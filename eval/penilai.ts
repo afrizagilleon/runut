@@ -8,6 +8,8 @@
 
 import { adaYangSama, angkaDalam, tanggalDalam } from './angka.ts';
 import { bacaJson, berkasCache, iniEntri, KELUARAN, adaBerkas } from './berkas.ts';
+import { muatDataMentah, type DataMentah } from './data-mentah.ts';
+import { nilaiKetepatan } from './ketepatan.ts';
 import { muatKunci, type Kunci } from './kunci.ts';
 import { BOBOT, PEMERIKSAAN_ANGKA, POLA_AJAKAN, POLA_SUMBER_SAH } from './penilai-aturan.ts';
 import { periksaSkema } from './skema-keluaran.ts';
@@ -36,6 +38,22 @@ export interface Nilai {
   ajakan: number;
   skor_total: number;
   pelanggaran: Pelanggaran[];
+  // ---- kolom amandemen A-1 ----
+  /** Angka yang BERTENTANGAN dengan data mentah (bukan sekadar tidak ada di kunci). */
+  angka_salah_baru: number;
+  /** Angka yang tidak bisa dipastikan benar maupun salah dari data mentah yang kita punya. */
+  tidak_terverifikasi: number;
+  /** Angka yang cocok data mentah, langsung atau lewat turunan yang diterima. */
+  angka_cocok: number;
+  /** Pelanggaran versi amandemen A-1, dipisah supaya metrik lama tidak tercampur. */
+  pelanggaran_baru: Pelanggaran[];
+}
+
+/** Data mentah dimuat sekali per proses; pembacaannya tidak menyentuh jaringan. */
+let dataMentahCache: DataMentah | null = null;
+export function dataMentah(): DataMentah {
+  if (dataMentahCache === null) dataMentahCache = muatDataMentah();
+  return dataMentahCache;
 }
 
 function teksFakta(f: FaktaKeluaran): string {
@@ -96,12 +114,16 @@ function angkaLayak(angka: number[]): number[] {
  * Tanggal dibuang dari kalimat sebelum angka diambil, supaya "24" pada
  * "24 Oktober 2025" tidak dihitung sebagai angka klaim.
  */
-function nilaiAngka(k: KeluaranLengan, kunci: Kunci, pelanggaran: Pelanggaran[]): number {
-  const klaim: string[] = [
+export function kalimatKlaim(k: KeluaranLengan): string[] {
+  return [
     ...k.fakta_terlihat.map(teksFakta),
     ...k.pembukaan.fakta_sesudah_t.map(teksFakta),
     ...k.soal.map((s) => `${s.batang} ${s.penjelasan}`),
   ];
+}
+
+function nilaiAngka(k: KeluaranLengan, kunci: Kunci, pelanggaran: Pelanggaran[]): number {
+  const klaim: string[] = kalimatKlaim(k);
   const semuaAngkaKunci: number[] = [];
   for (const b of kunci.baris.values()) semuaAngkaKunci.push(...b.angka_semua);
   if (kunci.saham_beredar !== null) semuaAngkaKunci.push(kunci.saham_beredar);
@@ -265,10 +287,23 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
       ajakan: 0,
       skor_total: BOBOT.gagal_skema,
       pelanggaran,
+      angka_salah_baru: 0,
+      tidak_terverifikasi: 0,
+      angka_cocok: 0,
+      pelanggaran_baru: [],
     };
   }
 
   const k = keluaran as KeluaranLengan;
+  const pelanggaranBaru: Pelanggaran[] = [];
+  const ketepatan = nilaiKetepatan(kalimatKlaim(k), dataMentah());
+  for (const a of ketepatan) {
+    if (a.status === 'cocok') continue;
+    pelanggaranBaru.push({
+      jenis: a.status === 'salah' ? 'angka-bertentangan' : 'tidak-terverifikasi',
+      keterangan: `angka ${a.nilai}: ${a.alasan} — pada kalimat "${a.kalimat.slice(0, 160)}"`,
+    });
+  }
   const angka_salah = nilaiAngka(k, kunci, pelanggaran);
   const kebocoran = nilaiKebocoran(k, pelanggaran);
   const tanpa_sumber = nilaiSumber(k, pelanggaran);
@@ -294,6 +329,10 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
       BOBOT.konflik_tak_terdeteksi * konflik.takTerdeteksi +
       BOBOT.ajakan * ajakan,
     pelanggaran,
+    angka_salah_baru: ketepatan.filter((a) => a.status === 'salah').length,
+    tidak_terverifikasi: ketepatan.filter((a) => a.status === 'tidak-terverifikasi').length,
+    angka_cocok: ketepatan.filter((a) => a.status === 'cocok').length,
+    pelanggaran_baru: pelanggaranBaru,
   };
 }
 
@@ -324,6 +363,7 @@ export function jalankan(): void {
     process.exitCode = 1;
     return;
   }
+  console.log('--- metrik lama (kunci sebagai acuan) ---');
   console.log('percobaan  skema  angka_salah  bocor  tanpa_sumber  konflik(tdk/ya/berlaku)  ajakan  skor');
   for (const n of hasil) {
     console.log(
@@ -331,6 +371,15 @@ export function jalankan(): void {
         `${String(n.kebocoran).padStart(5)}  ${String(n.tanpa_sumber).padStart(12)}  ` +
         `${String(n.konflik_tak_terdeteksi).padStart(8)}/${n.konflik_terdeteksi}/${n.konflik_berlaku}  ` +
         `${String(n.ajakan).padStart(6)}  ${String(n.skor_total).padStart(4)}`,
+    );
+  }
+  console.log('');
+  console.log('--- metrik amandemen A-1 (data mentah sebagai acuan) ---');
+  console.log('percobaan  angka_bertentangan  tidak_terverifikasi  angka_cocok');
+  for (const n of hasil) {
+    console.log(
+      `${n.lengan}-${n.ulangan}       ${String(n.angka_salah_baru).padStart(18)}  ` +
+        `${String(n.tidak_terverifikasi).padStart(19)}  ${String(n.angka_cocok).padStart(11)}`,
     );
   }
 }

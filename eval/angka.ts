@@ -19,9 +19,15 @@ function keAngka(token: string): number | null {
   return null;
 }
 
-/** Semua angka di dalam teks, sudah dikalikan satuan besar kalau disebut. */
-export function angkaDalam(teks: string): number[] {
-  const hasil: number[] = [];
+export interface AngkaBerekor {
+  nilai: number;
+  /** 14 karakter sesudah angka, apa adanya. Dipakai mengenali satuan (%, kali, persen). */
+  ekor: string;
+}
+
+/** Semua angka di dalam teks beserta ekornya, sudah dikalikan satuan besar kalau disebut. */
+export function angkaBerekorDalam(teks: string): AngkaBerekor[] {
+  const hasil: AngkaBerekor[] = [];
   for (const cocok of teks.matchAll(/\d[\d.,]*/g)) {
     const token = cocok[0].replace(/[.,]+$/, '');
     const nilai = keAngka(token);
@@ -34,9 +40,14 @@ export function angkaDalam(teks: string): number[] {
         break;
       }
     }
-    hasil.push(dikali);
+    hasil.push({ nilai: dikali, ekor });
   }
   return hasil;
+}
+
+/** Semua angka di dalam teks, sudah dikalikan satuan besar kalau disebut. */
+export function angkaDalam(teks: string): number[] {
+  return angkaBerekorDalam(teks).map((a) => a.nilai);
 }
 
 const BULAN: Record<string, string> = {
