@@ -1,0 +1,72 @@
+Kamu menyusun satu puzzle edukasi pasar modal Indonesia dari data nyata Bursa Efek Indonesia.
+
+Emiten: FOLK (PT Multi Garam Utama Tbk).
+Tanggal beku kasus, selanjutnya disebut T: 2025-10-07.
+
+Pemain membuka kasus ini seolah-olah hari ini adalah T. Ia melihat sekumpulan fakta, menjawab tiga soal, lalu membaca pembukaan yang menceritakan apa yang sebenarnya terjadi sesudah T.
+
+Yang mengikat kamu:
+
+1. Setiap fakta di "fakta_terlihat" HARUS sudah bisa diketahui publik pada atau sebelum T. Fakta yang baru terbit sesudah T hanya boleh muncul di "pembukaan.fakta_sesudah_t". Yang menentukan adalah tanggal fakta itu terbit ke publik, bukan tanggal peristiwanya.
+2. Setiap angka harus punya sumber yang bisa ditelusuri: tulis endpoint API atau nama berkas di field "sumber". Jangan menulis angka yang tidak kamu ambil dari data.
+3. Kalau kamu menemukan kejanggalan di datanya — angka yang tidak konsisten, harga yang tidak masuk akal, persentase yang tidak nyambung — catat di "temuan" beserta angkanya. Data resmi pun bisa salah.
+4. Jangan menyarankan membeli, menjual, atau menahan saham, dan jangan menyebut target harga. Ini bahan belajar, bukan nasihat investasi.
+5. Tulis semua kalimat dalam bahasa Indonesia.
+
+
+Kerjakan:
+
+- Kumpulkan data FOLK yang kamu perlukan lewat alat yang tersedia.
+- Susun 8 sampai 15 fakta terlihat yang cukup untuk memahami keadaan emiten pada T.
+- Susun tepat tiga soal pilihan ganda. Jawaban tiap soal harus bisa diturunkan dari fakta terlihat.
+- Susun pembukaan: beberapa paragraf tentang apa yang terjadi sesudah T, beserta fakta-fakta sesudah T yang mendukungnya.
+- Isi "temuan" dengan kejanggalan data yang kamu temukan. Boleh kosong kalau memang tidak ada.
+
+Keluarkan HANYA satu obyek JSON, tanpa kalimat pengantar dan tanpa penutup, dengan bentuk persis seperti ini:
+
+{
+  "skema_versi": 1,
+  "kasus_id": "<kode emiten huruf kecil>-<tanggal T>",
+  "emiten": "<kode emiten>",
+  "tanggal_t": "<YYYY-MM-DD>",
+  "fakta_terlihat": [
+    {
+      "fact_id": "<kode pendek unik>",
+      "klaim": "<satu kalimat bahasa Indonesia>",
+      "nilai": <angka atau teks atau null>,
+      "satuan": "<satuan atau null>",
+      "sumber": "<endpoint API atau nama berkas yang bisa ditelusuri>",
+      "tersedia_sejak": "<YYYY-MM-DD atau null>"
+    }
+  ],
+  "soal": [
+    {
+      "soal_id": "s1",
+      "batang": "<pertanyaan>",
+      "pilihan": [{ "kunci": "a", "teks": "<pilihan>" }],
+      "jawaban": "<kunci pilihan yang benar>",
+      "penjelasan": "<alasan, menyebut angka dan sumbernya>",
+      "fact_ids": ["<fact_id yang dipakai>"]
+    }
+  ],
+  "pembukaan": {
+    "paragraf": ["<apa yang sebenarnya terjadi sesudah T>"],
+    "fakta_sesudah_t": [
+      {
+        "fact_id": "<kode>",
+        "klaim": "<kalimat>",
+        "nilai": <angka atau teks atau null>,
+        "satuan": "<satuan atau null>",
+        "sumber": "<endpoint atau berkas>",
+        "tersedia_sejak": "<YYYY-MM-DD atau null>"
+      }
+    ]
+  },
+  "temuan": [
+    {
+      "aturan": "<kode aturan atau null>",
+      "ringkasan": "<kejanggalan data yang kamu temukan>",
+      "angka": [{ "label": "<label>", "nilai": <angka>, "satuan": "<satuan>" }]
+    }
+  ]
+}
