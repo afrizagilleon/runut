@@ -10,6 +10,7 @@ import { adaYangSama, angkaDalam, tanggalDalam } from './angka.ts';
 import { bacaJson, berkasCache, iniEntri, KELUARAN, adaBerkas } from './berkas.ts';
 import { muatDataMentah, type DataMentah } from './data-mentah.ts';
 import { nilaiKetepatan } from './ketepatan.ts';
+import { nilaiKelengkapan } from './kelengkapan.ts';
 import { muatKunci, type Kunci } from './kunci.ts';
 import { BOBOT, PEMERIKSAAN_ANGKA, POLA_AJAKAN, POLA_SUMBER_SAH } from './penilai-aturan.ts';
 import { periksaSkema } from './skema-keluaran.ts';
@@ -45,6 +46,11 @@ export interface Nilai {
   tidak_terverifikasi: number;
   /** Angka yang cocok data mentah, langsung atau lewat turunan yang diterima. */
   angka_cocok: number;
+  /** Berapa dari 14 baris fakta kunci (A1–A14) yang berhasil disebut. Makin besar makin baik. */
+  kelengkapan: number;
+  kelengkapan_dari: number;
+  /** Baris kunci yang tidak disebut, supaya angkanya bisa ditelusuri. */
+  kelengkapan_tidak_disebut: string[];
   /** Pelanggaran versi amandemen A-1, dipisah supaya metrik lama tidak tercampur. */
   pelanggaran_baru: Pelanggaran[];
 }
@@ -290,6 +296,9 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
       angka_salah_baru: 0,
       tidak_terverifikasi: 0,
       angka_cocok: 0,
+      kelengkapan: 0,
+      kelengkapan_dari: 0,
+      kelengkapan_tidak_disebut: [],
       pelanggaran_baru: [],
     };
   }
@@ -304,6 +313,7 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
       keterangan: `angka ${a.nilai}: ${a.alasan} — pada kalimat "${a.kalimat.slice(0, 160)}"`,
     });
   }
+  const lengkap = nilaiKelengkapan(k, kunci);
   const angka_salah = nilaiAngka(k, kunci, pelanggaran);
   const kebocoran = nilaiKebocoran(k, pelanggaran);
   const tanpa_sumber = nilaiSumber(k, pelanggaran);
@@ -332,6 +342,9 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
     angka_salah_baru: ketepatan.filter((a) => a.status === 'salah').length,
     tidak_terverifikasi: ketepatan.filter((a) => a.status === 'tidak-terverifikasi').length,
     angka_cocok: ketepatan.filter((a) => a.status === 'cocok').length,
+    kelengkapan: lengkap.jumlah,
+    kelengkapan_dari: lengkap.dari,
+    kelengkapan_tidak_disebut: lengkap.tidakDisebut,
     pelanggaran_baru: pelanggaranBaru,
   };
 }
@@ -375,11 +388,12 @@ export function jalankan(): void {
   }
   console.log('');
   console.log('--- metrik amandemen A-1 (data mentah sebagai acuan) ---');
-  console.log('percobaan  angka_bertentangan  tidak_terverifikasi  angka_cocok');
+  console.log('percobaan  angka_bertentangan  tidak_terverifikasi  angka_cocok  kelengkapan');
   for (const n of hasil) {
     console.log(
       `${n.lengan}-${n.ulangan}       ${String(n.angka_salah_baru).padStart(18)}  ` +
-        `${String(n.tidak_terverifikasi).padStart(19)}  ${String(n.angka_cocok).padStart(11)}`,
+        `${String(n.tidak_terverifikasi).padStart(19)}  ${String(n.angka_cocok).padStart(11)}  ` +
+        `${String(n.kelengkapan).padStart(6)}/${n.kelengkapan_dari}`,
     );
   }
 }
