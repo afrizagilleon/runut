@@ -312,7 +312,7 @@ export function nilaiSemua(): Nilai[] {
   for (const nama of readdirSync(KELUARAN).sort()) {
     if (!/^[ASC]-\d+\.json$/.test(nama)) continue;
     const isi = JSON.parse(readFileSync(join(KELUARAN, nama), 'utf8')) as BerkasPercobaan;
-    hasil.push(nilaiKeluaran(isi.keluaran, isi.lengan, isi.ulangan, nama, kunci));
+    hasil.push(nilaiKeluaran(isi.keluaran, isi.lengan, isi.ulangan, `eval/keluaran/${nama}`, kunci));
   }
   return hasil;
 }

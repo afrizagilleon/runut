@@ -15,7 +15,8 @@
     "eval:data": "node --experimental-strip-types eval/periksa-data.ts",
     "eval:jalan": "node --experimental-strip-types eval/jalan.ts",
     "eval:nilai": "node --experimental-strip-types eval/penilai.ts",
-    "eval:bukti": "node --experimental-strip-types eval/bukti-penilai.ts"
+    "eval:bukti": "node --experimental-strip-types eval/bukti-penilai.ts",
+    "eval:laporan": "node --experimental-strip-types eval/laporan.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
