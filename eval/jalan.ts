@@ -28,6 +28,30 @@ export function tulisPrompt(): { a: string; s: string } {
   return { a, s };
 }
 
+/**
+ * Pesan galat selengkap mungkin. `TypeError: fetch failed` sendirian tidak
+ * memberi tahu apa pun: sebab sebenarnya ada di `cause` (kode soket, galat
+ * TLS, atau respons HTTP). INV-6: kegagalan tidak boleh kehilangan isinya.
+ */
+function pesanGalat(galat: unknown): string {
+  if (!(galat instanceof Error)) return String(galat);
+  const bagian = [`${galat.name}: ${galat.message}`];
+  let sebab: unknown = galat.cause;
+  let kedalaman = 0;
+  while (sebab !== undefined && sebab !== null && kedalaman < 5) {
+    if (sebab instanceof Error) {
+      const kode = (sebab as Error & { code?: string }).code;
+      bagian.push(`cause: ${sebab.name}: ${sebab.message}${kode ? ` (code=${kode})` : ''}`);
+      sebab = sebab.cause;
+    } else {
+      bagian.push(`cause: ${String(sebab)}`);
+      sebab = undefined;
+    }
+    kedalaman++;
+  }
+  return bagian.join(' | ');
+}
+
 async function jalankanSatu(lengan: Lengan, ulangan: number): Promise<Percobaan> {
   if (lengan === 'A') return jalankanA(ulangan);
   if (lengan === 'S') return jalankanS(ulangan);
@@ -108,7 +132,7 @@ export async function jalankan(argv: string[]): Promise<void> {
           keluaran: null,
           lolos_skema: false,
           masalah_skema: [],
-          galat: galat instanceof Error ? `${galat.name}: ${galat.message}` : String(galat),
+          galat: pesanGalat(galat),
         };
       }
       const jalur = simpanPercobaan(percobaan);

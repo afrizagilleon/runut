@@ -82,6 +82,98 @@
         "fetch-daily-price"
       ],
       "kredit": 14
+    },
+    {
+      "waktu": "2026-09-20T15:08:00.723Z",
+      "lengan": "C",
+      "keterangan": "percobaan C-2 (pipeline dari cache, tanpa MCP)",
+      "alat": [],
+      "kredit": 0
+    },
+    {
+      "waktu": "2026-09-20T15:11:38.575Z",
+      "lengan": "A",
+      "keterangan": "percobaan A-2",
+      "alat": [
+        "fetch-company-report",
+        "fetch-daily-price",
+        "fetch-corporate-actions",
+        "fetch-listing-performance",
+        "fetch-news",
+        "fetch-quarterly-financial-dates",
+        "fetch-broker-summary-top",
+        "fetch-foreign-flow",
+        "fetch-filings",
+        "fetch-suspensions",
+        "fetch-quarterly-financials",
+        "fetch-news",
+        "fetch-daily-price",
+        "fetch-shareholders-composition"
+      ],
+      "kredit": 14
+    },
+    {
+      "waktu": "2026-09-20T15:15:54.848Z",
+      "lengan": "S",
+      "keterangan": "percobaan S-2",
+      "alat": [
+        "fetch-company-report",
+        "fetch-filings",
+        "fetch-daily-price",
+        "fetch-corporate-actions",
+        "fetch-shareholders-composition",
+        "fetch-quarterly-financial-dates",
+        "fetch-listing-performance",
+        "fetch-suspensions",
+        "fetch-news",
+        "fetch-quarterly-financials"
+      ],
+      "kredit": 10
+    },
+    {
+      "waktu": "2026-09-20T15:17:12.827Z",
+      "lengan": "C",
+      "keterangan": "percobaan C-3 (pipeline dari cache, tanpa MCP)",
+      "alat": [],
+      "kredit": 0
+    },
+    {
+      "waktu": "2026-09-20T15:20:56.475Z",
+      "lengan": "A",
+      "keterangan": "percobaan A-3",
+      "alat": [
+        "fetch-company-report",
+        "fetch-daily-price",
+        "fetch-listing-performance",
+        "fetch-corporate-actions",
+        "fetch-quarterly-financial-dates",
+        "fetch-news",
+        "fetch-news",
+        "fetch-foreign-flow",
+        "fetch-shareholders-composition",
+        "fetch-quarterly-financials",
+        "fetch-broker-summary-top",
+        "fetch-suspensions"
+      ],
+      "kredit": 12
+    },
+    {
+      "waktu": "2026-09-20T15:32:58.226Z",
+      "lengan": "S",
+      "keterangan": "percobaan S-3",
+      "alat": [
+        "fetch-company-report",
+        "fetch-filings",
+        "fetch-daily-price",
+        "fetch-corporate-actions",
+        "fetch-news",
+        "fetch-news",
+        "fetch-broker-summary-top",
+        "fetch-shareholders-composition",
+        "fetch-quarterly-financial-dates",
+        "fetch-suspensions"
+      ],
+      "kredit": 10
     }
   ]
 }

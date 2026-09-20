@@ -1,0 +1,744 @@
+{
+  "lengan": "C",
+  "ulangan": 2,
+  "waktu_mulai": "2026-09-20T15:06:14.557Z",
+  "waktu_selesai": "2026-09-20T15:08:00.722Z",
+  "model": "claude-sonnet-5",
+  "prompt_sha256": "ec04fa2f39f96e40803560498b0d8f730531adce23f41605256c3212a890a51e",
+  "prompt_panjang": 14862,
+  "token_masuk": 7794,
+  "token_keluar": 15709,
+  "alat_mcp": [],
+  "kredit_sectors": 0,
+  "stop_reason": "end_turn",
+  "teks_mentah": "```json\n{\n  \"skema_versi\": 1,\n  \"kasus_id\": \"folk-2025-10-07\",\n  \"emiten\": \"FOLK\",\n  \"tanggal_t\": \"2025-10-07\",\n  \"fakta_terlihat\": [\n    {\n      \"fact_id\": \"identitas\",\n      \"klaim\": \"PT Multi Garam Utama Tbk (FOLK) tercatat di papan Development sejak 7 Agustus 2023, berada di sub-sektor Multi-sector Holdings.\",\n      \"nilai\": \"FOLK\",\n      \"satuan\": null,\n      \"sumber\": \"/v2/company/report/FOLK/?sections=overview (.cache/sectors/FOLK-overview.json)\",\n      \"tersedia_sejak\": \"2023-08-07\"\n    },\n    {\n      \"fact_id\": \"beredar\",\n      \"klaim\": \"Jumlah saham beredar FOLK tercatat sebanyak 3.948.141.464 lembar, dihitung dari nilai pasar dibagi harga penutupan dan konsisten selama 59 hari bursa.\",\n      \"nilai\": 3948141464,\n      \"satuan\": \"lembar\",\n      \"sumber\": \"turunan (dihitung dari fakta lain di berkas ini)\",\n      \"tersedia_sejak\": \"2025-07-15\"\n    },\n    {\n      \"fact_id\": \"harga-awal\",\n      \"klaim\": \"Harga penutupan saham FOLK pada 15 Juli 2025 adalah Rp68 per lembar.\",\n      \"nilai\": 68,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-07-15\"\n    },\n    {\n      \"fact_id\": \"harga-sebelum-t\",\n      \"klaim\": \"Harga penutupan saham FOLK pada 6 Oktober 2025 adalah Rp115 per lembar.\",\n      \"nilai\": 115,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-10-06\"\n    },\n    {\n      \"fact_id\": \"harga-t\",\n      \"klaim\": \"Pada 7 Oktober 2025, saham FOLK ditutup di Rp155 per lembar, setelah dibuka di Rp116, sempat menyentuh tertinggi Rp155, dan terendah Rp116.\",\n      \"nilai\": 155,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"lonjakan-harian\",\n      \"klaim\": \"Harga penutupan saham FOLK melonjak 34,8 persen dalam satu hari bursa, dari 6 Oktober 2025 ke 7 Oktober 2025.\",\n      \"nilai\": 34.8,\n      \"satuan\": \"persen\",\n      \"sumber\": \"turunan (dihitung dari fakta lain di berkas ini)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"volume-t\",\n      \"klaim\": \"Volume perdagangan saham FOLK pada 7 Oktober 2025 mencapai 66.466.200 lembar, sekitar 2,7 kali rata-rata volume sepuluh hari bursa sebelumnya.\",\n      \"nilai\": 66466200,\n      \"satuan\": \"lembar\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"nilai-pasar-t\",\n      \"klaim\": \"Nilai pasar saham FOLK pada 7 Oktober 2025 tercatat sekitar Rp611.961.926.920.\",\n      \"nilai\": 611961926920,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"turunan (dihitung dari fakta lain di berkas ini)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"fin-2022\",\n      \"klaim\": \"Pada tahun buku 2022, FOLK mencatat pendapatan Rp40.237.612.994 dan laba bersih Rp5.056.658.536.\",\n      \"nilai\": 40237612994,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2023-01-01\"\n    },\n    {\n      \"fact_id\": \"fin-2023\",\n      \"klaim\": \"Pada tahun buku 2023, FOLK mencatat pendapatan Rp24.809.591.548 dan rugi bersih Rp10.644.683.801.\",\n      \"nilai\": 24809591548,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2024-01-01\"\n    },\n    {\n      \"fact_id\": \"fin-2024\",\n      \"klaim\": \"Pada tahun buku 2024, FOLK mencatat pendapatan Rp19.354.230.679 dan rugi bersih Rp16.661.197.051.\",\n      \"nilai\": 19354230679,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2025-01-01\"\n    },\n    {\n      \"fact_id\": \"ekuitas\",\n      \"klaim\": \"Ekuitas FOLK pada tahun buku 2024 tercatat sebesar Rp84.855.713.473.\",\n      \"nilai\": 84855713473,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2025-01-01\"\n    },\n    {\n      \"fact_id\": \"rups\",\n      \"klaim\": \"Sampai 7 Oktober 2025, FOLK tercatat menggelar 3 RUPS pada 31 Mei 2024, 22 Agustus 2024, dan 11 Juni 2025, namun tidak satu pun hasilnya tercatat di data.\",\n      \"nilai\": 3,\n      \"satuan\": \"rups\",\n      \"sumber\": \"/v2/company/corporate-actions/FOLK/ (.cache/sectors/FOLK-corpactions.json)\",\n      \"tersedia_sejak\": \"2025-06-11\"\n    },\n    {\n      \"fact_id\": \"dividen\",\n      \"klaim\": \"Tidak ada satu pun dividen yang tercatat dalam catatan aksi korporasi FOLK.\",\n      \"nilai\": \"tidak ada\",\n      \"satuan\": null,\n      \"sumber\": \"/v2/company/corporate-actions/FOLK/ (.cache/sectors/FOLK-corpactions.json)\",\n      \"tersedia_sejak\": \"2023-08-07\"\n    },\n    {\n      \"fact_id\": \"suspensi\",\n      \"klaim\": \"Sampai 7 Oktober 2025, belum ada suspensi perdagangan atas saham FOLK.\",\n      \"nilai\": 0,\n      \"satuan\": \"suspensi\",\n      \"sumber\": \"/v2/suspensions/ (.cache/sectors/suspensions-all.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"laporan-kepemilikan\",\n      \"klaim\": \"Sampai 7 Oktober 2025, belum ada satu pun laporan transaksi pemegang saham besar yang terbit untuk FOLK; laporan paling awal baru terbit 24 Oktober 2025.\",\n      \"nilai\": 0,\n      \"satuan\": \"laporan\",\n      \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    }\n  ],\n  \"soal\": [\n    {\n      \"soal_id\": \"s1\",\n      \"batang\": \"Berapa persen kenaikan harga penutupan saham FOLK dari 6 Oktober 2025 ke 7 Oktober 2025?\",\n      \"pilihan\": [\n        { \"kunci\": \"a\", \"teks\": \"12,5 persen\" },\n        { \"kunci\": \"b\", \"teks\": \"34,8 persen\" },\n        { \"kunci\": \"c\", \"teks\": \"50 persen\" },\n        { \"kunci\": \"d\", \"teks\": \"68 persen\" }\n      ],\n      \"jawaban\": \"b\",\n      \"penjelasan\": \"Harga penutupan naik dari Rp115 pada 6 Oktober 2025 menjadi Rp155 pada 7 Oktober 2025, yaitu kenaikan 34,8 persen dalam satu hari bursa sebagaimana tercatat pada fakta lonjakan-harian.\",\n      \"fact_ids\": [\"lonjakan-harian\", \"harga-sebelum-t\", \"harga-t\"]\n    },\n    {\n      \"soal_id\": \"s2\",\n      \"batang\": \"Berapa rugi bersih yang dicatat FOLK pada tahun buku 2024?\",\n      \"pilihan\": [\n        { \"kunci\": \"a\", \"teks\": \"Rp5.056.658.536\" },\n        { \"kunci\": \"b\", \"teks\": \"Rp10.644.683.801\" },\n        { \"kunci\": \"c\", \"teks\": \"Rp16.661.197.051\" },\n        { \"kunci\": \"d\", \"teks\": \"Rp84.855.713.473\" }\n      ],\n      \"jawaban\": \"c\",\n      \"penjelasan\": \"Fakta fin-2024 menyebutkan bahwa pada tahun buku 2024 FOLK mencatat rugi bersih sebesar Rp16.661.197.051.\",\n      \"fact_ids\": [\"fin-2024\"]\n    },\n    {\n      \"soal_id\": \"s3\",\n      \"batang\": \"Sampai 7 Oktober 2025, bagaimana status suspensi perdagangan dan laporan kepemilikan pemegang saham besar untuk saham FOLK?\",\n      \"pilihan\": [\n        { \"kunci\": \"a\", \"teks\": \"Sudah ada suspensi dan sudah ada laporan kepemilikan\" },\n        { \"kunci\": \"b\", \"teks\": \"Belum ada suspensi dan belum ada laporan kepemilikan\" },\n        { \"kunci\": \"c\", \"teks\": \"Sudah ada suspensi tapi belum ada laporan kepemilikan\" },\n        { \"kunci\": \"d\", \"teks\": \"Belum ada suspensi tapi sudah ada laporan kepemilikan\" }\n      ],\n      \"jawaban\": \"b\",\n      \"penjelasan\": \"Fakta suspensi menyatakan belum ada suspensi perdagangan sampai 7 Oktober 2025, dan fakta laporan-kepemilikan menyatakan belum ada laporan transaksi pemegang saham besar yang terbit sampai tanggal tersebut, dengan laporan pertama baru terbit 24 Oktober 2025.\",\n      \"fact_ids\": [\"suspensi\", \"laporan-kepemilikan\"]\n    }\n  ],\n  \"pembukaan\": {\n    \"paragraf\": [\n      \"Setelah harga saham FOLK melonjak signifikan pada 7 Oktober 2025, Bursa menghentikan sementara perdagangannya pada 8 Oktober 2025 dengan volume 0 lembar, dengan alasan terjadinya peningkatan harga kumulatif yang signifikan dalam rangka cooling down sebagai bentuk perlindungan bagi investor. Perdagangan dibuka kembali pada 9 Oktober 2025 dan ditutup di Rp208 dengan volume 110.988.000 lembar, sebelum dihentikan lagi pada 10 Oktober 2025 dengan alasan serupa.\",\n      \"Selanjutnya, pada 24 Oktober 2025 terbit laporan transaksi pemegang saham besar pertama, mencatat Sumber Garam Pratama menjual 197.407.074 lembar pada harga Rp170, sehingga kepemilikannya berubah dari 1.246.180.419 menjadi 1.048.773.345 lembar (31,56 persen menjadi 26,56 persen). Transaksi serupa berlanjut pada 11 Desember 2025 dengan penjualan 16.666.600 lembar di harga Rp300, dan pada 24 Desember 2025 dengan pembelian 116.404.195 lembar di harga Rp490. Harga penutupan tertinggi dalam data yang tersedia setelah 7 Oktober 2025 terjadi pada 9 Januari 2026 di Rp700 per lembar.\"\n    ],\n    \"fakta_sesudah_t\": [\n      {\n        \"fact_id\": \"suspensi-2025-10-08\",\n        \"klaim\": \"Pada 8 Oktober 2025, perdagangan saham FOLK dihentikan bursa dengan volume 0 lembar karena terjadinya peningkatan harga kumulatif yang signifikan pada saham FOLK.JK, dalam rangka cooling down sebagai bentuk perlindungan bagi investor.\",\n        \"nilai\": \"2025-10-08\",\n        \"satuan\": null,\n        \"sumber\": \"/v2/suspensions/ (.cache/sectors/suspensions-all.json)\",\n        \"tersedia_sejak\": \"2025-10-08\"\n      },\n      {\n        \"fact_id\": \"suspensi-2025-10-10\",\n        \"klaim\": \"Pada 10 Oktober 2025, perdagangan saham FOLK dihentikan bursa dengan volume 0 lembar karena terjadinya peningkatan harga kumulatif yang signifikan pada saham FOLK.JK.\",\n        \"nilai\": \"2025-10-10\",\n        \"satuan\": null,\n        \"sumber\": \"/v2/suspensions/ (.cache/sectors/suspensions-all.json)\",\n        \"tersedia_sejak\": \"2025-10-10\"\n      },\n      {\n        \"fact_id\": \"harga-buka-lagi\",\n        \"klaim\": \"Hari bursa pertama dengan perdagangan setelah 7 Oktober 2025 adalah 9 Oktober 2025, ditutup di Rp208 dengan volume 110.988.000 lembar.\",\n        \"nilai\": 208,\n        \"satuan\": \"rupiah\",\n        \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n        \"tersedia_sejak\": \"2025-10-09\"\n      },\n      {\n        \"fact_id\": \"harga-tertinggi-sesudah\",\n        \"klaim\": \"Harga penutupan tertinggi dalam data yang tersedia setelah 7 Oktober 2025 terjadi pada 9 Januari 2026 di Rp700 per lembar.\",\n        \"nilai\": 700,\n        \"satuan\": \"rupiah\",\n        \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n        \"tersedia_sejak\": \"2026-01-09\"\n      },\n      {\n        \"fact_id\": \"fil-2025-10-24-8\",\n        \"klaim\": \"Pada 24 Oktober 2025 terbit laporan bahwa Sumber Garam Pratama menjual 197.407.074 lembar saham FOLK pada harga Rp170, sehingga kepemilikannya berubah dari 1.246.180.419 menjadi 1.048.773.345 lembar (31,56 persen menjadi 26,56 persen).\",\n        \"nilai\": 197407074,\n        \"satuan\": \"lembar\",\n        \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n        \"tersedia_sejak\": \"2025-10-24\"\n      },\n      {\n        \"fact_id\": \"fil-2025-12-11-7\",\n        \"klaim\": \"Pada 11 Desember 2025 terbit laporan bahwa Sumber Garam Pratama menjual 16.666.600 lembar saham FOLK pada harga Rp300, sehingga kepemilikannya berubah dari 1.048.773.345 menjadi 1.032.106.745 lembar (26,56 persen menjadi 26,14 persen).\",\n        \"nilai\": 16666600,\n        \"satuan\": \"lembar\",\n        \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n        \"tersedia_sejak\": \"2025-12-11\"\n      },\n      {\n        \"fact_id\": \"fil-2025-12-24-6\",\n        \"klaim\": \"Pada 24 Desember 2025 terbit laporan bahwa Sumber Garam Pratama membeli 116.404.195 lembar saham FOLK pada harga Rp490, sehingga kepemilikannya berubah dari 1.032.106.745 menjadi 1.148.510.940 lembar (26,14 persen menjadi 29,09 persen).\",\n        \"nilai\": 116404195,\n        \"satuan\": \"lembar\",\n        \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n        \"tersedia_sejak\": \"2025-12-24\"\n      }\n    ]\n  },\n  \"temuan\": [\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2025-10-24 pada harga Rp170–Rp170, padahal harga saham hari itu hanya bergerak Rp206–Rp208.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 170, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 170, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 206, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2025-12-08 pada harga Rp300–Rp300, padahal harga saham hari itu hanya bergerak Rp408–Rp492.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 300, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 300, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 408, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 492, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2025-12-30 pada harga Rp341–Rp341, padahal harga saham hari itu hanya bergerak Rp398–Rp400.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 341, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 341, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 398, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 400, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2026-01-08 pada harga Rp75–Rp75, padahal harga saham hari itu hanya bergerak Rp540–Rp635.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 75, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 75, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 540, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 635, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R7\",\n      \"ringkasan\": \"Laporan 2026-05-19T12:50:02 menulis kepemilikan sebelum transaksi 22.08%, padahal 903.330.281 dibagi 3.948.141.464 saham beredar adalah 22.88%.\",\n      \"angka\": [\n        { \"label\": \"persen menurut laporan\", \"nilai\": 22.08, \"satuan\": \"persen\" },\n        { \"label\": \"persen hasil hitung ulang\", \"nilai\": 22.88, \"satuan\": \"persen\" },\n        { \"label\": \"lembar\", \"nilai\": 903330281, \"satuan\": \"lembar\" },\n        { \"label\": \"saham beredar\", \"nilai\": 3948141464, \"satuan\": \"lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R7\",\n      \"ringkasan\": \"Laporan 2026-05-19T12:50:02 menulis kepemilikan sesudah transaksi 20.77%, padahal 849.764.681 dibagi 3.948.141.464 saham beredar adalah 21.52%.\",\n      \"angka\": [\n        { \"label\": \"persen menurut laporan\", \"nilai\": 20.77, \"satuan\": \"persen\" },\n        { \"label\": \"persen hasil hitung ulang\", \"nilai\": 21.52, \"satuan\": \"persen\" },\n        { \"label\": \"lembar\", \"nilai\": 849764681, \"satuan\": \"lembar\" },\n        { \"label\": \"saham beredar\", \"nilai\": 3948141464, \"satuan\": \"lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-13 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-14 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-15 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-16 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-17 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-20 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-15 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-16 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-17 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-18 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-19 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-22 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-23 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-24 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    }\n  ]\n}\n```",
+  "respons_mentah": {
+    "model": "claude-sonnet-5",
+    "id": "msg_011CfEu6HLt6euX9gKwjcnBc",
+    "type": "message",
+    "role": "assistant",
+    "content": [
+      {
+        "type": "thinking",
+        "thinking": "",
+        "signature": "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"
+      },
+      {
+        "type": "text",
+        "text": "```json\n{\n  \"skema_versi\": 1,\n  \"kasus_id\": \"folk-2025-10-07\",\n  \"emiten\": \"FOLK\",\n  \"tanggal_t\": \"2025-10-07\",\n  \"fakta_terlihat\": [\n    {\n      \"fact_id\": \"identitas\",\n      \"klaim\": \"PT Multi Garam Utama Tbk (FOLK) tercatat di papan Development sejak 7 Agustus 2023, berada di sub-sektor Multi-sector Holdings.\",\n      \"nilai\": \"FOLK\",\n      \"satuan\": null,\n      \"sumber\": \"/v2/company/report/FOLK/?sections=overview (.cache/sectors/FOLK-overview.json)\",\n      \"tersedia_sejak\": \"2023-08-07\"\n    },\n    {\n      \"fact_id\": \"beredar\",\n      \"klaim\": \"Jumlah saham beredar FOLK tercatat sebanyak 3.948.141.464 lembar, dihitung dari nilai pasar dibagi harga penutupan dan konsisten selama 59 hari bursa.\",\n      \"nilai\": 3948141464,\n      \"satuan\": \"lembar\",\n      \"sumber\": \"turunan (dihitung dari fakta lain di berkas ini)\",\n      \"tersedia_sejak\": \"2025-07-15\"\n    },\n    {\n      \"fact_id\": \"harga-awal\",\n      \"klaim\": \"Harga penutupan saham FOLK pada 15 Juli 2025 adalah Rp68 per lembar.\",\n      \"nilai\": 68,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-07-15\"\n    },\n    {\n      \"fact_id\": \"harga-sebelum-t\",\n      \"klaim\": \"Harga penutupan saham FOLK pada 6 Oktober 2025 adalah Rp115 per lembar.\",\n      \"nilai\": 115,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-10-06\"\n    },\n    {\n      \"fact_id\": \"harga-t\",\n      \"klaim\": \"Pada 7 Oktober 2025, saham FOLK ditutup di Rp155 per lembar, setelah dibuka di Rp116, sempat menyentuh tertinggi Rp155, dan terendah Rp116.\",\n      \"nilai\": 155,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"lonjakan-harian\",\n      \"klaim\": \"Harga penutupan saham FOLK melonjak 34,8 persen dalam satu hari bursa, dari 6 Oktober 2025 ke 7 Oktober 2025.\",\n      \"nilai\": 34.8,\n      \"satuan\": \"persen\",\n      \"sumber\": \"turunan (dihitung dari fakta lain di berkas ini)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"volume-t\",\n      \"klaim\": \"Volume perdagangan saham FOLK pada 7 Oktober 2025 mencapai 66.466.200 lembar, sekitar 2,7 kali rata-rata volume sepuluh hari bursa sebelumnya.\",\n      \"nilai\": 66466200,\n      \"satuan\": \"lembar\",\n      \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"nilai-pasar-t\",\n      \"klaim\": \"Nilai pasar saham FOLK pada 7 Oktober 2025 tercatat sekitar Rp611.961.926.920.\",\n      \"nilai\": 611961926920,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"turunan (dihitung dari fakta lain di berkas ini)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"fin-2022\",\n      \"klaim\": \"Pada tahun buku 2022, FOLK mencatat pendapatan Rp40.237.612.994 dan laba bersih Rp5.056.658.536.\",\n      \"nilai\": 40237612994,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2023-01-01\"\n    },\n    {\n      \"fact_id\": \"fin-2023\",\n      \"klaim\": \"Pada tahun buku 2023, FOLK mencatat pendapatan Rp24.809.591.548 dan rugi bersih Rp10.644.683.801.\",\n      \"nilai\": 24809591548,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2024-01-01\"\n    },\n    {\n      \"fact_id\": \"fin-2024\",\n      \"klaim\": \"Pada tahun buku 2024, FOLK mencatat pendapatan Rp19.354.230.679 dan rugi bersih Rp16.661.197.051.\",\n      \"nilai\": 19354230679,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2025-01-01\"\n    },\n    {\n      \"fact_id\": \"ekuitas\",\n      \"klaim\": \"Ekuitas FOLK pada tahun buku 2024 tercatat sebesar Rp84.855.713.473.\",\n      \"nilai\": 84855713473,\n      \"satuan\": \"rupiah\",\n      \"sumber\": \"/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)\",\n      \"tersedia_sejak\": \"2025-01-01\"\n    },\n    {\n      \"fact_id\": \"rups\",\n      \"klaim\": \"Sampai 7 Oktober 2025, FOLK tercatat menggelar 3 RUPS pada 31 Mei 2024, 22 Agustus 2024, dan 11 Juni 2025, namun tidak satu pun hasilnya tercatat di data.\",\n      \"nilai\": 3,\n      \"satuan\": \"rups\",\n      \"sumber\": \"/v2/company/corporate-actions/FOLK/ (.cache/sectors/FOLK-corpactions.json)\",\n      \"tersedia_sejak\": \"2025-06-11\"\n    },\n    {\n      \"fact_id\": \"dividen\",\n      \"klaim\": \"Tidak ada satu pun dividen yang tercatat dalam catatan aksi korporasi FOLK.\",\n      \"nilai\": \"tidak ada\",\n      \"satuan\": null,\n      \"sumber\": \"/v2/company/corporate-actions/FOLK/ (.cache/sectors/FOLK-corpactions.json)\",\n      \"tersedia_sejak\": \"2023-08-07\"\n    },\n    {\n      \"fact_id\": \"suspensi\",\n      \"klaim\": \"Sampai 7 Oktober 2025, belum ada suspensi perdagangan atas saham FOLK.\",\n      \"nilai\": 0,\n      \"satuan\": \"suspensi\",\n      \"sumber\": \"/v2/suspensions/ (.cache/sectors/suspensions-all.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    },\n    {\n      \"fact_id\": \"laporan-kepemilikan\",\n      \"klaim\": \"Sampai 7 Oktober 2025, belum ada satu pun laporan transaksi pemegang saham besar yang terbit untuk FOLK; laporan paling awal baru terbit 24 Oktober 2025.\",\n      \"nilai\": 0,\n      \"satuan\": \"laporan\",\n      \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n      \"tersedia_sejak\": \"2025-10-07\"\n    }\n  ],\n  \"soal\": [\n    {\n      \"soal_id\": \"s1\",\n      \"batang\": \"Berapa persen kenaikan harga penutupan saham FOLK dari 6 Oktober 2025 ke 7 Oktober 2025?\",\n      \"pilihan\": [\n        { \"kunci\": \"a\", \"teks\": \"12,5 persen\" },\n        { \"kunci\": \"b\", \"teks\": \"34,8 persen\" },\n        { \"kunci\": \"c\", \"teks\": \"50 persen\" },\n        { \"kunci\": \"d\", \"teks\": \"68 persen\" }\n      ],\n      \"jawaban\": \"b\",\n      \"penjelasan\": \"Harga penutupan naik dari Rp115 pada 6 Oktober 2025 menjadi Rp155 pada 7 Oktober 2025, yaitu kenaikan 34,8 persen dalam satu hari bursa sebagaimana tercatat pada fakta lonjakan-harian.\",\n      \"fact_ids\": [\"lonjakan-harian\", \"harga-sebelum-t\", \"harga-t\"]\n    },\n    {\n      \"soal_id\": \"s2\",\n      \"batang\": \"Berapa rugi bersih yang dicatat FOLK pada tahun buku 2024?\",\n      \"pilihan\": [\n        { \"kunci\": \"a\", \"teks\": \"Rp5.056.658.536\" },\n        { \"kunci\": \"b\", \"teks\": \"Rp10.644.683.801\" },\n        { \"kunci\": \"c\", \"teks\": \"Rp16.661.197.051\" },\n        { \"kunci\": \"d\", \"teks\": \"Rp84.855.713.473\" }\n      ],\n      \"jawaban\": \"c\",\n      \"penjelasan\": \"Fakta fin-2024 menyebutkan bahwa pada tahun buku 2024 FOLK mencatat rugi bersih sebesar Rp16.661.197.051.\",\n      \"fact_ids\": [\"fin-2024\"]\n    },\n    {\n      \"soal_id\": \"s3\",\n      \"batang\": \"Sampai 7 Oktober 2025, bagaimana status suspensi perdagangan dan laporan kepemilikan pemegang saham besar untuk saham FOLK?\",\n      \"pilihan\": [\n        { \"kunci\": \"a\", \"teks\": \"Sudah ada suspensi dan sudah ada laporan kepemilikan\" },\n        { \"kunci\": \"b\", \"teks\": \"Belum ada suspensi dan belum ada laporan kepemilikan\" },\n        { \"kunci\": \"c\", \"teks\": \"Sudah ada suspensi tapi belum ada laporan kepemilikan\" },\n        { \"kunci\": \"d\", \"teks\": \"Belum ada suspensi tapi sudah ada laporan kepemilikan\" }\n      ],\n      \"jawaban\": \"b\",\n      \"penjelasan\": \"Fakta suspensi menyatakan belum ada suspensi perdagangan sampai 7 Oktober 2025, dan fakta laporan-kepemilikan menyatakan belum ada laporan transaksi pemegang saham besar yang terbit sampai tanggal tersebut, dengan laporan pertama baru terbit 24 Oktober 2025.\",\n      \"fact_ids\": [\"suspensi\", \"laporan-kepemilikan\"]\n    }\n  ],\n  \"pembukaan\": {\n    \"paragraf\": [\n      \"Setelah harga saham FOLK melonjak signifikan pada 7 Oktober 2025, Bursa menghentikan sementara perdagangannya pada 8 Oktober 2025 dengan volume 0 lembar, dengan alasan terjadinya peningkatan harga kumulatif yang signifikan dalam rangka cooling down sebagai bentuk perlindungan bagi investor. Perdagangan dibuka kembali pada 9 Oktober 2025 dan ditutup di Rp208 dengan volume 110.988.000 lembar, sebelum dihentikan lagi pada 10 Oktober 2025 dengan alasan serupa.\",\n      \"Selanjutnya, pada 24 Oktober 2025 terbit laporan transaksi pemegang saham besar pertama, mencatat Sumber Garam Pratama menjual 197.407.074 lembar pada harga Rp170, sehingga kepemilikannya berubah dari 1.246.180.419 menjadi 1.048.773.345 lembar (31,56 persen menjadi 26,56 persen). Transaksi serupa berlanjut pada 11 Desember 2025 dengan penjualan 16.666.600 lembar di harga Rp300, dan pada 24 Desember 2025 dengan pembelian 116.404.195 lembar di harga Rp490. Harga penutupan tertinggi dalam data yang tersedia setelah 7 Oktober 2025 terjadi pada 9 Januari 2026 di Rp700 per lembar.\"\n    ],\n    \"fakta_sesudah_t\": [\n      {\n        \"fact_id\": \"suspensi-2025-10-08\",\n        \"klaim\": \"Pada 8 Oktober 2025, perdagangan saham FOLK dihentikan bursa dengan volume 0 lembar karena terjadinya peningkatan harga kumulatif yang signifikan pada saham FOLK.JK, dalam rangka cooling down sebagai bentuk perlindungan bagi investor.\",\n        \"nilai\": \"2025-10-08\",\n        \"satuan\": null,\n        \"sumber\": \"/v2/suspensions/ (.cache/sectors/suspensions-all.json)\",\n        \"tersedia_sejak\": \"2025-10-08\"\n      },\n      {\n        \"fact_id\": \"suspensi-2025-10-10\",\n        \"klaim\": \"Pada 10 Oktober 2025, perdagangan saham FOLK dihentikan bursa dengan volume 0 lembar karena terjadinya peningkatan harga kumulatif yang signifikan pada saham FOLK.JK.\",\n        \"nilai\": \"2025-10-10\",\n        \"satuan\": null,\n        \"sumber\": \"/v2/suspensions/ (.cache/sectors/suspensions-all.json)\",\n        \"tersedia_sejak\": \"2025-10-10\"\n      },\n      {\n        \"fact_id\": \"harga-buka-lagi\",\n        \"klaim\": \"Hari bursa pertama dengan perdagangan setelah 7 Oktober 2025 adalah 9 Oktober 2025, ditutup di Rp208 dengan volume 110.988.000 lembar.\",\n        \"nilai\": 208,\n        \"satuan\": \"rupiah\",\n        \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n        \"tersedia_sejak\": \"2025-10-09\"\n      },\n      {\n        \"fact_id\": \"harga-tertinggi-sesudah\",\n        \"klaim\": \"Harga penutupan tertinggi dalam data yang tersedia setelah 7 Oktober 2025 terjadi pada 9 Januari 2026 di Rp700 per lembar.\",\n        \"nilai\": 700,\n        \"satuan\": \"rupiah\",\n        \"sumber\": \"/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)\",\n        \"tersedia_sejak\": \"2026-01-09\"\n      },\n      {\n        \"fact_id\": \"fil-2025-10-24-8\",\n        \"klaim\": \"Pada 24 Oktober 2025 terbit laporan bahwa Sumber Garam Pratama menjual 197.407.074 lembar saham FOLK pada harga Rp170, sehingga kepemilikannya berubah dari 1.246.180.419 menjadi 1.048.773.345 lembar (31,56 persen menjadi 26,56 persen).\",\n        \"nilai\": 197407074,\n        \"satuan\": \"lembar\",\n        \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n        \"tersedia_sejak\": \"2025-10-24\"\n      },\n      {\n        \"fact_id\": \"fil-2025-12-11-7\",\n        \"klaim\": \"Pada 11 Desember 2025 terbit laporan bahwa Sumber Garam Pratama menjual 16.666.600 lembar saham FOLK pada harga Rp300, sehingga kepemilikannya berubah dari 1.048.773.345 menjadi 1.032.106.745 lembar (26,56 persen menjadi 26,14 persen).\",\n        \"nilai\": 16666600,\n        \"satuan\": \"lembar\",\n        \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n        \"tersedia_sejak\": \"2025-12-11\"\n      },\n      {\n        \"fact_id\": \"fil-2025-12-24-6\",\n        \"klaim\": \"Pada 24 Desember 2025 terbit laporan bahwa Sumber Garam Pratama membeli 116.404.195 lembar saham FOLK pada harga Rp490, sehingga kepemilikannya berubah dari 1.032.106.745 menjadi 1.148.510.940 lembar (26,14 persen menjadi 29,09 persen).\",\n        \"nilai\": 116404195,\n        \"satuan\": \"lembar\",\n        \"sumber\": \"/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)\",\n        \"tersedia_sejak\": \"2025-12-24\"\n      }\n    ]\n  },\n  \"temuan\": [\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2025-10-24 pada harga Rp170–Rp170, padahal harga saham hari itu hanya bergerak Rp206–Rp208.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 170, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 170, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 206, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2025-12-08 pada harga Rp300–Rp300, padahal harga saham hari itu hanya bergerak Rp408–Rp492.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 300, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 300, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 408, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 492, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2025-12-30 pada harga Rp341–Rp341, padahal harga saham hari itu hanya bergerak Rp398–Rp400.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 341, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 341, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 398, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 400, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R6\",\n      \"ringkasan\": \"1 laporan menyebut transaksi 2026-01-08 pada harga Rp75–Rp75, padahal harga saham hari itu hanya bergerak Rp540–Rp635.\",\n      \"angka\": [\n        { \"label\": \"laporan yang terlibat\", \"nilai\": 1, \"satuan\": \"laporan\" },\n        { \"label\": \"harga laporan terendah\", \"nilai\": 75, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga laporan tertinggi\", \"nilai\": 75, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar terendah hari itu\", \"nilai\": 540, \"satuan\": \"rupiah per lembar\" },\n        { \"label\": \"harga pasar tertinggi hari itu\", \"nilai\": 635, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R7\",\n      \"ringkasan\": \"Laporan 2026-05-19T12:50:02 menulis kepemilikan sebelum transaksi 22.08%, padahal 903.330.281 dibagi 3.948.141.464 saham beredar adalah 22.88%.\",\n      \"angka\": [\n        { \"label\": \"persen menurut laporan\", \"nilai\": 22.08, \"satuan\": \"persen\" },\n        { \"label\": \"persen hasil hitung ulang\", \"nilai\": 22.88, \"satuan\": \"persen\" },\n        { \"label\": \"lembar\", \"nilai\": 903330281, \"satuan\": \"lembar\" },\n        { \"label\": \"saham beredar\", \"nilai\": 3948141464, \"satuan\": \"lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R7\",\n      \"ringkasan\": \"Laporan 2026-05-19T12:50:02 menulis kepemilikan sesudah transaksi 20.77%, padahal 849.764.681 dibagi 3.948.141.464 saham beredar adalah 21.52%.\",\n      \"angka\": [\n        { \"label\": \"persen menurut laporan\", \"nilai\": 20.77, \"satuan\": \"persen\" },\n        { \"label\": \"persen hasil hitung ulang\", \"nilai\": 21.52, \"satuan\": \"persen\" },\n        { \"label\": \"lembar\", \"nilai\": 849764681, \"satuan\": \"lembar\" },\n        { \"label\": \"saham beredar\", \"nilai\": 3948141464, \"satuan\": \"lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-13 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-14 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-15 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-16 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-17 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-10-20 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 208, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-15 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-16 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-17 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-18 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-19 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-22 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-23 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    },\n    {\n      \"aturan\": \"R10\",\n      \"ringkasan\": \"Pada 2025-12-24 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.\",\n      \"angka\": [\n        { \"label\": \"volume\", \"nilai\": 0, \"satuan\": \"lembar\" },\n        { \"label\": \"harga penutupan\", \"nilai\": 490, \"satuan\": \"rupiah per lembar\" }\n      ]\n    }\n  ]\n}\n```"
+      }
+    ],
+    "container": null,
+    "stop_reason": "end_turn",
+    "stop_sequence": null,
+    "stop_details": null,
+    "usage": {
+      "input_tokens": 7794,
+      "cache_creation_input_tokens": 0,
+      "cache_read_input_tokens": 0,
+      "cache_creation": {
+        "ephemeral_5m_input_tokens": 0,
+        "ephemeral_1h_input_tokens": 0
+      },
+      "output_tokens": 15709,
+      "output_tokens_details": {
+        "thinking_tokens": 5336
+      },
+      "service_tier": "standard",
+      "inference_geo": "global"
+    }
+  },
+  "urai_ok": true,
+  "alasan_gagal_urai": null,
+  "keluaran": {
+    "skema_versi": 1,
+    "kasus_id": "folk-2025-10-07",
+    "emiten": "FOLK",
+    "tanggal_t": "2025-10-07",
+    "fakta_terlihat": [
+      {
+        "fact_id": "identitas",
+        "klaim": "PT Multi Garam Utama Tbk (FOLK) tercatat di papan Development sejak 7 Agustus 2023, berada di sub-sektor Multi-sector Holdings.",
+        "nilai": "FOLK",
+        "satuan": null,
+        "sumber": "/v2/company/report/FOLK/?sections=overview (.cache/sectors/FOLK-overview.json)",
+        "tersedia_sejak": "2023-08-07"
+      },
+      {
+        "fact_id": "beredar",
+        "klaim": "Jumlah saham beredar FOLK tercatat sebanyak 3.948.141.464 lembar, dihitung dari nilai pasar dibagi harga penutupan dan konsisten selama 59 hari bursa.",
+        "nilai": 3948141464,
+        "satuan": "lembar",
+        "sumber": "turunan (dihitung dari fakta lain di berkas ini)",
+        "tersedia_sejak": "2025-07-15"
+      },
+      {
+        "fact_id": "harga-awal",
+        "klaim": "Harga penutupan saham FOLK pada 15 Juli 2025 adalah Rp68 per lembar.",
+        "nilai": 68,
+        "satuan": "rupiah",
+        "sumber": "/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)",
+        "tersedia_sejak": "2025-07-15"
+      },
+      {
+        "fact_id": "harga-sebelum-t",
+        "klaim": "Harga penutupan saham FOLK pada 6 Oktober 2025 adalah Rp115 per lembar.",
+        "nilai": 115,
+        "satuan": "rupiah",
+        "sumber": "/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)",
+        "tersedia_sejak": "2025-10-06"
+      },
+      {
+        "fact_id": "harga-t",
+        "klaim": "Pada 7 Oktober 2025, saham FOLK ditutup di Rp155 per lembar, setelah dibuka di Rp116, sempat menyentuh tertinggi Rp155, dan terendah Rp116.",
+        "nilai": 155,
+        "satuan": "rupiah",
+        "sumber": "/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)",
+        "tersedia_sejak": "2025-10-07"
+      },
+      {
+        "fact_id": "lonjakan-harian",
+        "klaim": "Harga penutupan saham FOLK melonjak 34,8 persen dalam satu hari bursa, dari 6 Oktober 2025 ke 7 Oktober 2025.",
+        "nilai": 34.8,
+        "satuan": "persen",
+        "sumber": "turunan (dihitung dari fakta lain di berkas ini)",
+        "tersedia_sejak": "2025-10-07"
+      },
+      {
+        "fact_id": "volume-t",
+        "klaim": "Volume perdagangan saham FOLK pada 7 Oktober 2025 mencapai 66.466.200 lembar, sekitar 2,7 kali rata-rata volume sepuluh hari bursa sebelumnya.",
+        "nilai": 66466200,
+        "satuan": "lembar",
+        "sumber": "/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)",
+        "tersedia_sejak": "2025-10-07"
+      },
+      {
+        "fact_id": "nilai-pasar-t",
+        "klaim": "Nilai pasar saham FOLK pada 7 Oktober 2025 tercatat sekitar Rp611.961.926.920.",
+        "nilai": 611961926920,
+        "satuan": "rupiah",
+        "sumber": "turunan (dihitung dari fakta lain di berkas ini)",
+        "tersedia_sejak": "2025-10-07"
+      },
+      {
+        "fact_id": "fin-2022",
+        "klaim": "Pada tahun buku 2022, FOLK mencatat pendapatan Rp40.237.612.994 dan laba bersih Rp5.056.658.536.",
+        "nilai": 40237612994,
+        "satuan": "rupiah",
+        "sumber": "/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)",
+        "tersedia_sejak": "2023-01-01"
+      },
+      {
+        "fact_id": "fin-2023",
+        "klaim": "Pada tahun buku 2023, FOLK mencatat pendapatan Rp24.809.591.548 dan rugi bersih Rp10.644.683.801.",
+        "nilai": 24809591548,
+        "satuan": "rupiah",
+        "sumber": "/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)",
+        "tersedia_sejak": "2024-01-01"
+      },
+      {
+        "fact_id": "fin-2024",
+        "klaim": "Pada tahun buku 2024, FOLK mencatat pendapatan Rp19.354.230.679 dan rugi bersih Rp16.661.197.051.",
+        "nilai": 19354230679,
+        "satuan": "rupiah",
+        "sumber": "/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)",
+        "tersedia_sejak": "2025-01-01"
+      },
+      {
+        "fact_id": "ekuitas",
+        "klaim": "Ekuitas FOLK pada tahun buku 2024 tercatat sebesar Rp84.855.713.473.",
+        "nilai": 84855713473,
+        "satuan": "rupiah",
+        "sumber": "/v2/company/report/FOLK/?sections=financials (.cache/sectors/FOLK-financials.json)",
+        "tersedia_sejak": "2025-01-01"
+      },
+      {
+        "fact_id": "rups",
+        "klaim": "Sampai 7 Oktober 2025, FOLK tercatat menggelar 3 RUPS pada 31 Mei 2024, 22 Agustus 2024, dan 11 Juni 2025, namun tidak satu pun hasilnya tercatat di data.",
+        "nilai": 3,
+        "satuan": "rups",
+        "sumber": "/v2/company/corporate-actions/FOLK/ (.cache/sectors/FOLK-corpactions.json)",
+        "tersedia_sejak": "2025-06-11"
+      },
+      {
+        "fact_id": "dividen",
+        "klaim": "Tidak ada satu pun dividen yang tercatat dalam catatan aksi korporasi FOLK.",
+        "nilai": "tidak ada",
+        "satuan": null,
+        "sumber": "/v2/company/corporate-actions/FOLK/ (.cache/sectors/FOLK-corpactions.json)",
+        "tersedia_sejak": "2023-08-07"
+      },
+      {
+        "fact_id": "suspensi",
+        "klaim": "Sampai 7 Oktober 2025, belum ada suspensi perdagangan atas saham FOLK.",
+        "nilai": 0,
+        "satuan": "suspensi",
+        "sumber": "/v2/suspensions/ (.cache/sectors/suspensions-all.json)",
+        "tersedia_sejak": "2025-10-07"
+      },
+      {
+        "fact_id": "laporan-kepemilikan",
+        "klaim": "Sampai 7 Oktober 2025, belum ada satu pun laporan transaksi pemegang saham besar yang terbit untuk FOLK; laporan paling awal baru terbit 24 Oktober 2025.",
+        "nilai": 0,
+        "satuan": "laporan",
+        "sumber": "/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)",
+        "tersedia_sejak": "2025-10-07"
+      }
+    ],
+    "soal": [
+      {
+        "soal_id": "s1",
+        "batang": "Berapa persen kenaikan harga penutupan saham FOLK dari 6 Oktober 2025 ke 7 Oktober 2025?",
+        "pilihan": [
+          {
+            "kunci": "a",
+            "teks": "12,5 persen"
+          },
+          {
+            "kunci": "b",
+            "teks": "34,8 persen"
+          },
+          {
+            "kunci": "c",
+            "teks": "50 persen"
+          },
+          {
+            "kunci": "d",
+            "teks": "68 persen"
+          }
+        ],
+        "jawaban": "b",
+        "penjelasan": "Harga penutupan naik dari Rp115 pada 6 Oktober 2025 menjadi Rp155 pada 7 Oktober 2025, yaitu kenaikan 34,8 persen dalam satu hari bursa sebagaimana tercatat pada fakta lonjakan-harian.",
+        "fact_ids": [
+          "lonjakan-harian",
+          "harga-sebelum-t",
+          "harga-t"
+        ]
+      },
+      {
+        "soal_id": "s2",
+        "batang": "Berapa rugi bersih yang dicatat FOLK pada tahun buku 2024?",
+        "pilihan": [
+          {
+            "kunci": "a",
+            "teks": "Rp5.056.658.536"
+          },
+          {
+            "kunci": "b",
+            "teks": "Rp10.644.683.801"
+          },
+          {
+            "kunci": "c",
+            "teks": "Rp16.661.197.051"
+          },
+          {
+            "kunci": "d",
+            "teks": "Rp84.855.713.473"
+          }
+        ],
+        "jawaban": "c",
+        "penjelasan": "Fakta fin-2024 menyebutkan bahwa pada tahun buku 2024 FOLK mencatat rugi bersih sebesar Rp16.661.197.051.",
+        "fact_ids": [
+          "fin-2024"
+        ]
+      },
+      {
+        "soal_id": "s3",
+        "batang": "Sampai 7 Oktober 2025, bagaimana status suspensi perdagangan dan laporan kepemilikan pemegang saham besar untuk saham FOLK?",
+        "pilihan": [
+          {
+            "kunci": "a",
+            "teks": "Sudah ada suspensi dan sudah ada laporan kepemilikan"
+          },
+          {
+            "kunci": "b",
+            "teks": "Belum ada suspensi dan belum ada laporan kepemilikan"
+          },
+          {
+            "kunci": "c",
+            "teks": "Sudah ada suspensi tapi belum ada laporan kepemilikan"
+          },
+          {
+            "kunci": "d",
+            "teks": "Belum ada suspensi tapi sudah ada laporan kepemilikan"
+          }
+        ],
+        "jawaban": "b",
+        "penjelasan": "Fakta suspensi menyatakan belum ada suspensi perdagangan sampai 7 Oktober 2025, dan fakta laporan-kepemilikan menyatakan belum ada laporan transaksi pemegang saham besar yang terbit sampai tanggal tersebut, dengan laporan pertama baru terbit 24 Oktober 2025.",
+        "fact_ids": [
+          "suspensi",
+          "laporan-kepemilikan"
+        ]
+      }
+    ],
+    "pembukaan": {
+      "paragraf": [
+        "Setelah harga saham FOLK melonjak signifikan pada 7 Oktober 2025, Bursa menghentikan sementara perdagangannya pada 8 Oktober 2025 dengan volume 0 lembar, dengan alasan terjadinya peningkatan harga kumulatif yang signifikan dalam rangka cooling down sebagai bentuk perlindungan bagi investor. Perdagangan dibuka kembali pada 9 Oktober 2025 dan ditutup di Rp208 dengan volume 110.988.000 lembar, sebelum dihentikan lagi pada 10 Oktober 2025 dengan alasan serupa.",
+        "Selanjutnya, pada 24 Oktober 2025 terbit laporan transaksi pemegang saham besar pertama, mencatat Sumber Garam Pratama menjual 197.407.074 lembar pada harga Rp170, sehingga kepemilikannya berubah dari 1.246.180.419 menjadi 1.048.773.345 lembar (31,56 persen menjadi 26,56 persen). Transaksi serupa berlanjut pada 11 Desember 2025 dengan penjualan 16.666.600 lembar di harga Rp300, dan pada 24 Desember 2025 dengan pembelian 116.404.195 lembar di harga Rp490. Harga penutupan tertinggi dalam data yang tersedia setelah 7 Oktober 2025 terjadi pada 9 Januari 2026 di Rp700 per lembar."
+      ],
+      "fakta_sesudah_t": [
+        {
+          "fact_id": "suspensi-2025-10-08",
+          "klaim": "Pada 8 Oktober 2025, perdagangan saham FOLK dihentikan bursa dengan volume 0 lembar karena terjadinya peningkatan harga kumulatif yang signifikan pada saham FOLK.JK, dalam rangka cooling down sebagai bentuk perlindungan bagi investor.",
+          "nilai": "2025-10-08",
+          "satuan": null,
+          "sumber": "/v2/suspensions/ (.cache/sectors/suspensions-all.json)",
+          "tersedia_sejak": "2025-10-08"
+        },
+        {
+          "fact_id": "suspensi-2025-10-10",
+          "klaim": "Pada 10 Oktober 2025, perdagangan saham FOLK dihentikan bursa dengan volume 0 lembar karena terjadinya peningkatan harga kumulatif yang signifikan pada saham FOLK.JK.",
+          "nilai": "2025-10-10",
+          "satuan": null,
+          "sumber": "/v2/suspensions/ (.cache/sectors/suspensions-all.json)",
+          "tersedia_sejak": "2025-10-10"
+        },
+        {
+          "fact_id": "harga-buka-lagi",
+          "klaim": "Hari bursa pertama dengan perdagangan setelah 7 Oktober 2025 adalah 9 Oktober 2025, ditutup di Rp208 dengan volume 110.988.000 lembar.",
+          "nilai": 208,
+          "satuan": "rupiah",
+          "sumber": "/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)",
+          "tersedia_sejak": "2025-10-09"
+        },
+        {
+          "fact_id": "harga-tertinggi-sesudah",
+          "klaim": "Harga penutupan tertinggi dalam data yang tersedia setelah 7 Oktober 2025 terjadi pada 9 Januari 2026 di Rp700 per lembar.",
+          "nilai": 700,
+          "satuan": "rupiah",
+          "sumber": "/v2/daily/FOLK/ (.cache/sectors/FOLK-daily-2025q3.json, FOLK-daily-2025q4.json)",
+          "tersedia_sejak": "2026-01-09"
+        },
+        {
+          "fact_id": "fil-2025-10-24-8",
+          "klaim": "Pada 24 Oktober 2025 terbit laporan bahwa Sumber Garam Pratama menjual 197.407.074 lembar saham FOLK pada harga Rp170, sehingga kepemilikannya berubah dari 1.246.180.419 menjadi 1.048.773.345 lembar (31,56 persen menjadi 26,56 persen).",
+          "nilai": 197407074,
+          "satuan": "lembar",
+          "sumber": "/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)",
+          "tersedia_sejak": "2025-10-24"
+        },
+        {
+          "fact_id": "fil-2025-12-11-7",
+          "klaim": "Pada 11 Desember 2025 terbit laporan bahwa Sumber Garam Pratama menjual 16.666.600 lembar saham FOLK pada harga Rp300, sehingga kepemilikannya berubah dari 1.048.773.345 menjadi 1.032.106.745 lembar (26,56 persen menjadi 26,14 persen).",
+          "nilai": 16666600,
+          "satuan": "lembar",
+          "sumber": "/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)",
+          "tersedia_sejak": "2025-12-11"
+        },
+        {
+          "fact_id": "fil-2025-12-24-6",
+          "klaim": "Pada 24 Desember 2025 terbit laporan bahwa Sumber Garam Pratama membeli 116.404.195 lembar saham FOLK pada harga Rp490, sehingga kepemilikannya berubah dari 1.032.106.745 menjadi 1.148.510.940 lembar (26,14 persen menjadi 29,09 persen).",
+          "nilai": 116404195,
+          "satuan": "lembar",
+          "sumber": "/v2/filings/?symbol=FOLK (.cache/sectors/FOLK-filings.json)",
+          "tersedia_sejak": "2025-12-24"
+        }
+      ]
+    },
+    "temuan": [
+      {
+        "aturan": "R6",
+        "ringkasan": "1 laporan menyebut transaksi 2025-10-24 pada harga Rp170–Rp170, padahal harga saham hari itu hanya bergerak Rp206–Rp208.",
+        "angka": [
+          {
+            "label": "laporan yang terlibat",
+            "nilai": 1,
+            "satuan": "laporan"
+          },
+          {
+            "label": "harga laporan terendah",
+            "nilai": 170,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga laporan tertinggi",
+            "nilai": 170,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar terendah hari itu",
+            "nilai": 206,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar tertinggi hari itu",
+            "nilai": 208,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R6",
+        "ringkasan": "1 laporan menyebut transaksi 2025-12-08 pada harga Rp300–Rp300, padahal harga saham hari itu hanya bergerak Rp408–Rp492.",
+        "angka": [
+          {
+            "label": "laporan yang terlibat",
+            "nilai": 1,
+            "satuan": "laporan"
+          },
+          {
+            "label": "harga laporan terendah",
+            "nilai": 300,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga laporan tertinggi",
+            "nilai": 300,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar terendah hari itu",
+            "nilai": 408,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar tertinggi hari itu",
+            "nilai": 492,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R6",
+        "ringkasan": "1 laporan menyebut transaksi 2025-12-30 pada harga Rp341–Rp341, padahal harga saham hari itu hanya bergerak Rp398–Rp400.",
+        "angka": [
+          {
+            "label": "laporan yang terlibat",
+            "nilai": 1,
+            "satuan": "laporan"
+          },
+          {
+            "label": "harga laporan terendah",
+            "nilai": 341,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga laporan tertinggi",
+            "nilai": 341,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar terendah hari itu",
+            "nilai": 398,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar tertinggi hari itu",
+            "nilai": 400,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R6",
+        "ringkasan": "1 laporan menyebut transaksi 2026-01-08 pada harga Rp75–Rp75, padahal harga saham hari itu hanya bergerak Rp540–Rp635.",
+        "angka": [
+          {
+            "label": "laporan yang terlibat",
+            "nilai": 1,
+            "satuan": "laporan"
+          },
+          {
+            "label": "harga laporan terendah",
+            "nilai": 75,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga laporan tertinggi",
+            "nilai": 75,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar terendah hari itu",
+            "nilai": 540,
+            "satuan": "rupiah per lembar"
+          },
+          {
+            "label": "harga pasar tertinggi hari itu",
+            "nilai": 635,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R7",
+        "ringkasan": "Laporan 2026-05-19T12:50:02 menulis kepemilikan sebelum transaksi 22.08%, padahal 903.330.281 dibagi 3.948.141.464 saham beredar adalah 22.88%.",
+        "angka": [
+          {
+            "label": "persen menurut laporan",
+            "nilai": 22.08,
+            "satuan": "persen"
+          },
+          {
+            "label": "persen hasil hitung ulang",
+            "nilai": 22.88,
+            "satuan": "persen"
+          },
+          {
+            "label": "lembar",
+            "nilai": 903330281,
+            "satuan": "lembar"
+          },
+          {
+            "label": "saham beredar",
+            "nilai": 3948141464,
+            "satuan": "lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R7",
+        "ringkasan": "Laporan 2026-05-19T12:50:02 menulis kepemilikan sesudah transaksi 20.77%, padahal 849.764.681 dibagi 3.948.141.464 saham beredar adalah 21.52%.",
+        "angka": [
+          {
+            "label": "persen menurut laporan",
+            "nilai": 20.77,
+            "satuan": "persen"
+          },
+          {
+            "label": "persen hasil hitung ulang",
+            "nilai": 21.52,
+            "satuan": "persen"
+          },
+          {
+            "label": "lembar",
+            "nilai": 849764681,
+            "satuan": "lembar"
+          },
+          {
+            "label": "saham beredar",
+            "nilai": 3948141464,
+            "satuan": "lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-10-13 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 208,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-10-14 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 208,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-10-15 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 208,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-10-16 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 208,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-10-17 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 208,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-10-20 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 208,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-15 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-16 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-17 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-18 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-19 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-22 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-23 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      },
+      {
+        "aturan": "R10",
+        "ringkasan": "Pada 2025-12-24 tidak ada satu lembar pun yang berpindah tangan dan harga tidak bergerak, tetapi tanggal itu tidak ada di daftar suspensi.",
+        "angka": [
+          {
+            "label": "volume",
+            "nilai": 0,
+            "satuan": "lembar"
+          },
+          {
+            "label": "harga penutupan",
+            "nilai": 490,
+            "satuan": "rupiah per lembar"
+          }
+        ]
+      }
+    ]
+  },
+  "lolos_skema": true,
+  "masalah_skema": [],
+  "galat": null
+}
