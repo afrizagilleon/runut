@@ -1,0 +1,26 @@
+# Catatan kerja pemilik — JANGAN PERNAH masuk repo publik
+.context/
+.research/
+.contracts/
+.plans/
+CLAUDE.md
+
+# Rahasia
+.env
+.env.*
+*.key
+
+# Cache data mentah (bisa dibuat ulang; tidak didistribusikan ulang)
+.cache/
+
+# Dependensi & build
+node_modules/
+dist/
+build/
+.vite/
+.next/
+
+# Sistem
+.DS_Store
+Thumbs.db
+*.log
