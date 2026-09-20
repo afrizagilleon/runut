@@ -2,7 +2,7 @@
 // Menyuntikkan satu angka salah dan satu fakta bocor ke keluaran lengan C,
 // menunjukkan skornya memburuk, lalu membuktikan berkas mentahnya tidak berubah
 // (suntikan hanya di memori; sha256 sebelum dan sesudah dicetak).
-import { readFileSync, writeFileSync, copyFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, copyFileSync, rmSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { KELUARAN } from './berkas.ts';
@@ -49,6 +49,49 @@ for (const p of sesudah.pelanggaran) {
 }
 console.log('skor memburuk:', sesudah.skor_total > sebelum.skor_total);
 
+// ---- bagian kedua: kolom amandemen A-1 ----
+//
+// Suntikan di atas TIDAK cukup untuk kolom ketepatan baru, dan itu sendiri
+// temuan yang harus terbaca: kalimat asli menyebut Rp155 DAN Rp116, jadi
+// walau "155" diganti "999", kalimatnya masih memuat satu nilai yang benar
+// untuk 7 Oktober (Rp116 adalah harga pembukaan hari itu) sehingga tidak
+// dihitung bertentangan. Supaya kolom baru ikut terbukti bisa menggigit,
+// kalimatnya diganti seluruhnya dengan klaim yang memang salah.
+console.log('');
+console.log('--- kolom amandemen A-1 ---');
+const cetakBaru = (label: string, n: ReturnType<typeof nilaiKeluaran>): void => {
+  console.log(
+    '%s: bertentangan=%d tak_terverifikasi=%d kelengkapan=%d/%d bocor_baru=%d klaim_ketersediaan=%d positif_palsu=%d',
+    label, n.angka_salah_baru, n.tidak_terverifikasi, n.kelengkapan, n.kelengkapan_dari,
+    n.kebocoran_baru, n.klaim_ketersediaan, n.konflik_positif_palsu,
+  );
+};
+cetakBaru('SEBELUM suntik      ', sebelum);
+cetakBaru('SESUDAH suntik lama ', sesudah);
+
+const rusak2 = JSON.parse(JSON.stringify(isi.keluaran)) as KeluaranLengan;
+const hargaT2 = rusak2.fakta_terlihat.find((f) => f.fact_id === 'harga-t');
+if (!hargaT2) throw new Error('fakta harga-t tidak ada di keluaran C-1');
+hargaT2.klaim = 'Pada 7 Oktober 2025, saham FOLK ditutup di Rp150 per lembar.';
+hargaT2.nilai = 150;
+const volumeT = rusak2.fakta_terlihat.find((f) => f.fact_id === 'volume-t');
+if (volumeT) {
+  volumeT.klaim = 'Volume perdagangan saham FOLK pada 7 Oktober 2025 mencapai 20.000.000 lembar.';
+  volumeT.nilai = 20000000;
+}
+const sesudah2 = nilaiKeluaran(rusak2, 'C', 1, 'C-1.json', kunci);
+cetakBaru('SESUDAH suntik baru ', sesudah2);
+console.log('pelanggaran baru yang muncul:');
+for (const p of sesudah2.pelanggaran_baru) {
+  if (!sebelum.pelanggaran_baru.some((q) => q.keterangan === p.keterangan)) console.log('  [' + p.jenis + ']', p.keterangan);
+}
+console.log(
+  'kolom ketepatan baru memburuk:', sesudah2.angka_salah_baru > sebelum.angka_salah_baru,
+  '| kelengkapan menurun:', sesudah2.kelengkapan < sebelum.kelengkapan,
+);
+
 // Keluaran mentah TIDAK pernah diubah di disk; suntikan hanya di memori.
 writeFileSync(jalur, readFileSync(cadangan));
 console.log('sha256 C-1.json sesudah:', sha(jalur), '| sama:', sha(jalur) === shaAwal);
+// Cadangan dibuang supaya `git status --short` tetap kosong sesudah skrip ini.
+rmSync(cadangan, { force: true });
