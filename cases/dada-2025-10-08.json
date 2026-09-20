@@ -1,0 +1,1978 @@
+{
+  "skema_versi": 1,
+  "kasus_id": "dada-2025-10-08",
+  "judul": "Perusahaan D: harga naik terus, siapa yang menjadi penjualnya?",
+  "emiten": {
+    "simbol": "DADA",
+    "nama": "PT Diamond Citra Propertindo Tbk",
+    "papan": "Pengembangan",
+    "sektor": "properti dan real estat"
+  },
+  "nama_samaran": "Perusahaan D",
+  "tanggal_t": "2025-10-08",
+  "fakta": [
+    {
+      "fact_id": "div-2025-09-16",
+      "klaim": "Dividen tunai Rp0,14 per lembar dengan tanggal ex 16 September 2025.",
+      "nilai": 0.14,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/DADA/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2025-09-16",
+          "berkas_cache": "dada-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-09-16",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "fil-2025-08-25",
+      "klaim": "Pada 25 Agustus 2025 pengendali melaporkan 4 penjualan, seluruhnya 369.500.000 lembar pada harga Rp12–Rp14. Kepemilikan tercatat bergerak dari 4.792.137.600 ke 4.412.637.600 lembar.",
+      "nilai": 369500000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan 4 laporan bertanggal 2025-08-25 dari /v2/filings/"
+      },
+      "turunan_dari": [
+        "fil-2025-08-25-01",
+        "fil-2025-08-25-02",
+        "fil-2025-08-25-03",
+        "fil-2025-08-25-04"
+      ],
+      "tersedia_sejak": "2025-08-25",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-08-25-01",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 100.000.000 lembar pada harga Rp12 atas transaksi 7 Agustus 2025, dilaporkan 25 Agustus 2025. Kepemilikan tercatat berubah dari 4.792.137.600 menjadi 4.692.137.600 lembar.",
+      "nilai": 100000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "6811cfbad8_0c09c0d1d4.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "6811cfbad8_0c09c0d1d4",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-08-25",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-08-25-02",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 20.000.000 lembar pada harga Rp12 atas transaksi 11 Agustus 2025, dilaporkan 25 Agustus 2025. Kepemilikan tercatat berubah dari 4.682.137.600 menjadi 4.662.137.600 lembar.",
+      "nilai": 20000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "0d1828e30b_6066536717.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "0d1828e30b_6066536717",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-08-25",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-08-25-03",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 70.000.000 lembar pada harga Rp13 atas transaksi 12 Agustus 2025, dilaporkan 25 Agustus 2025. Kepemilikan tercatat berubah dari 4.662.137.600 menjadi 4.592.137.600 lembar.",
+      "nilai": 70000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "8979b65868_5f0154247d.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "8979b65868_5f0154247d",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-08-25",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "fil-2025-08-25-04",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 179.500.000 lembar pada harga Rp14 atas transaksi 13 Agustus 2025, dilaporkan 25 Agustus 2025. Kepemilikan tercatat berubah dari 4.592.137.600 menjadi 4.412.637.600 lembar.",
+      "nilai": 179500000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "cacd503096_f952211387.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "cacd503096_f952211387",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-08-25",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "fil-2025-09-01",
+      "klaim": "Pada 1 September 2025 pengendali melaporkan 1 penjualan, seluruhnya 50.000.000 lembar pada harga Rp15. Kepemilikan tercatat bergerak dari 4.412.637.600 ke 4.362.637.600 lembar.",
+      "nilai": 50000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan 1 laporan bertanggal 2025-09-01 dari /v2/filings/"
+      },
+      "turunan_dari": [
+        "fil-2025-09-01-01"
+      ],
+      "tersedia_sejak": "2025-09-01",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "fil-2025-09-01-01",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 50.000.000 lembar pada harga Rp15 atas transaksi 14 Agustus 2025, dilaporkan 1 September 2025. Kepemilikan tercatat berubah dari 4.412.637.600 menjadi 4.362.637.600 lembar.",
+      "nilai": 50000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "43bdf5ab05_36a18bb3f8.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "43bdf5ab05_36a18bb3f8",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-09-01",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "fil-2025-09-29",
+      "klaim": "Pada 29 September 2025 pengendali melaporkan 1 penjualan, seluruhnya 10.000.000 lembar pada harga Rp165. Kepemilikan tercatat bergerak dari 4.362.637.600 ke 4.352.637.600 lembar.",
+      "nilai": 10000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan 1 laporan bertanggal 2025-09-29 dari /v2/filings/"
+      },
+      "turunan_dari": [
+        "fil-2025-09-29-01"
+      ],
+      "tersedia_sejak": "2025-09-29",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-09-29-01",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 10.000.000 lembar pada harga Rp165 atas transaksi 26 September 2025, dilaporkan 29 September 2025. Kepemilikan tercatat berubah dari 4.362.637.600 menjadi 4.352.637.600 lembar.",
+      "nilai": 10000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "5c20eb9901_74815f0703.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "5c20eb9901_74815f0703",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-09-29",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19",
+      "klaim": "Pada 19 Oktober 2025 pengendali melaporkan 22 transaksi, seluruhnya 368.988.900 lembar pada harga Rp152–Rp232. Kepemilikan tercatat bergerak dari 4.207.637.600 ke 2.816.281.900 lembar.",
+      "nilai": 368988900,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan 22 laporan bertanggal 2025-10-19 dari /v2/filings/"
+      },
+      "turunan_dari": [
+        "fil-2025-10-19-01",
+        "fil-2025-10-19-02",
+        "fil-2025-10-19-03",
+        "fil-2025-10-19-04",
+        "fil-2025-10-19-05",
+        "fil-2025-10-19-06",
+        "fil-2025-10-19-07",
+        "fil-2025-10-19-08",
+        "fil-2025-10-19-09",
+        "fil-2025-10-19-10",
+        "fil-2025-10-19-11",
+        "fil-2025-10-19-12",
+        "fil-2025-10-19-13",
+        "fil-2025-10-19-14",
+        "fil-2025-10-19-15",
+        "fil-2025-10-19-16",
+        "fil-2025-10-19-17",
+        "fil-2025-10-19-18",
+        "fil-2025-10-19-19",
+        "fil-2025-10-19-20",
+        "fil-2025-10-19-21",
+        "fil-2025-10-19-22"
+      ],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-01",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 67.944.600 lembar pada harga Rp152 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.207.637.600 menjadi 4.275.582.200 lembar.",
+      "nilai": 67944600,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "6e6f9dce39_05685131eb.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "6e6f9dce39_05685131eb",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-02",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 33.029.600 lembar pada harga Rp153 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.275.582.200 menjadi 4.308.611.800 lembar.",
+      "nilai": 33029600,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "f08cc908ff_58a18a8f8c.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "f08cc908ff_58a18a8f8c",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-03",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 19.187.800 lembar pada harga Rp154 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.308.611.800 menjadi 4.327.799.600 lembar.",
+      "nilai": 19187800,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "378c3c81a6_774771243c.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "378c3c81a6_774771243c",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-04",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 27.308.400 lembar pada harga Rp155 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.327.799.600 menjadi 4.355.108.000 lembar.",
+      "nilai": 27308400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "c6dec5769b_29b3a0a03d.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "c6dec5769b_29b3a0a03d",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-05",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 15.389.400 lembar pada harga Rp156 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.355.108.000 menjadi 4.370.497.400 lembar.",
+      "nilai": 15389400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "76e1c20772_fa3232386b.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "76e1c20772_fa3232386b",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-06",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 6.658.700 lembar pada harga Rp157 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.370.497.400 menjadi 4.377.156.100 lembar.",
+      "nilai": 6658700,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "e04019762c_70b505b401.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "e04019762c_70b505b401",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-07",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 5.961.300 lembar pada harga Rp158 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.377.156.100 menjadi 4.383.117.400 lembar.",
+      "nilai": 5961300,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "85dd06fb0e_e5dd522ec1.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "85dd06fb0e_e5dd522ec1",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-08",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 13.341.200 lembar pada harga Rp159 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.383.117.400 menjadi 4.396.458.600 lembar.",
+      "nilai": 13341200,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "09ab786c90_10c56f87d5.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "09ab786c90_10c56f87d5",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-09",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 28.411.900 lembar pada harga Rp180 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.475.731.500 menjadi 4.504.143.400 lembar.",
+      "nilai": 28411900,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "19e7b72cea_b562918cab.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "19e7b72cea_b562918cab",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-10",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 20.760.200 lembar pada harga Rp181 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.504.143.400 menjadi 4.524.903.600 lembar.",
+      "nilai": 20760200,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "e0a4dcbb48_658970de58.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "e0a4dcbb48_658970de58",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-11",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 21.798.400 lembar pada harga Rp182 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.524.903.600 menjadi 4.546.702.000 lembar.",
+      "nilai": 21798400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "e9048eb90e_5d4251ccec.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "e9048eb90e_5d4251ccec",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-12",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan pembelian 19.393.100 lembar pada harga Rp183 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 4.546.702.000 menjadi 4.566.095.100 lembar.",
+      "nilai": 19393100,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "a41b6c5454_c4e416550c.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "a41b6c5454_c4e416550c",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-13",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 8.350.300 lembar pada harga Rp214 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.906.086.200 menjadi 2.897.735.900 lembar.",
+      "nilai": 8350300,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "48a4d35028_fb1fcc37e6.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "48a4d35028_fb1fcc37e6",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-14",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 5.262.000 lembar pada harga Rp216 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.897.735.900 menjadi 2.892.473.900 lembar.",
+      "nilai": 5262000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "25fd87753d_a323c9c276.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "25fd87753d_a323c9c276",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-15",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 8.147.400 lembar pada harga Rp218 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.892.473.900 menjadi 2.884.326.500 lembar.",
+      "nilai": 8147400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "a8a37785fe_b973e2108e.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "offset": "20",
+          "laporan": "a8a37785fe_b973e2108e",
+          "berkas_cache": "dada-filings-2025-p20.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-16",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 19.294.800 lembar pada harga Rp220 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.884.326.500 menjadi 2.865.031.700 lembar.",
+      "nilai": 19294800,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "f6f2379725_3bc19a8fb2.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "f6f2379725_3bc19a8fb2",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-17",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 7.924.700 lembar pada harga Rp222 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.865.031.700 menjadi 2.857.107.000 lembar.",
+      "nilai": 7924700,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "067eba40fd_ace510349c.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "067eba40fd_ace510349c",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-18",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 5.501.400 lembar pada harga Rp224 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.857.107.000 menjadi 2.851.605.600 lembar.",
+      "nilai": 5501400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "1f62ba8e7e_3a9fc85a01.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "1f62ba8e7e_3a9fc85a01",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-19",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 6.288.200 lembar pada harga Rp226 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.851.605.600 menjadi 2.845.317.400 lembar.",
+      "nilai": 6288200,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "9faca22f39_7d2d55b620.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "9faca22f39_7d2d55b620",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-20",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 3.068.700 lembar pada harga Rp228 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.845.317.400 menjadi 2.842.248.700 lembar.",
+      "nilai": 3068700,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "ca7a394e1c_06fd939876.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "ca7a394e1c_06fd939876",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-21",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 20.878.400 lembar pada harga Rp230 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.842.248.700 menjadi 2.821.370.300 lembar.",
+      "nilai": 20878400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "0f7507a319_85996a714a.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "0f7507a319_85996a714a",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-19-22",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 5.088.400 lembar pada harga Rp232 atas transaksi 14 Oktober 2025, dilaporkan 19 Oktober 2025. Kepemilikan tercatat berubah dari 2.821.370.300 menjadi 2.816.281.900 lembar.",
+      "nilai": 5088400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "55ef440c5f_dfa9933230.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "55ef440c5f_dfa9933230",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-19",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26",
+      "klaim": "Pada 26 Oktober 2025 pengendali melaporkan 13 penjualan, seluruhnya 1.192.000.000 lembar pada harga Rp51–Rp80. Kepemilikan tercatat bergerak dari 2.816.281.900 ke 1.624.281.900 lembar.",
+      "nilai": 1192000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan 13 laporan bertanggal 2025-10-26 dari /v2/filings/"
+      },
+      "turunan_dari": [
+        "fil-2025-10-26-01",
+        "fil-2025-10-26-02",
+        "fil-2025-10-26-03",
+        "fil-2025-10-26-04",
+        "fil-2025-10-26-05",
+        "fil-2025-10-26-06",
+        "fil-2025-10-26-07",
+        "fil-2025-10-26-08",
+        "fil-2025-10-26-09",
+        "fil-2025-10-26-10",
+        "fil-2025-10-26-11",
+        "fil-2025-10-26-12",
+        "fil-2025-10-26-13"
+      ],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-01",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 437.661.900 lembar pada harga Rp51 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 2.816.281.900 menjadi 2.378.620.000 lembar.",
+      "nilai": 437661900,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "784cc1c104_45040f8000.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "784cc1c104_45040f8000",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-02",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 17.738.100 lembar pada harga Rp52 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 2.378.620.000 menjadi 2.360.881.900 lembar.",
+      "nilai": 17738100,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "8be7d2523c_ddfb1232d7.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "8be7d2523c_ddfb1232d7",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-03",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 20.000.000 lembar pada harga Rp53 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 2.360.881.900 menjadi 2.340.881.900 lembar.",
+      "nilai": 20000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "f6191f0623_2a5c2579be.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "f6191f0623_2a5c2579be",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-04",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 95.262.000 lembar pada harga Rp54 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 2.340.881.900 menjadi 2.245.619.900 lembar.",
+      "nilai": 95262000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "33510189d0_5fc572fb8a.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "33510189d0_5fc572fb8a",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-05",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 14.838.000 lembar pada harga Rp55 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 2.245.619.900 menjadi 2.230.781.900 lembar.",
+      "nilai": 14838000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "2b8f83f0d8_12b6e70417.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "2b8f83f0d8_12b6e70417",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-06",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 500.000 lembar pada harga Rp56 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 2.230.781.900 menjadi 2.230.281.900 lembar.",
+      "nilai": 500000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "19c1357527_9ba9fcefc3.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "19c1357527_9ba9fcefc3",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-07",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 437.661.900 lembar pada harga Rp51 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 2.230.281.900 menjadi 1.792.620.000 lembar.",
+      "nilai": 437661900,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "5774cd02a8_1b8dfda15c.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "5774cd02a8_1b8dfda15c",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-08",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 17.738.100 lembar pada harga Rp52 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 1.792.620.000 menjadi 1.774.881.900 lembar.",
+      "nilai": 17738100,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "c49cd8c770_045edbbe0e.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "c49cd8c770_045edbbe0e",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-09",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 20.000.000 lembar pada harga Rp53 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 1.774.881.900 menjadi 1.754.881.900 lembar.",
+      "nilai": 20000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "13698e98a4_1e1cefa1fc.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "13698e98a4_1e1cefa1fc",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-10",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 95.262.000 lembar pada harga Rp54 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 1.754.881.900 menjadi 1.659.619.900 lembar.",
+      "nilai": 95262000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "0cc43b0b2d_1e39e25e80.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "0cc43b0b2d_1e39e25e80",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-11",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 14.838.000 lembar pada harga Rp55 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 1.659.619.900 menjadi 1.644.781.900 lembar.",
+      "nilai": 14838000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "cf407cd3dc_68b663c32f.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "cf407cd3dc_68b663c32f",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-12",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 500.000 lembar pada harga Rp56 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 1.644.781.900 menjadi 1.644.281.900 lembar.",
+      "nilai": 500000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "dac91da2ef_607a350f05.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "dac91da2ef_607a350f05",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2025-10-26-13",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 20.000.000 lembar pada harga Rp80 atas transaksi 23 Oktober 2025, dilaporkan 26 Oktober 2025. Kepemilikan tercatat berubah dari 1.644.281.900 menjadi 1.624.281.900 lembar.",
+      "nilai": 20000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "70c5ac748f_a778a1add8.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "sub_sector": "properties-real-estate",
+          "offset": "0",
+          "laporan": "70c5ac748f_a778a1add8",
+          "berkas_cache": "dada-filings-2025.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-26",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "fil-2026-01-12-01",
+      "klaim": "Karya Permata Inovasi Indonesia melaporkan penjualan 600.000.000 lembar pada harga Rp67 atas transaksi 7 Januari 2026, dilaporkan 12 Januari 2026. Kepemilikan tercatat berubah dari 2.200.000.000 menjadi 1.600.000.000 lembar.",
+      "nilai": 600000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": "LK-12012026-2541-00.pdf-0.pdf",
+        "parameter": {
+          "symbol": "DADA",
+          "start_date": "2026-01-01",
+          "laporan": "LK-12012026-2541-00",
+          "berkas_cache": "dada-filings-2026.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-12",
+      "status": "KONFLIK"
+    },
+    {
+      "fact_id": "harga-2025-08-01",
+      "klaim": "Harga penutupan 1 Agustus 2025 adalah Rp8 per lembar.",
+      "nilai": 8,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-08-01",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-08-01",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "harga-2025-10-08",
+      "klaim": "Harga penutupan 8 Oktober 2025 adalah Rp178 per lembar.",
+      "nilai": 178,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-10-08",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-08",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "harga-2025-10-10",
+      "klaim": "Harga penutupan 10 Oktober 2025 adalah Rp152 per lembar.",
+      "nilai": 152,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-10-10",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-10",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "harga-2025-10-10-buka",
+      "klaim": "Harga pembukaan 10 Oktober 2025 adalah Rp177 per lembar.",
+      "nilai": 177,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-10-10",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-10",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "harga-2025-10-10-tertinggi",
+      "klaim": "Harga tertinggi 10 Oktober 2025 adalah Rp240 per lembar.",
+      "nilai": 240,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-10-10",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-10",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "harga-2025-10-22",
+      "klaim": "Harga penutupan 22 Oktober 2025 adalah Rp50 per lembar.",
+      "nilai": 50,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-10-22",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-22",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "hari-bursa-2025-08-01-2025-10-08",
+      "klaim": "Dari 1 Agustus 2025 sampai 8 Oktober 2025 ada 47 hari bursa, dan harga penutupan naik pada sebagian besar di antaranya.",
+      "nilai": 47,
+      "satuan": "hari bursa",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penghitungan baris harga harian antara 2025-08-01 dan 2025-10-08"
+      },
+      "turunan_dari": [
+        "harga-2025-08-01",
+        "harga-2025-10-08"
+      ],
+      "tersedia_sejak": "2025-10-08",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "kelipatan-2025-08-01-2025-10-08",
+      "klaim": "Harga penutupan naik 22,25 kali lipat, dari Rp8 menjadi Rp178.",
+      "nilai": 22.25,
+      "satuan": "kali",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "harga penutupan 2025-10-08 dibagi harga penutupan 2025-08-01"
+      },
+      "turunan_dari": [
+        "harga-2025-08-01",
+        "harga-2025-10-08"
+      ],
+      "tersedia_sejak": "2025-10-08",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "rups-2026-07-16-kuorum",
+      "klaim": "RUPS 16 Juli 2026 tidak mencapai kuorum: yang hadir hanya 22,32 persen dari seluruh saham, sehingga tidak ada agenda yang bisa diputuskan.",
+      "nilai": 22.32,
+      "satuan": "persen",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/DADA/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "agm",
+          "tanggal_rups": "2026-07-16",
+          "berkas_cache": "dada-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-07-16",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "saham-beredar",
+      "klaim": "Jumlah saham beredar 7.431.530.800 lembar, dihitung dari nilai pasar dibagi harga penutupan; angka yang sama muncul di 62 hari bursa.",
+      "nilai": 7431530800,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "nilai pasar dibagi harga penutupan pada tiap hari bursa di /v2/daily/DADA/"
+      },
+      "turunan_dari": [
+        "harga-2025-08-01"
+      ],
+      "tersedia_sejak": "2025-08-01",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "susp-2025-06-30",
+      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 30 Juni 2025. Alasan resmi: Belum menyampaikan laporan keuangan auditan tahunan.",
+      "nilai": null,
+      "satuan": null,
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/suspensions/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "DADA",
+          "tanggal_suspensi": "2025-06-30",
+          "berkas_cache": "dada-suspensions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-06-30",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "susp-2025-10-09",
+      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 9 Oktober 2025. Alasan resmi: Terjadinya peningkatan harga kumulatif yang signifikan pada saham DADA.JK, dalam rangka cooling down sebagai bentuk perlindungan bagi investor.",
+      "nilai": null,
+      "satuan": null,
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/suspensions/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "DADA",
+          "tanggal_suspensi": "2025-10-09",
+          "berkas_cache": "dada-suspensions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-09",
+      "status": "TERVERIFIKASI"
+    },
+    {
+      "fact_id": "volume-2025-10-10",
+      "klaim": "Volume perdagangan 10 Oktober 2025 adalah 5.112.760.000 lembar.",
+      "nilai": 5112760000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-10-10",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-10-10",
+      "status": "TERVERIFIKASI"
+    }
+  ],
+  "fakta_terlihat": [
+    "harga-2025-08-01",
+    "harga-2025-10-08",
+    "hari-bursa-2025-08-01-2025-10-08",
+    "kelipatan-2025-08-01-2025-10-08",
+    "susp-2025-06-30",
+    "div-2025-09-16",
+    "fil-2025-08-25",
+    "fil-2025-09-01",
+    "fil-2025-09-29",
+    "saham-beredar"
+  ],
+  "soal": [
+    {
+      "soal_id": "s1-sinyal-resmi",
+      "batang": "Beredar kabar di media sosial bahwa Perusahaan D akan dibeli investor besar dari luar negeri. Dari daftar fakta di atas, mana yang berasal dari perusahaan atau bursa, dan adakah yang mendukung kabar itu?",
+      "pilihan": [
+        {
+          "kunci": "a",
+          "teks": "Ada. Kenaikan harga terus-menerus sampai [[harga-2025-10-08|Rp178]] adalah cara perusahaan mengumumkan rencana akuisisi."
+        },
+        {
+          "kunci": "b",
+          "teks": "Tidak ada. Yang resmi hanya penghentian perdagangan oleh bursa, jadwal dividen, dan laporan transaksi pengendali; tidak satu pun menyebut rencana akuisisi."
+        },
+        {
+          "kunci": "c",
+          "teks": "Ada. Laporan transaksi pengendali menyebut nama calon pembeli dari luar negeri."
+        },
+        {
+          "kunci": "d",
+          "teks": "Tidak bisa dinilai, karena tidak ada satu pun informasi resmi tentang perusahaan ini."
+        }
+      ],
+      "jawaban": "b",
+      "penjelasan": "Harga penutupan naik [[kelipatan-2025-08-01-2025-10-08|22,25 kali lipat]] dalam [[hari-bursa-2025-08-01-2025-10-08|47 hari bursa]], dari [[harga-2025-08-01|Rp8]] ke [[harga-2025-10-08|Rp178]]. Kenaikan harga adalah data pasar: ia memberi tahu bahwa banyak orang bertransaksi, bukan mengapa mereka bertransaksi. Yang benar-benar datang dari perusahaan atau bursa hanya [[susp-2025-06-30|penghentian perdagangan 30 Juni 2025 karena laporan keuangan auditan tahunan belum disampaikan]], [[div-2025-09-16|jadwal dividen dengan tanggal ex 16 September 2025]], dan [[fil-2025-09-01|laporan transaksi pengendali 1 September 2025]]. Tidak ada satu pun yang menyebut akuisisi.",
+      "fact_ids": [
+        "harga-2025-08-01",
+        "harga-2025-10-08",
+        "hari-bursa-2025-08-01-2025-10-08",
+        "kelipatan-2025-08-01-2025-10-08",
+        "susp-2025-06-30",
+        "div-2025-09-16",
+        "fil-2025-09-01"
+      ]
+    },
+    {
+      "soal_id": "s2-hak-pemilik-kecil",
+      "batang": "Kamu memegang [[misal|10 lot]] atau [[misal|1.000 lembar]] saham Perusahaan D sejak sebelum [[div-2025-09-16|tanggal ex dividen 16 September 2025]]. Berapa dividen tunai yang kamu terima?",
+      "pilihan": [
+        {
+          "kunci": "a",
+          "teks": "[[misal|Rp140]]"
+        },
+        {
+          "kunci": "b",
+          "teks": "[[misal|Rp1.400]]"
+        },
+        {
+          "kunci": "c",
+          "teks": "[[misal|Rp14.000]]"
+        },
+        {
+          "kunci": "d",
+          "teks": "Tidak ada, karena perusahaan ini tidak pernah membagikan dividen."
+        }
+      ],
+      "jawaban": "a",
+      "penjelasan": "[[misal|1.000 lembar]] dikali [[div-2025-09-16|Rp0,14 per lembar]] sama dengan [[misal|Rp140]]. Dividen dihitung per lembar dan berasal dari laba perusahaan. Angka sekecil ini memperlihatkan bahwa kenaikan harga menuju [[harga-2025-10-08|Rp178]] tidak datang dari pembagian laba.",
+      "fact_ids": [
+        "div-2025-09-16",
+        "harga-2025-10-08"
+      ]
+    },
+    {
+      "soal_id": "s3-membaca-pemilik",
+      "batang": "Selama harga naik, apa yang dilakukan pemegang saham terbesar, dan pada harga berapa?",
+      "pilihan": [
+        {
+          "kunci": "a",
+          "teks": "Menambah kepemilikan, seluruhnya pada harga di sekitar [[harga-2025-10-08|Rp178]]."
+        },
+        {
+          "kunci": "b",
+          "teks": "Tidak melakukan transaksi apa pun sampai tanggal kasus ini."
+        },
+        {
+          "kunci": "c",
+          "teks": "Mengurangi kepemilikan, antara lain lewat [[fil-2025-09-01|laporan 1 September 2025 yang melepas 50.000.000 lembar pada harga Rp15]], jauh di bawah harga pasar pada tanggal kasus."
+        },
+        {
+          "kunci": "d",
+          "teks": "Melepas seluruh sahamnya sebelum [[div-2025-09-16|tanggal ex dividen]]."
+        }
+      ],
+      "jawaban": "c",
+      "penjelasan": "Pemegang saham besar berhak melepas sahamnya pada harga yang mereka sepakati; yang perlu dipahami pembeli baru adalah siapa yang menjadi penjual ketika mereka membeli. Perhatikan juga tanggalnya: transaksi baru diketahui publik ketika laporannya terbit. Transaksi di [[fil-2025-09-01|laporan 1 September 2025]] sudah terjadi pada pertengahan Agustus, sementara harga pada tanggal kasus sudah [[harga-2025-10-08|Rp178]] per lembar. Dua laporan lain, [[fil-2025-08-25|laporan 25 Agustus 2025]] dan [[fil-2025-09-29|laporan 29 September 2025]], memang ada di daftar fakta, tetapi keduanya ditandai KONFLIK oleh jejak verifikasi kasus ini, jadi tidak dipakai sebagai dasar jawaban. Alasannya bisa dibaca di bagian jejak verifikasi.",
+      "fact_ids": [
+        "fil-2025-09-01",
+        "harga-2025-10-08"
+      ]
+    }
+  ],
+  "pembukaan": {
+    "fact_ids": [
+      "susp-2025-10-09",
+      "harga-2025-10-10",
+      "harga-2025-10-10-buka",
+      "harga-2025-10-10-tertinggi",
+      "volume-2025-10-10",
+      "harga-2025-10-22",
+      "fil-2025-10-19",
+      "fil-2025-10-26",
+      "rups-2026-07-16-kuorum"
+    ],
+    "paragraf": [
+      "Perusahaan D adalah PT Diamond Citra Propertindo Tbk, sandi DADA, tercatat di Papan Pengembangan.",
+      "Sehari setelah tanggal kasus, [[susp-2025-10-09|bursa menghentikan perdagangan saham ini pada 9 Oktober 2025 karena kenaikan harga kumulatif yang signifikan, dalam rangka cooling down]]. Ketika perdagangan dibuka lagi keesokan harinya, harga dibuka di [[harga-2025-10-10-buka|Rp177]], menyentuh [[harga-2025-10-10-tertinggi|Rp240]], lalu ditutup di [[harga-2025-10-10|Rp152]], dengan [[volume-2025-10-10|5.112.760.000 lembar]] berpindah tangan dalam satu hari. Harga tertinggi kasus ini tercapai sehari setelah bursa menghentikan perdagangannya.",
+      "Dua belas hari kemudian harga tinggal [[harga-2025-10-22|Rp50]]. Laporan pengendali yang terbit sesudah tanggal kasus memperlihatkan kelanjutannya: [[fil-2025-10-19|laporan 19 Oktober 2025]] dan [[fil-2025-10-26|laporan 26 Oktober 2025]].",
+      "Rantai laporan itu sendiri tidak bersih. Enam transaksi yang dilaporkan malam itu terbit dua kali dengan jumlah, harga, dan urutan yang persis sama, dan ada dua lompatan saldo yang tidak dijelaskan laporan mana pun. Rinciannya ada di jejak verifikasi kasus ini, lengkap dengan angkanya.",
+      "Setahun kemudian, [[rups-2026-07-16-kuorum|rapat umum pemegang saham 16 Juli 2026 gagal mencapai kuorum karena yang hadir hanya 22,32 persen saham]], sehingga tidak ada agenda yang bisa diputuskan. Kuorum dihitung dari saham yang hadir, bukan dari jumlah orang yang hadir."
+    ]
+  },
+  "temuan": [
+    {
+      "temuan_id": "R2-6811cfbad8_0c09c0d1d4-0d1828e30b_6066536717",
+      "aturan": "R2",
+      "ringkasan": "Rantai Karya Permata Inovasi Indonesia putus: laporan 2025-08-25T17:00:51 berakhir di 4.692.137.600 lembar, tetapi laporan berikutnya 2025-08-25T17:03:44 mulai dari 4.682.137.600 lembar. Ada 10.000.000 lembar yang berkurang tanpa laporan.",
+      "angka": [
+        {
+          "label": "lompatan",
+          "nilai": -10000000,
+          "satuan": "lembar"
+        },
+        {
+          "label": "saldo akhir laporan sebelumnya",
+          "nilai": 4692137600,
+          "satuan": "lembar"
+        },
+        {
+          "label": "saldo awal laporan berikutnya",
+          "nilai": 4682137600,
+          "satuan": "lembar"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-08-25-01",
+        "fil-2025-08-25-02"
+      ],
+      "rujukan": [
+        "2025-08-25T17:00:51 · 6811cfbad8_0c09c0d1d4.pdf",
+        "2025-08-25T17:03:44 · 0d1828e30b_6066536717.pdf"
+      ]
+    },
+    {
+      "temuan_id": "R2-09ab786c90_10c56f87d5-19e7b72cea_b562918cab",
+      "aturan": "R2",
+      "ringkasan": "Rantai Karya Permata Inovasi Indonesia putus: laporan 2025-10-19T01:10:41 berakhir di 4.396.458.600 lembar, tetapi laporan berikutnya 2025-10-19T23:09:20 mulai dari 4.475.731.500 lembar. Ada 79.272.900 lembar yang bertambah tanpa laporan.",
+      "angka": [
+        {
+          "label": "lompatan",
+          "nilai": 79272900,
+          "satuan": "lembar"
+        },
+        {
+          "label": "saldo akhir laporan sebelumnya",
+          "nilai": 4396458600,
+          "satuan": "lembar"
+        },
+        {
+          "label": "saldo awal laporan berikutnya",
+          "nilai": 4475731500,
+          "satuan": "lembar"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-10-19-08",
+        "fil-2025-10-19-09"
+      ],
+      "rujukan": [
+        "2025-10-19T01:10:41 · 09ab786c90_10c56f87d5.pdf",
+        "2025-10-19T23:09:20 · 19e7b72cea_b562918cab.pdf"
+      ]
+    },
+    {
+      "temuan_id": "R2-a41b6c5454_c4e416550c-48a4d35028_fb1fcc37e6",
+      "aturan": "R2",
+      "ringkasan": "Rantai Karya Permata Inovasi Indonesia putus: laporan 2025-10-19T23:10:27 berakhir di 4.566.095.100 lembar, tetapi laporan berikutnya 2025-10-19T23:44:58 mulai dari 2.906.086.200 lembar. Ada 1.660.008.900 lembar yang berkurang tanpa laporan.",
+      "angka": [
+        {
+          "label": "lompatan",
+          "nilai": -1660008900,
+          "satuan": "lembar"
+        },
+        {
+          "label": "saldo akhir laporan sebelumnya",
+          "nilai": 4566095100,
+          "satuan": "lembar"
+        },
+        {
+          "label": "saldo awal laporan berikutnya",
+          "nilai": 2906086200,
+          "satuan": "lembar"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-10-19-12",
+        "fil-2025-10-19-13"
+      ],
+      "rujukan": [
+        "2025-10-19T23:10:27 · a41b6c5454_c4e416550c.pdf",
+        "2025-10-19T23:44:58 · 48a4d35028_fb1fcc37e6.pdf"
+      ]
+    },
+    {
+      "temuan_id": "R3-5774cd02a8_1b8dfda15c",
+      "aturan": "R3",
+      "ringkasan": "6 transaksi yang dilaporkan 2025-10-26T22:50:48–2025-10-26T22:54:38 dilaporkan ulang persis 2025-10-26T22:55:13–2025-10-26T23:01:13, dengan tanggal, jenis, jumlah, dan harga yang sama. Set ulangan berjumlah 586.000.000 lembar.",
+      "angka": [
+        {
+          "label": "transaksi yang berulang",
+          "nilai": 6,
+          "satuan": "transaksi"
+        },
+        {
+          "label": "lembar pada set ulangan",
+          "nilai": 586000000,
+          "satuan": "lembar"
+        },
+        {
+          "label": "bagian dari saham beredar",
+          "nilai": 7.89,
+          "satuan": "persen"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-10-26-01",
+        "fil-2025-10-26-02",
+        "fil-2025-10-26-03",
+        "fil-2025-10-26-04",
+        "fil-2025-10-26-05",
+        "fil-2025-10-26-06",
+        "fil-2025-10-26-07",
+        "fil-2025-10-26-08",
+        "fil-2025-10-26-09",
+        "fil-2025-10-26-10",
+        "fil-2025-10-26-11",
+        "fil-2025-10-26-12"
+      ],
+      "rujukan": [
+        "set pertama · 2025-10-26T22:50:48 · 784cc1c104_45040f8000.pdf",
+        "set pertama · 2025-10-26T22:51:27 · 8be7d2523c_ddfb1232d7.pdf",
+        "set pertama · 2025-10-26T22:52:25 · f6191f0623_2a5c2579be.pdf",
+        "set pertama · 2025-10-26T22:53:09 · 33510189d0_5fc572fb8a.pdf",
+        "set pertama · 2025-10-26T22:53:52 · 2b8f83f0d8_12b6e70417.pdf",
+        "set pertama · 2025-10-26T22:54:38 · 19c1357527_9ba9fcefc3.pdf",
+        "set ulangan · 2025-10-26T22:55:13 · 5774cd02a8_1b8dfda15c.pdf",
+        "set ulangan · 2025-10-26T22:55:44 · c49cd8c770_045edbbe0e.pdf",
+        "set ulangan · 2025-10-26T22:56:38 · 13698e98a4_1e1cefa1fc.pdf",
+        "set ulangan · 2025-10-26T22:57:20 · 0cc43b0b2d_1e39e25e80.pdf",
+        "set ulangan · 2025-10-26T22:58:11 · cf407cd3dc_68b663c32f.pdf",
+        "set ulangan · 2025-10-26T23:01:13 · dac91da2ef_607a350f05.pdf"
+      ]
+    },
+    {
+      "temuan_id": "R5-saldo-akhir",
+      "aturan": "R5",
+      "ringkasan": "Saldo akhir rantai 1.624.281.900 lembar tidak cocok dengan laporan 2026-01-12 (LK-12012026-2541-00.pdf-0.pdf), saldo sebelum transaksi yang menyebut 2.200.000.000 lembar pada 2026-01-12; selisihnya 575.718.100 lembar. Kalau 586.000.000 lembar dari set laporan ganda dikembalikan, sisa selisihnya tinggal -10.281.900 lembar.",
+      "angka": [
+        {
+          "label": "saldo akhir rantai",
+          "nilai": 1624281900,
+          "satuan": "lembar"
+        },
+        {
+          "label": "saldo menurut sumber kedua",
+          "nilai": 2200000000,
+          "satuan": "lembar"
+        },
+        {
+          "label": "selisih",
+          "nilai": 575718100,
+          "satuan": "lembar"
+        },
+        {
+          "label": "sisa selisih kalau set laporan ganda dikembalikan",
+          "nilai": -10281900,
+          "satuan": "lembar"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-10-26-13",
+        "fil-2026-01-12-01"
+      ],
+      "rujukan": [
+        "2025-10-26T23:02:29 · 70c5ac748f_a778a1add8.pdf",
+        "laporan 2026-01-12 (LK-12012026-2541-00.pdf-0.pdf), saldo sebelum transaksi"
+      ]
+    },
+    {
+      "temuan_id": "R6-harga-2025-09-26",
+      "aturan": "R6",
+      "ringkasan": "1 laporan menyebut transaksi 2025-09-26 pada harga Rp165–Rp165, padahal harga saham hari itu hanya bergerak Rp135–Rp163.",
+      "angka": [
+        {
+          "label": "laporan yang terlibat",
+          "nilai": 1,
+          "satuan": "laporan"
+        },
+        {
+          "label": "harga laporan terendah",
+          "nilai": 165,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga laporan tertinggi",
+          "nilai": 165,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga pasar terendah hari itu",
+          "nilai": 135,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga pasar tertinggi hari itu",
+          "nilai": 163,
+          "satuan": "rupiah per lembar"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-09-29-01"
+      ],
+      "rujukan": [
+        "2025-09-29T16:45:08 · 5c20eb9901_74815f0703.pdf"
+      ]
+    },
+    {
+      "temuan_id": "R6-harga-2025-10-14",
+      "aturan": "R6",
+      "ringkasan": "22 laporan menyebut transaksi 2025-10-14 pada harga Rp152–Rp232, padahal harga saham hari itu hanya bergerak Rp111–Rp111.",
+      "angka": [
+        {
+          "label": "laporan yang terlibat",
+          "nilai": 22,
+          "satuan": "laporan"
+        },
+        {
+          "label": "harga laporan terendah",
+          "nilai": 152,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga laporan tertinggi",
+          "nilai": 232,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga pasar terendah hari itu",
+          "nilai": 111,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga pasar tertinggi hari itu",
+          "nilai": 111,
+          "satuan": "rupiah per lembar"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-10-19-01",
+        "fil-2025-10-19-02",
+        "fil-2025-10-19-03",
+        "fil-2025-10-19-04",
+        "fil-2025-10-19-05",
+        "fil-2025-10-19-06",
+        "fil-2025-10-19-07",
+        "fil-2025-10-19-08",
+        "fil-2025-10-19-09",
+        "fil-2025-10-19-10",
+        "fil-2025-10-19-11",
+        "fil-2025-10-19-12",
+        "fil-2025-10-19-13",
+        "fil-2025-10-19-14",
+        "fil-2025-10-19-15",
+        "fil-2025-10-19-16",
+        "fil-2025-10-19-17",
+        "fil-2025-10-19-18",
+        "fil-2025-10-19-19",
+        "fil-2025-10-19-20",
+        "fil-2025-10-19-21",
+        "fil-2025-10-19-22"
+      ],
+      "rujukan": [
+        "2025-10-19T01:09:01 · 6e6f9dce39_05685131eb.pdf",
+        "2025-10-19T01:09:18 · f08cc908ff_58a18a8f8c.pdf",
+        "2025-10-19T01:09:32 · 378c3c81a6_774771243c.pdf",
+        "2025-10-19T01:09:49 · c6dec5769b_29b3a0a03d.pdf",
+        "2025-10-19T01:10:04 · 76e1c20772_fa3232386b.pdf",
+        "2025-10-19T01:10:15 · e04019762c_70b505b401.pdf",
+        "2025-10-19T01:10:30 · 85dd06fb0e_e5dd522ec1.pdf",
+        "2025-10-19T01:10:41 · 09ab786c90_10c56f87d5.pdf",
+        "2025-10-19T23:09:20 · 19e7b72cea_b562918cab.pdf",
+        "2025-10-19T23:09:45 · e0a4dcbb48_658970de58.pdf",
+        "2025-10-19T23:10:09 · e9048eb90e_5d4251ccec.pdf",
+        "2025-10-19T23:10:27 · a41b6c5454_c4e416550c.pdf",
+        "2025-10-19T23:44:58 · 48a4d35028_fb1fcc37e6.pdf",
+        "2025-10-19T23:45:03 · 25fd87753d_a323c9c276.pdf",
+        "2025-10-19T23:45:10 · a8a37785fe_b973e2108e.pdf",
+        "2025-10-19T23:45:15 · f6f2379725_3bc19a8fb2.pdf",
+        "2025-10-19T23:45:22 · 067eba40fd_ace510349c.pdf",
+        "2025-10-19T23:45:28 · 1f62ba8e7e_3a9fc85a01.pdf",
+        "2025-10-19T23:45:32 · 9faca22f39_7d2d55b620.pdf",
+        "2025-10-19T23:45:50 · ca7a394e1c_06fd939876.pdf",
+        "2025-10-19T23:46:00 · 0f7507a319_85996a714a.pdf",
+        "2025-10-19T23:46:04 · 55ef440c5f_dfa9933230.pdf"
+      ]
+    },
+    {
+      "temuan_id": "R6-harga-2025-10-23",
+      "aturan": "R6",
+      "ringkasan": "13 laporan menyebut transaksi 2025-10-23 pada harga Rp51–Rp80, padahal harga saham hari itu hanya bergerak Rp50–Rp50.",
+      "angka": [
+        {
+          "label": "laporan yang terlibat",
+          "nilai": 13,
+          "satuan": "laporan"
+        },
+        {
+          "label": "harga laporan terendah",
+          "nilai": 51,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga laporan tertinggi",
+          "nilai": 80,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga pasar terendah hari itu",
+          "nilai": 50,
+          "satuan": "rupiah per lembar"
+        },
+        {
+          "label": "harga pasar tertinggi hari itu",
+          "nilai": 50,
+          "satuan": "rupiah per lembar"
+        }
+      ],
+      "fakta_terkait": [
+        "fil-2025-10-26-01",
+        "fil-2025-10-26-02",
+        "fil-2025-10-26-03",
+        "fil-2025-10-26-04",
+        "fil-2025-10-26-05",
+        "fil-2025-10-26-06",
+        "fil-2025-10-26-07",
+        "fil-2025-10-26-08",
+        "fil-2025-10-26-09",
+        "fil-2025-10-26-10",
+        "fil-2025-10-26-11",
+        "fil-2025-10-26-12",
+        "fil-2025-10-26-13"
+      ],
+      "rujukan": [
+        "2025-10-26T22:50:48 · 784cc1c104_45040f8000.pdf",
+        "2025-10-26T22:51:27 · 8be7d2523c_ddfb1232d7.pdf",
+        "2025-10-26T22:52:25 · f6191f0623_2a5c2579be.pdf",
+        "2025-10-26T22:53:09 · 33510189d0_5fc572fb8a.pdf",
+        "2025-10-26T22:53:52 · 2b8f83f0d8_12b6e70417.pdf",
+        "2025-10-26T22:54:38 · 19c1357527_9ba9fcefc3.pdf",
+        "2025-10-26T22:55:13 · 5774cd02a8_1b8dfda15c.pdf",
+        "2025-10-26T22:55:44 · c49cd8c770_045edbbe0e.pdf",
+        "2025-10-26T22:56:38 · 13698e98a4_1e1cefa1fc.pdf",
+        "2025-10-26T22:57:20 · 0cc43b0b2d_1e39e25e80.pdf",
+        "2025-10-26T22:58:11 · cf407cd3dc_68b663c32f.pdf",
+        "2025-10-26T23:01:13 · dac91da2ef_607a350f05.pdf",
+        "2025-10-26T23:02:29 · 70c5ac748f_a778a1add8.pdf"
+      ]
+    }
+  ],
+  "pemeriksaan": [
+    {
+      "aturan": "R1",
+      "judul": "Aritmetika per laporan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R2",
+      "judul": "Kontinuitas rantai",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 3
+    },
+    {
+      "aturan": "R3",
+      "judul": "Laporan ganda",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 1
+    },
+    {
+      "aturan": "R4",
+      "judul": "Tanggal ketersediaan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R5",
+      "judul": "Rekonsiliasi dengan potret kepemilikan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 1
+    },
+    {
+      "aturan": "R6",
+      "judul": "Subjek laporan dan rentang harga",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 3
+    },
+    {
+      "aturan": "R7",
+      "judul": "Persen dihitung ulang",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R8",
+      "judul": "Tanda repo",
+      "dijalankan": false,
+      "alasan_lewat": "Kolom repurchase agreement tidak ada di data API dan belum ada PDF laporan yang diurai, sehingga tanda repo tidak bisa diperiksa.",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R9",
+      "judul": "Field terstruktur vs teks",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R10",
+      "judul": "Hari tanpa volume",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    }
+  ],
+  "kartu_konsep": [
+    {
+      "kode": "A2",
+      "judul": "Lot dan lembar"
+    },
+    {
+      "kode": "A4",
+      "judul": "Kapitalisasi pasar"
+    },
+    {
+      "kode": "B1",
+      "judul": "Dividen dan tanggal cum/ex"
+    },
+    {
+      "kode": "C1",
+      "judul": "Pengendali"
+    },
+    {
+      "kode": "C3",
+      "judul": "Tanggal transaksi dan tanggal laporan"
+    },
+    {
+      "kode": "D1",
+      "judul": "Suspensi"
+    },
+    {
+      "kode": "D2",
+      "judul": "Cooling down dan suspensi sampai pengumuman lebih lanjut"
+    },
+    {
+      "kode": "D4",
+      "judul": "Suspensi karena terlambat menyampaikan laporan"
+    }
+  ],
+  "disclaimer": [
+    "Data di halaman ini menggambarkan keadaan pada 8 Oktober 2025 dan bukan kondisi perusahaan sekarang.",
+    "Produk ini tidak menyarankan membeli atau menjual efek apa pun.",
+    "Setiap angka di halaman ini bisa ditelusuri ke sumbernya."
+  ]
+}
