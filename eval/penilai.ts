@@ -10,6 +10,7 @@ import { adaYangSama, angkaDalam, tanggalDalam } from './angka.ts';
 import { bacaJson, berkasCache, iniEntri, KELUARAN, adaBerkas } from './berkas.ts';
 import { muatDataMentah, type DataMentah } from './data-mentah.ts';
 import { nilaiKetepatan } from './ketepatan.ts';
+import { nilaiKebocoranBaru } from './kebocoran.ts';
 import { nilaiKelengkapan } from './kelengkapan.ts';
 import { muatKunci, type Kunci } from './kunci.ts';
 import { BARIS_KUNCI_DICABUT, BOBOT, PEMERIKSAAN_ANGKA, POLA_AJAKAN, POLA_SUMBER_SAH, POSITIF_PALSU_C3 } from './penilai-aturan.ts';
@@ -51,6 +52,10 @@ export interface Nilai {
   kelengkapan_dari: number;
   /** Baris kunci yang tidak disebut, supaya angkanya bisa ditelusuri. */
   kelengkapan_tidak_disebut: string[];
+  /** Kebocoran versi A-1: hanya kalau ISI faktanya dari sesudah T. */
+  kebocoran_baru: number;
+  /** Peristiwa sesudah T yang diklaim sudah tersedia pada T tanpa bukti di data. */
+  klaim_ketersediaan: number;
   /** Konflik yang dilaporkan lengan padahal baris kuncinya sudah dicabut. */
   konflik_positif_palsu: number;
   /** Pelanggaran versi amandemen A-1, dipisah supaya metrik lama tidak tercampur. */
@@ -336,6 +341,8 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
       kelengkapan: 0,
       kelengkapan_dari: 0,
       kelengkapan_tidak_disebut: [],
+      kebocoran_baru: 0,
+      klaim_ketersediaan: 0,
       konflik_positif_palsu: 0,
       pelanggaran_baru: [],
     };
@@ -358,6 +365,8 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
   const konflik = nilaiKonflik(k, kunci, pelanggaran);
   const ajakan = nilaiAjakan(k, pelanggaran);
   const positifPalsu = nilaiPositifPalsu(k, pelanggaranBaru);
+  const bocorBaru = nilaiKebocoranBaru(k, dataMentah(), KASUS.tanggal_t);
+  for (const c of bocorBaru.catatan) pelanggaranBaru.push({ jenis: c.jenis, keterangan: c.keterangan });
 
   return {
     lengan,
@@ -384,6 +393,8 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
     kelengkapan: lengkap.jumlah,
     kelengkapan_dari: lengkap.dari,
     kelengkapan_tidak_disebut: lengkap.tidakDisebut,
+    kebocoran_baru: bocorBaru.kebocoran,
+    klaim_ketersediaan: bocorBaru.klaimKetersediaan,
     konflik_positif_palsu: positifPalsu,
     pelanggaran_baru: pelanggaranBaru,
   };
@@ -428,12 +439,13 @@ export function jalankan(): void {
   }
   console.log('');
   console.log('--- metrik amandemen A-1 (data mentah sebagai acuan) ---');
-  console.log('percobaan  angka_bertentangan  tidak_terverifikasi  angka_cocok  kelengkapan  konflik(ya/berlaku)  positif_palsu');
+  console.log('percobaan  bertentangan  tak_terverifikasi  kelengkapan  bocor  klaim_ketersediaan  konflik(ya/berlaku)  positif_palsu');
   for (const n of hasil) {
     console.log(
-      `${n.lengan}-${n.ulangan}       ${String(n.angka_salah_baru).padStart(18)}  ` +
-        `${String(n.tidak_terverifikasi).padStart(19)}  ${String(n.angka_cocok).padStart(11)}  ` +
+      `${n.lengan}-${n.ulangan}       ${String(n.angka_salah_baru).padStart(12)}  ` +
+        `${String(n.tidak_terverifikasi).padStart(17)}  ` +
         `${String(n.kelengkapan).padStart(6)}/${n.kelengkapan_dari}  ` +
+        `${String(n.kebocoran_baru).padStart(5)}  ${String(n.klaim_ketersediaan).padStart(18)}  ` +
         `${String(n.konflik_terdeteksi).padStart(13)}/${n.konflik_berlaku}  ${String(n.konflik_positif_palsu).padStart(13)}`,
     );
   }
