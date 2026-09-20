@@ -18,6 +18,7 @@ bukan ditulis tangan. Membangun dua kali menghasilkan berkas yang sama persis.
 | `soal` | Tiga soal beserta pilihan, kunci, dan penjelasan. |
 | `pembukaan` | Fakta dan paragraf yang baru muncul setelah pemain menjawab. |
 | `temuan` | Jejak verifikasi: hasil aturan R1–R10 atas rantai laporan. |
+| `pemeriksaan` | Catatan kesepuluh aturan: mana yang jalan, mana yang dilewati, dan alasannya. Aturan yang hilang atau dilewati tanpa alasan membuat validator menolak kasus. |
 | `kartu_konsep` | Kartu konsep yang dipakai kasus ini. |
 | `disclaimer` | Tiga kalimat tetap yang selalu terlihat di halaman kasus. |
 
@@ -87,4 +88,13 @@ menyebut penyebabnya kalau daftar itu tidak kosong. Kode masalah yang ada sekara
 `FACT_ID_MENGGANTUNG` · `ANGKA_TANPA_FACT_ID` · `FAKTA_BELUM_TERSEDIA` ·
 `FAKTA_SESUDAH_T` · `FAKTA_KONFLIK_DIPAKAI` · `FAKTA_SOAL_TAK_TERLIHAT` ·
 `FAKTA_PEMBUKAAN_BOCOR` · `SOAL_GANDA` · `SOAL_PILIHAN_KURANG` · `JAWABAN_TAK_ADA` ·
-`SOAL_TANPA_FAKTA` · `TEMUAN_TANPA_ANGKA` · `AJAKAN_TRANSAKSI` · `DISCLAIMER`
+`SOAL_TANPA_FAKTA` · `TEMUAN_TANPA_ANGKA` · `AJAKAN_TRANSAKSI` · `DISCLAIMER` ·
+`PEMERIKSAAN_TAK_LENGKAP` · `PEMERIKSAAN_TANPA_ALASAN` · `PEMERIKSAAN_TAK_COCOK`
+
+## Status fakta dan soal
+
+Fakta yang tersangkut satu temuan ditandai `KONFLIK`, dan fakta gabungan yang
+dihitung dari fakta `KONFLIK` ikut menjadi `KONFLIK`: penjumlahan yang memuat
+laporan bermasalah ikut bermasalah. Fakta `KONFLIK` boleh ditampilkan ke pemain
+beserta tandanya, tetapi **tidak boleh menjadi dasar jawaban soal**; validator
+menolaknya lewat `FAKTA_KONFLIK_DIPAKAI`.

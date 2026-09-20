@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Fakta, Kasus } from './tipe.ts';
-import { VERSI_SKEMA } from './tipe.ts';
+import { SEMUA_ATURAN, VERSI_SKEMA } from './tipe.ts';
 import { periksaKasus } from './validator.ts';
 import { angkaTelanjang, pecahTeks, teksPolos } from './rujukan.ts';
 
@@ -56,6 +56,13 @@ function kasusMinimal(): Kasus {
       paragraf: ['Dua pekan kemudian harga menjadi [[harga-nanti|Rp50]].'],
     },
     temuan: [],
+    pemeriksaan: SEMUA_ATURAN.map((aturan) => ({
+      aturan,
+      judul: 'aturan ' + aturan,
+      dijalankan: false,
+      alasan_lewat: 'kasus contoh tidak memuat rantai laporan',
+      jumlah_temuan: 0,
+    })),
     kartu_konsep: [{ kode: 'A2', judul: 'lot dan lembar' }],
     disclaimer: ['Kalimat satu.', 'Kalimat dua.', 'Kalimat tiga.'],
   };
@@ -139,6 +146,30 @@ describe('validator kasus', () => {
     const kasus = kasusMinimal();
     kasus.disclaimer = ['Satu saja.'];
     expect(periksaKasus(kasus).map((m) => m.kode)).toContain('DISCLAIMER');
+  });
+
+  it('menolak kasus yang menghilangkan satu aturan dari jejak pemeriksaan', () => {
+    const kasus = kasusMinimal();
+    kasus.pemeriksaan = kasus.pemeriksaan.filter((p) => p.aturan !== 'R3');
+    const masalah = periksaKasus(kasus);
+    expect(masalah.map((m) => m.kode)).toContain('PEMERIKSAAN_TAK_LENGKAP');
+    expect(masalah.map((m) => m.pesan).join(' ')).toContain('R3');
+  });
+
+  it('menolak aturan yang dilewati tanpa menyebut alasan', () => {
+    const kasus = kasusMinimal();
+    kasus.pemeriksaan = kasus.pemeriksaan.map((p) =>
+      p.aturan === 'R8' ? { ...p, alasan_lewat: null } : p,
+    );
+    expect(periksaKasus(kasus).map((m) => m.kode)).toContain('PEMERIKSAAN_TANPA_ALASAN');
+  });
+
+  it('menolak jumlah temuan yang tidak cocok dengan daftar temuan', () => {
+    const kasus = kasusMinimal();
+    kasus.pemeriksaan = kasus.pemeriksaan.map((p) =>
+      p.aturan === 'R2' ? { ...p, dijalankan: true, alasan_lewat: null, jumlah_temuan: 1 } : p,
+    );
+    expect(periksaKasus(kasus).map((m) => m.kode)).toContain('PEMERIKSAAN_TAK_COCOK');
   });
 
   it('menolak jawaban yang tidak ada di pilihan', () => {

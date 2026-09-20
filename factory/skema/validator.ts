@@ -1,5 +1,5 @@
 import type { Kasus, MasalahValidasi, Soal } from './tipe.ts';
-import { VERSI_SKEMA } from './tipe.ts';
+import { SEMUA_ATURAN, VERSI_SKEMA } from './tipe.ts';
 import { RUJUKAN_ANDAIAN, ambilRujukan, angkaTelanjang } from './rujukan.ts';
 
 const POLA_TANGGAL = /^\d{4}-\d{2}-\d{2}$/;
@@ -192,6 +192,35 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
         masalah,
         'TEMUAN_TANPA_ANGKA',
         `Temuan "${temuan.temuan_id}" (${temuan.aturan}) tidak menyebut satu angka pun.`,
+      );
+    }
+  }
+
+  // --- jejak pemeriksaan: tidak ada aturan yang hilang diam-diam ----------
+  const dicatat = new Set(kasus.pemeriksaan.map((p) => p.aturan));
+  for (const aturan of SEMUA_ATURAN) {
+    if (!dicatat.has(aturan)) {
+      tambah(
+        masalah,
+        'PEMERIKSAAN_TAK_LENGKAP',
+        `Aturan ${aturan} tidak tercatat di jejak pemeriksaan; aturan tidak boleh hilang tanpa keterangan.`,
+      );
+    }
+  }
+  for (const p of kasus.pemeriksaan) {
+    if (!p.dijalankan && (p.alasan_lewat === null || p.alasan_lewat === '')) {
+      tambah(
+        masalah,
+        'PEMERIKSAAN_TANPA_ALASAN',
+        `Aturan ${p.aturan} ditandai tidak dijalankan tetapi tidak menyebut alasannya.`,
+      );
+    }
+    const sebenarnya = kasus.temuan.filter((t) => t.aturan === p.aturan).length;
+    if (sebenarnya !== p.jumlah_temuan) {
+      tambah(
+        masalah,
+        'PEMERIKSAAN_TAK_COCOK',
+        `Aturan ${p.aturan} mencatat ${String(p.jumlah_temuan)} temuan, tetapi di daftar temuan ada ${String(sebenarnya)}.`,
       );
     }
   }

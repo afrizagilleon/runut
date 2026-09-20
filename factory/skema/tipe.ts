@@ -65,6 +65,31 @@ export interface Temuan {
   rujukan: string[];
 }
 
+/**
+ * Catatan satu aturan verifikasi: dijalankan atau tidak, dan kalau tidak, kenapa.
+ * Ada supaya aturan yang tidak bisa dijalankan tidak hilang diam-diam (INV-6).
+ */
+export interface PemeriksaanAturan {
+  aturan: KodeAturan;
+  judul: string;
+  dijalankan: boolean;
+  alasan_lewat: string | null;
+  jumlah_temuan: number;
+}
+
+export const SEMUA_ATURAN: readonly KodeAturan[] = [
+  'R1',
+  'R2',
+  'R3',
+  'R4',
+  'R5',
+  'R6',
+  'R7',
+  'R8',
+  'R9',
+  'R10',
+];
+
 export interface PilihanSoal {
   kunci: string;
   teks: string;
@@ -110,6 +135,8 @@ export interface Kasus {
   soal: Soal[];
   pembukaan: Pembukaan;
   temuan: Temuan[];
+  /** Catatan seluruh aturan R1–R10: yang jalan, yang dilewati, beserta alasannya. */
+  pemeriksaan: PemeriksaanAturan[];
   kartu_konsep: KartuKonsep[];
   /** Tiga kalimat tetap RQ-08. */
   disclaimer: string[];
