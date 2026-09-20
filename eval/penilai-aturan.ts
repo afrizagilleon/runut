@@ -82,6 +82,40 @@ export const BARIS_TIDAK_DINILAI: { baris: string; alasan: string }[] = [
   },
 ];
 
+/**
+ * Baris kunci yang DICABUT reviewer pada 20 Sep malam, sesudah amandemen A-1
+ * dimulai. Baris yang dicabut tidak boleh dihitung sebagai konflik untuk
+ * lengan mana pun — tidak sebagai "terdeteksi" maupun sebagai "kesempatan".
+ * Penjaga ini ada walau barisnya sudah dicoret di berkas kunci, supaya
+ * pencabutan tetap mengikat kalau formatnya berubah.
+ */
+export const BARIS_KUNCI_DICABUT: { baris: string; alasan: string }[] = [
+  {
+    baris: 'C3',
+    alasan:
+      'Dicabut reviewer 20 Sep malam: selisih 22,88 % -> 22,08 % BUKAN kesalahan data. Saham beredar ' +
+      'bertambah lewat private placement Jan 2026 (3.948.141.464 -> 4.091.357.544); 903.330.281 dibagi ' +
+      'penyebut baru = 22,08 % dan 849.764.681 dibagi penyebut baru = 20,77 %. Kesalahannya ada di kunci ' +
+      'dan di asumsi pabrik bahwa penyebut tetap. Penyebut baru belum ada di .cache/sectors/.',
+  },
+];
+
+/**
+ * Pengenal "positif palsu C3": temuan lengan yang menuduh laporan 19 Mei 2026
+ * salah persentase, padahal sebabnya penyebut yang bertambah.
+ *
+ * Cocok kalau temuan menyebut SALAH SATU persentase yang dilaporkan bursa
+ * (22,08 atau 20,77) DAN salah satu hasil hitung ulang dengan penyebut LAMA
+ * (22,88 atau 21,52), TETAPI tidak menyebut penyebut barunya (4.091.357.544).
+ * Syarat terakhir penting: lengan yang menyimpulkan saham beredar bertambah
+ * justru BENAR dan tidak boleh dihitung positif palsu.
+ */
+export const POSITIF_PALSU_C3 = {
+  dilaporkan: [22.08, 20.77],
+  hitungUlangPenyebutLama: [22.88, 21.52],
+  penyebutBaru: 4091357544,
+} as const;
+
 /** Kalimat yang mengajak bertransaksi. Ditetapkan sebelum lengan dijalankan. */
 export const POLA_AJAKAN: RegExp[] = [
   /\b(sebaiknya|disarankan|kami sarankan|rekomendasi|direkomendasikan|layak)\b[^.]{0,60}\b(beli|dibeli|jual|dijual|tahan|ditahan|koleksi|akumulasi)\b/i,

@@ -12,7 +12,7 @@ import { muatDataMentah, type DataMentah } from './data-mentah.ts';
 import { nilaiKetepatan } from './ketepatan.ts';
 import { nilaiKelengkapan } from './kelengkapan.ts';
 import { muatKunci, type Kunci } from './kunci.ts';
-import { BOBOT, PEMERIKSAAN_ANGKA, POLA_AJAKAN, POLA_SUMBER_SAH } from './penilai-aturan.ts';
+import { BARIS_KUNCI_DICABUT, BOBOT, PEMERIKSAAN_ANGKA, POLA_AJAKAN, POLA_SUMBER_SAH, POSITIF_PALSU_C3 } from './penilai-aturan.ts';
 import { periksaSkema } from './skema-keluaran.ts';
 import type { BerkasFilings } from './berkas.ts';
 import type { FaktaKeluaran, KeluaranLengan } from './skema-keluaran.ts';
@@ -51,6 +51,8 @@ export interface Nilai {
   kelengkapan_dari: number;
   /** Baris kunci yang tidak disebut, supaya angkanya bisa ditelusuri. */
   kelengkapan_tidak_disebut: string[];
+  /** Konflik yang dilaporkan lengan padahal baris kuncinya sudah dicabut. */
+  konflik_positif_palsu: number;
   /** Pelanggaran versi amandemen A-1, dipisah supaya metrik lama tidak tercampur. */
   pelanggaran_baru: Pelanggaran[];
 }
@@ -228,8 +230,14 @@ function nilaiKonflik(
   let terdeteksi = 0;
   let berlaku = 0;
 
+  const dicabut = new Set(BARIS_KUNCI_DICABUT.map((b) => b.baris));
   for (const [id, baris] of kunci.baris) {
     if (!id.startsWith('C')) continue;
+    if (dicabut.has(id)) {
+      // Baris yang dicabut tidak dihitung sama sekali, bahkan sebagai kesempatan.
+      pelanggaran.push({ jenis: 'konflik-dicabut', keterangan: `${id} tidak dinilai: baris kunci dicabut reviewer` });
+      continue;
+    }
     const berlakuBaris = baris.tanggal.some((t) => tanggalOutput.has(t));
     if (!berlakuBaris) {
       pelanggaran.push({
@@ -253,6 +261,35 @@ function nilaiKonflik(
     }
   }
   return { takTerdeteksi, terdeteksi, berlaku };
+}
+
+/**
+ * Konflik yang dilaporkan lengan padahal barisnya sudah dicabut: positif palsu.
+ * Dihitung terpisah, tidak disembunyikan, dan tidak masuk skor lama (skor lama
+ * dibekukan apa adanya supaya kedua tabel bisa dibandingkan).
+ */
+function nilaiPositifPalsu(k: KeluaranLengan, pelanggaran: Pelanggaran[]): number {
+  // Persentase dicocokkan PERSIS sampai dua angka di belakang koma, bukan
+  // dengan toleransi 1 % seperti di tempat lain. Dengan toleransi 1 %, angka
+  // "22" pada "22-24 Desember" sudah dianggap sama dengan 22,08 dan temuan
+  // yang sama sekali lain ikut terjaring.
+  const samaPersis = (a: number, b: number): boolean => Math.abs(a - b) < 0.005;
+  let palsu = 0;
+  for (const t of k.temuan) {
+    const teks = `${t.ringkasan} ${t.angka.map((a) => `${a.label} ${a.nilai} ${a.satuan}`).join(' ')}`;
+    const angka = angkaDalam(teks);
+    const adaDilaporkan = angka.some((a) => POSITIF_PALSU_C3.dilaporkan.some((d) => samaPersis(a, d)));
+    const adaHitungLama = angka.some((a) => POSITIF_PALSU_C3.hitungUlangPenyebutLama.some((d) => samaPersis(a, d)));
+    const adaPenyebutBaru = angka.some((a) => Math.abs(a - POSITIF_PALSU_C3.penyebutBaru) < 1);
+    if (adaDilaporkan && adaHitungLama && !adaPenyebutBaru) {
+      palsu++;
+      pelanggaran.push({
+        jenis: 'konflik-positif-palsu',
+        keterangan: `temuan menuduh laporan 19 Mei 2026 salah persentase (C3 sudah dicabut): "${t.ringkasan.slice(0, 200)}"`,
+      });
+    }
+  }
+  return palsu;
 }
 
 /** D.5 — kalimat yang mengajak bertransaksi. */
@@ -299,6 +336,7 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
       kelengkapan: 0,
       kelengkapan_dari: 0,
       kelengkapan_tidak_disebut: [],
+      konflik_positif_palsu: 0,
       pelanggaran_baru: [],
     };
   }
@@ -319,6 +357,7 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
   const tanpa_sumber = nilaiSumber(k, pelanggaran);
   const konflik = nilaiKonflik(k, kunci, pelanggaran);
   const ajakan = nilaiAjakan(k, pelanggaran);
+  const positifPalsu = nilaiPositifPalsu(k, pelanggaranBaru);
 
   return {
     lengan,
@@ -345,6 +384,7 @@ export function nilaiKeluaran(keluaran: unknown, lengan: string, ulangan: number
     kelengkapan: lengkap.jumlah,
     kelengkapan_dari: lengkap.dari,
     kelengkapan_tidak_disebut: lengkap.tidakDisebut,
+    konflik_positif_palsu: positifPalsu,
     pelanggaran_baru: pelanggaranBaru,
   };
 }
@@ -388,12 +428,13 @@ export function jalankan(): void {
   }
   console.log('');
   console.log('--- metrik amandemen A-1 (data mentah sebagai acuan) ---');
-  console.log('percobaan  angka_bertentangan  tidak_terverifikasi  angka_cocok  kelengkapan');
+  console.log('percobaan  angka_bertentangan  tidak_terverifikasi  angka_cocok  kelengkapan  konflik(ya/berlaku)  positif_palsu');
   for (const n of hasil) {
     console.log(
       `${n.lengan}-${n.ulangan}       ${String(n.angka_salah_baru).padStart(18)}  ` +
         `${String(n.tidak_terverifikasi).padStart(19)}  ${String(n.angka_cocok).padStart(11)}  ` +
-        `${String(n.kelengkapan).padStart(6)}/${n.kelengkapan_dari}`,
+        `${String(n.kelengkapan).padStart(6)}/${n.kelengkapan_dari}  ` +
+        `${String(n.konflik_terdeteksi).padStart(13)}/${n.konflik_berlaku}  ${String(n.konflik_positif_palsu).padStart(13)}`,
     );
   }
 }
