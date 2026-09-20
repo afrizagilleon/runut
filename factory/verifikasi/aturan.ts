@@ -4,6 +4,7 @@
  * Aturan yang tidak bisa dijalankan menyebut alasannya; tidak ada yang dilewati diam-diam.
  */
 import type { Temuan } from '../skema/tipe.ts';
+import { angkaId } from '../format.ts';
 import type { HasilAturan, KonteksVerifikasi, Laporan } from './tipe.ts';
 
 /** Batas galat saat membandingkan persentase laporan dengan hitungan ulang. */
@@ -102,7 +103,9 @@ function lewat(
   return { aturan, judul, dijalankan: false, alasan_lewat: alasan, temuan: [] };
 }
 
-const angka = (nilai: number): string => nilai.toLocaleString('id-ID');
+// Pemformat sendiri, bukan toLocaleString: teks temuan ikut ke berkas kasus yang
+// harus bisa dibangun ulang identik di mesin lain.
+const angka = (nilai: number): string => angkaId(nilai);
 
 // --- R1 ---------------------------------------------------------------------
 
