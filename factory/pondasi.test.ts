@@ -14,10 +14,17 @@ interface Paket {
 const paket = JSON.parse(readFileSync(berkasPaket, 'utf8')) as Paket;
 
 describe('pondasi proyek', () => {
-  it('menyediakan empat skrip yang dijanjikan kontrak', () => {
-    expect(Object.keys(paket.scripts).sort()).toEqual(
-      ['build', 'build:case', 'test', 'typecheck'].sort(),
-    );
+  it('menyediakan empat skrip yang dijanjikan kontrak M1', () => {
+    // M1.5 5 memperbolehkan menambah skrip ke package.json untuk perkakas
+    // evaluasi, jadi yang diuji adalah keempat skrip M1 tetap ada, bukan bahwa
+    // tidak ada skrip lain. Skrip tambahan wajib berawalan `eval:` supaya
+    // penambahan diam-diam di luar lingkup tetap merah.
+    const skrip = Object.keys(paket.scripts).sort();
+    for (const wajib of ['build', 'build:case', 'test', 'typecheck']) {
+      expect(skrip).toContain(wajib);
+    }
+    const tambahan = skrip.filter((s) => !['build', 'build:case', 'test', 'typecheck'].includes(s));
+    expect(tambahan.every((s) => s.startsWith('eval:'))).toBe(true);
   });
 
   it('memakai ESM', () => {

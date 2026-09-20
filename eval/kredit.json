@@ -1,0 +1,87 @@
+{
+  "pagu": 150,
+  "asumsi": "satu panggilan alat MCP Sectors = satu kredit (tidak dikonfirmasi penyedia)",
+  "catatan": [
+    {
+      "waktu": "2026-09-20T14:40:36.693Z",
+      "lengan": "C",
+      "keterangan": "percobaan C-1 (pipeline dari cache, tanpa MCP) [dijalankan dengan max_tokens=16000, percobaan dibuang ke eval/keluaran/dibuang/]",
+      "alat": [],
+      "kredit": 0
+    },
+    {
+      "waktu": "2026-09-20T14:44:01.900Z",
+      "lengan": "A",
+      "keterangan": "percobaan A-1 [dijalankan dengan max_tokens=16000, percobaan dibuang ke eval/keluaran/dibuang/]",
+      "alat": [
+        "fetch-company-report",
+        "fetch-daily-price",
+        "fetch-corporate-actions",
+        "fetch-listing-performance",
+        "fetch-news",
+        "fetch-filings",
+        "fetch-broker-summary-top",
+        "fetch-foreign-flow",
+        "fetch-quarterly-financial-dates",
+        "fetch-suspensions",
+        "fetch-quarterly-financials",
+        "fetch-shareholders-composition",
+        "fetch-news"
+      ],
+      "kredit": 13
+    },
+    {
+      "waktu": "2026-09-20T14:46:12.884Z",
+      "lengan": "C",
+      "keterangan": "percobaan C-1 (pipeline dari cache, tanpa MCP)",
+      "alat": [],
+      "kredit": 0
+    },
+    {
+      "waktu": "2026-09-20T14:50:59.309Z",
+      "lengan": "A",
+      "keterangan": "percobaan A-1",
+      "alat": [
+        "fetch-company-report",
+        "fetch-daily-price",
+        "fetch-corporate-actions",
+        "fetch-listing-performance",
+        "fetch-news",
+        "fetch-quarterly-financial-dates",
+        "fetch-foreign-flow",
+        "fetch-filings",
+        "fetch-broker-summary-top",
+        "fetch-quarterly-financials",
+        "fetch-quarterly-financials",
+        "fetch-shareholders-composition",
+        "fetch-most-traded-stocks",
+        "fetch-daily-price",
+        "fetch-news",
+        "fetch-suspensions"
+      ],
+      "kredit": 16
+    },
+    {
+      "waktu": "2026-09-20T14:55:03.409Z",
+      "lengan": "S",
+      "keterangan": "percobaan S-1",
+      "alat": [
+        "fetch-company-report",
+        "fetch-filings",
+        "fetch-daily-price",
+        "fetch-corporate-actions",
+        "fetch-shareholders-composition",
+        "fetch-quarterly-financial-dates",
+        "fetch-news",
+        "fetch-quarterly-financials",
+        "fetch-foreign-flow",
+        "fetch-suspensions",
+        "fetch-broker-summary-top",
+        "fetch-daily-price",
+        "fetch-daily-price",
+        "fetch-daily-price"
+      ],
+      "kredit": 14
+    }
+  ]
+}
