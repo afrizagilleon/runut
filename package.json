@@ -10,7 +10,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "build": "vite build",
-    "build:case": "node --experimental-strip-types factory/bangun-kasus.ts"
+    "build:case": "node --experimental-strip-types factory/bangun-kasus.ts",
+    "eval:pilih": "node --experimental-strip-types eval/pilih-kasus.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

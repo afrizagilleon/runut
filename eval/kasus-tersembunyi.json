@@ -1,0 +1,61 @@
+{
+  "seed": "sectors-hackathon-2026-09-20",
+  "saringan": {
+    "pola_alasan": "peningkatan harga kumulatif|cooling down",
+    "minimal_suspensi": 2,
+    "wajib_ada_2025": true,
+    "dikecualikan": [
+      "DADA",
+      "KRYA",
+      "COCO",
+      "RLCO",
+      "BEEF",
+      "LPLI",
+      "ULTJ",
+      "ARNA",
+      "MTLA"
+    ],
+    "laporan_minimal": 8
+  },
+  "jumlah_lolos_saringan": 112,
+  "urutan_sepuluh_teratas": [
+    "AGII",
+    "FOLK",
+    "LABA",
+    "LIFE",
+    "GTSI",
+    "ASPI",
+    "SSTM",
+    "SOTS",
+    "PACK",
+    "TIRA"
+  ],
+  "pemeriksaan_kelayakan": [
+    {
+      "kode": "AGII",
+      "jumlahLaporan": 4,
+      "layak": false,
+      "alasan": "hanya 4 laporan kepemilikan (< 8)"
+    },
+    {
+      "kode": "FOLK",
+      "jumlahLaporan": 8,
+      "layak": true,
+      "alasan": "8 laporan kepemilikan (>= 8)"
+    }
+  ],
+  "terpilih": {
+    "kode": "FOLK",
+    "suspensi": [
+      "2025-10-08",
+      "2025-10-10"
+    ],
+    "tanggal_T": "2025-10-07",
+    "aturan_T": "hari bursa terakhir (volume > 0) sebelum suspensi cooling down pertama pada 2025"
+  },
+  "dibekukan_pemilik": {
+    "kode": "FOLK",
+    "tanggalT": "2025-10-07"
+  },
+  "catatan": "Kasus ini dipilih dan dibekukan pemilik pada 20 Sep 2026. Skrip ini hanya mereproduksi pemilihan itu."
+}
