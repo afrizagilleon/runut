@@ -335,16 +335,11 @@ function LayarPembuka({
       <h1 id="judul-pembuka" className="mundur">
         Kita mundur ke {hari.hari}, {hari.panjang}.
       </h1>
+      {/* v3 (D-6): satu kalimat, tanpa tiga aturan main. Rupa layar ini
+          dikerjakan T-06; di sini hanya isinya yang mengikuti skema baru. */}
       <p className="hook">
-        <Teks teks={kasus.pembuka.hook} bukaSumber={bukaSumber} />
+        <Teks teks={kasus.pembuka.kalimat} bukaSumber={bukaSumber} />
       </p>
-      <ul className="aturan-main">
-        {kasus.pembuka.aturan.map((baris, nomor) => (
-          <li key={nomor}>
-            <Teks teks={baris} bukaSumber={bukaSumber} />
-          </li>
-        ))}
-      </ul>
       <button
         type="button"
         className="tombol-utama"
@@ -420,7 +415,10 @@ function LayarSoal({
         </details>
       )}
 
-      <Gelembung teks={soal.batang} bukaSumber={bukaSumber} />
+      {/* v3: pesan teman menggantikan batang. Komposisi patokan menyusul di
+          T-03; di sini hanya sumber teksnya yang berpindah ke skema baru.
+          Pesan dirender POLOS — angka di dalam ucapan bukan fakta (INV-4). */}
+      <Gelembung teks={soal.pesan.isi} bukaSumber={bukaSumber} />
 
       <fieldset className="pilihan" disabled={s.dikunci}>
         <legend className="tersembunyi">Pilih satu jawaban</legend>

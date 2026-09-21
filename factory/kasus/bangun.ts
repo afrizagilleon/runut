@@ -84,15 +84,15 @@ function rujukanDalamTeks(teks: string): string[] {
 /** Semua fact_id yang disebut definisi kasus, baik lewat daftar maupun lewat teks. */
 function idYangDisebut(def: DefinisiKasus): string[] {
   const id: string[] = [...def.fakta_terlihat, ...def.pembukaan.fact_ids];
-  id.push(...rujukanDalamTeks(def.pembuka.hook));
-  for (const baris of def.pembuka.aturan) id.push(...rujukanDalamTeks(baris));
+  id.push(...rujukanDalamTeks(def.pembuka.kalimat));
   for (const s of def.soal) {
-    id.push(
-      ...s.kartu,
-      ...s.fact_ids,
-      ...rujukanDalamTeks(s.batang),
-      ...rujukanDalamTeks(s.penjelasan),
-    );
+    /*
+     * `pesan` dan `tanya` sengaja TIDAK ikut: keduanya ucapan orang, dan
+     * rujukan di dalamnya tidak pernah dirender (INV-4, D-2). Kalau ia ikut
+     * dihitung di sini, fakta bisa lolos "terpakai" hanya karena disebut di
+     * dalam kalimat teman — padahal pemain tidak bisa membukanya dari sana.
+     */
+    id.push(...s.kartu, ...s.fact_ids, ...rujukanDalamTeks(s.penjelasan));
     for (const p of s.pilihan) id.push(...rujukanDalamTeks(p.teks));
   }
   for (const [fact_id, teks] of Object.entries(def.awam)) {

@@ -56,20 +56,18 @@ export const DADA_2025_10_08: DefinisiKasus = {
     lot: 10,
   },
 
+  /*
+   * Layar pertama v3: SATU kalimat. Tiga baris aturan main v2 dihapus —
+   * pemilik tidak membacanya (uji ponsel 22 Sep), ia langsung mengetuk.
+   * Cara mainnya pindah ke `petunjuk` di soal 1, tempat ia sedang melihat.
+   *
+   * Tanpa rujukan angka: layar ini belum punya kartu, dan angka bertaut yang
+   * tidak bisa dibuka adalah janji kosong.
+   */
   pembuka: {
-    hook:
-      'Dalam [[' +
-      HARI_BURSA +
-      '|47 hari bursa]], harga saham sebuah perusahaan properti naik dari [[' +
-      HARGA_AWAL +
-      '|Rp8]] ke [[' +
-      HARGA_T +
-      '|Rp178]]. Grup obrolanmu ramai. Siapa yang omongannya cocok dengan data resmi?',
-    aturan: [
-      'Waktu dibekukan di [[hari-ini|8 Oktober 2025]]. Kamu hanya melihat apa yang publik tahu hari itu.',
-      'Cek omongan teman ke kartu fakta di atas tiap soal. Ini bukan tebak harga.',
-      'Sesudah tiga soal, kamu melihat apa yang terjadi berikutnya.',
-    ],
+    kalimat:
+      'Grup obrolanmu lagi ramai soal satu saham yang harganya melonjak. ' +
+      'Cek omongan mereka ke dokumen resminya.',
   },
 
   // Gabungan seluruh `kartu`; validator menolak kalau tidak sama persis.
@@ -176,11 +174,24 @@ export const DADA_2025_10_08: DefinisiKasus = {
           arti: 'hari ketika bursa buka, yaitu Senin–Jumat di luar hari libur.',
         },
       ],
-      batang:
-        'Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu bilang: "Naik [[' +
-        KELIPATAN +
-        '|22 kali]] tuh pasti karena mau dibeli investor asing. Bursa juga udah kasih pengumuman soal saham ini." ' +
-        'Dari kartu di atas, mana yang paling tepat?',
+      /*
+       * Petunjuk hanya di soal pertama (D-2). Validator menolak kalau ia muncul
+       * di soal lain, dan menolak kalau soal pertama tidak punya.
+       */
+      petunjuk: 'Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.',
+      /*
+       * Pesan teman: angka di dalamnya UCAPAN, bukan fakta. Tidak ditebalkan,
+       * tidak ditautkan (INV-4) — "22 kali" di sini adalah klaim Bayu, dan
+       * kartu harga di bawahnyalah yang boleh berbicara sebagai bukti.
+       */
+      pesan: {
+        nama: 'Bayu',
+        jam: '19.38',
+        isi:
+          'Gila, saham D naik 22 kali dari Agustus! Pasti karena mau dibeli investor asing. ' +
+          'Bursa juga udah kasih pengumuman soal saham ini.',
+      },
+      tanya: 'Omongan Bayu cocok dengan dokumennya?',
       pilihan: [
         {
           kunci: 'a',
@@ -223,10 +234,15 @@ export const DADA_2025_10_08: DefinisiKasus = {
           arti: 'mulai tanggal ini pembeli baru tidak lagi kebagian dividen tersebut; yang sudah pegang sebelumnya tetap kebagian.',
         },
       ],
-      batang:
-        'Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu pegang [[misal|10 lot]] sejak Juli. Ia bilang: ' +
-        '"Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya." ' +
-        'Dari kartu di atas, mana yang paling tepat?',
+      petunjuk: null,
+      pesan: {
+        nama: 'Dimas',
+        jam: '19.42',
+        isi:
+          'Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. ' +
+          'Harga setinggi ini jelas bukan karena dividennya.',
+      },
+      tanya: 'Omongan Dimas cocok dengan dokumennya?',
       pilihan: [
         {
           kunci: 'a',
@@ -250,7 +266,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
         DIV_LOT +
         '|Rp140]], untuk saham yang nilainya [[' +
         NILAI_LOT +
-        '|Rp178.000]] — kurang dari seperseribu nilainya. Temanmu betul, dan karena ia sudah pegang ' +
+        '|Rp178.000]] — kurang dari seperseribu nilainya. Dimas betul, dan karena ia sudah pegang ' +
         'sejak sebelum tanggal ex, ia memang kebagian. Dividen adalah bagian laba yang benar-benar ' +
         'sampai ke pemilik saham; angka ini memperlihatkan bahwa harga [[' +
         HARGA_T +
@@ -269,11 +285,15 @@ export const DADA_2025_10_08: DefinisiKasus = {
           arti: 'pihak dengan porsi saham paling besar, yang menentukan arah perusahaan. Setiap jual-belinya wajib dilaporkan dan diumumkan ke publik.',
         },
       ],
-      batang:
-        'Hari ini [[hari-ini|8 Oktober 2025]], harganya [[' +
-        HARGA_T +
-        '|Rp178]]. Temanmu bilang: "Pemilik terbesarnya tenang-tenang aja tuh, nggak kedengeran jual. ' +
-        'Berarti dia yakin harganya masih bakal naik." Dari kartu di atas, mana yang paling tepat?',
+      petunjuk: null,
+      pesan: {
+        nama: 'Rara',
+        jam: '19.47',
+        isi:
+          'Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. ' +
+          'Berarti dia yakin harganya masih bakal naik.',
+      },
+      tanya: 'Omongan Rara cocok dengan dokumennya?',
       pilihan: [
         {
           kunci: 'a',

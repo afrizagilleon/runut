@@ -3,7 +3,7 @@
  * Keterangan tiap field ada di `docs/format-kasus.md`.
  */
 
-export const VERSI_SKEMA = 2;
+export const VERSI_SKEMA = 3;
 
 export type StatusFakta = 'TERVERIFIKASI' | 'KONFLIK' | 'BELUM';
 
@@ -125,7 +125,25 @@ export interface Soal {
   kartu_penentu: string[];
   /** 0–2 istilah; lebih dari dua ditolak validator. */
   istilah: Istilah[];
-  batang: string;
+  /**
+   * Pesan yang masuk ke grup obrolan (v3). Ia dibaca lebih dulu, sebelum
+   * dokumennya: "orang kasih kabar, kita verify" (pemilik, 22 Sep).
+   *
+   * Menggantikan `batang` v2, yang mencampur konteks, tanggal, dan pertanyaan
+   * dalam satu paragraf — pemilik membacanya sebagai informasi, bukan kabar.
+   */
+  pesan: PesanTeman;
+  /**
+   * Judul pertanyaan, satu baris: "Omongan {nama} cocok dengan dokumennya?".
+   * Isi jawabannya ada di opsi, bukan di sini.
+   */
+  tanya: string;
+  /**
+   * Satu kalimat cara main, hanya di soal pertama. `null` di soal lain —
+   * validator menolak kalau bukan begitu. Pemilik tidak membaca tiga aturan di
+   * layar pertama, jadi petunjuknya dipindah ke tempat ia sedang melihat.
+   */
+  petunjuk: string | null;
   pilihan: PilihanSoal[];
   jawaban: string;
   penjelasan: string;
@@ -137,10 +155,30 @@ export interface KartuKonsep {
   judul: string;
 }
 
-/** Layar pertama: satu kalimat pancingan dan tepat tiga baris aturan main (D-1). */
+/**
+ * Pesan obrolan dari seorang teman (v3).
+ *
+ * Angka di dalamnya adalah **ucapan, bukan fakta**: ia tidak ditebalkan, tidak
+ * diwarnai, dan tidak ditautkan (INV-4). Tanda `[[fact_id|teks]]` boleh ada di
+ * data sebagai jejak, tetapi dirender polos.
+ */
+export interface PesanTeman {
+  /** Nama pendek pengirim, 2–12 huruf. Tiap soal pengirim berbeda. */
+  nama: string;
+  /** Jam kirim `HH.MM`, sesudah bursa tutup pada tanggal T. */
+  jam: string;
+  /** Isi pesan, paling banyak 220 karakter polos. */
+  isi: string;
+}
+
+/**
+ * Layar pertama (v3): satu kalimat saja.
+ *
+ * Tiga baris aturan main v2 dihapus — pemilik tidak membacanya, ia langsung
+ * mengetuk dan menggulir. Cara mainnya pindah ke `Soal.petunjuk` di soal 1.
+ */
 export interface Pembuka {
-  hook: string;
-  aturan: string[];
+  kalimat: string;
 }
 
 export interface Pembukaan {

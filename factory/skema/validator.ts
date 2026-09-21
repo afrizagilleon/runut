@@ -25,6 +25,22 @@ const MAKS_AWAM = 220;
  * bukan ke kepalanya (`docs/kasus-dada-v2.md`, aturan penulisan 7).
  */
 const MAKS_KEPALA = 36;
+
+/* --- v3: pesan teman, judul pertanyaan, petunjuk (D-2) ------------------- */
+/** Kalimat layar pertama; satu kalimat, bukan paragraf. */
+const MAKS_KALIMAT_PEMBUKA = 160;
+/** Pesan obrolan: panjang yang masih terbaca sekali lihat di 360 px. */
+const MAKS_PESAN = 220;
+/** Judul pertanyaan satu baris. */
+const MAKS_TANYA = 60;
+const MIN_NAMA = 2;
+const MAKS_NAMA = 12;
+/** Nama pengirim: huruf saja (boleh spasi di tengah), tanpa angka atau tanda. */
+const POLA_NAMA = /^[A-Za-z][A-Za-z ]*[A-Za-z]$/;
+/** Jam `HH.MM` 24 jam, dengan titik — bukan titik dua. */
+const POLA_JAM = /^([01]\d|2[0-3])\.[0-5]\d$/;
+/** Tanda tebal Markdown `**...**` di dalam teks yang harus polos. */
+const POLA_TEBAL = /\*\*[^*]+\*\*/;
 /** Kartu per soal (D-1). */
 const MIN_KARTU = 2;
 const MAKS_KARTU = 4;
@@ -52,7 +68,15 @@ const OPSI_PER_LABEL = 2;
  * - `kunci`   sama, tetapi pelanggaran tanggal dilaporkan sebagai INV-10 (teks kunci).
  * - `pembukaan` boleh menautkan fakta KONFLIK dan fakta sesudah T.
  */
-type Ketat = 'pemain' | 'kunci' | 'pembukaan';
+/**
+ * Seberapa ketat sebuah teks diperiksa.
+ *
+ * `ucapan` (v3) adalah kebalikan dari yang lain: di pesan teman dan di opsi,
+ * angka justru HARUS telanjang. Ia ucapan orang, bukan dokumen — menautkannya
+ * membuat kabar tampak sudah terverifikasi, dan seluruh gagasan "orang kasih
+ * kabar, kita verify" runtuh (INV-4, D-2).
+ */
+type Ketat = 'pemain' | 'kunci' | 'pembukaan' | 'ucapan';
 
 function tambah(
   daftar: MasalahValidasi[],
@@ -180,6 +204,18 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
   // pemain sebelum layar pembukaan wajib TERVERIFIKASI dan tersedia ≤ T,
   // walaupun ia tidak terdaftar sebagai kartu.
   const periksaTeks = (teks: string, dirujukOleh: string, ketat: Ketat): void => {
+    if (ketat === 'ucapan') {
+      for (const rujukan of ambilRujukan(teks)) {
+        tambah(
+          masalah,
+          'UCAPAN_BERTAUT',
+          `Teks di ${dirujukOleh} menautkan fakta "${rujukan.fact_id}". Ini ucapan orang, ` +
+            `bukan dokumen: angkanya tidak ditautkan dan tidak ditebalkan (INV-4).`,
+        );
+      }
+      // Angka telanjang memang yang diharapkan di sini; tidak diperiksa.
+      return;
+    }
     for (const rujukan of ambilRujukan(teks)) {
       if (rujukan.fact_id === RUJUKAN_ANDAIAN) continue;
       if (rujukan.fact_id === RUJUKAN_HARI_INI) {
@@ -233,17 +269,18 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
     }
   };
 
-  // --- layar pertama ------------------------------------------------------
-  periksaTeks(kasus.pembuka.hook, 'pembuka (hook)', 'pemain');
-  if (kasus.pembuka.aturan.length !== 3) {
+  // --- layar pertama (v3: satu kalimat) -----------------------------------
+  periksaTeks(kasus.pembuka.kalimat, 'pembuka (kalimat)', 'pemain');
+  if (kasus.pembuka.kalimat.trim() === '') {
+    tambah(masalah, 'PEMBUKA_KOSONG', 'Layar pertama tidak punya kalimat pembuka.');
+  }
+  if (teksPolos(kasus.pembuka.kalimat).length > MAKS_KALIMAT_PEMBUKA) {
     tambah(
       masalah,
-      'PEMBUKA_ATURAN',
-      `Layar pertama harus memuat tepat tiga baris aturan main, ditemukan ${String(kasus.pembuka.aturan.length)}.`,
+      'PEMBUKA_PANJANG',
+      `Kalimat layar pertama ${String(teksPolos(kasus.pembuka.kalimat).length)} karakter, ` +
+        `lebih dari ${String(MAKS_KALIMAT_PEMBUKA)}.`,
     );
-  }
-  for (const [nomor, baris] of kasus.pembuka.aturan.entries()) {
-    periksaTeks(baris, `pembuka (aturan ke-${String(nomor + 1)})`, 'pemain');
   }
 
   // --- fakta yang terlihat pemain ---------------------------------------
@@ -282,19 +319,27 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
   /** Gabungan seluruh `kartu`; D-1 menuntut ia sama persis dengan `fakta_terlihat`. */
   const semuaKartu = new Set<string>();
 
-  for (const soal of kasus.soal) {
+  for (const [nomorSoal, soal] of kasus.soal.entries()) {
     if (kunciSoal.has(soal.soal_id)) {
       tambah(masalah, 'SOAL_GANDA', `soal_id "${soal.soal_id}" muncul lebih dari sekali.`);
     }
     kunciSoal.add(soal.soal_id);
     periksaSoal(soal, masalah);
+    periksaPesan(soal, masalah);
+    periksaTanya(soal, masalah);
+    periksaPetunjuk(soal, nomorSoal, masalah);
+    periksaOpsiPolos(soal, masalah);
     periksaKartu(kasus, soal, indeksFakta, terlihat, masalah);
     periksaIstilah(soal, masalah);
     periksaOpsi(soal, masalah);
 
     for (const id of soal.kartu) semuaKartu.add(id);
 
-    periksaTeks(soal.batang, `soal "${soal.soal_id}" (batang)`, 'pemain');
+    periksaTeks(soal.pesan.isi, `soal "${soal.soal_id}" (pesan)`, 'ucapan');
+    periksaTeks(soal.tanya, `soal "${soal.soal_id}" (tanya)`, 'pemain');
+    if (soal.petunjuk !== null) {
+      periksaTeks(soal.petunjuk, `soal "${soal.soal_id}" (petunjuk)`, 'pemain');
+    }
     periksaTeks(soal.penjelasan, `soal "${soal.soal_id}" (penjelasan)`, 'kunci');
     for (const pilihan of soal.pilihan) {
       periksaTeks(pilihan.teks, `soal "${soal.soal_id}" (pilihan ${pilihan.kunci})`, 'pemain');
@@ -415,17 +460,14 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
   // --- INV-5: tidak ada ajakan bertransaksi -------------------------------
   const semuaTeks: Array<[string, string]> = [
     ['judul', kasus.judul],
-    ['pembuka (hook)', kasus.pembuka.hook],
-    ...kasus.pembuka.aturan.map((a, i): [string, string] => [
-      `pembuka (aturan ke-${String(i + 1)})`,
-      a,
-    ]),
+    ['pembuka (kalimat)', kasus.pembuka.kalimat],
     ...kasus.fakta.map((f): [string, string] => [`fakta "${f.fact_id}"`, f.klaim]),
     ...kasus.fakta
       .filter((f) => f.awam !== null)
       .map((f): [string, string] => [`kartu "${f.fact_id}" (teks awam)`, f.awam?.isi ?? '']),
     ...kasus.soal.flatMap((s): Array<[string, string]> => [
-      [`soal "${s.soal_id}" (batang)`, s.batang],
+      [`soal "${s.soal_id}" (pesan)`, s.pesan.isi],
+      [`soal "${s.soal_id}" (tanya)`, s.tanya],
       [`soal "${s.soal_id}" (penjelasan)`, s.penjelasan],
       ...s.istilah.map((i): [string, string] => [`soal "${s.soal_id}" (istilah ${i.kata})`, i.arti]),
       ...s.pilihan.map((p): [string, string] => [
@@ -748,6 +790,112 @@ function periksaOpsi(soal: Soal, masalah: MasalahValidasi[]): void {
         'OPSI_PANJANG_TIMPANG',
         `Opsi soal "${soal.soal_id}" timpang: terpanjang ${String(terpanjang)} karakter, terpendek ${String(terpendek)}, ` +
           `selisihnya ${String(Math.round(timpang * 100))} persen dari yang terpanjang (batas ${String(Math.round(MAKS_TIMPANG * 100))} persen).`,
+      );
+    }
+  }
+}
+
+/*
+ * --- v3: pesan teman, judul pertanyaan, petunjuk (D-2) --------------------
+ *
+ * Ketiganya dibaca pemain sebagai hal yang berbeda, jadi ketiganya dijaga
+ * terpisah. Yang paling mudah rusak diam-diam adalah aturan INV-4 di pesan:
+ * angka di dalam ucapan orang **bukan** fakta, jadi ia tidak boleh ditebalkan
+ * maupun ditautkan. Tanda `[[...]]` boleh ada di data sebagai jejak, tetapi
+ * kalau ia sampai dirender, pesan teman berubah menjadi dokumen — dan seluruh
+ * gagasan "kabar lawan bukti" runtuh.
+ */
+function periksaPesan(soal: Soal, masalah: MasalahValidasi[]): void {
+  const { nama, jam, isi } = soal.pesan;
+
+  if (nama.length < MIN_NAMA || nama.length > MAKS_NAMA || !POLA_NAMA.test(nama)) {
+    tambah(
+      masalah,
+      'PESAN_NAMA',
+      `Nama pengirim soal "${soal.soal_id}" adalah "${nama}"; harus ${String(MIN_NAMA)}–${String(MAKS_NAMA)} huruf, ` +
+        `huruf saja.`,
+    );
+  }
+
+  if (!POLA_JAM.test(jam)) {
+    tambah(
+      masalah,
+      'PESAN_JAM',
+      `Jam pesan soal "${soal.soal_id}" adalah "${jam}"; harus berbentuk HH.MM (24 jam, memakai titik).`,
+    );
+  }
+
+  const polos = teksPolos(isi);
+  if (polos.trim() === '') {
+    tambah(masalah, 'PESAN_KOSONG', `Pesan soal "${soal.soal_id}" kosong.`);
+  }
+  if (polos.length > MAKS_PESAN) {
+    tambah(
+      masalah,
+      'PESAN_PANJANG',
+      `Pesan soal "${soal.soal_id}" ${String(polos.length)} karakter polos, lebih dari ${String(MAKS_PESAN)}.`,
+    );
+  }
+  if (POLA_TEBAL.test(isi)) {
+    tambah(
+      masalah,
+      'PESAN_DITEBALKAN',
+      `Pesan soal "${soal.soal_id}" memuat tanda tebal. Angka di dalam ucapan orang adalah ucapan, ` +
+        `bukan fakta (INV-4): ia tidak ditebalkan, tidak diwarnai, tidak ditautkan.`,
+    );
+  }
+}
+
+function periksaTanya(soal: Soal, masalah: MasalahValidasi[]): void {
+  const polos = teksPolos(soal.tanya);
+  if (polos.trim() === '') {
+    tambah(masalah, 'TANYA_KOSONG', `Soal "${soal.soal_id}" tidak punya judul pertanyaan.`);
+  }
+  if (polos.length > MAKS_TANYA) {
+    tambah(
+      masalah,
+      'TANYA_PANJANG',
+      `Judul pertanyaan soal "${soal.soal_id}" ${String(polos.length)} karakter, ` +
+        `lebih dari ${String(MAKS_TANYA)}; ia harus muat satu baris.`,
+    );
+  }
+  // Nama pengirimnya harus muncul: "Omongan {nama} cocok dengan dokumennya?"
+  if (!polos.includes(soal.pesan.nama)) {
+    tambah(
+      masalah,
+      'TANYA_TANPA_NAMA',
+      `Judul pertanyaan soal "${soal.soal_id}" tidak menyebut "${soal.pesan.nama}"; ` +
+        `pemain harus tahu omongan siapa yang sedang dicek.`,
+    );
+  }
+}
+
+function periksaPetunjuk(soal: Soal, nomor: number, masalah: MasalahValidasi[]): void {
+  const pertama = nomor === 0;
+  if (!pertama && soal.petunjuk !== null) {
+    tambah(
+      masalah,
+      'PETUNJUK_BUKAN_SOAL_PERTAMA',
+      `Soal "${soal.soal_id}" bukan soal pertama tetapi punya petunjuk; cara main hanya diberikan sekali.`,
+    );
+  }
+  if (pertama && (soal.petunjuk === null || soal.petunjuk.trim() === '')) {
+    tambah(
+      masalah,
+      'PETUNJUK_HILANG',
+      `Soal pertama "${soal.soal_id}" tidak punya petunjuk; layar pertama tidak lagi memuat aturan main.`,
+    );
+  }
+}
+
+/** Opsi juga ucapan pemain, bukan dokumen: tidak ditebalkan, tidak ditautkan. */
+function periksaOpsiPolos(soal: Soal, masalah: MasalahValidasi[]): void {
+  for (const pilihan of soal.pilihan) {
+    if (POLA_TEBAL.test(pilihan.teks)) {
+      tambah(
+        masalah,
+        'OPSI_DITEBALKAN',
+        `Opsi ${pilihan.kunci} soal "${soal.soal_id}" memuat tanda tebal; opsi ditulis polos.`,
       );
     }
   }

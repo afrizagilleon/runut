@@ -34,12 +34,7 @@ function kasusMinimal(): Kasus {
     nama_samaran: 'Perusahaan X',
     tanggal_t: '2025-10-08',
     pembuka: {
-      hook: 'Harga naik dari [[harga-awal|Rp8]] ke [[harga-akhir|Rp178]]. Siapa yang betul?',
-      aturan: [
-        'Waktu dibekukan di [[hari-ini|8 Oktober 2025]].',
-        'Cek omongan teman ke kartu fakta di atas tiap soal.',
-        'Sesudah soal, kamu melihat apa yang terjadi berikutnya.',
-      ],
+      kalimat: 'Grup obrolanmu ramai soal satu saham. Cek omongan mereka ke dokumen resminya.',
     },
     fakta: [
       fakta({
@@ -61,7 +56,13 @@ function kasusMinimal(): Kasus {
         kartu: ['harga-awal', 'harga-akhir'],
         kartu_penentu: ['harga-akhir'],
         istilah: [{ kata: 'Hari bursa', arti: 'hari ketika bursa buka.' }],
-        batang: 'Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu bilang harga naik. Mana yang tepat?',
+        pesan: {
+          nama: 'Bayu',
+          jam: '19.38',
+          isi: 'Harganya naik 22 kali dari Agustus. Pasti karena mau dibeli investor asing.',
+        },
+        tanya: 'Omongan Bayu cocok dengan dokumennya?',
+        petunjuk: 'Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.',
         pilihan: [
           { kunci: 'a', teks: 'Betul, banyak orang bertransaksi di harga itu.' },
           { kunci: 'b', teks: 'Betul, laba perusahaan naik pada tahun itu.' },
@@ -437,13 +438,32 @@ describe('D-2 aturan 10 — panjang opsi tidak boleh membocorkan jawaban', () =>
 });
 
 describe('D-13(b) aturan 11 — tautan di luar layar pembukaan wajib bersih', () => {
-  it('menolak tautan ke fakta KONFLIK dari batang soal', () => {
+  it('menolak tautan ke fakta KONFLIK dari teks kartu', () => {
+    // v3: pesan teman adalah ucapan dan tidak boleh menautkan apa pun sama
+    // sekali, jadi aturan ini diuji lewat teks kartu — teks pemain yang masih
+    // diperiksa ketat.
     const kasus = kasusMinimal();
     kasus.fakta.push(fakta({ fact_id: 'ragu', status: 'KONFLIK' }));
-    kasus.soal[0]!.batang =
-      'Hari ini [[hari-ini|8 Oktober 2025]]. Ada juga [[ragu|satu laporan]] yang ramai. Mana yang tepat?';
+    kasus.fakta[1]!.awam = {
+      kepala: 'Data harga · 8 Okt 2025',
+      isi: 'Harga kini [[harga-akhir|Rp178]]; ada juga [[ragu|satu laporan]] yang ramai.',
+    };
     expect(kode(kasus)).toContain('TAUTAN_KONFLIK');
     expect(pesan(kasus)).toContain('ragu');
+  });
+
+  it('menolak tautan APA PUN di dalam pesan teman — ia ucapan, bukan dokumen', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.isi = 'Naiknya [[harga-akhir|22 kali]] lho, gila.';
+    expect(kode(kasus)).toContain('UCAPAN_BERTAUT');
+    expect(pesan(kasus)).toContain('harga-akhir');
+  });
+
+  it('mengizinkan angka telanjang di pesan teman — di situlah tempatnya', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.isi = 'Naiknya 22 kali lho, dari Rp8 ke Rp178. Gila.';
+    expect(kode(kasus)).not.toContain('ANGKA_TANPA_FACT_ID');
+    expect(kode(kasus)).not.toContain('UCAPAN_BERTAUT');
   });
 
   it('menolak tautan ke fakta sesudah T dari teks awam kartu', () => {
@@ -473,7 +493,7 @@ describe('D-13(b) aturan 11 — tautan di luar layar pembukaan wajib bersih', ()
 describe('penanda hari-ini', () => {
   it('menolak penanda yang menulis tanggal selain tanggal beku kasus', () => {
     const kasus = kasusMinimal();
-    kasus.soal[0]!.batang = 'Hari ini [[hari-ini|9 Oktober 2025]]. Mana yang paling tepat?';
+    kasus.soal[0]!.penjelasan = 'Pada [[hari-ini|9 Oktober 2025]] harganya sudah begitu.';
     expect(kode(kasus)).toContain('HARI_INI_TAK_COCOK');
     expect(pesan(kasus)).toContain('9 Oktober 2025');
   });
@@ -484,15 +504,27 @@ describe('penanda hari-ini', () => {
 });
 
 describe('layar pertama', () => {
-  it('menolak aturan main yang bukan tiga baris', () => {
+  it('menolak layar pertama tanpa kalimat', () => {
     const kasus = kasusMinimal();
-    kasus.pembuka.aturan = ['Hanya satu baris.'];
-    expect(kode(kasus)).toContain('PEMBUKA_ATURAN');
+    kasus.pembuka.kalimat = '   ';
+    expect(kode(kasus)).toContain('PEMBUKA_KOSONG');
   });
 
-  it('menolak angka telanjang di hook', () => {
+  it('menolak kalimat layar pertama yang melampaui 160 karakter', () => {
     const kasus = kasusMinimal();
-    kasus.pembuka.hook = 'Harga naik 22 kali lipat. Siapa yang betul?';
+    kasus.pembuka.kalimat = 'a'.repeat(161);
+    expect(kode(kasus)).toContain('PEMBUKA_PANJANG');
+  });
+
+  it('menerima kalimat tepat 160 karakter — batasnya benar-benar di situ', () => {
+    const kasus = kasusMinimal();
+    kasus.pembuka.kalimat = 'a'.repeat(160);
+    expect(kode(kasus)).not.toContain('PEMBUKA_PANJANG');
+  });
+
+  it('menolak angka telanjang di kalimat pembuka', () => {
+    const kasus = kasusMinimal();
+    kasus.pembuka.kalimat = 'Harga naik 22 kali lipat. Siapa yang betul?';
     expect(kode(kasus)).toContain('ANGKA_TANPA_FACT_ID');
   });
 });
@@ -523,8 +555,10 @@ describe('aturan v1 yang tetap berlaku', () => {
 
   it('mengizinkan angka andaian yang ditandai misal', () => {
     const kasus = kasusMinimal();
-    kasus.soal[0]!.batang =
-      'Hari ini [[hari-ini|8 Oktober 2025]]. Kamu pegang [[misal|10 lot]]. Mana yang tepat?';
+    kasus.fakta[1]!.awam = {
+      kepala: 'Data harga · 8 Okt 2025',
+      isi: 'Kalau kamu pegang [[misal|10 lot]], harganya [[harga-akhir|Rp178]] per lembar.',
+    };
     expect(periksaKasus(kasus)).toEqual([]);
   });
 
@@ -740,5 +774,101 @@ describe('A4-T3 — keterangan fakta harus berbahasa orang', () => {
     const kasus = kasusMinimal();
     expect(kode(kasus)).not.toContain('KETERANGAN_TANGGAL_MESIN');
     expect(kode(kasus)).not.toContain('KETERANGAN_KODE_FAKTA');
+  });
+});
+
+describe('D-2 v3 — pesan teman, judul pertanyaan, petunjuk', () => {
+  it('menolak nama pengirim yang terlalu pendek', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.nama = 'B';
+    expect(kode(kasus)).toContain('PESAN_NAMA');
+  });
+
+  it('menolak nama pengirim lebih dari 12 huruf', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.nama = 'Bayuuuuuuuuuu';
+    expect(kode(kasus)).toContain('PESAN_NAMA');
+  });
+
+  it('menolak nama pengirim yang memuat angka', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.nama = 'Bayu99';
+    expect(kode(kasus)).toContain('PESAN_NAMA');
+  });
+
+  it('menerima nama 2 dan 12 huruf — batasnya benar-benar di situ', () => {
+    for (const nama of ['Bu', 'Bayu Pratama']) {
+      const kasus = kasusMinimal();
+      kasus.soal[0]!.pesan.nama = nama;
+      kasus.soal[0]!.tanya = `Omongan ${nama} cocok dengan dokumennya?`;
+      expect(kode(kasus), nama).not.toContain('PESAN_NAMA');
+    }
+  });
+
+  it('menolak jam yang memakai titik dua, bukan titik', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.jam = '19:38';
+    expect(kode(kasus)).toContain('PESAN_JAM');
+  });
+
+  it('menolak jam di luar 24 jam', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.jam = '24.00';
+    expect(kode(kasus)).toContain('PESAN_JAM');
+  });
+
+  it('menolak pesan lebih dari 220 karakter polos', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.isi = 'a'.repeat(221);
+    expect(kode(kasus)).toContain('PESAN_PANJANG');
+  });
+
+  it('menerima pesan tepat 220 karakter', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.isi = 'a'.repeat(220);
+    expect(kode(kasus)).not.toContain('PESAN_PANJANG');
+  });
+
+  it('menolak tanda tebal di dalam pesan — angka di ucapan bukan fakta', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pesan.isi = 'Naiknya **22 kali** lho.';
+    expect(kode(kasus)).toContain('PESAN_DITEBALKAN');
+  });
+
+  it('menolak tanda tebal di dalam opsi', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.pilihan[0]!.teks = 'Betul, naiknya **22 kali** memang begitu.';
+    expect(kode(kasus)).toContain('OPSI_DITEBALKAN');
+  });
+
+  it('menolak judul pertanyaan lebih dari 60 karakter', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.tanya = `Omongan Bayu ${'a'.repeat(60)}?`;
+    expect(kode(kasus)).toContain('TANYA_PANJANG');
+  });
+
+  it('menolak judul pertanyaan yang tidak menyebut nama pengirimnya', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.tanya = 'Mana yang paling tepat?';
+    expect(kode(kasus)).toContain('TANYA_TANPA_NAMA');
+  });
+
+  it('menolak petunjuk di soal yang bukan pertama', () => {
+    const kasus = kasusMinimal();
+    kasus.soal.push({ ...kasus.soal[0]!, soal_id: 's2', petunjuk: 'Baca dulu ya.' });
+    expect(kode(kasus)).toContain('PETUNJUK_BUKAN_SOAL_PERTAMA');
+  });
+
+  it('menolak soal pertama tanpa petunjuk', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.petunjuk = null;
+    expect(kode(kasus)).toContain('PETUNJUK_HILANG');
+  });
+
+  it('menerima soal kedua tanpa petunjuk', () => {
+    const kasus = kasusMinimal();
+    kasus.soal.push({ ...kasus.soal[0]!, soal_id: 's2', petunjuk: null });
+    expect(kode(kasus)).not.toContain('PETUNJUK_BUKAN_SOAL_PERTAMA');
+    expect(kode(kasus)).not.toContain('PETUNJUK_HILANG');
   });
 });

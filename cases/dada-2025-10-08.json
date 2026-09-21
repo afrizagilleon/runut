@@ -1,5 +1,5 @@
 {
-  "skema_versi": 2,
+  "skema_versi": 3,
   "kasus_id": "dada-2025-10-08",
   "judul": "Perusahaan D: harga naik terus, siapa yang menjadi penjualnya?",
   "emiten": {
@@ -11,12 +11,7 @@
   "nama_samaran": "Perusahaan D",
   "tanggal_t": "2025-10-08",
   "pembuka": {
-    "hook": "Dalam [[hari-bursa-2025-08-01-2025-10-08|47 hari bursa]], harga saham sebuah perusahaan properti naik dari [[harga-2025-08-01|Rp8]] ke [[harga-2025-10-08|Rp178]]. Grup obrolanmu ramai. Siapa yang omongannya cocok dengan data resmi?",
-    "aturan": [
-      "Waktu dibekukan di [[hari-ini|8 Oktober 2025]]. Kamu hanya melihat apa yang publik tahu hari itu.",
-      "Cek omongan teman ke kartu fakta di atas tiap soal. Ini bukan tebak harga.",
-      "Sesudah tiga soal, kamu melihat apa yang terjadi berikutnya."
-    ]
+    "kalimat": "Grup obrolanmu lagi ramai soal satu saham yang harganya melonjak. Cek omongan mereka ke dokumen resminya."
   },
   "fakta": [
     {
@@ -1552,7 +1547,13 @@
           "arti": "hari ketika bursa buka, yaitu Senin–Jumat di luar hari libur."
         }
       ],
-      "batang": "Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu bilang: \"Naik [[kelipatan-2025-08-01-2025-10-08|22 kali]] tuh pasti karena mau dibeli investor asing. Bursa juga udah kasih pengumuman soal saham ini.\" Dari kartu di atas, mana yang paling tepat?",
+      "petunjuk": "Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.",
+      "pesan": {
+        "nama": "Bayu",
+        "jam": "19.38",
+        "isi": "Gila, saham D naik 22 kali dari Agustus! Pasti karena mau dibeli investor asing. Bursa juga udah kasih pengumuman soal saham ini."
+      },
+      "tanya": "Omongan Bayu cocok dengan dokumennya?",
       "pilihan": [
         {
           "kunci": "a",
@@ -1597,7 +1598,13 @@
           "arti": "mulai tanggal ini pembeli baru tidak lagi kebagian dividen tersebut; yang sudah pegang sebelumnya tetap kebagian."
         }
       ],
-      "batang": "Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu pegang [[misal|10 lot]] sejak Juli. Ia bilang: \"Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.\" Dari kartu di atas, mana yang paling tepat?",
+      "petunjuk": null,
+      "pesan": {
+        "nama": "Dimas",
+        "jam": "19.42",
+        "isi": "Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya."
+      },
+      "tanya": "Omongan Dimas cocok dengan dokumennya?",
       "pilihan": [
         {
           "kunci": "a",
@@ -1617,7 +1624,7 @@
         }
       ],
       "jawaban": "a",
-      "penjelasan": "Kartu kedua sudah menghitungnya: [[misal|1.000 lembar]] × [[div-2025-09-16|Rp0,14]] = [[andai-10-lot-dividen|Rp140]], untuk saham yang nilainya [[andai-10-lot-nilai|Rp178.000]] — kurang dari seperseribu nilainya. Temanmu betul, dan karena ia sudah pegang sejak sebelum tanggal ex, ia memang kebagian. Dividen adalah bagian laba yang benar-benar sampai ke pemilik saham; angka ini memperlihatkan bahwa harga [[harga-2025-10-08|Rp178]] tidak ditopang pembagian laba. Salah-kaprah yang umum: menghitung dividen per lot, padahal dividen dihitung per lembar; dan mengira tanggal ex menggugurkan hak orang yang sudah lama pegang, padahal yang tidak kebagian hanya pembeli sesudah tanggal itu.",
+      "penjelasan": "Kartu kedua sudah menghitungnya: [[misal|1.000 lembar]] × [[div-2025-09-16|Rp0,14]] = [[andai-10-lot-dividen|Rp140]], untuk saham yang nilainya [[andai-10-lot-nilai|Rp178.000]] — kurang dari seperseribu nilainya. Dimas betul, dan karena ia sudah pegang sejak sebelum tanggal ex, ia memang kebagian. Dividen adalah bagian laba yang benar-benar sampai ke pemilik saham; angka ini memperlihatkan bahwa harga [[harga-2025-10-08|Rp178]] tidak ditopang pembagian laba. Salah-kaprah yang umum: menghitung dividen per lot, padahal dividen dihitung per lembar; dan mengira tanggal ex menggugurkan hak orang yang sudah lama pegang, padahal yang tidak kebagian hanya pembeli sesudah tanggal itu.",
       "fact_ids": [
         "div-2025-09-16",
         "andai-10-lot-dividen"
@@ -1640,7 +1647,13 @@
           "arti": "pihak dengan porsi saham paling besar, yang menentukan arah perusahaan. Setiap jual-belinya wajib dilaporkan dan diumumkan ke publik."
         }
       ],
-      "batang": "Hari ini [[hari-ini|8 Oktober 2025]], harganya [[harga-2025-10-08|Rp178]]. Temanmu bilang: \"Pemilik terbesarnya tenang-tenang aja tuh, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik.\" Dari kartu di atas, mana yang paling tepat?",
+      "petunjuk": null,
+      "pesan": {
+        "nama": "Rara",
+        "jam": "19.47",
+        "isi": "Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik."
+      },
+      "tanya": "Omongan Rara cocok dengan dokumennya?",
       "pilihan": [
         {
           "kunci": "a",

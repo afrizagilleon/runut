@@ -21,7 +21,7 @@ describe('berkas kasus yang ikut repo', () => {
   it('ada dan lolos validator yang sama dengan yang dipakai build', () => {
     const kasus = muatBerkas();
     expect(periksaKasus(kasus)).toEqual([]);
-    expect(kasus.skema_versi).toBe(2);
+    expect(kasus.skema_versi).toBe(3);
     expect(kasus.tanggal_t).toBe('2025-10-08');
     expect(kasus.soal).toHaveLength(3);
     expect(kasus.disclaimer).toHaveLength(3);
@@ -112,10 +112,9 @@ describe('berkas kasus yang ikut repo', () => {
     const kasus = muatBerkas();
     const disingkirkan = ['fil-2025-08-25', 'fil-2025-09-29', 'fil-2025-09-29-01'];
     const teksPemain = [
-      kasus.pembuka.hook,
-      ...kasus.pembuka.aturan,
+      kasus.pembuka.kalimat,
       ...kasus.soal.flatMap((s) => [
-        s.batang,
+        s.pesan.isi,
         s.penjelasan,
         ...s.pilihan.map((p) => p.teks),
         ...s.kartu.map((id) => kasus.fakta.find((f) => f.fact_id === id)?.awam?.isi ?? ''),
@@ -138,11 +137,22 @@ describe('berkas kasus yang ikut repo', () => {
     expect(teks).toContain('Rp165');
   });
 
-  it('memakai penanda hari-ini di tiap batang soal (jangkar waktu, aturan 8)', () => {
+  it('tiap soal membawa pesan dari pengirim yang berbeda, dengan jam yang sah', () => {
+    // v3 menggantikan aturan 8 lama ("penanda hari-ini di tiap batang"):
+    // jangkar waktunya sekarang keping kalender yang menempel, bukan kalimat
+    // yang diulang di tiap soal. Yang dijaga di sini adalah bentuk barunya.
     const kasus = muatBerkas();
-    for (const soal of kasus.soal) {
-      expect(soal.batang, soal.soal_id).toContain('[[hari-ini|8 Oktober 2025]]');
+    const nama = kasus.soal.map((s) => s.pesan.nama);
+    expect(new Set(nama).size, nama.join(', ')).toBe(kasus.soal.length);
+    for (const s of kasus.soal) {
+      expect(s.pesan.jam, s.soal_id).toMatch(/^([01]\d|2[0-3])\.[0-5]\d$/);
+      // Sesudah bursa tutup (16.00 WIB), karena pesannya membicarakan
+      // harga penutupan hari itu.
+      expect(Number(s.pesan.jam.split('.')[0]), s.soal_id).toBeGreaterThanOrEqual(16);
+      expect(s.tanya, s.soal_id).toContain(s.pesan.nama);
+      expect(s.pesan.isi, s.soal_id).not.toMatch(/\[\[/);
     }
+    expect(kasus.soal.map((s) => s.petunjuk !== null)).toEqual([true, false, false]);
   });
 
   it('menyebut di panel sumber bahwa tanggal pencabutan suspensi tidak ada di data', () => {
