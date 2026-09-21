@@ -5,7 +5,8 @@
  */
 import type { Temuan } from '../skema/tipe.ts';
 import { angkaId } from '../format.ts';
-import type { HasilAturan, KonteksVerifikasi, Laporan } from './tipe.ts';
+import type { HasilAturan, HitunganAturan, KonteksVerifikasi, Laporan } from './tipe.ts';
+import { hitunganKosong } from './tipe.ts';
 
 /** Batas galat saat membandingkan persentase laporan dengan hitungan ulang. */
 export const TOLERANSI_PERSEN = 0.05;
@@ -87,20 +88,53 @@ export function cariBlokUlangan(laporan: Laporan[], panjangMinimal = 2): BlokUla
   return blok;
 }
 
+/**
+ * Bangun hitungan INV-B dari jumlah unit yang disapu.
+ * `hijau` selalu sisa, supaya `diperiksa = hijau + merah + tidak_lengkap`
+ * tidak pernah bisa meleset karena salah ketik.
+ */
+function hitung(
+  satuan: string,
+  bagian: {
+    diperiksa: number;
+    merah: number;
+    tidak_lengkap?: number;
+    dilewati?: number;
+    alasan_dilewati?: string[];
+  },
+): HitunganAturan {
+  const tidak_lengkap = bagian.tidak_lengkap ?? 0;
+  return {
+    satuan,
+    diperiksa: bagian.diperiksa,
+    hijau: bagian.diperiksa - bagian.merah - tidak_lengkap,
+    merah: bagian.merah,
+    tidak_lengkap,
+    dilewati: bagian.dilewati ?? 0,
+    alasan_dilewati: [...new Set(bagian.alasan_dilewati ?? [])].sort(),
+  };
+}
+
 function hasil(
   aturan: HasilAturan['aturan'],
   judul: string,
   temuan: Temuan[],
+  hitungan: HitunganAturan,
 ): HasilAturan {
-  return { aturan, judul, dijalankan: true, alasan_lewat: null, temuan };
+  return { aturan, judul, dijalankan: true, alasan_lewat: null, temuan, hitungan };
 }
 
 function lewat(
   aturan: HasilAturan['aturan'],
   judul: string,
   alasan: string,
+  satuan: string,
+  dilewati = 0,
 ): HasilAturan {
-  return { aturan, judul, dijalankan: false, alasan_lewat: alasan, temuan: [] };
+  const hitungan = hitunganKosong(satuan);
+  hitungan.dilewati = dilewati;
+  hitungan.alasan_dilewati = [alasan];
+  return { aturan, judul, dijalankan: false, alasan_lewat: alasan, temuan: [], hitungan };
 }
 
 // Pemformat sendiri, bukan toLocaleString: teks temuan ikut ke berkas kasus yang
@@ -112,7 +146,7 @@ const angka = (nilai: number): string => angkaId(nilai);
 export function r1Aritmetika(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Aritmetika per laporan';
   if (konteks.laporan.length === 0) {
-    return lewat('R1', judul, 'Tidak ada laporan untuk diperiksa.');
+    return lewat('R1', judul, 'Tidak ada laporan untuk diperiksa.', 'laporan');
   }
   const temuan: Temuan[] = [];
   for (const l of urut(konteks.laporan)) {
@@ -134,7 +168,12 @@ export function r1Aritmetika(konteks: KonteksVerifikasi): HasilAturan {
       });
     }
   }
-  return hasil('R1', judul, temuan);
+  return hasil(
+    'R1',
+    judul,
+    temuan,
+    hitung('laporan', { diperiksa: konteks.laporan.length, merah: temuan.length }),
+  );
 }
 
 // --- R2 ---------------------------------------------------------------------
@@ -142,10 +181,17 @@ export function r1Aritmetika(konteks: KonteksVerifikasi): HasilAturan {
 export function r2Kontinuitas(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Kontinuitas rantai';
   if (konteks.laporan.length < 2) {
-    return lewat('R2', judul, 'Rantai kurang dari dua laporan, tidak ada sambungan untuk diperiksa.');
+    return lewat(
+      'R2',
+      judul,
+      'Rantai kurang dari dua laporan, tidak ada sambungan untuk diperiksa.',
+      'sambungan',
+    );
   }
   const temuan: Temuan[] = [];
+  let sambungan = 0;
   for (const [pemegang, daftar] of perPemegang(konteks.laporan)) {
+    sambungan += Math.max(0, daftar.length - 1);
     for (let i = 1; i < daftar.length; i += 1) {
       const sebelumnya = daftar[i - 1]!;
       const sekarang = daftar[i]!;
@@ -169,7 +215,7 @@ export function r2Kontinuitas(konteks: KonteksVerifikasi): HasilAturan {
       });
     }
   }
-  return hasil('R2', judul, temuan);
+  return hasil('R2', judul, temuan, hitung('sambungan', { diperiksa: sambungan, merah: temuan.length }));
 }
 
 // --- R3 ---------------------------------------------------------------------
@@ -177,10 +223,17 @@ export function r2Kontinuitas(konteks: KonteksVerifikasi): HasilAturan {
 export function r3LaporanGanda(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Laporan ganda';
   if (konteks.laporan.length < 2) {
-    return lewat('R3', judul, 'Rantai kurang dari dua laporan, tidak ada urutan yang bisa berulang.');
+    return lewat(
+      'R3',
+      judul,
+      'Rantai kurang dari dua laporan, tidak ada urutan yang bisa berulang.',
+      'laporan',
+    );
   }
   const temuan: Temuan[] = [];
+  let laporanTerulang = 0;
   for (const blok of cariBlokUlangan(konteks.laporan)) {
+    laporanTerulang += blok.salinan.length;
     const persen =
       konteks.saham_beredar === null
         ? null
@@ -212,7 +265,12 @@ export function r3LaporanGanda(konteks: KonteksVerifikasi): HasilAturan {
       ],
     });
   }
-  return hasil('R3', judul, temuan);
+  return hasil(
+    'R3',
+    judul,
+    temuan,
+    hitung('laporan', { diperiksa: konteks.laporan.length, merah: laporanTerulang }),
+  );
 }
 
 // --- R4 ---------------------------------------------------------------------
@@ -220,11 +278,13 @@ export function r3LaporanGanda(konteks: KonteksVerifikasi): HasilAturan {
 export function r4TanggalKetersediaan(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Tanggal ketersediaan';
   if (konteks.laporan.length === 0) {
-    return lewat('R4', judul, 'Tidak ada laporan untuk diperiksa.');
+    return lewat('R4', judul, 'Tidak ada laporan untuk diperiksa.', 'laporan');
   }
   const temuan: Temuan[] = [];
+  const laporanMerah = new Set<string>();
   for (const l of urut(konteks.laporan)) {
     if (l.dilaporkan_pada === '') {
+      laporanMerah.add(l.laporan_id);
       temuan.push({
         temuan_id: `R4-${l.laporan_id}`,
         aturan: 'R4',
@@ -238,6 +298,7 @@ export function r4TanggalKetersediaan(konteks: KonteksVerifikasi): HasilAturan {
     const tanggalLaporan = l.dilaporkan_pada.slice(0, 10);
     for (const t of l.transaksi) {
       if (t.tanggal > tanggalLaporan) {
+        laporanMerah.add(l.laporan_id);
         temuan.push({
           temuan_id: `R4-${l.laporan_id}-${t.tanggal}`,
           aturan: 'R4',
@@ -249,7 +310,12 @@ export function r4TanggalKetersediaan(konteks: KonteksVerifikasi): HasilAturan {
       }
     }
   }
-  return hasil('R4', judul, temuan);
+  return hasil(
+    'R4',
+    judul,
+    temuan,
+    hitung('laporan', { diperiksa: konteks.laporan.length, merah: laporanMerah.size }),
+  );
 }
 
 // --- R5 ---------------------------------------------------------------------
@@ -257,16 +323,21 @@ export function r4TanggalKetersediaan(konteks: KonteksVerifikasi): HasilAturan {
 export function r5Rekonsiliasi(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Rekonsiliasi dengan potret kepemilikan';
   if (konteks.potret === null) {
-    return lewat('R5', judul, 'Tidak ada sumber kedua (potret kepemilikan atau saldo awal laporan berikutnya) untuk dibandingkan.');
+    return lewat(
+      'R5',
+      judul,
+      'Tidak ada sumber kedua (potret kepemilikan atau saldo awal laporan berikutnya) untuk dibandingkan.',
+      'rantai',
+    );
   }
   const daftar = urut(konteks.laporan);
   const terakhir = daftar[daftar.length - 1];
   if (terakhir === undefined) {
-    return lewat('R5', judul, 'Rantai kosong, tidak ada saldo akhir untuk dibandingkan.');
+    return lewat('R5', judul, 'Rantai kosong, tidak ada saldo akhir untuk dibandingkan.', 'rantai');
   }
   const potret = konteks.potret;
   const selisih = potret.lembar - terakhir.sesudah;
-  if (selisih === 0) return hasil('R5', judul, []);
+  if (selisih === 0) return hasil('R5', judul, [], hitung('rantai', { diperiksa: 1, merah: 0 }));
 
   const lembarGanda = cariBlokUlangan(konteks.laporan).reduce((j, b) => j + b.lembar, 0);
   const sisa = potret.lembar - (terakhir.sesudah + lembarGanda);
@@ -284,7 +355,10 @@ export function r5Rekonsiliasi(konteks: KonteksVerifikasi): HasilAturan {
     });
     tambahan = ` Kalau ${angka(lembarGanda)} lembar dari set laporan ganda dikembalikan, sisa selisihnya tinggal ${angka(sisa)} lembar.`;
   }
-  return hasil('R5', judul, [
+  return hasil(
+    'R5',
+    judul,
+    [
     {
       temuan_id: 'R5-saldo-akhir',
       aturan: 'R5',
@@ -293,7 +367,9 @@ export function r5Rekonsiliasi(konteks: KonteksVerifikasi): HasilAturan {
       fakta_terkait: [],
       rujukan: [`${terakhir.dilaporkan_pada} · ${terakhir.berkas}`, potret.sumber],
     },
-  ]);
+    ],
+    hitung('rantai', { diperiksa: 1, merah: 1 }),
+  );
 }
 
 // --- R6 ---------------------------------------------------------------------
@@ -301,11 +377,13 @@ export function r5Rekonsiliasi(konteks: KonteksVerifikasi): HasilAturan {
 export function r6SubjekLaporan(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Subjek laporan dan rentang harga';
   if (konteks.laporan.length === 0) {
-    return lewat('R6', judul, 'Tidak ada laporan untuk diperiksa.');
+    return lewat('R6', judul, 'Tidak ada laporan untuk diperiksa.', 'pemeriksaan');
   }
   const temuan: Temuan[] = [];
+  let merahSimbol = 0;
   for (const l of urut(konteks.laporan)) {
     if (l.simbol !== konteks.simbol) {
+      merahSimbol += 1;
       temuan.push({
         temuan_id: `R6-simbol-${l.laporan_id}`,
         aturan: 'R6',
@@ -317,8 +395,19 @@ export function r6SubjekLaporan(konteks: KonteksVerifikasi): HasilAturan {
     }
   }
 
+  const butirTransaksi = konteks.laporan.reduce((j, l) => j + l.transaksi.length, 0);
   if (konteks.harga.length === 0) {
-    const sebagian = hasil('R6', judul, temuan);
+    const sebagian = hasil(
+      'R6',
+      judul,
+      temuan,
+      hitung('pemeriksaan', {
+        diperiksa: konteks.laporan.length,
+        merah: merahSimbol,
+        dilewati: butirTransaksi,
+        alasan_dilewati: ['Tidak ada data harga harian untuk membandingkan harga transaksi.'],
+      }),
+    );
     sebagian.alasan_lewat =
       'Pemeriksaan rentang harga dilewati: tidak ada data harga harian.';
     return sebagian;
@@ -333,11 +422,18 @@ export function r6SubjekLaporan(konteks: KonteksVerifikasi): HasilAturan {
     tertinggi: number;
   }
   const kumpulan = new Map<string, Kumpulan>();
+  let butirTanpaHarga = 0;
+  let merahHarga = 0;
   for (const l of urut(konteks.laporan)) {
     for (const t of l.transaksi) {
       const bar = hargaPerTanggal.get(t.tanggal);
-      if (bar === undefined) continue; // di luar jendela data harga; bukan pelanggaran
+      if (bar === undefined) {
+        // di luar jendela data harga; bukan pelanggaran, tetapi juga bukan hijau
+        butirTanpaHarga += 1;
+        continue;
+      }
       if (t.harga >= bar.terendah && t.harga <= bar.tertinggi) continue;
+      merahHarga += 1;
       const ada = kumpulan.get(t.tanggal);
       if (ada === undefined) {
         kumpulan.set(t.tanggal, {
@@ -371,7 +467,16 @@ export function r6SubjekLaporan(konteks: KonteksVerifikasi): HasilAturan {
       rujukan: k.laporan.map((l) => `${l.dilaporkan_pada} · ${l.berkas}`),
     });
   }
-  return hasil('R6', judul, temuan);
+  return hasil(
+    'R6',
+    judul,
+    temuan,
+    hitung('pemeriksaan', {
+      diperiksa: konteks.laporan.length + butirTransaksi,
+      merah: merahSimbol + merahHarga,
+      tidak_lengkap: butirTanpaHarga,
+    }),
+  );
 }
 
 // --- R7 ---------------------------------------------------------------------
@@ -379,7 +484,13 @@ export function r6SubjekLaporan(konteks: KonteksVerifikasi): HasilAturan {
 export function r7PersenDihitungUlang(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Persen dihitung ulang';
   if (konteks.saham_beredar === null) {
-    return lewat('R7', judul, 'Jumlah saham beredar tidak diketahui, persentase tidak bisa dihitung ulang.');
+    return lewat(
+      'R7',
+      judul,
+      'Jumlah saham beredar tidak diketahui, persentase tidak bisa dihitung ulang.',
+      'sisi laporan',
+      konteks.laporan.length * 2,
+    );
   }
   const beredar = konteks.saham_beredar;
   const temuan: Temuan[] = [];
@@ -406,7 +517,12 @@ export function r7PersenDihitungUlang(konteks: KonteksVerifikasi): HasilAturan {
       });
     }
   }
-  return hasil('R7', judul, temuan);
+  return hasil(
+    'R7',
+    judul,
+    temuan,
+    hitung('sisi laporan', { diperiksa: konteks.laporan.length * 2, merah: temuan.length }),
+  );
 }
 
 // --- R8 ---------------------------------------------------------------------
@@ -419,6 +535,8 @@ export function r8TandaRepo(konteks: KonteksVerifikasi): HasilAturan {
       'R8',
       judul,
       'Kolom repurchase agreement tidak ada di data API dan belum ada PDF laporan yang diurai, sehingga tanda repo tidak bisa diperiksa.',
+      'laporan',
+      konteks.laporan.length,
     );
   }
   const temuan: Temuan[] = [];
@@ -434,7 +552,23 @@ export function r8TandaRepo(konteks: KonteksVerifikasi): HasilAturan {
       rujukan: [`${l.dilaporkan_pada} · ${l.berkas}`],
     });
   }
-  return hasil('R8', judul, temuan);
+  const berpenanda = konteks.laporan.filter(
+    (l) => konteks.tanda_repo[l.laporan_id] !== undefined,
+  ).length;
+  return hasil(
+    'R8',
+    judul,
+    temuan,
+    hitung('laporan', {
+      diperiksa: berpenanda,
+      merah: temuan.length,
+      dilewati: konteks.laporan.length - berpenanda,
+      alasan_dilewati:
+        konteks.laporan.length > berpenanda
+          ? ['PDF laporan belum diurai, tanda repo tidak diketahui.']
+          : [],
+    }),
+  );
 }
 
 // --- R9 ---------------------------------------------------------------------
@@ -452,9 +586,16 @@ export function r9TeksVersusField(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Field terstruktur vs teks';
   const daftar = urut(konteks.laporan).filter((l) => l.teks !== '');
   if (daftar.length === 0) {
-    return lewat('R9', judul, 'Laporan tidak memuat teks yang bisa diadu dengan field terstruktur.');
+    return lewat(
+      'R9',
+      judul,
+      'Laporan tidak memuat teks yang bisa diadu dengan field terstruktur.',
+      'laporan',
+      konteks.laporan.length,
+    );
   }
   const temuan: Temuan[] = [];
+  const laporanMerah = new Set<string>();
   let kumulatifJual = 0;
   let nomorJual = 0;
   for (const l of urut(konteks.laporan)) {
@@ -469,6 +610,7 @@ export function r9TeksVersusField(konteks: KonteksVerifikasi): HasilAturan {
       const dariTeks = keAngka(lembar[1]!);
       const keTeks = keAngka(lembar[2]!);
       if (dariTeks !== l.sebelum || keTeks !== l.sesudah) {
+        laporanMerah.add(l.laporan_id);
         temuan.push({
           temuan_id: `R9-lembar-${l.laporan_id}`,
           aturan: 'R9',
@@ -490,6 +632,7 @@ export function r9TeksVersusField(konteks: KonteksVerifikasi): HasilAturan {
       const dariTeks = Number(persen[1]);
       const keTeks = Number(persen[2]);
       if (dariTeks !== l.persen_sebelum || keTeks !== l.persen_sesudah) {
+        laporanMerah.add(l.laporan_id);
         temuan.push({
           temuan_id: `R9-persen-${l.laporan_id}`,
           aturan: 'R9',
@@ -513,6 +656,7 @@ export function r9TeksVersusField(konteks: KonteksVerifikasi): HasilAturan {
     if (urutan !== null && total !== null && Number(urutan[1]) === nomorJual) {
       const totalTeks = keAngka(total[1]!);
       if (totalTeks !== kumulatifJual) {
+        laporanMerah.add(l.laporan_id);
         temuan.push({
           temuan_id: `R9-kumulatif-${l.laporan_id}`,
           aturan: 'R9',
@@ -528,7 +672,20 @@ export function r9TeksVersusField(konteks: KonteksVerifikasi): HasilAturan {
       }
     }
   }
-  return hasil('R9', judul, temuan);
+  return hasil(
+    'R9',
+    judul,
+    temuan,
+    hitung('laporan', {
+      diperiksa: daftar.length,
+      merah: laporanMerah.size,
+      dilewati: konteks.laporan.length - daftar.length,
+      alasan_dilewati:
+        konteks.laporan.length > daftar.length
+          ? ['Laporan tidak memuat teks yang bisa diadu dengan field terstruktur.']
+          : [],
+    }),
+  );
 }
 
 // --- R10 --------------------------------------------------------------------
@@ -536,7 +693,7 @@ export function r9TeksVersusField(konteks: KonteksVerifikasi): HasilAturan {
 export function r10HariTanpaVolume(konteks: KonteksVerifikasi): HasilAturan {
   const judul = 'Hari tanpa volume';
   if (konteks.harga.length === 0) {
-    return lewat('R10', judul, 'Tidak ada data harga harian untuk diperiksa.');
+    return lewat('R10', judul, 'Tidak ada data harga harian untuk diperiksa.', 'baris harga');
   }
   const tanggalSuspensi = new Set(konteks.suspensi.map((s) => s.tanggal));
   const temuan: Temuan[] = [];
@@ -555,7 +712,12 @@ export function r10HariTanpaVolume(konteks: KonteksVerifikasi): HasilAturan {
       rujukan: [`harga harian ${h.tanggal}`],
     });
   }
-  return hasil('R10', judul, temuan);
+  return hasil(
+    'R10',
+    judul,
+    temuan,
+    hitung('baris harga', { diperiksa: konteks.harga.length, merah: temuan.length }),
+  );
 }
 
 // --- orkestrator ------------------------------------------------------------

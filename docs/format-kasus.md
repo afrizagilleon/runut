@@ -49,18 +49,28 @@ soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
 | `turunan_dari` | `fact_id` yang dipakai menghitung fakta ini. |
 | `awam` | Teks kartu dalam bahasa sehari-hari: `{ kepala, isi }`, atau `null` kalau fakta ini tidak pernah menjadi kartu. `kepala` adalah baris "jenis sumber · tanggal terbit"; `isi` satu-dua kalimat yang setiap angkanya ditulis sebagai rujukan `[[fact_id|teks]]`. Paling panjang 220 karakter, diukur sesudah penanda rujukannya dilepas. |
 | `tersedia_sejak` | Tanggal fakta itu bisa diketahui publik. Untuk laporan transaksi yang menentukan adalah **tanggal laporan**, bukan tanggal transaksi. `null` berarti tidak bisa ditentukan, dan fakta itu dikecualikan dari tampilan pemain. |
-| `status` | `TERVERIFIKASI`, `KONFLIK` (melanggar aturan dan belum selesai; tidak boleh jadi dasar jawaban), atau `BELUM`. |
+| `status` | `TERVERIFIKASI`, `KONFLIK` (melanggar aturan dan belum selesai; tidak boleh jadi dasar jawaban), `TIDAK_LENGKAP` (datanya tidak cukup untuk memutuskan; juga tidak boleh jadi dasar jawaban), atau `BELUM`. |
+
+### Kenapa `TIDAK_LENGKAP` ada (M2a)
+
+"Datanya tidak cukup" bukan hal yang sama dengan "angkanya bertentangan", dan
+bukan juga "belum kami periksa". Sebelum status ini ada, satu-satunya pilihan
+adalah memetakannya ke `KONFLIK` — yang **menolak kartu yang benar**: 203 baris
+harga bervolume nol dan 55 aksi korporasi tanpa harga dua sisi akan tampil
+sebagai pelanggaran data padahal yang kurang adalah datanya — atau ke `BELUM`,
+yang menyembunyikan temuannya sama sekali.
 
 ## Temuan
 
 | field | arti |
 |---|---|
 | `temuan_id` | Nama pendek yang unik untuk temuan itu. |
-| `aturan` | Kode aturan yang melahirkannya, `R1`–`R10`. |
+| `aturan` | Kode aturan yang melahirkannya. `R1`–`R10` adalah himpunan yang membangun berkas kasus; skema juga mengenal aturan M2a (`R11a`, `R12`, `R13`, `R14`, `R15`, `R16`, `R17B`, `R18a`, `R19a`, `R19b`, `R22`, `R25`, `R28`, `R33`, `R35`) yang berjalan di `npm run verifikasi:gudang`. |
 | `ringkasan` | Satu kalimat yang menerangkan apa yang janggal. |
 | `angka` | Angka-angka yang menjadi bukti; temuan tanpa angka ditolak validator. |
 | `fakta_terkait` | `fact_id` yang tersangkut temuan itu. |
 | `rujukan` | Penunjuk ke laporan yang terlibat: waktu laporan dan nama berkasnya. |
+| `keparahan` | **Opsional.** `konflik`, `peringatan`, atau `catatan`. Temuan yang tidak menulisnya dibaca sebagai `konflik`; temuan R1–R10 memang tidak menulisnya, sehingga berkas kasus lama tetap sah dan tidak berubah satu byte pun. |
 
 ## Soal
 
@@ -160,6 +170,9 @@ Dari versi 1:
 `FAKTA_PEMBUKAAN_BOCOR` · `SOAL_GANDA` · `SOAL_PILIHAN_KURANG` · `JAWABAN_TAK_ADA` ·
 `SOAL_TANPA_FAKTA` · `TEMUAN_TANPA_ANGKA` · `AJAKAN_TRANSAKSI` · `DISCLAIMER` ·
 `PEMERIKSAAN_TAK_LENGKAP` · `PEMERIKSAAN_TANPA_ALASAN` · `PEMERIKSAAN_TAK_COCOK`
+
+Baru di M2a, tentang skema temuan generasi kedua:
+`TEMUAN_ATURAN_TAK_DIKENAL` · `TEMUAN_KEPARAHAN_TAK_DIKENAL`
 
 Baru di versi 2, tentang kartu dan bentuk soal:
 `KARTU_JUMLAH` · `KARTU_MENGGANTUNG` · `KARTU_TAK_TERVERIFIKASI` · `KARTU_TANPA_TANGGAL` ·

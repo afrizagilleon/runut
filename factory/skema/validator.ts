@@ -1,5 +1,8 @@
-import type { Kasus, MasalahValidasi, Soal } from './tipe.ts';
-import { SEMUA_ATURAN, VERSI_SKEMA } from './tipe.ts';
+import type { Kasus, Keparahan, MasalahValidasi, Soal } from './tipe.ts';
+import { SEMUA_ATURAN, SEMUA_KODE_ATURAN, VERSI_SKEMA } from './tipe.ts';
+
+/** Ketiga nilai `Temuan.keparahan` yang sah (M2a D-1). */
+const KEPARAHAN: readonly Keparahan[] = ['konflik', 'peringatan', 'catatan'];
 import {
   RUJUKAN_ANDAIAN,
   RUJUKAN_HARI_INI,
@@ -354,11 +357,13 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
       periksaId(id, `soal "${soal.soal_id}"`);
       periksaTerlihat(id, `soal "${soal.soal_id}"`);
       const fakta = indeksFakta.get(id);
-      if (fakta !== undefined && fakta.status === 'KONFLIK') {
+      // TIDAK_LENGKAP (M2a D-1) sama terlarangnya dengan KONFLIK sebagai dasar
+      // jawaban: "datanya tidak cukup" bukan jawaban yang bisa dinilai benar.
+      if (fakta !== undefined && (fakta.status === 'KONFLIK' || fakta.status === 'TIDAK_LENGKAP')) {
         tambah(
           masalah,
           'FAKTA_KONFLIK_DIPAKAI',
-          `Fakta "${id}" berstatus KONFLIK tetapi dipakai sebagai dasar jawaban soal "${soal.soal_id}".`,
+          `Fakta "${id}" berstatus ${fakta.status} tetapi dipakai sebagai dasar jawaban soal "${soal.soal_id}".`,
         );
       }
       if (!terlihat.has(id)) {
@@ -424,6 +429,23 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
         masalah,
         'TEMUAN_TANPA_ANGKA',
         `Temuan "${temuan.temuan_id}" (${temuan.aturan}) tidak menyebut satu angka pun.`,
+      );
+    }
+    if (!SEMUA_KODE_ATURAN.includes(temuan.aturan)) {
+      tambah(
+        masalah,
+        'TEMUAN_ATURAN_TAK_DIKENAL',
+        `Temuan "${temuan.temuan_id}" menyebut aturan "${temuan.aturan}" yang tidak ada di skema.`,
+      );
+    }
+    // M2a D-1: medan opsional. Tidak ada = `konflik`; ada tetapi bukan salah
+    // satu dari tiga nilai = berkas kasus tidak sah.
+    if (temuan.keparahan !== undefined && !KEPARAHAN.includes(temuan.keparahan)) {
+      tambah(
+        masalah,
+        'TEMUAN_KEPARAHAN_TAK_DIKENAL',
+        `Temuan "${temuan.temuan_id}" menyebut keparahan "${String(temuan.keparahan)}"; ` +
+          `yang sah hanya ${KEPARAHAN.join(', ')}.`,
       );
     }
   }

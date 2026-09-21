@@ -62,6 +62,41 @@ export interface KonteksVerifikasi {
   tanda_repo: Record<string, boolean>;
 }
 
+/**
+ * Hitungan wajib tiap aturan (INV-B).
+ *
+ * "Nol merah" tanpa "diperiksa" tidak sah: pernah ditulis "0 merah dari 296"
+ * untuk aturan yang sebenarnya hanya memeriksa 18 baris. Karena tiap aturan
+ * memeriksa benda yang berbeda, `satuan` menyebut benda apa yang dihitung —
+ * "laporan", "sisi laporan", "baris harga", "sambungan", dan seterusnya.
+ *
+ * Invarian: `diperiksa = hijau + merah + tidak_lengkap`. `dilewati` dihitung
+ * di luar `diperiksa` karena unit yang dilewati memang tidak diperiksa.
+ */
+export interface HitunganAturan {
+  /** Benda yang dihitung, tunggal, huruf kecil. */
+  satuan: string;
+  diperiksa: number;
+  hijau: number;
+  merah: number;
+  tidak_lengkap: number;
+  dilewati: number;
+  /** Alasan unit dilewati, unik dan terurut supaya keluaran deterministik (INV-C). */
+  alasan_dilewati: string[];
+}
+
+export function hitunganKosong(satuan: string): HitunganAturan {
+  return {
+    satuan,
+    diperiksa: 0,
+    hijau: 0,
+    merah: 0,
+    tidak_lengkap: 0,
+    dilewati: 0,
+    alasan_dilewati: [],
+  };
+}
+
 export interface HasilAturan {
   aturan: KodeAturan;
   judul: string;
@@ -69,4 +104,6 @@ export interface HasilAturan {
   /** Alasan aturan tidak bisa dijalankan; `null` kalau dijalankan. */
   alasan_lewat: string | null;
   temuan: Temuan[];
+  /** INV-B: berapa yang sungguh diperiksa, bukan hanya berapa yang merah. */
+  hitungan: HitunganAturan;
 }

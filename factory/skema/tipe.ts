@@ -5,8 +5,40 @@
 
 export const VERSI_SKEMA = 3;
 
-export type StatusFakta = 'TERVERIFIKASI' | 'KONFLIK' | 'BELUM';
+/**
+ * Status satu fakta.
+ *
+ * `TIDAK_LENGKAP` (M2a D-1) adalah jawaban untuk "datanya tidak cukup untuk
+ * memutuskan", dan sengaja bukan `KONFLIK` maupun `BELUM`: memetakannya ke
+ * `KONFLIK` menolak kartu yang benar (203 baris harga R18a, 55 aksi R34),
+ * memetakannya ke `BELUM` menyembunyikan temuannya.
+ */
+export type StatusFakta = 'TERVERIFIKASI' | 'KONFLIK' | 'BELUM' | 'TIDAK_LENGKAP';
 
+/**
+ * Berat sebuah temuan (M2a D-1).
+ *
+ * - `konflik`    - angkanya bertentangan; fakta terkait tidak boleh jadi jawaban.
+ * - `peringatan` - datanya janggal tetapi penjelasan yang sah mungkin ada.
+ * - `catatan`    - label atau keterbatasan, bukan tuduhan kesalahan.
+ *
+ * Medan ini **opsional** di `Temuan`. Temuan R1-R10 tidak menulisnya sama
+ * sekali supaya berkas kasus lama tetap byte-identik (INV-A); temuan tanpa
+ * medan ini dibaca sebagai `konflik`.
+ */
+export type Keparahan = 'konflik' | 'peringatan' | 'catatan';
+
+export const KEPARAHAN_BAWAAN: Keparahan = 'konflik';
+
+/**
+ * Kode aturan verifikasi.
+ *
+ * R1-R10 adalah himpunan generasi pertama (`ATURAN_V1`), yang membangun berkas
+ * kasus. Sisanya lahir di M2a dari uji lawan `.context/aturan-R-uji-lawan.md`
+ * dan hanya berjalan di `ATURAN_V2` (`npm run verifikasi:gudang`).
+ * Nomor lama tidak pernah dipakai ulang; `R17B` adalah pengganti R17 usulan
+ * yang dibuang, jadi ia memakai nama sendiri.
+ */
 export type KodeAturan =
   | 'R1'
   | 'R2'
@@ -17,7 +49,22 @@ export type KodeAturan =
   | 'R7'
   | 'R8'
   | 'R9'
-  | 'R10';
+  | 'R10'
+  | 'R11a'
+  | 'R12'
+  | 'R13'
+  | 'R14'
+  | 'R15'
+  | 'R16'
+  | 'R17B'
+  | 'R18a'
+  | 'R19a'
+  | 'R19b'
+  | 'R22'
+  | 'R25'
+  | 'R28'
+  | 'R33'
+  | 'R35';
 
 export type JenisSumber = 'api' | 'berkas' | 'turunan';
 
@@ -75,6 +122,17 @@ export interface Temuan {
   fakta_terkait: string[];
   /** Penunjuk ke laporan yang terlibat, misalnya waktu laporan dan nama berkas. */
   rujukan: string[];
+  /**
+   * Berat temuan (M2a D-1). Tidak ditulis oleh R1-R10 supaya berkas kasus lama
+   * tetap byte-identik; yang tidak menulisnya dibaca sebagai
+   * `KEPARAHAN_BAWAAN` (`'konflik'`).
+   */
+  keparahan?: Keparahan;
+}
+
+/** Baca keparahan sebuah temuan, termasuk temuan jalur lama yang tidak menulisnya. */
+export function keparahanTemuan(temuan: Temuan): Keparahan {
+  return temuan.keparahan ?? KEPARAHAN_BAWAAN;
 }
 
 /**
@@ -89,6 +147,14 @@ export interface PemeriksaanAturan {
   jumlah_temuan: number;
 }
 
+/**
+ * Aturan yang **wajib tercatat** di jejak pemeriksaan sebuah berkas kasus.
+ *
+ * Ini himpunan generasi pertama (`ATURAN_V1`) dan sengaja tidak ikut bertambah
+ * bersama `KodeAturan`: berkas kasus dibangun oleh `ATURAN_V1`, jadi menuntut
+ * jejak R11+ di dalamnya akan menolak berkas kasus yang sah (INV-A).
+ * Daftar lengkap kode yang bisa dikeluarkan mesin ada di `SEMUA_KODE_ATURAN`.
+ */
 export const SEMUA_ATURAN: readonly KodeAturan[] = [
   'R1',
   'R2',
@@ -100,6 +166,26 @@ export const SEMUA_ATURAN: readonly KodeAturan[] = [
   'R8',
   'R9',
   'R10',
+];
+
+/** Semua kode aturan yang dikenal skema, termasuk aturan M2a. */
+export const SEMUA_KODE_ATURAN: readonly KodeAturan[] = [
+  ...SEMUA_ATURAN,
+  'R11a',
+  'R12',
+  'R13',
+  'R14',
+  'R15',
+  'R16',
+  'R17B',
+  'R18a',
+  'R19a',
+  'R19b',
+  'R22',
+  'R25',
+  'R28',
+  'R33',
+  'R35',
 ];
 
 export interface PilihanSoal {
