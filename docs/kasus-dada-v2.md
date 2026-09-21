@@ -37,7 +37,7 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 
 **Yang dilihat pemain:**
 
-> **Data harga · 1 Agu – 8 Okt 2025**
+> **Dihitung dari data harga · 1 Agu – 8 Okt 2025**
 > Harga saham Perusahaan D naik dari **Rp8** ke **Rp178** dalam 47 hari bursa — sekarang **22 kali** harga awalnya.
 >
 > **Pengumuman bursa · 30 Jun 2025**
@@ -52,7 +52,7 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 > c. Betul, pengumuman bursa itu menjelaskan kenapa harganya bisa naik 22 kali.
 > d. Keliru, pengumuman bursa itu soal harga yang naik terlalu cepat.
 
-**Kartu:** `kelipatan-2025-08-01-2025-10-08` · `susp-2025-06-30` — **Jawaban:** b
+**Kartu:** `kelipatan-2025-08-01-2025-10-08` · `susp-2025-06-30` — **Kartu penentu:** `susp-2025-06-30` — **Jawaban:** b
 
 **Teks kunci:** Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain: jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata "investor asing" atau "akuisisi" di kartu mana pun. Kartu harga hanya memberi tahu *bahwa* harganya naik 22 kali, bukan *kenapa*. Salah-kaprah yang umum: menganggap harga yang naik sebagai semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.
 
@@ -77,7 +77,7 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 > c. Keliru, ia kebagian Rp14.000 untuk 10 lot miliknya.
 > d. Keliru, Rp140 itu sudah besar dibanding nilai sahamnya.
 
-**Kartu:** `div-2025-09-16` · `andai-10-lot-dividen` (turunan baru) — **Jawaban:** a
+**Kartu:** `div-2025-09-16` · `andai-10-lot-dividen` (turunan baru) — **Kartu penentu:** `andai-10-lot-dividen` — **Jawaban:** a
 
 **Teks kunci:** Kartu kedua sudah menghitungnya: 1.000 lembar × Rp0,14 = Rp140, untuk saham yang nilainya Rp178.000 — kurang dari seperseribu nilainya. Temanmu betul, dan karena ia sudah pegang sejak sebelum tanggal ex, ia memang kebagian. Dividen adalah bagian laba yang benar-benar sampai ke pemilik saham; angka ini memperlihatkan bahwa harga Rp178 tidak ditopang pembagian laba. Salah-kaprah yang umum: menghitung dividen per lot, padahal dividen dihitung per lembar; dan mengira tanggal ex menggugurkan hak orang yang sudah lama pegang, padahal yang tidak kebagian hanya pembeli sesudah tanggal itu.
 
@@ -110,7 +110,9 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 > c. Keliru, laporannya menunjukkan ia menjual banyak di harga belasan rupiah.
 > d. Keliru, laporannya menunjukkan ia menjual banyak di harga ratusan rupiah.
 
-**Kartu:** `fil-2025-08-25-03` · `fil-2025-08-25-04` · `fil-2025-09-01` · `jumlah-jual-terverifikasi` (turunan baru) — **Jawaban:** c
+**Kartu:** `fil-2025-08-25-03` · `fil-2025-08-25-04` · `fil-2025-09-01-01` · `jumlah-jual-terverifikasi` (turunan baru) — **Kartu penentu:** `jumlah-jual-terverifikasi` — **Jawaban:** c
+
+> Kartu ketiga memakai laporan aslinya (`fil-2025-09-01-01`, sumber API), bukan fakta gabungan `fil-2025-09-01` (turunan): hanya laporan asli yang boleh bergaris kepala utuh.
 
 **Teks kunci:** Ketiga kartu laporan itu penjualan, bukan pembelian: 70 juta, 179,5 juta, dan 50 juta lembar — 299,5 juta lembar, semuanya di Rp13–Rp15, jauh di bawah harga hari ini. Perhatikan juga tanggalnya: transaksinya 12–14 Agustus, tetapi publik baru bisa membacanya pada 25 Agustus dan 1 September, ketika laporannya terbit. Pemilik besar berhak menjual; yang perlu dibaca calon pembeli adalah siapa yang ada di sisi jual. Salah-kaprah yang umum: menganggap "nggak kedengeran jual" sama dengan "tidak menjual".
 
@@ -132,7 +134,9 @@ Isi pembukaan lama dipertahankan (suspensi 9 Okt, 10 Okt buka Rp177 → tertingg
 
 ## Layar akhir — tiga ketukan dan satu kotak
 
-1. "Seberapa layak kasus ini kamu bagikan ke teman?" — 1 sampai 5.
+Judul: **Tiga pertanyaan singkat**. Anak judul: "Semuanya boleh dilewati. Di bawahnya ada kotak kalau kamu mau menulis." Tombol dari layar pembukaan ke sini berbunyi **Lanjut: tiga pertanyaan singkat**.
+
+1. "Seberapa layak kasus ini kamu bagikan ke teman?" — 1 sampai 5, dengan jangkar di kedua ujung: **1 = tidak akan kubagikan · 5 = langsung kubagikan**.
 2. "Kasus tadi terasa seperti…" — ujian hafalan · membaca data · menebak harga.
 3. "Kamu paling sering menjawab dari…" — kartu fakta · ingatan atau pengetahuan sendiri · tebakan.
 4. Kotak teks opsional: "Ada yang membingungkan atau ingin kamu sampaikan?" (boleh kosong)
@@ -144,6 +148,8 @@ Semua opsional; tombol **Selesai** selalu aktif. Di bawahnya satu tombol lagi: *
 (Sengaja tanpa "happy trading/investing": produk ini tidak pernah mengajak bertransaksi, INV-5.)
 
 ## Riwayat uji
+
+- **Review + kritik desain (21 Sep malam).** Kartu harga soal 1 memang hasil hitungan kami, jadi kepalanya kini berbunyi "Dihitung dari data harga …"; kartu ketiga soal 3 memakai laporan asli, bukan fakta gabungan; tiap soal punya satu kartu penentu yang disalin ringkas di atas teks kunci.
 
 - **Temuan eksekutor (21 Sep sore) — kesalahan penulis kontrak.** Soal 3 versi sebelumnya memakai `fil-2025-08-25` dan `fil-2025-09-29` sebagai kartu, padahal keduanya berstatus KONFLIK di pabrik kita sendiri; produk akan menyodorkan "Rp165" sebagai fakta sementara jejak verifikasinya menyebut harga itu janggal. Soal 3 ditulis ulang memakai tiga laporan TERVERIFIKASI; dua laporan yang disingkirkan kini muncul di layar pembukaan sebagai pelajaran. Bentuk soal 3 yang baru **belum** diuji ke manusia maupun model.
 
