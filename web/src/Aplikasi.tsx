@@ -608,7 +608,27 @@ function usePengamatOpsi(
     }
     const pengamat = new IntersectionObserver(
       (masuk) => {
-        const butir = masuk[0];
+        /*
+         * Butir **terakhir**, bukan yang pertama (A-3, F-1).
+         *
+         * `IntersectionObserver` tidak memanggil balik sekali per perubahan. Ia
+         * menyerahkan antrean berisi semua pengamatan yang menumpuk sejak
+         * panggilan terakhir, **tertua lebih dulu**. Ketika frame tertunda —
+         * mesin berbeban, tab sibuk — dua perlintasan ambang atau lebih tiba
+         * dalam satu panggilan.
+         *
+         * Versi lama membaca `masuk[0]` dan membuang sisanya, jadi ia mencatat
+         * putusan yang sudah kedaluwarsa. Sesudah itu tidak ada perlintasan
+         * baru, jadi tidak ada panggilan balik baru: keadaannya membeku pada
+         * nilai basi sampai pemain berpindah layar. Yang terlihat pemain adalah
+         * bilah "Jawab di bawah" yang hilang padahal opsinya masih jauh di
+         * bawah lipatan — satu-satunya petunjuk jalan di layar, lenyap.
+         *
+         * Terukur: 1 dari 15 putaran di bawah beban, dengan opsi pertama di
+         * rasio 0,0000 dan tidak ada bilah sama sekali. `usePengamatKartu` di
+         * berkas ini sudah benar sejak awal — ia menggelung seluruh antrean.
+         */
+        const butir = masuk[masuk.length - 1];
         if (butir === undefined) return;
         kirim({ jenis: 'opsi_terlihat', soal_id, terlihat: butir.isIntersecting });
       },
