@@ -197,8 +197,11 @@ export function Aplikasi(): JSX.Element {
       */}
       {layar.jenis === 'soal' && (
         <header className="penanda" role="banner">
-          <KepingKalender hari={hari} />
-          <TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />
+          {/* Kolomnya dibungkus, bukan ditempel ke tiap anak: lihat .penanda-kolom (A4-T2). */}
+          <div className="penanda-kolom">
+            <KepingKalender hari={hari} />
+            <TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />
+          </div>
         </header>
       )}
 

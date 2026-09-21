@@ -175,12 +175,25 @@ summary:focus-visible,
   z-index: 3;
   background: var(--kertas);
   border-bottom: 1px solid var(--garis);
-  padding: 8px var(--sisi);
+  /*
+   * Garisnya melintang selebar jendela — ia rak tempat kepingnya menempel.
+   * Isinya yang dibatasi kolom, bukan raknya.
+   */
+  padding: 8px 0;
 }
 
-.penanda > * {
+/*
+ * A4-T2: kolom yang sama persis dengan `.halaman`, ditulis dengan nilai yang
+ * sama pula. Sebelumnya perataan dipasang lewat `.penanda > *`, dan `margin: 0`
+ * milik `.kalender-keping` — satu kelas juga, tetapi ditulis belakangan —
+ * mengalahkannya diam-diam. Di 1440 px kepingnya mendarat di tepi kiri jendela
+ * sementara isinya di tengah. Membungkusnya membuat perataan itu tidak lagi
+ * bergantung pada urutan aturan.
+ */
+.penanda-kolom {
   max-width: var(--kolom);
-  margin-inline: auto;
+  margin: 0 auto;
+  padding-inline: var(--sisi);
 }
 
 /* Keping memakai gerigi yang sama: benda yang sama, ukuran lain. */
