@@ -1,10 +1,17 @@
 /*
- * Tampilan pemain kasus. Seluruh isi berkas ini diturunkan dari `docs/desain.md`;
- * yang tidak disebut di sana tidak ada di sini.
+ * Tampilan pemain kasus. Diturunkan dari `docs/desain.md` versi 3 DAN dari
+ * `docs/contoh/layar-soal.html`. Kalau keduanya berbeda, contoh yang menang
+ * (D-1): pemilik menyetujuinya dengan matanya di ponsel, sesudah menolak tiga
+ * versi yang ditafsirkan dari dokumen kata-kata.
  *
- * Dua bahan: lembar dokumen (suara resmi) dan gelembung obrolan (suara teman).
- * Satu tanda tangan: halaman kalender sobek. Satu gerak yang diatur: sobekan.
- * Skala huruf: 13 · 15 · 17 · 20 · 28 · 72. Tidak ada ukuran di luar skala.
+ * Dua bahan: lembar dokumen (kertas bersudut 2 px, suara resmi) dan pesan teman
+ * (satu-satunya bentuk membulat). Satu tanda tangan: halaman kalender sobek.
+ * Satu gerak yang diatur: sobekan.
+ *
+ * Skala huruf v3: 12 · 14 · 16 · 17 · 20 · 28 · 72, ditambah satu pengecualian
+ * bernama `.opsi-huruf` 13 px yang datang dari patokan. Empat peran teks
+ * (.judul .isi .meta .aksi) dan tidak ada yang kelima (INV-11). Tepat dua
+ * tulisan kapital: keping kalender dan cap umpan balik.
  *
  * Sengaja tidak ada: gradasi, bayangan, efek kaca, emoji sebagai ikon, ilustrasi
  * stok, grafik harga, angka skor, animasi selain sobekan dan transisi keadaan.
@@ -42,6 +49,9 @@
   --garis-kontrol: rgba(20, 33, 61, 0.5);
   --garis-kontrol: color-mix(in srgb, var(--tinta) 50%, transparent);
 
+  /* Nama pengirim pesan (v3, patokan). Kontras dihitung di ledger T-02. */
+  --nama: #1f6b45;
+
   --kalender: 'Avenir Next Condensed', Bahnschrift, 'Roboto Condensed',
     sans-serif-condensed, 'Arial Narrow', sans-serif;
   --baca: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
@@ -74,6 +84,7 @@
     --garis-tegas: color-mix(in srgb, var(--tinta) 30%, transparent);
     --garis-kontrol: rgba(232, 236, 244, 0.45);
     --garis-kontrol: color-mix(in srgb, var(--tinta) 45%, transparent);
+    --nama: #7fd6a6;
   }
 }
 
@@ -90,8 +101,9 @@ body {
   background: var(--kertas);
   color: var(--tinta);
   font-family: var(--baca);
+  /* Patokan: font: 400 17px/1.45. 1,5 membuat tiap paragraf lebih tinggi. */
   font-size: 17px;
-  line-height: 1.5;
+  line-height: 1.45;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -139,6 +151,50 @@ b {
   overflow: hidden;
   clip-path: inset(50%);
   white-space: nowrap;
+}
+
+/* --- empat peran teks — tidak ada yang kelima (INV-11) -------------------- */
+
+/*
+ * Nilainya disalin dari `docs/contoh/layar-soal.html`, bukan ditafsirkan dari
+ * dokumen kata-kata: pemilik sudah menolak tiga versi yang ditafsirkan, dan ia
+ * menyetujui contoh ini dengan matanya di ponsel (22 Sep 2026).
+ *
+ * Skala ukuran yang sah: 12 · 14 · 16 · 17 · 20 · 28 · 72, ditambah SATU
+ * pengecualian bernama: `.opsi-huruf` 13 px, karena patokan menulisnya begitu
+ * dan D-1 menyatakan patokan menang atas dokumen kata-kata. Pengecualian itu
+ * dieja di `periksa:desain` (T-10) supaya ia tetap terlihat, bukan lubang diam.
+ */
+.judul {
+  font-family: var(--baca);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.isi {
+  font-family: var(--baca);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.meta {
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--tinta-redup);
+  margin: 0;
+}
+
+.aksi {
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
 }
 
 /* --- fokus papan ketik: garis --stempel 2 px, jarak 2 px ------------------ */
@@ -207,7 +263,7 @@ summary:focus-visible,
   background: var(--lembar);
   border: 1px solid var(--garis);
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   clip-path: polygon(
@@ -274,7 +330,7 @@ summary:focus-visible,
   margin: 8px auto 24px;
   background: var(--lembar);
   border: 1px solid var(--garis-tegas);
-  border-radius: 0 0 6px 6px;
+  border-radius: 0 0 2px 2px;
   overflow: hidden;
   text-align: center;
   clip-path: polygon(
@@ -290,7 +346,7 @@ summary:focus-visible,
   background: var(--merah-kalender);
   color: var(--di-atas-pekat);
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   padding: 4px 0;
 }
@@ -306,7 +362,7 @@ summary:focus-visible,
 
 .kalender-hari {
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--tinta-redup);
   padding: 0 0 12px;
@@ -393,7 +449,7 @@ summary:focus-visible,
 .aturan-main li {
   border-top: 1px solid var(--garis);
   padding: 10px 0;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 /* --- lembar dokumen: suara resmi ------------------------------------------ */
@@ -408,7 +464,7 @@ summary:focus-visible,
 .lembar {
   background: var(--lembar);
   border: 1px solid var(--garis);
-  border-radius: 6px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -431,9 +487,8 @@ summary:focus-visible,
   font-family: var(--mesin);
   font-stretch: normal;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--tinta-redup);
   margin: 0;
 }
@@ -475,14 +530,14 @@ summary:focus-visible,
 
 .legenda {
   margin: 0 0 4px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--tinta-redup);
 }
 
 /* Istilah: satu baris yang bisa dibuka, bukan blok yang selalu terbentang. */
 .istilah {
   margin: 0 0 8px;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--tinta-redup);
 }
 
@@ -491,9 +546,8 @@ summary:focus-visible,
   display: flex;
   align-items: center;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--stempel);
   cursor: pointer;
 }
@@ -509,9 +563,8 @@ summary:focus-visible,
 
 .istilah dt {
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .istilah dd {
@@ -521,7 +574,7 @@ summary:focus-visible,
 /* --- gelembung obrolan: satu-satunya bentuk gelembung --------------------- */
 
 .pembuka-obrolan {
-  font-size: 15px;
+  font-size: 17px;
   color: var(--tinta-redup);
   margin: 0 0 4px;
 }
@@ -534,9 +587,8 @@ summary:focus-visible,
 .gelembung-label {
   margin: 0 0 4px;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--tinta-redup);
 }
 
@@ -550,7 +602,7 @@ summary:focus-visible,
   display: inline-block;
   background: var(--obrolan);
   color: var(--tinta);
-  border-radius: 16px 16px 16px 2px;
+  border-radius: 4px 16px 16px 16px;
   padding: 10px 12px;
 }
 
@@ -568,7 +620,7 @@ summary:focus-visible,
 }
 
 .tanya {
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0 0 8px;
 }
@@ -601,7 +653,7 @@ summary:focus-visible,
   padding: 8px 12px;
   background: var(--lembar);
   border: 1px solid var(--garis-kontrol);
-  border-radius: 6px;
+  border-radius: 3px;
   cursor: pointer;
   transition: border-color var(--gerak) ease, background-color var(--gerak) ease;
 }
@@ -675,9 +727,8 @@ summary:focus-visible,
   display: block;
   margin-top: 4px;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
 }
 
 .opsi-tanda-cocok {
@@ -728,9 +779,8 @@ summary:focus-visible,
 .penentu-judul {
   margin: 0 0 6px;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--tinta-redup);
 }
 
@@ -742,9 +792,8 @@ summary:focus-visible,
   margin: 0;
   padding: 6px 12px 0;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--tinta-redup);
   white-space: nowrap;
   overflow: hidden;
@@ -763,11 +812,11 @@ summary:focus-visible,
   gap: 8px;
   transform: rotate(-3deg);
   border: 2px solid currentColor;
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 6px 12px;
   margin: 8px 0 16px;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -781,7 +830,7 @@ summary:focus-visible,
 }
 
 .cap-tanda {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
 }
 
@@ -808,7 +857,7 @@ summary:focus-visible,
   background: var(--stempel);
   color: var(--di-atas-pekat);
   border: 2px solid var(--stempel);
-  border-radius: 6px;
+  border-radius: 3px;
   font-family: var(--baca);
   font-size: 17px;
   font-weight: 700;
@@ -829,7 +878,7 @@ summary:focus-visible,
   background: none;
   color: var(--stempel);
   border: 2px solid var(--stempel);
-  border-radius: 6px;
+  border-radius: 3px;
   font-family: var(--baca);
   font-size: 17px;
   font-weight: 700;
@@ -844,9 +893,8 @@ summary:focus-visible,
   border: 0;
   color: var(--stempel);
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -954,7 +1002,7 @@ summary:focus-visible,
 .keping-tanggal {
   display: inline-block;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--tinta-redup);
   border: 1px solid var(--garis-tegas);
@@ -978,9 +1026,8 @@ summary:focus-visible,
   font-family: var(--mesin);
   font-stretch: normal;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--tinta-redup);
   margin: 16px 0 8px;
 }
@@ -1021,7 +1068,7 @@ summary:focus-visible,
 
 .temuan-ringkas {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .jejak-rinci > summary {
@@ -1029,9 +1076,8 @@ summary:focus-visible,
   display: flex;
   align-items: center;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--stempel);
   cursor: pointer;
 }
@@ -1040,16 +1086,15 @@ summary:focus-visible,
 
 .label-orang {
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--tinta-redup);
 }
 
 .cara-hitung,
 .sejak-kapan,
 .dari-fakta {
-  font-size: 15px;
+  font-size: 14px;
   margin: 0 0 12px;
 }
 
@@ -1058,9 +1103,8 @@ summary:focus-visible,
   display: flex;
   align-items: center;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--stempel);
   cursor: pointer;
   border-top: 1px solid var(--garis);
@@ -1072,7 +1116,7 @@ summary:focus-visible,
   padding: 0;
   margin: 8px 0 0;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--tinta-redup);
 }
 
@@ -1081,12 +1125,12 @@ summary:focus-visible,
   flex-wrap: wrap;
   gap: 8px;
   margin: 8px 0 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .meta {
   color: var(--tinta-redup);
-  font-size: 15px;
+  font-size: 14px;
 }
 
 details summary {
@@ -1094,9 +1138,8 @@ details summary {
   display: flex;
   align-items: center;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--stempel);
   cursor: pointer;
 }
@@ -1126,7 +1169,7 @@ details summary {
 .jangkar {
   margin: 8px 0 0;
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.06em;
   color: var(--tinta-redup);
 }
@@ -1147,8 +1190,8 @@ details summary {
   padding: 8px 12px;
   background: var(--lembar);
   border: 1px solid var(--garis-kontrol);
-  border-radius: 6px;
-  font-size: 15px;
+  border-radius: 3px;
+  font-size: 14px;
   cursor: pointer;
   transition: border-color var(--gerak) ease, color var(--gerak) ease;
 }
@@ -1197,7 +1240,7 @@ textarea {
   background: var(--lembar);
   color: var(--tinta);
   border: 1px solid var(--garis-kontrol);
-  border-radius: 6px;
+  border-radius: 3px;
   font-family: var(--baca);
   font-size: 17px;
   line-height: 1.5;
@@ -1206,7 +1249,7 @@ textarea {
 
 .pesan-alpha {
   border: 1px solid var(--garis-tegas);
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 16px;
   background: var(--lembar);
 }
@@ -1234,7 +1277,7 @@ textarea {
   padding: 16px var(--sisi) 32px;
   border-top: 1px solid var(--garis);
   color: var(--tinta-redup);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .kaki ul {
@@ -1266,7 +1309,7 @@ textarea {
   background: var(--lembar);
   color: var(--tinta);
   border-top: 3px solid var(--stempel);
-  border-radius: 12px 12px 0 0;
+  border-radius: 3px 3px 0 0;
   padding: 16px var(--sisi) 32px;
 }
 
@@ -1279,7 +1322,7 @@ textarea {
     max-width: var(--kolom);
     border: 1px solid var(--garis-tegas);
     border-top: 3px solid var(--stempel);
-    border-radius: 6px;
+    border-radius: 3px;
     max-height: 80vh;
   }
 }
@@ -1299,9 +1342,8 @@ textarea {
   border: 0;
   color: var(--stempel);
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   cursor: pointer;
 }
 
@@ -1311,14 +1353,13 @@ textarea {
 
 .rincian {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .rincian dt {
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 12px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--tinta-redup);
   margin-top: 12px;
 }
@@ -1335,15 +1376,14 @@ textarea {
 
 code {
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 12px;
   word-break: break-all;
 }
 
 .tanda {
   font-family: var(--mesin);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 0.06em;
-  text-transform: uppercase;
   border: 1px solid currentColor;
   border-radius: 2px;
   padding: 1px 6px;
