@@ -18,6 +18,7 @@ import { Teks } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
 import { hariIniIso, penanda, type Penanda } from './tanggal.ts';
+import { buatIdSesi, sumberAcakPeramban } from './sesi.ts';
 import { angkaBesarSatuan } from './angka.ts';
 
 /**
@@ -49,8 +50,13 @@ function reduksi(bungkus: Bungkus, pesan: Pesan): Bungkus {
 function awalBungkus(kasus: Kasus): Bungkus {
   return {
     keadaan: keadaanAwal({
-      // Hidup di memori tab saja; tidak ditulis ke cookie maupun localStorage (INV-9).
-      sesi: crypto.randomUUID(),
+      /*
+       * Hidup di memori tab saja; tidak ditulis ke cookie maupun localStorage
+       * (INV-9). `crypto.randomUUID` hanya ada di konteks aman, jadi id-nya
+       * dibuat lewat `buatIdSesi` yang punya cadangan — memanggil
+       * `randomUUID` langsung membuat halaman putih di alamat LAN (A3-T1).
+       */
+      sesi: buatIdSesi(sumberAcakPeramban()),
       kasus_id: kasus.kasus_id,
       urutanSoal: urutanSoal(kasus),
       kunciBenar: kunciBenar(kasus),
