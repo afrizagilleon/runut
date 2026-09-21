@@ -4,7 +4,7 @@
  * Satu-satunya tempat keputusan "angka mana yang jadi penyebut" diambil, supaya
  * aturan tidak masing-masing memilih sendiri.
  */
-import type { DataEmiten, KonteksVerifikasi } from './tipe.ts';
+import type { DataEmiten, KonteksGudang } from './tipe.ts';
 import { bangunSahamBeredarPada, titikPenyebut } from './penyebut.ts';
 
 /**
@@ -20,8 +20,10 @@ export function sahamBeredarTerbaru(data: DataEmiten): number | null {
   return terakhir === undefined ? null : terakhir.lembar;
 }
 
-export function konteksEmiten(data: DataEmiten): KonteksVerifikasi {
+export function konteksEmiten(data: DataEmiten, berkas_kosong: string[] = []): KonteksGudang {
   return {
+    data,
+    berkas_kosong: [...berkas_kosong].sort(),
     simbol: data.simbol,
     laporan: data.laporan,
     harga: data.harga,

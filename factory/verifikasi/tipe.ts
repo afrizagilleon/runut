@@ -231,6 +231,22 @@ export interface PotretPemegang {
   lembar: number;
 }
 
+/**
+ * Konteks verifikasi untuk satu emiten di gudang: konteks biasa ditambah data
+ * mentah yang hanya dibutuhkan aturan M2a (paginasi, aksi korporasi, ringkasan
+ * pasar, potret pemegang).
+ */
+export interface KonteksGudang extends KonteksVerifikasi {
+  data: DataEmiten;
+  /**
+   * Berkas respons berpaginasi kosong di seluruh gudang. Berkas seperti itu
+   * tidak memuat simbolnya, jadi ia tidak bisa dialamatkan ke emiten mana pun
+   * - dan itulah yang membuat bukti negatif ("emiten ini tidak punya laporan")
+   * tidak sah tanpa parameter permintaan.
+   */
+  berkas_kosong: string[];
+}
+
 /** Semua data satu emiten yang terbaca dari gudang. */
 export interface DataEmiten {
   simbol: string;
