@@ -3,11 +3,49 @@
   "company_name": "PT Beta Tbk",
   "financials": {
     "eps": 2.0,
+    "historical_eps": {
+      "2024": {
+        "eps": 1.75,
+        "eps_growth": 0.1
+      },
+      "2025": {
+        "eps": 2.0,
+        "eps_growth": 0.1429
+      },
+      "sepanjang masa": {
+        "eps": 9.9
+      }
+    },
     "historical_financials": [
+      {
+        "year": 2024,
+        "earnings": 1750,
+        "revenue": 10000,
+        "total_equity": 8000,
+        "total_assets": 12000,
+        "gross_profit": 3000,
+        "outstanding_shares": 1000
+      },
       {
         "year": 2025,
         "earnings": 2000,
+        "revenue": 11000,
+        "total_equity": 8500,
+        "total_assets": 13000,
+        "gross_profit": null,
         "outstanding_shares": 1000
+      }
+    ],
+    "historical_financial_ratio": [
+      {
+        "year": "2025",
+        "profitability": {
+          "roe": 0.23529411764705882,
+          "net_profit_margin": 0.18181818181818182
+        },
+        "liquidity": {
+          "current_ratio": 1.5
+        }
       }
     ]
   }

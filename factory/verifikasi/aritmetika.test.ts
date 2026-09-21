@@ -19,29 +19,8 @@ import {
   r33SahamTersiratGoyah,
 } from './aturan-v2.ts';
 import { bangunSahamBeredarPada } from './penyebut.ts';
-import { harga, konteks, laporan } from './contoh.ts';
+import { dataEmiten, harga, konteks, laporan } from './contoh.ts';
 import type { BarisHarga, DataEmiten, KonteksGudang } from './tipe.ts';
-
-function dataEmiten(ubah: Partial<DataEmiten> = {}): DataEmiten {
-  return {
-    simbol: 'AA',
-    laporan: [],
-    harga: [],
-    suspensi: [],
-    berkas_laporan: [],
-    stock_split: [],
-    right_issue: [],
-    bonus: [],
-    dividen: [],
-    rups: [],
-    all_time_price: [],
-    pemegang: [],
-    saham_tahunan: [],
-    ringkasan_pasar: null,
-    berkas: [],
-    ...ubah,
-  };
-}
 
 function konteksHarga(baris: BarisHarga[], ubah: Partial<DataEmiten> = {}): KonteksGudang {
   const data = dataEmiten({ harga: baris, ...ubah });

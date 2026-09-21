@@ -7,7 +7,7 @@
  */
 import { describe, expect, it } from 'vitest';
 import { pasanganRantai, r14RantaiPutus, r16JamTerbit } from './aturan-v2.ts';
-import { konteks, laporan } from './contoh.ts';
+import { dataEmiten, konteks, laporan } from './contoh.ts';
 import { keparahanTemuan } from '../skema/tipe.ts';
 import type { BerkasLaporan, DataEmiten, KonteksGudang, Laporan, Paginasi } from './tipe.ts';
 
@@ -20,25 +20,8 @@ const PAGINASI: Paginasi = {
   has_previous: false,
 };
 
-function dataEmiten(laporanDaftar: Laporan[], berkas_laporan: BerkasLaporan[]): DataEmiten {
-  return {
-    simbol: 'AA',
-    laporan: laporanDaftar,
-    harga: [],
-    suspensi: [],
-    berkas_laporan,
-    stock_split: [],
-    right_issue: [],
-    bonus: [],
-    dividen: [],
-    rups: [],
-    all_time_price: [],
-    pemegang: [],
-    saham_tahunan: [],
-    ringkasan_pasar: null,
-    berkas: [],
-  };
-}
+const dataRantai = (laporanDaftar: Laporan[], berkas_laporan: BerkasLaporan[]): DataEmiten =>
+  dataEmiten({ simbol: 'AA', laporan: laporanDaftar, berkas_laporan });
 
 function konteksRantai(
   laporanDaftar: Laporan[],
@@ -49,7 +32,7 @@ function konteksRantai(
   ];
   return {
     ...konteks({ laporan: laporanDaftar, simbol: 'AA' }),
-    data: dataEmiten(laporanDaftar, berkas),
+    data: dataRantai(laporanDaftar, berkas),
     berkas_kosong: [],
   };
 }

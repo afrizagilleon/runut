@@ -6,33 +6,12 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { ATURAN_V2, verifikasiV2 } from './v2.ts';
 import { ATURAN } from './aturan.ts';
-import { konteks, harga, laporan } from './contoh.ts';
+import { dataEmiten, konteks, harga, laporan } from './contoh.ts';
 import { SEMUA_KODE_ATURAN, keparahanTemuan } from '../skema/tipe.ts';
 import { ATURAN_PENANDA, susunDokumenBukti, susunLaporanGudang } from '../gudang.ts';
 import type { DataEmiten, KonteksGudang } from './tipe.ts';
 
 const CONTOH = fileURLToPath(new URL('../muat/contoh-gudang', import.meta.url));
-
-function dataEmiten(ubah: Partial<DataEmiten> = {}): DataEmiten {
-  return {
-    simbol: 'AA',
-    laporan: [],
-    harga: [],
-    suspensi: [],
-    berkas_laporan: [],
-    stock_split: [],
-    right_issue: [],
-    bonus: [],
-    dividen: [],
-    rups: [],
-    all_time_price: [],
-    pemegang: [],
-    saham_tahunan: [],
-    ringkasan_pasar: null,
-    berkas: [],
-    ...ubah,
-  };
-}
 
 function ktx(ubah: Partial<DataEmiten> = {}): KonteksGudang {
   const data = dataEmiten(ubah);

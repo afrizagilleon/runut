@@ -14,7 +14,7 @@ import {
   tanggalTerbit,
   urutR12,
 } from './aturan-v2.ts';
-import { konteks, laporan } from './contoh.ts';
+import { dataEmiten, konteks, laporan } from './contoh.ts';
 import type { BerkasLaporan, DataEmiten, KonteksGudang, Laporan, Paginasi } from './tipe.ts';
 
 const PAGINASI: Paginasi = {
@@ -25,27 +25,6 @@ const PAGINASI: Paginasi = {
   has_next: false,
   has_previous: false,
 };
-
-function dataEmiten(ubah: Partial<DataEmiten> = {}): DataEmiten {
-  return {
-    simbol: 'AA',
-    laporan: [],
-    harga: [],
-    suspensi: [],
-    berkas_laporan: [],
-    stock_split: [],
-    right_issue: [],
-    bonus: [],
-    dividen: [],
-    rups: [],
-    all_time_price: [],
-    pemegang: [],
-    saham_tahunan: [],
-    ringkasan_pasar: null,
-    berkas: [],
-    ...ubah,
-  };
-}
 
 function konteksGudang(data: DataEmiten, berkas_kosong: string[] = []): KonteksGudang {
   return { ...konteks({ laporan: data.laporan, simbol: data.simbol }), data, berkas_kosong };

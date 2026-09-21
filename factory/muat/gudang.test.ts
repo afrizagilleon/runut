@@ -168,7 +168,7 @@ describe('muatGudang — penormalan dan pembuangan rangkap', () => {
       { label: 'ytd_low', tanggal: '2026-07-01', nilai: 11 },
     ]);
     expect(aa?.dividen).toEqual([
-      { ex_date: '2026-04-10', tanggal_bayar: '2026-04-24', nilai_per_lembar: 5 },
+      { ex_date: '2026-04-10', tanggal_bayar: '2026-04-24', nilai_per_lembar: 5, imbal_hasil: 0.05 },
     ]);
     expect(aa?.rups[0]?.tanggal).toBe('2026-04-01');
     expect(aa?.pemegang.map((p) => p.nama)).toEqual(['Contoh Sejahtera', 'Public']);
@@ -177,6 +177,79 @@ describe('muatGudang — penormalan dan pembuangan rangkap', () => {
       { tahun: 2025, lembar: 1000 },
     ]);
     expect(aa?.ringkasan_pasar).toEqual({ nilai_pasar: 108000, harga_tutup: 108, pada: '2026-01-09' });
+  });
+
+  // --- M2b T-02 (RQ-02): pemuat diperluas untuk keuangan dan peristiwa -------
+
+  describe('M2b T-02 — keuangan tahunan, laba per lembar, rasio, peristiwa', () => {
+    it('memuat RUPS yang teks keputusannya kosong, bukan membuangnya', () => {
+      // Kalau RUPS tanpa hasil dibuang, aturan yang membaca teks keputusan akan
+      // melaporkan "2 dari 2 diperiksa" padahal sebagian besar RUPS tidak punya
+      // teks sama sekali (uji lawan R23: 115 RUPS, 17 terisi).
+      expect(aa?.rups).toEqual([
+        {
+          tanggal: '2026-04-01',
+          ringkasan: 'Agenda #1: approved a total cash dividend of Rp5 per share.',
+        },
+        { tanggal: '2026-09-01', ringkasan: null },
+      ]);
+    });
+
+    it('membaca saham bonus yang hanya punya tanggal bayar, beserta rasionya', () => {
+      expect(aa?.bonus).toEqual([
+        { ex_date: '2026-02-10', sumber: 'aa-aksi.json', rasio_lama: 100, rasio_baru: 1 },
+      ]);
+    });
+
+    it('membaca seluruh baris keuangan tahunan, dan medan kosong tetap kosong', () => {
+      expect(bb?.keuangan_tahunan).toEqual([
+        {
+          tahun: 2024,
+          laba: 1750,
+          pendapatan: 10000,
+          ekuitas: 8000,
+          aset: 12000,
+          laba_kotor: 3000,
+          lembar: 1000,
+        },
+        {
+          tahun: 2025,
+          laba: 2000,
+          pendapatan: 11000,
+          ekuitas: 8500,
+          aset: 13000,
+          laba_kotor: null,
+          lembar: 1000,
+        },
+      ]);
+    });
+
+    it('membaca laba per lembar per tahun buku dan membuang kunci yang bukan tahun', () => {
+      expect(bb?.eps_tahunan).toEqual([
+        { tahun: 2024, eps: 1.75 },
+        { tahun: 2025, eps: 2 },
+      ]);
+    });
+
+    it('membaca medan rasio siap pakai beserta kelompoknya, terurut tetap', () => {
+      expect(bb?.rasio).toEqual([
+        { tahun: 2025, kelompok: 'liquidity', nama: 'current_ratio', nilai: 1.5 },
+        { tahun: 2025, kelompok: 'profitability', nama: 'net_profit_margin', nilai: 0.18181818181818182 },
+        { tahun: 2025, kelompok: 'profitability', nama: 'roe', nilai: 0.23529411764705882 },
+      ]);
+    });
+
+    it('membaca imbal hasil dividen dan harga penerbitan saham baru apa adanya', () => {
+      expect(aa?.dividen[0]?.imbal_hasil).toBe(0.05);
+      expect(aa?.right_issue).toEqual([]);
+    });
+
+    it('tidak menggandakan tahun buku kalau dua berkas menyebut tahun yang sama', () => {
+      const tahunKeuangan = (bb?.keuangan_tahunan ?? []).map((k) => k.tahun);
+      expect(new Set(tahunKeuangan).size).toBe(tahunKeuangan.length);
+      const tahunEps = (bb?.eps_tahunan ?? []).map((e) => e.tahun);
+      expect(new Set(tahunEps).size).toBe(tahunEps.length);
+    });
   });
 
   it('mengurutkan segalanya, supaya dua kali muat memberi hasil yang sama (INV-C)', () => {

@@ -9,7 +9,14 @@
  *    laporan ganda dibuang dan saldonya disambung ulang. Rantai ini tidak boleh
  *    memicu satu temuan pun.
  */
-import type { BarisHarga, KonteksVerifikasi, Laporan, Suspensi } from './tipe.ts';
+import type {
+  BarisHarga,
+  DataEmiten,
+  KonteksGudang,
+  KonteksVerifikasi,
+  Laporan,
+  Suspensi,
+} from './tipe.ts';
 import { cariBlokUlangan } from './aturan.ts';
 import { SAHAM_BEREDAR_DADA } from './rantai-dada.ts';
 
@@ -70,6 +77,58 @@ export function harga(ubah: Partial<BarisHarga> = {}): BarisHarga {
 
 export function suspensi(ubah: Partial<Suspensi> = {}): Suspensi {
   return { tanggal: '2025-10-09', alasan: 'cooling down', ...ubah };
+}
+
+/**
+ * Data satu emiten gudang yang seluruhnya kosong; ubah satu medan untuk menguji
+ * satu aturan.
+ *
+ * Ditulis di sini, sekali, karena `DataEmiten` bertambah medan tiap milestone:
+ * lima berkas tes M2a masing-masing menyalin bentuknya sendiri, dan tiap medan
+ * baru memecahkan kelimanya. Satu pembuat bersama berarti satu tempat yang
+ * harus diubah.
+ */
+export function dataEmiten(ubah: Partial<DataEmiten> = {}): DataEmiten {
+  const dasar: DataEmiten = {
+    simbol: 'AA',
+    laporan: [],
+    harga: [],
+    suspensi: [],
+    berkas_laporan: [],
+    stock_split: [],
+    right_issue: [],
+    bonus: [],
+    dividen: [],
+    rups: [],
+    all_time_price: [],
+    pemegang: [],
+    saham_tahunan: [],
+    keuangan_tahunan: [],
+    eps_tahunan: [],
+    rasio: [],
+    ringkasan_pasar: null,
+    berkas: [],
+  };
+  return { ...dasar, ...ubah };
+}
+
+/**
+ * Konteks gudang dari `dataEmiten`, dengan `sahamBeredarPada` yang sungguh
+ * dibangun dari titik-titik bertanggal — sama seperti `konteksEmiten` di
+ * produksi, supaya tes tidak diam-diam menguji mesin yang berbeda.
+ */
+export function konteksGudang(ubah: Partial<DataEmiten> = {}): KonteksGudang {
+  const data = dataEmiten(ubah);
+  return {
+    ...konteks({
+      simbol: data.simbol,
+      laporan: data.laporan,
+      harga: data.harga,
+      suspensi: data.suspensi,
+    }),
+    data,
+    berkas_kosong: [],
+  };
 }
 
 /**

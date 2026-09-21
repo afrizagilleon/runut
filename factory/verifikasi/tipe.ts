@@ -201,22 +201,71 @@ export interface RightIssue {
   rasio_lama: number | null;
   rasio_baru: number | null;
   sumber: string;
+  /** Harga pelaksanaan penerbitan saham baru; `null` kalau medannya kosong. */
+  harga?: number | null;
 }
 
 export interface SahamBonus {
   ex_date: string;
   sumber: string;
+  rasio_lama?: number | null;
+  rasio_baru?: number | null;
 }
 
 export interface Dividen {
   ex_date: string;
   tanggal_bayar: string | null;
   nilai_per_lembar: number;
+  /** `dividend_yield` apa adanya; `null` kalau medannya kosong. */
+  imbal_hasil?: number | null;
 }
 
+/**
+ * Satu rapat umum pemegang saham.
+ *
+ * `ringkasan` boleh `null`: `agm_result` hampir selalu kosong (uji lawan §R23:
+ * 115 RUPS, 17 terisi). RUPS tanpa hasil **tetap dimuat**, karena aturan yang
+ * membaca teks keputusan harus bisa melaporkan berapa RUPS yang tidak punya
+ * teks sama sekali — kalau tidak, "2 merah dari 2" terbaca seperti seluruh
+ * RUPS sudah diperiksa.
+ */
 export interface HasilRups {
   tanggal: string;
-  ringkasan: string;
+  ringkasan: string | null;
+}
+
+/**
+ * Satu tahun buku dari `financials.historical_financials`.
+ *
+ * Tiap medan boleh `null`: sebagian besar medan kosong untuk sebagian besar
+ * tahun, dan aturan yang membutuhkannya menjawab `TIDAK_LENGKAP`, bukan merah.
+ */
+export interface KeuanganTahunan {
+  tahun: number;
+  laba: number | null;
+  pendapatan: number | null;
+  ekuitas: number | null;
+  aset: number | null;
+  laba_kotor: number | null;
+  lembar: number | null;
+}
+
+/** `financials.historical_eps[tahun].eps` — laba per lembar satu tahun buku. */
+export interface EpsTahunan {
+  tahun: number;
+  eps: number;
+}
+
+/**
+ * Satu medan rasio siap pakai di `financials.historical_financial_ratio`,
+ * apa adanya: `kelompok` adalah nama obyek pembungkusnya (`profitability`,
+ * `leverage`, …), `nama` adalah nama medannya (`roe`, `current_ratio`, …).
+ */
+export interface RasioSiapPakai {
+  tahun: number;
+  kelompok: string;
+  nama: string;
+  nilai: number;
 }
 
 /** Satu nilai `overview.all_time_price`, misalnya `52_w_low` pada satu tanggal. */
@@ -263,6 +312,12 @@ export interface DataEmiten {
   pemegang: PotretPemegang[];
   /** `outstanding_shares` per tahun buku dari `financials`. */
   saham_tahunan: Array<{ tahun: number; lembar: number }>;
+  /** Seluruh baris `historical_financials`, bukan hanya jumlah sahamnya (M2b D-3). */
+  keuangan_tahunan: KeuanganTahunan[];
+  /** `historical_eps` per tahun buku (M2b D-3). */
+  eps_tahunan: EpsTahunan[];
+  /** Medan rasio siap pakai per tahun buku (M2b D-3), untuk R27. */
+  rasio: RasioSiapPakai[];
   /** Nilai pasar dan harga tutup terakhir dari `overview`, dengan tanggalnya. */
   ringkasan_pasar: { nilai_pasar: number; harga_tutup: number; pada: string } | null;
   /** Nama berkas cache yang menyumbang data emiten ini, terurut. */

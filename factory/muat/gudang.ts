@@ -25,11 +25,14 @@ import type {
   BerkasLaporan,
   DataEmiten,
   Dividen,
+  EpsTahunan,
   HasilRups,
+  KeuanganTahunan,
   Laporan,
   NilaiEkstrem,
   Paginasi,
   PotretPemegang,
+  RasioSiapPakai,
   RightIssue,
   SahamBonus,
   StockSplit,
@@ -268,6 +271,9 @@ function emitenKosong(simbol: string): DataEmiten {
     all_time_price: [],
     pemegang: [],
     saham_tahunan: [],
+    keuangan_tahunan: [],
+    eps_tahunan: [],
+    rasio: [],
     ringkasan_pasar: null,
     berkas: [],
   };
@@ -445,14 +451,23 @@ function serapAksiKorporasi(
       rasio_lama: angka(b['old_ratio']),
       rasio_baru: angka(b['new_ratio']),
       sumber: berkas,
+      harga: angka(b['price']),
     };
     data.right_issue.push(ri);
   }
   for (const butir of larik(aksi['bonus']) ?? []) {
     const b = obyek(butir);
-    const ex = b === null ? null : (teks(b['ex_date']) ?? teks(b['date']));
-    if (ex === null) continue;
-    const bonus: SahamBonus = { ex_date: ex, sumber: berkas };
+    // Saham bonus kadang hanya punya `payment_date`: satu-satunya saham bonus
+    // di gudang (MTLA 2015) begitu. Tanggal itu dipakai sebagai tanggal aksi
+    // dan disebut apa adanya, bukan disamarkan sebagai ex_date yang tidak ada.
+    const ex = b === null ? null : (teks(b['ex_date']) ?? teks(b['date']) ?? teks(b['payment_date']));
+    if (b === null || ex === null) continue;
+    const bonus: SahamBonus = {
+      ex_date: ex,
+      sumber: berkas,
+      rasio_lama: angka(b['old_ratio']),
+      rasio_baru: angka(b['new_ratio']),
+    };
     data.bonus.push(bonus);
   }
   for (const butir of larik(aksi['dividend']) ?? []) {
@@ -464,15 +479,17 @@ function serapAksiKorporasi(
       ex_date: ex,
       tanggal_bayar: teks(b['payment_date']),
       nilai_per_lembar: nilai,
+      imbal_hasil: angka(b['dividend_yield']),
     };
     data.dividen.push(dividen);
   }
   for (const butir of larik(aksi['agm']) ?? []) {
     const b = obyek(butir);
     const tanggal = b === null ? null : teks(b['agm_date']);
-    const ringkasan = b === null ? null : teks(b['agm_result']);
-    if (tanggal === null || ringkasan === null) continue;
-    const rups: HasilRups = { tanggal, ringkasan };
+    if (tanggal === null) continue;
+    // RUPS tanpa `agm_result` tetap dimuat: tanpa itu tidak ada aturan yang
+    // bisa melaporkan berapa RUPS yang teks keputusannya memang kosong.
+    const rups: HasilRups = { tanggal, ringkasan: b === null ? null : teks(b['agm_result']) };
     data.rups.push(rups);
   }
   return normalkanSimbol(simbol);
@@ -512,16 +529,79 @@ function serapRingkasan(
   return normalkanSimbol(simbol);
 }
 
+/**
+ * Tahun buku bisa ditulis sebagai angka (`historical_financials[].year`) atau
+ * sebagai teks (kunci `historical_eps`, `historical_financial_ratio[].year`).
+ * Keduanya dibaca sebagai bilangan bulat, dan yang bukan tahun dibuang.
+ */
+function tahunBuku(nilai: unknown): number | null {
+  const langsung = angka(nilai);
+  if (langsung !== null) return Number.isInteger(langsung) ? langsung : null;
+  const sebagaiTeks = teks(nilai);
+  if (sebagaiTeks === null || !/^\d{4}$/.test(sebagaiTeks)) return null;
+  return Number.parseInt(sebagaiTeks, 10);
+}
+
 function serapKeuanganKe(data: DataEmiten, akar: Record<string, unknown>): void {
   const keuangan = obyek(akar['financials']);
   if (keuangan === null) return;
+
   for (const butir of larik(keuangan['historical_financials']) ?? []) {
     const b = obyek(butir);
-    const tahun = b === null ? null : angka(b['year']);
-    const lembar = b === null ? null : angka(b['outstanding_shares']);
-    if (tahun === null || lembar === null || lembar === 0) continue;
-    if (data.saham_tahunan.some((s) => s.tahun === tahun)) continue;
-    data.saham_tahunan.push({ tahun, lembar });
+    if (b === null) continue;
+    const tahun = tahunBuku(b['year']);
+    if (tahun === null) continue;
+
+    const lembar = angka(b['outstanding_shares']);
+    // `saham_tahunan` sengaja membuang lembar nol: ia dipakai sebagai penyebut.
+    if (lembar !== null && lembar !== 0 && !data.saham_tahunan.some((s) => s.tahun === tahun)) {
+      data.saham_tahunan.push({ tahun, lembar });
+    }
+
+    if (data.keuangan_tahunan.some((k) => k.tahun === tahun)) continue;
+    const baris: KeuanganTahunan = {
+      tahun,
+      laba: angka(b['earnings']),
+      pendapatan: angka(b['revenue']),
+      ekuitas: angka(b['total_equity']),
+      aset: angka(b['total_assets']),
+      laba_kotor: angka(b['gross_profit']),
+      lembar,
+    };
+    data.keuangan_tahunan.push(baris);
+  }
+
+  const eps = obyek(keuangan['historical_eps']);
+  if (eps !== null) {
+    for (const kunci of Object.keys(eps).sort()) {
+      const tahun = tahunBuku(kunci);
+      const isi = obyek(eps[kunci]);
+      const nilai = isi === null ? null : angka(isi['eps']);
+      if (tahun === null || nilai === null) continue;
+      if (data.eps_tahunan.some((e) => e.tahun === tahun)) continue;
+      const butir: EpsTahunan = { tahun, eps: nilai };
+      data.eps_tahunan.push(butir);
+    }
+  }
+
+  for (const butir of larik(keuangan['historical_financial_ratio']) ?? []) {
+    const b = obyek(butir);
+    if (b === null) continue;
+    const tahun = tahunBuku(b['year']);
+    if (tahun === null) continue;
+    for (const kelompok of Object.keys(b).sort()) {
+      const isi = obyek(b[kelompok]);
+      if (isi === null) continue;
+      for (const nama of Object.keys(isi).sort()) {
+        const nilai = angka(isi[nama]);
+        if (nilai === null) continue;
+        if (data.rasio.some((r) => r.tahun === tahun && r.kelompok === kelompok && r.nama === nama)) {
+          continue;
+        }
+        const rasio: RasioSiapPakai = { tahun, kelompok, nama, nilai };
+        data.rasio.push(rasio);
+      }
+    }
   }
 }
 
@@ -694,6 +774,11 @@ export function muatGudang(folder: string = FOLDER_GUDANG): Gudang {
     );
     data.pemegang.sort((a, b) => a.nama.localeCompare(b.nama));
     data.saham_tahunan.sort((a, b) => a.tahun - b.tahun);
+    data.keuangan_tahunan.sort((a, b) => a.tahun - b.tahun);
+    data.eps_tahunan.sort((a, b) => a.tahun - b.tahun);
+    data.rasio.sort(
+      (a, b) => a.tahun - b.tahun || a.kelompok.localeCompare(b.kelompok) || a.nama.localeCompare(b.nama),
+    );
     data.berkas.sort();
   }
 
