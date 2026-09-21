@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Fakta } from '../../factory/skema/tipe.ts';
-import { namaAsal, namaFakta } from './PanelSumber.tsx';
+import { PINTU_HITUNG, PINTU_SUMBER, isiSumber, namaAsal, namaFakta } from './sumber.ts';
 
 /**
  * "Dihitung dari" dulu mencetak `fact_id` apa adanya, dan pemilik membaca
@@ -135,5 +135,88 @@ describe('namaAsal — daftar fakta asal harus bisa dibedakan', () => {
       expect(nama).not.toMatch(/\d{4}-\d{2}-\d{2}/);
       expect(nama).not.toMatch(/^[a-z]+(-[a-z0-9]+){2,}$/);
     }
+  });
+});
+
+describe('isiSumber — apa yang tampil saat sebuah fakta dibuka (D-5)', () => {
+  const resmi = (): Fakta =>
+    buat({
+      fact_id: 'div-2025-09-16',
+      klaim: 'Dividen tunai Rp0,14 per lembar dengan tanggal ex 16 September 2025.',
+      tersedia_sejak: '2025-09-16',
+      sumber: {
+        jenis: 'api',
+        endpoint: '/v2/corporate-actions/',
+        berkas: null,
+        parameter: { simbol: 'DADA' },
+        diambil_pada: null,
+        keterangan: null,
+      },
+    });
+
+  const hitungan = (): Fakta =>
+    buat({
+      fact_id: 'andai-10-lot-dividen',
+      klaim: 'Pengandaian: 1.000 lembar menerima Rp140 dividen tunai.',
+      tersedia_sejak: '2025-09-16',
+      turunan_dari: ['div-2025-09-16'],
+      sumber: {
+        jenis: 'turunan',
+        endpoint: null,
+        berkas: null,
+        parameter: {},
+        diambil_pada: null,
+        keterangan: 'pengandaian 10 lot dikali dividen per lembar yang diumumkan 16 September 2025',
+      },
+    });
+
+  it('sumber resmi: pintunya "Lihat sumbernya", tanpa cara menghitung', () => {
+    const isi = isiSumber(resmi(), petakan([resmi()]));
+    expect(isi.pintu).toBe(PINTU_SUMBER);
+    expect(isi.caraHitung).toBeNull();
+    expect(isi.dihitungDari).toEqual([]);
+  });
+
+  it('hitungan: pintunya "Lihat cara menghitungnya", dengan cara menghitung', () => {
+    const isi = isiSumber(hitungan(), petakan([hitungan(), resmi()]));
+    expect(isi.pintu).toBe(PINTU_HITUNG);
+    expect(isi.caraHitung).toContain('pengandaian 10 lot');
+  });
+
+  it('tanggal ditulis dalam bahasa orang, bukan ISO', () => {
+    const isi = isiSumber(resmi(), petakan([resmi()]));
+    expect(isi.sejakKapan).toBe('Sudah bisa dibaca publik sejak 16 September 2025.');
+    expect(isi.sejakKapan).not.toMatch(/\d{4}-\d{2}-\d{2}/);
+  });
+
+  it('fakta tanpa tanggal tidak berbohong, ia mengatakan tidak tahu', () => {
+    const isi = isiSumber(buat({ fact_id: 'x', tersedia_sejak: null }), petakan([]));
+    expect(isi.sejakKapan).toContain('tidak bisa ditentukan dari data');
+  });
+
+  it('"Dihitung dari" memakai nama orang, bukan kode fakta', () => {
+    const asal = buat({
+      fact_id: 'div-2025-09-16',
+      awam: { kepala: 'Pengumuman dividen · ex 16 Sep 2025', isi: '' },
+    });
+    const isi = isiSumber(hitungan(), petakan([hitungan(), asal]));
+    expect(isi.dihitungDari).toEqual(['Pengumuman dividen · ex 16 Sep 2025']);
+  });
+
+  it('kosakata pabrik HANYA di rincian teknis, tidak di permukaan', () => {
+    const isi = isiSumber(resmi(), petakan([resmi()]));
+    const permukaan = [isi.kalimatResmi, isi.caraHitung ?? '', isi.sejakKapan, ...isi.dihitungDari].join(' ');
+    for (const bocor of ['div-2025-09-16', '/v2/corporate-actions/', 'api', 'TERVERIFIKASI']) {
+      expect(permukaan, bocor).not.toContain(bocor);
+    }
+    const label = isi.rincian.map((b) => b.label);
+    expect(label).toContain('Kode fakta');
+    expect(label).toContain('Endpoint');
+    expect(isi.rincian.find((b) => b.label === 'Kode fakta')?.nilai).toBe('div-2025-09-16');
+  });
+
+  it('kode fakta asal ikut ke rincian teknis, bukan hilang', () => {
+    const isi = isiSumber(hitungan(), petakan([hitungan(), resmi()]));
+    expect(isi.rincian.find((b) => b.label === 'Kode fakta asal')?.nilai).toBe('div-2025-09-16');
   });
 });

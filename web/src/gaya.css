@@ -666,6 +666,41 @@ details[open] > .baris-istilah .panah {
   cursor: pointer;
 }
 
+/* --- rincian teknis: kosakata pabrik, di balik lipatan ------------------- */
+
+.rincian-teknis {
+  margin-top: 8px;
+}
+
+.rincian-teknis > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.rincian {
+  margin: 0;
+  font-size: 14px;
+}
+
+.rincian dt {
+  font-family: var(--mesin);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--tinta-redup);
+  margin-top: 8px;
+}
+
+.rincian dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}
+
 /* --- judul pertanyaan ----------------------------------------------------- */
 
 .tanya {
@@ -1152,68 +1187,6 @@ details[open] > .baris-istilah .panah {
   cursor: pointer;
 }
 
-/* --- panel sumber dalam bahasa orang -------------------------------------- */
-
-.label-orang {
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--tinta-redup);
-}
-
-.cara-hitung,
-.sejak-kapan,
-.dari-fakta {
-  font-size: 14px;
-  margin: 0 0 12px;
-}
-
-.rincian-teknis > summary {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--stempel);
-  cursor: pointer;
-  border-top: 1px solid var(--garis);
-  margin-top: 12px;
-}
-
-.angka-temuan {
-  list-style: none;
-  padding: 0;
-  margin: 8px 0 0;
-  font-family: var(--mesin);
-  font-size: 14px;
-  color: var(--tinta-redup);
-}
-
-.terkait {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 8px 0 0;
-  font-size: 14px;
-}
-
-.meta {
-  color: var(--tinta-redup);
-  font-size: 14px;
-}
-
-details summary {
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--stempel);
-  cursor: pointer;
-}
-
 /* --- layar akhir ----------------------------------------------------------- */
 
 /*
@@ -1360,110 +1333,3 @@ textarea {
   margin: 0 0 4px;
 }
 
-/* --- panel sumber: lembar bawah di bawah 640 px --------------------------- */
-
-.panel-latar {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  background: color-mix(in srgb, var(--tinta) 55%, transparent);
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-.panel {
-  width: 100%;
-  max-height: 88vh;
-  overflow-y: auto;
-  background: var(--lembar);
-  color: var(--tinta);
-  border-top: 3px solid var(--stempel);
-  border-radius: 3px 3px 0 0;
-  padding: 16px var(--sisi) 32px;
-}
-
-@media (min-width: 640px) {
-  .panel-latar {
-    align-items: center;
-  }
-
-  .panel {
-    max-width: var(--kolom);
-    border: 1px solid var(--garis-tegas);
-    border-top: 3px solid var(--stempel);
-    border-radius: 3px;
-    max-height: 80vh;
-  }
-}
-
-.panel-kepala {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.tombol-tutup {
-  min-height: 44px;
-  min-width: 44px;
-  background: none;
-  border: 0;
-  color: var(--stempel);
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-}
-
-.klaim {
-  font-size: 17px;
-}
-
-.rincian {
-  margin: 0;
-  font-size: 14px;
-}
-
-.rincian dt {
-  font-family: var(--mesin);
-  font-size: 12px;
-  letter-spacing: 0.06em;
-  color: var(--tinta-redup);
-  margin-top: 12px;
-}
-
-.rincian dd {
-  margin: 4px 0 0;
-}
-
-.daftar-parameter {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-code {
-  font-family: var(--mesin);
-  font-size: 12px;
-  word-break: break-all;
-}
-
-.tanda {
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  border: 1px solid currentColor;
-  border-radius: 2px;
-  padding: 1px 6px;
-  color: var(--tinta-redup);
-}
-
-.tanda-terverifikasi {
-  color: var(--cocok);
-}
-
-.tanda-konflik {
-  color: var(--belum-cocok);
-}

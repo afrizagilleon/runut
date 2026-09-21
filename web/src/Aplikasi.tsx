@@ -15,13 +15,13 @@ import {
 } from './alur.ts';
 import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { KartuFakta } from './KartuFakta.tsx';
-import { PanelSumber } from './PanelSumber.tsx';
 import { Teks } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
 import { hariIniIso, penanda, type Penanda } from './tanggal.ts';
 import { buatIdSesi, sumberAcakPeramban } from './sesi.ts';
 import { perintahRiwayat } from './riwayat.ts';
+import { isiSumber } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
 
 /**
@@ -187,8 +187,6 @@ export function Aplikasi(): JSX.Element {
     [kirim, layar, keadaan.urutanSoal],
   );
 
-  const faktaSumber: Fakta | null =
-    keadaan.sumberTerbuka === null ? null : (indeks.get(keadaan.sumberTerbuka) ?? null);
 
   return (
     <>
@@ -218,6 +216,7 @@ export function Aplikasi(): JSX.Element {
             nomor={layar.nomor}
             kirim={kirim}
             bukaSumber={bukaSumber}
+            indeks={indeks}
           />
         )}
         {layar.jenis === 'pembukaan' && (
@@ -230,16 +229,6 @@ export function Aplikasi(): JSX.Element {
 
       {(layar.jenis === 'pembuka' || layar.jenis === 'akhir') && <Kaki kasus={kasus} />}
 
-      {faktaSumber !== null && (
-        <PanelSumber
-          fakta={faktaSumber}
-          tutup={() => {
-            kirim({ jenis: 'tutup_sumber' });
-          }}
-          bukaSumber={bukaSumber}
-          indeks={indeks}
-        />
-      )}
     </>
   );
 }
@@ -415,6 +404,48 @@ function usePengamatOpsi(
   return acuan;
 }
 
+/**
+ * Isi yang terbuka DI DALAM lembar (D-5). Apa yang tampil ditentukan
+ * `isiSumber()`, fungsi murni yang dites; komponen ini hanya menatanya.
+ */
+function IsiLembarTerbuka({
+  fakta,
+  indeks,
+}: {
+  fakta: Fakta;
+  indeks: ReadonlyMap<string, Fakta>;
+}): JSX.Element {
+  const isi = isiSumber(fakta, indeks);
+  return (
+    <>
+      <p className="meta">Kalimat resminya</p>
+      <p className="isi">{isi.kalimatResmi}</p>
+
+      {isi.caraHitung !== null && <p className="isi">{isi.caraHitung}</p>}
+
+      <p className="meta">{isi.sejakKapan}</p>
+
+      {isi.dihitungDari.length > 0 && (
+        <p className="meta">Dihitung dari: {isi.dihitungDari.join(' · ')}</p>
+      )}
+
+      <details className="rincian-teknis">
+        <summary>Rincian teknis</summary>
+        <dl className="rincian">
+          {isi.rincian.map((baris) => (
+            <div key={baris.label}>
+              <dt>{baris.label}</dt>
+              <dd>
+                <code>{baris.nilai}</code>
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </details>
+    </>
+  );
+}
+
 function BarisIstilah({ istilah }: { istilah: Istilah[] }): JSX.Element {
   return (
     <details className="istilah-lipat" data-uid="istilah">
@@ -449,12 +480,14 @@ function LayarSoal({
   nomor,
   kirim,
   bukaSumber,
+  indeks,
 }: {
   kasus: Kasus;
   keadaan: Keadaan;
   nomor: number;
   kirim: (aksi: Aksi) => void;
   bukaSumber: (fact_id: string) => void;
+  indeks: ReadonlyMap<string, Fakta>;
 }): JSX.Element {
   const soal: Soal | undefined = kasus.soal[nomor];
   if (soal === undefined) return <p>Soal tidak ditemukan.</p>;
@@ -517,7 +550,10 @@ function LayarSoal({
             fakta={fakta}
             menentukan={s.dikunci && menentukan.has(fakta.fact_id)}
             bukaSumber={bukaSumber}
-          />
+            terbuka={keadaan.sumberTerbuka === fakta.fact_id}
+          >
+            <IsiLembarTerbuka fakta={fakta} indeks={indeks} />
+          </KartuFakta>
         ))}
       </div>
 
