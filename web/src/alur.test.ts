@@ -646,3 +646,64 @@ describe('alur — tanda opsi sesudah dikunci (A1-T4)', () => {
     expect(tandaOpsi(undefined, 'b', 'b')).toBe('polos');
   });
 });
+
+describe('alur — tombol kembali peramban (A1-T7)', () => {
+  const layarSesudahMundur = (aksi: Array<Aksi | [Aksi, number]>) => {
+    const sebelum = jalankan(aksi);
+    const hasil = langkah(sebelum.keadaan, { jenis: 'mundur' }, 99_000);
+    return {
+      dari: namaLayar(sebelum.keadaan.layar),
+      ke: namaLayar(hasil.keadaan.layar),
+      peristiwa: hasil.peristiwa.map((p) => p.nama),
+      isi: hasil.peristiwa[0]?.isi,
+    };
+  };
+
+  it('dari soal-1 kembali ke layar pembuka', () => {
+    const h = layarSesudahMundur([MULAI, { jenis: 'lanjut' }]);
+    expect(h).toMatchObject({ dari: 'soal-1', ke: 'pembuka' });
+    expect(h.peristiwa).toEqual(['lihat_balik', 'layar_masuk']);
+    expect(h.isi).toEqual({ dari_layar: 'soal-1', ke_layar: 'pembuka' });
+  });
+
+  it('dari soal-2 kembali ke soal-1', () => {
+    const h = layarSesudahMundur([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+    ]);
+    expect(h).toMatchObject({ dari: 'soal-2', ke: 'soal-1' });
+  });
+
+  it('dari layar pembukaan kembali ke soal terakhir', () => {
+    const h = layarSesudahMundur([...sampaiTerkunci(), { jenis: 'lanjut' }]);
+    expect(h).toMatchObject({ dari: 'pembukaan', ke: 'soal-3' });
+  });
+
+  it('dari layar akhir kembali ke layar pembukaan', () => {
+    const h = layarSesudahMundur([...sampaiTerkunci(), { jenis: 'lanjut' }, { jenis: 'lanjut' }]);
+    expect(h).toMatchObject({ dari: 'akhir', ke: 'pembukaan' });
+  });
+
+  it('NEGATIF — dari layar pembuka tidak ke mana-mana, jadi peramban keluar situs', () => {
+    const sebelum = jalankan([MULAI]);
+    const hasil = langkah(sebelum.keadaan, { jenis: 'mundur' }, 99_000);
+    expect(hasil.peristiwa).toEqual([]);
+    expect(hasil.keadaan).toBe(sebelum.keadaan);
+  });
+
+  it('mundur tidak menghapus jawaban yang sudah dikunci', () => {
+    const sebelum = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+    ]);
+    const hasil = langkah(sebelum.keadaan, { jenis: 'mundur' }, 99_000);
+    expect(hasil.keadaan.soal['s1']?.dikunci).toBe(true);
+    expect(hasil.keadaan.soal['s1']?.kunci).toBe('b');
+  });
+});

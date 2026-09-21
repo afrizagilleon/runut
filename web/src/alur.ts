@@ -135,6 +135,7 @@ export type Aksi =
   | { jenis: 'kunci_jawaban'; soal_id: string }
   | { jenis: 'lanjut' }
   | { jenis: 'lihat_balik'; nomor: number }
+  | { jenis: 'mundur' }
   | { jenis: 'catat_gulir'; persen: number }
   | { jenis: 'minat_kasus_lain' }
   | { jenis: 'isi_akhir'; medan: keyof JawabanAkhir; nilai: string | number | null }
@@ -263,6 +264,23 @@ class Catatan {
   get hasil(): { peristiwa: Peristiwa[]; urut: number } {
     return { peristiwa: this.keluar, urut: this.urut };
   }
+}
+
+/**
+ * Layar sebelum layar sekarang, atau `null` kalau sudah di layar pertama.
+ * Urutannya sama dengan urutan maju: pembuka → soal → pembukaan → akhir.
+ */
+export function layarSebelumnya(keadaan: Keadaan): Layar | null {
+  const layar = keadaan.layar;
+  if (layar.jenis === 'pembuka') return null;
+  if (layar.jenis === 'soal') {
+    return layar.nomor === 0 ? { jenis: 'pembuka' } : { jenis: 'soal', nomor: layar.nomor - 1 };
+  }
+  if (layar.jenis === 'pembukaan') {
+    const terakhir = keadaan.urutanSoal.length - 1;
+    return terakhir < 0 ? { jenis: 'pembuka' } : { jenis: 'soal', nomor: terakhir };
+  }
+  return { jenis: 'pembukaan' };
 }
 
 /** Tidak terjadi apa-apa: keadaan utuh, nol peristiwa. */
@@ -502,6 +520,26 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
         return abaikan(keadaan);
       }
       const tujuan: Layar = { jenis: 'soal', nomor: aksi.nomor };
+      const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      catat.tambah('lihat_balik', {
+        dari_layar: namaLayar(keadaan.layar),
+        ke_layar: namaLayar(tujuan),
+      });
+      const berikut = masukLayar(tutupWaktuLayar(keadaan, waktu), tujuan, waktu, catat);
+      const { peristiwa, urut } = catat.hasil;
+      return { keadaan: { ...berikut, urut }, peristiwa };
+    }
+
+    /*
+     * Tombol kembali peramban/Android (A1-T7). Satu entri riwayat per layar,
+     * dan `popstate` mundur satu layar **lewat reducer** — bukan dengan
+     * mengubah layar di komponen — supaya peristiwanya tetap lahir.
+     * Dari layar pembuka ia ditolak, sehingga peramban keluar dari situs
+     * seperti yang diharapkan pemain.
+     */
+    case 'mundur': {
+      const tujuan = layarSebelumnya(keadaan);
+      if (tujuan === null) return abaikan(keadaan);
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
       catat.tambah('lihat_balik', {
         dari_layar: namaLayar(keadaan.layar),

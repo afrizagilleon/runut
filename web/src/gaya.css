@@ -18,14 +18,29 @@
   --stempel: #4b3fa7;
   --merah-kalender: #d7263d;
   --obrolan: #dff3e4;
-  --cocok: #1b7f5c;
+  --cocok: #177052;
   --belum-cocok: #8a5300;
   /* Teks di atas --stempel dan --merah-kalender; dihitung ≥ 4,5:1 di kedua mode. */
   --di-atas-pekat: #ffffff;
 
-  /* Garis tepi lembar: --tinta 12 %, seperti dituntut docs/desain.md. */
+  /*
+   * Garis tepi. Nilai rgba() ditulis lebih dulu sebagai cadangan: WebView
+   * Android lama tidak mengenal color-mix() dan akan membuang deklarasinya,
+   * sehingga tumpukan kartu kehilangan batasnya sama sekali.
+   *
+   * --garis-kontrol dipakai baris opsi, petak layar akhir, dan kotak teks.
+   * docs/desain.md menulis "--tinta 45 % sehingga >= 3:1", tetapi 45 % hanya
+   * mencapai 2,79:1 di atas --lembar dan 2,72:1 di atas --kertas pada mode
+   * terang. Yang mengikat adalah batas 3:1 (WCAG 1.4.11), bukan angka
+   * persennya, jadi dipakai 50 % — nilai terkecil yang benar-benar melewatinya
+   * (3,20:1 dan 3,13:1). Hitungannya ditempel di ledger A1-T7.
+   */
+  --garis: rgba(20, 33, 61, 0.12);
   --garis: color-mix(in srgb, var(--tinta) 12%, transparent);
+  --garis-tegas: rgba(20, 33, 61, 0.22);
   --garis-tegas: color-mix(in srgb, var(--tinta) 22%, transparent);
+  --garis-kontrol: rgba(20, 33, 61, 0.5);
+  --garis-kontrol: color-mix(in srgb, var(--tinta) 50%, transparent);
 
   --kalender: 'Avenir Next Condensed', Bahnschrift, 'Roboto Condensed',
     sans-serif-condensed, 'Arial Narrow', sans-serif;
@@ -53,8 +68,12 @@
     --belum-cocok: #f0b45a;
     /* Di mode gelap, --stempel dan --merah-kalender terang, jadi teksnya gelap. */
     --di-atas-pekat: #0f1524;
+    --garis: rgba(232, 236, 244, 0.18);
     --garis: color-mix(in srgb, var(--tinta) 18%, transparent);
+    --garis-tegas: rgba(232, 236, 244, 0.3);
     --garis-tegas: color-mix(in srgb, var(--tinta) 30%, transparent);
+    --garis-kontrol: rgba(232, 236, 244, 0.45);
+    --garis-kontrol: color-mix(in srgb, var(--tinta) 45%, transparent);
   }
 }
 
@@ -568,7 +587,7 @@ summary:focus-visible,
   min-height: 56px;
   padding: 8px 12px;
   background: var(--lembar);
-  border: 1px solid var(--garis);
+  border: 1px solid var(--garis-kontrol);
   border-radius: 6px;
   cursor: pointer;
   transition: border-color var(--gerak) ease, background-color var(--gerak) ease;
@@ -581,9 +600,22 @@ summary:focus-visible,
   height: 1px;
 }
 
+/*
+ * Cadangan untuk WebView tanpa :has() — fokus tetap terlihat lewat garis pada
+ * radio-nya sendiri, walau kotaknya kecil.
+ */
+.opsi input:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+}
+
 .opsi:has(input:focus-visible) {
   outline: 2px solid var(--stempel);
   outline-offset: 2px;
+}
+
+.opsi:has(input:focus-visible) input:focus-visible {
+  outline: none;
 }
 
 .opsi-huruf {
@@ -637,7 +669,7 @@ summary:focus-visible,
 }
 
 .opsi-keliru {
-  border-color: var(--garis);
+  border-color: var(--garis-kontrol);
   color: var(--tinta-redup);
 }
 
@@ -783,15 +815,27 @@ summary:focus-visible,
 
 /* --- rujukan angka --------------------------------------------------------- */
 
+/*
+ * Tautan angka: bidang sentuhnya dilebarkan lewat padding-block, dan tinggi
+ * baris induknya dinaikkan ke 1,7 supaya barisnya tidak saling menindih
+ * (`docs/desain.md`).
+ */
 .rujukan {
   background: none;
   border: 0;
-  padding: 0;
+  padding: 8px 2px;
+  margin: -8px 0;
   font: inherit;
   font-weight: 700;
   color: var(--stempel);
   border-bottom: 1px dotted var(--stempel);
   cursor: pointer;
+}
+
+.teks-kunci,
+.garis-waktu li,
+.bacaan li {
+  line-height: 1.7;
 }
 
 .rujukan-datar,
@@ -972,11 +1016,17 @@ details summary {
 
 /* --- layar akhir ----------------------------------------------------------- */
 
+/*
+ * `fieldset` menggambar sisa bingkai di sekeliling legend di sebagian peramban;
+ * `border: 0` pada keempat sisi lebih dulu, baru satu garis atas ditambahkan
+ * lewat elemen pemisah sendiri.
+ */
 .tanya-akhir {
   border: 0;
-  border-top: 1px solid var(--garis);
   margin: 0 0 16px;
   padding: 16px 0 0;
+  border-top: 1px solid var(--garis);
+  min-width: 0;
 }
 
 .tanya-akhir legend {
@@ -1009,7 +1059,7 @@ details summary {
   min-width: 44px;
   padding: 8px 12px;
   background: var(--lembar);
-  border: 1px solid var(--garis-tegas);
+  border: 1px solid var(--garis-kontrol);
   border-radius: 6px;
   font-size: 15px;
   cursor: pointer;
@@ -1023,9 +1073,18 @@ details summary {
   height: 1px;
 }
 
+.petak input:focus-visible {
+  outline: 2px solid var(--stempel);
+  outline-offset: 2px;
+}
+
 .petak:has(input:focus-visible) {
   outline: 2px solid var(--stempel);
   outline-offset: 2px;
+}
+
+.petak:has(input:focus-visible) input:focus-visible {
+  outline: none;
 }
 
 .petak-pilih {
@@ -1050,7 +1109,7 @@ textarea {
   padding: 12px;
   background: var(--lembar);
   color: var(--tinta);
-  border: 1px solid var(--garis-tegas);
+  border: 1px solid var(--garis-kontrol);
   border-radius: 6px;
   font-family: var(--baca);
   font-size: 17px;

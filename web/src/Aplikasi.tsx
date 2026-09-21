@@ -138,6 +138,32 @@ export function Aplikasi(): JSX.Element {
     window.scrollTo(0, 0);
   }, [namaLayarKini]);
 
+  /*
+   * Satu entri riwayat per layar (A1-T7). Sebelumnya tombol kembali Android
+   * keluar dari situs dan menghapus seluruh sesi di tengah permainan.
+   * Layar pertama memakai replaceState supaya menekan kembali di sana memang
+   * keluar dari situs, seperti yang diharapkan pemain.
+   */
+  const layarTercatat = useRef<string | null>(null);
+  useEffect(() => {
+    if (layarTercatat.current === namaLayarKini) return;
+    if (layarTercatat.current === null) window.history.replaceState({ layar: namaLayarKini }, '');
+    else window.history.pushState({ layar: namaLayarKini }, '');
+    layarTercatat.current = namaLayarKini;
+  }, [namaLayarKini]);
+
+  useEffect(() => {
+    const mundur = (): void => {
+      // Perpindahan layar tetap satu dispatch; komponen tidak pernah
+      // mengubah layar sendiri.
+      kirim({ jenis: 'mundur' });
+    };
+    window.addEventListener('popstate', mundur);
+    return () => {
+      window.removeEventListener('popstate', mundur);
+    };
+  }, [kirim]);
+
   const bukaSumber = useCallback(
     (fact_id: string): void => {
       const soal_id = layar.jenis === 'soal' ? (keadaan.urutanSoal[layar.nomor] ?? null) : null;
