@@ -922,6 +922,22 @@ summary:focus-visible,
   margin-top: 8px;
 }
 
+/*
+ * Jalan pintas ke ringkasan (A4-T5). Sejajar judul di atasnya, dan memakai
+ * bentuk tautan yang sudah ada — bukan tombol baru — karena ia memang tautan
+ * ke bagian lain halaman yang sama. Bantalan 8 px milik .rujukan yang menjaga
+ * bidang sentuhnya >= 44 px.
+ */
+.loncat {
+  text-align: center;
+  margin: 0 0 16px;
+  /*
+   * 1,7 seperti baris lain yang memuat tautan: dengan 1,5 bidang sentuhnya
+   * hanya 42 px — diukur, bukan ditaksir — dan A2-T2 menuntut >= 44 px.
+   */
+  line-height: 1.7;
+}
+
 .garis-waktu {
   list-style: none;
   padding: 0;

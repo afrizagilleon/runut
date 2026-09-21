@@ -217,3 +217,50 @@ describe('ringkas — pembacaan berkas', () => {
     expect(ringkasSesi(acak).layar_terakhir).toBe('akhir');
   });
 });
+
+describe('A4-T5 — loncat ke ringkasan masuk ringkasan', () => {
+  const dasar = (nama: string, urut: number, isi: Record<string, unknown> = {}): Peristiwa => ({
+    nama,
+    sesi: 'sesi-loncat',
+    kasus_id: 'dada-2025-10-08',
+    t_ms: urut * 1_000,
+    urut,
+    isi,
+  });
+
+  const sesiLoncat = (): Peristiwa[] => [
+    dasar('mulai', 1, { lebar_layar: 375 }),
+    dasar('layar_masuk', 2, { layar: 'pembuka' }),
+    dasar('pembukaan_masuk', 3),
+    dasar('layar_masuk', 4, { layar: 'pembukaan' }),
+    dasar('loncat_ke_ringkasan', 5, { ms_di_pembukaan: 4_200, gulir_maks_persen: 12 }),
+    dasar('pembukaan_selesai', 6, { ms_di_pembukaan: 9_000, gulir_maks_persen: 90 }),
+    dasar('tutup', 7, { layar_terakhir: 'akhir' }),
+  ];
+
+  it('menandai sesi yang melompat dan mencatat guliran saat itu', () => {
+    const [sesi] = kelompokkanSesi(sesiLoncat());
+    expect(sesi?.loncat_ke_ringkasan).toBe(true);
+    expect(sesi?.gulir_saat_loncat).toBe(12);
+  });
+
+  it('sesi yang tidak melompat tidak ikut terhitung', () => {
+    const tanpa = sesiLoncat().filter((p) => p.nama !== 'loncat_ke_ringkasan');
+    const [sesi] = kelompokkanSesi(tanpa);
+    expect(sesi?.loncat_ke_ringkasan).toBe(false);
+    expect(sesi?.gulir_saat_loncat).toBeNull();
+  });
+
+  it('laporannya menyebut berapa sesi yang melompat', () => {
+    const hasil = laporan(kelompokkanSesi(sesiLoncat()));
+    expect(hasil).toContain('Menekan "Langsung ke ringkasan": **1**');
+    expect(hasil).toContain('loncat ke ringkasan');
+    expect(hasil).toContain('ya (gulir 12%)');
+  });
+
+  it('melompat TIDAK dihitung sebagai selesai membaca pembukaan', () => {
+    const hasil = laporan(kelompokkanSesi(sesiLoncat()));
+    // Dua angka berbeda: sampai pembukaan tetap 1, dan loncatnya dilaporkan sendiri.
+    expect(hasil).toContain('Sampai layar pembukaan: **1**');
+  });
+});

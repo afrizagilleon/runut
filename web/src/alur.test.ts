@@ -7,6 +7,7 @@ import {
   langkah,
   LABEL_COCOK,
   LABEL_PILIHAN_PEMAIN,
+  NAMA_PERISTIWA,
   namaLayar,
   semuaTerkunci,
   tandaOpsi,
@@ -708,6 +709,74 @@ describe('alur — tanda opsi sesudah dikunci (A1-T4, diperbaiki A4-T4)', () => 
 
   it('soal yang tidak dikenal tidak pernah menandai apa pun', () => {
     expect(tandaOpsi(undefined, 'b', 'b')).toEqual({ keadaan: 'polos', label: [] });
+  });
+});
+
+describe('alur — jalan pintas ke ringkasan (A4-T5)', () => {
+  /** Jalur terpendek sampai berdiri di layar pembukaan. */
+  const diPembukaan = (): Array<Aksi | [Aksi, number]> => [...sampaiTerkunci(), { jenis: 'lanjut' }];
+
+  it('melahirkan loncat_ke_ringkasan dengan lama dan guliran saat itu', () => {
+    const { keadaan, peristiwa } = jalankan([
+      ...diPembukaan(),
+      { jenis: 'catat_gulir', persen: 12 },
+      [{ jenis: 'loncat_ke_ringkasan' }, 4_200],
+    ]);
+    expect(namaLayar(keadaan.layar)).toBe('pembukaan');
+    const loncat = peristiwa.filter((p) => p.nama === 'loncat_ke_ringkasan');
+    expect(loncat).toHaveLength(1);
+    expect(loncat[0]?.isi['gulir_maks_persen']).toBe(12);
+    // 100 ms untuk catat_gulir, lalu 4.200 ms sampai loncatan.
+    expect(loncat[0]?.isi['ms_di_pembukaan']).toBe(4_300);
+  });
+
+  it('TIDAK memindahkan layar: pemain tetap di pembukaan', () => {
+    const sebelum = jalankan(diPembukaan()).keadaan;
+    const sesudah = jalankan([...diPembukaan(), { jenis: 'loncat_ke_ringkasan' }]).keadaan;
+    expect(namaLayar(sesudah.layar)).toBe(namaLayar(sebelum.layar));
+    expect(sesudah.layar).toEqual(sebelum.layar);
+  });
+
+  it('NEGATIF — diabaikan di luar layar pembukaan: nol peristiwa, keadaan utuh', () => {
+    for (const jalur of [
+      [MULAI],
+      [MULAI, { jenis: 'lanjut' } as Aksi],
+      [...sampaiTerkunci()],
+    ]) {
+      const dasar = jalankan(jalur);
+      const hasil = langkah(dasar.keadaan, { jenis: 'loncat_ke_ringkasan' }, 99_999);
+      expect(hasil.peristiwa, namaLayar(dasar.keadaan.layar)).toEqual([]);
+      expect(hasil.keadaan).toBe(dasar.keadaan);
+    }
+  });
+
+  it('boleh ditekan lebih dari sekali, dan tiap ketukan tercatat', () => {
+    const { peristiwa } = jalankan([
+      ...diPembukaan(),
+      { jenis: 'loncat_ke_ringkasan' },
+      { jenis: 'loncat_ke_ringkasan' },
+    ]);
+    expect(peristiwa.filter((p) => p.nama === 'loncat_ke_ringkasan')).toHaveLength(2);
+  });
+
+  it('tidak mengganggu urutan peristiwa sesudahnya', () => {
+    const { peristiwa } = jalankan([
+      ...diPembukaan(),
+      { jenis: 'loncat_ke_ringkasan' },
+      { jenis: 'lanjut' },
+    ]);
+    expect(namaUrut(peristiwa).slice(-5)).toEqual([
+      'pembukaan_masuk',
+      'layar_masuk', // layar pembukaan
+      'loncat_ke_ringkasan',
+      'pembukaan_selesai',
+      'layar_masuk', // layar akhir
+    ]);
+  });
+
+  it('namanya ada di daftar tertutup D-6', () => {
+    expect(NAMA_PERISTIWA).toContain('loncat_ke_ringkasan');
+    expect(NAMA_PERISTIWA).toHaveLength(13);
   });
 });
 

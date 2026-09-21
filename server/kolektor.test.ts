@@ -293,7 +293,7 @@ describe('kolektor — validator sebagai fungsi murni', () => {
     ]);
   });
 
-  it('menerima kedua belas nama peristiwa D-6 (termasuk kembali_ke_kartu)', () => {
+  it('menerima ketiga belas nama peristiwa D-6 (termasuk loncat_ke_ringkasan)', () => {
     const contoh: Array<[string, Record<string, unknown>]> = [
       ['mulai', { lebar_layar: 375 }],
       ['layar_masuk', { layar: 'soal-1' }],
@@ -313,15 +313,67 @@ describe('kolektor — validator sebagai fungsi murni', () => {
       ['kembali_ke_kartu', { soal_id: 's1' }],
       ['lihat_balik', { dari_layar: 'soal-3', ke_layar: 'soal-1' }],
       ['pembukaan_masuk', {}],
+      ['loncat_ke_ringkasan', { ms_di_pembukaan: 1, gulir_maks_persen: 12 }],
       ['pembukaan_selesai', { ms_di_pembukaan: 1, gulir_maks_persen: 90 }],
       ['minat_kasus_lain', {}],
       ['akhir_kirim', { rating: 4, terasa: 'membaca data', sumber_jawaban: 'kartu fakta', teks: '' }],
       ['tutup', { layar_terakhir: 'akhir' }],
     ];
-    expect(contoh).toHaveLength(12);
+    expect(contoh).toHaveLength(13);
     for (const [nama, isi] of contoh) {
       const hasil = periksaPeristiwa(peristiwa({ nama, isi }));
       expect(hasil.galat, nama).toBeUndefined();
     }
+  });
+});
+
+describe('kolektor — loncat_ke_ringkasan (A4-T5)', () => {
+  const loncat = (isi: Record<string, unknown>): Record<string, unknown> =>
+    peristiwa({ nama: 'loncat_ke_ringkasan', isi });
+
+  it('menerima peristiwanya dan menyimpan kedua medannya', () => {
+    const hasil = periksaPeristiwa(loncat({ ms_di_pembukaan: 4_200, gulir_maks_persen: 12 }));
+    expect(hasil.galat).toBeUndefined();
+    expect((hasil.peristiwa as { isi: Record<string, unknown> }).isi).toEqual({
+      ms_di_pembukaan: 4_200,
+      gulir_maks_persen: 12,
+    });
+  });
+
+  it('menolak medan yang tidak dikenal, seperti peristiwa lain', () => {
+    // Pengumpul tidak membuang medan asing diam-diam; ia menolak seluruh
+    // peristiwanya dan menyebut medan mana yang salah.
+    const hasil = periksaPeristiwa(
+      loncat({ ms_di_pembukaan: 1, gulir_maks_persen: 2, ke_mana: 'judul-bacaan' }),
+    );
+    expect(hasil.galat).toContain('ke_mana');
+    expect(hasil.galat).toContain('loncat_ke_ringkasan');
+  });
+
+  it('menolak kalau medannya bukan angka', () => {
+    expect(periksaPeristiwa(loncat({ ms_di_pembukaan: 'lama', gulir_maks_persen: 2 })).galat)
+      .toBeDefined();
+  });
+
+  it('tetap menolak nama di luar daftar tertutup', () => {
+    expect(periksaPeristiwa(peristiwa({ nama: 'loncat', isi: {} })).galat).toBeDefined();
+    expect(periksaPeristiwa(peristiwa({ nama: 'loncat_ke_ringkasan_2', isi: {} })).galat)
+      .toBeDefined();
+  });
+
+  it('benar-benar tertulis ke berkas lewat server sungguhan', async () => {
+    const balas = await kirim(
+      JSON.stringify([loncat({ ms_di_pembukaan: 9_000, gulir_maks_persen: 7 })]),
+    );
+    expect(balas.status).toBe(204);
+    const berkas = berkasHariIni();
+    expect(existsSync(berkas)).toBe(true);
+    const baris = readFileSync(berkas, 'utf8')
+      .trim()
+      .split('\n')
+      .map((b) => JSON.parse(b) as { nama: string; isi: Record<string, unknown> });
+    const tercatat = baris.filter((b) => b.nama === 'loncat_ke_ringkasan');
+    expect(tercatat).toHaveLength(1);
+    expect(tercatat[0]?.isi).toEqual({ ms_di_pembukaan: 9_000, gulir_maks_persen: 7 });
   });
 });

@@ -620,6 +620,29 @@ function LayarPembukaan({
       <h1 id="judul-pembukaan" className="waktu-jalan">
         Waktu berjalan lagi
       </h1>
+      {/*
+        Jalan pintas (A4-T5). Garis waktunya TIDAK disembunyikan dan TIDAK
+        dilipat: ia isi layar ini, dan melipatnya akan menyembunyikan justru
+        bagian yang membuat "waktu berjalan lagi" terasa. Yang ditambahkan hanya
+        jalan bagi pemain yang ingin langsung ke jawabannya.
+      */}
+      <p className="loncat">
+        <button
+          type="button"
+          className="rujukan"
+          onClick={() => {
+            kirim({ jenis: 'loncat_ke_ringkasan' });
+            // Gerak halus hanya kalau pemain tidak memintanya dihentikan.
+            const diam = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            document.getElementById('judul-bacaan')?.scrollIntoView({
+              behavior: diam ? 'auto' : 'smooth',
+              block: 'start',
+            });
+          }}
+        >
+          Langsung ke ringkasan ↓
+        </button>
+      </p>
       <p className="mundur">Inilah yang terjadi sesudah {hari.panjang}.</p>
       <p className="nama-asli">
         Nama aslinya: {kasus.emiten.nama} ({kasus.emiten.simbol}).

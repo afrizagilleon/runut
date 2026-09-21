@@ -48,6 +48,14 @@ export interface RingkasSesi {
   lengkap: boolean;
   lebar_layar: number | null;
   sampai_pembukaan: boolean;
+  /**
+   * A4-T5: pemain menekan "Langsung ke ringkasan". Seberapa sering ini dipakai
+   * adalah ukuran apakah garis waktu pembukaan terlalu panjang — pertanyaan
+   * yang hanya bisa dijawab kalau jalan pintasnya dicatat, bukan disembunyikan.
+   */
+  loncat_ke_ringkasan: boolean;
+  /** Sudah sejauh mana pemain menggulir saat melompat; null kalau tidak melompat. */
+  gulir_saat_loncat: number | null;
   durasi_total_ms: number;
   ms_per_layar: Array<[string, number]>;
   soal_terlama: string | null;
@@ -162,6 +170,7 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
     '(tidak diketahui)';
 
   const kirimAkhir = urut.find((p) => p.nama === 'akhir_kirim');
+  const loncat = urut.find((p) => p.nama === 'loncat_ke_ringkasan');
 
   return {
     sesi: pertama?.sesi ?? '(tanpa sesi)',
@@ -169,6 +178,8 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
     lengkap: mulai !== undefined,
     lebar_layar: angka(mulai?.isi['lebar_layar']),
     sampai_pembukaan: urut.some((p) => p.nama === 'pembukaan_masuk'),
+    loncat_ke_ringkasan: loncat !== undefined,
+    gulir_saat_loncat: loncat === undefined ? null : angka(loncat.isi['gulir_maks_persen']),
     durasi_total_ms: terakhir?.t_ms ?? 0,
     ms_per_layar: msPerLayar(urut),
     soal_terlama: terlama?.soal_id ?? null,
@@ -251,17 +262,27 @@ export function laporan(semua: RingkasSesi[]): string {
   const minat = sesi.filter((s) => s.minat_kasus_lain).length;
   baris.push(`Sampai layar pembukaan: **${String(sampai)}** dari ${String(sesi.length)}`);
   baris.push(`Menekan "Mau coba kasus lain": **${String(minat)}**`);
+  const loncat = sesi.filter((s) => s.loncat_ke_ringkasan);
+  baris.push(
+    `Menekan "Langsung ke ringkasan": **${String(loncat.length)}** dari ${String(sampai)} ` +
+      `yang sampai layar pembukaan`,
+  );
   baris.push('');
 
   baris.push('## Per sesi');
   baris.push('');
-  baris.push('| sesi | lebar | sampai pembukaan | durasi | berhenti di | soal terlama |');
-  baris.push('|---|---|---|---|---|---|');
+  baris.push(
+    '| sesi | lebar | sampai pembukaan | loncat ke ringkasan | durasi | berhenti di | soal terlama |',
+  );
+  baris.push('|---|---|---|---|---|---|---|');
   for (const s of sesi) {
+    const loncatSel = s.loncat_ke_ringkasan
+      ? `ya (gulir ${s.gulir_saat_loncat === null ? '?' : String(s.gulir_saat_loncat)}%)`
+      : ya(false);
     baris.push(
       `| ${s.sesi} | ${s.lebar_layar === null ? '—' : String(s.lebar_layar)} | ` +
-        `${ya(s.sampai_pembukaan)} | ${detik(s.durasi_total_ms)} | ${s.layar_terakhir} | ` +
-        `${s.soal_terlama ?? '—'} |`,
+        `${ya(s.sampai_pembukaan)} | ${loncatSel} | ${detik(s.durasi_total_ms)} | ` +
+        `${s.layar_terakhir} | ${s.soal_terlama ?? '—'} |`,
     );
   }
   baris.push('');

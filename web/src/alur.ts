@@ -21,6 +21,15 @@ export const NAMA_PERISTIWA = [
   'kunci_jawaban',
   'lihat_balik',
   'pembukaan_masuk',
+  /*
+   * A4-T5. Layar pembukaan panjang, dan pemilik harus menggulir jauh sebelum
+   * sampai ke ringkasan "apa yang bisa dan tidak bisa dibaca" — bagian yang
+   * justru menjawab pertanyaan permainannya. Jalan pintasnya dicatat karena
+   * seberapa sering ia dipakai adalah ukuran apakah garis waktunya terlalu
+   * panjang; menyembunyikan garis waktunya sendiri akan menghapus pertanyaan
+   * itu, bukan menjawabnya.
+   */
+  'loncat_ke_ringkasan',
   'pembukaan_selesai',
   'minat_kasus_lain',
   'akhir_kirim',
@@ -135,6 +144,7 @@ export type Aksi =
   | { jenis: 'kunci_jawaban'; soal_id: string }
   | { jenis: 'lanjut' }
   | { jenis: 'lihat_balik'; nomor: number }
+  | { jenis: 'loncat_ke_ringkasan' }
   | { jenis: 'mundur' }
   | { jenis: 'catat_gulir'; persen: number }
   | { jenis: 'minat_kasus_lain' }
@@ -567,6 +577,24 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       const berikut = masukLayar(tutupWaktuLayar(keadaan, waktu), tujuan, waktu, catat);
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...berikut, urut }, peristiwa };
+    }
+
+    /*
+     * Jalan pintas ke ringkasan di layar pembukaan (A4-T5). Guliran itu sendiri
+     * dikerjakan komponen — reducer tidak menyentuh DOM — tetapi peristiwanya
+     * lahir di sini, seperti semua peristiwa lain. Layarnya tidak berubah:
+     * pemain masih di layar yang sama, hanya di bagian lain halamannya.
+     */
+    case 'loncat_ke_ringkasan': {
+      if (keadaan.layar.jenis !== 'pembukaan') return abaikan(keadaan);
+      const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      catat.tambah('loncat_ke_ringkasan', {
+        ms_di_pembukaan:
+          keadaan.masukPembukaanPada === null ? 0 : waktu - keadaan.masukPembukaanPada,
+        gulir_maks_persen: keadaan.gulirMaksPersen,
+      });
+      const { peristiwa, urut } = catat.hasil;
+      return { keadaan: { ...keadaan, urut }, peristiwa };
     }
 
     /*

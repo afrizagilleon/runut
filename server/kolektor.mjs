@@ -47,6 +47,10 @@ const MEDAN_ISI = {
   kembali_ke_kartu: { soal_id: 'teks' },
   lihat_balik: { dari_layar: 'teks', ke_layar: 'teks' },
   pembukaan_masuk: {},
+  // A4-T5: jalan pintas ke ringkasan. Medannya sama dengan pembukaan_selesai
+  // supaya keduanya bisa dibandingkan langsung: berapa lama, dan sudah sejauh
+  // mana pemain menggulir, ketika ia memilih melompat.
+  loncat_ke_ringkasan: { ms_di_pembukaan: 'angka', gulir_maks_persen: 'angka' },
   pembukaan_selesai: { ms_di_pembukaan: 'angka', gulir_maks_persen: 'angka' },
   minat_kasus_lain: {},
   akhir_kirim: {
