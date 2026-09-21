@@ -6,6 +6,7 @@ import {
   KAPITAL_DIIZINKAN,
   MARKUP_BAWAAN,
   MAKS_KAPITAL,
+  MESIN_DIIZINKAN,
   RADIUS,
   SKALA,
   laporkan,
@@ -95,8 +96,14 @@ describe('periksa:desain — skala ukuran huruf', () => {
   });
 
   it('singkatan font: tidak bisa dipakai memutari skala', () => {
-    expect(kode('.a { font: 500 15px/1 var(--mesin); }')).toEqual(['SKALA_HURUF']);
-    expect(kode('.a { font: 500 16px/1.4 var(--mesin); }')).toEqual([]);
+    /*
+     * Hurufnya `var(--baca)`, bukan `var(--mesin)`: sejak D-B3 huruf mesin tik
+     * di selektor sembarang merah sendiri, dan tes ini bicara tentang **skala
+     * ukuran**, bukan tentang hurufnya. Memakai `--mesin` di sini akan membuat
+     * dua aturan bertumpuk di satu asersi dan menyembunyikan yang sedang diuji.
+     */
+    expect(kode('.a { font: 500 15px/1 var(--baca); }')).toEqual(['SKALA_HURUF']);
+    expect(kode('.a { font: 500 16px/1.4 var(--baca); }')).toEqual([]);
     expect(kode('.opsi-huruf { font: 500 13px/1; }')).toEqual([]);
   });
 
@@ -203,5 +210,85 @@ describe('periksa:desain — laporannya', () => {
 
   it('berkas bersih dilaporkan sebagai bersih', () => {
     expect(laporkan([])).toContain('bersih');
+  });
+});
+
+/**
+ * D-B3 (amandemen A-2) — huruf mesin tik hanya di daftar izin.
+ *
+ * Aturannya sudah ada di `docs/desain.md` sejak v3 ("mesin tik hanya untuk
+ * keping kalender dan rincian teknis") dan tetap dilanggar diam-diam, karena
+ * tidak ada yang memeriksanya. Blok "Kartu yang menentukan" memakainya untuk
+ * judul dan kepala lembar, dan itu baru ketahuan ketika teman pemilik mengirim
+ * tangkapan layar karena alasan **lain**.
+ */
+describe('periksa:desain — huruf mesin tik (D-B3)', () => {
+  it('meloloskan selektor yang ada di daftar izin', () => {
+    expect(kode('.kalender-keping { font-family: var(--mesin); }')).toEqual([]);
+    expect(kode('.rincian dt { font-family: var(--mesin); }')).toEqual([]);
+  });
+
+  it('menolak selektor yang tidak ada di daftar', () => {
+    expect(kode('.penentu-judul { font-family: var(--mesin); }')).toEqual([
+      'MESIN_TIK_DI_LUAR_DAFTAR',
+    ]);
+  });
+
+  it('menolak tumpukan mesin tik yang ditulis langsung, bukan lewat var', () => {
+    expect(kode('.apa-pun { font-family: ui-monospace, monospace; }')).toEqual([
+      'MESIN_TIK_DI_LUAR_DAFTAR',
+    ]);
+    expect(kode(".apa-pun { font-family: 'Roboto Mono', monospace; }")).toEqual([
+      'MESIN_TIK_DI_LUAR_DAFTAR',
+    ]);
+  });
+
+  it('menolak lewat singkatan font:, bukan hanya font-family', () => {
+    expect(kode('.apa-pun { font: 600 12px/1 var(--mesin); }')).toEqual([
+      'MESIN_TIK_DI_LUAR_DAFTAR',
+    ]);
+  });
+
+  it('menolak variabel bernama lain yang isinya mesin tik', () => {
+    expect(kode('.apa-pun { font-family: var(--mesin-tik); }')).toEqual([
+      'MESIN_TIK_DI_LUAR_DAFTAR',
+    ]);
+  });
+
+  it('tidak menuduh huruf baca maupun huruf kalender', () => {
+    expect(kode('.isi { font-family: var(--baca); }')).toEqual([]);
+    expect(kode('h1 { font-family: var(--kalender); }')).toEqual([]);
+    // "monolog" bukan "mono": batas kata dijaga.
+    expect(kode(".apa-pun { font-family: 'Monolog Sans', sans-serif; }")).toEqual([]);
+  });
+
+  it('nama berawalan sama tidak menumpang izin', () => {
+    expect(kode('.kalender-kepingan { font-family: var(--mesin); }')).toEqual([
+      'MESIN_TIK_DI_LUAR_DAFTAR',
+    ]);
+  });
+
+  it('mendefinisikan --mesin di :root bukan pemakaian', () => {
+    expect(kode(':root { --mesin: ui-monospace, monospace; }')).toEqual([]);
+  });
+
+  it('tiap butir daftar izin menyebut alasannya, dan yang warisan ditandai', () => {
+    for (const izin of MESIN_DIIZINKAN) {
+      expect(izin.alasan.length, izin.selektor).toBeGreaterThan(20);
+      if (!izin.disahkan) expect(izin.alasan).toContain('WARISAN');
+    }
+    // Daftar ini gunanya menutup pintu; kalau ia kosong, gate-nya tidak ada.
+    expect(MESIN_DIIZINKAN.length).toBeGreaterThan(0);
+  });
+
+  it('tiap butir daftar izin memang masih dipakai gaya.css — daftar tidak boleh membusuk', () => {
+    const isi = readFileSync(AKAR + 'web/src/gaya.css', 'utf8');
+    const dipakai = periksaCss('web/src/gaya.css', isi);
+    // Gate bersih, jadi tiap pemakaian mesin tik di gaya.css tertutup daftar ini.
+    expect(dipakai.filter((t) => t.kode === 'MESIN_TIK_DI_LUAR_DAFTAR')).toEqual([]);
+    for (const izin of MESIN_DIIZINKAN) {
+      const kelas = izin.selektor.split(/[ >]/)[0] ?? '';
+      expect(isi.includes(kelas), `${izin.selektor} masih ada di gaya.css`).toBe(true);
+    }
   });
 });

@@ -51,6 +51,107 @@ export const MAKS_KAPITAL = 2;
 /** Kelas tombol yang dianggap **tindakan utama** oleh INV-12. */
 export const KELAS_TOMBOL_UTAMA: readonly string[] = ['tombol-utama'];
 
+/* ------------------------------------------------------------------ */
+/* Huruf mesin tik (D-B3, amandemen A-2)                               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * `docs/desain.md` baris 36: *"mesin tik hanya untuk keping kalender dan
+ * rincian teknis."*
+ *
+ * Aturan itu sudah ada sejak v3 dan tetap dilanggar diam-diam, karena tidak ada
+ * yang memeriksanya: blok "Kartu yang menentukan" memakai huruf mesin tik untuk
+ * judul dan kepala lembarnya, dan baru ketahuan ketika teman pemilik mengirim
+ * tangkapan layar karena alasan **lain** (A-2). Itu persis "risiko utama" M3.2 —
+ * gaya lama terbawa ke layar yang tidak ada di contoh.
+ *
+ * Daftar di bawah adalah **daftar tertutup**: pemakaian baru harus masuk ke sini
+ * lebih dulu, dengan alasannya, dan itulah gunanya. Ia terbagi dua, dan
+ * pembagiannya jujur — sebagian memang disahkan desain atau patokan, sebagian
+ * warisan yang belum diputuskan rupanya.
+ */
+export interface IzinMesin {
+  /** Selektor yang diizinkan, dicocokkan sebagai kelas utuh. */
+  selektor: string;
+  /** Kenapa ia sah, atau kenapa ia masih di sini. */
+  alasan: string;
+  /** `true` = disahkan `docs/desain.md`/patokan; `false` = warisan, menunggu putusan. */
+  disahkan: boolean;
+}
+
+export const MESIN_DIIZINKAN: readonly IzinMesin[] = [
+  {
+    selektor: '.kalender-keping',
+    alasan:
+      'keping kalender — docs/desain.md baris 34 ("keping 12 px mesin tik") dan ' +
+      'baris 36; patokan docs/contoh/layar-soal.html:44',
+    disahkan: true,
+  },
+  {
+    selektor: '.kalender-pita',
+    alasan:
+      'bagian benda kalender yang sama (pita bulan pada halaman kalender); ' +
+      'docs/desain.md baris 34 menyebut kalender sebagai satu pemakaian khusus',
+    disahkan: true,
+  },
+  {
+    selektor: '.kalender-hari',
+    alasan: 'bagian benda kalender yang sama (nama hari pada halaman kalender)',
+    disahkan: true,
+  },
+  {
+    selektor: '.rincian dt',
+    alasan: 'rincian teknis — docs/desain.md baris 36, disebut namanya',
+    disahkan: true,
+  },
+  {
+    selektor: '.keping-tanggal',
+    alasan:
+      'keping tanggal di garis waktu; patokan memberi huruf mesin tik pada keping ' +
+      'tanggalnya sendiri (docs/contoh/layar-soal.html:44). Bentuknya keping, ' +
+      'isinya tanggal — keluarga yang sama dengan keping kalender',
+    disahkan: true,
+  },
+  {
+    selektor: '.cap',
+    alasan:
+      'WARISAN, belum diputuskan. docs/desain.md menyebut cap sebagai satu dari dua ' +
+      'tulisan kapital, tetapi tidak menyebut hurufnya. Mengubahnya mengubah rupa, ' +
+      'jadi ia dilaporkan, bukan ditebak (A-2, D-B3)',
+    disahkan: false,
+  },
+  {
+    selektor: '.bacaan h3',
+    alasan:
+      'WARISAN, belum diputuskan. Judul bagian di layar pembukaan; layar itu tidak ' +
+      'ada di patokan, dan desain tidak menyebut hurufnya',
+    disahkan: false,
+  },
+  {
+    selektor: '.jejak-rinci > summary',
+    alasan:
+      'WARISAN, belum diputuskan. Pintu lipatan jejak verifikasi — dekat dengan ' +
+      '"rincian teknis" tetapi bukan itu; desain tidak menyebutnya',
+    disahkan: false,
+  },
+  {
+    selektor: '.jangkar',
+    alasan:
+      'WARISAN, belum diputuskan. Jangkar skala 1-5 di layar akhir; layar itu tidak ' +
+      'ada di patokan',
+    disahkan: false,
+  },
+];
+
+/**
+ * Nilai `font-family`/`font` yang membawa huruf mesin tik.
+ *
+ * Bukan hanya `var(--mesin)`: tumpukan mesin tik apa pun ditangkap, supaya
+ * menuliskan `ui-monospace, monospace` langsung — atau lewat variabel bernama
+ * lain — tidak menjadi jalan memutar.
+ */
+const POLA_MESIN = /--mesin|\bmono(space)?\b/i;
+
 export interface Temuan {
   berkas: string;
   baris: number;
@@ -151,6 +252,24 @@ export function periksaCss(berkas: string, isi: string): Temuan[] {
   let kapital = 0;
   for (const d of deklarasi) {
     const { properti, nilai, selektor, baris } = d;
+
+    if (properti === 'font-family' || properti === 'font') {
+      if (POLA_MESIN.test(nilai)) {
+        const izin = MESIN_DIIZINKAN.find((i) => cocokSelektor(selektor, i.selektor));
+        if (izin === undefined) {
+          temuan.push({
+            berkas,
+            baris,
+            kode: 'MESIN_TIK_DI_LUAR_DAFTAR',
+            pesan:
+              `\`${selektor}\` memakai huruf mesin tik. docs/desain.md: "mesin tik ` +
+              `hanya untuk keping kalender dan rincian teknis". Kalau ini memang ` +
+              `disahkan desain atau patokan, tambahkan ke MESIN_DIIZINKAN beserta ` +
+              `rujukan barisnya.`,
+          });
+        }
+      }
+    }
 
     if (properti === 'text-transform' && nilai === 'uppercase') {
       kapital += 1;

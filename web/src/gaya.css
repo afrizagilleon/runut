@@ -476,7 +476,6 @@ summary:focus-visible,
   margin: 0 0 24px;
 }
 
-
 /* --- lembar dokumen: kertas bersudut, satu pintu di kakinya --------------- */
 
 /*
@@ -1022,18 +1021,6 @@ summary:focus-visible,
   font-weight: 700;
   cursor: pointer;
   transition: background-color var(--gerak) ease;
-}
-
-.tombol-kecil {
-  min-height: 44px;
-  padding: 0 4px;
-  background: none;
-  border: 0;
-  color: var(--stempel);
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  cursor: pointer;
 }
 
 /* --- rujukan angka --------------------------------------------------------- */
