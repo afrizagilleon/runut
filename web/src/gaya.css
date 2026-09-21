@@ -809,12 +809,70 @@ summary:focus-visible,
   margin: 24px 0;
 }
 
+/*
+ * Temuan BUKAN lembar: ia suara kami, bukan dokumen resmi. Ditulis langsung di
+ * atas kertas dengan garis kiri tipis (`docs/desain.md`).
+ */
 .daftar-temuan {
   list-style: none;
   padding: 0;
+  margin: 12px 0 0;
   display: flex;
   flex-direction: column;
-  gap: var(--antar-lembar);
+  gap: 16px;
+}
+
+.daftar-temuan > li {
+  border-left: 2px solid var(--garis-tegas);
+  padding-left: 12px;
+}
+
+.temuan-ringkas {
+  margin: 0;
+  font-size: 15px;
+}
+
+.jejak-rinci > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  cursor: pointer;
+}
+
+/* --- panel sumber dalam bahasa orang -------------------------------------- */
+
+.label-orang {
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-redup);
+}
+
+.cara-hitung,
+.sejak-kapan,
+.dari-fakta {
+  font-size: 15px;
+  margin: 0 0 12px;
+}
+
+.rincian-teknis > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  cursor: pointer;
+  border-top: 1px solid var(--garis);
+  margin-top: 12px;
 }
 
 .angka-temuan {

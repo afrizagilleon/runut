@@ -18,6 +18,7 @@ import { Teks } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
 import { penanda } from './tanggal.ts';
+import { angkaBesarSatuan } from './angka.ts';
 
 /**
  * Komponen hanya `dispatch` dan merender (D-5).
@@ -545,6 +546,9 @@ function LayarPembukaan({
         Waktu berjalan lagi
       </h1>
       <p className="mundur">Inilah yang terjadi sesudah {hari.panjang}.</p>
+      <p className="nama-asli">
+        Nama aslinya: {kasus.emiten.nama} ({kasus.emiten.simbol}).
+      </p>
 
       <ol className="garis-waktu">
         {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
@@ -583,11 +587,7 @@ function LayarPembukaan({
         </ul>
       </section>
 
-      <JejakVerifikasi kasus={kasus} bukaSumber={bukaSumber} />
-
-      <p className="nama-asli">
-        Nama aslinya: {kasus.emiten.nama} ({kasus.emiten.simbol}).
-      </p>
+      <JejakVerifikasi kasus={kasus} />
 
       <div className="tindakan">
         <button
@@ -617,73 +617,44 @@ function KepingTanggal({ kasus, teks }: { kasus: Kasus; teks: string }): JSX.Ele
   return <span className="keping-tanggal">{penanda(fakta.tersedia_sejak).pendek}</span>;
 }
 
-function JejakVerifikasi({
-  kasus,
-  bukaSumber,
-}: {
-  kasus: Kasus;
-  bukaSumber: (fact_id: string) => void;
-}): JSX.Element {
+/**
+ * Jejak verifikasi (A1-T5).
+ *
+ * **Tidak** memakai bahan lembar: temuan adalah suara *kami*, bukan dokumen
+ * resmi, dan lembar yang dipakai untuk segalanya berhenti berarti "ini
+ * sumbernya" (`docs/desain.md`). Satu paragraf pengantar, selebihnya di bawah
+ * lipatan yang penandanya tetap terlihat. Angkanya dibaca orang, bukan mesin.
+ */
+function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
   return (
     <section className="jejak" aria-labelledby="judul-jejak">
       <h2 id="judul-jejak">Jejak verifikasi</h2>
       <p>
         Sebelum kasus ini dibuat, rantai laporan kepemilikan diperiksa dengan sepuluh aturan.
-        Hasilnya {kasus.temuan.length} temuan.
+        Hasilnya {kasus.temuan.length} hal yang tidak cocok — itulah sebabnya dua laporan
+        disingkirkan dari kartu.
       </p>
-      <ul className="daftar-temuan">
-        {kasus.temuan.map((temuan) => (
-          <li key={temuan.temuan_id} className="lembar">
-            <div className="lembar-garis" aria-hidden="true" />
-            <div className="lembar-kepala">
-              <h3 className="lembar-sumber">Aturan {temuan.aturan}</h3>
-            </div>
-            <div className="lembar-isi">
-              <p>{temuan.ringkasan}</p>
+      <details className="jejak-rinci">
+        <summary>Lihat kesepuluh pemeriksaan dan hasilnya</summary>
+        <ul className="daftar-temuan">
+          {kasus.temuan.map((temuan) => (
+            <li key={temuan.temuan_id}>
+              <p className="temuan-ringkas">{temuan.ringkasan}</p>
               <ul className="angka-temuan">
                 {temuan.angka.map((angka) => (
                   <li key={angka.label}>
-                    {angka.label}: <strong>{angka.nilai}</strong> {angka.satuan}
+                    {angka.label}: <strong>{angkaBesarSatuan(angka.nilai, angka.satuan)}</strong>
                   </li>
                 ))}
               </ul>
-              {temuan.fakta_terkait.length > 0 && (
-                <p className="terkait">
-                  {temuan.fakta_terkait.slice(0, 4).map((id) => (
-                    <button
-                      key={id}
-                      type="button"
-                      className="rujukan"
-                      onClick={() => {
-                        bukaSumber(id);
-                      }}
-                    >
-                      {id}
-                    </button>
-                  ))}
-                  {temuan.fakta_terkait.length > 4 && (
-                    <span className="meta">
-                      dan {temuan.fakta_terkait.length - 4} fakta lain
-                    </span>
-                  )}
-                </p>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
-      <details>
-        <summary>Aturan yang tidak bisa dijalankan atas kasus ini</summary>
-        <ul className="daftar-parameter">
-          {kasus.pemeriksaan
-            .filter((p) => !p.dijalankan)
-            .map((p) => (
-              <li key={p.aturan}>
-                <strong>{p.aturan}</strong> — {p.alasan_lewat}
-              </li>
-            ))}
-          {kasus.pemeriksaan.every((p) => p.dijalankan) && <li>Semua aturan bisa dijalankan.</li>}
+            </li>
+          ))}
         </ul>
+        <p className="meta">
+          Aturan yang tidak bisa dijalankan atas kasus ini:{' '}
+          {kasus.pemeriksaan.filter((p) => !p.dijalankan).length} dari{' '}
+          {kasus.pemeriksaan.length}.
+        </p>
       </details>
     </section>
   );
