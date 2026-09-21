@@ -8,7 +8,7 @@ import {
 export interface TeksProps {
   teks: string;
   /** Dipanggil saat pemain mengetuk sebuah angka; membuka sumber fakta itu. */
-  bukaSumber: (fact_id: string) => void;
+  sakelarSumber: (fact_id: string) => void;
   /**
    * `false` untuk teks yang berada di dalam label pilihan: tombol di dalam label
    * akan ikut memilih radio-nya, jadi di sana angka dirender datar. Angka yang
@@ -78,7 +78,7 @@ export function ikatTandaBaca(bagian: BagianTeks[]): PotonganTeks[] {
  */
 export function Teks({
   teks,
-  bukaSumber,
+  sakelarSumber,
   interaktif = true,
   tebalSaja = false,
 }: TeksProps): JSX.Element {
@@ -128,7 +128,7 @@ export function Teks({
             // adalah kode faktanya, bukan angka yang tertulis di layar.
             data-uid={`angka:${bagian.fact_id}`}
             onClick={() => {
-              bukaSumber(bagian.fact_id);
+              sakelarSumber(bagian.fact_id);
             }}
             aria-label={`${bagian.teks} — lihat sumber angka ini`}
           >

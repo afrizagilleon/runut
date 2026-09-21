@@ -6,7 +6,7 @@ export interface KartuFaktaProps {
   /** Sesudah jawaban dikunci, kartu penentu ditegaskan (D-8). */
   menentukan: boolean;
   /** Ketukan pada kaki lembar membuka sumbernya **di tempat** (D-5). */
-  bukaSumber: (fact_id: string) => void;
+  sakelarSumber: (fact_id: string) => void;
   /** Sedang terbuka? Isinya dirender oleh pemanggil sebagai `children`. */
   terbuka?: boolean;
   /** Isi yang tampil di dalam lembar ini ketika terbuka. */
@@ -31,7 +31,7 @@ export interface KartuFaktaProps {
 export function KartuFakta({
   fakta,
   menentukan,
-  bukaSumber,
+  sakelarSumber,
   terbuka = false,
   children,
 }: KartuFaktaProps): JSX.Element {
@@ -52,7 +52,7 @@ export function KartuFakta({
           {awam?.kepala ?? fakta.fact_id}
         </p>
         <p className="isi lembar-badan-isi">
-          <Teks teks={awam?.isi ?? fakta.klaim} bukaSumber={bukaSumber} tebalSaja />
+          <Teks teks={awam?.isi ?? fakta.klaim} sakelarSumber={sakelarSumber} tebalSaja />
         </p>
       </div>
 
@@ -62,7 +62,7 @@ export function KartuFakta({
         aria-expanded={terbuka}
         data-uid={`kaki:${fakta.fact_id}`}
         onClick={() => {
-          bukaSumber(fakta.fact_id);
+          sakelarSumber(fakta.fact_id);
         }}
       >
         {dihitung ? 'Lihat cara menghitungnya' : 'Lihat sumbernya'}

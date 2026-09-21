@@ -59,6 +59,8 @@ const MEDAN_ISI = {
   },
   layar_masuk: { layar: 'teks' },
   kartu_buka: { soal_id: 'teks', fact_id: 'teks' },
+  // A-2: baris istilah adalah pintu seperti kaki lembar, dan dicatat sama.
+  istilah_buka: { soal_id: 'teks' },
   pilih: { soal_id: 'teks', kunci: 'teks', ganti_ke: 'angka' },
   kunci_jawaban: {
     soal_id: 'teks',

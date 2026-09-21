@@ -526,9 +526,14 @@ summary:focus-visible,
   transition: transform var(--gerak) ease;
 }
 
+/*
+ * Panah berputar mengikuti keadaan sakelar (A-2). `details[open]` dibuang
+ * bersama `<details>` baris istilah: keadaannya sekarang di reducer, dan
+ * `aria-expanded` yang menjadi satu-satunya sumbernya — pembaca layar dan mata
+ * membaca hal yang sama.
+ */
 .lembar-kaki[aria-expanded='true'] .panah,
-.baris-istilah[aria-expanded='true'] .panah,
-details[open] > .baris-istilah .panah {
+.baris-istilah[aria-expanded='true'] .panah {
   transform: rotate(90deg);
 }
 
@@ -539,6 +544,19 @@ details[open] > .baris-istilah .panah {
 
 .buka > * + * {
   margin-top: 8px;
+}
+
+/*
+ * Penjelasan sebaris untuk angka yang ditautkan di teks kunci dan pembukaan
+ * (A-2). Bahan lembar, sudut 2 px — sama dengan yang terbuka di dalam lembar,
+ * karena isinya memang hal yang sama.
+ */
+.penjelasan-sebaris {
+  margin: 8px 0 16px;
+  border: 1px solid var(--garis);
+  border-radius: 2px;
+  background: var(--lembar);
+  padding: 12px;
 }
 
 /* --- pesan teman: satu-satunya bentuk membulat --------------------------- */
@@ -614,10 +632,6 @@ details[open] > .baris-istilah .panah {
   text-align: left;
   cursor: pointer;
   list-style: none;
-}
-
-.baris-istilah::-webkit-details-marker {
-  display: none;
 }
 
 .baris-istilah u {

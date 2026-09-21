@@ -345,10 +345,15 @@ export function Aplikasi(): JSX.Element {
     };
   }, [kirim]);
 
-  const bukaSumber = useCallback(
+  /*
+   * Sakelar, bukan tombol buka (A-2). Ketuk pertama membuka, ketuk kedua
+   * menutup. Komponen tidak tahu mana yang sedang terjadi dan tidak perlu
+   * tahu: ia mengirim satu aksi, reducer yang memutuskan.
+   */
+  const sakelarSumber = useCallback(
     (fact_id: string): void => {
       const soal_id = layar.jenis === 'soal' ? (keadaan.urutanSoal[layar.nomor] ?? null) : null;
-      kirim({ jenis: 'buka_sumber', fact_id, soal_id });
+      kirim({ jenis: 'sakelar_sumber', fact_id, soal_id });
     },
     [kirim, layar, keadaan.urutanSoal],
   );
@@ -373,7 +378,7 @@ export function Aplikasi(): JSX.Element {
 
       <main className="halaman" id="isi">
         {layar.jenis === 'pembuka' && (
-          <LayarPembuka kasus={kasus} hari={hari} kirim={kirim} bukaSumber={bukaSumber} />
+          <LayarPembuka kasus={kasus} hari={hari} kirim={kirim} sakelarSumber={sakelarSumber} />
         )}
         {layar.jenis === 'soal' && (
           <LayarSoal
@@ -381,12 +386,19 @@ export function Aplikasi(): JSX.Element {
             keadaan={keadaan}
             nomor={layar.nomor}
             kirim={kirim}
-            bukaSumber={bukaSumber}
+            sakelarSumber={sakelarSumber}
             indeks={indeks}
           />
         )}
         {layar.jenis === 'pembukaan' && (
-          <LayarPembukaan kasus={kasus} hari={hari} kirim={kirim} bukaSumber={bukaSumber} />
+          <LayarPembukaan
+            kasus={kasus}
+            hari={hari}
+            kirim={kirim}
+            sakelarSumber={sakelarSumber}
+            indeks={indeks}
+            terbuka={keadaan.sumberTerbuka}
+          />
         )}
         {layar.jenis === 'akhir' && (
           <LayarAkhir keadaan={keadaan} kirim={kirim} hariIni={hariIni} />
@@ -478,12 +490,12 @@ function LayarPembuka({
   kasus,
   hari,
   kirim,
-  bukaSumber,
+  sakelarSumber,
 }: {
   kasus: Kasus;
   hari: ReturnType<typeof penanda>;
   kirim: (aksi: Aksi) => void;
-  bukaSumber: (fact_id: string) => void;
+  sakelarSumber: (fact_id: string) => void;
 }): JSX.Element {
   return (
     <section className="layar layar-pembuka" aria-labelledby="judul-pembuka">
@@ -499,7 +511,7 @@ function LayarPembuka({
         di soal 1, tempat ia sedang melihat.
       */}
       <p className="isi hook" data-uid="kalimat-pembuka">
-        <Teks teks={kasus.pembuka.kalimat} bukaSumber={bukaSumber} />
+        <Teks teks={kasus.pembuka.kalimat} sakelarSumber={sakelarSumber} />
       </p>
       <div className="tindakan" data-uid="bilah">
         <button
@@ -619,10 +631,35 @@ function IsiLembarTerbuka({
   );
 }
 
-function BarisIstilah({ istilah }: { istilah: Istilah[] }): JSX.Element {
+/**
+ * Baris istilah (A-2): sakelar yang keadaannya hidup di reducer.
+ *
+ * Dulu `<details>` bawaan peramban. Ia memang bisa menutup — tetapi
+ * keadaannya tinggal di DOM, jadi tidak ada tes yang bisa membuktikannya, dan
+ * pembukaannya tidak pernah tercatat. Sekarang bentuknya sama dengan kaki
+ * lembar: satu tombol, satu `dispatch`, satu peristiwa saat membuka.
+ */
+function BarisIstilah({
+  istilah,
+  soal_id,
+  terbuka,
+  kirim,
+}: {
+  istilah: Istilah[];
+  soal_id: string;
+  terbuka: boolean;
+  kirim: (aksi: Aksi) => void;
+}): JSX.Element {
   return (
-    <details className="istilah-lipat" data-uid="istilah">
-      <summary className="baris-istilah">
+    <div className="istilah-lipat" data-uid="istilah">
+      <button
+        type="button"
+        className="baris-istilah"
+        aria-expanded={terbuka}
+        onClick={() => {
+          kirim({ jenis: 'sakelar_istilah', soal_id });
+        }}
+      >
         <span>
           Arti istilah:{' '}
           {istilah.map((butir, nomor) => (
@@ -635,15 +672,59 @@ function BarisIstilah({ istilah }: { istilah: Istilah[] }): JSX.Element {
         <span className="panah" aria-hidden="true">
           ›
         </span>
-      </summary>
-      <div className="buka istilah-buka">
-        {istilah.map((butir) => (
-          <p className="isi" key={butir.kata}>
-            <b>{butir.kata}</b> — {butir.arti}
-          </p>
-        ))}
-      </div>
-    </details>
+      </button>
+      {terbuka && (
+        <div className="buka istilah-buka">
+          {istilah.map((butir) => (
+            <p className="isi" key={butir.kata}>
+              <b>{butir.kata}</b> — {butir.arti}
+            </p>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * Penjelasan sebaris untuk angka yang ditautkan di teks kunci dan pembukaan
+ * (D-5, dilengkapi A-2).
+ *
+ * Sebelum A-2, tautan angka di kedua tempat itu **memanggil `sakelarSumber` tetapi
+ * tidak menampilkan apa pun**: satu-satunya yang merender `sumberTerbuka`
+ * adalah lembar dokumen, dan layar pembukaan tidak punya lembar. Kontrol yang
+ * bisa diketuk tanpa akibat lebih buruk daripada kontrol yang tidak bisa
+ * ditutup — audit A2-T2 menemukannya, dan ini perbaikannya.
+ *
+ * Penjelasannya muncul tepat di bawah paragrafnya, bukan di dialog: pola yang
+ * sama dengan kaki lembar.
+ */
+function PenjelasanSebaris({
+  teks,
+  indeks,
+  terbuka,
+}: {
+  teks: string;
+  indeks: ReadonlyMap<string, Fakta>;
+  terbuka: readonly string[];
+}): JSX.Element | null {
+  const dibuka = ambilRujukan(teks)
+    .map((r) => r.fact_id)
+    .filter((id) => !PENANDA_BUKAN_FAKTA.includes(id) && terbuka.includes(id));
+  const unik = [...new Set(dibuka)];
+  if (unik.length === 0) return null;
+  return (
+    <>
+      {unik.map((id) => {
+        const fakta = indeks.get(id);
+        if (fakta === undefined) return null;
+        return (
+          <div className="buka penjelasan-sebaris" key={id}>
+            <IsiLembarTerbuka fakta={fakta} indeks={indeks} />
+          </div>
+        );
+      })}
+    </>
   );
 }
 
@@ -652,14 +733,14 @@ function LayarSoal({
   keadaan,
   nomor,
   kirim,
-  bukaSumber,
+  sakelarSumber,
   indeks,
 }: {
   kasus: Kasus;
   keadaan: Keadaan;
   nomor: number;
   kirim: (aksi: Aksi) => void;
-  bukaSumber: (fact_id: string) => void;
+  sakelarSumber: (fact_id: string) => void;
   indeks: ReadonlyMap<string, Fakta>;
 }): JSX.Element {
   const soal: Soal | undefined = kasus.soal[nomor];
@@ -722,8 +803,8 @@ function LayarSoal({
             key={fakta.fact_id}
             fakta={fakta}
             menentukan={s.dikunci && menentukan.has(fakta.fact_id)}
-            bukaSumber={bukaSumber}
-            terbuka={keadaan.sumberTerbuka === fakta.fact_id}
+            sakelarSumber={sakelarSumber}
+            terbuka={keadaan.sumberTerbuka.includes(fakta.fact_id)}
           >
             <IsiLembarTerbuka fakta={fakta} indeks={indeks} />
           </KartuFakta>
@@ -731,7 +812,12 @@ function LayarSoal({
       </div>
 
       {soal.istilah.length > 0 && (
-        <BarisIstilah istilah={soal.istilah} />
+        <BarisIstilah
+          istilah={soal.istilah}
+          soal_id={soal.soal_id}
+          terbuka={keadaan.istilahTerbuka}
+          kirim={kirim}
+        />
       )}
 
       <h1 className="judul tanya" id={`tanya-${soal.soal_id}`} data-uid="tanya">
@@ -772,7 +858,7 @@ function LayarSoal({
                   opsi c soal 1 menampilkan
                   "[[kelipatan-2025-08-01-2025-10-08|22 kali]]" di layar.
                 */}
-                <Teks teks={p.teks} bukaSumber={bukaSumber} interaktif={false} />
+                <Teks teks={p.teks} sakelarSumber={sakelarSumber} interaktif={false} />
                 {tanda.label.map((kata) => (
                   <span
                     key={kata}
@@ -837,15 +923,20 @@ function LayarSoal({
                     <div className="lembar-garis" aria-hidden="true" />
                     <p className="lembar-ringkas-kepala">{f.awam?.kepala ?? f.fact_id}</p>
                     <p className="lembar-isi">
-                      <Teks teks={f.awam?.isi ?? f.klaim} bukaSumber={bukaSumber} tebalSaja />
+                      <Teks teks={f.awam?.isi ?? f.klaim} sakelarSumber={sakelarSumber} tebalSaja />
                     </p>
                   </article>
                 ))}
             </div>
 
             <p className="teks-kunci" data-uid="teks-kunci">
-              <Teks teks={soal.penjelasan} bukaSumber={bukaSumber} />
+              <Teks teks={soal.penjelasan} sakelarSumber={sakelarSumber} />
             </p>
+            <PenjelasanSebaris
+              teks={soal.penjelasan}
+              indeks={indeks}
+              terbuka={keadaan.sumberTerbuka}
+            />
           </>
         )}
       </div>
@@ -902,12 +993,16 @@ function LayarPembukaan({
   kasus,
   hari,
   kirim,
-  bukaSumber,
+  sakelarSumber,
+  indeks,
+  terbuka,
 }: {
   kasus: Kasus;
   hari: ReturnType<typeof penanda>;
   kirim: (aksi: Aksi) => void;
-  bukaSumber: (fact_id: string) => void;
+  sakelarSumber: (fact_id: string) => void;
+  indeks: ReadonlyMap<string, Fakta>;
+  terbuka: readonly string[];
 }): JSX.Element {
   /*
    * Pendengar gulir layar ini dihapus di M3.2/T-07: sekarang ada satu pendengar
@@ -955,7 +1050,8 @@ function LayarPembukaan({
         {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
           <li key={nomor}>
             <KepingTanggal kasus={kasus} teks={paragraf} />
-            <Teks teks={paragraf} bukaSumber={bukaSumber} />
+            <Teks teks={paragraf} sakelarSumber={sakelarSumber} />
+            <PenjelasanSebaris teks={paragraf} indeks={indeks} terbuka={terbuka} />
           </li>
         ))}
       </ol>
@@ -966,7 +1062,8 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} bukaSumber={bukaSumber} />
+              <Teks teks={baris} sakelarSumber={sakelarSumber} />
+              <PenjelasanSebaris teks={baris} indeks={indeks} terbuka={terbuka} />
             </li>
           ))}
         </ul>
@@ -974,7 +1071,8 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.tidak_bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} bukaSumber={bukaSumber} />
+              <Teks teks={baris} sakelarSumber={sakelarSumber} />
+              <PenjelasanSebaris teks={baris} indeks={indeks} terbuka={terbuka} />
             </li>
           ))}
         </ul>
@@ -982,7 +1080,8 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.disingkirkan.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} bukaSumber={bukaSumber} />
+              <Teks teks={baris} sakelarSumber={sakelarSumber} />
+              <PenjelasanSebaris teks={baris} indeks={indeks} terbuka={terbuka} />
             </li>
           ))}
         </ul>

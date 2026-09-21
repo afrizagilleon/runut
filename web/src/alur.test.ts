@@ -404,7 +404,7 @@ describe('alur — lama kartu terlihat dan gulir balik (A1-T2)', () => {
     const { peristiwa, keadaan } = jalankan([
       MULAI,
       { jenis: 'lanjut' },
-      { jenis: 'buka_sumber', fact_id: 'k1', soal_id: 's1' },
+      { jenis: 'sakelar_sumber', fact_id: 'k1', soal_id: 's1' },
     ]);
     const buka = peristiwa.find((p) => p.nama === 'kartu_buka');
     expect(buka?.isi).toEqual({ soal_id: 's1', fact_id: 'k1' });
@@ -414,7 +414,7 @@ describe('alur — lama kartu terlihat dan gulir balik (A1-T2)', () => {
   it('tidak mencatat kartu_buka untuk panel sumber di luar layar soal', () => {
     const { peristiwa } = jalankan([
       MULAI,
-      { jenis: 'buka_sumber', fact_id: 'k1', soal_id: null },
+      { jenis: 'sakelar_sumber', fact_id: 'k1', soal_id: null },
     ]);
     expect(peristiwa.filter((p) => p.nama === 'kartu_buka')).toHaveLength(0);
   });
@@ -535,7 +535,7 @@ describe('alur — jalur berhenti di tengah', () => {
       { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
       { jenis: 'kunci_jawaban', soal_id: 's1' },
       { jenis: 'lanjut' },
-      { jenis: 'buka_sumber', soal_id: 's2', fact_id: 'k3' },
+      { jenis: 'sakelar_sumber', soal_id: 's2', fact_id: 'k3' },
       { jenis: 'tutup' },
     ]);
     expect(namaUrut(peristiwa)).toEqual([
@@ -794,8 +794,10 @@ describe('alur — jalan pintas ke ringkasan (A4-T5)', () => {
 
   it('namanya ada di daftar tertutup D-6', () => {
     expect(NAMA_PERISTIWA).toContain('loncat_ke_ringkasan');
-    // 13 nama M3.1 + tiga nama pelacak M3.2 (ketuk, ketuk_dibatasi, gulir).
-    expect(NAMA_PERISTIWA).toHaveLength(16);
+    // 13 nama M3.1 + tiga nama pelacak M3.2 (ketuk, ketuk_dibatasi, gulir)
+    // + istilah_buka (A-2).
+    expect(NAMA_PERISTIWA).toHaveLength(17);
+    expect(NAMA_PERISTIWA).toContain('istilah_buka');
   });
 });
 
@@ -1129,5 +1131,147 @@ describe('alur — penanda tautan dan nomor pengunjung di peristiwa mulai (D-9, 
       pengunjung: null,
       kunjungan_ke: null,
     });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* A-2 — yang bisa dibuka harus bisa ditutup                          */
+/* ------------------------------------------------------------------ */
+
+describe('alur — kaki lembar adalah sakelar (A-2)', () => {
+  const kaki = (fact_id: string, soal_id: string | null = 's1'): Aksi => ({
+    jenis: 'sakelar_sumber',
+    fact_id,
+    soal_id,
+  });
+
+  it('buka → tutup → buka, dan keadaannya mengikuti tiap ketukan', () => {
+    const langkahnya: Aksi[] = [MULAI, { jenis: 'lanjut' }];
+    let keadaan = keadaanAwal(AWAL);
+    let waktu = 1_000;
+    const jejak: Array<readonly string[]> = [];
+    for (const a of [...langkahnya, kaki('k1'), kaki('k1'), kaki('k1')]) {
+      waktu += 100;
+      keadaan = langkah(keadaan, a, waktu).keadaan;
+      jejak.push(keadaan.sumberTerbuka);
+    }
+    expect(jejak.slice(-3)).toEqual([['k1'], [], ['k1']]);
+  });
+
+  it('dua lembar terbuka BERSAMAAN; membuka yang kedua tidak menutup yang pertama', () => {
+    // Inilah bug yang ditemukan pemilik: `sumberTerbuka` dulu satu nilai, jadi
+    // lembar kedua menggeser isi di bawah jarinya.
+    const { keadaan } = jalankan([MULAI, { jenis: 'lanjut' }, kaki('k1'), kaki('k2')]);
+    expect([...keadaan.sumberTerbuka].sort()).toEqual(['k1', 'k2']);
+  });
+
+  it('menutup salah satu meninggalkan yang lain tetap terbuka', () => {
+    const { keadaan } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      kaki('k1'),
+      kaki('k2'),
+      kaki('k1'),
+    ]);
+    expect(keadaan.sumberTerbuka).toEqual(['k2']);
+  });
+
+  it('kartu_buka dihitung per PEMBUKAAN, bukan per ketukan', () => {
+    const { peristiwa, keadaan } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      kaki('k1'), // buka
+      kaki('k1'), // tutup — tidak melahirkan peristiwa
+      kaki('k1'), // buka lagi
+      kaki('k2'), // buka lembar lain
+    ]);
+    const buka = peristiwa.filter((p) => p.nama === 'kartu_buka');
+    expect(buka).toHaveLength(3);
+    expect(buka.map((p) => p.isi['fact_id'])).toEqual(['k1', 'k1', 'k2']);
+    expect(keadaan.soal['s1']?.kartuDibuka).toBe(3);
+  });
+
+  it('ketukan yang MENUTUP tidak melahirkan peristiwa apa pun', () => {
+    const sesudahBuka = jalankan([MULAI, { jenis: 'lanjut' }, kaki('k1')]);
+    const menutup = langkah(sesudahBuka.keadaan, kaki('k1'), 9_000);
+    expect(menutup.peristiwa).toHaveLength(0);
+    expect(menutup.keadaan.sumberTerbuka).toEqual([]);
+  });
+
+  it('pindah layar mengosongkan lembar yang terbuka', () => {
+    const { keadaan } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      kaki('k1'),
+      kaki('k2'),
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+    ]);
+    expect(keadaan.sumberTerbuka).toEqual([]);
+    expect(keadaan.istilahTerbuka).toBe(false);
+  });
+
+  it('melihat balik soal lama tidak menemukan lembar yang terlanjur terbentang', () => {
+    const { keadaan } = jalankan([
+      ...sampaiTerkunci(),
+      { jenis: 'lihat_balik', nomor: 0 },
+    ]);
+    expect(keadaan.sumberTerbuka).toEqual([]);
+  });
+
+  it('di luar layar soal, sakelar tetap bekerja tetapi tidak melahirkan kartu_buka', () => {
+    const { keadaan, peristiwa } = jalankan([MULAI, kaki('k1', null), kaki('k1', null)]);
+    expect(peristiwa.filter((p) => p.nama === 'kartu_buka')).toHaveLength(0);
+    expect(keadaan.sumberTerbuka).toEqual([]);
+  });
+});
+
+describe('alur — baris istilah adalah sakelar (A-2)', () => {
+  const istilah = (soal_id = 's1'): Aksi => ({ jenis: 'sakelar_istilah', soal_id });
+
+  it('buka → tutup → buka', () => {
+    let keadaan = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+    const jejak: boolean[] = [];
+    let waktu = 5_000;
+    for (let i = 0; i < 3; i += 1) {
+      waktu += 100;
+      keadaan = langkah(keadaan, istilah(), waktu).keadaan;
+      jejak.push(keadaan.istilahTerbuka);
+    }
+    expect(jejak).toEqual([true, false, true]);
+  });
+
+  it('istilah_buka lahir hanya saat membuka', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      istilah(), // buka
+      istilah(), // tutup
+      istilah(), // buka
+    ]);
+    const buka = peristiwa.filter((p) => p.nama === 'istilah_buka');
+    expect(buka).toHaveLength(2);
+    expect(buka[0]?.isi).toEqual({ soal_id: 's1' });
+  });
+
+  it('soal yang tidak dikenal tidak mengubah apa pun', () => {
+    const sebelum = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+    const hasil = langkah(sebelum, istilah('tidak-ada'), 9_000);
+    expect(hasil.keadaan).toBe(sebelum);
+    expect(hasil.peristiwa).toHaveLength(0);
+  });
+
+  it('istilah dan lembar berdiri sendiri-sendiri', () => {
+    const { keadaan } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      istilah(),
+      { jenis: 'sakelar_sumber', fact_id: 'k1', soal_id: 's1' },
+      { jenis: 'sakelar_sumber', fact_id: 'k1', soal_id: 's1' },
+    ]);
+    // Menutup lembar tidak ikut menutup istilah.
+    expect(keadaan.istilahTerbuka).toBe(true);
+    expect(keadaan.sumberTerbuka).toEqual([]);
   });
 });

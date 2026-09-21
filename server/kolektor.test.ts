@@ -313,11 +313,12 @@ describe('kolektor — validator sebagai fungsi murni', () => {
     ]);
   });
 
-  it('menerima keenam belas nama peristiwa D-6 (termasuk pelacak M3.2)', () => {
+  it('menerima ketujuh belas nama peristiwa D-6 (pelacak M3.2 + istilah_buka A-2)', () => {
     const contoh: Array<[string, Record<string, unknown>]> = [
       ['mulai', MULAI_ISI],
       ['layar_masuk', { layar: 'soal-1' }],
       ['kartu_buka', { soal_id: 's1', fact_id: 'susp-2025-06-30' }],
+      ['istilah_buka', { soal_id: 's1' }],
       ['pilih', { soal_id: 's1', kunci: 'b', ganti_ke: 0 }],
       [
         'kunci_jawaban',
@@ -342,7 +343,7 @@ describe('kolektor — validator sebagai fungsi murni', () => {
       ['akhir_kirim', { rating: 4, terasa: 'membaca data', sumber_jawaban: 'kartu fakta', teks: '' }],
       ['tutup', { layar_terakhir: 'akhir' }],
     ];
-    expect(contoh).toHaveLength(16);
+    expect(contoh).toHaveLength(17);
     for (const [nama, isi] of contoh) {
       const hasil = periksaPeristiwa(peristiwa({ nama, isi }));
       expect(hasil.galat, nama).toBeUndefined();

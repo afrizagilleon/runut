@@ -18,6 +18,12 @@ export const NAMA_PERISTIWA = [
   'mulai',
   'layar_masuk',
   'kartu_buka',
+  /*
+   * A-2: baris istilah dicatat seperti kaki lembar. Keduanya pintu ke
+   * penjelasan, dan pemilik ingin tahu pintu mana yang dipakai orang.
+   * Seperti `kartu_buka`, ia lahir **hanya saat membuka**.
+   */
+  'istilah_buka',
   'kembali_ke_kartu',
   'pilih',
   'kunci_jawaban',
@@ -147,8 +153,20 @@ export interface Keadaan {
   mulaiPada: number | null;
   layar: Layar;
   soal: Record<string, KeadaanSoal>;
-  /** fact_id yang panel sumbernya sedang terbuka; `null` kalau tertutup. */
-  sumberTerbuka: string | null;
+  /**
+   * `fact_id` lembar-lembar yang sumbernya sedang terbuka di layar ini (A-2).
+   *
+   * **Himpunan, bukan satu nilai.** Versi lama menyimpan satu `fact_id`, jadi
+   * membuka lembar kedua diam-diam menutup yang pertama dan menggeser isi di
+   * bawah jari pemain. Di `docs/contoh/layar-soal.html` tiap lembar mandiri,
+   * dan itulah yang ditiru di sini.
+   *
+   * Dikosongkan tiap ganti layar: yang dibuka di soal 1 tidak boleh ikut
+   * terbuka waktu pemain melihat balik soal itu dari layar lain.
+   */
+  sumberTerbuka: readonly string[];
+  /** Baris "Arti istilah" sedang terbuka di layar ini (A-2). */
+  istilahTerbuka: boolean;
   akhir: JawabanAkhir;
   /** Sudah menekan Selesai. */
   akhirTerkirim: boolean;
@@ -189,8 +207,14 @@ export type Aksi =
   | { jenis: 'kartu_keluar_layar'; soal_id: string }
   | { jenis: 'kembali_ke_kartu'; soal_id: string }
   | { jenis: 'opsi_terlihat'; soal_id: string; terlihat: boolean }
-  | { jenis: 'buka_sumber'; fact_id: string; soal_id: string | null }
-  | { jenis: 'tutup_sumber' }
+  /*
+   * Sakelar, bukan tombol buka (A-2). Satu `dispatch` per ketukan; yang
+   * memutuskan "ini membuka atau menutup" adalah reducer, bukan komponen —
+   * kalau komponen yang memutuskan, ia harus menyimpan keadaan sendiri, dan
+   * keadaan yang hidup di komponen tidak bisa dibuktikan tes mana pun.
+   */
+  | { jenis: 'sakelar_sumber'; fact_id: string; soal_id: string | null }
+  | { jenis: 'sakelar_istilah'; soal_id: string }
   | { jenis: 'pilih'; soal_id: string; kunci: string }
   | { jenis: 'kunci_jawaban'; soal_id: string }
   | { jenis: 'lanjut' }
@@ -253,7 +277,8 @@ export function keadaanAwal({
     mulaiPada: null,
     layar: { jenis: 'pembuka' },
     soal,
-    sumberTerbuka: null,
+    sumberTerbuka: [],
+    istilahTerbuka: false,
     akhir: { rating: null, terasa: null, sumber_jawaban: null, teks: null },
     akhirTerkirim: false,
     minatDitekan: false,
@@ -482,7 +507,16 @@ function masukLayar(
 ): Keadaan {
   if (tinggalkan) catatGulirLayar(keadaan, catat);
   // Gulir dihitung per layar: yang sudah dilaporkan tidak ikut ke layar berikut.
-  let berikut: Keadaan = { ...keadaan, layar, gulirMaksPersen: 0 };
+  // Begitu juga lembar yang terbuka (A-2): tiap layar mulai dengan semuanya
+  // tertutup, supaya pemain yang melihat balik soal lama tidak menemukan
+  // halaman yang sudah terlanjur terbentang.
+  let berikut: Keadaan = {
+    ...keadaan,
+    layar,
+    gulirMaksPersen: 0,
+    sumberTerbuka: [],
+    istilahTerbuka: false,
+  };
   if (layar.jenis === 'soal') {
     const id = berikut.urutanSoal[layar.nomor];
     if (id !== undefined) {
@@ -583,10 +617,22 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       return { keadaan: { ...keadaan, urut }, peristiwa };
     }
 
-    case 'buka_sumber': {
+    /*
+     * Ketuk pertama membuka, ketuk kedua menutup, berapa kali pun (A-2).
+     *
+     * Peristiwa `kartu_buka` lahir **hanya saat membuka**, jadi hitungannya
+     * tetap berarti "berapa kali sumber dibaca" dan bukan "berapa kali kaki
+     * lembar disentuh". Ketukan menutup tidak hilang dari data: ia tetap
+     * tercatat sebagai `ketuk` biasa lewat pelacak (D-8).
+     */
+    case 'sakelar_sumber': {
+      const sudahTerbuka = keadaan.sumberTerbuka.includes(aksi.fact_id);
+      const daftar = sudahTerbuka
+        ? keadaan.sumberTerbuka.filter((f) => f !== aksi.fact_id)
+        : [...keadaan.sumberTerbuka, aksi.fact_id];
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
-      let berikut: Keadaan = { ...keadaan, sumberTerbuka: aksi.fact_id };
-      if (aksi.soal_id !== null && keadaan.soal[aksi.soal_id] !== undefined) {
+      let berikut: Keadaan = { ...keadaan, sumberTerbuka: daftar };
+      if (!sudahTerbuka && aksi.soal_id !== null && keadaan.soal[aksi.soal_id] !== undefined) {
         catat.tambah('kartu_buka', { soal_id: aksi.soal_id, fact_id: aksi.fact_id });
         berikut = ubahSoal(berikut, aksi.soal_id, (lama) => ({
           ...lama,
@@ -597,8 +643,14 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       return { keadaan: { ...berikut, urut }, peristiwa };
     }
 
-    case 'tutup_sumber':
-      return { keadaan: { ...keadaan, sumberTerbuka: null }, peristiwa: [] };
+    case 'sakelar_istilah': {
+      if (keadaan.soal[aksi.soal_id] === undefined) return abaikan(keadaan);
+      const sudahTerbuka = keadaan.istilahTerbuka;
+      const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      if (!sudahTerbuka) catat.tambah('istilah_buka', { soal_id: aksi.soal_id });
+      const { peristiwa, urut } = catat.hasil;
+      return { keadaan: { ...keadaan, istilahTerbuka: !sudahTerbuka, urut }, peristiwa };
+    }
 
     case 'pilih': {
       const s = keadaan.soal[aksi.soal_id];
