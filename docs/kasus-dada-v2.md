@@ -14,7 +14,8 @@ Dua masukan pemilik yang melahirkan dokumen ini (21 Sep 2026):
 4. **Bentuk soal: omongan teman yang dicek ke kartu.** Batang soal memuat satu kalimat yang biasa terdengar di grup obrolan; pemain memilih mana yang paling tepat menurut kartu. Dalam satu kasus **minimal satu omongan teman harus betul**, supaya "jawab saja Keliru" tidak menjadi strategi.
 5. **Opsi seimbang**: dua "Betul…" dan dua "Keliru…", hampir sama panjang, sama spesifik. Tidak ada opsi kabur ("tidak bisa dinilai") dan tidak ada opsi konyol.
 6. **Soal harus mustahil dijawab benar tanpa membaca kartu**, dan batang/opsi sebuah soal tidak boleh memuat fakta yang dibutuhkan soal sesudahnya.
-7. Tiap soal boleh membawa paling banyak dua **istilah** berpenjelasan satu baris, tampil di bawah kartu.
+7. **Kepala kartu paling banyak 36 karakter**, supaya muat satu baris di layar 375 px tanpa terpotong; rentang tanggal yang panjang masuk ke kalimat kartu, bukan ke kepalanya.
+7b. Tiap soal boleh membawa paling banyak dua **istilah** berpenjelasan satu baris, tampil di bawah kartu.
 8. **Jangkar waktu.** Pemain hidup di 2026, kasusnya di 2025; tanpa pengingat, ia bingung "sekarang" itu kapan. Setiap batang soal dibuka dengan "Hari ini <tanggal T>." dan setiap layar dari pembuka sampai soal terakhir menampilkan penanda tetap "Hari ini: <hari>, <tanggal T>". Layar pembukaan mengganti penanda itu dengan "Waktu berjalan lagi".
 9. Teks kunci hanya memakai fakta ≤ T, menunjuk kartu yang menentukan, dan menjelaskan satu salah-kaprah. Nada ke tugas, bukan ke orang: tidak ada "hebat" atau "sayang sekali".
 
@@ -37,8 +38,8 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 
 **Yang dilihat pemain:**
 
-> **Dihitung dari data harga · 1 Agu – 8 Okt 2025**
-> Harga saham Perusahaan D naik dari **Rp8** ke **Rp178** dalam 47 hari bursa — sekarang **22 kali** harga awalnya.
+> **Dihitung dari data harga**
+> Dari 1 Agustus sampai hari ini, harga saham Perusahaan D naik dari **Rp8** ke **Rp178** — **22 kali** harga awalnya, dalam 47 hari bursa.
 >
 > **Pengumuman bursa · 30 Jun 2025**
 > Bursa menghentikan sementara jual-beli saham ini karena perusahaan **belum menyerahkan laporan keuangan tahunan yang sudah diaudit**. Per 1 Agustus sahamnya sudah diperdagangkan lagi.
@@ -62,11 +63,11 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 
 **Yang dilihat pemain:**
 
-> **Pengumuman dividen · tanggal ex 16 Sep 2025**
+> **Pengumuman dividen · ex 16 Sep 2025**
 > Perusahaan D membagikan dividen tunai **Rp0,14 per lembar** (sebelum pajak).
 >
-> **Dihitung dari kartu di atas dan harga 8 Okt 2025**
-> Untuk **10 lot** (1.000 lembar): dividennya **Rp140**, sedangkan nilai 10 lot itu di harga Rp178 adalah **Rp178.000**.
+> **Dihitung dari kartu di atas**
+> Untuk **10 lot** (1.000 lembar): dividennya **Rp140**, sedangkan nilai 10 lot itu di harga hari ini, Rp178, adalah **Rp178.000**.
 >
 > *Istilah — Lot:* satuan jual-beli saham; 1 lot = 100 lembar. · *Tanggal ex:* mulai tanggal ini pembeli baru tidak lagi kebagian dividen tersebut; yang sudah pegang sebelumnya tetap kebagian.
 >
@@ -89,13 +90,13 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 
 **Yang dilihat pemain:**
 
-> **Laporan pemegang saham · terbit 25 Agu 2025**
+> **Laporan pemilik · terbit 25 Agu 2025**
 > Pemilik terbesar Perusahaan D menjual **70 juta lembar** di harga **Rp13**. Transaksinya 12 Agustus.
 >
-> **Laporan pemegang saham · terbit 25 Agu 2025**
+> **Laporan pemilik · terbit 25 Agu 2025**
 > Ia menjual lagi **179,5 juta lembar** di harga **Rp14**. Transaksinya 13 Agustus.
 >
-> **Laporan pemegang saham · terbit 1 Sep 2025**
+> **Laporan pemilik · terbit 1 Sep 2025**
 > Ia menjual lagi **50 juta lembar** di harga **Rp15**. Transaksinya 14 Agustus.
 >
 > **Dihitung dari tiga laporan di atas**
@@ -148,6 +149,8 @@ Semua opsional; tombol **Selesai** selalu aktif. Di bawahnya satu tombol lagi: *
 (Sengaja tanpa "happy trading/investing": produk ini tidak pernah mengajak bertransaksi, INV-5.)
 
 ## Riwayat uji
+
+- **Review A-1 (21 Sep larut malam):** kepala kartu "Dihitung dari data harga · 1 Agu – 8 Okt 2025" terpotong di 375 px (402 px di ruang 341 px). Semua kepala dipendekkan ke ≤ 36 karakter dan rentang tanggal dipindah ke kalimat kartu.
 
 - **Review + kritik desain (21 Sep malam).** Kartu harga soal 1 memang hasil hitungan kami, jadi kepalanya kini berbunyi "Dihitung dari data harga …"; kartu ketiga soal 3 memakai laporan asli, bukan fakta gabungan; tiap soal punya satu kartu penentu yang disalin ringkas di atas teks kunci.
 
