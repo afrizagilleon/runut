@@ -1,9 +1,9 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type ElementHandle, type Page } from '@playwright/test';
 import {
   LABEL_SESUDAHNYA,
+  bersentuh,
   bilahTurunAda,
   buka,
-  ketuk,
   kunciJawaban,
   lanjut,
   mulaiKasus,
@@ -30,30 +30,64 @@ import { bacaKasus } from './bantu/kasus.ts';
  * sekarang berdiri.
  */
 
-/** Buka semua yang bisa dibuka di layar ini, termasuk "Rincian teknis". */
+/**
+ * Buka semua yang bisa dibuka di layar ini, termasuk "Rincian teknis".
+ *
+ * **Tiap kontrol dipegang sekali, lalu diperiksa dan diketuk lewat pegangan
+ * yang sama** — dan itulah inti perbaikan A1-T5c.
+ *
+ * Versi sebelumnya memakai `locator.nth(n)` dan **menyelesaikan selektornya
+ * berkali-kali untuk satu kontrol yang sama**: sekali untuk `count()`, sekali
+ * untuk membaca `open`, sekali lagi untuk `locator('summary')`, sekali lagi
+ * saat mengetuk. Di antara pembacaan itu daftarnya **tumbuh**: tiap lipatan yang
+ * terbuka melahirkan "Rincian teknis"-nya sendiri, dan tiap tautan angka yang
+ * terbuka melahirkan satu blok penjelasan beserta lipatannya. Indeks ke-n pada
+ * pembacaan pertama bukan elemen yang sama dengan indeks ke-n pada pembacaan
+ * berikutnya, jadi kontrol bisa terlewat, terketuk dua kali (terbuka lalu
+ * tertutup lagi), atau — yang paling merusak — kontrol yang sengaja dilewati
+ * bisa ikut terketuk. Itu hipotesis paling masuk akal untuk E-09a yang gagal
+ * satu dari empat putaran di tangan reviewer.
+ *
+ * Pegangan (`elementHandles`) tidak bisa bergeser: ia menunjuk simpul, bukan
+ * posisi. Pemeriksaan "masih tertutup?" dan ketukannya memakai pegangan yang
+ * sama, jadi keduanya tidak mungkin bicara tentang elemen yang berbeda.
+ */
 async function bukaSemuaLipatan(page: Page): Promise<number> {
   let dibuka = 0;
+  // Empat putaran: membuka lipatan melahirkan lipatan baru di dalamnya, dan
+  // yang baru itu pun bisa melahirkan lagi. Putarannya berhenti sendiri begitu
+  // tidak ada lagi yang tertutup.
+  for (let putaran = 0; putaran < 4; putaran += 1) {
+    const pegangan: ElementHandle<Node>[] = [
+      ...(await page.locator('[aria-expanded="false"]').elementHandles()),
+      ...(await page.locator('details:not([open]) > summary').elementHandles()),
+    ];
+    if (pegangan.length === 0) break;
 
-  const lipat = page.locator('[aria-expanded="false"]');
-  for (let n = (await lipat.count()) - 1; n >= 0; n -= 1) {
-    await ketuk(lipat.nth(n));
-    dibuka += 1;
-  }
-
-  // Dua putaran: membuka sebuah lipatan bisa melahirkan lipatan baru di dalamnya
-  // ("Rincian teknis" hanya ada setelah panel sumbernya terbentang).
-  for (let putaran = 0; putaran < 2; putaran += 1) {
-    const susulan = page.locator('[aria-expanded="false"]');
-    for (let n = (await susulan.count()) - 1; n >= 0; n -= 1) {
-      await ketuk(susulan.nth(n));
-      dibuka += 1;
-    }
-    const rinci = page.locator('details');
-    for (let n = (await rinci.count()) - 1; n >= 0; n -= 1) {
-      const satu = rinci.nth(n);
-      if ((await satu.evaluate((el) => (el as HTMLDetailsElement).open)) === false) {
-        await ketuk(satu.locator('summary'));
+    for (const satu of pegangan) {
+      try {
+        /*
+         * Membuka satu kontrol bisa membuka kontrol lain: tautan angka dan kaki
+         * lembar berbagi himpunan `sumberTerbuka` yang sama. Tanpa pemeriksaan
+         * ini, ketukan berikutnya justru MENUTUP yang sudah terbuka.
+         */
+        const masihTertutup = await satu.evaluate((simpul) => {
+          if (!(simpul instanceof Element)) return false;
+          if (simpul.tagName.toLowerCase() === 'summary') {
+            return (simpul.parentElement as HTMLDetailsElement | null)?.open !== true;
+          }
+          return simpul.getAttribute('aria-expanded') === 'false';
+        });
+        if (!masihTertutup) continue;
+        await satu.scrollIntoViewIfNeeded();
+        if (bersentuh()) await satu.tap();
+        else await satu.click();
         dibuka += 1;
+      } catch {
+        // Simpulnya sudah lepas dari DOM karena lipatan lain berubah; putaran
+        // berikutnya akan memungut penggantinya.
+      } finally {
+        await satu.dispose();
       }
     }
   }

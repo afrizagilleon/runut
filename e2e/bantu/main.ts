@@ -126,6 +126,16 @@ export function gagalYangBerarti(daftar: PermintaanGagal[]): PermintaanGagal[] {
  * Bahan review untuk manusia, bukan pembanding: tidak ada `toHaveScreenshot`
  * di seluruh rangkaian ini. Pemilik dan reviewer harus bisa melihat apa yang
  * dilihat browser tanpa menjalankan apa pun.
+ *
+ * **Gulirnya ditunggu berhenti lebih dulu, di sini — bukan di pemanggilnya.**
+ * `03-sesudah-jawab-di-bawah.png` sempat menampilkan ±90 px ruang kosong di
+ * atas keping kalender karena diambil saat gulir halus masih berjalan; reviewer
+ * mengukur sesudahnya dan mendapat `keping.top = 0`. Jadi produknya benar dan
+ * gambarnya yang berbohong. Gambar bahan review yang menyesatkan lebih buruk
+ * daripada tidak ada gambar: ia membuat orang mengejar cacat yang tidak ada.
+ *
+ * Penantiannya ditaruh di dalam fungsi ini supaya ia tidak bisa terlupa di
+ * salah satu dari dua belas tempat pemanggilan.
  */
 export async function simpanLayar(
   page: Page,
@@ -133,6 +143,7 @@ export async function simpanLayar(
   nama: string,
   penuh = false,
 ): Promise<string> {
+  await tungguGulirBerhenti(page);
   const dir = join(DIR_LAYAR, test.info().project.name);
   mkdirSync(dir, { recursive: true });
   const jalur = join(dir, `${String(nomor).padStart(2, '0')}-${nama}.png`);

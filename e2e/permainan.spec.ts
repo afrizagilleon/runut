@@ -25,6 +25,7 @@ import {
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus, kunciSalah } from './bantu/kasus.ts';
+import { kotak } from './bantu/ukur.ts';
 
 /**
  * E-10 — satu permainan penuh, dari layar pertama sampai pesan penutup, di
@@ -79,7 +80,21 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
       'opsi pertama harus terlihat sesudah "Jawab di bawah" diketuk',
     );
   }
-  await simpanLayar(page, 3, 'sesudah-jawab-di-bawah');
+  /*
+   * D-A5a. Penjaga "halaman diam saat digambar" ada di dalam `simpanLayar`,
+   * jadi ia berlaku untuk kedua belas tangkapan — bukan hanya yang ini.
+   * Yang diperiksa di sini adalah isi gambarnya: keping kalender menempel di
+   * puncak layar DAN keempat opsi sudah terlihat, yaitu keadaan yang memang
+   * ingin ditunjukkan PNG 03.
+   */
+  const jalur3 = await simpanLayar(page, 3, 'sesudah-jawab-di-bawah');
+  const kepingSaatItu = await kotak(page, '[data-uid="keping"]');
+  expect(kepingSaatItu, 'keping kalender ada di layar soal').not.toBeNull();
+  expect(
+    kepingSaatItu?.atas ?? -99,
+    `PNG 03 (${jalur3}) harus menampilkan keping di puncak layar, ` +
+      `terukur y = ${String(kepingSaatItu?.atas ?? -99)}`,
+  ).toBeLessThanOrEqual(0.5);
 
   /* --- sumber sebuah lembar dibuka di tempat -------------------------- */
   const faktaPertama = soal1.kartu[0] ?? '';
