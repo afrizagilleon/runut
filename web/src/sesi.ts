@@ -12,7 +12,7 @@
  * bisa disusun sendiri dengan keacakan yang sama kualitasnya. `Math.random`
  * adalah cadangan terakhir: ia bukan keacakan kriptografis, tetapi id sesi ini
  * bukan rahasia — ia hanya perlu tidak bertabrakan (INV-9: tidak ada identitas,
- * tidak ada cookie, hidup di memori tab saja).
+ * hidup di memori tab saja).
  *
  * Sumber acaknya disuntikkan supaya ketiga cabang bisa dites tanpa peramban.
  */
@@ -126,8 +126,9 @@ function angkaKunjungan(mentah: string | null): number {
 /**
  * Baca — dan kalau perlu buat — nomor pengunjung (D-13).
  *
- * Bukan cookie: ia tidak ikut terkirim di setiap permintaan dan tidak terbaca
- * situs lain. Ia ada karena "100+ peserta" harus berarti orang, bukan sesi;
+ * Ia bukan cookie — tidak ikut terkirim di setiap permintaan dan tidak terbaca
+ * situs lain — tetapi ia **tetap sesuatu yang disimpan di browser pemain**, dan
+ * D-11 menuntut hal itu dikatakan apa adanya, bukan dihaluskan. Ia ada karena "100+ peserta" harus berarti orang, bukan sesi;
  * menghitung sesi akan melebih-lebihkan jumlah peserta di depan juri.
  *
  * Empat keadaan, semuanya dites:
@@ -167,8 +168,8 @@ export function bacaPengunjung(
  * `localStorage` peramban, atau `null` kalau menyentuhnya saja melempar.
  *
  * Membaca `window.localStorage` bisa melempar sebelum satu metode pun dipanggil
- * (Chrome dengan cookie pihak ketiga diblokir di iframe, Firefox dengan
- * `dom.storage.enabled=false`), jadi aksesnya sendiri dibungkus.
+ * (peramban yang memblokir penyimpanan pihak ketiga di dalam iframe, Firefox
+ * dengan `dom.storage.enabled=false`), jadi aksesnya sendiri dibungkus.
  */
 export function penyimpananPeramban(): Penyimpanan | null {
   try {

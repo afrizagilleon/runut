@@ -37,6 +37,7 @@ import {
 import { perintahRiwayat } from './riwayat.ts';
 import { isiSumber } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
+import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
 
 /**
  * Komponen hanya `dispatch` dan merender (D-5).
@@ -1049,7 +1050,14 @@ function LayarAkhir({
           <HalamanKalender hari={hariIni} />
           <p>Kamu kembali ke hari ini.</p>
         </div>
-        <p>Jawabanmu tercatat tanpa nama, tanpa akun, dan tanpa cookie.</p>
+        {/*
+          D-11: klaim lama tentang kue peramban DIHAPUS dari seluruh aplikasi.
+          Nomor pengunjung (D-13) memang bukan kue itu, tetapi janji yang
+          terdengar lebih bersih daripada kenyataannya tidak boleh ada — orang
+          yang membacanya akan menyimpulkan "tidak ada apa pun yang disimpan di
+          browser saya", dan sejak D-13 itu tidak benar.
+        */}
+        <p>{KALIMAT_TERIMA_KASIH}</p>
         {!keadaan.minatDitekan ? (
           <button
             type="button"
@@ -1151,6 +1159,13 @@ function LayarAkhir({
           }}
         />
       </label>
+
+      {/*
+        Kalimat D-11, kata demi kata. Ia berada di sini — tepat di atas tombol
+        Selesai, sesudah kotak teks — karena di situlah pemain memutuskan
+        mengirim atau tidak. Kalimat yang sama ada di README.
+      */}
+      <p className="meta privasi" data-uid="privasi">{KALIMAT_PRIVASI}</p>
 
       <div className="tindakan" data-uid="bilah">
         <button

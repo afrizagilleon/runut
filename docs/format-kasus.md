@@ -3,20 +3,29 @@
 Berkas kasus (`cases/<kasus_id>.json`) **dihasilkan perintah** `npm run build:case -- <kasus_id>`,
 bukan ditulis tangan. Membangun dua kali menghasilkan berkas yang sama persis.
 
+**Skema versi 3.** Perubahan dari versi 2, semuanya karena satu keputusan isi —
+soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
+
+| versi 2 | versi 3 |
+|---|---|
+| `soal.batang` (satu paragraf: konteks + tanggal + pertanyaan) | `soal.pesan { nama, jam, isi }` + `soal.tanya` |
+| — | `soal.petunjuk` (satu kalimat, hanya di soal pertama) |
+| `kasus.pembuka { hook, aturan[3] }` | `kasus.pembuka { kalimat }` |
+
 ## Kasus
 
 | field | arti |
 |---|---|
-| `skema_versi` | Versi bentuk berkas ini; berkas dengan versi lain ditolak validator. |
+| `skema_versi` | Versi bentuk berkas ini; berkas dengan versi lain ditolak validator. **Sekarang 3.** |
 | `kasus_id` | Nama kasus sekaligus nama berkas, memuat tanggal beku. |
 | `judul` | Judul yang dibaca pemain di daftar kasus. |
 | `emiten` | Simbol, nama resmi, papan pencatatan, dan sektor emiten yang sebenarnya. |
 | `nama_samaran` | Nama yang dipakai di batang soal supaya jawabannya tidak bisa dicari di mesin pencari. |
 | `tanggal_t` | Tanggal beku kasus; fakta yang baru tersedia sesudahnya tidak boleh terlihat pemain. |
-| `pembuka` | Layar pertama: satu `hook` dan tepat tiga baris `aturan`. |
+| `pembuka` | Layar pertama: **satu** `kalimat`, paling panjang 160 karakter. Tiga baris aturan main versi 2 dihapus di versi 3 — pemilik tidak membacanya; cara mainnya sekarang `petunjuk` di soal pertama. |
 | `fakta` | Seluruh fakta berlabel, termasuk yang hanya muncul di pembukaan. |
 | `fakta_terlihat` | Daftar `fact_id` yang menjadi kartu. **Harus sama persis dengan gabungan seluruh `kartu` di semua soal.** |
-| `soal` | Tiga soal beserta kartu, istilah, pilihan, kunci, dan penjelasan. |
+| `soal` | Tiga soal beserta pesan teman, kartu, istilah, pilihan, kunci, dan penjelasan. |
 | `pembukaan` | Fakta dan paragraf yang baru muncul setelah pemain menjawab, ditambah tiga daftar butir. |
 | `temuan` | Jejak verifikasi: hasil aturan R1–R10 atas rantai laporan. |
 | `pemeriksaan` | Catatan kesepuluh aturan: mana yang jalan, mana yang dilewati, dan alasannya. Aturan yang hilang atau dilewati tanpa alasan membuat validator menolak kasus. |
@@ -60,7 +69,10 @@ bukan ditulis tangan. Membangun dua kali menghasilkan berkas yang sama persis.
 | `soal_id` | Nama pendek yang unik. |
 | `kartu` | 2–4 `fact_id` yang tampil sebagai kartu tepat di atas soal. Semuanya wajib berstatus `TERVERIFIKASI`, punya `tersedia_sejak` ≤ `tanggal_t`, dan punya `awam`. |
 | `istilah` | 0–2 butir `{kata, arti}` berpenjelasan satu baris, tampil di bawah kartu. |
-| `batang` | Pertanyaannya, dibuka dengan "Hari ini `[[hari-ini|…]]`". |
+| `pesan` | Kabar dari seorang teman: `{ nama, jam, isi }`. Nama 2–12 huruf tanpa angka, `jam` berbentuk `HH.MM` 24 jam (**titik**, bukan titik dua), `isi` paling panjang 220 karakter polos. |
+| `tanya` | Judul pertanyaan, paling panjang 60 karakter, dan **wajib menyebut nama pengirim pesannya** — pemain menjawab tentang omongan seseorang, bukan tentang soal yang melayang. |
+| `petunjuk` | Satu kalimat cara main, **hanya di soal pertama**; `null` di soal lain. |
+| `kartu_penentu` | `fact_id` yang menjadi dasar jawaban; ditegaskan sesudah jawaban dikunci. |
 | `pilihan` | Daftar `{kunci, teks}`. |
 | `jawaban` | `kunci` pilihan yang benar; harus ada di daftar pilihan. |
 | `penjelasan` | Alasan jawaban itu benar, tanpa menghakimi. |
@@ -70,6 +82,25 @@ Opsi berbentuk **omongan teman yang dicek ke kartu**: tepat dua opsi diawali
 `Betul,` dan dua diawali `Keliru,`, dan selisih panjang opsi terpanjang dan
 terpendek tidak boleh lebih dari 40 persen dari yang terpanjang. Keduanya menjaga
 hal yang sama: supaya bentuk opsi tidak membocorkan jawabannya.
+
+### Pesan teman adalah ucapan, bukan fakta
+
+Versi 2 menyimpan pertanyaan sebagai satu paragraf `batang`. Versi 3 memecahnya
+menjadi pesan teman plus judul pertanyaan, dan pemecahan itu membawa aturan yang
+berbeda untuk keduanya.
+
+Di dalam `pesan.isi` dan `pilihan[].teks`, angka ditulis **telanjang** dan
+tautan fakta **ditolak** (`UCAPAN_BERTAUT`). Alasannya bukan kerapian: kalau
+angka di dalam kabar ikut ditautkan ke sumbernya, kabar itu tampak sudah
+terverifikasi sebelum pemain memeriksanya, dan seluruh gagasan produk ini —
+"orang kasih kabar, kita verify" — runtuh sebelum pemain sempat bekerja.
+
+Tanda tebal juga ditolak di kedua tempat itu (`PESAN_DITEBALKAN`,
+`OPSI_DITEBALKAN`): penekanan di dalam ucapan orang adalah penilaian kami atas
+ucapannya.
+
+Di `awam` kartu, `penjelasan`, dan paragraf pembukaan, aturannya kebalikannya:
+setiap angka **wajib** tertaut (INV-4).
 
 ## Pembukaan
 
@@ -87,8 +118,9 @@ teks kartu, batang, opsi, dan teks kunci — validator menolaknya.
 
 ## Cara menulis angka di dalam teks
 
-Setiap angka di `batang`, `pilihan`, `penjelasan`, dan paragraf pembukaan ditulis
-sebagai rujukan:
+Setiap angka di `awam` kartu, `penjelasan`, dan paragraf pembukaan ditulis
+sebagai rujukan — **tetapi tidak di `pesan` dan `pilihan`**, yang aturannya
+kebalikannya (lihat "Pesan teman adalah ucapan" di atas):
 
 ```
 Harga penutupan naik ke [[harga-2025-10-08|Rp178]].
@@ -103,11 +135,14 @@ Dua pengecualian, keduanya penanda yang bukan `fact_id`:
 - **`misal`** — angka andaian yang diciptakan soal itu sendiri, misalnya
   `[[misal|10 lot]]`. Tidak punya sumber karena bukan fakta.
 - **`hari-ini`** — tanggal beku kasus, misalnya `[[hari-ini|8 Oktober 2025]]`.
-  Setiap batang soal dan setiap baris aturan main dibuka dengannya, karena pemain
-  hidup di tahun yang berbeda dari kasusnya. Ia bukan fakta melainkan
-  `kasus.tanggal_t`, dan validator memastikan teks yang ditulisnya sama persis
-  dengan tanggal itu — jadi penanda ini tidak bisa dipakai menyelundupkan angka
-  lain.
+  Ia bukan fakta melainkan `kasus.tanggal_t`, dan validator memastikan teks yang
+  ditulisnya sama persis dengan tanggal itu — jadi penanda ini tidak bisa dipakai
+  menyelundupkan angka lain.
+
+  Di versi 2, setiap batang soal dibuka dengannya. Versi 3 menghapus kebiasaan
+  itu: jangkar waktunya sekarang keping kalender yang menempel di kepala layar,
+  karena pemilik membaca kalimat "Hari ini 8 Oktober…" yang diulang tiga kali
+  sebagai informasi baru, bukan sebagai konteks.
 
 Teks awam kartu memakai aturan yang sama, dengan satu kelonggaran: ia boleh
 membulatkan. `[[kelipatan-…|22 kali]]` sah walaupun nilai faktanya 22,25; angka
@@ -129,10 +164,35 @@ Dari versi 1:
 Baru di versi 2, tentang kartu dan bentuk soal:
 `KARTU_JUMLAH` · `KARTU_MENGGANTUNG` · `KARTU_TAK_TERVERIFIKASI` · `KARTU_TANPA_TANGGAL` ·
 `KARTU_SESUDAH_T` · `KARTU_TANPA_AWAM` · `KARTU_AWAM_PANJANG` · `KARTU_TAK_TERLIHAT` ·
+`KARTU_PENENTU_JUMLAH` · `KARTU_PENENTU_BUKAN_KARTU` · `KEPALA_HITUNG_HILANG` ·
+`KEPALA_HITUNG_PALSU` · `KEPALA_PANJANG` · `KETERANGAN_KODE_FAKTA` ·
+`KETERANGAN_TANGGAL_MESIN` ·
 `TERLIHAT_TAK_TERPAKAI` · `ISTILAH_TERLALU_BANYAK` · `ISTILAH_TANPA_ARTI` ·
 `OPSI_TANPA_LABEL` · `OPSI_TAK_DUA_DUA` · `OPSI_PANJANG_TIMPANG` · `KUNCI_SESUDAH_T` ·
-`TAUTAN_KONFLIK` · `TAUTAN_SESUDAH_T` · `HARI_INI_TAK_COCOK` · `PEMBUKA_ATURAN` ·
-`PEMBUKAAN_TAK_LENGKAP`
+`TAUTAN_KONFLIK` · `TAUTAN_SESUDAH_T` · `HARI_INI_TAK_COCOK` · `PEMBUKAAN_TAK_LENGKAP`
+
+Baru di versi 3, tentang pesan teman dan judul pertanyaan:
+`PESAN_NAMA` · `PESAN_JAM` · `PESAN_KOSONG` · `PESAN_PANJANG` · `PESAN_DITEBALKAN` ·
+`OPSI_DITEBALKAN` · `UCAPAN_BERTAUT` · `TANYA_KOSONG` · `TANYA_PANJANG` ·
+`TANYA_TANPA_NAMA` · `PETUNJUK_BUKAN_SOAL_PERTAMA` · `PETUNJUK_HILANG` ·
+`PEMBUKA_KOSONG` · `PEMBUKA_PANJANG`
+
+Dihapus di versi 3 bersama medannya: `PEMBUKA_ATURAN` ("layar pertama harus
+tepat tiga baris aturan").
+
+## Apa yang dicatat aplikasi dari berkas ini
+
+Berkas kasus tidak memuat data pemain, dan tidak pernah akan. Yang tercatat saat
+seseorang bermain dijelaskan di README (bagian "Apa yang dicatat"): nama
+peristiwa, nama blok yang diketuk (`uid`), kedalaman gulir, kode penanda tautan,
+dan satu nomor pengunjung acak. Dua hal dari berkas ini ikut muncul di sana, dan
+keduanya kode kami sendiri, bukan isi layar:
+
+- `fact_id`, di `kartu_buka` dan di `uid` berbentuk `lembar:<fact_id>`,
+  `kaki:<fact_id>`, `angka:<fact_id>`;
+- `soal_id`, di `pilih`, `kunci_jawaban`, dan `kembali_ke_kartu`.
+
+Teks kartu, isi pesan teman, dan teks opsi **tidak pernah** dikirim ke mana pun.
 
 ## Status fakta dan soal
 
