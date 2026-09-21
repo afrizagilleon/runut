@@ -119,3 +119,106 @@ test('D-C3 bilah kembali ketika opsi pertama baru menyembul (zona abu-abu)', asy
       'sedikit kehilangan satu-satunya petunjuk jalan di layar.',
   ).toHaveCount(1);
 });
+
+/**
+ * D-C3 — antrean pengamat yang menumpuk (akar sebab E-03a).
+ *
+ * `IntersectionObserver` tidak memanggil baliknya sekali per perubahan. Ia
+ * menyerahkan **antrean**: semua pengamatan yang menumpuk sejak panggilan
+ * terakhir, tertua lebih dulu. Ketika frame tertunda — mesin berbeban, tab
+ * sibuk, laptop menahan panas — dua perlintasan ambang atau lebih bisa tiba
+ * dalam satu panggilan.
+ *
+ * `usePengamatOpsi` membaca `masuk[0]`, yang **tertua**, lalu membuang sisanya.
+ * Jadi ia mencatat putusan yang sudah kedaluwarsa dan membuang yang berlaku.
+ * Sesudah itu tidak ada perlintasan baru, jadi tidak ada panggilan baru:
+ * `opsiTerlihat` membeku pada nilai basi selama pemain bertahan di layar itu.
+ *
+ * Saudaranya di berkas yang sama, `usePengamatKartu`, menggelung seluruh
+ * antrean (`for (const m of masukan)`). Dua pengamat di satu berkas membaca
+ * antrean yang sama dengan dua cara berbeda; satu benar, satu tidak.
+ *
+ * Tes ini tidak menunggu beban dan tidak mengulang-ulang sampai beruntung: ia
+ * menyerahkan antrean dua butir langsung ke panggilan balik produk yang
+ * sungguhan, di peramban yang sungguhan. Butir terbaru berkata "belum
+ * terlihat". Kalau produk menurut, bilahnya kembali.
+ */
+test('D-C3 pengamat opsi menuruti butir TERBARU ketika antrean menumpuk', async ({ page }) => {
+  const kasus = bacaKasus();
+  const soal = kasus.soal[0];
+  expect(soal, 'kasus punya soal pertama').toBeDefined();
+  if (soal === undefined) return;
+  const kunci = soal.pilihan[0]?.kunci ?? 'a';
+
+  /*
+   * Panggilan balik pengamat produk ditangkap sebelum aplikasi dimuat, dengan
+   * membungkus `IntersectionObserver`. Yang ditangkap hanya pengamat yang
+   * mengamati sebuah OPSI — pengamat kartu di berkas yang sama tidak disentuh,
+   * dan keduanya tetap berjalan sungguhan.
+   */
+  await page.addInitScript(() => {
+    const Asli = window.IntersectionObserver;
+    type Balik = (masuk: IntersectionObserverEntry[], pengamat: IntersectionObserver) => void;
+    const bungkus = class extends Asli {
+      private readonly balik: Balik;
+      constructor(balik: Balik, pilihan?: IntersectionObserverInit) {
+        super(balik, pilihan);
+        this.balik = balik;
+      }
+      override observe(sasaran: Element): void {
+        if (sasaran.matches('[data-uid^="opsi:"]')) {
+          (window as unknown as Record<string, unknown>).__balikOpsi = (
+            butir: IntersectionObserverEntry[],
+          ): void => {
+            this.balik(butir, this as unknown as IntersectionObserver);
+          };
+        }
+        super.observe(sasaran);
+      }
+    };
+    window.IntersectionObserver = bungkus as unknown as typeof IntersectionObserver;
+  });
+
+  await buka(page, penandaBaru());
+  await mulaiKasus(page);
+  await tungguSoal(page, 1);
+
+  /* --- opsi dibuat terlihat penuh: bilah menyingkir ------------------- */
+  await gulirKeRasio(page, kunci, 1);
+  await expect(bilahTurun(page), 'bilah menyingkir saat opsi terlihat').toHaveCount(0);
+
+  const tertangkap = await page.evaluate(
+    () => typeof (window as unknown as Record<string, unknown>).__balikOpsi === 'function',
+  );
+  expect(tertangkap, 'panggilan balik pengamat opsi tertangkap').toBe(true);
+
+  /* --- antrean dua butir: tertua "terlihat", TERBARU "tidak" ---------- */
+  await page.evaluate((ambang: number) => {
+    const sasaran = document.querySelector('[data-uid^="opsi:"]');
+    if (sasaran === null) throw new Error('opsi tidak ada');
+    const butir = (terlihat: boolean, rasio: number): IntersectionObserverEntry =>
+      ({
+        target: sasaran,
+        isIntersecting: terlihat,
+        intersectionRatio: rasio,
+        boundingClientRect: sasaran.getBoundingClientRect(),
+        intersectionRect: sasaran.getBoundingClientRect(),
+        rootBounds: null,
+        time: performance.now(),
+      }) as unknown as IntersectionObserverEntry;
+    const balik = (window as unknown as Record<string, unknown>).__balikOpsi as (
+      m: IntersectionObserverEntry[],
+    ) => void;
+    // Tertua lebih dulu, persis urutan yang diserahkan peramban.
+    balik([butir(true, 1), butir(false, ambang / 2)]);
+  }, ambangOpsiProduk());
+
+  await expect(
+    bilahTurun(page),
+    'butir TERBARU di antrean berkata opsi belum terlihat, jadi bilah "Jawab di bawah" ' +
+      'harus kembali. Kalau ia tidak kembali, produk membaca butir tertua dan membuang ' +
+      'yang berlaku — dan karena tidak ada perlintasan ambang baru sesudah itu, tidak ' +
+      'ada panggilan balik baru yang akan membetulkannya. Bilahnya hilang sampai pemain ' +
+      'berpindah layar.',
+  ).toHaveCount(1);
+});
