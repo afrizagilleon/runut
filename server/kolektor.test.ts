@@ -5,7 +5,7 @@ import type { AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 // @ts-expect-error — pengumpul sengaja JavaScript bawaan Node, tanpa langkah build.
-import { buatKolektor, periksaPeristiwa } from './kolektor.mjs';
+import { HOST_BAWAAN, buatKolektor, periksaPeristiwa } from './kolektor.mjs';
 
 /**
  * Seluruh blok ini menjalankan server sungguhan di port acak (RQ-06), bukan
@@ -37,6 +37,19 @@ function peristiwa(ubah: Record<string, unknown> = {}): Record<string, unknown> 
     ...ubah,
   };
 }
+
+/**
+ * Isi peristiwa `mulai` yang lengkap menurut M3.2 (D-9, D-13).
+ *
+ * Ketiga medan baru wajib ada walau nilainya null: medan yang kadang hilang
+ * membuat "tidak ada penanda" tidak bisa dibedakan dari "kiriman yang cacat".
+ */
+const MULAI_ISI = {
+  lebar_layar: 375,
+  penanda: null,
+  pengunjung: null,
+  kunjungan_ke: null,
+};
 
 async function kirim(badan: string, tambahan: Record<string, string> = {}): Promise<Response> {
   return fetch(`${alamat}/e`, {
@@ -88,6 +101,13 @@ describe('kolektor — jalur sehat', () => {
     const info = server.address() as AddressInfo;
     expect(info.address).toBe('127.0.0.1');
   });
+
+  it('bawaannya sendiri loopback, bukan hanya di tes ini (INV-9)', () => {
+    // Tes di atas memeriksa `listen()` yang ditulis tes ini sendiri. Yang
+    // menentukan di produksi adalah bawaan pengumpul, dan itulah yang diperiksa
+    // di sini — ditemukan sebagai lubang lewat sabotase T-08/9.
+    expect(HOST_BAWAAN).toBe('127.0.0.1');
+  });
 });
 
 describe('kolektor — peristiwa sah', () => {
@@ -102,7 +122,7 @@ describe('kolektor — peristiwa sah', () => {
     const sebelum = barisTertulis().length;
     const jawaban = await kirim(
       JSON.stringify([
-        peristiwa({ nama: 'mulai', urut: 1, isi: { lebar_layar: 375 } }),
+        peristiwa({ nama: 'mulai', urut: 1, isi: MULAI_ISI }),
         peristiwa({ nama: 'layar_masuk', urut: 2, isi: { layar: 'pembuka' } }),
       ]),
     );
@@ -293,9 +313,9 @@ describe('kolektor — validator sebagai fungsi murni', () => {
     ]);
   });
 
-  it('menerima ketiga belas nama peristiwa D-6 (termasuk loncat_ke_ringkasan)', () => {
+  it('menerima keenam belas nama peristiwa D-6 (termasuk pelacak M3.2)', () => {
     const contoh: Array<[string, Record<string, unknown>]> = [
-      ['mulai', { lebar_layar: 375 }],
+      ['mulai', MULAI_ISI],
       ['layar_masuk', { layar: 'soal-1' }],
       ['kartu_buka', { soal_id: 's1', fact_id: 'susp-2025-06-30' }],
       ['pilih', { soal_id: 's1', kunci: 'b', ganti_ke: 0 }],
@@ -315,11 +335,14 @@ describe('kolektor — validator sebagai fungsi murni', () => {
       ['pembukaan_masuk', {}],
       ['loncat_ke_ringkasan', { ms_di_pembukaan: 1, gulir_maks_persen: 12 }],
       ['pembukaan_selesai', { ms_di_pembukaan: 1, gulir_maks_persen: 90 }],
+      ['ketuk', { layar: 'soal-1', uid: 'opsi:b', x: 0.5, y: 0.25, mati: false }],
+      ['ketuk_dibatasi', { layar: 'soal-2', batas: 300 }],
+      ['gulir', { layar: 'soal-1', maks: 0.62 }],
       ['minat_kasus_lain', {}],
       ['akhir_kirim', { rating: 4, terasa: 'membaca data', sumber_jawaban: 'kartu fakta', teks: '' }],
       ['tutup', { layar_terakhir: 'akhir' }],
     ];
-    expect(contoh).toHaveLength(13);
+    expect(contoh).toHaveLength(16);
     for (const [nama, isi] of contoh) {
       const hasil = periksaPeristiwa(peristiwa({ nama, isi }));
       expect(hasil.galat, nama).toBeUndefined();
@@ -375,5 +398,235 @@ describe('kolektor — loncat_ke_ringkasan (A4-T5)', () => {
     const tercatat = baris.filter((b) => b.nama === 'loncat_ke_ringkasan');
     expect(tercatat).toHaveLength(1);
     expect(tercatat[0]?.isi).toEqual({ ms_di_pembukaan: 9_000, gulir_maks_persen: 7 });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Pelacak, penanda, nomor pengunjung (RQ-06, M3.2/T-08)              */
+/* ------------------------------------------------------------------ */
+
+const UUID_SAH = '7001fc29-39a8-4ec8-a615-03cea28ad892';
+
+const ketuk = (isi: Record<string, unknown>): Record<string, unknown> =>
+  peristiwa({ nama: 'ketuk', isi });
+
+const mulai = (isi: Record<string, unknown>): Record<string, unknown> =>
+  peristiwa({ nama: 'mulai', isi: { ...MULAI_ISI, ...isi } });
+
+describe('kolektor — peristiwa ketuk (D-8)', () => {
+  it('menerima ketukan hidup maupun mati dan menyimpan kelima medannya', () => {
+    const hasil = periksaPeristiwa(
+      ketuk({ layar: 'soal-1', uid: 'lembar:har-2025-10-08', x: 0.482, y: 0.771, mati: true }),
+    );
+    expect(hasil.galat).toBeUndefined();
+    expect((hasil.peristiwa as { isi: Record<string, unknown> }).isi).toEqual({
+      layar: 'soal-1',
+      uid: 'lembar:har-2025-10-08',
+      x: 0.482,
+      y: 0.771,
+      mati: true,
+    });
+  });
+
+  it('menerima uid null — ketukan di ruang kosong tetap data', () => {
+    expect(
+      periksaPeristiwa(ketuk({ layar: 'pembuka', uid: null, x: 0, y: 0, mati: true })).galat,
+    ).toBeUndefined();
+  });
+
+  it('menolak x atau y di luar 0–1', () => {
+    for (const [x, y] of [
+      [1.0001, 0.5],
+      [-0.001, 0.5],
+      [0.5, 2],
+      [0.5, -1],
+      [375, 812],
+    ]) {
+      const hasil = periksaPeristiwa(ketuk({ layar: 'soal-1', uid: 'pesan', x, y, mati: true }));
+      expect(hasil.galat, `${String(x)},${String(y)}`).toBeDefined();
+    }
+    // Kedua ujungnya sendiri sah.
+    expect(
+      periksaPeristiwa(ketuk({ layar: 'soal-1', uid: 'pesan', x: 0, y: 1, mati: true })).galat,
+    ).toBeUndefined();
+  });
+
+  it('menolak uid lebih dari 64 karakter', () => {
+    const batas = 'a'.repeat(64);
+    expect(
+      periksaPeristiwa(ketuk({ layar: 'soal-1', uid: batas, x: 0.5, y: 0.5, mati: true })).galat,
+    ).toBeUndefined();
+    const hasil = periksaPeristiwa(
+      ketuk({ layar: 'soal-1', uid: `${batas}a`, x: 0.5, y: 0.5, mati: true }),
+    );
+    expect(hasil.galat).toContain('uid');
+  });
+
+  it('menolak medan asing, termasuk yang berbau isi elemen', () => {
+    const hasil = periksaPeristiwa(
+      ketuk({ layar: 'soal-1', uid: 'pesan', x: 0.5, y: 0.5, mati: true, teks: 'Gila, saham D' }),
+    );
+    expect(hasil.galat).toContain('teks');
+  });
+
+  it('menolak mati yang bukan boolean', () => {
+    expect(
+      periksaPeristiwa(ketuk({ layar: 'soal-1', uid: 'pesan', x: 0.5, y: 0.5, mati: 'ya' })).galat,
+    ).toBeDefined();
+  });
+
+  it('ketuk_dibatasi dan gulir diterima dengan bentuknya sendiri', () => {
+    expect(
+      periksaPeristiwa(peristiwa({ nama: 'ketuk_dibatasi', isi: { layar: 'soal-2', batas: 300 } }))
+        .galat,
+    ).toBeUndefined();
+    expect(
+      periksaPeristiwa(peristiwa({ nama: 'gulir', isi: { layar: 'soal-3', maks: 1 } })).galat,
+    ).toBeUndefined();
+    // `maks` juga rasio: 62 persen ditulis 62 adalah cacat, bukan kedalaman.
+    expect(
+      periksaPeristiwa(peristiwa({ nama: 'gulir', isi: { layar: 'soal-3', maks: 62 } })).galat,
+    ).toBeDefined();
+  });
+});
+
+describe('kolektor — penanda tautan (D-9)', () => {
+  it('menerima kode yang sah', () => {
+    for (const kode of ['afriza', 'uji', 'a', '12345678', 'wa1']) {
+      expect(periksaPeristiwa(mulai({ penanda: kode })).galat, kode).toBeUndefined();
+    }
+  });
+
+  it('menolak kode yang tidak sah', () => {
+    for (const kode of ['123456789', 'AFRIZA', 'af riza', '', 'a-b', 'kode.']) {
+      expect(periksaPeristiwa(mulai({ penanda: kode })).galat, kode).toBeDefined();
+    }
+  });
+
+  it('menolak penanda yang bukan teks', () => {
+    expect(periksaPeristiwa(mulai({ penanda: 7 })).galat).toBeDefined();
+  });
+});
+
+describe('kolektor — nomor pengunjung (D-13)', () => {
+  it('menerima UUID v4 beserta hitungan kunjungannya', () => {
+    const hasil = periksaPeristiwa(mulai({ pengunjung: UUID_SAH, kunjungan_ke: 3 }));
+    expect(hasil.galat).toBeUndefined();
+    expect((hasil.peristiwa as { isi: Record<string, unknown> }).isi).toEqual({
+      lebar_layar: 375,
+      penanda: null,
+      pengunjung: UUID_SAH,
+      kunjungan_ke: 3,
+    });
+  });
+
+  it('menolak pengunjung yang bukan UUID v4', () => {
+    for (const salah of [
+      '7001fc29-39a8-3ec8-a615-03cea28ad892', // versi 3
+      '7001fc29-39a8-4ec8-c615-03cea28ad892', // varian salah
+      '7001FC29-39A8-4EC8-A615-03CEA28AD892', // huruf besar
+      'bukan-uuid',
+      '',
+    ]) {
+      expect(periksaPeristiwa(mulai({ pengunjung: salah })).galat, salah).toBeDefined();
+    }
+  });
+
+  it('menolak kunjungan_ke di luar 1–9999, termasuk pecahan', () => {
+    for (const salah of [0, -1, 10_000, 1.5, '3']) {
+      expect(
+        periksaPeristiwa(mulai({ pengunjung: UUID_SAH, kunjungan_ke: salah })).galat,
+        String(salah),
+      ).toBeDefined();
+    }
+    for (const sah of [1, 9999]) {
+      expect(
+        periksaPeristiwa(mulai({ pengunjung: UUID_SAH, kunjungan_ke: sah })).galat,
+        String(sah),
+      ).toBeUndefined();
+    }
+  });
+
+  it('medan baru wajib ada, walau isinya null', () => {
+    // Kiriman gaya lama (hanya lebar_layar) ditolak: "tidak ada penanda" harus
+    // bisa dibedakan dari "medannya hilang di jalan".
+    const hasil = periksaPeristiwa(peristiwa({ nama: 'mulai', isi: { lebar_layar: 375 } }));
+    expect(hasil.galat).toBeDefined();
+  });
+});
+
+describe('kolektor — pelacak lewat server sungguhan (RQ-06)', () => {
+  it('menulis ketuk, gulir, dan mulai ber-penanda apa adanya', async () => {
+    const balas = await kirim(
+      JSON.stringify([
+        peristiwa({
+          nama: 'mulai',
+          urut: 201,
+          isi: { ...MULAI_ISI, penanda: 'uji', pengunjung: UUID_SAH, kunjungan_ke: 2 },
+        }),
+        peristiwa({
+          nama: 'ketuk',
+          urut: 202,
+          isi: { layar: 'soal-1', uid: 'lembar:susp-2025-06-30', x: 0.31, y: 0.44, mati: true },
+        }),
+        peristiwa({ nama: 'gulir', urut: 203, isi: { layar: 'soal-1', maks: 0.87 } }),
+      ]),
+    );
+    expect(balas.status).toBe(204);
+
+    const baris = barisTertulis().map((b) => JSON.parse(b) as {
+      urut: number;
+      nama: string;
+      isi: Record<string, unknown>;
+    });
+    const tercatat = baris.filter((b) => b.urut >= 201 && b.urut <= 203);
+    expect(tercatat.map((b) => b.nama)).toEqual(['mulai', 'ketuk', 'gulir']);
+    expect(tercatat[0]?.isi).toEqual({
+      lebar_layar: 375,
+      penanda: 'uji',
+      pengunjung: UUID_SAH,
+      kunjungan_ke: 2,
+    });
+    expect(tercatat[1]?.isi['mati']).toBe(true);
+    expect(tercatat[2]?.isi['maks']).toBe(0.87);
+  });
+
+  it('satu ketukan cacat menolak seluruh kiriman, tanpa menulis sebagiannya', async () => {
+    const sebelum = barisTertulis().length;
+    const balas = await kirim(
+      JSON.stringify([
+        peristiwa({
+          nama: 'ketuk',
+          urut: 210,
+          isi: { layar: 'soal-1', uid: 'pesan', x: 0.5, y: 0.5, mati: false },
+        }),
+        peristiwa({
+          nama: 'ketuk',
+          urut: 211,
+          isi: { layar: 'soal-1', uid: 'pesan', x: 188, y: 400, mati: false },
+        }),
+      ]),
+    );
+    expect(balas.status).toBe(400);
+    expect(await balas.text()).toContain('x');
+    expect(barisTertulis().length).toBe(sebelum);
+  });
+
+  it('masih loopback dan masih tanpa IP maupun User-Agent', async () => {
+    await kirim(
+      JSON.stringify(
+        peristiwa({
+          nama: 'ketuk',
+          urut: 220,
+          isi: { layar: 'akhir', uid: null, x: 0.5, y: 0.5, mati: true },
+        }),
+      ),
+    );
+    const info = server.address() as AddressInfo;
+    expect(info.address).toBe('127.0.0.1');
+    const isi = readFileSync(berkasHariIni(), 'utf8');
+    expect(isi).not.toContain(UA_UJI);
+    expect(isi).not.toContain('127.0.0.1');
+    expect(isi.toLowerCase()).not.toContain('user-agent');
   });
 });

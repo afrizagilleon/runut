@@ -29,9 +29,34 @@ import { join } from 'node:path';
 /** Badan permintaan paling besar yang diterima (D-9). */
 export const MAKS_BADAN = 8 * 1024;
 
+/**
+ * Alamat dengar bawaan: loopback saja (INV-9).
+ *
+ * Diekspor supaya bisa **dites**. Sabotase T-08/9 menemukan bahwa tes lama
+ * "mendengarkan di loopback" sebenarnya hanya memeriksa `listen()` yang
+ * ditulis tesnya sendiri; mengganti bawaan menjadi `0.0.0.0` tidak membuat satu
+ * pun tes merah. Di produksi pengumpul berada di belakang Caddy, jadi
+ * mendengarkan di semua antarmuka berarti membuka jalan yang melewati proxy
+ * itu — persis jenis kesalahan yang tidak terlihat sampai terlambat.
+ */
+export const HOST_BAWAAN = '127.0.0.1';
+
 /** Daftar peristiwa tertutup (D-6). Apa pun di luar ini dijawab 400. */
 const MEDAN_ISI = {
-  mulai: { lebar_layar: 'angka' },
+  /*
+   * M3.2: tiga keterangan tentang sesi ikut di peristiwa pembuka.
+   *
+   * `penanda` (D-9) memisahkan sesi uji dari sesi orang lain; `pengunjung` +
+   * `kunjungan_ke` (D-13) membuat "100+ peserta" berarti orang, bukan sesi.
+   * Ketiganya boleh `null` — dan itu berarti "memang tidak ada", bukan "hilang
+   * di jalan": medannya wajib ada di kiriman.
+   */
+  mulai: {
+    lebar_layar: 'angka',
+    penanda: 'penanda?',
+    pengunjung: 'uuid?',
+    kunjungan_ke: 'kunjungan?',
+  },
   layar_masuk: { layar: 'teks' },
   kartu_buka: { soal_id: 'teks', fact_id: 'teks' },
   pilih: { soal_id: 'teks', kunci: 'teks', ganti_ke: 'angka' },
@@ -53,6 +78,15 @@ const MEDAN_ISI = {
   loncat_ke_ringkasan: { ms_di_pembukaan: 'angka', gulir_maks_persen: 'angka' },
   pembukaan_selesai: { ms_di_pembukaan: 'angka', gulir_maks_persen: 'angka' },
   minat_kasus_lain: {},
+  /*
+   * Pelacak (D-8). `uid` adalah nama yang ditulis aplikasi sendiri di markup,
+   * bukan isi elemen; `x`/`y` relatif terhadap viewport, jadi tidak ada
+   * koordinat mutlak maupun ukuran layar yang bisa dipakai membedakan orang.
+   * Tidak ada medan bertipe teks bebas di sini, dan itu bukan kebetulan.
+   */
+  ketuk: { layar: 'teks', uid: 'uid?', x: 'rasio', y: 'rasio', mati: 'boolean' },
+  ketuk_dibatasi: { layar: 'teks', batas: 'angka' },
+  gulir: { layar: 'teks', maks: 'rasio' },
   akhir_kirim: {
     rating: 'angka?',
     terasa: 'teks?',
@@ -65,6 +99,16 @@ const MEDAN_ISI = {
 const MAKS_TEKS = 200;
 const MAKS_TEKS_PANJANG = 500;
 const MAKS_ID = 64;
+
+/** Batas hitungan kunjungan (D-13); di luar ini nilainya bukan orang, tetapi cacat. */
+const MAKS_KUNJUNGAN = 9999;
+
+/** Bentuk UUID v4 (D-13). Sengaja disalin dari `web/src/sesi.ts`: pengumpul */
+/** tidak boleh mengimpor apa pun dari aplikasi, termasuk untuk hal sekecil ini. */
+const POLA_UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
+/** Kode penanda dari `?k=` (D-9). */
+const POLA_PENANDA = /^[a-z0-9]{1,8}$/;
 
 function teksSah(nilai, batas) {
   return typeof nilai === 'string' && nilai.length > 0 && nilai.length <= batas;
@@ -83,6 +127,15 @@ function medanSah(bentuk, nilai) {
   if (inti === 'boolean') return typeof nilai === 'boolean';
   if (inti === 'teks') return teksSah(nilai, MAKS_TEKS);
   if (inti === 'teks-panjang') return typeof nilai === 'string' && nilai.length <= MAKS_TEKS_PANJANG;
+  // Koordinat relatif: di luar 0–1 berarti pengirimnya mengirim piksel mutlak,
+  // dan piksel mutlak adalah hal yang justru dijanjikan tidak dikirim (INV-9).
+  if (inti === 'rasio') return angkaSah(nilai) && nilai >= 0 && nilai <= 1;
+  if (inti === 'uid') return teksSah(nilai, MAKS_ID);
+  if (inti === 'penanda') return typeof nilai === 'string' && POLA_PENANDA.test(nilai);
+  if (inti === 'uuid') return typeof nilai === 'string' && POLA_UUID_V4.test(nilai);
+  if (inti === 'kunjungan') {
+    return Number.isInteger(nilai) && nilai >= 1 && nilai <= MAKS_KUNJUNGAN;
+  }
   return false;
 }
 
@@ -270,7 +323,7 @@ export function buatKolektor(env = process.env) {
 
 /** Dijalankan langsung lewat `npm run kolektor`, tidak saat diimpor tes. */
 if (process.argv[1] !== undefined && import.meta.url.endsWith(process.argv[1].replace(/\\/g, '/'))) {
-  const host = process.env.HOST ?? '127.0.0.1';
+  const host = process.env.HOST ?? HOST_BAWAAN;
   const port = Number(process.env.PORT ?? 8787);
   buatKolektor().listen(port, host, () => {
     console.log(`kolektor mendengarkan di http://${host}:${String(port)}`);
