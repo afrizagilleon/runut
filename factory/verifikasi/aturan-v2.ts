@@ -538,6 +538,9 @@ export function r33SahamTersiratGoyah(konteks: KonteksGudang): HasilAturan {
     temuan.push({
       temuan_id: `R33-${konteks.simbol}-${hariIni.tanggal}`,
       aturan: 'R33',
+      // Penanda, bukan tuduhan: aturan ini tidak menyatakan datanya salah, ia
+      // menyatakan penyebut persen tidak boleh diambil dari hari seperti ini.
+      keparahan: 'peringatan',
       ringkasan:
         `Jumlah saham tersirat ${konteks.simbol} berubah ${persen}% dalam satu hari bursa: ` +
         `${angka(sebelum)} lembar pada ${kemarin.tanggal} menjadi ${angka(sesudah)} lembar pada ` +
@@ -1291,6 +1294,34 @@ export interface RuntunDatar {
   akhir: string;
   panjang: number;
   lunak: boolean;
+  /**
+   * Harga tutup **semua** hari di dalam runtun ini sama persis.
+   *
+   * Ini yang membedakan dua hal yang sangat mudah tertukar. "Hari datar"
+   * berarti buka, tertinggi, terendah, dan tutup satu hari itu sama - harganya
+   * tidak bergerak **di dalam hari itu**. Runtun hari datar karena itu belum
+   * tentu berarti harganya tidak bergerak: DADA 2025-08-05..08 adalah empat
+   * hari datar berturut-turut yang harganya Rp10, Rp11, Rp12, Rp11 - naik dan
+   * turun tiap hari, dengan volume ratusan juta lembar. Hanya kalau medan ini
+   * `true` kalimat "tidak bergerak sama sekali" boleh dipakai.
+   */
+  tutup_sama: boolean;
+  tutup_awal: number;
+  tutup_akhir: number;
+}
+
+/** Harga tutup di kedua ujung sebuah rentang, dan apakah semuanya sama. */
+function tutupRuntun(
+  baris: BarisHarga[],
+  dari: number,
+  sampai: number,
+): { tutup_sama: boolean; tutup_awal: number; tutup_akhir: number } {
+  const awal = baris[dari]?.tutup ?? 0;
+  let sama = true;
+  for (let k = dari; k <= sampai; k += 1) {
+    if (baris[k]?.tutup !== awal) sama = false;
+  }
+  return { tutup_sama: sama, tutup_awal: awal, tutup_akhir: baris[sampai]?.tutup ?? 0 };
 }
 
 /**
@@ -1324,6 +1355,7 @@ export function cariRuntunDatar(harga: BarisHarga[]): RuntunDatar[] {
         akhir: baris[j]?.tanggal ?? '',
         panjang,
         lunak: false,
+        ...tutupRuntun(baris, i, j),
       });
       for (let k = i; k <= j; k += 1) nomorRuntun[k] = nomor;
       nomor += 1;
@@ -1351,6 +1383,7 @@ export function cariRuntunDatar(harga: BarisHarga[]): RuntunDatar[] {
       akhir: baris[sampai]?.tanggal ?? '',
       panjang: jumlah,
       lunak: true,
+      ...tutupRuntun(baris, awal, sampai),
     });
   }
 
@@ -1359,6 +1392,32 @@ export function cariRuntunDatar(harga: BarisHarga[]): RuntunDatar[] {
       a.awal.localeCompare(b.awal) ||
       a.akhir.localeCompare(b.akhir) ||
       Number(a.lunak) - Number(b.lunak),
+  );
+}
+
+/**
+ * Kalimat satu runtun, dengan dua cabang yang tidak boleh tertukar.
+ *
+ * "Hari datar" adalah sifat **satu hari**: buka, tertinggi, terendah, dan
+ * tutupnya sama, jadi harganya tidak bergerak di dalam hari itu. Runtun hari
+ * datar karena itu belum tentu berarti harganya diam. Kalimat "tidak bergerak
+ * sama sekali" hanya dipakai kalau harga tutup **seluruh** hari di runtun itu
+ * memang sama; kalau tidak, yang dikatakan adalah apa yang sebenarnya terjadi.
+ */
+export function kalimatRuntun(simbol: string, r: RuntunDatar): string {
+  const jendela = r.lunak
+    ? `${String(r.panjang)} dari ${String(JENDELA_LUNAK)} hari bursa antara ${r.awal} dan ${r.akhir}`
+    : `${String(r.panjang)} hari bursa berturut-turut, dari ${r.awal} sampai ${r.akhir}`;
+  if (r.tutup_sama) {
+    return (
+      `Harga ${simbol} tidak bergerak sama sekali selama ${jendela}: tiap harinya tutup di ` +
+      `Rp${angka(r.tutup_awal)}, dan buka, tertinggi, serta terendahnya juga Rp${angka(r.tutup_awal)}.`
+    );
+  }
+  return (
+    `Selama ${jendela}, harga ${simbol} tiap harinya hanya mencatat satu angka — buka, ` +
+    `tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari ` +
+    `(Rp${angka(r.tutup_awal)} di awal, Rp${angka(r.tutup_akhir)} di akhir).`
   );
 }
 
@@ -1385,12 +1444,7 @@ export function r19bRuntunDatar(konteks: KonteksVerifikasi): HasilAturan {
       temuan_id: `R19b-${konteks.simbol}-${r.awal}${r.lunak ? '-lunak' : ''}`,
       aturan: 'R19b',
       keparahan: 'peringatan',
-      ringkasan: r.lunak
-        ? `Harga ${konteks.simbol} praktis tidak bergerak antara ${r.awal} dan ${r.akhir}: ` +
-          `${String(r.panjang)} dari ${String(JENDELA_LUNAK)} hari bursa mencatat satu harga saja ` +
-          `untuk buka, tertinggi, terendah, dan tutup.`
-        : `Harga ${konteks.simbol} tidak bergerak sama sekali selama ${String(r.panjang)} hari bursa ` +
-          `berturut-turut, dari ${r.awal} sampai ${r.akhir}.`,
+      ringkasan: kalimatRuntun(konteks.simbol, r),
       angka: [
         { label: r.lunak ? 'hari datar di dalam jendela' : 'panjang runtun', nilai: r.panjang, satuan: 'hari' },
       ],

@@ -8,7 +8,7 @@ import { ATURAN_V2, verifikasiV2 } from './v2.ts';
 import { ATURAN } from './aturan.ts';
 import { konteks, harga, laporan } from './contoh.ts';
 import { SEMUA_KODE_ATURAN, keparahanTemuan } from '../skema/tipe.ts';
-import { susunDokumenBukti, susunLaporanGudang } from '../gudang.ts';
+import { ATURAN_PENANDA, susunDokumenBukti, susunLaporanGudang } from '../gudang.ts';
 import type { DataEmiten, KonteksGudang } from './tipe.ts';
 
 const CONTOH = fileURLToPath(new URL('../muat/contoh-gudang', import.meta.url));
@@ -210,5 +210,65 @@ describe('dokumen bukti — bentuk dan batasnya', () => {
   it('memuat bagian "Yang tidak bisa diperiksa dari data ini"', () => {
     expect(dokumen).toContain('## Yang tidak bisa diperiksa dari data ini');
     expect(dokumen).toContain('Penyebabnya tidak diketahui');
+  });
+});
+
+describe('A-1 D-A2 — kata laporan mengikuti keparahan aturan', () => {
+  const laporanGudang = susunLaporanGudang(CONTOH);
+  const dokumen = susunDokumenBukti(laporanGudang);
+
+  const bagian = (kode: string): string =>
+    dokumen.split(`### ${kode} \u2014`)[1]?.split('###')[0] ?? '';
+
+  it('memakai "ditandai" untuk aturan penanda dan "bertentangan" untuk aturan penolak', () => {
+    for (const e of ATURAN_V2) {
+      const isi = bagian(e.kode);
+      const penanda = ATURAN_PENANDA.includes(e.kode);
+      expect(isi, `${e.kode} tidak punya bagiannya`).toContain('Diperiksa ');
+      if (penanda) {
+        expect(isi, `${e.kode} penanda tetapi memakai "bertentangan"`).not.toMatch(
+          /\d bertentangan,/,
+        );
+        expect(isi, `${e.kode} penanda tanpa kata "ditandai"`).toMatch(/\d ditandai,/);
+      } else {
+        expect(isi, `${e.kode} penolak tetapi memakai "ditandai"`).not.toMatch(/\d ditandai,/);
+        expect(isi, `${e.kode} penolak tanpa kata "bertentangan"`).toMatch(/\d bertentangan,/);
+      }
+    }
+  });
+
+  it('menyelaraskan daftar penanda dengan kata kerja kalimat awamnya', () => {
+    for (const e of ATURAN_V2) {
+      const kalimat =
+        bagian(e.kode)
+          .split('\n')
+          .filter((b) => b.trim() !== '')[1] ?? '';
+      if (ATURAN_PENANDA.includes(e.kode)) {
+        expect(kalimat, `${e.kode}: ${kalimat}`).toMatch(/^Kami (menandai|memberi)/);
+      } else {
+        expect(kalimat, `${e.kode}: ${kalimat}`).toMatch(/^Kami menolak/);
+      }
+    }
+  });
+
+  it('menyelaraskan daftar penanda dengan keparahan temuan yang sungguh dikeluarkan', () => {
+    // Aturan penanda tidak boleh mengeluarkan satu pun temuan berkeparahan
+    // konflik atas seluruh gudang contoh maupun gudang sungguhan.
+    for (const emiten of susunLaporanGudang().emiten) {
+      for (const p of emiten.pemeriksaan) {
+        if (!ATURAN_PENANDA.includes(p.aturan)) continue;
+        for (const t of p.temuan) {
+          expect(keparahanTemuan(t), `${p.aturan} di ${emiten.simbol}`).not.toBe('konflik');
+        }
+      }
+    }
+  });
+
+  it('memberi catatan kaki satu kalimat pada kolom merah', () => {
+    expect(dokumen).toContain('| merah[^merah] |');
+    const catatan = dokumen.split('\n').find((b) => b.startsWith('[^merah]:'));
+    expect(catatan).toBeDefined();
+    expect(catatan).toContain('bukan bahwa');
+    for (const kode of ATURAN_PENANDA) expect(catatan).toContain(kode);
   });
 });

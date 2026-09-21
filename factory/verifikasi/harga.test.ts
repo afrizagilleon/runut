@@ -17,6 +17,7 @@ import {
   r17bHargaHariTransaksi,
   r18aVolumeNolTanpaSuspensi,
   r19aDatarTanpaVolume,
+  kalimatRuntun,
   r19bRuntunDatar,
 } from './aturan-v2.ts';
 import { harga, konteks, laporan, suspensi } from './contoh.ts';
@@ -280,5 +281,79 @@ describe('R19b — runtun hari datar', () => {
     const satu = cariRuntunDatar(baris);
     const dua = cariRuntunDatar([...baris].reverse());
     expect(dua).toEqual(satu);
+  });
+});
+
+describe('R19b — kalimat runtun menyebut apa yang sebenarnya datar (A-1 D-A1)', () => {
+  /**
+   * "Hari datar" adalah sifat satu hari: buka, tertinggi, terendah, dan
+   * tutupnya sama. Runtun hari datar karena itu belum tentu berarti harganya
+   * diam. Data nyata DADA 2025-08-05..08 adalah empat hari datar berturut-turut
+   * yang harganya Rp10, Rp11, Rp12, Rp11 — berubah tiap hari, dengan volume
+   * ratusan juta lembar.
+   */
+  const berganti = (): BarisHarga[] => [
+    datar('2025-08-05', 10, 134_573_300),
+    datar('2025-08-06', 11, 93_430_500),
+    datar('2025-08-07', 12, 111_731_200),
+    datar('2025-08-08', 11, 192_997_900),
+  ];
+  /** Data nyata DADA 2025-10-22..28: tutupnya Rp50 di semua hari. */
+  const diam = (): BarisHarga[] => [
+    datar('2025-10-22', 50, 190_759_400),
+    datar('2025-10-23', 50, 66_156_200),
+    datar('2025-10-24', 50, 36_349_000),
+    datar('2025-10-27', 50, 25_522_300),
+  ];
+
+  it('menandai runtun yang harganya berganti tiap hari, dan tidak menyebutnya tidak bergerak', () => {
+    const runtun = cariRuntunDatar(berganti());
+    expect(runtun).toHaveLength(1);
+    expect(runtun[0]?.tutup_sama).toBe(false);
+    const kalimat = kalimatRuntun('DADA', runtun[0]!);
+    expect(kalimat).not.toContain('tidak bergerak');
+    expect(kalimat).toContain('hanya mencatat satu angka');
+    expect(kalimat).toContain('berganti dari hari ke hari');
+    expect(kalimat).toContain('Rp10 di awal');
+    expect(kalimat).toContain('Rp11 di akhir');
+  });
+
+  it('baru menyebut "tidak bergerak sama sekali" kalau tutup semua harinya memang sama', () => {
+    const runtun = cariRuntunDatar(diam());
+    expect(runtun).toHaveLength(1);
+    expect(runtun[0]?.tutup_sama).toBe(true);
+    const kalimat = kalimatRuntun('DADA', runtun[0]!);
+    expect(kalimat).toContain('tidak bergerak sama sekali');
+    expect(kalimat).toContain('tutup di Rp50');
+  });
+
+  it('memakai kaca mata yang sama untuk runtun lunak', () => {
+    const jendela: BarisHarga[] = [
+      ...berganti(),
+      datar('2025-08-11', 13),
+      datar('2025-08-12', 14),
+      bar('2025-08-13', 14, 15),
+      datar('2025-08-14', 15),
+      datar('2025-08-15', 16),
+      datar('2025-08-18', 17),
+    ];
+    const lunak = cariRuntunDatar(jendela).filter((r) => r.lunak);
+    expect(lunak).toHaveLength(1);
+    expect(lunak[0]?.tutup_sama).toBe(false);
+    expect(kalimatRuntun('DADA', lunak[0]!)).not.toContain('tidak bergerak');
+  });
+
+  it('memakai kalimat itu juga di temuan yang benar-benar dikeluarkan aturannya', () => {
+    const h = r19bRuntunDatar(konteks({ harga: berganti(), simbol: 'DADA' }));
+    expect(h.temuan).toHaveLength(1);
+    expect(h.temuan[0]?.ringkasan).not.toContain('tidak bergerak');
+    const diamHasil = r19bRuntunDatar(konteks({ harga: diam(), simbol: 'DADA' }));
+    expect(diamHasil.temuan[0]?.ringkasan).toContain('tidak bergerak sama sekali');
+  });
+
+  it('R19a tetap berbicara tentang satu hari, bukan tentang gerakan antar hari', () => {
+    const h = r19aDatarTanpaVolume(konteks({ harga: berganti().map((b) => ({ ...b, volume: 0 })) }));
+    expect(h.temuan[0]?.ringkasan).toContain('mencatat satu harga saja untuk buka');
+    expect(h.temuan[0]?.ringkasan).not.toContain('tidak bergerak');
   });
 });

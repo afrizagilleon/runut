@@ -12,7 +12,7 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 
 ## Hasil per aturan
 
-| aturan | satuan | diperiksa | hijau | merah | tidak lengkap | dilewati |
+| aturan | satuan | diperiksa | hijau | merah[^merah] | tidak lengkap | dilewati |
 |---|---|---:|---:|---:|---:|---:|
 | R25 | emiten | 11 | 0 | 0 | 11 | 0 |
 | R12 | laporan | 57 | 57 | 0 | 0 | 53 |
@@ -40,6 +40,8 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R28 | aksi korporasi | 12 | 2 | 0 | 10 | 0 |
 | R35 | nilai harga ekstrem | 104 | 44 | 0 | 60 | 0 |
 
+[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R22, R28, R33), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
+
 ### R25 — Kelengkapan halaman laporan
 
 Kami menolak bukti negatif kalau daftar laporannya belum terbukti habis.
@@ -53,7 +55,7 @@ Alasan dilewati:
 
 Kami menandai laporan yang tanggal di nama berkasnya berbeda dari jam terbitnya, dan memakai tanggal nama berkas untuk mengurutkan rantai.
 
-Diperiksa 57 laporan: 57 tidak bermasalah, 0 bertentangan, 0 datanya tidak cukup untuk memutuskan. 53 laporan tidak masuk pemeriksaan ini. Aturannya jalan untuk 11 emiten dan dilewati untuk 292.
+Diperiksa 57 laporan: 57 tidak bermasalah, 0 ditandai, 0 datanya tidak cukup untuk memutuskan. 53 laporan tidak masuk pemeriksaan ini. Aturannya jalan untuk 11 emiten dan dilewati untuk 292.
 
 Alasan dilewati:
 - Tidak ada laporan untuk diperiksa.
@@ -62,7 +64,7 @@ Alasan dilewati:
 
 Kami menandai satu pemegang saham yang ditulis dengan lebih dari satu ejaan, supaya rantainya tidak terbaca sebagai dua orang.
 
-Diperiksa 71 nama pemegang: 59 tidak bermasalah, 12 bertentangan, 0 datanya tidak cukup untuk memutuskan. 0 nama pemegang tidak masuk pemeriksaan ini. Aturannya jalan untuk 12 emiten dan dilewati untuk 291.
+Diperiksa 71 nama pemegang: 59 tidak bermasalah, 12 ditandai, 0 datanya tidak cukup untuk memutuskan. 0 nama pemegang tidak masuk pemeriksaan ini. Aturannya jalan untuk 12 emiten dan dilewati untuk 291.
 
 Alasan dilewati:
 - Tidak ada nama pemegang saham untuk dibandingkan.
@@ -75,7 +77,7 @@ Contoh nyata:
 
 Kami menandai hari yang jumlah saham tersiratnya melompat, karena penyebut persen tidak boleh diambil dari hari seperti itu.
 
-Diperiksa 2.177 pasang hari: 2.154 tidak bermasalah, 2 bertentangan, 21 datanya tidak cukup untuk memutuskan. 0 pasang hari tidak masuk pemeriksaan ini. Aturannya jalan untuk 13 emiten dan dilewati untuk 290.
+Diperiksa 2.177 pasang hari: 2.154 tidak bermasalah, 2 ditandai, 21 datanya tidak cukup untuk memutuskan. 0 pasang hari tidak masuk pemeriksaan ini. Aturannya jalan untuk 13 emiten dan dilewati untuk 290.
 
 Alasan dilewati:
 - Kurang dari dua hari harga, tidak ada pasangan untuk dibandingkan.
@@ -145,7 +147,7 @@ Contoh nyata:
 
 Kami menandai laporan yang terbit lebih dulu tetapi sudah memuat keadaan yang baru dihasilkan laporan berikutnya.
 
-Diperiksa 83 sambungan: 79 tidak bermasalah, 4 bertentangan, 0 datanya tidak cukup untuk memutuskan. 0 sambungan tidak masuk pemeriksaan ini. Aturannya jalan untuk 9 emiten dan dilewati untuk 294.
+Diperiksa 83 sambungan: 79 tidak bermasalah, 4 ditandai, 0 datanya tidak cukup untuk memutuskan. 0 sambungan tidak masuk pemeriksaan ini. Aturannya jalan untuk 9 emiten dan dilewati untuk 294.
 
 Alasan dilewati:
 - Rantai kurang dari dua laporan, tidak ada sambungan untuk diperiksa.
@@ -254,7 +256,7 @@ Alasan dilewati:
 
 Kami menandai hari yang volumenya nol tetapi tidak ada di daftar suspensi, dan tidak menyimpulkan apa pun darinya.
 
-Diperiksa 170 baris harga bervolume nol: 11 tidak bermasalah, 0 bertentangan, 159 datanya tidak cukup untuk memutuskan. 2.020 baris harga bervolume nol tidak masuk pemeriksaan ini. Aturannya jalan untuk 13 emiten dan dilewati untuk 290.
+Diperiksa 170 baris harga bervolume nol: 11 tidak bermasalah, 0 ditandai, 159 datanya tidak cukup untuk memutuskan. 2.020 baris harga bervolume nol tidak masuk pemeriksaan ini. Aturannya jalan untuk 13 emiten dan dilewati untuk 290.
 
 Alasan dilewati:
 - Tidak ada data harga harian untuk diperiksa.
@@ -263,7 +265,7 @@ Alasan dilewati:
 
 Kami menandai hari yang tidak mencatat satu lembar pun berpindah tangan.
 
-Diperiksa 0 baris harga: 0 tidak bermasalah, 0 bertentangan, 0 datanya tidak cukup untuk memutuskan. 110 baris harga tidak masuk pemeriksaan ini. Aturannya jalan untuk 0 emiten dan dilewati untuk 303.
+Diperiksa 0 baris harga: 0 tidak bermasalah, 0 ditandai, 0 datanya tidak cukup untuk memutuskan. 110 baris harga tidak masuk pemeriksaan ini. Aturannya jalan untuk 0 emiten dan dilewati untuk 303.
 
 Alasan dilewati:
 - Digantikan R18a, yang memeriksa hal yang sama tetapi menjawab TIDAK_LENGKAP alih-alih KONFLIK: daftar suspensi hanya mencatat hari mulai berhenti, bukan tiap harinya.
@@ -272,7 +274,7 @@ Alasan dilewati:
 
 Kami menandai hari yang harganya hanya satu angka dan volumenya nol, karena angka itu bukan harga yang disepakati siapa pun.
 
-Diperiksa 331 hari datar: 167 tidak bermasalah, 164 bertentangan, 0 datanya tidak cukup untuk memutuskan. 1.859 hari datar tidak masuk pemeriksaan ini. Aturannya jalan untuk 7 emiten dan dilewati untuk 296.
+Diperiksa 331 hari datar: 167 tidak bermasalah, 164 ditandai, 0 datanya tidak cukup untuk memutuskan. 1.859 hari datar tidak masuk pemeriksaan ini. Aturannya jalan untuk 7 emiten dan dilewati untuk 296.
 
 Alasan dilewati:
 - Tidak ada hari yang harga buka, tertinggi, terendah, dan tutupnya sama.
@@ -283,22 +285,22 @@ Contoh nyata:
 
 ### R19b — Runtun hari datar
 
-Kami menandai runtun hari yang harganya tidak bergerak sama sekali.
+Kami menandai runtun hari bursa yang tiap harinya hanya mencatat satu angka untuk buka, tertinggi, terendah, dan tutup — entah harganya diam, entah berganti tiap hari.
 
-Diperiksa 2.190 hari bursa: 1.766 tidak bermasalah, 424 bertentangan, 0 datanya tidak cukup untuk memutuskan. 0 hari bursa tidak masuk pemeriksaan ini. Aturannya jalan untuk 13 emiten dan dilewati untuk 290.
+Diperiksa 2.190 hari bursa: 1.766 tidak bermasalah, 424 ditandai, 0 datanya tidak cukup untuk memutuskan. 0 hari bursa tidak masuk pemeriksaan ini. Aturannya jalan untuk 13 emiten dan dilewati untuk 290.
 
 Alasan dilewati:
 - Hari bursa kurang dari tiga, tidak ada runtun yang bisa terbentuk.
 
 Contoh nyata:
-- **DADA** — Harga DADA tidak bergerak sama sekali selama 4 hari bursa berturut-turut, dari 2025-08-05 sampai 2025-08-08.
-- **DADA** — Harga DADA praktis tidak bergerak antara 2025-08-05 dan 2025-08-19: 9 dari 10 hari bursa mencatat satu harga saja untuk buka, tertinggi, terendah, dan tutup.
+- **DADA** — Selama 4 hari bursa berturut-turut, dari 2025-08-05 sampai 2025-08-08, harga DADA tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp10 di awal, Rp11 di akhir).
+- **DADA** — Selama 9 dari 10 hari bursa antara 2025-08-05 dan 2025-08-19, harga DADA tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp10 di awal, Rp17 di akhir).
 
 ### R28 — Label deret harga di sekitar aksi korporasi
 
 Kami memberi label pada deret harga di sekitar aksi korporasi, dan melarang kartu harga melintasi tanggal stock split.
 
-Diperiksa 12 aksi korporasi: 2 tidak bermasalah, 0 bertentangan, 10 datanya tidak cukup untuk memutuskan. 0 aksi korporasi tidak masuk pemeriksaan ini. Aturannya jalan untuk 10 emiten dan dilewati untuk 293.
+Diperiksa 12 aksi korporasi: 2 tidak bermasalah, 0 ditandai, 10 datanya tidak cukup untuk memutuskan. 0 aksi korporasi tidak masuk pemeriksaan ini. Aturannya jalan untuk 10 emiten dan dilewati untuk 293.
 
 Alasan dilewati:
 - Tidak ada aksi korporasi tercatat untuk emiten ini.

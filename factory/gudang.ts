@@ -47,13 +47,42 @@ const KALIMAT_AWAM: Record<string, string> = {
   R17B: 'Kami menolak kartu kalau harga yang ditulis laporan di luar rentang harga saham itu pada tanggal transaksinya sendiri.',
   R18a: 'Kami menandai hari yang volumenya nol tetapi tidak ada di daftar suspensi, dan tidak menyimpulkan apa pun darinya.',
   R19a: 'Kami menandai hari yang harganya hanya satu angka dan volumenya nol, karena angka itu bukan harga yang disepakati siapa pun.',
-  R19b: 'Kami menandai runtun hari yang harganya tidak bergerak sama sekali.',
+  R19b:
+    'Kami menandai runtun hari bursa yang tiap harinya hanya mencatat satu angka untuk buka, ' +
+    'tertinggi, terendah, dan tutup — entah harganya diam, entah berganti tiap hari.',
   R22: 'Kami menandai satu pemegang saham yang ditulis dengan lebih dari satu ejaan, supaya rantainya tidak terbaca sebagai dua orang.',
   R25: 'Kami menolak bukti negatif kalau daftar laporannya belum terbukti habis.',
   R28: 'Kami memberi label pada deret harga di sekitar aksi korporasi, dan melarang kartu harga melintasi tanggal stock split.',
   R33: 'Kami menandai hari yang jumlah saham tersiratnya melompat, karena penyebut persen tidak boleh diambil dari hari seperti itu.',
   R35: 'Kami menolak kartu kalau harga tertinggi atau terendah yang disebut ringkasan tidak terjangkau deret harga hariannya sendiri.',
 };
+
+/**
+ * Aturan **penanda**: temuannya berkeparahan `peringatan` atau `catatan`, dan
+ * merahnya berarti "perlu dijelaskan sebelum dipakai di kartu", bukan "datanya
+ * salah". Sisanya adalah aturan **penolak**, yang merahnya berarti dua angka di
+ * dalam data yang sama saling bertentangan.
+ *
+ * Daftarnya ditulis di sini, bukan diturunkan dari temuan yang kebetulan
+ * muncul: aturan yang nol merah hari ini tetap harus memakai kata yang benar.
+ * `v2.test.ts` menjaga daftar ini tetap sejalan dengan kata kerja kalimat
+ * awamnya dan dengan keparahan temuan yang sungguh dikeluarkan tiap aturan.
+ */
+export const ATURAN_PENANDA: readonly KodeAturan[] = [
+  'R10',
+  'R12',
+  'R16',
+  'R18a',
+  'R19a',
+  'R19b',
+  'R22',
+  'R28',
+  'R33',
+];
+
+function penanda(aturan: KodeAturan): boolean {
+  return ATURAN_PENANDA.includes(aturan);
+}
 
 interface HasilAturanRingkas {
   aturan: KodeAturan;
@@ -230,7 +259,7 @@ export function susunDokumenBukti(laporan: LaporanGudang): string {
   baris.push('');
   baris.push('## Hasil per aturan');
   baris.push('');
-  baris.push('| aturan | satuan | diperiksa | hijau | merah | tidak lengkap | dilewati |');
+  baris.push('| aturan | satuan | diperiksa | hijau | merah[^merah] | tidak lengkap | dilewati |');
   baris.push('|---|---|---:|---:|---:|---:|---:|');
   for (const a of laporan.agregat) {
     baris.push(
@@ -239,15 +268,24 @@ export function susunDokumenBukti(laporan: LaporanGudang): string {
     );
   }
   baris.push('');
+  baris.push(
+    '[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling ' +
+      'bertentangan. Untuk aturan penanda (' +
+      ATURAN_PENANDA.join(', ') +
+      '), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa ' +
+      'datanya salah.',
+  );
+  baris.push('');
 
   for (const a of laporan.agregat) {
+    const kataMerah = penanda(a.aturan) ? 'ditandai' : 'bertentangan';
     baris.push(`### ${a.aturan} — ${a.judul}`);
     baris.push('');
     baris.push(KALIMAT_AWAM[a.aturan] ?? a.judul);
     baris.push('');
     baris.push(
       `Diperiksa ${angka(a.diperiksa)} ${a.satuan}: ${angka(a.hijau)} tidak bermasalah, ` +
-        `${angka(a.merah)} bertentangan, ${angka(a.tidak_lengkap)} datanya tidak cukup untuk memutuskan. ` +
+        `${angka(a.merah)} ${kataMerah}, ${angka(a.tidak_lengkap)} datanya tidak cukup untuk memutuskan. ` +
         `${angka(a.dilewati)} ${a.satuan} tidak masuk pemeriksaan ini. ` +
         `Aturannya jalan untuk ${angka(a.emiten_dijalankan)} emiten dan dilewati untuk ${angka(a.emiten_dilewati)}.`,
     );
