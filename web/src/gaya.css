@@ -321,7 +321,7 @@ summary:focus-visible,
   display: flex;
   flex-direction: column;
   gap: var(--antar-lembar);
-  margin: 0 0 16px;
+  margin: 0 0 12px;
 }
 
 .lembar {
@@ -345,15 +345,7 @@ summary:focus-visible,
   border: 2px solid var(--stempel);
 }
 
-.lembar-kepala {
-  display: flex;
-  /* Baris kepala boleh membungkus dua baris; "Lipat" tetap sejajar baris pertama. */
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 8px 12px 0;
-}
-
+/* Kepala lembar: satu baris, bantalan 6/12 (`docs/desain.md`). */
 .lembar-sumber {
   font-family: var(--mesin);
   font-stretch: normal;
@@ -365,37 +357,26 @@ summary:focus-visible,
   margin: 0;
 }
 
-/* Target sentuh tetap >= 44 px walau baris kepala membungkus. */
-.lembar-lipat {
-  flex: none;
-  min-height: 44px;
-  display: flex;
-  align-items: flex-start;
-  padding-top: 2px;
-  min-width: 44px;
-  padding: 0 8px;
-  background: none;
-  border: 0;
-  color: var(--stempel);
-  font-family: var(--mesin);
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
 .lembar-isi {
-  padding: 4px 12px 12px;
+  padding: 0 12px 6px;
+  margin: 0;
 }
 
-.lembar-isi p {
-  margin: 0 0 8px;
+.angka-lembar {
+  font-weight: 700;
 }
 
-/* Baris kepala kartu adalah tombolnya: mengetuknya membuka panel sumber (D-4). */
+/*
+ * Baris kepala kartu adalah tombolnya, selebar kartu dan setinggi >= 44 px:
+ * satu lembar = satu pintu ke sumbernya (`docs/desain.md`). Satu baris, dengan
+ * elipsis kalau terlalu panjang — kepala yang membungkus dua baris menambah
+ * tinggi layar soal tanpa menambah arti.
+ */
 .lembar-sumber-tombol {
+  display: block;
+  width: 100%;
   min-height: 44px;
-  padding: 0;
+  padding: 6px 12px;
   background: none;
   border: 0;
   color: inherit;
@@ -404,15 +385,40 @@ summary:focus-visible,
   text-transform: inherit;
   text-align: left;
   cursor: pointer;
-  border-bottom: 1px dotted var(--stempel);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* --- istilah --------------------------------------------------------------- */
+/* --- legenda garis dan istilah --------------------------------------------- */
 
+.legenda {
+  margin: 0 0 4px;
+  font-size: 13px;
+  color: var(--tinta-redup);
+}
+
+/* Istilah: satu baris yang bisa dibuka, bukan blok yang selalu terbentang. */
 .istilah {
-  margin: 0 0 16px;
+  margin: 0 0 8px;
   font-size: 15px;
   color: var(--tinta-redup);
+}
+
+.istilah > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stempel);
+  cursor: pointer;
+}
+
+.istilah dl {
+  margin: 0;
 }
 
 .istilah-butir {
@@ -436,14 +442,14 @@ summary:focus-visible,
 .pembuka-obrolan {
   font-size: 15px;
   color: var(--tinta-redup);
-  margin: 0 0 8px;
+  margin: 0 0 4px;
 }
 
 .gelembung {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
 }
 
 .gelembung-inisial {
@@ -469,32 +475,37 @@ summary:focus-visible,
 }
 
 .tanya {
+  font-size: 15px;
   font-weight: 700;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
 }
 
-.lihat-kartu {
+.kembali-kartu {
   display: block;
-  margin: 0 0 12px;
+  margin: 0 0 8px;
 }
 
 /* --- opsi ------------------------------------------------------------------ */
 
 .pilihan {
   border: 0;
-  margin: 0 0 16px;
+  margin: 0 0 12px;
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--antar-lembar);
+  gap: 6px;
 }
 
+/*
+ * Bantalan dirapatkan ke 8/12 supaya empat opsi tiga baris tidak menghabiskan
+ * 409 px sendirian. Tinggi minimum 56 px dan bidang sentuh tidak disentuh.
+ */
 .opsi {
   display: flex;
   align-items: flex-start;
   gap: 10px;
   min-height: 56px;
-  padding: 12px;
+  padding: 8px 12px;
   background: var(--lembar);
   border: 1px solid var(--garis);
   border-radius: 6px;

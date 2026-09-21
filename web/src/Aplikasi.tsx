@@ -174,7 +174,7 @@ export function Aplikasi(): JSX.Element {
         {layar.jenis === 'akhir' && <LayarAkhir keadaan={keadaan} kirim={kirim} />}
       </main>
 
-      <Kaki kasus={kasus} />
+      {(layar.jenis === 'pembuka' || layar.jenis === 'akhir') && <Kaki kasus={kasus} />}
 
       {faktaSumber !== null && (
         <PanelSumber
@@ -330,31 +330,29 @@ function LayarSoal({
         ))}
       </div>
 
+      {nomor === 0 && (
+        <p className="legenda">
+          Garis utuh: diumumkan pihak resmi. Garis putus-putus: kami yang menghitung.
+        </p>
+      )}
+
       {soal.istilah.length > 0 && (
-        <dl className="istilah">
-          {soal.istilah.map((butir) => (
-            <div key={butir.kata} className="istilah-butir">
-              <dt>{butir.kata}</dt>
-              <dd>{butir.arti}</dd>
-            </div>
-          ))}
-        </dl>
+        <details className="istilah">
+          <summary>
+            {soal.istilah.map((butir) => butir.kata.toLowerCase()).join(' · ')}
+          </summary>
+          <dl>
+            {soal.istilah.map((butir) => (
+              <div key={butir.kata} className="istilah-butir">
+                <dt>{butir.kata}</dt>
+                <dd>{butir.arti}</dd>
+              </div>
+            ))}
+          </dl>
+        </details>
       )}
 
       <Gelembung teks={soal.batang} bukaSumber={bukaSumber} />
-
-      <button
-        type="button"
-        className="tombol-kecil kembali-kartu"
-        onClick={() => {
-          kirim({ jenis: 'kembali_ke_kartu', soal_id: soal.soal_id });
-          // Menggulir adalah kerja tampilan, bukan keadaan permainan; yang
-          // dicatat tetap satu peristiwa dari reducer di atas.
-          acuanTumpukan.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
-        }}
-      >
-        Kembali ke kartu
-      </button>
 
       <fieldset className="pilihan" disabled={s.dikunci}>
         <legend className="tersembunyi">Pilih satu jawaban</legend>
@@ -386,6 +384,19 @@ function LayarSoal({
         })}
       </fieldset>
 
+      <button
+        type="button"
+        className="tombol-kecil kembali-kartu"
+        onClick={() => {
+          kirim({ jenis: 'kembali_ke_kartu', soal_id: soal.soal_id });
+          // Menggulir adalah kerja tampilan, bukan keadaan permainan; yang
+          // dicatat tetap satu peristiwa dari reducer di atas.
+          acuanTumpukan.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+        }}
+      >
+        Kembali ke kartu
+      </button>
+
       {s.dikunci && (
         <div className="kunci-jawaban" role="status">
           <p className={`cap${s.benar === true ? ' cap-cocok' : ' cap-belum'}`}>
@@ -400,42 +411,36 @@ function LayarSoal({
         </div>
       )}
 
-      <div className="tindakan">
-        {!s.dikunci ? (
-          <button
-            type="button"
-            className="tombol-utama"
-            disabled={s.kunci === null}
-            onClick={() => {
-              kirim({ jenis: 'kunci_jawaban', soal_id: soal.soal_id });
-            }}
-          >
-            Kunci jawaban
-          </button>
-        ) : (
-          <button
-            type="button"
-            className="tombol-utama"
-            onClick={() => {
-              kirim({ jenis: 'lanjut' });
-            }}
-          >
-            {terakhir ? 'Lihat yang terjadi sesudahnya' : `Lanjut ke soal ${String(nomor + 2)}`}
-          </button>
-        )}
-      </div>
-
-      {nomor > 0 && (
-        <button
-          type="button"
-          className="tombol-kecil"
-          onClick={() => {
-            kirim({ jenis: 'lihat_balik', nomor: nomor - 1 });
-          }}
-        >
-          Lihat lagi soal {nomor}
-        </button>
+      {/*
+        Tombol utama tidak pernah tampil dalam keadaan mati (`docs/desain.md`):
+        sebelum ada pilihan ia tidak dirender sama sekali, bukan dirender abu-abu.
+      */}
+      {(s.dikunci || s.kunci !== null) && (
+        <div className="tindakan">
+          {!s.dikunci ? (
+            <button
+              type="button"
+              className="tombol-utama"
+              onClick={() => {
+                kirim({ jenis: 'kunci_jawaban', soal_id: soal.soal_id });
+              }}
+            >
+              Kunci jawaban
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="tombol-utama"
+              onClick={() => {
+                kirim({ jenis: 'lanjut' });
+              }}
+            >
+              {terakhir ? 'Lihat yang terjadi sesudahnya' : `Lanjut ke soal ${String(nomor + 2)}`}
+            </button>
+          )}
+        </div>
       )}
+
     </section>
   );
 }
