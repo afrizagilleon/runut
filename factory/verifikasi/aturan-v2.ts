@@ -1400,3 +1400,229 @@ export function r19bRuntunDatar(konteks: KonteksVerifikasi): HasilAturan {
   }
   return hasil('R19b', judul, temuan, hitung(satuan, { diperiksa: konteks.harga.length, merah }));
 }
+
+// --- R28 label deret harga di sekitar aksi korporasi -------------------------
+
+export type LabelDeret = 'disesuaikan' | 'mentah' | 'tak-terbaca';
+
+export interface AksiBerlabel {
+  jenis: string;
+  ex_date: string;
+  rasio: number;
+  /** Hari bursa terakhir sebelum `ex_date`. */
+  cum: string;
+  /** Hari bursa pertama pada atau sesudah `ex_date`. */
+  ex: string;
+  /** Saham tersirat cum dibagi saham tersirat ex. */
+  perbandingan: number;
+  label: LabelDeret;
+}
+
+/**
+ * Seberapa dekat perbandingan boleh meleset dan masih disebut "sama".
+ *
+ * Lima persen, ditulis sebagai pecahan: 1 dan rasio aksi terpisah jauh (rasio
+ * terkecil yang ada adalah 4), jadi toleransi selebar ini tidak pernah membuat
+ * kedua label bisa cocok sekaligus.
+ */
+export const TOLERANSI_R28 = { pembilang: 5, penyebut: 100 } as const;
+
+function dekatDengan(nilai: number, target: number): boolean {
+  if (target <= 0) return false;
+  const selisih = Math.abs(nilai - target);
+  return (
+    selisih * TOLERANSI_R28.penyebut <= TOLERANSI_R28.pembilang * target
+  );
+}
+
+/**
+ * R28 — apakah deret harga di sekitar aksi korporasi ditulis ulang?
+ *
+ * Aturan ini **tidak mengeluarkan KONFLIK**. Ia mengeluarkan **label** yang
+ * menentukan boleh tidaknya sebuah kartu harga dibuat:
+ *
+ * - `disesuaikan` — saham tersirat tidak berubah melintasi aksi (perbandingan
+ *   mendekati 1);
+ * - `mentah` — saham tersirat berubah sebesar rasio aksinya;
+ * - `tak-terbaca` — bukan keduanya.
+ *
+ * Label `disesuaikan` **tidak boleh dibaca sebagai "deretnya sudah
+ * disesuaikan"**: bukti di dalam satu endpoint yang sama saling bertentangan
+ * (harga tertinggi lama satu emiten persis sama dengan `all_time_high`-nya,
+ * yang berarti harga lama tidak dibagi rasio split). Yang bisa dikatakan
+ * hanyalah apa yang diukur; penyebabnya tidak diketahui.
+ *
+ * Aturan tolak yang mengikat dan dikeluarkan di sini sebagai temuan
+ * berkeparahan catatan: **kartu harga tidak boleh melintasi tanggal stock
+ * split yang tercatat.**
+ */
+export function r28LabelDeretHarga(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Label deret harga di sekitar aksi korporasi';
+  const satuan = 'aksi korporasi';
+  const aksi = [
+    ...konteks.data.stock_split.map((s) => ({ jenis: 'stock split', ex_date: s.tanggal, rasio: s.rasio })),
+    ...konteks.data.right_issue.map((r) => ({
+      jenis: 'rights issue',
+      ex_date: r.ex_date,
+      rasio:
+        r.rasio_lama !== null && r.rasio_baru !== null && r.rasio_lama > 0
+          ? (r.rasio_lama + r.rasio_baru) / r.rasio_lama
+          : 0,
+    })),
+    ...konteks.data.bonus.map((b) => ({ jenis: 'saham bonus', ex_date: b.ex_date, rasio: 0 })),
+  ].sort((a, b) => a.ex_date.localeCompare(b.ex_date) || a.jenis.localeCompare(b.jenis));
+
+  if (aksi.length === 0) {
+    return lewat('R28', judul, 'Tidak ada aksi korporasi tercatat untuk emiten ini.', satuan);
+  }
+
+  const sehat = [...konteks.harga]
+    .filter((h) => !barisHargaCacat(h) && h.tutup > 0 && h.nilai_pasar > 0)
+    .sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const a of aksi) {
+    diperiksa += 1;
+    const sebelum = [...sehat].reverse().find((h) => h.tanggal < a.ex_date);
+    const sesudah = sehat.find((h) => h.tanggal >= a.ex_date);
+    if (sebelum === undefined || sesudah === undefined) {
+      tidakLengkap += 1;
+      alasan.push('Tidak ada baris harga sehat di kedua sisi tanggal ex aksi ini.');
+      continue;
+    }
+    const tersiratCum = Math.round(sebelum.nilai_pasar / sebelum.tutup);
+    const tersiratEx = Math.round(sesudah.nilai_pasar / sesudah.tutup);
+    if (tersiratCum <= 0 || tersiratEx <= 0) {
+      tidakLengkap += 1;
+      alasan.push('Jumlah saham tersirat di salah satu sisi tidak bisa dihitung.');
+      continue;
+    }
+    const perbandingan = tersiratEx / tersiratCum;
+    const label: LabelDeret = dekatDengan(perbandingan, 1)
+      ? 'disesuaikan'
+      : a.rasio > 0 && dekatDengan(perbandingan, a.rasio)
+        ? 'mentah'
+        : 'tak-terbaca';
+
+    const kalimat =
+      label === 'disesuaikan'
+        ? 'jumlah saham tersirat tidak berubah melintasi aksi ini'
+        : label === 'mentah'
+          ? 'jumlah saham tersirat berubah sebesar rasio aksinya'
+          : 'jumlah saham tersirat berubah, tetapi tidak sebesar rasio aksinya; angkanya tidak terbaca';
+
+    temuan.push({
+      temuan_id: `R28-${konteks.simbol}-${a.ex_date}-${a.jenis.replace(/\s+/g, '-')}`,
+      aturan: 'R28',
+      keparahan: 'catatan',
+      ringkasan:
+        `Deret harga ${konteks.simbol} di sekitar ${a.jenis} ${a.ex_date} diberi label ` +
+        `"${label}": ${kalimat} (${angka(tersiratCum)} lembar pada ${sebelum.tanggal} menjadi ` +
+        `${angka(tersiratEx)} lembar pada ${sesudah.tanggal}). Label ini tidak menyatakan ada yang ` +
+        `salah; ia menentukan kartu harga mana yang boleh dibuat. Penyebabnya tidak diketahui.`,
+      angka: [
+        { label: 'saham tersirat sebelum tanggal ex', nilai: tersiratCum, satuan: 'lembar' },
+        { label: 'saham tersirat pada atau sesudah tanggal ex', nilai: tersiratEx, satuan: 'lembar' },
+        { label: 'perbandingan', nilai: Number(perbandingan.toFixed(3)), satuan: 'kali' },
+        { label: 'rasio aksi menurut data', nilai: a.rasio, satuan: 'kali' },
+      ],
+      fakta_terkait: [],
+      rujukan: [`harga harian ${sebelum.tanggal}`, `harga harian ${sesudah.tanggal}`],
+    });
+
+    if (a.jenis === 'stock split') {
+      temuan.push({
+        temuan_id: `R28-tolak-${konteks.simbol}-${a.ex_date}`,
+        aturan: 'R28',
+        keparahan: 'catatan',
+        ringkasan:
+          `Kartu harga ${konteks.simbol} tidak boleh melintasi ${a.ex_date}: pada tanggal itu ` +
+          `tercatat stock split, dan apakah harga sebelum tanggal itu ditulis dengan dasar yang sama ` +
+          `tidak bisa ditentukan dari data yang ada.`,
+        angka: [{ label: 'rasio stock split', nilai: a.rasio, satuan: 'kali' }],
+        fakta_terkait: [],
+        rujukan: [`aksi korporasi ${a.ex_date}`],
+      });
+    }
+  }
+
+  return hasil(
+    'R28',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah: 0, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R35 all_time_price terjangkau deret harian ------------------------------
+
+/**
+ * R35 — nilai `overview.all_time_price` harus terjangkau baris harian pada
+ * tanggal yang disebutnya sendiri.
+ *
+ * Tiga keluaran, dan yang ketiga sama pentingnya dengan dua yang pertama:
+ * terjangkau (hijau), **tidak** terjangkau (KONFLIK), dan **belum bisa
+ * diperiksa** karena tanggalnya di luar deret harian yang kita punya
+ * (TIDAK_LENGKAP).
+ *
+ * Akibat yang mengikat kalau ada satu saja yang tidak terjangkau:
+ * `all_time_price` tidak boleh dipakai di kartu mana pun sampai itu dijelaskan.
+ */
+export function r35AllTimePrice(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Harga ekstrem ringkasan terjangkau deret harian';
+  const satuan = 'nilai harga ekstrem';
+  const nilai = konteks.data.all_time_price;
+  if (nilai.length === 0) {
+    return lewat('R35', judul, 'Ringkasan emiten ini tidak memuat all_time_price.', satuan);
+  }
+  const sehat = new Map(
+    konteks.harga.filter((h) => !barisHargaCacat(h)).map((h) => [h.tanggal, h]),
+  );
+
+  const temuan: Temuan[] = [];
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const n of nilai) {
+    const bar = sehat.get(n.tanggal);
+    if (bar === undefined) {
+      tidakLengkap += 1;
+      alasan.push('Tanggal nilai ekstrem ini di luar deret harga harian yang kita punya.');
+      continue;
+    }
+    if (n.nilai >= bar.terendah && n.nilai <= bar.tertinggi) continue;
+    merah += 1;
+    temuan.push({
+      temuan_id: `R35-${konteks.simbol}-${n.label}-${n.tanggal}`,
+      aturan: 'R35',
+      ringkasan:
+        `Ringkasan ${konteks.simbol} menyebut ${n.label} Rp${angka(n.nilai)} pada ${n.tanggal}, ` +
+        `padahal baris harga harian hari itu hanya bergerak Rp${angka(bar.terendah)}-` +
+        `Rp${angka(bar.tertinggi)}. Angka itu tidak terjangkau deret harganya sendiri.`,
+      angka: [
+        { label: `nilai ${n.label} menurut ringkasan`, nilai: n.nilai, satuan: 'rupiah per lembar' },
+        { label: 'harga terendah hari itu', nilai: bar.terendah, satuan: 'rupiah per lembar' },
+        { label: 'harga tertinggi hari itu', nilai: bar.tertinggi, satuan: 'rupiah per lembar' },
+      ],
+      fakta_terkait: [],
+      rujukan: [`ringkasan ${konteks.simbol}`, `harga harian ${n.tanggal}`],
+    });
+  }
+
+  return hasil(
+    'R35',
+    judul,
+    temuan,
+    hitung(satuan, {
+      diperiksa: nilai.length,
+      merah,
+      tidak_lengkap: tidakLengkap,
+      alasan_dilewati: alasan,
+    }),
+  );
+}
