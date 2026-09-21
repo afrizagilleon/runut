@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { pecahTeks } from '../../factory/skema/rujukan.ts';
 import { ikatTandaBaca } from './Teks.tsx';
@@ -55,5 +57,64 @@ describe('ikatTandaBaca (A2-T2)', () => {
     const hasil = ikat('Hari ini [[hari-ini|8 Oktober 2025]]. Kamu pegang [[misal|10 lot]], lalu.');
     expect(hasil[1]?.ekor).toBe('.');
     expect(hasil[3]?.ekor).toBe(',');
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.2/T-12 — opsi dirender POLOS, penandanya dilepas (D-2)          */
+/* ------------------------------------------------------------------ */
+
+describe('opsi: penanda rujukan dilepas, bukan ikut terbaca', () => {
+  const AKAR = fileURLToPath(new URL('../../', import.meta.url));
+  const kasus = JSON.parse(
+    readFileSync(`${AKAR}cases/dada-2025-10-08.json`, 'utf8'),
+  ) as { soal: Array<{ soal_id: string; pilihan: Array<{ kunci: string; teks: string }> }> };
+
+  /** Teks yang benar-benar dilihat pemain kalau opsi dirender `interaktif={false}`. */
+  const terlihat = (teks: string): string =>
+    pecahTeks(teks)
+      .map((b) => (b.jenis === 'utuh' ? b.teks : b.teks))
+      .join('');
+
+  it('berkas kasus memang masih menyimpan penanda di beberapa opsi', () => {
+    // Itu disengaja (D-2: penanda boleh ada di data untuk jejak). Kalau suatu
+    // hari tidak ada lagi, tes di bawah menjadi hampa — jadi keberadaannya
+    // ikut dijaga di sini.
+    const berpenanda = kasus.soal.flatMap((s) => s.pilihan).filter((p) => p.teks.includes('[['));
+    expect(berpenanda.length).toBeGreaterThan(0);
+  });
+
+  it('tidak satu pun opsi menampilkan kurung siku ganda ke pemain', () => {
+    for (const soal of kasus.soal) {
+      for (const p of soal.pilihan) {
+        const tampil = terlihat(p.teks);
+        expect(tampil, `${soal.soal_id} ${p.kunci}`).not.toContain('[[');
+        expect(tampil, `${soal.soal_id} ${p.kunci}`).not.toContain(']]');
+        expect(tampil, `${soal.soal_id} ${p.kunci}`).not.toContain('|');
+      }
+    }
+  });
+
+  it('teks yang dilihat pemain tetap memuat angkanya', () => {
+    const c = kasus.soal[0]?.pilihan.find((p) => p.kunci === 'c');
+    expect(terlihat(c?.teks ?? '')).toContain('22 kali');
+    expect(terlihat(c?.teks ?? '')).not.toContain('kelipatan-2025-08-01');
+  });
+
+  it('opsi dirender lewat Teks dengan interaktif={false}, bukan sebagai teks mentah', () => {
+    // Penjaga terakhir: yang di atas membuktikan aturannya, yang ini
+    // membuktikan aturan itu dipakai di tempat yang benar.
+    // Komentar dibuang lebih dulu: komentar yang MENYEBUT `interaktif={false}`
+    // tidak boleh dihitung sebagai kode yang memakainya.
+    const sumber = readFileSync(`${AKAR}web/src/Aplikasi.tsx`, 'utf8').replace(
+      /\/\*[\s\S]*?\*\//g,
+      '',
+    );
+    const opsi = sumber.slice(sumber.indexOf('className="opsi-teks"'), sumber.indexOf('opsi-tanda'));
+    expect(opsi).toContain('<Teks teks={p.teks}');
+    // `interaktif={false}` bukan hiasan: tanpa ia, angka di dalam opsi menjadi
+    // tombol yang membuka sumber, dan ucapan teman tampak sudah terverifikasi
+    // sebelum pemain memeriksanya (D-2, mode ketat 'ucapan').
+    expect(opsi).toContain('interaktif={false}');
   });
 });

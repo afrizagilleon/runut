@@ -1060,10 +1060,19 @@ details[open] > .baris-istilah .panah {
   line-height: 1.7;
 }
 
-.rujukan-datar,
+/*
+ * Angka andaian dan tanggal beku ditebalkan; angka di dalam OPSI tidak.
+ * `.rujukan-datar` hanya lahir di dalam opsi (`interaktif={false}`), dan di
+ * sana tebal dilarang: penekanan di dalam ucapan orang adalah penilaian kami
+ * atas ucapannya, dan bentuk opsi tidak boleh membocorkan jawabannya.
+ */
 .andaian,
 .hari-ini {
   font-weight: 700;
+}
+
+.rujukan-datar {
+  font-weight: inherit;
 }
 
 /* --- layar pembukaan ------------------------------------------------------- */

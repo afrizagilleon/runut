@@ -156,6 +156,17 @@ export function Aplikasi(): JSX.Element {
    * Yang dibaca dari DOM hanya `data-uid` dan apakah elemennya cocok dengan
    * `PEMILIH_INTERAKTIF`. Tidak ada `textContent`, tidak ada `value`.
    */
+  /*
+   * Satu-satunya tempat persentase gulir dihitung. Ia dipakai dua pendengar
+   * (`pointerup` dan `scroll`) supaya keduanya tidak bisa berbeda.
+   */
+  const catatGulirSekarang = useCallback((): void => {
+    const tinggi = document.documentElement.scrollHeight - window.innerHeight;
+    // Layar yang muat seluruhnya berarti sudah terlihat semua, bukan nol.
+    const persen = tinggi <= 0 ? 100 : (window.scrollY / tinggi) * 100;
+    kirim({ jenis: 'catat_gulir', persen });
+  }, [kirim]);
+
   useEffect(() => {
     let turunPada: { x: number; y: number } | null = null;
 
@@ -166,6 +177,25 @@ export function Aplikasi(): JSX.Element {
     const naik = (peristiwa: PointerEvent): void => {
       const awal = turunPada;
       turunPada = null;
+
+      /*
+       * Kedalaman gulir ikut diambil di sini, dan itu bukan kemudahan.
+       *
+       * Peristiwa `scroll` hanya dikirim peramban bersama frame. Di panel
+       * peramban mesin ini — `visibilityState: hidden`, tanpa frame — sebuah
+       * pendengar `scroll` yang dipasang langsung di konsol **tidak menyala
+       * sama sekali** walau `window.scrollY` sudah berubah. Terukur, bukan
+       * dugaan. Artinya metrik yang hanya bergantung pada `scroll` bisa
+       * diam-diam nol di keadaan yang tidak kita duga — persis kegagalan F-1
+       * yang sudah pernah kena di proyek ini (kartu tercatat nol detik).
+       *
+       * `pointerup` adalah justru akhir dari sebuah guliran jari, dan ia
+       * dikirim tanpa menunggu frame. Jadi setiap jari yang diangkat
+       * melaporkan posisi gulirnya — termasuk (dan terutama) ketika gerakannya
+       * ditolak sebagai ketukan di baris berikutnya.
+       */
+      catatGulirSekarang();
+
       // Jari yang bergeser jauh sedang menggulir, bukan mengetuk.
       if (!ketukanSah(awal, { x: peristiwa.clientX, y: peristiwa.clientY })) return;
       const sasaran = peristiwa.target;
@@ -194,7 +224,7 @@ export function Aplikasi(): JSX.Element {
       window.removeEventListener('pointerdown', turun);
       window.removeEventListener('pointerup', naik);
     };
-  }, [kirim]);
+  }, [kirim, catatGulirSekarang]);
 
   /*
    * `visibilitychange: hidden` (D-8) — kesempatan kirim yang datang lebih awal
@@ -276,18 +306,12 @@ export function Aplikasi(): JSX.Element {
    * setiap layar baru akan mewarisi kedalaman gulir layar sebelumnya.
    */
   useEffect(() => {
-    const catat = (): void => {
-      const tinggi = document.documentElement.scrollHeight - window.innerHeight;
-      // Layar yang muat seluruhnya berarti sudah terlihat semua, bukan nol.
-      const persen = tinggi <= 0 ? 100 : (window.scrollY / tinggi) * 100;
-      kirim({ jenis: 'catat_gulir', persen });
-    };
-    catat();
-    window.addEventListener('scroll', catat, { passive: true });
+    catatGulirSekarang();
+    window.addEventListener('scroll', catatGulirSekarang, { passive: true });
     return () => {
-      window.removeEventListener('scroll', catat);
+      window.removeEventListener('scroll', catatGulirSekarang);
     };
-  }, [kirim, namaLayarKini]);
+  }, [catatGulirSekarang, namaLayarKini]);
 
   /*
    * Satu entri riwayat per layar (A1-T7), diperbaiki di A4-T1.
@@ -740,8 +764,15 @@ function LayarSoal({
                 {p.kunci}
               </span>
               <span className="opsi-teks">
-                {/* Opsi juga ucapan: polos, tanpa tebal dan tanpa tautan. */}
-                {p.teks}
+                {/*
+                  Opsi juga ucapan: polos, tanpa tebal dan tanpa tautan (D-2).
+                  "Polos" berarti penanda `[[fact_id|teks]]` DILEPAS dan hanya
+                  teks yang dilihat pemain yang tampil — bukan penandanya ikut
+                  terbaca. `interaktif={false}` persis untuk itu; tanpa ia,
+                  opsi c soal 1 menampilkan
+                  "[[kelipatan-2025-08-01-2025-10-08|22 kali]]" di layar.
+                */}
+                <Teks teks={p.teks} bukaSumber={bukaSumber} interaktif={false} />
                 {tanda.label.map((kata) => (
                   <span
                     key={kata}
