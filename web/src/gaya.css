@@ -819,6 +819,12 @@ summary:focus-visible,
  * Tautan angka: bidang sentuhnya dilebarkan lewat padding-block, dan tinggi
  * baris induknya dinaikkan ke 1,7 supaya barisnya tidak saling menindih
  * (`docs/desain.md`).
+ *
+ * `<button>` selalu menjadi kotak inline **atom** — `display: inline` pun
+ * dipaksa kembali ke `inline-block` oleh peramban — dan kotak atom membuka
+ * kesempatan putus baris di kedua sisinya. Itu yang membuat titik sesudah
+ * tautan terlempar ke baris berikutnya (F-A1-2). Perbaikannya struktural:
+ * `Teks.tsx` mengikat tanda baca ke dalam `.tanpa-putus` bersama tautannya.
  */
 .rujukan {
   background: none;
@@ -832,7 +838,19 @@ summary:focus-visible,
   cursor: pointer;
 }
 
+/* Tautan dan tanda bacanya satu kesatuan; tidak boleh terpisah baris. */
+.tanpa-putus {
+  white-space: nowrap;
+}
+
+/*
+ * Tinggi baris 1,7 di mana pun tautan angka muncul di dalam kalimat: bantalan
+ * tegak tautan butuh ruang supaya bidang sentuhnya tetap >= 44 px tanpa baris
+ * yang saling menindih.
+ */
+.hook,
 .teks-kunci,
+.aturan-main li,
 .garis-waktu li,
 .bacaan li {
   line-height: 1.7;
