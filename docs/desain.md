@@ -1,6 +1,6 @@
 # Arah desain pemain kasus — versi 3
 
-Dokumen ini mengikat, **bersama layar contoh `docs/contoh/layar-soal.html`**. Kalau kata-kata di sini dan contoh itu berbeda, **contoh yang menang**: pemilik menyetujuinya dengan matanya di ponsel (22 Sep 2026) sesudah menolak tiga versi yang ditafsirkan dari dokumen kata-kata. Yang tidak disebut di sini dan tidak ada di contoh tidak ditambahkan.
+Dokumen ini mengikat, **bersama layar contoh `docs/contoh/layar-soal.html`**. Kalau kata-kata di sini dan contoh itu berbeda, **contoh yang menang**: pemilik menyetujuinya dengan matanya di ponsel (21 Sep 2026) sesudah menolak tiga versi yang ditafsirkan dari dokumen kata-kata. Yang tidak disebut di sini dan tidak ada di contoh tidak ditambahkan.
 
 ## Subjek, pembaca, tugas halaman
 

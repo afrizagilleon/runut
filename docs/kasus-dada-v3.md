@@ -2,7 +2,7 @@
 
 Menggantikan bagian layar dan soal di `docs/kasus-dada-v2.md` untuk skema kasus versi 3. Kartu, kartu penentu, opsi, jawaban, fakta turunan, layar pembukaan, dan layar akhir dari v2 **tetap berlaku** kecuali disebut di sini. Rupa layarnya mengikuti `docs/contoh/layar-soal.html`.
 
-Lahir dari uji pemilik di ponsel (22 Sep 2026): layar v2 "ramai, masih terasa AI slop"; label "TEMANMU" tak terbaca; kalimat "Hari ini 8 Oktober…" terbaca sebagai informasi, bukan konteks; kartu dikira pilihan ganda; tiga aturan di layar pertama tidak dibaca. Tentang urutan baru ia berkata: *"orang kasih kabar, kita verify — agar melatih motorik masyarakat untuk selalu verify jika ada informasi masuk."*
+Lahir dari uji pemilik di ponsel (21 Sep 2026): layar v2 "ramai, masih terasa AI slop"; label "TEMANMU" tak terbaca; kalimat "Hari ini 8 Oktober…" terbaca sebagai informasi, bukan konteks; kartu dikira pilihan ganda; tiga aturan di layar pertama tidak dibaca. Tentang urutan baru ia berkata: *"orang kasih kabar, kita verify — agar melatih motorik masyarakat untuk selalu verify jika ada informasi masuk."*
 
 ## Aturan penulisan tambahan (berlaku untuk semua kasus berikutnya)
 
