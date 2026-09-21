@@ -184,6 +184,7 @@ export default defineConfig({
         '**/papan-ketik.spec.ts',
         '**/permainan.spec.ts',
         '**/umpan-tekan.spec.ts',
+        '**/tepi-bahan.spec.ts',
       ],
       use: {
         ...devices['Desktop Chrome'],

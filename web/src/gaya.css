@@ -901,28 +901,17 @@ summary:focus-visible,
   margin: 0 0 12px;
 }
 
+/*
+ * Judulnya peran `meta` biasa (A-2, D-B1). Dulu ia huruf mesin tik ber-
+ * letter-spacing, melanggar `docs/desain.md` v3: mesin tik hanya untuk keping
+ * kalender dan rincian teknis. Yang tersisa di sini hanya jaraknya.
+ */
 .penentu-judul {
   margin: 0 0 6px;
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--tinta-redup);
 }
 
 .lembar-ringkas {
   border-radius: 2px;
-}
-
-.lembar-ringkas-kepala {
-  margin: 0;
-  padding: 6px 12px 0;
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--tinta-redup);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* --- cap umpan balik ------------------------------------------------------- */

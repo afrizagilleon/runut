@@ -948,9 +948,23 @@ function LayarSoal({
               {s.benar === true ? 'Cocok dengan kartu' : 'Belum cocok dengan kartu'}
             </p>
 
-            {/* Salinan ringkas kartu penentu, supaya mata tidak menggulir balik. */}
+            {/*
+              Salinan ringkas kartu penentu, supaya mata tidak menggulir balik.
+
+              Bahannya **sama persis** dengan `KartuFakta`: `.lembar-badan`
+              membungkus kepala peran *meta* dan isi peran *isi*, tanpa kaki
+              (tidak ada yang bisa dibuka di salinan). Sebelum A-2, blok ini
+              merender `<p className="lembar-isi">` langsung di bawah
+              `article.lembar` — dan karena bantalan lembar hanya ada di
+              `.lembar-badan`, badannya menempel ke tepi kiri kartu sementara
+              kepalanya berjarak 12 px. Teman pemilik yang menemukannya:
+              "memang mepet gini tulisannya ke pinggir?"
+
+              Pelajarannya bukan soal satu blok: bahan yang dipakai ulang harus
+              dipakai ulang **beserta bantalannya**, bukan hanya rupanya.
+            */}
             <div className="penentu" data-uid="penentu">
-              <p className="penentu-judul">Kartu yang menentukan</p>
+              <p className="meta penentu-judul">Kartu yang menentukan</p>
               {kartu
                 .filter((f) => menentukan.has(f.fact_id))
                 .map((f) => (
@@ -960,11 +974,16 @@ function LayarSoal({
                       f.sumber.jenis === 'turunan' ? ' lembar-hitung' : ''
                     }`}
                   >
-                    <div className="lembar-garis" aria-hidden="true" />
-                    <p className="lembar-ringkas-kepala">{f.awam?.kepala ?? f.fact_id}</p>
-                    <p className="lembar-isi">
-                      <Teks teks={f.awam?.isi ?? f.klaim} sakelarSumber={sakelarSumber} tebalSaja />
-                    </p>
+                    <div className="lembar-badan">
+                      <p className="meta">{f.awam?.kepala ?? f.fact_id}</p>
+                      <p className="isi lembar-badan-isi">
+                        <Teks
+                          teks={f.awam?.isi ?? f.klaim}
+                          sakelarSumber={sakelarSumber}
+                          tebalSaja
+                        />
+                      </p>
+                    </div>
                   </article>
                 ))}
             </div>
