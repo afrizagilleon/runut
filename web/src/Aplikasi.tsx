@@ -35,7 +35,7 @@ import {
   type SimpulKetuk,
 } from './pelacak.ts';
 import { perintahRiwayat } from './riwayat.ts';
-import { isiSumber } from './sumber.ts';
+import { isiSumber, type Emiten } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
 import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
 
@@ -596,11 +596,16 @@ function usePengamatOpsi(
 function IsiLembarTerbuka({
   fakta,
   indeks,
+  emiten,
+  sudahDibuka,
 }: {
   fakta: Fakta;
   indeks: ReadonlyMap<string, Fakta>;
+  emiten: Emiten;
+  /** Layar pembukaan sudah tercapai, jadi identitas emiten boleh tampil. */
+  sudahDibuka: boolean;
 }): JSX.Element {
-  const isi = isiSumber(fakta, indeks);
+  const isi = isiSumber(fakta, indeks, emiten, sudahDibuka);
   return (
     <>
       <p className="meta">Kalimat resminya</p>
@@ -703,10 +708,14 @@ function PenjelasanSebaris({
   teks,
   indeks,
   terbuka,
+  emiten,
+  sudahDibuka,
 }: {
   teks: string;
   indeks: ReadonlyMap<string, Fakta>;
   terbuka: readonly string[];
+  emiten: Emiten;
+  sudahDibuka: boolean;
 }): JSX.Element | null {
   const dibuka = ambilRujukan(teks)
     .map((r) => r.fact_id)
@@ -720,7 +729,12 @@ function PenjelasanSebaris({
         if (fakta === undefined) return null;
         return (
           <div className="buka penjelasan-sebaris" key={id}>
-            <IsiLembarTerbuka fakta={fakta} indeks={indeks} />
+            <IsiLembarTerbuka
+              fakta={fakta}
+              indeks={indeks}
+              emiten={emiten}
+              sudahDibuka={sudahDibuka}
+            />
           </div>
         );
       })}
@@ -806,7 +820,12 @@ function LayarSoal({
             sakelarSumber={sakelarSumber}
             terbuka={keadaan.sumberTerbuka.includes(fakta.fact_id)}
           >
-            <IsiLembarTerbuka fakta={fakta} indeks={indeks} />
+            <IsiLembarTerbuka
+              fakta={fakta}
+              indeks={indeks}
+              emiten={kasus.emiten}
+              sudahDibuka={false}
+            />
           </KartuFakta>
         ))}
       </div>
@@ -936,6 +955,8 @@ function LayarSoal({
               teks={soal.penjelasan}
               indeks={indeks}
               terbuka={keadaan.sumberTerbuka}
+              emiten={kasus.emiten}
+              sudahDibuka={false}
             />
           </>
         )}
@@ -1051,7 +1072,13 @@ function LayarPembukaan({
           <li key={nomor}>
             <KepingTanggal kasus={kasus} teks={paragraf} />
             <Teks teks={paragraf} sakelarSumber={sakelarSumber} />
-            <PenjelasanSebaris teks={paragraf} indeks={indeks} terbuka={terbuka} />
+            <PenjelasanSebaris
+              teks={paragraf}
+              indeks={indeks}
+              terbuka={terbuka}
+              emiten={kasus.emiten}
+              sudahDibuka
+            />
           </li>
         ))}
       </ol>
@@ -1063,7 +1090,13 @@ function LayarPembukaan({
           {kasus.pembukaan.bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
               <Teks teks={baris} sakelarSumber={sakelarSumber} />
-              <PenjelasanSebaris teks={baris} indeks={indeks} terbuka={terbuka} />
+              <PenjelasanSebaris
+                teks={baris}
+                indeks={indeks}
+                terbuka={terbuka}
+                emiten={kasus.emiten}
+                sudahDibuka
+              />
             </li>
           ))}
         </ul>
@@ -1072,7 +1105,13 @@ function LayarPembukaan({
           {kasus.pembukaan.tidak_bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
               <Teks teks={baris} sakelarSumber={sakelarSumber} />
-              <PenjelasanSebaris teks={baris} indeks={indeks} terbuka={terbuka} />
+              <PenjelasanSebaris
+                teks={baris}
+                indeks={indeks}
+                terbuka={terbuka}
+                emiten={kasus.emiten}
+                sudahDibuka
+              />
             </li>
           ))}
         </ul>
@@ -1081,7 +1120,13 @@ function LayarPembukaan({
           {kasus.pembukaan.disingkirkan.map((baris, nomor) => (
             <li key={nomor}>
               <Teks teks={baris} sakelarSumber={sakelarSumber} />
-              <PenjelasanSebaris teks={baris} indeks={indeks} terbuka={terbuka} />
+              <PenjelasanSebaris
+                teks={baris}
+                indeks={indeks}
+                terbuka={terbuka}
+                emiten={kasus.emiten}
+                sudahDibuka
+              />
             </li>
           ))}
         </ul>

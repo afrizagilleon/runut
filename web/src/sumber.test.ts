@@ -1,6 +1,25 @@
 import { describe, expect, it } from 'vitest';
 import type { Fakta } from '../../factory/skema/tipe.ts';
-import { PINTU_HITUNG, PINTU_SUMBER, isiSumber, namaAsal, namaFakta } from './sumber.ts';
+import {
+  CATATAN_SAMARAN,
+  PINTU_HITUNG,
+  PINTU_SUMBER,
+  SAMARAN,
+  isiSumber,
+  namaAsal,
+  namaFakta,
+  samarkan,
+} from './sumber.ts';
+
+/**
+ * Identitas emiten yang dipakai seluruh berkas ini. Tes lama memanggil
+ * `isiSumber` dengan dua argumen; sejak A-1 identitas dan bendera "sudah
+ * dibuka" wajib disebut, jadi tes lama memakai `DIBUKA` — perilakunya sama
+ * persis dengan sebelum amandemen.
+ */
+const EMITEN = { simbol: 'DADA', nama: 'PT Diamond Citra Propertindo Tbk' };
+const DIBUKA = true;
+const DISAMARKAN = false;
 
 /**
  * "Dihitung dari" dulu mencetak `fact_id` apa adanya, dan pemilik membaca
@@ -171,26 +190,26 @@ describe('isiSumber — apa yang tampil saat sebuah fakta dibuka (D-5)', () => {
     });
 
   it('sumber resmi: pintunya "Lihat sumbernya", tanpa cara menghitung', () => {
-    const isi = isiSumber(resmi(), petakan([resmi()]));
+    const isi = isiSumber(resmi(), petakan([resmi()]), EMITEN, DIBUKA);
     expect(isi.pintu).toBe(PINTU_SUMBER);
     expect(isi.caraHitung).toBeNull();
     expect(isi.dihitungDari).toEqual([]);
   });
 
   it('hitungan: pintunya "Lihat cara menghitungnya", dengan cara menghitung', () => {
-    const isi = isiSumber(hitungan(), petakan([hitungan(), resmi()]));
+    const isi = isiSumber(hitungan(), petakan([hitungan(), resmi()]), EMITEN, DIBUKA);
     expect(isi.pintu).toBe(PINTU_HITUNG);
     expect(isi.caraHitung).toContain('pengandaian 10 lot');
   });
 
   it('tanggal ditulis dalam bahasa orang, bukan ISO', () => {
-    const isi = isiSumber(resmi(), petakan([resmi()]));
+    const isi = isiSumber(resmi(), petakan([resmi()]), EMITEN, DIBUKA);
     expect(isi.sejakKapan).toBe('Sudah bisa dibaca publik sejak 16 September 2025.');
     expect(isi.sejakKapan).not.toMatch(/\d{4}-\d{2}-\d{2}/);
   });
 
   it('fakta tanpa tanggal tidak berbohong, ia mengatakan tidak tahu', () => {
-    const isi = isiSumber(buat({ fact_id: 'x', tersedia_sejak: null }), petakan([]));
+    const isi = isiSumber(buat({ fact_id: 'x', tersedia_sejak: null }), petakan([]), EMITEN, DIBUKA);
     expect(isi.sejakKapan).toContain('tidak bisa ditentukan dari data');
   });
 
@@ -199,12 +218,12 @@ describe('isiSumber — apa yang tampil saat sebuah fakta dibuka (D-5)', () => {
       fact_id: 'div-2025-09-16',
       awam: { kepala: 'Pengumuman dividen · ex 16 Sep 2025', isi: '' },
     });
-    const isi = isiSumber(hitungan(), petakan([hitungan(), asal]));
+    const isi = isiSumber(hitungan(), petakan([hitungan(), asal]), EMITEN, DIBUKA);
     expect(isi.dihitungDari).toEqual(['Pengumuman dividen · ex 16 Sep 2025']);
   });
 
   it('kosakata pabrik HANYA di rincian teknis, tidak di permukaan', () => {
-    const isi = isiSumber(resmi(), petakan([resmi()]));
+    const isi = isiSumber(resmi(), petakan([resmi()]), EMITEN, DIBUKA);
     const permukaan = [isi.kalimatResmi, isi.caraHitung ?? '', isi.sejakKapan, ...isi.dihitungDari].join(' ');
     for (const bocor of ['div-2025-09-16', '/v2/corporate-actions/', 'api', 'TERVERIFIKASI']) {
       expect(permukaan, bocor).not.toContain(bocor);
@@ -216,7 +235,169 @@ describe('isiSumber — apa yang tampil saat sebuah fakta dibuka (D-5)', () => {
   });
 
   it('kode fakta asal ikut ke rincian teknis, bukan hilang', () => {
-    const isi = isiSumber(hitungan(), petakan([hitungan(), resmi()]));
+    const isi = isiSumber(hitungan(), petakan([hitungan(), resmi()]), EMITEN, DIBUKA);
     expect(isi.rincian.find((b) => b.label === 'Kode fakta asal')?.nilai).toBe('div-2025-09-16');
+  });
+});
+
+/**
+ * A-1, cacat C-3: kode saham terbaca di layar soal, dua ketukan dari kartu mana
+ * pun — "Lihat sumbernya ›" lalu "Rincian teknis". Di berkas kasus DADA, kode
+ * sahamnya muncul 44 kali di `sumber.parameter` dan 10 kali di `sumber.endpoint`,
+ * dan `IsiLembarTerbuka` merender `rincian` apa adanya.
+ *
+ * Yang dijaga di bawah bukan "ada penyamaran", melainkan **tiap medan** dan
+ * **tiap cara identitas itu bisa tertulis** — karena yang bocor kemarin justru
+ * medan yang tidak terpikirkan.
+ */
+describe('samarkan — tiap variasi penulisan identitas', () => {
+  const emiten = { simbol: 'DADA', nama: 'PT Diamond Citra Propertindo Tbk' };
+
+  it('mengganti kode saham yang berdiri sendiri', () => {
+    expect(samarkan('Parameter symbol DADA', emiten)).toBe(`Parameter symbol ${SAMARAN}`);
+  });
+
+  it('mengganti kode saham di dalam jalur endpoint', () => {
+    expect(samarkan('/v2/company/corporate-actions/DADA/', emiten)).toBe(
+      `/v2/company/corporate-actions/${SAMARAN}/`,
+    );
+  });
+
+  it('mengganti varian .JK utuh, bukan menyisakan ".JK"', () => {
+    const hasil = samarkan('simbol=DADA.JK&x=1', emiten);
+    expect(hasil).toBe(`simbol=${SAMARAN}&x=1`);
+    expect(hasil).not.toContain('.JK');
+  });
+
+  it('tidak peduli huruf besar-kecil', () => {
+    expect(samarkan('dada / Dada / DaDa', emiten)).toBe(`${SAMARAN} / ${SAMARAN} / ${SAMARAN}`);
+  });
+
+  it('mengganti nama emiten, bukan hanya kodenya', () => {
+    expect(samarkan('Diumumkan PT Diamond Citra Propertindo Tbk.', emiten)).toBe(
+      `Diumumkan ${SAMARAN}.`,
+    );
+  });
+
+  it('TIDAK menyamarkan kode yang hanya kebetulan menjadi bagian kata lain', () => {
+    // "pada" memuat "ada", dan "DADAP" memuat "DADA": keduanya kata lain.
+    expect(samarkan('pada DADAP sore', { simbol: 'DADA', nama: 'X Y Z' })).toBe('pada DADAP sore');
+  });
+
+  it('mengganti semua kemunculan, bukan yang pertama saja', () => {
+    expect(samarkan('DADA lalu DADA lagi', emiten)).toBe(`${SAMARAN} lalu ${SAMARAN} lagi`);
+  });
+
+  it('membiarkan teks yang memang tidak memuat identitas', () => {
+    expect(samarkan('Harga penutupan Rp178 per lembar.', emiten)).toBe(
+      'Harga penutupan Rp178 per lembar.',
+    );
+  });
+});
+
+describe('isiSumber — identitas disamarkan sampai kasus selesai (A-1, C-3)', () => {
+  const emiten = { simbol: 'DADA', nama: 'PT Diamond Citra Propertindo Tbk' };
+
+  const bocor = (): Fakta =>
+    buat({
+      fact_id: 'susp-DADA-2025-06-30',
+      klaim: 'Bursa menghentikan sementara perdagangan PT Diamond Citra Propertindo Tbk.',
+      turunan_dari: ['harga-DADA-2025-08-01'],
+      sumber: {
+        jenis: 'api',
+        endpoint: '/v2/company/corporate-actions/DADA/',
+        berkas: 'idx/DADA-2025-06-30.pdf',
+        parameter: { symbol: 'DADA.JK', papan: 'Pengembangan' },
+        diambil_pada: '2025-10-08T03:00:00Z',
+        keterangan: null,
+      },
+    });
+
+  const hitunganBocor = (): Fakta =>
+    buat({
+      ...bocor(),
+      fact_id: 'turunan-DADA',
+      sumber: {
+        ...bocor().sumber,
+        jenis: 'turunan',
+        keterangan: 'harga DADA 8 Oktober dibagi harga DADA 1 Agustus',
+      },
+    });
+
+  /** Semua teks yang dikembalikan `isiSumber`, digabung. */
+  const semuaTeks = (isi: ReturnType<typeof isiSumber>): string =>
+    [
+      isi.kalimatResmi,
+      isi.caraHitung ?? '',
+      isi.sejakKapan,
+      ...isi.dihitungDari,
+      ...isi.rincian.map((b) => `${b.label} ${b.nilai}`),
+    ].join(' | ');
+
+  it('tidak menyisakan kode saham di satu medan pun selama belum dibuka', () => {
+    const isi = isiSumber(hitunganBocor(), petakan([hitunganBocor()]), emiten, DISAMARKAN);
+    const teks = semuaTeks(isi);
+    expect(teks).not.toContain('DADA');
+    expect(teks).not.toContain('dada');
+    expect(teks).not.toContain('.JK');
+  });
+
+  it('tidak menyisakan nama emiten selama belum dibuka', () => {
+    const isi = isiSumber(bocor(), petakan([bocor()]), emiten, DISAMARKAN);
+    expect(semuaTeks(isi)).not.toContain(emiten.nama);
+  });
+
+  it('menyamarkan endpoint, berkas, parameter, kode fakta, dan kode fakta asal', () => {
+    const isi = isiSumber(bocor(), petakan([bocor()]), emiten, DISAMARKAN);
+    const nilai = (label: string): string =>
+      isi.rincian.find((b) => b.label === label)?.nilai ?? '(tidak ada)';
+    expect(nilai('Endpoint')).toBe(`/v2/company/corporate-actions/${SAMARAN}/`);
+    expect(nilai('Berkas sumber')).toBe(`idx/${SAMARAN}-2025-06-30.pdf`);
+    expect(nilai('Parameter symbol')).toBe(SAMARAN);
+    expect(nilai('Kode fakta')).toBe(`susp-${SAMARAN}-2025-06-30`);
+    expect(nilai('Kode fakta asal')).toBe(`harga-${SAMARAN}-2025-08-01`);
+  });
+
+  it('menyamarkan kalimat resmi dan cara menghitungnya', () => {
+    const isi = isiSumber(hitunganBocor(), petakan([hitunganBocor()]), emiten, DISAMARKAN);
+    expect(isi.kalimatResmi).toBe(`Bursa menghentikan sementara perdagangan ${SAMARAN}.`);
+    expect(isi.caraHitung).toBe(
+      `harga ${SAMARAN} 8 Oktober dibagi harga ${SAMARAN} 1 Agustus`,
+    );
+  });
+
+  it('menyamarkan "Dihitung dari", yang memakai klaim fakta asal', () => {
+    const asal = buat({
+      fact_id: 'harga-DADA-2025-08-01',
+      klaim: 'Harga penutupan DADA 1 Agustus 2025.',
+    });
+    const isi = isiSumber(hitunganBocor(), petakan([hitunganBocor(), asal]), emiten, DISAMARKAN);
+    expect(isi.dihitungDari.join(' ')).not.toContain('DADA');
+    expect(isi.dihitungDari.join(' ')).toContain(SAMARAN);
+  });
+
+  it('baris pertama rincian mengatakan kenapa, supaya ••• tidak tampak seperti data hilang', () => {
+    const isi = isiSumber(bocor(), petakan([bocor()]), emiten, DISAMARKAN);
+    expect(isi.rincian[0]?.nilai).toBe(CATATAN_SAMARAN);
+  });
+
+  it('SESUDAH dibuka, tiap nilai kembali utuh dan catatannya hilang', () => {
+    const isi = isiSumber(hitunganBocor(), petakan([hitunganBocor()]), emiten, DIBUKA);
+    const nilai = (label: string): string =>
+      isi.rincian.find((b) => b.label === label)?.nilai ?? '(tidak ada)';
+    expect(nilai('Endpoint')).toBe('/v2/company/corporate-actions/DADA/');
+    expect(nilai('Berkas sumber')).toBe('idx/DADA-2025-06-30.pdf');
+    expect(nilai('Parameter symbol')).toBe('DADA.JK');
+    expect(nilai('Kode fakta')).toBe('turunan-DADA');
+    expect(isi.kalimatResmi).toContain(emiten.nama);
+    expect(isi.caraHitung).toContain('DADA');
+    expect(isi.rincian.map((b) => b.nilai)).not.toContain(CATATAN_SAMARAN);
+    expect(semuaTeks(isi)).not.toContain(SAMARAN);
+  });
+
+  it('tanggal "sudah bisa dibaca sejak" tidak ikut berubah oleh penyamaran', () => {
+    const disamarkan = isiSumber(bocor(), petakan([bocor()]), emiten, DISAMARKAN);
+    const dibuka = isiSumber(bocor(), petakan([bocor()]), emiten, DIBUKA);
+    expect(disamarkan.sejakKapan).toBe(dibuka.sejakKapan);
   });
 });
