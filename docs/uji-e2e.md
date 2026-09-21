@@ -100,6 +100,7 @@ dilihat browser tanpa membuka browser.
 |---|---|---|
 | Halaman putih di `http://` LAN: `crypto.randomUUID` tidak ada di konteks tidak aman | `asal-tidak-aman.spec.ts` E-01 | `Aplikasi.tsx`: `buatIdSesi(...)` → `crypto.randomUUID()` |
 | Tombol kembali kedua keluar dari situs | `riwayat.spec.ts` E-02 | `riwayat.ts`: `perintahRiwayat` mengembalikan `'dorong'` untuk layar yang sama; atau `pushState` di dalam penangan `popstate` |
+| **C-1** Tombol **maju** tidak menggerakkan layar, lalu kembali pun berhenti bekerja | `riwayat.spec.ts` E-02b, E-02c | `Aplikasi.tsx`: `popstate` dianggap selalu mundur · `alur.ts`: `tujuanRiwayat` tidak memeriksa `pernahSampai` · `riwayat.ts`: `majuPeramban` tidak memindahkan penunjuk |
 | Kaki kartu tidak bisa menutup | `buka-tutup.spec.ts` E-03 | `alur.ts`: `sakelar_sumber` hanya membuka |
 | Opsi pertama tidak terlihat di 360 px dan pemain tidak tahu harus ke mana | `bilah-bawah.spec.ts` E-04 | `Aplikasi.tsx`: pengamat opsi tidak men-dispatch |
 | Sobekan kalender meniadakan dirinya sendiri | `sobekan.spec.ts` E-05 | `Kalender.tsx`: kelas `kalender-jatuh` dihapus |
@@ -113,7 +114,10 @@ dilihat browser tanpa membuka browser.
 | Kartu tercatat nol detik (F-1) | `pengamat-kartu.spec.ts` E-07 | `Aplikasi.tsx`: pengamat kartu tidak men-dispatch |
 | Build "tanpa pengumpul" diam-diam menghubungi sesuatu | `jaringan-tanpa.spec.ts` E-08 | `main.tsx`: satu `fetch` ke asal lain |
 | `VITE_KOLEKTOR_URL=/e` menjadi `E:/` lewat Git Bash | `jaringan-dengan.spec.ts` E-08 | `kirim.ts`: `ALAMAT` menjadi `'E:/e'` |
-| Identitas emiten bocor sebelum pembukaan | `identitas.spec.ts` E-09 | `Aplikasi.tsx`: kode saham ditampilkan di keping kalender |
+| Identitas emiten bocor sebelum pembukaan | `identitas.spec.ts` E-09a | `Aplikasi.tsx`: kode saham ditampilkan di keping kalender |
+| **C-3** Kode saham terbaca di "Rincian teknis", dua ketukan dari kartu mana pun | `identitas.spec.ts` E-09a, E-09b | `sumber.ts`: `samarkanBila` mengembalikan teks apa adanya · varian `.JK` dikeluarkan dari daftar · pola dibuat peka huruf besar-kecil |
+| **C-2** Tautan angka membuka sesuatu tanpa mengatakannya (`aria-expanded`) | `buka-tutup.spec.ts` E-03a, E-03b | `Teks.tsx`: `aria-expanded` dicabut, atau dibekukan di `false` · `Aplikasi.tsx`: `id` blok penjelasan dihapus |
+| **C-4** Sorot ketuk biru bawaan Chromium, bukan umpan tekan dari palet | `umpan-tekan.spec.ts` | `gaya.css`: aturan `:active` dihapus · `-webkit-tap-highlight-color` dihapus · `:active` hanya untuk satu dari tiga kontrol |
 | Sesudah salah, pemain tidak tahu mana pilihannya | `umpan-balik.spec.ts` E-11 | `alur.ts`: label "Pilihanmu" dihapus dari opsi keliru |
 | Gulir mendatar | `tata-letak.spec.ts` E-12a | `gaya.css`: `.tumpukan { min-width: 700px }` |
 | Kepala lembar terpotong | `tata-letak.spec.ts` E-12b | `gaya.css`: kepala lembar `max-width` kecil + `overflow: hidden` |
@@ -162,6 +166,20 @@ dilihat browser tanpa membuka browser.
   "elemennya tidak ada" dengan ambang seolah ia hasil ukur; periksa
   keberadaannya terpisah. Ini pernah membuat satu tes hijau atas halaman yang
   sudah rusak.
+- **Mengaduk banyak kontrol: pegang, jangan menomori.** Kalau sebuah tes membuka
+  banyak lipatan sekaligus, pakai `elementHandles()` dan periksa-lalu-ketuk
+  lewat pegangan yang **sama**. `locator.nth(n)` menyelesaikan selektornya ulang
+  di tiap pemanggilan, dan daftarnya tumbuh saat lipatan terbuka — indeks ke-n
+  pada pembacaan pertama bukan elemen yang sama dengan indeks ke-n berikutnya.
+  Itu hipotesis terkuat untuk satu kegagalan E-09a yang tidak terulang.
+- **Asersi yang tidak pernah bisa gagal lebih buruk daripada tidak ada asersi.**
+  Sebelum percaya sebuah penjaga, rusak kode yang dijaganya dan pastikan ia
+  merah. `keping.top === 0` pernah lolos sebagai penjaga "gambar diambil saat
+  halaman diam" — padahal keping itu `position: sticky; top: 0` dan selalu 0.
+- **Tangkapan layar diambil saat halaman diam.** `simpanLayar()` menunggu
+  gulirnya berhenti dan memeriksa `scrollY` tidak berubah selama gambarnya
+  diambil. Gambar bahan review yang menyesatkan membuat orang mengejar cacat
+  yang tidak ada.
 
 ## Cara reviewer menjalankan proyek `alpha`
 
