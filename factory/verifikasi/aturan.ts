@@ -4,19 +4,11 @@
  * Aturan yang tidak bisa dijalankan menyebut alasannya; tidak ada yang dilewati diam-diam.
  */
 import type { Temuan } from '../skema/tipe.ts';
-import { angkaId } from '../format.ts';
-import type { HasilAturan, HitunganAturan, KonteksVerifikasi, Laporan } from './tipe.ts';
-import { hitunganKosong } from './tipe.ts';
+import type { HasilAturan, KonteksVerifikasi, Laporan } from './tipe.ts';
+import { angka, hasil, hitung, lewat, urut } from './dasar.ts';
 
 /** Batas galat saat membandingkan persentase laporan dengan hitungan ulang. */
 export const TOLERANSI_PERSEN = 0.05;
-
-function urut(laporan: Laporan[]): Laporan[] {
-  return [...laporan].sort((a, b) => {
-    const selisih = a.dilaporkan_pada.localeCompare(b.dilaporkan_pada);
-    return selisih !== 0 ? selisih : a.laporan_id.localeCompare(b.laporan_id);
-  });
-}
 
 function perPemegang(laporan: Laporan[]): Map<string, Laporan[]> {
   const peta = new Map<string, Laporan[]>();
@@ -88,58 +80,6 @@ export function cariBlokUlangan(laporan: Laporan[], panjangMinimal = 2): BlokUla
   return blok;
 }
 
-/**
- * Bangun hitungan INV-B dari jumlah unit yang disapu.
- * `hijau` selalu sisa, supaya `diperiksa = hijau + merah + tidak_lengkap`
- * tidak pernah bisa meleset karena salah ketik.
- */
-function hitung(
-  satuan: string,
-  bagian: {
-    diperiksa: number;
-    merah: number;
-    tidak_lengkap?: number;
-    dilewati?: number;
-    alasan_dilewati?: string[];
-  },
-): HitunganAturan {
-  const tidak_lengkap = bagian.tidak_lengkap ?? 0;
-  return {
-    satuan,
-    diperiksa: bagian.diperiksa,
-    hijau: bagian.diperiksa - bagian.merah - tidak_lengkap,
-    merah: bagian.merah,
-    tidak_lengkap,
-    dilewati: bagian.dilewati ?? 0,
-    alasan_dilewati: [...new Set(bagian.alasan_dilewati ?? [])].sort(),
-  };
-}
-
-function hasil(
-  aturan: HasilAturan['aturan'],
-  judul: string,
-  temuan: Temuan[],
-  hitungan: HitunganAturan,
-): HasilAturan {
-  return { aturan, judul, dijalankan: true, alasan_lewat: null, temuan, hitungan };
-}
-
-function lewat(
-  aturan: HasilAturan['aturan'],
-  judul: string,
-  alasan: string,
-  satuan: string,
-  dilewati = 0,
-): HasilAturan {
-  const hitungan = hitunganKosong(satuan);
-  hitungan.dilewati = dilewati;
-  hitungan.alasan_dilewati = [alasan];
-  return { aturan, judul, dijalankan: false, alasan_lewat: alasan, temuan: [], hitungan };
-}
-
-// Pemformat sendiri, bukan toLocaleString: teks temuan ikut ke berkas kasus yang
-// harus bisa dibangun ulang identik di mesin lain.
-const angka = (nilai: number): string => angkaId(nilai);
 
 // --- R1 ---------------------------------------------------------------------
 
