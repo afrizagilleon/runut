@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 import { PENANDA_BUKAN_FAKTA, ambilRujukan } from '../../factory/skema/rujukan.ts';
 import type { Fakta, Kasus, Soal } from '../../factory/skema/tipe.ts';
 import {
@@ -67,21 +67,40 @@ export function Aplikasi(): JSX.Element {
     dispatch({ aksi, waktu: Date.now() });
   }, []);
 
+  // Cermin keadaan terakhir, hanya untuk jalur `pagehide` di bawah.
+  const acuanKeadaan = useRef(keadaan);
+  acuanKeadaan.current = keadaan;
+
   // Satu-satunya tempat waktu dibaca untuk peristiwa pembuka.
   useEffect(() => {
     kirim({ jenis: 'mulai', lebar_layar: window.innerWidth });
   }, [kirim]);
 
+  /*
+   * `pagehide` adalah kesempatan terakhir; halaman bisa mati sebelum React
+   * sempat merender sekali lagi. Jadi peristiwa `tutup` TIDAK boleh lewat
+   * `dispatch`: ia dihitung di sini juga dari reducer yang sama, lalu langsung
+   * diserahkan ke kirim.ts dan disiram.
+   *
+   * Ini ditemukan bite-test: versi pertama memakai `dispatch` dan peristiwa
+   * `tutup` tidak pernah sampai ke pengumpul, sehingga "di layar mana orang
+   * berhenti" — justru yang paling ingin diketahui — selalu hilang.
+   *
+   * `acuanKeadaan` bukan sumber kebenaran kedua: ia hanya cermin keadaan
+   * terakhir yang sudah dirender, dipakai satu kali di jalur yang tidak boleh
+   * menunggu render berikutnya.
+   */
   useEffect(() => {
     const tutup = (): void => {
-      kirim({ jenis: 'tutup' });
+      const hasil = langkah(acuanKeadaan.current, { jenis: 'tutup' }, Date.now());
+      catatPeristiwa(hasil.peristiwa);
       siramPeristiwa();
     };
     window.addEventListener('pagehide', tutup);
     return () => {
       window.removeEventListener('pagehide', tutup);
     };
-  }, [kirim]);
+  }, []);
 
   // Peristiwa diserahkan ke kirim.ts di sini, bukan di dalam reducer: reducer
   // harus tetap murni, dan React boleh memanggilnya dua kali di StrictMode.
