@@ -127,6 +127,16 @@ test('E-05 sobekan kalender benar-benar berjalan dan selesai', async ({ page }) 
     const mulai = performance.now();
     const semua = document.getAnimations();
     const nama = semua.map((a) => ('animationName' in a ? String(a.animationName) : 'tanpa-nama'));
+    /*
+     * Lama yang DIJANJIKAN tiap animasi oleh gayanya sendiri: `endTime` =
+     * tunda + lama aktif + tunda akhir. Dibaca dari animasinya, bukan disalin
+     * dari `gaya.css`, supaya angka di tes tidak bisa berselisih dengan angka
+     * di produk (prinsip yang sama dengan `ambangOpsiProduk`).
+     */
+    const dijanjikan = semua.map((a) => {
+      const waktu = a.effect?.getComputedTiming();
+      return waktu === undefined ? Number.POSITIVE_INFINITY : Number(waktu.endTime ?? 0);
+    });
     await Promise.all(
       semua.map(async (a) => {
         try {
@@ -139,6 +149,7 @@ test('E-05 sobekan kalender benar-benar berjalan dan selesai', async ({ page }) 
     return {
       jumlah: semua.length,
       nama,
+      dijanjikan,
       ms: performance.now() - mulai,
       keadaan: semua.map((a) => a.playState),
     };
@@ -148,7 +159,26 @@ test('E-05 sobekan kalender benar-benar berjalan dan selesai', async ({ page }) 
   expect(gerak.nama, 'animasinya adalah sobek dan tutup-ruang').toEqual(
     expect.arrayContaining(['sobek', 'tutup-ruang']),
   );
-  expect(gerak.ms, 'sisa animasi selesai dalam <= 1,5 detik').toBeLessThanOrEqual(1500);
+  /*
+   * Yang diuji: animasinya **dijanjikan pendek**, dan ia **benar-benar selesai**
+   * (`playState` di bawah; `Promise.all` di atas yang menunggunya, dengan batas
+   * waktu tes sebagai jaring kalau ia menggantung selamanya).
+   *
+   * Yang TIDAK diuji lagi: berapa lama jam dinding berjalan sampai janji itu
+   * ditepati. Versi lama mengukur `performance.now()` dan menuntutnya <= 1,5
+   * detik. Animasinya sendiri hanya 950 ms (`sobek` 700+250, `tutup-ruang`
+   * 400+450), jadi sisanya adalah kelonggaran 550 ms untuk penjadwal — dan
+   * penjadwal bukan yang sedang diuji. Terukur di bawah tujuh pembakar CPU:
+   * **23.100 ms**, dua puluh tiga detik, bukan 1,5. Animasinya tetap lengkap
+   * dan tetap mencapai `finished`; yang tidak datang adalah frame-nya.
+   *
+   * Ini bukan pelonggaran: asersi lama tidak pernah bisa gagal karena animasi
+   * yang kepanjangan tanpa juga gagal karena mesin yang sibuk, dan asersi yang
+   * merah karena dua sebab berbeda tidak memberi tahu yang mana.
+   */
+  const terlama = Math.max(...gerak.dijanjikan);
+  expect(terlama, `tiap animasi dijanjikan selesai dalam <= 1,5 detik (terlama ${String(terlama)} ms)`)
+    .toBeLessThanOrEqual(1500);
   expect(gerak.keadaan.every((k) => k === 'finished'), `playState akhir: ${gerak.keadaan.join(', ')}`).toBe(
     true,
   );
@@ -166,7 +196,8 @@ test('E-05 sobekan kalender benar-benar berjalan dan selesai', async ({ page }) 
 
   // eslint-disable-next-line no-console
   console.log(
-    `E-05 animasi=${String(gerak.jumlah)} [${gerak.nama.join(', ')}] sisa=${gerak.ms.toFixed(0)}ms ` +
+    `E-05 animasi=${String(gerak.jumlah)} [${gerak.nama.join(', ')}] ` +
+      `dijanjikan=${terlama.toFixed(0)}ms sisa-jam-dinding=${gerak.ms.toFixed(0)}ms ` +
       `tinggi-ruang-akhir=${akhir.tinggiRuang.toFixed(1)}px opasitas-jatuh=${String(akhir.opasitasJatuh)} ` +
       `tanggal-garis-waktu=${tanggal.join(' ')}`,
   );
