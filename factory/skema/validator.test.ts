@@ -59,6 +59,7 @@ function kasusMinimal(): Kasus {
       {
         soal_id: 's1',
         kartu: ['harga-awal', 'harga-akhir'],
+        kartu_penentu: ['harga-akhir'],
         istilah: [{ kata: 'Hari bursa', arti: 'hari ketika bursa buka.' }],
         batang: 'Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu bilang harga naik. Mana yang tepat?',
         pilihan: [
@@ -286,6 +287,75 @@ describe('D-2 aturan 8 — tidak ada fakta terlihat yang menganggur', () => {
     kasus.fakta_terlihat = ['harga-awal'];
     expect(kode(kasus)).toContain('KARTU_TAK_TERLIHAT');
     expect(pesan(kasus)).toContain('harga-akhir');
+  });
+});
+
+describe('A1-T1 — kartu penentu', () => {
+  it('menolak soal tanpa satu pun kartu penentu', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.kartu_penentu = [];
+    expect(kode(kasus)).toContain('KARTU_PENENTU_JUMLAH');
+    expect(pesan(kasus)).toContain('s1');
+  });
+
+  it('menolak lebih dari dua kartu penentu', () => {
+    const kasus = kasusMinimal();
+    kasus.fakta.push(
+      fakta({ fact_id: 'harga-tengah', awam: { kepala: 'Data harga', isi: 'Isi.' } }),
+    );
+    kasus.soal[0]!.kartu.push('harga-tengah');
+    kasus.fakta_terlihat.push('harga-tengah');
+    kasus.soal[0]!.kartu_penentu = ['harga-awal', 'harga-akhir', 'harga-tengah'];
+    expect(kode(kasus)).toContain('KARTU_PENENTU_JUMLAH');
+  });
+
+  it('menolak kartu penentu yang bukan kartu soal itu', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.kartu_penentu = ['harga-nanti'];
+    expect(kode(kasus)).toContain('KARTU_PENENTU_BUKAN_KARTU');
+    expect(pesan(kasus)).toContain('harga-nanti');
+  });
+});
+
+describe('A1-T1 — garis kepala harus sepakat dengan sumbernya', () => {
+  function faktaTurunan(fact_id: string, kepala: string): Fakta {
+    return fakta({
+      fact_id,
+      awam: { kepala, isi: `Isi [[${fact_id}|Rp1]].` },
+      sumber: {
+        jenis: 'turunan',
+        endpoint: null,
+        berkas: null,
+        parameter: {},
+        diambil_pada: null,
+        keterangan: 'contoh hitungan',
+      },
+    });
+  }
+
+  it('menolak kartu turunan yang kepalanya tidak diawali "Dihitung dari"', () => {
+    const kasus = kasusMinimal();
+    kasus.fakta[1] = faktaTurunan('harga-akhir', 'Laporan pemegang saham · 1 Sep 2025');
+    expect(kode(kasus)).toContain('KEPALA_HITUNG_HILANG');
+    expect(pesan(kasus)).toContain('harga-akhir');
+  });
+
+  it('menerima kartu turunan yang kepalanya diawali "Dihitung dari"', () => {
+    const kasus = kasusMinimal();
+    kasus.fakta[1] = faktaTurunan('harga-akhir', 'Dihitung dari data harga · 8 Okt 2025');
+    expect(kode(kasus)).not.toContain('KEPALA_HITUNG_HILANG');
+    expect(kode(kasus)).not.toContain('KEPALA_HITUNG_PALSU');
+  });
+
+  it('menolak kartu bersumber API yang kepalanya mengaku hitungan sendiri', () => {
+    const kasus = kasusMinimal();
+    kasus.fakta[0] = fakta({
+      fact_id: 'harga-awal',
+      nilai: 8,
+      awam: { kepala: 'Dihitung dari entah apa', isi: 'Harga mulai [[harga-awal|Rp8]].' },
+    });
+    expect(kode(kasus)).toContain('KEPALA_HITUNG_PALSU');
+    expect(pesan(kasus)).toContain('harga-awal');
   });
 });
 

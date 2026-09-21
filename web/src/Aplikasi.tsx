@@ -513,7 +513,7 @@ function LayarPembukaan({
             kirim({ jenis: 'lanjut' });
           }}
         >
-          Lanjut ke tiga pertanyaan
+          Lanjut: tiga pertanyaan singkat
         </button>
       </div>
     </section>
@@ -645,10 +645,13 @@ function LayarAkhir({
   return (
     <section className="layar layar-akhir" aria-labelledby="judul-akhir">
       <h1 id="judul-akhir">Tiga pertanyaan singkat</h1>
-      <p className="meta">Semuanya boleh dilewati.</p>
+      <p className="meta">
+        Semuanya boleh dilewati. Di bawahnya ada kotak kalau kamu mau menulis.
+      </p>
 
       <fieldset className="tanya-akhir">
         <legend>Seberapa layak kasus ini kamu bagikan ke teman?</legend>
+        <p className="jangkar">1 = tidak akan kubagikan · 5 = langsung kubagikan</p>
         <div className="deret-pilihan">
           {[1, 2, 3, 4, 5].map((nilai) => (
             <label key={nilai} className={`petak${keadaan.akhir.rating === nilai ? ' petak-pilih' : ''}`}>

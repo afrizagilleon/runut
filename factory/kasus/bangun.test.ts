@@ -40,6 +40,40 @@ describe('berkas kasus yang ikut repo', () => {
     expect(kasus.soal.map((s) => s.istilah.length)).toEqual([2, 2, 1]);
   });
 
+  it('menunjuk satu kartu penentu per soal, semuanya benar-benar kartu soal itu (A1-T1)', () => {
+    const kasus = muatBerkas();
+    expect(kasus.soal.map((s) => s.kartu_penentu)).toEqual([
+      ['susp-2025-06-30'],
+      ['andai-10-lot-dividen'],
+      ['jumlah-jual-terverifikasi'],
+    ]);
+    for (const soal of kasus.soal) {
+      for (const id of soal.kartu_penentu) {
+        expect(soal.kartu, soal.soal_id).toContain(id);
+      }
+    }
+  });
+
+  it('memberi kepala "Dihitung dari" tepat pada kartu yang kami hitung sendiri (A1-T1)', () => {
+    const kasus = muatBerkas();
+    const indeks = new Map(kasus.fakta.map((f) => [f.fact_id, f]));
+    for (const soal of kasus.soal) {
+      for (const id of soal.kartu) {
+        const fakta = indeks.get(id);
+        const dihitung = fakta?.sumber.jenis === 'turunan';
+        const mengaku = fakta?.awam?.kepala.startsWith('Dihitung dari') === true;
+        expect(mengaku, `${id} — garis kepala harus sepakat dengan sumbernya`).toBe(dihitung);
+      }
+    }
+  });
+
+  it('memakai laporan asli, bukan fakta gabungan, sebagai kartu ketiga soal 3 (A1-T1)', () => {
+    const kasus = muatBerkas();
+    const soal3 = kasus.soal[2];
+    expect(soal3?.kartu).toContain('fil-2025-09-01-01');
+    expect(soal3?.kartu).not.toContain('fil-2025-09-01');
+  });
+
   it('memberi setiap kartu teks awam berbahasa sehari-hari yang cukup pendek', () => {
     const kasus = muatBerkas();
     const indeks = new Map(kasus.fakta.map((f) => [f.fact_id, f]));
@@ -254,8 +288,11 @@ describe.skipIf(!adaCache)('membangun ulang kasus dari cache', () => {
     expect(status('fil-2025-08-25-04')).toBe('TERVERIFIKASI');
     // Laporan 29 Sep tersangkut R6 (harga di luar rentang hari itu).
     expect(status('fil-2025-09-29')).toBe('KONFLIK');
-    // Laporan 1 Sep tidak tersangkut temuan mana pun.
-    expect(status('fil-2025-09-01')).toBe('TERVERIFIKASI');
+    // Laporan 1 Sep tidak tersangkut temuan mana pun. Sejak A1-T1 yang menjadi
+    // kartu adalah laporan aslinya, bukan fakta gabungannya, jadi gabungannya
+    // tidak lagi ditarik ke berkas kasus sama sekali.
+    expect(status('fil-2025-09-01-01')).toBe('TERVERIFIKASI');
+    expect(status('fil-2025-09-01')).toBeUndefined();
     expect(status('harga-2025-10-08')).toBe('TERVERIFIKASI');
   });
 

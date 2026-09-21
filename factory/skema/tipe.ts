@@ -117,6 +117,12 @@ export interface Soal {
   soal_id: string;
   /** 2–4 fact_id yang tampil sebagai kartu tepat di atas soal (D-1). */
   kartu: string[];
+  /**
+   * 1–2 kartu yang benar-benar menentukan jawabannya, himpunan bagian `kartu`.
+   * Salinan ringkasnya tampil tepat di atas teks kunci, supaya mata tidak perlu
+   * menggulir balik satu setengah layar untuk mencocokkan (A1-T1).
+   */
+  kartu_penentu: string[];
   /** 0–2 istilah; lebih dari dua ditolak validator. */
   istilah: Istilah[];
   batang: string;

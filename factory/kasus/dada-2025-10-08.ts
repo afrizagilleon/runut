@@ -30,8 +30,10 @@ const DIV_LOT = 'andai-10-lot-dividen';
 const NILAI_LOT = 'andai-10-lot-nilai';
 const JUAL_1 = 'fil-2025-08-25-03';
 const JUAL_2 = 'fil-2025-08-25-04';
-const JUAL_3 = 'fil-2025-09-01';
-const JUAL_3_ANAK = 'fil-2025-09-01-01';
+// Laporan aslinya, bukan fakta gabungan `fil-2025-09-01` (jenis turunan):
+// hanya laporan asli yang boleh bergaris kepala utuh (dokumen soal, revisi
+// 21 Sep malam).
+const JUAL_3 = 'fil-2025-09-01-01';
 const JUMLAH_JUAL = 'jumlah-jual-terverifikasi';
 
 export const DADA_2025_10_08: DefinisiKasus = {
@@ -75,7 +77,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
 
   awam: {
     [KELIPATAN]: {
-      kepala: 'Data harga · 1 Agu – 8 Okt 2025',
+      kepala: 'Dihitung dari data harga · 1 Agu – 8 Okt 2025',
       isi:
         'Harga saham Perusahaan D naik dari [[' +
         HARGA_AWAL +
@@ -143,7 +145,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
         '|50 juta lembar]] di harga [[' +
         JUAL_3 +
         '|Rp15]]. Transaksinya [[' +
-        JUAL_3_ANAK +
+        JUAL_3 +
         '|14 Agustus]].',
     },
     [JUMLAH_JUAL]: {
@@ -161,6 +163,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
     {
       soal_id: 's1-kata-bursa',
       kartu: [KELIPATAN, SUSPENSI],
+      kartu_penentu: [SUSPENSI],
       istilah: [
         {
           kata: 'Penghentian sementara (suspensi)',
@@ -210,6 +213,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
     {
       soal_id: 's2-dividen-pemilik-kecil',
       kartu: [DIVIDEN, DIV_LOT],
+      kartu_penentu: [DIV_LOT],
       istilah: [
         { kata: 'Lot', arti: 'satuan jual-beli saham; satu lot sama dengan seratus lembar.' },
         {
@@ -256,6 +260,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
     {
       soal_id: 's3-siapa-yang-menjual',
       kartu: [JUAL_1, JUAL_2, JUAL_3, JUMLAH_JUAL],
+      kartu_penentu: [JUMLAH_JUAL],
       istilah: [
         {
           kata: 'Pemilik terbesar (pemegang saham pengendali)',
@@ -302,7 +307,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
         '|Rp15]], jauh di bawah harga hari ini. Perhatikan juga tanggalnya: transaksinya terjadi [[' +
         JUAL_1 +
         '|12 Agustus]] sampai [[' +
-        JUAL_3_ANAK +
+        JUAL_3 +
         '|14 Agustus]], tetapi publik baru bisa membacanya pada [[' +
         JUAL_2 +
         '|25 Agustus]] dan [[' +

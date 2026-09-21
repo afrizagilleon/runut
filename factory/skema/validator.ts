@@ -18,6 +18,15 @@ const MIN_KARTU = 2;
 const MAKS_KARTU = 4;
 /** Istilah per soal (D-1). */
 const MAKS_ISTILAH = 2;
+/** Kartu penentu per soal (A1-T1). */
+const MIN_PENENTU = 1;
+const MAKS_PENENTU = 2;
+/**
+ * Kepala lembar bergaris putus-putus wajib berbunyi begini. Garis kepala
+ * memberi tahu pemain siapa yang mengumumkan angkanya; kalau kepalanya tidak
+ * mengatakan hal yang sama, garis itu berbohong (`docs/desain.md`).
+ */
+const KEPALA_HITUNG = 'Dihitung dari';
 /** Selisih panjang opsi terpanjang dan terpendek, sebagai porsi dari yang terpanjang (D-2). */
 const MAKS_TIMPANG = 0.4;
 /** Label opsi wajib (D-2): dua "Betul," dan dua "Keliru,". */
@@ -538,6 +547,67 @@ function periksaKartu(
         masalah,
         'KARTU_TAK_TERLIHAT',
         `Kartu "${id}" di soal "${soal.soal_id}" tidak terdaftar di fakta_terlihat; D-1 menuntut keduanya sama.`,
+      );
+    }
+
+    periksaKepalaGaris(fakta, soal, masalah);
+  }
+
+  periksaKartuPenentu(soal, masalah);
+}
+
+/**
+ * Garis kepala lembar dipilih mesin dari `sumber.jenis`, tetapi kepalanya
+ * ditulis manusia. Kalau keduanya tidak sepakat, pemain melihat garis
+ * putus-putus di atas kalimat yang mengaku laporan resmi — atau sebaliknya.
+ * Dua arah, dua kode, supaya masing-masing bisa dibuktikan sendiri.
+ */
+function periksaKepalaGaris(
+  fakta: Kasus['fakta'][number],
+  soal: Soal,
+  masalah: MasalahValidasi[],
+): void {
+  const kepala = fakta.awam?.kepala;
+  if (kepala === undefined || kepala === null) return;
+  const dihitung = fakta.sumber.jenis === 'turunan';
+  const mengaku = kepala.startsWith(KEPALA_HITUNG);
+
+  if (dihitung && !mengaku) {
+    tambah(
+      masalah,
+      'KEPALA_HITUNG_HILANG',
+      `Kartu "${fakta.fact_id}" di soal "${soal.soal_id}" dihitung sendiri (sumber.jenis "turunan") ` +
+        `sehingga garis kepalanya putus-putus, tetapi kepalanya berbunyi "${kepala}" — ` +
+        `kepala lembar bergaris putus-putus wajib diawali "${KEPALA_HITUNG}".`,
+    );
+  }
+  if (!dihitung && mengaku) {
+    tambah(
+      masalah,
+      'KEPALA_HITUNG_PALSU',
+      `Kartu "${fakta.fact_id}" di soal "${soal.soal_id}" berkepala "${kepala}" seolah kami yang ` +
+        `menghitungnya, padahal sumbernya "${fakta.sumber.jenis}" sehingga garis kepalanya utuh.`,
+    );
+  }
+}
+
+/** A1-T1: 1–2 kartu penentu, dan semuanya harus benar-benar kartu soal itu. */
+function periksaKartuPenentu(soal: Soal, masalah: MasalahValidasi[]): void {
+  if (soal.kartu_penentu.length < MIN_PENENTU || soal.kartu_penentu.length > MAKS_PENENTU) {
+    tambah(
+      masalah,
+      'KARTU_PENENTU_JUMLAH',
+      `Soal "${soal.soal_id}" menyebut ${String(soal.kartu_penentu.length)} kartu penentu; ` +
+        `yang diizinkan ${String(MIN_PENENTU)}–${String(MAKS_PENENTU)}. ` +
+        'Kalau semua kartu menentukan, tidak ada yang menentukan.',
+    );
+  }
+  for (const id of soal.kartu_penentu) {
+    if (!soal.kartu.includes(id)) {
+      tambah(
+        masalah,
+        'KARTU_PENENTU_BUKAN_KARTU',
+        `Kartu penentu "${id}" di soal "${soal.soal_id}" bukan salah satu kartu soal itu.`,
       );
     }
   }

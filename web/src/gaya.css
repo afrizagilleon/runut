@@ -797,6 +797,15 @@ details summary {
   font-weight: 700;
 }
 
+/* Jangkar skala 1-5: tanpa ini angka telanjang tidak berarti apa-apa. */
+.jangkar {
+  margin: 8px 0 0;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--tinta-redup);
+}
+
 .deret-pilihan {
   display: flex;
   flex-wrap: wrap;
