@@ -34,14 +34,21 @@ describe('pondasi proyek', () => {
     // lain — tidak ada awalan baru yang diloloskan — supaya penjaga ini tetap
     // menangkap skrip yang tidak disahkan kontrak mana pun.
     const M33 = ['e2e', 'e2e:lihat'];
+    // M2a D-6: mesin verifikasi generasi kedua atas seluruh gudang data.
+    // Disebut namanya, bukan diloloskan lewat awalan baru.
+    const M2A = ['verifikasi:gudang'];
     const skrip = Object.keys(paket.scripts).sort();
-    for (const wajib of [...M1, ...M32, ...M33]) {
+    for (const wajib of [...M1, ...M32, ...M33, ...M2A]) {
       expect(skrip).toContain(wajib);
     }
     const tambahan = skrip.filter((s) => !M1.includes(s));
     const takDikenal = tambahan.filter(
       (s) =>
-        !s.startsWith('eval:') && !M31.includes(s) && !M32.includes(s) && !M33.includes(s),
+        !s.startsWith('eval:') &&
+        !M31.includes(s) &&
+        !M32.includes(s) &&
+        !M33.includes(s) &&
+        !M2A.includes(s),
     );
     expect(takDikenal).toEqual([]);
   });
