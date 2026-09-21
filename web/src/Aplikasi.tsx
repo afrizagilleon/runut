@@ -240,10 +240,24 @@ function usePengamatKartu(
   useEffect(() => {
     const elemen = acuan.current;
     if (elemen === null) return;
+
+    /*
+     * Laporan pertama TIDAK menunggu pengamat.
+     *
+     * Saat layar soal dirender, gulir sudah dikembalikan ke atas dan tumpukan
+     * kartu berada di puncak halaman — kartu terlihat menurut susunannya
+     * sendiri, bukan menurut tebakan. Mengandalkan panggilan pertama pengamat
+     * membuat metriknya diam-diam nol di peramban yang menunda panggilan itu,
+     * dan metrik yang diam-diam nol adalah persis kegagalan F-1 yang sedang
+     * ditambal. Ditemukan bite-test: di pane tanpa frame, pengamat tidak pernah
+     * melapor sama sekali dan ketiga soal tercatat nol detik.
+     *
+     * Pengamat tetap dipasang dan tetap yang menentukan sisanya: begitu ia
+     * melapor "keluar", reducer menutup jendela waktunya.
+     */
+    kirim({ jenis: 'kartu_masuk_layar', soal_id });
+
     if (typeof IntersectionObserver === 'undefined') {
-      // WebView tanpa pengamat: kartu dianggap terlihat selama layar ini hidup.
-      // Lebih longgar daripada sebenarnya, tetapi tidak pernah nol palsu.
-      kirim({ jenis: 'kartu_masuk_layar', soal_id });
       return () => {
         kirim({ jenis: 'kartu_keluar_layar', soal_id });
       };

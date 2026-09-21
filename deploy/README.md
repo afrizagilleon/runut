@@ -145,11 +145,17 @@ Host runut-alpha-data
 
 ```bash
 # 1. Bangun dengan alamat pengumpul relatif (satu asal).
-#    DI GIT BASH, JALANKAN BARIS INI LEWAT POWERSHELL — lihat "Kalau gagal".
-VITE_KOLEKTOR_URL=/e npm run build
+#    DI GIT BASH, MSYS_NO_PATHCONV=1 WAJIB — lihat "Kalau gagal".
+MSYS_NO_PATHCONV=1 VITE_KOLEKTOR_URL=/e npx vite build
 
 # 2. Kirim.
 bash deploy/kirim.sh
+```
+
+Di PowerShell, bentuk yang setara:
+
+```powershell
+$env:VITE_KOLEKTOR_URL = '/e'; npm run build; Remove-Item Env:\VITE_KOLEKTOR_URL
 ```
 
 Periksa hasilnya:
@@ -206,13 +212,20 @@ VITE_KOLEKTOR_URL=/e node -e 'console.log(process.env.VITE_KOLEKTOR_URL)'
 # E:/
 ```
 
-**Jalan keluar:** bangun lewat PowerShell, yang tidak menerjemahkan apa pun:
+**Jalan keluar di Git Bash** — matikan penerjemahan jalur untuk perintah itu:
+
+```bash
+MSYS_NO_PATHCONV=1 VITE_KOLEKTOR_URL=/e npx vite build
+```
+
+**Atau lewat PowerShell**, yang tidak menerjemahkan apa pun:
 
 ```powershell
-$env:VITE_KOLEKTOR_URL = '/e'; npm run build; $env:VITE_KOLEKTOR_URL = $null
+$env:VITE_KOLEKTOR_URL = '/e'; npm run build; Remove-Item Env:\VITE_KOLEKTOR_URL
 ```
 
 Sesudah itu `grep -c '"/e"' web/dist/assets/*.js` harus menjawab `1`.
+Kalau ia menjawab `0`, build-nya salah dan tidak boleh dikirim.
 
 ### Arsip rusak, atau "Pseudo-terminal will not be allocated"
 
