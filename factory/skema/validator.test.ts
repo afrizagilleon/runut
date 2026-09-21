@@ -290,6 +290,54 @@ describe('D-2 aturan 8 — tidak ada fakta terlihat yang menganggur', () => {
   });
 });
 
+describe('A2-T1 — panjang baris kepala kartu', () => {
+  it('menolak kepala lebih dari 36 karakter dan menyebut panjangnya', () => {
+    const kasus = kasusMinimal();
+    kasus.fakta[1] = fakta({
+      fact_id: 'harga-akhir',
+      nilai: 178,
+      awam: {
+        // 44 karakter — persis kepala yang terpotong di 375 px sebelum A-2.
+        kepala: 'Dihitung dari data harga · 1 Agu – 8 Okt 2025',
+        isi: 'Harga kini [[harga-akhir|Rp178]].',
+      },
+      sumber: {
+        jenis: 'turunan',
+        endpoint: null,
+        berkas: null,
+        parameter: {},
+        diambil_pada: null,
+        keterangan: 'contoh hitungan',
+      },
+    });
+    expect(kode(kasus)).toContain('KEPALA_PANJANG');
+    expect(pesan(kasus)).toContain('harga-akhir');
+    expect(pesan(kasus)).toContain('45');
+  });
+
+  it('menerima kepala tepat 36 karakter', () => {
+    const kasus = kasusMinimal();
+    const kepala = 'Laporan pemilik · terbit 25 Agu 2025';
+    expect(kepala).toHaveLength(36);
+    kasus.fakta[1] = fakta({
+      fact_id: 'harga-akhir',
+      nilai: 178,
+      awam: { kepala, isi: 'Harga kini [[harga-akhir|Rp178]].' },
+    });
+    expect(kode(kasus)).not.toContain('KEPALA_PANJANG');
+  });
+
+  it('menolak kepala 37 karakter — batasnya benar-benar di 36', () => {
+    const kasus = kasusMinimal();
+    kasus.fakta[1] = fakta({
+      fact_id: 'harga-akhir',
+      nilai: 178,
+      awam: { kepala: 'x'.repeat(37), isi: 'Harga kini [[harga-akhir|Rp178]].' },
+    });
+    expect(kode(kasus)).toContain('KEPALA_PANJANG');
+  });
+});
+
 describe('A1-T1 — kartu penentu', () => {
   it('menolak soal tanpa satu pun kartu penentu', () => {
     const kasus = kasusMinimal();

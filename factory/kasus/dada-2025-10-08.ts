@@ -77,17 +77,19 @@ export const DADA_2025_10_08: DefinisiKasus = {
 
   awam: {
     [KELIPATAN]: {
-      kepala: 'Dihitung dari data harga · 1 Agu – 8 Okt 2025',
+      kepala: 'Dihitung dari data harga',
       isi:
-        'Harga saham Perusahaan D naik dari [[' +
+        'Dari [[' +
+        HARGA_AWAL +
+        '|1 Agustus]] sampai hari ini, harga saham Perusahaan D naik dari [[' +
         HARGA_AWAL +
         '|Rp8]] ke [[' +
         HARGA_T +
-        '|Rp178]] dalam [[' +
-        HARI_BURSA +
-        '|47 hari bursa]] — sekarang [[' +
+        '|Rp178]] — [[' +
         KELIPATAN +
-        '|22 kali]] harga awalnya.',
+        '|22 kali]] harga awalnya, dalam [[' +
+        HARI_BURSA +
+        '|47 hari bursa]].',
     },
     [SUSPENSI]: {
       kepala: 'Pengumuman bursa · 30 Jun 2025',
@@ -98,25 +100,25 @@ export const DADA_2025_10_08: DefinisiKasus = {
         '|1 Agustus]] sahamnya sudah diperdagangkan lagi.',
     },
     [DIVIDEN]: {
-      kepala: 'Pengumuman dividen · tanggal ex 16 Sep 2025',
+      kepala: 'Pengumuman dividen · ex 16 Sep 2025',
       isi:
         'Perusahaan D membagikan dividen tunai [[' +
         DIVIDEN +
         '|Rp0,14 per lembar]] (sebelum pajak).',
     },
     [DIV_LOT]: {
-      kepala: 'Dihitung dari kartu di atas dan harga 8 Okt 2025',
+      kepala: 'Dihitung dari kartu di atas',
       isi:
         'Untuk [[misal|10 lot]] ([[misal|1.000 lembar]]): dividennya [[' +
         DIV_LOT +
-        '|Rp140]], sedangkan nilai [[misal|10 lot]] itu di harga [[' +
+        '|Rp140]], sedangkan nilai [[misal|10 lot]] itu di harga hari ini, [[' +
         HARGA_T +
-        '|Rp178]] adalah [[' +
+        '|Rp178]], adalah [[' +
         NILAI_LOT +
         '|Rp178.000]].',
     },
     [JUAL_1]: {
-      kepala: 'Laporan pemegang saham · terbit 25 Agu 2025',
+      kepala: 'Laporan pemilik · terbit 25 Agu 2025',
       isi:
         'Pemilik terbesar Perusahaan D menjual [[' +
         JUAL_1 +
@@ -127,7 +129,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
         '|12 Agustus]].',
     },
     [JUAL_2]: {
-      kepala: 'Laporan pemegang saham · terbit 25 Agu 2025',
+      kepala: 'Laporan pemilik · terbit 25 Agu 2025',
       isi:
         'Ia menjual lagi [[' +
         JUAL_2 +
@@ -138,7 +140,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
         '|13 Agustus]].',
     },
     [JUAL_3]: {
-      kepala: 'Laporan pemegang saham · terbit 1 Sep 2025',
+      kepala: 'Laporan pemilik · terbit 1 Sep 2025',
       isi:
         'Ia menjual lagi [[' +
         JUAL_3 +

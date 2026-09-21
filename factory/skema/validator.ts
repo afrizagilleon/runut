@@ -13,6 +13,16 @@ const POLA_TANGGAL = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Batas panjang teks kartu, diukur atas teks polos sesudah `[[…|…]]` dilepas (D-13d). */
 const MAKS_AWAM = 220;
+/**
+ * Batas panjang baris kepala kartu (A2-T1).
+ *
+ * Kepala dirender satu baris dengan elipsis; lebih dari ini ia terpotong di
+ * layar 375 px dan pemain kehilangan tanggal terbitnya. "Dihitung dari data
+ * harga · 1 Agu – 8 Okt 2025" butuh 402 px di ruang 341 px — itu yang terjadi
+ * sebelum aturan ini ada. Rentang tanggal yang panjang masuk ke kalimat kartu,
+ * bukan ke kepalanya (`docs/kasus-dada-v2.md`, aturan penulisan 7).
+ */
+const MAKS_KEPALA = 36;
 /** Kartu per soal (D-1). */
 const MIN_KARTU = 2;
 const MAKS_KARTU = 4;
@@ -553,6 +563,14 @@ function periksaKartu(
           masalah,
           'KARTU_TANPA_AWAM',
           `Kartu "${id}" di soal "${soal.soal_id}" punya baris kepala kosong.`,
+        );
+      }
+      if (fakta.awam.kepala.length > MAKS_KEPALA) {
+        tambah(
+          masalah,
+          'KEPALA_PANJANG',
+          `Baris kepala kartu "${id}" di soal "${soal.soal_id}" ${String(fakta.awam.kepala.length)} ` +
+            `karakter, lebih dari ${String(MAKS_KEPALA)}; ia akan terpotong satu baris di layar 375 px.`,
         );
       }
     }
