@@ -1,0 +1,38 @@
+# Caddyfile contoh untuk alpha Runut.
+#
+# Salin ke /etc/caddy/Caddyfile, ganti runut.contoh.id dengan subdomain
+# sungguhan, lalu `sudo systemctl reload caddy`.
+#
+# Satu asal untuk aplikasi dan pengumpul: berkas statis dilayani dari disk,
+# /e dan /sehat diteruskan ke pengumpul di loopback. Karena satu asal, aplikasi
+# dibangun dengan VITE_KOLEKTOR_URL=/e dan tidak butuh CORS sama sekali.
+#
+# Sengaja TANPA direktif `log`. Caddy tidak menulis log akses kecuali diminta,
+# dan INV-9 melarang menyimpan alamat IP. Kalau suatu saat log dinyalakan untuk
+# mencari masalah, matikan lagi sesudahnya dan hapus berkasnya.
+
+runut.contoh.id {
+	root * /var/www/runut-alpha
+
+	handle /e {
+		reverse_proxy 127.0.0.1:8787
+	}
+
+	handle /sehat {
+		reverse_proxy 127.0.0.1:8787
+	}
+
+	handle {
+		file_server
+	}
+
+	encode zstd gzip
+
+	header {
+		# Tidak ada sumber daya dari luar sama sekali: tidak ada CDN huruf,
+		# tidak ada analytics pihak ketiga, tidak ada gambar dari luar.
+		Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; connect-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+		Referrer-Policy "no-referrer"
+		X-Content-Type-Options "nosniff"
+	}
+}

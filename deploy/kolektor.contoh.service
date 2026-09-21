@@ -1,0 +1,47 @@
+# Layanan pengumpul peristiwa alpha.
+#
+# Salin ke /etc/systemd/system/runut-kolektor.service, lalu:
+#   sudo systemctl daemon-reload
+#   sudo systemctl enable --now runut-kolektor
+#
+# Pengumpul mendengarkan di 127.0.0.1 saja. Caddy yang menghadap internet.
+# Jangan mengubah HOST menjadi 0.0.0.0: firewall VPS ini tidak aktif, jadi
+# pengumpul akan langsung terbuka ke internet tanpa TLS dan tanpa pembatas.
+
+[Unit]
+Description=Runut — pengumpul peristiwa alpha
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=runut
+Group=runut
+WorkingDirectory=/opt/runut
+ExecStart=/usr/bin/node /opt/runut/server/kolektor.mjs
+Restart=on-failure
+RestartSec=3
+
+Environment=HOST=127.0.0.1
+Environment=PORT=8787
+Environment=DATA_DIR=/var/lib/runut-alpha/data
+Environment=MAKS_PER_MENIT=600
+# Satu asal di produksi, jadi CORS tidak dipakai. Isi hanya kalau menguji dari
+# laptop lintas port, misalnya ASAL_DIIZINKAN=http://localhost:5173
+Environment=ASAL_DIIZINKAN=
+
+# Pengetatan secukupnya. Pengumpul hanya perlu menulis ke satu direktori.
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/var/lib/runut-alpha/data
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+
+[Install]
+WantedBy=multi-user.target
