@@ -17,7 +17,7 @@ import { PanelSumber } from './PanelSumber.tsx';
 import { Teks } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
-import { penanda } from './tanggal.ts';
+import { hariIniIso, penanda, type Penanda } from './tanggal.ts';
 import { angkaBesarSatuan } from './angka.ts';
 
 /**
@@ -63,6 +63,12 @@ function awalBungkus(kasus: Kasus): Bungkus {
 export function Aplikasi(): JSX.Element {
   const kasus = KASUS;
   const hari = useMemo(() => penanda(kasus.tanggal_t), [kasus.tanggal_t]);
+  /*
+   * Tanggal hari ini dari jam perangkat, lewat fungsi tanggal murni yang sama.
+   * Waktu disuntikkan sekali di sini, bukan dibaca di dalam fungsi itu, supaya
+   * `hariIniIso` tetap bisa dites dengan waktu buatan.
+   */
+  const hariIni = useMemo(() => penanda(hariIniIso(new Date())), []);
   const [bungkus, dispatch] = useReducer(reduksi, kasus, awalBungkus);
   const { keadaan } = bungkus;
 
@@ -173,7 +179,9 @@ export function Aplikasi(): JSX.Element {
         {layar.jenis === 'pembukaan' && (
           <LayarPembukaan kasus={kasus} hari={hari} kirim={kirim} bukaSumber={bukaSumber} />
         )}
-        {layar.jenis === 'akhir' && <LayarAkhir keadaan={keadaan} kirim={kirim} />}
+        {layar.jenis === 'akhir' && (
+          <LayarAkhir keadaan={keadaan} kirim={kirim} hariIni={hariIni} />
+        )}
       </main>
 
       {(layar.jenis === 'pembuka' || layar.jenis === 'akhir') && <Kaki kasus={kasus} />}
@@ -497,12 +505,10 @@ function Gelembung({
   return (
     <>
       <p className="pembuka-obrolan">
-        <Teks teks={teks.slice(0, mulai)} bukaSumber={bukaSumber} />
+        <Teks teks={teks.slice(0, mulai).replace(/Temanmu bilang:\s*$/, '')} bukaSumber={bukaSumber} />
       </p>
+      <p className="gelembung-label">Temanmu</p>
       <p className="gelembung">
-        <span className="gelembung-inisial" aria-hidden="true">
-          A
-        </span>
         <span className="gelembung-isi">
           <Teks teks={kutip[1] ?? ''} bukaSumber={bukaSumber} interaktif={false} />
         </span>
@@ -666,14 +672,20 @@ const SUMBER_JAWABAN = ['kartu fakta', 'ingatan atau pengetahuan sendiri', 'teba
 function LayarAkhir({
   keadaan,
   kirim,
+  hariIni,
 }: {
   keadaan: Keadaan;
   kirim: (aksi: Aksi) => void;
+  hariIni: Penanda;
 }): JSX.Element {
   if (keadaan.akhirTerkirim) {
     return (
       <section className="layar layar-akhir" aria-labelledby="judul-terima">
         <h1 id="judul-terima">Terima kasih.</h1>
+        <div className="kembali-hari-ini">
+          <HalamanKalender hari={hariIni} />
+          <p>Kamu kembali ke hari ini.</p>
+        </div>
         <p>Jawabanmu tercatat tanpa nama, tanpa akun, dan tanpa cookie.</p>
         {!keadaan.minatDitekan ? (
           <button

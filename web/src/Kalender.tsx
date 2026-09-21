@@ -2,11 +2,15 @@ import type { Penanda } from './tanggal.ts';
 
 /**
  * Tanda tangan desain (D-8): halaman kalender sobek, benda yang ada di hampir
- * setiap rumah dan warung di Indonesia. Tiga wujud, satu benda:
+ * setiap rumah dan warung di Indonesia.
  *
- * - `halaman` di layar pertama — pita bulan, angka besar, nama hari;
- * - `keping` di layar soal — menempel di atas dan tetap terlihat saat menggulir;
- * - `sobek` di layar pembukaan — halaman yang sama, tersobek 600 ms.
+ * **Benda yang sama di mana pun ia muncul.** Sisi atasnya bergerigi — bekas
+ * perforasi sobekan — dan gerigi yang sama menjadi sisi atas keping yang
+ * menempel di layar soal. Halaman kalender bukan kartu: ia sengaja tidak
+ * berbagi bentuk dengan lembar dokumen.
+ *
+ * Tiga wujud, satu benda: halaman besar di layar pertama, keping menempel di
+ * layar soal, dan halaman yang tersobek di layar pembukaan.
  */
 
 export function HalamanKalender({ hari }: { hari: Penanda }): JSX.Element {
@@ -35,8 +39,17 @@ export function KepingKalender({ hari }: { hari: Penanda }): JSX.Element {
 }
 
 /**
- * Halaman yang tersobek. Gerak satu-satunya yang diatur di seluruh aplikasi;
- * dengan `prefers-reduced-motion` CSS menggantinya dengan pergantian langsung.
+ * Halaman yang tersobek dan jatuh **keluar dari tempatnya**.
+ *
+ * Gerak satu-satunya yang diatur di seluruh aplikasi. Tiga hal yang membuat
+ * versi pertama meniadakan dirinya sendiri, dan sudah diperbaiki: ruangnya
+ * `overflow: hidden` sehingga halaman terpotong begitu mulai jatuh; ruang itu
+ * menyusut bersamaan dengan jatuhnya, bukan sesudahnya; dan sobekan dimulai
+ * tepat ketika layar melompat ke atas. Sekarang: `overflow: visible`, mulai
+ * 250 ms sesudah layar tampil, dan ruangnya baru menutup 200 ms sesudah
+ * sobekan dimulai.
+ *
+ * Dengan `prefers-reduced-motion`, sobekan diganti pergantian langsung.
  */
 export function KalenderSobek({ hari }: { hari: Penanda }): JSX.Element {
   return (

@@ -164,15 +164,27 @@ summary:focus-visible,
   margin-inline: auto;
 }
 
+/* Keping memakai gerigi yang sama: benda yang sama, ukuran lain. */
 .kalender-keping {
+  --gigi: 4px;
   display: flex;
   align-items: baseline;
   gap: 8px;
   margin: 0;
+  padding: 6px 8px 4px;
+  background: var(--lembar);
+  border: 1px solid var(--garis);
   font-family: var(--mesin);
   font-size: 13px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  clip-path: polygon(
+    0 var(--gigi), 4% 0, 8% var(--gigi), 12% 0, 16% var(--gigi), 20% 0,
+    24% var(--gigi), 28% 0, 32% var(--gigi), 36% 0, 40% var(--gigi), 44% 0,
+    48% var(--gigi), 52% 0, 56% var(--gigi), 60% 0, 64% var(--gigi), 68% 0,
+    72% var(--gigi), 76% 0, 80% var(--gigi), 84% 0, 88% var(--gigi), 92% 0,
+    96% var(--gigi), 100% 0, 100% 100%, 0 100%
+  );
 }
 
 .kalender-label {
@@ -208,14 +220,38 @@ summary:focus-visible,
 
 /* --- halaman kalender ------------------------------------------------------ */
 
+/*
+ * Sisi atas bergerigi — bekas perforasi sobekan. Gerigi yang sama dipakai
+ * halaman kalender DAN keping yang menempel, supaya keduanya terbaca sebagai
+ * satu benda dan bukan sebagai kartu (`docs/desain.md`).
+ */
+.gerigi {
+  --gigi: 6px;
+  clip-path: polygon(
+    0 var(--gigi), 4% 0, 8% var(--gigi), 12% 0, 16% var(--gigi), 20% 0,
+    24% var(--gigi), 28% 0, 32% var(--gigi), 36% 0, 40% var(--gigi), 44% 0,
+    48% var(--gigi), 52% 0, 56% var(--gigi), 60% 0, 64% var(--gigi), 68% 0,
+    72% var(--gigi), 76% 0, 80% var(--gigi), 84% 0, 88% var(--gigi), 92% 0,
+    96% var(--gigi), 100% 0, 100% 100%, 0 100%
+  );
+}
+
 .kalender-halaman {
+  --gigi: 6px;
   width: 176px;
   margin: 8px auto 24px;
   background: var(--lembar);
   border: 1px solid var(--garis-tegas);
-  border-radius: 6px;
+  border-radius: 0 0 6px 6px;
   overflow: hidden;
   text-align: center;
+  clip-path: polygon(
+    0 var(--gigi), 4% 0, 8% var(--gigi), 12% 0, 16% var(--gigi), 20% 0,
+    24% var(--gigi), 28% 0, 32% var(--gigi), 36% 0, 40% var(--gigi), 44% 0,
+    48% var(--gigi), 52% 0, 56% var(--gigi), 60% 0, 64% var(--gigi), 68% 0,
+    72% var(--gigi), 76% 0, 80% var(--gigi), 84% 0, 88% var(--gigi), 92% 0,
+    96% var(--gigi), 100% 0, 100% 100%, 0 100%
+  );
 }
 
 .kalender-pita {
@@ -245,19 +281,25 @@ summary:focus-visible,
 }
 
 /* Satu-satunya gerak yang diatur di seluruh aplikasi (D-8). */
+/*
+ * Sobekan (`docs/desain.md`). Tiga hal yang membuat versi pertama meniadakan
+ * dirinya sendiri, semuanya diperbaiki di sini:
+ *   1. `overflow: hidden` memotong halaman begitu ia mulai jatuh -> `visible`;
+ *   2. ruangnya menyusut BERSAMAAN dengan jatuhnya -> baru menutup 200 ms
+ *      sesudah sobekan dimulai;
+ *   3. sobekan mulai tepat saat layar melompat ke atas -> ditunda 250 ms.
+ */
 .kalender-sobek {
   display: flex;
   justify-content: center;
-  overflow: hidden;
+  overflow: visible;
   height: 176px;
-  /* Ruangnya ikut menutup begitu halaman jatuh; kalau tidak, sobekan
-     meninggalkan lubang kosong setinggi kalender di puncak layar. */
-  animation: tutup-ruang 600ms ease-in forwards;
+  animation: tutup-ruang 400ms ease-in 450ms forwards;
 }
 
 .kalender-jatuh {
   margin: 0;
-  animation: sobek 600ms ease-in forwards;
+  animation: sobek 700ms ease-in 250ms forwards;
   transform-origin: top center;
 }
 
@@ -267,7 +309,7 @@ summary:focus-visible,
     opacity: 1;
   }
   to {
-    transform: rotate(7deg) translateY(120px);
+    transform: rotate(14deg) translateY(220px);
     opacity: 0;
   }
 }
@@ -291,6 +333,13 @@ summary:focus-visible,
     animation: none;
     opacity: 0;
   }
+}
+
+/* --- layar terima kasih: kembali ke hari ini ------------------------------ */
+
+.kembali-hari-ini {
+  margin: 16px 0 24px;
+  text-align: center;
 }
 
 /* --- layar pertama --------------------------------------------------------- */
@@ -445,33 +494,45 @@ summary:focus-visible,
   margin: 0 0 4px;
 }
 
+/*
+ * Gelembung obrolan: dibedakan oleh BENTUK (ekor), bukan hanya oleh rona hijau.
+ * Tanpa inisial huruf — "A" di samping gelembung terbaca sebagai opsi a
+ * (`docs/desain.md`).
+ */
+.gelembung-label {
+  margin: 0 0 4px;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-redup);
+}
+
 .gelembung {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
+  display: block;
   margin: 0 0 8px;
 }
 
-.gelembung-inisial {
-  flex: none;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+.gelembung-isi {
+  position: relative;
+  display: inline-block;
   background: var(--obrolan);
   color: var(--tinta);
-  border: 1px solid var(--garis);
-  font-family: var(--mesin);
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 16px 16px 16px 2px;
+  padding: 10px 12px;
 }
 
-.gelembung-isi {
-  background: var(--obrolan);
-  color: var(--tinta);
-  border-radius: 6px 16px 16px 16px;
-  padding: 10px 12px;
+/* Ekor gelembung di sudut kiri bawah. */
+.gelembung-isi::after {
+  content: '';
+  position: absolute;
+  left: -6px;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 10px 10px;
+  border-color: transparent transparent var(--obrolan) transparent;
 }
 
 .tanya {

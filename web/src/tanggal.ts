@@ -96,3 +96,17 @@ export function penanda(iso: string): Penanda {
     panjang: `${String(hari)} ${namaBulan} ${String(tahun)}`,
   };
 }
+
+/**
+ * Tanggal ISO untuk "hari ini" menurut jam perangkat (A1-T6).
+ *
+ * Waktunya disuntikkan, bukan dibaca di dalam sini, supaya bisa dites dengan
+ * waktu buatan. Memakai bagian **lokal**, bukan UTC: pemain di Jakarta yang
+ * membuka pukul 06.00 harus melihat tanggal hari itu, bukan kemarin.
+ */
+export function hariIniIso(sekarang: Date): string {
+  const tahun = String(sekarang.getFullYear()).padStart(4, '0');
+  const bulan = String(sekarang.getMonth() + 1).padStart(2, '0');
+  const hari = String(sekarang.getDate()).padStart(2, '0');
+  return `${tahun}-${bulan}-${hari}`;
+}

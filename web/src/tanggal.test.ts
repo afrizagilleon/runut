@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { TanggalTidakSah, penanda } from './tanggal.ts';
+import { TanggalTidakSah, hariIniIso, penanda } from './tanggal.ts';
 
 describe('penanda waktu beku', () => {
   it('menghitung nama hari kasus DADA dengan benar', () => {
@@ -57,5 +57,26 @@ describe('penanda waktu beku', () => {
 
   it('murni: dua pemanggilan menghasilkan nilai yang sama', () => {
     expect(penanda('2025-10-08')).toEqual(penanda('2025-10-08'));
+  });
+});
+
+describe('hariIniIso — waktu disuntikkan (A1-T6)', () => {
+  it('memakai tanggal lokal, bukan UTC', () => {
+    // 06.00 di Jakarta pada 21 September; di UTC masih 20 September.
+    const pagi = new Date(2026, 8, 21, 6, 0, 0);
+    expect(hariIniIso(pagi)).toBe('2026-09-21');
+  });
+
+  it('memberi nol di depan untuk bulan dan tanggal satu digit', () => {
+    expect(hariIniIso(new Date(2026, 0, 5, 12, 0, 0))).toBe('2026-01-05');
+  });
+
+  it('menghasilkan tanggal yang bisa dibaca fungsi penanda', () => {
+    expect(penanda(hariIniIso(new Date(2025, 9, 8, 9, 0, 0))).panjang).toBe('8 Oktober 2025');
+  });
+
+  it('menangani pergantian tahun', () => {
+    expect(hariIniIso(new Date(2026, 11, 31, 23, 59, 0))).toBe('2026-12-31');
+    expect(hariIniIso(new Date(2027, 0, 1, 0, 1, 0))).toBe('2027-01-01');
   });
 });
