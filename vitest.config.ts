@@ -7,6 +7,7 @@ export default defineConfig({
       'factory/**/*.test.ts',
       'eval/**/*.test.ts',
       'web/**/*.test.ts',
+      'web/**/*.test.tsx',
       'server/**/*.test.ts',
       'alat/**/*.test.ts',
     ],
