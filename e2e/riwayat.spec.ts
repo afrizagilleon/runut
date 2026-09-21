@@ -122,16 +122,13 @@ test('E-02 kembali tiga kali mendarat di soal 2, soal 1, lalu layar pertama', as
 });
 
 /**
- * CACAT PRODUK yang ditemukan e2e ini, belum diperbaiki — lihat §9 "Cacat yang
- * ditemukan", butir **C-1**.
+ * E-02b — tombol **maju** peramban (cacat C-1, ditambal A1-T2).
  *
- * `web/src/Aplikasi.tsx` mendengarkan `popstate` dan **selalu** men-dispatch
- * `{ jenis: 'mundur' }`, tanpa melihat ke mana peramban sebenarnya berpindah.
- * Tombol **maju** juga menyalakan `popstate`. Dari layar pertama,
- * `layarSebelumnya()` mengembalikan `null`, jadi aksinya diabaikan: penunjuk
- * riwayat peramban maju ke `soal-1` sementara layarnya tetap layar pertama —
- * dan sejak itu keduanya tidak sinkron lagi, sehingga kembali berikutnya pun
- * tidak menggerakkan layar. Terukur:
+ * Cacatnya: `popstate` selalu dianggap "mundur", padahal tombol maju
+ * menyalakan peristiwa yang sama. Dari layar pertama `layarSebelumnya()`
+ * mengembalikan `null`, jadi aksinya diabaikan — penunjuk riwayat peramban
+ * maju sementara layarnya diam, dan sejak itu keduanya tidak sinkron lagi
+ * sehingga **kembali pun berhenti bekerja**. Terukur sebelum ditambal:
  *
  * ```
  * mundur 3     {"layar":"Kita mundur ke Rabu, 8 Oktober","entri":"pembuka"}
@@ -139,19 +136,8 @@ test('E-02 kembali tiga kali mendarat di soal 2, soal 1, lalu layar pertama', as
  * MAJU 2       {"layar":"Kita mundur ke Rabu, 8 Oktober","entri":"soal-2"}
  * mundur lagi  {"layar":"Kita mundur ke Rabu, 8 Oktober","entri":"soal-1"}
  * ```
- *
- * Tidak saya perbaiki sendiri karena perbaikannya bukan tambalan kecil: ia
- * butuh aksi reducer baru "pindah ke layar bernama", dan harus memutuskan
- * peristiwa apa yang lahir ketika pemain **maju** — `lihat_balik` menurut
- * namanya berarti melihat ke belakang, dan D-6 adalah daftar peristiwa
- * tertutup. Itu keputusan penulis kontrak, bukan keputusan eksekutor (§3.6(3)).
- *
- * `test.fail()`, bukan tes yang dilemahkan: begitu cacatnya diperbaiki, tes ini
- * menjadi **merah dengan sendirinya** dan memaksa anotasi ini dicabut.
  */
-test('E-02b maju sekali sesudah kembali harus mendarat di soal 1 (CACAT C-1)', async ({ page }) => {
-  test.fail(true, 'C-1: popstate selalu dianggap mundur; tombol maju tidak menggerakkan layar');
-
+test('E-02b maju sekali sesudah kembali mendarat di soal 1', async ({ page }) => {
   await buka(page, penandaBaru());
   await majuSampaiSoal3(page);
   await page.goBack();
@@ -160,11 +146,76 @@ test('E-02b maju sekali sesudah kembali harus mendarat di soal 1 (CACAT C-1)', a
   await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
 
   await page.goForward();
-  expect(await entriRiwayat(page), 'peramban memang sudah maju ke entri soal-1').toBe('soal-1');
-  /*
-   * Tenggat pendek dengan sengaja: ketidaksinkronan ini terjadi seketika, tidak
-   * ada yang perlu ditunggu 15 detik. Tenggat penuh hanya menambah setengah
-   * menit ke setiap putaran `npm run e2e` tanpa menambah satu pun bukti.
-   */
-  await expect(page.locator('[aria-label="Soal 1 dari 3"]')).toBeVisible({ timeout: 3_000 });
+  expect(await entriRiwayat(page), 'peramban maju ke entri soal-1').toBe('soal-1');
+  await tungguSoal(page, 1);
+  expect(await layarSekarang(page), 'layarnya ikut maju, bukan diam di layar pertama').toBe(
+    'Soal 1 dari 3',
+  );
+});
+
+/**
+ * E-02c — maju dan mundur boleh diselang-seling tanpa tumpukannya melenceng.
+ *
+ * Satu langkah maju yang benar belum membuktikan apa-apa kalau langkah
+ * sesudahnya melenceng: cacat C-1 justru baru terasa pada ketukan **berikutnya**,
+ * ketika layar dan entri riwayat sudah tidak sinkron.
+ */
+test('E-02c mundur x2 lalu maju x2 lalu mundur x1 mendarat di layar yang benar', async ({
+  page,
+}) => {
+  await buka(page, penandaBaru());
+  const asal = new URL(page.url()).origin;
+  await majuSampaiSoal3(page);
+
+  const jejak: { langkah: string; layar: string; entri: string | null; asal: string }[] = [];
+  const catat = async (langkah: string): Promise<void> => {
+    jejak.push({
+      langkah,
+      layar: await layarSekarang(page),
+      entri: await entriRiwayat(page),
+      asal: new URL(page.url()).origin,
+    });
+  };
+
+  await page.goBack();
+  await tungguSoal(page, 2);
+  await catat('mundur-1');
+  await page.goBack();
+  await tungguSoal(page, 1);
+  await catat('mundur-2');
+
+  await page.goForward();
+  await tungguSoal(page, 2);
+  await catat('maju-1');
+  await page.goForward();
+  await tungguSoal(page, 3);
+  await catat('maju-2');
+
+  await page.goBack();
+  await tungguSoal(page, 2);
+  await catat('mundur-3');
+
+  expect(
+    jejak.map((l) => `${l.langkah}=${l.layar}`),
+    'urutan layar sepanjang mundur x2, maju x2, mundur x1',
+  ).toEqual([
+    'mundur-1=Soal 2 dari 3',
+    'mundur-2=Soal 1 dari 3',
+    'maju-1=Soal 2 dari 3',
+    'maju-2=Soal 3 dari 3',
+    'mundur-3=Soal 2 dari 3',
+  ]);
+  expect(
+    jejak.map((l) => l.entri),
+    'entri riwayat peramban sinkron dengan layarnya di tiap langkah',
+  ).toEqual(['soal-2', 'soal-1', 'soal-2', 'soal-3', 'soal-2']);
+  for (const l of jejak) {
+    expect(l.asal, `langkah ${l.langkah} tetap di asal yang sama`).toBe(asal);
+  }
+
+  // Jawaban yang sudah dikunci tidak boleh berubah karena tombol peramban.
+  await expect(
+    page.getByText('Cocok dengan kartu').first(),
+    'soal yang sudah dikunci tetap terkunci sesudah maju-mundur',
+  ).toBeVisible();
 });

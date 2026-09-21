@@ -13,8 +13,12 @@ import {
   BATAS_KETUK,
   NAMA_PERISTIWA,
   namaLayar,
+  layarDariNama,
+  layarSebelumnya,
+  pernahSampai,
   semuaTerkunci,
   tandaOpsi,
+  tujuanRiwayat,
 } from './alur.ts';
 
 const AWAL = {
@@ -802,9 +806,12 @@ describe('alur — jalan pintas ke ringkasan (A4-T5)', () => {
 });
 
 describe('alur — tombol kembali peramban (A1-T7)', () => {
+  /** Tombol kembali: tujuannya adalah layar tepat sebelum layar kini. */
   const layarSesudahMundur = (aksi: Array<Aksi | [Aksi, number]>) => {
     const sebelum = jalankan(aksi);
-    const hasil = langkah(sebelum.keadaan, { jenis: 'mundur' }, 99_000);
+    const sebelumnya = layarSebelumnya(sebelum.keadaan);
+    const nama = sebelumnya === null ? 'pembuka' : namaLayar(sebelumnya);
+    const hasil = langkah(sebelum.keadaan, { jenis: 'riwayat_ke', nama }, 99_000);
     return {
       dari: namaLayar(sebelum.keadaan.layar),
       ke: namaLayar(hasil.keadaan.layar),
@@ -843,7 +850,7 @@ describe('alur — tombol kembali peramban (A1-T7)', () => {
 
   it('NEGATIF — dari layar pembuka tidak ke mana-mana, jadi peramban keluar situs', () => {
     const sebelum = jalankan([MULAI]);
-    const hasil = langkah(sebelum.keadaan, { jenis: 'mundur' }, 99_000);
+    const hasil = langkah(sebelum.keadaan, { jenis: 'riwayat_ke', nama: 'pembuka' }, 99_000);
     expect(hasil.peristiwa).toEqual([]);
     expect(hasil.keadaan).toBe(sebelum.keadaan);
   });
@@ -856,7 +863,7 @@ describe('alur — tombol kembali peramban (A1-T7)', () => {
       { jenis: 'kunci_jawaban', soal_id: 's1' },
       { jenis: 'lanjut' },
     ]);
-    const hasil = langkah(sebelum.keadaan, { jenis: 'mundur' }, 99_000);
+    const hasil = langkah(sebelum.keadaan, { jenis: 'riwayat_ke', nama: 'soal-1' }, 99_000);
     expect(hasil.keadaan.soal['s1']?.dikunci).toBe(true);
     expect(hasil.keadaan.soal['s1']?.kunci).toBe('b');
   });
@@ -1273,5 +1280,149 @@ describe('alur — baris istilah adalah sakelar (A-2)', () => {
     // Menutup lembar tidak ikut menutup istilah.
     expect(keadaan.istilahTerbuka).toBe(true);
     expect(keadaan.sumberTerbuka).toEqual([]);
+  });
+});
+
+/**
+ * A-1, cacat C-1: tombol **maju** peramban tidak menggerakkan layar, dan
+ * sesudah dipakai tombol kembali pun berhenti bekerja.
+ *
+ * Sebabnya: `popstate` selalu dianggap mundur. Yang diuji di bawah adalah
+ * penggantinya — perpindahan yang membaca **tujuan** dari entri riwayat.
+ */
+describe('alur — perpindahan lewat tombol peramban (A1-T2, C-1)', () => {
+  const diPembukaan = () => jalankan([...sampaiTerkunci(), { jenis: 'lanjut' }]).keadaan;
+
+  describe('layarDariNama — kebalikan namaLayar', () => {
+    it('mengenali keempat bentuk nama layar', () => {
+      expect(layarDariNama('pembuka', 3)).toEqual({ jenis: 'pembuka' });
+      expect(layarDariNama('soal-1', 3)).toEqual({ jenis: 'soal', nomor: 0 });
+      expect(layarDariNama('soal-3', 3)).toEqual({ jenis: 'soal', nomor: 2 });
+      expect(layarDariNama('pembukaan', 3)).toEqual({ jenis: 'pembukaan' });
+      expect(layarDariNama('akhir', 3)).toEqual({ jenis: 'akhir' });
+    });
+
+    it('bolak-balik dengan namaLayar untuk tiap layar yang mungkin', () => {
+      for (const nama of ['pembuka', 'soal-1', 'soal-2', 'soal-3', 'pembukaan', 'akhir']) {
+        const layar = layarDariNama(nama, 3);
+        expect(layar).not.toBeNull();
+        if (layar !== null) expect(namaLayar(layar)).toBe(nama);
+      }
+    });
+
+    it('menolak nama yang tidak dikenal atau nomor soal di luar jangkauan', () => {
+      for (const rusak of ['', 'soal-0', 'soal-4', 'soal-x', 'soal--1', 'Pembuka', 'akhirr', '{}']) {
+        expect(layarDariNama(rusak, 3), rusak).toBeNull();
+      }
+    });
+  });
+
+  describe('pernahSampai — maju tidak boleh menjadi jalan pintas', () => {
+    it('layar pertama selalu boleh', () => {
+      expect(pernahSampai(jalankan([MULAI]).keadaan, { jenis: 'pembuka' })).toBe(true);
+    });
+
+    it('soal-2 belum pernah dicapai kalau soal-1 belum dikunci', () => {
+      const k = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+      expect(pernahSampai(k, { jenis: 'soal', nomor: 1 })).toBe(false);
+    });
+
+    it('soal-2 sudah pernah dicapai begitu soal-1 terkunci', () => {
+      const k = jalankan([
+        MULAI,
+        { jenis: 'lanjut' },
+        { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+        { jenis: 'kunci_jawaban', soal_id: 's1' },
+      ]).keadaan;
+      expect(pernahSampai(k, { jenis: 'soal', nomor: 1 })).toBe(true);
+    });
+
+    it('pembukaan dan layar akhir hanya sesudah ketiga soal terkunci', () => {
+      const belum = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+      expect(pernahSampai(belum, { jenis: 'pembukaan' })).toBe(false);
+      expect(pernahSampai(belum, { jenis: 'akhir' })).toBe(false);
+      const sudah = jalankan(sampaiTerkunci()).keadaan;
+      expect(pernahSampai(sudah, { jenis: 'pembukaan' })).toBe(true);
+      expect(pernahSampai(sudah, { jenis: 'akhir' })).toBe(true);
+    });
+  });
+
+  describe('tujuanRiwayat — satu penilai untuk reducer dan komponen', () => {
+    it('mundur selalu sah', () => {
+      expect(tujuanRiwayat(diPembukaan(), 'soal-1')).toEqual({ jenis: 'soal', nomor: 0 });
+    });
+
+    it('maju ke layar yang pernah dicapai: sah', () => {
+      const k = jalankan([...sampaiTerkunci(), { jenis: 'lanjut' }]).keadaan;
+      const mundur = langkah(k, { jenis: 'riwayat_ke', nama: 'soal-1' }, 50_000).keadaan;
+      expect(tujuanRiwayat(mundur, 'soal-3')).toEqual({ jenis: 'soal', nomor: 2 });
+    });
+
+    it('maju ke layar yang BELUM pernah dicapai: ditolak', () => {
+      const k = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+      expect(tujuanRiwayat(k, 'soal-3')).toBeNull();
+      expect(tujuanRiwayat(k, 'pembukaan')).toBeNull();
+      expect(tujuanRiwayat(k, 'akhir')).toBeNull();
+    });
+
+    it('nama rusak ditolak, tanpa melempar', () => {
+      const k = jalankan([MULAI]).keadaan;
+      for (const rusak of ['', 'soal-9', 'entah', '../../']) {
+        expect(() => tujuanRiwayat(k, rusak)).not.toThrow();
+        expect(tujuanRiwayat(k, rusak), rusak).toBeNull();
+      }
+    });
+  });
+
+  describe('peristiwa yang lahir', () => {
+    const sesudah = (keadaan: Keadaan, nama: string) =>
+      langkah(keadaan, { jenis: 'riwayat_ke', nama }, 90_000);
+
+    it('MUNDUR melahirkan peristiwa yang persis sama dengan sebelum A-1', () => {
+      const h = sesudah(diPembukaan(), 'soal-3');
+      expect(h.peristiwa.map((p) => p.nama)).toEqual(['lihat_balik', 'gulir', 'layar_masuk']);
+      expect(h.peristiwa[0]?.isi).toEqual({ dari_layar: 'pembukaan', ke_layar: 'soal-3' });
+      expect(namaLayar(h.keadaan.layar)).toBe('soal-3');
+    });
+
+    it('MAJU melahirkan HANYA layar_masuk — tanpa nama peristiwa baru', () => {
+      const mundur = sesudah(diPembukaan(), 'soal-3').keadaan;
+      const maju = sesudah(mundur, 'pembukaan');
+      expect(maju.peristiwa.map((p) => p.nama)).toEqual(['layar_masuk']);
+      expect(maju.peristiwa[0]?.isi).toEqual({ layar: 'pembukaan' });
+      expect(namaLayar(maju.keadaan.layar)).toBe('pembukaan');
+    });
+
+    it('tiap nama yang lahir tetap ada di daftar tertutup D-6', () => {
+      const mundur = sesudah(diPembukaan(), 'soal-3');
+      const maju = sesudah(mundur.keadaan, 'pembukaan');
+      for (const p of [...mundur.peristiwa, ...maju.peristiwa]) {
+        expect(NAMA_PERISTIWA).toContain(p.nama);
+      }
+      expect(NAMA_PERISTIWA).toHaveLength(17);
+    });
+
+    it('maju TIDAK mengubah jawaban yang sudah dikunci', () => {
+      const mundur = sesudah(diPembukaan(), 'soal-1').keadaan;
+      const maju = sesudah(mundur, 'soal-2').keadaan;
+      for (const id of ['s1', 's2', 's3']) {
+        expect(maju.soal[id]?.dikunci, id).toBe(true);
+      }
+      expect(maju.soal['s1']?.kunci).toBe('b');
+    });
+
+    it('maju yang ditolak tidak mengubah keadaan sama sekali', () => {
+      const k = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+      const h = sesudah(k, 'pembukaan');
+      expect(h.peristiwa).toEqual([]);
+      expect(h.keadaan).toBe(k);
+    });
+
+    it('pindah ke layar yang sedang dibuka tidak melahirkan apa pun', () => {
+      const k = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+      const h = sesudah(k, 'soal-1');
+      expect(h.peristiwa).toEqual([]);
+      expect(h.keadaan).toBe(k);
+    });
   });
 });

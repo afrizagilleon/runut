@@ -1,10 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { type Aksi, type Keadaan, keadaanAwal, langkah, namaLayar } from './alur.ts';
+import {
+  type Aksi,
+  type Keadaan,
+  keadaanAwal,
+  langkah,
+  namaLayar,
+  tujuanRiwayat,
+} from './alur.ts';
 import {
   type Tumpukan,
   dorong,
   ganti,
   layarEntri,
+  majuPeramban,
   mundurPeramban,
   perintahRiwayat,
   sesuaikan,
@@ -30,6 +38,9 @@ const AWAL = {
  */
 function meja(): {
   kirim: (aksi: Aksi) => void;
+  dariRiwayat: () => void;
+  tekanMaju: () => void;
+  rusakkanEntri: (nama: string) => void;
   tekanKembali: () => void;
   layar: () => string;
   tumpukan: () => Tumpukan;
@@ -51,14 +62,39 @@ function meja(): {
       keadaan = langkah(keadaan, aksi, waktu).keadaan;
       sinkron();
     },
+    /*
+     * Tiruan penangan `popstate` di `Aplikasi.tsx`, langkah demi langkah:
+     * baca nama layar dari entri yang kini aktif, tanyakan `tujuanRiwayat`
+     * apakah perpindahannya sah, lalu dispatch — atau, kalau tidak sah,
+     * pertahankan layar kini dan ganti entrinya. Kalau modelnya tidak
+     * menirukan komponennya, ia menguji hal lain.
+     */
+    dariRiwayat() {
+      const nama = layarEntri(tumpukan);
+      if (nama === null) return;
+      if (tujuanRiwayat(keadaan, nama) === null) {
+        tumpukan = ganti(tumpukan, namaLayar(keadaan.layar));
+        return;
+      }
+      waktu += 100;
+      keadaan = langkah(keadaan, { jenis: 'riwayat_ke', nama }, waktu).keadaan;
+      sinkron();
+    },
     tekanKembali() {
       tumpukan = mundurPeramban(tumpukan);
       // Kalau peramban meninggalkan situs, halaman dibongkar: tidak ada
       // `popstate`, tidak ada dispatch.
       if (tumpukan.diLuarSitus) return;
-      waktu += 100;
-      keadaan = langkah(keadaan, { jenis: 'mundur' }, waktu).keadaan;
-      sinkron();
+      this.dariRiwayat();
+    },
+    /** Tombol maju peramban (A-1, cacat C-1). */
+    tekanMaju() {
+      tumpukan = majuPeramban(tumpukan);
+      this.dariRiwayat();
+    },
+    /** Menulis nama lain ke entri yang aktif, menirukan `state` yang rusak. */
+    rusakkanEntri(nama: string) {
+      tumpukan = ganti(tumpukan, nama);
     },
     layar: () => namaLayar(keadaan.layar),
     tumpukan: () => tumpukan,
@@ -261,5 +297,116 @@ describe('A4-T1 — dari layar Pembukaan dan layar akhir', () => {
       }
     }
     expect(beda).toEqual([]);
+  });
+});
+
+/**
+ * A-1, cacat C-1: tombol **maju**.
+ *
+ * Model murni yang dijalankan persis seperti `Aplikasi.tsx` menjalankannya —
+ * peramban memindahkan penunjuknya lebih dulu, lalu `popstate` membawa nama
+ * layar tujuan ke aplikasi.
+ */
+describe('A1-T2 — tombol maju peramban', () => {
+  it('majuPeramban di entri terdepan tidak melakukan apa-apa, dan TIDAK keluar situs', () => {
+    const m = sampaiSoal3();
+    const sebelum = m.tumpukan();
+    m.tekanMaju();
+    expect(m.tumpukan().indeks).toBe(sebelum.indeks);
+    expect(m.layar()).toBe('soal-3');
+    expect(m.diLuarSitus()).toBe(false);
+  });
+
+  it('maju–mundur–maju: layar dan entri aktif selalu sama', () => {
+    const m = sampaiSoal3();
+    const jejak: string[] = [];
+    const catat = (): void => {
+      jejak.push(`${m.layar()}|${String(layarEntri(m.tumpukan()))}`);
+    };
+    catat();
+    m.tekanKembali();
+    catat();
+    m.tekanMaju();
+    catat();
+    m.tekanKembali();
+    catat();
+    expect(jejak).toEqual([
+      'soal-3|soal-3',
+      'soal-2|soal-2',
+      'soal-3|soal-3',
+      'soal-2|soal-2',
+    ]);
+  });
+
+  it('mundur ×3 lalu maju ×3 kembali ke soal-3, tanpa menambah entri', () => {
+    const m = sampaiSoal3();
+    const panjangAwal = m.tumpukan().entri.length;
+
+    m.tekanKembali();
+    m.tekanKembali();
+    m.tekanKembali();
+    expect(m.layar()).toBe('pembuka');
+
+    m.tekanMaju();
+    expect(m.layar()).toBe('soal-1');
+    m.tekanMaju();
+    expect(m.layar()).toBe('soal-2');
+    m.tekanMaju();
+    expect(m.layar()).toBe('soal-3');
+
+    expect(
+      m.tumpukan().entri.length,
+      'maju-mundur tidak boleh menambah satu entri pun',
+    ).toBe(panjangAwal);
+    expect(layarEntri(m.tumpukan())).toBe('soal-3');
+  });
+
+  it('sesudah maju sampai ujung, kembali masih berjalan normal', () => {
+    const m = sampaiSoal3();
+    m.tekanKembali();
+    m.tekanKembali();
+    m.tekanMaju();
+    m.tekanMaju();
+    expect(m.layar()).toBe('soal-3');
+    m.tekanKembali();
+    expect(m.layar()).toBe('soal-2');
+    m.tekanKembali();
+    expect(m.layar()).toBe('soal-1');
+    m.tekanKembali();
+    expect(m.layar()).toBe('pembuka');
+    // Dan yang berikutnya barulah meninggalkan situs.
+    m.tekanKembali();
+    expect(m.diLuarSitus()).toBe(true);
+  });
+
+  it('entri riwayat yang RUSAK: layar kini dipertahankan dan entrinya diganti', () => {
+    const m = sampaiSoal3();
+    m.rusakkanEntri('soal-99');
+    expect(layarEntri(m.tumpukan())).toBe('soal-99');
+    m.dariRiwayat();
+    expect(m.layar(), 'layarnya tidak bergerak').toBe('soal-3');
+    expect(layarEntri(m.tumpukan()), 'entrinya diperbaiki, bukan didorong').toBe('soal-3');
+    expect(m.tumpukan().entri.length).toBe(4);
+  });
+
+  it('entri riwayat KOSONG diperlakukan sama: diganti, bukan didorong', () => {
+    const m = sampaiSoal3();
+    const panjang = m.tumpukan().entri.length;
+    m.rusakkanEntri('');
+    m.dariRiwayat();
+    expect(m.layar()).toBe('soal-3');
+    expect(layarEntri(m.tumpukan())).toBe('soal-3');
+    expect(m.tumpukan().entri.length).toBe(panjang);
+  });
+
+  it('maju ke layar yang BELUM pernah dicapai ditolak, entrinya diperbaiki', () => {
+    // Pemain baru di soal-1; sebuah entri "pembukaan" diselipkan di depannya.
+    const m = meja();
+    m.kirim({ jenis: 'mulai', lebar_layar: 375 });
+    m.kirim({ jenis: 'lanjut' });
+    m.rusakkanEntri('pembukaan');
+    m.dariRiwayat();
+    expect(m.layar(), 'tidak ada jalan pintas ke pembukaan').toBe('soal-1');
+    expect(layarEntri(m.tumpukan())).toBe('soal-1');
   });
 });

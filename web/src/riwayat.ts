@@ -94,6 +94,21 @@ export function mundurPeramban(tumpukan: Tumpukan): Tumpukan {
 }
 
 /**
+ * Tombol **maju** (A-1, cacat C-1).
+ *
+ * Ia tidak ada di model sampai sekarang, dan ketiadaannya itulah cacatnya:
+ * aplikasi menganggap setiap `popstate` sebagai mundur, padahal tombol maju
+ * menyalakan peristiwa yang sama. Di entri terdepan, maju tidak melakukan
+ * apa-apa — peramban tidak punya tempat untuk dituju, dan ia **tidak**
+ * meninggalkan situs seperti yang dilakukan mundur di entri pertama.
+ */
+export function majuPeramban(tumpukan: Tumpukan): Tumpukan {
+  if (tumpukan.indeks < 0) return tumpukan;
+  if (tumpukan.indeks >= tumpukan.entri.length - 1) return tumpukan;
+  return { ...tumpukan, indeks: tumpukan.indeks + 1 };
+}
+
+/**
  * Satu putaran aplikasi: layar sekarang `layar`, sesuaikan riwayatnya.
  * Inilah yang dijalankan efek di `Aplikasi.tsx`, ditulis sebagai fungsi murni
  * supaya urutan maju–mundur–maju bisa dijalankan di meja tanpa peramban.

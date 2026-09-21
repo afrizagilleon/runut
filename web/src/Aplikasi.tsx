@@ -12,6 +12,7 @@ import {
   langkah,
   namaLayar,
   tandaOpsi,
+  tujuanRiwayat,
 } from './alur.ts';
 import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { KartuFakta } from './KartuFakta.tsx';
@@ -333,15 +334,35 @@ export function Aplikasi(): JSX.Element {
     else if (perintah === 'dorong') window.history.pushState({ layar: namaLayarKini }, '');
   }, [namaLayarKini]);
 
+  /*
+   * Tombol kembali DAN tombol maju peramban (A1-T2, cacat C-1).
+   *
+   * Versi lama men-dispatch `mundur` untuk setiap `popstate`. Tombol maju
+   * menyalakan peristiwa yang sama, jadi dari layar pertama aksinya diabaikan
+   * diam-diam dan penunjuk riwayat peramban berjalan sendiri meninggalkan
+   * layarnya — sesudah itu kembali pun tidak menggerakkan apa pun.
+   *
+   * Sekarang yang dibaca adalah **tujuan** di `event.state.layar`. Kalau tujuan
+   * itu tidak sah — entri bukan milik kita, nomor soal di luar jangkauan, atau
+   * layar yang belum pernah dicapai pemain — layar kini dipertahankan dan
+   * entrinya diganti, supaya keduanya sinkron lagi tanpa satu pun galat.
+   * Yang memutuskan sah atau tidak adalah `tujuanRiwayat`, fungsi murni yang
+   * sama dengan yang dipakai reducer: dua penilai yang terpisah akan berselisih,
+   * dan selisih itulah cacatnya.
+   */
   useEffect(() => {
-    const mundur = (): void => {
-      // Perpindahan layar tetap satu dispatch; komponen tidak pernah
-      // mengubah layar sendiri.
-      kirim({ jenis: 'mundur' });
+    const pindah = (peristiwa: PopStateEvent): void => {
+      const nama = (peristiwa.state as { layar?: string } | null)?.layar ?? null;
+      const keadaanKini = acuanKeadaan.current;
+      if (nama === null || tujuanRiwayat(keadaanKini, nama) === null) {
+        window.history.replaceState({ layar: namaLayar(keadaanKini.layar) }, '');
+        return;
+      }
+      kirim({ jenis: 'riwayat_ke', nama });
     };
-    window.addEventListener('popstate', mundur);
+    window.addEventListener('popstate', pindah);
     return () => {
-      window.removeEventListener('popstate', mundur);
+      window.removeEventListener('popstate', pindah);
     };
   }, [kirim]);
 

@@ -93,6 +93,34 @@ export function namaLayar(layar: Layar): string {
   return layar.jenis === 'soal' ? `soal-${String(layar.nomor + 1)}` : layar.jenis;
 }
 
+/**
+ * Kebalikan `namaLayar`: nama yang tersimpan di entri riwayat peramban menjadi
+ * layar (A-1, cacat C-1).
+ *
+ * `null` untuk nama yang tidak dikenal **dan** untuk nomor soal di luar
+ * jangkauan kasus ini. Entri riwayat bisa datang dari muatan halaman yang lain,
+ * dari kasus dengan jumlah soal berbeda, atau dari tangan orang yang
+ * mengubahnya; tidak satu pun boleh membuat aplikasi melempar.
+ */
+export function layarDariNama(nama: string, jumlahSoal: number): Layar | null {
+  if (nama === 'pembuka') return { jenis: 'pembuka' };
+  if (nama === 'pembukaan') return { jenis: 'pembukaan' };
+  if (nama === 'akhir') return { jenis: 'akhir' };
+  const cocok = /^soal-(\d+)$/.exec(nama);
+  if (cocok === null) return null;
+  const nomor = Number(cocok[1]) - 1;
+  if (!Number.isInteger(nomor) || nomor < 0 || nomor >= jumlahSoal) return null;
+  return { jenis: 'soal', nomor };
+}
+
+/** Posisi layar dalam perjalanan maju: pembuka → soal → pembukaan → akhir. */
+function urutanLayar(layar: Layar, jumlahSoal: number): number {
+  if (layar.jenis === 'pembuka') return 0;
+  if (layar.jenis === 'soal') return layar.nomor + 1;
+  if (layar.jenis === 'pembukaan') return jumlahSoal + 1;
+  return jumlahSoal + 2;
+}
+
 export interface KeadaanSoal {
   /** Pilihan sekarang; `null` berarti belum memilih. */
   kunci: string | null;
@@ -220,7 +248,13 @@ export type Aksi =
   | { jenis: 'lanjut' }
   | { jenis: 'lihat_balik'; nomor: number }
   | { jenis: 'loncat_ke_ringkasan' }
-  | { jenis: 'mundur' }
+  /*
+   * Perpindahan lewat tombol peramban (A-1, cacat C-1). Namanya datang dari
+   * `history.state.layar`, bukan dari tebakan arah: tombol **maju** menyalakan
+   * `popstate` yang sama dengan tombol kembali, dan versi lama menganggap
+   * keduanya mundur.
+   */
+  | { jenis: 'riwayat_ke'; nama: string }
   | { jenis: 'catat_gulir'; persen: number }
   | { jenis: 'minat_kasus_lain' }
   | { jenis: 'isi_akhir'; medan: keyof JawabanAkhir; nilai: string | number | null }
@@ -401,6 +435,46 @@ export function bilahBawah(
 
 export function semuaTerkunci(keadaan: Keadaan): boolean {
   return keadaan.urutanSoal.every((id) => keadaan.soal[id]?.dikunci === true);
+}
+
+/**
+ * Pemain memang pernah sampai di layar ini (A-1, cacat C-1).
+ *
+ * Dipakai hanya untuk arah **maju**: tombol maju peramban tidak boleh menjadi
+ * jalan pintas ke soal yang belum dibuka atau ke pembukaan yang belum diperoleh.
+ * Syaratnya dibaca dari keadaan permainan, bukan dari tumpukan riwayat — karena
+ * tumpukan riwayat adalah hal yang justru bisa dibuat-buat.
+ */
+export function pernahSampai(keadaan: Keadaan, layar: Layar): boolean {
+  if (layar.jenis === 'pembuka') return true;
+  if (layar.jenis === 'soal') {
+    // Layar soal ke-n hanya bisa dicapai kalau semua soal sebelumnya terkunci.
+    return keadaan.urutanSoal
+      .slice(0, layar.nomor)
+      .every((id) => keadaan.soal[id]?.dikunci === true);
+  }
+  // Pembukaan dan layar akhir sama-sama di balik ketiga soal (D-3).
+  return semuaTerkunci(keadaan);
+}
+
+/**
+ * Layar tujuan kalau perpindahan riwayat ini sah, atau `null` kalau tidak.
+ *
+ * **Satu sumber kebenaran untuk dua pemakai.** Reducer memakainya untuk
+ * memutuskan, dan komponen memakainya untuk tahu kapan ia harus memperbaiki
+ * entri riwayat sendiri (`replaceState`). Kalau keduanya memutuskan terpisah,
+ * mereka akan berselisih — dan layar yang tidak sinkron dengan tumpukan riwayat
+ * persis cacat C-1.
+ */
+export function tujuanRiwayat(keadaan: Keadaan, nama: string): Layar | null {
+  const tujuan = layarDariNama(nama, keadaan.urutanSoal.length);
+  if (tujuan === null) return null;
+  const jumlahSoal = keadaan.urutanSoal.length;
+  const ke = urutanLayar(tujuan, jumlahSoal);
+  const kini = urutanLayar(keadaan.layar, jumlahSoal);
+  // Mundur selalu sah; pemain jelas sudah pernah melewatinya.
+  if (ke <= kini) return tujuan;
+  return pernahSampai(keadaan, tujuan) ? tujuan : null;
 }
 
 /** Pengumpul peristiwa untuk satu pemanggilan reducer: menomori dan memberi cap waktu. */
@@ -786,21 +860,43 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
     }
 
     /*
-     * Tombol kembali peramban/Android (A1-T7). Satu entri riwayat per layar,
-     * dan `popstate` mundur satu layar **lewat reducer** — bukan dengan
-     * mengubah layar di komponen — supaya peristiwanya tetap lahir.
-     * Dari layar pembuka ia ditolak, sehingga peramban keluar dari situs
-     * seperti yang diharapkan pemain.
+     * Tombol kembali DAN tombol maju peramban/Android (A1-T7, diperbaiki A1-T2).
+     *
+     * Versi lama menganggap setiap `popstate` sebagai mundur. Tombol maju
+     * menyalakan peristiwa yang sama, jadi dari layar pertama aksinya diabaikan
+     * diam-diam: penunjuk riwayat peramban maju sementara layarnya diam, dan
+     * sejak itu keduanya tidak sinkron — kembali pun berhenti bekerja dan
+     * pemain terjebak (cacat C-1).
+     *
+     * Sekarang yang dibaca adalah **tujuannya**, dari `history.state.layar`.
+     * Mundur berperilaku persis seperti dulu dan melahirkan peristiwa yang
+     * persis sama (`lihat_balik`, `gulir`, `layar_masuk`). Maju hanya sah ke
+     * layar yang memang pernah dicapai, tidak mengubah satu pun jawaban, dan
+     * melahirkan **hanya** `layar_masuk` — tidak ada nama peristiwa baru, karena
+     * D-6 adalah daftar tertutup dan pengumpul di server sungguhan
+     * memvalidasinya.
      */
-    case 'mundur': {
-      const tujuan = layarSebelumnya(keadaan);
+    case 'riwayat_ke': {
+      const tujuan = tujuanRiwayat(keadaan, aksi.nama);
       if (tujuan === null) return abaikan(keadaan);
+      const jumlahSoal = keadaan.urutanSoal.length;
+      const ke = urutanLayar(tujuan, jumlahSoal);
+      const kini = urutanLayar(keadaan.layar, jumlahSoal);
+      if (ke === kini) return abaikan(keadaan);
+
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
-      catat.tambah('lihat_balik', {
-        dari_layar: namaLayar(keadaan.layar),
-        ke_layar: namaLayar(tujuan),
-      });
-      const berikut = masukLayar(tutupWaktuLayar(keadaan, waktu), tujuan, waktu, catat);
+      const ditutup = tutupWaktuLayar(keadaan, waktu);
+      if (ke < kini) {
+        catat.tambah('lihat_balik', {
+          dari_layar: namaLayar(keadaan.layar),
+          ke_layar: namaLayar(tujuan),
+        });
+        const berikut = masukLayar(ditutup, tujuan, waktu, catat);
+        const { peristiwa, urut } = catat.hasil;
+        return { keadaan: { ...berikut, urut }, peristiwa };
+      }
+      // Maju: `tinggalkan: false`, jadi tidak ada `gulir` — hanya `layar_masuk`.
+      const berikut = masukLayar(ditutup, tujuan, waktu, catat, false);
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...berikut, urut }, peristiwa };
     }
