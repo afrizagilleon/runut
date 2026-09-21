@@ -73,5 +73,5 @@ Tiga baris aturan main dari v2 dihapus.
 ## Layar akhir dan pesan penutup
 
 Seperti v2, dengan dua perubahan:
-- Kalimat di bawah tombol Selesai: *Kami mencatat apa yang diketuk dan seberapa jauh layar digulir — tanpa nama, akun, cookie, alamat IP, atau teks yang kamu ketik selain kotak masukan ini.*
+- Kalimat di bawah tombol Selesai: *Kami mencatat apa yang diketuk dan seberapa jauh layar digulir, dan menyimpan satu nomor acak di browsermu supaya tahu kalau kamu kembali. Bukan nama, bukan akun, bukan alamat IP; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak dicatat, kecuali kotak masukan ini.* Layar terima kasih: "Jawabanmu tercatat tanpa nama dan tanpa akun." Klaim "tanpa cookie" tidak dipakai di mana pun: nomor acak itu memang bukan cookie, tetapi janji tidak boleh terdengar lebih bersih dari kenyataannya.
 - Pesan "Mau coba kasus lain": **Tidak semua saham seperti ini.** Kasus berikutnya adalah perusahaan yang sehat — sedang kami siapkan. Selamat belajar membaca data.
