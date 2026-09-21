@@ -259,11 +259,15 @@ summary:focus-visible,
   align-items: baseline;
   gap: 8px;
   margin: 0;
-  padding: 6px 8px 4px;
+  /* Patokan .keping-dalam: padding 10px 12px 8px; .keping-tanggal: 600 12px/1. */
+  padding: 10px 12px 8px;
   background: var(--lembar);
   border: 1px solid var(--garis);
+  border-top: 0;
   font-family: var(--mesin);
   font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   clip-path: polygon(
@@ -452,28 +456,35 @@ summary:focus-visible,
   font-size: 14px;
 }
 
-/* --- lembar dokumen: suara resmi ------------------------------------------ */
+/* --- lembar dokumen: kertas bersudut, satu pintu di kakinya --------------- */
 
+/*
+ * Nilai disalin dari `docs/contoh/layar-soal.html`:
+ *   .lembar      radius 2px, garis kepala 2px --stempel (putus-putus bila hitungan)
+ *   .lembar-badan padding 10px 12px 8px
+ *   .lembar-kaki  min-height 44px, padding 0 12px, 500 14px/1, warna --stempel
+ *
+ * Kepala lembar sekarang peran *meta* biasa, bukan tombol berhuruf kapital.
+ * Pemilik mengira lembar ini pilihan ganda; kepala yang tampak bisa dipilih
+ * adalah sebabnya.
+ */
 .tumpukan {
   display: flex;
   flex-direction: column;
   gap: var(--antar-lembar);
-  margin: 0 0 12px;
+  margin: 0 0 24px;
 }
 
 .lembar {
   background: var(--lembar);
   border: 1px solid var(--garis);
-  border-radius: 3px;
-  overflow: hidden;
+  border-top: 2px solid var(--stempel);
+  border-radius: 2px;
+  margin: 0;
 }
 
-/* Garis kepala utuh = diumumkan pihak lain. Putus-putus = kami yang menghitung. */
-.lembar-garis {
-  border-top: 3px solid var(--stempel);
-}
-
-.lembar-hitung > .lembar-garis {
+/* Putus-putus = kami yang menghitung. Kepalanya wajib berbunyi "Dihitung dari…". */
+.lembar-hitung {
   border-top-style: dashed;
 }
 
@@ -482,152 +493,183 @@ summary:focus-visible,
   border: 2px solid var(--stempel);
 }
 
-/* Kepala lembar: satu baris, bantalan 6/12 (`docs/desain.md`). */
-.lembar-sumber {
-  font-family: var(--mesin);
-  font-stretch: normal;
-  font-weight: 400;
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--tinta-redup);
-  margin: 0;
+.lembar-badan {
+  padding: 10px 12px 8px;
 }
 
-.lembar-isi {
-  padding: 0 12px 6px;
-  margin: 0;
+.lembar-badan .meta {
+  margin-bottom: 4px;
 }
 
+/*
+ * Angka penting di badan lembar: tebal DAN --stempel (permintaan pemilik,
+ * 22 Sep). Hanya di lembar — tidak di pesan, opsi, atau judul. Ia tidak
+ * interaktif, jadi ketukan padanya tercatat `mati: true` (D-1, D-8).
+ */
+.lembar-badan b,
 .angka-lembar {
   font-weight: 700;
+  color: var(--stempel);
 }
 
-/*
- * Baris kepala kartu adalah tombolnya, selebar kartu dan setinggi >= 44 px:
- * satu lembar = satu pintu ke sumbernya (`docs/desain.md`). Satu baris, dengan
- * elipsis kalau terlalu panjang — kepala yang membungkus dua baris menambah
- * tinggi layar soal tanpa menambah arti.
- */
-.lembar-sumber-tombol {
-  display: block;
-  width: 100%;
-  min-height: 44px;
-  padding: 6px 12px;
-  background: none;
-  border: 0;
-  color: inherit;
-  font: inherit;
-  letter-spacing: inherit;
-  text-transform: inherit;
-  text-align: left;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* --- legenda garis dan istilah --------------------------------------------- */
-
-.legenda {
-  margin: 0 0 4px;
-  font-size: 14px;
-  color: var(--tinta-redup);
-}
-
-/* Istilah: satu baris yang bisa dibuka, bukan blok yang selalu terbentang. */
-.istilah {
-  margin: 0 0 8px;
-  font-size: 14px;
-  color: var(--tinta-redup);
-}
-
-.istilah > summary {
-  min-height: 44px;
+.lembar-kaki {
   display: flex;
   align-items: center;
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-top: 1px solid var(--garis);
+  background: none;
   color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: left;
   cursor: pointer;
 }
 
-.istilah dl {
-  margin: 0;
-}
-
-.istilah-butir {
-  border-top: 1px solid var(--garis);
-  padding: 8px 0;
-}
-
-.istilah dt {
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-}
-
-.istilah dd {
-  margin: 2px 0 0;
-}
-
-/* --- gelembung obrolan: satu-satunya bentuk gelembung --------------------- */
-
-.pembuka-obrolan {
+.panah {
   font-size: 17px;
-  color: var(--tinta-redup);
-  margin: 0 0 4px;
+  line-height: 1;
+  transition: transform var(--gerak) ease;
 }
+
+.lembar-kaki[aria-expanded='true'] .panah,
+.baris-istilah[aria-expanded='true'] .panah,
+details[open] > .baris-istilah .panah {
+  transform: rotate(90deg);
+}
+
+.buka {
+  padding: 4px 12px 12px;
+  border-top: 1px solid var(--garis);
+}
+
+.buka > * + * {
+  margin-top: 8px;
+}
+
+/* --- pesan teman: satu-satunya bentuk membulat --------------------------- */
+
+.pesan {
+  margin: 8px 0 24px;
+}
+
+.pesan-nama {
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--nama);
+  margin: 0 0 4px 12px;
+}
+
+.pesan-balon {
+  max-width: 86%;
+  margin: 0;
+  background: var(--obrolan);
+  padding: 10px 12px 6px;
+  border-radius: 4px 16px 16px 16px;
+}
+
+.pesan-jam {
+  display: block;
+  text-align: right;
+  font-family: var(--baca);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--tinta-redup);
+  margin-top: 2px;
+}
+
+/* Petunjuk satu kalimat, hanya di soal pertama. */
+.petunjuk {
+  margin: 8px 0 0;
+}
+
+.antar {
+  margin: 0 0 8px;
+}
+
+/* Keping menempel setinggi ~64 px; tanpa ini sasaran gulir tertutup olehnya. */
+.antar,
+.tanya {
+  scroll-margin-top: 64px;
+}
+
+/* --- baris istilah -------------------------------------------------------- */
+
+.istilah-lipat {
+  margin: 0 0 24px;
+}
+
+.baris-istilah {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--garis);
+  border-radius: 2px;
+  background: var(--lembar);
+  color: var(--tinta);
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  list-style: none;
+}
+
+.baris-istilah::-webkit-details-marker {
+  display: none;
+}
+
+.baris-istilah u {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.istilah-buka {
+  border: 1px solid var(--garis);
+  border-top: 0;
+  border-radius: 0 0 2px 2px;
+  background: var(--lembar);
+}
+
+/* --- "kembali ke dokumen" ------------------------------------------------- */
 
 /*
- * Gelembung obrolan: dibedakan oleh BENTUK (ekor), bukan hanya oleh rona hijau.
- * Tanpa inisial huruf — "A" di samping gelembung terbaca sebagai opsi a
- * (`docs/desain.md`).
+ * Patokan: 500 14px/1, warna --stempel, tanpa bantalan, tinggi sentuh >= 44 px.
+ * Tanpa aturan ini tombol memakai bawaan peramban (13,33 px, bantalan 1px 6px)
+ * — terukur saat membandingkan nilai terhitung dengan patokan.
  */
-.gelembung-label {
-  margin: 0 0 4px;
-  font-family: var(--mesin);
-  font-size: 14px;
-  letter-spacing: 0.06em;
-  color: var(--tinta-redup);
-}
-
-.gelembung {
-  display: block;
+.kembali {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   margin: 0 0 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
 }
 
-.gelembung-isi {
-  position: relative;
-  display: inline-block;
-  background: var(--obrolan);
-  color: var(--tinta);
-  border-radius: 4px 16px 16px 16px;
-  padding: 10px 12px;
-}
-
-/* Ekor gelembung di sudut kiri bawah. */
-.gelembung-isi::after {
-  content: '';
-  position: absolute;
-  left: -6px;
-  bottom: 0;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 0 0 10px 10px;
-  border-color: transparent transparent var(--obrolan) transparent;
-}
+/* --- judul pertanyaan ----------------------------------------------------- */
 
 .tanya {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0 0 8px;
-}
-
-.kembali-kartu {
-  display: block;
-  margin: 0 0 8px;
+  margin: 0 0 12px;
 }
 
 /* --- opsi ------------------------------------------------------------------ */
@@ -648,12 +690,20 @@ summary:focus-visible,
 .opsi {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
+  width: 100%;
   min-height: 56px;
-  padding: 8px 12px;
+  /* Patokan: padding 12px, gap 12px. Terpilih memakai 11px + garis 2px
+     supaya kotaknya tidak bergeser satu piksel saat dipilih. */
+  padding: 12px;
   background: var(--lembar);
   border: 1px solid var(--garis-kontrol);
   border-radius: 3px;
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
   cursor: pointer;
   transition: border-color var(--gerak) ease, background-color var(--gerak) ease;
 }
@@ -688,24 +738,28 @@ summary:focus-visible,
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  border: 1px solid var(--garis-tegas);
-  font-family: var(--mesin);
+  border: 1px solid var(--garis-kontrol);
+  display: grid;
+  place-items: center;
+  font-family: var(--baca);
+  /* 13 px: satu-satunya ukuran di luar skala, datang dari patokan (D-1). */
   font-size: 13px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--tinta-redup);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--tinta);
   transition: border-color var(--gerak) ease, color var(--gerak) ease;
 }
 
+/* Patokan: terpilih = garis 2px --stempel dan lingkaran huruf terisi. */
 .opsi-dipilih {
-  border-color: var(--stempel);
+  border: 2px solid var(--stempel);
+  padding: 11px;
 }
 
 .opsi-dipilih .opsi-huruf {
+  background: var(--stempel);
   border-color: var(--stempel);
-  color: var(--stempel);
-  font-weight: 700;
+  color: var(--lembar);
 }
 
 /*

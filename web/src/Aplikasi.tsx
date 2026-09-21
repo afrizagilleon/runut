@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 import type { RefObject } from 'react';
 import { PENANDA_BUKAN_FAKTA, ambilRujukan } from '../../factory/skema/rujukan.ts';
-import type { Fakta, Kasus, Soal } from '../../factory/skema/tipe.ts';
+import type { Fakta, Istilah, Kasus, Soal } from '../../factory/skema/tipe.ts';
 import {
   type Aksi,
   type Keadaan,
@@ -353,6 +353,58 @@ function LayarPembuka({
   );
 }
 
+/**
+ * "dua dokumen", bukan "2 dokumen" — kalimat pengantar dibaca sebagai kalimat,
+ * dan angka kecil yang dieja tidak bersaing dengan angka di dalam lembar.
+ */
+export function angkaKata(n: number): string {
+  const kata = ['nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan'];
+  return kata[n] ?? String(n);
+}
+
+/** Gerak halus hanya kalau pemain tidak memintanya dihentikan. */
+function gerakHalus(): ScrollBehavior {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+/**
+ * Baris istilah (patokan): satu baris berbingkai >= 44 px dengan panah, artinya
+ * terbuka tepat di bawahnya. Menggantikan `<details>` v2 yang berhuruf kapital
+ * dan tidak tampak bisa diketuk.
+ *
+ * Terbuka/tertutupnya adalah keadaan tampilan murni — tidak ada peristiwa D-6
+ * untuknya dan tidak ada yang perlu dicatat — tetapi ia tetap tidak boleh hidup
+ * di `useState` (D-5 M3.1). Ia dipegang `<details>` bawaan peramban, yang
+ * menyimpan keadaannya sendiri di DOM.
+ */
+function BarisIstilah({ istilah }: { istilah: Istilah[] }): JSX.Element {
+  return (
+    <details className="istilah-lipat" data-uid="istilah">
+      <summary className="baris-istilah">
+        <span>
+          Arti istilah:{' '}
+          {istilah.map((butir, nomor) => (
+            <span key={butir.kata}>
+              {nomor > 0 && ' · '}
+              <u>{butir.kata.toLowerCase()}</u>
+            </span>
+          ))}
+        </span>
+        <span className="panah" aria-hidden="true">
+          ›
+        </span>
+      </summary>
+      <div className="buka istilah-buka">
+        {istilah.map((butir) => (
+          <p className="isi" key={butir.kata}>
+            <b>{butir.kata}</b> — {butir.arti}
+          </p>
+        ))}
+      </div>
+    </details>
+  );
+}
+
 function LayarSoal({
   kasus,
   keadaan,
@@ -382,6 +434,43 @@ function LayarSoal({
         Soal {nomor + 1} dari {kasus.soal.length}
       </h2>
 
+      {/*
+        Urutan D-3, disalin dari patokan: petunjuk (soal 1) -> pesan teman ->
+        pengantar -> lembar -> istilah -> judul -> opsi -> kembali.
+
+        Yang pindah ke atas HANYA pesan temannya. Lembar tetap menempel tepat di
+        atas judul pertanyaan dan opsi, seperti permintaan pemilik semula —
+        "orang kasih kabar, kita verify" berarti kabarnya dibaca dulu, bukan
+        buktinya dijauhkan dari pertanyaannya.
+      */}
+      {soal.petunjuk !== null && (
+        <p className="meta petunjuk" data-uid="petunjuk">
+          {soal.petunjuk}
+        </p>
+      )}
+
+      <figure
+        className="pesan"
+        data-uid="pesan"
+        aria-label={`Pesan dari ${soal.pesan.nama}, ${soal.pesan.jam}`}
+      >
+        <figcaption className="pesan-nama">{soal.pesan.nama}</figcaption>
+        <blockquote className="pesan-balon">
+          {/*
+            Dirender POLOS, tanpa Teks: angka di dalam ucapan orang adalah
+            ucapan, bukan fakta (INV-4). Menautkannya membuat kabar tampak sudah
+            terverifikasi sebelum pemain memeriksanya. Validator menolak tautan
+            di sini lewat mode ketat 'ucapan' (T-01).
+          */}
+          <p className="isi">{soal.pesan.isi}</p>
+          <time className="pesan-jam">{soal.pesan.jam}</time>
+        </blockquote>
+      </figure>
+
+      <p className="meta antar" id={`antar-${soal.soal_id}`} data-uid="antar">
+        Cek omongan {soal.pesan.nama} ke {angkaKata(kartu.length)} dokumen ini:
+      </p>
+
       <div className="tumpukan" ref={acuanTumpukan}>
         {kartu.map((fakta) => (
           <KartuFakta
@@ -393,41 +482,26 @@ function LayarSoal({
         ))}
       </div>
 
-      {nomor === 0 && (
-        <p className="legenda">
-          Garis utuh: diumumkan pihak resmi. Garis putus-putus: kami yang menghitung.
-        </p>
-      )}
-
       {soal.istilah.length > 0 && (
-        <details className="istilah">
-          <summary>
-            {soal.istilah.map((butir) => butir.kata.toLowerCase()).join(' · ')}
-          </summary>
-          <dl>
-            {soal.istilah.map((butir) => (
-              <div key={butir.kata} className="istilah-butir">
-                <dt>{butir.kata}</dt>
-                <dd>{butir.arti}</dd>
-              </div>
-            ))}
-          </dl>
-        </details>
+        <BarisIstilah istilah={soal.istilah} />
       )}
 
-      {/* v3: pesan teman menggantikan batang. Komposisi patokan menyusul di
-          T-03; di sini hanya sumber teksnya yang berpindah ke skema baru.
-          Pesan dirender POLOS — angka di dalam ucapan bukan fakta (INV-4). */}
-      <Gelembung teks={soal.pesan.isi} bukaSumber={bukaSumber} />
+      <h1 className="judul tanya" id={`tanya-${soal.soal_id}`} data-uid="tanya">
+        {soal.tanya}
+      </h1>
 
       <fieldset className="pilihan" disabled={s.dikunci}>
         <legend className="tersembunyi">Pilih satu jawaban</legend>
         {soal.pilihan.map((p) => {
           // "Opsi mana mendapat tanda apa" adalah aturan, dan aturannya ada di
-          // reducer sebagai fungsi murni yang dites (A1-T4).
+          // reducer sebagai fungsi murni yang dites (A1-T4, A4-T4).
           const tanda = tandaOpsi(s, p.kunci, soal.jawaban);
           return (
-            <label key={p.kunci} className={`opsi opsi-${tanda.keadaan}`}>
+            <label
+              key={p.kunci}
+              className={`opsi aksi opsi-${tanda.keadaan}`}
+              data-uid={`opsi:${p.kunci}`}
+            >
               <input
                 type="radio"
                 name={soal.soal_id}
@@ -441,16 +515,15 @@ function LayarSoal({
                 {p.kunci}
               </span>
               <span className="opsi-teks">
-                <Teks teks={p.teks} bukaSumber={bukaSumber} interaktif={false} />
-                {/*
-                  Kata, bukan warna saja. Daftarnya datang dari selektor murni
-                  di alur.ts, jadi "baris mana dapat kata apa" bisa dites (A4-T4).
-                */}
+                {/* Opsi juga ucapan: polos, tanpa tebal dan tanpa tautan. */}
+                {p.teks}
                 {tanda.label.map((kata) => (
                   <span
                     key={kata}
                     className={
-                      kata === LABEL_COCOK ? 'opsi-tanda opsi-tanda-cocok' : 'opsi-tanda opsi-tanda-pemain'
+                      kata === LABEL_COCOK
+                        ? 'opsi-tanda opsi-tanda-cocok'
+                        : 'opsi-tanda opsi-tanda-pemain'
                     }
                   >
                     {kata}
@@ -464,15 +537,19 @@ function LayarSoal({
 
       <button
         type="button"
-        className="tombol-kecil kembali-kartu"
+        className="kembali"
+        data-uid="kembali"
         onClick={() => {
           kirim({ jenis: 'kembali_ke_kartu', soal_id: soal.soal_id });
           // Menggulir adalah kerja tampilan, bukan keadaan permainan; yang
-          // dicatat tetap satu peristiwa dari reducer di atas.
-          acuanTumpukan.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+          // dicatat tetap satu peristiwa dari reducer di atas. Mendarat di
+          // kalimat pengantar supaya kepingnya tidak menutupi lembar pertama.
+          document
+            .getElementById(`antar-${soal.soal_id}`)
+            ?.scrollIntoView({ block: 'start', behavior: gerakHalus() });
         }}
       >
-        Kembali ke kartu
+        ↑ Kembali ke dokumen
       </button>
 
       {/*
@@ -552,40 +629,6 @@ function LayarSoal({
 }
 
 /** Gelembung obrolan: satu-satunya bentuk gelembung di seluruh antarmuka (D-8). */
-function Gelembung({
-  teks,
-  bukaSumber,
-}: {
-  teks: string;
-  bukaSumber: (fact_id: string) => void;
-}): JSX.Element {
-  const kutip = /"([^"]*)"/.exec(teks);
-  if (kutip === null) {
-    return (
-      <p className="tanya">
-        <Teks teks={teks} bukaSumber={bukaSumber} />
-      </p>
-    );
-  }
-  const mulai = kutip.index;
-  const akhir = mulai + kutip[0].length;
-  return (
-    <>
-      <p className="pembuka-obrolan">
-        <Teks teks={teks.slice(0, mulai).replace(/Temanmu bilang:\s*$/, '')} bukaSumber={bukaSumber} />
-      </p>
-      <p className="gelembung-label">Temanmu</p>
-      <p className="gelembung">
-        <span className="gelembung-isi">
-          <Teks teks={kutip[1] ?? ''} bukaSumber={bukaSumber} interaktif={false} />
-        </span>
-      </p>
-      <p className="tanya">
-        <Teks teks={teks.slice(akhir)} bukaSumber={bukaSumber} />
-      </p>
-    </>
-  );
-}
 
 function LayarPembukaan({
   kasus,
