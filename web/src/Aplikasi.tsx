@@ -829,9 +829,15 @@ function LayarSoal({
         "tidak-ada" adalah jawaban yang sah dan penting: tombol utama tidak
         pernah tampil mati (INV-12), jadi ketika belum ada yang bisa dikunci dan
         opsinya sudah terlihat, bilahnya menyingkir — bukan berubah kelabu.
+
+        `data-uid` menyebut KEADAAN bilahnya, bukan sekadar "bilah" (D-10):
+        `bilah:turun` / `bilah:kunci` / `bilah:lanjut`. Tanpa itu, ringkasan
+        tidak bisa menjawab "berapa sesi mengetuk ↓ Jawab di bawah" —
+        satu-satunya angka yang memberi tahu apakah opsi pertama memang tidak
+        terlihat di ponsel pemilik.
       */}
       {bilah.jenis !== 'tidak-ada' && (
-        <div className="tindakan" data-uid="bilah">
+        <div className="tindakan" data-uid={`bilah:${bilah.jenis}`}>
           <button
             type="button"
             className={bilah.jenis === 'turun' ? 'tombol-utama tombol-turun' : 'tombol-utama'}

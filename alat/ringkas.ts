@@ -37,9 +37,28 @@ export interface RingkasSoal {
   ganti_pilihan: number;
 }
 
+/** Satu ketukan seperti yang dicatat pelacak (D-8). */
+export interface KetukSesi {
+  layar: string;
+  /** `null` berarti ketukan mendarat di luar semua blok bernama. */
+  uid: string | null;
+  mati: boolean;
+}
+
 export interface RingkasSesi {
   sesi: string;
   kasus_id: string;
+  /** Kode dari `?k=` (D-9); `null` kalau tautannya polos. */
+  penanda: string | null;
+  /** Nomor pengunjung (D-13); `null` kalau penyimpanan tidak bisa dipakai. */
+  pengunjung: string | null;
+  kunjungan_ke: number | null;
+  /** Ketukan sesi ini, urut. */
+  ketuk: KetukSesi[];
+  /** Sesi ini menabrak batas 300 ketukan. */
+  ketuk_dibatasi: boolean;
+  /** Kedalaman gulir terjauh per layar, 0–1. Kunjungan ulang diambil yang terjauh. */
+  gulir: Array<[string, number]>;
   /**
    * Sesi tanpa peristiwa `mulai` — misalnya tab lama yang baru ditutup, atau
    * kiriman yang kepalanya hilang. Ia dilaporkan terpisah dan tidak masuk
@@ -172,9 +191,37 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
   const kirimAkhir = urut.find((p) => p.nama === 'akhir_kirim');
   const loncat = urut.find((p) => p.nama === 'loncat_ke_ringkasan');
 
+  const ketuk: KetukSesi[] = [];
+  for (const p of urut) {
+    if (p.nama !== 'ketuk') continue;
+    ketuk.push({
+      layar: teks(p.isi['layar']) ?? '(tidak diketahui)',
+      uid: teks(p.isi['uid']),
+      mati: p.isi['mati'] === true,
+    });
+  }
+
+  // Satu layar bisa dikunjungi lebih dari sekali (melihat balik soal yang sudah
+  // dikunci). Yang disimpan adalah yang TERJAUH, bukan yang terakhir: pertanyaan
+  // D-10 adalah "sampai mana mereka menggulir", bukan "di mana mereka berhenti".
+  const gulir = new Map<string, number>();
+  for (const p of urut) {
+    if (p.nama !== 'gulir') continue;
+    const layar = teks(p.isi['layar']);
+    const maks = angka(p.isi['maks']);
+    if (layar === null || maks === null) continue;
+    gulir.set(layar, Math.max(gulir.get(layar) ?? 0, maks));
+  }
+
   return {
     sesi: pertama?.sesi ?? '(tanpa sesi)',
     kasus_id: pertama?.kasus_id ?? '(tanpa kasus)',
+    penanda: teks(mulai?.isi['penanda']),
+    pengunjung: teks(mulai?.isi['pengunjung']),
+    kunjungan_ke: angka(mulai?.isi['kunjungan_ke']),
+    ketuk,
+    ketuk_dibatasi: urut.some((p) => p.nama === 'ketuk_dibatasi'),
+    gulir: [...gulir.entries()].sort((a, b) => a[0].localeCompare(b[0])),
     lengkap: mulai !== undefined,
     lebar_layar: angka(mulai?.isi['lebar_layar']),
     sampai_pembukaan: urut.some((p) => p.nama === 'pembukaan_masuk'),
@@ -223,8 +270,292 @@ export function kelompokkanSesi(peristiwa: Peristiwa[]): RingkasSesi[] {
     .sort((a, b) => a.sesi.localeCompare(b.sesi));
 }
 
+/* ------------------------------------------------------------------ */
+/* Orang, bukan sesi (D-13)                                            */
+/* ------------------------------------------------------------------ */
+
+export interface HitungOrang {
+  sesi: number;
+  pengunjung_unik: number;
+  /** Pengunjung yang datang lebih dari sekali. */
+  kembali: number;
+  /** Sesi yang tidak bisa menyimpan nomor; dihitung terpisah, tidak ditebak. */
+  sesi_tanpa_nomor: number;
+}
+
+/**
+ * Berapa **orang**, bukan berapa sesi (D-13).
+ *
+ * Pemilik akan menyebar satu tautan per saluran ke banyak orang, dan satu orang
+ * bisa membuka tautan itu tiga kali. Menghitung sesi akan melebih-lebihkan
+ * jumlah peserta di depan juri, jadi angka yang dipakai adalah nomor pengunjung
+ * yang berbeda.
+ *
+ * "Kembali" berarti salah satu dari dua hal, dan keduanya cukup: nomor itu
+ * muncul di lebih dari satu sesi di berkas ini, atau ia sendiri melaporkan
+ * `kunjungan_ke > 1` — kunjungan sebelumnya bisa saja ada di berkas hari lain.
+ *
+ * Sesi ber-`pengunjung: null` **tidak ditebak** dan tidak ikut penyebut mana
+ * pun; ia dilaporkan sebagai angkanya sendiri.
+ */
+export function hitungOrang(semua: RingkasSesi[]): HitungOrang {
+  const kunjunganTertinggi = new Map<string, number>();
+  const jumlahSesi = new Map<string, number>();
+  let tanpaNomor = 0;
+
+  for (const s of semua) {
+    if (s.pengunjung === null) {
+      tanpaNomor += 1;
+      continue;
+    }
+    jumlahSesi.set(s.pengunjung, (jumlahSesi.get(s.pengunjung) ?? 0) + 1);
+    kunjunganTertinggi.set(
+      s.pengunjung,
+      Math.max(kunjunganTertinggi.get(s.pengunjung) ?? 0, s.kunjungan_ke ?? 1),
+    );
+  }
+
+  let kembali = 0;
+  for (const [nomor, kunjungan] of kunjunganTertinggi.entries()) {
+    if (kunjungan > 1 || (jumlahSesi.get(nomor) ?? 0) > 1) kembali += 1;
+  }
+
+  return {
+    sesi: semua.length,
+    pengunjung_unik: kunjunganTertinggi.size,
+    kembali,
+    sesi_tanpa_nomor: tanpaNomor,
+  };
+}
+
+/** Nama yang dipakai di tabel untuk sesi tanpa kode penanda. */
+export const TANPA_PENANDA = '(tanpa penanda)';
+
+/** Hitungan orang per kode penanda, urut abjad. */
+export function perPenanda(semua: RingkasSesi[]): Array<[string, HitungOrang]> {
+  const per = new Map<string, RingkasSesi[]>();
+  for (const s of semua) {
+    const kunci = s.penanda ?? TANPA_PENANDA;
+    const ada = per.get(kunci);
+    if (ada === undefined) per.set(kunci, [s]);
+    else ada.push(s);
+  }
+  return [...per.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([kode, daftar]) => [kode, hitungOrang(daftar)]);
+}
+
+/* ------------------------------------------------------------------ */
+/* Penanda yang dikecualikan (D-9)                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Dikecualikan tanpa diminta: pemilik menguji dengan `?k=afriza`, reviewer
+ * dengan `?k=uji`. Sesi mereka bukan pemain, dan membiarkannya masuk akan
+ * membuat setiap angka alpha memuji pekerjaan kami sendiri.
+ *
+ * Jumlah yang dikecualikan **selalu dicetak**, supaya tidak ada sesi yang
+ * hilang diam-diam.
+ */
+export const PENANDA_DIKECUALIKAN_BAWAAN: readonly string[] = ['afriza', 'uji'];
+
+export interface Argumen {
+  berkas: string[];
+  kecuali: string[];
+}
+
+/**
+ * Baca argumen baris perintah: `--kecuali k1,k2` menggantikan daftar bawaan.
+ *
+ * `--kecuali ''` (atau `--kecuali=`) berarti **tidak ada** yang dikecualikan —
+ * itulah cara melihat sesi uji sendiri kalau memang diinginkan.
+ */
+export function bacaArgumen(argumen: string[]): Argumen {
+  const berkas: string[] = [];
+  let kecuali: string[] | null = null;
+  for (let i = 0; i < argumen.length; i += 1) {
+    const arg = argumen[i] ?? '';
+    if (arg === '--kecuali') {
+      kecuali = pecahKode(argumen[i + 1] ?? '');
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--kecuali=')) {
+      kecuali = pecahKode(arg.slice('--kecuali='.length));
+      continue;
+    }
+    berkas.push(arg);
+  }
+  return { berkas, kecuali: kecuali ?? [...PENANDA_DIKECUALIKAN_BAWAAN] };
+}
+
+function pecahKode(nilai: string): string[] {
+  return nilai
+    .split(',')
+    .map((k) => k.trim())
+    .filter((k) => k !== '');
+}
+
+export interface Pisahan {
+  dipakai: RingkasSesi[];
+  dikecualikan: RingkasSesi[];
+}
+
+export function pisahkanKecuali(semua: RingkasSesi[], kecuali: readonly string[]): Pisahan {
+  const set = new Set(kecuali);
+  return {
+    dipakai: semua.filter((s) => s.penanda === null || !set.has(s.penanda)),
+    dikecualikan: semua.filter((s) => s.penanda !== null && set.has(s.penanda)),
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Per layar: uid teratas, ketukan mati, kedalaman gulir (D-10)        */
+/* ------------------------------------------------------------------ */
+
+/** Median; `null` untuk daftar kosong. Genap → rata-rata dua nilai tengah. */
+export function median(nilai: number[]): number | null {
+  if (nilai.length === 0) return null;
+  const urut = [...nilai].sort((a, b) => a - b);
+  const tengah = Math.floor(urut.length / 2);
+  if (urut.length % 2 === 1) return urut[tengah] ?? null;
+  return ((urut[tengah - 1] ?? 0) + (urut[tengah] ?? 0)) / 2;
+}
+
+export interface BarisUid {
+  uid: string;
+  ketuk: number;
+  /** Ketukan pada uid ini yang mendarat di sesuatu yang tidak bisa diketuk. */
+  mati: number;
+}
+
+export interface RingkasLayar {
+  layar: string;
+  /** Sepuluh uid yang paling sering diketuk di layar ini. */
+  uid: BarisUid[];
+  ketuk: number;
+  ketuk_mati: number;
+  /** Kedalaman gulir median di layar ini, 0–1; `null` kalau tidak ada datanya. */
+  gulir_median: number | null;
+  /** Berapa sesi yang pernah membuka layar ini (menurut peristiwa gulir). */
+  sesi: number;
+}
+
+/** Nama yang dipakai untuk ketukan yang tidak mendarat di blok bernama mana pun. */
+export const UID_KOSONG = '(di luar blok bernama)';
+
+export function perLayar(semua: RingkasSesi[]): RingkasLayar[] {
+  const layar = new Map<
+    string,
+    { uid: Map<string, BarisUid>; ketuk: number; mati: number; gulir: number[]; sesi: Set<string> }
+  >();
+
+  const pastikan = (nama: string): NonNullable<ReturnType<typeof layar.get>> => {
+    const ada = layar.get(nama);
+    if (ada !== undefined) return ada;
+    const baru = { uid: new Map<string, BarisUid>(), ketuk: 0, mati: 0, gulir: [], sesi: new Set<string>() };
+    layar.set(nama, baru);
+    return baru;
+  };
+
+  for (const s of semua) {
+    for (const k of s.ketuk) {
+      const l = pastikan(k.layar);
+      l.ketuk += 1;
+      if (k.mati) l.mati += 1;
+      const nama = k.uid ?? UID_KOSONG;
+      const baris = l.uid.get(nama) ?? { uid: nama, ketuk: 0, mati: 0 };
+      baris.ketuk += 1;
+      if (k.mati) baris.mati += 1;
+      l.uid.set(nama, baris);
+    }
+    for (const [nama, maks] of s.gulir) {
+      const l = pastikan(nama);
+      l.gulir.push(maks);
+      l.sesi.add(s.sesi);
+    }
+  }
+
+  return [...layar.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([nama, isi]) => ({
+      layar: nama,
+      uid: [...isi.uid.values()]
+        // Urutan tetap walau jumlahnya sama, supaya keluarannya bisa dibandingkan.
+        .sort((a, b) => b.ketuk - a.ketuk || a.uid.localeCompare(b.uid))
+        .slice(0, 10),
+      ketuk: isi.ketuk,
+      ketuk_mati: isi.mati,
+      gulir_median: median(isi.gulir),
+      sesi: isi.sesi.size,
+    }));
+}
+
+/* ------------------------------------------------------------------ */
+/* Per layar soal: tiga pertanyaan D-10                                */
+/* ------------------------------------------------------------------ */
+
+export interface RingkasLayarSoal {
+  layar: string;
+  /** Sesi yang mengetuk bilah "↓ Jawab di bawah" — opsi pertama tidak terlihat. */
+  jawab_di_bawah: number;
+  /** Sesi yang membuka kaki lembar ("Lihat sumbernya" / "cara menghitungnya"). */
+  buka_sumber: number;
+  /** Sesi yang mengetuk baris "Arti istilah". */
+  buka_istilah: number;
+  sesi: number;
+}
+
+export function perLayarSoal(semua: RingkasSesi[]): RingkasLayarSoal[] {
+  const layar = new Map<
+    string,
+    { turun: Set<string>; sumber: Set<string>; istilah: Set<string>; sesi: Set<string> }
+  >();
+
+  const pastikan = (nama: string): NonNullable<ReturnType<typeof layar.get>> => {
+    const ada = layar.get(nama);
+    if (ada !== undefined) return ada;
+    const baru = {
+      turun: new Set<string>(),
+      sumber: new Set<string>(),
+      istilah: new Set<string>(),
+      sesi: new Set<string>(),
+    };
+    layar.set(nama, baru);
+    return baru;
+  };
+
+  for (const s of semua) {
+    for (const nama of [...s.gulir.map(([l]) => l), ...s.ketuk.map((k) => k.layar)]) {
+      if (nama.startsWith('soal-')) pastikan(nama).sesi.add(s.sesi);
+    }
+    for (const k of s.ketuk) {
+      if (!k.layar.startsWith('soal-')) continue;
+      const l = pastikan(k.layar);
+      if (k.uid === 'bilah:turun') l.turun.add(s.sesi);
+      if (k.uid !== null && k.uid.startsWith('kaki:')) l.sumber.add(s.sesi);
+      if (k.uid === 'istilah') l.istilah.add(s.sesi);
+    }
+  }
+
+  return [...layar.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([nama, isi]) => ({
+      layar: nama,
+      jawab_di_bawah: isi.turun.size,
+      buka_sumber: isi.sumber.size,
+      buka_istilah: isi.istilah.size,
+      sesi: isi.sesi.size,
+    }));
+}
+
 function detik(ms: number): string {
   return `${(ms / 1000).toFixed(1)} d`;
+}
+
+/** Kedalaman gulir dibaca orang sebagai persen, bukan sebagai 0,62. */
+function persen(rasio: number | null): string {
+  return rasio === null ? '—' : `${String(Math.round(rasio * 100))}%`;
 }
 
 function ya(nilai: boolean): string {
@@ -239,14 +570,30 @@ function nilaiAkhir(akhir: Record<string, unknown> | null, medan: string): strin
 }
 
 /** Seluruh laporan Markdown untuk sekumpulan sesi. */
-export function laporan(semua: RingkasSesi[]): string {
+export function laporan(
+  masukan: RingkasSesi[],
+  kecuali: readonly string[] = PENANDA_DIKECUALIKAN_BAWAAN,
+): string {
   const baris: string[] = [];
+  const { dipakai: semua, dikecualikan } = pisahkanKecuali(masukan, kecuali);
   const sesi = semua.filter((s) => s.lengkap);
   const sebagian = semua.filter((s) => !s.lengkap);
 
   baris.push('# Ringkasan alpha');
   baris.push('');
   baris.push(`Sesi: **${String(sesi.length)}**`);
+
+  /*
+   * Dicetak SEBELUM angka apa pun, dan dicetak walau nol: sesi yang hilang
+   * diam-diam adalah cara termudah membuat data alpha terlihat lebih baik
+   * daripada kenyataannya.
+   */
+  baris.push('');
+  baris.push(
+    `Sesi yang dikecualikan (penanda ${
+      kecuali.length === 0 ? '—' : kecuali.map((k) => `\`${k}\``).join(', ')
+    }): **${String(dikecualikan.length)}**`,
+  );
 
   if (sesi.length === 0) {
     baris.push('');
@@ -257,6 +604,32 @@ export function laporan(semua: RingkasSesi[]): string {
     }
     return baris.join('\n') + '\n';
   }
+
+  const orang = hitungOrang(sesi);
+  baris.push('');
+  baris.push('## Berapa orang, bukan berapa sesi');
+  baris.push('');
+  baris.push(
+    'Satu orang bisa membuka tautannya tiga kali. **Pengunjung unik** adalah nomor acak',
+  );
+  baris.push(
+    'pihak pertama di browser masing-masing (D-13). Sesi yang tidak bisa menyimpan nomor itu',
+  );
+  baris.push('dihitung terpisah dan **tidak ditebak**.');
+  baris.push('');
+  baris.push('| | sesi | pengunjung unik | yang kembali | sesi tanpa nomor |');
+  baris.push('|---|---|---|---|---|');
+  baris.push(
+    `| **semua** | ${String(orang.sesi)} | ${String(orang.pengunjung_unik)} | ` +
+      `${String(orang.kembali)} | ${String(orang.sesi_tanpa_nomor)} |`,
+  );
+  for (const [kode, hitung] of perPenanda(sesi)) {
+    baris.push(
+      `| ${kode} | ${String(hitung.sesi)} | ${String(hitung.pengunjung_unik)} | ` +
+        `${String(hitung.kembali)} | ${String(hitung.sesi_tanpa_nomor)} |`,
+    );
+  }
+  baris.push('');
 
   const sampai = sesi.filter((s) => s.sampai_pembukaan).length;
   const minat = sesi.filter((s) => s.minat_kasus_lain).length;
@@ -356,6 +729,64 @@ export function laporan(semua: RingkasSesi[]): string {
   }
   baris.push('');
 
+  baris.push('## Apa yang diketuk, dan apa yang dikira bisa diketuk');
+  baris.push('');
+  baris.push(
+    '**mati** = ketukan yang mendarat di sesuatu yang bukan elemen interaktif. Angka mati',
+  );
+  baris.push(
+    'yang tinggi pada satu `uid` berarti orang mengira benda itu pintu — itulah alasan',
+  );
+  baris.push('terukur untuk menjadikannya pintu sungguhan di milestone berikutnya.');
+  baris.push('');
+  for (const l of perLayar(sesi)) {
+    baris.push(
+      `**${l.layar}** — ${String(l.ketuk)} ketukan, ${String(l.ketuk_mati)} mati · ` +
+        `gulir median ${persen(l.gulir_median)} (${String(l.sesi)} sesi)`,
+    );
+    baris.push('');
+    if (l.uid.length === 0) {
+      baris.push('Tidak ada ketukan tercatat di layar ini.');
+      baris.push('');
+      continue;
+    }
+    baris.push('| uid | ketuk | mati |');
+    baris.push('|---|---|---|');
+    for (const u of l.uid) {
+      baris.push(`| ${u.uid} | ${String(u.ketuk)} | ${String(u.mati)} |`);
+    }
+    baris.push('');
+  }
+
+  const dibatasi = sesi.filter((s) => s.ketuk_dibatasi).length;
+  if (dibatasi > 0) {
+    baris.push(
+      `Sesi yang menabrak batas 300 ketukan: **${String(dibatasi)}** — ketukan sesudahnya` +
+        ' tidak tercatat.',
+    );
+    baris.push('');
+  }
+
+  const perSoal = perLayarSoal(sesi);
+  if (perSoal.length > 0) {
+    baris.push('## Tiga pertanyaan per layar soal');
+    baris.push('');
+    baris.push(
+      '"Jawab di bawah" dihitung per **sesi**, bukan per ketukan: yang ditanyakan adalah',
+    );
+    baris.push('berapa orang tidak melihat opsi pertamanya, bukan berapa kali tombolnya ditekan.');
+    baris.push('');
+    baris.push('| layar | sesi | ketuk "↓ Jawab di bawah" | membuka sumber | membuka istilah |');
+    baris.push('|---|---|---|---|---|');
+    for (const l of perSoal) {
+      baris.push(
+        `| ${l.layar} | ${String(l.sesi)} | ${String(l.jawab_di_bawah)} | ` +
+          `${String(l.buka_sumber)} | ${String(l.buka_istilah)} |`,
+      );
+    }
+    baris.push('');
+  }
+
   baris.push('## Titik berhenti');
   baris.push('');
   const berhenti = new Map<string, number>();
@@ -399,18 +830,23 @@ export function laporan(semua: RingkasSesi[]): string {
 }
 
 export function utama(argumen: string[]): number {
-  if (argumen.length === 0) {
+  const { berkas: daftar, kecuali } = bacaArgumen(argumen);
+  if (daftar.length === 0) {
     console.error(
       'Sebutkan berkas JSONL yang mau diringkas, misalnya:\n' +
-        '  npm run alpha:ringkas -- alat/contoh/peristiwa-contoh.jsonl',
+        '  npm run alpha:ringkas -- alat/contoh/peristiwa-contoh.jsonl\n' +
+        '\n' +
+        `Penanda yang dikecualikan tanpa diminta: ${PENANDA_DIKECUALIKAN_BAWAAN.join(', ')}.\n` +
+        '  --kecuali k1,k2   ganti daftarnya\n' +
+        '  --kecuali ""      jangan kecualikan apa pun',
     );
     return 1;
   }
   const peristiwa: Peristiwa[] = [];
-  for (const berkas of argumen) {
+  for (const berkas of daftar) {
     peristiwa.push(...bacaJsonl(readFileSync(berkas, 'utf8'), berkas));
   }
-  process.stdout.write(laporan(kelompokkanSesi(peristiwa)));
+  process.stdout.write(laporan(kelompokkanSesi(peristiwa), kecuali));
   return 0;
 }
 

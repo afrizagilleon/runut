@@ -2,12 +2,23 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
+  PENANDA_DIKECUALIKAN_BAWAAN,
+  TANPA_PENANDA,
+  UID_KOSONG,
+  bacaArgumen,
   bacaJsonl,
   buangKembar,
+  hitungOrang,
   kelompokkanSesi,
   laporan,
+  median,
+  perLayar,
+  perLayarSoal,
+  perPenanda,
+  pisahkanKecuali,
   ringkasSesi,
   type Peristiwa,
+  type RingkasSesi,
 } from './ringkas.ts';
 
 const CONTOH = fileURLToPath(new URL('./contoh/peristiwa-contoh.jsonl', import.meta.url));
@@ -20,11 +31,14 @@ const lengkap = (): ReturnType<typeof kelompokkanSesi> =>
   kelompokkanSesi(muat()).filter((s) => s.lengkap);
 
 describe('ringkas — berkas contoh', () => {
-  it('memuat tiga sesi lengkap dan satu yang tak lengkap', () => {
+  it('memuat enam sesi lengkap dan satu yang tak lengkap', () => {
     expect(lengkap().map((s) => s.sesi)).toEqual([
       'sesi-a-tuntas',
       'sesi-b-berhenti-soal-2',
       'sesi-c-tanpa-membaca-kartu',
+      'sesi-e-afriza-uji-pemilik',
+      'sesi-f-kembali',
+      'sesi-g-tanpa-nomor',
     ]);
     expect(kelompokkanSesi(muat()).filter((s) => !s.lengkap).map((s) => s.sesi)).toEqual([
       'sesi-d-tab-lama',
@@ -32,8 +46,12 @@ describe('ringkas — berkas contoh', () => {
   });
 
   it('menandai sesi yang sampai pembukaan dan yang berhenti di tengah', () => {
-    expect(lengkap().map((s) => s.sampai_pembukaan)).toEqual([true, false, true]);
-    expect(lengkap().map((s) => s.layar_terakhir)).toEqual(['akhir', 'soal-2', 'akhir']);
+    expect(lengkap().map((s) => s.sampai_pembukaan)).toEqual([
+      true, false, true, false, false, false,
+    ]);
+    expect(lengkap().map((s) => s.layar_terakhir)).toEqual([
+      'akhir', 'soal-2', 'akhir', 'soal-1', 'soal-1', 'soal-1',
+    ]);
   });
 
   it('memisahkan pembaca kartu dari yang melewatinya (A1-T2)', () => {
@@ -93,7 +111,9 @@ describe('ringkas — berkas contoh', () => {
   });
 
   it('mencatat ketukan "Mau coba kasus lain"', () => {
-    expect(lengkap().map((s) => s.minat_kasus_lain)).toEqual([true, false, false]);
+    expect(lengkap().map((s) => s.minat_kasus_lain)).toEqual([
+      true, false, false, false, false, false,
+    ]);
   });
 });
 
@@ -131,9 +151,10 @@ describe('ringkas — kembaran dan sesi tak lengkap (F-5)', () => {
 
   it('sesi tanpa mulai tidak masuk penyebut mana pun', () => {
     const teks = laporan(kelompokkanSesi(muat()));
-    // Tiga sesi lengkap, bukan empat.
-    expect(teks).toContain('Sesi: **3**');
-    expect(teks).toContain('Sampai layar pembukaan: **2** dari 3');
+    // Enam sesi lengkap, satu (penanda `afriza`) dikecualikan bawaan; sesi
+    // tanpa `mulai` tetap tidak masuk penyebut mana pun.
+    expect(teks).toContain('Sesi: **5**');
+    expect(teks).toContain('Sampai layar pembukaan: **2** dari 5');
     expect(teks).toContain('## Sesi tak lengkap');
     expect(teks).toContain('sesi-d-tab-lama');
   });
@@ -262,5 +283,254 @@ describe('A4-T5 — loncat ke ringkasan masuk ringkasan', () => {
     const hasil = laporan(kelompokkanSesi(sesiLoncat()));
     // Dua angka berbeda: sampai pembukaan tetap 1, dan loncatnya dilaporkan sendiri.
     expect(hasil).toContain('Sampai layar pembukaan: **1**');
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.2/T-09 — orang, penanda, ketukan, gulir (D-9, D-10, D-13)       */
+/* ------------------------------------------------------------------ */
+
+const semuaSesi = (): RingkasSesi[] => kelompokkanSesi(muat()).filter((s) => s.lengkap);
+
+const cari = (nama: string): RingkasSesi => {
+  const s = semuaSesi().find((x) => x.sesi === nama);
+  if (s === undefined) throw new Error(`sesi ${nama} tidak ada di berkas contoh`);
+  return s;
+};
+
+describe('ringkas — penanda dan nomor pengunjung dibaca dari peristiwa mulai', () => {
+  it('membaca ketiganya apa adanya', () => {
+    const a = cari('sesi-a-tuntas');
+    expect(a.penanda).toBeNull();
+    expect(a.pengunjung).toBe('4b1d2f60-8c11-4a3e-9f02-111111111111');
+    expect(a.kunjungan_ke).toBe(1);
+
+    const e = cari('sesi-e-afriza-uji-pemilik');
+    expect(e.penanda).toBe('afriza');
+    expect(e.kunjungan_ke).toBe(7);
+  });
+
+  it('sesi yang tidak bisa menyimpan nomor tetap terbaca, dengan null', () => {
+    const g = cari('sesi-g-tanpa-nomor');
+    expect(g.pengunjung).toBeNull();
+    expect(g.kunjungan_ke).toBeNull();
+    expect(g.penanda).toBe('wa2');
+  });
+});
+
+describe('ringkas — berapa orang, bukan berapa sesi (D-13)', () => {
+  it('menghitung unik, kembali, dan sesi tanpa nomor secara terpisah', () => {
+    // Sesi a dan f memakai nomor yang sama: satu orang, dua sesi.
+    const hitung = hitungOrang(semuaSesi());
+    expect(hitung.sesi).toBe(6);
+    expect(hitung.pengunjung_unik).toBe(4);
+    expect(hitung.kembali).toBe(2); // pengunjung A (dua sesi) dan E (kunjungan ke-7)
+    expect(hitung.sesi_tanpa_nomor).toBe(1);
+  });
+
+  it('sesi tanpa nomor TIDAK ditebak menjadi orang baru', () => {
+    const hanyaTanpaNomor = semuaSesi().filter((s) => s.pengunjung === null);
+    const hitung = hitungOrang(hanyaTanpaNomor);
+    expect(hitung.sesi).toBe(1);
+    expect(hitung.pengunjung_unik).toBe(0);
+    expect(hitung.sesi_tanpa_nomor).toBe(1);
+  });
+
+  it('dua sesi dengan nomor yang sama adalah satu orang yang kembali', () => {
+    const berulang = semuaSesi().filter((s) =>
+      ['sesi-a-tuntas', 'sesi-f-kembali'].includes(s.sesi),
+    );
+    expect(hitungOrang(berulang)).toEqual({
+      sesi: 2,
+      pengunjung_unik: 1,
+      kembali: 1,
+      sesi_tanpa_nomor: 0,
+    });
+  });
+
+  it('satu sesi pada kunjungan pertama bukan pengunjung yang kembali', () => {
+    expect(hitungOrang([cari('sesi-b-berhenti-soal-2')]).kembali).toBe(0);
+  });
+
+  it('memecah angkanya per penanda, dan menamai yang tanpa penanda', () => {
+    const per = Object.fromEntries(perPenanda(semuaSesi()));
+    expect(per['wa1']?.sesi).toBe(2);
+    expect(per['wa1']?.pengunjung_unik).toBe(2);
+    expect(per['wa2']?.sesi_tanpa_nomor).toBe(1);
+    expect(per['afriza']?.sesi).toBe(1);
+    expect(per[TANPA_PENANDA]?.sesi).toBe(2); // sesi a dan f
+  });
+});
+
+describe('ringkas — penanda yang dikecualikan (D-9)', () => {
+  it('bawaannya afriza dan uji', () => {
+    expect([...PENANDA_DIKECUALIKAN_BAWAAN]).toEqual(['afriza', 'uji']);
+    expect(bacaArgumen(['berkas.jsonl']).kecuali).toEqual(['afriza', 'uji']);
+    expect(bacaArgumen(['berkas.jsonl']).berkas).toEqual(['berkas.jsonl']);
+  });
+
+  it('--kecuali mengganti daftarnya, dalam dua bentuk penulisan', () => {
+    expect(bacaArgumen(['a.jsonl', '--kecuali', 'k1,k2']).kecuali).toEqual(['k1', 'k2']);
+    expect(bacaArgumen(['--kecuali=k3', 'a.jsonl']).kecuali).toEqual(['k3']);
+    expect(bacaArgumen(['a.jsonl', '--kecuali', 'k1,k2']).berkas).toEqual(['a.jsonl']);
+  });
+
+  it('--kecuali kosong berarti tidak ada yang dikecualikan', () => {
+    expect(bacaArgumen(['a.jsonl', '--kecuali', '']).kecuali).toEqual([]);
+  });
+
+  it('memisahkan sesi yang dikecualikan, dan hanya yang berpenanda itu', () => {
+    const { dipakai, dikecualikan } = pisahkanKecuali(semuaSesi(), ['afriza', 'uji']);
+    expect(dikecualikan.map((s) => s.sesi)).toEqual(['sesi-e-afriza-uji-pemilik']);
+    // Sesi tanpa penanda tidak pernah ikut terbuang.
+    expect(dipakai.some((s) => s.penanda === null)).toBe(true);
+    expect(dipakai).toHaveLength(5);
+  });
+
+  it('laporan mencetak berapa sesi yang dikecualikan, supaya tidak hilang diam-diam', () => {
+    const hasil = laporan(kelompokkanSesi(muat()));
+    expect(hasil).toContain('Sesi yang dikecualikan');
+    expect(hasil).toContain('**1**');
+    expect(hasil).not.toContain('sesi-e-afriza-uji-pemilik');
+  });
+
+  it('tanpa pengecualian, sesi pemilik ikut terhitung', () => {
+    const hasil = laporan(kelompokkanSesi(muat()), []);
+    expect(hasil).toContain('Sesi: **6**');
+    expect(hasil).toContain('sesi-e-afriza-uji-pemilik');
+  });
+});
+
+describe('ringkas — apa yang diketuk dan apa yang dikira bisa diketuk (D-10)', () => {
+  it('mengurutkan sepuluh uid teratas per layar dan menghitung ketukan matinya', () => {
+    const soal1 = perLayar(semuaSesi()).find((l) => l.layar === 'soal-1');
+    expect(soal1).toBeDefined();
+    const per = Object.fromEntries((soal1?.uid ?? []).map((u) => [u.uid, u]));
+    // Dua ketukan sesi b + satu sesi a + satu sesi f pada badan lembar: semuanya mati.
+    expect(per['lembar:susp-2025-06-30']?.ketuk).toBe(2);
+    expect(per['lembar:susp-2025-06-30']?.mati).toBe(2);
+    expect(per['kaki:kelipatan-2025-08-01-2025-10-08']?.mati).toBe(0);
+    expect(soal1?.ketuk_mati).toBeGreaterThan(0);
+  });
+
+  it('tidak pernah memberi lebih dari sepuluh baris per layar', () => {
+    for (const l of perLayar(semuaSesi())) {
+      expect(l.uid.length, l.layar).toBeLessThanOrEqual(10);
+    }
+  });
+
+  it('memotong di sepuluh dan membuang yang paling jarang, bukan yang terakhir', () => {
+    // Berkas contoh tidak punya layar ber-uid lebih dari sepuluh, jadi batasnya
+    // diuji di sini — kalau tidak, `slice(0, 10)` bisa dihapus tanpa satu pun
+    // tes merah (ditemukan sabotase T-09/9).
+    const banyak: Peristiwa[] = [
+      {
+        nama: 'mulai', sesi: 's', kasus_id: 'k', t_ms: 0, urut: 1,
+        isi: { lebar_layar: 360, penanda: null, pengunjung: null, kunjungan_ke: null },
+      },
+    ];
+    // Dua belas uid; makin kecil nomornya makin sering diketuk.
+    let urut = 2;
+    for (let n = 0; n < 12; n += 1) {
+      for (let kali = 0; kali < 12 - n; kali += 1) {
+        banyak.push({
+          nama: 'ketuk', sesi: 's', kasus_id: 'k', t_ms: urut, urut,
+          isi: { layar: 'soal-1', uid: `blok-${String(n).padStart(2, '0')}`, x: 0.5, y: 0.5, mati: false },
+        });
+        urut += 1;
+      }
+    }
+    const soal1 = perLayar(kelompokkanSesi(banyak)).find((l) => l.layar === 'soal-1');
+    expect(soal1?.uid).toHaveLength(10);
+    expect(soal1?.uid[0]?.uid).toBe('blok-00');
+    expect(soal1?.uid[9]?.uid).toBe('blok-09');
+    // Dua yang paling jarang memang hilang dari tabel, tetapi tidak dari totalnya.
+    expect(soal1?.uid.map((u) => u.uid)).not.toContain('blok-11');
+    expect(soal1?.ketuk).toBe(78);
+  });
+
+  it('memberi nama pada ketukan yang tidak mendarat di blok bernama', () => {
+    const soal2 = perLayar(semuaSesi()).find((l) => l.layar === 'soal-2');
+    const kosong = soal2?.uid.find((u) => u.uid === UID_KOSONG);
+    expect(kosong?.ketuk).toBe(1);
+    expect(kosong?.mati).toBe(1);
+  });
+
+  it('menghitung kedalaman gulir median per layar, bukan rata-rata', () => {
+    expect(median([])).toBeNull();
+    expect(median([0.5])).toBe(0.5);
+    expect(median([0.1, 0.9])).toBeCloseTo(0.5, 6);
+    // Satu nilai ekstrem tidak menggeser median.
+    expect(median([0.4, 0.5, 0.6, 100])).toBeCloseTo(0.55, 6);
+    const pembuka = perLayar(semuaSesi()).find((l) => l.layar === 'pembuka');
+    expect(pembuka?.gulir_median).not.toBeNull();
+    expect(pembuka?.sesi).toBe(6);
+  });
+
+  it('mengambil guliran TERJAUH kalau satu layar dikunjungi dua kali', () => {
+    const dua: Peristiwa[] = [
+      { nama: 'mulai', sesi: 's', kasus_id: 'k', t_ms: 0, urut: 1,
+        isi: { lebar_layar: 360, penanda: null, pengunjung: null, kunjungan_ke: null } },
+      { nama: 'gulir', sesi: 's', kasus_id: 'k', t_ms: 1, urut: 2, isi: { layar: 'soal-1', maks: 0.9 } },
+      { nama: 'gulir', sesi: 's', kasus_id: 'k', t_ms: 2, urut: 3, isi: { layar: 'soal-1', maks: 0.2 } },
+    ];
+    expect(kelompokkanSesi(dua)[0]?.gulir).toEqual([['soal-1', 0.9]]);
+  });
+
+  it('melaporkan sesi yang menabrak batas 300 ketukan', () => {
+    expect(cari('sesi-g-tanpa-nomor').ketuk_dibatasi).toBe(true);
+    expect(cari('sesi-a-tuntas').ketuk_dibatasi).toBe(false);
+    expect(laporan(kelompokkanSesi(muat()))).toContain('menabrak batas 300 ketukan');
+  });
+});
+
+describe('ringkas — tiga pertanyaan per layar soal (D-10)', () => {
+  it('menghitung SESI, bukan ketukan', () => {
+    const per = Object.fromEntries(perLayarSoal(semuaSesi()).map((l) => [l.layar, l]));
+    // Sesi b mengetuk badan lembar dua kali di soal-1; ia tetap satu sesi.
+    expect(per['soal-1']?.buka_sumber).toBe(2); // sesi a dan g membuka kaki lembar
+    expect(per['soal-1']?.jawab_di_bawah).toBe(2); // sesi c dan g
+    expect(per['soal-1']?.buka_istilah).toBe(2); // sesi a dan f
+    expect(per['soal-2']?.jawab_di_bawah).toBe(2); // sesi a dan b
+  });
+
+  it('membedakan membuka sumber dari membuka istilah', () => {
+    // Di berkas contoh kedua angkanya kebetulan sama (2 dan 2), jadi menukarnya
+    // tidak terlihat — ditemukan sabotase T-09/13. Di sini sengaja dibuat beda.
+    const dasar = (urut: number, uid: string): Peristiwa => ({
+      nama: 'ketuk', sesi: 's', kasus_id: 'k', t_ms: urut, urut,
+      isi: { layar: 'soal-1', uid, x: 0.5, y: 0.5, mati: false },
+    });
+    const peristiwa: Peristiwa[] = [
+      {
+        nama: 'mulai', sesi: 's', kasus_id: 'k', t_ms: 0, urut: 1,
+        isi: { lebar_layar: 360, penanda: null, pengunjung: null, kunjungan_ke: null },
+      },
+      dasar(2, 'kaki:har-2025-10-08'),
+      dasar(3, 'kaki:susp-2025-06-30'),
+      dasar(4, 'opsi:a'),
+    ];
+    const satu = perLayarSoal(kelompokkanSesi(peristiwa))[0];
+    expect(satu?.buka_sumber).toBe(1);
+    expect(satu?.buka_istilah).toBe(0);
+
+    const dengan = perLayarSoal(kelompokkanSesi([...peristiwa, dasar(5, 'istilah')]))[0];
+    expect(dengan?.buka_sumber).toBe(1);
+    expect(dengan?.buka_istilah).toBe(1);
+  });
+
+  it('laporannya memuat tabelnya', () => {
+    const hasil = laporan(kelompokkanSesi(muat()));
+    expect(hasil).toContain('Tiga pertanyaan per layar soal');
+    expect(hasil).toContain('ketuk "↓ Jawab di bawah"');
+    expect(hasil).toContain('| soal-1 |');
+  });
+
+  it('laporannya memuat tabel orang dan tabel ketukan', () => {
+    const hasil = laporan(kelompokkanSesi(muat()));
+    expect(hasil).toContain('Berapa orang, bukan berapa sesi');
+    expect(hasil).toContain('pengunjung unik');
+    expect(hasil).toContain('Apa yang diketuk, dan apa yang dikira bisa diketuk');
+    expect(hasil).toContain('gulir median');
   });
 });
