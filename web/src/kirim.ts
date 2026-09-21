@@ -38,6 +38,18 @@ const PENTING: ReadonlySet<NamaPeristiwa> = new Set<NamaPeristiwa>([
 export const MAKS_BADAN = 8 * 1024;
 
 /**
+ * Kelompok pengiriman (D-8): kirim begitu antrean mencapai 20 peristiwa.
+ *
+ * Sebelum pelacak, antrean hanya berisi gerakan besar dan bisa menunggu sampai
+ * ada yang penting. Ketukan mengubah itu: satu layar soal saja bisa melahirkan
+ * puluhan `ketuk`, dan menyimpannya sampai `pagehide` berarti satu kiriman
+ * raksasa pada saat halaman sedang mati — persis kiriman yang paling mungkin
+ * hilang. D-8 menyebut batas muatan 32 KB; `MAKS_BADAN` 8 KB lebih ketat dari
+ * itu dan tetap memenuhinya, sekaligus menjauh dari kuota `sendBeacon`.
+ */
+export const KELOMPOK = 20;
+
+/**
  * Pecah peristiwa menjadi beberapa muatan yang masing-masing muat di `maks`.
  *
  * Murni dan bisa dites tanpa peramban maupun variabel lingkungan. Satu peristiwa
@@ -64,6 +76,15 @@ export function pecahMuatan(peristiwa: Peristiwa[], maks: number = MAKS_BADAN): 
 /** Benar kalau sekumpulan peristiwa memuat sesuatu yang tidak boleh menunggu. */
 export function perluSiram(peristiwa: Peristiwa[]): boolean {
   return peristiwa.some((p) => PENTING.has(p.nama));
+}
+
+/**
+ * Antrean sepanjang ini harus dikirim sekarang: ada yang penting di dalamnya,
+ * atau kelompoknya sudah penuh (D-8). Murni, supaya aturannya bisa dites tanpa
+ * `VITE_KOLEKTOR_URL` maupun peramban.
+ */
+export function perluKirim(panjangAntrean: number, baru: Peristiwa[]): boolean {
+  return perluSiram(baru) || panjangAntrean >= KELOMPOK;
 }
 
 let antre: Peristiwa[] = [];
@@ -161,5 +182,5 @@ export function catatPeristiwa(peristiwa: Peristiwa[]): void {
   const baru = saringYangBaru(peristiwa, urutTerakhir);
   if (baru.length === 0) return;
   antre = [...antre, ...baru];
-  if (perluSiram(baru)) siramPeristiwa();
+  if (perluKirim(antre.length, baru)) siramPeristiwa();
 }

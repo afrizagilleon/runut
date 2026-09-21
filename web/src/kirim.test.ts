@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import type { Peristiwa } from './alur.ts';
-import { MAKS_BADAN, MENGIRIM, pecahMuatan, perluSiram, saringYangBaru } from './kirim.ts';
+import {
+  KELOMPOK,
+  MAKS_BADAN,
+  MENGIRIM,
+  pecahMuatan,
+  perluKirim,
+  perluSiram,
+  saringYangBaru,
+} from './kirim.ts';
 
 function peristiwa(nama: Peristiwa['nama'], urut: number, isi = {}): Peristiwa {
   return {
@@ -126,5 +134,38 @@ describe('kirim — satu peristiwa hanya boleh diserahkan sekali', () => {
     saringYangBaru([p(3)], catatan);
     saringYangBaru([p(3)], catatan);
     expect(saringYangBaru([p(4)], catatan).map((x) => x.urut)).toEqual([4]);
+  });
+});
+
+describe('kirim — kelompok 20 peristiwa (D-8)', () => {
+  const sepele = (jumlah: number): Peristiwa[] =>
+    Array.from({ length: jumlah }, (_, nomor) =>
+      peristiwa('ketuk', nomor + 1, { layar: 'soal-1', uid: 'pesan', x: 0.5, y: 0.5, mati: true }),
+    );
+
+  it('antrean yang belum penuh dan tanpa peristiwa penting boleh menunggu', () => {
+    expect(perluKirim(KELOMPOK - 1, sepele(1))).toBe(false);
+    expect(perluKirim(0, sepele(5))).toBe(false);
+  });
+
+  it('antrean yang sudah mencapai 20 dikirim sekarang juga', () => {
+    expect(perluKirim(KELOMPOK, sepele(1))).toBe(true);
+    expect(perluKirim(KELOMPOK + 4, sepele(1))).toBe(true);
+  });
+
+  it('peristiwa penting tetap menyalip batas kelompok', () => {
+    expect(perluKirim(1, [peristiwa('kunci_jawaban', 9)])).toBe(true);
+    expect(perluKirim(1, [peristiwa('tutup', 9)])).toBe(true);
+  });
+
+  it('ketukan bukan peristiwa penting: ia menunggu kelompoknya penuh', () => {
+    expect(perluSiram(sepele(19))).toBe(false);
+  });
+
+  it('dua puluh ketukan muat jauh di bawah batas muatan D-8 (32 KB)', () => {
+    const muatan = pecahMuatan(sepele(KELOMPOK));
+    expect(muatan).toHaveLength(1);
+    expect(JSON.stringify(muatan[0]).length).toBeLessThan(32 * 1024);
+    expect(MAKS_BADAN).toBeLessThanOrEqual(32 * 1024);
   });
 });

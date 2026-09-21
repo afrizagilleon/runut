@@ -19,7 +19,21 @@ import { Teks } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
 import { hariIniIso, penanda, type Penanda } from './tanggal.ts';
-import { buatIdSesi, sumberAcakPeramban } from './sesi.ts';
+import {
+  bacaPengunjung,
+  buatIdSesi,
+  kodePenanda,
+  penyimpananPeramban,
+  sumberAcakPeramban,
+  type Pengunjung,
+} from './sesi.ts';
+import {
+  PEMILIH_INTERAKTIF,
+  bacaSasaran,
+  ketukanSah,
+  rasioLayar,
+  type SimpulKetuk,
+} from './pelacak.ts';
 import { perintahRiwayat } from './riwayat.ts';
 import { isiSumber } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
@@ -50,12 +64,35 @@ function reduksi(bungkus: Bungkus, pesan: Pesan): Bungkus {
   return { keadaan: hasil.keadaan, antre: [...bungkus.antre, ...hasil.peristiwa] };
 }
 
+/**
+ * Nomor pengunjung dibaca **sekali per pemuatan halaman** (D-13).
+ *
+ * Bukan sekali per efek: `StrictMode` menjalankan efek dua kali di mode
+ * pengembangan, dan sebuah remount di produksi bisa melakukan hal yang sama.
+ * Karena `bacaPengunjung` menaikkan hitungan kunjungan setiap kali ia dipanggil,
+ * versi tanpa penjaga ini menghitung satu kunjungan sebagai dua — terukur
+ * langsung di peramban: satu tab yang dimuat ulang tiga kali melaporkan
+ * `kunjungan_ke: 4` alih-alih 3.
+ *
+ * Satu pemuatan halaman = satu kunjungan, dan itulah arti angka ini.
+ */
+let pengunjungPemuatanIni: Pengunjung | null = null;
+
+function pengunjungSekali(): Pengunjung {
+  pengunjungPemuatanIni ??= bacaPengunjung(penyimpananPeramban(), () =>
+    buatIdSesi(sumberAcakPeramban()),
+  );
+  return pengunjungPemuatanIni;
+}
+
 function awalBungkus(kasus: Kasus): Bungkus {
   return {
     keadaan: keadaanAwal({
       /*
-       * Hidup di memori tab saja; tidak ditulis ke cookie maupun localStorage
-       * (INV-9). `crypto.randomUUID` hanya ada di konteks aman, jadi id-nya
+       * Id **sesi**: hidup di memori tab saja, tidak ditulis ke mana pun dan
+       * hilang begitu tab ditutup. Yang disimpan di `localStorage` hanyalah
+       * nomor **pengunjung** (D-13), yang lain benda dan dibaca di efek
+       * `mulai` di bawah. `crypto.randomUUID` hanya ada di konteks aman, jadi id-nya
        * dibuat lewat `buatIdSesi` yang punya cadangan — memanggil
        * `randomUUID` langsung membuat halaman putih di alamat LAN (A3-T1).
        */
@@ -89,10 +126,90 @@ export function Aplikasi(): JSX.Element {
   const acuanKeadaan = useRef(keadaan);
   acuanKeadaan.current = keadaan;
 
-  // Satu-satunya tempat waktu dibaca untuk peristiwa pembuka.
+  /*
+   * Satu-satunya tempat waktu dibaca untuk peristiwa pembuka.
+   *
+   * Penanda tautan (D-9) dan nomor pengunjung (D-13) ikut di sini, bukan lewat
+   * jalur sendiri: keduanya keterangan tentang sesi ini, dan sesi hanya punya
+   * satu peristiwa pembuka. Keputusannya sendiri diambil fungsi murni
+   * (`kodePenanda`, `bacaPengunjung`); komponen hanya menyerahkan sumbernya.
+   */
   useEffect(() => {
-    kirim({ jenis: 'mulai', lebar_layar: window.innerWidth });
+    const { pengunjung, kunjungan_ke } = pengunjungSekali();
+    kirim({
+      jenis: 'mulai',
+      lebar_layar: window.innerWidth,
+      penanda: kodePenanda(window.location.search),
+      pengunjung,
+      kunjungan_ke,
+    });
   }, [kirim]);
+
+  /*
+   * Pelacak ketukan (D-8): **satu** pendengar di akar, bukan satu penangan per
+   * elemen. Alasannya bukan hemat: penangan per elemen berarti setiap komponen
+   * baru harus ingat mendaftarkan dirinya, dan yang lupa tidak akan pernah
+   * terlihat di data — kegagalan diam yang tidak bisa dibedakan dari "tidak ada
+   * yang mengetuk di sana".
+   *
+   * Yang dibaca dari DOM hanya `data-uid` dan apakah elemennya cocok dengan
+   * `PEMILIH_INTERAKTIF`. Tidak ada `textContent`, tidak ada `value`.
+   */
+  useEffect(() => {
+    let turunPada: { x: number; y: number } | null = null;
+
+    const turun = (peristiwa: PointerEvent): void => {
+      turunPada = { x: peristiwa.clientX, y: peristiwa.clientY };
+    };
+
+    const naik = (peristiwa: PointerEvent): void => {
+      const awal = turunPada;
+      turunPada = null;
+      // Jari yang bergeser jauh sedang menggulir, bukan mengetuk.
+      if (!ketukanSah(awal, { x: peristiwa.clientX, y: peristiwa.clientY })) return;
+      const sasaran = peristiwa.target;
+      if (!(sasaran instanceof Element)) return;
+
+      const rantai: SimpulKetuk[] = [];
+      for (let simpul: Element | null = sasaran; simpul !== null; simpul = simpul.parentElement) {
+        rantai.push({
+          uid: simpul.getAttribute('data-uid'),
+          interaktif: simpul.matches(PEMILIH_INTERAKTIF),
+        });
+      }
+      const { uid, mati } = bacaSasaran(rantai);
+      kirim({
+        jenis: 'ketuk',
+        uid,
+        mati,
+        x: rasioLayar(peristiwa.clientX, window.innerWidth),
+        y: rasioLayar(peristiwa.clientY, window.innerHeight),
+      });
+    };
+
+    window.addEventListener('pointerdown', turun, { passive: true });
+    window.addEventListener('pointerup', naik, { passive: true });
+    return () => {
+      window.removeEventListener('pointerdown', turun);
+      window.removeEventListener('pointerup', naik);
+    };
+  }, [kirim]);
+
+  /*
+   * `visibilitychange: hidden` (D-8) — kesempatan kirim yang datang lebih awal
+   * dan lebih sering daripada `pagehide` di ponsel: pindah aplikasi, kunci
+   * layar, tarik bilah notifikasi. Ia hanya **menyiram** antrean; peristiwa
+   * `tutup` tetap milik `pagehide` supaya tidak lahir dua kali.
+   */
+  useEffect(() => {
+    const sembunyi = (): void => {
+      if (document.visibilityState === 'hidden') siramPeristiwa();
+    };
+    document.addEventListener('visibilitychange', sembunyi);
+    return () => {
+      document.removeEventListener('visibilitychange', sembunyi);
+    };
+  }, []);
 
   /*
    * `pagehide` adalah kesempatan terakhir; halaman bisa mati sebelum React
@@ -148,6 +265,30 @@ export function Aplikasi(): JSX.Element {
   }, [namaLayarKini]);
 
   /*
+   * Kedalaman gulir tiap layar (D-8). Pendengarnya hanya melaporkan persentase
+   * sekarang; yang mengingat angka terjauh, menyetelnya ulang tiap ganti layar,
+   * dan melahirkan peristiwa `gulir` adalah reducer.
+   *
+   * Sengaja dipasang **sesudah** efek `scrollTo(0, 0)` di atas: React
+   * menjalankan efek menurut urutan penulisannya, dan laporan pertama harus
+   * diambil sesudah gulir dikembalikan ke puncak layar baru — kalau tidak,
+   * setiap layar baru akan mewarisi kedalaman gulir layar sebelumnya.
+   */
+  useEffect(() => {
+    const catat = (): void => {
+      const tinggi = document.documentElement.scrollHeight - window.innerHeight;
+      // Layar yang muat seluruhnya berarti sudah terlihat semua, bukan nol.
+      const persen = tinggi <= 0 ? 100 : (window.scrollY / tinggi) * 100;
+      kirim({ jenis: 'catat_gulir', persen });
+    };
+    catat();
+    window.addEventListener('scroll', catat, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', catat);
+    };
+  }, [kirim, namaLayarKini]);
+
+  /*
    * Satu entri riwayat per layar (A1-T7), diperbaiki di A4-T1.
    *
    * Versi lama mengingat sendiri layar terakhir yang dicatatnya, dan karena itu
@@ -196,7 +337,7 @@ export function Aplikasi(): JSX.Element {
         sendiri (docs/desain.md, "Tanda tangan").
       */}
       {layar.jenis === 'soal' && (
-        <header className="penanda" role="banner">
+        <header className="penanda" role="banner" data-uid="keping">
           {/* Kolomnya dibungkus, bukan ditempel ke tiap anak: lihat .penanda-kolom (A4-T2). */}
           <div className="penanda-kolom">
             <KepingKalender hari={hari} />
@@ -321,7 +462,9 @@ function LayarPembuka({
 }): JSX.Element {
   return (
     <section className="layar layar-pembuka" aria-labelledby="judul-pembuka">
-      <HalamanKalender hari={hari} />
+      <div data-uid="kalender">
+        <HalamanKalender hari={hari} />
+      </div>
       <h1 id="judul-pembuka" className="mundur">
         Kita mundur ke {hari.hari}, {hari.panjang}.
       </h1>
@@ -434,7 +577,7 @@ function IsiLembarTerbuka({
         <p className="meta">Dihitung dari: {isi.dihitungDari.join(' · ')}</p>
       )}
 
-      <details className="rincian-teknis">
+      <details className="rincian-teknis" data-uid="rincian">
         <summary>Rincian teknis</summary>
         <dl className="rincian">
           {isi.rincian.map((baris) => (
@@ -637,7 +780,7 @@ function LayarSoal({
         Wadah `role="status"` ada sejak layar dirender; isinya yang berubah.
         Wadah yang lahir bersama isinya kadang tidak terbaca pembaca layar.
       */}
-      <div className="kunci-jawaban" role="status" aria-live="polite">
+      <div className="kunci-jawaban" role="status" aria-live="polite" data-uid="sesudah-dikunci">
         {s.dikunci && (
           <>
             <p className={`cap${s.benar === true ? ' cap-cocok' : ' cap-belum'}`}>
@@ -648,7 +791,7 @@ function LayarSoal({
             </p>
 
             {/* Salinan ringkas kartu penentu, supaya mata tidak menggulir balik. */}
-            <div className="penentu">
+            <div className="penentu" data-uid="penentu">
               <p className="penentu-judul">Kartu yang menentukan</p>
               {kartu
                 .filter((f) => menentukan.has(f.fact_id))
@@ -668,7 +811,7 @@ function LayarSoal({
                 ))}
             </div>
 
-            <p className="teks-kunci">
+            <p className="teks-kunci" data-uid="teks-kunci">
               <Teks teks={soal.penjelasan} bukaSumber={bukaSumber} />
             </p>
           </>
@@ -728,20 +871,13 @@ function LayarPembukaan({
   kirim: (aksi: Aksi) => void;
   bukaSumber: (fact_id: string) => void;
 }): JSX.Element {
-  // Gulir terjauh dicatat lewat reducer, bukan disimpan di komponen.
-  useEffect(() => {
-    const catat = (): void => {
-      const tinggi = document.documentElement.scrollHeight - window.innerHeight;
-      const persen = tinggi <= 0 ? 100 : (window.scrollY / tinggi) * 100;
-      kirim({ jenis: 'catat_gulir', persen });
-    };
-    catat();
-    window.addEventListener('scroll', catat, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', catat);
-    };
-  }, [kirim]);
-
+  /*
+   * Pendengar gulir layar ini dihapus di M3.2/T-07: sekarang ada satu pendengar
+   * di `Aplikasi` yang berlaku untuk **semua** layar (D-8), memakai aksi
+   * `catat_gulir` yang sama. `gulir_maks_persen` di `pembukaan_selesai` dan
+   * `loncat_ke_ringkasan` tetap terisi dari sana — reducer menyetel ulang
+   * angkanya tiap ganti layar, jadi yang terbaca memang guliran layar ini saja.
+   */
   return (
     <section className="layar layar-pembukaan" aria-labelledby="judul-pembukaan">
       <KalenderSobek hari={hari} />
@@ -758,6 +894,7 @@ function LayarPembukaan({
         <button
           type="button"
           className="rujukan"
+          data-uid="loncat"
           onClick={() => {
             kirim({ jenis: 'loncat_ke_ringkasan' });
             // Gerak halus hanya kalau pemain tidak memintanya dihentikan.
@@ -776,7 +913,7 @@ function LayarPembukaan({
         Nama aslinya: {kasus.emiten.nama} ({kasus.emiten.simbol}).
       </p>
 
-      <ol className="garis-waktu">
+      <ol className="garis-waktu" data-uid="garis-waktu">
         {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
           <li key={nomor}>
             <KepingTanggal kasus={kasus} teks={paragraf} />
@@ -785,7 +922,7 @@ function LayarPembukaan({
         ))}
       </ol>
 
-      <section className="bacaan" aria-labelledby="judul-bacaan">
+      <section className="bacaan" aria-labelledby="judul-bacaan" data-uid="bacaan">
         <h2 id="judul-bacaan">Apa yang bisa dan tidak bisa dibaca pada {hari.panjang}</h2>
         <h3>Bisa dibaca</h3>
         <ul>
@@ -815,7 +952,7 @@ function LayarPembukaan({
 
       <JejakVerifikasi kasus={kasus} />
 
-      <div className="tindakan">
+      <div className="tindakan" data-uid="bilah">
         <button
           type="button"
           className="tombol-utama"
@@ -860,7 +997,7 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
         Hasilnya {kasus.temuan.length} hal yang tidak cocok — itulah sebabnya dua laporan
         disingkirkan dari kartu.
       </p>
-      <details className="jejak-rinci">
+      <details className="jejak-rinci" data-uid="jejak">
         <summary>Lihat kesepuluh pemeriksaan dan hasilnya</summary>
         <ul className="daftar-temuan">
           {kasus.temuan.map((temuan) => (
@@ -902,7 +1039,7 @@ function LayarAkhir({
     return (
       <section className="layar layar-akhir" aria-labelledby="judul-terima">
         <h1 id="judul-terima">Terima kasih.</h1>
-        <div className="kembali-hari-ini">
+        <div className="kembali-hari-ini" data-uid="kalender">
           <HalamanKalender hari={hariIni} />
           <p>Kamu kembali ke hari ini.</p>
         </div>
@@ -911,6 +1048,7 @@ function LayarAkhir({
           <button
             type="button"
             className="tombol-kedua"
+            data-uid="kasus-lain"
             onClick={() => {
               kirim({ jenis: 'minat_kasus_lain' });
             }}
@@ -918,7 +1056,7 @@ function LayarAkhir({
             Mau coba kasus lain
           </button>
         ) : (
-          <div className="pesan-alpha">
+          <div className="pesan-alpha" data-uid="pesan-alpha">
             <p>
               <strong>Tidak semua saham seperti ini.</strong> Kasus berikutnya adalah perusahaan
               yang sehat — sedang kami siapkan. Selamat belajar membaca data, folks.
@@ -936,7 +1074,7 @@ function LayarAkhir({
         Semuanya boleh dilewati. Di bawahnya ada kotak kalau kamu mau menulis.
       </p>
 
-      <fieldset className="tanya-akhir">
+      <fieldset className="tanya-akhir" data-uid="akhir:rating">
         <legend>Seberapa layak kasus ini kamu bagikan ke teman?</legend>
         <p className="jangkar">1 = tidak akan kubagikan · 5 = langsung kubagikan</p>
         <div className="deret-pilihan">
@@ -956,7 +1094,7 @@ function LayarAkhir({
         </div>
       </fieldset>
 
-      <fieldset className="tanya-akhir">
+      <fieldset className="tanya-akhir" data-uid="akhir:terasa">
         <legend>Kasus tadi terasa seperti…</legend>
         <div className="deret-pilihan">
           {TERASA.map((nilai) => (
@@ -975,7 +1113,7 @@ function LayarAkhir({
         </div>
       </fieldset>
 
-      <fieldset className="tanya-akhir">
+      <fieldset className="tanya-akhir" data-uid="akhir:sumber_jawaban">
         <legend>Kamu paling sering menjawab dari…</legend>
         <div className="deret-pilihan">
           {SUMBER_JAWABAN.map((nilai) => (
@@ -997,7 +1135,7 @@ function LayarAkhir({
         </div>
       </fieldset>
 
-      <label className="tanya-akhir kotak-teks">
+      <label className="tanya-akhir kotak-teks" data-uid="akhir:teks">
         <span className="label-teks">Ada yang membingungkan atau ingin kamu sampaikan?</span>
         <textarea
           rows={4}
@@ -1008,7 +1146,7 @@ function LayarAkhir({
         />
       </label>
 
-      <div className="tindakan">
+      <div className="tindakan" data-uid="bilah">
         <button
           type="button"
           className="tombol-utama"
@@ -1025,7 +1163,7 @@ function LayarAkhir({
 
 function Kaki({ kasus }: { kasus: Kasus }): JSX.Element {
   return (
-    <footer className="kaki" aria-label="Tiga kalimat tetap">
+    <footer className="kaki" aria-label="Tiga kalimat tetap" data-uid="kaki-halaman">
       <ul>
         {kasus.disclaimer.map((kalimat) => (
           <li key={kalimat}>{kalimat}</li>

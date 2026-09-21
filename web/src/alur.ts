@@ -11,6 +11,8 @@
  * interaksi, bukan ditempel belakangan.
  */
 
+import { MAKS_UID } from './pelacak.ts';
+
 /** Daftar peristiwa tertutup (D-6). Apa pun di luar daftar ini ditolak pengumpul. */
 export const NAMA_PERISTIWA = [
   'mulai',
@@ -33,6 +35,15 @@ export const NAMA_PERISTIWA = [
   'pembukaan_selesai',
   'minat_kasus_lain',
   'akhir_kirim',
+  /*
+   * Pelacak (D-8, M3.2). Ketiganya lahir di reducer yang sama seperti peristiwa
+   * lain: pemilik ingin tahu "apa yang orang ketuk, apa yang mereka kira bisa
+   * diketuk, dan sampai mana mereka menggulir", dan jawaban itu tidak boleh
+   * datang lewat pipa kedua yang nomor urutnya sendiri.
+   */
+  'ketuk',
+  'ketuk_dibatasi',
+  'gulir',
   'tutup',
 ] as const;
 
@@ -54,6 +65,16 @@ export interface Peristiwa {
 
 /** Batas panjang teks bebas di layar akhir (D-6). */
 export const MAKS_TEKS_AKHIR = 500;
+
+/**
+ * Ketukan paling banyak yang dicatat satu sesi (D-8).
+ *
+ * Sesudahnya lahir **satu** `ketuk_dibatasi`, lalu diam. Batas ini bukan soal
+ * biaya: sesi yang mengirim ribuan ketukan biasanya jari yang tersangkut atau
+ * tab yang dibiarkan terbuka semalaman, dan membiarkannya masuk akan menggeser
+ * setiap angka "uid teratas" tanpa ada yang menyadarinya.
+ */
+export const BATAS_KETUK = 300;
 
 export type Layar =
   | { jenis: 'pembuka' }
@@ -133,9 +154,20 @@ export interface Keadaan {
   akhirTerkirim: boolean;
   /** Sudah menekan "Mau coba kasus lain"; pesan alpha-nya lalu tampil. */
   minatDitekan: boolean;
-  /** Gulir terjauh di layar pembukaan, dalam persen. */
+  /**
+   * Gulir terjauh **di layar yang sedang dibuka**, dalam persen.
+   *
+   * Disetel ulang tiap kali layar berganti (D-8): angka ini menjadi `gulir`
+   * yang dikirim saat meninggalkan layar, dan sekaligus tetap menjadi
+   * `gulir_maks_persen` di `pembukaan_selesai` — karena layar itulah yang
+   * sedang dibuka ketika peristiwa tersebut lahir.
+   */
   gulirMaksPersen: number;
   masukPembukaanPada: number | null;
+  /** Berapa `ketuk` yang sudah dilahirkan sesi ini; berhenti di `BATAS_KETUK`. */
+  ketukan: number;
+  /** `ketuk_dibatasi` sudah dilahirkan; ia hanya lahir sekali. */
+  ketukDibatasi: boolean;
   /** Nomor urut peristiwa terakhir. */
   urut: number;
   /** Sudah menerima aksi `tutup`; sesudah ini reducer tidak melahirkan apa pun. */
@@ -143,7 +175,16 @@ export interface Keadaan {
 }
 
 export type Aksi =
-  | { jenis: 'mulai'; lebar_layar: number }
+  | {
+      jenis: 'mulai';
+      lebar_layar: number;
+      /** Kode dari `?k=` (D-9); `null` kalau tidak ada atau tidak sah. */
+      penanda?: string | null;
+      /** Nomor pengunjung dari `localStorage` (D-13); `null` kalau tidak bisa disimpan. */
+      pengunjung?: string | null;
+      kunjungan_ke?: number | null;
+    }
+  | { jenis: 'ketuk'; uid: string | null; x: number; y: number; mati: boolean }
   | { jenis: 'kartu_masuk_layar'; soal_id: string }
   | { jenis: 'kartu_keluar_layar'; soal_id: string }
   | { jenis: 'kembali_ke_kartu'; soal_id: string }
@@ -218,6 +259,8 @@ export function keadaanAwal({
     minatDitekan: false,
     gulirMaksPersen: 0,
     masukPembukaanPada: null,
+    ketukan: 0,
+    ketukDibatasi: false,
     urut: 0,
     tertutup: false,
   };
@@ -411,9 +454,35 @@ function tutupWaktuLayar(keadaan: Keadaan, waktu: number): Keadaan {
   }));
 }
 
-/** Catat masuk ke layar baru, termasuk cap waktu masuk kalau itu layar soal. */
-function masukLayar(keadaan: Keadaan, layar: Layar, waktu: number, catat: Catatan): Keadaan {
-  let berikut: Keadaan = { ...keadaan, layar };
+/**
+ * Kedalaman gulir layar yang sedang ditinggalkan (D-8), 0–1 dua desimal.
+ *
+ * Lahir di sini, bukan di pendengar gulir, supaya ia punya `urut` yang sama
+ * deretnya dengan peristiwa lain dan tidak bisa datang dua kali.
+ */
+function catatGulirLayar(keadaan: Keadaan, catat: Catatan): void {
+  catat.tambah('gulir', {
+    layar: namaLayar(keadaan.layar),
+    maks: Math.round(keadaan.gulirMaksPersen) / 100,
+  });
+}
+
+/**
+ * Catat masuk ke layar baru, termasuk cap waktu masuk kalau itu layar soal.
+ *
+ * `tinggalkan` hanya `false` pada aksi `mulai`, karena di sana belum ada layar
+ * yang ditinggalkan.
+ */
+function masukLayar(
+  keadaan: Keadaan,
+  layar: Layar,
+  waktu: number,
+  catat: Catatan,
+  tinggalkan = true,
+): Keadaan {
+  if (tinggalkan) catatGulirLayar(keadaan, catat);
+  // Gulir dihitung per layar: yang sudah dilaporkan tidak ikut ke layar berikut.
+  let berikut: Keadaan = { ...keadaan, layar, gulirMaksPersen: 0 };
   if (layar.jenis === 'soal') {
     const id = berikut.urutanSoal[layar.nomor];
     if (id !== undefined) {
@@ -425,6 +494,12 @@ function masukLayar(keadaan: Keadaan, layar: Layar, waktu: number, catat: Catata
   }
   catat.tambah('layar_masuk', { layar: namaLayar(layar) });
   return berikut;
+}
+
+/** Jaga-jaga terakhir untuk koordinat relatif: 0–1, tiga desimal (D-8). */
+function rasioTiga(nilai: number): number {
+  if (!Number.isFinite(nilai)) return 0;
+  return Math.round(Math.min(1, Math.max(0, nilai)) * 1000) / 1000;
 }
 
 function potong(teks: string | null): string | null {
@@ -448,8 +523,16 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       if (keadaan.mulaiPada !== null) return abaikan(keadaan);
       const dimulai: Keadaan = { ...keadaan, mulaiPada: waktu };
       const catat = new Catatan(dimulai, waktu, dimulai.urut);
-      catat.tambah('mulai', { lebar_layar: aksi.lebar_layar });
-      const berikut = masukLayar(dimulai, { jenis: 'pembuka' }, waktu, catat);
+      catat.tambah('mulai', {
+        lebar_layar: aksi.lebar_layar,
+        // Ketiganya selalu ada di muatan, walau nilainya null: pengumpul
+        // memeriksa bentuk peristiwa, dan medan yang kadang hilang membuat
+        // "tidak ada penanda" tidak bisa dibedakan dari "kiriman versi lama".
+        penanda: aksi.penanda ?? null,
+        pengunjung: aksi.pengunjung ?? null,
+        kunjungan_ke: aksi.kunjungan_ke ?? null,
+      });
+      const berikut = masukLayar(dimulai, { jenis: 'pembuka' }, waktu, catat, false);
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...berikut, urut }, peristiwa };
     }
@@ -684,6 +767,39 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       };
     }
 
+    /*
+     * Ketukan (D-8). Ia **tidak mengubah keadaan permainan** — tidak ada
+     * pilihan yang berpindah, tidak ada layar yang berganti — tetapi tetap
+     * lewat sini supaya `urut`-nya satu deret dengan peristiwa lain dan
+     * `kirim.ts` hanya punya satu pintu masuk.
+     *
+     * Yang dicatat hanya lima hal, dan kelimanya sudah ditentukan bentuknya di
+     * sini: layar, nama `uid` yang kita tulis sendiri di markup, posisi relatif
+     * terhadap viewport, dan apakah sasarannya bisa diketuk. Tidak ada teks
+     * pemain, tidak ada isi elemen, tidak ada koordinat mutlak.
+     */
+    case 'ketuk': {
+      const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      if (keadaan.ketukan >= BATAS_KETUK) {
+        if (keadaan.ketukDibatasi) return abaikan(keadaan);
+        catat.tambah('ketuk_dibatasi', {
+          layar: namaLayar(keadaan.layar),
+          batas: BATAS_KETUK,
+        });
+        const { peristiwa, urut } = catat.hasil;
+        return { keadaan: { ...keadaan, ketukDibatasi: true, urut }, peristiwa };
+      }
+      catat.tambah('ketuk', {
+        layar: namaLayar(keadaan.layar),
+        uid: aksi.uid === null ? null : aksi.uid.slice(0, MAKS_UID),
+        x: rasioTiga(aksi.x),
+        y: rasioTiga(aksi.y),
+        mati: aksi.mati,
+      });
+      const { peristiwa, urut } = catat.hasil;
+      return { keadaan: { ...keadaan, ketukan: keadaan.ketukan + 1, urut }, peristiwa };
+    }
+
     case 'catat_gulir': {
       const persen = Math.max(0, Math.min(100, Math.round(aksi.persen)));
       if (persen <= keadaan.gulirMaksPersen) return abaikan(keadaan);
@@ -726,6 +842,9 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
 
     case 'tutup': {
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      // Layar terakhir juga punya kedalaman gulir, dan justru layar tempat
+      // orang berhenti yang paling ingin diketahui pemilik.
+      catatGulirLayar(keadaan, catat);
       catat.tambah('tutup', { layar_terakhir: namaLayar(keadaan.layar) });
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...keadaan, tertutup: true, urut }, peristiwa };

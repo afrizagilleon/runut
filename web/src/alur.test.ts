@@ -10,6 +10,7 @@ import {
   LABEL_TURUN,
   bilahBawah,
   LABEL_PILIHAN_PEMAIN,
+  BATAS_KETUK,
   NAMA_PERISTIWA,
   namaLayar,
   semuaTerkunci,
@@ -80,24 +81,32 @@ describe('alur — jalur tuntas', () => {
       { jenis: 'tutup' },
     ]);
 
+    // Tiap perpindahan layar melahirkan `gulir` untuk layar yang DITINGGALKAN
+    // (D-8) — termasuk sekali lagi sebelum `tutup`, untuk layar terakhir.
     expect(namaUrut(peristiwa)).toEqual([
       'mulai',
       'layar_masuk', // pembuka
+      'gulir', // meninggalkan pembuka
       'layar_masuk', // soal-1
       'pilih',
       'kunci_jawaban',
+      'gulir', // meninggalkan soal-1
       'layar_masuk', // soal-2
       'pilih',
       'kunci_jawaban',
+      'gulir', // meninggalkan soal-2
       'layar_masuk', // soal-3
       'pilih',
       'kunci_jawaban',
       'pembukaan_masuk',
+      'gulir', // meninggalkan soal-3
       'layar_masuk', // pembukaan
       'pembukaan_selesai',
+      'gulir', // meninggalkan pembukaan
       'layar_masuk', // akhir
       'akhir_kirim',
       'minat_kasus_lain',
+      'gulir', // layar akhir, sesaat sebelum tutup
       'tutup',
     ]);
   });
@@ -376,7 +385,7 @@ describe('alur — lama kartu terlihat dan gulir balik (A1-T2)', () => {
       { jenis: 'kartu_keluar_layar', soal_id: 's1' },
       { jenis: 'kartu_masuk_layar', soal_id: 's1' },
     ]);
-    expect(namaUrut(peristiwa)).toEqual(['mulai', 'layar_masuk', 'layar_masuk']);
+    expect(namaUrut(peristiwa)).toEqual(['mulai', 'layar_masuk', 'gulir', 'layar_masuk']);
   });
 
   it('"Kembali ke kartu" melahirkan tepat satu peristiwa per ketukan', () => {
@@ -419,8 +428,8 @@ describe('alur — melihat balik soal yang sudah dikunci (D-3)', () => {
     ]);
     const balik = peristiwa.find((p) => p.nama === 'lihat_balik');
     expect(balik?.isi).toEqual({ dari_layar: 'soal-3', ke_layar: 'soal-1' });
-    // Sesudah lihat_balik, layar_masuk soal-1 juga tercatat.
-    expect(namaUrut(peristiwa).slice(-2)).toEqual(['lihat_balik', 'layar_masuk']);
+    // Sesudah lihat_balik, `gulir` soal-3 dan layar_masuk soal-1 juga tercatat.
+    expect(namaUrut(peristiwa).slice(-3)).toEqual(['lihat_balik', 'gulir', 'layar_masuk']);
   });
 
   it('NEGATIF — menolak melihat balik soal yang belum dikunci', () => {
@@ -532,11 +541,14 @@ describe('alur — jalur berhenti di tengah', () => {
     expect(namaUrut(peristiwa)).toEqual([
       'mulai',
       'layar_masuk',
+      'gulir',
       'layar_masuk',
       'pilih',
       'kunci_jawaban',
+      'gulir',
       'layar_masuk',
       'kartu_buka',
+      'gulir',
       'tutup',
     ]);
     expect(peristiwa[peristiwa.length - 1]?.isi).toEqual({ layar_terakhir: 'soal-2' });
@@ -590,6 +602,7 @@ describe('alur — kemurnian reducer (D-5)', () => {
     const dipakai = new Set(namaUrut(peristiwa));
     expect([...dipakai].sort()).toEqual([
       'akhir_kirim',
+      'gulir',
       'kunci_jawaban',
       'layar_masuk',
       'lihat_balik',
@@ -768,18 +781,21 @@ describe('alur — jalan pintas ke ringkasan (A4-T5)', () => {
       { jenis: 'loncat_ke_ringkasan' },
       { jenis: 'lanjut' },
     ]);
-    expect(namaUrut(peristiwa).slice(-5)).toEqual([
+    expect(namaUrut(peristiwa).slice(-7)).toEqual([
       'pembukaan_masuk',
+      'gulir', // meninggalkan soal-3
       'layar_masuk', // layar pembukaan
       'loncat_ke_ringkasan',
       'pembukaan_selesai',
+      'gulir', // meninggalkan pembukaan
       'layar_masuk', // layar akhir
     ]);
   });
 
   it('namanya ada di daftar tertutup D-6', () => {
     expect(NAMA_PERISTIWA).toContain('loncat_ke_ringkasan');
-    expect(NAMA_PERISTIWA).toHaveLength(13);
+    // 13 nama M3.1 + tiga nama pelacak M3.2 (ketuk, ketuk_dibatasi, gulir).
+    expect(NAMA_PERISTIWA).toHaveLength(16);
   });
 });
 
@@ -798,7 +814,7 @@ describe('alur — tombol kembali peramban (A1-T7)', () => {
   it('dari soal-1 kembali ke layar pembuka', () => {
     const h = layarSesudahMundur([MULAI, { jenis: 'lanjut' }]);
     expect(h).toMatchObject({ dari: 'soal-1', ke: 'pembuka' });
-    expect(h.peristiwa).toEqual(['lihat_balik', 'layar_masuk']);
+    expect(h.peristiwa).toEqual(['lihat_balik', 'gulir', 'layar_masuk']);
     expect(h.isi).toEqual({ dari_layar: 'soal-1', ke_layar: 'pembuka' });
   });
 
@@ -920,12 +936,198 @@ describe('alur — bilah bawah tiga keadaan (D-4, T-04)', () => {
       { jenis: 'opsi_terlihat', soal_id: 's1', terlihat: true },
       { jenis: 'opsi_terlihat', soal_id: 's1', terlihat: false },
     ]);
-    expect(namaUrut(peristiwa)).toEqual(['mulai', 'layar_masuk', 'layar_masuk']);
+    expect(namaUrut(peristiwa)).toEqual(['mulai', 'layar_masuk', 'gulir', 'layar_masuk']);
   });
 
   it('opsi_terlihat dengan nilai yang sama tidak mengubah keadaan', () => {
     const dasar = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
     const hasil = langkah(dasar, { jenis: 'opsi_terlihat', soal_id: 's1', terlihat: false }, 9_999);
     expect(hasil.keadaan).toBe(dasar);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Pelacak ketukan dan gulir (D-8, M3.2/T-07)                         */
+/* ------------------------------------------------------------------ */
+
+/** Satu ketukan pada `uid`, di tengah layar. */
+const ketuk = (uid: string | null, mati = false): Aksi => ({
+  jenis: 'ketuk',
+  uid,
+  x: 0.5,
+  y: 0.5,
+  mati,
+});
+
+describe('alur — ketukan lahir dari reducer (D-8)', () => {
+  it('ketukan di opsi: mati false, uid dan layar benar', () => {
+    const { peristiwa } = jalankan([MULAI, { jenis: 'lanjut' }, ketuk('opsi:b')]);
+    const k = peristiwa.filter((p) => p.nama === 'ketuk');
+    expect(k).toHaveLength(1);
+    expect(k[0]?.isi).toEqual({ layar: 'soal-1', uid: 'opsi:b', x: 0.5, y: 0.5, mati: false });
+  });
+
+  it('ketukan di badan lembar: mati true, tetap membawa uid lembarnya', () => {
+    const { peristiwa } = jalankan([MULAI, { jenis: 'lanjut' }, ketuk('lembar:k1', true)]);
+    const k = peristiwa.find((p) => p.nama === 'ketuk');
+    expect(k?.isi['mati']).toBe(true);
+    expect(k?.isi['uid']).toBe('lembar:k1');
+  });
+
+  it('ketukan di ruang kosong: uid null, tetap tercatat', () => {
+    const { peristiwa } = jalankan([MULAI, ketuk(null, true)]);
+    const k = peristiwa.find((p) => p.nama === 'ketuk');
+    expect(k?.isi['uid']).toBeNull();
+    expect(k?.isi['mati']).toBe(true);
+    expect(k?.isi['layar']).toBe('pembuka');
+  });
+
+  it('ketukan TIDAK mengubah keadaan permainan, hanya melahirkan peristiwa', () => {
+    const sesudahMulai = langkah(keadaanAwal(AWAL), MULAI, 1_000).keadaan;
+    const hasil = langkah(sesudahMulai, ketuk('pesan', true), 1_100);
+    expect(hasil.peristiwa).toHaveLength(1);
+    // Yang boleh berubah hanya pencatatannya sendiri.
+    expect({ ...hasil.keadaan, urut: 0, ketukan: 0 }).toEqual({
+      ...sesudahMulai,
+      urut: 0,
+      ketukan: 0,
+    });
+    expect(hasil.keadaan.layar).toEqual(sesudahMulai.layar);
+    expect(hasil.keadaan.soal).toEqual(sesudahMulai.soal);
+  });
+
+  it('isi ketukan hanya lima medan — tidak ada tempat untuk teks pemain', () => {
+    const { peristiwa } = jalankan([MULAI, ketuk('opsi:a')]);
+    const k = peristiwa.find((p) => p.nama === 'ketuk');
+    expect(Object.keys(k?.isi ?? {}).sort()).toEqual(['layar', 'mati', 'uid', 'x', 'y']);
+  });
+
+  it('koordinat dijepit 0–1 dan dibulatkan tiga desimal', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'ketuk', uid: 'pesan', x: 1.8, y: -0.4, mati: true },
+      { jenis: 'ketuk', uid: 'pesan', x: 0.123456, y: 0.9999, mati: true },
+    ]);
+    const k = peristiwa.filter((p) => p.nama === 'ketuk');
+    expect([k[0]?.isi['x'], k[0]?.isi['y']]).toEqual([1, 0]);
+    expect([k[1]?.isi['x'], k[1]?.isi['y']]).toEqual([0.123, 1]);
+  });
+
+  it('uid lebih panjang dari 64 karakter dipotong, bukan ditolak pengumpul', () => {
+    const { peristiwa } = jalankan([MULAI, ketuk(`lembar:${'y'.repeat(120)}`, true)]);
+    expect(String(peristiwa.find((p) => p.nama === 'ketuk')?.isi['uid'])).toHaveLength(64);
+  });
+
+  it('ketukan sebelum mulai diabaikan seperti aksi lain', () => {
+    const hasil = langkah(keadaanAwal(AWAL), ketuk('pesan', true), 1_000);
+    expect(hasil.peristiwa).toHaveLength(0);
+  });
+});
+
+describe('alur — batas 300 ketukan per sesi (D-8)', () => {
+  it('ketukan ke-301 melahirkan ketuk_dibatasi, tepat sekali', () => {
+    const banyak: Aksi[] = [MULAI, ...Array.from({ length: 305 }, () => ketuk('pesan', true))];
+    const { keadaan, peristiwa } = jalankan(banyak);
+    expect(peristiwa.filter((p) => p.nama === 'ketuk')).toHaveLength(BATAS_KETUK);
+    const dibatasi = peristiwa.filter((p) => p.nama === 'ketuk_dibatasi');
+    expect(dibatasi).toHaveLength(1);
+    expect(dibatasi[0]?.isi).toEqual({ layar: 'pembuka', batas: BATAS_KETUK });
+    expect(keadaan.ketukan).toBe(BATAS_KETUK);
+    // Yang ke-301 adalah yang melahirkan peringatan; sesudahnya diam.
+    expect(peristiwa[peristiwa.length - 1]?.nama).toBe('ketuk_dibatasi');
+  });
+
+  it('ketukan ke-300 masih tercatat penuh', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      ...Array.from({ length: BATAS_KETUK }, () => ketuk('pesan', true)),
+    ]);
+    expect(peristiwa.filter((p) => p.nama === 'ketuk')).toHaveLength(BATAS_KETUK);
+    expect(peristiwa.filter((p) => p.nama === 'ketuk_dibatasi')).toHaveLength(0);
+  });
+});
+
+describe('alur — kedalaman gulir per layar (D-8)', () => {
+  it('melahirkan gulir saat meninggalkan layar, dengan angka terjauh 0–1', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 35 },
+      { jenis: 'catat_gulir', persen: 72 },
+      { jenis: 'catat_gulir', persen: 20 },
+      { jenis: 'lanjut' },
+    ]);
+    const g = peristiwa.filter((p) => p.nama === 'gulir');
+    expect(g).toHaveLength(1);
+    expect(g[0]?.isi).toEqual({ layar: 'pembuka', maks: 0.72 });
+  });
+
+  it('gulir layar sebelumnya tidak diwariskan ke layar berikutnya', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 90 },
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+    ]);
+    const g = peristiwa.filter((p) => p.nama === 'gulir');
+    expect(g.map((p) => [p.isi['layar'], p.isi['maks']])).toEqual([
+      ['pembuka', 0.9],
+      ['soal-1', 0],
+    ]);
+  });
+
+  it('layar terakhir ikut dilaporkan sebelum tutup', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 40 },
+      { jenis: 'tutup' },
+    ]);
+    expect(namaUrut(peristiwa).slice(-2)).toEqual(['gulir', 'tutup']);
+    expect(peristiwa[peristiwa.length - 2]?.isi).toEqual({ layar: 'pembuka', maks: 0.4 });
+  });
+
+  it('gulir_maks_persen di pembukaan_selesai tetap milik layar pembukaan saja', () => {
+    const { peristiwa } = jalankan([
+      ...sampaiTerkunci(),
+      // Guliran di soal terakhir TIDAK boleh ikut terbaca di pembukaan.
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'lanjut' },
+      { jenis: 'catat_gulir', persen: 33 },
+      { jenis: 'lanjut' },
+    ]);
+    expect(peristiwa.find((p) => p.nama === 'pembukaan_selesai')?.isi['gulir_maks_persen']).toBe(
+      33,
+    );
+  });
+});
+
+describe('alur — penanda tautan dan nomor pengunjung di peristiwa mulai (D-9, D-13)', () => {
+  it('membawa ketiganya apa adanya', () => {
+    const { peristiwa } = jalankan([
+      {
+        jenis: 'mulai',
+        lebar_layar: 360,
+        penanda: 'grup1',
+        pengunjung: '11111111-2222-4333-a444-555555555555',
+        kunjungan_ke: 2,
+      },
+    ]);
+    expect(peristiwa[0]?.isi).toEqual({
+      lebar_layar: 360,
+      penanda: 'grup1',
+      pengunjung: '11111111-2222-4333-a444-555555555555',
+      kunjungan_ke: 2,
+    });
+  });
+
+  it('medannya tetap ada walau kosong: null, bukan hilang', () => {
+    const { peristiwa } = jalankan([MULAI]);
+    expect(peristiwa[0]?.isi).toEqual({
+      lebar_layar: 375,
+      penanda: null,
+      pengunjung: null,
+      kunjungan_ke: null,
+    });
   });
 });

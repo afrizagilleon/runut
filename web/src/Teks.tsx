@@ -124,6 +124,9 @@ export function Teks({
           <button
             type="button"
             className="rujukan"
+            // D-8: tiap elemen interaktif punya nama sendiri. Yang dicatat
+            // adalah kode faktanya, bukan angka yang tertulis di layar.
+            data-uid={`angka:${bagian.fact_id}`}
             onClick={() => {
               bukaSumber(bagian.fact_id);
             }}
