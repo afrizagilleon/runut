@@ -839,6 +839,19 @@ summary:focus-visible,
  * tautan terlempar ke baris berikutnya (F-A1-2). Perbaikannya struktural:
  * `Teks.tsx` mengikat tanda baca ke dalam `.tanpa-putus` bersama tautannya.
  */
+/*
+ * Garis bawah tautan: `text-decoration`, bukan `border-bottom` (A4-T3).
+ *
+ * `<button>` selalu kotak sebaris yang utuh, jadi `border-bottom` digambar di
+ * tepi bawah **kotaknya** — sekali saja, di bawah bantalan 8 px. Selama
+ * teksnya muat satu baris itu tidak kentara; begitu ia membungkus ke baris
+ * kedua, baris pertama kehilangan garisnya dan sisanya menggantung jauh di
+ * bawah teks. Itu yang dilihat pemilik di panel sumber.
+ *
+ * `text-decoration` mengikuti tiap potongan baris, jadi setiap baris tautan
+ * bergaris dan garisnya menempel pada hurufnya. Bantalan 8 px dipertahankan:
+ * ia yang membuat bidang sentuh tetap >= 44 px (A2-T2).
+ */
 .rujukan {
   background: none;
   border: 0;
@@ -847,7 +860,10 @@ summary:focus-visible,
   font: inherit;
   font-weight: 700;
   color: var(--stempel);
-  border-bottom: 1px dotted var(--stempel);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
   cursor: pointer;
 }
 

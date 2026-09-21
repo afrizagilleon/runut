@@ -235,6 +235,7 @@ export function Aplikasi(): JSX.Element {
             kirim({ jenis: 'tutup_sumber' });
           }}
           bukaSumber={bukaSumber}
+          indeks={indeks}
         />
       )}
     </>

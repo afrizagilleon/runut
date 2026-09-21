@@ -10,6 +10,8 @@ import {
 import { tanggalId } from '../format.ts';
 
 const POLA_TANGGAL = /^\d{4}-\d{2}-\d{2}$/;
+/** Tanggal ISO di mana pun di dalam kalimat, bukan hanya seluruh nilainya. */
+const POLA_TANGGAL_DI_TEKS = /\d{4}-\d{2}-\d{2}/;
 
 /** Batas panjang teks kartu, diukur atas teks polos sesudah `[[…|…]]` dilepas (D-13d). */
 const MAKS_AWAM = 220;
@@ -113,6 +115,43 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
   }
 
   const adaFakta = (id: string): boolean => indeksFakta.has(id);
+
+  /*
+   * `sumber.keterangan` adalah kalimat "Cara menghitungnya" yang dibaca pemain
+   * di panel sumber — bukan catatan pabrik. Uji pemilik di ponsel menemukannya
+   * berbunyi "harga penutupan 2025-10-08 dibagi harga penutupan 2025-08-01".
+   *
+   * Pemeriksaan "tanpa tanggal ISO" yang sudah ada hanya memindai teks layar
+   * pembukaan, jadi panel ini lolos begitu saja. Dua aturan di bawah menutup
+   * kedua bentuk bahasa mesin yang bisa bocor ke sana: tanggal ISO, dan
+   * `fact_id` mentah. Keduanya punya tempatnya sendiri — di dalam lipatan
+   * "Rincian teknis".
+   */
+  for (const fakta of kasus.fakta) {
+    const keterangan = fakta.sumber.keterangan;
+    if (keterangan === null) continue;
+    const tanggalMesin = POLA_TANGGAL_DI_TEKS.exec(keterangan);
+    if (tanggalMesin !== null) {
+      tambah(
+        masalah,
+        'KETERANGAN_TANGGAL_MESIN',
+        `Keterangan fakta "${fakta.fact_id}" memuat tanggal mesin "${tanggalMesin[0]}"; ` +
+          `pemain membacanya di panel sumber, jadi ia harus berbahasa orang ` +
+          `(pakai tanggalId()). Keterangan: "${keterangan}"`,
+      );
+    }
+    for (const lain of kasus.fakta) {
+      if (keterangan.includes(lain.fact_id)) {
+        tambah(
+          masalah,
+          'KETERANGAN_KODE_FAKTA',
+          `Keterangan fakta "${fakta.fact_id}" menyebut kode fakta "${lain.fact_id}" mentah-mentah; ` +
+            `sebut isinya dalam bahasa orang. Keterangan: "${keterangan}"`,
+        );
+        break;
+      }
+    }
+  }
 
   for (const fakta of kasus.fakta) {
     for (const asal of fakta.turunan_dari) {

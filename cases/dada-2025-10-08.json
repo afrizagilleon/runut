@@ -30,7 +30,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "pengandaian 10 lot (1.000 lembar) dikali dividen per lembar dari div-2025-09-16"
+        "keterangan": "pengandaian 10 lot (1.000 lembar) dikali dividen per lembar yang diumumkan 16 September 2025"
       },
       "turunan_dari": [
         "div-2025-09-16"
@@ -53,7 +53,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "pengandaian 10 lot (1.000 lembar) dikali harga penutupan dari harga-2025-10-08"
+        "keterangan": "pengandaian 10 lot (1.000 lembar) dikali harga penutupan 8 Oktober 2025"
       },
       "turunan_dari": [
         "harga-2025-10-08"
@@ -98,7 +98,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "penjumlahan 4 laporan bertanggal 2025-08-25 dari /v2/filings/"
+        "keterangan": "penjumlahan 4 laporan pengendali yang terbit 25 Agustus 2025"
       },
       "turunan_dari": [
         "fil-2025-08-25-01",
@@ -245,7 +245,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "penjumlahan 1 laporan bertanggal 2025-09-29 dari /v2/filings/"
+        "keterangan": "penjumlahan 1 laporan pengendali yang terbit 29 September 2025"
       },
       "turunan_dari": [
         "fil-2025-09-29-01"
@@ -288,7 +288,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "penjumlahan 22 laporan bertanggal 2025-10-19 dari /v2/filings/"
+        "keterangan": "penjumlahan 22 laporan pengendali yang terbit 19 Oktober 2025"
       },
       "turunan_dari": [
         "fil-2025-10-19-01",
@@ -842,7 +842,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "penjumlahan 13 laporan bertanggal 2025-10-26 dari /v2/filings/"
+        "keterangan": "penjumlahan 13 laporan pengendali yang terbit 26 Oktober 2025"
       },
       "turunan_dari": [
         "fil-2025-10-26-01",
@@ -1370,7 +1370,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "penghitungan baris harga harian antara 2025-08-01 dan 2025-10-08"
+        "keterangan": "penghitungan hari bursa antara 1 Agustus 2025 dan 8 Oktober 2025"
       },
       "turunan_dari": [
         "harga-2025-08-01",
@@ -1391,7 +1391,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "penjumlahan fakta fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01"
+        "keterangan": "penjumlahan 3 laporan pengendali yang terbit 25 Agustus 2025 dan 1 September 2025"
       },
       "turunan_dari": [
         "fil-2025-08-25-03",
@@ -1416,7 +1416,7 @@
         "berkas": null,
         "parameter": {},
         "diambil_pada": null,
-        "keterangan": "harga penutupan 2025-10-08 dibagi harga penutupan 2025-08-01"
+        "keterangan": "harga penutupan 8 Oktober 2025 dibagi harga penutupan 1 Agustus 2025"
       },
       "turunan_dari": [
         "harga-2025-08-01",

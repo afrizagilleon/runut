@@ -690,3 +690,55 @@ describe('rujukan angka', () => {
     expect(angkaTelanjang('Naik 22 kali ke [[harga-akhir|Rp178]].')).toEqual(['22']);
   });
 });
+
+describe('A4-T3 — keterangan fakta harus berbahasa orang', () => {
+  /** Fakta turunan dengan keterangan yang bisa diatur, dipasang sebagai kartu. */
+  function dengan(keterangan: string): Kasus {
+    const kasus = kasusMinimal();
+    kasus.fakta[1] = fakta({
+      fact_id: 'harga-akhir',
+      nilai: 178,
+      awam: { kepala: 'Data harga · 8 Okt 2025', isi: 'Harga kini [[harga-akhir|Rp178]].' },
+      sumber: {
+        jenis: 'turunan',
+        endpoint: null,
+        berkas: null,
+        parameter: {},
+        diambil_pada: null,
+        keterangan,
+      },
+    });
+    return kasus;
+  }
+
+  it('menolak tanggal ISO di tengah kalimat — persis yang dibaca pemilik di ponselnya', () => {
+    const kasus = dengan('harga penutupan 2025-10-08 dibagi harga penutupan 2025-08-01');
+    expect(kode(kasus)).toContain('KETERANGAN_TANGGAL_MESIN');
+    expect(pesan(kasus)).toContain('2025-10-08');
+    expect(pesan(kasus)).toContain('harga-akhir');
+  });
+
+  it('menerima kalimat yang sama sesudah tanggalnya dibahasakan', () => {
+    const kasus = dengan('harga penutupan 8 Oktober 2025 dibagi harga penutupan 1 Agustus 2025');
+    expect(kode(kasus)).not.toContain('KETERANGAN_TANGGAL_MESIN');
+    expect(kode(kasus)).not.toContain('KETERANGAN_KODE_FAKTA');
+  });
+
+  it('menolak kode fakta mentah di dalam keterangan', () => {
+    const kasus = dengan('penjumlahan fakta harga-awal dan harga-nanti');
+    expect(kode(kasus)).toContain('KETERANGAN_KODE_FAKTA');
+    expect(pesan(kasus)).toContain('harga-awal');
+  });
+
+  it('tidak mengeluh untuk kata berstrip biasa yang bukan kode fakta', () => {
+    const kasus = dengan('rata-rata harga penutupan sepanjang 1 Agustus 2025 sampai hari beku');
+    expect(kode(kasus)).not.toContain('KETERANGAN_KODE_FAKTA');
+    expect(kode(kasus)).not.toContain('KETERANGAN_TANGGAL_MESIN');
+  });
+
+  it('membiarkan keterangan kosong (fakta bersumber API tidak punya cara hitung)', () => {
+    const kasus = kasusMinimal();
+    expect(kode(kasus)).not.toContain('KETERANGAN_TANGGAL_MESIN');
+    expect(kode(kasus)).not.toContain('KETERANGAN_KODE_FAKTA');
+  });
+});

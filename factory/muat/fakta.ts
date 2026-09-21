@@ -58,6 +58,18 @@ function idTanggal(iso: string): string {
   return iso.slice(0, 10);
 }
 
+/**
+ * Daftar tanggal dalam bahasa orang, tanpa kembar: "25 Agustus 2025 dan
+ * 1 September 2025". Dipakai `keterangan` fakta turunan, yang dibaca pemain di
+ * panel sumber — jadi ia tidak boleh memuat tanggal ISO maupun `fact_id`
+ * (A4-T3, dijaga validator).
+ */
+function daftarTanggalOrang(iso: readonly string[]): string {
+  const unik = [...new Set(iso)].sort().map(tanggalId);
+  if (unik.length <= 1) return unik[0] ?? 'tanggal yang tidak tercatat';
+  return `${unik.slice(0, -1).join(', ')} dan ${unik[unik.length - 1] ?? ''}`;
+}
+
 /** Fakta harga: satu untuk tiap kolom yang mungkin dipakai kasus. */
 function faktaHarga(data: DataDada): FaktaMentah[] {
   const fakta: FaktaMentah[] = [];
@@ -246,7 +258,7 @@ function faktaLaporan(data: DataDada): FaktaMentah[] {
       nilai: total,
       satuan: 'lembar',
       sumber: sumberTurunan(
-        `penjumlahan ${String(daftar.length)} laporan bertanggal ${tanggal} dari /v2/filings/`,
+        `penjumlahan ${angkaId(daftar.length)} laporan pengendali yang terbit ${tanggalId(tanggal)}`,
       ),
       turunan_dari: idAnak,
       tersedia_sejak: tanggal,
@@ -265,9 +277,7 @@ function faktaSahamBeredar(data: DataDada): FaktaMentah {
     klaim: `Jumlah saham beredar ${angkaId(beredar.lembar)} lembar, dihitung dari nilai pasar dibagi harga penutupan; angka yang sama muncul di ${angkaId(beredar.hari_sepakat)} hari bursa.`,
     nilai: beredar.lembar,
     satuan: 'lembar',
-    sumber: sumberTurunan(
-      'nilai pasar dibagi harga penutupan pada tiap hari bursa di /v2/daily/DADA/',
-    ),
+    sumber: sumberTurunan('nilai pasar dibagi harga penutupan pada tiap hari bursa'),
     turunan_dari: awal === undefined ? [] : [`harga-${awal.tanggal}`],
     tersedia_sejak: awal?.tanggal ?? null,
     status: 'TERVERIFIKASI',
@@ -289,7 +299,9 @@ export function faktaKenaikan(data: DataDada, dari: string, sampai: string): Fak
       klaim: `Dari ${tanggalId(awal.tanggal)} sampai ${tanggalId(akhir.tanggal)} ada ${angkaId(jendela.length)} hari bursa, dan harga penutupan naik pada sebagian besar di antaranya.`,
       nilai: jendela.length,
       satuan: 'hari bursa',
-      sumber: sumberTurunan(`penghitungan baris harga harian antara ${dari} dan ${sampai}`),
+      sumber: sumberTurunan(
+        `penghitungan hari bursa antara ${tanggalId(dari)} dan ${tanggalId(sampai)}`,
+      ),
       turunan_dari: [`harga-${awal.tanggal}`, `harga-${akhir.tanggal}`],
       tersedia_sejak: akhir.tanggal,
       status: 'TERVERIFIKASI',
@@ -300,7 +312,7 @@ export function faktaKenaikan(data: DataDada, dari: string, sampai: string): Fak
       nilai: kelipatan,
       satuan: 'kali',
       sumber: sumberTurunan(
-        `harga penutupan ${sampai} dibagi harga penutupan ${dari}`,
+        `harga penutupan ${tanggalId(sampai)} dibagi harga penutupan ${tanggalId(dari)}`,
       ),
       turunan_dari: [`harga-${awal.tanggal}`, `harga-${akhir.tanggal}`],
       tersedia_sejak: akhir.tanggal,
@@ -369,7 +381,8 @@ export function faktaTurunanPemain(pustaka: Fakta[], asal: AsalTurunanPemain): F
       nilai: dividenLot,
       satuan: 'rupiah',
       sumber: sumberTurunan(
-        `pengandaian ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) dikali dividen per lembar dari ${asal.dividen}`,
+        `pengandaian ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) dikali dividen ` +
+          `per lembar yang diumumkan ${tanggalId(dividen.tersedia_sejak ?? '')}`,
       ),
       turunan_dari: [asal.dividen],
       tersedia_sejak: dividen.tersedia_sejak,
@@ -383,7 +396,8 @@ export function faktaTurunanPemain(pustaka: Fakta[], asal: AsalTurunanPemain): F
       nilai: nilaiLot,
       satuan: 'rupiah',
       sumber: sumberTurunan(
-        `pengandaian ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) dikali harga penutupan dari ${asal.harga_t}`,
+        `pengandaian ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) dikali harga ` +
+          `penutupan ${tanggalId(hargaT.tersedia_sejak ?? '')}`,
       ),
       turunan_dari: [asal.harga_t],
       tersedia_sejak: hargaT.tersedia_sejak,
@@ -397,7 +411,10 @@ export function faktaTurunanPemain(pustaka: Fakta[], asal: AsalTurunanPemain): F
         `${angkaId(totalJual)} lembar. Laporan yang tersangkut temuan tidak ikut dijumlahkan.`,
       nilai: totalJual,
       satuan: 'lembar',
-      sumber: sumberTurunan(`penjumlahan fakta ${asal.jual_terverifikasi.join(', ')}`),
+      sumber: sumberTurunan(
+        `penjumlahan ${angkaId(laporan.length)} laporan pengendali yang terbit ` +
+          `${daftarTanggalOrang(tanggalJual)}`,
+      ),
       turunan_dari: [...asal.jual_terverifikasi],
       tersedia_sejak: terbitTerakhir,
       status: 'TERVERIFIKASI',
