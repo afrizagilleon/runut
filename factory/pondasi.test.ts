@@ -17,14 +17,23 @@ describe('pondasi proyek', () => {
   it('menyediakan empat skrip yang dijanjikan kontrak M1', () => {
     // M1.5 5 memperbolehkan menambah skrip ke package.json untuk perkakas
     // evaluasi, jadi yang diuji adalah keempat skrip M1 tetap ada, bukan bahwa
-    // tidak ada skrip lain. Skrip tambahan wajib berawalan `eval:` supaya
-    // penambahan diam-diam di luar lingkup tetap merah.
+    // tidak ada skrip lain. Skrip tambahan wajib berawalan `eval:` — atau
+    // disebut namanya di daftar di bawah — supaya penambahan diam-diam di luar
+    // lingkup tetap merah.
+    //
+    // M3.1 D-12 menambahkan `dev`, `preview`, dan `kolektor`; D-10 menambahkan
+    // `alpha:ringkas`. Keempatnya disebut satu per satu, bukan diloloskan lewat
+    // awalan baru, supaya penjaga ini tetap menangkap skrip yang tidak
+    // disahkan kontrak mana pun.
+    const M1 = ['build', 'build:case', 'test', 'typecheck'];
+    const M31 = ['dev', 'preview', 'kolektor', 'alpha:ringkas'];
     const skrip = Object.keys(paket.scripts).sort();
-    for (const wajib of ['build', 'build:case', 'test', 'typecheck']) {
+    for (const wajib of M1) {
       expect(skrip).toContain(wajib);
     }
-    const tambahan = skrip.filter((s) => !['build', 'build:case', 'test', 'typecheck'].includes(s));
-    expect(tambahan.every((s) => s.startsWith('eval:'))).toBe(true);
+    const tambahan = skrip.filter((s) => !M1.includes(s));
+    const takDikenal = tambahan.filter((s) => !s.startsWith('eval:') && !M31.includes(s));
+    expect(takDikenal).toEqual([]);
   });
 
   it('memakai ESM', () => {

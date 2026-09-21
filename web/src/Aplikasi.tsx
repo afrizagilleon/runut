@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useReducer } from 'react';
+import { PENANDA_BUKAN_FAKTA, ambilRujukan } from '../../factory/skema/rujukan.ts';
 import type { Fakta, Kasus, Soal } from '../../factory/skema/tipe.ts';
 import {
   type Aksi,
@@ -6,6 +7,7 @@ import {
   type Peristiwa,
   keadaanAwal,
   langkah,
+  namaLayar,
 } from './alur.ts';
 import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { KartuFakta } from './KartuFakta.tsx';
@@ -92,6 +94,14 @@ export function Aplikasi(): JSX.Element {
 
   const indeks = useMemo(() => indeksFakta(kasus), [kasus]);
   const layar = keadaan.layar;
+  const namaLayarKini = namaLayar(layar);
+
+  // Berpindah layar mengembalikan gulir ke atas. Tanpa ini pemain yang menggulir
+  // sampai tombol lalu menekannya mendarat di tengah kartu soal berikutnya dan
+  // tidak pernah melihat kartu yang pertama — persis kegagalan yang dijaga D-4.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [namaLayarKini]);
 
   const bukaSumber = useCallback(
     (fact_id: string): void => {
@@ -106,12 +116,15 @@ export function Aplikasi(): JSX.Element {
 
   return (
     <>
-      {layar.jenis !== 'pembukaan' && layar.jenis !== 'akhir' && (
+      {/*
+        Keping kalender hanya di layar soal: di layar pertama tempatnya diambil
+        halaman kalender besar, dan dua kalender sekaligus hanya mengulang diri
+        sendiri (docs/desain.md, "Tanda tangan").
+      */}
+      {layar.jenis === 'soal' && (
         <header className="penanda" role="banner">
           <KepingKalender hari={hari} />
-          {layar.jenis === 'soal' && (
-            <TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />
-          )}
+          <TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />
         </header>
       )}
 
@@ -240,6 +253,7 @@ function LayarSoal({
             key={fakta.fact_id}
             fakta={fakta}
             terlipat={s.terlipat[fakta.fact_id] === true}
+            menentukan={s.dikunci && menentukan.has(fakta.fact_id)}
             bukaSumber={bukaSumber}
             lipat={(fact_id) => {
               kirim({ jenis: 'lipat_kartu', soal_id: soal.soal_id, fact_id });
@@ -314,13 +328,6 @@ function LayarSoal({
           </p>
           <p className="teks-kunci">
             <Teks teks={soal.penjelasan} bukaSumber={bukaSumber} />
-          </p>
-          <p className="kartu-menentukan">
-            Kartu yang menentukan:{' '}
-            {kartu
-              .filter((f) => menentukan.has(f.fact_id))
-              .map((f) => f.awam?.kepala ?? f.fact_id)
-              .join(' · ')}
           </p>
         </div>
       )}
@@ -439,6 +446,7 @@ function LayarPembukaan({
       <ol className="garis-waktu">
         {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
           <li key={nomor}>
+            <KepingTanggal kasus={kasus} teks={paragraf} />
             <Teks teks={paragraf} bukaSumber={bukaSumber} />
           </li>
         ))}
@@ -491,6 +499,19 @@ function LayarPembukaan({
       </div>
     </section>
   );
+}
+
+/**
+ * Keping tanggal di garis waktu (D-8). Tanggalnya tidak diketik tangan: ia
+ * diambil dari `tersedia_sejak` fakta pertama yang ditautkan paragraf itu,
+ * sehingga keping dan isinya tidak bisa berbeda.
+ */
+function KepingTanggal({ kasus, teks }: { kasus: Kasus; teks: string }): JSX.Element | null {
+  const rujukan = ambilRujukan(teks).find((r) => !PENANDA_BUKAN_FAKTA.includes(r.fact_id));
+  if (rujukan === undefined) return null;
+  const fakta = kasus.fakta.find((f) => f.fact_id === rujukan.fact_id);
+  if (fakta?.tersedia_sejak == null) return null;
+  return <span className="keping-tanggal">{penanda(fakta.tersedia_sejak).pendek}</span>;
 }
 
 function JejakVerifikasi({

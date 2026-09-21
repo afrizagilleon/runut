@@ -4,6 +4,8 @@ import { Teks } from './Teks.tsx';
 export interface KartuFaktaProps {
   fakta: Fakta;
   terlipat: boolean;
+  /** Sesudah jawaban dikunci, kartu yang menentukan ditegaskan (D-8). */
+  menentukan: boolean;
   /** Ketukan pada kartu membuka panel sumbernya (D-4). */
   bukaSumber: (fact_id: string) => void;
   lipat: (fact_id: string) => void;
@@ -21,6 +23,7 @@ export interface KartuFaktaProps {
 export function KartuFakta({
   fakta,
   terlipat,
+  menentukan,
   bukaSumber,
   lipat,
   buka,
@@ -30,11 +33,30 @@ export function KartuFakta({
   const judul = `kartu-${fakta.fact_id}`;
 
   return (
-    <article className={`lembar${dihitung ? ' lembar-hitung' : ''}`} aria-labelledby={judul}>
+    <article
+      className={`lembar${dihitung ? ' lembar-hitung' : ''}${
+        menentukan ? ' lembar-menentukan' : ''
+      }`}
+      aria-labelledby={judul}
+    >
       <div className="lembar-garis" aria-hidden="true" />
       <div className="lembar-kepala">
+        {/*
+          D-4: mengetuk kartu membuka panel sumbernya. Yang diketuk adalah baris
+          kepala — jenis sumber dan tanggalnya — karena badan kartu memuat angka
+          yang masing-masing sudah menjadi tombol, dan tombol di dalam tombol
+          bukan HTML yang sah.
+        */}
         <h3 className="lembar-sumber" id={judul}>
-          {awam?.kepala ?? fakta.fact_id}
+          <button
+            type="button"
+            className="lembar-sumber-tombol"
+            onClick={() => {
+              bukaSumber(fakta.fact_id);
+            }}
+          >
+            {awam?.kepala ?? fakta.fact_id}
+          </button>
         </h3>
         <button
           type="button"
@@ -54,15 +76,6 @@ export function KartuFakta({
           <p>
             <Teks teks={awam?.isi ?? fakta.klaim} bukaSumber={bukaSumber} />
           </p>
-          <button
-            type="button"
-            className="lembar-sumber-tombol"
-            onClick={() => {
-              bukaSumber(fakta.fact_id);
-            }}
-          >
-            Dari mana angka ini?
-          </button>
         </div>
       )}
     </article>
