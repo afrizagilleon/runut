@@ -198,12 +198,18 @@ export function semuaTerkunci(keadaan: Keadaan): boolean {
 /** Pengumpul peristiwa untuk satu pemanggilan reducer: menomori dan memberi cap waktu. */
 class Catatan {
   private readonly keluar: Peristiwa[] = [];
+  private readonly keadaan: Keadaan;
+  private readonly waktu: number;
+  private urut: number;
 
-  constructor(
-    private readonly keadaan: Keadaan,
-    private readonly waktu: number,
-    private urut: number,
-  ) {}
+  // Ditulis panjang, bukan sebagai parameter property: `node
+  // --experimental-strip-types` — yang dipakai seluruh skrip repo ini —
+  // menolak parameter property, dan berkas ini harus bisa diimpor dari sana.
+  constructor(keadaan: Keadaan, waktu: number, urut: number) {
+    this.keadaan = keadaan;
+    this.waktu = waktu;
+    this.urut = urut;
+  }
 
   tambah(nama: NamaPeristiwa, isi: Record<string, NilaiIsi> = {}): void {
     this.urut += 1;

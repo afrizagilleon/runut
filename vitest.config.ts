@@ -8,6 +8,7 @@ export default defineConfig({
       'eval/**/*.test.ts',
       'web/**/*.test.ts',
       'server/**/*.test.ts',
+      'alat/**/*.test.ts',
     ],
     // Kegagalan tidak boleh senyap: kalau glob tidak menemukan tes, gagalkan.
     passWithNoTests: false,
