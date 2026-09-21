@@ -207,6 +207,27 @@ export function soalSekarang(keadaan: Keadaan): string | null {
   return keadaan.urutanSoal[keadaan.layar.nomor] ?? null;
 }
 
+/**
+ * Tanda yang didapat satu baris opsi (A1-T4).
+ *
+ * Fungsi murni, bukan rangkaian tanda tanya di dalam JSX: "opsi mana mendapat
+ * tanda apa" adalah aturan, dan aturan harus bisa dites. Sesudah dikunci,
+ * penekanan visual terkuat wajib berada di jawaban yang cocok dengan kartu —
+ * bukan di pilihan pemain yang keliru.
+ */
+export type TandaOpsi = 'polos' | 'dipilih' | 'cocok' | 'keliru';
+
+export function tandaOpsi(
+  soal: KeadaanSoal | undefined,
+  kunciOpsi: string,
+  jawaban: string,
+): TandaOpsi {
+  if (soal === undefined) return 'polos';
+  if (!soal.dikunci) return soal.kunci === kunciOpsi ? 'dipilih' : 'polos';
+  if (kunciOpsi === jawaban) return 'cocok';
+  return soal.kunci === kunciOpsi ? 'keliru' : 'polos';
+}
+
 export function semuaTerkunci(keadaan: Keadaan): boolean {
   return keadaan.urutanSoal.every((id) => keadaan.soal[id]?.dikunci === true);
 }

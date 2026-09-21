@@ -7,6 +7,7 @@ import {
   langkah,
   namaLayar,
   semuaTerkunci,
+  tandaOpsi,
 } from './alur.ts';
 
 const AWAL = {
@@ -593,5 +594,55 @@ describe('alur — kemurnian reducer (D-5)', () => {
       'pilih',
       'tutup',
     ]);
+  });
+});
+
+describe('alur — tanda opsi sesudah dikunci (A1-T4)', () => {
+  const sesudah = (aksi: Array<Aksi | [Aksi, number]>) => jalankan(aksi).keadaan.soal['s1'];
+
+  it('belum dikunci: hanya pilihan pemain yang ditandai', () => {
+    const s = sesudah([MULAI, { jenis: 'lanjut' }, { jenis: 'pilih', soal_id: 's1', kunci: 'c' }]);
+    expect(tandaOpsi(s, 'c', 'b')).toBe('dipilih');
+    expect(tandaOpsi(s, 'b', 'b')).toBe('polos');
+    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
+  });
+
+  it('dikunci dan benar: jawaban yang cocok ditandai, sisanya polos', () => {
+    const s = sesudah([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    expect(tandaOpsi(s, 'b', 'b')).toBe('cocok');
+    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
+    expect(tandaOpsi(s, 'd', 'b')).toBe('polos');
+  });
+
+  it('dikunci dan salah: yang cocok tetap dapat tanda terkuat, pilihan keliru diredupkan', () => {
+    const s = sesudah([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'd' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    expect(tandaOpsi(s, 'b', 'b')).toBe('cocok');
+    expect(tandaOpsi(s, 'd', 'b')).toBe('keliru');
+    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
+  });
+
+  it('melihat ulang soal lama: tandanya sama dengan saat dikunci', () => {
+    const keadaan = jalankan([
+      ...sampaiTerkunci(),
+      { jenis: 'lihat_balik', nomor: 0 },
+    ]).keadaan;
+    const s = keadaan.soal['s1'];
+    expect(namaLayar(keadaan.layar)).toBe('soal-1');
+    expect(tandaOpsi(s, 'b', 'b')).toBe('cocok');
+    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
+  });
+
+  it('soal yang tidak dikenal tidak pernah menandai apa pun', () => {
+    expect(tandaOpsi(undefined, 'b', 'b')).toBe('polos');
   });
 });

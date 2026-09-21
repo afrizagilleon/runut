@@ -9,6 +9,7 @@ import {
   keadaanAwal,
   langkah,
   namaLayar,
+  tandaOpsi,
 } from './alur.ts';
 import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { KartuFakta } from './KartuFakta.tsx';
@@ -357,18 +358,16 @@ function LayarSoal({
       <fieldset className="pilihan" disabled={s.dikunci}>
         <legend className="tersembunyi">Pilih satu jawaban</legend>
         {soal.pilihan.map((p) => {
-          const dipilih = s.kunci === p.kunci;
-          const tepat = s.dikunci && p.kunci === soal.jawaban;
+          // "Opsi mana mendapat tanda apa" adalah aturan, dan aturannya ada di
+          // reducer sebagai fungsi murni yang dites (A1-T4).
+          const tanda = tandaOpsi(s, p.kunci, soal.jawaban);
           return (
-            <label
-              key={p.kunci}
-              className={`opsi${dipilih ? ' opsi-dipilih' : ''}${tepat ? ' opsi-tepat' : ''}`}
-            >
+            <label key={p.kunci} className={`opsi opsi-${tanda}`}>
               <input
                 type="radio"
                 name={soal.soal_id}
                 value={p.kunci}
-                checked={dipilih}
+                checked={s.kunci === p.kunci}
                 onChange={() => {
                   kirim({ jenis: 'pilih', soal_id: soal.soal_id, kunci: p.kunci });
                 }}
@@ -378,6 +377,9 @@ function LayarSoal({
               </span>
               <span className="opsi-teks">
                 <Teks teks={p.teks} bukaSumber={bukaSumber} interaktif={false} />
+                {tanda === 'cocok' && (
+                  <span className="opsi-tanda">✓ yang cocok dengan kartu</span>
+                )}
               </span>
             </label>
           );
@@ -397,19 +399,47 @@ function LayarSoal({
         Kembali ke kartu
       </button>
 
-      {s.dikunci && (
-        <div className="kunci-jawaban" role="status">
-          <p className={`cap${s.benar === true ? ' cap-cocok' : ' cap-belum'}`}>
-            <span aria-hidden="true" className="cap-tanda">
-              {s.benar === true ? '✓' : '!'}
-            </span>
-            {s.benar === true ? 'Cocok dengan kartu' : 'Belum cocok dengan kartu'}
-          </p>
-          <p className="teks-kunci">
-            <Teks teks={soal.penjelasan} bukaSumber={bukaSumber} />
-          </p>
-        </div>
-      )}
+      {/*
+        Wadah `role="status"` ada sejak layar dirender; isinya yang berubah.
+        Wadah yang lahir bersama isinya kadang tidak terbaca pembaca layar.
+      */}
+      <div className="kunci-jawaban" role="status" aria-live="polite">
+        {s.dikunci && (
+          <>
+            <p className={`cap${s.benar === true ? ' cap-cocok' : ' cap-belum'}`}>
+              <span aria-hidden="true" className="cap-tanda">
+                {s.benar === true ? '✓' : '!'}
+              </span>
+              {s.benar === true ? 'Cocok dengan kartu' : 'Belum cocok dengan kartu'}
+            </p>
+
+            {/* Salinan ringkas kartu penentu, supaya mata tidak menggulir balik. */}
+            <div className="penentu">
+              <p className="penentu-judul">Kartu yang menentukan</p>
+              {kartu
+                .filter((f) => menentukan.has(f.fact_id))
+                .map((f) => (
+                  <article
+                    key={f.fact_id}
+                    className={`lembar lembar-ringkas${
+                      f.sumber.jenis === 'turunan' ? ' lembar-hitung' : ''
+                    }`}
+                  >
+                    <div className="lembar-garis" aria-hidden="true" />
+                    <p className="lembar-ringkas-kepala">{f.awam?.kepala ?? f.fact_id}</p>
+                    <p className="lembar-isi">
+                      <Teks teks={f.awam?.isi ?? f.klaim} bukaSumber={bukaSumber} tebalSaja />
+                    </p>
+                  </article>
+                ))}
+            </div>
+
+            <p className="teks-kunci">
+              <Teks teks={soal.penjelasan} bukaSumber={bukaSumber} />
+            </p>
+          </>
+        )}
+      </div>
 
       {/*
         Tombol utama tidak pernah tampil dalam keadaan mati (`docs/desain.md`):

@@ -550,17 +550,75 @@ summary:focus-visible,
   font-weight: 700;
 }
 
-.opsi-tepat {
-  border-color: var(--cocok);
+/*
+ * Sesudah dikunci, penekanan terkuat ada di jawaban yang cocok dengan kartu —
+ * bukan di pilihan pemain yang keliru. Keduanya ditandai bentuk dan kata, tidak
+ * pernah warna saja.
+ */
+.opsi-cocok {
+  border: 2px solid var(--cocok);
 }
 
-.opsi-tepat .opsi-huruf {
+.opsi-cocok .opsi-huruf {
   border-color: var(--cocok);
   color: var(--cocok);
+  font-weight: 700;
+}
+
+.opsi-tanda {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--cocok);
+}
+
+.opsi-keliru {
+  border-color: var(--garis);
+  color: var(--tinta-redup);
+}
+
+.opsi-keliru .opsi-huruf {
+  border-color: var(--tinta-redup);
+  color: var(--tinta-redup);
 }
 
 .pilihan:disabled .opsi {
   cursor: default;
+}
+
+/* --- salinan ringkas kartu penentu ---------------------------------------- */
+
+.penentu {
+  margin: 0 0 12px;
+}
+
+.penentu-judul {
+  margin: 0 0 6px;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-redup);
+}
+
+.lembar-ringkas {
+  margin-bottom: 8px;
+}
+
+.lembar-ringkas-kepala {
+  margin: 0;
+  padding: 6px 12px 0;
+  font-family: var(--mesin);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tinta-redup);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* --- cap umpan balik ------------------------------------------------------- */
