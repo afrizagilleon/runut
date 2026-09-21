@@ -7,6 +7,7 @@ import {
   type Keadaan,
   type Peristiwa,
   LABEL_COCOK,
+  bilahBawah,
   keadaanAwal,
   langkah,
   namaLayar,
@@ -377,6 +378,43 @@ function gerakHalus(): ScrollBehavior {
  * di `useState` (D-5 M3.1). Ia dipegang `<details>` bawaan peramban, yang
  * menyimpan keadaannya sendiri di DOM.
  */
+/**
+ * Pengamat opsi pertama (D-4): memberi tahu reducer apakah opsi pertama sedang
+ * terlihat. Ia **hanya** `dispatch` — keputusan "bilah mana yang tampil" ada di
+ * `bilahBawah()`, fungsi murni yang dites.
+ *
+ * Ambang 0,6 seperti patokan: opsi dianggap terlihat kalau lebih dari separuh
+ * badannya masuk layar, bukan kalau ujungnya baru menyembul.
+ */
+function usePengamatOpsi(
+  soal_id: string,
+  kirim: (aksi: Aksi) => void,
+): RefObject<HTMLLabelElement> {
+  const acuan = useRef<HTMLLabelElement>(null);
+  useEffect(() => {
+    const simpul = acuan.current;
+    if (simpul === null || typeof IntersectionObserver === 'undefined') {
+      // Tanpa pengamat, bilah "Jawab di bawah" akan menetap selamanya dan
+      // menutupi opsi. Lebih baik menganggapnya terlihat.
+      kirim({ jenis: 'opsi_terlihat', soal_id, terlihat: true });
+      return;
+    }
+    const pengamat = new IntersectionObserver(
+      (masuk) => {
+        const butir = masuk[0];
+        if (butir === undefined) return;
+        kirim({ jenis: 'opsi_terlihat', soal_id, terlihat: butir.isIntersecting });
+      },
+      { threshold: 0.6 },
+    );
+    pengamat.observe(simpul);
+    return () => {
+      pengamat.disconnect();
+    };
+  }, [soal_id, kirim]);
+  return acuan;
+}
+
 function BarisIstilah({ istilah }: { istilah: Istilah[] }): JSX.Element {
   return (
     <details className="istilah-lipat" data-uid="istilah">
@@ -424,9 +462,10 @@ function LayarSoal({
   if (s === undefined) return <p>Soal tidak ditemukan.</p>;
 
   const kartu = kartuSoal(kasus, soal);
-  const terakhir = nomor + 1 >= kasus.soal.length;
   const menentukan = new Set(soal.kartu_penentu);
   const acuanTumpukan = usePengamatKartu(soal.soal_id, kirim);
+  const acuanOpsi = usePengamatOpsi(soal.soal_id, kirim);
+  const bilah = bilahBawah(s, nomor, kasus.soal.length);
 
   return (
     <section className="layar layar-soal" aria-labelledby={`judul-${soal.soal_id}`}>
@@ -501,6 +540,7 @@ function LayarSoal({
               key={p.kunci}
               className={`opsi aksi opsi-${tanda.keadaan}`}
               data-uid={`opsi:${p.kunci}`}
+              ref={p.kunci === soal.pilihan[0]?.kunci ? acuanOpsi : undefined}
             >
               <input
                 type="radio"
@@ -598,29 +638,35 @@ function LayarSoal({
         Tombol utama tidak pernah tampil dalam keadaan mati (`docs/desain.md`):
         sebelum ada pilihan ia tidak dirender sama sekali, bukan dirender abu-abu.
       */}
-      {(s.dikunci || s.kunci !== null) && (
-        <div className="tindakan">
-          {!s.dikunci ? (
-            <button
-              type="button"
-              className="tombol-utama"
-              onClick={() => {
+      {/*
+        Bilah bawah tiga keadaan (D-4). Yang memutuskan adalah `bilahBawah()`,
+        fungsi murni di alur.ts; komponen ini hanya merender jawabannya.
+
+        "tidak-ada" adalah jawaban yang sah dan penting: tombol utama tidak
+        pernah tampil mati (INV-12), jadi ketika belum ada yang bisa dikunci dan
+        opsinya sudah terlihat, bilahnya menyingkir — bukan berubah kelabu.
+      */}
+      {bilah.jenis !== 'tidak-ada' && (
+        <div className="tindakan" data-uid="bilah">
+          <button
+            type="button"
+            className={bilah.jenis === 'turun' ? 'tombol-utama tombol-turun' : 'tombol-utama'}
+            onClick={() => {
+              if (bilah.jenis === 'turun') {
+                document
+                  .getElementById(`tanya-${soal.soal_id}`)
+                  ?.scrollIntoView({ block: 'start', behavior: gerakHalus() });
+                return;
+              }
+              if (bilah.jenis === 'kunci') {
                 kirim({ jenis: 'kunci_jawaban', soal_id: soal.soal_id });
-              }}
-            >
-              Kunci jawaban
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="tombol-utama"
-              onClick={() => {
-                kirim({ jenis: 'lanjut' });
-              }}
-            >
-              {terakhir ? 'Lihat yang terjadi sesudahnya' : `Lanjut ke soal ${String(nomor + 2)}`}
-            </button>
-          )}
+                return;
+              }
+              kirim({ jenis: 'lanjut' });
+            }}
+          >
+            {bilah.label}
+          </button>
         </div>
       )}
 

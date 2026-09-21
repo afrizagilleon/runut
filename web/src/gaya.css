@@ -215,8 +215,8 @@ summary:focus-visible,
 .halaman {
   max-width: var(--kolom);
   margin: 0 auto;
-  /* Tanpa ruang mati di bawah: tombol .tindakan sudah menempel di kaki layar. */
-  padding: 16px var(--sisi) 8px;
+  /* 96 px di bawah = ruang untuk bilah bawah yang fixed (patokan .kolom). */
+  padding: 16px var(--sisi) 96px;
 }
 
 .layar {
@@ -894,29 +894,45 @@ details[open] > .baris-istilah .panah {
 
 /* --- tombol ---------------------------------------------------------------- */
 
+/*
+ * Bilah bawah (D-4, patokan). `fixed`, bukan `sticky`: ia harus terlihat sejak
+ * layar dibuka — justru ketika pemain BELUM menggulir — karena di 360 x 640
+ * opsi pertama soal 1 tidak terlihat dan pemilik tidak tahu harus ke mana.
+ * Kolom memberi bantalan bawah 96 px supaya ia tidak menutupi apa pun.
+ */
 .tindakan {
-  position: sticky;
+  position: fixed;
+  left: 0;
+  right: 0;
   bottom: 0;
+  z-index: 4;
   background: var(--kertas);
   border-top: 1px solid var(--garis);
-  padding: 12px 0 16px;
-  margin-top: 16px;
+  padding: 12px var(--sisi);
 }
 
 .tombol-utama {
   display: block;
   width: 100%;
-  min-height: 56px;
-  padding: 12px 16px;
+  max-width: 528px;
+  margin: 0 auto;
+  min-height: 52px;
+  border: 0;
+  border-radius: 3px;
   background: var(--stempel);
   color: var(--di-atas-pekat);
-  border: 2px solid var(--stempel);
-  border-radius: 3px;
   font-family: var(--baca);
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
+  line-height: 1;
   cursor: pointer;
-  transition: opacity var(--gerak) ease;
+}
+
+/* "Jawab di bawah": tindakan kedua, jadi garis tepi — bukan bidang penuh. */
+.tombol-turun {
+  background: var(--lembar);
+  color: var(--stempel);
+  border: 1.5px solid var(--stempel);
 }
 
 .tombol-utama:disabled {

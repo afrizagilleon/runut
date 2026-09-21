@@ -6,6 +6,9 @@ import {
   keadaanAwal,
   langkah,
   LABEL_COCOK,
+  LABEL_KUNCI,
+  LABEL_TURUN,
+  bilahBawah,
   LABEL_PILIHAN_PEMAIN,
   NAMA_PERISTIWA,
   namaLayar,
@@ -838,5 +841,91 @@ describe('alur — tombol kembali peramban (A1-T7)', () => {
     const hasil = langkah(sebelum.keadaan, { jenis: 'mundur' }, 99_000);
     expect(hasil.keadaan.soal['s1']?.dikunci).toBe(true);
     expect(hasil.keadaan.soal['s1']?.kunci).toBe('b');
+  });
+});
+
+describe('alur — bilah bawah tiga keadaan (D-4, T-04)', () => {
+  const soalBaru = (): Parameters<typeof bilahBawah>[0] =>
+    jalankan([MULAI, { jenis: 'lanjut' }]).keadaan.soal['s1'];
+
+  it('belum memilih dan opsi BELUM terlihat: tawarkan "↓ Jawab di bawah"', () => {
+    const s = soalBaru();
+    expect(s?.opsiTerlihat).toBe(false);
+    expect(bilahBawah(s, 0, 3)).toEqual({ jenis: 'turun', label: LABEL_TURUN });
+  });
+
+  it('belum memilih dan opsi SUDAH terlihat: bilah menyingkir', () => {
+    const { keadaan } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'opsi_terlihat', soal_id: 's1', terlihat: true },
+    ]);
+    expect(bilahBawah(keadaan.soal['s1'], 0, 3)).toEqual({ jenis: 'tidak-ada' });
+  });
+
+  it('sudah memilih: "Kunci jawaban" — apa pun keadaan terlihatnya', () => {
+    for (const terlihat of [false, true]) {
+      const { keadaan } = jalankan([
+        MULAI,
+        { jenis: 'lanjut' },
+        { jenis: 'opsi_terlihat', soal_id: 's1', terlihat },
+        { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      ]);
+      expect(bilahBawah(keadaan.soal['s1'], 0, 3), String(terlihat)).toEqual({
+        jenis: 'kunci',
+        label: LABEL_KUNCI,
+      });
+    }
+  });
+
+  it('sesudah dikunci: "Lanjut ke soal n", dan di soal terakhir kalimat lain', () => {
+    const { keadaan } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    const s = keadaan.soal['s1'];
+    expect(bilahBawah(s, 0, 3)).toEqual({ jenis: 'lanjut', label: 'Lanjut ke soal 2' });
+    expect(bilahBawah(s, 1, 3)).toEqual({ jenis: 'lanjut', label: 'Lanjut ke soal 3' });
+    expect(bilahBawah(s, 2, 3)).toEqual({
+      jenis: 'lanjut',
+      label: 'Lihat yang terjadi sesudahnya',
+    });
+  });
+
+  it('TIDAK PERNAH mengembalikan tindakan utama yang mati (INV-12)', () => {
+    // Keempat keadaan: yang tidak punya tindakan masuk akal mengembalikan
+    // "tidak-ada", bukan tombol kelabu. Tidak ada medan "mati" sama sekali.
+    for (const bilah of [
+      bilahBawah(soalBaru(), 0, 3),
+      bilahBawah(undefined, 0, 3),
+      bilahBawah({ ...soalBaru()!, opsiTerlihat: true }, 0, 3),
+      bilahBawah({ ...soalBaru()!, kunci: 'b' }, 0, 3),
+      bilahBawah({ ...soalBaru()!, dikunci: true }, 0, 3),
+    ]) {
+      expect(Object.keys(bilah)).not.toContain('mati');
+      if (bilah.jenis !== 'tidak-ada') expect(bilah.label.length).toBeGreaterThan(0);
+    }
+  });
+
+  it('soal yang tidak dikenal tidak menawarkan apa-apa', () => {
+    expect(bilahBawah(undefined, 0, 3)).toEqual({ jenis: 'tidak-ada' });
+  });
+
+  it('opsi_terlihat tidak melahirkan peristiwa apa pun (bukan gerakan pemain)', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'opsi_terlihat', soal_id: 's1', terlihat: true },
+      { jenis: 'opsi_terlihat', soal_id: 's1', terlihat: false },
+    ]);
+    expect(namaUrut(peristiwa)).toEqual(['mulai', 'layar_masuk', 'layar_masuk']);
+  });
+
+  it('opsi_terlihat dengan nilai yang sama tidak mengubah keadaan', () => {
+    const dasar = jalankan([MULAI, { jenis: 'lanjut' }]).keadaan;
+    const hasil = langkah(dasar, { jenis: 'opsi_terlihat', soal_id: 's1', terlihat: false }, 9_999);
+    expect(hasil.keadaan).toBe(dasar);
   });
 });

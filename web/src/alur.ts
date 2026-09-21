@@ -87,6 +87,15 @@ export interface KeadaanSoal {
   msKartuTerlihatSaatKunci: number;
   /** Kartu pernah keluar layar; dipakai membedakan gulir balik dari kemunculan pertama. */
   pernahKeluar: boolean;
+  /**
+   * Opsi pertama sedang terlihat di layar (D-4).
+   *
+   * Satu-satunya fakta TAMPILAN di dalam keadaan permainan, dan ia ada di sini
+   * karena bilah bawah harus bisa ditentukan fungsi murni: "apa yang pantas
+   * ditawarkan sekarang" tidak boleh dihitung di dalam JSX. Pengamatnya di
+   * komponen hanya `dispatch`, persis seperti pengamat kartu (A1-T9).
+   */
+  opsiTerlihat: boolean;
   /** Berapa kali kartu masuk layar lagi sesudah pernah keluar. */
   gulirBalik: number;
   /** Nilai `gulirBalik` yang dibekukan saat soal ini dikunci. */
@@ -138,6 +147,7 @@ export type Aksi =
   | { jenis: 'kartu_masuk_layar'; soal_id: string }
   | { jenis: 'kartu_keluar_layar'; soal_id: string }
   | { jenis: 'kembali_ke_kartu'; soal_id: string }
+  | { jenis: 'opsi_terlihat'; soal_id: string; terlihat: boolean }
   | { jenis: 'buka_sumber'; fact_id: string; soal_id: string | null }
   | { jenis: 'tutup_sumber' }
   | { jenis: 'pilih'; soal_id: string; kunci: string }
@@ -176,6 +186,7 @@ function soalKosong(): KeadaanSoal {
     msKartuTerlihat: 0,
     msKartuTerlihatSaatKunci: 0,
     pernahKeluar: false,
+    opsiTerlihat: false,
     gulirBalik: 0,
     gulirBalikSaatKunci: 0,
     masukPada: null,
@@ -276,6 +287,48 @@ export function tandaOpsi(
   return dipilihPemain
     ? { keadaan: 'keliru', label: [LABEL_PILIHAN_PEMAIN] }
     : { keadaan: 'polos', label: [] };
+}
+
+/**
+ * Bilah bawah: tiga keadaan, ditentukan fungsi murni (D-4).
+ *
+ * Aturannya satu kalimat: **bilah bawah selalu membawa satu tindakan yang masuk
+ * akal, dan tombol utama tidak pernah tampil mati** (INV-12). Karena itu
+ * "tidak ada bilah" adalah jawaban yang sah — bukan tombol kelabu.
+ *
+ * `turun` ada demi temuan pemilik di ponselnya: di 360 × 640 opsi pertama soal 1
+ * tidak terlihat, dan ia tidak tahu harus ke mana. Begitu opsinya terlihat,
+ * bilahnya menyingkir supaya tidak menutupi apa pun.
+ */
+export type BilahBawah =
+  | { jenis: 'tidak-ada' }
+  | { jenis: 'turun'; label: string }
+  | { jenis: 'kunci'; label: string }
+  | { jenis: 'lanjut'; label: string };
+
+export const LABEL_TURUN = '\u2193 Jawab di bawah';
+export const LABEL_KUNCI = 'Kunci jawaban';
+
+export function bilahBawah(
+  soal: KeadaanSoal | undefined,
+  nomor: number,
+  jumlahSoal: number,
+): BilahBawah {
+  if (soal === undefined) return { jenis: 'tidak-ada' };
+
+  if (soal.dikunci) {
+    const terakhir = nomor + 1 >= jumlahSoal;
+    return {
+      jenis: 'lanjut',
+      label: terakhir ? 'Lihat yang terjadi sesudahnya' : `Lanjut ke soal ${String(nomor + 2)}`,
+    };
+  }
+
+  if (soal.kunci !== null) return { jenis: 'kunci', label: LABEL_KUNCI };
+
+  return soal.opsiTerlihat
+    ? { jenis: 'tidak-ada' }
+    : { jenis: 'turun', label: LABEL_TURUN };
 }
 
 export function semuaTerkunci(keadaan: Keadaan): boolean {
@@ -615,6 +668,20 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       const berikut = masukLayar(tutupWaktuLayar(keadaan, waktu), tujuan, waktu, catat);
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...berikut, urut }, peristiwa };
+    }
+
+    /*
+     * Fakta tampilan, bukan gerakan pemain: tidak melahirkan peristiwa apa pun
+     * (D-6 adalah daftar tertutup dan tidak punya nama untuk ini). Ia hanya
+     * mengubah keadaan supaya `bilahBawah()` bisa memutuskannya.
+     */
+    case 'opsi_terlihat': {
+      const lama = keadaan.soal[aksi.soal_id];
+      if (lama === undefined || lama.opsiTerlihat === aksi.terlihat) return abaikan(keadaan);
+      return {
+        keadaan: ubahSoal(keadaan, aksi.soal_id, (s) => ({ ...s, opsiTerlihat: aksi.terlihat })),
+        peristiwa: [],
+      };
     }
 
     case 'catat_gulir': {
