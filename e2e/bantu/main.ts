@@ -205,6 +205,37 @@ export async function tungguMasukLayar(
   return akhir;
 }
 
+/**
+ * Tunggu sampai gulir benar-benar berhenti — ditunggu dalam satuan **frame**,
+ * bukan detik.
+ *
+ * Sesudah jari diangkat halaman masih meluncur sendiri, dan gulir halus
+ * `scrollIntoView` juga butuh beberapa frame. Mengukur posisi di tengah
+ * gerakan itu berarti membandingkan dua angka yang diambil pada saat berbeda.
+ */
+export async function tungguGulirBerhenti(page: Page): Promise<void> {
+  await page.evaluate(
+    async () =>
+      await new Promise<void>((beres) => {
+        let terakhir = Number.NaN;
+        let diam = 0;
+        const langkah = (): void => {
+          if (window.scrollY === terakhir) diam += 1;
+          else {
+            diam = 0;
+            terakhir = window.scrollY;
+          }
+          if (diam >= 10) {
+            beres();
+            return;
+          }
+          requestAnimationFrame(langkah);
+        };
+        requestAnimationFrame(langkah);
+      }),
+  );
+}
+
 /* ------------------------------------------------------------------ */
 /* Langkah permainan                                                   */
 /* ------------------------------------------------------------------ */

@@ -10,6 +10,7 @@ import {
   mulaiKasus,
   penandaBaru,
   pilihOpsi,
+  tungguGulirBerhenti,
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
@@ -125,35 +126,6 @@ async function gulirJari(page: Page, dari: { x: number; y: number }, jauh: numbe
   }
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await cdp.detach();
-}
-
-/**
- * Tunggu sampai gulir benar-benar berhenti — ditunggu dalam satuan **frame**,
- * bukan detik. Sesudah jari diangkat, halaman masih meluncur sendiri, dan
- * membaca `scrollY` di tengah luncuran itu akan membandingkan dua angka yang
- * diambil pada saat yang berbeda.
- */
-async function tungguGulirBerhenti(page: Page): Promise<void> {
-  await page.evaluate(
-    async () =>
-      await new Promise<void>((beres) => {
-        let terakhir = Number.NaN;
-        let diam = 0;
-        const langkah = (): void => {
-          if (window.scrollY === terakhir) diam += 1;
-          else {
-            diam = 0;
-            terakhir = window.scrollY;
-          }
-          if (diam >= 10) {
-            beres();
-            return;
-          }
-          requestAnimationFrame(langkah);
-        };
-        requestAnimationFrame(langkah);
-      }),
-  );
 }
 
 function ketukan(daftar: BarisPeristiwa[]): BarisPeristiwa[] {
