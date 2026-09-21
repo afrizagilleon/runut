@@ -14,6 +14,7 @@
     "preview": "vite preview",
     "kolektor": "node server/kolektor.mjs",
     "alpha:ringkas": "node --experimental-strip-types alat/ringkas.ts",
+    "periksa:desain": "node --experimental-strip-types alat/periksa-desain.ts",
     "build:case": "node --experimental-strip-types factory/bangun-kasus.ts",
     "eval:pilih": "node --experimental-strip-types eval/pilih-kasus.ts",
     "eval:data": "node --experimental-strip-types eval/periksa-data.ts",

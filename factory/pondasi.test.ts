@@ -27,12 +27,16 @@ describe('pondasi proyek', () => {
     // disahkan kontrak mana pun.
     const M1 = ['build', 'build:case', 'test', 'typecheck'];
     const M31 = ['dev', 'preview', 'kolektor', 'alpha:ringkas'];
+    // M3.2 RQ-08: gate desain INV-11/INV-12.
+    const M32 = ['periksa:desain'];
     const skrip = Object.keys(paket.scripts).sort();
-    for (const wajib of M1) {
+    for (const wajib of [...M1, ...M32]) {
       expect(skrip).toContain(wajib);
     }
     const tambahan = skrip.filter((s) => !M1.includes(s));
-    const takDikenal = tambahan.filter((s) => !s.startsWith('eval:') && !M31.includes(s));
+    const takDikenal = tambahan.filter(
+      (s) => !s.startsWith('eval:') && !M31.includes(s) && !M32.includes(s),
+    );
     expect(takDikenal).toEqual([]);
   });
 
