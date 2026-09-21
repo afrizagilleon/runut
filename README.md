@@ -28,6 +28,29 @@ sudut membulat, dua tulisan kapital, dan tidak ada tombol utama yang tampil mati
 
 Berkas kasus sudah ikut di repo, jadi `npm run dev` jalan tanpa `build:case`.
 
+## Uji di browser sungguhan
+
+```bash
+npm run e2e          # memainkan Runut di Chromium, ponsel 360 x 640, terang dan gelap
+npm run e2e:lihat    # sama, tetapi kelihatan
+```
+
+`npm run e2e` menyalakan servernya sendiri di port miliknya (8797, 5183, 4183,
+4184) dan mematikannya lagi, lalu memainkan satu kasus penuh terhadap **build
+produksi dengan pengumpul peristiwa yang sungguhan**. Tiap layar disimpan sebagai
+PNG di `.cache/e2e/layar/`, supaya bisa dilihat tanpa membuka browser.
+
+Ia ada karena tes unit tidak bisa melihat apa yang dilihat pemain: repo ini
+sengaja tanpa jsdom, dan peramban tanpa frame tidak menjalankan
+`IntersectionObserver`, animasi, maupun gulir. Lima cacat sampai ke ponsel
+pemilik lewat celah itu.
+
+**Aturan repo: setiap cacat yang ditemukan manusia ditulis dulu sebagai tes e2e
+yang merah, baru diperbaiki.** Dan setiap tes harus dibuktikan merah dengan
+merusak kode produk — tes yang tetap hijau ketika kode yang dijaganya rusak
+bukan penjaga. Tabel "cacat → tes → sabotase" dan cara menambah tes baru ada di
+[`docs/uji-e2e.md`](docs/uji-e2e.md).
+
 ## Apa yang dicatat
 
 Secara baku **tidak ada apa pun yang dikirim ke mana pun.** Aplikasi yang
@@ -150,6 +173,7 @@ baris istilah.
 | `server/` | Pengumpul peristiwa alpha: Node bawaan saja, nol dependensi |
 | `alat/` | Perkakas: ringkasan data alpha menjadi tabel Markdown, dan gate `periksa:desain` |
 | `deploy/` | Berkas dan skrip untuk menerbitkan alpha; tidak pernah dijalankan otomatis |
+| `e2e/` | Uji ujung-ke-ujung di Chromium sungguhan; lihat `docs/uji-e2e.md` |
 | `docs/` | Catatan arsitektur, aturan verifikasi, dan sumber |
 
 ## Sumber data

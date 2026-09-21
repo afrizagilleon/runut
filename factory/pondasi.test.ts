@@ -29,13 +29,19 @@ describe('pondasi proyek', () => {
     const M31 = ['dev', 'preview', 'kolektor', 'alpha:ringkas'];
     // M3.2 RQ-08: gate desain INV-11/INV-12.
     const M32 = ['periksa:desain'];
+    // M3.3 D-1: uji ujung-ke-ujung di browser sungguhan. `e2e:lihat` adalah
+    // `--headed`, untuk dilihat manusia. Disebut satu per satu seperti yang
+    // lain — tidak ada awalan baru yang diloloskan — supaya penjaga ini tetap
+    // menangkap skrip yang tidak disahkan kontrak mana pun.
+    const M33 = ['e2e', 'e2e:lihat'];
     const skrip = Object.keys(paket.scripts).sort();
-    for (const wajib of [...M1, ...M32]) {
+    for (const wajib of [...M1, ...M32, ...M33]) {
       expect(skrip).toContain(wajib);
     }
     const tambahan = skrip.filter((s) => !M1.includes(s));
     const takDikenal = tambahan.filter(
-      (s) => !s.startsWith('eval:') && !M31.includes(s) && !M32.includes(s),
+      (s) =>
+        !s.startsWith('eval:') && !M31.includes(s) && !M32.includes(s) && !M33.includes(s),
     );
     expect(takDikenal).toEqual([]);
   });
