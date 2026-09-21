@@ -441,20 +441,9 @@ summary:focus-visible,
 }
 
 .hook {
-  font-size: 17px;
-}
-
-.aturan-main {
-  list-style: none;
-  padding: 0;
   margin: 0 0 24px;
 }
 
-.aturan-main li {
-  border-top: 1px solid var(--garis);
-  padding: 10px 0;
-  font-size: 14px;
-}
 
 /* --- lembar dokumen: kertas bersudut, satu pintu di kakinya --------------- */
 
@@ -815,9 +804,10 @@ details[open] > .baris-istilah .panah {
 .opsi-tanda {
   display: block;
   margin-top: 4px;
-  font-family: var(--mesin);
+  font-family: var(--baca);
   font-size: 14px;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .opsi-tanda-cocok {
@@ -874,7 +864,7 @@ details[open] > .baris-istilah .panah {
 }
 
 .lembar-ringkas {
-  margin-bottom: 8px;
+  border-radius: 2px;
 }
 
 .lembar-ringkas-kepala {

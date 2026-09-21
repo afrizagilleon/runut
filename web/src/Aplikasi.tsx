@@ -325,20 +325,25 @@ function LayarPembuka({
       <h1 id="judul-pembuka" className="mundur">
         Kita mundur ke {hari.hari}, {hari.panjang}.
       </h1>
-      {/* v3 (D-6): satu kalimat, tanpa tiga aturan main. Rupa layar ini
-          dikerjakan T-06; di sini hanya isinya yang mengikuti skema baru. */}
-      <p className="hook">
+      {/*
+        D-6: satu kalimat, satu tombol. Tiga baris aturan main v2 dihapus —
+        pemilik tidak membacanya; cara mainnya kini muncul sebagai `petunjuk`
+        di soal 1, tempat ia sedang melihat.
+      */}
+      <p className="isi hook" data-uid="kalimat-pembuka">
         <Teks teks={kasus.pembuka.kalimat} bukaSumber={bukaSumber} />
       </p>
-      <button
-        type="button"
-        className="tombol-utama"
-        onClick={() => {
-          kirim({ jenis: 'lanjut' });
-        }}
-      >
-        Mulai kasus
-      </button>
+      <div className="tindakan" data-uid="bilah">
+        <button
+          type="button"
+          className="tombol-utama"
+          onClick={() => {
+            kirim({ jenis: 'lanjut' });
+          }}
+        >
+          Mulai kasus
+        </button>
+      </div>
     </section>
   );
 }
