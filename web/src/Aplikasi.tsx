@@ -1,96 +1,147 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer } from 'react';
 import type { Fakta, Kasus, Soal } from '../../factory/skema/tipe.ts';
+import {
+  type Aksi,
+  type Keadaan,
+  type Peristiwa,
+  keadaanAwal,
+  langkah,
+} from './alur.ts';
+import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
+import { KartuFakta } from './KartuFakta.tsx';
 import { PanelSumber } from './PanelSumber.tsx';
 import { Teks } from './Teks.tsx';
-import { DAFTAR_KASUS, faktaPembukaan, faktaTerlihat, indeksFakta } from './kasus.ts';
+import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
+import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
+import { penanda } from './tanggal.ts';
 
-type Tahap = 'daftar' | 'fakta' | 'soal' | 'pembukaan' | 'debrief';
+/**
+ * Komponen hanya `dispatch` dan merender (D-5).
+ *
+ * Tidak ada satu pun `useState` di berkas ini: seluruh keadaan permainan —
+ * termasuk lipatan kartu, panel sumber yang terbuka, isian layar akhir, dan
+ * apakah tombol "Mau coba kasus lain" sudah ditekan — hidup di `alur.ts`.
+ * Waktu disuntikkan di sini, satu kali per aksi, supaya reducer tetap murni.
+ */
+
+interface Bungkus {
+  keadaan: Keadaan;
+  /** Peristiwa yang belum diserahkan ke `kirim.ts`. */
+  antre: Peristiwa[];
+}
+
+type Pesan = { aksi: Aksi; waktu: number } | { bersihkan: number };
+
+function reduksi(bungkus: Bungkus, pesan: Pesan): Bungkus {
+  if ('bersihkan' in pesan) {
+    return { ...bungkus, antre: bungkus.antre.slice(pesan.bersihkan) };
+  }
+  const hasil = langkah(bungkus.keadaan, pesan.aksi, pesan.waktu);
+  if (hasil.keadaan === bungkus.keadaan && hasil.peristiwa.length === 0) return bungkus;
+  return { keadaan: hasil.keadaan, antre: [...bungkus.antre, ...hasil.peristiwa] };
+}
+
+function awalBungkus(kasus: Kasus): Bungkus {
+  return {
+    keadaan: keadaanAwal({
+      // Hidup di memori tab saja; tidak ditulis ke cookie maupun localStorage (INV-9).
+      sesi: crypto.randomUUID(),
+      kasus_id: kasus.kasus_id,
+      urutanSoal: urutanSoal(kasus),
+      kunciBenar: kunciBenar(kasus),
+      kartuSoal: petaKartu(kasus),
+    }),
+    antre: [],
+  };
+}
 
 export function Aplikasi(): JSX.Element {
-  const [tahap, setTahap] = useState<Tahap>('daftar');
-  const [nomorSoal, setNomorSoal] = useState(0);
-  const [jawaban, setJawaban] = useState<Record<string, string>>({});
-  const [dikunci, setDikunci] = useState<Record<string, boolean>>({});
-  const [sumber, setSumber] = useState<string | null>(null);
+  const kasus = KASUS;
+  const hari = useMemo(() => penanda(kasus.tanggal_t), [kasus.tanggal_t]);
+  const [bungkus, dispatch] = useReducer(reduksi, kasus, awalBungkus);
+  const { keadaan } = bungkus;
 
-  const kasus = DAFTAR_KASUS[0];
-  if (kasus === undefined) {
-    return <main className="halaman">Belum ada kasus di berkas ini.</main>;
-  }
+  const kirim = useCallback((aksi: Aksi): void => {
+    dispatch({ aksi, waktu: Date.now() });
+  }, []);
 
-  const indeks = indeksFakta(kasus);
-  const faktaSumber: Fakta | null = sumber === null ? null : (indeks.get(sumber) ?? null);
-  const bukaSumber = (fact_id: string): void => {
-    setSumber(fact_id);
-  };
+  // Satu-satunya tempat waktu dibaca untuk peristiwa pembuka.
+  useEffect(() => {
+    kirim({ jenis: 'mulai', lebar_layar: window.innerWidth });
+  }, [kirim]);
 
-  const mulai = (): void => {
-    setTahap('fakta');
-    setNomorSoal(0);
-    setJawaban({});
-    setDikunci({});
-  };
+  useEffect(() => {
+    const tutup = (): void => {
+      kirim({ jenis: 'tutup' });
+      siramPeristiwa();
+    };
+    window.addEventListener('pagehide', tutup);
+    return () => {
+      window.removeEventListener('pagehide', tutup);
+    };
+  }, [kirim]);
+
+  // Peristiwa diserahkan ke kirim.ts di sini, bukan di dalam reducer: reducer
+  // harus tetap murni, dan React boleh memanggilnya dua kali di StrictMode.
+  useEffect(() => {
+    if (bungkus.antre.length === 0) return;
+    const jumlah = bungkus.antre.length;
+    catatPeristiwa(bungkus.antre.slice(0, jumlah));
+    dispatch({ bersihkan: jumlah });
+  }, [bungkus.antre]);
+
+  const indeks = useMemo(() => indeksFakta(kasus), [kasus]);
+  const layar = keadaan.layar;
+
+  const bukaSumber = useCallback(
+    (fact_id: string): void => {
+      const soal_id = layar.jenis === 'soal' ? (keadaan.urutanSoal[layar.nomor] ?? null) : null;
+      kirim({ jenis: 'buka_sumber', fact_id, soal_id });
+    },
+    [kirim, layar, keadaan.urutanSoal],
+  );
+
+  const faktaSumber: Fakta | null =
+    keadaan.sumberTerbuka === null ? null : (indeks.get(keadaan.sumberTerbuka) ?? null);
 
   return (
     <>
-      <main className="halaman">
-        {tahap === 'daftar' ? (
-          <Daftar kasus={kasus} mulai={mulai} />
-        ) : (
-          <>
-            <KepalaKasus kasus={kasus} kembali={() => { setTahap('daftar'); }} />
-            {tahap === 'fakta' && (
-              <BagianFakta
-                kasus={kasus}
-                bukaSumber={bukaSumber}
-                lanjut={() => { setTahap('soal'); }}
-              />
-            )}
-            {tahap === 'soal' && (
-              <BagianSoal
-                kasus={kasus}
-                nomor={nomorSoal}
-                jawaban={jawaban}
-                dikunci={dikunci}
-                pilih={(soal_id, kunci) => {
-                  setJawaban((lama) => ({ ...lama, [soal_id]: kunci }));
-                }}
-                kunci={(soal_id) => {
-                  setDikunci((lama) => ({ ...lama, [soal_id]: true }));
-                }}
-                lanjut={() => {
-                  if (nomorSoal + 1 < kasus.soal.length) setNomorSoal(nomorSoal + 1);
-                  else setTahap('pembukaan');
-                }}
-                mundur={() => {
-                  if (nomorSoal > 0) setNomorSoal(nomorSoal - 1);
-                  else setTahap('fakta');
-                }}
-                bukaSumber={bukaSumber}
-              />
-            )}
-            {tahap === 'pembukaan' && (
-              <BagianPembukaan
-                kasus={kasus}
-                bukaSumber={bukaSumber}
-                lanjut={() => { setTahap('debrief'); }}
-              />
-            )}
-            {tahap === 'debrief' && (
-              <BagianDebrief
-                kasus={kasus}
-                jawaban={jawaban}
-                selesai={() => { setTahap('daftar'); }}
-              />
-            )}
-            <Disclaimer kasus={kasus} />
-          </>
+      {layar.jenis !== 'pembukaan' && layar.jenis !== 'akhir' && (
+        <header className="penanda" role="banner">
+          <KepingKalender hari={hari} />
+          {layar.jenis === 'soal' && (
+            <TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />
+          )}
+        </header>
+      )}
+
+      <main className="halaman" id="isi">
+        {layar.jenis === 'pembuka' && (
+          <LayarPembuka kasus={kasus} hari={hari} kirim={kirim} bukaSumber={bukaSumber} />
         )}
+        {layar.jenis === 'soal' && (
+          <LayarSoal
+            kasus={kasus}
+            keadaan={keadaan}
+            nomor={layar.nomor}
+            kirim={kirim}
+            bukaSumber={bukaSumber}
+          />
+        )}
+        {layar.jenis === 'pembukaan' && (
+          <LayarPembukaan kasus={kasus} hari={hari} kirim={kirim} bukaSumber={bukaSumber} />
+        )}
+        {layar.jenis === 'akhir' && <LayarAkhir keadaan={keadaan} kirim={kirim} />}
       </main>
+
+      <Kaki kasus={kasus} />
+
       {faktaSumber !== null && (
         <PanelSumber
           fakta={faktaSumber}
-          tutup={() => { setSumber(null); }}
+          tutup={() => {
+            kirim({ jenis: 'tutup_sumber' });
+          }}
           bukaSumber={bukaSumber}
         />
       )}
@@ -98,245 +149,346 @@ export function Aplikasi(): JSX.Element {
   );
 }
 
-function Daftar({ kasus, mulai }: { kasus: Kasus; mulai: () => void }): JSX.Element {
+/** Tiga titik: memang tiga soal berurutan, jadi penanda urutan dipakai di sini. */
+function TitikSoal({ jumlah, sekarang }: { jumlah: number; sekarang: number }): JSX.Element {
+  return (
+    <p className="titik-soal" aria-label={`Soal ${String(sekarang + 1)} dari ${String(jumlah)}`}>
+      {Array.from({ length: jumlah }, (_, nomor) => (
+        <span
+          key={nomor}
+          aria-hidden="true"
+          className={`titik${nomor === sekarang ? ' titik-kini' : ''}${
+            nomor < sekarang ? ' titik-lewat' : ''
+          }`}
+        />
+      ))}
+    </p>
+  );
+}
+
+function LayarPembuka({
+  kasus,
+  hari,
+  kirim,
+  bukaSumber,
+}: {
+  kasus: Kasus;
+  hari: ReturnType<typeof penanda>;
+  kirim: (aksi: Aksi) => void;
+  bukaSumber: (fact_id: string) => void;
+}): JSX.Element {
+  return (
+    <section className="layar layar-pembuka" aria-labelledby="judul-pembuka">
+      <HalamanKalender hari={hari} />
+      <h1 id="judul-pembuka" className="mundur">
+        Kita mundur ke {hari.hari}, {hari.panjang}.
+      </h1>
+      <p className="hook">
+        <Teks teks={kasus.pembuka.hook} bukaSumber={bukaSumber} />
+      </p>
+      <ul className="aturan-main">
+        {kasus.pembuka.aturan.map((baris, nomor) => (
+          <li key={nomor}>
+            <Teks teks={baris} bukaSumber={bukaSumber} />
+          </li>
+        ))}
+      </ul>
+      <button
+        type="button"
+        className="tombol-utama"
+        onClick={() => {
+          kirim({ jenis: 'lanjut' });
+        }}
+      >
+        Mulai kasus
+      </button>
+    </section>
+  );
+}
+
+function LayarSoal({
+  kasus,
+  keadaan,
+  nomor,
+  kirim,
+  bukaSumber,
+}: {
+  kasus: Kasus;
+  keadaan: Keadaan;
+  nomor: number;
+  kirim: (aksi: Aksi) => void;
+  bukaSumber: (fact_id: string) => void;
+}): JSX.Element {
+  const soal: Soal | undefined = kasus.soal[nomor];
+  if (soal === undefined) return <p>Soal tidak ditemukan.</p>;
+  const s = keadaan.soal[soal.soal_id];
+  if (s === undefined) return <p>Soal tidak ditemukan.</p>;
+
+  const kartu = kartuSoal(kasus, soal);
+  const terakhir = nomor + 1 >= kasus.soal.length;
+  const menentukan = new Set(soal.kartu);
+
+  return (
+    <section className="layar layar-soal" aria-labelledby={`judul-${soal.soal_id}`}>
+      <h2 className="tersembunyi" id={`judul-${soal.soal_id}`}>
+        Soal {nomor + 1} dari {kasus.soal.length}
+      </h2>
+
+      <div className="tumpukan">
+        {kartu.map((fakta) => (
+          <KartuFakta
+            key={fakta.fact_id}
+            fakta={fakta}
+            terlipat={s.terlipat[fakta.fact_id] === true}
+            bukaSumber={bukaSumber}
+            lipat={(fact_id) => {
+              kirim({ jenis: 'lipat_kartu', soal_id: soal.soal_id, fact_id });
+            }}
+            buka={(fact_id) => {
+              kirim({ jenis: 'buka_kartu', soal_id: soal.soal_id, fact_id });
+            }}
+          />
+        ))}
+      </div>
+
+      {soal.istilah.length > 0 && (
+        <dl className="istilah">
+          {soal.istilah.map((butir) => (
+            <div key={butir.kata} className="istilah-butir">
+              <dt>{butir.kata}</dt>
+              <dd>{butir.arti}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+
+      <Gelembung teks={soal.batang} bukaSumber={bukaSumber} />
+
+      <button
+        type="button"
+        className="tombol-kecil lihat-kartu"
+        onClick={() => {
+          kirim({ jenis: 'lihat_kartu_lagi', soal_id: soal.soal_id });
+        }}
+      >
+        Lihat kartu lagi
+      </button>
+
+      <fieldset className="pilihan" disabled={s.dikunci}>
+        <legend className="tersembunyi">Pilih satu jawaban</legend>
+        {soal.pilihan.map((p) => {
+          const dipilih = s.kunci === p.kunci;
+          const tepat = s.dikunci && p.kunci === soal.jawaban;
+          return (
+            <label
+              key={p.kunci}
+              className={`opsi${dipilih ? ' opsi-dipilih' : ''}${tepat ? ' opsi-tepat' : ''}`}
+            >
+              <input
+                type="radio"
+                name={soal.soal_id}
+                value={p.kunci}
+                checked={dipilih}
+                onChange={() => {
+                  kirim({ jenis: 'pilih', soal_id: soal.soal_id, kunci: p.kunci });
+                }}
+              />
+              <span className="opsi-huruf" aria-hidden="true">
+                {p.kunci}
+              </span>
+              <span className="opsi-teks">
+                <Teks teks={p.teks} bukaSumber={bukaSumber} interaktif={false} />
+              </span>
+            </label>
+          );
+        })}
+      </fieldset>
+
+      {s.dikunci && (
+        <div className="kunci-jawaban" role="status">
+          <p className={`cap${s.benar === true ? ' cap-cocok' : ' cap-belum'}`}>
+            <span aria-hidden="true" className="cap-tanda">
+              {s.benar === true ? '✓' : '!'}
+            </span>
+            {s.benar === true ? 'Cocok dengan kartu' : 'Belum cocok dengan kartu'}
+          </p>
+          <p className="teks-kunci">
+            <Teks teks={soal.penjelasan} bukaSumber={bukaSumber} />
+          </p>
+          <p className="kartu-menentukan">
+            Kartu yang menentukan:{' '}
+            {kartu
+              .filter((f) => menentukan.has(f.fact_id))
+              .map((f) => f.awam?.kepala ?? f.fact_id)
+              .join(' · ')}
+          </p>
+        </div>
+      )}
+
+      <div className="tindakan">
+        {!s.dikunci ? (
+          <button
+            type="button"
+            className="tombol-utama"
+            disabled={s.kunci === null}
+            onClick={() => {
+              kirim({ jenis: 'kunci_jawaban', soal_id: soal.soal_id });
+            }}
+          >
+            Kunci jawaban
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="tombol-utama"
+            onClick={() => {
+              kirim({ jenis: 'lanjut' });
+            }}
+          >
+            {terakhir ? 'Lihat yang terjadi sesudahnya' : `Lanjut ke soal ${String(nomor + 2)}`}
+          </button>
+        )}
+      </div>
+
+      {nomor > 0 && (
+        <button
+          type="button"
+          className="tombol-kecil"
+          onClick={() => {
+            kirim({ jenis: 'lihat_balik', nomor: nomor - 1 });
+          }}
+        >
+          Lihat lagi soal {nomor}
+        </button>
+      )}
+    </section>
+  );
+}
+
+/** Gelembung obrolan: satu-satunya bentuk gelembung di seluruh antarmuka (D-8). */
+function Gelembung({
+  teks,
+  bukaSumber,
+}: {
+  teks: string;
+  bukaSumber: (fact_id: string) => void;
+}): JSX.Element {
+  const kutip = /"([^"]*)"/.exec(teks);
+  if (kutip === null) {
+    return (
+      <p className="tanya">
+        <Teks teks={teks} bukaSumber={bukaSumber} />
+      </p>
+    );
+  }
+  const mulai = kutip.index;
+  const akhir = mulai + kutip[0].length;
   return (
     <>
-      <h1>Runut</h1>
-      <p className="sambutan">
-        Latihan membaca dokumen pasar modal. Kamu melihat apa yang diketahui publik pada satu
-        tanggal di masa lalu, menjawab tiga pertanyaan, lalu melihat apa yang terjadi sesudahnya.
-        Setiap angka bisa diketuk untuk melihat sumbernya.
+      <p className="pembuka-obrolan">
+        <Teks teks={teks.slice(0, mulai)} bukaSumber={bukaSumber} />
       </p>
-      <ul className="daftar-kasus">
-        <li>
-          <article className="kartu">
-            <h2>{kasus.judul}</h2>
-            <p className="meta">
-              {kasus.nama_samaran} · sektor {kasus.emiten.sektor} · data sampai {kasus.tanggal_t}
-            </p>
-            <p className="meta">
-              {kasus.soal.length} soal · {kasus.fakta_terlihat.length} fakta · sekitar 5 menit
-            </p>
-            <button type="button" className="tombol-utama" onClick={mulai}>
-              Mulai kasus ini
-            </button>
-          </article>
-        </li>
-      </ul>
-      <p className="catatan">
-        Tanpa akun, tanpa login, dan tanpa mengirim apa pun ke mana pun. Semua data sudah ada di
-        dalam halaman ini.
+      <p className="gelembung">
+        <span className="gelembung-inisial" aria-hidden="true">
+          A
+        </span>
+        <span className="gelembung-isi">
+          <Teks teks={kutip[1] ?? ''} bukaSumber={bukaSumber} interaktif={false} />
+        </span>
+      </p>
+      <p className="tanya">
+        <Teks teks={teks.slice(akhir)} bukaSumber={bukaSumber} />
       </p>
     </>
   );
 }
 
-function KepalaKasus({ kasus, kembali }: { kasus: Kasus; kembali: () => void }): JSX.Element {
-  return (
-    <header className="kepala">
-      <button type="button" className="tombol-kecil" onClick={kembali}>
-        ← Daftar kasus
-      </button>
-      <h1>{kasus.nama_samaran}</h1>
-      <p className="meta">
-        Sektor {kasus.emiten.sektor} · Papan {kasus.emiten.papan} · keadaan pada {kasus.tanggal_t}
-      </p>
-    </header>
-  );
-}
-
-function Disclaimer({ kasus }: { kasus: Kasus }): JSX.Element {
-  return (
-    <aside className="disclaimer" aria-label="Tiga kalimat tetap">
-      <ul>
-        {kasus.disclaimer.map((kalimat) => (
-          <li key={kalimat}>{kalimat}</li>
-        ))}
-      </ul>
-    </aside>
-  );
-}
-
-function KartuFakta({
-  fakta,
-  bukaSumber,
-}: {
-  fakta: Fakta;
-  bukaSumber: (fact_id: string) => void;
-}): JSX.Element {
-  return (
-    <li className="kartu kartu-fakta">
-      <p>{fakta.klaim}</p>
-      <p className="baris-kartu">
-        <span className={`tanda tanda-${fakta.status.toLowerCase()}`}>{fakta.status}</span>
-        <button
-          type="button"
-          className="tombol-kecil"
-          onClick={() => {
-            bukaSumber(fakta.fact_id);
-          }}
-        >
-          Lihat sumber
-        </button>
-      </p>
-    </li>
-  );
-}
-
-function BagianFakta({
+function LayarPembukaan({
   kasus,
-  bukaSumber,
-  lanjut,
-}: {
-  kasus: Kasus;
-  bukaSumber: (fact_id: string) => void;
-  lanjut: () => void;
-}): JSX.Element {
-  return (
-    <section aria-labelledby="judul-fakta">
-      <h2 id="judul-fakta">Yang diketahui publik sampai {kasus.tanggal_t}</h2>
-      <p>
-        Baca dulu daftarnya. Apa pun yang baru terbit sesudah tanggal ini sengaja tidak ada di
-        sini.
-      </p>
-      <ul className="daftar-fakta">
-        {faktaTerlihat(kasus).map((fakta) => (
-          <KartuFakta key={fakta.fact_id} fakta={fakta} bukaSumber={bukaSumber} />
-        ))}
-      </ul>
-      <button type="button" className="tombol-utama" onClick={lanjut}>
-        Lanjut ke {kasus.soal.length} soal
-      </button>
-    </section>
-  );
-}
-
-function BagianSoal({
-  kasus,
-  nomor,
-  jawaban,
-  dikunci,
-  pilih,
-  kunci,
-  lanjut,
-  mundur,
+  hari,
+  kirim,
   bukaSumber,
 }: {
   kasus: Kasus;
-  nomor: number;
-  jawaban: Record<string, string>;
-  dikunci: Record<string, boolean>;
-  pilih: (soal_id: string, kunci: string) => void;
-  kunci: (soal_id: string) => void;
-  lanjut: () => void;
-  mundur: () => void;
+  hari: ReturnType<typeof penanda>;
+  kirim: (aksi: Aksi) => void;
   bukaSumber: (fact_id: string) => void;
 }): JSX.Element {
-  const soal: Soal | undefined = kasus.soal[nomor];
-  if (soal === undefined) return <p>Soal tidak ditemukan.</p>;
-  const terpilih = jawaban[soal.soal_id];
-  const sudah = dikunci[soal.soal_id] === true;
-  const tepat = soal.pilihan.find((p) => p.kunci === soal.jawaban);
+  // Gulir terjauh dicatat lewat reducer, bukan disimpan di komponen.
+  useEffect(() => {
+    const catat = (): void => {
+      const tinggi = document.documentElement.scrollHeight - window.innerHeight;
+      const persen = tinggi <= 0 ? 100 : (window.scrollY / tinggi) * 100;
+      kirim({ jenis: 'catat_gulir', persen });
+    };
+    catat();
+    window.addEventListener('scroll', catat, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', catat);
+    };
+  }, [kirim]);
 
   return (
-    <section aria-labelledby="judul-soal">
-      <p className="langkah">
-        Soal {nomor + 1} dari {kasus.soal.length}
-      </p>
-      <h2 id="judul-soal">
-        <Teks teks={soal.batang} bukaSumber={bukaSumber} />
-      </h2>
+    <section className="layar layar-pembukaan" aria-labelledby="judul-pembukaan">
+      <KalenderSobek hari={hari} />
+      <h1 id="judul-pembukaan" className="waktu-jalan">
+        Waktu berjalan lagi
+      </h1>
+      <p className="mundur">Inilah yang terjadi sesudah {hari.panjang}.</p>
 
-      <fieldset className="pilihan" disabled={sudah}>
-        <legend className="tersembunyi">Pilih satu jawaban</legend>
-        {soal.pilihan.map((p) => (
-          <label
-            key={p.kunci}
-            className={`pilihan-baris${sudah && p.kunci === soal.jawaban ? ' pilihan-tepat' : ''}`}
-          >
-            <input
-              type="radio"
-              name={soal.soal_id}
-              value={p.kunci}
-              checked={terpilih === p.kunci}
-              onChange={() => {
-                pilih(soal.soal_id, p.kunci);
-              }}
-            />
-            <span>
-              <Teks teks={p.teks} bukaSumber={bukaSumber} interaktif={false} />
-            </span>
-          </label>
+      <ol className="garis-waktu">
+        {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
+          <li key={nomor}>
+            <Teks teks={paragraf} bukaSumber={bukaSumber} />
+          </li>
         ))}
-      </fieldset>
+      </ol>
 
-      {!sudah && (
-        <button
-          type="button"
-          className="tombol-utama"
-          disabled={terpilih === undefined}
-          onClick={() => {
-            kunci(soal.soal_id);
-          }}
-        >
-          Kunci jawaban
-        </button>
-      )}
-
-      {sudah && (
-        <div className="umpan-balik" role="status">
-          <p>
-            Jawaban yang dimaksud soal ini: <strong>{tepat?.kunci.toUpperCase()}</strong>.{' '}
-            {terpilih === soal.jawaban
-              ? 'Sama dengan pilihanmu.'
-              : 'Berbeda dari pilihanmu — tidak apa-apa, alasannya di bawah.'}
-          </p>
-          <p>
-            <Teks teks={soal.penjelasan} bukaSumber={bukaSumber} />
-          </p>
-          <button type="button" className="tombol-utama" onClick={lanjut}>
-            {nomor + 1 < kasus.soal.length ? 'Soal berikutnya' : 'Lihat pembukaan'}
-          </button>
-        </div>
-      )}
-
-      <button type="button" className="tombol-kecil" onClick={mundur}>
-        ← Kembali
-      </button>
-    </section>
-  );
-}
-
-function BagianPembukaan({
-  kasus,
-  bukaSumber,
-  lanjut,
-}: {
-  kasus: Kasus;
-  bukaSumber: (fact_id: string) => void;
-  lanjut: () => void;
-}): JSX.Element {
-  return (
-    <section aria-labelledby="judul-pembukaan">
-      <h2 id="judul-pembukaan">Apa yang terjadi sesudah {kasus.tanggal_t}</h2>
-      {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
-        <p key={nomor}>
-          <Teks teks={paragraf} bukaSumber={bukaSumber} />
-        </p>
-      ))}
-
-      <h3>Fakta yang baru tersedia sesudah tanggal kasus</h3>
-      <ul className="daftar-fakta">
-        {faktaPembukaan(kasus).map((fakta) => (
-          <KartuFakta key={fakta.fact_id} fakta={fakta} bukaSumber={bukaSumber} />
-        ))}
-      </ul>
+      <section className="bacaan" aria-labelledby="judul-bacaan">
+        <h2 id="judul-bacaan">Apa yang bisa dan tidak bisa dibaca pada {hari.panjang}</h2>
+        <h3>Bisa dibaca</h3>
+        <ul>
+          {kasus.pembukaan.bisa_dibaca.map((baris, nomor) => (
+            <li key={nomor}>
+              <Teks teks={baris} bukaSumber={bukaSumber} />
+            </li>
+          ))}
+        </ul>
+        <h3>Tidak bisa dibaca</h3>
+        <ul>
+          {kasus.pembukaan.tidak_bisa_dibaca.map((baris, nomor) => (
+            <li key={nomor}>
+              <Teks teks={baris} bukaSumber={bukaSumber} />
+            </li>
+          ))}
+        </ul>
+        <h3>Yang kami singkirkan dari kartu</h3>
+        <ul>
+          {kasus.pembukaan.disingkirkan.map((baris, nomor) => (
+            <li key={nomor}>
+              <Teks teks={baris} bukaSumber={bukaSumber} />
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <JejakVerifikasi kasus={kasus} bukaSumber={bukaSumber} />
 
-      <button type="button" className="tombol-utama" onClick={lanjut}>
-        Lihat ringkasan
-      </button>
+      <p className="nama-asli">
+        Nama aslinya: {kasus.emiten.nama} ({kasus.emiten.simbol}).
+      </p>
+
+      <div className="tindakan">
+        <button
+          type="button"
+          className="tombol-utama"
+          onClick={() => {
+            kirim({ jenis: 'lanjut' });
+          }}
+        >
+          Lanjut ke tiga pertanyaan
+        </button>
+      </div>
     </section>
   );
 }
@@ -350,51 +502,52 @@ function JejakVerifikasi({
 }): JSX.Element {
   return (
     <section className="jejak" aria-labelledby="judul-jejak">
-      <h3 id="judul-jejak">Jejak verifikasi</h3>
+      <h2 id="judul-jejak">Jejak verifikasi</h2>
       <p>
         Sebelum kasus ini dibuat, rantai laporan kepemilikan diperiksa dengan sepuluh aturan.
         Hasilnya {kasus.temuan.length} temuan.
       </p>
       <ul className="daftar-temuan">
         {kasus.temuan.map((temuan) => (
-          <li key={temuan.temuan_id} className="kartu">
-            <p className="baris-kartu">
-              <span className="tanda tanda-aturan">{temuan.aturan}</span>
-            </p>
-            <p>{temuan.ringkasan}</p>
-            <ul className="angka-temuan">
-              {temuan.angka.map((angka) => (
-                <li key={angka.label}>
-                  {angka.label}: <strong>{angka.nilai}</strong> {angka.satuan}
-                </li>
-              ))}
-            </ul>
-            {temuan.fakta_terkait.length > 0 && (
-              <p className="baris-kartu">
-                <span className="meta">Fakta terkait:</span>
-                {temuan.fakta_terkait.slice(0, 6).map((id) => (
-                  <button
-                    key={id}
-                    type="button"
-                    className="rujukan"
-                    onClick={() => {
-                      bukaSumber(id);
-                    }}
-                  >
-                    {id}
-                  </button>
+          <li key={temuan.temuan_id} className="lembar">
+            <div className="lembar-garis" aria-hidden="true" />
+            <div className="lembar-kepala">
+              <h3 className="lembar-sumber">Aturan {temuan.aturan}</h3>
+            </div>
+            <div className="lembar-isi">
+              <p>{temuan.ringkasan}</p>
+              <ul className="angka-temuan">
+                {temuan.angka.map((angka) => (
+                  <li key={angka.label}>
+                    {angka.label}: <strong>{angka.nilai}</strong> {angka.satuan}
+                  </li>
                 ))}
-                {temuan.fakta_terkait.length > 6 && (
-                  <span className="meta">
-                    dan {temuan.fakta_terkait.length - 6} fakta lain
-                  </span>
-                )}
-              </p>
-            )}
+              </ul>
+              {temuan.fakta_terkait.length > 0 && (
+                <p className="terkait">
+                  {temuan.fakta_terkait.slice(0, 4).map((id) => (
+                    <button
+                      key={id}
+                      type="button"
+                      className="rujukan"
+                      onClick={() => {
+                        bukaSumber(id);
+                      }}
+                    >
+                      {id}
+                    </button>
+                  ))}
+                  {temuan.fakta_terkait.length > 4 && (
+                    <span className="meta">
+                      dan {temuan.fakta_terkait.length - 4} fakta lain
+                    </span>
+                  )}
+                </p>
+              )}
+            </div>
           </li>
         ))}
       </ul>
-
       <details>
         <summary>Aturan yang tidak bisa dijalankan atas kasus ini</summary>
         <ul className="daftar-parameter">
@@ -412,37 +565,142 @@ function JejakVerifikasi({
   );
 }
 
-function BagianDebrief({
-  kasus,
-  jawaban,
-  selesai,
+const TERASA = ['ujian hafalan', 'membaca data', 'menebak harga'] as const;
+const SUMBER_JAWABAN = ['kartu fakta', 'ingatan atau pengetahuan sendiri', 'tebakan'] as const;
+
+function LayarAkhir({
+  keadaan,
+  kirim,
 }: {
-  kasus: Kasus;
-  jawaban: Record<string, string>;
-  selesai: () => void;
+  keadaan: Keadaan;
+  kirim: (aksi: Aksi) => void;
 }): JSX.Element {
-  const cocok = kasus.soal.filter((s) => jawaban[s.soal_id] === s.jawaban).length;
+  if (keadaan.akhirTerkirim) {
+    return (
+      <section className="layar layar-akhir" aria-labelledby="judul-terima">
+        <h1 id="judul-terima">Terima kasih.</h1>
+        <p>Jawabanmu tercatat tanpa nama, tanpa akun, dan tanpa cookie.</p>
+        {!keadaan.minatDitekan ? (
+          <button
+            type="button"
+            className="tombol-kedua"
+            onClick={() => {
+              kirim({ jenis: 'minat_kasus_lain' });
+            }}
+          >
+            Mau coba kasus lain
+          </button>
+        ) : (
+          <div className="pesan-alpha">
+            <p>
+              <strong>Tidak semua saham seperti ini.</strong> Kasus berikutnya adalah perusahaan
+              yang sehat — sedang kami siapkan. Selamat belajar membaca data, folks.
+            </p>
+          </div>
+        )}
+      </section>
+    );
+  }
+
   return (
-    <section aria-labelledby="judul-debrief">
-      <h2 id="judul-debrief">Ringkasan</h2>
-      <p>
-        Pilihanmu sama dengan jawaban soal pada {cocok} dari {kasus.soal.length} soal. Angka ini
-        tidak disimpan di mana pun.
-      </p>
-      <h3>Konsep yang dipakai kasus ini</h3>
-      <ul className="daftar-konsep">
-        {kasus.kartu_konsep.map((kartu) => (
-          <li key={kartu.kode}>
-            <span className="tanda tanda-aturan">{kartu.kode}</span> {kartu.judul}
-          </li>
+    <section className="layar layar-akhir" aria-labelledby="judul-akhir">
+      <h1 id="judul-akhir">Tiga pertanyaan singkat</h1>
+      <p className="meta">Semuanya boleh dilewati.</p>
+
+      <fieldset className="tanya-akhir">
+        <legend>Seberapa layak kasus ini kamu bagikan ke teman?</legend>
+        <div className="deret-pilihan">
+          {[1, 2, 3, 4, 5].map((nilai) => (
+            <label key={nilai} className={`petak${keadaan.akhir.rating === nilai ? ' petak-pilih' : ''}`}>
+              <input
+                type="radio"
+                name="rating"
+                checked={keadaan.akhir.rating === nilai}
+                onChange={() => {
+                  kirim({ jenis: 'isi_akhir', medan: 'rating', nilai });
+                }}
+              />
+              <span>{nilai}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="tanya-akhir">
+        <legend>Kasus tadi terasa seperti…</legend>
+        <div className="deret-pilihan">
+          {TERASA.map((nilai) => (
+            <label key={nilai} className={`petak${keadaan.akhir.terasa === nilai ? ' petak-pilih' : ''}`}>
+              <input
+                type="radio"
+                name="terasa"
+                checked={keadaan.akhir.terasa === nilai}
+                onChange={() => {
+                  kirim({ jenis: 'isi_akhir', medan: 'terasa', nilai });
+                }}
+              />
+              <span>{nilai}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <fieldset className="tanya-akhir">
+        <legend>Kamu paling sering menjawab dari…</legend>
+        <div className="deret-pilihan">
+          {SUMBER_JAWABAN.map((nilai) => (
+            <label
+              key={nilai}
+              className={`petak${keadaan.akhir.sumber_jawaban === nilai ? ' petak-pilih' : ''}`}
+            >
+              <input
+                type="radio"
+                name="sumber_jawaban"
+                checked={keadaan.akhir.sumber_jawaban === nilai}
+                onChange={() => {
+                  kirim({ jenis: 'isi_akhir', medan: 'sumber_jawaban', nilai });
+                }}
+              />
+              <span>{nilai}</span>
+            </label>
+          ))}
+        </div>
+      </fieldset>
+
+      <label className="tanya-akhir kotak-teks">
+        <span className="label-teks">Ada yang membingungkan atau ingin kamu sampaikan?</span>
+        <textarea
+          rows={4}
+          value={keadaan.akhir.teks ?? ''}
+          onChange={(peristiwa) => {
+            kirim({ jenis: 'isi_akhir', medan: 'teks', nilai: peristiwa.target.value });
+          }}
+        />
+      </label>
+
+      <div className="tindakan">
+        <button
+          type="button"
+          className="tombol-utama"
+          onClick={() => {
+            kirim({ jenis: 'kirim_akhir' });
+          }}
+        >
+          Selesai
+        </button>
+      </div>
+    </section>
+  );
+}
+
+function Kaki({ kasus }: { kasus: Kasus }): JSX.Element {
+  return (
+    <footer className="kaki" aria-label="Tiga kalimat tetap">
+      <ul>
+        {kasus.disclaimer.map((kalimat) => (
+          <li key={kalimat}>{kalimat}</li>
         ))}
       </ul>
-      <p>
-        Nama sebenarnya: {kasus.emiten.nama} ({kasus.emiten.simbol}).
-      </p>
-      <button type="button" className="tombol-utama" onClick={selesai}>
-        Kembali ke daftar kasus
-      </button>
-    </section>
+    </footer>
   );
 }

@@ -101,6 +101,8 @@ export interface Keadaan {
   akhir: JawabanAkhir;
   /** Sudah menekan Selesai. */
   akhirTerkirim: boolean;
+  /** Sudah menekan "Mau coba kasus lain"; pesan alpha-nya lalu tampil. */
+  minatDitekan: boolean;
   /** Gulir terjauh di layar pembukaan, dalam persen. */
   gulirMaksPersen: number;
   masukPembukaanPada: number | null;
@@ -175,6 +177,7 @@ export function keadaanAwal({
     sumberTerbuka: null,
     akhir: { rating: null, terasa: null, sumber_jawaban: null, teks: null },
     akhirTerkirim: false,
+    minatDitekan: false,
     gulirMaksPersen: 0,
     masukPembukaanPada: null,
     urut: 0,
@@ -455,7 +458,7 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
       catat.tambah('minat_kasus_lain');
       const { peristiwa, urut } = catat.hasil;
-      return { keadaan: { ...keadaan, urut }, peristiwa };
+      return { keadaan: { ...keadaan, minatDitekan: true, urut }, peristiwa };
     }
 
     case 'isi_akhir': {

@@ -1,4 +1,4 @@
-import { RUJUKAN_ANDAIAN, pecahTeks } from '../../factory/skema/rujukan.ts';
+import { RUJUKAN_ANDAIAN, RUJUKAN_HARI_INI, pecahTeks } from '../../factory/skema/rujukan.ts';
 
 export interface TeksProps {
   teks: string;
@@ -7,15 +7,19 @@ export interface TeksProps {
   /**
    * `false` untuk teks yang berada di dalam label pilihan: tombol di dalam label
    * akan ikut memilih radio-nya, jadi di sana angka dirender datar. Angka yang
-   * sama tetap bisa diketuk di batang soal, penjelasan, dan daftar fakta.
+   * sama tetap bisa diketuk di batang soal, kartu, dan teks kunci.
    */
   interaktif?: boolean;
 }
 
 /**
  * Render kalimat yang angkanya ditulis sebagai rujukan `[[fact_id|teks]]`.
- * Angka fakta menjadi tombol yang bisa diketuk atau ditekan dengan keyboard;
- * angka andaian di dalam soal dirender datar karena ia tidak punya sumber.
+ *
+ * Tiga jenis potongan:
+ * - angka fakta → tombol yang membuka panel sumber;
+ * - angka andaian (`misal`) → datar, karena ia memang tidak punya sumber;
+ * - tanggal beku (`hari-ini`) → datar dan tidak diberi keterangan "andaian",
+ *   karena ia bukan pengandaian melainkan tanggal kasusnya sendiri.
  */
 export function Teks({ teks, bukaSumber, interaktif = true }: TeksProps): JSX.Element {
   return (
@@ -23,6 +27,13 @@ export function Teks({ teks, bukaSumber, interaktif = true }: TeksProps): JSX.El
       {pecahTeks(teks).map((bagian, nomor) => {
         if (bagian.jenis === 'utuh') {
           return <span key={nomor}>{bagian.teks}</span>;
+        }
+        if (bagian.fact_id === RUJUKAN_HARI_INI) {
+          return (
+            <span key={nomor} className="hari-ini">
+              {bagian.teks}
+            </span>
+          );
         }
         if (!interaktif) {
           return (
