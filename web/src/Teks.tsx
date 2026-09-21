@@ -5,10 +5,30 @@ import {
   type BagianTeks,
 } from '../../factory/skema/rujukan.ts';
 
+/**
+ * Id blok penjelasan sebaris untuk sebuah fakta.
+ *
+ * Satu fungsi, dipakai dua tempat: tombol angka menunjuknya lewat
+ * `aria-controls`, dan `PenjelasanSebaris` memakainya sebagai `id`. Kalau
+ * keduanya mengarang idnya sendiri, mereka akan berselisih tanpa ada yang tahu.
+ */
+export function idPenjelasan(fact_id: string): string {
+  return `penjelasan-${fact_id}`;
+}
+
 export interface TeksProps {
   teks: string;
   /** Dipanggil saat pemain mengetuk sebuah angka; membuka sumber fakta itu. */
   sakelarSumber: (fact_id: string) => void;
+  /**
+   * `fact_id` yang penjelasan sebarisnya sedang terbuka (C-2).
+   *
+   * Tombol angka adalah kontrol buka-tutup, dan sampai A-1 ia tidak mengatakan
+   * begitu: tanpa `aria-expanded`, pembaca layar mengumumkannya sebagai tombol
+   * biasa dan pemakainya tidak tahu ada sesuatu yang baru saja terbentang di
+   * bawah paragraf.
+   */
+  terbuka?: readonly string[];
   /**
    * `false` untuk teks yang berada di dalam label pilihan: tombol di dalam label
    * akan ikut memilih radio-nya, jadi di sana angka dirender datar. Angka yang
@@ -79,6 +99,7 @@ export function ikatTandaBaca(bagian: BagianTeks[]): PotonganTeks[] {
 export function Teks({
   teks,
   sakelarSumber,
+  terbuka = [],
   interaktif = true,
   tebalSaja = false,
 }: TeksProps): JSX.Element {
@@ -120,6 +141,7 @@ export function Teks({
             </span>
           );
         }
+        const sedangTerbuka = terbuka.includes(bagian.fact_id);
         const tombol = (
           <button
             type="button"
@@ -127,6 +149,15 @@ export function Teks({
             // D-8: tiap elemen interaktif punya nama sendiri. Yang dicatat
             // adalah kode faktanya, bukan angka yang tertulis di layar.
             data-uid={`angka:${bagian.fact_id}`}
+            /*
+             * C-2: ia membuka dan menutup penjelasan sebaris, jadi ia harus
+             * mengatakannya. `aria-controls` hanya dipasang ketika blok yang
+             * ditunjuknya memang ada — menunjuk id yang tidak ada di halaman
+             * adalah rujukan menggantung, dan pembaca layar tidak tertolong
+             * olehnya.
+             */
+            aria-expanded={sedangTerbuka}
+            aria-controls={sedangTerbuka ? idPenjelasan(bagian.fact_id) : undefined}
             onClick={() => {
               sakelarSumber(bagian.fact_id);
             }}

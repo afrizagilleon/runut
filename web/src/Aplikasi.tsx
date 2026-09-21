@@ -16,7 +16,7 @@ import {
 } from './alur.ts';
 import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { KartuFakta } from './KartuFakta.tsx';
-import { Teks } from './Teks.tsx';
+import { Teks, idPenjelasan } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
 import { hariIniIso, penanda, type Penanda } from './tanggal.ts';
@@ -749,7 +749,7 @@ function PenjelasanSebaris({
         const fakta = indeks.get(id);
         if (fakta === undefined) return null;
         return (
-          <div className="buka penjelasan-sebaris" key={id}>
+          <div className="buka penjelasan-sebaris" key={id} id={idPenjelasan(id)}>
             <IsiLembarTerbuka
               fakta={fakta}
               indeks={indeks}
@@ -970,7 +970,11 @@ function LayarSoal({
             </div>
 
             <p className="teks-kunci" data-uid="teks-kunci">
-              <Teks teks={soal.penjelasan} sakelarSumber={sakelarSumber} />
+              <Teks
+                teks={soal.penjelasan}
+                sakelarSumber={sakelarSumber}
+                terbuka={keadaan.sumberTerbuka}
+              />
             </p>
             <PenjelasanSebaris
               teks={soal.penjelasan}
@@ -1092,7 +1096,7 @@ function LayarPembukaan({
         {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
           <li key={nomor}>
             <KepingTanggal kasus={kasus} teks={paragraf} />
-            <Teks teks={paragraf} sakelarSumber={sakelarSumber} />
+            <Teks teks={paragraf} sakelarSumber={sakelarSumber} terbuka={terbuka} />
             <PenjelasanSebaris
               teks={paragraf}
               indeks={indeks}
@@ -1110,7 +1114,7 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} sakelarSumber={sakelarSumber} />
+              <Teks teks={baris} sakelarSumber={sakelarSumber} terbuka={terbuka} />
               <PenjelasanSebaris
                 teks={baris}
                 indeks={indeks}
@@ -1125,7 +1129,7 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.tidak_bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} sakelarSumber={sakelarSumber} />
+              <Teks teks={baris} sakelarSumber={sakelarSumber} terbuka={terbuka} />
               <PenjelasanSebaris
                 teks={baris}
                 indeks={indeks}
@@ -1140,7 +1144,7 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.disingkirkan.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} sakelarSumber={sakelarSumber} />
+              <Teks teks={baris} sakelarSumber={sakelarSumber} terbuka={terbuka} />
               <PenjelasanSebaris
                 teks={baris}
                 indeks={indeks}

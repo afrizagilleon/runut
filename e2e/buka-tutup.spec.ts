@@ -32,11 +32,41 @@ import { bacaKasus, type SoalUji } from './bantu/kasus.ts';
 /** Teks yang selalu muncul di dalam panel sumber yang terbuka (`IsiLembarTerbuka`). */
 const PENANDA_ISI_TERBUKA = 'Kalimat resminya';
 
+/**
+ * Tiap tautan angka yang ada di layar ini **harus** membawa `aria-expanded`.
+ *
+ * Tanpa asersi ini, audit di bawah hanya "memungut yang kebetulan ada": mencabut
+ * `aria-expanded` dari tautan angka membuat kontrolnya menghilang dari daftar
+ * dan seluruh rangkaian tetap hijau — terbukti, itu yang terjadi pada sabotase
+ * pertama A1-T4. Yang dijaga sekarang adalah **kelengkapannya**, bukan hanya
+ * perilaku yang kebetulan tertangkap.
+ */
+async function tautanAngkaBerAria(page: Page, namaLayar: string): Promise<number> {
+  const semua = await page.locator('[data-uid^="angka:"]').count();
+  const berAria = await page.locator('[data-uid^="angka:"][aria-expanded]').count();
+  expect(
+    berAria,
+    `layar "${namaLayar}": ${String(berAria)} dari ${String(semua)} tautan angka membawa aria-expanded (C-2)`,
+  ).toBe(semua);
+  return semua;
+}
+
 /** Isi yang harus muncul ketika sebuah kontrol ber-`aria-expanded` dibuka. */
 function isiKontrol(page: Page, uid: string, soal: SoalUji): Locator {
   if (uid.startsWith('kaki:')) {
     const fact_id = uid.slice('kaki:'.length);
     return page.locator(`[data-uid="lembar:${fact_id}"]`).getByText(PENANDA_ISI_TERBUKA);
+  }
+  if (uid.startsWith('angka:')) {
+    /*
+     * Tautan angka mendapat `aria-expanded` di A1-T4 (C-2), jadi audit ini
+     * memungutnya **sendiri** — tanpa satu baris pun yang menyebutnya di sini
+     * selain pemetaan ke isinya. Itulah yang dimaksud "E-03 memungutnya
+     * otomatis": penjaga yang harus diingat untuk didaftarkan adalah penjaga
+     * yang suatu hari akan lupa didaftarkan.
+     */
+    const fact_id = uid.slice('angka:'.length);
+    return page.locator(`[id="penjelasan-${fact_id}"]`);
   }
   if (uid === 'istilah') {
     const arti = soal.istilah[0]?.arti ?? '';
@@ -161,6 +191,7 @@ test('E-03a tiap kontrol lipat di ketiga layar soal bisa ditutup, sebelum dan se
     laporan.push(`soal-${String(nomor + 1)} sesudah-dikunci: ${String(sesudah.length)} — ${sesudah.join(', ')}`);
 
     /* --- tautan angka di teks kunci (PenjelasanSebaris) ---------------- */
+    await tautanAngkaBerAria(page, `soal-${String(nomor + 1)}-sesudah-dikunci`);
     const angka = page.locator('[data-uid="teks-kunci"] [data-uid^="angka:"]');
     const jumlahAngka = await angka.count();
     laporan.push(`soal-${String(nomor + 1)} tautan-angka-di-teks-kunci: ${String(jumlahAngka)}`);
@@ -211,7 +242,7 @@ test('E-03b layar pembukaan: lipatan jejak dan tautan angka bisa ditutup lagi', 
 
   /* --- tautan angka di garis waktu dan ringkasan ----------------------- */
   const angka = page.locator('[data-uid^="angka:"]');
-  const jumlah = await angka.count();
+  const jumlah = await tautanAngkaBerAria(page, 'pembukaan');
   expect(jumlah, 'layar pembukaan harus punya tautan angka').toBeGreaterThan(0);
 
   const terbuka = page.getByText(PENANDA_ISI_TERBUKA);
@@ -233,9 +264,28 @@ test('E-03b layar pembukaan: lipatan jejak dan tautan angka bisa ditutup lagi', 
     await expect(terbuka).toHaveCount(0);
   }
 
+  /*
+   * `aria-controls` yang ditambahkan A1-T4 menunjuk `id` blok penjelasan. Kalau
+   * satu fakta dirujuk dari dua paragraf dan keduanya dibuka, dua blok dengan
+   * `id` yang sama akan lahir — rujukan yang menunjuk ke dua tempat sekaligus,
+   * dan pembaca layar hanya menemukan yang pertama. Data kasus sekarang tidak
+   * menghasilkannya; penjaga ini ada supaya kasus berikutnya tidak diam-diam
+   * menghasilkannya.
+   */
+  for (let n = jumlah - 1; n >= 0; n -= 1) await ketuk(angka.nth(n));
+  const idKembar = await page.evaluate(() => {
+    const hitung = new Map<string, number>();
+    for (const el of document.querySelectorAll('[id]')) {
+      hitung.set(el.id, (hitung.get(el.id) ?? 0) + 1);
+    }
+    return [...hitung].filter(([, berapa]) => berapa > 1).map(([id, berapa]) => `${id} x${String(berapa)}`);
+  });
+  expect(idKembar, 'tidak boleh ada id kembar ketika semua penjelasan terbuka').toEqual([]);
+
   // eslint-disable-next-line no-console
   console.log(
     `E-03b pembukaan: kontrol aria-expanded=${String(await page.locator('[aria-expanded]').count())} ` +
-      `details=${String(await page.locator('details').count())} tautan-angka=${String(jumlah)} (diuji ${String(diuji)})`,
+      `details=${String(await page.locator('details').count())} tautan-angka=${String(jumlah)} ` +
+      `(diuji buka-tutup-buka ${String(diuji)}, semuanya dibuka untuk memeriksa id kembar)`,
   );
 });
