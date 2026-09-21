@@ -415,3 +415,391 @@ export function r25KelengkapanHalaman(konteks: KonteksGudang): HasilAturan {
 
   return hasil('R25', judul, temuan, hitung(satuan, { diperiksa: 1, merah: 0, tidak_lengkap: 1 }));
 }
+
+// --- R33 jumlah saham tersirat goyah -----------------------------------------
+
+/**
+ * Fraksi harga bursa (tick) untuk satu tingkat harga.
+ *
+ * Dipakai R33: ambang 2% terlalu rapat untuk saham berharga rendah. Satu tick
+ * dari Rp50 adalah 2,00% — satu gerakan harga terkecil yang mungkin sudah
+ * menyentuh ambangnya, sehingga setiap hari akan merah tanpa ada yang salah.
+ */
+export function fraksiHarga(harga: number): number {
+  if (harga < 200) return 1;
+  if (harga < 500) return 2;
+  if (harga < 2000) return 5;
+  if (harga < 5000) return 10;
+  return 25;
+}
+
+/** Ambang dasar R33: dua persen, ditulis sebagai pecahan supaya tetap eksak. */
+export const AMBANG_R33 = { pembilang: 2, penyebut: 100 } as const;
+
+/**
+ * Ambang goyah untuk satu tingkat harga, sebagai pecahan eksak:
+ * `max(2%, 2 x fraksi harga / harga)`.
+ */
+export function ambangGoyah(harga: number): { pembilang: number; penyebut: number } {
+  const tick = fraksiHarga(harga);
+  // Bandingkan 2/100 dengan 2*tick/harga tanpa membaginya.
+  const duaPersenLebihBesar = AMBANG_R33.pembilang * harga >= 2 * tick * AMBANG_R33.penyebut;
+  return duaPersenLebihBesar
+    ? { pembilang: AMBANG_R33.pembilang, penyebut: AMBANG_R33.penyebut }
+    : { pembilang: 2 * tick, penyebut: harga };
+}
+
+/**
+ * Apakah perubahan dari `sebelum` ke `sesudah` mencapai ambangnya?
+ *
+ * Dibandingkan sebagai bilangan bulat besar dengan `>=` yang eksplisit:
+ * perubahan **tepat** 2,0% adalah merah karena ambangnya memang `>=`, bukan
+ * karena pembagian pecahan kebetulan jatuh di sisi itu (INV-D).
+ */
+export function mencapaiAmbang(
+  sebelum: number,
+  sesudah: number,
+  ambang: { pembilang: number; penyebut: number },
+): boolean {
+  if (sebelum <= 0) return false;
+  const selisih = BigInt(Math.abs(Math.round(sesudah) - Math.round(sebelum)));
+  return selisih * BigInt(ambang.penyebut) >= BigInt(ambang.pembilang) * BigInt(Math.round(sebelum));
+}
+
+/** Jarak hari kalender antara dua tanggal ISO, tanpa tanda. */
+function jarakHari(a: string, b: string): number {
+  return Math.abs(selisihHari(a, b));
+}
+
+/**
+ * R33 — jumlah saham tersirat (`nilai pasar / harga tutup`) melompat dari satu
+ * hari bursa ke hari bursa berikutnya.
+ *
+ * Aturan kerja yang mengikat: jangan memakai `nilai pasar / harga tutup`
+ * sebagai penyebut di dekat aksi korporasi. Temuan menyebut aksi korporasi
+ * yang tercatat dalam 21 hari kalender di sekitar lompatannya **sebagai
+ * fakta**, bukan sebagai sebab — data tidak memuat sebab.
+ */
+export function r33SahamTersiratGoyah(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Kestabilan jumlah saham tersirat';
+  const satuan = 'pasang hari';
+  if (konteks.harga.length < 2) {
+    return lewat('R33', judul, 'Kurang dari dua hari harga, tidak ada pasangan untuk dibandingkan.', satuan);
+  }
+
+  const aksi = [
+    ...konteks.data.stock_split.map((s) => ({ tanggal: s.tanggal, apa: `stock split rasio ${String(s.rasio)}` })),
+    ...konteks.data.right_issue.map((r) => ({ tanggal: r.ex_date, apa: 'rights issue' })),
+    ...konteks.data.bonus.map((b) => ({ tanggal: b.ex_date, apa: 'saham bonus' })),
+  ].sort((a, b) => a.tanggal.localeCompare(b.tanggal) || a.apa.localeCompare(b.apa));
+
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  const baris = [...konteks.harga].sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+  for (let i = 1; i < baris.length; i += 1) {
+    const kemarin = baris[i - 1];
+    const hariIni = baris[i];
+    if (kemarin === undefined || hariIni === undefined) continue;
+    diperiksa += 1;
+    const cacat =
+      kemarin.buka_kosong === true ||
+      hariIni.buka_kosong === true ||
+      kemarin.tutup <= 0 ||
+      hariIni.tutup <= 0 ||
+      kemarin.nilai_pasar <= 0 ||
+      hariIni.nilai_pasar <= 0;
+    if (cacat) {
+      tidakLengkap += 1;
+      alasan.push('Salah satu baris harga pasangan ini cacat (harga tutup, nilai pasar, atau open kosong).');
+      continue;
+    }
+    const sebelum = Math.round(kemarin.nilai_pasar / kemarin.tutup);
+    const sesudah = Math.round(hariIni.nilai_pasar / hariIni.tutup);
+    const ambang = ambangGoyah(hariIni.tutup);
+    if (!mencapaiAmbang(sebelum, sesudah, ambang)) continue;
+
+    merah += 1;
+    const dekat = aksi.filter((a) => jarakHari(a.tanggal, hariIni.tanggal) <= 21);
+    const keterangan =
+      dekat.length === 0
+        ? ' Tidak ada aksi korporasi tercatat dalam 21 hari di sekitarnya; penyebabnya tidak diketahui.'
+        : ` Dalam 21 hari di sekitarnya tercatat ${dekat.map((a) => `${a.apa} ${a.tanggal}`).join(', ')}.`;
+    const persen = ((Math.abs(sesudah - sebelum) / sebelum) * 100).toFixed(2);
+    temuan.push({
+      temuan_id: `R33-${konteks.simbol}-${hariIni.tanggal}`,
+      aturan: 'R33',
+      ringkasan:
+        `Jumlah saham tersirat ${konteks.simbol} berubah ${persen}% dalam satu hari bursa: ` +
+        `${angka(sebelum)} lembar pada ${kemarin.tanggal} menjadi ${angka(sesudah)} lembar pada ` +
+        `${hariIni.tanggal}.${keterangan}`,
+      angka: [
+        { label: 'saham tersirat hari sebelumnya', nilai: sebelum, satuan: 'lembar' },
+        { label: 'saham tersirat hari itu', nilai: sesudah, satuan: 'lembar' },
+        { label: 'perubahan', nilai: Number(persen), satuan: 'persen' },
+        {
+          label: 'ambang yang berlaku',
+          nilai: Number(((ambang.pembilang / ambang.penyebut) * 100).toFixed(2)),
+          satuan: 'persen',
+        },
+      ],
+      fakta_terkait: [],
+      rujukan: [`harga harian ${kemarin.tanggal}`, `harga harian ${hariIni.tanggal}`],
+    });
+  }
+
+  return hasil(
+    'R33',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R15 aritmetika per laporan, termasuk `others` ---------------------------
+
+/**
+ * R15 — aritmetika di dalam satu laporan.
+ *
+ * Bedanya dengan R1 generasi pertama: R1 memperlakukan **apa pun yang bukan
+ * `buy` sebagai jual**, sehingga 26 laporan ber-`transaction_type` `others`
+ * ikut dihitung sebagai penjualan — dan uji lawan membuktikan laporan rusak
+ * yang jenisnya diganti `others` **lolos hijau**. Untuk `others`, yang
+ * diperiksa adalah `|sesudah - sebelum| == jumlah`, tanpa arah.
+ *
+ * Di himpunan V2, R15 menggantikan R1 supaya satu cacat data tidak melahirkan
+ * dua temuan berkeparahan konflik.
+ */
+export function r15Aritmetika(konteks: KonteksVerifikasi): HasilAturan {
+  const judul = 'Aritmetika per laporan, termasuk transaksi jenis lain';
+  const satuan = 'laporan';
+  if (konteks.laporan.length === 0) {
+    return lewat('R15', judul, 'Tidak ada laporan untuk diperiksa.', satuan);
+  }
+  const temuan: Temuan[] = [];
+  let merah = 0;
+
+  for (const l of urut(konteks.laporan)) {
+    const jenisMentah = l.jenis_mentah ?? (l.jenis === 'beli' ? 'buy' : 'sell');
+    const selisih = l.sesudah - l.sebelum;
+    let cocok: boolean;
+    let harusnya: string;
+    if (jenisMentah === 'buy') {
+      cocok = selisih === l.jumlah;
+      harusnya = `${angka(l.sebelum)} + ${angka(l.jumlah)} = ${angka(l.sebelum + l.jumlah)}`;
+    } else if (jenisMentah === 'sell') {
+      cocok = selisih === -l.jumlah;
+      harusnya = `${angka(l.sebelum)} - ${angka(l.jumlah)} = ${angka(l.sebelum - l.jumlah)}`;
+    } else {
+      // `others`: arahnya tidak diketahui, besarannya tetap harus cocok.
+      cocok = Math.abs(selisih) === l.jumlah;
+      harusnya = `selisih ${angka(Math.abs(selisih))} lembar harus sama dengan ${angka(l.jumlah)}`;
+    }
+    if (cocok) continue;
+
+    merah += 1;
+    temuan.push({
+      temuan_id: `R15-${l.laporan_id}`,
+      aturan: 'R15',
+      ringkasan:
+        `Laporan ${l.dilaporkan_pada} (jenis "${jenisMentah}") tidak konsisten sendiri: ` +
+        `${harusnya}, tetapi laporan menulis ${angka(l.sesudah)} lembar sesudah transaksi.`,
+      angka: [
+        { label: 'kepemilikan sebelum', nilai: l.sebelum, satuan: 'lembar' },
+        { label: 'jumlah transaksi', nilai: l.jumlah, satuan: 'lembar' },
+        { label: 'kepemilikan sesudah menurut laporan', nilai: l.sesudah, satuan: 'lembar' },
+        { label: 'selisih yang tercatat', nilai: selisih, satuan: 'lembar' },
+      ],
+      fakta_terkait: [],
+      rujukan: [`${l.dilaporkan_pada} · ${l.berkas}`],
+    });
+  }
+
+  return hasil('R15', judul, temuan, hitung(satuan, { diperiksa: konteks.laporan.length, merah }));
+}
+
+// --- R11a penyebut dua sisi satu laporan -------------------------------------
+
+/**
+ * R11a — dua sisi satu laporan harus bisa memakai penyebut yang sama.
+ *
+ * Tiap sisi memberi selang penyebut dari ketelitian **medan** (dua desimal,
+ * ditetapkan, bukan diturunkan dari nilai). Kalau kedua selang bersinggungan,
+ * ada satu jumlah saham beredar yang menjelaskan keduanya: hijau. Kalau tidak,
+ * kedua persen itu tidak mungkin berasal dari penyebut yang sama: KONFLIK.
+ *
+ * Kasus tepi yang ditetapkan di sini, karena definisi semula membiarkannya:
+ * **satu sisi nol atau kosong** adalah `TIDAK_LENGKAP`, bukan dilewati
+ * diam-diam. Sembilan laporan di cache uji lawan berbentuk begitu.
+ */
+export function r11aPenyebutDuaSisi(konteks: KonteksVerifikasi): HasilAturan {
+  const judul = 'Penyebut dua sisi satu laporan';
+  const satuan = 'laporan';
+  if (konteks.laporan.length === 0) {
+    return lewat('R11a', judul, 'Tidak ada laporan untuk diperiksa.', satuan);
+  }
+  const temuan: Temuan[] = [];
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const l of urut(konteks.laporan)) {
+    const kosongSebelum = !Number.isFinite(l.persen_sebelum) || l.persen_sebelum <= 0;
+    const kosongSesudah = !Number.isFinite(l.persen_sesudah) || l.persen_sesudah <= 0;
+    if (kosongSebelum && kosongSesudah) {
+      tidakLengkap += 1;
+      alasan.push('Kedua medan persen nol atau kosong.');
+      continue;
+    }
+    if (kosongSebelum || kosongSesudah) {
+      tidakLengkap += 1;
+      alasan.push('Tepat satu medan persen nol atau kosong, jadi kedua sisi tidak bisa diadu.');
+      continue;
+    }
+    const a = selangPenyebut(l.sebelum, l.persen_sebelum, DESIMAL_PERSEN);
+    const b = selangPenyebut(l.sesudah, l.persen_sesudah, DESIMAL_PERSEN);
+    if (a === null || b === null) {
+      tidakLengkap += 1;
+      alasan.push('Salah satu sisi tidak memberi selang penyebut yang bisa dihitung.');
+      continue;
+    }
+    if (a.bawah <= b.atas && b.bawah <= a.atas) continue;
+
+    merah += 1;
+    temuan.push({
+      temuan_id: `R11a-${l.laporan_id}`,
+      aturan: 'R11a',
+      ringkasan:
+        `Laporan ${l.dilaporkan_pada} menulis ${String(l.persen_sebelum)}% sebelum dan ` +
+        `${String(l.persen_sesudah)}% sesudah, tetapi tidak ada satu jumlah saham beredar pun yang ` +
+        `menjelaskan keduanya: sisi sebelum menuntut ${angka(Math.round(a.bawah))}-${angka(Math.round(a.atas))} ` +
+        `lembar, sisi sesudah menuntut ${angka(Math.round(b.bawah))}-${angka(Math.round(b.atas))} lembar.`,
+      angka: [
+        { label: 'persen sebelum', nilai: l.persen_sebelum, satuan: 'persen' },
+        { label: 'persen sesudah', nilai: l.persen_sesudah, satuan: 'persen' },
+        { label: 'penyebut terkecil dari sisi sebelum', nilai: Math.round(a.bawah), satuan: 'lembar' },
+        { label: 'penyebut terkecil dari sisi sesudah', nilai: Math.round(b.bawah), satuan: 'lembar' },
+        // Ketelitian medan ditetapkan dua desimal. Kalau salah satu sisi
+        // ditulis dengan desimal lebih sedikit, selangnya menjadi lebih sempit
+        // daripada yang dijamin datanya - pembaca perlu melihat itu.
+        {
+          label: 'desimal paling sedikit yang tertulis di kedua sisi',
+          nilai: Math.min(desimalTertulis(l.persen_sebelum), desimalTertulis(l.persen_sesudah)),
+          satuan: 'angka desimal',
+        },
+      ],
+      fakta_terkait: [],
+      rujukan: [`${l.dilaporkan_pada} · ${l.berkas}`],
+    });
+  }
+
+  return hasil(
+    'R11a',
+    judul,
+    temuan,
+    hitung(satuan, {
+      diperiksa: konteks.laporan.length,
+      merah,
+      tidak_lengkap: tidakLengkap,
+      alasan_dilewati: alasan,
+    }),
+  );
+}
+
+/** Berapa angka desimal yang benar-benar tertulis di sebuah nilai persen. */
+export function desimalTertulis(nilai: number): number {
+  const pecahan = String(nilai).split('.')[1];
+  return pecahan === undefined ? 0 : pecahan.length;
+}
+
+// --- R13 lembar lebih besar daripada modal -----------------------------------
+
+/**
+ * Batas R13: kepemilikan boleh melewati 100% sedikit tanpa berarti salah.
+ *
+ * Batas `>` telanjang membuat kepemilikan tepat 100% lolos dan 100,000001%
+ * merah — terlalu tajam untuk data yang penyebutnya sendiri berupa perkiraan,
+ * dan saham treasuri membuat lebih dari 100% bisa sah. Ambangnya 101%,
+ * dibandingkan sebagai bilangan bulat: merah kalau `100 x lembar > 101 x
+ * beredar`.
+ */
+export function melewatiModal(lembar: number, beredar: number): boolean {
+  if (beredar <= 0) return false;
+  return BigInt(100) * BigInt(Math.round(lembar)) > BigInt(101) * BigInt(Math.round(beredar));
+}
+
+/**
+ * R13 — jumlah lembar yang dilaporkan lebih besar daripada seluruh saham beredar.
+ *
+ * Tanpa penyebut, jawabannya `TIDAK_LENGKAP`, **bukan hijau**. Melewati emiten
+ * diam-diam lebih berbahaya daripada merah palsu: mesin akan melaporkan "R13
+ * hijau" untuk emiten yang tidak pernah diperiksa sama sekali.
+ */
+export function r13LembarLebihBesarDariModal(konteks: KonteksVerifikasi): HasilAturan {
+  const judul = 'Lembar dilaporkan melebihi saham beredar';
+  const satuan = 'medan kepemilikan';
+  if (konteks.laporan.length === 0) {
+    return lewat('R13', judul, 'Tidak ada laporan untuk diperiksa.', satuan);
+  }
+  const cari = konteks.sahamBeredarPada;
+  if (cari === undefined) {
+    return lewat(
+      'R13',
+      judul,
+      'Konteks ini tidak menyediakan jumlah saham beredar per tanggal.',
+      satuan,
+      konteks.laporan.length * 3,
+    );
+  }
+
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const l of urut(konteks.laporan)) {
+    const titik = cari(l.dilaporkan_pada.slice(0, 10));
+    const medan: Array<[string, number]> = [
+      ['kepemilikan sebelum', l.sebelum],
+      ['kepemilikan sesudah', l.sesudah],
+      ['jumlah transaksi', l.jumlah],
+    ];
+    for (const [nama, lembar] of medan) {
+      diperiksa += 1;
+      if (titik === null) {
+        tidakLengkap += 1;
+        alasan.push('Tidak ada titik jumlah saham beredar yang berlaku pada tanggal laporan.');
+        continue;
+      }
+      if (!melewatiModal(lembar, titik.lembar)) continue;
+      merah += 1;
+      const persen = ((lembar / titik.lembar) * 100).toFixed(1);
+      temuan.push({
+        temuan_id: `R13-${l.laporan_id}-${nama.replace(/\s+/g, '-')}`,
+        aturan: 'R13',
+        ringkasan:
+          `Laporan ${l.dilaporkan_pada} menulis ${nama} ${angka(lembar)} lembar, yaitu ${persen}% ` +
+          `dari ${angka(titik.lembar)} saham beredar yang berlaku ${titik.pada}. Satu pemegang tidak ` +
+          `bisa memegang lebih banyak lembar daripada yang diterbitkan.`,
+        angka: [
+          { label: nama, nilai: lembar, satuan: 'lembar' },
+          { label: 'saham beredar yang dipakai', nilai: titik.lembar, satuan: 'lembar' },
+          { label: 'bagian dari saham beredar', nilai: Number(persen), satuan: 'persen' },
+        ],
+        fakta_terkait: [],
+        rujukan: [`${l.dilaporkan_pada} · ${l.berkas}`, `penyebut: ${titik.sumber}`],
+      });
+    }
+  }
+
+  return hasil(
+    'R13',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
