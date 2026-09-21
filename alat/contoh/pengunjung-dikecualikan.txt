@@ -1,0 +1,22 @@
+# Nomor pengunjung yang TIDAK dihitung sebagai peserta (D-B4).
+#
+# Satu UUID v4 per baris. Baris kosong dan baris berawalan # diabaikan.
+# Baris yang bukan UUID v4 menghentikan `alpha:ringkas` dengan galat yang
+# menyebut nomor barisnya -- daftar pengecualian yang salah ketik dan diam
+# akan membuang sesi orang sungguhan tanpa ada yang tahu.
+#
+# Kenapa per nomor pengunjung dan bukan per penanda: pemilik pernah membuka
+# situsnya tanpa ?k=afriza, dan sesi itu lolos ke angka alpha. Nomor
+# pengunjung acak tetapi tetap sama tiap kunjungan (D-13), jadi itulah kunci
+# yang benar untuk "ini saya, bukan pemain".
+#
+# Nomor di bawah punya DUA sesi di peristiwa-contoh.jsonl (sesi-a-tuntas dan
+# sesi-f-kembali), keduanya tanpa penanda -- persis keadaan yang dijaga D-B4.
+4b1d2f60-8c11-4a3e-9f02-111111111111
+
+# Nomor ini sengaja TIDAK didaftar: sesinya sudah dikecualikan lewat penanda
+# `afriza`, dan pengecualian penanda dihitung lebih dulu. Mendaftarnya di sini
+# tidak akan menambah angka mana pun -- itu yang membuat kedua angka menjumlah.
+# 4b1d2f60-8c11-4a3e-9f02-555555555555
+
+# Berkas aslinya ada di .cache/alpha/ dan tidak ikut repo.

@@ -5,8 +5,10 @@ import {
   PENANDA_DIKECUALIKAN_BAWAAN,
   TANPA_PENANDA,
   UID_KOSONG,
+  BERKAS_PENGUNJUNG_BAWAAN,
   bacaArgumen,
   bacaJsonl,
+  bacaPengunjungDikecualikan,
   buangKembar,
   hitungOrang,
   kelompokkanSesi,
@@ -532,5 +534,136 @@ describe('ringkas — tiga pertanyaan per layar soal (D-10)', () => {
     expect(hasil).toContain('pengunjung unik');
     expect(hasil).toContain('Apa yang diketuk, dan apa yang dikira bisa diketuk');
     expect(hasil).toContain('gulir median');
+  });
+});
+
+/**
+ * D-B4 (amandemen A-2) — pengecualian per nomor pengunjung.
+ *
+ * Pemilik pernah membuka situsnya tanpa `?k=afriza`, dan sesi itu lolos ke
+ * angka alpha. Nomor pengunjungnya acak tetapi tetap sama tiap kunjungan
+ * (D-13), jadi itulah kunci yang benar untuk "ini saya, bukan pemain".
+ */
+describe('ringkas — pengunjung yang dikecualikan (D-B4)', () => {
+  const UUID_A = '4b1d2f60-8c11-4a3e-9f02-111111111111';
+  const UUID_B = '4b1d2f60-8c11-4a3e-9f02-222222222222';
+
+  describe('bacaPengunjungDikecualikan', () => {
+    it('membaca satu UUID per baris', () => {
+      expect(bacaPengunjungDikecualikan(`${UUID_A}\n${UUID_B}\n`, 'uji.txt')).toEqual([
+        UUID_A,
+        UUID_B,
+      ]);
+    });
+
+    it('mengabaikan baris kosong, spasi, dan #komentar', () => {
+      const isi = `# daftar\n\n   \n${UUID_A}   \n# lagi\n`;
+      expect(bacaPengunjungDikecualikan(isi, 'uji.txt')).toEqual([UUID_A]);
+    });
+
+    it('menerima berkas ber-CRLF', () => {
+      const isi = [UUID_A, UUID_B, ''].join('\r\n');
+      expect(bacaPengunjungDikecualikan(isi, 'uji.txt')).toEqual([UUID_A, UUID_B]);
+    });
+
+    it('MELEMPAR dengan nomor baris kalau ada yang bukan UUID v4', () => {
+      const isi = `# kepala\n${UUID_A}\nbukan-uuid\n`;
+      expect(() => bacaPengunjungDikecualikan(isi, 'daftar.txt')).toThrow(/daftar\.txt:3/);
+      expect(() => bacaPengunjungDikecualikan(isi, 'daftar.txt')).toThrow(/bukan UUID v4/);
+    });
+
+    it('menolak UUID versi lain — bukan v4 berarti bukan nomor pengunjung kita', () => {
+      const v1 = '4b1d2f60-8c11-1a3e-9f02-111111111111';
+      expect(() => bacaPengunjungDikecualikan(v1, 'd.txt')).toThrow(/bukan UUID v4/);
+    });
+
+    it('berkas kosong berarti tidak ada yang dikecualikan, bukan galat', () => {
+      expect(bacaPengunjungDikecualikan('', 'uji.txt')).toEqual([]);
+      expect(bacaPengunjungDikecualikan('# hanya komentar\n', 'uji.txt')).toEqual([]);
+    });
+  });
+
+  describe('bacaArgumen', () => {
+    it('tanpa argumen, berkas daftarnya belum ditentukan', () => {
+      expect(bacaArgumen(['a.jsonl']).berkasPengunjung).toBeNull();
+    });
+
+    it('menerima --kecuali-pengunjung <berkas> dan bentuk =', () => {
+      expect(bacaArgumen(['a.jsonl', '--kecuali-pengunjung', 'd.txt']).berkasPengunjung).toBe(
+        'd.txt',
+      );
+      expect(bacaArgumen(['--kecuali-pengunjung=d.txt', 'a.jsonl']).berkasPengunjung).toBe('d.txt');
+    });
+
+    it('tidak menelan nama berkas peristiwa', () => {
+      const a = bacaArgumen(['a.jsonl', '--kecuali-pengunjung', 'd.txt', 'b.jsonl']);
+      expect(a.berkas).toEqual(['a.jsonl', 'b.jsonl']);
+    });
+
+    it('nama berkas bawaannya dieja, bukan ditebak di tempat lain', () => {
+      expect(BERKAS_PENGUNJUNG_BAWAAN).toBe('pengunjung-dikecualikan.txt');
+    });
+  });
+
+  describe('pisahkanKecuali — dua jalur, tanpa hitung ganda', () => {
+    it('memisahkan sesi menurut nomor pengunjungnya', () => {
+      const { dipakai, dikecualikanPengunjung } = pisahkanKecuali(semuaSesi(), [], [UUID_A]);
+      expect(dikecualikanPengunjung.map((s) => s.sesi)).toEqual([
+        'sesi-a-tuntas',
+        'sesi-f-kembali',
+      ]);
+      expect(dipakai.some((s) => s.pengunjung === UUID_A)).toBe(false);
+    });
+
+    it('penanda dihitung LEBIH DULU, jadi tidak ada sesi yang masuk dua daftar', () => {
+      const pemilik = '4b1d2f60-8c11-4a3e-9f02-555555555555';
+      const { dipakai, dikecualikan, dikecualikanPengunjung } = pisahkanKecuali(
+        semuaSesi(),
+        ['afriza'],
+        [pemilik],
+      );
+      expect(dikecualikan.map((s) => s.sesi)).toEqual(['sesi-e-afriza-uji-pemilik']);
+      expect(dikecualikanPengunjung).toEqual([]);
+      // Ketiganya menjumlah kembali ke seluruh sesi: tidak ada yang hilang.
+      expect(dipakai.length + dikecualikan.length + dikecualikanPengunjung.length).toBe(
+        semuaSesi().length,
+      );
+    });
+
+    it('sesi tanpa nomor pengunjung tidak pernah ikut terbuang', () => {
+      const { dipakai } = pisahkanKecuali(semuaSesi(), [], [UUID_A, UUID_B]);
+      expect(dipakai.some((s) => s.pengunjung === null)).toBe(true);
+    });
+
+    it('daftar kosong tidak membuang apa pun', () => {
+      const { dipakai, dikecualikanPengunjung } = pisahkanKecuali(semuaSesi(), [], []);
+      expect(dikecualikanPengunjung).toEqual([]);
+      expect(dipakai.length).toBe(semuaSesi().length);
+    });
+  });
+
+  describe('laporan', () => {
+    it('mencetak jumlah sesi DAN jumlah pengunjung, terpisah dari penanda', () => {
+      const teks = laporan(semuaSesi(), ['afriza', 'uji'], [UUID_A]);
+      const BQ = String.fromCharCode(96);
+      expect(teks).toContain('Sesi yang dikecualikan (penanda ' + BQ + 'afriza' + BQ + ', ' + BQ + 'uji' + BQ + '): **1**');
+      expect(teks).toContain(
+        'Sesi yang dikecualikan (nomor pengunjung, 1 nomor terdaftar): **2** dari **1** pengunjung',
+      );
+    });
+
+    it('dicetak walau nol — sesi yang hilang diam-diam itu yang dijaga', () => {
+      const teks = laporan(semuaSesi(), [], []);
+      expect(teks).toContain(
+        'Sesi yang dikecualikan (nomor pengunjung, 0 nomor terdaftar): **0** dari **0** pengunjung',
+      );
+    });
+
+    it('sesi yang dikecualikan benar-benar keluar dari angka yang dilaporkan', () => {
+      const tanpa = laporan(semuaSesi(), ['afriza', 'uji'], []);
+      const dengan = laporan(semuaSesi(), ['afriza', 'uji'], [UUID_A]);
+      expect(tanpa).toContain('Sesi: **5**');
+      expect(dengan).toContain('Sesi: **3**');
+    });
   });
 });

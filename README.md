@@ -163,6 +163,28 @@ teratas per layar beserta ketukan matinya, kedalaman gulir median, dan per layar
 soal berapa sesi yang mengetuk "↓ Jawab di bawah", membuka sumber, atau membuka
 baris istilah.
 
+**Mengecualikan sesi sendiri lewat nomor pengunjung.** Penanda `?k=` hanya
+bekerja kalau tautannya memang dipakai — dan pemilik pernah membuka situsnya
+tanpa itu, sehingga sesinya ikut terhitung sebagai peserta. Nomor pengunjung
+(D-13) acak tetapi tetap sama tiap kunjungan dari browser yang sama, jadi itulah
+kunci yang benar:
+
+```bash
+# satu UUID v4 per baris; baris kosong dan #komentar diabaikan
+npm run alpha:ringkas -- data/*.jsonl --kecuali-pengunjung daftar-saya.txt
+```
+
+Tanpa argumen itu, berkas `pengunjung-dikecualikan.txt` **di direktori berkas
+peristiwa pertama** dipakai bila ada. Contohnya:
+[`alat/contoh/pengunjung-dikecualikan.txt`](alat/contoh/pengunjung-dikecualikan.txt).
+
+Dua hal yang dijaga di sini. Baris yang bukan UUID v4 **menghentikan** perintahnya
+dengan galat yang menyebut nomor barisnya — daftar pengecualian yang salah ketik
+dan diam akan membuang sesi orang sungguhan tanpa ada yang tahu. Dan jumlah yang
+dikecualikan lewat nomor pengunjung dicetak **terpisah** dari yang lewat penanda,
+beserta berapa pengunjung, supaya ketiga angkanya menjumlah kembali ke seluruh
+sesi. Berkas mentahnya tidak pernah diubah.
+
 ## Susunan
 
 | Folder | Isi |

@@ -9,7 +9,8 @@
  * apakah orang sampai ke pembukaan, di soal mana mereka berhenti, dan —
  * yang paling penting — **apakah mereka membuka kartu sebelum menjawab**.
  */
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
 
 export interface Peristiwa {
   nama: string;
@@ -362,6 +363,54 @@ export const PENANDA_DIKECUALIKAN_BAWAAN: readonly string[] = ['afriza', 'uji'];
 export interface Argumen {
   berkas: string[];
   kecuali: string[];
+  /**
+   * Berkas daftar nomor pengunjung yang dikecualikan (D-B4), bila disebut di
+   * baris perintah. `null` berarti "pakai bawaannya kalau ada".
+   */
+  berkasPengunjung: string | null;
+}
+
+/* ------------------------------------------------------------------ */
+/* Pengunjung yang dikecualikan (D-B4, amandemen A-2)                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Nama berkas bawaan, dicari **di direktori berkas peristiwa pertama**.
+ *
+ * Kenapa per nomor pengunjung dan bukan per penanda: pemilik pernah membuka
+ * situsnya tanpa `?k=afriza`, dan sesi itu lolos ke angka alpha. Nomor
+ * pengunjungnya acak tetapi **tetap sama tiap kunjungan** (D-13), jadi itulah
+ * kunci yang benar untuk "ini saya, bukan pemain".
+ */
+export const BERKAS_PENGUNJUNG_BAWAAN = 'pengunjung-dikecualikan.txt';
+
+/** Bentuk UUID v4; sama dengan yang dipakai pengumpul dan `web/src/sesi.ts`. */
+const POLA_UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+
+/**
+ * Baca daftar nomor pengunjung dari isi berkas.
+ *
+ * Satu UUID per baris; baris kosong dan baris berawalan `#` diabaikan. Baris
+ * yang **bukan** UUID v4 melempar galat yang menyebut nomor barisnya — bukan
+ * diabaikan diam-diam. Alasannya sama dengan alasan berkas ini ada: daftar
+ * pengecualian yang salah ketik dan diam akan membuang sesi orang sungguhan,
+ * atau gagal membuang sesi pemilik, tanpa ada yang tahu.
+ */
+export function bacaPengunjungDikecualikan(isi: string, namaBerkas: string): string[] {
+  const keluar: string[] = [];
+  const baris = isi.split(/\r?\n/);
+  for (const [nomor, satu] of baris.entries()) {
+    const bersih = satu.trim();
+    if (bersih === '' || bersih.startsWith('#')) continue;
+    if (!POLA_UUID_V4.test(bersih)) {
+      throw new Error(
+        `${namaBerkas}:${String(nomor + 1)}: "${bersih}" bukan UUID v4. ` +
+          'Satu nomor pengunjung per baris; baris kosong dan #komentar diabaikan.',
+      );
+    }
+    keluar.push(bersih);
+  }
+  return keluar;
 }
 
 /**
@@ -373,8 +422,18 @@ export interface Argumen {
 export function bacaArgumen(argumen: string[]): Argumen {
   const berkas: string[] = [];
   let kecuali: string[] | null = null;
+  let berkasPengunjung: string | null = null;
   for (let i = 0; i < argumen.length; i += 1) {
     const arg = argumen[i] ?? '';
+    if (arg === '--kecuali-pengunjung') {
+      berkasPengunjung = argumen[i + 1] ?? '';
+      i += 1;
+      continue;
+    }
+    if (arg.startsWith('--kecuali-pengunjung=')) {
+      berkasPengunjung = arg.slice('--kecuali-pengunjung='.length);
+      continue;
+    }
     if (arg === '--kecuali') {
       kecuali = pecahKode(argumen[i + 1] ?? '');
       i += 1;
@@ -386,7 +445,11 @@ export function bacaArgumen(argumen: string[]): Argumen {
     }
     berkas.push(arg);
   }
-  return { berkas, kecuali: kecuali ?? [...PENANDA_DIKECUALIKAN_BAWAAN] };
+  return {
+    berkas,
+    kecuali: kecuali ?? [...PENANDA_DIKECUALIKAN_BAWAAN],
+    berkasPengunjung,
+  };
 }
 
 function pecahKode(nilai: string): string[] {
@@ -398,14 +461,36 @@ function pecahKode(nilai: string): string[] {
 
 export interface Pisahan {
   dipakai: RingkasSesi[];
+  /** Dikecualikan karena penandanya (D-9). */
   dikecualikan: RingkasSesi[];
+  /** Dikecualikan karena nomor pengunjungnya (D-B4). */
+  dikecualikanPengunjung: RingkasSesi[];
 }
 
-export function pisahkanKecuali(semua: RingkasSesi[], kecuali: readonly string[]): Pisahan {
-  const set = new Set(kecuali);
+/**
+ * Pisahkan sesi yang dipakai dari yang dikecualikan.
+ *
+ * Dua jalur pengecualian, dan **urutannya ditetapkan**: penanda lebih dulu,
+ * nomor pengunjung atas sisanya. Tanpa urutan yang tetap, sesi yang cocok
+ * keduanya akan terhitung dua kali dan jumlah yang dicetak tidak lagi
+ * menjumlah — persis hal yang dijaga D-B4 supaya tidak ada yang hilang diam-diam.
+ */
+export function pisahkanKecuali(
+  semua: RingkasSesi[],
+  kecuali: readonly string[],
+  pengunjungKecuali: readonly string[] = [],
+): Pisahan {
+  const setPenanda = new Set(kecuali);
+  const setPengunjung = new Set(pengunjungKecuali);
+  const lewatPenanda = (s: RingkasSesi): boolean =>
+    s.penanda !== null && setPenanda.has(s.penanda);
+  const sisa = semua.filter((s) => !lewatPenanda(s));
+  const lewatPengunjung = (s: RingkasSesi): boolean =>
+    s.pengunjung !== null && setPengunjung.has(s.pengunjung);
   return {
-    dipakai: semua.filter((s) => s.penanda === null || !set.has(s.penanda)),
-    dikecualikan: semua.filter((s) => s.penanda !== null && set.has(s.penanda)),
+    dipakai: sisa.filter((s) => !lewatPengunjung(s)),
+    dikecualikan: semua.filter(lewatPenanda),
+    dikecualikanPengunjung: sisa.filter(lewatPengunjung),
   };
 }
 
@@ -573,9 +658,14 @@ function nilaiAkhir(akhir: Record<string, unknown> | null, medan: string): strin
 export function laporan(
   masukan: RingkasSesi[],
   kecuali: readonly string[] = PENANDA_DIKECUALIKAN_BAWAAN,
+  pengunjungKecuali: readonly string[] = [],
 ): string {
   const baris: string[] = [];
-  const { dipakai: semua, dikecualikan } = pisahkanKecuali(masukan, kecuali);
+  const {
+    dipakai: semua,
+    dikecualikan,
+    dikecualikanPengunjung,
+  } = pisahkanKecuali(masukan, kecuali, pengunjungKecuali);
   const sesi = semua.filter((s) => s.lengkap);
   const sebagian = semua.filter((s) => !s.lengkap);
 
@@ -593,6 +683,21 @@ export function laporan(
     `Sesi yang dikecualikan (penanda ${
       kecuali.length === 0 ? '—' : kecuali.map((k) => `\`${k}\``).join(', ')
     }): **${String(dikecualikan.length)}**`,
+  );
+
+  /*
+   * Dicetak TERPISAH dari pengecualian penanda, dan dicetak walau nol (D-B4).
+   * Dua jalur yang dijumlahkan menjadi satu angka akan menyembunyikan mana yang
+   * bekerja — dan yang ingin diketahui pemilik justru itu: berapa sesinya
+   * sendiri yang lolos karena ia lupa memakai ?k=.
+   */
+  const orangDikecualikan = new Set(
+    dikecualikanPengunjung.map((x) => x.pengunjung).filter((x): x is string => x !== null),
+  );
+  baris.push('');
+  baris.push(
+    `Sesi yang dikecualikan (nomor pengunjung, ${String(pengunjungKecuali.length)} nomor terdaftar): ` +
+      `**${String(dikecualikanPengunjung.length)}** dari **${String(orangDikecualikan.size)}** pengunjung`,
   );
 
   if (sesi.length === 0) {
@@ -830,7 +935,7 @@ export function laporan(
 }
 
 export function utama(argumen: string[]): number {
-  const { berkas: daftar, kecuali } = bacaArgumen(argumen);
+  const { berkas: daftar, kecuali, berkasPengunjung } = bacaArgumen(argumen);
   if (daftar.length === 0) {
     console.error(
       'Sebutkan berkas JSONL yang mau diringkas, misalnya:\n' +
@@ -838,7 +943,11 @@ export function utama(argumen: string[]): number {
         '\n' +
         `Penanda yang dikecualikan tanpa diminta: ${PENANDA_DIKECUALIKAN_BAWAAN.join(', ')}.\n` +
         '  --kecuali k1,k2   ganti daftarnya\n' +
-        '  --kecuali ""      jangan kecualikan apa pun',
+        '  --kecuali ""      jangan kecualikan apa pun\n' +
+        '\n' +
+        'Nomor pengunjung yang dikecualikan dibaca dari berkas (D-B4):\n' +
+        '  --kecuali-pengunjung <berkas>   sebutkan berkasnya\n' +
+        `  bawaan: ${BERKAS_PENGUNJUNG_BAWAAN} di direktori berkas peristiwa pertama, bila ada`,
     );
     return 1;
   }
@@ -846,7 +955,23 @@ export function utama(argumen: string[]): number {
   for (const berkas of daftar) {
     peristiwa.push(...bacaJsonl(readFileSync(berkas, 'utf8'), berkas));
   }
-  process.stdout.write(laporan(kelompokkanSesi(peristiwa), kecuali));
+  /*
+   * Berkas daftar pengunjung dicari di samping berkas peristiwa pertama, dan
+   * ketiadaannya **bukan galat**: kebanyakan pemakaian tidak punya daftar itu.
+   * Tetapi berkas yang disebut sendiri di baris perintah dan ternyata tidak ada
+   * **adalah** galat — kalau tidak, salah ketik nama berkas akan diam-diam
+   * berarti "tidak ada yang dikecualikan".
+   */
+  let pengunjungKecuali: string[] = [];
+  const disebut = berkasPengunjung !== null && berkasPengunjung !== '';
+  const jalur = disebut
+    ? berkasPengunjung
+    : join(dirname(daftar[0] ?? '.'), BERKAS_PENGUNJUNG_BAWAAN);
+  if (disebut || existsSync(jalur)) {
+    pengunjungKecuali = bacaPengunjungDikecualikan(readFileSync(jalur, 'utf8'), jalur);
+  }
+
+  process.stdout.write(laporan(kelompokkanSesi(peristiwa), kecuali, pengunjungKecuali));
   return 0;
 }
 
