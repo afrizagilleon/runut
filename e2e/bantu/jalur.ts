@@ -18,6 +18,15 @@ export const DIR_HASIL: string = join(CACHE, 'hasil');
 export const DIR_LAPORAN: string = join(CACHE, 'laporan');
 export const DIR_LAYAR: string = join(CACHE, 'layar');
 export const DIR_DATA: string = join(CACHE, 'data');
+/**
+ * Artefak kegagalan (D-C1). **Tidak pernah dihapus otomatis**: tidak oleh
+ * `globalSetup`, dan tidak oleh Playwright yang mengosongkan `outputDir` di
+ * awal tiap putaran. Kegagalan reviewer dua kali berturut-turut tidak bisa
+ * didiagnosis justru karena artefaknya lenyap sebelum sempat dibaca —
+ * `e2e:beban` menjalankan lima belas putaran, dan yang gagal di putaran ketiga
+ * sudah hilang sebelum putaran keempat selesai.
+ */
+export const DIR_GAGAL: string = join(CACHE, 'gagal');
 export const DIR_DIST_DENGAN: string = join(CACHE, 'dist-dengan');
 export const DIR_DIST_TANPA: string = join(CACHE, 'dist-tanpa');
 

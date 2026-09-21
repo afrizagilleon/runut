@@ -85,6 +85,7 @@ export default defineConfig({
   reporter: [
     ['list'],
     ['html', { outputFolder: DIR_LAPORAN, open: 'never' }],
+    ['./e2e/bantu/pelapor-gagal.ts'],
   ],
   globalSetup: './e2e/bantu/siapkan.ts',
 
