@@ -678,17 +678,41 @@ summary:focus-visible,
   font-size: 13px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+
+.opsi-tanda-cocok {
   color: var(--cocok);
 }
 
+/*
+ * "Pilihanmu" (A4-T4). A1-T4 menurunkan pilihan pemain yang keliru menjadi
+ * abu-abu tanpa label, dan pemilik kehilangan satu-satunya hal yang ia perlukan
+ * untuk belajar dari kesalahannya: yang mana tadi jawabannya. Warnanya mengikuti
+ * baris tempat ia berada, karena kata itulah tandanya — bukan warnanya.
+ */
+.opsi-tanda-pemain {
+  color: var(--tinta-redup);
+}
+
+.opsi-keliru .opsi-tanda-pemain,
+.opsi-dipilih .opsi-tanda-pemain {
+  color: var(--belum-cocok);
+}
+
+/*
+ * Pilihan pemain yang keliru: garis --belum-cocok 2 px. Penekanan terkuat tetap
+ * di jawaban yang cocok — ia yang berwarna --cocok dan berlabel tanda centang —
+ * tetapi baris pemain tidak lagi tenggelam menjadi abu-abu tanpa nama.
+ */
 .opsi-keliru {
-  border-color: var(--garis-kontrol);
+  border: 2px solid var(--belum-cocok);
   color: var(--tinta-redup);
 }
 
 .opsi-keliru .opsi-huruf {
-  border-color: var(--tinta-redup);
-  color: var(--tinta-redup);
+  border-color: var(--belum-cocok);
+  color: var(--belum-cocok);
+  font-weight: 700;
 }
 
 .pilihan:disabled .opsi {

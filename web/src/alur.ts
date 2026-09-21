@@ -209,24 +209,63 @@ export function soalSekarang(keadaan: Keadaan): string | null {
 }
 
 /**
- * Tanda yang didapat satu baris opsi (A1-T4).
+ * Tanda yang didapat satu baris opsi (A1-T4, diperbaiki A4-T4).
  *
  * Fungsi murni, bukan rangkaian tanda tanya di dalam JSX: "opsi mana mendapat
  * tanda apa" adalah aturan, dan aturan harus bisa dites. Sesudah dikunci,
- * penekanan visual terkuat wajib berada di jawaban yang cocok dengan kartu —
- * bukan di pilihan pemain yang keliru.
+ * penekanan visual terkuat wajib berada di jawaban yang cocok dengan kartu.
+ *
+ * **Yang salah di A1-T4:** pilihan pemain yang keliru diturunkan menjadi abu-abu
+ * **tanpa label apa pun**. Penekanan memang pindah ke jawaban yang cocok, tetapi
+ * pemain kehilangan satu-satunya hal yang ia butuhkan untuk belajar dari
+ * kesalahannya: *yang mana tadi jawabanku*. Uji ponsel pemilik menemukan persis
+ * itu — sesudah salah, ia tidak tahu lagi mana pilihannya.
+ *
+ * Jadi keempat keadaan tetap, tetapi selektornya sekarang juga menyebut
+ * **kata** yang tampil di baris itu. Pilihan pemain selalu berlabel
+ * "Pilihanmu"; jawaban yang cocok selalu berlabel "✓ yang cocok dengan kartu".
+ * Kalau pemain menjawab benar, satu baris membawa keduanya. Tidak pernah warna
+ * saja: selalu ada kata, dan garis 2 px yang bisa dilihat tanpa membedakan warna.
  */
-export type TandaOpsi = 'polos' | 'dipilih' | 'cocok' | 'keliru';
+export type KeadaanOpsi = 'polos' | 'dipilih' | 'cocok' | 'keliru';
+
+/** Label kata di dalam baris opsi. Keduanya tampil bersama kalau pemain benar. */
+export const LABEL_PILIHAN_PEMAIN = 'Pilihanmu';
+export const LABEL_COCOK = '✓ yang cocok dengan kartu';
+
+export interface TandaOpsi {
+  /** Menentukan kelas `.opsi-*`, yaitu bentuk dan garisnya. */
+  keadaan: KeadaanOpsi;
+  /** Kata yang tampil di dalam baris, urut dari atas. Boleh kosong, satu, atau dua. */
+  label: readonly string[];
+}
 
 export function tandaOpsi(
   soal: KeadaanSoal | undefined,
   kunciOpsi: string,
   jawaban: string,
 ): TandaOpsi {
-  if (soal === undefined) return 'polos';
-  if (!soal.dikunci) return soal.kunci === kunciOpsi ? 'dipilih' : 'polos';
-  if (kunciOpsi === jawaban) return 'cocok';
-  return soal.kunci === kunciOpsi ? 'keliru' : 'polos';
+  if (soal === undefined) return { keadaan: 'polos', label: [] };
+
+  const dipilihPemain = soal.kunci === kunciOpsi;
+
+  if (!soal.dikunci) {
+    return dipilihPemain
+      ? { keadaan: 'dipilih', label: [LABEL_PILIHAN_PEMAIN] }
+      : { keadaan: 'polos', label: [] };
+  }
+
+  if (kunciOpsi === jawaban) {
+    // Pemain menjawab benar: satu baris membawa kedua tanda.
+    return {
+      keadaan: 'cocok',
+      label: dipilihPemain ? [LABEL_PILIHAN_PEMAIN, LABEL_COCOK] : [LABEL_COCOK],
+    };
+  }
+
+  return dipilihPemain
+    ? { keadaan: 'keliru', label: [LABEL_PILIHAN_PEMAIN] }
+    : { keadaan: 'polos', label: [] };
 }
 
 export function semuaTerkunci(keadaan: Keadaan): boolean {

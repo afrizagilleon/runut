@@ -6,6 +6,7 @@ import {
   type Aksi,
   type Keadaan,
   type Peristiwa,
+  LABEL_COCOK,
   keadaanAwal,
   langkah,
   namaLayar,
@@ -428,7 +429,7 @@ function LayarSoal({
           // reducer sebagai fungsi murni yang dites (A1-T4).
           const tanda = tandaOpsi(s, p.kunci, soal.jawaban);
           return (
-            <label key={p.kunci} className={`opsi opsi-${tanda}`}>
+            <label key={p.kunci} className={`opsi opsi-${tanda.keadaan}`}>
               <input
                 type="radio"
                 name={soal.soal_id}
@@ -443,9 +444,20 @@ function LayarSoal({
               </span>
               <span className="opsi-teks">
                 <Teks teks={p.teks} bukaSumber={bukaSumber} interaktif={false} />
-                {tanda === 'cocok' && (
-                  <span className="opsi-tanda">✓ yang cocok dengan kartu</span>
-                )}
+                {/*
+                  Kata, bukan warna saja. Daftarnya datang dari selektor murni
+                  di alur.ts, jadi "baris mana dapat kata apa" bisa dites (A4-T4).
+                */}
+                {tanda.label.map((kata) => (
+                  <span
+                    key={kata}
+                    className={
+                      kata === LABEL_COCOK ? 'opsi-tanda opsi-tanda-cocok' : 'opsi-tanda opsi-tanda-pemain'
+                    }
+                  >
+                    {kata}
+                  </span>
+                ))}
               </span>
             </label>
           );

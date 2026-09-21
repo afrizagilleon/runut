@@ -5,6 +5,8 @@ import {
   type Peristiwa,
   keadaanAwal,
   langkah,
+  LABEL_COCOK,
+  LABEL_PILIHAN_PEMAIN,
   namaLayar,
   semuaTerkunci,
   tandaOpsi,
@@ -597,38 +599,99 @@ describe('alur — kemurnian reducer (D-5)', () => {
   });
 });
 
-describe('alur — tanda opsi sesudah dikunci (A1-T4)', () => {
+describe('alur — tanda opsi sesudah dikunci (A1-T4, diperbaiki A4-T4)', () => {
   const sesudah = (aksi: Array<Aksi | [Aksi, number]>) => jalankan(aksi).keadaan.soal['s1'];
+  /** Keadaannya saja, untuk menegaskan keempat keadaan itu sendiri tidak berubah. */
+  const keadaanOpsi = (s: Parameters<typeof tandaOpsi>[0], k: string, j: string): string =>
+    tandaOpsi(s, k, j).keadaan;
+  const HURUF = ['a', 'b', 'c', 'd'];
 
-  it('belum dikunci: hanya pilihan pemain yang ditandai', () => {
+  it('belum dikunci: hanya pilihan pemain yang ditandai, dan ia sudah berlabel kata', () => {
     const s = sesudah([MULAI, { jenis: 'lanjut' }, { jenis: 'pilih', soal_id: 's1', kunci: 'c' }]);
-    expect(tandaOpsi(s, 'c', 'b')).toBe('dipilih');
-    expect(tandaOpsi(s, 'b', 'b')).toBe('polos');
-    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
+    expect(keadaanOpsi(s, 'c', 'b')).toBe('dipilih');
+    expect(tandaOpsi(s, 'c', 'b').label).toEqual([LABEL_PILIHAN_PEMAIN]);
+    expect(keadaanOpsi(s, 'b', 'b')).toBe('polos');
+    expect(tandaOpsi(s, 'b', 'b').label).toEqual([]);
+    expect(keadaanOpsi(s, 'a', 'b')).toBe('polos');
   });
 
-  it('dikunci dan benar: jawaban yang cocok ditandai, sisanya polos', () => {
-    const s = sesudah([
+  it('tepat satu baris berlabel Pilihanmu, di keempat keadaan mana pun', () => {
+    for (const pilihan of HURUF) {
+      for (const dikunci of [false, true]) {
+        const aksi: Array<Aksi | [Aksi, number]> = [
+          MULAI,
+          { jenis: 'lanjut' },
+          { jenis: 'pilih', soal_id: 's1', kunci: pilihan },
+        ];
+        if (dikunci) aksi.push({ jenis: 'kunci_jawaban', soal_id: 's1' });
+        const s = sesudah(aksi);
+        const berlabel = HURUF.filter((k) =>
+          tandaOpsi(s, k, 'b').label.includes(LABEL_PILIHAN_PEMAIN),
+        );
+        expect(berlabel, `pilihan ${pilihan}, dikunci ${String(dikunci)}`).toEqual([pilihan]);
+      }
+    }
+  });
+
+  it('tepat satu baris berlabel yang cocok, dan hanya sesudah dikunci', () => {
+    const belum = sesudah([
       MULAI,
       { jenis: 'lanjut' },
-      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'd' },
+    ]);
+    expect(HURUF.filter((k) => tandaOpsi(belum, k, 'b').label.includes(LABEL_COCOK))).toEqual([]);
+
+    const sudah = sesudah([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'd' },
       { jenis: 'kunci_jawaban', soal_id: 's1' },
     ]);
-    expect(tandaOpsi(s, 'b', 'b')).toBe('cocok');
-    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
-    expect(tandaOpsi(s, 'd', 'b')).toBe('polos');
+    expect(HURUF.filter((k) => tandaOpsi(sudah, k, 'b').label.includes(LABEL_COCOK))).toEqual(['b']);
   });
 
-  it('dikunci dan salah: yang cocok tetap dapat tanda terkuat, pilihan keliru diredupkan', () => {
+  it('tidak ada baris yang hanya berwarna: tiap keadaan bukan-polos membawa kata', () => {
     const s = sesudah([
       MULAI,
       { jenis: 'lanjut' },
       { jenis: 'pilih', soal_id: 's1', kunci: 'd' },
       { jenis: 'kunci_jawaban', soal_id: 's1' },
     ]);
-    expect(tandaOpsi(s, 'b', 'b')).toBe('cocok');
-    expect(tandaOpsi(s, 'd', 'b')).toBe('keliru');
-    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
+    for (const k of HURUF) {
+      const tanda = tandaOpsi(s, k, 'b');
+      if (tanda.keadaan === 'polos') expect(tanda.label).toEqual([]);
+      else expect(tanda.label.length, `opsi ${k} keadaan ${tanda.keadaan}`).toBeGreaterThan(0);
+    }
+  });
+
+  it('dikunci dan benar: SATU baris membawa kedua tanda', () => {
+    const s = sesudah([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    expect(keadaanOpsi(s, 'b', 'b')).toBe('cocok');
+    expect(tandaOpsi(s, 'b', 'b').label).toEqual([LABEL_PILIHAN_PEMAIN, LABEL_COCOK]);
+    expect(keadaanOpsi(s, 'a', 'b')).toBe('polos');
+    expect(tandaOpsi(s, 'a', 'b').label).toEqual([]);
+    expect(keadaanOpsi(s, 'd', 'b')).toBe('polos');
+  });
+
+  it('dikunci dan salah: pemain TAHU mana pilihannya, yang cocok tetap punya tandanya sendiri', () => {
+    const s = sesudah([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'd' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    expect(keadaanOpsi(s, 'b', 'b')).toBe('cocok');
+    expect(tandaOpsi(s, 'b', 'b').label).toEqual([LABEL_COCOK]);
+    expect(keadaanOpsi(s, 'd', 'b')).toBe('keliru');
+    // Inti cacat yang ditemukan pemilik: baris ini dulu tidak punya label apa pun.
+    expect(tandaOpsi(s, 'd', 'b').label).toEqual([LABEL_PILIHAN_PEMAIN]);
+    expect(keadaanOpsi(s, 'a', 'b')).toBe('polos');
+    expect(tandaOpsi(s, 'a', 'b').label).toEqual([]);
   });
 
   it('melihat ulang soal lama: tandanya sama dengan saat dikunci', () => {
@@ -638,12 +701,13 @@ describe('alur — tanda opsi sesudah dikunci (A1-T4)', () => {
     ]).keadaan;
     const s = keadaan.soal['s1'];
     expect(namaLayar(keadaan.layar)).toBe('soal-1');
-    expect(tandaOpsi(s, 'b', 'b')).toBe('cocok');
-    expect(tandaOpsi(s, 'a', 'b')).toBe('polos');
+    expect(keadaanOpsi(s, 'b', 'b')).toBe('cocok');
+    expect(tandaOpsi(s, 'b', 'b').label).toEqual([LABEL_PILIHAN_PEMAIN, LABEL_COCOK]);
+    expect(keadaanOpsi(s, 'a', 'b')).toBe('polos');
   });
 
   it('soal yang tidak dikenal tidak pernah menandai apa pun', () => {
-    expect(tandaOpsi(undefined, 'b', 'b')).toBe('polos');
+    expect(tandaOpsi(undefined, 'b', 'b')).toEqual({ keadaan: 'polos', label: [] });
   });
 });
 
