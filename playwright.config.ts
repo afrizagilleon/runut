@@ -179,7 +179,12 @@ export default defineConfig({
     },
     {
       name: 'lebar',
-      testMatch: ['**/tata-letak-lebar.spec.ts', '**/papan-ketik.spec.ts', '**/permainan.spec.ts'],
+      testMatch: [
+        '**/tata-letak-lebar.spec.ts',
+        '**/papan-ketik.spec.ts',
+        '**/permainan.spec.ts',
+        '**/umpan-tekan.spec.ts',
+      ],
       use: {
         ...devices['Desktop Chrome'],
         channel: 'chromium',

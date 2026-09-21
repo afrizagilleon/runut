@@ -210,6 +210,38 @@ summary:focus-visible,
   border-radius: 2px;
 }
 
+/* --- umpan tekan: satu baris dari patokan (C-4) --------------------------- */
+
+/*
+ * `docs/contoh/layar-soal.html:72`, disalin apa adanya:
+ *
+ *   .lembar-kaki:active, .baris-istilah:active, .opsi:active { background: var(--garis); }
+ *
+ * Itu satu-satunya aturan `:active` di seluruh berkas patokan. Tanpanya,
+ * `docs/desain.md` ("umpan tekan pada semua kontrol") tidak terpenuhi DAN yang
+ * tampil justru sorot ketuk bawaan Chromium — `rgba(51, 181, 229, 0.4)`, biru
+ * langit yang tidak ada di palet mana pun. Reviewer melihatnya di tangkapan
+ * layar `04-sumber-terbuka` (C-4).
+ *
+ * `-webkit-tap-highlight-color` disetel transparan di kontrol yang sama, karena
+ * menambahkan `:active` saja tidak cukup: sorot bawaan itu dilukis DI ATAS
+ * latar, jadi ia tetap menutupi umpan tekan yang baru.
+ *
+ * Tombol utama sengaja TIDAK ikut. Patokan tidak mengaturnya, dan mengarang
+ * rupa untuknya bukan pekerjaan amandemen ini (D-A3).
+ */
+.lembar-kaki,
+.baris-istilah,
+.opsi {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.lembar-kaki:active,
+.baris-istilah:active,
+.opsi:active {
+  background: var(--garis);
+}
+
 /* --- kerangka halaman ------------------------------------------------------ */
 
 .halaman {
