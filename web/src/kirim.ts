@@ -21,7 +21,23 @@ export const MENGIRIM: boolean = ALAMAT !== '';
  * Peristiwa yang tidak boleh menunggu: sesudahnya pemain bisa saja menutup tab.
  * Sisanya menumpuk di memori dan ikut terkirim bersama yang berikutnya.
  */
-const PENTING: ReadonlySet<NamaPeristiwa> = new Set<NamaPeristiwa>([
+export const PENTING: ReadonlySet<NamaPeristiwa> = new Set<NamaPeristiwa>([
+  /*
+   * A-1: `mulai` dan `layar_masuk` dikirim **segera**, bukan menunggu kelompok
+   * penuh atau halaman mati.
+   *
+   * Temuan reviewer (F-1): kunjungan yang ditinggalkan di layar pertama tidak
+   * pernah sampai ke pengumpul sampai `pagehide` atau `visibilitychange`
+   * menyala — dan di ponsel keduanya tidak selalu sempat. Sesi yang hilang
+   * begitu bukan sembarang angka: ia justru **jumlah pengunjung**, angka yang
+   * akan disebut pemilik ke juri. Orang yang membuka tautan lalu menutupnya
+   * dua detik kemudian tetap seorang pengunjung.
+   *
+   * Biayanya satu `sendBeacon` kecil per perpindahan layar — enam per sesi
+   * penuh. Itu murah dibanding sesi yang hilang tanpa jejak.
+   */
+  'mulai',
+  'layar_masuk',
   'kunci_jawaban',
   'kembali_ke_kartu',
   'pembukaan_masuk',

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Peristiwa } from './alur.ts';
 import {
   KELOMPOK,
+  PENTING,
   MAKS_BADAN,
   MENGIRIM,
   pecahMuatan,
@@ -72,6 +73,11 @@ describe('kirim — pemecahan muatan (D-9 membatasi badan 8 KB)', () => {
 
 describe('kirim — peristiwa yang tidak boleh menunggu', () => {
   const penting: Array<Peristiwa['nama']> = [
+    // A-1 memindahkan `mulai` dan `layar_masuk` ke daftar ini. Keduanya dulu
+    // sengaja menunggu; temuan reviewer F-1 membalik keputusan itu, karena
+    // kunjungan yang ditinggalkan di layar pertama tidak pernah sampai.
+    'mulai',
+    'layar_masuk',
     'kunci_jawaban',
     'pembukaan_masuk',
     'pembukaan_selesai',
@@ -85,7 +91,9 @@ describe('kirim — peristiwa yang tidak boleh menunggu', () => {
     });
   }
 
-  const menunggu: Array<Peristiwa['nama']> = ['mulai', 'layar_masuk', 'kartu_buka', 'pilih'];
+  // Sisanya tetap menunggu kelompoknya: kalau semuanya penting, satu layar soal
+  // melahirkan puluhan permintaan kecil.
+  const menunggu: Array<Peristiwa['nama']> = ['kartu_buka', 'pilih', 'ketuk', 'gulir'];
   for (const nama of menunggu) {
     it(`membiarkan ${nama} menumpuk dulu`, () => {
       expect(perluSiram([peristiwa(nama, 1)])).toBe(false);
@@ -167,5 +175,47 @@ describe('kirim — kelompok 20 peristiwa (D-8)', () => {
     expect(muatan).toHaveLength(1);
     expect(JSON.stringify(muatan[0]).length).toBeLessThan(32 * 1024);
     expect(MAKS_BADAN).toBeLessThanOrEqual(32 * 1024);
+  });
+});
+
+describe('kirim — A-1: kunjungan tidak boleh hilang', () => {
+  /*
+   * Temuan reviewer F-1: sesi yang ditinggalkan di layar pertama hanya sampai
+   * ke pengumpul kalau `pagehide` atau `visibilitychange` sempat menyala. Di
+   * ponsel keduanya tidak selalu sempat, dan yang hilang adalah angka
+   * pengunjung — angka yang akan disebut ke juri.
+   */
+  it('mulai dikirim segera, tanpa menunggu kelompok penuh', () => {
+    expect(perluSiram([peristiwa('mulai', 1, { lebar_layar: 360 })])).toBe(true);
+    expect(perluKirim(0, [peristiwa('mulai', 1, { lebar_layar: 360 })])).toBe(true);
+  });
+
+  it('layar_masuk dikirim segera, jadi tiap perpindahan layar tercatat', () => {
+    expect(perluSiram([peristiwa('layar_masuk', 2, { layar: 'pembuka' })])).toBe(true);
+    expect(perluKirim(0, [peristiwa('layar_masuk', 2, { layar: 'soal-1' })])).toBe(true);
+  });
+
+  it('kunjungan terpendek yang mungkin pun sudah memicu pengiriman', () => {
+    // Buka halaman, tidak menyentuh apa pun: dua peristiwa, dan keduanya penting.
+    const baruBuka = [
+      peristiwa('mulai', 1, { lebar_layar: 360 }),
+      peristiwa('layar_masuk', 2, { layar: 'pembuka' }),
+    ];
+    expect(perluKirim(0, baruBuka)).toBe(true);
+  });
+
+  it('ketukan dan gulir TETAP menunggu kelompoknya — A-1 tidak membuka keran', () => {
+    // Kalau semua peristiwa menjadi penting, satu layar soal melahirkan puluhan
+    // permintaan. Yang dikirim segera hanya yang menandai keberadaan orang.
+    expect(perluSiram([peristiwa('ketuk', 3, { layar: 'soal-1' })])).toBe(false);
+    expect(perluSiram([peristiwa('gulir', 4, { layar: 'soal-1' })])).toBe(false);
+    expect(perluSiram([peristiwa('pilih', 5, {})])).toBe(false);
+  });
+
+  it('daftar PENTING memuat kedua nama A-1, dan tetap sembilan nama', () => {
+    expect(PENTING.has('mulai')).toBe(true);
+    expect(PENTING.has('layar_masuk')).toBe(true);
+    expect(PENTING.has('ketuk')).toBe(false);
+    expect(PENTING.size).toBe(9);
   });
 });
