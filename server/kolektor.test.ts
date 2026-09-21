@@ -31,7 +31,8 @@ function peristiwa(ubah: Record<string, unknown> = {}): Record<string, unknown> 
       kunci: 'b',
       benar: true,
       ms_di_soal: 21_000,
-      kartu_dibuka_sebelum: 2,
+      ms_kartu_terlihat_sebelum: 14_500,
+      gulir_balik_ke_kartu: 1,
     },
     ...ubah,
   };
@@ -116,7 +117,7 @@ describe('kolektor — peristiwa sah', () => {
     expect(tercatat).toBeDefined();
     expect(typeof tercatat?.['diterima_pada']).toBe('string');
     expect(tercatat?.['nama']).toBe('kunci_jawaban');
-    expect((tercatat?.['isi'] as Record<string, unknown>)['kartu_dibuka_sebelum']).toBe(2);
+    expect((tercatat?.['isi'] as Record<string, unknown>)['ms_kartu_terlihat_sebelum']).toBe(14_500);
   });
 
   it('menerima medan layar akhir yang seluruhnya null', async () => {
@@ -292,7 +293,7 @@ describe('kolektor — validator sebagai fungsi murni', () => {
     ]);
   });
 
-  it('menerima kesebelas nama peristiwa D-6', () => {
+  it('menerima kedua belas nama peristiwa D-6 (termasuk kembali_ke_kartu)', () => {
     const contoh: Array<[string, Record<string, unknown>]> = [
       ['mulai', { lebar_layar: 375 }],
       ['layar_masuk', { layar: 'soal-1' }],
@@ -300,8 +301,16 @@ describe('kolektor — validator sebagai fungsi murni', () => {
       ['pilih', { soal_id: 's1', kunci: 'b', ganti_ke: 0 }],
       [
         'kunci_jawaban',
-        { soal_id: 's1', kunci: 'b', benar: true, ms_di_soal: 1, kartu_dibuka_sebelum: 0 },
+        {
+          soal_id: 's1',
+          kunci: 'b',
+          benar: true,
+          ms_di_soal: 1,
+          ms_kartu_terlihat_sebelum: 0,
+          gulir_balik_ke_kartu: 0,
+        },
       ],
+      ['kembali_ke_kartu', { soal_id: 's1' }],
       ['lihat_balik', { dari_layar: 'soal-3', ke_layar: 'soal-1' }],
       ['pembukaan_masuk', {}],
       ['pembukaan_selesai', { ms_di_pembukaan: 1, gulir_maks_persen: 90 }],
@@ -309,7 +318,7 @@ describe('kolektor — validator sebagai fungsi murni', () => {
       ['akhir_kirim', { rating: 4, terasa: 'membaca data', sumber_jawaban: 'kartu fakta', teks: '' }],
       ['tutup', { layar_terakhir: 'akhir' }],
     ];
-    expect(contoh).toHaveLength(11);
+    expect(contoh).toHaveLength(12);
     for (const [nama, isi] of contoh) {
       const hasil = periksaPeristiwa(peristiwa({ nama, isi }));
       expect(hasil.galat, nama).toBeUndefined();

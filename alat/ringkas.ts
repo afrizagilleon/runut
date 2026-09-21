@@ -26,13 +26,26 @@ export interface RingkasSoal {
   benar: boolean | null;
   kunci: string | null;
   ms_di_soal: number | null;
-  kartu_dibuka_sebelum: number | null;
+  /** Lama tumpukan kartu terlihat sebelum jawaban dikunci (A1-T2). */
+  ms_kartu_terlihat: number | null;
+  /** Berapa kali pemain menggulir balik ke kartu sebelum mengunci. */
+  gulir_balik: number | null;
+  /** Ketukan tombol "Kembali ke kartu" di soal ini. */
+  kembali_ke_kartu: number;
+  /** Panel sumber kartu yang dibuka di soal ini. */
+  panel_sumber: number;
   ganti_pilihan: number;
 }
 
 export interface RingkasSesi {
   sesi: string;
   kasus_id: string;
+  /**
+   * Sesi tanpa peristiwa `mulai` — misalnya tab lama yang baru ditutup, atau
+   * kiriman yang kepalanya hilang. Ia dilaporkan terpisah dan tidak masuk
+   * penyebut mana pun, supaya tidak menyamar sebagai orang yang berhenti.
+   */
+  lengkap: boolean;
   lebar_layar: number | null;
   sampai_pembukaan: boolean;
   durasi_total_ms: number;
@@ -101,7 +114,10 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
       benar: null,
       kunci: null,
       ms_di_soal: null,
-      kartu_dibuka_sebelum: null,
+      ms_kartu_terlihat: null,
+      gulir_balik: null,
+      kembali_ke_kartu: 0,
+      panel_sumber: 0,
       ganti_pilihan: 0,
     };
     soal.set(soal_id, baru);
@@ -122,7 +138,16 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
       s.benar = typeof p.isi['benar'] === 'boolean' ? p.isi['benar'] : null;
       s.kunci = teks(p.isi['kunci']);
       s.ms_di_soal = angka(p.isi['ms_di_soal']);
-      s.kartu_dibuka_sebelum = angka(p.isi['kartu_dibuka_sebelum']);
+      s.ms_kartu_terlihat = angka(p.isi['ms_kartu_terlihat_sebelum']);
+      s.gulir_balik = angka(p.isi['gulir_balik_ke_kartu']);
+    }
+    if (p.nama === 'kembali_ke_kartu') {
+      const id = teks(p.isi['soal_id']);
+      if (id !== null) pastikan(id).kembali_ke_kartu += 1;
+    }
+    if (p.nama === 'kartu_buka') {
+      const id = teks(p.isi['soal_id']);
+      if (id !== null) pastikan(id).panel_sumber += 1;
     }
   }
 
@@ -141,6 +166,7 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
   return {
     sesi: pertama?.sesi ?? '(tanpa sesi)',
     kasus_id: pertama?.kasus_id ?? '(tanpa kasus)',
+    lengkap: mulai !== undefined,
     lebar_layar: angka(mulai?.isi['lebar_layar']),
     sampai_pembukaan: urut.some((p) => p.nama === 'pembukaan_masuk'),
     durasi_total_ms: terakhir?.t_ms ?? 0,
@@ -153,9 +179,29 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
   };
 }
 
+/**
+ * Buang peristiwa kembar `(sesi, urut)`.
+ *
+ * Ini **jaring pengaman**, bukan perbaikan: penyebabnya sudah ditambal di
+ * pengirim (A1-T2). Ia tetap ada karena berkas alpha yang sudah telanjur
+ * terkumpul memuat kembaran, dan karena pengumpul sengaja tidak menyimpan
+ * keadaan antar-permintaan.
+ */
+export function buangKembar(peristiwa: Peristiwa[]): Peristiwa[] {
+  const terlihat = new Set<string>();
+  const keluar: Peristiwa[] = [];
+  for (const p of peristiwa) {
+    const kunci = `${p.sesi}#${String(p.urut)}`;
+    if (terlihat.has(kunci)) continue;
+    terlihat.add(kunci);
+    keluar.push(p);
+  }
+  return keluar;
+}
+
 export function kelompokkanSesi(peristiwa: Peristiwa[]): RingkasSesi[] {
   const per = new Map<string, Peristiwa[]>();
-  for (const p of peristiwa) {
+  for (const p of buangKembar(peristiwa)) {
     const daftar = per.get(p.sesi);
     if (daftar === undefined) per.set(p.sesi, [p]);
     else daftar.push(p);
@@ -182,15 +228,22 @@ function nilaiAkhir(akhir: Record<string, unknown> | null, medan: string): strin
 }
 
 /** Seluruh laporan Markdown untuk sekumpulan sesi. */
-export function laporan(sesi: RingkasSesi[]): string {
+export function laporan(semua: RingkasSesi[]): string {
   const baris: string[] = [];
+  const sesi = semua.filter((s) => s.lengkap);
+  const sebagian = semua.filter((s) => !s.lengkap);
+
   baris.push('# Ringkasan alpha');
   baris.push('');
   baris.push(`Sesi: **${String(sesi.length)}**`);
 
   if (sesi.length === 0) {
     baris.push('');
-    baris.push('Tidak ada satu pun sesi di berkas yang diberikan.');
+    baris.push('Tidak ada satu pun sesi lengkap di berkas yang diberikan.');
+    if (sebagian.length > 0) {
+      baris.push('');
+      baris.push(`Sesi tak lengkap (tanpa peristiwa \`mulai\`): ${String(sebagian.length)}.`);
+    }
     return baris.join('\n') + '\n';
   }
 
@@ -213,18 +266,24 @@ export function laporan(sesi: RingkasSesi[]): string {
   }
   baris.push('');
 
-  baris.push('## Kartu dibuka sebelum menjawab');
-  baris.push('');
-  baris.push('Ini ukuran yang paling penting: apakah pemain menjawab dari kartu atau dari ingatan.');
-  baris.push('');
   const semuaSoal = [...new Set(sesi.flatMap((s) => s.soal.map((x) => x.soal_id)))].sort();
-  baris.push(`| sesi | ${semuaSoal.join(' | ')} |`);
+
+  baris.push('## Apakah kartu dibaca sebelum menjawab');
+  baris.push('');
+  baris.push(
+    'Ukuran utama alpha. **Detik** = lama tumpukan kartu berada di layar sebelum jawaban',
+  );
+  baris.push(
+    'dikunci; **balik** = berapa kali pemain menggulir kembali ke kartu sesudah meninggalkannya.',
+  );
+  baris.push('');
+  baris.push(`| sesi | ${semuaSoal.map((id) => `${id} (detik / balik)`).join(' | ')} |`);
   baris.push(`|---|${semuaSoal.map(() => '---').join('|')}|`);
   for (const s of sesi) {
     const sel = semuaSoal.map((id) => {
       const soal = s.soal.find((x) => x.soal_id === id);
-      if (soal === undefined || soal.kartu_dibuka_sebelum === null) return '—';
-      return String(soal.kartu_dibuka_sebelum);
+      if (soal === undefined || soal.ms_kartu_terlihat === null) return '—';
+      return `${detik(soal.ms_kartu_terlihat)} / ${String(soal.gulir_balik ?? 0)}`;
     });
     baris.push(`| ${s.sesi} | ${sel.join(' | ')} |`);
   }
@@ -232,8 +291,10 @@ export function laporan(sesi: RingkasSesi[]): string {
 
   baris.push('## Per soal');
   baris.push('');
-  baris.push('| soal | dijawab | benar | rata kartu dibuka | rata ganti pilihan | rata lama |');
-  baris.push('|---|---|---|---|---|---|');
+  baris.push(
+    '| soal | dijawab | benar | rata kartu terlihat | rata gulir balik | ketuk "Kembali ke kartu" | panel sumber | rata ganti pilihan | rata lama |',
+  );
+  baris.push('|---|---|---|---|---|---|---|---|---|');
   for (const id of semuaSoal) {
     const jawab = sesi
       .map((s) => s.soal.find((x) => x.soal_id === id))
@@ -241,13 +302,21 @@ export function laporan(sesi: RingkasSesi[]): string {
     const benar = jawab.filter((s) => s.benar === true).length;
     const rata = (ambil: (s: RingkasSoal) => number): string =>
       jawab.length === 0 ? '—' : (jawab.reduce((j, s) => j + ambil(s), 0) / jawab.length).toFixed(1);
-    const rataLama =
+    const rataDetik = (ambil: (s: RingkasSoal) => number): string =>
       jawab.length === 0
         ? '—'
-        : detik(jawab.reduce((j, s) => j + (s.ms_di_soal ?? 0), 0) / jawab.length);
+        : detik(jawab.reduce((j, s) => j + ambil(s), 0) / jawab.length);
+    const jumlah = (ambil: (s: RingkasSoal) => number): string =>
+      String(
+        sesi
+          .flatMap((s) => s.soal.filter((x) => x.soal_id === id))
+          .reduce((j, s) => j + ambil(s), 0),
+      );
     baris.push(
       `| ${id} | ${String(jawab.length)} | ${String(benar)} | ` +
-        `${rata((s) => s.kartu_dibuka_sebelum ?? 0)} | ${rata((s) => s.ganti_pilihan)} | ${rataLama} |`,
+        `${rataDetik((s) => s.ms_kartu_terlihat ?? 0)} | ${rata((s) => s.gulir_balik ?? 0)} | ` +
+        `${jumlah((s) => s.kembali_ke_kartu)} | ${jumlah((s) => s.panel_sumber)} | ` +
+        `${rata((s) => s.ganti_pilihan)} | ${rataDetik((s) => s.ms_di_soal ?? 0)} |`,
     );
   }
   baris.push('');
@@ -287,6 +356,22 @@ export function laporan(sesi: RingkasSesi[]): string {
       `| ${s.sesi} | ${nilaiAkhir(s.akhir, 'rating')} | ${nilaiAkhir(s.akhir, 'terasa')} | ` +
         `${nilaiAkhir(s.akhir, 'sumber_jawaban')} | ${tulisan.replace(/\|/g, '\\|')} |`,
     );
+  }
+
+  if (sebagian.length > 0) {
+    baris.push('');
+    baris.push('## Sesi tak lengkap');
+    baris.push('');
+    baris.push(
+      'Tanpa peristiwa `mulai` — biasanya tab lama yang baru ditutup. **Tidak** dihitung di',
+    );
+    baris.push('penyebut mana pun di atas.');
+    baris.push('');
+    baris.push('| sesi | peristiwa terakhir | layar terakhir |');
+    baris.push('|---|---|---|');
+    for (const s of sebagian) {
+      baris.push(`| ${s.sesi} | ${String(s.soal.length)} soal tersentuh | ${s.layar_terakhir} |`);
+    }
   }
 
   return baris.join('\n') + '\n';

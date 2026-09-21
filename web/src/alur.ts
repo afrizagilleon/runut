@@ -16,6 +16,7 @@ export const NAMA_PERISTIWA = [
   'mulai',
   'layar_masuk',
   'kartu_buka',
+  'kembali_ke_kartu',
   'pilih',
   'kunci_jawaban',
   'lihat_balik',
@@ -64,12 +65,23 @@ export interface KeadaanSoal {
   benar: boolean | null;
   /** Berapa kali pemain berpindah pilihan; 0 untuk pilihan pertama. */
   ganti: number;
-  /** Jumlah peristiwa `kartu_buka` untuk soal ini. */
+  /** Jumlah panel sumber kartu yang dibuka di soal ini. */
   kartuDibuka: number;
-  /** Jumlah `kartu_buka` yang terjadi **sebelum** soal ini dikunci. */
-  kartuDibukaSebelumKunci: number;
-  /** Kartu yang sedang terlipat pemain, per fact_id. */
-  terlipat: Record<string, boolean>;
+  /**
+   * Sejak kapan tumpukan kartu ≥ 50 % terlihat; `null` kalau sedang tidak
+   * terlihat. Diisi pengamat di komponen lewat dispatch, dijumlahkan di sini.
+   */
+  kartuTerlihatSejak: number | null;
+  /** Milidetik tumpukan kartu terlihat, dari kunjungan yang sudah selesai. */
+  msKartuTerlihat: number;
+  /** Nilai `msKartuTerlihat` yang dibekukan saat soal ini dikunci. */
+  msKartuTerlihatSaatKunci: number;
+  /** Kartu pernah keluar layar; dipakai membedakan gulir balik dari kemunculan pertama. */
+  pernahKeluar: boolean;
+  /** Berapa kali kartu masuk layar lagi sesudah pernah keluar. */
+  gulirBalik: number;
+  /** Nilai `gulirBalik` yang dibekukan saat soal ini dikunci. */
+  gulirBalikSaatKunci: number;
   /** Waktu masuk terakhir ke layar soal ini; `null` kalau sedang tidak di sini. */
   masukPada: number | null;
   /** Milidetik yang sudah terkumpul di layar soal ini dari kunjungan sebelumnya. */
@@ -114,9 +126,9 @@ export interface Keadaan {
 
 export type Aksi =
   | { jenis: 'mulai'; lebar_layar: number }
-  | { jenis: 'buka_kartu'; soal_id: string; fact_id: string }
-  | { jenis: 'lipat_kartu'; soal_id: string; fact_id: string }
-  | { jenis: 'lihat_kartu_lagi'; soal_id: string }
+  | { jenis: 'kartu_masuk_layar'; soal_id: string }
+  | { jenis: 'kartu_keluar_layar'; soal_id: string }
+  | { jenis: 'kembali_ke_kartu'; soal_id: string }
   | { jenis: 'buka_sumber'; fact_id: string; soal_id: string | null }
   | { jenis: 'tutup_sumber' }
   | { jenis: 'pilih'; soal_id: string; kunci: string }
@@ -149,8 +161,12 @@ function soalKosong(): KeadaanSoal {
     benar: null,
     ganti: 0,
     kartuDibuka: 0,
-    kartuDibukaSebelumKunci: 0,
-    terlipat: {},
+    kartuTerlihatSejak: null,
+    msKartuTerlihat: 0,
+    msKartuTerlihatSaatKunci: 0,
+    pernahKeluar: false,
+    gulirBalik: 0,
+    gulirBalikSaatKunci: 0,
     masukPada: null,
     msTerkumpul: 0,
   };
@@ -297,44 +313,50 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       return { keadaan: { ...berikut, urut }, peristiwa };
     }
 
-    case 'buka_kartu': {
+    /*
+     * Pengamat di komponen hanya melaporkan "kartu masuk layar" dan "kartu
+     * keluar layar" beserta waktunya. Seluruh penjumlahan terjadi di sini
+     * (A1-T2) — komponen tidak boleh menghitung apa pun, karena yang bisa
+     * dibuktikan tes hanyalah yang ada di reducer.
+     */
+    case 'kartu_masuk_layar': {
       const s = keadaan.soal[aksi.soal_id];
       if (s === undefined) return abaikan(keadaan);
-      const catat = new Catatan(keadaan, waktu, keadaan.urut);
-      catat.tambah('kartu_buka', { soal_id: aksi.soal_id, fact_id: aksi.fact_id });
-      const berikut = ubahSoal(keadaan, aksi.soal_id, (lama) =>
-        hitungBuka(lama, [aksi.fact_id]),
-      );
-      const { peristiwa, urut } = catat.hasil;
-      return { keadaan: { ...berikut, urut }, peristiwa };
-    }
-
-    case 'lipat_kartu': {
-      // Melipat bukan "membuka", jadi ia tidak melahirkan peristiwa — tetapi
-      // keadaannya tetap di reducer, bukan di komponen.
-      const s = keadaan.soal[aksi.soal_id];
-      if (s === undefined) return abaikan(keadaan);
+      if (s.kartuTerlihatSejak !== null) return abaikan(keadaan);
       return {
         keadaan: ubahSoal(keadaan, aksi.soal_id, (lama) => ({
           ...lama,
-          terlipat: { ...lama.terlipat, [aksi.fact_id]: true },
+          kartuTerlihatSejak: waktu,
+          // Masuk lagi sesudah pernah keluar = pemain menggulir balik ke kartu.
+          gulirBalik: lama.pernahKeluar ? lama.gulirBalik + 1 : lama.gulirBalik,
         })),
         peristiwa: [],
       };
     }
 
-    case 'lihat_kartu_lagi': {
+    case 'kartu_keluar_layar': {
       const s = keadaan.soal[aksi.soal_id];
       if (s === undefined) return abaikan(keadaan);
-      const kartu = daftarKartu(keadaan, aksi.soal_id);
-      if (kartu.length === 0) return abaikan(keadaan);
+      if (s.kartuTerlihatSejak === null) return abaikan(keadaan);
+      const sejak = s.kartuTerlihatSejak;
+      return {
+        keadaan: ubahSoal(keadaan, aksi.soal_id, (lama) => ({
+          ...lama,
+          msKartuTerlihat: lama.msKartuTerlihat + Math.max(0, waktu - sejak),
+          kartuTerlihatSejak: null,
+          pernahKeluar: true,
+        })),
+        peristiwa: [],
+      };
+    }
+
+    case 'kembali_ke_kartu': {
+      const s = keadaan.soal[aksi.soal_id];
+      if (s === undefined) return abaikan(keadaan);
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
-      for (const fact_id of kartu) {
-        catat.tambah('kartu_buka', { soal_id: aksi.soal_id, fact_id });
-      }
-      const berikut = ubahSoal(keadaan, aksi.soal_id, (lama) => hitungBuka(lama, kartu));
+      catat.tambah('kembali_ke_kartu', { soal_id: aksi.soal_id });
       const { peristiwa, urut } = catat.hasil;
-      return { keadaan: { ...berikut, urut }, peristiwa };
+      return { keadaan: { ...keadaan, urut }, peristiwa };
     }
 
     case 'buka_sumber': {
@@ -342,7 +364,10 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       let berikut: Keadaan = { ...keadaan, sumberTerbuka: aksi.fact_id };
       if (aksi.soal_id !== null && keadaan.soal[aksi.soal_id] !== undefined) {
         catat.tambah('kartu_buka', { soal_id: aksi.soal_id, fact_id: aksi.fact_id });
-        berikut = ubahSoal(berikut, aksi.soal_id, (lama) => hitungBuka(lama, [aksi.fact_id]));
+        berikut = ubahSoal(berikut, aksi.soal_id, (lama) => ({
+          ...lama,
+          kartuDibuka: lama.kartuDibuka + 1,
+        }));
       }
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...berikut, urut }, peristiwa };
@@ -378,20 +403,32 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       const benar = keadaan.kunciBenar[aksi.soal_id] === s.kunci;
       const msDiSoal =
         s.msTerkumpul + (s.masukPada === null ? 0 : waktu - s.masukPada);
+      /*
+       * Lama kartu benar-benar berada di layar sebelum jawaban dikunci — bukan
+       * berapa kali kartu "dibuka". Kartu tampil terbuka sejak awal, jadi
+       * hitungan buka-ulang tidak pernah mengukur apakah pemain membacanya
+       * (F-1, kesalahan D-6 versi pertama).
+       */
+      const msKartu =
+        s.msKartuTerlihat +
+        (s.kartuTerlihatSejak === null ? 0 : Math.max(0, waktu - s.kartuTerlihatSejak));
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
       catat.tambah('kunci_jawaban', {
         soal_id: aksi.soal_id,
         kunci: s.kunci,
         benar,
         ms_di_soal: msDiSoal,
-        // Hanya pembukaan kartu **sebelum** penguncian yang dihitung.
-        kartu_dibuka_sebelum: s.kartuDibuka,
+        ms_kartu_terlihat_sebelum: msKartu,
+        gulir_balik_ke_kartu: s.gulirBalik,
       });
       const berikut = ubahSoal(keadaan, aksi.soal_id, (lama) => ({
         ...lama,
         dikunci: true,
         benar,
-        kartuDibukaSebelumKunci: lama.kartuDibuka,
+        // Dibekukan: apa pun yang terjadi sesudah penguncian tidak boleh
+        // mengubah angka yang sudah dilaporkan.
+        msKartuTerlihatSaatKunci: msKartu,
+        gulirBalikSaatKunci: lama.gulirBalik,
       }));
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...berikut, urut }, peristiwa };
@@ -506,12 +543,3 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
   }
 }
 
-function hitungBuka(lama: KeadaanSoal, fact_ids: string[]): KeadaanSoal {
-  const terlipat = { ...lama.terlipat };
-  for (const id of fact_ids) terlipat[id] = false;
-  return { ...lama, kartuDibuka: lama.kartuDibuka + fact_ids.length, terlipat };
-}
-
-function daftarKartu(keadaan: Keadaan, soal_id: string): string[] {
-  return keadaan.kartuSoal[soal_id] ?? [];
-}

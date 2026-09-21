@@ -23,6 +23,7 @@ export const MENGIRIM: boolean = ALAMAT !== '';
  */
 const PENTING: ReadonlySet<NamaPeristiwa> = new Set<NamaPeristiwa>([
   'kunci_jawaban',
+  'kembali_ke_kartu',
   'pembukaan_masuk',
   'pembukaan_selesai',
   'minat_kasus_lain',
@@ -67,6 +68,41 @@ export function perluSiram(peristiwa: Peristiwa[]): boolean {
 
 let antre: Peristiwa[] = [];
 let sudahMengeluh = false;
+
+/**
+ * Nomor urut tertinggi yang sudah pernah diterima, per sesi.
+ *
+ * Tanpa ini, satu peristiwa bisa diserahkan dua kali dan tertulis dua baris
+ * dengan `(sesi, urut)` yang sama. Itu bukan kemungkinan teoretis: `pagehide`
+ * menyala lebih dari sekali di ponsel — pindah tab lalu menutup, atau halaman
+ * dipulihkan dari bfcache — dan jalur `pagehide` menghitung peristiwanya dari
+ * keadaan yang sama, sehingga melahirkan `urut` yang sama dua kali.
+ * Direproduksi dan diukur sebelum ditambal (ledger A1-T2).
+ *
+ * Penjagaan ditaruh di sini, bukan di pemanggilnya, karena ini satu-satunya
+ * pintu yang dilewati semua jalur: efek React maupun `pagehide`.
+ */
+const urutTerakhir = new Map<string, number>();
+
+/**
+ * Buang peristiwa yang nomor urutnya sudah pernah lewat sini.
+ *
+ * Petanya diberikan pemanggil supaya fungsi ini bisa dites tanpa peramban dan
+ * tanpa variabel lingkungan — penjaga yang tidak bisa dibuktikan bukan penjaga.
+ */
+export function saringYangBaru(
+  peristiwa: Peristiwa[],
+  tertinggiPerSesi: Map<string, number>,
+): Peristiwa[] {
+  const baru: Peristiwa[] = [];
+  for (const p of peristiwa) {
+    const tertinggi = tertinggiPerSesi.get(p.sesi) ?? 0;
+    if (p.urut <= tertinggi) continue;
+    tertinggiPerSesi.set(p.sesi, p.urut);
+    baru.push(p);
+  }
+  return baru;
+}
 
 /**
  * INV-6, dengan satu pengecualian yang disengaja: gagalnya pengiriman **tidak
@@ -122,7 +158,8 @@ export function siramPeristiwa(): void {
 /** Terima peristiwa dari aplikasi; kirim sekarang kalau ada yang penting. */
 export function catatPeristiwa(peristiwa: Peristiwa[]): void {
   if (!MENGIRIM) return;
-  if (peristiwa.length === 0) return;
-  antre = [...antre, ...peristiwa];
-  if (perluSiram(peristiwa)) siramPeristiwa();
+  const baru = saringYangBaru(peristiwa, urutTerakhir);
+  if (baru.length === 0) return;
+  antre = [...antre, ...baru];
+  if (perluSiram(baru)) siramPeristiwa();
 }

@@ -263,53 +263,136 @@ describe('alur — memilih dan mengunci (D-3)', () => {
   });
 });
 
-describe('alur — kartu (D-4, D-6)', () => {
-  it('menghitung kartu_dibuka_sebelum hanya dari pembukaan sebelum penguncian', () => {
-    const { peristiwa } = jalankan([
+describe('alur — lama kartu terlihat dan gulir balik (A1-T2)', () => {
+  /*
+   * Ukuran "apakah pemain membaca kartu" adalah lama tumpukan kartu berada di
+   * layar sebelum jawaban dikunci, bukan berapa kali kartu dibuka: kartu tampil
+   * terbuka sejak awal, sehingga hitungan buka-ulang selalu nol untuk orang
+   * yang justru membacanya (F-1).
+   */
+  it('menjumlahkan masuk-keluar-masuk dengan angka yang persis', () => {
+    const { keadaan, peristiwa } = jalankan([
       MULAI,
-      { jenis: 'lanjut' },
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k1' },
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k2' },
-      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
-      { jenis: 'kunci_jawaban', soal_id: 's1' },
-      // Dibuka lagi SESUDAH dikunci: tidak boleh ikut terhitung.
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k1' },
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k2' },
+      [{ jenis: 'lanjut' }, 100],
+      // Pengamat melaporkan kartu sudah di layar begitu layarnya dirender.
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 0],
+      // Kartu terlihat dari +100 sampai +1.100 = 1.000 ms
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 1_000],
+      // Di luar layar 400 ms: pemain menggulir ke opsi
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 400],
+      // Terlihat lagi 700 ms: gulir balik pertama
+      [{ jenis: 'pilih', soal_id: 's1', kunci: 'b' }, 700],
+      [{ jenis: 'kunci_jawaban', soal_id: 's1' }, 0],
     ]);
     const kunci = peristiwa.find((p) => p.nama === 'kunci_jawaban');
-    expect(kunci?.isi['kartu_dibuka_sebelum']).toBe(2);
+    expect(kunci?.isi['ms_kartu_terlihat_sebelum']).toBe(1_700);
+    expect(kunci?.isi['gulir_balik_ke_kartu']).toBe(1);
+    expect(keadaan.soal['s1']?.msKartuTerlihatSaatKunci).toBe(1_700);
+    expect(keadaan.soal['s1']?.gulirBalikSaatKunci).toBe(1);
   });
 
-  it('membekukan kartuDibukaSebelumKunci saat penguncian, sementara kartuDibuka terus jalan', () => {
+  it('tidak menghitung waktu ketika kartu di luar layar', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      [{ jenis: 'lanjut' }, 100],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 0],
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 500],
+      // 9 detik di luar layar tidak boleh ikut terhitung.
+      [{ jenis: 'pilih', soal_id: 's1', kunci: 'b' }, 9_000],
+      [{ jenis: 'kunci_jawaban', soal_id: 's1' }, 0],
+    ]);
+    expect(peristiwa.find((p) => p.nama === 'kunci_jawaban')?.isi['ms_kartu_terlihat_sebelum']).toBe(
+      500,
+    );
+  });
+
+  it('NEGATIF — waktu sesudah penguncian tidak mengubah angka yang sudah dilaporkan', () => {
     const { keadaan } = jalankan([
       MULAI,
-      { jenis: 'lanjut' },
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k1' },
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k2' },
-      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
-      { jenis: 'kunci_jawaban', soal_id: 's1' },
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k1' },
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k2' },
+      [{ jenis: 'lanjut' }, 100],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 0],
+      [{ jenis: 'pilih', soal_id: 's1', kunci: 'b' }, 600],
+      [{ jenis: 'kunci_jawaban', soal_id: 's1' }, 0],
+      // Membaca kartu lagi sesudah jawaban terkunci: tidak boleh terhitung.
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 5_000],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 1_000],
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 4_000],
     ]);
-    expect(keadaan.soal['s1']?.kartuDibukaSebelumKunci).toBe(2);
-    expect(keadaan.soal['s1']?.kartuDibuka).toBe(4);
+    expect(keadaan.soal['s1']?.msKartuTerlihatSaatKunci).toBe(600);
+    expect(keadaan.soal['s1']?.gulirBalikSaatKunci).toBe(0);
   });
 
-  it('mencatat nol kartu dibuka untuk pemain yang menjawab tanpa membuka kartu', () => {
-    const { peristiwa } = jalankan(sampaiTerkunci());
-    for (const p of peristiwa.filter((e) => e.nama === 'kunci_jawaban')) {
-      expect(p.isi['kartu_dibuka_sebelum']).toBe(0);
-    }
-  });
-
-  it('mencatat kartu_buka saat panel sumber dibuka dari sebuah kartu', () => {
+  it('kemunculan pertama bukan gulir balik', () => {
     const { peristiwa } = jalankan([
+      MULAI,
+      [{ jenis: 'lanjut' }, 100],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 200],
+      [{ jenis: 'pilih', soal_id: 's1', kunci: 'b' }, 300],
+      [{ jenis: 'kunci_jawaban', soal_id: 's1' }, 0],
+    ]);
+    expect(peristiwa.find((p) => p.nama === 'kunci_jawaban')?.isi['gulir_balik_ke_kartu']).toBe(0);
+  });
+
+  it('menghitung dua gulir balik sebagai dua', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      [{ jenis: 'lanjut' }, 100],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 0],
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 200],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 200],
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 200],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 200],
+      [{ jenis: 'pilih', soal_id: 's1', kunci: 'b' }, 200],
+      [{ jenis: 'kunci_jawaban', soal_id: 's1' }, 0],
+    ]);
+    expect(peristiwa.find((p) => p.nama === 'kunci_jawaban')?.isi['gulir_balik_ke_kartu']).toBe(2);
+  });
+
+  it('mengabaikan laporan masuk atau keluar yang berulang', () => {
+    const { keadaan } = jalankan([
+      MULAI,
+      [{ jenis: 'lanjut' }, 100],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 300],
+      [{ jenis: 'kartu_masuk_layar', soal_id: 's1' }, 300],
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 300],
+      [{ jenis: 'kartu_keluar_layar', soal_id: 's1' }, 300],
+    ]);
+    expect(keadaan.soal['s1']?.gulirBalik).toBe(0);
+    // Terlihat dari laporan masuk pertama (+400) sampai laporan keluar pertama (+1.000).
+    expect(keadaan.soal['s1']?.msKartuTerlihat).toBe(600);
+  });
+
+  it('pengamat kartu tidak melahirkan peristiwa apa pun', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'kartu_keluar_layar', soal_id: 's1' },
+      { jenis: 'kartu_masuk_layar', soal_id: 's1' },
+    ]);
+    expect(namaUrut(peristiwa)).toEqual(['mulai', 'layar_masuk', 'layar_masuk']);
+  });
+
+  it('"Kembali ke kartu" melahirkan tepat satu peristiwa per ketukan', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      { jenis: 'kembali_ke_kartu', soal_id: 's1' },
+      { jenis: 'kembali_ke_kartu', soal_id: 's1' },
+    ]);
+    const kembali = peristiwa.filter((p) => p.nama === 'kembali_ke_kartu');
+    expect(kembali).toHaveLength(2);
+    expect(kembali[0]?.isi).toEqual({ soal_id: 's1' });
+  });
+
+  it('kartu_buka kini hanya berarti panel sumber dibuka', () => {
+    const { peristiwa, keadaan } = jalankan([
       MULAI,
       { jenis: 'lanjut' },
       { jenis: 'buka_sumber', fact_id: 'k1', soal_id: 's1' },
     ]);
     const buka = peristiwa.find((p) => p.nama === 'kartu_buka');
     expect(buka?.isi).toEqual({ soal_id: 's1', fact_id: 'k1' });
+    expect(keadaan.soal['s1']?.kartuDibuka).toBe(1);
   });
 
   it('tidak mencatat kartu_buka untuk panel sumber di luar layar soal', () => {
@@ -318,35 +401,6 @@ describe('alur — kartu (D-4, D-6)', () => {
       { jenis: 'buka_sumber', fact_id: 'k1', soal_id: null },
     ]);
     expect(peristiwa.filter((p) => p.nama === 'kartu_buka')).toHaveLength(0);
-  });
-
-  it('"Lihat kartu lagi" mencatat satu kartu_buka per kartu soal itu', () => {
-    const { peristiwa } = jalankan([
-      MULAI,
-      { jenis: 'lanjut' },
-      { jenis: 'lihat_kartu_lagi', soal_id: 's1' },
-    ]);
-    const buka = peristiwa.filter((p) => p.nama === 'kartu_buka');
-    expect(buka.map((p) => p.isi['fact_id'])).toEqual(['k1', 'k2']);
-  });
-
-  it('melipat kartu mengubah keadaan di reducer tanpa melahirkan peristiwa', () => {
-    const sebelum = jalankan([MULAI, { jenis: 'lanjut' }]);
-    const hasil = langkah(
-      sebelum.keadaan,
-      { jenis: 'lipat_kartu', soal_id: 's1', fact_id: 'k1' },
-      9_999,
-    );
-    expect(hasil.peristiwa).toEqual([]);
-    expect(hasil.keadaan.soal['s1']?.terlipat['k1']).toBe(true);
-    // Membukanya lagi melahirkan peristiwa dan membatalkan lipatan.
-    const dibuka = langkah(
-      hasil.keadaan,
-      { jenis: 'buka_kartu', soal_id: 's1', fact_id: 'k1' },
-      10_000,
-    );
-    expect(namaUrut(dibuka.peristiwa)).toEqual(['kartu_buka']);
-    expect(dibuka.keadaan.soal['s1']?.terlipat['k1']).toBe(false);
   });
 });
 
@@ -465,7 +519,7 @@ describe('alur — jalur berhenti di tengah', () => {
       { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
       { jenis: 'kunci_jawaban', soal_id: 's1' },
       { jenis: 'lanjut' },
-      { jenis: 'buka_kartu', soal_id: 's2', fact_id: 'k3' },
+      { jenis: 'buka_sumber', soal_id: 's2', fact_id: 'k3' },
       { jenis: 'tutup' },
     ]);
     expect(namaUrut(peristiwa)).toEqual([

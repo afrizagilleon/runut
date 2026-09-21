@@ -10,6 +10,12 @@ export interface TeksProps {
    * sama tetap bisa diketuk di batang soal, kartu, dan teks kunci.
    */
   interaktif?: boolean;
+  /**
+   * `true` di dalam lembar dokumen: angka dirender tebal, bukan tautan.
+   * Satu lembar = satu pintu ke sumbernya, yaitu kepala lembarnya
+   * (`docs/desain.md`). Sebelas tautan kecil di satu layar bukan pintu.
+   */
+  tebalSaja?: boolean;
 }
 
 /**
@@ -21,7 +27,12 @@ export interface TeksProps {
  * - tanggal beku (`hari-ini`) → datar dan tidak diberi keterangan "andaian",
  *   karena ia bukan pengandaian melainkan tanggal kasusnya sendiri.
  */
-export function Teks({ teks, bukaSumber, interaktif = true }: TeksProps): JSX.Element {
+export function Teks({
+  teks,
+  bukaSumber,
+  interaktif = true,
+  tebalSaja = false,
+}: TeksProps): JSX.Element {
   return (
     <>
       {pecahTeks(teks).map((bagian, nomor) => {
@@ -33,6 +44,13 @@ export function Teks({ teks, bukaSumber, interaktif = true }: TeksProps): JSX.El
             <span key={nomor} className="hari-ini">
               {bagian.teks}
             </span>
+          );
+        }
+        if (tebalSaja) {
+          return (
+            <strong key={nomor} className="angka-lembar">
+              {bagian.teks}
+            </strong>
           );
         }
         if (!interaktif) {

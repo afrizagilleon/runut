@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Peristiwa } from './alur.ts';
-import { MAKS_BADAN, MENGIRIM, pecahMuatan, perluSiram } from './kirim.ts';
+import { MAKS_BADAN, MENGIRIM, pecahMuatan, perluSiram, saringYangBaru } from './kirim.ts';
 
 function peristiwa(nama: Peristiwa['nama'], urut: number, isi = {}): Peristiwa {
   return {
@@ -86,5 +86,45 @@ describe('kirim — peristiwa yang tidak boleh menunggu', () => {
 
   it('menyiram kalau satu saja di antaranya penting', () => {
     expect(perluSiram([peristiwa('pilih', 1), peristiwa('kunci_jawaban', 2)])).toBe(true);
+  });
+});
+
+/*
+ * Penjaga kirim-ganda (A1-T2). Penyebabnya terukur, bukan ditebak: `pagehide`
+ * menyala lebih dari sekali di ponsel dan jalur itu menghitung peristiwanya dari
+ * keadaan yang sama, sehingga `urut` yang sama lahir dua kali. Reproduksinya
+ * ditempel di ledger.
+ */
+describe('kirim — satu peristiwa hanya boleh diserahkan sekali', () => {
+  const p = (urut: number, sesi = 'sesi-1'): Peristiwa => ({
+    nama: 'tutup',
+    sesi,
+    kasus_id: 'dada-2025-10-08',
+    t_ms: urut * 100,
+    urut,
+    isi: { layar_terakhir: 'akhir' },
+  });
+
+  it('membuang peristiwa dengan urut yang sudah pernah lewat', () => {
+    const catatan = new Map<string, number>();
+    expect(saringYangBaru([p(1), p(2)], catatan)).toHaveLength(2);
+    expect(saringYangBaru([p(2)], catatan)).toHaveLength(0);
+  });
+
+  it('membuang kembaran di dalam satu serahan', () => {
+    expect(saringYangBaru([p(6), p(6)], new Map())).toHaveLength(1);
+  });
+
+  it('menghitung urut terpisah per sesi', () => {
+    const catatan = new Map<string, number>();
+    saringYangBaru([p(5, 'sesi-1')], catatan);
+    expect(saringYangBaru([p(5, 'sesi-2')], catatan)).toHaveLength(1);
+  });
+
+  it('meloloskan urut yang lebih besar sesudah kembaran ditolak', () => {
+    const catatan = new Map<string, number>();
+    saringYangBaru([p(3)], catatan);
+    saringYangBaru([p(3)], catatan);
+    expect(saringYangBaru([p(4)], catatan).map((x) => x.urut)).toEqual([4]);
   });
 });

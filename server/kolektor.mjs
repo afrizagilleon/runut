@@ -40,8 +40,11 @@ const MEDAN_ISI = {
     kunci: 'teks',
     benar: 'boolean',
     ms_di_soal: 'angka',
-    kartu_dibuka_sebelum: 'angka',
+    // A1-T2: lama kartu benar-benar di layar, bukan berapa kali dibuka.
+    ms_kartu_terlihat_sebelum: 'angka',
+    gulir_balik_ke_kartu: 'angka',
   },
+  kembali_ke_kartu: { soal_id: 'teks' },
   lihat_balik: { dari_layar: 'teks', ke_layar: 'teks' },
   pembukaan_masuk: {},
   pembukaan_selesai: { ms_di_pembukaan: 'angka', gulir_maks_persen: 'angka' },

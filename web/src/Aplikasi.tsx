@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+import type { RefObject } from 'react';
 import { PENANDA_BUKAN_FAKTA, ambilRujukan } from '../../factory/skema/rujukan.ts';
 import type { Fakta, Kasus, Soal } from '../../factory/skema/tipe.ts';
 import {
@@ -90,8 +91,15 @@ export function Aplikasi(): JSX.Element {
    * terakhir yang sudah dirender, dipakai satu kali di jalur yang tidak boleh
    * menunggu render berikutnya.
    */
+  const sudahTutup = useRef(false);
   useEffect(() => {
     const tutup = (): void => {
+      // `pagehide` menyala lebih dari sekali di ponsel (pindah tab lalu menutup,
+      // atau halaman dipulihkan dari bfcache). Tanpa penjaga ini, `tutup`
+      // dihitung ulang dari keadaan yang sama dan lahir dua kali dengan `urut`
+      // yang sama — kembar persis yang terukur di data alpha.
+      if (sudahTutup.current) return;
+      sudahTutup.current = true;
       const hasil = langkah(acuanKeadaan.current, { jenis: 'tutup' }, Date.now());
       catatPeristiwa(hasil.peristiwa);
       siramPeristiwa();
@@ -181,6 +189,50 @@ export function Aplikasi(): JSX.Element {
   );
 }
 
+/**
+ * Pengamat tumpukan kartu (A1-T2).
+ *
+ * Komponen **hanya** meneruskan "masuk layar" dan "keluar layar" ke reducer;
+ * seluruh penjumlahan terjadi di `alur.ts`. Kalau penjumlahannya dikerjakan di
+ * sini, tidak ada satu pun tes yang bisa membuktikannya.
+ */
+function usePengamatKartu(
+  soal_id: string,
+  kirim: (aksi: Aksi) => void,
+): RefObject<HTMLDivElement> {
+  const acuan = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const elemen = acuan.current;
+    if (elemen === null) return;
+    if (typeof IntersectionObserver === 'undefined') {
+      // WebView tanpa pengamat: kartu dianggap terlihat selama layar ini hidup.
+      // Lebih longgar daripada sebenarnya, tetapi tidak pernah nol palsu.
+      kirim({ jenis: 'kartu_masuk_layar', soal_id });
+      return () => {
+        kirim({ jenis: 'kartu_keluar_layar', soal_id });
+      };
+    }
+    const pengamat = new IntersectionObserver(
+      (masukan) => {
+        for (const m of masukan) {
+          kirim({
+            jenis: m.isIntersecting ? 'kartu_masuk_layar' : 'kartu_keluar_layar',
+            soal_id,
+          });
+        }
+      },
+      { threshold: 0.5 },
+    );
+    pengamat.observe(elemen);
+    return () => {
+      pengamat.disconnect();
+      // Meninggalkan layar menutup jendela waktu yang sedang berjalan.
+      kirim({ jenis: 'kartu_keluar_layar', soal_id });
+    };
+  }, [soal_id, kirim]);
+  return acuan;
+}
+
 /** Tiga titik: memang tiga soal berurutan, jadi penanda urutan dipakai di sini. */
 function TitikSoal({ jumlah, sekarang }: { jumlah: number; sekarang: number }): JSX.Element {
   return (
@@ -258,7 +310,8 @@ function LayarSoal({
 
   const kartu = kartuSoal(kasus, soal);
   const terakhir = nomor + 1 >= kasus.soal.length;
-  const menentukan = new Set(soal.kartu);
+  const menentukan = new Set(soal.kartu_penentu);
+  const acuanTumpukan = usePengamatKartu(soal.soal_id, kirim);
 
   return (
     <section className="layar layar-soal" aria-labelledby={`judul-${soal.soal_id}`}>
@@ -266,20 +319,13 @@ function LayarSoal({
         Soal {nomor + 1} dari {kasus.soal.length}
       </h2>
 
-      <div className="tumpukan">
+      <div className="tumpukan" ref={acuanTumpukan}>
         {kartu.map((fakta) => (
           <KartuFakta
             key={fakta.fact_id}
             fakta={fakta}
-            terlipat={s.terlipat[fakta.fact_id] === true}
             menentukan={s.dikunci && menentukan.has(fakta.fact_id)}
             bukaSumber={bukaSumber}
-            lipat={(fact_id) => {
-              kirim({ jenis: 'lipat_kartu', soal_id: soal.soal_id, fact_id });
-            }}
-            buka={(fact_id) => {
-              kirim({ jenis: 'buka_kartu', soal_id: soal.soal_id, fact_id });
-            }}
           />
         ))}
       </div>
@@ -299,12 +345,15 @@ function LayarSoal({
 
       <button
         type="button"
-        className="tombol-kecil lihat-kartu"
+        className="tombol-kecil kembali-kartu"
         onClick={() => {
-          kirim({ jenis: 'lihat_kartu_lagi', soal_id: soal.soal_id });
+          kirim({ jenis: 'kembali_ke_kartu', soal_id: soal.soal_id });
+          // Menggulir adalah kerja tampilan, bukan keadaan permainan; yang
+          // dicatat tetap satu peristiwa dari reducer di atas.
+          acuanTumpukan.current?.scrollIntoView({ block: 'start', behavior: 'smooth' });
         }}
       >
-        Lihat kartu lagi
+        Kembali ke kartu
       </button>
 
       <fieldset className="pilihan" disabled={s.dikunci}>
