@@ -803,3 +803,207 @@ export function r13LembarLebihBesarDariModal(konteks: KonteksVerifikasi): HasilA
     hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
   );
 }
+
+// --- R14 dan R16: rantai putus dan jam terbit --------------------------------
+
+export interface PasanganRantai {
+  pemegang: string;
+  sebelumnya: Laporan;
+  sekarang: Laporan;
+  /** `sekarang.sebelum - sebelumnya.sesudah`; nol berarti rantainya nyambung. */
+  selisih: number;
+  /**
+   * Laporan yang terbit lebih dulu sudah memuat keadaan yang baru dihasilkan
+   * laporan yang terbit kemudian (R16).
+   *
+   * Dua bentuknya: saldo awal keduanya sama (laporan diterbitkan ulang), atau
+   * saldo akhir laporan berikutnya sama dengan saldo awal laporan sebelumnya —
+   * yang berarti urutan terbitnya terbalik terhadap urutan kejadiannya.
+   */
+  jam_bertabrakan: boolean;
+}
+
+/**
+ * Susun rantai tiap pemegang dan kembalikan pasangan berurutannya.
+ *
+ * Dua keputusan yang menentukan hasilnya, keduanya dari aturan gerbang:
+ * urutannya memakai **kunci R12** (tanggal nama berkas), dan pemegangnya
+ * disatukan dengan **normalisasi R22** (awalan `PT`, akhiran badan hukum).
+ * Menormalkan nama tanpa memperbaiki urutan lebih dulu menaikkan putus rantai
+ * dari 26 ke 27; keduanya harus jalan, dalam urutan itu.
+ */
+export function pasanganRantai(laporan: Laporan[]): PasanganRantai[] {
+  const perPemegang = new Map<string, Laporan[]>();
+  for (const l of urutR12(laporan)) {
+    const kunci = normalkanNama(l.pemegang);
+    const daftar = perPemegang.get(kunci);
+    if (daftar === undefined) perPemegang.set(kunci, [l]);
+    else daftar.push(l);
+  }
+
+  const pasangan: PasanganRantai[] = [];
+  for (const kunci of [...perPemegang.keys()].sort()) {
+    const daftar = perPemegang.get(kunci) ?? [];
+    for (let i = 1; i < daftar.length; i += 1) {
+      const sebelumnya = daftar[i - 1];
+      const sekarang = daftar[i];
+      if (sebelumnya === undefined || sekarang === undefined) continue;
+      pasangan.push({
+        pemegang: sekarang.pemegang,
+        sebelumnya,
+        sekarang,
+        selisih: sekarang.sebelum - sebelumnya.sesudah,
+        jam_bertabrakan:
+          sekarang.sebelum === sebelumnya.sebelum ||
+          sekarang.sesudah === sebelumnya.sebelum,
+      });
+    }
+  }
+  return pasangan;
+}
+
+/**
+ * R14 — rantai kepemilikan seorang pemegang putus.
+ *
+ * Saldo akhir satu laporan harus sama dengan saldo awal laporan berikutnya.
+ * Kalau tidak, ada lembar yang berpindah tanpa laporan.
+ *
+ * Kalau pasangan yang sama juga melanggar R16 (jam terbitnya mundur), temuannya
+ * **digabung di sini**, dengan dua sebab dalam satu kalimat: satu cacat data
+ * tidak boleh tampil sebagai dua pelanggaran.
+ */
+export function r14RantaiPutus(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Rantai kepemilikan putus';
+  const satuan = 'sambungan';
+  if (konteks.laporan.length < 2) {
+    return lewat('R14', judul, 'Rantai kurang dari dua laporan, tidak ada sambungan untuk diperiksa.', satuan);
+  }
+  const gerbang = r25KelengkapanHalaman(konteks);
+  if (gerbang.hitungan.merah > 0) {
+    return lewat(
+      'R14',
+      judul,
+      'R25 menemukan halaman laporan yang menggantung, jadi putus rantai tidak bisa dibedakan dari laporan yang belum ditarik.',
+      satuan,
+      Math.max(0, konteks.laporan.length - 1),
+    );
+  }
+
+  const pasangan = pasanganRantai(konteks.laporan);
+  const temuan: Temuan[] = [];
+  let merah = 0;
+
+  for (const p of pasangan) {
+    if (p.selisih === 0) continue;
+    merah += 1;
+    const arah = p.selisih > 0 ? 'bertambah' : 'berkurang';
+    const tambahan = p.jam_bertabrakan
+      ? ` Selain itu laporan pukul ${jamSaja(p.sebelumnya.dilaporkan_pada)} sudah memuat keadaan yang ` +
+        `baru dihasilkan laporan pukul ${jamSaja(p.sekarang.dilaporkan_pada)}, jadi urutan terbitnya ` +
+        `terbalik terhadap urutan kejadiannya.`
+      : '';
+    temuan.push({
+      temuan_id: `R14-${p.sebelumnya.laporan_id}-${p.sekarang.laporan_id}`,
+      aturan: 'R14',
+      ringkasan:
+        `Rantai ${p.pemegang} putus: laporan ${p.sebelumnya.dilaporkan_pada} berakhir di ` +
+        `${angka(p.sebelumnya.sesudah)} lembar, tetapi laporan berikutnya ${p.sekarang.dilaporkan_pada} ` +
+        `mulai dari ${angka(p.sekarang.sebelum)} lembar. Ada ${angka(Math.abs(p.selisih))} lembar yang ` +
+        `${arah} tanpa laporan.${tambahan}`,
+      angka: [
+        { label: 'lompatan', nilai: p.selisih, satuan: 'lembar' },
+        { label: 'saldo akhir laporan sebelumnya', nilai: p.sebelumnya.sesudah, satuan: 'lembar' },
+        { label: 'saldo awal laporan berikutnya', nilai: p.sekarang.sebelum, satuan: 'lembar' },
+      ],
+      fakta_terkait: [],
+      rujukan: [
+        `${p.sebelumnya.dilaporkan_pada} · ${p.sebelumnya.berkas}`,
+        `${p.sekarang.dilaporkan_pada} · ${p.sekarang.berkas}`,
+      ],
+    });
+  }
+
+  return hasil('R14', judul, temuan, hitung(satuan, { diperiksa: pasangan.length, merah }));
+}
+
+function jamSaja(waktu: string): string {
+  return waktu.slice(11, 16);
+}
+
+/**
+ * R16 — jam terbit tidak searah dengan rantai saldo.
+ *
+ * Laporan yang terbit lebih dulu sudah memuat keadaan yang baru dihasilkan
+ * laporan yang terbit kemudian. Dua bentuknya: saldo awal dua laporan
+ * berurutan sama persis, atau saldo akhir laporan berikutnya sama dengan saldo
+ * awal laporan sebelumnya.
+ *
+ * Kenapa ini penting bagi pemain: kalau jam terbit dipakai memutuskan "apa
+ * yang sudah bisa dibaca pada tanggal T", rantai seperti ini membuat
+ * jawabannya tidak tunggal.
+ *
+ * Keparahan **peringatan**: dua laporan yang benar-benar melaporkan transaksi
+ * berbeda pada hari yang sama bisa punya saldo awal sama kalau salah satunya
+ * dibatalkan dan diterbitkan ulang. Karena itu temuannya wajib menyebut
+ * **jam**, bukan hanya harinya. Pasangan yang sudah dilaporkan R14 tidak
+ * diulang; jumlahnya tetap dihitung dan satu catatan menyebut berapa banyak.
+ */
+export function r16JamTerbit(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Jam terbit laporan terhadap urutan rantai';
+  const satuan = 'sambungan';
+  if (konteks.laporan.length < 2) {
+    return lewat('R16', judul, 'Rantai kurang dari dua laporan, tidak ada sambungan untuk diperiksa.', satuan);
+  }
+
+  const pasangan = pasanganRantai(konteks.laporan);
+  const temuan: Temuan[] = [];
+  let merah = 0;
+  let digabung = 0;
+
+  for (const p of pasangan) {
+    if (!p.jam_bertabrakan) continue;
+    merah += 1;
+    if (p.selisih !== 0) {
+      digabung += 1;
+      continue;
+    }
+    temuan.push({
+      temuan_id: `R16-${p.sebelumnya.laporan_id}-${p.sekarang.laporan_id}`,
+      aturan: 'R16',
+      keparahan: 'peringatan',
+      ringkasan:
+        `Laporan ${p.pemegang} pukul ${jamSaja(p.sebelumnya.dilaporkan_pada)} pada ` +
+        `${p.sebelumnya.dilaporkan_pada.slice(0, 10)} sudah memuat saldo ` +
+        `${angka(p.sebelumnya.sebelum)} lembar, yang baru dihasilkan laporan pukul ` +
+        `${jamSaja(p.sekarang.dilaporkan_pada)}. Urutan terbitnya terbalik terhadap urutan ` +
+        `kejadiannya, jadi "apa yang sudah bisa dibaca hari itu" tidak punya satu jawaban.`,
+      angka: [
+        { label: 'saldo awal laporan yang terbit lebih dulu', nilai: p.sebelumnya.sebelum, satuan: 'lembar' },
+        { label: 'saldo awal laporan berikutnya', nilai: p.sekarang.sebelum, satuan: 'lembar' },
+        { label: 'saldo akhir laporan berikutnya', nilai: p.sekarang.sesudah, satuan: 'lembar' },
+      ],
+      fakta_terkait: [],
+      rujukan: [
+        `${p.sebelumnya.dilaporkan_pada} · ${p.sebelumnya.berkas}`,
+        `${p.sekarang.dilaporkan_pada} · ${p.sekarang.berkas}`,
+      ],
+    });
+  }
+
+  if (digabung > 0) {
+    temuan.push({
+      temuan_id: `R16-digabung-${konteks.simbol}`,
+      aturan: 'R16',
+      keparahan: 'catatan',
+      ringkasan:
+        `${String(digabung)} sambungan yang jam terbitnya tidak searah dengan rantai juga putus ` +
+        `rantainya, dan sudah dilaporkan sebagai satu temuan R14. Satu cacat data tidak dihitung ` +
+        `dua kali.`,
+      angka: [{ label: 'sambungan yang digabung ke R14', nilai: digabung, satuan: 'sambungan' }],
+      fakta_terkait: [],
+      rujukan: [],
+    });
+  }
+
+  return hasil('R16', judul, temuan, hitung(satuan, { diperiksa: pasangan.length, merah }));
+}
