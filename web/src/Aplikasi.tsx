@@ -581,6 +581,18 @@ function gerakHalus(): ScrollBehavior {
  * Ambang 0,6 seperti patokan: opsi dianggap terlihat kalau lebih dari separuh
  * badannya masuk layar, bukan kalau ujungnya baru menyembul.
  */
+/**
+ * Berapa bagian opsi pertama yang harus masuk layar sebelum ia disebut
+ * terlihat (D-4).
+ *
+ * Diberi nama dan diekspor di A-3 supaya rangkaian e2e bisa MEMBACANYA dari
+ * kode ini alih-alih menyalin angkanya. Ambang yang disalin akan berbeda
+ * diam-diam begitu salah satunya berubah, dan tes yang memakai ambang berbeda
+ * dari produknya akan menunggu kesepakatan yang tidak pernah datang - persis
+ * kegagalan lima belas detik yang dilihat reviewer.
+ */
+export const AMBANG_OPSI_TERLIHAT = 0.6;
+
 function usePengamatOpsi(
   soal_id: string,
   kirim: (aksi: Aksi) => void,
@@ -600,7 +612,7 @@ function usePengamatOpsi(
         if (butir === undefined) return;
         kirim({ jenis: 'opsi_terlihat', soal_id, terlihat: butir.isIntersecting });
       },
-      { threshold: 0.6 },
+      { threshold: AMBANG_OPSI_TERLIHAT },
     );
     pengamat.observe(simpul);
     return () => {

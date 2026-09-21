@@ -16,10 +16,11 @@
  *   `click()`. Cacat kaki lembar yang tidak bisa menutup lolos justru karena
  *   yang diuji hanya "ketuk sekali", bukan jari sungguhan yang mengetuk dua kali.
  */
-import { expect, test, type Locator, type Page } from '@playwright/test';
+import { expect, test, type ElementHandle, type Locator, type Page } from '@playwright/test';
 import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { DIR_LAYAR } from './jalur.ts';
+import { ambangOpsiProduk } from './ambang.ts';
 
 /** Label bilah bawah, disalin dari `web/src/alur.ts` (LABEL_TURUN, LABEL_KUNCI). */
 export const LABEL_TURUN = '↓ Jawab di bawah';
@@ -32,8 +33,15 @@ export const LABEL_SELESAI = 'Selesai';
 export const LABEL_KASUS_LAIN = 'Mau coba kasus lain';
 export const LABEL_SESUDAHNYA = 'Lihat yang terjadi sesudahnya';
 
-/** Ambang pengamat opsi pertama di `usePengamatOpsi` (D-4). */
-export const AMBANG_OPSI = 0.6;
+/**
+ * Ambang pengamat opsi pertama di `usePengamatOpsi` (D-4).
+ *
+ * **Dibaca dari kode produk**, tidak disalin (D-C3). Sebelumnya angka `0.6`
+ * ditulis ulang di sini; dua angka yang berjanji sama adalah dua angka yang
+ * bisa berselisih diam-diam, dan tes yang memakai ambang berbeda dari produknya
+ * akan menunggu kesepakatan yang tidak pernah datang.
+ */
+export const AMBANG_OPSI: number = ambangOpsiProduk();
 
 /** Penanda sesi uji: `[a-z0-9]{8}`, sesuai `kodePenanda()` di `web/src/sesi.ts`. */
 export function penandaBaru(): string {
@@ -284,23 +292,102 @@ export async function tungguSoal(page: Page, nomor: number): Promise<void> {
  * bukan menunggu waktu — adalah yang membuat langkah ini tidak balapan dengan
  * `IntersectionObserver`.
  */
+/**
+ * Apakah elemen ini "terlihat" **menurut alat yang sama dengan produk**: sebuah
+ * `IntersectionObserver` dengan ambang yang sama, dipasang sekejap lalu dilepas.
+ *
+ * Kenapa bukan `rasioDiViewport()` (D-C3): ambangnya memang sudah sama sejak
+ * awal — keduanya 0,6 — tetapi **cara menghitungnya tidak**. Chromium menghitung
+ * perpotongan dalam LayoutUnit (kelipatan 1/64 px) dengan pembulatannya sendiri;
+ * `getBoundingClientRect()` memberi float CSS px, dan tes lalu mengalikan dan
+ * membagi lagi. Dua hitungan itu sama sampai bit terakhir, dan bit terakhir
+ * persis yang menentukan ketika sebuah opsi kebetulan parkir di dekat 0,6:
+ * produk berkata "belum terlihat", tes berkata "sudah", dan keduanya tidak akan
+ * pernah berubah pikiran. Lima belas detik tak sepakat yang dilihat reviewer
+ * adalah bentuk yang tepat dari kegagalan itu — bukan kedipan waktu, melainkan
+ * dua alat ukur yang tidak pernah bisa setuju.
+ *
+ * Pengamat baru dipasang tiap kali, jadi ia selalu melaporkan keadaan SEKARANG.
+ * Itu yang membuat sabotase "pengamat opsi tidak men-dispatch" tetap merah:
+ * keadaan produk yang basi akan berselisih dengan pengamat yang segar.
+ */
+async function terlihatMenurutPengamat(
+  pegangan: ElementHandle<HTMLElement | SVGElement>,
+  ambang: number,
+): Promise<{ terlihat: boolean; rasio: number }> {
+  return await pegangan.evaluate(
+    async (el, ambangDalam: number) =>
+      await new Promise<{ terlihat: boolean; rasio: number }>((beres) => {
+        const pengamat = new IntersectionObserver(
+          (masuk) => {
+            const butir = masuk[0];
+            pengamat.disconnect();
+            beres(
+              butir === undefined
+                ? { terlihat: false, rasio: 0 }
+                : { terlihat: butir.isIntersecting, rasio: butir.intersectionRatio },
+            );
+          },
+          { threshold: ambangDalam },
+        );
+        pengamat.observe(el);
+      }),
+    ambang,
+  );
+}
+
+/** Keadaan bilah bawah yang sedang tampil: `turun`, `kunci`, `lanjut`, atau tidak ada. */
+async function uidBilahSekarang(page: Page): Promise<string> {
+  const bilah = page.locator('[data-uid^="bilah:"]');
+  if ((await bilah.count()) === 0) return 'tidak-ada';
+  return (await bilah.first().getAttribute('data-uid')) ?? 'tanpa-uid';
+}
+
 export async function bilahTurunAda(page: Page, kunciPertama: string): Promise<boolean> {
   const turun = bilahTurun(page);
-  const pertama = opsi(page, kunciPertama);
-  await expect
-    .poll(
-      async () => {
-        const adaBilah = (await turun.count()) > 0;
-        const terlihat = (await rasioDiViewport(pertama)) >= AMBANG_OPSI;
-        return adaBilah !== terlihat;
-      },
-      {
-        timeout: 15_000,
-        message:
-          'bilah "Jawab di bawah" harus ada persis ketika opsi pertama belum terlihat (D-4)',
-      },
-    )
-    .toBe(true);
+  /*
+   * Elemennya dipegang SEKALI: pencarian selektor yang berulang membatalkan
+   * gulir halus Chromium yang sedang berjalan (terukur di T-02).
+   */
+  const pegangan = await opsi(page, kunciPertama).elementHandle();
+  if (pegangan === null) {
+    throw new Error(`opsi pertama "${kunciPertama}" tidak ada di halaman`);
+  }
+
+  // Pengamatan terakhir sebelum menyerah. Kegagalan reviewer tidak bisa
+  // didiagnosis justru karena pesannya tidak memuat satu pun angka.
+  let terakhir = 'belum sempat terukur';
+  try {
+    await expect
+      .poll(
+        async () => {
+          const adaBilah = (await turun.count()) > 0;
+          const { terlihat, rasio } = await terlihatMenurutPengamat(pegangan, AMBANG_OPSI);
+          terakhir =
+            `opsi-terlihat=${String(terlihat)} rasio=${rasio.toFixed(4)} ` +
+            `ambang=${String(AMBANG_OPSI)} bilah-turun-ada=${String(adaBilah)} ` +
+            `bilah-yang-tampil=${await uidBilahSekarang(page)}`;
+          return adaBilah !== terlihat;
+        },
+        {
+          timeout: 15_000,
+          message:
+            'bilah "Jawab di bawah" harus ada persis ketika opsi pertama belum terlihat (D-4)',
+        },
+      )
+      .toBe(true);
+  } catch (galat) {
+    throw new Error(
+      'bilah "Jawab di bawah" harus ada persis ketika opsi pertama belum terlihat (D-4).\n' +
+        `Pengamatan terakhir sebelum menyerah: ${terakhir}\n` +
+        'Kalau bilah-yang-tampil bukan "bilah:turun", ada yang sudah memilih atau ' +
+        'mengunci jawaban sebelum langkah ini — dan bilah turun memang tidak akan ' +
+        'pernah muncul lagi.\n' +
+        String(galat),
+    );
+  } finally {
+    await pegangan.dispose();
+  }
   return (await turun.count()) > 0;
 }
 
