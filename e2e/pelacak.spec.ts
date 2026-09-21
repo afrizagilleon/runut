@@ -384,3 +384,282 @@ test('E-06f pengunjung sama di konteks yang sama, berbeda di konteks baru', asyn
     await konteksLain.close();
   }
 });
+
+/**
+ * D-2: ambang dibedakan dari peristiwa tinggalkan-layar lewat URUTAN, bukan
+ * lewat medan baru. `gulir` yang diikuti `layar_masuk`/`tutup` pada `t_ms` yang
+ * sama adalah yang lahir saat meninggalkan layar; sisanya ambang.
+ *
+ * Aturannya ditulis di sini sebagai kode dan dipakai apa adanya oleh tes di
+ * bawah — jadi yang dibuktikan sekaligus adalah bahwa aturan itu memang bisa
+ * dipakai pembaca berkas, bukan hanya kalimat di kontrak.
+ */
+function pisahGulir(
+  semua: BarisPeristiwa[],
+  layar: string,
+): { ambang: BarisPeristiwa[]; tinggalkan: BarisPeristiwa[] } {
+  const ambang: BarisPeristiwa[] = [];
+  const tinggalkan: BarisPeristiwa[] = [];
+  for (const [nomor, p] of semua.entries()) {
+    if (p.nama !== 'gulir' || p.isi.layar !== layar) continue;
+    const sesudah = semua[nomor + 1];
+    const pindah =
+      sesudah !== undefined &&
+      (sesudah.nama === 'layar_masuk' || sesudah.nama === 'tutup') &&
+      sesudah.t_ms === p.t_ms;
+    (pindah ? tinggalkan : ambang).push(p);
+  }
+  return { ambang, tinggalkan };
+}
+
+/**
+ * E-06h (M3.4a, RQ-03) — ambang gulir 50 % dan 100 % sampai ke berkas.
+ *
+ * Yang diuji bukan "reducer melahirkan dua peristiwa" — itu tugas tes unit.
+ * Yang diuji di sini adalah jalur penuhnya: jari sungguhan menggulir halaman
+ * sungguhan, `pointerup`/`scroll` melapor, reducer melahirkan, `sendBeacon`
+ * mengirim, proxy meneruskan, validator pengumpul menerima, dan barisnya
+ * **tertulis di cakram**. Empat dari enam tahap itu pernah menjatuhkan
+ * peristiwa diam-diam di proyek ini.
+ *
+ * Ambang **tidak** ada di `PENTING`, jadi ia menumpuk di antrean sampai
+ * peristiwa penting berikutnya (`kunci_jawaban`) menyiramnya. Itu memang yang
+ * dituntut D-1 ("ikut kelompok biasa"), dan tes ini membuktikan ia tidak hilang
+ * karena menunggu.
+ */
+test('E-06h ambang gulir 50% lalu 100% lahir sekali, sebelum kunci_jawaban', async ({ page }) => {
+  const kasus = bacaKasus();
+  const soal = kasus.soal[0];
+  expect(soal).toBeDefined();
+  if (soal === undefined) return;
+
+  const penanda = penandaBaru();
+  await buka(page, penanda);
+  const sesi = await tungguSatuSesi(penanda);
+  await mulaiKasus(page);
+  await tungguSoal(page, 1);
+
+  /** Rumus yang sama dengan produk, dihitung tes dari `scrollY` sendiri. */
+  const persenSekarang = async (): Promise<number> =>
+    page.evaluate(() => {
+      const tinggi = document.documentElement.scrollHeight - window.innerHeight;
+      return tinggi <= 0 ? 100 : (window.scrollY / tinggi) * 100;
+    });
+
+  const tinggiGulir = await page.evaluate(
+    () => document.documentElement.scrollHeight - window.innerHeight,
+  );
+  /*
+   * Kalau layar soal 1 muat satu jendela, tes ini tidak menguji apa yang
+   * dikiranya menguji — ia harus mengatakannya, bukan hijau diam-diam.
+   */
+  expect(
+    tinggiGulir,
+    'layar soal 1 harus lebih panjang dari satu jendela, kalau tidak tes ini kosong',
+  ).toBeGreaterThan(200);
+
+  /*
+   * Enam langkah sampai dasar, bukan satu geseran. Satu geseran dari 0 ke 100 %
+   * melahirkan kedua ambang dalam SATU pemanggilan reducer dengan `t_ms` yang
+   * sama — dan "kapan 50 % terlewat" lalu tidak terukur. Langkah kecil juga
+   * lebih menyerupai jempol sungguhan.
+   */
+  const langkahPx = Math.max(60, Math.round(tinggiGulir / 6));
+  const tengah = { x: 180, y: 520 };
+  const jejak: number[] = [await persenSekarang()];
+  for (let n = 0; n < 20 && (jejak[jejak.length - 1] ?? 0) < 99.5; n += 1) {
+    await gulirJari(page, tengah, langkahPx);
+    await tungguGulirBerhenti(page);
+    jejak.push(await persenSekarang());
+  }
+
+  expect(jejak[jejak.length - 1], 'jari harus sampai ke dasar layar soal 1').toBeGreaterThanOrEqual(
+    99.5,
+  );
+  /*
+   * Prasyarat tes: halaman pernah berhenti di antara kedua ambang. Tanpa itu,
+   * `t_ms` kedua ambang boleh saja sama, dan asersi urutan waktu di bawah
+   * menjadi asersi yang tidak pernah bisa gagal.
+   */
+  expect(
+    jejak.some((p) => p >= 50 && p < 99.5),
+    `halaman harus pernah berhenti di antara 50% dan dasar; jejak=${jejak
+      .map((p) => p.toFixed(0))
+      .join(',')}`,
+  ).toBe(true);
+
+  await pilihOpsi(page, soal.jawaban);
+  await kunciJawaban(page);
+  const kunci = (await tungguPeristiwa(sesi, 'kunci_jawaban'))[0];
+  expect(kunci).toBeDefined();
+
+  const sebelumKunci = peristiwaSesi(sesi).filter((p) => p.urut <= (kunci?.urut ?? 0));
+  const { ambang } = pisahGulir(sebelumKunci, 'soal-1');
+
+  expect(
+    ambang.map((p) => p.isi.maks),
+    'tepat dua ambang, 0,5 lalu 1, keduanya sebelum kunci_jawaban',
+  ).toEqual([0.5, 1]);
+  expect(ambang[0]?.urut ?? 0).toBeLessThan(ambang[1]?.urut ?? 0);
+  expect(ambang[1]?.urut ?? 0).toBeLessThan(kunci?.urut ?? 0);
+  expect(ambang[1]?.t_ms ?? 0, 't_ms ambang 100% harus lebih besar daripada 50%').toBeGreaterThan(
+    ambang[0]?.t_ms ?? 0,
+  );
+
+  // Pindah layar: `gulir` tinggalkan-layar TETAP lahir seperti sebelum M3.4a.
+  await lanjut(page, 'Lanjut ke soal 2');
+  await tungguSoal(page, 2);
+  await tungguPeristiwa(sesi, 'layar_masuk', 3);
+
+  const semua = peristiwaSesi(sesi);
+  const soal1 = pisahGulir(semua, 'soal-1');
+  expect(
+    soal1.tinggalkan.map((p) => p.isi.maks),
+    'tepat satu gulir tinggalkan-layar untuk soal-1',
+  ).toEqual([1]);
+  expect(soal1.ambang.map((p) => p.isi.maks), 'ambangnya tidak lahir ulang').toEqual([0.5, 1]);
+
+  // Dan tidak satu pun medan baru menyelinap masuk lewat jalur sungguhan.
+  for (const p of semua.filter((x) => x.nama === 'gulir')) {
+    expect(Object.keys(p.isi).sort()).toEqual(['layar', 'maks']);
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(
+    `E-06h sesi=${sesi} tinggi-gulir=${String(tinggiGulir)}px langkah=${String(langkahPx)}px ` +
+      `jejak=${jejak.map((p) => p.toFixed(0)).join('>')}% ` +
+      `t_ms 50%=${String(ambang[0]?.t_ms)} 100%=${String(ambang[1]?.t_ms)} ` +
+      `kunci_jawaban=${String(kunci?.t_ms)} · gulir soal-1: ambang=${String(soal1.ambang.length)} ` +
+      `tinggalkan=${String(soal1.tinggalkan.length)}`,
+  );
+});
+
+/**
+ * E-06i (M3.4a, D-1) — layar yang muat satu jendela: kedua ambang di detik nol.
+ *
+ * "100 % pada detik 0" harus terbaca sebagai *tidak perlu menggulir*, bukan
+ * sebagai membaca. Itulah satu-satunya klausa D-1 yang tidak bisa diuji di
+ * viewport proyek ini, dan angkanya diukur, bukan ditebak — tinggi dokumen tiap
+ * layar di 360 x 640:
+ *
+ * ```
+ * pembuka 670  soal-1 1491  soal-2 1304  soal-3 1635  pembukaan 2873  akhir 1261
+ * ```
+ *
+ * Tidak satu pun muat; layar pertama meleset **30 px**. Jadi tes ini memakai
+ * viewport 360 x 760 — ukuran Android yang biasa (dan lebih pendek daripada
+ * iPhone 14 yang 390 x 844), bukan angka yang dicari-cari sampai hijau. Di
+ * sana layar pertama muat sejendela dan layar lain tidak, jadi tes ini punya
+ * subyek DAN pembanding sekaligus. Kalau ternyata tidak ada yang muat, ia
+ * mengatakannya dan merah: hijau diam-diam atas nol subyek adalah persis
+ * hiasan yang dilarang repo ini.
+ */
+test('E-06i layar yang muat satu jendela melahirkan kedua ambang di detik nol', async ({ page }) => {
+  await page.setViewportSize({ width: 360, height: 760 });
+
+  const kasus = bacaKasus();
+  const penanda = penandaBaru();
+  await buka(page, penanda);
+  const sesi = await tungguSatuSesi(penanda);
+
+  /** Diukur SEBELUM apa pun diketuk di layar itu, jadi gulirnya masih di puncak. */
+  const ukur = async (): Promise<{ muat: boolean; tinggi: number; jendela: number }> =>
+    page.evaluate(() => ({
+      muat: document.documentElement.scrollHeight - window.innerHeight <= 0,
+      tinggi: document.documentElement.scrollHeight,
+      jendela: window.innerHeight,
+    }));
+
+  const ukuran: Array<[string, { muat: boolean; tinggi: number; jendela: number }]> = [];
+  await tungguGulirBerhenti(page);
+  ukuran.push(['pembuka', await ukur()]);
+
+  await mulaiKasus(page);
+  for (const [nomor, soal] of kasus.soal.entries()) {
+    await tungguSoal(page, nomor + 1);
+    await tungguGulirBerhenti(page);
+    ukuran.push([`soal-${String(nomor + 1)}`, await ukur()]);
+    await bilahTurunAda(page, soal.pilihan[0]?.kunci ?? 'a');
+    await pilihOpsi(page, soal.jawaban);
+    await kunciJawaban(page);
+    await lanjut(
+      page,
+      nomor === kasus.soal.length - 1 ? LABEL_SESUDAHNYA : `Lanjut ke soal ${String(nomor + 2)}`,
+    );
+  }
+  await tungguGulirBerhenti(page);
+  ukuran.push(['pembukaan', await ukur()]);
+
+  await lanjut(page, 'Lanjut: tiga pertanyaan singkat');
+  await tungguGulirBerhenti(page);
+  ukuran.push(['akhir', await ukur()]);
+
+  await tungguPeristiwa(sesi, 'layar_masuk', ukuran.length);
+  const semua = peristiwaSesi(sesi);
+
+  // eslint-disable-next-line no-console
+  console.log(
+    `E-06i sesi=${sesi} viewport=360x760 ${ukuran
+      .map(([nama, u]) => `${nama}=${String(u.tinggi)}/${String(u.jendela)}${u.muat ? '(muat)' : ''}`)
+      .join(' ')}`,
+  );
+
+  const pendek = ukuran.filter(([, u]) => u.muat).map(([nama]) => nama);
+  const panjang = ukuran.filter(([, u]) => !u.muat).map(([nama]) => nama);
+  expect(
+    pendek.length,
+    `tidak ada layar yang muat satu jendela di 360x760 — tes ini tidak punya subyek`,
+  ).toBeGreaterThan(0);
+  expect(panjang.length, 'dan harus ada pembandingnya: layar yang TIDAK muat').toBeGreaterThan(0);
+
+  /* --- layar yang muat: kedua ambang tepat sesudah layar_masuk, t_ms sama --- */
+  for (const nama of pendek) {
+    const masuk = semua.find((p) => p.nama === 'layar_masuk' && p.isi.layar === nama);
+    expect(masuk, `layar_masuk untuk ${nama}`).toBeDefined();
+    const sesudah = semua.filter(
+      (p) => p.urut > (masuk?.urut ?? 0) && p.nama === 'gulir' && p.isi.layar === nama,
+    );
+    expect(
+      sesudah.slice(0, 2).map((p) => p.isi.maks),
+      `kedua ambang ${nama} lahir segera sesudah layar_masuk`,
+    ).toEqual([0.5, 1]);
+    expect(sesudah[0]?.urut, `ambang ${nama} tepat sesudah layar_masuk`).toBe((masuk?.urut ?? 0) + 1);
+    /*
+     * "Detik nol", bukan "milidetik yang sama". `layar_masuk` lahir di efek
+     * React yang satu dan laporan gulir pertama di efek berikutnya, jadi
+     * keduanya membaca jam dua kali — selisihnya nyata tetapi kecil. Yang harus
+     * terbaca peringkas adalah 0,0 detik, dan ambang setengah detik jauh lebih
+     * ketat daripada itu. Selisih terukurnya ikut dicetak, jadi pergeseran
+     * sekecil apa pun kelihatan tanpa membuat tes bergantung pada jam.
+     */
+    for (const p of sesudah.slice(0, 2)) {
+      const jarak = p.t_ms - (masuk?.t_ms ?? 0);
+      expect(jarak, `ambang ${nama} tidak boleh mendahului layar_masuk`).toBeGreaterThanOrEqual(0);
+      expect(jarak, `ambang ${nama} lahir pada detik nol layar itu`).toBeLessThan(500);
+    }
+    // eslint-disable-next-line no-console
+    console.log(
+      `E-06i ${nama} MUAT: layar_masuk urut=${String(masuk?.urut)} t_ms=${String(masuk?.t_ms)} ` +
+        `ambang=${sesudah
+          .slice(0, 2)
+          .map(
+            (p) =>
+              `${String(p.isi.maks)}@urut${String(p.urut)}/t${String(p.t_ms)}(+${String(
+                p.t_ms - (masuk?.t_ms ?? 0),
+              )}ms)`,
+          )
+          .join(' ')}`,
+    );
+  }
+
+  /* --- pembanding: layar yang TIDAK muat tidak melahirkan ambang di detik nol --- */
+  for (const nama of panjang) {
+    const masuk = semua.find((p) => p.nama === 'layar_masuk' && p.isi.layar === nama);
+    if (masuk === undefined) continue;
+    const tepatSesudah = semua.find((p) => p.urut === masuk.urut + 1);
+    expect(
+      tepatSesudah?.nama === 'gulir' && tepatSesudah.t_ms === masuk.t_ms,
+      `${nama} tidak muat sejendela, jadi tidak boleh ada ambang di detik nol`,
+    ).toBe(false);
+  }
+});
