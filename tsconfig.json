@@ -22,5 +22,14 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["factory/**/*.ts", "alat/**/*.ts", "eval/**/*.ts", "web/**/*.ts", "web/**/*.tsx", "vite.config.ts"]
+  "include": [
+    "factory/**/*.ts",
+    "alat/**/*.ts",
+    "eval/**/*.ts",
+    "web/**/*.ts",
+    "web/**/*.tsx",
+    "vite.config.ts",
+    "e2e/**/*.ts",
+    "playwright.config.ts"
+  ]
 }

@@ -4,6 +4,24 @@ import react from '@vitejs/plugin-react';
 
 const akar = fileURLToPath(new URL('.', import.meta.url));
 
+/*
+ * Dua variabel lingkungan, keduanya hanya untuk uji ujung-ke-ujung (M3.3 D-3,
+ * D-4). Tanpa keduanya, konfigurasi ini berperilaku persis seperti sebelumnya
+ * (INV-15): alamat proxy tetap `http://127.0.0.1:8787` dan daftar host yang
+ * diizinkan tidak disetel sama sekali — bukan disetel ke nilai bawaannya.
+ *
+ * `KOLEKTOR_PROXY` ada karena rangkaian e2e menjalankan pengumpulnya sendiri di
+ * port lain (8797), supaya ia tidak pernah menulis ke berkas data pemilik.
+ *
+ * `E2E_HOST` ada karena satu cacat hanya muncul di asal yang tidak aman —
+ * `http://` yang bukan localhost. Vite 5.4.12 ke atas menolak `Host` yang tidak
+ * dikenal, jadi nama host tiruan itu harus diizinkan; ia diizinkan **hanya**
+ * ketika variabelnya diset, sehingga `npm run dev` biasa tidak melonggar.
+ */
+const kolektorProxy: string = process.env.KOLEKTOR_PROXY ?? 'http://127.0.0.1:8787';
+const hostUji: string = process.env.E2E_HOST ?? '';
+const izinHost: { allowedHosts?: string[] } = hostUji === '' ? {} : { allowedHosts: [hostUji] };
+
 export default defineConfig({
   root: 'web',
   base: './',
@@ -28,15 +46,17 @@ export default defineConfig({
    */
   server: {
     fs: { allow: [akar] },
+    ...izinHost,
     proxy: {
-      '/e': 'http://127.0.0.1:8787',
-      '/sehat': 'http://127.0.0.1:8787',
+      '/e': kolektorProxy,
+      '/sehat': kolektorProxy,
     },
   },
   preview: {
+    ...izinHost,
     proxy: {
-      '/e': 'http://127.0.0.1:8787',
-      '/sehat': 'http://127.0.0.1:8787',
+      '/e': kolektorProxy,
+      '/sehat': kolektorProxy,
     },
   },
   build: {
