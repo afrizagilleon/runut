@@ -139,14 +139,16 @@ export function gagalYangBerarti(daftar: PermintaanGagal[]): PermintaanGagal[] {
  */
 export async function simpanLayar(
   page: Page,
-  nomor: number,
+  /** Angka (dijadikan dua digit) atau penomoran sisipan seperti `'05b'`. */
+  nomor: number | string,
   nama: string,
   penuh = false,
 ): Promise<string> {
   await tungguGulirBerhenti(page);
   const dir = join(DIR_LAYAR, test.info().project.name);
   mkdirSync(dir, { recursive: true });
-  const jalur = join(dir, `${String(nomor).padStart(2, '0')}-${nama}.png`);
+  const urut = typeof nomor === 'number' ? String(nomor).padStart(2, '0') : nomor;
+  const jalur = join(dir, `${urut}-${nama}.png`);
   await page.screenshot({ path: jalur, fullPage: penuh });
   return jalur;
 }

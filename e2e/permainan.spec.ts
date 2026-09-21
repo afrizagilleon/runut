@@ -111,6 +111,20 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   await expect(page.getByText('Belum cocok dengan kartu')).toBeVisible();
   await simpanLayar(page, 5, 'soal-1-dikunci-salah');
 
+  /*
+   * A2-T5: blok "Kartu yang menentukan" mendapat tangkapannya sendiri.
+   *
+   * Di sanalah cacat teman pemilik hidup (badan lembar menempel ke tepi kartu),
+   * dan di PNG 05 blok itu bisa berada di luar layar tergantung panjang opsi —
+   * gambar yang tidak memperlihatkan bagian yang sedang dijaga tidak menolong
+   * reviewer maupun pemilik.
+   */
+  const penentu = page.locator('[data-uid="penentu"]');
+  await expect(penentu, 'blok "Kartu yang menentukan" ada sesudah jawaban dikunci').toBeVisible();
+  await expect(penentu.getByText('Kartu yang menentukan')).toBeVisible();
+  await penentu.scrollIntoViewIfNeeded();
+  await simpanLayar(page, '05b', 'kartu-penentu');
+
   /* --- soal 2: jawab BENAR -------------------------------------------- */
   const soal2 = kasus.soal[1];
   expect(soal2, 'kasus harus punya soal kedua').toBeDefined();
