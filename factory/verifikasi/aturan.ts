@@ -426,6 +426,11 @@ export function r6SubjekLaporan(konteks: KonteksVerifikasi): HasilAturan {
   let merahHarga = 0;
   for (const l of urut(konteks.laporan)) {
     for (const t of l.transaksi) {
+      if (t.harga_kosong === true) {
+        // medan `price` butir ini kosong di data; 0 bukan harganya
+        butirTanpaHarga += 1;
+        continue;
+      }
       const bar = hargaPerTanggal.get(t.tanggal);
       if (bar === undefined) {
         // di luar jendela data harga; bukan pelanggaran, tetapi juga bukan hijau

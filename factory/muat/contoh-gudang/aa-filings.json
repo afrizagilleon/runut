@@ -1,0 +1,113 @@
+{
+  "results": [
+    {
+      "title": "Laporan",
+      "body": "",
+      "source": "https://x/LK-05012026-0001-00.pdf-0.pdf",
+      "timestamp": "2026-01-06T10:00:00",
+      "sector": "x",
+      "sub_sector": "y",
+      "tags": [],
+      "symbol": "AA.JK",
+      "transaction_type": "sell",
+      "holder_type": "insider",
+      "holder_name": "PT Contoh Sejahtera Tbk",
+      "holding_before": 1000,
+      "holding_after": 900,
+      "amount_transaction": 100,
+      "price": 100,
+      "transaction_value": 10000,
+      "price_transaction": [
+        {
+          "date": "2026-01-05",
+          "type": "sell",
+          "price": 100,
+          "amount_transacted": 100
+        }
+      ],
+      "share_percentage_before": 10.0,
+      "share_percentage_after": 9.0,
+      "share_percentage_transaction": 0.0,
+      "idx_investor_slug": null,
+      "idx_conglomerates_group_slug": null
+    },
+    {
+      "title": "Laporan",
+      "body": "",
+      "source": "https://x/LK-08012026-0002-00.pdf-0.pdf",
+      "timestamp": "2026-01-09T11:00:00",
+      "sector": "x",
+      "sub_sector": "y",
+      "tags": [],
+      "symbol": "AA.JK",
+      "transaction_type": "sell",
+      "holder_type": "insider",
+      "holder_name": "PT Contoh Sejahtera Tbk",
+      "holding_before": 900,
+      "holding_after": 800,
+      "amount_transaction": 100,
+      "price": 100,
+      "transaction_value": 10000,
+      "price_transaction": [
+        {
+          "date": "2026-01-08",
+          "type": "sell",
+          "price": 105,
+          "amount_transacted": 60
+        },
+        {
+          "date": "2026-01-08",
+          "type": "sell",
+          "price": null,
+          "amount_transacted": 40
+        }
+      ],
+      "share_percentage_before": 9.0,
+      "share_percentage_after": 8.0,
+      "share_percentage_transaction": 0.0,
+      "idx_investor_slug": null,
+      "idx_conglomerates_group_slug": null
+    },
+    {
+      "title": "Laporan",
+      "body": "",
+      "source": "https://x/From_EREP/202601/abc123.pdf",
+      "timestamp": "2026-01-12T12:00:00",
+      "sector": "x",
+      "sub_sector": "y",
+      "tags": [],
+      "symbol": "AA.JK",
+      "transaction_type": "others",
+      "holder_type": "insider",
+      "holder_name": "PT Contoh Sejahtera Tbk",
+      "holding_before": 800,
+      "holding_after": 750,
+      "amount_transaction": 50,
+      "price": 100,
+      "transaction_value": 5000,
+      "price_transaction": [
+        {
+          "date": "2026-01-05",
+          "type": "others",
+          "price": 100,
+          "amount_transacted": 50
+        }
+      ],
+      "share_percentage_before": 8.0,
+      "share_percentage_after": 7.5,
+      "share_percentage_transaction": 0.0,
+      "idx_investor_slug": null,
+      "idx_conglomerates_group_slug": null
+    }
+  ],
+  "pagination": {
+    "total_count": 3,
+    "showing": 3,
+    "limit": 30,
+    "offset": 0,
+    "has_next": false,
+    "has_previous": false,
+    "next_offset": null,
+    "previous_offset": null
+  }
+}

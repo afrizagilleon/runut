@@ -30,6 +30,9 @@ export function laporan(ubah: Partial<Laporan> = {}): Laporan {
     transaksi: [{ tanggal: '2025-08-07', jenis: 'jual', harga: 12, jumlah: 100_000_000 }],
     teks: '',
     berkas: 'contoh-1.pdf',
+    sumber_dokumen: 'https://contoh/LK-07082025-0001-00.pdf',
+    jenis_mentah: 'sell',
+    berkas_cache: 'contoh-filings.json',
   };
   return { ...dasar, ...ubah };
 }
