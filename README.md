@@ -28,6 +28,33 @@ sudut membulat, dua tulisan kapital, dan tidak ada tombol utama yang tampil mati
 
 Berkas kasus sudah ikut di repo, jadi `npm run dev` jalan tanpa `build:case`.
 
+## Mesin verifikasi
+
+Produk ini menjanjikan satu hal: setiap angka di kartu sudah diperiksa. Yang
+memeriksanya adalah sekumpulan aturan yang berjalan **tanpa LLM**, ditulis di
+`docs/aturan-verifikasi.md`.
+
+Ada dua himpunan. Himpunan pertama (R1–R10) membangun berkas kasus yang
+dimainkan orang. Himpunan kedua menambahkan aturan yang lahir dari uji lawan:
+satu agent mengusulkan aturan baru, agent lain berusaha mematahkannya dan
+menulis ulang tiap aturan dari nol. Himpunan kedua berjalan atas **seluruh**
+emiten di `.cache/sectors/`, bukan atas satu kasus:
+
+```bash
+npm run verifikasi:gudang
+```
+
+Perintah itu menulis hasil lengkapnya ke `.cache/m2a/gudang.json` dan
+agregatnya ke `docs/bukti/aturan-gudang.md`. Ia tidak membaca jaringan, jam
+dinding, maupun angka acak, jadi dua kali jalan atas data yang sama memberi
+berkas yang sama persis.
+
+Tiap aturan wajib melaporkan **berapa yang sungguh diperiksa**, bukan hanya
+berapa yang merah, dan tiap temuan punya berat: `konflik` menolak kartu,
+`peringatan` menandai yang janggal, `catatan` adalah label atau keterbatasan.
+Fakta yang datanya tidak cukup untuk diputuskan berstatus `TIDAK_LENGKAP` —
+bukan konflik, dan bukan "belum diperiksa".
+
 ## Uji di browser sungguhan
 
 ```bash
