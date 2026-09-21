@@ -105,6 +105,7 @@ describe('alur — jalur tuntas', () => {
       'pembukaan_masuk',
       'gulir', // meninggalkan soal-3
       'layar_masuk', // pembukaan
+      'gulir', // M3.4a: ambang 50% dilewati di pembukaan (persen 80)
       'pembukaan_selesai',
       'gulir', // meninggalkan pembukaan
       'layar_masuk', // akhir
@@ -1065,9 +1066,14 @@ describe('alur — kedalaman gulir per layar (D-8)', () => {
       { jenis: 'catat_gulir', persen: 20 },
       { jenis: 'lanjut' },
     ]);
+    // Dua peristiwa: ambang 50% saat 72% dilewati (M3.4a D-1), lalu angka
+    // terjauh yang sebenarnya saat layarnya ditinggalkan. Turun ke 20% tidak
+    // melahirkan apa pun.
     const g = peristiwa.filter((p) => p.nama === 'gulir');
-    expect(g).toHaveLength(1);
-    expect(g[0]?.isi).toEqual({ layar: 'pembuka', maks: 0.72 });
+    expect(g.map((p) => p.isi)).toEqual([
+      { layar: 'pembuka', maks: 0.5 },
+      { layar: 'pembuka', maks: 0.72 },
+    ]);
   });
 
   it('gulir layar sebelumnya tidak diwariskan ke layar berikutnya', () => {
@@ -1081,8 +1087,9 @@ describe('alur — kedalaman gulir per layar (D-8)', () => {
     ]);
     const g = peristiwa.filter((p) => p.nama === 'gulir');
     expect(g.map((p) => [p.isi['layar'], p.isi['maks']])).toEqual([
-      ['pembuka', 0.9],
-      ['soal-1', 0],
+      ['pembuka', 0.5], // ambang, M3.4a
+      ['pembuka', 0.9], // meninggalkan pembuka
+      ['soal-1', 0], // soal-1 tidak digulir sama sekali
     ]);
   });
 
@@ -1424,5 +1431,196 @@ describe('alur — perpindahan lewat tombol peramban (A1-T2, C-1)', () => {
       expect(h.peristiwa).toEqual([]);
       expect(h.keadaan).toBe(k);
     });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.4a — gulir ambang: KAPAN 50% dan 100% dilewati (D-1)             */
+/* ------------------------------------------------------------------ */
+
+/** `gulir` saja, sebagai pasangan [layar, maks], urut lahirnya. */
+const gulirUrut = (peristiwa: Peristiwa[]): Array<[unknown, unknown]> =>
+  peristiwa.filter((p) => p.nama === 'gulir').map((p) => [p.isi['layar'], p.isi['maks']]);
+
+describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
+  it('melahirkan 50% lalu 100% masing-masing tepat sekali, dalam satu kunjungan', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 20 },
+      { jenis: 'catat_gulir', persen: 50 },
+      { jenis: 'catat_gulir', persen: 60 },
+      { jenis: 'catat_gulir', persen: 100 },
+    ]);
+    expect(gulirUrut(peristiwa)).toEqual([
+      ['pembuka', 0.5],
+      ['pembuka', 1],
+    ]);
+  });
+
+  it('50% lahir tepat di 50, bukan sesudahnya', () => {
+    const { peristiwa } = jalankan([MULAI, { jenis: 'catat_gulir', persen: 50 }]);
+    expect(gulirUrut(peristiwa)).toEqual([['pembuka', 0.5]]);
+  });
+
+  it('49% belum melahirkan apa pun', () => {
+    const { peristiwa } = jalankan([MULAI, { jenis: 'catat_gulir', persen: 49 }]);
+    expect(gulirUrut(peristiwa)).toEqual([]);
+  });
+
+  it('lompatan langsung dari 0 ke 100 tetap melahirkan KEDUANYA, 50% lebih dulu', () => {
+    const { peristiwa } = jalankan([MULAI, { jenis: 'catat_gulir', persen: 100 }]);
+    expect(gulirUrut(peristiwa)).toEqual([
+      ['pembuka', 0.5],
+      ['pembuka', 1],
+    ]);
+    // Keduanya lahir dari satu pemanggilan reducer, jadi `t_ms`-nya sama;
+    // yang membedakan urutannya adalah `urut`, dan itu yang dibaca peringkas.
+    const g = peristiwa.filter((p) => p.nama === 'gulir');
+    expect(g[1]?.urut).toBe((g[0]?.urut ?? 0) + 1);
+  });
+
+  it('naik–turun–naik tidak melahirkan ambang yang sama dua kali', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 80 },
+      { jenis: 'catat_gulir', persen: 10 },
+      { jenis: 'catat_gulir', persen: 55 },
+      { jenis: 'catat_gulir', persen: 5 },
+      { jenis: 'catat_gulir', persen: 90 },
+    ]);
+    expect(gulirUrut(peristiwa)).toEqual([['pembuka', 0.5]]);
+  });
+
+  it('100% yang sudah dilaporkan tidak lahir lagi walau dilapor ulang', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'catat_gulir', persen: 30 },
+      { jenis: 'catat_gulir', persen: 100 },
+    ]);
+    expect(gulirUrut(peristiwa).filter(([, m]) => m === 1)).toHaveLength(1);
+  });
+
+  it('pindah layar mengulang hitungan: tiap kunjungan punya 50% sendiri', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 70 },
+      { jenis: 'lanjut' }, // ke soal-1
+      { jenis: 'catat_gulir', persen: 70 },
+    ]);
+    expect(gulirUrut(peristiwa)).toEqual([
+      ['pembuka', 0.5], // ambang di pembuka
+      ['pembuka', 0.7], // meninggalkan pembuka
+      ['soal-1', 0.5], // ambang di soal-1, hitungan mulai dari nol lagi
+    ]);
+  });
+
+  it('kunjungan KEDUA ke layar yang sama melahirkan ambangnya lagi', () => {
+    const { peristiwa } = jalankan([
+      ...sampaiTerkunci(),
+      { jenis: 'catat_gulir', persen: 100 }, // di soal-3, kunjungan pertama
+      { jenis: 'lihat_balik', nomor: 0 },
+      { jenis: 'lihat_balik', nomor: 2 }, // kembali ke soal-3
+      { jenis: 'catat_gulir', persen: 100 },
+    ]);
+    const soal3 = gulirUrut(peristiwa).filter(([l]) => l === 'soal-3');
+    expect(soal3).toEqual([
+      ['soal-3', 0.5], // ambang, kunjungan 1
+      ['soal-3', 1], // ambang, kunjungan 1
+      ['soal-3', 1], // meninggalkan soal-3
+      ['soal-3', 0.5], // ambang, kunjungan 2 — lahir lagi
+      ['soal-3', 1],
+    ]);
+  });
+
+  it('layar yang muat satu jendela: kedua ambang lahir tepat sesudah layar_masuk', () => {
+    /*
+     * Pelapor di komponen menghitung `tinggi <= 0` sebagai 100%, dan ia melapor
+     * sekali tiap ganti layar. Jadi "layar muat sejendela" sampai ke reducer
+     * sebagai `catat_gulir 100` segera sesudah masuk — dan itu yang ditiru di
+     * sini, dengan maju waktu nol. "100% pada detik 0" harus terbaca sebagai
+     * TIDAK PERLU MENGGULIR, bukan sebagai membaca.
+     */
+    const { peristiwa } = jalankan([
+      MULAI,
+      [{ jenis: 'catat_gulir', persen: 100 }, 0],
+      { jenis: 'lanjut' },
+      [{ jenis: 'catat_gulir', persen: 100 }, 0],
+    ]);
+    expect(namaUrut(peristiwa)).toEqual([
+      'mulai',
+      'layar_masuk', // pembuka
+      'gulir', // 50% — pada t_ms yang sama dengan layar_masuk
+      'gulir', // 100%
+      'gulir', // meninggalkan pembuka
+      'layar_masuk', // soal-1
+      'gulir', // 50%
+      'gulir', // 100%
+    ]);
+    const masukPembuka = peristiwa[1];
+    for (const g of peristiwa.slice(2, 4)) expect(g.t_ms).toBe(masukPembuka?.t_ms);
+  });
+
+  it('paling banyak DUA peristiwa ambang per kunjungan layar', () => {
+    const langkahGulir: Aksi[] = [];
+    for (let p = 1; p <= 100; p += 1) langkahGulir.push({ jenis: 'catat_gulir', persen: p });
+    const { peristiwa } = jalankan([MULAI, ...langkahGulir]);
+    expect(peristiwa.filter((p) => p.nama === 'gulir')).toHaveLength(2);
+  });
+
+  it('bentuk medannya tetap { layar, maks } — tanpa medan baru (D-2)', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'lanjut' },
+    ]);
+    for (const g of peristiwa.filter((p) => p.nama === 'gulir')) {
+      expect(Object.keys(g.isi).sort()).toEqual(['layar', 'maks']);
+    }
+  });
+
+  it('`urut` tetap satu deret tanpa lubang dan tanpa kembaran', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 55 },
+      { jenis: 'lanjut' },
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'tutup' },
+    ]);
+    expect(peristiwa.map((p) => p.urut)).toEqual(peristiwa.map((_, nomor) => nomor + 1));
+  });
+
+  it('ambang tidak memakai kuota 300 ketukan (D-4)', () => {
+    const langkahGulir: Aksi[] = [];
+    for (let p = 10; p <= 100; p += 10) langkahGulir.push({ jenis: 'catat_gulir', persen: p });
+    const { keadaan } = jalankan([MULAI, ...langkahGulir]);
+    expect(keadaan.ketukan).toBe(0);
+    expect(keadaan.ketukDibatasi).toBe(false);
+    expect(BATAS_KETUK).toBe(300);
+  });
+
+  it('tidak menambah satu pun nama ke daftar tertutup D-6', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'lanjut' },
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'tutup' },
+    ]);
+    for (const p of peristiwa) {
+      expect(NAMA_PERISTIWA as readonly string[]).toContain(p.nama);
+    }
+  });
+
+  it('reducer tetap murni: keadaan yang diberikan tidak berubah', () => {
+    const sebelum = jalankan([MULAI]).keadaan;
+    const salinan = JSON.stringify(sebelum);
+    langkah(sebelum, { jenis: 'catat_gulir', persen: 100 }, 9_999);
+    expect(JSON.stringify(sebelum)).toBe(salinan);
   });
 });

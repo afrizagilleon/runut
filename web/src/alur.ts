@@ -209,6 +209,20 @@ export interface Keadaan {
    * sedang dibuka ketika peristiwa tersebut lahir.
    */
   gulirMaksPersen: number;
+  /**
+   * Ambang gulir terbesar yang sudah dilaporkan di **kunjungan layar ini**
+   * (M3.4a D-1): 0, 50, atau 100.
+   *
+   * Disetel ulang tiap ganti layar bersama `gulirMaksPersen`, dan hanya boleh
+   * naik. Karena `gulirMaksPersen` sendiri tidak pernah turun, "naik–turun–naik"
+   * tidak bisa melahirkan peristiwa ambang kedua kali — itu sifat kedua angka
+   * ini, bukan sebuah pemeriksaan tambahan yang bisa lupa dipasang.
+   *
+   * Ini medan KEADAAN, bukan medan peristiwa: bentuk `gulir` tetap
+   * `{ layar, maks }` (D-2), karena pengumpul di server sungguhan memvalidasi
+   * daftar tertutup dan tidak ikut di-deploy bersama perubahan ini.
+   */
+  ambangGulirDilapor: number;
   masukPembukaanPada: number | null;
   /** Berapa `ketuk` yang sudah dilahirkan sesi ini; berhenti di `BATAS_KETUK`. */
   ketukan: number;
@@ -317,6 +331,7 @@ export function keadaanAwal({
     akhirTerkirim: false,
     minatDitekan: false,
     gulirMaksPersen: 0,
+    ambangGulirDilapor: 0,
     masukPembukaanPada: null,
     ketukan: 0,
     ketukDibatasi: false,
@@ -567,6 +582,50 @@ function catatGulirLayar(keadaan: Keadaan, catat: Catatan): void {
 }
 
 /**
+ * Ambang gulir yang dilaporkan begitu dilewati (M3.4a D-1), dalam persen.
+ *
+ * Urut naik; `catatAmbangGulir` bergantung pada urutan itu.
+ */
+export const AMBANG_GULIR = [50, 100] as const;
+
+/**
+ * `gulir` ambang: pertama kali 50 % dan pertama kali 100 % di tiap kunjungan
+ * layar (M3.4a D-1).
+ *
+ * **Kenapa ada.** Sampai sekarang `gulir` hanya lahir saat meninggalkan layar,
+ * jadi berkas peristiwa menjawab *seberapa jauh* tetapi tidak *kapan*. Satu sesi
+ * ponsel alpha berada 18,6 menit di soal 1 tanpa satu ketukan pun, gulir 100 %,
+ * lalu menutup — dan dari data itu "ia membaca semuanya lalu bingung harus apa"
+ * tidak bisa dibedakan dari "ponselnya ditinggal". Dua `t_ms` tambahan per
+ * kunjungan layar memisahkan keduanya.
+ *
+ * **Kenapa di reducer.** Supaya `urut`-nya satu deret dengan peristiwa lain dan
+ * tidak bisa datang dua kali — alasan yang sama seperti `catatGulirLayar`.
+ * Komponen tetap hanya melaporkan fakta gulir (`catat_gulir`), persis seperti
+ * sebelumnya; tidak ada satu baris pun yang berubah di `Aplikasi.tsx`.
+ *
+ * **Layar yang muat satu jendela** tidak perlu perlakuan khusus di sini:
+ * pelapor di komponen sudah menghitung `tinggi <= 0` sebagai 100 %, dan ia sudah
+ * melapor sekali tiap ganti layar. Jadi kedua ambang lahir sendiri tepat sesudah
+ * `layar_masuk`, dan "100 % pada detik 0" terbaca sebagai *tidak perlu
+ * menggulir*, bukan sebagai membaca.
+ *
+ * Paling banyak dua peristiwa per kunjungan layar. Mereka tidak menggeser batas
+ * `BATAS_KETUK`, yang hanya menghitung `ketuk`.
+ */
+function catatAmbangGulir(keadaan: Keadaan, catat: Catatan): Keadaan {
+  let dilapor = keadaan.ambangGulirDilapor;
+  for (const ambang of AMBANG_GULIR) {
+    if (keadaan.gulirMaksPersen < ambang) break;
+    if (dilapor >= ambang) continue;
+    catat.tambah('gulir', { layar: namaLayar(keadaan.layar), maks: ambang / 100 });
+    dilapor = ambang;
+  }
+  if (dilapor === keadaan.ambangGulirDilapor) return keadaan;
+  return { ...keadaan, ambangGulirDilapor: dilapor };
+}
+
+/**
  * Catat masuk ke layar baru, termasuk cap waktu masuk kalau itu layar soal.
  *
  * `tinggalkan` hanya `false` pada aksi `mulai`, karena di sana belum ada layar
@@ -588,6 +647,9 @@ function masukLayar(
     ...keadaan,
     layar,
     gulirMaksPersen: 0,
+    // Hitungan ambang mulai dari nol lagi: tiap KUNJUNGAN layar punya
+    // "pertama kali 50 %" sendiri, termasuk kunjungan kedua ke soal yang sama.
+    ambangGulirDilapor: 0,
     sumberTerbuka: [],
     istilahTerbuka: false,
   };
@@ -950,8 +1012,14 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
 
     case 'catat_gulir': {
       const persen = Math.max(0, Math.min(100, Math.round(aksi.persen)));
+      // Gulir yang tidak lebih jauh dari yang sudah tercatat tidak bisa
+      // melewati ambang mana pun, jadi ia tetap berhenti di sini.
       if (persen <= keadaan.gulirMaksPersen) return abaikan(keadaan);
-      return { keadaan: { ...keadaan, gulirMaksPersen: persen }, peristiwa: [] };
+      const naik: Keadaan = { ...keadaan, gulirMaksPersen: persen };
+      const catat = new Catatan(naik, waktu, naik.urut);
+      const berikut = catatAmbangGulir(naik, catat);
+      const { peristiwa, urut } = catat.hasil;
+      return { keadaan: { ...berikut, urut }, peristiwa };
     }
 
     case 'minat_kasus_lain': {
