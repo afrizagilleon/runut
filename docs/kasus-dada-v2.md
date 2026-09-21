@@ -56,7 +56,7 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 
 **Teks kunci:** Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain: jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata "investor asing" atau "akuisisi" di kartu mana pun. Kartu harga hanya memberi tahu *bahwa* harganya naik 22 kali, bukan *kenapa*. Salah-kaprah yang umum: menganggap harga yang naik sebagai semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.
 
-**Catatan untuk eksekutor:** data tidak memuat tanggal pencabutan penghentian 30 Juni. Kalimat "tanggal pencabutannya tidak ada di data" wajib tampil di panel sumber kartu ini; "Per 1 Agustus sudah diperdagangkan lagi" bersandar pada volume 1 Agustus 2025 = 35.713.500 lembar di deret harian.
+**Catatan untuk eksekutor:** data tidak memuat tanggal pencabutan penghentian 30 Juni. Kalimat "tanggal pencabutannya tidak ada di data" wajib tampil di panel sumber kartu ini; "Per 1 Agustus sudah diperdagangkan lagi" bersandar pada adanya harga penutupan 1 Agustus 2025 (`harga-2025-08-01`), ditautkan dari teks awam kartu. "22 kali" adalah pembulatan awam dari 22,25; nilai persisnya tampil di panel sumber.
 
 ## Soal 2 — dividen untuk pemilik kecil
 
@@ -77,42 +77,44 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 > c. Keliru, ia kebagian Rp14.000 untuk 10 lot miliknya.
 > d. Keliru, Rp140 itu sudah besar dibanding nilai sahamnya.
 
-**Kartu:** `div-2025-09-16` · `andai-10-lot` (turunan baru) — **Jawaban:** a
+**Kartu:** `div-2025-09-16` · `andai-10-lot-dividen` (turunan baru) — **Jawaban:** a
 
 **Teks kunci:** Kartu kedua sudah menghitungnya: 1.000 lembar × Rp0,14 = Rp140, untuk saham yang nilainya Rp178.000 — kurang dari seperseribu nilainya. Temanmu betul, dan karena ia sudah pegang sejak sebelum tanggal ex, ia memang kebagian. Dividen adalah bagian laba yang benar-benar sampai ke pemilik saham; angka ini memperlihatkan bahwa harga Rp178 tidak ditopang pembagian laba. Salah-kaprah yang umum: menghitung dividen per lot, padahal dividen dihitung per lembar; dan mengira tanggal ex menggugurkan hak orang yang sudah lama pegang, padahal yang tidak kebagian hanya pembeli sesudah tanggal itu.
 
-**Catatan untuk eksekutor:** `andai-10-lot` adalah fakta turunan dari `div-2025-09-16` dan `harga-2025-10-08`, dengan pengandaian 10 lot ditulis di `keterangan`. Hitung ulang 1.000 × 0,14 dan 1.000 × 178. "Kurang dari seperseribu" = 140 ÷ 178.000 = 0,00079.
+**Catatan untuk eksekutor:** satu fakta membawa satu nilai, jadi kartu kedua adalah fakta `andai-10-lot-dividen` (Rp140; turunan dari `div-2025-09-16`) yang teks awamnya menautkan "Rp178.000" ke fakta turunan kedua, `andai-10-lot-nilai` (turunan dari `harga-2025-10-08`). Pengandaian 10 lot ditulis di `keterangan` keduanya. Fakta yang hanya ditautkan dari teks awam kartu tidak wajib masuk `fakta_terlihat`, tetapi wajib TERVERIFIKASI dan tersedia ≤ T. Hitung ulang 1.000 × 0,14 dan 1.000 × 178. "Kurang dari seperseribu" = 140 ÷ 178.000 = 0,00079.
 
 ## Soal 3 — siapa yang menjual
+
+**Hanya laporan yang lolos pemeriksaan yang boleh menjadi kartu.** Dua laporan dari periode ini tidak lolos dan karena itu **tidak** dipakai: rangkaian empat laporan 25 Agustus kehilangan 10.000.000 lembar di antara dua laporannya (temuan R2; dua dari empat laporannya berstatus KONFLIK), dan laporan 29 September menyebut harga Rp165 pada hari ketika harga pasar hanya bergerak Rp135–Rp163 (temuan R6). Tiga laporan di bawah ini berstatus TERVERIFIKASI dan saldo lembarnya bersambung persis: 4.662.137.600 → 4.592.137.600 → 4.412.637.600 → 4.362.637.600.
 
 **Yang dilihat pemain:**
 
 > **Laporan pemegang saham · terbit 25 Agu 2025**
-> Pemilik terbesar Perusahaan D menjual **369,5 juta lembar** di harga **Rp12–14**.
+> Pemilik terbesar Perusahaan D menjual **70 juta lembar** di harga **Rp13**. Transaksinya 12 Agustus.
+>
+> **Laporan pemegang saham · terbit 25 Agu 2025**
+> Ia menjual lagi **179,5 juta lembar** di harga **Rp14**. Transaksinya 13 Agustus.
 >
 > **Laporan pemegang saham · terbit 1 Sep 2025**
-> Ia menjual lagi **50 juta lembar** di harga **Rp15**.
->
-> **Laporan pemegang saham · terbit 29 Sep 2025**
-> Ia menjual lagi **10 juta lembar** di harga **Rp165**.
+> Ia menjual lagi **50 juta lembar** di harga **Rp15**. Transaksinya 14 Agustus.
 >
 > **Dihitung dari tiga laporan di atas**
-> Dari setiap 100 lembar yang ia jual, **98 lembar** terjual di harga Rp15 ke bawah.
+> Tiga penjualan itu berjumlah **299,5 juta lembar**, semuanya di harga Rp15 ke bawah.
 >
 > *Istilah — Pemilik terbesar (pemegang saham pengendali):* pihak dengan porsi saham paling besar, yang menentukan arah perusahaan. Setiap jual-belinya wajib dilaporkan dan diumumkan ke publik.
 >
-> Hari ini 8 Oktober 2025, harganya Rp178. Temanmu bilang: *"Pemilik terbesarnya aja baru jual di Rp165 — berarti harga segitu masih wajar."* Dari kartu di atas, mana yang paling tepat?
+> Hari ini 8 Oktober 2025, harganya Rp178. Temanmu bilang: *"Pemilik terbesarnya tenang-tenang aja tuh, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik."* Dari kartu di atas, mana yang paling tepat?
 >
-> a. Betul, hampir semua sahamnya ia jual di sekitar Rp165.
-> b. Betul, penjualan pertamanya memang baru terjadi di Rp165.
-> c. Keliru, hampir semua sahamnya ia jual di harga belasan rupiah.
-> d. Keliru, ia paling banyak menjual justru di atas harga Rp165.
+> a. Betul, laporannya menunjukkan ia membeli lagi di harga belasan rupiah.
+> b. Betul, laporannya menunjukkan ia membeli lagi di harga ratusan rupiah.
+> c. Keliru, laporannya menunjukkan ia menjual banyak di harga belasan rupiah.
+> d. Keliru, laporannya menunjukkan ia menjual banyak di harga ratusan rupiah.
 
-**Kartu:** `fil-2025-08-25` · `fil-2025-09-01` · `fil-2025-09-29` · `porsi-jual-murah` (turunan baru) — **Jawaban:** c
+**Kartu:** `fil-2025-08-25-03` · `fil-2025-08-25-04` · `fil-2025-09-01` · `jumlah-jual-terverifikasi` (turunan baru) — **Jawaban:** c
 
-**Teks kunci:** Tiga laporan itu semuanya penjualan, tetapi ukurannya jauh berbeda: 369,5 juta dan 50 juta lembar di Rp12–15, melawan 10 juta lembar di Rp165. Kartu keempat merangkumnya: 98 dari setiap 100 lembar terjual di harga belasan rupiah. Pemilik besar berhak menjual; yang perlu dibaca calon pembeli adalah siapa yang ada di sisi jual. Perhatikan juga tanggalnya: publik baru tahu sebuah transaksi ketika laporannya terbit. Salah-kaprah yang umum: melihat transaksi terakhir lalu mengira semuanya terjadi di harga itu.
+**Teks kunci:** Ketiga kartu laporan itu penjualan, bukan pembelian: 70 juta, 179,5 juta, dan 50 juta lembar — 299,5 juta lembar, semuanya di Rp13–Rp15, jauh di bawah harga hari ini. Perhatikan juga tanggalnya: transaksinya 12–14 Agustus, tetapi publik baru bisa membacanya pada 25 Agustus dan 1 September, ketika laporannya terbit. Pemilik besar berhak menjual; yang perlu dibaca calon pembeli adalah siapa yang ada di sisi jual. Salah-kaprah yang umum: menganggap "nggak kedengeran jual" sama dengan "tidak menjual".
 
-**Catatan untuk eksekutor:** `porsi-jual-murah` = 419.500.000 ÷ 429.500.000 = 97,67% → ditulis "98 dari setiap 100"; `turunan_dari` ketiga laporan. Persentase kepemilikan (64,48% → 58,57%) tidak tampil di kartu, hanya di panel sumber, dan di sana ditulis dua desimal secara konsisten (59,375% → 59,38%).
+**Catatan untuk eksekutor:** `jumlah-jual-terverifikasi` = 70.000.000 + 179.500.000 + 50.000.000 = 299.500.000 lembar; `turunan_dari` ketiga laporan itu, sehingga statusnya TERVERIFIKASI. Persentase kepemilikan tidak tampil di kartu. "Rp178" di batang soal menunjuk `harga-2025-10-08`.
 
 ---
 
@@ -123,8 +125,9 @@ Tombol: **Mulai kasus**. Tidak ada pilihan persona, tingkat, atau login. Tiga ka
 Isi pembukaan lama dipertahankan (suspensi 9 Okt, 10 Okt buka Rp177 → tertinggi Rp240 → tutup Rp152, 22 Okt Rp50, laporan penjualan Rp220–232 dan Rp51–56, RUPS 16 Jul 2026 gagal kuorum 22,32%), ditulis dengan gaya bahasa yang sama dengan kartu, ditambah satu bagian sesudahnya:
 
 **Apa yang bisa dan tidak bisa dibaca pada 8 Oktober**
-- Bisa dibaca: pemilik terbesarnya sedang menjual, hampir semuanya di harga belasan rupiah; dividennya sangat kecil dibanding harga; satu-satunya pengumuman bursa berbicara tentang laporan keuangan yang terlambat, bukan akuisisi.
+- Bisa dibaca: pemilik terbesarnya sudah menjual ratusan juta lembar di harga belasan rupiah; dividennya sangat kecil dibanding harga; satu-satunya pengumuman bursa berbicara tentang laporan keuangan yang terlambat, bukan akuisisi.
 - Tidak bisa dibaca: kapan harga berbalik, atau sampai berapa. Tidak satu pun kartu memuat itu, dan produk ini tidak pernah memintamu menebaknya.
+- Yang kami singkirkan dari kartu: dua laporan resmi dari periode yang sama tidak lolos pemeriksaan kami — satu rangkaian laporan kehilangan 10 juta lembar di tengah jalan, dan satu laporan menyebut harga Rp165 pada hari ketika harga pasar hanya bergerak Rp135–Rp163. Dokumen resmi pun perlu dihitung ulang; rinciannya ada di jejak verifikasi.
 - Nama aslinya: PT Diamond Citra Propertindo Tbk (DADA).
 
 ## Layar akhir — tiga ketukan dan satu kotak
@@ -141,6 +144,8 @@ Semua opsional; tombol **Selesai** selalu aktif. Di bawahnya satu tombol lagi: *
 (Sengaja tanpa "happy trading/investing": produk ini tidak pernah mengajak bertransaksi, INV-5.)
 
 ## Riwayat uji
+
+- **Temuan eksekutor (21 Sep sore) — kesalahan penulis kontrak.** Soal 3 versi sebelumnya memakai `fil-2025-08-25` dan `fil-2025-09-29` sebagai kartu, padahal keduanya berstatus KONFLIK di pabrik kita sendiri; produk akan menyodorkan "Rp165" sebagai fakta sementara jejak verifikasinya menyebut harga itu janggal. Soal 3 ditulis ulang memakai tiga laporan TERVERIFIKASI; dua laporan yang disingkirkan kini muncul di layar pembukaan sebagai pelajaran. Bentuk soal 3 yang baru **belum** diuji ke manusia maupun model.
 
 - **Uji model tanpa kartu / dengan kartu (21 Sep, tiga putaran atas draf formal).** Draf pertama gagal telak (soal 1 tertebak benar dengan keyakinan 88% dari pola opsi dan bocoran antar-soal). Pelajaran yang dibawa ke bentuk sekarang: opsi seimbang, tanpa bocoran antar-soal, istilah dijelaskan, kartu suspensi harus menjelaskan bahwa saham sudah diperdagangkan lagi, pengecoh lahir dari salah baca nyata. Batasnya: satu model, satu sampel; berguna menemukan bocoran, bukan mengukur kesulitan — dan **sama sekali tidak mengukur apakah pemula mau mengerjakannya**, yang justru menjadi cacat terbesar draf itu.
 - **Uji pemilik atas bentuk sekarang (21 Sep):** soal 3, lalu soal 1 dan 2, semuanya dijawab benar dalam sekali lihat, tanpa mengandalkan ingatan penjelasan malam sebelumnya. Temuan pemilik: "sekarang tahun 2026 — saya sempat bingung"; lahir aturan 8 (jangkar waktu).
