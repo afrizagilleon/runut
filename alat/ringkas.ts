@@ -38,6 +38,46 @@ export interface RingkasSoal {
   ganti_pilihan: number;
 }
 
+/**
+ * Kapan sesuatu terjadi di satu layar, bukan hanya seberapa jauh (M3.4a D-3).
+ *
+ * Pertanyaan yang tidak bisa dijawab berkas peristiwa sampai sekarang: satu
+ * sesi ponsel berada 18,6 menit di soal 1 tanpa satu ketukan pun, gulir 100 %,
+ * lalu menutup. *Ia membaca semuanya lalu bingung harus apa* dan *ponselnya
+ * ditinggal* menghasilkan angka yang sama persis — sampai `gulir` punya cap
+ * waktu sendiri dan jeda diamnya dihitung.
+ */
+export interface KapanLayar {
+  layar: string;
+  /** Berapa kali layar ini dibuka (`layar_masuk`). */
+  kunjungan: number;
+  /**
+   * Milidetik dari `layar_masuk` ke `ketuk` pertama, mati atau tidak, di
+   * **kunjungan pertama**; `null` kalau tidak ada satu pun ketukan di sana.
+   */
+  ms_ke_ketuk_pertama: number | null;
+  /** Milidetik dari `layar_masuk` ke `gulir` ambang 50 % di kunjungan pertama. */
+  ms_ke_gulir_50: number | null;
+  /** Milidetik dari `layar_masuk` ke `gulir` ambang 100 % di kunjungan pertama. */
+  ms_ke_gulir_100: number | null;
+  /**
+   * Jeda `t_ms` terbesar antara dua peristiwa berurutan di layar ini, di
+   * **semua** kunjungan — karena sesi yang ditinggalkan bisa ditinggalkan pada
+   * kunjungan yang mana pun.
+   */
+  jeda_diam_ms: number;
+  /**
+   * Di antara peristiwa apa jeda itu; `null` kalau layarnya hanya punya satu
+   * peristiwa.
+   *
+   * `gulir` diberi keterangan `(ambang)` atau `(pindah)` menurut aturan D-2,
+   * karena "gulir → gulir" tanpa keterangan tidak memberi tahu apa pun: yang
+   * ingin dibaca pemilik adalah "sampai dasar, lalu tidak terjadi apa-apa
+   * sampai ia pergi".
+   */
+  jeda_antara: [string, string] | null;
+}
+
 /** Satu ketukan seperti yang dicatat pelacak (D-8). */
 export interface KetukSesi {
   layar: string;
@@ -60,6 +100,8 @@ export interface RingkasSesi {
   ketuk_dibatasi: boolean;
   /** Kedalaman gulir terjauh per layar, 0–1. Kunjungan ulang diambil yang terjauh. */
   gulir: Array<[string, number]>;
+  /** Kapan, bukan hanya seberapa jauh (M3.4a D-3). Urut nama layar. */
+  kapan: KapanLayar[];
   /**
    * Sesi tanpa peristiwa `mulai` — misalnya tab lama yang baru ditutup, atau
    * kiriman yang kepalanya hilang. Ia dilaporkan terpisah dan tidak masuk
@@ -122,6 +164,159 @@ function msPerLayar(peristiwa: Peristiwa[]): Array<[string, number]> {
     jumlah.set(layar, (jumlah.get(layar) ?? 0) + Math.max(0, berikut - p.t_ms));
   }
   return [...jumlah.entries()];
+}
+
+/**
+ * `gulir` yang lahir saat MENINGGALKAN layar, bukan saat ambang dilewati
+ * (M3.4a D-2).
+ *
+ * Tidak ada medan yang membedakan keduanya — dan itu disengaja: pengumpul di
+ * server sungguhan memvalidasi daftar tertutup `gulir: { layar, maks }` dan
+ * tidak ikut di-deploy, jadi satu medan baru berarti seluruh kelompok peristiwa
+ * ditolak 400. Yang membedakan adalah **urutan**: `gulir` yang diikuti
+ * `layar_masuk` atau `tutup` pada `t_ms` yang sama adalah yang lahir saat
+ * meninggalkan layar.
+ *
+ * Aturan ini juga benar untuk kasus sempit "pemain mencapai 100 % lalu langsung
+ * menekan lanjut pada milidetik yang sama": di sana yang tepat mendahului
+ * `layar_masuk` adalah peristiwa tinggalkan-layar, dan ambangnya diikuti oleh
+ * `gulir` itu — bukan oleh `layar_masuk`.
+ */
+function indeksGulirTinggalkan(urut: Peristiwa[]): Set<number> {
+  const keluar = new Set<number>();
+  for (const [nomor, p] of urut.entries()) {
+    if (p.nama !== 'gulir') continue;
+    const sesudah = urut[nomor + 1];
+    if (sesudah === undefined) continue;
+    if (sesudah.nama !== 'layar_masuk' && sesudah.nama !== 'tutup') continue;
+    if (sesudah.t_ms !== p.t_ms) continue;
+    keluar.add(nomor);
+  }
+  return keluar;
+}
+
+/**
+ * Pecah sesi menjadi kunjungan layar: tiap `layar_masuk` membuka satu, dan
+ * kunjungan itu memuat semua peristiwa sampai `layar_masuk` berikutnya.
+ *
+ * Peristiwa sebelum `layar_masuk` pertama (yaitu `mulai`) tidak masuk kunjungan
+ * mana pun: ia bukan milik sebuah layar.
+ */
+function kunjunganLayar(urut: Peristiwa[]): Array<{ layar: string; isi: Peristiwa[] }> {
+  const keluar: Array<{ layar: string; isi: Peristiwa[] }> = [];
+  let sekarang: { layar: string; isi: Peristiwa[] } | null = null;
+  for (const p of urut) {
+    if (p.nama === 'layar_masuk') {
+      sekarang = { layar: teks(p.isi['layar']) ?? '(tidak diketahui)', isi: [p] };
+      keluar.push(sekarang);
+      continue;
+    }
+    if (sekarang !== null) sekarang.isi.push(p);
+  }
+  return keluar;
+}
+
+/**
+ * "Kapan", per layar (M3.4a D-3).
+ *
+ * Berkas lama tidak punya peristiwa ambang sama sekali; di sana
+ * `ms_ke_gulir_50` dan `ms_ke_gulir_100` menjadi `null` dan tabelnya mencetak
+ * "—". Itu bukan kasus khusus yang ditulis di sini — ia jatuh sendiri dari
+ * "tidak ada peristiwa yang cocok".
+ */
+export function kapanPerLayar(peristiwa: Peristiwa[]): KapanLayar[] {
+  const urut = [...peristiwa].sort((a, b) => a.urut - b.urut);
+  const tinggalkan = indeksGulirTinggalkan(urut);
+  const nomorAsli = new Map<Peristiwa, number>();
+  for (const [nomor, p] of urut.entries()) nomorAsli.set(p, nomor);
+
+  const per = new Map<string, KapanLayar>();
+  for (const kunjungan of kunjunganLayar(urut)) {
+    const masuk = kunjungan.isi[0];
+    if (masuk === undefined) continue;
+    const nol = masuk.t_ms;
+
+    const ada = per.get(kunjungan.layar);
+    const baris: KapanLayar = ada ?? {
+      layar: kunjungan.layar,
+      kunjungan: 0,
+      ms_ke_ketuk_pertama: null,
+      ms_ke_gulir_50: null,
+      ms_ke_gulir_100: null,
+      jeda_diam_ms: 0,
+      jeda_antara: null,
+    };
+    const pertama = baris.kunjungan === 0;
+    baris.kunjungan += 1;
+
+    if (pertama) {
+      /*
+       * `ketuk` dan `gulir` membawa nama layarnya sendiri, dan di sini ia
+       * **dipakai**, bukan hanya diandaikan cocok dengan kunjungan yang sedang
+       * berjalan.
+       *
+       * Keluaran reducer selalu cocok. Berkas yang ditulis tangan sebelum M3.4a
+       * tidak: di `alat/contoh/peristiwa-contoh.jsonl` ada
+       * `gulir { layar: "akhir", maks: 1 }` yang duduk di tengah kunjungan
+       * `pembukaan`. Tanpa penyaringan ini, sesi itu mendapat "detik ke 100 %"
+       * di layar yang salah — angka yang dikarang, dan justru untuk berkas lama
+       * yang seharusnya melaporkan "—". Ditemukan lewat tes, bukan lewat
+       * pembacaan kode.
+       */
+      const diSini = kunjungan.isi.filter(
+        (p) => teks(p.isi['layar']) === null || teks(p.isi['layar']) === kunjungan.layar,
+      );
+
+      const ketuk = diSini.find((p) => p.nama === 'ketuk');
+      baris.ms_ke_ketuk_pertama = ketuk === undefined ? null : Math.max(0, ketuk.t_ms - nol);
+
+      const ambang = (nilai: number): number | null => {
+        const cocok = diSini.find(
+          (p) =>
+            p.nama === 'gulir' &&
+            angka(p.isi['maks']) === nilai &&
+            !tinggalkan.has(nomorAsli.get(p) ?? -1),
+        );
+        return cocok === undefined ? null : Math.max(0, cocok.t_ms - nol);
+      };
+      baris.ms_ke_gulir_50 = ambang(0.5);
+      baris.ms_ke_gulir_100 = ambang(1);
+    }
+
+    /*
+     * Keterangan tiga tingkat, bukan dua — dan tingkat ketiga itu kejujuran,
+     * bukan kelengkapan.
+     *
+     * Peristiwa ambang hanya pernah ber-`maks` 0,5 atau 1 persis. `gulir`
+     * dengan `maks` lain (0,4 · 0,87 · 0,22) **tidak mungkin** ambang, jadi ia
+     * disebut `gulir` saja. Ini penting untuk berkas lama: contoh yang ditulis
+     * tangan sebelum M3.4a tidak mengikuti invarian reducer bahwa `gulir`
+     * tinggalkan-layar dan `layar_masuk` berbagi `t_ms`, sehingga aturan urutan
+     * D-2 tidak selalu mengenalinya di sana. Menyebutnya "ambang" akan menjadi
+     * angka yang dikarang.
+     */
+    const label = (p: Peristiwa): string => {
+      if (p.nama !== 'gulir') return p.nama;
+      const maks = angka(p.isi['maks']);
+      if (tinggalkan.has(nomorAsli.get(p) ?? -1)) return `gulir(pindah ${persen(maks)})`;
+      if (maks === 0.5 || maks === 1) return `gulir(ambang ${persen(maks)})`;
+      return `gulir(${persen(maks)})`;
+    };
+
+    for (let n = 1; n < kunjungan.isi.length; n += 1) {
+      const sebelum = kunjungan.isi[n - 1];
+      const sesudah = kunjungan.isi[n];
+      if (sebelum === undefined || sesudah === undefined) continue;
+      const jeda = sesudah.t_ms - sebelum.t_ms;
+      if (jeda <= baris.jeda_diam_ms) continue;
+      baris.jeda_diam_ms = jeda;
+      baris.jeda_antara = [label(sebelum), label(sesudah)];
+    }
+
+    per.set(kunjungan.layar, baris);
+  }
+
+  return [...per.values()].sort((a, b) => a.layar.localeCompare(b.layar));
 }
 
 export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
@@ -223,6 +418,7 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
     ketuk,
     ketuk_dibatasi: urut.some((p) => p.nama === 'ketuk_dibatasi'),
     gulir: [...gulir.entries()].sort((a, b) => a[0].localeCompare(b[0])),
+    kapan: kapanPerLayar(urut),
     lengkap: mulai !== undefined,
     lebar_layar: angka(mulai?.isi['lebar_layar']),
     sampai_pembukaan: urut.some((p) => p.nama === 'pembukaan_masuk'),
@@ -638,6 +834,22 @@ function detik(ms: number): string {
   return `${(ms / 1000).toFixed(1)} d`;
 }
 
+/** Sama, tetapi "—" untuk yang memang tidak ada — bukan 0,0 d (M3.4a D-3). */
+function detikAtau(ms: number | null): string {
+  return ms === null ? '—' : detik(ms);
+}
+
+/**
+ * Jeda diam dalam satuan yang bisa dibaca orang (M3.4a D-3).
+ *
+ * "1111,0 d" dan "18,5 mnt" adalah angka yang sama, tetapi hanya yang kedua
+ * yang langsung terbaca sebagai *ponsel ini ditinggalkan*. Batasnya 90 detik:
+ * di bawah itu detik masih terbaca sebagai jeda manusia yang sedang membaca.
+ */
+function lama(ms: number): string {
+  return ms < 90_000 ? detik(ms) : `${(ms / 60_000).toFixed(1)} mnt`;
+}
+
 /** Kedalaman gulir dibaca orang sebagai persen, bukan sebagai 0,62. */
 function persen(rasio: number | null): string {
   return rasio === null ? '—' : `${String(Math.round(rasio * 100))}%`;
@@ -831,6 +1043,51 @@ export function laporan(
       return cocok === undefined ? '—' : detik(cocok[1]);
     });
     baris.push(`| ${s.sesi} | ${sel.join(' | ')} |`);
+  }
+  baris.push('');
+
+  /*
+   * M3.4a D-3. Tabel di atas menjawab "seberapa jauh" dan "berapa lama"; tabel
+   * ini menjawab "kapan". Tanpa ia, dua cerita yang berlawanan tidak bisa
+   * dibedakan dari berkas peristiwa: sesi yang 18,6 menit di soal 1 dengan
+   * gulir 100 % dan nol ketukan bisa berarti "membaca semuanya lalu bingung
+   * harus apa" atau "ponselnya ditinggal", dan angkanya sama persis.
+   */
+  baris.push('## Kapan, bukan hanya seberapa jauh');
+  baris.push('');
+  baris.push(
+    'Semua waktu dihitung dari `layar_masuk` layar itu. **ketuk-1** = ketukan pertama di layar',
+  );
+  baris.push(
+    'itu, mati atau tidak. **50 %** dan **100 %** = kapan kedalaman gulir itu pertama kali',
+  );
+  baris.push(
+    'dilewati; "0,0 d" berarti layarnya muat satu jendela, jadi tidak perlu digulir sama sekali.',
+  );
+  baris.push(
+    '**diam** = jeda terpanjang antara dua peristiwa berurutan di layar itu, dan di antara apa;',
+  );
+  baris.push(
+    'jeda di atas 90 detik dicetak dalam menit, karena "1111,0 d" tidak terbaca sebagai',
+  );
+  baris.push('*ponsel ini ditinggalkan* dan "18,5 mnt" terbaca.');
+  baris.push('');
+  baris.push(
+    'Berkas yang terkumpul sebelum M3.4a tidak punya peristiwa ambang sama sekali; kolom 50 % dan',
+  );
+  baris.push('100 % di sana "—". Itu ketiadaan data, bukan nol.');
+  baris.push('');
+  baris.push('| sesi | layar | kunjungan | ketuk-1 | 50 % | 100 % | diam | antara |');
+  baris.push('|---|---|---|---|---|---|---|---|');
+  for (const s of sesi) {
+    for (const k of s.kapan) {
+      baris.push(
+        `| ${s.sesi} | ${k.layar} | ${String(k.kunjungan)} | ` +
+          `${detikAtau(k.ms_ke_ketuk_pertama)} | ${detikAtau(k.ms_ke_gulir_50)} | ` +
+          `${detikAtau(k.ms_ke_gulir_100)} | ${lama(k.jeda_diam_ms)} | ` +
+          `${k.jeda_antara === null ? '—' : `${k.jeda_antara[0]} → ${k.jeda_antara[1]}`} |`,
+      );
+    }
   }
   baris.push('');
 

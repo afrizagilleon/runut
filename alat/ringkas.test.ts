@@ -11,6 +11,7 @@ import {
   bacaPengunjungDikecualikan,
   buangKembar,
   hitungOrang,
+  kapanPerLayar,
   kelompokkanSesi,
   laporan,
   median,
@@ -19,6 +20,7 @@ import {
   perPenanda,
   pisahkanKecuali,
   ringkasSesi,
+  type KapanLayar,
   type Peristiwa,
   type RingkasSesi,
 } from './ringkas.ts';
@@ -665,5 +667,332 @@ describe('ringkas — pengunjung yang dikecualikan (D-B4)', () => {
       expect(tanpa).toContain('Sesi: **5**');
       expect(dengan).toContain('Sesi: **3**');
     });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.4a D-3 — kapan, bukan hanya seberapa jauh                        */
+/* ------------------------------------------------------------------ */
+
+const BERTINGKAT = fileURLToPath(
+  new URL('./contoh/peristiwa-bertingkat.jsonl', import.meta.url),
+);
+
+function muatBertingkat(): Peristiwa[] {
+  return bacaJsonl(readFileSync(BERTINGKAT, 'utf8'), 'peristiwa-bertingkat.jsonl');
+}
+
+const sesiBertingkat = (nama: string): RingkasSesi => {
+  const cocok = kelompokkanSesi(muatBertingkat()).find((s) => s.sesi === nama);
+  expect(cocok, `sesi ${nama} harus ada di berkas contoh`).toBeDefined();
+  if (cocok === undefined) throw new Error(nama);
+  return cocok;
+};
+
+const diLayar = (s: RingkasSesi, layar: string): KapanLayar => {
+  const cocok = s.kapan.find((k) => k.layar === layar);
+  expect(cocok, `layar ${layar} di sesi ${s.sesi}`).toBeDefined();
+  if (cocok === undefined) throw new Error(layar);
+  return cocok;
+};
+
+/** Baris `kapan` untuk satu layar, dari daftar mentah `kapanPerLayar`. */
+const diLayarDaftar = (daftar: KapanLayar[], layar: string): KapanLayar => {
+  const cocok = daftar.find((k) => k.layar === layar);
+  expect(cocok, `layar ${layar}`).toBeDefined();
+  if (cocok === undefined) throw new Error(layar);
+  return cocok;
+};
+
+/** Susun peristiwa buatan dengan `urut` yang urut sendiri. */
+function rangkai(daftar: Array<[string, number, Record<string, unknown>]>): Peristiwa[] {
+  return daftar.map(([nama, t_ms, isi], nomor) => ({
+    nama,
+    sesi: 'uji',
+    kasus_id: 'uji',
+    t_ms,
+    urut: nomor + 1,
+    isi,
+  }));
+}
+
+describe('ringkas — kapanPerLayar (M3.4a D-3)', () => {
+  it('detik ke ketukan pertama dihitung dari layar_masuk, mati atau tidak', () => {
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['mulai', 0, {}],
+        ['layar_masuk', 1_000, { layar: 'soal-1' }],
+        ['ketuk', 4_500, { layar: 'soal-1', uid: null, x: 0.5, y: 0.5, mati: true }],
+        ['ketuk', 9_000, { layar: 'soal-1', uid: 'opsi:a', x: 0.5, y: 0.5, mati: false }],
+      ]),
+    );
+    // Ketukan MATI pun ketukan: yang ditanya adalah kapan orangnya bergerak.
+    expect(diLayarDaftar(kapan, 'soal-1').ms_ke_ketuk_pertama).toBe(3_500);
+  });
+
+  it('"—" ketika layar itu tidak pernah diketuk sama sekali', () => {
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['layar_masuk', 0, { layar: 'soal-1' }],
+        ['gulir', 2_000, { layar: 'soal-1', maks: 0.5 }],
+      ]),
+    );
+    expect(diLayarDaftar(kapan, 'soal-1').ms_ke_ketuk_pertama).toBeNull();
+  });
+
+  it('membedakan gulir ambang dari gulir tinggalkan-layar lewat urutan (D-2)', () => {
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['layar_masuk', 0, { layar: 'soal-1' }],
+        ['gulir', 3_000, { layar: 'soal-1', maks: 0.5 }], // ambang
+        ['gulir', 8_000, { layar: 'soal-1', maks: 1 }], // ambang
+        ['gulir', 9_000, { layar: 'soal-1', maks: 1 }], // tinggalkan-layar
+        ['layar_masuk', 9_000, { layar: 'soal-2' }],
+      ]),
+    );
+    const s1 = diLayarDaftar(kapan, 'soal-1');
+    expect(s1.ms_ke_gulir_50).toBe(3_000);
+    expect(s1.ms_ke_gulir_100).toBe(8_000);
+  });
+
+  it('gulir tinggalkan-layar TIDAK dibaca sebagai ambang — berkas lama tetap "—"', () => {
+    /*
+     * Ini kasus berkas yang terkumpul sebelum M3.4a: satu-satunya `gulir` di
+     * layar itu adalah yang lahir saat meninggalkannya, dan `maks`-nya kebetulan
+     * 1. Kalau ia terbaca sebagai ambang, setiap sesi lama tiba-tiba punya
+     * "detik ke 100 %" yang tidak pernah diukur siapa pun.
+     */
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['layar_masuk', 0, { layar: 'soal-1' }],
+        ['ketuk', 5_000, { layar: 'soal-1', uid: 'opsi:a', x: 0.5, y: 0.5, mati: false }],
+        ['gulir', 12_000, { layar: 'soal-1', maks: 1 }],
+        ['layar_masuk', 12_000, { layar: 'soal-2' }],
+      ]),
+    );
+    const s1 = diLayarDaftar(kapan, 'soal-1');
+    expect(s1.ms_ke_gulir_50).toBeNull();
+    expect(s1.ms_ke_gulir_100).toBeNull();
+    expect(s1.ms_ke_ketuk_pertama).toBe(5_000);
+  });
+
+  it('ambang tepat sebelum pindah layar pada milidetik yang sama tetap terbaca ambang', () => {
+    /*
+     * Kasus sempit: pemain mencapai 100 % lalu langsung menekan lanjut. Yang
+     * TEPAT mendahului `layar_masuk` adalah peristiwa tinggalkan-layar; ambang
+     * di depannya diikuti oleh `gulir` itu, bukan oleh `layar_masuk`.
+     */
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['layar_masuk', 0, { layar: 'soal-1' }],
+        ['gulir', 7_000, { layar: 'soal-1', maks: 0.5 }],
+        ['gulir', 7_000, { layar: 'soal-1', maks: 1 }],
+        ['gulir', 7_000, { layar: 'soal-1', maks: 1 }],
+        ['layar_masuk', 7_000, { layar: 'soal-2' }],
+      ]),
+    );
+    const s1 = diLayarDaftar(kapan, 'soal-1');
+    expect(s1.ms_ke_gulir_50).toBe(7_000);
+    expect(s1.ms_ke_gulir_100).toBe(7_000);
+  });
+
+  it('jeda diam terpanjang, dan di antara peristiwa apa', () => {
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['layar_masuk', 0, { layar: 'soal-1' }],
+        ['gulir', 2_000, { layar: 'soal-1', maks: 0.5 }],
+        ['gulir', 3_200, { layar: 'soal-1', maks: 1 }],
+        ['gulir', 1_000_000, { layar: 'soal-1', maks: 1 }],
+        ['tutup', 1_000_000, { layar_terakhir: 'soal-1' }],
+      ]),
+    );
+    const s1 = diLayarDaftar(kapan, 'soal-1');
+    expect(s1.jeda_diam_ms).toBe(996_800);
+    expect(s1.jeda_antara).toEqual(['gulir(ambang 100%)', 'gulir(pindah 100%)']);
+  });
+
+  it('gulir dengan maks yang bukan 0,5 atau 1 tidak pernah disebut ambang', () => {
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['layar_masuk', 0, { layar: 'soal-1' }],
+        ['gulir', 9_000, { layar: 'soal-1', maks: 0.62 }],
+      ]),
+    );
+    expect(diLayarDaftar(kapan, 'soal-1').jeda_antara).toEqual(['layar_masuk', 'gulir(62%)']);
+  });
+
+  it('kunjungan kedua dihitung, dan waktunya tetap milik kunjungan pertama', () => {
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['layar_masuk', 0, { layar: 'soal-1' }],
+        ['ketuk', 2_000, { layar: 'soal-1', uid: 'a', x: 0.5, y: 0.5, mati: false }],
+        ['gulir', 3_000, { layar: 'soal-1', maks: 0.5 }],
+        ['gulir', 4_000, { layar: 'soal-1', maks: 0.6 }],
+        ['layar_masuk', 4_000, { layar: 'soal-2' }],
+        ['gulir', 9_000, { layar: 'soal-2', maks: 0.3 }],
+        ['layar_masuk', 9_000, { layar: 'soal-1' }],
+        ['ketuk', 40_000, { layar: 'soal-1', uid: 'b', x: 0.5, y: 0.5, mati: false }],
+      ]),
+    );
+    const s1 = diLayarDaftar(kapan, 'soal-1');
+    expect(s1.kunjungan).toBe(2);
+    // Kunjungan pertama: ketukan pada detik 2, bukan pada detik 31 kunjungan kedua.
+    expect(s1.ms_ke_ketuk_pertama).toBe(2_000);
+    expect(s1.ms_ke_gulir_50).toBe(3_000);
+    // Jeda terpanjang diambil dari SEMUA kunjungan: 9.000 -> 40.000.
+    expect(s1.jeda_diam_ms).toBe(31_000);
+  });
+
+  it('peristiwa sebelum layar_masuk pertama tidak masuk layar mana pun', () => {
+    const kapan = kapanPerLayar(
+      rangkai([
+        ['mulai', 0, {}],
+        ['layar_masuk', 500, { layar: 'pembuka' }],
+      ]),
+    );
+    expect(kapan.map((k) => k.layar)).toEqual(['pembuka']);
+    expect(diLayarDaftar(kapan, 'pembuka').jeda_diam_ms).toBe(0);
+    expect(diLayarDaftar(kapan, 'pembuka').jeda_antara).toBeNull();
+  });
+
+  it('sesi tanpa satu pun layar_masuk tidak melempar', () => {
+    expect(kapanPerLayar(rangkai([['tutup', 5, { layar_terakhir: 'soal-1' }]]))).toEqual([]);
+  });
+});
+
+describe('ringkas — berkas contoh bertingkat (M3.4a D-3)', () => {
+  it('memuat tepat tiga sesi, semuanya lengkap', () => {
+    const semua = kelompokkanSesi(muatBertingkat());
+    expect(semua.map((s) => s.sesi)).toEqual([
+      'sesi-h-membaca-lalu-menjawab',
+      'sesi-i-ditinggal-di-soal-1',
+      'sesi-j-layar-muat-sejendela',
+    ]);
+    expect(semua.every((s) => s.lengkap)).toBe(true);
+  });
+
+  it('sesi yang MEMBACA lalu menjawab: gulir pelan, ketukan di antaranya', () => {
+    const s = diLayar(sesiBertingkat('sesi-h-membaca-lalu-menjawab'), 'soal-1');
+    expect(s.ms_ke_gulir_50).toBe(20_500);
+    expect(s.ms_ke_gulir_100).toBe(46_200);
+    expect(s.ms_ke_ketuk_pertama).toBe(10_700);
+    // Ketukan pertama MENDAHULUI 50 %: orang ini membuka sumber sambil membaca.
+    expect(s.ms_ke_ketuk_pertama ?? 0).toBeLessThan(s.ms_ke_gulir_50 ?? 0);
+    expect(s.jeda_diam_ms).toBeLessThan(30_000);
+  });
+
+  it('sesi yang DITINGGAL: 100 % dalam 3,2 detik, lalu 18,5 menit tanpa apa-apa', () => {
+    const s = diLayar(sesiBertingkat('sesi-i-ditinggal-di-soal-1'), 'soal-1');
+    expect(s.ms_ke_gulir_50).toBe(1_500);
+    expect(s.ms_ke_gulir_100).toBe(3_200);
+    // Inti seluruh milestone: nol ketukan, dan diam yang panjangnya menit.
+    expect(s.ms_ke_ketuk_pertama).toBeNull();
+    expect(s.jeda_diam_ms).toBeGreaterThan(15 * 60_000);
+    expect(s.jeda_antara).toEqual(['gulir(ambang 100%)', 'gulir(pindah 100%)']);
+  });
+
+  it('kedua sesi itu tidak bisa dibedakan dari kedalaman gulirnya saja', () => {
+    /*
+     * Justifikasi milestone ini, ditulis sebagai tes: dua sesi yang berlawanan
+     * punya kedalaman gulir yang SAMA PERSIS di soal 1. Hanya kolom waktu yang
+     * memisahkannya.
+     */
+    const membaca = sesiBertingkat('sesi-h-membaca-lalu-menjawab');
+    const ditinggal = sesiBertingkat('sesi-i-ditinggal-di-soal-1');
+    const dalam = (s: RingkasSesi): number | undefined =>
+      s.gulir.find(([l]) => l === 'soal-1')?.[1];
+    expect(dalam(membaca)).toBe(1);
+    expect(dalam(ditinggal)).toBe(1);
+    expect(diLayar(membaca, 'soal-1').ms_ke_gulir_100).toBeGreaterThan(40_000);
+    expect(diLayar(ditinggal, 'soal-1').ms_ke_gulir_100).toBeLessThan(5_000);
+  });
+
+  it('sesi LAYAR-MUAT-SEJENDELA: kedua ambang pada detik nol', () => {
+    const s = sesiBertingkat('sesi-j-layar-muat-sejendela');
+    for (const layar of ['pembuka', 'soal-1', 'soal-2']) {
+      const k = diLayar(s, layar);
+      expect(k.ms_ke_gulir_50, layar).toBe(0);
+      expect(k.ms_ke_gulir_100, layar).toBe(0);
+    }
+    // Dan itu TIDAK berarti ia membaca cepat: ketukan pertamanya jauh sesudahnya.
+    expect(diLayar(s, 'soal-1').ms_ke_ketuk_pertama).toBe(21_400);
+  });
+
+  it('kedalaman gulir per layar tetap MAKSIMUM, bukan yang terakhir', () => {
+    const s = sesiBertingkat('sesi-h-membaca-lalu-menjawab');
+    expect(s.gulir.find(([l]) => l === 'soal-3')?.[1]).toBe(0.55);
+  });
+});
+
+describe('ringkas — laporan bagian "Kapan" (M3.4a D-3)', () => {
+  it('mencetak bagiannya, dan berkas lama hampir seluruhnya "—"', () => {
+    const teks = laporan(lengkap());
+    expect(teks).toContain('## Kapan, bukan hanya seberapa jauh');
+    expect(teks).toContain('| sesi | layar | kunjungan | ketuk-1 | 50 % | 100 % | diam | antara |');
+
+    /*
+     * Batas yang jujur, dan angkanya dipatok di sini supaya tidak bisa melebar
+     * diam-diam.
+     *
+     * D-2 melarang medan baru, jadi satu-satunya pembeda ambang dari
+     * tinggalkan-layar adalah urutan. Untuk keluaran REDUCER aturan itu pasti:
+     * `gulir` tinggalkan-layar selalu berbagi `t_ms` dengan `layar_masuk` atau
+     * `tutup` tepat sesudahnya, karena keduanya lahir dari satu pemanggilan.
+     *
+     * `alat/contoh/peristiwa-contoh.jsonl` **bukan** keluaran reducer — ia
+     * ditulis tangan sebelum M3.4a dan tidak mengikuti invarian itu. Di sana
+     * ada satu `gulir { layar: "soal-2", maks: 1 }` yang duduk di tengah
+     * kunjungan, dan ia memang tidak bisa dibedakan dari ambang oleh aturan
+     * mana pun. Satu baris itu disebut namanya; sisanya wajib "—".
+     */
+    const PENGECUALIAN = new Set(['sesi-a-tuntas|soal-2']);
+    const barisKapan = teks
+      .split('\n')
+      .filter((b) => b.startsWith('| sesi-') && b.split('|').length === 10);
+    expect(barisKapan.length).toBeGreaterThan(8);
+    let dikecualikan = 0;
+    for (const b of barisKapan) {
+      const kolom = b.split('|').map((x) => x.trim());
+      if (PENGECUALIAN.has(`${String(kolom[1])}|${String(kolom[2])}`)) {
+        dikecualikan += 1;
+        continue;
+      }
+      expect(kolom[5], `kolom 50% di "${b}"`).toBe('—');
+      expect(kolom[6], `kolom 100% di "${b}"`).toBe('—');
+    }
+    expect(dikecualikan, 'pengecualiannya memang ada, bukan daftar mati').toBe(PENGECUALIAN.size);
+  });
+
+  it('sesi lama yang gulirnya hanya tinggalkan-layar tetap "—" seluruhnya', () => {
+    // Bentuk yang sebenarnya dari data alpha lama: `gulir` hanya lahir saat
+    // pindah layar, jadi tidak satu pun kolom waktu gulirnya terisi.
+    const s = lengkap().find((x) => x.sesi === 'sesi-c-tanpa-membaca-kartu');
+    expect(s).toBeDefined();
+    for (const k of s?.kapan ?? []) {
+      expect(k.ms_ke_gulir_50, k.layar).toBeNull();
+      expect(k.ms_ke_gulir_100, k.layar).toBeNull();
+    }
+  });
+
+  it('jeda di atas 90 detik dicetak dalam menit, bukan sebagai 1111,0 d', () => {
+    const teks = laporan(kelompokkanSesi(muatBertingkat()));
+    expect(teks).toContain('18.5 mnt');
+    expect(teks).not.toContain('1111.0 d');
+  });
+
+  it('berkas lama tetap teringkas tanpa galat, dan tabel lamanya utuh', () => {
+    const teks = laporan(lengkap());
+    for (const judul of [
+      '## Berapa orang, bukan berapa sesi',
+      '## Per sesi',
+      '## Apakah kartu dibaca sebelum menjawab',
+      '## Per soal',
+      '## Lama per layar',
+      '## Apa yang diketuk, dan apa yang dikira bisa diketuk',
+      '## Titik berhenti',
+      '## Layar akhir',
+    ]) {
+      expect(teks, judul).toContain(judul);
+    }
   });
 });
