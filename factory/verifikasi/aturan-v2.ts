@@ -10,7 +10,13 @@
  * diam-diam: yang dilewati disebut jumlah dan alasannya.
  */
 import type { Temuan } from '../skema/tipe.ts';
-import type { HasilAturan, KonteksGudang, KonteksVerifikasi, Laporan } from './tipe.ts';
+import type {
+  BarisHarga,
+  HasilAturan,
+  KonteksGudang,
+  KonteksVerifikasi,
+  Laporan,
+} from './tipe.ts';
 import { angka, hasil, hitung, lewat, urut } from './dasar.ts';
 import { DESIMAL_PERSEN, persenKonsisten, selangPenyebut } from './penyebut.ts';
 
@@ -1006,4 +1012,391 @@ export function r16JamTerbit(konteks: KonteksGudang): HasilAturan {
   }
 
   return hasil('R16', judul, temuan, hitung(satuan, { diperiksa: pasangan.length, merah }));
+}
+
+// --- R17B harga laporan terhadap rentang hari transaksinya -------------------
+
+/**
+ * Baris harga yang **tidak boleh** dipakai sebagai rentang.
+ *
+ * Satu baris ber-`low` 0 di dalam sebuah jendela membuat `min(low)` nol dan
+ * aturan rentang harga tidak bisa berbunyi lagi: uji sabotase membuktikan
+ * harga Rp33 menjadi hijau palsu karenanya. Baris begini dibuang **lebih
+ * dulu**, bukan ikut dihitung lalu dikoreksi.
+ */
+export function barisHargaCacat(h: BarisHarga): boolean {
+  return h.buka_kosong === true || h.tertinggi <= 0 || h.terendah <= 0;
+}
+
+/**
+ * R17B — harga yang ditulis di laporan terhadap rentang harga **pada tanggal
+ * transaksinya sendiri**.
+ *
+ * Menggantikan R17 usulan, yang memakai jendela 40 hari bursa dengan premis
+ * "tanggal transaksi tidak tersedia". Premis itu salah: setiap laporan punya
+ * `price_transaction` bertanggal. Jendela 40 hari melewatkan 48 laporan yang
+ * melanggar rentang hari transaksinya sendiri, dan dua merahnya terbukti
+ * positif palsu.
+ *
+ * Medan agregat `price` **tidak dipakai sama sekali**: ia rata-rata tertimbang
+ * yang menghitung harga kosong sebagai Rp0.
+ *
+ * Putusan: KONFLIK, kecuali laporan yang bertanda repo (harga repo memang boleh
+ * di luar pasar reguler) -> TIDAK_LENGKAP. Tanggal transaksi yang tidak ada di
+ * deret harga juga TIDAK_LENGKAP, **bukan** dibandingkan ke jendela lain.
+ */
+export function r17bHargaHariTransaksi(konteks: KonteksVerifikasi): HasilAturan {
+  const judul = 'Harga laporan terhadap rentang harga hari transaksinya';
+  const satuan = 'butir transaksi';
+  const butirSemua = konteks.laporan.reduce((j, l) => j + l.transaksi.length, 0);
+  if (butirSemua === 0) {
+    return lewat('R17B', judul, 'Tidak ada butir transaksi bertanggal untuk diperiksa.', satuan);
+  }
+  if (konteks.harga.length === 0) {
+    return lewat('R17B', judul, 'Tidak ada data harga harian untuk membandingkan.', satuan, butirSemua);
+  }
+
+  const sehat = new Map(
+    konteks.harga.filter((h) => !barisHargaCacat(h)).map((h) => [h.tanggal, h]),
+  );
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const l of urut(konteks.laporan)) {
+    let hargaKosong = 0;
+    for (const t of l.transaksi) {
+      diperiksa += 1;
+      if (t.harga_kosong === true) {
+        hargaKosong += 1;
+        tidakLengkap += 1;
+        alasan.push('Medan harga butir transaksi kosong; nol bukan harganya.');
+        continue;
+      }
+      const bar = sehat.get(t.tanggal);
+      if (bar === undefined) {
+        tidakLengkap += 1;
+        alasan.push('Tanggal transaksi tidak ada di deret harga harian, atau baris harganya cacat.');
+        continue;
+      }
+      if (t.harga >= bar.terendah && t.harga <= bar.tertinggi) continue;
+
+      const repo = konteks.tanda_repo[l.laporan_id] === true;
+      if (repo) {
+        tidakLengkap += 1;
+        alasan.push('Laporan bertanda repurchase agreement; harga repo boleh di luar pasar reguler.');
+        continue;
+      }
+      merah += 1;
+      temuan.push({
+        temuan_id: `R17B-${l.laporan_id}-${t.tanggal}-${String(t.harga)}`,
+        aturan: 'R17B',
+        ringkasan:
+          `Laporan ${l.dilaporkan_pada} menyebut transaksi ${t.tanggal} pada harga Rp${angka(t.harga)}, ` +
+          `padahal harga saham hari itu hanya bergerak Rp${angka(bar.terendah)}-Rp${angka(bar.tertinggi)}.`,
+        angka: [
+          { label: 'harga menurut laporan', nilai: t.harga, satuan: 'rupiah per lembar' },
+          { label: 'harga pasar terendah hari itu', nilai: bar.terendah, satuan: 'rupiah per lembar' },
+          { label: 'harga pasar tertinggi hari itu', nilai: bar.tertinggi, satuan: 'rupiah per lembar' },
+          { label: 'lembar pada butir ini', nilai: t.jumlah, satuan: 'lembar' },
+        ],
+        fakta_terkait: [],
+        rujukan: [`${l.dilaporkan_pada} · ${l.berkas}`, `harga harian ${t.tanggal}`],
+      });
+    }
+
+    if (hargaKosong > 0) {
+      temuan.push({
+        temuan_id: `R17B-agregat-${l.laporan_id}`,
+        aturan: 'R17B',
+        keparahan: 'catatan',
+        ringkasan:
+          `Laporan ${l.dilaporkan_pada} punya ${String(hargaKosong)} butir transaksi tanpa harga. ` +
+          `Medan harga gabungan laporan ini (Rp${angka(l.harga)}) adalah rata-rata tertimbang yang ` +
+          `menghitung butir tanpa harga sebagai Rp0, jadi ia lebih rendah daripada harga transaksi ` +
+          `yang sebenarnya dan tidak boleh dipakai sebagai harga.`,
+        angka: [
+          { label: 'butir tanpa harga', nilai: hargaKosong, satuan: 'butir' },
+          { label: 'medan harga gabungan laporan', nilai: l.harga, satuan: 'rupiah per lembar' },
+        ],
+        fakta_terkait: [],
+        rujukan: [`${l.dilaporkan_pada} · ${l.berkas}`],
+      });
+    }
+  }
+
+  return hasil(
+    'R17B',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R18a hari bervolume nol tanpa baris suspensi ----------------------------
+
+/**
+ * R18a — hari bursa yang volumenya nol tetapi tidak ada di daftar suspensi.
+ *
+ * Putusannya **TIDAK_LENGKAP**, bukan KONFLIK, dan itu penting: data suspensi
+ * mencatat hari **mulai** berhentinya perdagangan, bukan tiap hari selama
+ * berhenti. Menandainya konflik akan menolak ratusan baris harga yang benar.
+ *
+ * Keterbatasan yang dilaporkan apa adanya: baris suspensi yang punya harga
+ * hari itu jauh lebih sedikit daripada seluruh baris suspensi, jadi "nol
+ * merah" di arah sebaliknya tidak membawa informasi baru.
+ */
+export function r18aVolumeNolTanpaSuspensi(konteks: KonteksVerifikasi): HasilAturan {
+  const judul = 'Hari bervolume nol tanpa baris suspensi';
+  const satuan = 'baris harga bervolume nol';
+  if (konteks.harga.length === 0) {
+    return lewat('R18a', judul, 'Tidak ada data harga harian untuk diperiksa.', satuan);
+  }
+  const tanggalSuspensi = new Set(konteks.suspensi.map((s) => s.tanggal));
+  const nol = [...konteks.harga]
+    .filter((h) => h.volume === 0)
+    .sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+  const berVolume = konteks.harga.length - nol.length;
+
+  const temuan: Temuan[] = [];
+  let tidakLengkap = 0;
+  const tanpaSuspensi: string[] = [];
+  for (const h of nol) {
+    if (tanggalSuspensi.has(h.tanggal)) continue;
+    tidakLengkap += 1;
+    tanpaSuspensi.push(h.tanggal);
+  }
+
+  if (tanpaSuspensi.length > 0) {
+    const awal = tanpaSuspensi[0];
+    const akhir = tanpaSuspensi[tanpaSuspensi.length - 1];
+    temuan.push({
+      temuan_id: `R18a-${konteks.simbol}`,
+      aturan: 'R18a',
+      keparahan: 'catatan',
+      ringkasan:
+        `${String(tanpaSuspensi.length)} hari bursa ${konteks.simbol} antara ${String(awal)} dan ` +
+        `${String(akhir)} tidak mencatat satu lembar pun berpindah tangan, dan tanggal-tanggal itu ` +
+        `tidak ada di daftar suspensi. Daftar suspensi hanya mencatat hari mulai berhenti, bukan ` +
+        `tiap harinya, jadi tidak bisa ditentukan apakah hari-hari itu memang suspensi.`,
+      angka: [
+        { label: 'hari bervolume nol tanpa baris suspensi', nilai: tanpaSuspensi.length, satuan: 'hari' },
+        { label: 'hari bervolume nol yang ada di daftar suspensi', nilai: nol.length - tanpaSuspensi.length, satuan: 'hari' },
+        { label: 'baris suspensi yang kita punya', nilai: konteks.suspensi.length, satuan: 'baris' },
+      ],
+      fakta_terkait: [],
+      rujukan: [`harga harian ${String(awal)}`, `harga harian ${String(akhir)}`],
+    });
+  }
+
+  return hasil(
+    'R18a',
+    judul,
+    temuan,
+    hitung(satuan, {
+      diperiksa: nol.length,
+      merah: 0,
+      tidak_lengkap: tidakLengkap,
+      dilewati: berVolume,
+      alasan_dilewati: berVolume > 0 ? ['Hari bursa yang volumenya tidak nol; aturan ini tidak berlaku untuknya.'] : [],
+    }),
+  );
+}
+
+// --- R19a / R19b harga datar -------------------------------------------------
+
+/** Hari datar: buka, tertinggi, terendah, dan tutup sama persis. */
+export function hariDatar(h: BarisHarga): boolean {
+  return (
+    !barisHargaCacat(h) &&
+    h.buka === h.tertinggi &&
+    h.tertinggi === h.terendah &&
+    h.terendah === h.tutup
+  );
+}
+
+/**
+ * R19a — hari yang harganya datar **dan** volumenya nol.
+ *
+ * Nilainya bagi pemain langsung: kunci jawaban beku pernah menulis "harga
+ * pasar hari itu tepat Rp490" untuk hari yang volumenya nol. Harga hari itu
+ * bukan harga yang disepakati siapa pun; tidak ada satu lembar pun berpindah.
+ * Keparahan peringatan.
+ */
+export function r19aDatarTanpaVolume(konteks: KonteksVerifikasi): HasilAturan {
+  const judul = 'Harga datar pada hari tanpa transaksi';
+  const satuan = 'hari datar';
+  const datar = [...konteks.harga].filter(hariDatar).sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+  if (datar.length === 0) {
+    return lewat(
+      'R19a',
+      judul,
+      'Tidak ada hari yang harga buka, tertinggi, terendah, dan tutupnya sama.',
+      satuan,
+      konteks.harga.length,
+    );
+  }
+  const temuan: Temuan[] = [];
+  let merah = 0;
+  const tanggalNol: string[] = [];
+  for (const h of datar) {
+    if (h.volume !== 0) continue;
+    merah += 1;
+    tanggalNol.push(h.tanggal);
+  }
+  if (tanggalNol.length > 0) {
+    const awal = tanggalNol[0];
+    const akhir = tanggalNol[tanggalNol.length - 1];
+    temuan.push({
+      temuan_id: `R19a-${konteks.simbol}`,
+      aturan: 'R19a',
+      keparahan: 'peringatan',
+      ringkasan:
+        `${String(tanggalNol.length)} hari bursa ${konteks.simbol} antara ${String(awal)} dan ` +
+        `${String(akhir)} mencatat satu harga saja untuk buka, tertinggi, terendah, dan tutup, ` +
+        `sementara volumenya nol. Angka itu bukan harga yang disepakati siapa pun hari itu.`,
+      angka: [
+        { label: 'hari datar bervolume nol', nilai: tanggalNol.length, satuan: 'hari' },
+        { label: 'hari datar seluruhnya', nilai: datar.length, satuan: 'hari' },
+      ],
+      fakta_terkait: [],
+      rujukan: [`harga harian ${String(awal)}`, `harga harian ${String(akhir)}`],
+    });
+  }
+  return hasil(
+    'R19a',
+    judul,
+    temuan,
+    hitung(satuan, {
+      diperiksa: datar.length,
+      merah,
+      dilewati: konteks.harga.length - datar.length,
+      alasan_dilewati:
+        konteks.harga.length > datar.length ? ['Hari yang harganya bergerak; aturan ini tidak berlaku untuknya.'] : [],
+    }),
+  );
+}
+
+/** Panjang runtun datar terpendek yang dilaporkan R19b. */
+export const RUNTUN_MINIMAL = 3;
+/** Jendela runtun lunak: berapa hari bursa yang dilihat sekaligus. */
+export const JENDELA_LUNAK = 10;
+/** Berapa hari datar di dalam jendela itu yang sudah cukup untuk dilaporkan. */
+export const DATAR_LUNAK_MINIMAL = 9;
+
+export interface RuntunDatar {
+  awal: string;
+  akhir: string;
+  panjang: number;
+  lunak: boolean;
+}
+
+/**
+ * Cari runtun hari datar: yang berurutan penuh (>= 3 hari) dan yang "lunak"
+ * (>= 9 dari 10 hari bursa berurutan).
+ *
+ * Runtun lunak ada karena ambang runtun penuh rapuh: satu hari yang bergerak
+ * Rp1 di tengah runtun lima hari memecahnya jadi 2 + 2, dan keduanya hilang
+ * dari laporan.
+ */
+export function cariRuntunDatar(harga: BarisHarga[]): RuntunDatar[] {
+  const baris = [...harga].sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+  const datar = baris.map(hariDatar);
+  const runtun: RuntunDatar[] = [];
+  /** Nomor runtun penuh yang menutupi tiap hari; -1 = tidak tertutup. */
+  const nomorRuntun = new Array<number>(baris.length).fill(-1);
+
+  let i = 0;
+  let nomor = 0;
+  while (i < baris.length) {
+    if (!datar[i]) {
+      i += 1;
+      continue;
+    }
+    let j = i;
+    while (j + 1 < baris.length && datar[j + 1]) j += 1;
+    const panjang = j - i + 1;
+    if (panjang >= RUNTUN_MINIMAL) {
+      runtun.push({
+        awal: baris[i]?.tanggal ?? '',
+        akhir: baris[j]?.tanggal ?? '',
+        panjang,
+        lunak: false,
+      });
+      for (let k = i; k <= j; k += 1) nomorRuntun[k] = nomor;
+      nomor += 1;
+    }
+    i = j + 1;
+  }
+
+  // Jendela lunak dilaporkan hanya kalau ia **tidak** seluruhnya berada di
+  // dalam satu runtun penuh: kalau ia di dalam satu runtun, ia tidak mengatakan
+  // apa pun yang belum dikatakan runtun itu. Jendela yang melintasi dua runtun
+  // penuh justru inti gunanya - ia memperlihatkan bahwa pemisahnya cuma satu hari.
+  let sampai = -1;
+  for (let awal = 0; awal + JENDELA_LUNAK <= baris.length; awal += 1) {
+    if (awal <= sampai) continue;
+    let jumlah = 0;
+    let satuRuntun = nomorRuntun[awal] !== -1;
+    for (let k = awal; k < awal + JENDELA_LUNAK; k += 1) {
+      if (datar[k]) jumlah += 1;
+      if (nomorRuntun[k] !== nomorRuntun[awal] || nomorRuntun[k] === -1) satuRuntun = false;
+    }
+    if (jumlah < DATAR_LUNAK_MINIMAL || satuRuntun) continue;
+    sampai = awal + JENDELA_LUNAK - 1;
+    runtun.push({
+      awal: baris[awal]?.tanggal ?? '',
+      akhir: baris[sampai]?.tanggal ?? '',
+      panjang: jumlah,
+      lunak: true,
+    });
+  }
+
+  return runtun.sort(
+    (a, b) =>
+      a.awal.localeCompare(b.awal) ||
+      a.akhir.localeCompare(b.akhir) ||
+      Number(a.lunak) - Number(b.lunak),
+  );
+}
+
+/**
+ * R19b — runtun hari datar berturut-turut.
+ *
+ * Harga yang tidak bergerak berhari-hari bukan kesalahan data, tetapi ia
+ * membuat kalimat "harga hari itu Rp sekian" kehilangan arti. Keparahan
+ * peringatan. Runtun lunak dilaporkan terpisah, supaya satu hari yang bergerak
+ * Rp1 tidak menghapus sebuah runtun panjang dari laporan.
+ */
+export function r19bRuntunDatar(konteks: KonteksVerifikasi): HasilAturan {
+  const judul = 'Runtun hari datar';
+  const satuan = 'hari bursa';
+  if (konteks.harga.length < RUNTUN_MINIMAL) {
+    return lewat('R19b', judul, 'Hari bursa kurang dari tiga, tidak ada runtun yang bisa terbentuk.', satuan);
+  }
+  const runtun = cariRuntunDatar(konteks.harga);
+  const temuan: Temuan[] = [];
+  let merah = 0;
+  for (const r of runtun) {
+    merah += r.panjang;
+    temuan.push({
+      temuan_id: `R19b-${konteks.simbol}-${r.awal}${r.lunak ? '-lunak' : ''}`,
+      aturan: 'R19b',
+      keparahan: 'peringatan',
+      ringkasan: r.lunak
+        ? `Harga ${konteks.simbol} praktis tidak bergerak antara ${r.awal} dan ${r.akhir}: ` +
+          `${String(r.panjang)} dari ${String(JENDELA_LUNAK)} hari bursa mencatat satu harga saja ` +
+          `untuk buka, tertinggi, terendah, dan tutup.`
+        : `Harga ${konteks.simbol} tidak bergerak sama sekali selama ${String(r.panjang)} hari bursa ` +
+          `berturut-turut, dari ${r.awal} sampai ${r.akhir}.`,
+      angka: [
+        { label: r.lunak ? 'hari datar di dalam jendela' : 'panjang runtun', nilai: r.panjang, satuan: 'hari' },
+      ],
+      fakta_terkait: [],
+      rujukan: [`harga harian ${r.awal}`, `harga harian ${r.akhir}`],
+    });
+  }
+  return hasil('R19b', judul, temuan, hitung(satuan, { diperiksa: konteks.harga.length, merah }));
 }
