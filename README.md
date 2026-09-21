@@ -78,13 +78,29 @@ Yang tercatat adalah perilaku di halaman, bukan orangnya:
 | `lihat_balik` | kembali melihat soal yang sudah dikunci |
 | `ketuk` | satu ketukan: di layar mana, pada blok bernama apa, di bagian layar sebelah mana (0–1), dan apakah sasarannya memang bisa diketuk |
 | `ketuk_dibatasi` | sesi ini menabrak batas 300 ketukan; sesudahnya ketukan tidak dicatat lagi |
-| `gulir` | sejauh mana layar itu digulir (0–1), dikirim saat meninggalkannya |
+| `gulir` | sejauh mana layar itu digulir (0–1): saat meninggalkan layar, **dan** saat 50 % lalu 100 % pertama kali terlewat di layar itu |
 | `pembukaan_masuk`, `pembukaan_selesai`, `loncat_ke_ringkasan` | sampai ke layar pembukaan, lama membacanya, seberapa jauh menggulir |
 | `minat_kasus_lain` | tombol "Mau coba kasus lain" ditekan |
 | `akhir_kirim` | isian tiga pertanyaan dan kotak teks di layar akhir |
 | `tutup` | tab ditutup, di layar mana |
 
 Daftar peristiwa di atas tertutup: pengumpul menolak apa pun di luarnya.
+
+**Kapan, bukan hanya seberapa jauh.** `gulir` lahir tiga kali di satu kunjungan
+layar: ketika 50 % pertama kali terlewat, ketika 100 % pertama kali terlewat,
+dan ketika layarnya ditinggalkan. Ketiganya berbentuk sama (`{ layar, maks }`) —
+tidak ada nama baru dan tidak ada medan baru, karena daftar itu tertutup dan
+pengumpul di server memvalidasinya. Yang membedakan adalah urutannya: `gulir`
+yang diikuti `layar_masuk` atau `tutup` pada milidetik yang sama adalah yang
+lahir saat meninggalkan layar.
+
+Alasannya satu sesi alpha yang sungguhan. Ia berada 18,6 menit di soal 1, gulir
+100 %, tanpa satu ketukan pun, lalu menutup. Dengan `gulir` yang hanya lahir saat
+pindah layar, *ia membaca semuanya lalu bingung harus apa* dan *ponselnya
+ditinggal* menghasilkan angka yang sama persis. Dua cap waktu tambahan
+memisahkan keduanya. Layar yang memang muat satu jendela melahirkan keduanya
+pada detik nol — "100 % pada detik 0" berarti **tidak perlu menggulir**, bukan
+membaca dengan kecepatan yang mustahil.
 
 ### Ketukan: nama, bukan isi
 
@@ -162,6 +178,28 @@ Keluarannya tabel Markdown: berapa orang (bukan berapa sesi), sepuluh `uid`
 teratas per layar beserta ketukan matinya, kedalaman gulir median, dan per layar
 soal berapa sesi yang mengetuk "↓ Jawab di bawah", membuka sumber, atau membuka
 baris istilah.
+
+Bagian **"Kapan, bukan hanya seberapa jauh"** menjawab per sesi × layar: detik
+ke ketukan pertama, detik ke 50 %, detik ke 100 %, dan jeda diam terpanjang
+beserta di antara peristiwa apa. Berkas yang terkumpul sebelum pelacak
+bertingkat tidak punya peristiwa ambang, jadi kolom 50 %/100 % di sana "—" —
+itu ketiadaan data, bukan nol. Contohnya ada di
+[`alat/contoh/peristiwa-bertingkat.jsonl`](alat/contoh/peristiwa-bertingkat.jsonl),
+yang memuat tiga sesi yang sengaja berlawanan:
+
+```bash
+npm run alpha:ringkas -- alat/contoh/peristiwa-bertingkat.jsonl
+```
+
+```
+| sesi                         | layar  | ketuk-1 | 50 %   | 100 %  | diam     |
+| sesi-h-membaca-lalu-menjawab | soal-1 | 10.7 d  | 20.5 d | 46.2 d | 19.4 d   |
+| sesi-i-ditinggal-di-soal-1   | soal-1 | —       | 1.5 d  | 3.2 d  | 18.5 mnt |
+```
+
+Kedua sesi itu punya kedalaman gulir yang **sama persis** di soal 1 (100 %).
+Hanya kolom waktunya yang memberi tahu bahwa yang satu membaca dan yang satu
+meninggalkan ponselnya.
 
 **Mengecualikan sesi sendiri lewat nomor pengunjung.** Penanda `?k=` hanya
 bekerja kalau tautannya memang dipakai — dan pemilik pernah membuka situsnya

@@ -108,6 +108,8 @@ dilihat browser tanpa membuka browser.
 | Ketukan mati tidak terbedakan dari ketukan hidup | `pelacak.spec.ts` E-06b | `pelacak.ts`: `bacaSasaran` selalu `mati: false` |
 | Guliran tercatat sebagai ketukan | `pelacak.spec.ts` E-06c | `pelacak.ts`: ambang `GESER_MAKS` dilonggarkan |
 | Kedalaman gulir diam-diam nol | `pelacak.spec.ts` E-06d | `alur.ts`: `gulir.maks` selalu 0 |
+| "18,6 menit di soal 1, gulir 100 %, nol ketukan" tidak bisa dibedakan dari ponsel yang ditinggal | `pelacak.spec.ts` E-06h | `alur.ts`: `catatAmbangGulir` tidak melahirkan apa pun · penjaga `dilapor >= ambang` dicabut (ambang lahir berulang) |
+| Layar yang muat satu jendela terbaca seolah dibaca sampai habis | `pelacak.spec.ts` E-06i | `Aplikasi.tsx`: `tinggi <= 0 ? 100` menjadi `? 0` |
 | Peristiwa kembar sesudah `pagehide` | `pelacak.spec.ts` E-06e | (dijaga `saringYangBaru`; urut 1..N diperiksa utuh) |
 | Teks pemain bocor ke peristiwa lain | `pelacak.spec.ts` E-06g | `alur.ts`: teks layar akhir ikut ke `tutup` |
 | "100+ peserta" menghitung sesi, bukan orang | `pelacak.spec.ts` E-06f | `sesi.ts`: `bacaPengunjung` selalu membuat nomor baru |
@@ -176,6 +178,15 @@ dilihat browser tanpa membuka browser.
   Sebelum percaya sebuah penjaga, rusak kode yang dijaganya dan pastikan ia
   merah. `keping.top === 0` pernah lolos sebagai penjaga "gambar diambil saat
   halaman diam" — padahal keping itu `position: sticky; top: 0` dan selalu 0.
+- **Kalau tes butuh viewport lain, ukur dulu, jangan cari angka yang hijau.**
+  E-06i menguji layar yang muat satu jendela. Di 360 × 640 tidak ada satu pun:
+  tinggi dokumennya 670 · 1491 · 1304 · 1635 · 2873 · 1261 px, dan layar
+  pertama meleset 30 px. Tes itu memakai 360 × 760 — ukuran Android yang biasa —
+  dan menyebutkan pengukurannya di komentar, supaya pembaca berikutnya tahu
+  angka itu dari mana. Ia juga menuntut ada layar yang **tidak** muat di
+  viewport yang sama, sehingga subyek dan pembandingnya ada di satu tes, dan
+  merah kalau tidak ada satu pun layar yang muat — hijau atas nol subyek adalah
+  hiasan, bukan penjaga.
 - **Tangkapan layar diambil saat halaman diam.** `simpanLayar()` menunggu
   gulirnya berhenti dan memeriksa `scrollY` tidak berubah selama gambarnya
   diambil. Gambar bahan review yang menyesatkan membuat orang mengejar cacat
