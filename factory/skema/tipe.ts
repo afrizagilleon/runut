@@ -3,7 +3,7 @@
  * Keterangan tiap field ada di `docs/format-kasus.md`.
  */
 
-export const VERSI_SKEMA = 1;
+export const VERSI_SKEMA = 2;
 
 export type StatusFakta = 'TERVERIFIKASI' | 'KONFLIK' | 'BELUM';
 
@@ -36,6 +36,16 @@ export interface Sumber {
   keterangan: string | null;
 }
 
+/**
+ * Teks kartu dalam bahasa sehari-hari (D-1). `kepala` adalah baris mesin tik
+ * "jenis sumber · tanggal terbit"; `isi` satu-dua kalimat yang setiap angkanya
+ * ditulis sebagai rujukan `[[fact_id|teks]]` supaya INV-4 tetap berlaku di kartu.
+ */
+export interface TeksAwam {
+  kepala: string;
+  isi: string;
+}
+
 export interface Fakta {
   fact_id: string;
   klaim: string;
@@ -47,6 +57,8 @@ export interface Fakta {
   /** Tanggal fakta bisa diketahui publik (ISO). `null` = tidak bisa ditentukan. */
   tersedia_sejak: string | null;
   status: StatusFakta;
+  /** Teks kartu untuk pemain; `null` kalau fakta ini tidak pernah menjadi kartu. */
+  awam: TeksAwam | null;
 }
 
 export interface AngkaTemuan {
@@ -95,8 +107,18 @@ export interface PilihanSoal {
   teks: string;
 }
 
+/** Satu istilah berpenjelasan satu baris, tampil di bawah kartu (D-1). */
+export interface Istilah {
+  kata: string;
+  arti: string;
+}
+
 export interface Soal {
   soal_id: string;
+  /** 2–4 fact_id yang tampil sebagai kartu tepat di atas soal (D-1). */
+  kartu: string[];
+  /** 0–2 istilah; lebih dari dua ditolak validator. */
+  istilah: Istilah[];
   batang: string;
   pilihan: PilihanSoal[];
   jawaban: string;
@@ -109,9 +131,24 @@ export interface KartuKonsep {
   judul: string;
 }
 
+/** Layar pertama: satu kalimat pancingan dan tepat tiga baris aturan main (D-1). */
+export interface Pembuka {
+  hook: string;
+  aturan: string[];
+}
+
 export interface Pembukaan {
   fact_ids: string[];
   paragraf: string[];
+  /** "Apa yang bisa dibaca pada 8 Oktober". */
+  bisa_dibaca: string[];
+  /** "…dan apa yang tidak bisa dibaca." */
+  tidak_bisa_dibaca: string[];
+  /**
+   * "Yang kami singkirkan dari kartu" (D-13e): laporan resmi yang tidak lolos
+   * pemeriksaan sendiri. Satu-satunya tempat fakta KONFLIK boleh ditautkan.
+   */
+  disingkirkan: string[];
 }
 
 export interface Emiten {
@@ -129,6 +166,8 @@ export interface Kasus {
   nama_samaran: string;
   /** Tanggal beku kasus (ISO). Fakta sesudah tanggal ini tidak terlihat pemain. */
   tanggal_t: string;
+  /** Layar pertama. */
+  pembuka: Pembuka;
   fakta: Fakta[];
   /** fact_id yang boleh dilihat pemain sebelum menjawab. */
   fakta_terlihat: string[];

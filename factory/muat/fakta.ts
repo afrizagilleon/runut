@@ -15,6 +15,19 @@ import type { Fakta, Sumber } from '../skema/tipe.ts';
 import type { Laporan } from '../verifikasi/tipe.ts';
 import { BERKAS, type AsalBerkas, type DataDada } from './dada.ts';
 
+/**
+ * Fakta sebelum teks kartunya dipasang. Angka lahir di berkas ini; kata-kata
+ * kartu lahir di definisi kasus (`factory/kasus/*.ts`) dan ditempelkan
+ * `bangunKasus()`. Pemisahan itu disengaja: pemuat tidak tahu nama samaran
+ * emiten, dan definisi kasus tidak boleh menghitung angka.
+ */
+type FaktaMentah = Omit<Fakta, 'awam'>;
+
+/** Fakta apa adanya: belum menjadi kartu, jadi belum punya teks awam. */
+function tanpaAwam(fakta: FaktaMentah): Fakta {
+  return { ...fakta, awam: null };
+}
+
 function sumberApi(
   asal: AsalBerkas,
   tambahan: Record<string, string> = {},
@@ -46,8 +59,8 @@ function idTanggal(iso: string): string {
 }
 
 /** Fakta harga: satu untuk tiap kolom yang mungkin dipakai kasus. */
-function faktaHarga(data: DataDada): Fakta[] {
-  const fakta: Fakta[] = [];
+function faktaHarga(data: DataDada): FaktaMentah[] {
+  const fakta: FaktaMentah[] = [];
   for (const h of data.harga) {
     const asal = BERKAS.harga;
     const sumber = (): Sumber => sumberApi(asal, { tanggal: h.tanggal });
@@ -105,11 +118,14 @@ function faktaHarga(data: DataDada): Fakta[] {
   return fakta;
 }
 
-function faktaSuspensi(data: DataDada): Fakta[] {
+function faktaSuspensi(data: DataDada): FaktaMentah[] {
   const asal = BERKAS.suspensi;
-  return data.suspensi.map((s): Fakta => ({
+  return data.suspensi.map((s): FaktaMentah => ({
     fact_id: `susp-${s.tanggal}`,
-    klaim: `Perdagangan saham dihentikan sementara oleh bursa pada ${tanggalId(s.tanggal)}. Alasan resmi: ${s.alasan}.`,
+    klaim:
+      `Perdagangan saham dihentikan sementara oleh bursa pada ${tanggalId(s.tanggal)}. ` +
+      `Alasan resmi: ${s.alasan}. Tanggal pencabutan penghentian ini tidak ada di data, ` +
+      'jadi lamanya tidak bisa dipastikan dari sumber mana pun yang dipakai kasus ini.',
     nilai: null,
     satuan: null,
     sumber: sumberApi(asal, { tanggal_suspensi: s.tanggal }),
@@ -121,9 +137,9 @@ function faktaSuspensi(data: DataDada): Fakta[] {
   }));
 }
 
-function faktaDividen(data: DataDada): Fakta[] {
+function faktaDividen(data: DataDada): FaktaMentah[] {
   const asal = BERKAS.aksiKorporasi;
-  return data.dividen.map((d): Fakta => ({
+  return data.dividen.map((d): FaktaMentah => ({
     fact_id: `div-${d.ex_date}`,
     klaim: `Dividen tunai ${rupiah(d.nilai_per_lembar)} per lembar dengan tanggal ex ${tanggalId(d.ex_date)}.`,
     nilai: d.nilai_per_lembar,
@@ -135,9 +151,9 @@ function faktaDividen(data: DataDada): Fakta[] {
   }));
 }
 
-function faktaRups(data: DataDada): Fakta[] {
+function faktaRups(data: DataDada): FaktaMentah[] {
   const asal = BERKAS.aksiKorporasi;
-  const fakta: Fakta[] = [];
+  const fakta: FaktaMentah[] = [];
   for (const r of data.rups) {
     if (r.kuorum_persen === null) continue;
     fakta.push({
@@ -177,8 +193,8 @@ function kalimatLaporan(l: Laporan): string {
 }
 
 /** Satu fakta per laporan, plus satu fakta gabungan per tanggal laporan. */
-function faktaLaporan(data: DataDada): Fakta[] {
-  const fakta: Fakta[] = [];
+function faktaLaporan(data: DataDada): FaktaMentah[] {
+  const fakta: FaktaMentah[] = [];
   const perTanggal = new Map<string, Laporan[]>();
   const semua = [...data.laporan2025, ...data.laporan2026];
 
@@ -241,7 +257,7 @@ function faktaLaporan(data: DataDada): Fakta[] {
   return fakta;
 }
 
-function faktaSahamBeredar(data: DataDada): Fakta {
+function faktaSahamBeredar(data: DataDada): FaktaMentah {
   const awal = data.harga[0];
   const beredar = data.saham_beredar;
   return {
@@ -267,7 +283,7 @@ export function faktaKenaikan(data: DataDada, dari: string, sampai: string): Fak
     throw new Error(`Tidak ada data harga antara ${dari} dan ${sampai}.`);
   }
   const kelipatan = Number((akhir.tutup / awal.tutup).toFixed(2));
-  return [
+  return ([
     {
       fact_id: `hari-bursa-${dari}-${sampai}`,
       klaim: `Dari ${tanggalId(awal.tanggal)} sampai ${tanggalId(akhir.tanggal)} ada ${angkaId(jendela.length)} hari bursa, dan harga penutupan naik pada sebagian besar di antaranya.`,
@@ -290,7 +306,103 @@ export function faktaKenaikan(data: DataDada, dari: string, sampai: string): Fak
       tersedia_sejak: akhir.tanggal,
       status: 'TERVERIFIKASI',
     },
-  ];
+  ] satisfies FaktaMentah[]).map(tanpaAwam);
+}
+
+/** Id fakta yang dipakai menyusun fakta turunan khusus pemain (D-13a). */
+export interface AsalTurunanPemain {
+  /** Dividen per lembar yang dipakai pengandaian. */
+  dividen: string;
+  /** Harga penutupan pada tanggal beku kasus. */
+  harga_t: string;
+  /** Laporan pengendali yang lolos pemeriksaan dan boleh dijumlahkan. */
+  jual_terverifikasi: string[];
+  /** Pengandaian lot yang ditulis di `keterangan`, misalnya 10. */
+  lot: number;
+}
+
+/** 1 lot = 100 lembar; dipakai menurunkan pengandaian "10 lot". */
+const LEMBAR_PER_LOT = 100;
+
+function nilaiAngka(fakta: Fakta, untuk: string): number {
+  if (typeof fakta.nilai !== 'number') {
+    throw new Error(
+      `Fakta "${fakta.fact_id}" tidak punya nilai angka, jadi ${untuk} tidak bisa dihitung darinya.`,
+    );
+  }
+  return fakta.nilai;
+}
+
+/**
+ * Tiga fakta turunan yang hanya ada untuk pemain (D-13a, RQ-02).
+ *
+ * Tidak satu pun angkanya ditulis tangan: semuanya dihitung dari fakta yang
+ * sudah ada di pustaka, dan `turunan_dari` membuat statusnya ikut bergerak
+ * kalau fakta asalnya ternyata bermasalah.
+ */
+export function faktaTurunanPemain(pustaka: Fakta[], asal: AsalTurunanPemain): Fakta[] {
+  const dividen = ambilFakta(pustaka, asal.dividen);
+  const hargaT = ambilFakta(pustaka, asal.harga_t);
+  const lembar = asal.lot * LEMBAR_PER_LOT;
+
+  const perLembar = nilaiAngka(dividen, 'dividen pengandaian');
+  const harga = nilaiAngka(hargaT, 'nilai saham pengandaian');
+  // Dividen per lembar berpecahan (Rp0,14); dibulatkan ke rupiah terdekat supaya
+  // tidak lahir angka berekor yang tidak pernah dibayarkan.
+  const dividenLot = Math.round(lembar * perLembar);
+  const nilaiLot = lembar * harga;
+
+  const laporan = asal.jual_terverifikasi.map((id) => ambilFakta(pustaka, id));
+  const totalJual = laporan.reduce((jumlah, f) => jumlah + nilaiAngka(f, 'jumlah penjualan'), 0);
+  const tanggalJual = laporan
+    .map((f) => f.tersedia_sejak)
+    .filter((t): t is string => t !== null)
+    .sort();
+  const terbitTerakhir = tanggalJual[tanggalJual.length - 1] ?? null;
+
+  return ([
+    {
+      fact_id: 'andai-10-lot-dividen',
+      klaim:
+        `Pengandaian: pemilik ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) menerima ` +
+        `${angkaId(lembar)} × ${rupiah(perLembar)} = ${rupiah(dividenLot)} dividen tunai sebelum pajak.`,
+      nilai: dividenLot,
+      satuan: 'rupiah',
+      sumber: sumberTurunan(
+        `pengandaian ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) dikali dividen per lembar dari ${asal.dividen}`,
+      ),
+      turunan_dari: [asal.dividen],
+      tersedia_sejak: dividen.tersedia_sejak,
+      status: 'TERVERIFIKASI',
+    },
+    {
+      fact_id: 'andai-10-lot-nilai',
+      klaim:
+        `Pengandaian: ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) pada harga penutupan ` +
+        `${rupiah(harga)} bernilai ${angkaId(lembar)} × ${rupiah(harga)} = ${rupiah(nilaiLot)}.`,
+      nilai: nilaiLot,
+      satuan: 'rupiah',
+      sumber: sumberTurunan(
+        `pengandaian ${angkaId(asal.lot)} lot (${angkaId(lembar)} lembar) dikali harga penutupan dari ${asal.harga_t}`,
+      ),
+      turunan_dari: [asal.harga_t],
+      tersedia_sejak: hargaT.tersedia_sejak,
+      status: 'TERVERIFIKASI',
+    },
+    {
+      fact_id: 'jumlah-jual-terverifikasi',
+      klaim:
+        `Penjumlahan ${angkaId(laporan.length)} laporan pengendali yang lolos seluruh aturan ` +
+        `verifikasi: ${laporan.map((f) => angkaId(nilaiAngka(f, 'jumlah penjualan'))).join(' + ')} = ` +
+        `${angkaId(totalJual)} lembar. Laporan yang tersangkut temuan tidak ikut dijumlahkan.`,
+      nilai: totalJual,
+      satuan: 'lembar',
+      sumber: sumberTurunan(`penjumlahan fakta ${asal.jual_terverifikasi.join(', ')}`),
+      turunan_dari: [...asal.jual_terverifikasi],
+      tersedia_sejak: terbitTerakhir,
+      status: 'TERVERIFIKASI',
+    },
+  ] satisfies FaktaMentah[]).map(tanpaAwam);
 }
 
 export interface Pustaka {
@@ -301,7 +413,7 @@ export interface Pustaka {
 
 /** Seluruh fakta yang bisa diturunkan dari cache DADA, belum disaring per kasus. */
 export function pustakaDada(data: DataDada): Pustaka {
-  const kelompok: Array<[string, Fakta[]]> = [
+  const kelompok: Array<[string, FaktaMentah[]]> = [
     ['harga', faktaHarga(data)],
     ['suspensi', faktaSuspensi(data)],
     ['dividen', faktaDividen(data)],
@@ -309,7 +421,7 @@ export function pustakaDada(data: DataDada): Pustaka {
     ['laporan', faktaLaporan(data)],
     ['turunan', [faktaSahamBeredar(data)]],
   ];
-  const fakta = kelompok.flatMap(([, daftar]) => daftar);
+  const fakta = kelompok.flatMap(([, daftar]) => daftar).map(tanpaAwam);
   const jumlah: Record<string, number> = {};
   for (const [nama, daftar] of kelompok) jumlah[nama] = daftar.length;
   jumlah['seluruhnya'] = fakta.length;

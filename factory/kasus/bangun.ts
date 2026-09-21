@@ -6,24 +6,32 @@
  * dan setiap angka di dalam kalimat itu berupa rujukan `[[fact_id|teks]]` yang
  * harus menunjuk fakta yang benar-benar ada (INV-4).
  */
-import { RUJUKAN_ANDAIAN, ambilRujukan } from '../skema/rujukan.ts';
+import { PENANDA_BUKAN_FAKTA, ambilRujukan } from '../skema/rujukan.ts';
 import type {
   Emiten,
   Fakta,
   Kasus,
   KartuKonsep,
   MasalahValidasi,
+  Pembuka,
   Pembukaan,
   PemeriksaanAturan,
   Soal,
   Temuan,
+  TeksAwam,
 } from '../skema/tipe.ts';
 import { VERSI_SKEMA } from '../skema/tipe.ts';
 import { periksaKasus } from '../skema/validator.ts';
 import { verifikasi } from '../verifikasi/aturan.ts';
 import type { KonteksVerifikasi } from '../verifikasi/tipe.ts';
 import type { DataDada } from '../muat/dada.ts';
-import { ambilFakta, faktaKenaikan, pustakaDada } from '../muat/fakta.ts';
+import {
+  ambilFakta,
+  faktaKenaikan,
+  faktaTurunanPemain,
+  pustakaDada,
+  type AsalTurunanPemain,
+} from '../muat/fakta.ts';
 
 export interface JendelaTurunan {
   dari: string;
@@ -38,7 +46,16 @@ export interface DefinisiKasus {
   tanggal_t: string;
   /** Jendela harga yang dipakai menurunkan fakta kenaikan dan kelipatan. */
   turunan: JendelaTurunan[];
+  /** Fakta turunan khusus pemain: pengandaian lot dan penjumlahan laporan (D-13a). */
+  turunan_pemain: AsalTurunanPemain;
+  pembuka: Pembuka;
   fakta_terlihat: string[];
+  /**
+   * Teks kartu dalam bahasa sehari-hari, per fact_id. Kata-kata kartu ditulis di
+   * definisi kasus karena ia per-kasus (memakai nama samaran emiten); angkanya
+   * tetap lahir di pemuat dan ditautkan lewat `[[fact_id|teks]]`.
+   */
+  awam: Record<string, TeksAwam>;
   soal: Soal[];
   pembukaan: Pembukaan;
   kartu_konsep: KartuKonsep[];
@@ -61,17 +78,33 @@ export class KasusTidakSah extends Error {
 function rujukanDalamTeks(teks: string): string[] {
   return ambilRujukan(teks)
     .map((r) => r.fact_id)
-    .filter((id) => id !== RUJUKAN_ANDAIAN);
+    .filter((id) => !PENANDA_BUKAN_FAKTA.includes(id));
 }
 
 /** Semua fact_id yang disebut definisi kasus, baik lewat daftar maupun lewat teks. */
 function idYangDisebut(def: DefinisiKasus): string[] {
   const id: string[] = [...def.fakta_terlihat, ...def.pembukaan.fact_ids];
+  id.push(...rujukanDalamTeks(def.pembuka.hook));
+  for (const baris of def.pembuka.aturan) id.push(...rujukanDalamTeks(baris));
   for (const s of def.soal) {
-    id.push(...s.fact_ids, ...rujukanDalamTeks(s.batang), ...rujukanDalamTeks(s.penjelasan));
+    id.push(
+      ...s.kartu,
+      ...s.fact_ids,
+      ...rujukanDalamTeks(s.batang),
+      ...rujukanDalamTeks(s.penjelasan),
+    );
     for (const p of s.pilihan) id.push(...rujukanDalamTeks(p.teks));
   }
-  for (const p of def.pembukaan.paragraf) id.push(...rujukanDalamTeks(p));
+  for (const [fact_id, teks] of Object.entries(def.awam)) {
+    id.push(fact_id, ...rujukanDalamTeks(teks.isi));
+  }
+  const barisPembukaan = [
+    ...def.pembukaan.paragraf,
+    ...def.pembukaan.bisa_dibaca,
+    ...def.pembukaan.tidak_bisa_dibaca,
+    ...def.pembukaan.disingkirkan,
+  ];
+  for (const p of barisPembukaan) id.push(...rujukanDalamTeks(p));
   return id;
 }
 
@@ -136,6 +169,23 @@ function tandaiKonflik(terpilih: Map<string, Fakta>, temuan: Temuan[]): void {
   }
 }
 
+/**
+ * Tempelkan teks kartu ke faktanya. Teks awam untuk fact_id yang tidak terpakai
+ * adalah salah ketik yang diam-diam tidak pernah tampil, jadi ia dilempar.
+ */
+function pasangAwam(terpilih: Map<string, Fakta>, awam: Record<string, TeksAwam>): void {
+  for (const [fact_id, teks] of Object.entries(awam)) {
+    const fakta = terpilih.get(fact_id);
+    if (fakta === undefined) {
+      throw new Error(
+        `Teks awam ditulis untuk fact_id "${fact_id}", tetapi fakta itu tidak dipakai kasus ini; ` +
+          'teks kartu yang tidak pernah tampil hampir selalu salah ketik.',
+      );
+    }
+    terpilih.set(fact_id, { ...fakta, awam: teks });
+  }
+}
+
 export interface HasilBangun {
   kasus: Kasus;
   /** Aturan yang tidak bisa dijalankan, untuk dicetak perintah build. */
@@ -164,10 +214,13 @@ export function konteksDada(data: DataDada): KonteksVerifikasi {
 }
 
 export function bangunKasus(def: DefinisiKasus, data: DataDada): HasilBangun {
-  const pustaka = [
+  const dasar = [
     ...pustakaDada(data).fakta,
     ...def.turunan.flatMap((j) => faktaKenaikan(data, j.dari, j.sampai)),
   ];
+  // Turunan pemain dihitung dari pustaka dasar, jadi ia tidak bisa menyebut
+  // angka yang tidak ada asalnya (`ambilFakta` melempar kalau id-nya menggantung).
+  const pustaka = [...dasar, ...faktaTurunanPemain(dasar, def.turunan_pemain)];
 
   const hasil = verifikasi(konteksDada(data));
   const temuan = kaitkanTemuan(hasil.temuan, pustaka);
@@ -190,6 +243,7 @@ export function bangunKasus(def: DefinisiKasus, data: DataDada): HasilBangun {
   }
   lengkapiTurunan(terpilih, pustaka);
   tandaiKonflik(terpilih, temuan);
+  pasangAwam(terpilih, def.awam);
 
   const kasus: Kasus = {
     skema_versi: VERSI_SKEMA,
@@ -198,6 +252,7 @@ export function bangunKasus(def: DefinisiKasus, data: DataDada): HasilBangun {
     emiten: def.emiten,
     nama_samaran: def.nama_samaran,
     tanggal_t: def.tanggal_t,
+    pembuka: def.pembuka,
     fakta: [...terpilih.values()].sort((a, b) => a.fact_id.localeCompare(b.fact_id)),
     fakta_terlihat: [...def.fakta_terlihat],
     soal: def.soal,

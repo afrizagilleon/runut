@@ -5,6 +5,20 @@
 
 export const RUJUKAN_ANDAIAN = 'misal';
 
+/**
+ * Penanda tanggal beku kasus. Batang soal dan aturan main wajib dibuka dengan
+ * "Hari ini <tanggal T>" (aturan 8 `docs/kasus-dada-v2.md`), tetapi tanggal itu
+ * bukan fakta — ia `kasus.tanggal_t`. Tanpa penanda sendiri, satu-satunya jalan
+ * adalah menyamarkannya sebagai `misal`, yang berbohong: tanggal beku bukan
+ * pengandaian. Validator memastikan teks yang dirender penanda ini benar-benar
+ * sama dengan `tanggal_t` kasusnya, jadi ia tidak bisa dipakai menyelundupkan
+ * angka lain.
+ */
+export const RUJUKAN_HARI_INI = 'hari-ini';
+
+/** Penanda yang tidak menunjuk fakta; keduanya tidak boleh dianggap fact_id menggantung. */
+export const PENANDA_BUKAN_FAKTA: readonly string[] = [RUJUKAN_ANDAIAN, RUJUKAN_HARI_INI];
+
 const POLA_RUJUKAN = /\[\[([^\]|]+)\|([^\]]*)\]\]/g;
 
 export interface Rujukan {

@@ -1,5 +1,5 @@
 {
-  "skema_versi": 1,
+  "skema_versi": 2,
   "kasus_id": "dada-2025-10-08",
   "judul": "Perusahaan D: harga naik terus, siapa yang menjadi penjualnya?",
   "emiten": {
@@ -10,7 +10,58 @@
   },
   "nama_samaran": "Perusahaan D",
   "tanggal_t": "2025-10-08",
+  "pembuka": {
+    "hook": "Dalam [[hari-bursa-2025-08-01-2025-10-08|47 hari bursa]], harga saham sebuah perusahaan properti naik dari [[harga-2025-08-01|Rp8]] ke [[harga-2025-10-08|Rp178]]. Grup obrolanmu ramai. Siapa yang omongannya cocok dengan data resmi?",
+    "aturan": [
+      "Waktu dibekukan di [[hari-ini|8 Oktober 2025]]. Kamu hanya melihat apa yang publik tahu hari itu.",
+      "Cek omongan teman ke kartu fakta di atas tiap soal. Ini bukan tebak harga.",
+      "Sesudah tiga soal, kamu melihat apa yang terjadi berikutnya."
+    ]
+  },
   "fakta": [
+    {
+      "fact_id": "andai-10-lot-dividen",
+      "klaim": "Pengandaian: pemilik 10 lot (1.000 lembar) menerima 1.000 × Rp0,14 = Rp140 dividen tunai sebelum pajak.",
+      "nilai": 140,
+      "satuan": "rupiah",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "pengandaian 10 lot (1.000 lembar) dikali dividen per lembar dari div-2025-09-16"
+      },
+      "turunan_dari": [
+        "div-2025-09-16"
+      ],
+      "tersedia_sejak": "2025-09-16",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Dihitung dari kartu di atas dan harga 8 Okt 2025",
+        "isi": "Untuk [[misal|10 lot]] ([[misal|1.000 lembar]]): dividennya [[andai-10-lot-dividen|Rp140]], sedangkan nilai [[misal|10 lot]] itu di harga [[harga-2025-10-08|Rp178]] adalah [[andai-10-lot-nilai|Rp178.000]]."
+      }
+    },
+    {
+      "fact_id": "andai-10-lot-nilai",
+      "klaim": "Pengandaian: 10 lot (1.000 lembar) pada harga penutupan Rp178 bernilai 1.000 × Rp178 = Rp178.000.",
+      "nilai": 178000,
+      "satuan": "rupiah",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "pengandaian 10 lot (1.000 lembar) dikali harga penutupan dari harga-2025-10-08"
+      },
+      "turunan_dari": [
+        "harga-2025-10-08"
+      ],
+      "tersedia_sejak": "2025-10-08",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
     {
       "fact_id": "div-2025-09-16",
       "klaim": "Dividen tunai Rp0,14 per lembar dengan tanggal ex 16 September 2025.",
@@ -30,7 +81,11 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-09-16",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Pengumuman dividen · tanggal ex 16 Sep 2025",
+        "isi": "Perusahaan D membagikan dividen tunai [[div-2025-09-16|Rp0,14 per lembar]] (sebelum pajak)."
+      }
     },
     {
       "fact_id": "fil-2025-08-25",
@@ -52,7 +107,8 @@
         "fil-2025-08-25-04"
       ],
       "tersedia_sejak": "2025-08-25",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-08-25-01",
@@ -74,7 +130,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-08-25",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-08-25-02",
@@ -96,7 +153,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-08-25",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-08-25-03",
@@ -118,7 +176,11 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-08-25",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Laporan pemegang saham · terbit 25 Agu 2025",
+        "isi": "Pemilik terbesar Perusahaan D menjual [[fil-2025-08-25-03|70 juta lembar]] di harga [[fil-2025-08-25-03|Rp13]]. Transaksinya [[fil-2025-08-25-03|12 Agustus]]."
+      }
     },
     {
       "fact_id": "fil-2025-08-25-04",
@@ -140,7 +202,11 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-08-25",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Laporan pemegang saham · terbit 25 Agu 2025",
+        "isi": "Ia menjual lagi [[fil-2025-08-25-04|179,5 juta lembar]] di harga [[fil-2025-08-25-04|Rp14]]. Transaksinya [[fil-2025-08-25-04|13 Agustus]]."
+      }
     },
     {
       "fact_id": "fil-2025-09-01",
@@ -159,7 +225,11 @@
         "fil-2025-09-01-01"
       ],
       "tersedia_sejak": "2025-09-01",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Laporan pemegang saham · terbit 1 Sep 2025",
+        "isi": "Ia menjual lagi [[fil-2025-09-01|50 juta lembar]] di harga [[fil-2025-09-01|Rp15]]. Transaksinya [[fil-2025-09-01-01|14 Agustus]]."
+      }
     },
     {
       "fact_id": "fil-2025-09-01-01",
@@ -181,7 +251,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-09-01",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-09-29",
@@ -200,7 +271,8 @@
         "fil-2025-09-29-01"
       ],
       "tersedia_sejak": "2025-09-29",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-09-29-01",
@@ -222,7 +294,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-09-29",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19",
@@ -262,7 +335,8 @@
         "fil-2025-10-19-22"
       ],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-01",
@@ -284,7 +358,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-02",
@@ -306,7 +381,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-03",
@@ -328,7 +404,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-04",
@@ -350,7 +427,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-05",
@@ -372,7 +450,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-06",
@@ -394,7 +473,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-07",
@@ -416,7 +496,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-08",
@@ -438,7 +519,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-09",
@@ -460,7 +542,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-10",
@@ -482,7 +565,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-11",
@@ -504,7 +588,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-12",
@@ -526,7 +611,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-13",
@@ -548,7 +634,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-14",
@@ -570,7 +657,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-15",
@@ -592,7 +680,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-16",
@@ -615,7 +704,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-17",
@@ -638,7 +728,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-18",
@@ -661,7 +752,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-19",
@@ -684,7 +776,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-20",
@@ -707,7 +800,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-21",
@@ -730,7 +824,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-19-22",
@@ -753,7 +848,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-19",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26",
@@ -784,7 +880,8 @@
         "fil-2025-10-26-13"
       ],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-01",
@@ -807,7 +904,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-02",
@@ -830,7 +928,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-03",
@@ -853,7 +952,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-04",
@@ -876,7 +976,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-05",
@@ -899,7 +1000,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-06",
@@ -922,7 +1024,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-07",
@@ -945,7 +1048,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-08",
@@ -968,7 +1072,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-09",
@@ -991,7 +1096,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-10",
@@ -1014,7 +1120,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-11",
@@ -1037,7 +1144,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-12",
@@ -1060,7 +1168,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2025-10-26-13",
@@ -1083,7 +1192,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-26",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "fil-2026-01-12-01",
@@ -1105,7 +1215,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2026-01-12",
-      "status": "KONFLIK"
+      "status": "KONFLIK",
+      "awam": null
     },
     {
       "fact_id": "harga-2025-08-01",
@@ -1127,7 +1238,31 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-08-01",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2025-09-26-tertinggi",
+      "klaim": "Harga tertinggi 26 September 2025 adalah Rp163 per lembar.",
+      "nilai": 163,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/DADA/",
+        "berkas": null,
+        "parameter": {
+          "start": "2025-08-01",
+          "end": "2025-10-29",
+          "tanggal": "2025-09-26",
+          "berkas_cache": "dada-daily-2025q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-09-26",
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "harga-2025-10-08",
@@ -1149,7 +1284,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-08",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "harga-2025-10-10",
@@ -1171,7 +1307,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-10",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "harga-2025-10-10-buka",
@@ -1193,7 +1330,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-10",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "harga-2025-10-10-tertinggi",
@@ -1215,7 +1353,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-10",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "harga-2025-10-22",
@@ -1237,7 +1376,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-22",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "hari-bursa-2025-08-01-2025-10-08",
@@ -1257,7 +1397,33 @@
         "harga-2025-10-08"
       ],
       "tersedia_sejak": "2025-10-08",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "jumlah-jual-terverifikasi",
+      "klaim": "Penjumlahan 3 laporan pengendali yang lolos seluruh aturan verifikasi: 70.000.000 + 179.500.000 + 50.000.000 = 299.500.000 lembar. Laporan yang tersangkut temuan tidak ikut dijumlahkan.",
+      "nilai": 299500000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan fakta fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01"
+      },
+      "turunan_dari": [
+        "fil-2025-08-25-03",
+        "fil-2025-08-25-04",
+        "fil-2025-09-01"
+      ],
+      "tersedia_sejak": "2025-09-01",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Dihitung dari tiga laporan di atas",
+        "isi": "Tiga penjualan itu berjumlah [[jumlah-jual-terverifikasi|299,5 juta lembar]], semuanya di harga [[fil-2025-09-01|Rp15]] ke bawah."
+      }
     },
     {
       "fact_id": "kelipatan-2025-08-01-2025-10-08",
@@ -1277,7 +1443,11 @@
         "harga-2025-10-08"
       ],
       "tersedia_sejak": "2025-10-08",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Data harga · 1 Agu – 8 Okt 2025",
+        "isi": "Harga saham Perusahaan D naik dari [[harga-2025-08-01|Rp8]] ke [[harga-2025-10-08|Rp178]] dalam [[hari-bursa-2025-08-01-2025-10-08|47 hari bursa]] — sekarang [[kelipatan-2025-08-01-2025-10-08|22 kali]] harga awalnya."
+      }
     },
     {
       "fact_id": "rups-2026-07-16-kuorum",
@@ -1298,30 +1468,12 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2026-07-16",
-      "status": "TERVERIFIKASI"
-    },
-    {
-      "fact_id": "saham-beredar",
-      "klaim": "Jumlah saham beredar 7.431.530.800 lembar, dihitung dari nilai pasar dibagi harga penutupan; angka yang sama muncul di 62 hari bursa.",
-      "nilai": 7431530800,
-      "satuan": "lembar",
-      "sumber": {
-        "jenis": "turunan",
-        "endpoint": null,
-        "berkas": null,
-        "parameter": {},
-        "diambil_pada": null,
-        "keterangan": "nilai pasar dibagi harga penutupan pada tiap hari bursa di /v2/daily/DADA/"
-      },
-      "turunan_dari": [
-        "harga-2025-08-01"
-      ],
-      "tersedia_sejak": "2025-08-01",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "susp-2025-06-30",
-      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 30 Juni 2025. Alasan resmi: Belum menyampaikan laporan keuangan auditan tahunan.",
+      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 30 Juni 2025. Alasan resmi: Belum menyampaikan laporan keuangan auditan tahunan. Tanggal pencabutan penghentian ini tidak ada di data, jadi lamanya tidak bisa dipastikan dari sumber mana pun yang dipakai kasus ini.",
       "nilai": null,
       "satuan": null,
       "sumber": {
@@ -1338,11 +1490,15 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-06-30",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Pengumuman bursa · 30 Jun 2025",
+        "isi": "Bursa menghentikan sementara jual-beli saham ini karena perusahaan belum menyerahkan laporan keuangan tahunan yang sudah diaudit. Per [[harga-2025-08-01|1 Agustus]] sahamnya sudah diperdagangkan lagi."
+      }
     },
     {
       "fact_id": "susp-2025-10-09",
-      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 9 Oktober 2025. Alasan resmi: Terjadinya peningkatan harga kumulatif yang signifikan pada saham DADA.JK, dalam rangka cooling down sebagai bentuk perlindungan bagi investor.",
+      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 9 Oktober 2025. Alasan resmi: Terjadinya peningkatan harga kumulatif yang signifikan pada saham DADA.JK, dalam rangka cooling down sebagai bentuk perlindungan bagi investor. Tanggal pencabutan penghentian ini tidak ada di data, jadi lamanya tidak bisa dipastikan dari sumber mana pun yang dipakai kasus ini.",
       "nilai": null,
       "satuan": null,
       "sumber": {
@@ -1359,7 +1515,8 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-09",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     },
     {
       "fact_id": "volume-2025-10-10",
@@ -1381,109 +1538,145 @@
       },
       "turunan_dari": [],
       "tersedia_sejak": "2025-10-10",
-      "status": "TERVERIFIKASI"
+      "status": "TERVERIFIKASI",
+      "awam": null
     }
   ],
   "fakta_terlihat": [
-    "harga-2025-08-01",
-    "harga-2025-10-08",
-    "hari-bursa-2025-08-01-2025-10-08",
     "kelipatan-2025-08-01-2025-10-08",
     "susp-2025-06-30",
     "div-2025-09-16",
-    "fil-2025-08-25",
+    "andai-10-lot-dividen",
+    "fil-2025-08-25-03",
+    "fil-2025-08-25-04",
     "fil-2025-09-01",
-    "fil-2025-09-29",
-    "saham-beredar"
+    "jumlah-jual-terverifikasi"
   ],
   "soal": [
     {
-      "soal_id": "s1-sinyal-resmi",
-      "batang": "Beredar kabar di media sosial bahwa Perusahaan D akan dibeli investor besar dari luar negeri. Dari daftar fakta di atas, mana yang berasal dari perusahaan atau bursa, dan adakah yang mendukung kabar itu?",
+      "soal_id": "s1-kata-bursa",
+      "kartu": [
+        "kelipatan-2025-08-01-2025-10-08",
+        "susp-2025-06-30"
+      ],
+      "istilah": [
+        {
+          "kata": "Penghentian sementara (suspensi)",
+          "arti": "bursa menyetop jual-beli sebuah saham untuk sementara; pemiliknya tetap punya sahamnya, tetapi tidak bisa menjual atau membeli."
+        },
+        {
+          "kata": "Hari bursa",
+          "arti": "hari ketika bursa buka, yaitu Senin–Jumat di luar hari libur."
+        }
+      ],
+      "batang": "Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu bilang: \"Naik [[kelipatan-2025-08-01-2025-10-08|22 kali]] tuh pasti karena mau dibeli investor asing. Bursa juga udah kasih pengumuman soal saham ini.\" Dari kartu di atas, mana yang paling tepat?",
       "pilihan": [
         {
           "kunci": "a",
-          "teks": "Ada. Kenaikan harga terus-menerus sampai [[harga-2025-10-08|Rp178]] adalah cara perusahaan mengumumkan rencana akuisisi."
+          "teks": "Betul, pengumuman bursa itu memang soal rencana pembelian oleh investor asing."
         },
         {
           "kunci": "b",
-          "teks": "Tidak ada. Yang resmi hanya penghentian perdagangan oleh bursa, jadwal dividen, dan laporan transaksi pengendali; tidak satu pun menyebut rencana akuisisi."
+          "teks": "Keliru, pengumuman bursa itu soal laporan keuangan yang belum diserahkan."
         },
         {
           "kunci": "c",
-          "teks": "Ada. Laporan transaksi pengendali menyebut nama calon pembeli dari luar negeri."
+          "teks": "Betul, pengumuman bursa itu menjelaskan kenapa harganya bisa naik [[kelipatan-2025-08-01-2025-10-08|22 kali]]."
         },
         {
           "kunci": "d",
-          "teks": "Tidak bisa dinilai, karena tidak ada satu pun informasi resmi tentang perusahaan ini."
+          "teks": "Keliru, pengumuman bursa itu soal harga yang naik terlalu cepat."
         }
       ],
       "jawaban": "b",
-      "penjelasan": "Harga penutupan naik [[kelipatan-2025-08-01-2025-10-08|22,25 kali lipat]] dalam [[hari-bursa-2025-08-01-2025-10-08|47 hari bursa]], dari [[harga-2025-08-01|Rp8]] ke [[harga-2025-10-08|Rp178]]. Kenaikan harga adalah data pasar: ia memberi tahu bahwa banyak orang bertransaksi, bukan mengapa mereka bertransaksi. Yang benar-benar datang dari perusahaan atau bursa hanya [[susp-2025-06-30|penghentian perdagangan 30 Juni 2025 karena laporan keuangan auditan tahunan belum disampaikan]], [[div-2025-09-16|jadwal dividen dengan tanggal ex 16 September 2025]], dan [[fil-2025-09-01|laporan transaksi pengendali 1 September 2025]]. Tidak ada satu pun yang menyebut akuisisi.",
+      "penjelasan": "Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain: jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata \"investor asing\" atau \"akuisisi\" di kartu mana pun. Kartu harga hanya memberi tahu bahwa harganya naik [[kelipatan-2025-08-01-2025-10-08|22 kali]], bukan kenapa. Salah-kaprah yang umum: menganggap harga yang naik sebagai semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.",
       "fact_ids": [
-        "harga-2025-08-01",
-        "harga-2025-10-08",
-        "hari-bursa-2025-08-01-2025-10-08",
         "kelipatan-2025-08-01-2025-10-08",
-        "susp-2025-06-30",
-        "div-2025-09-16",
-        "fil-2025-09-01"
+        "susp-2025-06-30"
       ]
     },
     {
-      "soal_id": "s2-hak-pemilik-kecil",
-      "batang": "Kamu memegang [[misal|10 lot]] atau [[misal|1.000 lembar]] saham Perusahaan D sejak sebelum [[div-2025-09-16|tanggal ex dividen 16 September 2025]]. Berapa dividen tunai yang kamu terima?",
+      "soal_id": "s2-dividen-pemilik-kecil",
+      "kartu": [
+        "div-2025-09-16",
+        "andai-10-lot-dividen"
+      ],
+      "istilah": [
+        {
+          "kata": "Lot",
+          "arti": "satuan jual-beli saham; satu lot sama dengan seratus lembar."
+        },
+        {
+          "kata": "Tanggal ex",
+          "arti": "mulai tanggal ini pembeli baru tidak lagi kebagian dividen tersebut; yang sudah pegang sebelumnya tetap kebagian."
+        }
+      ],
+      "batang": "Hari ini [[hari-ini|8 Oktober 2025]]. Temanmu pegang [[misal|10 lot]] sejak Juli. Ia bilang: \"Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.\" Dari kartu di atas, mana yang paling tepat?",
       "pilihan": [
         {
           "kunci": "a",
-          "teks": "[[misal|Rp140]]"
+          "teks": "Betul, ia kebagian dividen dan jumlahnya cuma [[andai-10-lot-dividen|Rp140]]."
         },
         {
           "kunci": "b",
-          "teks": "[[misal|Rp1.400]]"
+          "teks": "Betul, malah ia tidak kebagian karena tanggal ex-nya."
         },
         {
           "kunci": "c",
-          "teks": "[[misal|Rp14.000]]"
+          "teks": "Keliru, ia kebagian [[misal|Rp14.000]] untuk [[misal|10 lot]] miliknya."
         },
         {
           "kunci": "d",
-          "teks": "Tidak ada, karena perusahaan ini tidak pernah membagikan dividen."
+          "teks": "Keliru, [[andai-10-lot-dividen|Rp140]] itu sudah besar dibanding nilai sahamnya."
         }
       ],
       "jawaban": "a",
-      "penjelasan": "[[misal|1.000 lembar]] dikali [[div-2025-09-16|Rp0,14 per lembar]] sama dengan [[misal|Rp140]]. Dividen dihitung per lembar dan berasal dari laba perusahaan. Angka sekecil ini memperlihatkan bahwa kenaikan harga menuju [[harga-2025-10-08|Rp178]] tidak datang dari pembagian laba.",
+      "penjelasan": "Kartu kedua sudah menghitungnya: [[misal|1.000 lembar]] × [[div-2025-09-16|Rp0,14]] = [[andai-10-lot-dividen|Rp140]], untuk saham yang nilainya [[andai-10-lot-nilai|Rp178.000]] — kurang dari seperseribu nilainya. Temanmu betul, dan karena ia sudah pegang sejak sebelum tanggal ex, ia memang kebagian. Dividen adalah bagian laba yang benar-benar sampai ke pemilik saham; angka ini memperlihatkan bahwa harga [[harga-2025-10-08|Rp178]] tidak ditopang pembagian laba. Salah-kaprah yang umum: menghitung dividen per lot, padahal dividen dihitung per lembar; dan mengira tanggal ex menggugurkan hak orang yang sudah lama pegang, padahal yang tidak kebagian hanya pembeli sesudah tanggal itu.",
       "fact_ids": [
         "div-2025-09-16",
-        "harga-2025-10-08"
+        "andai-10-lot-dividen"
       ]
     },
     {
-      "soal_id": "s3-membaca-pemilik",
-      "batang": "Selama harga naik, apa yang dilakukan pemegang saham terbesar, dan pada harga berapa?",
+      "soal_id": "s3-siapa-yang-menjual",
+      "kartu": [
+        "fil-2025-08-25-03",
+        "fil-2025-08-25-04",
+        "fil-2025-09-01",
+        "jumlah-jual-terverifikasi"
+      ],
+      "istilah": [
+        {
+          "kata": "Pemilik terbesar (pemegang saham pengendali)",
+          "arti": "pihak dengan porsi saham paling besar, yang menentukan arah perusahaan. Setiap jual-belinya wajib dilaporkan dan diumumkan ke publik."
+        }
+      ],
+      "batang": "Hari ini [[hari-ini|8 Oktober 2025]], harganya [[harga-2025-10-08|Rp178]]. Temanmu bilang: \"Pemilik terbesarnya tenang-tenang aja tuh, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik.\" Dari kartu di atas, mana yang paling tepat?",
       "pilihan": [
         {
           "kunci": "a",
-          "teks": "Menambah kepemilikan, seluruhnya pada harga di sekitar [[harga-2025-10-08|Rp178]]."
+          "teks": "Betul, laporannya menunjukkan ia membeli lagi di harga belasan rupiah."
         },
         {
           "kunci": "b",
-          "teks": "Tidak melakukan transaksi apa pun sampai tanggal kasus ini."
+          "teks": "Betul, laporannya menunjukkan ia membeli lagi di harga ratusan rupiah."
         },
         {
           "kunci": "c",
-          "teks": "Mengurangi kepemilikan, antara lain lewat [[fil-2025-09-01|laporan 1 September 2025 yang melepas 50.000.000 lembar pada harga Rp15]], jauh di bawah harga pasar pada tanggal kasus."
+          "teks": "Keliru, laporannya menunjukkan ia menjual banyak di harga belasan rupiah."
         },
         {
           "kunci": "d",
-          "teks": "Melepas seluruh sahamnya sebelum [[div-2025-09-16|tanggal ex dividen]]."
+          "teks": "Keliru, laporannya menunjukkan ia menjual banyak di harga ratusan rupiah."
         }
       ],
       "jawaban": "c",
-      "penjelasan": "Pemegang saham besar berhak melepas sahamnya pada harga yang mereka sepakati; yang perlu dipahami pembeli baru adalah siapa yang menjadi penjual ketika mereka membeli. Perhatikan juga tanggalnya: transaksi baru diketahui publik ketika laporannya terbit. Transaksi di [[fil-2025-09-01|laporan 1 September 2025]] sudah terjadi pada pertengahan Agustus, sementara harga pada tanggal kasus sudah [[harga-2025-10-08|Rp178]] per lembar. Dua laporan lain, [[fil-2025-08-25|laporan 25 Agustus 2025]] dan [[fil-2025-09-29|laporan 29 September 2025]], memang ada di daftar fakta, tetapi keduanya ditandai KONFLIK oleh jejak verifikasi kasus ini, jadi tidak dipakai sebagai dasar jawaban. Alasannya bisa dibaca di bagian jejak verifikasi.",
+      "penjelasan": "Ketiga kartu laporan itu penjualan, bukan pembelian: [[fil-2025-08-25-03|70 juta]], [[fil-2025-08-25-04|179,5 juta]], dan [[fil-2025-09-01|50 juta lembar]] — seluruhnya [[jumlah-jual-terverifikasi|299,5 juta lembar]], semuanya di harga [[fil-2025-08-25-03|Rp13]] sampai [[fil-2025-09-01|Rp15]], jauh di bawah harga hari ini. Perhatikan juga tanggalnya: transaksinya terjadi [[fil-2025-08-25-03|12 Agustus]] sampai [[fil-2025-09-01-01|14 Agustus]], tetapi publik baru bisa membacanya pada [[fil-2025-08-25-04|25 Agustus]] dan [[fil-2025-09-01|1 September]], ketika laporannya terbit. Pemilik besar berhak menjual; yang perlu dibaca calon pembeli adalah siapa yang ada di sisi jual. Salah-kaprah yang umum: menganggap \"nggak kedengeran jual\" sama dengan \"tidak menjual\".",
       "fact_ids": [
+        "fil-2025-08-25-03",
+        "fil-2025-08-25-04",
         "fil-2025-09-01",
-        "harga-2025-10-08"
+        "jumlah-jual-terverifikasi"
       ]
     }
   ],
@@ -1501,10 +1694,21 @@
     ],
     "paragraf": [
       "Perusahaan D adalah PT Diamond Citra Propertindo Tbk, sandi DADA, tercatat di Papan Pengembangan.",
-      "Sehari setelah tanggal kasus, [[susp-2025-10-09|bursa menghentikan perdagangan saham ini pada 9 Oktober 2025 karena kenaikan harga kumulatif yang signifikan, dalam rangka cooling down]]. Ketika perdagangan dibuka lagi keesokan harinya, harga dibuka di [[harga-2025-10-10-buka|Rp177]], menyentuh [[harga-2025-10-10-tertinggi|Rp240]], lalu ditutup di [[harga-2025-10-10|Rp152]], dengan [[volume-2025-10-10|5.112.760.000 lembar]] berpindah tangan dalam satu hari. Harga tertinggi kasus ini tercapai sehari setelah bursa menghentikan perdagangannya.",
-      "Dua belas hari kemudian harga tinggal [[harga-2025-10-22|Rp50]]. Laporan pengendali yang terbit sesudah tanggal kasus memperlihatkan kelanjutannya: [[fil-2025-10-19|laporan 19 Oktober 2025]] dan [[fil-2025-10-26|laporan 26 Oktober 2025]].",
+      "Sehari sesudah tanggal kasus, [[susp-2025-10-09|bursa menyetop lagi jual-beli saham ini pada 9 Oktober 2025 — kali ini karena harganya sudah naik terlalu jauh, supaya pasar mendingin dulu]]. Begitu dibuka kembali keesokan harinya, harga mulai di [[harga-2025-10-10-buka|Rp177]], sempat menyentuh [[harga-2025-10-10-tertinggi|Rp240]], lalu tutup di [[harga-2025-10-10|Rp152]]. Hari itu [[volume-2025-10-10|5.112.760.000 lembar]] berpindah tangan. Harga tertinggi kasus ini justru tercapai sehari sesudah bursa menghentikannya.",
+      "Dua belas hari kemudian harga tinggal [[harga-2025-10-22|Rp50]]. Laporan pemilik terbesar yang terbit sesudah tanggal kasus memperlihatkan kelanjutannya: [[fil-2025-10-19|laporan 19 Oktober 2025]] dan [[fil-2025-10-26|laporan 26 Oktober 2025]].",
       "Rantai laporan itu sendiri tidak bersih. Enam transaksi yang dilaporkan malam itu terbit dua kali dengan jumlah, harga, dan urutan yang persis sama, dan ada dua lompatan saldo yang tidak dijelaskan laporan mana pun. Rinciannya ada di jejak verifikasi kasus ini, lengkap dengan angkanya.",
-      "Setahun kemudian, [[rups-2026-07-16-kuorum|rapat umum pemegang saham 16 Juli 2026 gagal mencapai kuorum karena yang hadir hanya 22,32 persen saham]], sehingga tidak ada agenda yang bisa diputuskan. Kuorum dihitung dari saham yang hadir, bukan dari jumlah orang yang hadir."
+      "Setahun kemudian, [[rups-2026-07-16-kuorum|rapat umum pemegang saham 16 Juli 2026 gagal karena yang hadir hanya 22,32 persen saham]], sehingga tidak ada satu pun agenda yang bisa diputuskan. Yang dihitung adalah jumlah saham yang hadir, bukan jumlah orang yang hadir."
+    ],
+    "bisa_dibaca": [
+      "Pemilik terbesarnya sudah menjual [[jumlah-jual-terverifikasi|ratusan juta lembar]] di harga belasan rupiah.",
+      "Dividennya sangat kecil dibanding harganya: [[andai-10-lot-dividen|Rp140]] untuk saham senilai [[andai-10-lot-nilai|Rp178.000]].",
+      "Satu-satunya pengumuman bursa sebelum tanggal kasus berbicara tentang [[susp-2025-06-30|laporan keuangan yang terlambat]], bukan tentang akuisisi."
+    ],
+    "tidak_bisa_dibaca": [
+      "Kapan harga berbalik, atau sampai berapa. Tidak satu pun kartu memuat itu, dan produk ini tidak pernah memintamu menebaknya."
+    ],
+    "disingkirkan": [
+      "Dua laporan resmi dari periode yang sama tidak lolos pemeriksaan kami, jadi keduanya tidak pernah menjadi kartu. Rangkaian laporan [[fil-2025-08-25|25 Agustus]] putus di tengah: saldo [[fil-2025-08-25-01|laporan pertama]] tidak bersambung dengan [[fil-2025-08-25-02|laporan berikutnya]]. Dan laporan [[fil-2025-09-29|29 September]] menyebut harga [[fil-2025-09-29-01|Rp165]] pada hari ketika harga tertinggi di pasar hanya [[harga-2025-09-26-tertinggi|Rp163]]. Dokumen resmi pun perlu dihitung ulang; rinciannya ada di jejak verifikasi di bawah."
     ]
   },
   "temuan": [
@@ -1940,10 +2144,6 @@
     {
       "kode": "A2",
       "judul": "Lot dan lembar"
-    },
-    {
-      "kode": "A4",
-      "judul": "Kapitalisasi pasar"
     },
     {
       "kode": "B1",
