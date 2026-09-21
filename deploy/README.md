@@ -82,6 +82,14 @@ Pengumpul **hanya** mendengarkan di `127.0.0.1`. Firewall VPS ini tidak aktif,
 jadi mengubah `HOST` menjadi `0.0.0.0` akan langsung membuka pengumpul ke
 internet tanpa TLS dan tanpa pembatas. Jangan.
 
+**`MemoryDenyWriteExecute=` sengaja tidak ada di unit itu.** Ia melarang proses
+memetakan memori yang bisa ditulis sekaligus dieksekusi, dan V8 membutuhkan
+persis itu untuk JIT-nya. Dengan baris tersebut aktif, Node **mati saat start**
+di server sungguhan (21 Sep 2026): layanannya tidak pernah naik dan pengumpul
+tidak menerima satu peristiwa pun. Jangan menambahkannya kembali sebagai
+"pengetatan yang terlewat" — ia tidak bisa dipakai dengan runtime ini.
+Pengetatan lain di unit itu tetap berlaku.
+
 ### 3. Caddy
 
 ```bash

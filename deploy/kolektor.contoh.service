@@ -41,7 +41,19 @@ ProtectKernelModules=yes
 ProtectControlGroups=yes
 RestrictAddressFamilies=AF_INET AF_INET6
 LockPersonality=yes
-MemoryDenyWriteExecute=yes
+
+# MemoryDenyWriteExecute SENGAJA TIDAK DIPAKAI.
+#
+# Ia melarang satu proses memetakan memori yang bisa ditulis sekaligus
+# dieksekusi. V8 membutuhkan persis itu: JIT-nya menulis kode mesin lalu
+# menjalankannya. Dengan baris itu aktif, Node mati saat start di server
+# sungguhan (21 Sep 2026) -- layanan tidak pernah naik, dan pengumpul tidak
+# menerima satu peristiwa pun.
+#
+# Jadi ia bukan pengetatan yang "belum sempat dinyalakan": ia tidak bisa dipakai
+# dengan runtime ini. Pengetatan lain di atas tetap berlaku, dan yang menjaga
+# permukaannya tetap kecil adalah pengumpul itu sendiri -- nol dependensi,
+# mendengarkan hanya di loopback.
 
 [Install]
 WantedBy=multi-user.target
