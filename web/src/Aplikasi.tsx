@@ -19,6 +19,7 @@ import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
 import { hariIniIso, penanda, type Penanda } from './tanggal.ts';
 import { buatIdSesi, sumberAcakPeramban } from './sesi.ts';
+import { perintahRiwayat } from './riwayat.ts';
 import { angkaBesarSatuan } from './angka.ts';
 
 /**
@@ -145,17 +146,23 @@ export function Aplikasi(): JSX.Element {
   }, [namaLayarKini]);
 
   /*
-   * Satu entri riwayat per layar (A1-T7). Sebelumnya tombol kembali Android
-   * keluar dari situs dan menghapus seluruh sesi di tengah permainan.
-   * Layar pertama memakai replaceState supaya menekan kembali di sana memang
-   * keluar dari situs, seperti yang diharapkan pemain.
+   * Satu entri riwayat per layar (A1-T7), diperbaiki di A4-T1.
+   *
+   * Versi lama mengingat sendiri layar terakhir yang dicatatnya, dan karena itu
+   * tidak bisa membedakan "pemain maju" dari "peramban baru saja mundur". Setiap
+   * `popstate` ia mendorong entri baru — memotong perjalanan pemain dan, di
+   * ponsel pemilik, membuat kembali yang kedua keluar dari situs.
+   *
+   * Sekarang yang ditanya adalah entri riwayat itu sendiri: kalau `history.state`
+   * sudah menunjuk layar ini, peramban sudah di tempat yang benar dan tidak ada
+   * yang perlu didorong. Keputusannya fungsi murni di `riwayat.ts`, diuji dengan
+   * urutan maju–mundur–maju lengkap.
    */
-  const layarTercatat = useRef<string | null>(null);
   useEffect(() => {
-    if (layarTercatat.current === namaLayarKini) return;
-    if (layarTercatat.current === null) window.history.replaceState({ layar: namaLayarKini }, '');
-    else window.history.pushState({ layar: namaLayarKini }, '');
-    layarTercatat.current = namaLayarKini;
+    const entri = (window.history.state as { layar?: string } | null)?.layar ?? null;
+    const perintah = perintahRiwayat(entri, namaLayarKini);
+    if (perintah === 'ganti') window.history.replaceState({ layar: namaLayarKini }, '');
+    else if (perintah === 'dorong') window.history.pushState({ layar: namaLayarKini }, '');
   }, [namaLayarKini]);
 
   useEffect(() => {
