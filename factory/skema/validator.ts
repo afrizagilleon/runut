@@ -446,9 +446,24 @@ const POLA_AJAKAN: readonly RegExp[] = [
   /\b(sebaiknya|ayo|yuk|mending|segera|buruan|wajib|harus)\s+(di)?(beli|jual)\b/i,
   /\b(beli|jual)\s+(sekarang|selagi|mumpung)\b/i,
   /\brekomendasi\s+(beli|jual)\b/i,
-  // Kalimat perintah: "Beli saham ini." / "Jual saja."
+  /*
+   * Kalimat perintah di awal kalimat mana pun **di dalam** paragraf, bukan
+   * hanya di awal teks (A1-T8, menutup F-6). `[.!?]` diikuti spasi menandai
+   * awal kalimat berikutnya; `^` tetap menangkap kalimat pertama.
+   */
   /(^|[.!?]\s+)(beli|jual|borong)\b/i,
 ];
+
+/**
+ * Kata benda majemuk yang kebetulan diawali "jual" atau "beli", dan `fact_id`
+ * di dalam tanda tautan. Keduanya dilepas dari teks sebelum pencocokan supaya
+ * "Jual-beli saham ini disetop bursa." tidak dibaca sebagai perintah,
+ * sementara "Jual saja seluruhnya." tetap tertangkap.
+ *
+ * Inilah dua positif palsu yang diperbaiki di T-01+T-02 dan tidak boleh hidup
+ * lagi ketika INV-5 dipulihkan.
+ */
+const BUKAN_PERINTAH = /\b(jual-beli|beli-jual)\b/gi;
 
 /**
  * Potongan kalimat yang mengajak bertransaksi, atau `null` kalau bersih.
@@ -457,7 +472,7 @@ const POLA_AJAKAN: readonly RegExp[] = [
  * dianggap ajakan.
  */
 export function ajakanBertransaksi(teks: string): string | null {
-  const dibaca = teksPolos(teks);
+  const dibaca = teksPolos(teks).replace(BUKAN_PERINTAH, 'perdagangan');
   for (const pola of POLA_AJAKAN) {
     const cocok = pola.exec(dibaca);
     if (cocok !== null) return cocok[0].trim();

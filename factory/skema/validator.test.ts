@@ -563,6 +563,12 @@ describe('aturan v1 yang tetap berlaku', () => {
  */
 describe('INV-5 ajakan bertransaksi', () => {
   const harusTertangkap = [
+    // A1-T8: awal kalimat DI DALAM paragraf, bukan hanya di awal teks.
+    'Laporannya sudah terbit. Beli saham ini sekarang.',
+    'Harganya sudah turun jauh. Jual saja seluruhnya sebelum terlambat.',
+    'Kartu ketiga merangkumnya. Borong selagi masih murah.',
+    'Ini kalimat pertama! Beli sebanyak yang kamu mampu.',
+    'Pertanyaannya sederhana? Jual sekarang juga.',
     'Saham ini layak dikoleksi.',
     'Beli sekarang selagi masih murah.',
     'Sebaiknya jual saham ini sebelum turun.',
@@ -581,6 +587,10 @@ describe('INV-5 ajakan bertransaksi', () => {
   }
 
   const harusLolos = [
+    // Dua positif palsu yang sudah diperbaiki tidak boleh hidup lagi.
+    'Bursa menyetop perdagangan. Jual-beli saham ini dihentikan sementara.',
+    'Pemilik terbesar menjual 70 juta lembar. Penjualan itu dilaporkan 25 Agustus.',
+    'Laporannya terbit. Pemilik menjual 70 juta lembar di harga Rp13.',
     'Bursa menghentikan sementara jual-beli saham ini karena laporan keuangan belum diserahkan.',
     'Yang perlu dibaca calon pembeli adalah siapa yang ada di sisi jual.',
     'Pemilik terbesarnya tenang-tenang aja tuh, nggak kedengeran jual.',
@@ -596,6 +606,20 @@ describe('INV-5 ajakan bertransaksi', () => {
 
   it('tidak membaca fact_id di dalam [[…|…]] sebagai kalimat', () => {
     expect(ajakanBertransaksi('Berjumlah [[jumlah-jual-terverifikasi|299,5 juta lembar]].')).toBeNull();
+  });
+
+  it('tidak tertipu fact_id yang jatuh tepat sesudah titik', () => {
+    expect(
+      ajakanBertransaksi('Itu laporannya. [[jumlah-jual-terverifikasi|299,5 juta lembar]] terjual.'),
+    ).toBeNull();
+  });
+
+  it('menangkap perintah walau jauh di tengah paragraf panjang', () => {
+    const paragraf =
+      'Tiga laporan itu semuanya penjualan, tetapi ukurannya jauh berbeda. ' +
+      'Pemilik besar berhak menjual sahamnya kapan pun ia mau. ' +
+      'Beli saham ini sebelum harganya naik lagi.';
+    expect(ajakanBertransaksi(paragraf)).not.toBeNull();
   });
 });
 
