@@ -6,6 +6,14 @@ import type { Server } from 'node:http';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 // @ts-expect-error — pengumpul sengaja JavaScript bawaan Node, tanpa langkah build.
 import { HOST_BAWAAN, buatKolektor, periksaPeristiwa } from './kolektor.mjs';
+/*
+ * M3.4a D-2. Yang diimpor di sini adalah **tes**, bukan pengumpul: aturan
+ * "pengumpul tidak boleh mengimpor apa pun dari aplikasi" tetap utuh
+ * (`server/kolektor.mjs` tidak disentuh sama sekali di milestone ini). Yang
+ * diperlukan tes adalah justru menyatukan keduanya di satu tempat, supaya
+ * keluaran reducer yang sesungguhnya diadu dengan validator yang sesungguhnya.
+ */
+import { type Aksi, NAMA_PERISTIWA, keadaanAwal, langkah } from '../web/src/alur.ts';
 
 /**
  * Seluruh blok ini menjalankan server sungguhan di port acak (RQ-06), bukan
@@ -629,5 +637,143 @@ describe('kolektor — pelacak lewat server sungguhan (RQ-06)', () => {
     expect(isi).not.toContain(UA_UJI);
     expect(isi).not.toContain('127.0.0.1');
     expect(isi.toLowerCase()).not.toContain('user-agent');
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.4a D-2 — ketiga jenis `gulir` lewat pengumpul SUNGGUHAN          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Peristiwa `gulir` sekarang punya tiga asal: ambang 50 %, ambang 100 %, dan
+ * yang lahir saat meninggalkan layar. Ketiganya memakai bentuk yang **sama**,
+ * dan itu bukan kebetulan: `server/kolektor.mjs` memvalidasi daftar tertutup
+ * `gulir: { layar, maks }` dan **tidak ikut di-deploy** bersama perubahan ini.
+ * Satu medan baru atau satu nama baru berarti seluruh kelompok peristiwa ditolak
+ * 400 dan data pemain hilang diam-diam — kegagalan yang tidak akan terlihat di
+ * gate mana pun. Karena itu yang diuji di sini adalah **pengumpul yang
+ * sesungguhnya**, bukan tiruan, dengan keluaran **reducer yang sesungguhnya**.
+ */
+describe('kolektor — gulir bertingkat M3.4a (D-2)', () => {
+  const gulir = (urut: number, isi: Record<string, unknown>): Record<string, unknown> =>
+    peristiwa({ nama: 'gulir', urut, isi });
+
+  it('menerima ketiga jenis gulir dengan 204 dan menulisnya apa adanya', async () => {
+    const balas = await kirim(
+      JSON.stringify([
+        gulir(301, { layar: 'soal-1', maks: 0.5 }), // ambang 50 %
+        gulir(302, { layar: 'soal-1', maks: 1 }), // ambang 100 %
+        gulir(303, { layar: 'soal-1', maks: 0.87 }), // meninggalkan layar
+      ]),
+    );
+    expect(balas.status).toBe(204);
+
+    const baris = barisTertulis().map(
+      (b) => JSON.parse(b) as { urut: number; nama: string; isi: Record<string, unknown> },
+    );
+    const tercatat = baris.filter((b) => b.urut >= 301 && b.urut <= 303);
+    expect(tercatat.map((b) => b.nama)).toEqual(['gulir', 'gulir', 'gulir']);
+    expect(tercatat.map((b) => b.isi['maks'])).toEqual([0.5, 1, 0.87]);
+    for (const b of tercatat) expect(Object.keys(b.isi).sort()).toEqual(['layar', 'maks']);
+  });
+
+  it('SEMUA keluaran reducer yang sungguhan lolos validator yang sungguhan', () => {
+    /*
+     * Jalur permainan yang melewati kedua ambang di beberapa layar, memakai
+     * `langkah()` dari `web/src/alur.ts` — bukan muatan yang diketik ulang di
+     * tes ini. Peristiwa yang diketik ulang hanya membuktikan bahwa tesnya
+     * setuju dengan dirinya sendiri.
+     */
+    const aksi: Aksi[] = [
+      { jenis: 'mulai', lebar_layar: 360 },
+      { jenis: 'catat_gulir', persen: 100 }, // pembuka muat sejendela
+      { jenis: 'lanjut' },
+      { jenis: 'catat_gulir', persen: 55 },
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+      { jenis: 'catat_gulir', persen: 70 },
+      { jenis: 'tutup' },
+    ];
+    let keadaan = keadaanAwal({
+      sesi: '2f1a1d6c-0000-4000-8000-000000000009',
+      kasus_id: 'dada-2025-10-08',
+      urutanSoal: ['s1', 's2', 's3'],
+      kunciBenar: { s1: 'b', s2: 'a', s3: 'c' },
+      kartuSoal: { s1: ['k1'], s2: ['k2'], s3: ['k3'] },
+    });
+    const semua: Array<{ nama: string; isi: Record<string, unknown> }> = [];
+    let waktu = 1_000;
+    for (const a of aksi) {
+      waktu += 250;
+      const hasil = langkah(keadaan, a, waktu);
+      keadaan = hasil.keadaan;
+      semua.push(...hasil.peristiwa);
+    }
+
+    // Jalur ini memang melewati ambang; kalau tidak, tes di bawah tidak menguji apa-apa.
+    const semuaGulir = semua.filter((p) => p.nama === 'gulir');
+    expect(semuaGulir.filter((p) => p.isi['maks'] === 0.5).length).toBeGreaterThanOrEqual(2);
+    expect(semuaGulir.filter((p) => p.isi['maks'] === 1).length).toBeGreaterThanOrEqual(2);
+
+    for (const p of semua) {
+      const hasil = periksaPeristiwa(p) as { galat?: string };
+      expect(hasil.galat, `${p.nama} ${JSON.stringify(p.isi)}`).toBeUndefined();
+    }
+  });
+
+  it('kalau saja ada medan baru, pengumpul menolak 400 — dan data itu hilang', async () => {
+    /*
+     * Inilah kegagalan yang dijaga D-2, ditulis sebagai tes supaya ia tidak
+     * hanya menjadi kalimat di kontrak: peristiwa yang sama persis, ditambah
+     * satu medan `ambang`, ditolak — bersama SELURUH kelompoknya.
+     */
+    const sebelum = barisTertulis().length;
+    const balas = await kirim(
+      JSON.stringify([
+        gulir(310, { layar: 'soal-1', maks: 0.5, ambang: true }),
+        gulir(311, { layar: 'soal-1', maks: 0.9 }),
+      ]),
+    );
+    expect(balas.status).toBe(400);
+    expect(await balas.text()).toContain('ambang');
+    // Tidak sebagian: peristiwa kedua yang sah pun tidak tertulis.
+    expect(barisTertulis().length).toBe(sebelum);
+  });
+
+  it('nama peristiwa baru untuk ambang juga akan ditolak', async () => {
+    const balas = await kirim(
+      JSON.stringify([peristiwa({ nama: 'gulir_ambang', urut: 320, isi: { layar: 'soal-1', maks: 0.5 } })]),
+    );
+    expect(balas.status).toBe(400);
+    expect(await balas.text()).toContain('daftar tertutup');
+  });
+
+  it('daftar nama peristiwa reducer masih sama persis dengan yang dikenal pengumpul', () => {
+    /*
+     * Penjaga langsung untuk "TANPA nama peristiwa baru". Kalau reducer
+     * menambah satu nama, tes ini merah di repo — jauh sebelum server alpha
+     * yang belum diperbarui menolaknya diam-diam.
+     */
+    const dikenalPengumpul = [...NAMA_PERISTIWA]
+      .filter((n) => (periksaPeristiwa({ nama: n }) as { galat?: string }).galat !== `nama peristiwa "${n}" tidak ada di daftar tertutup`)
+      .sort();
+    expect(dikenalPengumpul).toEqual([...NAMA_PERISTIWA].sort());
+    // Angka yang dibekukan: 17 nama, sama seperti sebelum M3.4a.
+    expect(NAMA_PERISTIWA).toHaveLength(17);
+  });
+
+  it('maks di luar 0–1 tetap ditolak, jadi 50 dan 100 harus rasio', () => {
+    expect(
+      (periksaPeristiwa(peristiwa({ nama: 'gulir', isi: { layar: 'soal-1', maks: 50 } })) as {
+        galat?: string;
+      }).galat,
+    ).toBeDefined();
+    expect(
+      (periksaPeristiwa(peristiwa({ nama: 'gulir', isi: { layar: 'soal-1', maks: 0.5 } })) as {
+        galat?: string;
+      }).galat,
+    ).toBeUndefined();
   });
 });
