@@ -775,27 +775,28 @@ describe('R26 — pembagian laba terhadap laba tahun buku', () => {
     expect(bersama.temuan[0]?.ringkasan).toContain('Rp45 per lembar');
   });
 
-  it('memakai jumlah saham tahun buku itu, bukan jumlah saham hari ini', () => {
-    // Pola ULTJ: basis 11.553.528.000 pada tahun buku 2023 dan 10.398.175.200
-    // pada 2025. Dengan basis hari ini, pembagian laba 2023 meleset 11%.
+  it('memakai jumlah saham tahun buku itu, bukan jumlah saham tahun terakhir', () => {
+    // Pola ULTJ dilebih-lebihkan supaya bedanya menentukan putusan: dividen
+    // Rp200 per lembar untuk tahun buku 2023, yang basis sahamnya 11,55 miliar.
+    // Dengan basis tahun buku terakhir (satu juta lembar) pembagiannya nyaris
+    // nol dan lolos hijau; dengan basis tahun bukunya sendiri ia 231%.
     const h = r26PembagianLaba(
       ktx({
         simbol: 'ULTJ',
-        dividen: [dividen('2024-05-04', 17)],
+        dividen: [dividen('2024-05-04', 200)],
         keuangan_tahunan: [
           { tahun: 2023, laba: 1_000_000_000_000, pendapatan: null, ekuitas: null, aset: null, laba_kotor: null, lembar: null },
           { tahun: 2025, laba: 1_000_000_000_000, pendapatan: null, ekuitas: null, aset: null, laba_kotor: null, lembar: null },
         ],
         eps_tahunan: [
           { tahun: 2023, eps: 1_000_000_000_000 / 11_553_528_000 },
-          { tahun: 2025, eps: 1_000_000_000_000 / 10_398_175_200 },
+          { tahun: 2025, eps: 1_000_000_000_000 / 1_000_000 },
         ],
       }),
     );
-    expect(h.temuan).toHaveLength(0);
-    // Basis tahun buku 2023 yang dipakai, bukan basis 2025.
-    const persen = (17 * 11_553_528_000) / 1_000_000_000_000 * 100;
-    expect(Number(persen.toFixed(1))).toBe(19.6);
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('tahun buku 2023');
+    expect(h.temuan[0]?.angka.find((a) => a.satuan === 'lembar')?.nilai).toBe(11_553_528_000);
   });
 
   it('menandai dividen yang dipetakan ke tahun buku yang RUPS-nya menyatakan tidak membagi', () => {
