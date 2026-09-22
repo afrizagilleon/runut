@@ -82,10 +82,34 @@ export interface BentrokHarga {
   medan: string;
 }
 
+/**
+ * Berkas cache asal tiap baris yang tidak membawa jejaknya sendiri (M4 D-1).
+ *
+ * `Laporan` sudah punya `berkas_cache`, tetapi baris harga, suspensi, aksi
+ * korporasi, dan ringkasan tidak — dan pustaka fakta umum harus bisa menulis
+ * "dari berkas mana angka ini" tanpa menebaknya dari nama berkas. Peta ini
+ * additif: tidak satu pun tipe di `factory/verifikasi/` berubah karenanya.
+ *
+ * Kunci harga dan suspensi memakai simbol yang sudah dinormalkan, persis
+ * seperti kunci rangkap di dalam pemuat: `ARNA|2026-01-05`.
+ */
+export interface AsalGudang {
+  harga: Map<string, string>;
+  suspensi: Map<string, string>;
+  /** Satu berkas aksi korporasi per simbol; yang pertama menang. */
+  aksi: Map<string, string>;
+  /** Satu berkas ringkasan/keuangan per simbol; yang pertama menang. */
+  ringkasan: Map<string, string>;
+  /** Satu berkas potret kepemilikan per simbol; yang pertama menang. */
+  kepemilikan: Map<string, string>;
+}
+
 export interface Gudang {
   folder: string;
   emiten: Map<string, DataEmiten>;
   berkas: BerkasGudang[];
+  /** Berkas asal tiap baris yang tipenya tidak membawa jejaknya sendiri. */
+  asal: AsalGudang;
   /** Berkas yang jenisnya tidak bisa ditentukan dari isinya. */
   tak_dikenal: BerkasGudang[];
   /** Baris harga rangkap yang dibuang, dan yang angkanya bertentangan. */
@@ -287,6 +311,12 @@ interface Pengumpul {
   bentrok: BentrokHarga[];
   rangkapLaporan: number;
   rangkapHarga: number;
+  asal: AsalGudang;
+}
+
+/** Catat berkas asal sekali saja: yang pertama menang, seperti baris rangkap. */
+function catatAsal(peta: Map<string, string>, kunci: string, berkas: string): void {
+  if (!peta.has(kunci)) peta.set(kunci, berkas);
 }
 
 function ambil(kumpul: Pengumpul, simbol: string, berkas: string): DataEmiten {
@@ -398,6 +428,7 @@ function serapHarga(kumpul: Pengumpul, berkas: string, daftar: unknown[]): strin
       continue;
     }
     kumpul.kunciHargaTerpakai.set(kunci, bar);
+    catatAsal(kumpul.asal.harga, kunci, berkas);
     ambil(kumpul, kode, berkas).harga.push(bar);
   }
   return simbolBerkas;
@@ -417,6 +448,7 @@ function serapSuspensi(kumpul: Pengumpul, berkas: string, daftar: unknown[]): st
     const kunci = `${kode}|${tanggal}|${alasan}`;
     if (kumpul.kunciSuspensiTerpakai.has(kunci)) continue;
     kumpul.kunciSuspensiTerpakai.add(kunci);
+    catatAsal(kumpul.asal.suspensi, `${kode}|${tanggal}`, berkas);
     const suspensi: Suspensi = { tanggal, alasan };
     ambil(kumpul, kode, berkas).suspensi.push(suspensi);
   }
@@ -431,6 +463,7 @@ function serapAksiKorporasi(
   const simbol = teks(akar['symbol']);
   if (simbol === null) return null;
   const data = ambil(kumpul, simbol, berkas);
+  catatAsal(kumpul.asal.aksi, normalkanSimbol(simbol), berkas);
   const aksi = obyek(akar['corporate_actions']);
   if (aksi === null) return normalkanSimbol(simbol);
 
@@ -503,6 +536,7 @@ function serapRingkasan(
   const simbol = teks(akar['symbol']);
   if (simbol === null) return null;
   const data = ambil(kumpul, simbol, berkas);
+  catatAsal(kumpul.asal.ringkasan, normalkanSimbol(simbol), berkas);
   const ringkasan = obyek(akar['overview']);
   if (ringkasan !== null) {
     const nilaiPasar = angka(ringkasan['market_cap']);
@@ -613,6 +647,7 @@ function serapKeuangan(
   const simbol = teks(akar['symbol']);
   if (simbol === null) return null;
   serapKeuanganKe(ambil(kumpul, simbol, berkas), akar);
+  catatAsal(kumpul.asal.ringkasan, normalkanSimbol(simbol), berkas);
   return normalkanSimbol(simbol);
 }
 
@@ -624,6 +659,7 @@ function serapKepemilikan(
   const simbol = teks(akar['symbol']);
   if (simbol === null) return null;
   const data = ambil(kumpul, simbol, berkas);
+  catatAsal(kumpul.asal.kepemilikan, normalkanSimbol(simbol), berkas);
   const kepemilikan = obyek(akar['ownership']);
   for (const butir of larik(kepemilikan?.['major_shareholders']) ?? []) {
     const b = obyek(butir);
@@ -687,6 +723,13 @@ export function muatGudang(folder: string = FOLDER_GUDANG): Gudang {
     bentrok: [],
     rangkapLaporan: 0,
     rangkapHarga: 0,
+    asal: {
+      harga: new Map(),
+      suspensi: new Map(),
+      aksi: new Map(),
+      ringkasan: new Map(),
+      kepemilikan: new Map(),
+    },
   };
   const catatanBerkas: BerkasGudang[] = [];
 
@@ -798,6 +841,7 @@ export function muatGudang(folder: string = FOLDER_GUDANG): Gudang {
     folder,
     emiten,
     berkas: catatanBerkas,
+    asal: kumpul.asal,
     tak_dikenal,
     bentrok_harga: kumpul.bentrok,
     ringkasan: {

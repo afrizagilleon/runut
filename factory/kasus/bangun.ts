@@ -21,10 +21,14 @@ import type {
   Temuan,
   TeksAwam,
 } from '../skema/tipe.ts';
-import { VERSI_SKEMA } from '../skema/tipe.ts';
+import { VERSI_SKEMA, keparahanTemuan } from '../skema/tipe.ts';
 import { periksaKasus } from '../skema/validator.ts';
 import { verifikasi } from '../verifikasi/aturan.ts';
-import type { KonteksVerifikasi } from '../verifikasi/tipe.ts';
+import { verifikasiV2 } from '../verifikasi/v2.ts';
+import { konteksEmiten } from '../verifikasi/konteks.ts';
+import type { DataEmiten, KonteksVerifikasi } from '../verifikasi/tipe.ts';
+import type { AsalGudang } from '../muat/gudang.ts';
+import { pustakaGudang, type SumberGudang } from '../muat/pustaka-gudang.ts';
 import type { DataDada } from '../muat/dada.ts';
 import {
   ambilFakta,
@@ -84,8 +88,18 @@ function rujukanDalamTeks(teks: string): string[] {
     .filter((id) => !PENANDA_BUKAN_FAKTA.includes(id));
 }
 
+/**
+ * Bagian definisi kasus yang menyebut fact_id. Sengaja sesempit yang dipakai,
+ * supaya jalur DADA dan jalur umum (M4 D-1) bisa memakainya tanpa salah satu
+ * dari keduanya harus berpura-pura punya medan milik yang lain.
+ */
+type DefinisiBerfakta = Pick<
+  DefinisiKasus,
+  'fakta_terlihat' | 'pembukaan' | 'pembuka' | 'soal' | 'awam'
+>;
+
 /** Semua fact_id yang disebut definisi kasus, baik lewat daftar maupun lewat teks. */
-function idYangDisebut(def: DefinisiKasus): string[] {
+function idYangDisebut(def: DefinisiBerfakta): string[] {
   const id: string[] = [...def.fakta_terlihat, ...def.pembukaan.fact_ids];
   id.push(...rujukanDalamTeks(def.pembuka.kalimat));
   for (const s of def.soal) {
@@ -246,6 +260,136 @@ export function bangunKasus(def: DefinisiKasus, data: DataDada): HasilBangun {
   }
   lengkapiTurunan(terpilih, pustaka);
   tandaiKonflik(terpilih, temuan);
+  pasangAwam(terpilih, def.awam);
+
+  const kasus: Kasus = {
+    skema_versi: VERSI_SKEMA,
+    kasus_id: def.kasus_id,
+    judul: def.judul,
+    emiten: def.emiten,
+    nama_samaran: def.nama_samaran,
+    tanggal_t: def.tanggal_t,
+    pembuka: def.pembuka,
+    fakta: [...terpilih.values()].sort((a, b) => a.fact_id.localeCompare(b.fact_id)),
+    fakta_terlihat: [...def.fakta_terlihat],
+    soal: def.soal,
+    pembukaan: def.pembukaan,
+    penutup: def.penutup,
+    temuan,
+    pemeriksaan,
+    kartu_konsep: def.kartu_konsep,
+    disclaimer: def.disclaimer,
+  };
+
+  const masalah = periksaKasus(kasus);
+  if (masalah.length > 0) throw new KasusTidakSah(def.kasus_id, masalah);
+
+  return { kasus, dilewati: pemeriksaan.filter((p) => !p.dijalankan) };
+}
+
+/* ------------------------------------------------------------------ */
+/* Jalur umum: emiten apa pun, lewat pemuat gudang M2a (M4 D-1)        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Definisi kasus untuk jalur umum.
+ *
+ * Bedanya dengan `DefinisiKasus` hanya di bagian data: tidak ada `turunan`
+ * jendela harga maupun `turunan_pemain` khas DADA. Sebagai gantinya kasus
+ * menyebut endpoint asal tiap jenis berkas, dan menyediakan satu fungsi yang
+ * menurunkan fakta tambahan dari pustaka dasar.
+ */
+export interface DefinisiKasusUmum
+  extends Omit<DefinisiKasus, 'turunan' | 'turunan_pemain'> {
+  /** Simbol emiten di gudang, sudah dinormalkan (tanpa `.JK`). */
+  simbol: string;
+  /** Endpoint, parameter, dan sebutan pemegang untuk pustaka fakta. */
+  sumber: Omit<SumberGudang, 'asal'>;
+  /**
+   * Fakta turunan kasus ini, dihitung dari pustaka dasar.
+   *
+   * Sebuah fungsi dan bukan daftar: turunan yang satu dihitung dari turunan
+   * yang lain (selisih dipakai penjumlahan), dan urutannya adalah bagian dari
+   * arti kasusnya. Yang dikembalikan ditambahkan ke pustaka berurutan, jadi
+   * `ambilFakta` di dalamnya selalu menemukan yang sudah lahir sebelumnya.
+   */
+  turunan: (pustaka: Fakta[], data: DataEmiten) => Fakta[];
+}
+
+/**
+ * Data yang dipakai **memverifikasi** kasus ini: hanya dokumen yang sudah
+ * terbit pada `tanggal_t` (M4 D-2).
+ *
+ * Ini keputusan isi, bukan kemudahan. Premis produk ini adalah "apa yang bisa
+ * dibaca pada hari itu", dan memverifikasi kartu dengan dokumen dari masa
+ * depan melanggar premis itu ke arah yang paling halus: sebuah laporan yang
+ * terbit tiga minggu **sesudah** T bisa membuat kartu yang sah pada hari itu
+ * tiba-tiba berstatus KONFLIK, dan pemain akan kehilangan kartu karena sesuatu
+ * yang pada hari itu belum ada di dokumen mana pun.
+ *
+ * Yang dibuang bukan disembunyikan: pustaka fakta tetap dibangun dari **data
+ * penuh** (layar pembukaan memang bercerita tentang sesudah T), dan hasil
+ * verifikasi atas data penuh dilaporkan di ledger milestone.
+ */
+export function dataSampai(data: DataEmiten, tanggal_t: string): DataEmiten {
+  return {
+    ...data,
+    laporan: data.laporan.filter((l) => l.dilaporkan_pada.slice(0, 10) <= tanggal_t),
+    harga: data.harga.filter((h) => h.tanggal <= tanggal_t),
+    suspensi: data.suspensi.filter((s) => s.tanggal <= tanggal_t),
+    dividen: data.dividen.filter((d) => d.ex_date <= tanggal_t),
+    rups: data.rups.filter((r) => r.tanggal <= tanggal_t),
+    stock_split: data.stock_split.filter((s) => s.tanggal <= tanggal_t),
+    right_issue: data.right_issue.filter((r) => r.ex_date <= tanggal_t),
+    bonus: data.bonus.filter((b) => b.ex_date <= tanggal_t),
+  };
+}
+
+/**
+ * Temuan mana yang menandai fakta KONFLIK (M4 D-2).
+ *
+ * Hanya yang berkeparahan `konflik`. `peringatan` dan `catatan` tetap masuk
+ * "Jejak verifikasi" sebagai penjelasan — itulah gunanya keparahan yang lahir
+ * di M2a: sebelum ada tingkatan ini, satu-satunya pilihan adalah menolak kartu
+ * yang benar atau menyembunyikan temuannya sama sekali.
+ */
+function temuanKonflik(temuan: Temuan[]): Temuan[] {
+  return temuan.filter((t) => keparahanTemuan(t) === 'konflik');
+}
+
+export function bangunKasusUmum(
+  def: DefinisiKasusUmum,
+  data: DataEmiten,
+  asal: AsalGudang,
+  berkas_kosong: string[] = [],
+): HasilBangun {
+  const sumber: SumberGudang = { ...def.sumber, asal };
+  const dasar = pustakaGudang(data, sumber).fakta;
+  const pustaka = [...dasar];
+  for (const fakta of def.turunan(pustaka, data)) pustaka.push(fakta);
+
+  const hasil = verifikasiV2(konteksEmiten(dataSampai(data, def.tanggal_t), berkas_kosong));
+  const mentah = hasil.pemeriksaan.flatMap((p) => p.temuan);
+  const temuan = kaitkanTemuan(mentah, pustaka);
+  const pemeriksaan: PemeriksaanAturan[] = hasil.pemeriksaan.map((p) => ({
+    aturan: p.aturan,
+    judul: p.judul,
+    dijalankan: p.dijalankan,
+    alasan_lewat: p.alasan_lewat,
+    jumlah_temuan: p.temuan.length,
+  }));
+
+  const terpilih = new Map<string, Fakta>();
+  for (const id of idYangDisebut(def)) {
+    if (!terpilih.has(id)) terpilih.set(id, ambilFakta(pustaka, id));
+  }
+  for (const t of temuanKonflik(temuan)) {
+    for (const id of t.fakta_terkait) {
+      if (!terpilih.has(id)) terpilih.set(id, ambilFakta(pustaka, id));
+    }
+  }
+  lengkapiTurunan(terpilih, pustaka);
+  tandaiKonflik(terpilih, temuanKonflik(temuan));
   pasangAwam(terpilih, def.awam);
 
   const kasus: Kasus = {
