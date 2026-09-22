@@ -116,6 +116,7 @@ Yang tercatat adalah perilaku di halaman, bukan orangnya:
 | `ketuk` | satu ketukan: di layar mana, pada blok bernama apa, di bagian layar sebelah mana (0–1), dan apakah sasarannya memang bisa diketuk |
 | `ketuk_dibatasi` | sesi ini menabrak batas 300 ketukan; sesudahnya ketukan tidak dicatat lagi |
 | `gulir` | sejauh mana layar itu digulir (0–1): saat meninggalkan layar, **dan** saat 50 % lalu 100 % pertama kali terlewat di layar itu |
+| `balon` | balon chat melayang diturunkan utuh atau dikembalikan mengintip, dan dengan cara apa: ketukan atau tarikan jari |
 | `pembukaan_masuk`, `pembukaan_selesai`, `loncat_ke_ringkasan` | sampai ke layar pembukaan, lama membacanya, seberapa jauh menggulir |
 | `minat_kasus_lain` | tombol "Mau coba kasus lain" ditekan |
 | `akhir_kirim` | isian tiga pertanyaan dan kotak teks di layar akhir |
@@ -138,6 +139,27 @@ ditinggal* menghasilkan angka yang sama persis. Dua cap waktu tambahan
 memisahkan keduanya. Layar yang memang muat satu jendela melahirkan keduanya
 pada detik nol — "100 % pada detik 0" berarti **tidak perlu menggulir**, bukan
 membaca dengan kecepatan yang mustahil.
+
+### Balon chat yang melayang
+
+Begitu lebih dari separuh badan pesan teman lewat ke atas keping tanggal,
+sebuah salinannya melayang tepat di bawah keping dan **mengintip**: tersisa
+satu tepi setinggi 28 px. Ketuk atau tarik untuk menurunkannya utuh, tarik ke
+atas untuk mengembalikannya mengintip. Ia tidak pernah menutupi keping, dan
+"↑ Kembali ke dokumen" membawa pemain ke puncak halaman, tempat balonnya ada
+di alirannya sendiri.
+
+Yang dicatat adalah **perubahan keadaan**, bukan gerakan jari: tarikan yang
+jatuh kembali ke tempat semula tidak melahirkan apa pun. Paling banyak **40**
+peristiwa `balon` per sesi; sesudah itu pencatatannya berhenti, tanpa peristiwa
+penanda — berbeda dengan `ketuk`, yang batasnya diumumkan lewat
+`ketuk_dibatasi`. Balon yang digoyang empat puluh kali sudah menjawab
+pertanyaannya sendiri, dan peristiwa ke-41 hanya menghabiskan kuota kiriman.
+
+**Mengintip tidak bisa dicatat, dan itu sifat balonnya:** balon yang dibiarkan
+tidak berpindah keadaan. Ringkasan karena itu membaca "hanya mengintip" dari
+fakta lain — pemain sampai ke pilihan jawaban di layar itu, dan pilihan berada
+jauh di bawah balon aslinya.
 
 ### Ketukan: nama, bukan isi
 
@@ -237,6 +259,29 @@ npm run alpha:ringkas -- alat/contoh/peristiwa-bertingkat.jsonl
 Kedua sesi itu punya kedalaman gulir yang **sama persis** di soal 1 (100 %).
 Hanya kolom waktunya yang memberi tahu bahwa yang satu membaca dan yang satu
 meninggalkan ponselnya.
+
+Bagian **"Balon chat"** menjawab pertanyaan pemilik tentang balon melayang:
+per sesi × layar soal, berapa kali ia diturunkan lewat ketukan dan berapa lewat
+tarikan; per soal, berapa sesi yang tidak menyentuhnya sama sekali, hanya
+mengintip, atau pernah menurunkannya. Kolom terakhirnya menyandingkan
+`gulir_balik_ke_kartu` rata-rata antara sesi yang memakai balon dan sesi yang
+tidak — angka yang sama yang membuat balon ini ada. Contohnya di
+[`alat/contoh/peristiwa-balon.jsonl`](alat/contoh/peristiwa-balon.jsonl):
+
+```bash
+npm run alpha:ringkas -- alat/contoh/peristiwa-contoh.jsonl alat/contoh/peristiwa-balon.jsonl
+```
+
+```
+| layar  | sesi | tidak menyentuh | hanya mengintip | pernah menurunkan | gulir balik (pakai balon) | gulir balik (tanpa balon) |
+| soal-1 | 7    | 2               | 3               | 2                 | 0.0 (2 sesi)              | 0.7 (3 sesi)              |
+| soal-2 | 5    | 0               | 3               | 2                 | 0.5 (2 sesi)              | 2.0 (2 sesi)              |
+```
+
+Berkas yang terkumpul **sebelum** balon melayang ada tidak punya peristiwa
+`balon` sama sekali; di sana ketiga kotak hanya menggambarkan seberapa jauh
+orang sampai, dan yang berarti adalah kolom pembandingnya. Laporannya
+mengatakan itu sendiri.
 
 **Mengecualikan sesi sendiri lewat nomor pengunjung.** Penanda `?k=` hanya
 bekerja kalau tautannya memang dipakai — dan pemilik pernah membuka situsnya

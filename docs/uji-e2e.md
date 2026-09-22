@@ -138,6 +138,7 @@ dilihat browser tanpa membuka browser.
 | **M3.6-4** Sobekan kalender "kurang terasa" | `sobekan.spec.ts` E-05 | `gaya.css`: `animation-delay` sobekan dijadikan 2.000 ms (janji animasi 2.700 ms > batas 1.750 ms) |
 | **M3.6-5** "rantai laporan kepemilikan" terdengar seperti rantai komando; "sepuluh aturan" ditulis mati padahal mesin V2 punya 31 | `jejak-verifikasi.spec.ts` E-18 | `jejak.ts`: angka ditulis mati lagi · kata "rantai" dikembalikan · ringkasan lipatan memakai angka lain daripada kalimat pembukanya |
 | **F-M36-1** "Langsung ke ringkasan" mendarat 176 px meleset ketika diketuk selagi kalender masih menutup ruangnya | `permainan.spec.ts` E-10 (proyek `lebar`) | `Aplikasi.tsx`: guliran kedua di `gulirKeSasaran()` dihapus |
+| **M3.7-1** Pesan teman hilang dari layar justru ketika pemain menjawab: gulir balik ke kartu 2,5× di soal 2 (uji duduk 22 Sep) | `balon-melayang.spec.ts` E-19a–g | `Aplikasi.tsx`: ketukan tidak men-dispatch `sakelar_balon` (5 dari 7 merah) · ambang `AMBANG_BALON_MELAYANG` 0,5 → 0,001 (E-19e) · `INTIP_BALON_PX` 28 → 4 (E-19a) · tarikan tidak pernah melewati ambang (E-19c) · `gaya.css`: `overflow: hidden` pada `.melayang` dihapus (E-19a) · aturan `prefers-reduced-motion` balon dihapus (E-19f) |
 
 ## Menambah tes ketika cacat baru ditemukan
 
@@ -213,6 +214,20 @@ dilihat browser tanpa membuka browser.
   sasarannya, dan berapa jauh berbeda tiap putaran. Tes yang bertanya "apakah
   ini terlihat dari tempat pemain mengetuk" harus mengembalikan posisi gulirnya
   lebih dulu; kalau tidak, yang diukur adalah guliran alat uji.
+- **Ambang yang dibaca dari produk menjaga kesepakatan, bukan nilainya.**
+  `bantu/ambang.ts` membaca konstanta dari teks sumber supaya tes dan produk
+  tidak bisa berselisih tentang di mana batasnya. Tetapi tes yang **menghitung
+  titik ujinya** dari angka itu akan ikut berpindah ketika angkanya berpindah:
+  mengubah ambang balon melayang dari 0,5 menjadi 0,001 membuat E-19e tetap
+  hijau, karena ia menggeser sendiri posisi gulirnya. Terukur waktu sabotase.
+  Jadi setiap ambang yang dibaca begitu butuh **dua** penjaga: satu baris yang
+  memaku nilainya ke angka patokan, dan satu asersi perilaku dengan pecahan
+  tetap yang tidak bertanya kepada produk sama sekali.
+- **Kotak yang bertindih belum tentu berarti tertutup.** "Balon tidak menutupi
+  keping" diuji dengan `elementFromPoint` di beberapa titik di dalam keping,
+  bukan dengan membandingkan kotak. Perbandingan kotak tetap hijau ketika
+  guntingnya dicabut; yang menjawab "apa yang benar-benar ada di titik ini"
+  tidak.
 - **Tangkapan layar diambil saat halaman diam.** `simpanLayar()` menunggu
   gulirnya berhenti dan memeriksa `scrollY` tidak berubah selama gambarnya
   diambil. Gambar bahan review yang menyesatkan membuat orang mengejar cacat
