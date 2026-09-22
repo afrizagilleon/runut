@@ -58,6 +58,26 @@ const POLA_TEBAL = /\*\*[^*]+\*\*/;
  * jadi batasnya sama dengan teks kartu.
  */
 const MAKS_PENUTUP = 220;
+/**
+ * Panjang teks yang TAMPIL di dalam sebuah rujukan `[[fact_id|teks]]` (M4).
+ *
+ * Bukan kerapian: `Teks.tsx` membungkus tautan beserta tanda bacanya di dalam
+ * `.tanpa-putus` (`white-space: nowrap`), supaya titik sesudah tautan tidak
+ * terlempar ke baris berikutnya (F-A1-2). Akibatnya label rujukan **tidak bisa
+ * putus baris sama sekali**, dan label sepanjang satu klausa memaksa seluruh
+ * halaman melebar di 360 px.
+ *
+ * Terukur, bukan dikira: satu label 64 karakter di layar pembukaan ULTJ
+ * membuat `scrollWidth` 568 melawan `clientWidth` 360 — gulir mendatar yang
+ * dijaga E-12a, dan Chromium lalu memperlebar layout viewport sehingga ketukan
+ * mendarat di tempat yang salah. Batas di bawah berada tepat di atas label
+ * terpanjang kasus DADA (31 karakter), yang memang muat.
+ *
+ * Penjaga sebenarnya tetap E-12a di browser; ini peringatan dini di pabrik,
+ * supaya penulis kasus berikutnya tidak menemukannya lewat tes yang menggantung
+ * sembilan puluh detik.
+ */
+const MAKS_LABEL_RUJUKAN = 36;
 /** Kartu per soal (D-1). */
 const MIN_KARTU = 2;
 const MAKS_KARTU = 4;
@@ -441,6 +461,63 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
     }
     for (const [nomor, teks] of baris.entries()) {
       periksaTeks(teks, `pembukaan (${nama} ke-${String(nomor + 1)})`, 'pembukaan');
+    }
+  }
+
+  /*
+   * --- panjang label rujukan (M4) -----------------------------------------
+   *
+   * Disapu dari SELURUH teks yang dirender lewat `Teks.tsx`, sekali, di satu
+   * tempat: aturan yang diperiksa per bagian akan lupa bagian berikutnya.
+   */
+  const teksBerujukan: Array<[string, string]> = [
+    ['pembuka (kalimat)', kasus.pembuka.kalimat],
+    ...kasus.fakta
+      .filter((f) => f.awam !== null)
+      .map((f): [string, string] => [`kartu "${f.fact_id}"`, f.awam?.isi ?? '']),
+    ...kasus.soal.map((s): [string, string] => [`penjelasan "${s.soal_id}"`, s.penjelasan]),
+    ...kasus.pembukaan.paragraf.map((p, i): [string, string] => [
+      `pembukaan (paragraf ke-${String(i + 1)})`,
+      p,
+    ]),
+    ...kasus.pembukaan.bisa_dibaca.map((p, i): [string, string] => [
+      `pembukaan (bisa_dibaca ke-${String(i + 1)})`,
+      p,
+    ]),
+    ...kasus.pembukaan.tidak_bisa_dibaca.map((p, i): [string, string] => [
+      `pembukaan (tidak_bisa_dibaca ke-${String(i + 1)})`,
+      p,
+    ]),
+    ...kasus.pembukaan.disingkirkan.map((p, i): [string, string] => [
+      `pembukaan (disingkirkan ke-${String(i + 1)})`,
+      p,
+    ]),
+  ];
+  for (const [tempat, isi] of teksBerujukan) {
+    /*
+     * Tanda tebal Markdown di teks yang dirender `Teks.tsx` terbaca **apa
+     * adanya** oleh pemain: tidak ada satu baris pun di web/src yang mengurai
+     * `**…**`. Aturan ini ada karena saya sendiri menulisnya di teks kunci ULTJ
+     * dan baru melihatnya waktu membaca berkas kasus yang sudah jadi.
+     */
+    if (POLA_TEBAL.test(isi)) {
+      tambah(
+        masalah,
+        'TEKS_DITEBALKAN',
+        `Teks di ${tempat} memuat tanda tebal "**"; tidak ada yang menguraikannya, ` +
+          'jadi bintangnya akan terbaca pemain apa adanya.',
+      );
+    }
+    for (const rujukan of ambilRujukan(isi)) {
+      if (rujukan.teks.length <= MAKS_LABEL_RUJUKAN) continue;
+      tambah(
+        masalah,
+        'RUJUKAN_PANJANG',
+        `Rujukan di ${tempat} menampilkan ${String(rujukan.teks.length)} karakter ` +
+          `("${rujukan.teks}"), lebih dari ${String(MAKS_LABEL_RUJUKAN)}. Label rujukan tidak ` +
+          'bisa putus baris, jadi yang sepanjang ini memaksa halaman melebar di 360 px. ' +
+          'Tautkan angkanya saja, bukan seluruh klausanya.',
+      );
     }
   }
 

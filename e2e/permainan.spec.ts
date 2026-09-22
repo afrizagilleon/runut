@@ -21,10 +21,13 @@ import {
   pilihOpsi,
   rasioDiViewport,
   simpanLayar,
+  tandaiDimainkan,
   tungguMasukLayar,
   tungguSoal,
+  KASUS_BAWAAN,
 } from './bantu/main.ts';
 import { bacaKasus, kunciSalah } from './bantu/kasus.ts';
+import { ID_KASUS } from './bantu/jalur.ts';
 import { kotak } from './bantu/ukur.ts';
 
 /**
@@ -40,8 +43,26 @@ import { kotak } from './bantu/ukur.ts';
  * `toHaveScreenshot` di sini, dan tidak pernah ada tes yang merah karena satu
  * piksel bergeser.
  */
-test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', async ({ page }) => {
-  const kasus = bacaKasus();
+for (const kasus_id of ID_KASUS) {
+/*
+ * Nama anak folder tangkapan layar. Kasus bawaan menyimpan langsung di
+ * `<proyek>/`, supaya nama berkas yang sudah dikenal reviewer sejak M3.3 tidak
+ * bergeser; kasus lain mendapat folder sendiri (`<proyek>/ultj/`).
+ */
+const subfolder = kasus_id === KASUS_BAWAAN ? '' : (kasus_id.split('-')[0] ?? kasus_id);
+
+test(`E-10 [${kasus_id}] satu permainan penuh, tanpa galat konsol, dengan tangkapan layar`, async ({
+  page,
+}) => {
+  /*
+   * Proyek `alpha` bermain melawan server sungguhan, dan tiap putaran menambah
+   * satu sesi ke data pemilik. Ia memainkan kasus bawaan saja.
+   */
+  test.skip(
+    test.info().project.name === 'alpha' && kasus_id !== KASUS_BAWAAN,
+    'proyek alpha hanya memainkan kasus bawaan',
+  );
+  const kasus = bacaKasus(kasus_id);
   const galat = awasiGalat(page);
   /*
    * Proyek `alpha` memakai `?k=uji` seperti yang disepakati D-9: penanda itu
@@ -50,7 +71,16 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
    */
   const penanda = test.info().project.name === 'alpha' ? 'uji' : penandaBaru();
 
-  await buka(page, penanda);
+  /*
+   * Semua kasus ditandai sudah dimainkan lebih dulu (M4 D-4). Yang diuji di
+   * sini adalah satu permainan penuh **sampai pesan penutupnya**, dan pesan
+   * itu hanya tampil ketika tidak ada lagi kasus yang belum dimainkan. Tanpa
+   * penanda ini, tes ini berubah perilakunya tiap kali satu kasus ditambahkan
+   * ke repo — dan "Mau coba kasus lain membuka kasus berikutnya" punya tesnya
+   * sendiri (E-20e).
+   */
+  await tandaiDimainkan(page, ID_KASUS);
+  await buka(page, penanda, kasus_id);
 
   /* --- layar pertama ------------------------------------------------- */
   const tombolMulai = page.getByRole('button', { name: LABEL_MULAI });
@@ -66,7 +96,7 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   await expect(meta).toContainText(`${String(kasus.soal.length)} soal`);
   await expect(meta).toContainText(`sekitar ${String(kasus.pembuka.menit ?? 0)} menit`);
   await expect(meta).toContainText('tanpa akun, tanpa skor');
-  await simpanLayar(page, 1, 'layar-pertama');
+  await simpanLayar(page, 1, 'layar-pertama', false, subfolder);
 
   await mulaiKasus(page);
 
@@ -77,7 +107,7 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
 
   await tungguSoal(page, 1);
   await expect(page.getByRole('heading', { name: soal1.tanya })).toBeVisible();
-  await simpanLayar(page, 2, 'soal-1-atas');
+  await simpanLayar(page, 2, 'soal-1-atas', false, subfolder);
 
   const kunciPertama = soal1.pilihan[0]?.kunci ?? 'a';
   const adaBilahTurun = await bilahTurunAda(page, kunciPertama);
@@ -97,7 +127,7 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
    * puncak layar DAN keempat opsi sudah terlihat, yaitu keadaan yang memang
    * ingin ditunjukkan PNG 03.
    */
-  const jalur3 = await simpanLayar(page, 3, 'sesudah-jawab-di-bawah');
+  const jalur3 = await simpanLayar(page, 3, 'sesudah-jawab-di-bawah', false, subfolder);
   const kepingSaatItu = await kotak(page, '[data-uid="keping"]');
   expect(kepingSaatItu, 'keping kalender ada di layar soal').not.toBeNull();
   expect(
@@ -113,13 +143,13 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   await ketuk(kaki);
   await expect(kaki).toHaveAttribute('aria-expanded', 'true');
   await expect(page.getByText('Kalimat resminya').first()).toBeVisible();
-  await simpanLayar(page, 4, 'sumber-terbuka');
+  await simpanLayar(page, 4, 'sumber-terbuka', false, subfolder);
 
   const salah = kunciSalah(soal1);
   await pilihOpsi(page, salah);
   await kunciJawaban(page);
   await expect(page.getByText('Belum cocok dengan kartu')).toBeVisible();
-  await simpanLayar(page, 5, 'soal-1-dikunci-salah');
+  await simpanLayar(page, 5, 'soal-1-dikunci-salah', false, subfolder);
 
   /*
    * A2-T5: blok "Kartu yang menentukan" mendapat tangkapannya sendiri.
@@ -133,7 +163,7 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   await expect(penentu, 'blok "Kartu yang menentukan" ada sesudah jawaban dikunci').toBeVisible();
   await expect(penentu.getByText('Kartu yang menentukan')).toBeVisible();
   await penentu.scrollIntoViewIfNeeded();
-  await simpanLayar(page, '05b', 'kartu-penentu');
+  await simpanLayar(page, '05b', 'kartu-penentu', false, subfolder);
 
   /* --- soal 2: jawab BENAR -------------------------------------------- */
   const soal2 = kasus.soal[1];
@@ -143,7 +173,7 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   await lanjut(page, 'Lanjut ke soal 2');
   await tungguSoal(page, 2);
   await expect(page.getByRole('heading', { name: soal2.tanya })).toBeVisible();
-  await simpanLayar(page, 6, 'soal-2');
+  await simpanLayar(page, 6, 'soal-2', false, subfolder);
 
   await bilahTurunAda(page, soal2.pilihan[0]?.kunci ?? 'a');
   await pilihOpsi(page, soal2.jawaban);
@@ -158,7 +188,7 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   await lanjut(page, 'Lanjut ke soal 3');
   await tungguSoal(page, 3);
   await expect(page.getByRole('heading', { name: soal3.tanya })).toBeVisible();
-  await simpanLayar(page, 7, 'soal-3');
+  await simpanLayar(page, 7, 'soal-3', false, subfolder);
 
   await bilahTurunAda(page, soal3.pilihan[0]?.kunci ?? 'a');
   await pilihOpsi(page, soal3.jawaban);
@@ -167,8 +197,8 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   /* --- pembukaan ------------------------------------------------------ */
   await lanjut(page, LABEL_SESUDAHNYA);
   await expect(page.getByRole('heading', { name: 'Waktu berjalan lagi' })).toBeVisible();
-  await simpanLayar(page, 8, 'pembukaan-atas');
-  await simpanLayar(page, 9, 'pembukaan-penuh', true);
+  await simpanLayar(page, 8, 'pembukaan-atas', false, subfolder);
+  await simpanLayar(page, 9, 'pembukaan-penuh', true, subfolder);
 
   const ringkasan = page.getByRole('heading', { name: 'Apa yang bisa dan tidak bisa dibaca' });
   expect(
@@ -187,15 +217,22 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   await expect(page.getByRole('heading', { name: 'Tiga pertanyaan singkat' })).toBeVisible();
   await expect(page.getByRole('group')).toHaveCount(3);
   await expect(page.locator('textarea')).toHaveCount(1);
-  await simpanLayar(page, 10, 'layar-akhir');
+  await simpanLayar(page, 10, 'layar-akhir', false, subfolder);
 
   await lanjut(page, LABEL_SELESAI);
   await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
-  await simpanLayar(page, 11, 'terima-kasih');
+  await simpanLayar(page, 11, 'terima-kasih', false, subfolder);
 
   await ketuk(page.getByRole('button', { name: LABEL_KASUS_LAIN }));
-  await expect(page.getByText('Tidak semua saham seperti ini.')).toBeVisible();
-  await simpanLayar(page, 12, 'kasus-lain');
+  /*
+   * Pesan penutupnya dibaca dari berkas kasus, bukan disalin ke dalam tes:
+   * sejak M4 tiap kasus menutup dengan kalimatnya sendiri, dan tes yang
+   * menuliskan kalimat DADA akan hijau atas kasus mana pun yang kebetulan
+   * memakai kata yang sama.
+   */
+  await expect(page.getByText(kasus.penutup.kepala)).toBeVisible();
+  await expect(page.getByText(kasus.penutup.isi)).toBeVisible();
+  await simpanLayar(page, 12, 'kasus-lain', false, subfolder);
 
   expect(galat.kode(), 'tidak boleh ada galat konsol maupun pageerror sepanjang permainan').toEqual(
     [],
@@ -205,3 +242,4 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
     'tidak boleh ada permintaan yang gagal selain ikon tab yang memang tidak disediakan',
   ).toEqual([]);
 });
+}

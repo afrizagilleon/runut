@@ -3,14 +3,25 @@ import { DIR_DIST_DENGAN, ID_KASUS } from './bantu/jalur.ts';
 import { bacaBundel } from './bantu/bundel.ts';
 import { bacaKasus } from './bantu/kasus.ts';
 import {
+  LABEL_KASUS_LAIN,
+  LABEL_LANJUT_AKHIR,
   LABEL_MULAI,
+  LABEL_SELESAI,
+  LABEL_SESUDAHNYA,
   awasiGalat,
+  bilahTurunAda,
   buka,
   bukaTanpaKasus,
   gagalYangBerarti,
+  ketuk,
+  kunciJawaban,
+  lanjut,
+  mulaiKasus,
   penandaBaru,
+  pilihOpsi,
+  tungguSoal,
 } from './bantu/main.ts';
-import { peristiwaSesi, tungguSatuSesi } from './bantu/peristiwa.ts';
+import { mulaiDenganPenanda, peristiwaSesi, tungguSatuSesi, tungguSesi } from './bantu/peristiwa.ts';
 
 /**
  * E-20 — pemilihan kasus (M4 D-4).
@@ -134,4 +145,114 @@ test('E-20d pesan penutup datang dari berkas kasus, bukan dari kode', () => {
       `pesan penutup ${kasus_id} (isi) harus ikut ke bundel`,
     ).toBe(true);
   }
+});
+
+/* ------------------------------------------------------------------ */
+/* Berpindah kasus (M4 D-4, D-5)                                       */
+/* ------------------------------------------------------------------ */
+
+/** Mainkan satu kasus sampai layar "Terima kasih." — jalan terpendeknya. */
+async function mainkanSampaiTerimaKasih(page: Page, kasus_id: string): Promise<void> {
+  const kasus = bacaKasus(kasus_id);
+  await mulaiKasus(page);
+  for (const [nomor, soal] of kasus.soal.entries()) {
+    await tungguSoal(page, nomor + 1);
+    await bilahTurunAda(page, soal.pilihan[0]?.kunci ?? 'a');
+    await pilihOpsi(page, soal.jawaban);
+    await kunciJawaban(page);
+    await lanjut(
+      page,
+      nomor === kasus.soal.length - 1 ? LABEL_SESUDAHNYA : `Lanjut ke soal ${String(nomor + 2)}`,
+    );
+  }
+  await expect(page.getByRole('heading', { name: 'Waktu berjalan lagi' })).toBeVisible();
+  await lanjut(page, LABEL_LANJUT_AKHIR);
+  await lanjut(page, LABEL_SELESAI);
+  await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
+}
+
+test('E-20e "Mau coba kasus lain" membuka kasus yang BELUM dimainkan, sesi baru', async ({
+  page,
+}) => {
+  const galat = awasiGalat(page);
+  const penanda = penandaBaru();
+  const pertama = ID_KASUS[0] ?? '';
+  const kedua = ID_KASUS[1] ?? '';
+  expect(kedua, 'tes ini butuh dua kasus di repo').not.toBe('');
+
+  await buka(page, penanda, pertama);
+  const sesiPertama = await tungguSatuSesi(penanda);
+  await mainkanSampaiTerimaKasih(page, pertama);
+
+  await ketuk(page.getByRole('button', { name: LABEL_KASUS_LAIN }));
+
+  /*
+   * Kasus berikutnya terbuka LANGSUNG — bukan pesan penutup. Yang diperiksa
+   * adalah layar pertama kasus kedua, bukan sekadar "halaman berubah":
+   * tombol "Mulai kasus" ada lagi, dan baris meta menyebut jumlah soal kasus
+   * itu sendiri.
+   */
+  await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
+  await expect(page.locator('[data-uid="pesan-alpha"]')).toHaveCount(0);
+
+  /*
+   * Sesi baru, pengunjung sama (D-4): dua peristiwa `mulai` dengan penanda yang
+   * sama, id sesi berbeda, kasus_id berbeda, nomor pengunjung sama.
+   */
+  const sesi = await tungguSesi(penanda, 2);
+  expect(new Set(sesi).size, 'dua sesi yang berbeda').toBe(2);
+  const mulai = mulaiDenganPenanda(penanda);
+  expect(mulai.map((p) => p.kasus_id)).toEqual([pertama, kedua]);
+  expect(sesi[0]).toBe(sesiPertama);
+  const pengunjung = mulai.map((p) => p.isi.pengunjung);
+  expect(pengunjung[0], 'nomor pengunjung tidak boleh null di build uji').not.toBeNull();
+  expect(pengunjung[0], 'pengunjung sama, sesi baru').toBe(pengunjung[1]);
+  expect(
+    mulai.map((p) => p.isi.kunjungan_ke),
+    'membuka kasus kedua bukan kunjungan kedua',
+  ).toEqual([mulai[0]?.isi.kunjungan_ke, mulai[0]?.isi.kunjungan_ke]);
+
+  /* `minat_kasus_lain` tetap lahir, dan ia milik sesi yang ditinggalkan. */
+  const minat = peristiwaSesi(sesiPertama).filter((p) => p.nama === 'minat_kasus_lain');
+  expect(minat, 'peristiwa minat_kasus_lain harus tetap lahir').toHaveLength(1);
+
+  /* D-5: kasus baru adalah layar baru di riwayat peramban, bukan halaman baru. */
+  expect(
+    await dimainkanDiPeramban(page),
+    'kedua kasus tercatat sudah dimainkan sesudah yang kedua dibuka',
+  ).toEqual([pertama, kedua]);
+
+  expect(galat.kode(), 'tidak boleh ada galat konsol saat berpindah kasus').toEqual([]);
+  expect(gagalYangBerarti(galat.permintaanGagal())).toEqual([]);
+});
+
+test('E-20f dua kunjungan di satu peramban tidak mengulang kasus sampai keduanya habis', async ({
+  page,
+}) => {
+  const p1 = penandaBaru();
+  const p2 = penandaBaru();
+  const p3 = penandaBaru();
+
+  await bukaTanpaKasus(page, p1);
+  await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
+  const kasus1 = kasusSesi(await tungguSatuSesi(p1));
+
+  await bukaTanpaKasus(page, p2);
+  await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
+  const kasus2 = kasusSesi(await tungguSatuSesi(p2));
+
+  expect(
+    kasus2,
+    `kunjungan kedua harus mendapat kasus yang lain; kunjungan pertama ${kasus1}`,
+  ).not.toBe(kasus1);
+  expect([kasus1, kasus2].sort()).toEqual([...ID_KASUS].sort());
+
+  /*
+   * Kunjungan ketiga: semuanya sudah dimainkan, jadi kasusnya acak lagi dari
+   * seluruh daftar — yang diperiksa adalah bahwa ia tetap **salah satu kasus
+   * yang ada**, bukan layar kosong.
+   */
+  await bukaTanpaKasus(page, p3);
+  await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
+  expect(ID_KASUS).toContain(kasusSesi(await tungguSatuSesi(p3)));
 });

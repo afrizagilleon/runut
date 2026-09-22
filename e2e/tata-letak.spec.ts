@@ -20,6 +20,7 @@ import {
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
+import { ID_KASUS } from './bantu/jalur.ts';
 import { kotak, ukurLayar, type BarisKontras, type UkuranSentuh } from './bantu/ukur.ts';
 
 /**
@@ -65,14 +66,15 @@ async function periksaLayar(page: Page, nama: string, kumpul: Laporan[]): Promis
   });
 }
 
-test('E-12 a/b/e/f tata letak terukur di tiap layar, dan kontras empat peran teks', async ({
+for (const kasus_id of ID_KASUS) {
+test(`E-12 a/b/e/f [${kasus_id}] tata letak terukur di tiap layar, dan kontras empat peran teks`, async ({
   page,
 }) => {
-  const kasus = bacaKasus();
+  const kasus = bacaKasus(kasus_id);
   const kumpul: Laporan[] = [];
   const skema = test.info().project.use.colorScheme ?? 'light';
 
-  await buka(page, penandaBaru());
+  await buka(page, penandaBaru(), kasus_id);
   await periksaLayar(page, 'layar-pertama', kumpul);
 
   await mulaiKasus(page);
@@ -162,6 +164,8 @@ test('E-12 a/b/e/f tata letak terukur di tiap layar, dan kontras empat peran tek
     ).toBeGreaterThanOrEqual(4.5);
   }
 });
+
+}
 
 test('E-12c sesudah "Kembali ke dokumen", keping tidak menutupi kalimat pengantar', async ({
   page,

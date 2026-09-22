@@ -298,7 +298,7 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
         `lembarnya pernah turun jauh, dari [[${DIVIDEN_TAHUNAN[1]}|Rp85 di 2021]] ke ` +
         `[[${DIVIDEN_TAHUNAN[2]}|Rp25 di 2022]], sebelum naik lagi tiap tahun sampai ` +
         `[[${DIV_T}|Rp130]]. Kartu kedua sudah membandingkan tahun demi tahun, jadi tidak ada ` +
-        'yang perlu kamu hitung. Perhatikan juga apa yang **tidak** ada di kartu ini: berapa ' +
+        'yang perlu kamu hitung. Perhatikan juga apa yang tidak ada di kartu ini: berapa ' +
         'dividen tahun depan, dan kenapa jumlahnya berubah — dokumen hanya mencatat yang sudah ' +
         'terjadi. Salah-kaprah yang umum: satu kalimat yang setengahnya benar dibaca sebagai ' +
         'seluruhnya benar, dan bagian yang terdengar paling meyakinkan justru yang paling jarang ' +
@@ -362,15 +362,16 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
     paragraf: [
       '[[harga-2026-05-05|Hari bursa berikutnya]] ditutup [[harga-2026-05-05|Rp1.700]], di atas ' +
         `[[${HARGA_SEBELUM}|Rp1.690]] — penutupan terakhir sebelum tanggal ex.`,
-      '[[fil-2026-05-22-01|Terbit lagi satu laporan pembelian orang dalam, 3.000.000 lembar]]; ' +
-        `[[${DIV_BAYAR}|di hari yang sama]] dividen [[${DIV_T}|Rp130 per lembar]] dibayarkan.`,
+      'Terbit lagi satu laporan pembelian orang dalam, ' +
+        `[[fil-2026-05-22-01|3.000.000 lembar]]; [[${DIV_BAYAR}|di hari yang sama]] dividen ` +
+        `[[${DIV_T}|Rp130 per lembar]] dibayarkan.`,
       '[[harga-2026-06-08-terendah|Harga menyentuh Rp1.210]] di dalam hari dan ditutup ' +
         '[[harga-2026-06-08|Rp1.245]], angka terendah sepanjang deret tahun itu.',
       '[[harga-2026-09-18-tertinggi|Harga menyentuh Rp2.190]] dan ditutup ' +
         '[[harga-2026-09-18|Rp2.060]], tertinggi sepanjang deret; volume sehari ' +
         '[[volume-2026-09-18|123.380.100 lembar]], enam kali volume ' +
         '[[volume-2026-09-17|hari sebelumnya]].',
-      '[[rups-2026-10-27|Satu rapat umum pemegang saham lagi dijadwalkan]]. Teks keputusannya ' +
+      '[[rups-2026-10-27|Satu rapat pemegang saham]] lagi dijadwalkan. Teks keputusannya ' +
         'belum ada di data mana pun, jadi isinya tidak bisa dikutip di sini.',
     ],
     bisa_dibaca: [

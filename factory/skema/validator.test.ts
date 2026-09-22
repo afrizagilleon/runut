@@ -2,7 +2,14 @@ import { describe, expect, it } from 'vitest';
 import type { Fakta, Kasus } from './tipe.ts';
 import { SEMUA_ATURAN, VERSI_SKEMA } from './tipe.ts';
 import { ajakanBertransaksi, periksaKasus } from './validator.ts';
-import { angkaTelanjang, pecahTeks, teksPolos } from './rujukan.ts';
+import { ambilRujukan, angkaTelanjang, pecahTeks, teksPolos } from './rujukan.ts';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+const AKAR_REPO = fileURLToPath(new URL('../../', import.meta.url));
+const kasusAsliDada = JSON.parse(
+  readFileSync(`${AKAR_REPO}cases/dada-2025-10-08.json`, 'utf8'),
+) as unknown as Kasus;
 
 function fakta(ubah: Partial<Fakta> & { fact_id: string }): Fakta {
   return {
@@ -699,6 +706,69 @@ describe('aturan v1 yang tetap berlaku', () => {
     kasus.penutup = { kepala: 'Sampai jumpa.', isi: 'Saham ini layak dikoleksi.' };
     expect(kode(kasus)).toContain('AJAKAN_TRANSAKSI');
     expect(pesan(kasus)).toContain('penutup');
+  });
+
+  /*
+   * M4. Label rujukan tidak bisa putus baris (`Teks.tsx` membungkusnya di
+   * `.tanpa-putus`), jadi label sepanjang satu klausa memaksa halaman melebar
+   * di 360 px. Terukur di layar pembukaan ULTJ: satu label 64 karakter membuat
+   * scrollWidth 568 melawan clientWidth 360.
+   */
+  it('menolak label rujukan yang lebih panjang daripada 36 karakter', () => {
+    const kasus = kasusMinimal();
+    kasus.pembukaan.paragraf = [
+      '[[harga-nanti|Terbit lagi satu laporan pembelian orang dalam, Rp50]].',
+    ];
+    expect(kode(kasus)).toContain('RUJUKAN_PANJANG');
+    expect(pesan(kasus)).toContain('paragraf ke-1');
+  });
+
+  it('menerima label tepat 36 karakter — batasnya benar-benar di situ', () => {
+    const kasus = kasusMinimal();
+    kasus.pembukaan.paragraf = [`[[harga-nanti|${'a'.repeat(30)} Rp50]].`];
+    expect(kode(kasus)).not.toContain('RUJUKAN_PANJANG');
+  });
+
+  it('menyapu kartu dan teks kunci juga, bukan hanya layar pembukaan', () => {
+    const kartu = kasusMinimal();
+    const fakta = kartu.fakta.find((f) => f.fact_id === 'harga-akhir');
+    if (fakta?.awam == null) throw new Error('kasus contoh harus punya kartu');
+    fakta.awam.isi = `Harga kini [[harga-akhir|${'b'.repeat(40)}]].`;
+    expect(kode(kartu)).toContain('RUJUKAN_PANJANG');
+
+    const kunci = kasusMinimal();
+    const soal = kunci.soal[0];
+    if (soal === undefined) throw new Error('kasus contoh harus punya soal');
+    soal.penjelasan = `Karena [[harga-akhir|${'c'.repeat(40)}]].`;
+    expect(kode(kunci)).toContain('RUJUKAN_PANJANG');
+  });
+
+  it('kasus DADA yang hidup lolos batas itu — label terpanjangnya 31 karakter', () => {
+    const teks = [
+      ...kasusAsliDada.fakta.filter((f) => f.awam !== null).map((f) => f.awam?.isi ?? ''),
+      ...kasusAsliDada.soal.map((s) => s.penjelasan),
+      ...kasusAsliDada.pembukaan.paragraf,
+      ...kasusAsliDada.pembukaan.bisa_dibaca,
+      ...kasusAsliDada.pembukaan.tidak_bisa_dibaca,
+      ...kasusAsliDada.pembukaan.disingkirkan,
+    ];
+    const terpanjang = Math.max(
+      ...teks.flatMap((t) => ambilRujukan(t).map((r) => r.teks.length)),
+    );
+    expect(terpanjang).toBeLessThanOrEqual(36);
+  });
+
+  it('menolak tanda tebal di teks yang dirender apa adanya', () => {
+    const kasus = kasusMinimal();
+    const soal = kasus.soal[0];
+    if (soal === undefined) throw new Error('kasus contoh harus punya soal');
+    soal.penjelasan = 'Perhatikan apa yang **tidak** ada di kartu ini.';
+    expect(kode(kasus)).toContain('TEKS_DITEBALKAN');
+    expect(pesan(kasus)).toContain('penjelasan "s1"');
+  });
+
+  it('kedua berkas kasus yang ikut repo tidak memuat satu tanda tebal pun', () => {
+    expect(JSON.stringify(kasusAsliDada)).not.toContain('**');
   });
 
   it('menolak kalimat tetap yang jumlahnya bukan tiga', () => {

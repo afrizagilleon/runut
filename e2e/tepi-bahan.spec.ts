@@ -13,6 +13,7 @@ import {
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
+import { ID_KASUS } from './bantu/jalur.ts';
 
 /**
  * D-B2 — tidak ada teks yang menempel ke tepi bahan.
@@ -246,9 +247,12 @@ function laporkan(nama: string, hasil: HasilTepi): string {
   );
 }
 
-test('D-B2 tidak ada teks yang menempel ke tepi bahan, di tiap layar', async ({ page }) => {
-  const kasus = bacaKasus();
-  await buka(page, penandaBaru());
+for (const kasus_id of ID_KASUS) {
+test(`D-B2 [${kasus_id}] tidak ada teks yang menempel ke tepi bahan, di tiap layar`, async ({
+  page,
+}) => {
+  const kasus = bacaKasus(kasus_id);
+  await buka(page, penandaBaru(), kasus_id);
 
   const laporan: string[] = [];
   const semuaPelanggaran: string[] = [];
@@ -306,3 +310,4 @@ test('D-B2 tidak ada teks yang menempel ke tepi bahan, di tiap layar', async ({ 
       semuaPelanggaran.map((p) => `  ${p}`).join('\n'),
   ).toEqual([]);
 });
+}

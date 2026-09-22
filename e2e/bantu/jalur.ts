@@ -64,7 +64,7 @@ export const HOST_TIDAK_AMAN = 'runut.test';
  * terbaca oleh tes, dan "aplikasi memuat semua kasus" tidak akan pernah bisa
  * merah.
  */
-export const ID_KASUS: readonly string[] = ['dada-2025-10-08'];
+export const ID_KASUS: readonly string[] = ['dada-2025-10-08', 'ultj-2026-05-04'];
 
 export function berkasKasus(kasus_id: string): string {
   return join(AKAR, 'cases', `${kasus_id}.json`);

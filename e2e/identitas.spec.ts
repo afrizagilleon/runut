@@ -12,6 +12,7 @@ import {
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
+import { ID_KASUS } from './bantu/jalur.ts';
 
 /**
  * E-09 — INV-10: identitas emiten tidak bocor sebelum layar pembukaan.
@@ -145,9 +146,10 @@ async function tautanKeluar(page: Page): Promise<string[]> {
 
 async function mainkanSampaiPembukaan(
   page: Page,
+  kasus_id: string,
   periksa: (nama: string) => Promise<void>,
 ): Promise<void> {
-  const kasus = bacaKasus();
+  const kasus = bacaKasus(kasus_id);
   await periksa('layar-pertama');
   await mulaiKasus(page);
   for (const [nomor, soal] of kasus.soal.entries()) {
@@ -170,22 +172,23 @@ async function mainkanSampaiPembukaan(
   ).toBeVisible();
 }
 
-function rahasiaKasus(): { medan: string; nilai: string }[] {
-  const kasus = bacaKasus();
+function rahasiaKasus(kasus_id: string): { medan: string; nilai: string }[] {
+  const kasus = bacaKasus(kasus_id);
   return [
     { medan: 'simbol', nilai: kasus.emiten.simbol },
     { medan: 'nama', nilai: kasus.emiten.nama },
   ];
 }
 
-test('E-09a identitas emiten tidak TERBACA sebelum pembukaan, dan muncul sesudahnya', async ({
+for (const kasus_id of ID_KASUS) {
+test(`E-09a [${kasus_id}] identitas emiten tidak TERBACA sebelum pembukaan, dan muncul sesudahnya`, async ({
   page,
 }) => {
-  const rahasia = rahasiaKasus();
-  await buka(page, penandaBaru());
+  const rahasia = rahasiaKasus(kasus_id);
+  await buka(page, penandaBaru(), kasus_id);
   const laporan: string[] = [];
 
-  await mainkanSampaiPembukaan(page, async (nama) => {
+  await mainkanSampaiPembukaan(page, kasus_id, async (nama) => {
     const dibuka = await bukaSemuaLipatan(page);
     const teks = await teksTerlihat(page);
     for (const r of rahasia) {
@@ -214,17 +217,19 @@ test('E-09a identitas emiten tidak TERBACA sebelum pembukaan, dan muncul sesudah
   ).toEqual([]);
 
   // eslint-disable-next-line no-console
-  console.log(`E-09a sebelum pembukaan:\n  ${laporan.join('\n  ')}`);
+  console.log(`E-09a [${kasus_id}] sebelum pembukaan:\n  ${laporan.join('\n  ')}`);
 });
+}
 
-test('E-09b identitas emiten tidak ADA DI DOM sebelum pembukaan, lipatan teknis pun dibuka', async ({
+for (const kasus_id of ID_KASUS) {
+test(`E-09b [${kasus_id}] identitas emiten tidak ADA DI DOM sebelum pembukaan, lipatan teknis pun dibuka`, async ({
   page,
 }) => {
-  const rahasia = rahasiaKasus();
-  await buka(page, penandaBaru());
+  const rahasia = rahasiaKasus(kasus_id);
+  await buka(page, penandaBaru(), kasus_id);
   const laporan: string[] = [];
 
-  await mainkanSampaiPembukaan(page, async (nama) => {
+  await mainkanSampaiPembukaan(page, kasus_id, async (nama) => {
     const dibuka = await bukaSemuaLipatan(page);
     const terlihat = await teksTerlihat(page);
     const dom = await teksDom(page);
@@ -249,5 +254,8 @@ test('E-09b identitas emiten tidak ADA DI DOM sebelum pembukaan, lipatan teknis 
   }
 
   // eslint-disable-next-line no-console
-  console.log(`E-09b sebelum pembukaan (semua lipatan dibuka):\n  ${laporan.join('\n  ')}`);
+  console.log(
+    `E-09b [${kasus_id}] sebelum pembukaan (semua lipatan dibuka):\n  ${laporan.join('\n  ')}`,
+  );
 });
+}

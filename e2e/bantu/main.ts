@@ -79,6 +79,28 @@ export async function bukaTanpaKasus(page: Page, penanda: string): Promise<void>
   await page.goto(`/?k=${penanda}`);
 }
 
+/**
+ * Setel daftar kasus yang "sudah dimainkan" sebelum halaman pertama dimuat
+ * (M4 D-4).
+ *
+ * Dipakai tes yang ingin keadaan akhir permainan **pasti**: sesudah semua
+ * kasus dimainkan, "Mau coba kasus lain" menampilkan pesan penutup alih-alih
+ * membuka kasus berikutnya. Tanpa ini, E-10 akan berubah perilakunya tiap kali
+ * satu kasus ditambahkan ke repo — dan yang diujinya bukan itu.
+ *
+ * `addInitScript` berjalan sebelum skrip halaman di **tiap** navigasi, jadi ia
+ * juga menahan kalau tes memuat ulang.
+ */
+export async function tandaiDimainkan(page: Page, kasus: readonly string[]): Promise<void> {
+  await page.addInitScript((daftar: readonly string[]) => {
+    try {
+      window.localStorage.setItem('kasus_dimainkan', JSON.stringify(daftar));
+    } catch {
+      /* Penyimpanan yang diblokir bukan urusan tes ini. */
+    }
+  }, kasus);
+}
+
 /** Proyek ini memakai layar sentuh? Menentukan `tap()` atau `click()`. */
 export function bersentuh(): boolean {
   return test.info().project.use.hasTouch === true;
@@ -173,9 +195,15 @@ export async function simpanLayar(
   nomor: number | string,
   nama: string,
   penuh = false,
+  /**
+   * Anak folder di bawah nama proyek, untuk kasus selain kasus bawaan (M4).
+   * Kosong berarti langsung di `<proyek>/`, supaya nama berkas tangkapan layar
+   * DADA tidak bergeser dari yang sudah dikenal reviewer sejak M3.3.
+   */
+  subfolder = '',
 ): Promise<string> {
   await tungguGulirBerhenti(page);
-  const dir = join(DIR_LAYAR, test.info().project.name);
+  const dir = join(DIR_LAYAR, test.info().project.name, subfolder);
   mkdirSync(dir, { recursive: true });
   const urut = typeof nomor === 'number' ? String(nomor).padStart(2, '0') : nomor;
   const jalur = join(dir, `${urut}-${nama}.png`);

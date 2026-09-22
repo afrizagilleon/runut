@@ -9,6 +9,7 @@
  * sampai ke pemain tanpa satu baris pun yang menyebutnya.
  */
 import dada from '@cases/dada-2025-10-08.json';
+import ultj from '@cases/ultj-2026-05-04.json';
 import type { Kasus } from '../../factory/skema/tipe.ts';
 
 export * from './isi-kasus.ts';
@@ -21,6 +22,7 @@ export * from './isi-kasus.ts';
  * yang benar-benar ikut di repo.
  */
 export const KASUS: Kasus = dada as unknown as Kasus;
+export const KASUS_ULTJ: Kasus = ultj as unknown as Kasus;
 
 /**
  * Seluruh kasus yang bisa dimainkan, dalam urutan tetap.
@@ -30,4 +32,4 @@ export const KASUS: Kasus = dada as unknown as Kasus;
  * kasus pada kunjungan pertama. Karena itu ia ditulis di sini sekali, bukan
  * dihasilkan dari urutan berkas di cakram.
  */
-export const DAFTAR_KASUS: readonly Kasus[] = [KASUS];
+export const DAFTAR_KASUS: readonly Kasus[] = [KASUS, KASUS_ULTJ];

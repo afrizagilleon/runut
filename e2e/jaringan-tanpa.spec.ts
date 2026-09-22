@@ -11,12 +11,13 @@ import {
   lanjut,
   mulaiKasus,
   penandaBaru,
+  tandaiDimainkan,
   pilihOpsi,
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
 import { bacaBundel } from './bantu/bundel.ts';
-import { DIR_DIST_TANPA } from './bantu/jalur.ts';
+import { DIR_DIST_TANPA, ID_KASUS } from './bantu/jalur.ts';
 
 /**
  * E-08 (bagian "tanpa pengumpul") — INV-2 di browser sungguhan.
@@ -39,6 +40,13 @@ test('E-08 tanpa pengumpul: nol permintaan ke asal lain, nol POST', async ({ pag
     permintaan.push({ metode: r.method(), url: r.url(), jenis: r.resourceType() });
   });
 
+  /*
+   * Semua kasus ditandai sudah dimainkan (M4 D-4): tes ini berakhir di pesan
+   * penutup, dan pesan itu hanya tampil ketika tidak ada kasus lain yang
+   * menunggu. Tanpa penanda ini, "Mau coba kasus lain" membuka kasus kedua dan
+   * tes jaringan ini mengukur layar yang salah.
+   */
+  await tandaiDimainkan(page, ID_KASUS);
   await buka(page, penandaBaru());
   const asal = new URL(page.url()).origin;
 
@@ -61,7 +69,7 @@ test('E-08 tanpa pengumpul: nol permintaan ke asal lain, nol POST', async ({ pag
   await lanjut(page, LABEL_SELESAI);
   await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
   await ketuk(page.getByRole('button', { name: 'Mau coba kasus lain' }));
-  await expect(page.getByText('Tidak semua saham seperti ini.')).toBeVisible();
+  await expect(page.getByText(kasus.penutup.kepala)).toBeVisible();
 
   // Halaman ditinggalkan sungguhan: di sinilah `pagehide` menyala, dan di sinilah
   // build dengan pengumpul akan mengirim beacon terakhirnya.
