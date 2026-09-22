@@ -78,6 +78,39 @@ export interface KapanLayar {
   jeda_antara: [string, string] | null;
 }
 
+/**
+ * Balon chat melayang di satu layar soal, untuk satu sesi (M3.7 D-4).
+ *
+ * Pemilik bertanya tiga hal sekaligus: "pastikan kita bisa melacak dia
+ * membuka, mengintip, atau tidak menggunakan sama sekali". Dua yang pertama
+ * datang dari peristiwa `balon`; yang ketiga **tidak bisa**, dan itu sifat
+ * peristiwanya, bukan kelalaian — balon yang hanya mengintip tidak pernah
+ * berpindah keadaan, jadi ia tidak melahirkan satu peristiwa pun.
+ *
+ * Yang memisahkan "mengintip" dari "tidak pernah melihatnya" adalah
+ * `sampai_pilihan`: pilihan jawaban berada jauh di bawah balon aslinya, dan
+ * tidak ada jalan ke sana yang tidak melewati ambang 50 %. Sesi yang menjawab
+ * soal itu sudah pasti melihat salinannya mengintip.
+ */
+export interface BalonLayar {
+  layar: string;
+  /** Peristiwa `balon` yang menurunkan balon lewat ketukan. */
+  turun_ketuk: number;
+  /** ...dan lewat tarikan jari. */
+  turun_tarik: number;
+  /** Peristiwa `balon` yang mengembalikannya mengintip, dengan cara apa pun. */
+  intip: number;
+  /** Pernah turun utuh di layar ini, walau sesudahnya dinaikkan lagi. */
+  pernah_turun: boolean;
+  /** Pemain sampai ke pilihan jawaban di kunjungan layar ini. */
+  sampai_pilihan: boolean;
+  /**
+   * `gulir_balik_ke_kartu` yang dilaporkan saat soal di layar ini dikunci;
+   * `null` kalau ia belum pernah dikunci — ketiadaan angka, bukan nol.
+   */
+  gulir_balik: number | null;
+}
+
 /** Satu ketukan seperti yang dicatat pelacak (D-8). */
 export interface KetukSesi {
   layar: string;
@@ -102,6 +135,19 @@ export interface RingkasSesi {
   gulir: Array<[string, number]>;
   /** Kapan, bukan hanya seberapa jauh (M3.4a D-3). Urut nama layar. */
   kapan: KapanLayar[];
+  /** Balon chat melayang per layar soal (M3.7 D-4). Urut nama layar. */
+  balon: BalonLayar[];
+  /**
+   * Sesi ini melahirkan sedikitnya satu peristiwa `balon`.
+   *
+   * Dipakai membelah pembanding `gulir_balik_ke_kartu`. Yang **tidak** memakai
+   * balon di sini bercampur: sesi dari berkas sebelum M3.7 (yang memang tidak
+   * punya balonnya) dan sesi M3.7 yang membiarkannya mengintip. Keduanya
+   * menjawab pertanyaan yang sama — "berapa jauh orang menggulir balik ketika
+   * balon melayang TIDAK dipakai" — jadi mereka memang satu kolom, dan itu
+   * dikatakan di laporannya.
+   */
+  pakai_balon: boolean;
   /**
    * Sesi tanpa peristiwa `mulai` — misalnya tab lama yang baru ditutup, atau
    * kiriman yang kepalanya hilang. Ia dilaporkan terpisah dan tidak masuk
@@ -319,6 +365,59 @@ export function kapanPerLayar(peristiwa: Peristiwa[]): KapanLayar[] {
   return [...per.values()].sort((a, b) => a.layar.localeCompare(b.layar));
 }
 
+/**
+ * Balon chat per layar soal, dari kunjungan layar (M3.7 D-4).
+ *
+ * Dihitung dari `kunjunganLayar` dan bukan dari medan `layar` di peristiwanya
+ * sendiri, untuk satu alasan: `pilih` dan `kunci_jawaban` membawa `soal_id`,
+ * bukan nama layar, dan tidak ada tabel yang memetakan keduanya. Kunjungan
+ * layar adalah tempat di mana keduanya bertemu tanpa ditebak.
+ */
+export function balonPerLayar(urut: Peristiwa[]): BalonLayar[] {
+  const per = new Map<string, BalonLayar>();
+  for (const kunjungan of kunjunganLayar(urut)) {
+    if (!kunjungan.layar.startsWith('soal-')) continue;
+    const ada = per.get(kunjungan.layar);
+    const b: BalonLayar = ada ?? {
+      layar: kunjungan.layar,
+      turun_ketuk: 0,
+      turun_tarik: 0,
+      intip: 0,
+      pernah_turun: false,
+      sampai_pilihan: false,
+      gulir_balik: null,
+    };
+
+    for (const p of kunjungan.isi) {
+      if (p.nama === 'pilih' || p.nama === 'kunci_jawaban') b.sampai_pilihan = true;
+      if (p.nama === 'kunci_jawaban') {
+        const balik = angka(p.isi['gulir_balik_ke_kartu']);
+        if (balik !== null) b.gulir_balik = balik;
+      }
+      if (p.nama !== 'balon') continue;
+      /*
+       * Nama layar di peristiwanya ikut diperiksa, tidak hanya diandaikan
+       * cocok dengan kunjungan yang sedang berjalan — alasan yang sama dengan
+       * `kapanPerLayar`: berkas yang ditulis tangan bisa memuat peristiwa yang
+       * duduk di kunjungan layar lain, dan menghitungnya di sana akan
+       * mengarang angka.
+       */
+      const layar = teks(p.isi['layar']);
+      if (layar !== null && layar !== kunjungan.layar) continue;
+      if (p.isi['keadaan'] === 'turun') {
+        b.pernah_turun = true;
+        if (p.isi['cara'] === 'tarik') b.turun_tarik += 1;
+        else b.turun_ketuk += 1;
+      } else if (p.isi['keadaan'] === 'intip') {
+        b.intip += 1;
+      }
+    }
+
+    per.set(kunjungan.layar, b);
+  }
+  return [...per.values()].sort((a, b) => a.layar.localeCompare(b.layar));
+}
+
 export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
   const urut = [...peristiwa].sort((a, b) => a.urut - b.urut);
   const pertama = urut[0];
@@ -419,6 +518,8 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
     ketuk_dibatasi: urut.some((p) => p.nama === 'ketuk_dibatasi'),
     gulir: [...gulir.entries()].sort((a, b) => a[0].localeCompare(b[0])),
     kapan: kapanPerLayar(urut),
+    balon: balonPerLayar(urut),
+    pakai_balon: urut.some((p) => p.nama === 'balon'),
     lengkap: mulai !== undefined,
     lebar_layar: angka(mulai?.isi['lebar_layar']),
     sampai_pembukaan: urut.some((p) => p.nama === 'pembukaan_masuk'),
@@ -830,6 +931,97 @@ export function perLayarSoal(semua: RingkasSesi[]): RingkasLayarSoal[] {
     }));
 }
 
+/* ------------------------------------------------------------------ */
+/* Balon chat per soal (M3.7 D-4)                                      */
+/* ------------------------------------------------------------------ */
+
+export interface RingkasBalonSoal {
+  layar: string;
+  /** Sesi yang pernah membuka layar ini. */
+  sesi: number;
+  /** Tidak pernah sampai ke pilihan dan tidak pernah menyentuh balon. */
+  tidak_menyentuh: number;
+  /** Sampai ke pilihan — jadi salinannya melayang — tetapi tidak pernah diturunkan. */
+  hanya_mengintip: number;
+  pernah_menurunkan: number;
+  turun_ketuk: number;
+  turun_tarik: number;
+  intip: number;
+  /** Rata `gulir_balik_ke_kartu` sesi yang memakai balon; `null` kalau tidak ada. */
+  gulir_balik_dengan: number | null;
+  sesi_dengan: number;
+  /** Rata yang sama untuk sesi yang tidak memakainya, termasuk berkas lama. */
+  gulir_balik_tanpa: number | null;
+  sesi_tanpa: number;
+}
+
+/**
+ * Tiga kotak per layar soal, dan ketiganya harus menjumlah (M3.7 D-4).
+ *
+ * "Menjumlah" bukan kerapian: sesi yang hilang dari ketiga kotak adalah sesi
+ * yang diam-diam tidak dihitung, dan angka yang tidak menjumlah adalah cara
+ * termudah membuat fitur ini terlihat lebih dipakai daripada kenyataannya.
+ */
+export function perBalonSoal(semua: RingkasSesi[]): RingkasBalonSoal[] {
+  const per = new Map<string, RingkasBalonSoal>();
+  const balik = new Map<string, { dengan: number[]; tanpa: number[] }>();
+
+  const pastikan = (layar: string): RingkasBalonSoal => {
+    const ada = per.get(layar);
+    if (ada !== undefined) return ada;
+    const baru: RingkasBalonSoal = {
+      layar,
+      sesi: 0,
+      tidak_menyentuh: 0,
+      hanya_mengintip: 0,
+      pernah_menurunkan: 0,
+      turun_ketuk: 0,
+      turun_tarik: 0,
+      intip: 0,
+      gulir_balik_dengan: null,
+      sesi_dengan: 0,
+      gulir_balik_tanpa: null,
+      sesi_tanpa: 0,
+    };
+    per.set(layar, baru);
+    balik.set(layar, { dengan: [], tanpa: [] });
+    return baru;
+  };
+
+  for (const s of semua) {
+    for (const b of s.balon) {
+      const baris = pastikan(b.layar);
+      baris.sesi += 1;
+      baris.turun_ketuk += b.turun_ketuk;
+      baris.turun_tarik += b.turun_tarik;
+      baris.intip += b.intip;
+      if (b.pernah_turun) baris.pernah_menurunkan += 1;
+      else if (b.sampai_pilihan) baris.hanya_mengintip += 1;
+      else baris.tidak_menyentuh += 1;
+
+      if (b.gulir_balik === null) continue;
+      const kotak = balik.get(b.layar);
+      if (kotak === undefined) continue;
+      if (s.pakai_balon) kotak.dengan.push(b.gulir_balik);
+      else kotak.tanpa.push(b.gulir_balik);
+    }
+  }
+
+  const rata = (nilai: number[]): number | null =>
+    nilai.length === 0 ? null : nilai.reduce((j, n) => j + n, 0) / nilai.length;
+
+  for (const [layar, kotak] of balik.entries()) {
+    const baris = per.get(layar);
+    if (baris === undefined) continue;
+    baris.gulir_balik_dengan = rata(kotak.dengan);
+    baris.sesi_dengan = kotak.dengan.length;
+    baris.gulir_balik_tanpa = rata(kotak.tanpa);
+    baris.sesi_tanpa = kotak.tanpa.length;
+  }
+
+  return [...per.values()].sort((a, b) => a.layar.localeCompare(b.layar));
+}
+
 function detik(ms: number): string {
   return `${(ms / 1000).toFixed(1)} d`;
 }
@@ -1144,6 +1336,99 @@ export function laporan(
       baris.push(
         `| ${l.layar} | ${String(l.sesi)} | ${String(l.jawab_di_bawah)} | ` +
           `${String(l.buka_sumber)} | ${String(l.buka_istilah)} |`,
+      );
+    }
+    baris.push('');
+  }
+
+  /*
+   * M3.7 D-4. Pertanyaan pemilik, kata demi kata: "pastikan kita bisa melacak
+   * dia membuka, mengintip, atau tidak menggunakan sama sekali, atau tingkat
+   * scroll masih sangat tinggi." Dua tabel di bawah menjawab tiga yang
+   * pertama; kolom terakhir tabel kedua menjawab yang keempat.
+   */
+  baris.push('## Balon chat');
+  baris.push('');
+  baris.push(
+    'Balon pesan melayang di bawah keping begitu lebih dari separuh badannya lewat ke atas,',
+  );
+  baris.push('dan **mengintip** secara bawaan: tersisa satu tepi setinggi 28 px.');
+  baris.push('');
+  baris.push(
+    '**Mengintip tidak melahirkan peristiwa apa pun** — balon yang dibiarkan tidak berpindah',
+  );
+  baris.push(
+    'keadaan. Karena itu "hanya mengintip" dibaca dari fakta lain: pemain sampai ke pilihan',
+  );
+  baris.push(
+    'jawaban di layar itu, dan pilihan berada jauh di bawah balon aslinya — tidak ada jalan ke',
+  );
+  baris.push(
+    'sana yang tidak melewati ambangnya. "Tidak menyentuh sama sekali" berarti ia bahkan tidak',
+  );
+  baris.push('sampai sejauh itu.');
+  baris.push('');
+  baris.push(
+    'Di berkas yang terkumpul **sebelum M3.7** balon melayang belum ada sama sekali. Ketiga kotak',
+  );
+  baris.push(
+    'di sana hanya menggambarkan seberapa jauh orang sampai, bukan apa yang mereka lakukan',
+  );
+  baris.push(
+    'terhadap balonnya — dan yang berarti di baris itu justru kolom gulir balik, sebagai',
+  );
+  baris.push('pembanding.');
+  baris.push('');
+  const balonSesi = sesi.filter((s) => s.balon.length > 0);
+  if (balonSesi.length === 0) {
+    baris.push('Tidak ada satu pun layar soal yang tercatat di berkas ini.');
+    baris.push('');
+  } else {
+    baris.push(
+      '| sesi | layar | turun (ketuk) | turun (tarik) | kembali mengintip | pernah turun |',
+    );
+    baris.push('|---|---|---|---|---|---|');
+    for (const s of balonSesi) {
+      for (const b of s.balon) {
+        baris.push(
+          `| ${s.sesi} | ${b.layar} | ${String(b.turun_ketuk)} | ${String(b.turun_tarik)} | ` +
+            `${String(b.intip)} | ${ya(b.pernah_turun)} |`,
+        );
+      }
+    }
+    baris.push('');
+  }
+
+  const perBalon = perBalonSoal(sesi);
+  if (perBalon.length > 0) {
+    baris.push(
+      'Kolom **gulir balik** menyandingkan angka yang sama dengan yang dijawab balon melayang:',
+    );
+    baris.push(
+      'berapa kali pemain menggulir kembali ke kartu sebelum mengunci. Sesi "tanpa balon" adalah',
+    );
+    baris.push(
+      'sesi yang tidak melahirkan satu peristiwa `balon` pun — berkas sebelum M3.7 dan sesi yang',
+    );
+    baris.push(
+      'membiarkannya mengintip, bersama-sama. Sesi yang belum mengunci soal itu tidak masuk',
+    );
+    baris.push('penyebut mana pun; "—" berarti tidak ada datanya, bukan nol.');
+    baris.push('');
+    baris.push(
+      '| layar | sesi | tidak menyentuh | hanya mengintip | pernah menurunkan | ketuk | tarik | ' +
+        'gulir balik (pakai balon) | gulir balik (tanpa balon) |',
+    );
+    baris.push('|---|---|---|---|---|---|---|---|---|');
+    for (const b of perBalon) {
+      const kolom = (nilai: number | null, jumlah: number): string =>
+        nilai === null ? '—' : `${nilai.toFixed(1)} (${String(jumlah)} sesi)`;
+      baris.push(
+        `| ${b.layar} | ${String(b.sesi)} | ${String(b.tidak_menyentuh)} | ` +
+          `${String(b.hanya_mengintip)} | ${String(b.pernah_menurunkan)} | ` +
+          `${String(b.turun_ketuk)} | ${String(b.turun_tarik)} | ` +
+          `${kolom(b.gulir_balik_dengan, b.sesi_dengan)} | ` +
+          `${kolom(b.gulir_balik_tanpa, b.sesi_tanpa)} |`,
       );
     }
     baris.push('');

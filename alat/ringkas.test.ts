@@ -15,6 +15,7 @@ import {
   kelompokkanSesi,
   laporan,
   median,
+  perBalonSoal,
   perLayar,
   perLayarSoal,
   perPenanda,
@@ -994,5 +995,228 @@ describe('ringkas — laporan bagian "Kapan" (M3.4a D-3)', () => {
     ]) {
       expect(teks, judul).toContain(judul);
     }
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Balon chat melayang (M3.7 D-4)                                      */
+/* ------------------------------------------------------------------ */
+
+const CONTOH_BALON = fileURLToPath(new URL('./contoh/peristiwa-balon.jsonl', import.meta.url));
+
+function muatBalon(): Peristiwa[] {
+  return bacaJsonl(readFileSync(CONTOH_BALON, 'utf8'), 'peristiwa-balon.jsonl');
+}
+
+const sesiBalon = (): RingkasSesi[] =>
+  kelompokkanSesi(muatBalon()).filter((s) => s.lengkap);
+
+/** Satu baris balon milik satu sesi di satu layar. */
+function baris(sesi: RingkasSesi, layar: string): ReturnType<typeof ringkasSesi>['balon'][number] {
+  const cocok = sesi.balon.find((b) => b.layar === layar);
+  if (cocok === undefined) throw new Error(`${sesi.sesi} tidak punya baris balon ${layar}`);
+  return cocok;
+}
+
+describe('ringkas — balon chat per sesi (M3.7 D-4)', () => {
+  it('memuat empat sesi contoh', () => {
+    expect(sesiBalon().map((s) => s.sesi)).toEqual([
+      'sesi-i-turun-ketuk',
+      'sesi-j-turun-tarik',
+      'sesi-k-hanya-mengintip',
+      'sesi-l-berhenti-sebelum-pilihan',
+    ]);
+  });
+
+  it('memisahkan turun lewat ketuk dari turun lewat tarik', () => {
+    const [ketukan, tarikan] = sesiBalon();
+    expect(ketukan).toBeDefined();
+    expect(tarikan).toBeDefined();
+    if (ketukan === undefined || tarikan === undefined) return;
+
+    expect(baris(ketukan, 'soal-1').turun_ketuk).toBe(1);
+    expect(baris(ketukan, 'soal-1').turun_tarik).toBe(0);
+    expect(baris(tarikan, 'soal-1').turun_ketuk).toBe(0);
+    expect(baris(tarikan, 'soal-1').turun_tarik).toBe(1);
+  });
+
+  it('menghitung berapa kali balon dikembalikan mengintip', () => {
+    const [ketukan, tarikan] = sesiBalon();
+    if (ketukan === undefined || tarikan === undefined) return;
+    expect(baris(ketukan, 'soal-1').intip).toBe(0);
+    expect(baris(ketukan, 'soal-2').intip).toBe(1);
+    expect(baris(tarikan, 'soal-1').intip).toBe(1);
+  });
+
+  it('`pernah_turun` tetap benar walau balonnya dinaikkan lagi', () => {
+    const ketukan = sesiBalon()[0];
+    if (ketukan === undefined) return;
+    expect(baris(ketukan, 'soal-2').intip).toBe(1);
+    expect(baris(ketukan, 'soal-2').pernah_turun).toBe(true);
+  });
+
+  /*
+   * Turun, naik, turun lagi. Urutan ini tidak ada di berkas contoh, dan
+   * ketiadaannya adalah lubang yang terlihat waktu sabotase: sebuah versi yang
+   * menghitung `pernah_turun` dari "berapa turun dibanding berapa intip" tetap
+   * hijau atas data yang hanya pernah turun sekali. Yang dijaga di sini adalah
+   * sifatnya, bukan kebetulan datanya.
+   */
+  it('turun, naik, lalu turun lagi: dua turun, satu intip, dan tetap pernah turun', () => {
+    const p = (urut: number, nama: string, isi: Record<string, unknown>): Peristiwa => ({
+      nama,
+      sesi: 'sesi-goyang',
+      kasus_id: 'dada-2025-10-08',
+      t_ms: urut * 1000,
+      urut,
+      isi,
+    });
+    const satu = ringkasSesi([
+      p(1, 'mulai', { lebar_layar: 360, penanda: null, pengunjung: null, kunjungan_ke: null }),
+      p(2, 'layar_masuk', { layar: 'soal-1' }),
+      p(3, 'balon', { layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' }),
+      p(4, 'balon', { layar: 'soal-1', keadaan: 'intip', cara: 'tarik' }),
+      p(5, 'balon', { layar: 'soal-1', keadaan: 'turun', cara: 'tarik' }),
+      p(6, 'tutup', { layar_terakhir: 'soal-1' }),
+    ]);
+    const b = satu.balon.find((x) => x.layar === 'soal-1');
+    expect(b).toBeDefined();
+    if (b === undefined) return;
+    expect(b.turun_ketuk).toBe(1);
+    expect(b.turun_tarik).toBe(1);
+    expect(b.intip).toBe(1);
+    expect(b.pernah_turun).toBe(true);
+  });
+
+  /*
+   * Inilah yang membedakan "mengintip" dari "tidak menggunakan sama sekali",
+   * dan ia tidak bisa datang dari peristiwa `balon`: balon yang hanya
+   * mengintip TIDAK pernah berpindah keadaan, jadi ia tidak melahirkan satu
+   * peristiwa pun. Yang membuktikan salinannya memang pernah melayang adalah
+   * pemain sampai ke pilihan jawaban di layar itu — pilihan berada jauh di
+   * bawah balon aslinya, dan tidak ada jalan ke sana yang tidak melewati
+   * ambang 50 %.
+   */
+  it('membedakan layar yang pilihannya tercapai dari yang tidak', () => {
+    const sesi = sesiBalon();
+    const mengintip = sesi[2];
+    const berhenti = sesi[3];
+    if (mengintip === undefined || berhenti === undefined) return;
+    expect(baris(mengintip, 'soal-1').sampai_pilihan).toBe(true);
+    expect(baris(mengintip, 'soal-1').pernah_turun).toBe(false);
+    expect(baris(berhenti, 'soal-1').sampai_pilihan).toBe(false);
+    expect(baris(berhenti, 'soal-1').pernah_turun).toBe(false);
+  });
+
+  it('membawa gulir balik ke kartu layar itu, dari kunci_jawaban di kunjungannya', () => {
+    const sesi = sesiBalon();
+    const ketukan = sesi[0];
+    const mengintip = sesi[2];
+    const berhenti = sesi[3];
+    if (ketukan === undefined || mengintip === undefined || berhenti === undefined) return;
+    expect(baris(ketukan, 'soal-2').gulir_balik).toBe(0);
+    expect(baris(mengintip, 'soal-2').gulir_balik).toBe(4);
+    // Belum dikunci berarti belum ada angkanya — bukan nol.
+    expect(baris(berhenti, 'soal-1').gulir_balik).toBeNull();
+  });
+
+  it('menandai sesi yang memang memakai balonnya', () => {
+    expect(sesiBalon().map((s) => s.pakai_balon)).toEqual([true, true, false, false]);
+  });
+
+  it('sesi berkas lama tidak punya satu baris balon pun', () => {
+    for (const s of lengkap()) {
+      expect(s.balon.filter((b) => b.turun_ketuk + b.turun_tarik + b.intip > 0)).toEqual([]);
+      expect(s.pakai_balon).toBe(false);
+    }
+  });
+});
+
+describe('ringkas — balon chat per soal (M3.7 D-4)', () => {
+  it('membagi sesi menjadi tidak menyentuh / hanya mengintip / pernah menurunkan', () => {
+    const per = perBalonSoal(sesiBalon());
+    expect(per.map((p) => p.layar)).toEqual(['soal-1', 'soal-2', 'soal-3']);
+
+    const satu = per[0];
+    expect(satu).toBeDefined();
+    if (satu === undefined) return;
+    expect(satu.sesi).toBe(4);
+    expect(satu.pernah_menurunkan).toBe(2);
+    expect(satu.hanya_mengintip).toBe(1);
+    expect(satu.tidak_menyentuh).toBe(1);
+    // Ketiganya menjumlah; sesi yang hilang dari salah satu kotak adalah cacat.
+    expect(satu.pernah_menurunkan + satu.hanya_mengintip + satu.tidak_menyentuh).toBe(satu.sesi);
+  });
+
+  it('menghitung cara menurunkan per soal', () => {
+    const per = perBalonSoal(sesiBalon());
+    const dua = per.find((p) => p.layar === 'soal-2');
+    if (dua === undefined) return;
+    expect(dua.turun_ketuk).toBe(1);
+    expect(dua.turun_tarik).toBe(1);
+    expect(dua.intip).toBe(1);
+  });
+
+  it('menyandingkan gulir balik sesi yang memakai balon dengan yang tidak', () => {
+    const per = perBalonSoal(sesiBalon());
+    const satu = per.find((p) => p.layar === 'soal-1');
+    const dua = per.find((p) => p.layar === 'soal-2');
+    if (satu === undefined || dua === undefined) return;
+
+    expect(satu.sesi_dengan).toBe(2);
+    expect(satu.gulir_balik_dengan).toBe(0);
+    expect(satu.sesi_tanpa).toBe(1);
+    expect(satu.gulir_balik_tanpa).toBe(2);
+
+    expect(dua.gulir_balik_dengan).toBe(0.5);
+    expect(dua.gulir_balik_tanpa).toBe(4);
+  });
+
+  it('sesi yang belum mengunci tidak ikut penyebut gulir balik', () => {
+    const satu = perBalonSoal(sesiBalon()).find((p) => p.layar === 'soal-1');
+    if (satu === undefined) return;
+    // sesi-l masuk hitungan sesi, tetapi tidak punya angka gulir balik.
+    expect(satu.sesi).toBe(4);
+    expect(satu.sesi_dengan + satu.sesi_tanpa).toBe(3);
+  });
+
+  it('berkas lama saja: semuanya jatuh ke kolom "tanpa balon"', () => {
+    const per = perBalonSoal(lengkap());
+    expect(per.length).toBeGreaterThan(0);
+    for (const p of per) {
+      expect(p.pernah_menurunkan).toBe(0);
+      expect(p.sesi_dengan).toBe(0);
+      expect(p.gulir_balik_dengan).toBeNull();
+    }
+  });
+});
+
+describe('ringkas — bagian "Balon chat" di laporan (M3.7 D-4)', () => {
+  it('mencetak bagiannya beserta kedua tabelnya', () => {
+    const teks = laporan(sesiBalon(), []);
+    expect(teks).toContain('## Balon chat');
+    expect(teks).toContain('| sesi | layar | turun (ketuk) | turun (tarik) | kembali mengintip |');
+    expect(teks).toContain('| layar | sesi | tidak menyentuh | hanya mengintip |');
+    expect(teks).toContain('sesi-i-turun-ketuk');
+  });
+
+  it('mencetak kedua kolom gulir balik berdampingan', () => {
+    const teks = laporan([...sesiBalon(), ...lengkap()], []);
+    expect(teks).toContain('gulir balik (pakai balon)');
+    expect(teks).toContain('gulir balik (tanpa balon)');
+  });
+
+  it('mengatakan bahwa berkas sebelum M3.7 tidak punya balonnya sama sekali', () => {
+    const teks = laporan(sesiBalon(), []);
+    expect(teks).toContain('sebelum M3.7');
+  });
+
+  it('berkas lama saja tetap mencetak bagiannya, dengan "—" bukan nol', () => {
+    const teks = laporan(lengkap());
+    expect(teks).toContain('## Balon chat');
+    // Tidak ada satu pun sesi yang memakai balon, jadi kolomnya kosong — dan
+    // kosong harus terbaca sebagai ketiadaan data, bukan sebagai angka nol.
+    const bagian = teks.slice(teks.indexOf('## Balon chat'));
+    expect(bagian).toContain('—');
   });
 });
