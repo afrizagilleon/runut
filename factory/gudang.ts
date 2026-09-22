@@ -20,6 +20,7 @@ import { keJson } from './kasus/json.ts';
 import { muatGudang } from './muat/gudang.ts';
 import { konteksEmiten } from './verifikasi/konteks.ts';
 import { ATURAN_V2, verifikasiV2 } from './verifikasi/v2.ts';
+import { daftarAksi, hargaDiKeduaSisi } from './verifikasi/aturan-keuangan.ts';
 import type { HitunganAturan } from './verifikasi/tipe.ts';
 import type { KodeAturan, Temuan } from './skema/tipe.ts';
 import { keparahanTemuan } from './skema/tipe.ts';
@@ -170,12 +171,150 @@ function agregatKosong(aturan: KodeAturan, judul: string): Agregat {
   };
 }
 
+// --- D-4: tabel "peristiwa -> kartu yang sah" --------------------------------
+
+/**
+ * Jenis peristiwa kurikulum, dan satu kalimat awam yang **wajib dijelaskan di
+ * kartu** tentang jenis itu.
+ *
+ * Kalimatnya bukan penilaian dan bukan tebakan: ia menyebutkan apa yang berubah
+ * di dalam data ketika peristiwa itu terjadi, supaya kartu tidak diam-diam
+ * membandingkan dua angka yang pembaginya berbeda.
+ */
+export const PERISTIWA: ReadonlyArray<{
+  jenis: string;
+  wajib: string;
+}> = [
+  {
+    jenis: 'dividen tunai',
+    wajib:
+      'Kartu harus menyebut tanggal ex — hari pertama pembeli baru tidak lagi kebagian dividen ' +
+      'itu — karena harga biasanya membuka lebih rendah pada hari itu tanpa ada yang rugi.',
+  },
+  {
+    jenis: 'penerbitan saham baru',
+    wajib:
+      'Harga sebelum dan sesudah tanggal ex penerbitan saham baru tidak bisa dibandingkan ' +
+      'langsung, dan persen kepemilikan sebelum dan sesudahnya dibagi jumlah saham yang berbeda.',
+  },
+  {
+    jenis: 'pemecahan saham',
+    wajib:
+      'Kartu harga tidak boleh melintasi tanggal pemecahan saham: di data ini dua medan dari ' +
+      'endpoint yang sama saling bertentangan tentang apakah harga lama sudah ditulis ulang, ' +
+      'dan sebabnya belum diketahui.',
+  },
+  {
+    jenis: 'saham bonus',
+    wajib:
+      'Sama dengan pemecahan saham, jumlah lembar bertambah tanpa uang baru masuk, jadi harga ' +
+      'per lembar sebelum dan sesudahnya bukan angka yang sebanding.',
+  },
+  {
+    jenis: 'pembelian kembali saham',
+    wajib:
+      'Pembelian kembali saham hanya muncul sebagai kalimat di keputusan RUPS, tanpa jumlah dan ' +
+      'tanpa tanggal, jadi tidak ada angka yang bisa dijadikan kartu.',
+  },
+  {
+    jenis: 'keluar dari bursa',
+    wajib:
+      'Tidak ada satu medan pun di data ini yang menyatakan sebuah emiten keluar dari bursa, ' +
+      'jadi peristiwa itu tidak bisa diperiksa sama sekali.',
+  },
+];
+
+export interface BarisPeristiwa {
+  jenis: string;
+  /** Berapa kejadian jenis ini di seluruh gudang. */
+  kejadian: number;
+  /** Berapa yang punya baris harga di kedua sisi tanggalnya (R34). */
+  berharga: number;
+  /** Berapa yang lolos seluruh aturan penolak emitennya. */
+  lolos: number;
+  /** Emiten yang punya kejadian jenis ini, terurut. */
+  emiten: string[];
+  wajib: string;
+}
+
+/**
+ * Aturan penolak yang **mengenai peristiwa korporasi**: kalau salah satunya
+ * mengeluarkan temuan berkeparahan konflik untuk sebuah emiten, angka peristiwa
+ * emiten itu tidak boleh jadi kartu.
+ *
+ * Sengaja bukan "semua aturan penolak". Rantai laporan kepemilikan MTLA yang
+ * putus tidak mengatakan apa pun tentang apakah dividen MTLA bisa dijadikan
+ * kartu; menolak keduanya sekaligus berarti menolak kartu yang benar.
+ */
+export const PENOLAK_PERISTIWA: readonly KodeAturan[] = ['R23', 'R31', 'R35'];
+
+/**
+ * Susun tabel peristiwa dari hasil V2 seluruh gudang.
+ *
+ * "Lolos" berarti: peristiwa itu punya harga harian di kedua sisinya (R34)
+ * **dan** emitennya tidak punya satu pun temuan berkeparahan konflik dari
+ * `PENOLAK_PERISTIWA`.
+ */
+export function susunTabelPeristiwa(
+  gudang: ReturnType<typeof muatGudang>,
+  berkasKosong: string[],
+): BarisPeristiwa[] {
+  const hitungan = new Map<string, { kejadian: number; berharga: number; lolos: number; emiten: Set<string> }>();
+  for (const { jenis } of PERISTIWA) {
+    hitungan.set(jenis, { kejadian: 0, berharga: 0, lolos: 0, emiten: new Set() });
+  }
+
+  for (const [kode, data] of gudang.emiten) {
+    const konteks = konteksEmiten(data, berkasKosong);
+    const hasil = verifikasiV2(konteks);
+    const adaKonflik = hasil.pemeriksaan.some(
+      (p) =>
+        PENOLAK_PERISTIWA.includes(p.aturan) &&
+        p.temuan.some((t) => keparahanTemuan(t) === 'konflik'),
+    );
+
+    for (const a of daftarAksi(konteks)) {
+      const baris = hitungan.get(a.jenis);
+      if (baris === undefined) continue;
+      baris.kejadian += 1;
+      baris.emiten.add(kode);
+      const berharga = hargaDiKeduaSisi(konteks.harga, a.tanggal);
+      if (berharga) baris.berharga += 1;
+      if (berharga && !adaKonflik) baris.lolos += 1;
+    }
+
+    // Pembelian kembali saham hanya ada sebagai kalimat keputusan RUPS.
+    for (const r of data.rups) {
+      if (r.ringkasan === null || !/buyback|buy-back|repurchase of its own shares/i.test(r.ringkasan)) {
+        continue;
+      }
+      const baris = hitungan.get('pembelian kembali saham');
+      if (baris === undefined) continue;
+      baris.kejadian += 1;
+      baris.emiten.add(kode);
+    }
+  }
+
+  return PERISTIWA.map(({ jenis, wajib }) => {
+    const h = hitungan.get(jenis) ?? { kejadian: 0, berharga: 0, lolos: 0, emiten: new Set<string>() };
+    return {
+      jenis,
+      kejadian: h.kejadian,
+      berharga: h.berharga,
+      lolos: h.lolos,
+      emiten: [...h.emiten].sort(),
+      wajib,
+    };
+  });
+}
+
 export interface LaporanGudang {
   ringkasan_gudang: ReturnType<typeof muatGudang>['ringkasan'];
   berkas_tak_dikenal: Array<{ berkas: string; alasan: string }>;
   berkas_paginasi_kosong: string[];
   emiten: HasilEmiten[];
   agregat: Agregat[];
+  peristiwa: BarisPeristiwa[];
 }
 
 /** Susun seluruh laporan gudang. Fungsi murni atas isi gudang; tidak menulis apa pun. */
@@ -253,6 +392,7 @@ export function susunLaporanGudang(folder?: string): LaporanGudang {
     berkas_paginasi_kosong: berkasKosong,
     emiten,
     agregat: daftarAgregat,
+    peristiwa: susunTabelPeristiwa(gudang, berkasKosong),
   };
 }
 
@@ -293,6 +433,32 @@ export function susunDokumenBukti(laporan: LaporanGudang): string {
         'dialamatkan ke emiten mana pun dari isinya: ' +
         laporan.berkas_paginasi_kosong.map((b) => `\`${b}\``).join(', ') + '.',
     );
+  }
+  baris.push('');
+  baris.push('## Peristiwa perusahaan: apa yang boleh jadi kartu');
+  baris.push('');
+  baris.push(
+    'Kurikulum melabeli kasus menurut **peristiwa**: perusahaan membagi dividen, menerbitkan ' +
+      'saham baru, memecah saham, membeli kembali saham, keluar dari bursa. Tabel ini menghitung ' +
+      'berapa kejadian tiap jenis ada di gudang, berapa yang punya harga harian di kedua sisi ' +
+      'tanggalnya, dan berapa yang emitennya tidak punya satu pun angka yang saling bertentangan. ' +
+      'Kolom terakhir adalah yang paling penting: apa yang **wajib dijelaskan** di kartu tentang ' +
+      'jenis peristiwa itu.',
+  );
+  baris.push('');
+  baris.push('| peristiwa | kejadian | punya harga di kedua sisi | lolos jadi bahan kartu | emiten |');
+  baris.push('|---|---:|---:|---:|---|');
+  for (const p of laporan.peristiwa) {
+    baris.push(
+      `| ${p.jenis} | ${angka(p.kejadian)} | ${angka(p.berharga)} | ${angka(p.lolos)} | ` +
+        `${p.emiten.length === 0 ? '—' : p.emiten.join(', ')} |`,
+    );
+  }
+  baris.push('');
+  baris.push('Yang wajib dijelaskan di kartu, per jenis peristiwa:');
+  baris.push('');
+  for (const p of laporan.peristiwa) {
+    baris.push(`- **${p.jenis}** — ${p.wajib}`);
   }
   baris.push('');
   baris.push('## Hasil per aturan');

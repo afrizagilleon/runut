@@ -10,6 +10,28 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 
 3 berkas adalah respons berpaginasi yang kosong. Respons seperti itu tidak memuat kode emitennya sama sekali, jadi ia tidak bisa dialamatkan ke emiten mana pun dari isinya: `COCO-filings-sebelum.json`, `MERK-filings.json`, `dada-news-2025.json`.
 
+## Peristiwa perusahaan: apa yang boleh jadi kartu
+
+Kurikulum melabeli kasus menurut **peristiwa**: perusahaan membagi dividen, menerbitkan saham baru, memecah saham, membeli kembali saham, keluar dari bursa. Tabel ini menghitung berapa kejadian tiap jenis ada di gudang, berapa yang punya harga harian di kedua sisi tanggalnya, dan berapa yang emitennya tidak punya satu pun angka yang saling bertentangan. Kolom terakhir adalah yang paling penting: apa yang **wajib dijelaskan** di kartu tentang jenis peristiwa itu.
+
+| peristiwa | kejadian | punya harga di kedua sisi | lolos jadi bahan kartu | emiten |
+|---|---:|---:|---:|---|
+| dividen tunai | 55 | 6 | 5 | ARNA, BIRD, DADA, KRYA, MERK, MLPT, MTLA, RAJA, ULTJ |
+| penerbitan saham baru | 8 | 3 | 0 | AHAP, BAJA, BRNA, COCO, FORU |
+| pemecahan saham | 8 | 2 | 1 | ARNA, MERK, MLPT, RAJA, RMKE, ULTJ |
+| saham bonus | 1 | 0 | 0 | MTLA |
+| pembelian kembali saham | 1 | 0 | 0 | ARNA |
+| keluar dari bursa | 0 | 0 | 0 | — |
+
+Yang wajib dijelaskan di kartu, per jenis peristiwa:
+
+- **dividen tunai** — Kartu harus menyebut tanggal ex — hari pertama pembeli baru tidak lagi kebagian dividen itu — karena harga biasanya membuka lebih rendah pada hari itu tanpa ada yang rugi.
+- **penerbitan saham baru** — Harga sebelum dan sesudah tanggal ex penerbitan saham baru tidak bisa dibandingkan langsung, dan persen kepemilikan sebelum dan sesudahnya dibagi jumlah saham yang berbeda.
+- **pemecahan saham** — Kartu harga tidak boleh melintasi tanggal pemecahan saham: di data ini dua medan dari endpoint yang sama saling bertentangan tentang apakah harga lama sudah ditulis ulang, dan sebabnya belum diketahui.
+- **saham bonus** — Sama dengan pemecahan saham, jumlah lembar bertambah tanpa uang baru masuk, jadi harga per lembar sebelum dan sesudahnya bukan angka yang sebanding.
+- **pembelian kembali saham** — Pembelian kembali saham hanya muncul sebagai kalimat di keputusan RUPS, tanpa jumlah dan tanpa tanggal, jadi tidak ada angka yang bisa dijadikan kartu.
+- **keluar dari bursa** — Tidak ada satu medan pun di data ini yang menyatakan sebuah emiten keluar dari bursa, jadi peristiwa itu tidak bisa diperiksa sama sekali.
+
 ## Hasil per aturan
 
 | aturan | satuan | diperiksa | hijau | merah[^merah] | tidak lengkap | dilewati |
@@ -17,9 +39,9 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R25 | emiten | 12 | 0 | 0 | 12 | 0 |
 | R12 | laporan | 57 | 57 | 0 | 0 | 64 |
 | R22 | nama pemegang | 74 | 62 | 12 | 0 | 0 |
-| R21 | pasang sumber | 7 | 6 | 1 | 0 | 1.069 |
 | R20 | emiten | 11 | 6 | 5 | 0 | 0 |
 | R32 | pergantian tahun buku | 50 | 49 | 1 | 0 | 0 |
+| R21 | pasang sumber | 7 | 6 | 1 | 0 | 1.069 |
 | R33 | pasang hari | 2.414 | 2.374 | 19 | 21 | 0 |
 | R15 | laporan | 121 | 121 | 0 | 0 | 0 |
 | R1 | laporan | 0 | 0 | 0 | 0 | 121 |
@@ -83,18 +105,6 @@ Contoh nyata:
 - **BIRD** — Satu pemegang saham ditulis dengan 2 ejaan berbeda: "Chandra Investama", "PT Chandra Investama". Tanpa disatukan, rantainya terbaca sebagai 2 pemegang yang berbeda.
 - **BIRD** — Satu pemegang saham ditulis dengan 2 ejaan berbeda: "PT Pusaka Citra Djokosoetono", "Pusaka Citra Djokosoetono". Tanpa disatukan, rantainya terbaca sebagai 2 pemegang yang berbeda.
 
-### R21 — Jumlah saham beda antar sumber
-
-Kami menandai dua sumber yang menyebut jumlah saham berbeda untuk tanggal yang sama, dan tidak mengadu dua angka yang diukur pada waktu yang berbeda.
-
-Diperiksa 7 pasang sumber: 6 tidak bermasalah, 1 ditandai, 0 datanya tidak cukup untuk memutuskan. 1.069 pasang sumber tidak masuk pemeriksaan ini. Aturannya jalan untuk 12 emiten dan dilewati untuk 291.
-
-Alasan dilewati:
-- Kurang dari dua sumber jumlah saham, jadi tidak ada yang bisa diadu.
-
-Contoh nyata:
-- **ARNA** — Dua sumber menyebut jumlah saham ARNA yang berbeda untuk tanggal yang sama, 2025-12-31: 7.160.306.042 lembar menurut jumlah saham yang diterbitkan menurut laporan keuangan tahun buku 2025; 7.341.430.976 lembar menurut nilai pasar dibagi harga tutup 2025-12-30, hari bursa terdekat dengan akhir tahun buku 2025. Selisihnya 2,53%. Karena keduanya berbicara tentang hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak terbaca dari data ini.
-
 ### R20 — Basis saham di laba per lembar
 
 Kami menandai emiten yang laba per lembarnya tidak dihitung atas jumlah saham yang sama tiap tahun, karena dua angka seperti itu tidak bisa dibandingkan langsung.
@@ -119,6 +129,18 @@ Alasan dilewati:
 
 Contoh nyata:
 - **ULTJ** — Jumlah saham ULTJ menjadi 0,9 kali lipat antara tahun buku 2024 dan 2025 — dari 11.553.528.000 lembar menjadi 10.398.175.200 lembar. Tidak ada aksi korporasi tercatat sepanjang tahun buku itu. Penyebabnya tidak diketahui.
+
+### R21 — Jumlah saham beda antar sumber
+
+Kami menandai dua sumber yang menyebut jumlah saham berbeda untuk tanggal yang sama, dan tidak mengadu dua angka yang diukur pada waktu yang berbeda.
+
+Diperiksa 7 pasang sumber: 6 tidak bermasalah, 1 ditandai, 0 datanya tidak cukup untuk memutuskan. 1.069 pasang sumber tidak masuk pemeriksaan ini. Aturannya jalan untuk 12 emiten dan dilewati untuk 291.
+
+Alasan dilewati:
+- Kurang dari dua sumber jumlah saham, jadi tidak ada yang bisa diadu.
+
+Contoh nyata:
+- **ARNA** — Dua sumber menyebut jumlah saham ARNA yang berbeda untuk tanggal yang sama, 2025-12-31: 7.160.306.042 lembar menurut jumlah saham yang diterbitkan menurut laporan keuangan tahun buku 2025; 7.341.430.976 lembar menurut nilai pasar dibagi harga tutup 2025-12-30, hari bursa terdekat dengan akhir tahun buku 2025. Selisihnya 2,53%. Karena keduanya berbicara tentang hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak terbaca dari data ini.
 
 ### R33 — Kestabilan jumlah saham tersirat
 

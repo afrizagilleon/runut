@@ -80,9 +80,9 @@ export const ATURAN_V2: readonly EntriAturan[] = [
   { kode: 'R25', urutan: 1, bergantung: [], jalankan: r25KelengkapanHalaman },
   { kode: 'R12', urutan: 2, bergantung: [], jalankan: r12TanggalNamaBerkas },
   { kode: 'R22', urutan: 3, bergantung: ['R12'], jalankan: r22NamaPemegang },
-  { kode: 'R21', urutan: 4, bergantung: [], jalankan: r21SahamBedaSumber },
-  { kode: 'R20', urutan: 5, bergantung: [], jalankan: r20BasisLabaPerLembar },
-  { kode: 'R32', urutan: 6, bergantung: ['R21', 'R20'], jalankan: r32PerubahanSahamVsAksi },
+  { kode: 'R20', urutan: 4, bergantung: [], jalankan: r20BasisLabaPerLembar },
+  { kode: 'R32', urutan: 5, bergantung: ['R20'], jalankan: r32PerubahanSahamVsAksi },
+  { kode: 'R21', urutan: 6, bergantung: ['R32'], jalankan: r21SahamBedaSumber },
   { kode: 'R33', urutan: 7, bergantung: [], jalankan: r33SahamTersiratGoyah },
   { kode: 'R15', urutan: 8, bergantung: [], jalankan: r15Aritmetika },
   {

@@ -317,6 +317,12 @@ export function r21SahamBedaSumber(konteks: KonteksGudang): HasilAturan {
     );
   }
 
+  // R32 sebagai pembatal (RQ-04): kalau perubahan jumlah saham sepanjang satu
+  // tahun buku sudah terjelaskan aksi korporasi, selisih antar sumber pada akhir
+  // tahun itu adalah cacat yang sama — dan satu cacat data hanya boleh
+  // melahirkan satu temuan.
+  const terjelaskan = new Set(tahunTerjelaskan(konteks).map((t) => akhirTahun(t)));
+
   const temuan: Temuan[] = [];
   let diperiksa = 0;
   let merah = 0;
@@ -328,6 +334,14 @@ export function r21SahamBedaSumber(konteks: KonteksGudang): HasilAturan {
       const a = sumber[i];
       const b = sumber[j];
       if (a === undefined || b === undefined) continue;
+
+      if (a.jenis === 'tanggal' && a.kunci === b.kunci && terjelaskan.has(a.kunci)) {
+        dilewati += 1;
+        alasan.push(
+          'Perubahan jumlah saham sepanjang tahun buku ini sudah dijelaskan aksi korporasi di R32, jadi selisih antar sumber di sini adalah cacat yang sama.',
+        );
+        continue;
+      }
 
       if (a.jenis === 'tanpa-tanggal' || b.jenis === 'tanpa-tanggal') {
         dilewati += 1;
