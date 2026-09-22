@@ -40,6 +40,7 @@ import { isiSumber, type Emiten } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
 import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
 import { barisMeta } from './pembuka.ts';
+import { kalimatJejak, ringkasanJejak } from './jejak.ts';
 
 /**
  * Komponen hanya `dispatch` dan merender (D-5).
@@ -1428,13 +1429,17 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
   return (
     <section className="jejak" aria-labelledby="judul-jejak">
       <h2 id="judul-jejak">Jejak verifikasi</h2>
-      <p>
-        Sebelum kasus ini dibuat, rantai laporan kepemilikan diperiksa dengan sepuluh aturan.
-        Hasilnya {kasus.temuan.length} hal yang tidak cocok — itulah sebabnya dua laporan
-        disingkirkan dari kartu.
-      </p>
+      {/*
+        Kata-katanya dan angkanya lahir di `jejak.ts`, fungsi murni yang dites
+        (M3.6 D-5). Dulu kalimat ini menyebut "rantai laporan kepemilikan" --
+        yang terdengar pemain adalah "rantai komando" -- dan mengeja "sepuluh
+        aturan" dengan tangan, padahal mesin V2 punya 31 dan kasus ini dibangun
+        V1 dengan 10. Angka yang diketik tangan sudah pasti berbohong ke salah
+        satu arah begitu mesinnya berganti.
+      */}
+      <p>{kalimatJejak(kasus)}</p>
       <details className="jejak-rinci" data-uid="jejak">
-        <summary>Lihat kesepuluh pemeriksaan dan hasilnya</summary>
+        <summary>{ringkasanJejak(kasus)}</summary>
         <ul className="daftar-temuan">
           {kasus.temuan.map((temuan) => (
             <li key={temuan.temuan_id}>
