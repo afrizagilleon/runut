@@ -28,6 +28,9 @@ import {
   penyesuaianSplitDividen,
   r23LabaBedaEndpoint,
   r31DividenRupsVersusMedan,
+  menyatakanTanpaDividen,
+  r26PembagianLaba,
+  r27RasioSiapPakai,
 } from './aturan-keuangan.ts';
 
 function ktx(ubah: Partial<DataEmiten> = {}): KonteksGudang {
@@ -109,7 +112,7 @@ describe('R20 — basis saham di laba per lembar', () => {
     expect(h.temuan[0]?.keparahan).toBe('peringatan');
     expect(h.temuan[0]?.ringkasan).toContain('10.398.175.200');
     expect(h.temuan[0]?.ringkasan).toContain('11.553.528.000');
-    expect(h.temuan[0]?.ringkasan).toContain('11.11%');
+    expect(h.temuan[0]?.ringkasan).toContain('11,11%');
   });
 
   it('merah untuk pola TIRT: 1,06% saja sudah di atas ambang satu persen', () => {
@@ -197,7 +200,7 @@ describe('R21 — jumlah saham beda antar sumber', () => {
     expect(h.hitungan).toMatchObject({ satuan: 'pasang sumber', diperiksa: 1, merah: 1 });
     expect(h.temuan[0]?.keparahan).toBe('peringatan');
     expect(h.temuan[0]?.ringkasan).toContain('2025-12-31');
-    expect(h.temuan[0]?.ringkasan).toContain('2.53%');
+    expect(h.temuan[0]?.ringkasan).toContain('2,53%');
   });
 
   it('hijau untuk positif palsu FOLK: dua tanggal berbeda tidak diadu', () => {
@@ -691,5 +694,270 @@ describe('R31 — dividen di keputusan RUPS versus medan dividend', () => {
       lipat: 1,
       bukti: null,
     });
+  });
+});
+
+// --- M2b T-05: R26 dan R27 ---------------------------------------------------
+
+describe('R26 — pembagian laba terhadap laba tahun buku', () => {
+  /** Tahun buku dengan laba dan laba per lembar yang memberi jumlah saham persis. */
+  const tahunBuku = (t: number, laba: number, lembar: number): Partial<DataEmiten> => ({
+    keuangan_tahunan: [
+      { tahun: t, laba, pendapatan: null, ekuitas: null, aset: null, laba_kotor: null, lembar: null },
+    ],
+    eps_tahunan: [{ tahun: t, eps: laba / lembar }],
+  });
+
+  const dividen = (ex: string, nilai: number) => ({
+    ex_date: ex,
+    tanggal_bayar: null,
+    nilai_per_lembar: nilai,
+  });
+
+  it('hijau untuk pembagian laba yang masuk akal', () => {
+    // Pola MTLA: Rp11,25 per lembar atas laba tahun buku 2024.
+    const h = r26PembagianLaba(
+      ktx({
+        simbol: 'MTLA',
+        dividen: [dividen('2025-06-12', 11.25)],
+        ...tahunBuku(2024, 500_000_000_000, 7_655_126_330),
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ satuan: 'tahun buku berdividen', diperiksa: 1, hijau: 1, merah: 0 });
+  });
+
+  it('merah untuk pola BIRD: dividen dibagikan sesudah tahun buku yang rugi', () => {
+    const h = r26PembagianLaba(
+      ktx({
+        simbol: 'BIRD',
+        dividen: [dividen('2021-09-07', 36)],
+        ...tahunBuku(2020, -161_353_000_000, 2_502_307_692),
+      }),
+    );
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.keparahan).toBe('peringatan');
+    expect(h.temuan[0]?.ringkasan).toContain('rugi Rp161.353.000.000');
+    expect(h.temuan[0]?.ringkasan).toContain('-55,8%');
+    expect(h.temuan[0]?.ringkasan).not.toContain('untung Rp');
+  });
+
+  it('merah untuk pola BIRD kedua: 1.946% dari laba tahun buku', () => {
+    const h = r26PembagianLaba(
+      ktx({
+        simbol: 'BIRD',
+        dividen: [dividen('2022-07-04', 60)],
+        ...tahunBuku(2021, 7_714_000_000, 2_502_173_913),
+      }),
+    );
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('untung Rp7.714.000.000');
+  });
+
+  it('menjumlahkan per tahun buku: dua dividen yang lolos satu-satu tertangkap bersama', () => {
+    // Sabotase uji lawan §7: RAJA tahun buku 2025 membagi Rp5 (23,2%) dan
+    // Rp40 (185,4%) — keduanya di dalam selang; jumlahnya 208,6% tidak.
+    const laba = 455_902_659_945;
+    const lembar = 21_138_000_000;
+    const satuSatu = (ex: string, nilai: number) =>
+      r26PembagianLaba(ktx({ simbol: 'RAJA', dividen: [dividen(ex, nilai)], ...tahunBuku(2025, laba, lembar) }));
+    expect(satuSatu('2026-01-09', 5).hitungan.merah).toBe(0);
+    expect(satuSatu('2026-07-02', 40).hitungan.merah).toBe(0);
+
+    const bersama = r26PembagianLaba(
+      ktx({
+        simbol: 'RAJA',
+        dividen: [dividen('2026-01-09', 5), dividen('2026-07-02', 40)],
+        ...tahunBuku(2025, laba, lembar),
+      }),
+    );
+    expect(bersama.hitungan).toMatchObject({ diperiksa: 1, merah: 1 });
+    expect(bersama.temuan[0]?.ringkasan).toContain('2 pembagian');
+    expect(bersama.temuan[0]?.ringkasan).toContain('Rp45 per lembar');
+  });
+
+  it('memakai jumlah saham tahun buku itu, bukan jumlah saham hari ini', () => {
+    // Pola ULTJ: basis 11.553.528.000 pada tahun buku 2023 dan 10.398.175.200
+    // pada 2025. Dengan basis hari ini, pembagian laba 2023 meleset 11%.
+    const h = r26PembagianLaba(
+      ktx({
+        simbol: 'ULTJ',
+        dividen: [dividen('2024-05-04', 17)],
+        keuangan_tahunan: [
+          { tahun: 2023, laba: 1_000_000_000_000, pendapatan: null, ekuitas: null, aset: null, laba_kotor: null, lembar: null },
+          { tahun: 2025, laba: 1_000_000_000_000, pendapatan: null, ekuitas: null, aset: null, laba_kotor: null, lembar: null },
+        ],
+        eps_tahunan: [
+          { tahun: 2023, eps: 1_000_000_000_000 / 11_553_528_000 },
+          { tahun: 2025, eps: 1_000_000_000_000 / 10_398_175_200 },
+        ],
+      }),
+    );
+    expect(h.temuan).toHaveLength(0);
+    // Basis tahun buku 2023 yang dipakai, bukan basis 2025.
+    const persen = (17 * 11_553_528_000) / 1_000_000_000_000 * 100;
+    expect(Number(persen.toFixed(1))).toBe(19.6);
+  });
+
+  it('menandai dividen yang dipetakan ke tahun buku yang RUPS-nya menyatakan tidak membagi', () => {
+    // Penjaga kalimat negatif. R24 dibuang justru karena tidak punya ini.
+    const h = r26PembagianLaba(
+      ktx({
+        simbol: 'FOLK',
+        dividen: [dividen('2026-03-02', 5)],
+        rups: [
+          {
+            tanggal: '2026-06-09',
+            ringkasan:
+              'Agenda #2: The meeting decided not to distribute dividends for the 2025 fiscal year, instead allocating the net profit to retained earnings.',
+          },
+        ],
+        ...tahunBuku(2025, 1_000_000_000_000, 4_000_000_000),
+      }),
+    );
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('tidak ada dividen yang dibagikan untuk tahun buku 2025');
+  });
+
+  it('mengenali kalimat negatif dalam beberapa bentuk, dan tidak salah membaca yang positif', () => {
+    expect(menyatakanTanpaDividen('The meeting decided not to distribute dividends for 2025')).toBe(true);
+    expect(menyatakanTanpaDividen('designated as retained earnings, with no dividend distribution')).toBe(true);
+    expect(menyatakanTanpaDividen('including cash dividends (no cash dividend was proposed)')).toBe(true);
+    expect(menyatakanTanpaDividen('approved a total cash dividend of Rp133.50 per share')).toBe(false);
+  });
+
+  it('menjawab TIDAK_LENGKAP kalau laba tahun buku itu tidak ada di data', () => {
+    const h = r26PembagianLaba(ktx({ dividen: [dividen('2026-01-09', 5)] }));
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, tidak_lengkap: 1, merah: 0 });
+    expect(h.hitungan.alasan_dilewati.join(' ')).toContain('tidak ada di data');
+  });
+
+  it('hijau tepat di tepi dua ratus persen', () => {
+    const h = r26PembagianLaba(
+      ktx({ dividen: [dividen('2026-06-01', 200)], ...tahunBuku(2025, 100_000_000_000, 1_000_000_000) }),
+    );
+    expect(h.hitungan.merah).toBe(0);
+    const lewat = r26PembagianLaba(
+      ktx({ dividen: [dividen('2026-06-01', 201)], ...tahunBuku(2025, 100_000_000_000, 1_000_000_000) }),
+    );
+    expect(lewat.hitungan.merah).toBe(1);
+  });
+
+  it('mengalikan kembali dividen yang R31 buktikan sudah dibagi rasio pemecahan saham', () => {
+    // Tanpa ini, pembagian laba MLPT terhitung 25 kali terlalu kecil.
+    const dasar = {
+      simbol: 'MLPT',
+      dividen: [dividen('2026-05-11', 3.2)],
+      ...tahunBuku(2025, 30_000_000_000, 1_000_000_000),
+    };
+    expect(r26PembagianLaba(ktx(dasar)).hitungan.merah).toBe(0);
+
+    const denganBukti = r26PembagianLaba(
+      ktx({
+        ...dasar,
+        stock_split: [{ tanggal: '2026-07-21', rasio: 25, sumber: 'MLPT-corpactions.json' }],
+        rups: [
+          {
+            tanggal: '2026-04-29',
+            ringkasan: 'approved a total cash dividend of Rp80.00 per share for the 2025 fiscal year',
+          },
+        ],
+      }),
+    );
+    // Tanpa dikalikan kembali: 3,20 x 1 miliar / 30 miliar = 10,7%, hijau.
+    // Sesudah dikalikan kembali: Rp80 x 1 miliar / 30 miliar = 266,7%, merah.
+    expect(denganBukti.hitungan.merah).toBe(1);
+    expect(denganBukti.temuan[0]?.ringkasan).toContain('Rp80 per lembar');
+  });
+});
+
+describe('R27 — medan rasio siap pakai', () => {
+  const rasio = (nama: string, nilai: number, kelompok = 'profitability') => ({
+    tahun: 2025,
+    kelompok,
+    nama,
+    nilai,
+  });
+  const keuangan2025 = (ubah: Partial<DataEmiten['keuangan_tahunan'][number]> = {}) => [
+    {
+      tahun: 2025,
+      laba: 635_837_000_000,
+      pendapatan: 5_705_193_000_000,
+      ekuitas: 6_326_724_000_000,
+      aset: 9_651_198_000_000,
+      laba_kotor: 1_814_425_000_000,
+      lembar: null,
+      ...ubah,
+    },
+  ];
+
+  it('hijau kalau rasio siap pakai sama dengan hitungan ulangnya', () => {
+    const h = r27RasioSiapPakai(
+      ktx({
+        simbol: 'BIRD',
+        rasio: [rasio('roe', 635_837_000_000 / 6_326_724_000_000)],
+        keuangan_tahunan: keuangan2025(),
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ satuan: 'medan rasio', diperiksa: 1, hijau: 1, merah: 0 });
+  });
+
+  it('merah kalau rasio siap pakai tidak bisa dihitung ulang dari laporan keuangan', () => {
+    const h = r27RasioSiapPakai(
+      ktx({ rasio: [rasio('roe', 0.5)], keuangan_tahunan: keuangan2025() }),
+    );
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.keparahan).toBe('peringatan');
+    expect(h.temuan[0]?.ringkasan).toContain('bukan rumus yang kami kira');
+  });
+
+  it('merah untuk pola TLDN: imbal hasil ekuitas 262,52 tidak mungkin', () => {
+    const h = r27RasioSiapPakai(ktx({ simbol: 'TLDN', rasio: [rasio('roe', 262.52)] }));
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('di luar selang');
+  });
+
+  it('merah untuk pola PSSI: pembagian laba siap pakai yang negatif', () => {
+    const h = r27RasioSiapPakai(ktx({ simbol: 'PSSI', rasio: [rasio('payout_ratio', -0.479)] }));
+    expect(h.hitungan.merah).toBe(1);
+  });
+
+  it('merah untuk pola TIRT: rasio positif yang lahir dari dua angka negatif', () => {
+    const h = r27RasioSiapPakai(
+      ktx({
+        simbol: 'TIRT',
+        rasio: [rasio('roe', -33_358_663_046 / -635_584_467_177)],
+        keuangan_tahunan: keuangan2025({ laba: -33_358_663_046, ekuitas: -635_584_467_177 }),
+      }),
+    );
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('positif hanya karena kedua angka yang dibagi sama-sama negatif');
+    expect(h.temuan[0]?.ringkasan).toContain('terbaca seperti untung, padahal tahun buku itu rugi');
+  });
+
+  it('tidak menandai marjin yang besar hanya karena pendapatannya kecil', () => {
+    // TIRT 2023: pendapatan Rp22 juta, laba kotor minus Rp29 miliar. Marjinnya
+    // -1.306 kali dan angka itu benar. Menandainya berarti menolak data benar.
+    const h = r27RasioSiapPakai(
+      ktx({
+        simbol: 'TIRT',
+        rasio: [rasio('gross_profit_margin', -29_193_956_975 / 22_360_023)],
+        keuangan_tahunan: keuangan2025({ laba_kotor: -29_193_956_975, pendapatan: 22_360_023 }),
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0, hijau: 1 });
+  });
+
+  it('menjawab TIDAK_LENGKAP untuk medan yang tidak punya rumus hitung ulang', () => {
+    const h = r27RasioSiapPakai(
+      ktx({ rasio: [rasio('current_ratio', 1.93, 'liquidity')], keuangan_tahunan: keuangan2025() }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, tidak_lengkap: 1, merah: 0 });
+    expect(h.hitungan.alasan_dilewati.join(' ')).toContain('tidak punya rumus hitung ulang');
+  });
+
+  it('dilewati beserta alasannya kalau emiten tidak punya medan rasio', () => {
+    const h = r27RasioSiapPakai(ktx());
+    expect(h.dijalankan).toBe(false);
+    expect(h.alasan_lewat).toContain('tidak punya satu pun medan rasio');
   });
 });

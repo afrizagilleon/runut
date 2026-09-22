@@ -15,6 +15,7 @@
 import type { Temuan } from '../skema/tipe.ts';
 import type {
   HasilAturan,
+  KeuanganTahunan,
   KonteksGudang,
   RightIssue,
   SahamBonus,
@@ -259,7 +260,7 @@ export function r20BasisLabaPerLembar(konteks: KonteksGudang): HasilAturan {
       `Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — ` +
       `memberi ${angka(min)} lembar untuk tahun buku ${String(sedikit?.tahun ?? 0)} dan ` +
       `${angka(maks)} lembar untuk tahun buku ${String(paling?.tahun ?? 0)}, selisih ` +
-      `${String(sebarPersen(min, maks))}%. Dua angka laba per lembar dari tahun yang berbeda ` +
+      `${angka(sebarPersen(min, maks))}%. Dua angka laba per lembar dari tahun yang berbeda ` +
       `karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari ` +
       `jumlah sahamnya, bukan dari labanya.`,
     angka: [
@@ -360,7 +361,7 @@ export function r21SahamBedaSumber(konteks: KonteksGudang): HasilAturan {
         ringkasan:
           `Dua sumber menyebut jumlah saham ${konteks.simbol} yang berbeda untuk tanggal yang sama, ` +
           `${a.kunci}: ${angka(a.lembar)} lembar menurut ${a.nama}; ${angka(b.lembar)} lembar menurut ` +
-          `${b.nama}. Selisihnya ${String(sebarPersen(min, maks))}%. Karena keduanya berbicara tentang ` +
+          `${b.nama}. Selisihnya ${angka(sebarPersen(min, maks))}%. Karena keduanya berbicara tentang ` +
           `hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak ` +
           `terbaca dari data ini.`,
         angka: [
@@ -503,7 +504,7 @@ export function r32PerubahanSahamVsAksi(konteks: KonteksGudang): HasilAturan {
         aturan: 'R32',
         keparahan: 'catatan',
         ringkasan:
-          `Jumlah saham ${konteks.simbol} menjadi ${String(lipatTerukur)} kali lipat antara tahun buku ` +
+          `Jumlah saham ${konteks.simbol} menjadi ${angka(lipatTerukur)} kali lipat antara tahun buku ` +
           `${String(kemarin.tahun)} dan ${tahun} — dari ${angka(kemarin.lembar)} lembar menjadi ` +
           `${angka(sekarang.lembar)} lembar — dan ${menjelaskan.map((a) => `${a.apa} pada ${a.tanggal}`).join(' serta ')} ` +
           `menjelaskan perubahan sebesar itu. Angka apa pun per lembar dari kedua tahun itu tetap ` +
@@ -529,7 +530,7 @@ export function r32PerubahanSahamVsAksi(konteks: KonteksGudang): HasilAturan {
       aturan: 'R32',
       keparahan: 'peringatan',
       ringkasan:
-        `Jumlah saham ${konteks.simbol} menjadi ${String(lipatTerukur)} kali lipat antara tahun buku ` +
+        `Jumlah saham ${konteks.simbol} menjadi ${angka(lipatTerukur)} kali lipat antara tahun buku ` +
         `${String(kemarin.tahun)} dan ${tahun} — dari ${angka(kemarin.lembar)} lembar menjadi ` +
         `${angka(sekarang.lembar)} lembar. ${daftarAksi} Penyebabnya tidak diketahui.`,
       angka: [
@@ -964,5 +965,349 @@ export function r31DividenRupsVersusMedan(konteks: KonteksGudang): HasilAturan {
     judul,
     temuan,
     hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, dilewati, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R26 pembagian laba tak masuk akal ---------------------------------------
+
+/**
+ * Selang pembagian laba yang masuk akal, dalam persen laba tahun buku itu.
+ *
+ * Nol sampai dua ratus persen. Di atas seratus persen sudah tidak biasa tetapi
+ * sah — perusahaan boleh membagi laba ditahan tahun-tahun sebelumnya — jadi
+ * batasnya sengaja longgar. Di bawah nol berarti tahun bukunya rugi, dan
+ * membagi dividen sesudah tahun rugi juga sah. Aturan ini karena itu menguji
+ * **asumsi pemetaan tahun buku kita**, bukan data emitennya.
+ */
+export const SELANG_R26 = { bawah: 0, atas: 200 } as const;
+
+/**
+ * Kalimat yang berarti "tidak ada dividen dibagikan untuk tahun buku itu".
+ *
+ * Penjaga ini wajib, dan R24 dibuang justru karena tidak punya: aturan yang
+ * hanya mencari kata "dividend" di teks keputusan RUPS membaca "the meeting
+ * decided **not to** distribute dividends" sebagai pengumuman dividen.
+ */
+const KALIMAT_TANPA_DIVIDEN = [
+  /not\s+to\s+distribute\s+(any\s+)?dividend/i,
+  /no\s+dividend\s+distribution/i,
+  /no\s+cash\s+dividend/i,
+  /without\s+distributing\s+dividend/i,
+  /tidak\s+membagi(kan)?\s+dividen/i,
+];
+
+export function menyatakanTanpaDividen(ringkasan: string): boolean {
+  return KALIMAT_TANPA_DIVIDEN.some((pola) => pola.test(ringkasan));
+}
+
+/**
+ * Tahun buku sebuah entri dividen: tahun `ex_date` dikurangi satu.
+ *
+ * **Batas yang harus diketahui pembaca:** aturan ini salah untuk dividen
+ * interim yang tanggal ex-nya jatuh di dalam tahun bukunya sendiri. MLPT
+ * membuktikannya — interim ex 2025-11-07 dan final ex 2026-05-11 sama-sama
+ * untuk tahun buku 2025, tetapi aturan ini menaruh yang pertama di 2024.
+ * Tidak ada medan di data yang menyebutkan tahun buku sebuah dividen, jadi
+ * aturan ini adalah pemetaan yang **diasumsikan**, dan itulah yang sebenarnya
+ * diuji R26.
+ */
+export function tahunBukuDividen(exDate: string): number {
+  return Number.parseInt(exDate.slice(0, 4), 10) - 1;
+}
+
+/**
+ * R26 — pembagian laba yang tak masuk akal terhadap laba tahun buku itu.
+ *
+ * Dijumlahkan **per tahun buku** lebih dulu. Tanpa itu, dua dividen setahun
+ * lolos hijau satu-satu walau jumlahnya di luar selang: RAJA tahun buku 2025
+ * membagi Rp5 (23,2%) dan Rp40 (185,4%), dan jumlahnya 208,6%.
+ *
+ * Penyebutnya adalah jumlah saham **pada tahun buku itu** (`laba ÷ laba per
+ * lembar`), bukan jumlah saham hari ini. Dengan jumlah saham hari ini, seluruh
+ * pembagian laba ULTJ sebelum 2025 dihitung dengan basis yang meleset 11%.
+ *
+ * Kalau R31 membuktikan medan dividen sudah dibagi rasio pemecahan saham,
+ * angkanya dikalikan kembali lebih dulu — kalau tidak, pembagian laba MLPT
+ * terhitung 25 kali terlalu kecil.
+ */
+export function r26PembagianLaba(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Pembagian laba terhadap laba tahun buku';
+  const satuan = 'tahun buku berdividen';
+  if (konteks.data.dividen.length === 0) {
+    return lewat('R26', judul, 'Emiten ini tidak punya satu pun dividen tercatat.', satuan);
+  }
+
+  const penyesuaian = penyesuaianSplitDividen(konteks);
+  const basis = new Map(basisSahamPerTahun(konteks).map((b) => [b.tahun, b]));
+
+  const perTahun = new Map<number, Array<{ ex: string; milli: number }>>();
+  for (const d of konteks.data.dividen) {
+    const t = tahunBukuDividen(d.ex_date);
+    if (!Number.isFinite(t)) continue;
+    const milli = Math.round(d.nilai_per_lembar * 1000) * penyesuaian.lipat;
+    const daftar = perTahun.get(t);
+    if (daftar === undefined) perTahun.set(t, [{ ex: d.ex_date, milli }]);
+    else daftar.push({ ex: d.ex_date, milli });
+  }
+
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const t of [...perTahun.keys()].sort((a, b) => a - b)) {
+    diperiksa += 1;
+    const daftar = (perTahun.get(t) ?? []).sort((a, b) => a.ex.localeCompare(b.ex));
+    const totalMilli = daftar.reduce((jumlah, d) => jumlah + d.milli, 0);
+    const b = basis.get(t);
+
+    // Penjaga kalimat negatif: RUPS yang memutuskan penggunaan laba tahun buku
+    // t diselenggarakan pada tahun t + 1.
+    const rupsTahunItu = konteks.data.rups.filter(
+      (r) => r.ringkasan !== null && r.tanggal.slice(0, 4) === String(t + 1),
+    );
+    const menolak = rupsTahunItu.find((r) => menyatakanTanpaDividen(r.ringkasan ?? ''));
+    if (menolak !== undefined) {
+      merah += 1;
+      temuan.push({
+        temuan_id: 'R26-' + konteks.simbol + '-' + String(t) + '-tanpa-dividen',
+        aturan: 'R26',
+        keparahan: 'peringatan',
+        ringkasan:
+          'Keputusan RUPS ' + konteks.simbol + ' pada ' + menolak.tanggal + ' menyatakan tidak ada ' +
+          'dividen yang dibagikan untuk tahun buku ' + String(t) + ', tetapi medan dividen memuat ' +
+          String(daftar.length) + ' pembagian yang menurut aturan pemetaan kami termasuk tahun buku ' +
+          'itu: ' + daftar.map((d) => 'Rp' + rupiahMilli(d.milli) + ' dengan tanggal ex ' + d.ex).join(', ') +
+          '. Yang paling mungkin bukan bahwa salah satunya salah, melainkan bahwa aturan pemetaan ' +
+          'kami — tahun ex dikurangi satu — tidak berlaku untuk emiten ini. Pembagian laba tahun ' +
+          'buku ' + String(t) + ' tidak boleh ditulis di kartu sebelum itu dijelaskan.',
+        angka: [{ label: 'jumlah dividen yang dipetakan', nilai: daftar.length, satuan: 'pembagian' }],
+        fakta_terkait: [],
+        rujukan: ['RUPS ' + menolak.tanggal, ...daftar.map((d) => 'dividen ex ' + d.ex)],
+      });
+      continue;
+    }
+
+    if (b === undefined || b.laba === 0) {
+      tidakLengkap += 1;
+      alasan.push(
+        'Laba atau laba per lembar tahun buku ' + String(t) + ' tidak ada di data, jadi pembagian laba tahun itu tidak bisa dihitung.',
+      );
+      continue;
+    }
+
+    // payout = dividen per lembar x jumlah saham tahun itu / laba tahun itu.
+    const totalRupiah = (totalMilli / 1000) * b.lembar;
+    const persen = Number(((totalRupiah / b.laba) * 100).toFixed(1));
+    if (persen >= SELANG_R26.bawah && persen <= SELANG_R26.atas) continue;
+
+    merah += 1;
+    const rincian =
+      daftar.length === 1
+        ? 'Rp' + rupiahMilli(totalMilli) + ' per lembar dengan tanggal ex ' + (daftar[0]?.ex ?? '')
+        : daftar.length +
+          ' pembagian yang jumlahnya Rp' +
+          rupiahMilli(totalMilli) +
+          ' per lembar (' +
+          daftar.map((d) => 'Rp' + rupiahMilli(d.milli) + ' ex ' + d.ex).join(' dan ') +
+          ')';
+    const sebabRugi =
+      b.laba < 0
+        ? ' Angkanya negatif karena pembaginya rugi, bukan untung: dividen dibagikan sesudah tahun rugi, dan itu bisa saja sah kalau uangnya berasal dari laba tahun-tahun sebelumnya.'
+        : '';
+    temuan.push({
+      temuan_id: 'R26-' + konteks.simbol + '-' + String(t),
+      aturan: 'R26',
+      keparahan: 'peringatan',
+      ringkasan:
+        konteks.simbol + ' membagikan ' + rincian + ', yang menurut aturan pemetaan kami termasuk ' +
+        'tahun buku ' + String(t) + '. Tahun buku itu ' +
+        (b.laba < 0
+          ? 'rugi Rp' + angka(Math.round(-b.laba))
+          : 'untung Rp' + angka(Math.round(b.laba))) +
+        ', jadi pembagian itu setara ' + angka(persen) + '% dari labanya — di luar selang ' +
+        String(SELANG_R26.bawah) + '% sampai ' + String(SELANG_R26.atas) +
+        '% yang kami anggap masuk akal.' + sebabRugi +
+        ' Penyebabnya tidak diketahui; bisa juga aturan pemetaan tahun buku kami yang tidak ' +
+        'berlaku untuk emiten ini. Pembagian laba tahun buku ini tidak boleh ditulis di kartu ' +
+        'sebelum itu dijelaskan.',
+      angka: [
+        { label: 'dividen per lembar tahun buku ini', nilai: totalMilli / 1000, satuan: 'rupiah per lembar' },
+        { label: 'jumlah saham tahun buku ini', nilai: b.lembar, satuan: 'lembar' },
+        { label: 'laba tahun buku ini', nilai: Math.round(b.laba), satuan: 'rupiah' },
+        { label: 'pembagian laba', nilai: persen, satuan: 'persen' },
+      ],
+      fakta_terkait: [],
+      rujukan: daftar.map((d) => 'dividen ex ' + d.ex),
+    });
+  }
+
+  return hasil(
+    'R26',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R27 medan rasio siap pakai ----------------------------------------------
+
+/**
+ * Selang yang masuk akal, **hanya** untuk medan yang punya batas alami.
+ *
+ * Sengaja longgar: imbal hasil ekuitas bisa sah sangat besar kalau ekuitasnya
+ * mendekati nol. Yang aturan ini cari adalah angka yang tidak mungkin, seperti
+ * `roe` 262,52 (yaitu 26.252%) dan `payout_ratio` -0,479.
+ *
+ * **Marjin dan rasio lancar sengaja TIDAK ada di sini.** Keduanya dibagi
+ * pendapatan atau utang lancar, yang bisa mengecil sampai hampir nol tanpa ada
+ * yang salah: pendapatan TIRT 2023 adalah Rp22 juta sementara laba kotornya
+ * minus Rp29 miliar, jadi marjinnya -1.306 kali dan angka itu **benar**.
+ * Menandainya berarti menolak data yang benar, yaitu kegagalan yang aturan ini
+ * ada untuk mencegahnya.
+ */
+export const SELANG_RASIO: Record<string, { bawah: number; atas: number }> = {
+  roe: { bawah: -5, atas: 5 },
+  roa: { bawah: -5, atas: 5 },
+  payout_ratio: { bawah: 0, atas: 2 },
+};
+
+/**
+ * Cara menghitung ulang sebuah medan rasio dari laporan keuangan tahun yang
+ * sama. Yang tidak ada di sini tidak bisa dihitung ulang dari data ini.
+ */
+const HITUNG_ULANG: Record<string, (k: KeuanganTahunan) => { atas: number; bawah: number } | null> = {
+  roe: (k) => (k.laba === null || k.ekuitas === null ? null : { atas: k.laba, bawah: k.ekuitas }),
+  roa: (k) => (k.laba === null || k.aset === null ? null : { atas: k.laba, bawah: k.aset }),
+  net_profit_margin: (k) =>
+    k.laba === null || k.pendapatan === null ? null : { atas: k.laba, bawah: k.pendapatan },
+  gross_profit_margin: (k) =>
+    k.laba_kotor === null || k.pendapatan === null ? null : { atas: k.laba_kotor, bawah: k.pendapatan },
+};
+
+/**
+ * Seberapa jauh rasio siap pakai boleh melenceng dari hitungan ulangnya.
+ *
+ * Satu per sepuluh ribu: cukup longgar untuk pembulatan tampilan, cukup rapat
+ * untuk menangkap rumus yang berbeda. Perbandingannya dilakukan sebagai
+ * perkalian silang bilangan bulat, bukan pembagian pecahan (INV-D).
+ */
+export const TOLERANSI_R27 = 0.0001;
+
+/**
+ * R27 — medan rasio siap pakai yang tidak bisa dihitung ulang.
+ *
+ * Dua pemeriksaan, dan yang kedua lebih berarti daripada yang pertama:
+ * apakah angkanya masuk akal sama sekali, dan apakah ia bisa dihitung ulang
+ * dari laporan keuangan tahun yang sama. Medan yang **tidak bisa** dihitung
+ * ulang dari data ini dijawab `TIDAK_LENGKAP`, bukan hijau — "hijau" untuk
+ * angka yang tidak pernah diperiksa adalah persis kegagalan yang INV-B ada
+ * untuk mencegahnya.
+ */
+export function r27RasioSiapPakai(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Medan rasio siap pakai';
+  const satuan = 'medan rasio';
+  if (konteks.data.rasio.length === 0) {
+    return lewat('R27', judul, 'Emiten ini tidak punya satu pun medan rasio siap pakai.', satuan);
+  }
+
+  const keuangan = new Map(konteks.data.keuangan_tahunan.map((k) => [k.tahun, k]));
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const r of konteks.data.rasio) {
+    diperiksa += 1;
+    const selang = SELANG_RASIO[r.nama];
+    if (selang !== undefined && (r.nilai < selang.bawah || r.nilai > selang.atas)) {
+      merah += 1;
+      temuan.push({
+        temuan_id: 'R27-' + konteks.simbol + '-' + String(r.tahun) + '-' + r.nama + '-selang',
+        aturan: 'R27',
+        keparahan: 'peringatan',
+        ringkasan:
+          'Medan rasio siap pakai `' + r.nama + '` ' + konteks.simbol + ' untuk tahun buku ' +
+          String(r.tahun) + ' bernilai ' + String(r.nilai) + ', di luar selang ' +
+          String(selang.bawah) + ' sampai ' + String(selang.atas) + ' yang kami anggap mungkin. ' +
+          'Penyebabnya tidak diketahui. Angka itu tidak boleh dipakai di kartu apa pun.',
+        angka: [{ label: r.nama + ' tahun buku ' + String(r.tahun), nilai: r.nilai, satuan: 'rasio' }],
+        fakta_terkait: [],
+        rujukan: ['rasio ' + r.kelompok + '.' + r.nama + ' tahun buku ' + String(r.tahun)],
+      });
+      continue;
+    }
+
+    const cara = HITUNG_ULANG[r.nama];
+    const k = keuangan.get(r.tahun);
+    const bahan = cara === undefined || k === undefined ? null : cara(k);
+    if (bahan === null || bahan.bawah === 0) {
+      tidakLengkap += 1;
+      alasan.push(
+        cara === undefined
+          ? 'Medan `' + r.nama + '` tidak punya rumus hitung ulang dari laporan keuangan di data ini.'
+          : 'Angka yang dibutuhkan untuk menghitung ulang `' + r.nama + '` tahun buku ' + String(r.tahun) + ' tidak ada di laporan keuangan.',
+      );
+      continue;
+    }
+
+    // |nilai - atas/bawah| <= toleransi, ditulis sebagai perkalian silang.
+    const selisih = Math.abs(r.nilai * bahan.bawah - bahan.atas);
+    if (selisih <= TOLERANSI_R27 * Math.abs(bahan.bawah)) {
+      // Angkanya cocok, tetapi tandanya bisa menipu: rasio yang positif karena
+      // penyebutnya negatif membaca seperti untung padahal pembilangnya rugi.
+      if (r.nilai > 0 && bahan.atas < 0 && bahan.bawah < 0) {
+        merah += 1;
+        temuan.push({
+          temuan_id: 'R27-' + konteks.simbol + '-' + String(r.tahun) + '-' + r.nama + '-tanda',
+          aturan: 'R27',
+          keparahan: 'peringatan',
+          ringkasan:
+            'Medan rasio siap pakai `' + r.nama + '` ' + konteks.simbol + ' untuk tahun buku ' +
+            String(r.tahun) + ' bernilai ' + String(r.nilai) + ', yaitu angka positif — tetapi ia ' +
+            'positif hanya karena kedua angka yang dibagi sama-sama negatif: ' +
+            'Rp' + angka(Math.round(bahan.atas)) + ' dibagi Rp' + angka(Math.round(bahan.bawah)) + '. ' +
+            'Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu ' +
+            'rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.',
+          angka: [
+            { label: r.nama + ' siap pakai', nilai: r.nilai, satuan: 'rasio' },
+            { label: 'yang dibagi', nilai: Math.round(bahan.atas), satuan: 'rupiah' },
+            { label: 'pembaginya', nilai: Math.round(bahan.bawah), satuan: 'rupiah' },
+          ],
+          fakta_terkait: [],
+          rujukan: ['rasio ' + r.kelompok + '.' + r.nama + ' tahun buku ' + String(r.tahun)],
+        });
+      }
+      continue;
+    }
+
+    merah += 1;
+    const dihitung = Number((bahan.atas / bahan.bawah).toFixed(6));
+    temuan.push({
+      temuan_id: 'R27-' + konteks.simbol + '-' + String(r.tahun) + '-' + r.nama,
+      aturan: 'R27',
+      keparahan: 'peringatan',
+      ringkasan:
+        'Medan rasio siap pakai `' + r.nama + '` ' + konteks.simbol + ' untuk tahun buku ' +
+        String(r.tahun) + ' bernilai ' + String(r.nilai) + ', sementara menghitungnya ulang dari ' +
+        'angka laporan keuangan tahun yang sama memberi ' + String(dihitung) + '. Rumus yang ' +
+        'dipakai penyedia data karena itu bukan rumus yang kami kira. Angka itu tidak boleh ' +
+        'dipakai di kartu sebelum rumusnya diketahui.',
+      angka: [
+        { label: r.nama + ' siap pakai', nilai: r.nilai, satuan: 'rasio' },
+        { label: r.nama + ' hasil hitung ulang', nilai: dihitung, satuan: 'rasio' },
+      ],
+      fakta_terkait: [],
+      rujukan: ['rasio ' + r.kelompok + '.' + r.nama + ' tahun buku ' + String(r.tahun)],
+    });
+  }
+
+  return hasil(
+    'R27',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
   );
 }

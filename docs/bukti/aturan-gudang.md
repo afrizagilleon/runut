@@ -44,8 +44,10 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R35 | nilai harga ekstrem | 104 | 46 | 3 | 55 | 0 |
 | R23 | keputusan RUPS | 2 | 1 | 1 | 0 | 98 |
 | R31 | angka dividen di keputusan RUPS | 6 | 4 | 2 | 0 | 95 |
+| R26 | tahun buku berdividen | 50 | 34 | 3 | 13 | 0 |
+| R27 | medan rasio | 988 | 306 | 6 | 676 | 0 |
 
-[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R20, R21, R22, R28, R32, R33), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
+[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R20, R21, R22, R26, R27, R28, R32, R33), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
 
 ### R25 — Kelengkapan halaman laporan
 
@@ -88,7 +90,7 @@ Alasan dilewati:
 - Kurang dari dua sumber jumlah saham, jadi tidak ada yang bisa diadu.
 
 Contoh nyata:
-- **ARNA** — Dua sumber menyebut jumlah saham ARNA yang berbeda untuk tanggal yang sama, 2025-12-31: 7.160.306.042 lembar menurut jumlah saham yang diterbitkan menurut laporan keuangan tahun buku 2025; 7.341.430.976 lembar menurut nilai pasar dibagi harga tutup 2025-12-30, hari bursa terdekat dengan akhir tahun buku 2025. Selisihnya 2.53%. Karena keduanya berbicara tentang hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak terbaca dari data ini.
+- **ARNA** — Dua sumber menyebut jumlah saham ARNA yang berbeda untuk tanggal yang sama, 2025-12-31: 7.160.306.042 lembar menurut jumlah saham yang diterbitkan menurut laporan keuangan tahun buku 2025; 7.341.430.976 lembar menurut nilai pasar dibagi harga tutup 2025-12-30, hari bursa terdekat dengan akhir tahun buku 2025. Selisihnya 2,53%. Karena keduanya berbicara tentang hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak terbaca dari data ini.
 
 ### R20 — Basis saham di laba per lembar
 
@@ -100,8 +102,8 @@ Alasan dilewati:
 - Kurang dari dua tahun buku yang punya laba sekaligus laba per lembar, jadi tidak ada dua basis yang bisa dibandingkan.
 
 Contoh nyata:
-- **COCO** — Laba per lembar COCO tidak dihitung atas jumlah saham yang sama tiap tahun. Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — memberi 560.000.000 lembar untuk tahun buku 2020 dan 3.559.455.924 lembar untuk tahun buku 2025, selisih 535.62%. Dua angka laba per lembar dari tahun yang berbeda karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari jumlah sahamnya, bukan dari labanya.
-- **KRYA** — Laba per lembar KRYA tidak dihitung atas jumlah saham yang sama tiap tahun. Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — memberi 1.625.490.196 lembar untuk tahun buku 2022 dan 1.663.943.474 lembar untuk tahun buku 2023, selisih 2.37%. Dua angka laba per lembar dari tahun yang berbeda karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari jumlah sahamnya, bukan dari labanya.
+- **COCO** — Laba per lembar COCO tidak dihitung atas jumlah saham yang sama tiap tahun. Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — memberi 560.000.000 lembar untuk tahun buku 2020 dan 3.559.455.924 lembar untuk tahun buku 2025, selisih 535,62%. Dua angka laba per lembar dari tahun yang berbeda karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari jumlah sahamnya, bukan dari labanya.
+- **KRYA** — Laba per lembar KRYA tidak dihitung atas jumlah saham yang sama tiap tahun. Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — memberi 1.625.490.196 lembar untuk tahun buku 2022 dan 1.663.943.474 lembar untuk tahun buku 2023, selisih 2,37%. Dua angka laba per lembar dari tahun yang berbeda karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari jumlah sahamnya, bukan dari labanya.
 
 ### R32 — Perubahan jumlah saham dijelaskan aksi korporasi
 
@@ -113,7 +115,7 @@ Alasan dilewati:
 - Kurang dari dua tahun buku yang basis sahamnya bisa dihitung, jadi tidak ada pergantian tahun untuk diperiksa.
 
 Contoh nyata:
-- **ULTJ** — Jumlah saham ULTJ menjadi 0.9 kali lipat antara tahun buku 2024 dan 2025 — dari 11.553.528.000 lembar menjadi 10.398.175.200 lembar. Tidak ada aksi korporasi tercatat sepanjang tahun buku itu. Penyebabnya tidak diketahui.
+- **ULTJ** — Jumlah saham ULTJ menjadi 0,9 kali lipat antara tahun buku 2024 dan 2025 — dari 11.553.528.000 lembar menjadi 10.398.175.200 lembar. Tidak ada aksi korporasi tercatat sepanjang tahun buku itu. Penyebabnya tidak diketahui.
 
 ### R33 — Kestabilan jumlah saham tersirat
 
@@ -384,6 +386,32 @@ Alasan dilewati:
 Contoh nyata:
 - **MLPT** — Keputusan RUPS MLPT pada 2026-04-29 menyebut dividen Rp133,5 per lembar, tetapi medan dividen memberi Rp2,14 dengan tanggal ex 2025-11-07 ditambah Rp3,2 dengan tanggal ex 2026-05-11 — 25 kali lebih kecil. Angkanya baru cocok sesudah dikali 25, yaitu rasio pemecahan saham yang tercatat untuk emiten ini. Artinya medan dividen sudah dibagi rasio pemecahan saham sementara deret harganya belum, jadi dividen dan harga di data ini tidak memakai satuan yang sama. Kartu dividen yang melintasi tanggal pemecahan saham tidak boleh memakai medan itu apa adanya.
 - **RAJA** — Keputusan RUPS RAJA pada 2026-06-23 menyebut dividen Rp28 per lembar, dan angka itu tidak ada di medan dividen. Yang ada di sana untuk rentang waktu yang sama: Rp12 (ex 2025-05-14), Rp5 (ex 2026-01-09), Rp40 (ex 2026-07-02). Tidak ada satu pun yang sama dengannya, tidak ada dua yang jumlahnya sama dengannya, dan tidak ada pula yang cocok sesudah dikali rasio pemecahan saham yang tercatat. Mana yang benar tidak terbaca dari data ini.
+
+### R26 — Pembagian laba terhadap laba tahun buku
+
+Kami menandai pembagian dividen yang tidak masuk akal dibandingkan laba tahun buku yang kami petakan untuknya.
+
+Diperiksa 50 tahun buku berdividen: 34 tidak bermasalah, 3 ditandai, 13 datanya tidak cukup untuk memutuskan. 0 tahun buku berdividen tidak masuk pemeriksaan ini. Aturannya jalan untuk 9 emiten dan dilewati untuk 294.
+
+Alasan dilewati:
+- Emiten ini tidak punya satu pun dividen tercatat.
+
+Contoh nyata:
+- **BIRD** — BIRD membagikan Rp36 per lembar dengan tanggal ex 2021-09-07, yang menurut aturan pemetaan kami termasuk tahun buku 2020. Tahun buku itu rugi Rp161.353.000.000, jadi pembagian itu setara -55,8% dari labanya — di luar selang 0% sampai 200% yang kami anggap masuk akal. Angkanya negatif karena pembaginya rugi, bukan untung: dividen dibagikan sesudah tahun rugi, dan itu bisa saja sah kalau uangnya berasal dari laba tahun-tahun sebelumnya. Penyebabnya tidak diketahui; bisa juga aturan pemetaan tahun buku kami yang tidak berlaku untuk emiten ini. Pembagian laba tahun buku ini tidak boleh ditulis di kartu sebelum itu dijelaskan.
+- **BIRD** — BIRD membagikan Rp60 per lembar dengan tanggal ex 2022-07-04, yang menurut aturan pemetaan kami termasuk tahun buku 2021. Tahun buku itu untung Rp7.714.000.000, jadi pembagian itu setara 1.946,2% dari labanya — di luar selang 0% sampai 200% yang kami anggap masuk akal. Penyebabnya tidak diketahui; bisa juga aturan pemetaan tahun buku kami yang tidak berlaku untuk emiten ini. Pembagian laba tahun buku ini tidak boleh ditulis di kartu sebelum itu dijelaskan.
+
+### R27 — Medan rasio siap pakai
+
+Kami menandai medan rasio siap pakai yang tidak bisa dihitung ulang dari laporan keuangan tahun yang sama, atau yang tandanya menipu.
+
+Diperiksa 988 medan rasio: 306 tidak bermasalah, 6 ditandai, 676 datanya tidak cukup untuk memutuskan. 0 medan rasio tidak masuk pemeriksaan ini. Aturannya jalan untuk 12 emiten dan dilewati untuk 291.
+
+Alasan dilewati:
+- Emiten ini tidak punya satu pun medan rasio siap pakai.
+
+Contoh nyata:
+- **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2020 bernilai 1.0616813578468016, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: Rp-414.398.439.415 dibagi Rp-390.322.799.164. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
+- **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2021 bernilai 0.2457842344731376, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: Rp-126.517.856.201 dibagi Rp-514.751.714.943. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
 
 ## Yang tidak bisa diperiksa dari data ini
 

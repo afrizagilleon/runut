@@ -61,6 +61,12 @@ const KALIMAT_AWAM: Record<string, string> = {
     'Kami menolak kartu kalau laba yang disebut keputusan RUPS berbeda dari laba di laporan ' +
     'keuangan tahun buku yang sama.',
   R25: 'Kami menolak bukti negatif kalau daftar laporannya belum terbukti habis.',
+  R26:
+    'Kami menandai pembagian dividen yang tidak masuk akal dibandingkan laba tahun buku yang ' +
+    'kami petakan untuknya.',
+  R27:
+    'Kami menandai medan rasio siap pakai yang tidak bisa dihitung ulang dari laporan keuangan ' +
+    'tahun yang sama, atau yang tandanya menipu.',
   R28: 'Kami memberi label pada deret harga di sekitar aksi korporasi, dan melarang kartu harga melintasi tanggal stock split.',
   R32:
     'Kami menandai perubahan jumlah saham dari satu tahun buku ke tahun berikutnya yang tidak ada ' +
@@ -93,6 +99,8 @@ export const ATURAN_PENANDA: readonly KodeAturan[] = [
   'R20',
   'R21',
   'R22',
+  'R26',
+  'R27',
   'R28',
   'R32',
   'R33',

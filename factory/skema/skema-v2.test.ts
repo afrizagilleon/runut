@@ -127,6 +127,8 @@ describe('M2a D-1 — skema generasi kedua', () => {
       'R22',
       'R23',
       'R25',
+      'R26',
+      'R27',
       'R28',
       'R31',
       'R32',

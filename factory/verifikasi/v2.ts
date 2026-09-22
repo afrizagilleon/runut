@@ -42,6 +42,8 @@ import {
   r20BasisLabaPerLembar,
   r21SahamBedaSumber,
   r23LabaBedaEndpoint,
+  r26PembagianLaba,
+  r27RasioSiapPakai,
   r31DividenRupsVersusMedan,
   r32PerubahanSahamVsAksi,
 } from './aturan-keuangan.ts';
@@ -142,6 +144,8 @@ export const ATURAN_V2: readonly EntriAturan[] = [
   { kode: 'R35', urutan: 28, bergantung: ['R28'], jalankan: r35AllTimePrice },
   { kode: 'R23', urutan: 29, bergantung: [], jalankan: r23LabaBedaEndpoint },
   { kode: 'R31', urutan: 30, bergantung: [], jalankan: r31DividenRupsVersusMedan },
+  { kode: 'R26', urutan: 31, bergantung: ['R20', 'R32', 'R31'], jalankan: r26PembagianLaba },
+  { kode: 'R27', urutan: 32, bergantung: [], jalankan: r27RasioSiapPakai },
 ];
 
 export interface HasilVerifikasiV2 {
