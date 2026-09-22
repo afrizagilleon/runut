@@ -557,3 +557,412 @@ export function tahunTerjelaskan(konteks: KonteksGudang): number[] {
     .filter((n) => Number.isFinite(n) && n > 0)
     .sort((a, b) => a - b);
 }
+
+// --- pengurai angka rupiah di teks keputusan RUPS ----------------------------
+
+/**
+ * Satu angka rupiah yang terbaca di teks keputusan RUPS, beserta letaknya.
+ *
+ * `milli` adalah nilainya dikali seribu dan dibulatkan ke bilangan bulat.
+ * Semua pembandingan dividen dilakukan di satuan itu, bukan dalam pecahan:
+ * `2,14 + 3,20` dalam pecahan memberi 5,340000000000001 dan dikali 25 memberi
+ * 133,50000000000003, yang tidak akan pernah sama dengan Rp133,50 yang tertulis
+ * di teks (INV-D).
+ */
+export interface AngkaRupiah {
+  /** Nilai dikali 1.000, dibulatkan. */
+  milli: number;
+  /** Teks aslinya, apa adanya, untuk ditulis di temuan. */
+  teks: string;
+  /** Indeks awal `Rp` di dalam teks keputusan. */
+  mulai: number;
+  /** Indeks tepat sesudah angkanya. */
+  selesai: number;
+}
+
+/**
+ * Pola angka rupiah.
+ *
+ * Koma adalah pemisah ribuan **gaya Inggris** (`Rp400,475,916,944`), bukan
+ * koma desimal gaya Indonesia. Uji lawan §R23 menunjuk tepat ke sini: usulan
+ * menuliskan angka yang sama dengan titik ribuan gaya Indonesia, yaitu
+ * transkripsi manusia, bukan isi berkas. Titik adalah pemisah desimal
+ * (`Rp133.50`, `Rp40,983,839,406.00`).
+ */
+const POLA_RUPIAH = /Rp\s?(\d[\d,]*(?:\.\d{1,3})?)/gi;
+
+export function bacaAngkaRupiah(teks: string): AngkaRupiah[] {
+  const keluar: AngkaRupiah[] = [];
+  POLA_RUPIAH.lastIndex = 0;
+  let cocok: RegExpExecArray | null = POLA_RUPIAH.exec(teks);
+  while (cocok !== null) {
+    const mentah = cocok[1] ?? '';
+    const bersih = mentah.replace(/,/g, '');
+    const nilai = Number(bersih);
+    if (Number.isFinite(nilai)) {
+      keluar.push({
+        milli: Math.round(nilai * 1000),
+        teks: cocok[0],
+        mulai: cocok.index,
+        selesai: cocok.index + cocok[0].length,
+      });
+    }
+    cocok = POLA_RUPIAH.exec(teks);
+  }
+  return keluar;
+}
+
+// --- R23 laba beda antar endpoint --------------------------------------------
+
+/** Jangkar R23: angka laba harus menempel pada frasa ini, bukan sekadar sekalimat. */
+const JANGKAR_LABA = /net profit of\s+$/i;
+
+/**
+ * R23 — laba di keputusan RUPS berbeda dari laba di laporan keuangan.
+ *
+ * Tahun bukunya adalah tahun RUPS dikurangi satu: RUPS tahunan mengesahkan
+ * laporan keuangan tahun sebelumnya. Kalau kedua angka berbeda, temuannya
+ * menyebut **keduanya** dan tidak memutuskan mana yang benar: `agm_result`
+ * bisa menyebut laba induk saja sementara laporan keuangan menyebut laba
+ * konsolidasi, dan keduanya sah.
+ */
+export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Laba di keputusan RUPS versus laporan keuangan';
+  const satuan = 'keputusan RUPS';
+  const rups = konteks.data.rups;
+  if (rups.length === 0) {
+    return lewat('R23', judul, 'Emiten ini tidak punya satu pun RUPS tercatat.', satuan);
+  }
+
+  const laba = new Map(
+    konteks.data.keuangan_tahunan
+      .filter((k) => k.laba !== null)
+      .map((k) => [k.tahun, k.laba as number]),
+  );
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  let dilewati = 0;
+  const alasan: string[] = [];
+
+  for (const r of rups) {
+    if (r.ringkasan === null) {
+      dilewati += 1;
+      alasan.push('Teks keputusan RUPS ini kosong di data, jadi tidak ada angka laba untuk dibaca.');
+      continue;
+    }
+    const berjangkar = bacaAngkaRupiah(r.ringkasan).filter((a) =>
+      JANGKAR_LABA.test(r.ringkasan?.slice(Math.max(0, a.mulai - 20), a.mulai) ?? ''),
+    );
+    if (berjangkar.length === 0) {
+      dilewati += 1;
+      alasan.push('Teks keputusan RUPS ini tidak memuat pola "net profit of Rp…".');
+      continue;
+    }
+
+    const tahunBuku = Number.parseInt(r.tanggal.slice(0, 4), 10) - 1;
+    const menurutKeuangan = laba.get(tahunBuku);
+
+    for (const a of berjangkar) {
+      diperiksa += 1;
+      if (menurutKeuangan === undefined) {
+        tidakLengkap += 1;
+        alasan.push(
+          `Laporan keuangan tahun buku ${String(tahunBuku)} tidak ada di data, jadi angka laba di RUPS tidak bisa diadu dengan apa pun.`,
+        );
+        continue;
+      }
+      const dariRups = Math.round(a.milli / 1000);
+      if (dariRups === Math.round(menurutKeuangan)) continue;
+
+      merah += 1;
+      const selisih = Math.abs(dariRups - Math.round(menurutKeuangan));
+      temuan.push({
+        temuan_id: `R23-${konteks.simbol}-${r.tanggal}`,
+        aturan: 'R23',
+        ringkasan:
+          `Laba bersih tahun buku ${String(tahunBuku)} ditulis dua kali dengan angka yang berbeda. ` +
+          `Keputusan RUPS ${konteks.simbol} pada ${r.tanggal} menyebut Rp${angka(dariRups)}; ` +
+          `laporan keuangan menyebut Rp${angka(Math.round(menurutKeuangan))}. Selisihnya ` +
+          `Rp${angka(selisih)}. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa ` +
+          `menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok ` +
+          `usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia ` +
+          `diambil.`,
+        angka: [
+          { label: 'laba menurut keputusan RUPS', nilai: dariRups, satuan: 'rupiah' },
+          { label: 'laba menurut laporan keuangan', nilai: Math.round(menurutKeuangan), satuan: 'rupiah' },
+          { label: 'selisih', nilai: selisih, satuan: 'rupiah' },
+        ],
+        fakta_terkait: [],
+        rujukan: [`RUPS ${r.tanggal}`, `tahun buku ${String(tahunBuku)}`],
+      });
+    }
+  }
+
+  return hasil(
+    'R23',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, dilewati, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R31 dividen di keputusan RUPS versus medan dividend ---------------------
+
+/**
+ * Penjaga: angka yang didahului "nominal value" atau "par value" adalah **nilai
+ * nominal saham**, bukan dividen.
+ *
+ * MLPT RUPS 2026-06-29: "changing the nominal value from Rp100 to Rp4 per
+ * share". Tanpa penjaga ini, Rp4 terbaca sebagai dividen per lembar dan RUPS
+ * pemecahan saham terbaca sebagai RUPS dividen.
+ */
+const PENJAGA_NOMINAL = /(nominal|par)\s+value/i;
+
+/** Berapa karakter sebelum angka yang ikut dibaca penjaga nominal. */
+const JANGKAUAN_PENJAGA = 60;
+
+/** Angka dividen harus **menempel** pada "per share", bukan sekadar sekalimat. */
+const JANGKAR_PER_LEMBAR = /^\s*per\s+share/i;
+
+/**
+ * Lebar jendela dividen yang boleh dipasangkan dengan satu RUPS, dalam hari
+ * kalender sebelum dan sesudah tanggal RUPS.
+ *
+ * Tahun buku sebuah entri `dividend` **tidak ada di data**: tidak ada satu
+ * medan pun yang menyebutkannya, dan aturan "tahun ex_date dikurangi satu"
+ * tidak berlaku untuk emiten yang membagi dividen interim. MLPT membuktikannya:
+ * interim ex 2025-11-07 dan final ex 2026-05-11 sama-sama untuk tahun buku
+ * 2025. Karena itu pemasangan dilakukan lewat jendela waktu yang ditulis di
+ * sini, bukan lewat tahun buku yang ditebak.
+ */
+export const JENDELA_RUPS_HARI = { sebelum: 550, sesudah: 200 } as const;
+
+export interface CocokDividen {
+  /** Bagaimana angkanya cocok. */
+  cara: 'satu' | 'jumlah-dua';
+  /** Rasio pemecahan saham yang harus dikalikan supaya cocok; 1 berarti tidak perlu. */
+  lipat: number;
+  /** `ex_date` dividen yang dipakai. */
+  ex: string[];
+  /** Jumlah `dividend_amount` yang dipakai, dalam satuan seperseribu rupiah. */
+  milli: number;
+}
+
+/**
+ * Cari cara paling sederhana supaya `targetMilli` cocok dengan medan `dividend`.
+ *
+ * Urutan pencarian ditetapkan supaya hasilnya sama di tiap mesin (INV-C): tanpa
+ * pengali dulu, lalu dengan rasio pemecahan saham dari yang terkecil; di dalam
+ * tiap pengali, satu dividen dulu menurut `ex_date` menaik, baru jumlah dua
+ * dividen. Tidak ada seri yang tersisa.
+ */
+export function cariCocokDividen(
+  targetMilli: number,
+  dividen: Array<{ ex_date: string; nilai_per_lembar: number }>,
+  rasioSplit: number[],
+): CocokDividen | null {
+  const urut = [...dividen].sort((a, b) => a.ex_date.localeCompare(b.ex_date));
+  const milli = urut.map((d) => Math.round(d.nilai_per_lembar * 1000));
+  const pengali = [1, ...[...new Set(rasioSplit)].filter((r) => r > 1).sort((a, b) => a - b)];
+
+  for (const lipat of pengali) {
+    for (const [i, m] of milli.entries()) {
+      const ex = urut[i]?.ex_date;
+      if (ex === undefined || m === undefined) continue;
+      if (m * lipat === targetMilli) return { cara: 'satu', lipat, ex: [ex], milli: m };
+    }
+    for (let i = 0; i < milli.length; i += 1) {
+      for (let j = i + 1; j < milli.length; j += 1) {
+        const a = milli[i];
+        const b = milli[j];
+        const exA = urut[i]?.ex_date;
+        const exB = urut[j]?.ex_date;
+        if (a === undefined || b === undefined || exA === undefined || exB === undefined) continue;
+        if ((a + b) * lipat === targetMilli) {
+          return { cara: 'jumlah-dua', lipat, ex: [exA, exB], milli: a + b };
+        }
+      }
+    }
+  }
+  return null;
+}
+
+/** Tulis nilai seperseribu rupiah sebagai rupiah, tanpa nol berekor. */
+export function rupiahMilli(milli: number): string {
+  const bulat = Math.trunc(milli / 1000);
+  const sisa = Math.abs(milli % 1000);
+  if (sisa === 0) return angka(bulat);
+  return angka(bulat) + ',' + String(sisa).padStart(3, '0').replace(/0+$/, '');
+}
+
+/** Angka rupiah di teks RUPS yang menempel pada "per share" dan bukan nilai nominal. */
+export function angkaPerLembar(ringkasan: string): AngkaRupiah[] {
+  return bacaAngkaRupiah(ringkasan).filter((a) => {
+    if (!JANGKAR_PER_LEMBAR.test(ringkasan.slice(a.selesai, a.selesai + 20))) return false;
+    const sebelum = ringkasan.slice(Math.max(0, a.mulai - JANGKAUAN_PENJAGA), a.mulai);
+    return !PENJAGA_NOMINAL.test(sebelum);
+  });
+}
+
+function dividenDekat(
+  konteks: KonteksGudang,
+  tanggalRups: string,
+): Array<{ ex_date: string; nilai_per_lembar: number }> {
+  return konteks.data.dividen.filter((d) => {
+    const selisih =
+      (Date.parse(d.ex_date.slice(0, 10) + 'T00:00:00Z') -
+        Date.parse(tanggalRups.slice(0, 10) + 'T00:00:00Z')) /
+      SEHARI_MS;
+    if (!Number.isFinite(selisih)) return false;
+    return selisih >= -JENDELA_RUPS_HARI.sebelum && selisih <= JENDELA_RUPS_HARI.sesudah;
+  });
+}
+
+/**
+ * Hasil R31 yang dipakai aturan lain: apakah medan `dividend_amount` emiten ini
+ * sudah dibagi rasio pemecahan saham sementara deret harganya tidak.
+ *
+ * R26 dan R29 membaca ini. Tanpa itu, R29 membandingkan dividen MLPT yang sudah
+ * dibagi 25 dengan harga yang belum, dan kolom "turun dibagi dividen" meleset
+ * 25 kali lipat.
+ */
+export interface PenyesuaianSplit {
+  disesuaikan: boolean;
+  /** Rasio yang terbukti dipakai; 1 kalau tidak terbukti. */
+  lipat: number;
+  /** Tanggal RUPS yang membuktikannya; `null` kalau tidak terbukti. */
+  bukti: string | null;
+}
+
+export function penyesuaianSplitDividen(konteks: KonteksGudang): PenyesuaianSplit {
+  const rasio = konteks.data.stock_split.map((s) => s.rasio);
+  for (const r of konteks.data.rups) {
+    if (r.ringkasan === null) continue;
+    for (const a of angkaPerLembar(r.ringkasan)) {
+      const cocok = cariCocokDividen(a.milli, dividenDekat(konteks, r.tanggal), rasio);
+      if (cocok !== null && cocok.lipat > 1) {
+        return { disesuaikan: true, lipat: cocok.lipat, bukti: r.tanggal };
+      }
+    }
+  }
+  return { disesuaikan: false, lipat: 1, bukti: null };
+}
+
+/**
+ * R31 — dividen yang diumumkan RUPS harus ada di medan `dividend`.
+ *
+ * Tiga putusan:
+ * - cocok tanpa pengali → hijau;
+ * - cocok **hanya** sesudah dikali rasio pemecahan saham → peringatan, dan
+ *   itulah tanda bahwa `dividend_amount` sudah dibagi rasio itu sementara deret
+ *   harganya tidak (MLPT: Rp133,50 = 25 x (2,14 + 3,20), padahal kedua
+ *   `ex_date`-nya sebelum tanggal pemecahan saham);
+ * - tidak cocok sama sekali → KONFLIK yang menyebut kedua angka.
+ */
+export function r31DividenRupsVersusMedan(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Dividen di keputusan RUPS versus medan dividend';
+  const satuan = 'angka dividen di keputusan RUPS';
+  const rups = konteks.data.rups;
+  if (rups.length === 0) {
+    return lewat('R31', judul, 'Emiten ini tidak punya satu pun RUPS tercatat.', satuan);
+  }
+
+  const rasio = konteks.data.stock_split.map((s) => s.rasio);
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  let dilewati = 0;
+  const alasan: string[] = [];
+
+  for (const r of rups) {
+    if (r.ringkasan === null) {
+      dilewati += 1;
+      alasan.push('Teks keputusan RUPS ini kosong di data, jadi tidak ada angka dividen untuk dibaca.');
+      continue;
+    }
+    const angkaRups = angkaPerLembar(r.ringkasan);
+    if (angkaRups.length === 0) {
+      dilewati += 1;
+      alasan.push('Teks keputusan RUPS ini tidak menyebut satu pun jumlah rupiah per lembar.');
+      continue;
+    }
+    const dekat = dividenDekat(konteks, r.tanggal);
+
+    for (const a of angkaRups) {
+      diperiksa += 1;
+      if (dekat.length === 0) {
+        tidakLengkap += 1;
+        alasan.push('Tidak ada satu pun entri dividen bertanggal dekat RUPS ini untuk diadu.');
+        continue;
+      }
+      const cocok = cariCocokDividen(a.milli, dekat, rasio);
+      if (cocok !== null && cocok.lipat === 1) continue;
+
+      merah += 1;
+      if (cocok !== null) {
+        const bagian = cocok.ex
+          .map((ex) => {
+            const d = dekat.find((x) => x.ex_date === ex);
+            return (
+              'Rp' +
+              rupiahMilli(Math.round((d?.nilai_per_lembar ?? 0) * 1000)) +
+              ' dengan tanggal ex ' +
+              ex
+            );
+          })
+          .join(' ditambah ');
+        temuan.push({
+          temuan_id: 'R31-' + konteks.simbol + '-' + r.tanggal + '-' + String(a.mulai),
+          aturan: 'R31',
+          keparahan: 'peringatan',
+          ringkasan:
+            'Keputusan RUPS ' + konteks.simbol + ' pada ' + r.tanggal + ' menyebut dividen Rp' +
+            rupiahMilli(a.milli) + ' per lembar, tetapi medan dividen memberi ' + bagian + ' — ' +
+            String(cocok.lipat) + ' kali lebih kecil. Angkanya baru cocok sesudah dikali ' +
+            String(cocok.lipat) + ', yaitu rasio pemecahan saham yang tercatat untuk emiten ini. ' +
+            'Artinya medan dividen sudah dibagi rasio pemecahan saham sementara deret harganya ' +
+            'belum, jadi dividen dan harga di data ini tidak memakai satuan yang sama. Kartu ' +
+            'dividen yang melintasi tanggal pemecahan saham tidak boleh memakai medan itu apa adanya.',
+          angka: [
+            { label: 'dividen menurut keputusan RUPS', nilai: a.milli / 1000, satuan: 'rupiah per lembar' },
+            { label: 'dividen menurut medan dividend', nilai: cocok.milli / 1000, satuan: 'rupiah per lembar' },
+            { label: 'rasio pemecahan saham', nilai: cocok.lipat, satuan: 'kali' },
+          ],
+          fakta_terkait: [],
+          rujukan: ['RUPS ' + r.tanggal, ...cocok.ex.map((ex) => 'dividen ex ' + ex)],
+        });
+        continue;
+      }
+
+      const tersedia = dekat
+        .map((d) => 'Rp' + rupiahMilli(Math.round(d.nilai_per_lembar * 1000)) + ' (ex ' + d.ex_date + ')')
+        .join(', ');
+      temuan.push({
+        temuan_id: 'R31-' + konteks.simbol + '-' + r.tanggal + '-' + String(a.mulai),
+        aturan: 'R31',
+        ringkasan:
+          'Keputusan RUPS ' + konteks.simbol + ' pada ' + r.tanggal + ' menyebut dividen Rp' +
+          rupiahMilli(a.milli) + ' per lembar, dan angka itu tidak ada di medan dividen. Yang ada ' +
+          'di sana untuk rentang waktu yang sama: ' + tersedia + '. Tidak ada satu pun yang sama ' +
+          'dengannya, tidak ada dua yang jumlahnya sama dengannya, dan tidak ada pula yang cocok ' +
+          'sesudah dikali rasio pemecahan saham yang tercatat. Mana yang benar tidak terbaca dari ' +
+          'data ini.',
+        angka: [
+          { label: 'dividen menurut keputusan RUPS', nilai: a.milli / 1000, satuan: 'rupiah per lembar' },
+        ],
+        fakta_terkait: [],
+        rujukan: ['RUPS ' + r.tanggal, ...dekat.map((d) => 'dividen ex ' + d.ex_date)],
+      });
+    }
+  }
+
+  return hasil(
+    'R31',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, dilewati, alasan_dilewati: alasan }),
+  );
+}

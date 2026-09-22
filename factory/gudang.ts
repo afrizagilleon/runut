@@ -57,11 +57,17 @@ const KALIMAT_AWAM: Record<string, string> = {
     'Kami menandai dua sumber yang menyebut jumlah saham berbeda untuk tanggal yang sama, dan ' +
     'tidak mengadu dua angka yang diukur pada waktu yang berbeda.',
   R22: 'Kami menandai satu pemegang saham yang ditulis dengan lebih dari satu ejaan, supaya rantainya tidak terbaca sebagai dua orang.',
+  R23:
+    'Kami menolak kartu kalau laba yang disebut keputusan RUPS berbeda dari laba di laporan ' +
+    'keuangan tahun buku yang sama.',
   R25: 'Kami menolak bukti negatif kalau daftar laporannya belum terbukti habis.',
   R28: 'Kami memberi label pada deret harga di sekitar aksi korporasi, dan melarang kartu harga melintasi tanggal stock split.',
   R32:
     'Kami menandai perubahan jumlah saham dari satu tahun buku ke tahun berikutnya yang tidak ada ' +
     'satu pun aksi korporasi tercatat untuk menjelaskannya.',
+  R31:
+    'Kami menolak kartu kalau dividen per lembar yang disebut keputusan RUPS tidak ada di medan ' +
+    'dividen, atau baru cocok sesudah dikali rasio pemecahan saham.',
   R33: 'Kami menandai hari yang jumlah saham tersiratnya melompat, karena penyebut persen tidak boleh diambil dari hari seperti itu.',
   R35: 'Kami menolak kartu kalau harga tertinggi atau terendah yang disebut ringkasan tidak terjangkau deret harga hariannya sendiri.',
 };

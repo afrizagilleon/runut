@@ -42,6 +42,8 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R19b | hari bursa | 2.428 | 1.942 | 486 | 0 | 0 |
 | R28 | aksi korporasi | 17 | 5 | 0 | 12 | 0 |
 | R35 | nilai harga ekstrem | 104 | 46 | 3 | 55 | 0 |
+| R23 | keputusan RUPS | 2 | 1 | 1 | 0 | 98 |
+| R31 | angka dividen di keputusan RUPS | 6 | 4 | 2 | 0 | 95 |
 
 [^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R20, R21, R22, R28, R32, R33), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
 
@@ -357,6 +359,31 @@ Alasan dilewati:
 Contoh nyata:
 - **COCO** — Ringkasan COCO menyebut 52_w_low Rp66 pada 2026-07-01, padahal baris harga harian hari itu hanya bergerak Rp116-Rp172. Angka itu tidak terjangkau deret harganya sendiri.
 - **COCO** — Ringkasan COCO menyebut 90_d_low Rp66 pada 2026-07-01, padahal baris harga harian hari itu hanya bergerak Rp116-Rp172. Angka itu tidak terjangkau deret harganya sendiri.
+
+### R23 — Laba di keputusan RUPS versus laporan keuangan
+
+Kami menolak kartu kalau laba yang disebut keputusan RUPS berbeda dari laba di laporan keuangan tahun buku yang sama.
+
+Diperiksa 2 keputusan RUPS: 1 tidak bermasalah, 1 bertentangan, 0 datanya tidak cukup untuk memutuskan. 98 keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 14 emiten dan dilewati untuk 289.
+
+Alasan dilewati:
+- Emiten ini tidak punya satu pun RUPS tercatat.
+
+Contoh nyata:
+- **RLCO** — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS RLCO pada 2026-06-08 menyebut Rp40.983.839.406; laporan keuangan menyebut Rp40.920.550.292. Selisihnya Rp63.289.114. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
+
+### R31 — Dividen di keputusan RUPS versus medan dividend
+
+Kami menolak kartu kalau dividen per lembar yang disebut keputusan RUPS tidak ada di medan dividen, atau baru cocok sesudah dikali rasio pemecahan saham.
+
+Diperiksa 6 angka dividen di keputusan RUPS: 4 tidak bermasalah, 2 bertentangan, 0 datanya tidak cukup untuk memutuskan. 95 angka dividen di keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 14 emiten dan dilewati untuk 289.
+
+Alasan dilewati:
+- Emiten ini tidak punya satu pun RUPS tercatat.
+
+Contoh nyata:
+- **MLPT** — Keputusan RUPS MLPT pada 2026-04-29 menyebut dividen Rp133,5 per lembar, tetapi medan dividen memberi Rp2,14 dengan tanggal ex 2025-11-07 ditambah Rp3,2 dengan tanggal ex 2026-05-11 — 25 kali lebih kecil. Angkanya baru cocok sesudah dikali 25, yaitu rasio pemecahan saham yang tercatat untuk emiten ini. Artinya medan dividen sudah dibagi rasio pemecahan saham sementara deret harganya belum, jadi dividen dan harga di data ini tidak memakai satuan yang sama. Kartu dividen yang melintasi tanggal pemecahan saham tidak boleh memakai medan itu apa adanya.
+- **RAJA** — Keputusan RUPS RAJA pada 2026-06-23 menyebut dividen Rp28 per lembar, dan angka itu tidak ada di medan dividen. Yang ada di sana untuk rentang waktu yang sama: Rp12 (ex 2025-05-14), Rp5 (ex 2026-01-09), Rp40 (ex 2026-07-02). Tidak ada satu pun yang sama dengannya, tidak ada dua yang jumlahnya sama dengannya, dan tidak ada pula yang cocok sesudah dikali rasio pemecahan saham yang tercatat. Mana yang benar tidak terbaca dari data ini.
 
 ## Yang tidak bisa diperiksa dari data ini
 
