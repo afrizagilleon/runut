@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
+  BAYANGAN_DIIZINKAN,
   CSS_BAWAAN,
   KAPITAL_DIIZINKAN,
   MARKUP_BAWAAN,
@@ -136,6 +137,40 @@ describe('periksa:desain — radius, bayangan, gradien, kabur', () => {
 
   it('box-shadow: none bukan bayangan', () => {
     expect(kode('.a { box-shadow: none; }')).toEqual([]);
+  });
+
+  /*
+   * M3.7. Satu pengecualian bernama, dan pengecualian itu harus **sempit**:
+   * selektor yang tepat DAN nilai yang tepat. Pengecualian yang hanya menyebut
+   * selektor mengubah gate bayangan menjadi saran bagi benda itu — dan yang
+   * dilarang desain adalah kaburnya, bukan namanya.
+   */
+  describe('pengecualian bernama untuk balon melayang', () => {
+    it('menerima bayangan patokan v3d pada selektornya sendiri', () => {
+      expect(kode('.melayang-balon { box-shadow: 0 2px 0 var(--garis); }')).toEqual([]);
+    });
+
+    it('tetap menolak nilai lain pada selektor yang sama', () => {
+      expect(kode('.melayang-balon { box-shadow: 0 8px 24px rgba(0,0,0,.3); }')).toEqual([
+        'BAYANGAN',
+      ]);
+      expect(kode('.melayang-balon { box-shadow: 0 2px 0 red; }')).toEqual(['BAYANGAN']);
+    });
+
+    it('tetap menolak nilai yang sama pada selektor lain', () => {
+      expect(kode('.lembar { box-shadow: 0 2px 0 var(--garis); }')).toEqual(['BAYANGAN']);
+    });
+
+    it('nama berawalan sama tidak ikut lolos', () => {
+      expect(kode('.melayang-balon-besar { box-shadow: 0 2px 0 var(--garis); }')).toEqual([
+        'BAYANGAN',
+      ]);
+    });
+
+    it('daftarnya tetap satu butir', () => {
+      expect(BAYANGAN_DIIZINKAN).toHaveLength(1);
+      expect(BAYANGAN_DIIZINKAN[0]?.selektor).toBe('.melayang-balon');
+    });
   });
 });
 

@@ -61,6 +61,14 @@
 
   --kolom: 560px;
   --sisi: 16px;
+
+  /*
+   * Tepi balon melayang yang tetap terlihat saat mengintip (M3.7 D-1,
+   * patokan v3d): 28 px, tinggi grip. Ditulis sebagai variabel supaya
+   * "berapa yang mengintip" punya satu tempat, bukan dua angka yang
+   * berselisih antara CSS dan hitungan tarikan di komponen.
+   */
+  --intip: 28px;
   --antar-lembar: 8px;
   --gerak: 140ms;
 
@@ -694,6 +702,139 @@ summary:focus-visible,
  */
 .pesan-meta {
   margin: 0 0 6px;
+}
+
+/* --- balon chat melayang (M3.7 D-1) --------------------------------------- */
+
+/*
+ * Patokan: `docs/contoh/layar-soal-v3d.html`, disetujui pemilik di ponselnya
+ * 22 Sep 2026 malam ("oke mantap, ini yang aku maksud") sesudah ia menolak dua
+ * versi sebelumnya dengan mata. Nilai di bawah **disalin** dari sana, bukan
+ * ditafsirkan; yang berbeda hanya disebut namanya di komentar.
+ *
+ * Kenapa ada: uji duduk 22 Sep menemukan orang menggulir bolak-balik jauh
+ * antara pesan teman dan pilihan jawaban — gulir balik ke kartu 2,5x di soal 2.
+ * Pesannya adalah hal yang sedang diverifikasi; ia tidak boleh hilang dari
+ * layar justru ketika pemain menjawab.
+ *
+ * Tiga hal yang dijaga bentuk ini:
+ *
+ * - **Tidak pernah menutupi keping.** Wadahnya mulai tepat di bawah keping dan
+ *   ber-`overflow: hidden`, jadi bagian balon yang tergeser ke atas terpotong
+ *   di batas itu. Bukan `z-index` yang menjaganya — keping tetap di 3, salinan
+ *   di 1 — melainkan geometri, yang tidak bisa dikalahkan aturan lain.
+ * - **Teks tidak dipotong, hanya tergeser.** Tidak ada `text-overflow`, tidak
+ *   ada tinggi tetap pada balonnya: yang mengintip adalah balon utuh yang
+ *   digeser ke atas, dan menariknya turun memperlihatkan seluruh kalimat.
+ * - **Tidak menutupi apa pun saat diam.** Wadah `pointer-events: none`, dan
+ *   balonnya baru menerima sentuhan ketika salinannya memang aktif.
+ */
+.melayang {
+  position: fixed;
+  left: 0;
+  right: 0;
+  /* Diukur komponen dari keping yang sungguhan, bukan ditebak. */
+  top: var(--tinggi-keping, 64px);
+  bottom: 0;
+  z-index: 1;
+  /* Kolom yang sama persis dengan `.halaman`, jadi lebar salinan = lebar asli. */
+  max-width: var(--kolom);
+  margin: 0 auto;
+  padding-inline: var(--sisi);
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.melayang-aktif {
+  opacity: 1;
+}
+
+/*
+ * Balon salinan. Ia sebuah `<button>` dan itu keputusan, bukan kebetulan:
+ * seluruh badannya bisa diketuk dan ditarik (patokan v3d), jadi ia memang satu
+ * kontrol — dan pelacak ketukan (D-8) harus melihatnya sebagai kontrol, bukan
+ * mencatat setiap ketukan di atasnya sebagai "ketukan mati".
+ *
+ * Rupanya tetap datang dari `.pesan-balon`: latar, bantalan, radius, dan lebar
+ * maksimum ditulis **sekali**, di sana. Yang ditulis di sini hanya apa yang
+ * membuat tombol berhenti terlihat seperti tombol, dan gerakannya.
+ */
+.melayang-balon {
+  display: block;
+  width: 100%;
+  border: 0;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  /*
+   * Patokan v3d menulis `box-shadow: 0 2px 0 var(--garis)`: garis tegas tanpa
+   * kabur, bukan bayangan yang mengangkat kertas. Ia dikecualikan dengan nama
+   * di `alat/periksa-desain.ts` — gate bayangannya sendiri tidak dilemahkan.
+   */
+  box-shadow: 0 2px 0 var(--garis);
+  transform: translateY(calc(var(--intip) - 100%));
+  transition: transform 0.26s ease;
+  will-change: transform;
+  /* Tidak menangkap sentuhan selama salinannya belum aktif. */
+  pointer-events: none;
+}
+
+.melayang-aktif .melayang-balon {
+  pointer-events: auto;
+}
+
+/*
+ * Isi salinan ditulis dengan `span`, karena itulah anak yang sah bagi sebuah
+ * `<button>`. Peran teksnya tetap peran yang sama (`.isi`, `.pesan-meta`,
+ * `.pesan-jam`) dan ukurannya tidak ditulis ulang di sini — yang ditambahkan
+ * hanya blok-nya, supaya susunannya sama persis dengan balon asli.
+ */
+.melayang-balon .isi {
+  display: block;
+}
+
+.melayang-turun .melayang-balon {
+  transform: translateY(0);
+}
+
+/* Selama jari menempel, balon mengikuti jari — bukan meluncur ke belakangnya. */
+.melayang-balon.menarik {
+  transition: none;
+}
+
+/* Grip: tepi bawah balon yang tetap terlihat saat mengintip. */
+.grip {
+  display: grid;
+  place-items: center;
+  height: 28px;
+  margin: 4px -12px -6px;
+  /* Tarikan yang berawal di grip menggerakkan balon, bukan menggulir halaman. */
+  touch-action: none;
+}
+
+.grip i {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--tinta-redup);
+  opacity: 0.55;
+}
+
+/*
+ * Gerak yang diminta berhenti, berhenti. Balonnya tetap berpindah keadaan —
+ * yang hilang hanya perjalanannya.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .melayang,
+  .melayang-balon,
+  .melayang-balon.menarik {
+    transition: none;
+  }
 }
 
 /* Petunjuk satu kalimat, hanya di soal pertama. */

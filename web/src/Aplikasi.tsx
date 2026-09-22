@@ -1,14 +1,20 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
-import type { RefObject } from 'react';
+// `PointerEvent` milik React dialiaskan: nama itu sudah dipakai jenis DOM di
+// pelacak ketukan di bawah, dan dua benda berbeda bernama sama adalah cara
+// tercepat membuat penangan yang salah terkompilasi diam-diam.
+import type { PointerEvent as PointerReact, RefObject } from 'react';
 import { PENANDA_BUKAN_FAKTA, ambilRujukan } from '../../factory/skema/rujukan.ts';
 import type { Fakta, Istilah, Kasus, Soal } from '../../factory/skema/tipe.ts';
 import {
   type Aksi,
   type Keadaan,
+  type KeadaanBalon,
   type Peristiwa,
   LABEL_COCOK,
+  balonMelayang,
   bilahBawah,
   keadaanAwal,
+  keadaanBalon,
   langkah,
   namaLayar,
   tandaOpsi,
@@ -923,6 +929,279 @@ function PenjelasanSebaris({
   );
 }
 
+/* ------------------------------------------------------------------ */
+/* Balon chat melayang (M3.7 D-1)                                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Berapa bagian balon asli yang masih harus terlihat **di bawah keping**
+ * sebelum salinan melayang mengambil alih (patokan v3d).
+ *
+ * Diekspor supaya rangkaian e2e bisa MEMBACANYA dari kode ini alih-alih
+ * menyalin angkanya, persis alasan `AMBANG_OPSI_TERLIHAT` diekspor: dua angka
+ * yang berjanji sama adalah dua angka yang akan berselisih diam-diam, dan tes
+ * yang memakai ambang berbeda dari produknya menunggu kesepakatan yang tidak
+ * pernah datang.
+ *
+ * Setengah, bukan "sampai hilang seluruhnya": menunggu balon lenyap berarti
+ * ada satu jendela gulir tempat pesannya sudah tidak terbaca tetapi salinannya
+ * belum ada — dan justru di jendela itu pemain sedang membaca pilihan.
+ */
+export const AMBANG_BALON_MELAYANG = 0.5;
+
+/** Tepi balon yang tetap terlihat saat mengintip, piksel (patokan v3d; `--intip`). */
+export const INTIP_BALON_PX = 28;
+
+/**
+ * Tarikan harus melewati sepertiga tinggi balon sebelum ia jatuh ke sisi lain.
+ *
+ * Sepertiga, bukan setengah: jari yang menarik balon ke bawah berhenti begitu
+ * isinya terbaca, bukan begitu balonnya sampai di tempatnya.
+ */
+export const BAGI_AMBANG_TARIK = 3;
+
+/** Gerak jari paling jauh yang masih dianggap ketukan, bukan tarikan (patokan v3d). */
+const GESER_TARIK = 6;
+
+/** Ambang perpotongan yang dipantau; cukup rapat di sekitar setengah. */
+const AMBANG_PENGAMAT_BALON = [0, 0.25, 0.4, 0.5, 0.6, 0.75, 1];
+
+/** Gerakan jari yang sedang berlangsung. Hidup selama satu tarikan saja. */
+interface TarikanBalon {
+  mulaiY: number;
+  tinggi: number;
+  turunAwal: boolean;
+  bergerak: boolean;
+}
+
+/**
+ * Salinan balon chat yang melayang di bawah keping (M3.7 D-1).
+ *
+ * **Perilakunya disalin dari `docs/contoh/layar-soal-v3d.html`**, bukan
+ * ditafsirkan: pemilik menolak dua versi sebelumnya dengan mata dan menyetujui
+ * yang ini ("oke mantap, ini yang aku maksud"). Yang menyimpang dari sana
+ * disebut namanya di komentar di bawah.
+ *
+ * Komponen ini tidak menyimpan satu pun keadaan permainan. Yang ia pegang
+ * hanya dua hal yang memang bukan keadaan:
+ *
+ * - `tarikan`, data satu gerakan jari yang hidup dari `pointerdown` sampai
+ *   `pointerup` dan mati bersamanya. Hasil gerakan itu — turun atau
+ *   mengintip — diserahkan ke reducer, dan hanya dari sanalah ia dirender.
+ * - posisi balon **selama** jari masih menempel, yang ditulis langsung ke
+ *   `style.transform`. Enam puluh kali `dispatch` per detik untuk hal yang
+ *   tidak pernah dicatat akan membuat setiap gerakan jari melewati React.
+ */
+function BalonMelayang({
+  layar,
+  pesan,
+  tanggal,
+  aktif,
+  keadaan,
+  acuanAsli,
+  kirim,
+}: {
+  layar: string;
+  pesan: Soal['pesan'];
+  tanggal: string;
+  aktif: boolean;
+  keadaan: KeadaanBalon;
+  acuanAsli: RefObject<HTMLElement>;
+  kirim: (aksi: Aksi) => void;
+}): JSX.Element {
+  const acuanWadah = useRef<HTMLDivElement>(null);
+  const tarikan = useRef<TarikanBalon | null>(null);
+
+  /*
+   * Pengamat balon asli. Ia **hanya** `dispatch`; yang memutuskan apa artinya
+   * "melayang" bagi keadaan permainan ada di reducer (D-2), seperti pengamat
+   * kartu dan pengamat opsi.
+   */
+  useEffect(() => {
+    const asli = acuanAsli.current;
+    const wadah = acuanWadah.current;
+    if (asli === null || wadah === null) return;
+
+    /*
+     * Tinggi keping DIUKUR, tidak ditebak: ia berbeda dari patokan (keping di
+     * produk membawa tiga titik kemajuan di bawah tanggalnya), dan angka yang
+     * ditebak akan membuat balon mengintip di tempat yang salah tanpa ada yang
+     * tahu. Nilainya diserahkan ke CSS lewat satu variabel.
+     */
+    const ukurKeping = (): number =>
+      document.querySelector('[data-uid="keping"]')?.getBoundingClientRect().height ?? 0;
+
+    let tinggiKeping = ukurKeping();
+    const pasangTinggi = (): void => {
+      wadah.style.setProperty('--tinggi-keping', `${String(tinggiKeping)}px`);
+    };
+    pasangTinggi();
+
+    if (typeof IntersectionObserver === 'undefined') {
+      // Tanpa pengamat, salinan yang menetap akan menutupi bacaan yang sedang
+      // dibuka. Lebih baik menganggapnya tidak pernah melayang.
+      kirim({ jenis: 'balon_melayang', layar, melayang: false });
+      return;
+    }
+
+    const pengamat = new IntersectionObserver(
+      (masuk) => {
+        /*
+         * Butir **terakhir**, bukan yang pertama — alasannya sama persis
+         * dengan `usePengamatOpsi` (A-3, F-1): satu panggilan balik bisa
+         * membawa beberapa perlintasan ambang yang menumpuk, tertua lebih
+         * dulu, dan membaca yang pertama berarti mencatat putusan basi yang
+         * tidak akan pernah diperbarui.
+         */
+        const butir = masuk[masuk.length - 1];
+        if (butir === undefined) return;
+        const kotak = butir.boundingClientRect;
+        const terlihat =
+          kotak.height <= 0 ? 1 : Math.max(0, kotak.bottom - tinggiKeping) / kotak.height;
+        const lewat = kotak.top < tinggiKeping && terlihat < AMBANG_BALON_MELAYANG;
+        kirim({ jenis: 'balon_melayang', layar, melayang: lewat });
+      },
+      {
+        threshold: AMBANG_PENGAMAT_BALON,
+        rootMargin: `-${String(Math.round(tinggiKeping))}px 0px 0px 0px`,
+      },
+    );
+    pengamat.observe(asli);
+
+    /*
+     * Jendela yang berubah ukuran memindahkan kepingnya. `rootMargin` pengamat
+     * tidak ikut berubah — ia hanya menentukan kapan panggilan balik datang,
+     * dan ambang yang menentukan keputusannya dihitung ulang dari kotak yang
+     * segar di setiap panggilan.
+     */
+    const ubahUkuran = (): void => {
+      tinggiKeping = ukurKeping();
+      pasangTinggi();
+    };
+    window.addEventListener('resize', ubahUkuran, { passive: true });
+
+    return () => {
+      window.removeEventListener('resize', ubahUkuran);
+      pengamat.disconnect();
+      // Meninggalkan layar mengembalikan balonnya ke keadaan bawaan.
+      kirim({ jenis: 'balon_melayang', layar, melayang: false });
+    };
+  }, [layar, kirim, acuanAsli]);
+
+  const mulaiTarik = (peristiwa: PointerReact<HTMLButtonElement>): void => {
+    const simpul = peristiwa.currentTarget;
+    tarikan.current = {
+      mulaiY: peristiwa.clientY,
+      tinggi: simpul.getBoundingClientRect().height,
+      turunAwal: keadaan === 'turun',
+      bergerak: false,
+    };
+    simpul.classList.add('menarik');
+    simpul.setPointerCapture(peristiwa.pointerId);
+  };
+
+  const ikutJari = (peristiwa: PointerReact<HTMLButtonElement>): void => {
+    const gerak = tarikan.current;
+    if (gerak === null) return;
+    const beda = peristiwa.clientY - gerak.mulaiY;
+    if (Math.abs(beda) > GESER_TARIK) gerak.bergerak = true;
+    if (!gerak.bergerak) return;
+    const penuh = 0;
+    const mengintip = INTIP_BALON_PX - gerak.tinggi;
+    const y = Math.max(mengintip, Math.min(penuh, (gerak.turunAwal ? penuh : mengintip) + beda));
+    peristiwa.currentTarget.style.transform = `translateY(${String(y)}px)`;
+  };
+
+  /** Lepaskan pegangan jari dan kembalikan posisi balon ke tangan CSS. */
+  const lepaskan = (simpul: HTMLButtonElement): TarikanBalon | null => {
+    const gerak = tarikan.current;
+    tarikan.current = null;
+    simpul.classList.remove('menarik');
+    simpul.style.transform = '';
+    return gerak;
+  };
+
+  const selesaiTarik = (peristiwa: PointerReact<HTMLButtonElement>): void => {
+    const gerak = lepaskan(peristiwa.currentTarget);
+    if (gerak === null) return;
+    if (!gerak.bergerak) {
+      kirim({
+        jenis: 'sakelar_balon',
+        layar,
+        keadaan: gerak.turunAwal ? 'intip' : 'turun',
+        cara: 'ketuk',
+      });
+      return;
+    }
+    const beda = peristiwa.clientY - gerak.mulaiY;
+    const ambang = gerak.tinggi / BAGI_AMBANG_TARIK;
+    // Dari turun, jari harus menarik NAIK sejauh ambang; dari mengintip, TURUN.
+    const turun = gerak.turunAwal ? beda > -ambang : beda > ambang;
+    kirim({ jenis: 'sakelar_balon', layar, keadaan: turun ? 'turun' : 'intip', cara: 'tarik' });
+  };
+
+  /*
+   * Menyimpang dari patokan v3d, dan sengaja: di sana `pointercancel` masuk ke
+   * jalur yang sama dengan `pointerup`, sehingga gerakan yang DIBATALKAN
+   * peramban — jari yang ternyata menggulir halaman — terbaca sebagai ketukan
+   * dan membalik keadaan balon. Gerakan yang dibatalkan bukan ketukan.
+   */
+  const batalTarik = (peristiwa: PointerReact<HTMLButtonElement>): void => {
+    lepaskan(peristiwa.currentTarget);
+  };
+
+  const kelas = ['melayang', aktif ? 'melayang-aktif' : '', keadaan === 'turun' ? 'melayang-turun' : '']
+    .filter((k) => k !== '')
+    .join(' ');
+
+  return (
+    <div className={kelas} ref={acuanWadah} aria-hidden={!aktif}>
+      <button
+        type="button"
+        className="pesan-balon melayang-balon"
+        data-uid="balon"
+        /*
+         * Satu kontrol, satu nama. Isinya `aria-hidden` supaya teks pesan tidak
+         * terbaca dua kali — yang membaca dengan telinga sudah punya balon
+         * aslinya di alirannya, dan salinan ini tidak membawa satu kata baru.
+         */
+        aria-label={`Balon pesan ${pesan.nama}: ketuk untuk menurunkan atau menaikkan`}
+        aria-pressed={keadaan === 'turun'}
+        tabIndex={aktif ? 0 : -1}
+        onPointerDown={mulaiTarik}
+        onPointerMove={ikutJari}
+        onPointerUp={selesaiTarik}
+        onPointerCancel={batalTarik}
+        /*
+         * `detail === 0` berarti klik yang lahir dari papan ketik (Enter atau
+         * spasi), bukan dari jari. Klik jari sudah ditangani `pointerup`;
+         * menanganinya dua kali akan membalik balonnya dua kali.
+         */
+        onClick={(peristiwa) => {
+          if (peristiwa.detail !== 0) return;
+          kirim({
+            jenis: 'sakelar_balon',
+            layar,
+            keadaan: keadaan === 'turun' ? 'intip' : 'turun',
+            cara: 'ketuk',
+          });
+        }}
+      >
+        <span aria-hidden="true">
+          <span className="pesan-meta">
+            <span className="pesan-nama">{pesan.nama}</span> · {tanggal}
+          </span>
+          <span className="isi">{pesan.isi}</span>
+          <span className="pesan-jam">{pesan.jam}</span>
+        </span>
+        <span className="grip" aria-hidden="true">
+          <i />
+        </span>
+      </button>
+    </div>
+  );
+}
+
 function LayarSoal({
   kasus,
   keadaan,
@@ -947,6 +1226,9 @@ function LayarSoal({
   const menentukan = new Set(soal.kartu_penentu);
   const acuanTumpukan = usePengamatKartu(soal.soal_id, kirim);
   const acuanOpsi = usePengamatOpsi(soal.soal_id, kirim);
+  // Balon asli yang diamati salinan melayangnya (M3.7 D-1).
+  const acuanPesan = useRef<HTMLElement>(null);
+  const layarIni = namaLayar({ jenis: 'soal', nomor });
   const bilah = bilahBawah(s, nomor, kasus.soal.length);
   // D-2: tanggalnya lahir dari fungsi murni, tidak diketik tangan di data.
   const tanggal = tanggalBalon(kasus.tanggal_t);
@@ -976,6 +1258,7 @@ function LayarSoal({
       <figure
         className="pesan"
         data-uid="pesan"
+        ref={acuanPesan}
         /*
          * Nama untuk pembaca layar: tidak berubah sejak M3.5 D-2, kata demi
          * kata. Jamnya ikut di sini walau tanggal di layar tidak lagi
@@ -1022,6 +1305,22 @@ function LayarSoal({
           <time className="pesan-jam">{soal.pesan.jam}</time>
         </blockquote>
       </figure>
+
+      {/*
+        Salinan melayang (M3.7 D-1). Ia dirender SELALU, bukan hanya ketika
+        aktif: kemunculannya adalah sebuah transisi, dan yang baru lahir tidak
+        punya keadaan sebelumnya untuk ditransisikan. Yang ditentukan "aktif"
+        hanyalah apakah ia terlihat dan bisa disentuh.
+      */}
+      <BalonMelayang
+        layar={layarIni}
+        pesan={soal.pesan}
+        tanggal={tanggal}
+        aktif={balonMelayang(keadaan, layarIni)}
+        keadaan={keadaanBalon(keadaan, layarIni)}
+        acuanAsli={acuanPesan}
+        kirim={kirim}
+      />
 
       <p className="meta antar" id={`antar-${soal.soal_id}`} data-uid="antar">
         Cek omongan {soal.pesan.nama} ke {angkaKata(kartu.length)} dokumen ini:
@@ -1118,12 +1417,19 @@ function LayarSoal({
         data-uid="kembali"
         onClick={() => {
           kirim({ jenis: 'kembali_ke_kartu', soal_id: soal.soal_id });
-          // Menggulir adalah kerja tampilan, bukan keadaan permainan; yang
-          // dicatat tetap satu peristiwa dari reducer di atas. Mendarat di
-          // kalimat pengantar supaya kepingnya tidak menutupi lembar pertama.
-          document
-            .getElementById(`antar-${soal.soal_id}`)
-            ?.scrollIntoView({ block: 'start', behavior: gerakHalus() });
+          /*
+           * Ke PUNCAK halaman, bukan ke kalimat pengantar (M3.7 D-1).
+           *
+           * Sejak balon melayang ada, mendarat di pengantar berarti mendarat
+           * di satu-satunya tempat yang masih tertutup salinan balon: pesannya
+           * melayang tepat di bawah keping justru karena aslinya sudah lewat
+           * ke atas. Di puncak halaman balon ada di alirannya sendiri,
+           * salinannya padam, dan tidak ada apa pun yang menutupi apa pun.
+           *
+           * Menggulir tetap kerja tampilan; yang dicatat tetap satu peristiwa
+           * dari reducer di atas.
+           */
+          window.scrollTo({ top: 0, behavior: gerakHalus() });
         }}
       >
         ↑ Kembali ke dokumen

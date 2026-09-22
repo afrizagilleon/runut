@@ -143,6 +143,41 @@ export const MESIN_DIIZINKAN: readonly IzinMesin[] = [
   },
 ];
 
+/* ------------------------------------------------------------------ */
+/* Bayangan (M3.7)                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Satu-satunya `box-shadow` yang sah, dengan nilainya dieja.
+ *
+ * Aturannya tidak berubah — "kertas di patokan tidak melayang" tetap berlaku
+ * untuk setiap bahan lain di layar. Yang dikecualikan adalah satu benda yang
+ * memang melayang menurut patokan yang disetujui pemilik dengan matanya:
+ * salinan balon chat di `docs/contoh/layar-soal-v3d.html:118`, yang berdiri di
+ * atas isi halaman dan butuh satu garis untuk mengatakannya.
+ *
+ * **Nilainya ikut dieja**, bukan hanya selektornya. Pengecualian yang hanya
+ * menyebut selektor akan membuka pintu untuk bayangan kabur apa pun di benda
+ * yang sama — dan yang dilarang desain adalah kaburnya, bukan namanya:
+ * `0 2px 0` tanpa radius kabur adalah garis tegas, bukan kertas yang terangkat.
+ */
+export interface IzinBayangan {
+  selektor: string;
+  nilai: string;
+  alasan: string;
+}
+
+export const BAYANGAN_DIIZINKAN: readonly IzinBayangan[] = [
+  {
+    selektor: '.melayang-balon',
+    nilai: '0 2px 0 var(--garis)',
+    alasan:
+      'salinan balon chat yang melayang di bawah keping (M3.7 D-1); patokan ' +
+      'docs/contoh/layar-soal-v3d.html:118 menulisnya persis begini. Tanpa kabur: ' +
+      'satu garis tegas 2 px, bukan kertas yang terangkat',
+  },
+];
+
 /**
  * Nilai `font-family`/`font` yang membawa huruf mesin tik.
  *
@@ -322,12 +357,20 @@ export function periksaCss(berkas: string, isi: string): Temuan[] {
     }
 
     if (properti === 'box-shadow' && nilai !== 'none') {
-      temuan.push({
-        berkas,
-        baris,
-        kode: 'BAYANGAN',
-        pesan: `\`${selektor}\` memakai box-shadow. Kertas di patokan tidak melayang.`,
-      });
+      const izin = BAYANGAN_DIIZINKAN.find(
+        (i) => cocokSelektor(selektor, i.selektor) && nilai === i.nilai,
+      );
+      if (izin === undefined) {
+        temuan.push({
+          berkas,
+          baris,
+          kode: 'BAYANGAN',
+          pesan:
+            `\`${selektor}\` memakai box-shadow ${nilai}. Kertas di patokan tidak ` +
+            `melayang. Kalau ini memang disahkan patokan, tambahkan selektor DAN ` +
+            `nilainya ke BAYANGAN_DIIZINKAN beserta rujukan barisnya.`,
+        });
+      }
     }
 
     if (properti === 'backdrop-filter') {
