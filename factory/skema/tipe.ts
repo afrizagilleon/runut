@@ -309,6 +309,27 @@ export interface Pembuka {
   menit?: number;
 }
 
+/**
+ * Pesan penutup kasus ini (M4 D-4): yang tampil sesudah "Mau coba kasus lain"
+ * ketika **tidak ada lagi** kasus yang belum dimainkan.
+ *
+ * Ia per-kasus, bukan satu kalimat tetap di dalam komponen. Sampai M3.7 ia
+ * ditulis mati di `Aplikasi.tsx` dan berbunyi "kasus berikutnya adalah
+ * perusahaan yang **sehat**" — sebuah penilaian saham, dan sebuah janji yang
+ * hanya masuk akal kalau kasus yang baru saja dimainkan adalah DADA. Begitu
+ * ada dua kasus, kalimat yang sama muncul di ujung keduanya dan salah di salah
+ * satunya.
+ *
+ * Bentuknya mengikuti `TeksAwam`: `kepala` adalah kalimat pertama yang
+ * ditebalkan di layar, `isi` sisanya. Keduanya polos — tanpa rujukan fakta dan
+ * tanpa tanda tebal, karena penebalannya ditentukan medannya, bukan penanda di
+ * dalam teks.
+ */
+export interface Penutup {
+  kepala: string;
+  isi: string;
+}
+
 export interface Pembukaan {
   fact_ids: string[];
   paragraf: string[];
@@ -345,6 +366,8 @@ export interface Kasus {
   fakta_terlihat: string[];
   soal: Soal[];
   pembukaan: Pembukaan;
+  /** Pesan penutup kasus ini, ketika tidak ada lagi kasus yang belum dimainkan. */
+  penutup: Penutup;
   temuan: Temuan[];
   /** Catatan seluruh aturan R1–R10: yang jalan, yang dilewati, beserta alasannya. */
   pemeriksaan: PemeriksaanAturan[];

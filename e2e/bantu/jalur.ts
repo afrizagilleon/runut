@@ -55,5 +55,20 @@ export const ASAL_KOLEKTOR = `http://127.0.0.1:${String(PORT_KOLEKTOR)}`;
  */
 export const HOST_TIDAK_AMAN = 'runut.test';
 
-/** Alamat `vite` yang menjalankan berkas kasus; dipakai `bacaKasus()`. */
-export const BERKAS_KASUS: string = join(AKAR, 'cases', 'dada-2025-10-08.json');
+/**
+ * Kasus yang ikut di repo, dalam urutan yang sama dengan `DAFTAR_KASUS` di
+ * `web/src/kasus.ts` (M4 D-4).
+ *
+ * Ditulis di sini, bukan dibaca dari isi folder `cases/`: kalau daftar ini
+ * dihasilkan dari cakram, kasus yang lupa didaftarkan di aplikasi akan tetap
+ * terbaca oleh tes, dan "aplikasi memuat semua kasus" tidak akan pernah bisa
+ * merah.
+ */
+export const ID_KASUS: readonly string[] = ['dada-2025-10-08'];
+
+export function berkasKasus(kasus_id: string): string {
+  return join(AKAR, 'cases', `${kasus_id}.json`);
+}
+
+/** Berkas kasus bawaan seluruh rangkaian; dipakai `bacaKasus()` tanpa argumen. */
+export const BERKAS_KASUS: string = berkasKasus('dada-2025-10-08');

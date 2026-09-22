@@ -165,14 +165,35 @@ describe('M2a D-1 — skema generasi kedua', () => {
    * aturan baru, medan baru, urutan kunci yang bergeser. Ia bukan larangan
    * mengubah isi kasus ketika pemiliknya memang memutuskan begitu.
    *
-   * SHA di bawah diperbarui satu kali di M3.5 (D-1), dan hanya `pembuka` yang
-   * berubah: kalimat layar pertama diganti sesudah uji duduk 22 Sep, dan medan
-   * `menit` lahir untuk baris meta. Diff-nya dua baris, ditempel di ledger.
+   * SHA di bawah diperbarui dua kali sejauh ini, dan tiap kali diff-nya
+   * ditempel di ledger milestone yang memintanya:
+   *
+   * 1. **M3.5 D-1** — hanya `pembuka`: kalimat layar pertama diganti sesudah
+   *    uji duduk 22 Sep, dan medan `menit` lahir untuk baris meta (2 baris).
+   * 2. **M4 D-4** — hanya `penutup`: pesan penutup pindah dari kode komponen ke
+   *    berkas kasus, dan kalimatnya diganti dari "perusahaan yang **sehat**"
+   *    (penilaian saham) menjadi peristiwanya (4 baris).
+   *
    * Perubahan lain di berkas ini tetap merah di sini.
    */
   it('INV-A: berkas kasus yang sedang dimainkan tetap byte-identik', () => {
     const sha = createHash('sha256').update(readFileSync(BERKAS_KASUS)).digest('hex');
-    expect(sha).toBe('62ebd0ccff3e25eea7257a9fb819a3cd6c75aba017d5fbd3d86340fb36e3af36');
+    expect(sha).toBe('c4433ab18028973d7774e4f1b594f0c3756035298cadd91e20d88c8de66e97e2');
+  });
+
+  /*
+   * M4 D-4: yang berubah hanya pesan penutup, dan isinya diperiksa di sini —
+   * bukan hanya panjang diff-nya. Kata "sehat" adalah penilaian saham; label
+   * sebuah kasus di produk ini selalu peristiwanya.
+   */
+  it('M4 D-4: pesan penutup DADA menyebut peristiwa, bukan penilaian saham', () => {
+    const kasus = muatKasus();
+    expect(kasus.penutup.kepala).toBe('Tidak semua saham seperti ini.');
+    expect(kasus.penutup.isi).toContain('perusahaan yang membagi dividen tiap tahun');
+    const seluruhnya = `${kasus.penutup.kepala} ${kasus.penutup.isi}`.toLowerCase();
+    for (const kata of ['sehat', 'bagus', 'buruk', 'sedang kami siapkan']) {
+      expect(seluruhnya).not.toContain(kata);
+    }
   });
 
   it('M3.5 D-1: yang berubah di berkas kasus hanya blok pembuka', () => {

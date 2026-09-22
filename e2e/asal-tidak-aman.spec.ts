@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { HOST_TIDAK_AMAN } from './bantu/jalur.ts';
-import { LABEL_MULAI, awasiGalat, gagalYangBerarti, mulaiKasus, penandaBaru } from './bantu/main.ts';
+import {
+  KASUS_BAWAAN,
+  LABEL_MULAI,
+  awasiGalat,
+  gagalYangBerarti,
+  mulaiKasus,
+  penandaBaru,
+} from './bantu/main.ts';
 import { mulaiDenganPenanda, tungguSatuSesi } from './bantu/peristiwa.ts';
 
 /**
@@ -29,7 +36,9 @@ function alamatTidakAman(penanda: string): string {
   expect(dasar, 'proyek ini harus punya baseURL').toBeDefined();
   const url = new URL(dasar ?? '');
   url.hostname = HOST_TIDAK_AMAN;
-  url.search = `k=${penanda}`;
+  // `kasus=` ikut karena alasan yang sama seperti `buka()` di bantu/main.ts:
+  // tanpa itu kasusnya dipilih acak dan tes ini membandingkan layar dengan DADA.
+  url.search = `k=${penanda}&kasus=${KASUS_BAWAAN}`;
   return url.toString();
 }
 

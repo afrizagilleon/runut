@@ -16,6 +16,7 @@ import type {
   Pembuka,
   Pembukaan,
   PemeriksaanAturan,
+  Penutup,
   Soal,
   Temuan,
   TeksAwam,
@@ -58,6 +59,8 @@ export interface DefinisiKasus {
   awam: Record<string, TeksAwam>;
   soal: Soal[];
   pembukaan: Pembukaan;
+  /** Pesan penutup kasus ini (M4 D-4); polos, tanpa rujukan fakta. */
+  penutup: Penutup;
   kartu_konsep: KartuKonsep[];
   disclaimer: string[];
 }
@@ -257,6 +260,7 @@ export function bangunKasus(def: DefinisiKasus, data: DataDada): HasilBangun {
     fakta_terlihat: [...def.fakta_terlihat],
     soal: def.soal,
     pembukaan: def.pembukaan,
+    penutup: def.penutup,
     temuan,
     pemeriksaan,
     kartu_konsep: def.kartu_konsep,

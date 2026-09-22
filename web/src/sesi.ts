@@ -90,7 +90,10 @@ export function uuidV4Sah(nilai: unknown): boolean {
 /* Nomor pengunjung (D-13)                                            */
 /* ------------------------------------------------------------------ */
 
-/** Kunci `localStorage` yang dipakai. Hanya dua, dan keduanya dieja di README. */
+/**
+ * Kunci `localStorage` nomor pengunjung. Yang ketiga, `kasus_dimainkan`, ada di
+ * `pilih-kasus.ts`; ketiganya dieja di README.
+ */
 export const KUNCI_PENGUNJUNG = 'pengunjung';
 export const KUNCI_KUNJUNGAN = 'kunjungan_ke';
 

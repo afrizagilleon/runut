@@ -53,7 +53,29 @@ export function penandaBaru(): string {
   return kode;
 }
 
-export async function buka(page: Page, penanda: string): Promise<void> {
+/**
+ * Kasus yang dibuka tes kalau ia tidak menyebut kasus lain (M4 D-4).
+ *
+ * Sejak ada lebih dari satu kasus, `/` memilih **acak** — dan seluruh rangkaian
+ * ini menyandingkan apa yang tampil di layar dengan isi
+ * `cases/dada-2025-10-08.json` (`bacaKasus()`). Tanpa `?kasus=`, setiap tes
+ * jawaban, kartu, dan identitas akan hijau atau merah menurut lemparan koin.
+ *
+ * Tes yang memang menguji pemilihan kasus menyebut kasusnya sendiri, atau
+ * memakai `bukaTanpaKasus()` supaya keacakannya justru terlihat.
+ */
+export const KASUS_BAWAAN = 'dada-2025-10-08';
+
+export async function buka(
+  page: Page,
+  penanda: string,
+  kasus: string = KASUS_BAWAAN,
+): Promise<void> {
+  await page.goto(`/?k=${penanda}&kasus=${kasus}`);
+}
+
+/** Buka tanpa `?kasus=`: kasusnya dipilih aplikasi, seperti pemain sungguhan. */
+export async function bukaTanpaKasus(page: Page, penanda: string): Promise<void> {
   await page.goto(`/?k=${penanda}`);
 }
 

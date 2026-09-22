@@ -17,6 +17,7 @@ import {
   median,
   perBalonSoal,
   perLayar,
+  perKasus,
   perLayarSoal,
   perPenanda,
   pisahkanKecuali,
@@ -1218,5 +1219,140 @@ describe('ringkas — bagian "Balon chat" di laporan (M3.7 D-4)', () => {
     // kosong harus terbaca sebagai ketiadaan data, bukan sebagai angka nol.
     const bagian = teks.slice(teks.indexOf('## Balon chat'));
     expect(bagian).toContain('—');
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Per kasus (M4 D-4)                                                  */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Satu sesi buatan: peristiwa seminimal mungkin supaya yang diuji memang
+ * pemisahan per kasus, bukan pembacaan berkas contoh.
+ */
+function sesiKasus(
+  sesi: string,
+  kasus_id: string,
+  jawab: Array<{ soal_id: string; benar: boolean; kartuMs: number; balik: number }>,
+  sampaiPembukaan: boolean,
+): Peristiwa[] {
+  let urut = 0;
+  const berikut = (): number => (urut += 1);
+  const dasar = (nama: string, isi: Record<string, unknown>): Peristiwa => ({
+    nama,
+    sesi,
+    kasus_id,
+    t_ms: urut * 1000,
+    urut: berikut(),
+    isi,
+  });
+  const peristiwa: Peristiwa[] = [
+    dasar('mulai', { lebar_layar: 360, penanda: null, pengunjung: null, kunjungan_ke: null }),
+  ];
+  for (const j of jawab) {
+    peristiwa.push(
+      dasar('kunci_jawaban', {
+        soal_id: j.soal_id,
+        kunci: 'a',
+        benar: j.benar,
+        ms_di_soal: 30_000,
+        ms_kartu_terlihat_sebelum: j.kartuMs,
+        gulir_balik_ke_kartu: j.balik,
+      }),
+    );
+  }
+  if (sampaiPembukaan) peristiwa.push(dasar('pembukaan_masuk', {}));
+  return peristiwa;
+}
+
+function duaKasus(): RingkasSesi[] {
+  return kelompokkanSesi([
+    ...sesiKasus(
+      'sesi-dada-1',
+      'dada-2025-10-08',
+      [
+        { soal_id: 's1', benar: true, kartuMs: 10_000, balik: 2 },
+        { soal_id: 's2', benar: false, kartuMs: 20_000, balik: 0 },
+      ],
+      true,
+    ),
+    ...sesiKasus(
+      'sesi-dada-2',
+      'dada-2025-10-08',
+      [{ soal_id: 's1', benar: false, kartuMs: 6_000, balik: 1 }],
+      false,
+    ),
+    ...sesiKasus(
+      'sesi-ultj-1',
+      'ultj-2026-05-04',
+      [{ soal_id: 'u1', benar: true, kartuMs: 40_000, balik: 3 }],
+      true,
+    ),
+  ]);
+}
+
+describe('perKasus — angka alpha dipecah menurut kasus (M4 D-4)', () => {
+  it('memisahkan sesi menurut kasus_id peristiwanya, urut abjad', () => {
+    expect(perKasus(duaKasus()).map((k) => k.kasus_id)).toEqual([
+      'dada-2025-10-08',
+      'ultj-2026-05-04',
+    ]);
+  });
+
+  it('menghitung sesi dan yang sampai layar pembukaan per kasus', () => {
+    const per = Object.fromEntries(perKasus(duaKasus()).map((k) => [k.kasus_id, k]));
+    expect(per['dada-2025-10-08']?.sesi).toBe(2);
+    expect(per['dada-2025-10-08']?.sampai_pembukaan).toBe(1);
+    expect(per['ultj-2026-05-04']?.sesi).toBe(1);
+    expect(per['ultj-2026-05-04']?.sampai_pembukaan).toBe(1);
+  });
+
+  it('jumlah sesi per kasus sama dengan jumlah sesi seluruhnya', () => {
+    const semua = duaKasus();
+    expect(perKasus(semua).reduce((j, k) => j + k.sesi, 0)).toBe(semua.length);
+  });
+
+  it('benar per soal memakai soal_id kasus itu sendiri, tidak dicampur', () => {
+    const per = Object.fromEntries(perKasus(duaKasus()).map((k) => [k.kasus_id, k]));
+    expect(per['dada-2025-10-08']?.soal).toEqual([
+      { soal_id: 's1', dijawab: 2, benar: 1 },
+      { soal_id: 's2', dijawab: 1, benar: 0 },
+    ]);
+    expect(per['ultj-2026-05-04']?.soal).toEqual([{ soal_id: 'u1', dijawab: 1, benar: 1 }]);
+  });
+
+  it('kartu terlihat dan gulir balik dirata-rata di dalam kasusnya saja', () => {
+    const per = Object.fromEntries(perKasus(duaKasus()).map((k) => [k.kasus_id, k]));
+    // DADA: (10.000 + 20.000 + 6.000) / 3 = 12.000; (2 + 0 + 1) / 3 = 1
+    expect(per['dada-2025-10-08']?.rata_kartu_terlihat_ms).toBe(12_000);
+    expect(per['dada-2025-10-08']?.rata_gulir_balik).toBe(1);
+    // ULTJ sendirian, jadi angkanya tidak boleh tertarik oleh DADA.
+    expect(per['ultj-2026-05-04']?.rata_kartu_terlihat_ms).toBe(40_000);
+    expect(per['ultj-2026-05-04']?.rata_gulir_balik).toBe(3);
+  });
+
+  it('kasus tanpa satu pun jawaban terkunci: "—", bukan nol', () => {
+    const sesi = kelompokkanSesi(sesiKasus('sesi-kosong', 'kk-2026-01-01', [], false));
+    const [satu] = perKasus(sesi);
+    expect(satu?.sesi).toBe(1);
+    expect(satu?.soal).toEqual([]);
+    expect(satu?.rata_kartu_terlihat_ms).toBeNull();
+    expect(satu?.rata_gulir_balik).toBeNull();
+  });
+
+  it('laporannya memuat satu baris per kasus, dengan soal_id-nya', () => {
+    const teks = laporan(duaKasus(), []);
+    expect(teks).toContain('## Per kasus');
+    expect(teks).toContain(
+      '| kasus | sesi | sampai pembukaan | benar per soal | rata kartu terlihat | rata gulir balik |',
+    );
+    expect(teks).toContain('| dada-2025-10-08 | 2 | 1 | s1 1/2 · s2 0/1 |');
+    expect(teks).toContain('| ultj-2026-05-04 | 1 | 1 | u1 1/1 |');
+  });
+
+  it('berkas contoh yang hanya punya satu kasus tetap mencetak bagiannya', () => {
+    const teks = laporan(lengkap());
+    expect(teks).toContain('## Per kasus');
+    expect(teks).toContain('dada-2025-10-08');
   });
 });

@@ -405,6 +405,18 @@ export const DADA_2025_10_08: DefinisiKasus = {
     ],
   },
 
+  /*
+   * M4 D-4. Kalimat lamanya berbunyi "Kasus berikutnya adalah perusahaan yang
+   * **sehat** — sedang kami siapkan", dan ia salah dua kali: "sehat" adalah
+   * penilaian saham, sedangkan label sebuah kasus di produk ini selalu
+   * peristiwanya; dan "sedang kami siapkan" sudah tidak benar sejak kasus
+   * keduanya ada.
+   */
+  penutup: {
+    kepala: 'Tidak semua saham seperti ini.',
+    isi: 'Kasus berikutnya: perusahaan yang membagi dividen tiap tahun. Selamat belajar membaca data, folks.',
+  },
+
   kartu_konsep: [
     { kode: 'A2', judul: 'Lot dan lembar' },
     { kode: 'B1', judul: 'Dividen dan tanggal cum/ex' },

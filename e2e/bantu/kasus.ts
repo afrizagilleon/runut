@@ -7,7 +7,7 @@
  * apa yang tampil di layar dengan apa yang ada di data.
  */
 import { readFileSync } from 'node:fs';
-import { BERKAS_KASUS } from './jalur.ts';
+import { BERKAS_KASUS, berkasKasus } from './jalur.ts';
 
 export interface PilihanUji {
   kunci: string;
@@ -42,17 +42,24 @@ export interface KasusUji {
     tidak_bisa_dibaca: string[];
     disingkirkan: string[];
   };
+  /** Pesan penutup kasus ini (M4 D-4); `kepala` ditebalkan di layar. */
+  penutup: { kepala: string; isi: string };
   /** Aturan verifikasi yang dijalankan atas kasus ini (M3.6 D-5). */
   pemeriksaan: { aturan: string; judul: string; dijalankan: boolean }[];
   temuan: { temuan_id: string }[];
   disclaimer: string[];
 }
 
-let tersimpan: KasusUji | null = null;
+const tersimpan = new Map<string, KasusUji>();
 
-export function bacaKasus(): KasusUji {
-  tersimpan ??= JSON.parse(readFileSync(BERKAS_KASUS, 'utf8')) as KasusUji;
-  return tersimpan;
+/** Berkas kasus yang ikut di repo; tanpa argumen, kasus bawaan rangkaian ini. */
+export function bacaKasus(kasus_id?: string): KasusUji {
+  const jalur = kasus_id === undefined ? BERKAS_KASUS : berkasKasus(kasus_id);
+  const ada = tersimpan.get(jalur);
+  if (ada !== undefined) return ada;
+  const isi = JSON.parse(readFileSync(jalur, 'utf8')) as KasusUji;
+  tersimpan.set(jalur, isi);
+  return isi;
 }
 
 /** Kunci jawaban yang **salah** untuk sebuah soal: opsi pertama yang bukan jawaban. */

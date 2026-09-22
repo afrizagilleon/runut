@@ -9,11 +9,9 @@ import {
   type Aksi,
   type Keadaan,
   type KeadaanBalon,
-  type Peristiwa,
   LABEL_COCOK,
   balonMelayang,
   bilahBawah,
-  keadaanAwal,
   keadaanBalon,
   langkah,
   namaLayar,
@@ -24,7 +22,16 @@ import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { KartuFakta } from './KartuFakta.tsx';
 import { Teks, idPenjelasan } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
-import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
+import { DAFTAR_KASUS, indeksFakta, kartuSoal } from './kasus.ts';
+import { awalBungkus, reduksi } from './bungkus.ts';
+import {
+  bacaDimainkan,
+  kasusBerikut,
+  kodeKasus,
+  pilihKasus,
+  simpanDimainkan,
+  tambahDimainkan,
+} from './pilih-kasus.ts';
 import { hariIniIso, penanda, tanggalBalon, type Penanda } from './tanggal.ts';
 import {
   bacaPengunjung,
@@ -57,23 +64,6 @@ import { kalimatJejak, ringkasanJejak } from './jejak.ts';
  * Waktu disuntikkan di sini, satu kali per aksi, supaya reducer tetap murni.
  */
 
-interface Bungkus {
-  keadaan: Keadaan;
-  /** Peristiwa yang belum diserahkan ke `kirim.ts`. */
-  antre: Peristiwa[];
-}
-
-type Pesan = { aksi: Aksi; waktu: number } | { bersihkan: number };
-
-function reduksi(bungkus: Bungkus, pesan: Pesan): Bungkus {
-  if ('bersihkan' in pesan) {
-    return { ...bungkus, antre: bungkus.antre.slice(pesan.bersihkan) };
-  }
-  const hasil = langkah(bungkus.keadaan, pesan.aksi, pesan.waktu);
-  if (hasil.keadaan === bungkus.keadaan && hasil.peristiwa.length === 0) return bungkus;
-  return { keadaan: hasil.keadaan, antre: [...bungkus.antre, ...hasil.peristiwa] };
-}
-
 /**
  * Nomor pengunjung dibaca **sekali per pemuatan halaman** (D-13).
  *
@@ -95,29 +85,57 @@ function pengunjungSekali(): Pengunjung {
   return pengunjungPemuatanIni;
 }
 
-function awalBungkus(kasus: Kasus): Bungkus {
-  return {
-    keadaan: keadaanAwal({
-      /*
-       * Id **sesi**: hidup di memori tab saja, tidak ditulis ke mana pun dan
-       * hilang begitu tab ditutup. Yang disimpan di `localStorage` hanyalah
-       * nomor **pengunjung** (D-13), yang lain benda dan dibaca di efek
-       * `mulai` di bawah. `crypto.randomUUID` hanya ada di konteks aman, jadi id-nya
-       * dibuat lewat `buatIdSesi` yang punya cadangan — memanggil
-       * `randomUUID` langsung membuat halaman putih di alamat LAN (A3-T1).
-       */
-      sesi: buatIdSesi(sumberAcakPeramban()),
-      kasus_id: kasus.kasus_id,
-      urutanSoal: urutanSoal(kasus),
-      kunciBenar: kunciBenar(kasus),
-      kartuSoal: petaKartu(kasus),
-    }),
-    antre: [],
-  };
+/**
+ * Id **sesi**: hidup di memori tab saja, tidak ditulis ke mana pun dan hilang
+ * begitu tab ditutup. Yang disimpan di `localStorage` hanyalah nomor
+ * **pengunjung** (D-13) dan daftar kasus yang sudah dimainkan (M4 D-4), yang
+ * lain benda. `crypto.randomUUID` hanya ada di konteks aman, jadi id-nya dibuat
+ * lewat `buatIdSesi` yang punya cadangan — memanggil `randomUUID` langsung
+ * membuat halaman putih di alamat LAN (A3-T1).
+ */
+function sesiBaru(): string {
+  return buatIdSesi(sumberAcakPeramban());
+}
+
+/** Daftar kasus yang sudah dimainkan pengunjung ini, dari penyimpanan peramban. */
+function dimainkanSekarang(): string[] {
+  return bacaDimainkan(penyimpananPeramban());
+}
+
+/** Catat bahwa kasus ini dimainkan, supaya kunjungan berikutnya mendapat yang lain. */
+function catatDimainkan(kasus_id: string): void {
+  const simpan = penyimpananPeramban();
+  simpanDimainkan(simpan, tambahDimainkan(bacaDimainkan(simpan), kasus_id));
+}
+
+/**
+ * Kasus untuk pemuatan halaman ini, dipilih **sekali** (M4 D-4).
+ *
+ * Sekali per pemuatan, bukan sekali per render dan bukan sekali per efek,
+ * dengan alasan yang sama seperti `pengunjungSekali()` di bawahnya: pemilihan
+ * ini menulis ke `localStorage`, dan `StrictMode` menjalankan segalanya dua
+ * kali di mode pengembangan. Memilih dua kali berarti kasus pertama tercatat
+ * "sudah dimainkan" sebelum satu layar pun tampil.
+ */
+let kasusPemuatanIni: Kasus | null = null;
+
+function kasusSekali(): Kasus {
+  if (kasusPemuatanIni === null) {
+    const terpilih = pilihKasus({
+      daftar: DAFTAR_KASUS,
+      dimainkan: dimainkanSekarang(),
+      paksa: kodeKasus(window.location.search),
+      acak: Math.random,
+    });
+    catatDimainkan(terpilih.kasus_id);
+    kasusPemuatanIni = terpilih;
+  }
+  return kasusPemuatanIni;
 }
 
 export function Aplikasi(): JSX.Element {
-  const kasus = KASUS;
+  const [bungkus, dispatch] = useReducer(reduksi, null, () => awalBungkus(kasusSekali(), sesiBaru()));
+  const { kasus, keadaan } = bungkus;
   const hari = useMemo(() => penanda(kasus.tanggal_t), [kasus.tanggal_t]);
   /*
    * Tanggal hari ini dari jam perangkat, lewat fungsi tanggal murni yang sama.
@@ -125,11 +143,23 @@ export function Aplikasi(): JSX.Element {
    * `hariIniIso` tetap bisa dites dengan waktu buatan.
    */
   const hariIni = useMemo(() => penanda(hariIniIso(new Date())), []);
-  const [bungkus, dispatch] = useReducer(reduksi, kasus, awalBungkus);
-  const { keadaan } = bungkus;
 
   const kirim = useCallback((aksi: Aksi): void => {
     dispatch({ aksi, waktu: Date.now() });
+  }, []);
+
+  /**
+   * Buka kasus berikutnya yang belum dimainkan: **sesi baru, pengunjung sama**
+   * (M4 D-4).
+   *
+   * Nomor pengunjung sengaja tidak dibaca ulang — `pengunjungSekali()` sudah
+   * mengunci satu kunjungan per pemuatan halaman, dan membuka kasus kedua
+   * bukan kunjungan kedua. Kalau ia dibaca lagi di sini, satu orang yang
+   * memainkan dua kasus akan terhitung sebagai dua kunjungan.
+   */
+  const bukaKasusLain = useCallback((berikut: Kasus): void => {
+    catatDimainkan(berikut.kasus_id);
+    dispatch({ kasusBaru: berikut, sesi: sesiBaru() });
   }, []);
 
   // Cermin keadaan terakhir, hanya untuk jalur `pagehide` di bawah.
@@ -153,7 +183,14 @@ export function Aplikasi(): JSX.Element {
       pengunjung,
       kunjungan_ke,
     });
-  }, [kirim]);
+    /*
+     * `keadaan.sesi` ikut sebagai ketergantungan sejak M4 D-4: membuka kasus
+     * lain melahirkan sesi baru, dan sesi tanpa peristiwa `mulai` tidak masuk
+     * penyebut mana pun di ringkasan pemilik. Pemanggilan berulang untuk sesi
+     * yang sama tidak berbahaya — reducer mengabaikan `mulai` kedua, dan itulah
+     * yang sudah menjaga `StrictMode` sejak dulu.
+     */
+  }, [kirim, keadaan.sesi]);
 
   /*
    * Pelacak ketukan (D-8): **satu** pendengar di akar, bukan satu penangan per
@@ -458,7 +495,13 @@ export function Aplikasi(): JSX.Element {
           />
         )}
         {layar.jenis === 'akhir' && (
-          <LayarAkhir keadaan={keadaan} kirim={kirim} hariIni={hariIni} />
+          <LayarAkhir
+            kasus={kasus}
+            keadaan={keadaan}
+            kirim={kirim}
+            hariIni={hariIni}
+            bukaKasusLain={bukaKasusLain}
+          />
         )}
       </main>
 
@@ -1774,13 +1817,17 @@ const TERASA = ['ujian hafalan', 'membaca data', 'menebak harga'] as const;
 const SUMBER_JAWABAN = ['kartu fakta', 'ingatan atau pengetahuan sendiri', 'tebakan'] as const;
 
 function LayarAkhir({
+  kasus,
   keadaan,
   kirim,
   hariIni,
+  bukaKasusLain,
 }: {
+  kasus: Kasus;
   keadaan: Keadaan;
   kirim: (aksi: Aksi) => void;
   hariIni: Penanda;
+  bukaKasusLain: (berikut: Kasus) => void;
 }): JSX.Element {
   if (keadaan.akhirTerkirim) {
     return (
@@ -1804,7 +1851,23 @@ function LayarAkhir({
             className="tombol-kedua"
             data-uid="kasus-lain"
             onClick={() => {
+              /*
+               * Dua hal dalam satu ketukan (M4 D-4), dan urutannya penting.
+               *
+               * `minat_kasus_lain` lahir lebih dulu, dari sesi yang sedang
+               * berjalan — ia mencatat keinginannya, bukan hasilnya, dan ia
+               * tetap lahir walau tidak ada kasus lain yang tersisa. Baru
+               * sesudah itu kasus berikutnya dibuka, kalau memang ada; kalau
+               * tidak, `minatDitekan` menyalakan pesan penutup kasus ini.
+               *
+               * Daftar "sudah dimainkan" dibaca di sini, bukan di render:
+               * ketukan inilah satu-satunya saat jawabannya dipakai, dan
+               * membacanya di render akan membuat setiap render menyentuh
+               * `localStorage`.
+               */
               kirim({ jenis: 'minat_kasus_lain' });
+              const berikut = kasusBerikut(DAFTAR_KASUS, dimainkanSekarang());
+              if (berikut !== null) bukaKasusLain(berikut);
             }}
           >
             Mau coba kasus lain
@@ -1812,8 +1875,7 @@ function LayarAkhir({
         ) : (
           <div className="pesan-alpha" data-uid="pesan-alpha">
             <p>
-              <strong>Tidak semua saham seperti ini.</strong> Kasus berikutnya adalah perusahaan
-              yang sehat — sedang kami siapkan. Selamat belajar membaca data, folks.
+              <strong>{kasus.penutup.kepala}</strong> {kasus.penutup.isi}
             </p>
           </div>
         )}

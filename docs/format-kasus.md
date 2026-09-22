@@ -27,6 +27,7 @@ soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
 | `fakta_terlihat` | Daftar `fact_id` yang menjadi kartu. **Harus sama persis dengan gabungan seluruh `kartu` di semua soal.** |
 | `soal` | Tiga soal beserta pesan teman, kartu, istilah, pilihan, kunci, dan penjelasan. |
 | `pembukaan` | Fakta dan paragraf yang baru muncul setelah pemain menjawab, ditambah tiga daftar butir. |
+| `penutup` | Pesan penutup kasus ini: `{ kepala, isi }`, polos. |
 | `temuan` | Jejak verifikasi: hasil aturan R1–R10 atas rantai laporan. |
 | `pemeriksaan` | Catatan kesepuluh aturan: mana yang jalan, mana yang dilewati, dan alasannya. Aturan yang hilang atau dilewati tanpa alasan membuat validator menolak kasus. |
 | `kartu_konsep` | Kartu konsep yang dipakai kasus ini. |
@@ -144,6 +145,30 @@ Layar pembukaan adalah **satu-satunya** tempat teks boleh menautkan fakta
 berstatus `KONFLIK` atau fakta yang terbit sesudah T. Di semua layar lain —
 teks kartu, batang, opsi, dan teks kunci — validator menolaknya.
 
+## Pesan penutup (`penutup`)
+
+| field | arti |
+|---|---|
+| `kepala` | Kalimat pertama; ditebalkan di layar. |
+| `isi` | Sisanya, tanpa penekanan. |
+
+Ia tampil di ujung layar terima kasih, sesudah pemain menekan "Mau coba kasus
+lain" dan **tidak ada lagi** kasus yang belum ia mainkan. Kalau masih ada,
+kasus itulah yang langsung terbuka dan pesan ini tidak pernah terlihat.
+
+Sampai M3.7 kalimatnya ditulis mati di `web/src/Aplikasi.tsx` dan berbunyi
+*"Kasus berikutnya adalah perusahaan yang sehat — sedang kami siapkan"*. Dua
+hal salah di sana, dan keduanya baru terlihat ketika kasus kedua ada: "sehat"
+adalah penilaian saham, sedangkan label sebuah kasus di produk ini selalu
+**peristiwanya**; dan satu kalimat tetap di dalam komponen akan muncul di ujung
+setiap kasus, termasuk kasus yang membuatnya salah.
+
+Keduanya **polos**: tanpa rujukan `[[fact_id|teks]]` (`PENUTUP_BERTAUT`) dan
+tanpa tanda tebal (`PENUTUP_DITEBALKAN`). Alasannya bukan selera — teks ini
+dirender apa adanya, tanpa pengurai rujukan, jadi penanda yang lolos ke sini
+akan terbaca mentah oleh pemain. Panjang keduanya bersama paling banyak 220
+karakter, sama dengan teks kartu.
+
 ## Cara menulis angka di dalam teks
 
 Setiap angka di `awam` kartu, `penjelasan`, dan paragraf pembukaan ditulis
@@ -210,6 +235,9 @@ Baru di versi 3, tentang pesan teman dan judul pertanyaan:
 
 Baru di M3.5, tentang lama main yang dijanjikan layar pertama:
 `PEMBUKA_MENIT`
+
+Baru di M4, tentang pesan penutup kasus:
+`PENUTUP_KOSONG` · `PENUTUP_BERTAUT` · `PENUTUP_DITEBALKAN` · `PENUTUP_PANJANG`
 
 Dihapus di versi 3 bersama medannya: `PEMBUKA_ATURAN` ("layar pertama harus
 tepat tiga baris aturan").

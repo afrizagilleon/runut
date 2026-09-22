@@ -90,6 +90,10 @@ function kasusMinimal(): Kasus {
       jumlah_temuan: 0,
     })),
     kartu_konsep: [{ kode: 'A2', judul: 'lot dan lembar' }],
+    penutup: {
+      kepala: 'Tidak semua saham seperti ini.',
+      isi: 'Kasus berikutnya: perusahaan yang membagi dividen tiap tahun.',
+    },
     disclaimer: ['Kalimat satu.', 'Kalimat dua.', 'Kalimat tiga.'],
   };
 }
@@ -648,6 +652,53 @@ describe('aturan v1 yang tetap berlaku', () => {
       awam: { kepala: 'Data harga', isi: 'Saham ini layak dikoleksi.' },
     });
     expect(kode(kasus)).toContain('AJAKAN_TRANSAKSI');
+  });
+
+  /*
+   * M4 D-4. Pesan penutup dirender polos di `LayarAkhir` — tanpa `Teks`, tanpa
+   * pengurai rujukan — jadi yang dijaga di sini adalah bahwa ia memang bisa
+   * ditulis polos: penanda yang akan terbaca mentah oleh pemain ditolak di
+   * pabrik, bukan ditemukan di layar.
+   */
+  it('menolak pesan penutup yang kosong', () => {
+    const kasus = kasusMinimal();
+    kasus.penutup = { kepala: '  ', isi: 'Ada isinya.' };
+    expect(kode(kasus)).toContain('PENUTUP_KOSONG');
+    expect(pesan(kasus)).toContain('kepala');
+  });
+
+  it('menolak rujukan fakta di pesan penutup — penandanya akan terbaca pemain', () => {
+    const kasus = kasusMinimal();
+    kasus.penutup = {
+      kepala: 'Tidak semua saham seperti ini.',
+      isi: 'Harganya menjadi [[harga-akhir|Rp178]].',
+    };
+    expect(kode(kasus)).toContain('PENUTUP_BERTAUT');
+  });
+
+  it('menolak tanda tebal di pesan penutup; yang ditebalkan adalah medan kepala', () => {
+    const kasus = kasusMinimal();
+    kasus.penutup = { kepala: '**Tidak semua saham seperti ini.**', isi: 'Selamat membaca.' };
+    expect(kode(kasus)).toContain('PENUTUP_DITEBALKAN');
+  });
+
+  it('menolak pesan penutup yang melampaui 220 karakter', () => {
+    const kasus = kasusMinimal();
+    kasus.penutup = { kepala: 'a'.repeat(110), isi: 'b'.repeat(110) };
+    expect(kode(kasus)).toContain('PENUTUP_PANJANG');
+  });
+
+  it('menerima pesan penutup tepat 220 karakter — batasnya benar-benar di situ', () => {
+    const kasus = kasusMinimal();
+    kasus.penutup = { kepala: 'a'.repeat(110), isi: 'b'.repeat(109) };
+    expect(kode(kasus)).not.toContain('PENUTUP_PANJANG');
+  });
+
+  it('menolak ajakan bertransaksi di pesan penutup', () => {
+    const kasus = kasusMinimal();
+    kasus.penutup = { kepala: 'Sampai jumpa.', isi: 'Saham ini layak dikoleksi.' };
+    expect(kode(kasus)).toContain('AJAKAN_TRANSAKSI');
+    expect(pesan(kasus)).toContain('penutup');
   });
 
   it('menolak kalimat tetap yang jumlahnya bukan tiga', () => {

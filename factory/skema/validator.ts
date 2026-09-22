@@ -53,6 +53,11 @@ const POLA_NAMA = /^[A-Za-z][A-Za-z ]*[A-Za-z]$/;
 const POLA_JAM = /^([01]\d|2[0-3])\.[0-5]\d$/;
 /** Tanda tebal Markdown `**...**` di dalam teks yang harus polos. */
 const POLA_TEBAL = /\*\*[^*]+\*\*/;
+/**
+ * Pesan penutup kasus (M4 D-4): satu kotak kecil di ujung layar terima kasih,
+ * jadi batasnya sama dengan teks kartu.
+ */
+const MAKS_PENUTUP = 220;
 /** Kartu per soal (D-1). */
 const MIN_KARTU = 2;
 const MAKS_KARTU = 4;
@@ -439,6 +444,47 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
     }
   }
 
+  /*
+   * --- pesan penutup (M4 D-4) ---------------------------------------------
+   *
+   * Polos, dan itu diperiksa, bukan diandaikan: ia dirender sebagai teks biasa
+   * di `LayarAkhir`, tanpa `Teks` dan tanpa pengurai rujukan. Sebuah
+   * `[[fact_id|Rp130]]` di sini akan tampil apa adanya kepada pemain —
+   * penandanya ikut terbaca — dan angka yang tidak pernah bisa dibuka
+   * sumbernya adalah persis yang dilarang INV-4.
+   */
+  const bagianPenutup: Array<[string, string]> = [
+    ['kepala', kasus.penutup.kepala],
+    ['isi', kasus.penutup.isi],
+  ];
+  for (const [nama, teks] of bagianPenutup) {
+    if (teks.trim() === '') {
+      tambah(masalah, 'PENUTUP_KOSONG', `Pesan penutup tidak punya "${nama}".`);
+    }
+    if (ambilRujukan(teks).length > 0) {
+      tambah(
+        masalah,
+        'PENUTUP_BERTAUT',
+        `Pesan penutup ("${nama}") memuat rujukan fakta; ia dirender polos, jadi penandanya akan terbaca pemain.`,
+      );
+    }
+    if (POLA_TEBAL.test(teks)) {
+      tambah(
+        masalah,
+        'PENUTUP_DITEBALKAN',
+        `Pesan penutup ("${nama}") memuat tanda tebal; yang ditebalkan di layar adalah medan "kepala", bukan penanda di dalam teks.`,
+      );
+    }
+  }
+  const panjangPenutup = kasus.penutup.kepala.length + 1 + kasus.penutup.isi.length;
+  if (panjangPenutup > MAKS_PENUTUP) {
+    tambah(
+      masalah,
+      'PENUTUP_PANJANG',
+      `Pesan penutup ${String(panjangPenutup)} karakter, lebih dari ${String(MAKS_PENUTUP)}.`,
+    );
+  }
+
   // --- temuan -------------------------------------------------------------
   for (const temuan of kasus.temuan) {
     for (const id of temuan.fakta_terkait) {
@@ -533,6 +579,8 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
       `pembukaan (disingkirkan ke-${String(i + 1)})`,
       p,
     ]),
+    ['penutup (kepala)', kasus.penutup.kepala],
+    ['penutup (isi)', kasus.penutup.isi],
     ...kasus.temuan.map((t): [string, string] => [`temuan "${t.temuan_id}"`, t.ringkasan]),
   ];
   for (const [tempat, teks] of semuaTeks) {

@@ -2,9 +2,16 @@
  * Berkas kasus diimpor saat build, bukan diambil lewat jaringan.
  * Itulah cara INV-2 dijaga: aplikasi yang sudah dibangun tidak punya satu pun
  * alamat untuk dihubungi, kecuali pengumpul yang ditentukan saat build (D-7).
+ *
+ * **Impornya eksplisit, satu baris per kasus** (M4 D-4) — bukan glob dinamis.
+ * Glob akan membuat "kasus mana yang ikut ke dalam bundel" bergantung pada isi
+ * folder saat build, dan kasus setengah jadi yang tertinggal di `cases/` akan
+ * sampai ke pemain tanpa satu baris pun yang menyebutnya.
  */
-import berkas from '@cases/dada-2025-10-08.json';
-import type { Fakta, Kasus, Soal } from '../../factory/skema/tipe.ts';
+import dada from '@cases/dada-2025-10-08.json';
+import type { Kasus } from '../../factory/skema/tipe.ts';
+
+export * from './isi-kasus.ts';
 
 /*
  * JSON tidak membawa tipe persatuan (`status`, `aturan`), jadi bentuknya
@@ -13,46 +20,14 @@ import type { Fakta, Kasus, Soal } from '../../factory/skema/tipe.ts';
  * tes `berkas kasus yang ikut repo` menjalankan validator yang sama atas berkas
  * yang benar-benar ikut di repo.
  */
-export const KASUS: Kasus = berkas as unknown as Kasus;
+export const KASUS: Kasus = dada as unknown as Kasus;
 
-export const DAFTAR_KASUS: Kasus[] = [KASUS];
-
-export function indeksFakta(kasus: Kasus): Map<string, Fakta> {
-  return new Map(kasus.fakta.map((f) => [f.fact_id, f]));
-}
-
-export function faktaTerlihat(kasus: Kasus): Fakta[] {
-  const indeks = indeksFakta(kasus);
-  return kasus.fakta_terlihat
-    .map((id) => indeks.get(id))
-    .filter((f): f is Fakta => f !== undefined);
-}
-
-export function faktaPembukaan(kasus: Kasus): Fakta[] {
-  const indeks = indeksFakta(kasus);
-  return kasus.pembukaan.fact_ids
-    .map((id) => indeks.get(id))
-    .filter((f): f is Fakta => f !== undefined);
-}
-
-/** Kartu fakta satu soal, berurutan seperti di berkas kasus. */
-export function kartuSoal(kasus: Kasus, soal: Soal): Fakta[] {
-  const indeks = indeksFakta(kasus);
-  return soal.kartu.map((id) => indeks.get(id)).filter((f): f is Fakta => f !== undefined);
-}
-
-export function urutanSoal(kasus: Kasus): string[] {
-  return kasus.soal.map((s) => s.soal_id);
-}
-
-export function kunciBenar(kasus: Kasus): Record<string, string> {
-  const peta: Record<string, string> = {};
-  for (const s of kasus.soal) peta[s.soal_id] = s.jawaban;
-  return peta;
-}
-
-export function petaKartu(kasus: Kasus): Record<string, string[]> {
-  const peta: Record<string, string[]> = {};
-  for (const s of kasus.soal) peta[s.soal_id] = [...s.kartu];
-  return peta;
-}
+/**
+ * Seluruh kasus yang bisa dimainkan, dalam urutan tetap.
+ *
+ * Urutannya menentukan dua hal yang dilihat pemain: kasus mana yang dibuka
+ * "Mau coba kasus lain" lebih dulu (`kasusBerikut`), dan pemetaan angka acak ke
+ * kasus pada kunjungan pertama. Karena itu ia ditulis di sini sekali, bukan
+ * dihasilkan dari urutan berkas di cakram.
+ */
+export const DAFTAR_KASUS: readonly Kasus[] = [KASUS];

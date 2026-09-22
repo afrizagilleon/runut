@@ -644,6 +644,78 @@ export function perPenanda(semua: RingkasSesi[]): Array<[string, HitungOrang]> {
 }
 
 /* ------------------------------------------------------------------ */
+/* Per kasus (M4 D-4)                                                  */
+/* ------------------------------------------------------------------ */
+
+export interface RingkasKasusSoal {
+  soal_id: string;
+  /** Sesi yang mengunci jawaban di soal ini. */
+  dijawab: number;
+  benar: number;
+}
+
+export interface RingkasKasus {
+  kasus_id: string;
+  sesi: number;
+  sampai_pembukaan: number;
+  /** Urut menurut soal_id; nama soal berbeda antar-kasus, jadi ia tidak bisa satu kolom. */
+  soal: RingkasKasusSoal[];
+  /** Rata-rata lama kartu terlihat sebelum dikunci, `null` kalau belum ada yang menjawab. */
+  rata_kartu_terlihat_ms: number | null;
+  /** Rata-rata gulir balik ke kartu sebelum dikunci. */
+  rata_gulir_balik: number | null;
+}
+
+/**
+ * Angka alpha dipecah menurut kasus yang dimainkan (M4 D-4).
+ *
+ * Sejak ada lebih dari satu kasus, setiap angka gabungan menjawab pertanyaan
+ * yang salah: "berapa persen benar di soal 2" tidak berarti apa-apa kalau soal
+ * 2 dua kasus berbeda adalah dua soal yang berbeda. Pemisahannya di sini,
+ * bukan di kepala pembaca laporan.
+ *
+ * `kasus_id` dibaca dari peristiwanya sendiri, bukan dari daftar kasus yang
+ * ada sekarang: berkas peristiwa hari ini bisa memuat kasus yang berkasnya
+ * sudah berubah besok, dan menyembunyikannya akan membuat jumlah sesi per
+ * kasus tidak lagi berjumlah sama dengan jumlah sesi seluruhnya.
+ */
+export function perKasus(semua: RingkasSesi[]): RingkasKasus[] {
+  const per = new Map<string, RingkasSesi[]>();
+  for (const s of semua) {
+    const ada = per.get(s.kasus_id);
+    if (ada === undefined) per.set(s.kasus_id, [s]);
+    else ada.push(s);
+  }
+
+  return [...per.entries()]
+    .sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([kasus_id, daftar]) => {
+      const dikunci = daftar.flatMap((s) => s.soal).filter((x) => x.benar !== null);
+      const rata = (ambil: (s: RingkasSoal) => number | null): number | null => {
+        const nilai = dikunci.map(ambil).filter((n): n is number => n !== null);
+        if (nilai.length === 0) return null;
+        return nilai.reduce((j, n) => j + n, 0) / nilai.length;
+      };
+      const idSoal = [...new Set(dikunci.map((x) => x.soal_id))].sort();
+      return {
+        kasus_id,
+        sesi: daftar.length,
+        sampai_pembukaan: daftar.filter((s) => s.sampai_pembukaan).length,
+        soal: idSoal.map((soal_id) => {
+          const jawab = dikunci.filter((x) => x.soal_id === soal_id);
+          return {
+            soal_id,
+            dijawab: jawab.length,
+            benar: jawab.filter((x) => x.benar === true).length,
+          };
+        }),
+        rata_kartu_terlihat_ms: rata((s) => s.ms_kartu_terlihat),
+        rata_gulir_balik: rata((s) => s.gulir_balik),
+      };
+    });
+}
+
+/* ------------------------------------------------------------------ */
 /* Penanda yang dikecualikan (D-9)                                     */
 /* ------------------------------------------------------------------ */
 
@@ -1149,6 +1221,37 @@ export function laporan(
     `Menekan "Langsung ke ringkasan": **${String(loncat.length)}** dari ${String(sampai)} ` +
       `yang sampai layar pembukaan`,
   );
+  baris.push('');
+
+  /*
+   * M4 D-4. Ditaruh sebelum "Per sesi" karena ia menjawab pertanyaan pemilik
+   * yang pertama sejak ada dua kasus — "orang dapat kasus yang mana, dan
+   * apakah keduanya sama-sama terbaca" — dan karena tabel di bawahnya baru
+   * berarti sesudah pembacanya tahu kasusnya lebih dari satu.
+   */
+  baris.push('## Per kasus');
+  baris.push('');
+  baris.push(
+    'Nama soal berbeda antar-kasus, jadi kolom "benar per soal" mengeja soal_id-nya sendiri.',
+  );
+  baris.push('');
+  baris.push(
+    '| kasus | sesi | sampai pembukaan | benar per soal | rata kartu terlihat | rata gulir balik |',
+  );
+  baris.push('|---|---|---|---|---|---|');
+  for (const k of perKasus(sesi)) {
+    const perSoal =
+      k.soal.length === 0
+        ? '—'
+        : k.soal
+            .map((s) => `${s.soal_id} ${String(s.benar)}/${String(s.dijawab)}`)
+            .join(' · ');
+    baris.push(
+      `| ${k.kasus_id} | ${String(k.sesi)} | ${String(k.sampai_pembukaan)} | ${perSoal} | ` +
+        `${detikAtau(k.rata_kartu_terlihat_ms)} | ` +
+        `${k.rata_gulir_balik === null ? '—' : k.rata_gulir_balik.toFixed(1)} |`,
+    );
+  }
   baris.push('');
 
   baris.push('## Per sesi');

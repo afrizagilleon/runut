@@ -185,6 +185,11 @@ menyimpan **satu** angka acak (UUID v4) di `localStorage` browser pemain:
 |---|---|
 | `pengunjung` | satu UUID v4 acak, dibuat di browser pemain, tidak pernah dipakai di tempat lain |
 | `kunjungan_ke` | sudah berapa kali halaman ini dibuka dari browser itu |
+| `kasus_dimainkan` | daftar `kasus_id` yang sudah dimainkan dari browser itu, supaya kunjungan berikutnya mendapat kasus lain |
+
+Kunci ketiga lahir bersama kasus kedua: tanpa daftar itu, orang yang kembali
+besok disodori kasus yang persis sama. Isinya nama kasus, bukan jawaban —
+jawaban tidak pernah disimpan di browser pemain.
 
 Ia **bukan cookie**: tidak ikut terkirim di setiap permintaan dan tidak bisa
 dibaca situs lain. Tetapi ia tetap sesuatu yang disimpan di browser pemain, dan
