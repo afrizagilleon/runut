@@ -98,6 +98,35 @@ export function penanda(iso: string): Penanda {
 }
 
 /**
+ * Nama bulan pendek berhuruf biasa: "Okt", bukan "OKT".
+ *
+ * Diturunkan dari `BULAN`, tidak ditulis ulang: dua daftar yang berjanji sama
+ * adalah dua daftar yang bisa berselisih diam-diam. Keping kalender tetap
+ * memakai `BULAN_PENDEK` yang berhuruf kapital — kapital di aplikasi ini hanya
+ * milik keping dan cap (INV-11), dan balon chat bukan keduanya.
+ */
+const BULAN_SINGKAT: readonly string[] = BULAN.map((nama) => nama.slice(0, 3));
+
+/**
+ * Tanggal satu balon chat (M3.5 D-2): `Rabu, 8 Okt 2025 · 19.38`.
+ *
+ * Teman pemilik membaca ketiga pesan tanpa pernah tahu kapan pesan itu dikirim:
+ * *"tidak tahu chat-nya di hari sesudah dokumen rilis atau sebelumnya"*. Keping
+ * tanggal yang menempel di puncak layar tidak ia lihat sama sekali — ia
+ * berpatokan pada tiga bulatan kemajuan. Maka tanggalnya dibawa balonnya
+ * sendiri, seperti aplikasi pesan.
+ *
+ * `pesan` di berkas kasus **tidak** bertambah medan: setiap pesan terjadi pada
+ * tanggal beku kasus, dan menyalin tanggal itu ke tiap pesan hanya membuka
+ * kemungkinan keduanya berselisih.
+ */
+export function tanggalBalon(tanggal_t: string, jam: string): string {
+  const hari = penanda(tanggal_t);
+  const bulan = BULAN_SINGKAT[Number(tanggal_t.slice(5, 7)) - 1] ?? '';
+  return `${hari.hari}, ${hari.angka} ${bulan} ${tanggal_t.slice(0, 4)} · ${jam}`;
+}
+
+/**
  * Tanggal ISO untuk "hari ini" menurut jam perangkat (A1-T6).
  *
  * Waktunya disuntikkan, bukan dibaca di dalam sini, supaya bisa dites dengan

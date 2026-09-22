@@ -624,6 +624,22 @@ summary:focus-visible,
   margin-top: 2px;
 }
 
+/*
+ * Tanggal balon (M3.5 D-2). Bentuknya sama persis dengan `.pesan-jam` yang
+ * sudah ada — satu baris 12 px, peran *meta* — hanya tempatnya yang berbeda:
+ * di puncak balon, tepat di bawah nama pengirim, seperti aplikasi pesan.
+ * Jamnya di kanan bawah tetap.
+ */
+.pesan-tanggal {
+  display: block;
+  font-family: var(--baca);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--tinta-redup);
+  margin: 0 0 6px;
+}
+
 /* Petunjuk satu kalimat, hanya di soal pertama. */
 .petunjuk {
   margin: 8px 0 0;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { TanggalTidakSah, hariIniIso, penanda } from './tanggal.ts';
+import { TanggalTidakSah, hariIniIso, penanda, tanggalBalon } from './tanggal.ts';
 
 describe('penanda waktu beku', () => {
   it('menghitung nama hari kasus DADA dengan benar', () => {
@@ -57,6 +57,49 @@ describe('penanda waktu beku', () => {
 
   it('murni: dua pemanggilan menghasilkan nilai yang sama', () => {
     expect(penanda('2025-10-08')).toEqual(penanda('2025-10-08'));
+  });
+});
+
+/*
+ * M3.5 D-2. Teman pemilik (fakultas ekonomi) sesudah bermain: "ga tau yang chat
+ * itu tanggal berapa… tidak tahu chat-nya di hari sesudah dokumen rilis atau
+ * sebelumnya". Ia berpatokan pada tiga bulatan kemajuan dan tidak melihat keping
+ * tanggal di atasnya. Balon chat hanya berbunyi "19.42".
+ *
+ * Jadi tanggalnya dibawa balonnya sendiri, seperti aplikasi pesan — dan seperti
+ * seluruh tanggal di aplikasi ini, ia lahir dari fungsi murni, tidak diketik
+ * tangan di data mana pun.
+ */
+describe('tanggal balon chat (D-2)', () => {
+  it('menyusun hari, tanggal pendek berhuruf biasa, dan jam pesan', () => {
+    expect(tanggalBalon('2025-10-08', '19.38')).toBe('Rabu, 8 Okt 2025 · 19.38');
+  });
+
+  it('memakai jam pesan yang diberikan, bukan jam yang pertama saja', () => {
+    expect(tanggalBalon('2025-10-08', '19.42')).toBe('Rabu, 8 Okt 2025 · 19.42');
+    expect(tanggalBalon('2025-10-08', '19.55')).toBe('Rabu, 8 Okt 2025 · 19.55');
+  });
+
+  it('TIDAK berhuruf kapital — kapital hanya milik keping dan cap (INV-11)', () => {
+    const teks = tanggalBalon('2025-10-08', '19.38');
+    expect(teks).not.toBe(teks.toUpperCase());
+    expect(teks).toContain('Okt');
+    expect(teks).not.toContain('OKT');
+  });
+
+  it('memakai singkatan bulan Indonesia yang sama dengan keping, tanpa titik', () => {
+    expect(tanggalBalon('2025-08-01', '09.00')).toBe('Jumat, 1 Agu 2025 · 09.00');
+    expect(tanggalBalon('2025-05-20', '23.59')).toBe('Selasa, 20 Mei 2025 · 23.59');
+    expect(tanggalBalon('2026-01-05', '00.01')).toBe('Senin, 5 Jan 2026 · 00.01');
+  });
+
+  it('melempar untuk tanggal yang tidak sah, sama seperti penanda', () => {
+    expect(() => tanggalBalon('8 Oktober 2025', '19.38')).toThrow(TanggalTidakSah);
+    expect(() => tanggalBalon('2025-02-30', '19.38')).toThrow(TanggalTidakSah);
+  });
+
+  it('murni: dua pemanggilan menghasilkan teks yang sama', () => {
+    expect(tanggalBalon('2025-10-08', '19.38')).toBe(tanggalBalon('2025-10-08', '19.38'));
   });
 });
 

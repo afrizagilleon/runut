@@ -19,7 +19,7 @@ import { KartuFakta } from './KartuFakta.tsx';
 import { Teks, idPenjelasan } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { KASUS, indeksFakta, kartuSoal, kunciBenar, petaKartu, urutanSoal } from './kasus.ts';
-import { hariIniIso, penanda, type Penanda } from './tanggal.ts';
+import { hariIniIso, penanda, tanggalBalon, type Penanda } from './tanggal.ts';
 import {
   bacaPengunjung,
   buatIdSesi,
@@ -831,6 +831,8 @@ function LayarSoal({
   const acuanTumpukan = usePengamatKartu(soal.soal_id, kirim);
   const acuanOpsi = usePengamatOpsi(soal.soal_id, kirim);
   const bilah = bilahBawah(s, nomor, kasus.soal.length);
+  // D-2: tanggalnya lahir dari fungsi murni, tidak diketik tangan di data.
+  const tanggal = tanggalBalon(kasus.tanggal_t, soal.pesan.jam);
 
   return (
     <section className="layar layar-soal" aria-labelledby={`judul-${soal.soal_id}`}>
@@ -856,10 +858,21 @@ function LayarSoal({
       <figure
         className="pesan"
         data-uid="pesan"
-        aria-label={`Pesan dari ${soal.pesan.nama}, ${soal.pesan.jam}`}
+        aria-label={`Pesan dari ${soal.pesan.nama}, ${tanggal}`}
       >
         <figcaption className="pesan-nama">{soal.pesan.nama}</figcaption>
         <blockquote className="pesan-balon">
+          {/*
+            Tanggal balon (M3.5 D-2), tepat di bawah nama pengirim seperti
+            aplikasi pesan. Teman pemilik membaca ketiga pesan tanpa pernah tahu
+            kapan pesan itu dikirim — ia tidak melihat keping tanggal yang
+            menempel di puncak layar, dan balonnya hanya berbunyi "19.42".
+
+            Ia **menyimpang dari patokan** `docs/contoh/layar-soal.html`, yang
+            tidak memuat baris ini; patokannya sendiri tidak diubah. Alasannya
+            temuan pemilik 22 Sep, dan ukurannya ditempel di ledger.
+          */}
+          <p className="pesan-tanggal">{tanggal}</p>
           {/*
             Dirender POLOS, tanpa Teks: angka di dalam ucapan orang adalah
             ucapan, bukan fakta (INV-4). Menautkannya membuat kabar tampak sudah
