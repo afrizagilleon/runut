@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import type { Kasus } from '../../factory/skema/tipe.ts';
-import { jumlahPemeriksaan, kalimatJejak, ringkasanJejak } from './jejak.ts';
+import { faktaGugur, jumlahPemeriksaan, kalimatJejak, ringkasanJejak } from './jejak.ts';
 
 /*
  * M3.6 D-5. Dua kegagalan yang dijaga di sini, keduanya sudah pernah terjadi:
@@ -16,7 +16,7 @@ const kasusAsli = JSON.parse(
 ) as unknown as Kasus;
 
 /** Kasus buatan: hanya medan yang dibaca modul ini yang perlu ada. */
-function kasusUji(pemeriksaan: number, temuan: number): Kasus {
+function kasusUji(pemeriksaan: number, temuan: number, gugur = 1): Kasus {
   return {
     pemeriksaan: Array.from({ length: pemeriksaan }, (_, nomor) => ({
       aturan: `R${String(nomor + 1)}`,
@@ -26,6 +26,10 @@ function kasusUji(pemeriksaan: number, temuan: number): Kasus {
       jumlah_temuan: 0,
     })),
     temuan: Array.from({ length: temuan }, (_, nomor) => ({ temuan_id: `t${String(nomor)}` })),
+    fakta: Array.from({ length: gugur }, (_, nomor) => ({
+      fact_id: `f${String(nomor)}`,
+      status: 'KONFLIK',
+    })),
   } as unknown as Kasus;
 }
 
@@ -96,5 +100,48 @@ describe('ringkasanJejak', () => {
     const teks = ringkasanJejak(kasusAsli).toLowerCase();
     expect(teks).not.toContain('rantai');
     expect(teks).not.toContain('kesepuluh');
+  });
+});
+
+/*
+ * M4 D-2. Ekor kalimat ikut data sejak kasus keduanya ada: ULTJ tidak
+ * menggugurkan satu kartu pun, dan kalimat yang menutup dengan "dua laporan
+ * disingkirkan" akan berbohong di sana.
+ */
+describe('kalimatJejak — ekornya ikut data (M4 D-2)', () => {
+  it('menyebut berapa angka yang gugur ketika memang ada yang gugur', () => {
+    const teks = kalimatJejak(kasusUji(10, 8, 43));
+    expect(teks).toContain('8 hal yang tidak cocok');
+    expect(teks).toContain('43 angka');
+  });
+
+  it('mengatakan apa adanya ketika tidak satu pun kartu gugur', () => {
+    const teks = kalimatJejak(kasusUji(35, 7, 0));
+    expect(teks).toContain('7 hal yang tidak cocok');
+    expect(teks).toContain('tidak satu pun');
+    expect(teks).not.toContain('0 angka');
+  });
+
+  it('tidak pernah mengeja "dua laporan" lagi — angka itu dulu diketik tangan', () => {
+    for (const kasus of [kasusUji(10, 8, 43), kasusUji(35, 7, 0), kasusAsli]) {
+      expect(kalimatJejak(kasus)).not.toContain('dua laporan');
+    }
+  });
+
+  it('nol temuan tidak menghasilkan kalimat yang menggantung', () => {
+    const teks = kalimatJejak(kasusUji(35, 0, 0));
+    expect(teks).toContain('Tidak ada satu pun yang tidak cocok.');
+    expect(teks).not.toContain('0 hal');
+  });
+});
+
+describe('faktaGugur', () => {
+  it('menghitung fakta yang tidak TERVERIFIKASI, bukan jumlah temuan', () => {
+    expect(faktaGugur(kasusUji(10, 8, 43))).toBe(43);
+    expect(faktaGugur(kasusUji(10, 8, 0))).toBe(0);
+  });
+
+  it('kasus DADA yang hidup memang menggugurkan kartu', () => {
+    expect(faktaGugur(kasusAsli)).toBeGreaterThan(0);
   });
 });

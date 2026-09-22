@@ -206,6 +206,34 @@ function faktaSuspensi(data: DataEmiten, sumber: SumberGudang): FaktaMentah[] {
 function faktaDividen(data: DataEmiten, sumber: SumberGudang): FaktaMentah[] {
   const berkas = sumber.asal.aksi.get(data.simbol) ?? null;
   const fakta: FaktaMentah[] = [];
+  const pertama = data.dividen[0];
+  const terakhir = data.dividen[data.dividen.length - 1];
+  /*
+   * Satu fakta untuk daftarnya sendiri, dan `jenis: 'api'` bukan `'turunan'`:
+   * yang dikatakannya adalah **isi satu medan respons** (`corporate_actions.
+   * dividend`), bukan hitungan kami atasnya. Bedanya terbaca pemain — garis
+   * kepala lembar yang utuh berarti "ini dokumennya", yang putus-putus berarti
+   * "ini hitungan kami" (`docs/desain.md`).
+   *
+   * Kalimatnya sengaja **tidak** mengatakan "perusahaan selalu membagi
+   * dividen": daftar aksi korporasi tidak bisa dibuktikan habis, dan yang bisa
+   * dikatakan hanyalah apa yang tercatat di dalamnya.
+   */
+  if (pertama !== undefined && terakhir !== undefined) {
+    fakta.push({
+      fact_id: 'dividen-tercatat',
+      klaim:
+        `Daftar aksi korporasi mencatat ${angkaId(data.dividen.length)} pembagian dividen tunai, ` +
+        `dari tanggal ex ${tanggalId(pertama.ex_date)} sampai ${tanggalId(terakhir.ex_date)}. ` +
+        'Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi.',
+      nilai: data.dividen.length,
+      satuan: 'pembagian',
+      sumber: sumberApi(sumber, 'aksi', berkas, { bagian: 'dividend' }),
+      turunan_dari: [],
+      tersedia_sejak: terakhir.ex_date,
+      status: 'TERVERIFIKASI',
+    });
+  }
   for (const d of data.dividen) {
     fakta.push({
       fact_id: `div-${d.ex_date}`,

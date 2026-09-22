@@ -35,19 +35,46 @@ export function jumlahPemeriksaan(kasus: Kasus): number {
 }
 
 /**
+ * Berapa fakta yang gugur sebagai kartu karena pemeriksaan ini (M4 D-2).
+ *
+ * Fakta berstatus `KONFLIK` atau `TIDAK_LENGKAP` tidak boleh menjadi kartu dan
+ * tidak boleh menjadi dasar jawaban; validator menolak kasus yang mencoba.
+ * Angkanya dibaca dari berkas kasusnya sendiri, seperti `jumlahPemeriksaan`.
+ */
+export function faktaGugur(kasus: Kasus): number {
+  return kasus.fakta.filter((f) => f.status !== 'TERVERIFIKASI').length;
+}
+
+/**
  * Kalimat pembuka Jejak verifikasi.
  *
  * "Beginilah soal ini dilahirkan" bukan hiasan: bagian ini menjawab pertanyaan
  * yang tidak pernah diucapkan pemain — dari mana kartu-kartu itu datang, dan
- * kenapa ada laporan resmi yang tidak menjadi kartu.
+ * kenapa ada dokumen resmi yang tidak menjadi kartu.
+ *
+ * **Ekornya ikut data sejak M4.** Versi M3.6 menutup dengan "itulah sebabnya
+ * dua laporan disingkirkan dari kartu" — dua, diketik tangan, benar untuk DADA
+ * dan **bohong untuk kasus yang tidak menggugurkan satu pun**. Itu persis
+ * kelas kesalahan yang M3.6 D-5 sendiri perbaiki di bagian depan kalimat ini;
+ * ia hanya belum sampai ke belakangnya, karena waktu itu kasusnya baru satu.
  */
 export function kalimatJejak(kasus: Kasus): string {
-  return (
+  const pembuka =
     `Beginilah soal ini dilahirkan: sebelum kartu dibuat, laporan-laporan pemilik saham ` +
     `diperiksa dengan ${String(jumlahPemeriksaan(kasus))} pemeriksaan otomatis — apakah satu ` +
-    `sama lain nyambung, dan cocok dengan harga di pasar. Hasilnya ` +
-    `${String(kasus.temuan.length)} hal yang tidak cocok; itulah sebabnya dua laporan ` +
-    `disingkirkan dari kartu.`
+    `sama lain nyambung, dan cocok dengan harga di pasar.`;
+  const temuan = kasus.temuan.length;
+  if (temuan === 0) return `${pembuka} Tidak ada satu pun yang tidak cocok.`;
+  const gugur = faktaGugur(kasus);
+  if (gugur === 0) {
+    return (
+      `${pembuka} Hasilnya ${String(temuan)} hal yang tidak cocok, tetapi tidak satu pun ` +
+      `membuat sebuah angka gugur sebagai kartu.`
+    );
+  }
+  return (
+    `${pembuka} Hasilnya ${String(temuan)} hal yang tidak cocok, dan ${String(gugur)} angka ` +
+    `yang karena itu tidak boleh menjadi kartu.`
   );
 }
 

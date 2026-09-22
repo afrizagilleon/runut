@@ -1,0 +1,1572 @@
+{
+  "skema_versi": 3,
+  "kasus_id": "ultj-2026-05-04",
+  "judul": "Perusahaan U: dividen tiap tahun, dan orang dalam yang membeli",
+  "emiten": {
+    "simbol": "ULTJ",
+    "nama": "PT Ultrajaya Milk Industry & Trading Company Tbk",
+    "papan": "Utama",
+    "sektor": "makanan dan minuman"
+  },
+  "nama_samaran": "Perusahaan U",
+  "tanggal_t": "2026-05-04",
+  "pembuka": {
+    "kalimat": "Grup obrolanmu ramai soal satu saham yang pagi tadi bukanya jatuh. Cek omongan mereka ke dokumen resminya.",
+    "menit": 5
+  },
+  "fakta": [
+    {
+      "fact_id": "beda-turun-dividen",
+      "klaim": "Jarak antara turunnya harga dan dividen per lembar: Rp145 dikurangi Rp130 sama dengan Rp15.",
+      "nilai": 15,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "pengurangan dua angka yang keduanya ada di kartu ini"
+      },
+      "turunan_dari": [
+        "turun-2026-05-04",
+        "div-2026-05-04"
+      ],
+      "tersedia_sejak": "2026-05-04",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Dihitung dari data harga",
+        "isi": "Hari bursa terakhir sebelum hari ini, [[harga-2026-04-30|Kamis 30 April]], ditutup [[harga-2026-04-30|Rp1.690]]. Hari ini dibuka [[harga-2026-05-04-buka|Rp1.545]] — turun [[turun-2026-05-04|Rp145]]. Dividen per lembarnya [[div-2026-05-04|Rp130]], jadi bedanya [[beda-turun-dividen|Rp15]]."
+      }
+    },
+    {
+      "fact_id": "div-2020-09-03",
+      "klaim": "Dividen tunai Rp12 per lembar dengan tanggal ex 3 September 2020.",
+      "nilai": 12,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2020-09-03",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2020-09-03",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "div-2021-09-01",
+      "klaim": "Dividen tunai Rp85 per lembar dengan tanggal ex 1 September 2021.",
+      "nilai": 85,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2021-09-01",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2021-09-01",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "div-2022-08-04",
+      "klaim": "Dividen tunai Rp25 per lembar dengan tanggal ex 4 Agustus 2022.",
+      "nilai": 25,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2022-08-04",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2022-08-04",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "div-2023-07-03",
+      "klaim": "Dividen tunai Rp30 per lembar dengan tanggal ex 3 Juli 2023.",
+      "nilai": 30,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2023-07-03",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2023-07-03",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "div-2024-06-28",
+      "klaim": "Dividen tunai Rp40 per lembar dengan tanggal ex 28 Juni 2024.",
+      "nilai": 40,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2024-06-28",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2024-06-28",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "div-2025-05-15",
+      "klaim": "Dividen tunai Rp45 per lembar dengan tanggal ex 15 Mei 2025.",
+      "nilai": 45,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2025-05-15",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-05-15",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "div-2026-05-04",
+      "klaim": "Dividen tunai Rp130 per lembar dengan tanggal ex 4 Mei 2026.",
+      "nilai": 130,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2026-05-04",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-05-04",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Pengumuman dividen · ex 4 Mei 2026",
+        "isi": "Perusahaan U membagikan dividen tunai [[div-2026-05-04|Rp130 per lembar]]. Hari ini tanggal ex-nya: pembeli yang baru masuk hari ini tidak lagi kebagian. Uangnya dibayarkan [[div-2026-05-04-bayar|22 Mei 2026]]."
+      }
+    },
+    {
+      "fact_id": "div-2026-05-04-bayar",
+      "klaim": "Dividen dengan tanggal ex 4 Mei 2026 dibayarkan 22 Mei 2026.",
+      "nilai": "2026-05-22",
+      "satuan": null,
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "ex_date": "2026-05-04",
+          "medan": "payment_date",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-05-04",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "dividen-tercatat",
+      "klaim": "Daftar aksi korporasi mencatat 7 pembagian dividen tunai, dari tanggal ex 3 September 2020 sampai 4 Mei 2026. Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi.",
+      "nilai": 7,
+      "satuan": "pembagian",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "dividend",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-05-04",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Riwayat dividen · 2020–2026",
+        "isi": "Tercatat satu pembagian dividen tunai di tiap tahun, menurut tanggal ex-nya: [[div-2020-09-03|2020 Rp12]], [[div-2021-09-01|2021 Rp85]], [[div-2022-08-04|2022 Rp25]], [[div-2023-07-03|2023 Rp30]], [[div-2024-06-28|2024 Rp40]], [[div-2025-05-15|2025 Rp45]], [[div-2026-05-04|2026 Rp130]] per lembar."
+      }
+    },
+    {
+      "fact_id": "fil-2026-01-06-01",
+      "klaim": "Pemilik terbesar melaporkan pembelian 700.000 lembar atas transaksi 30 Desember 2025, dilaporkan 6 Januari 2026. Kepemilikan tercatat berubah dari 5.527.219.300 menjadi 5.527.919.300 lembar, yaitu dari 53,16 persen menjadi 53,16 persen saham.",
+      "nilai": 700000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-06T10:25:57|LK-06012026-9220-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-06",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Laporan pemilik terbesar · Jan",
+        "isi": "Pemilik terbesar Perusahaan U melaporkan [[fil-jan-pemilik-terbesar-laporan|dua pembelian]], terbit [[fil-2026-01-06-01|6]] dan [[fil-2026-01-07-01|7 Januari 2026]]: [[fil-2026-01-06-01|700.000]] lalu [[fil-2026-01-07-01|300.000 lembar]]. Porsinya bergerak dari [[fil-jan-pemilik-terbesar-persen-awal|53,16%]] ke [[fil-jan-pemilik-terbesar-persen-akhir|53,17%]]."
+      }
+    },
+    {
+      "fact_id": "fil-2026-01-06-02",
+      "klaim": "Orang dalam lain melaporkan pembelian 550.400 lembar atas transaksi 30 Desember 2025, dilaporkan 6 Januari 2026. Kepemilikan tercatat berubah dari 126.051.060 menjadi 126.601.460 lembar, yaitu dari 1,21 persen menjadi 1,22 persen saham.",
+      "nilai": 550400,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-06T10:34:18|LK-06012026-6030-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-06",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Laporan orang dalam lain · Jan",
+        "isi": "Seorang orang dalam lain melaporkan [[fil-jan-orang-dalam-lain-laporan|enam pembelian]], terbit [[fil-2026-01-06-02|6]] sampai [[fil-2026-01-22-01|22 Januari 2026]]. Ia menambah [[fil-jan-orang-dalam-lain|16,07 juta lembar]], dan porsinya bergerak dari [[fil-jan-orang-dalam-lain-persen-awal|1,21%]] ke [[fil-jan-orang-dalam-lain-persen-akhir|1,37%]]."
+      }
+    },
+    {
+      "fact_id": "fil-2026-01-07-01",
+      "klaim": "Pemilik terbesar melaporkan pembelian 300.000 lembar atas transaksi 2 Januari 2026, dilaporkan 7 Januari 2026. Kepemilikan tercatat berubah dari 5.527.919.300 menjadi 5.528.219.300 lembar, yaitu dari 53,16 persen menjadi 53,17 persen saham.",
+      "nilai": 300000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-07T16:24:12|LK-07012026-4325-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-07",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-2026-01-07-02",
+      "klaim": "Orang dalam lain melaporkan pembelian 2.391.800 lembar atas transaksi 2 Januari 2026, dilaporkan 7 Januari 2026. Kepemilikan tercatat berubah dari 126.601.460 menjadi 128.993.260 lembar, yaitu dari 1,22 persen menjadi 1,24 persen saham.",
+      "nilai": 2391800,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-07T16:25:43|LK-07012026-1552-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-07",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-2026-01-09-01",
+      "klaim": "Orang dalam lain melaporkan pembelian 5.221.600 lembar atas transaksi 6 Januari 2026, dilaporkan 9 Januari 2026. Kepemilikan tercatat berubah dari 128.993.260 menjadi 134.214.860 lembar, yaitu dari 1,24 persen menjadi 1,29 persen saham.",
+      "nilai": 5221600,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-09T16:00:56|LK-09012026-4095-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-09",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-2026-01-13-01",
+      "klaim": "Orang dalam lain melaporkan pembelian 1.522.700 lembar atas transaksi 8 Januari 2026, dilaporkan 13 Januari 2026. Kepemilikan tercatat berubah dari 134.214.860 menjadi 135.737.560 lembar, yaitu dari 1,29 persen menjadi 1,31 persen saham.",
+      "nilai": 1522700,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-13T15:56:50|LK-13012026-5201-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-13",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-2026-01-20-01",
+      "klaim": "Orang dalam lain melaporkan pembelian 44.800 lembar atas transaksi 15 Januari 2026, dilaporkan 20 Januari 2026. Kepemilikan tercatat berubah dari 135.737.560 menjadi 135.782.360 lembar, yaitu dari 1,31 persen menjadi 1,31 persen saham.",
+      "nilai": 44800,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-20T12:07:23|LK-20012026-3755-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-20",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-2026-01-22-01",
+      "klaim": "Orang dalam lain melaporkan pembelian 6.338.600 lembar atas transaksi 19 Januari 2026, dilaporkan 22 Januari 2026. Kepemilikan tercatat berubah dari 135.782.360 menjadi 142.120.960 lembar, yaitu dari 1,31 persen menjadi 1,37 persen saham.",
+      "nilai": 6338600,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-01-22T15:59:06|LK-22012026-3384-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-01-22",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-2026-05-22-01",
+      "klaim": "Orang dalam lain melaporkan pembelian 3.000.000 lembar atas transaksi 19 Mei 2026, dilaporkan 22 Mei 2026. Kepemilikan tercatat berubah dari 151.210.360 menjadi 154.210.360 lembar, yaitu dari 1,45 persen menjadi 1,48 persen saham.",
+      "nilai": 3000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/filings/",
+        "berkas": null,
+        "parameter": {
+          "symbol": "ULTJ",
+          "laporan": "ULTJ|2026-05-22T10:27:32|LK-22052026-1721-00.pdf-0.pdf",
+          "berkas_cache": "ULTJ-filings.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-05-22",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-orang-dalam-lain",
+      "klaim": "Orang dalam lain menambah 16.069.900 lembar lewat 6 laporan yang terbit 6 Januari 2026–22 Januari 2026.",
+      "nilai": 16069900,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan laporan orang dalam lain yang terbit 6 Januari 2026–22 Januari 2026"
+      },
+      "turunan_dari": [
+        "fil-2026-01-06-02",
+        "fil-2026-01-07-02",
+        "fil-2026-01-09-01",
+        "fil-2026-01-13-01",
+        "fil-2026-01-20-01",
+        "fil-2026-01-22-01"
+      ],
+      "tersedia_sejak": "2026-01-22",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-orang-dalam-lain-laporan",
+      "klaim": "Orang dalam lain menerbitkan 6 laporan dalam rentang 6 Januari 2026–22 Januari 2026.",
+      "nilai": 6,
+      "satuan": "laporan",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penghitungan laporan orang dalam lain yang terbit 6 Januari 2026–22 Januari 2026"
+      },
+      "turunan_dari": [
+        "fil-2026-01-06-02",
+        "fil-2026-01-07-02",
+        "fil-2026-01-09-01",
+        "fil-2026-01-13-01",
+        "fil-2026-01-20-01",
+        "fil-2026-01-22-01"
+      ],
+      "tersedia_sejak": "2026-01-22",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-orang-dalam-lain-persen-akhir",
+      "klaim": "Sesudah laporan terakhirnya, orang dalam lain tercatat memegang 1,37 persen saham.",
+      "nilai": 1.37,
+      "satuan": "persen",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "medan porsi sesudah transaksi di laporan terakhir dalam rentang itu"
+      },
+      "turunan_dari": [
+        "fil-2026-01-22-01"
+      ],
+      "tersedia_sejak": "2026-01-22",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-orang-dalam-lain-persen-awal",
+      "klaim": "Sebelum laporan pertamanya, orang dalam lain tercatat memegang 1,21 persen saham.",
+      "nilai": 1.21,
+      "satuan": "persen",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "medan porsi sebelum transaksi di laporan pertama dalam rentang itu"
+      },
+      "turunan_dari": [
+        "fil-2026-01-06-02"
+      ],
+      "tersedia_sejak": "2026-01-06",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-pemilik-terbesar",
+      "klaim": "Pemilik terbesar menambah 1.000.000 lembar lewat 2 laporan yang terbit 6 Januari 2026–7 Januari 2026.",
+      "nilai": 1000000,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan laporan pemilik terbesar yang terbit 6 Januari 2026–7 Januari 2026"
+      },
+      "turunan_dari": [
+        "fil-2026-01-06-01",
+        "fil-2026-01-07-01"
+      ],
+      "tersedia_sejak": "2026-01-07",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-pemilik-terbesar-laporan",
+      "klaim": "Pemilik terbesar menerbitkan 2 laporan dalam rentang 6 Januari 2026–7 Januari 2026.",
+      "nilai": 2,
+      "satuan": "laporan",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penghitungan laporan pemilik terbesar yang terbit 6 Januari 2026–7 Januari 2026"
+      },
+      "turunan_dari": [
+        "fil-2026-01-06-01",
+        "fil-2026-01-07-01"
+      ],
+      "tersedia_sejak": "2026-01-07",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-pemilik-terbesar-persen-akhir",
+      "klaim": "Sesudah laporan terakhirnya, pemilik terbesar tercatat memegang 53,17 persen saham.",
+      "nilai": 53.17,
+      "satuan": "persen",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "medan porsi sesudah transaksi di laporan terakhir dalam rentang itu"
+      },
+      "turunan_dari": [
+        "fil-2026-01-07-01"
+      ],
+      "tersedia_sejak": "2026-01-07",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "fil-jan-pemilik-terbesar-persen-awal",
+      "klaim": "Sebelum laporan pertamanya, pemilik terbesar tercatat memegang 53,16 persen saham.",
+      "nilai": 53.16,
+      "satuan": "persen",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "medan porsi sebelum transaksi di laporan pertama dalam rentang itu"
+      },
+      "turunan_dari": [
+        "fil-2026-01-06-01"
+      ],
+      "tersedia_sejak": "2026-01-06",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2026-04-30",
+      "klaim": "Harga penutupan 30 April 2026 adalah Rp1.690 per lembar.",
+      "nilai": 1690,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-04-30",
+          "berkas_cache": "ULTJ-daily-2026q2.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-04-30",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2026-05-04-buka",
+      "klaim": "Harga pembukaan 4 Mei 2026 adalah Rp1.545 per lembar.",
+      "nilai": 1545,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-05-04",
+          "berkas_cache": "ULTJ-daily-2026q2.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-05-04",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2026-05-05",
+      "klaim": "Harga penutupan 5 Mei 2026 adalah Rp1.700 per lembar.",
+      "nilai": 1700,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-05-05",
+          "berkas_cache": "ULTJ-daily-2026q2.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-05-05",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2026-06-08",
+      "klaim": "Harga penutupan 8 Juni 2026 adalah Rp1.245 per lembar.",
+      "nilai": 1245,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-06-08",
+          "berkas_cache": "ULTJ-daily-2026q2.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-06-08",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2026-06-08-terendah",
+      "klaim": "Harga terendah 8 Juni 2026 adalah Rp1.210 per lembar.",
+      "nilai": 1210,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-06-08",
+          "berkas_cache": "ULTJ-daily-2026q2.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-06-08",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2026-09-18",
+      "klaim": "Harga penutupan 18 September 2026 adalah Rp2.060 per lembar.",
+      "nilai": 2060,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-09-18",
+          "berkas_cache": "ULTJ-daily-2026q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-09-18",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "harga-2026-09-18-tertinggi",
+      "klaim": "Harga tertinggi 18 September 2026 adalah Rp2.190 per lembar.",
+      "nilai": 2190,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-09-18",
+          "berkas_cache": "ULTJ-daily-2026q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-09-18",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "laporan-jan-2026",
+      "klaim": "Laporan kepemilikan orang dalam yang terbit Januari, seluruhnya pembelian: 8 laporan.",
+      "nilai": 8,
+      "satuan": "laporan",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penghitungan dokumen yang masing-masing punya sumbernya sendiri"
+      },
+      "turunan_dari": [
+        "fil-2026-01-06-01",
+        "fil-2026-01-07-01",
+        "fil-2026-01-06-02",
+        "fil-2026-01-07-02",
+        "fil-2026-01-09-01",
+        "fil-2026-01-13-01",
+        "fil-2026-01-20-01",
+        "fil-2026-01-22-01"
+      ],
+      "tersedia_sejak": "2026-01-22",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "rups-2026-10-27",
+      "klaim": "Rapat umum pemegang saham dijadwalkan 27 Oktober 2026. Teks keputusannya tidak ada di data, jadi isinya tidak bisa dikutip.",
+      "nilai": null,
+      "satuan": null,
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/company/corporate-actions/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "bagian": "agm",
+          "tanggal_rups": "2026-10-27",
+          "berkas_cache": "ULTJ-corpactions.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-10-27",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "tahun-berdividen",
+      "klaim": "Tahun yang tercatat punya pembagian dividen tunai, beruntun tanpa lompatan: 7 tahun.",
+      "nilai": 7,
+      "satuan": "tahun",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penghitungan dokumen yang masing-masing punya sumbernya sendiri"
+      },
+      "turunan_dari": [
+        "div-2020-09-03",
+        "div-2021-09-01",
+        "div-2022-08-04",
+        "div-2023-07-03",
+        "div-2024-06-28",
+        "div-2025-05-15",
+        "div-2026-05-04"
+      ],
+      "tersedia_sejak": "2026-05-04",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Dihitung dari riwayat di atas",
+        "isi": "[[tahun-berdividen|Tujuh tahun berturut-turut]] ada pembagian. Jumlah per lembarnya tidak selalu naik: dari [[div-2021-09-01|Rp85 di 2021]] turun ke [[div-2022-08-04|Rp25 di 2022]], baru naik lagi tiap tahun sampai [[div-2026-05-04|Rp130]]."
+      }
+    },
+    {
+      "fact_id": "tambahan-jan-2026",
+      "klaim": "Lembar yang ditambahkan kedua orang dalam sepanjang bulan itu: 1.000.000 + 16.069.900 = 17.069.900 lembar.",
+      "nilai": 17069900,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "penjumlahan 2 angka yang masing-masing punya sumbernya sendiri"
+      },
+      "turunan_dari": [
+        "fil-jan-pemilik-terbesar",
+        "fil-jan-orang-dalam-lain"
+      ],
+      "tersedia_sejak": "2026-01-22",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Dihitung dari laporan di atas",
+        "isi": "[[laporan-jan-2026|Kedelapan laporan]] itu pembelian. Pemilik terbesar menambah [[fil-jan-pemilik-terbesar|1 juta lembar]] lewat [[fil-jan-pemilik-terbesar-laporan|dua laporan]]; orang dalam lain menambah [[fil-jan-orang-dalam-lain|16,07 juta lembar]] lewat [[fil-jan-orang-dalam-lain-laporan|enam laporan]]. Seluruhnya [[tambahan-jan-2026|17,07 juta lembar]]."
+      }
+    },
+    {
+      "fact_id": "turun-2026-05-04",
+      "klaim": "Jarak antara penutupan terakhir sebelum tanggal ex dan pembukaan hari ini: Rp1.690 dikurangi Rp1.545 sama dengan Rp145.",
+      "nilai": 145,
+      "satuan": "rupiah per lembar",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": "pengurangan dua angka yang keduanya ada di kartu ini"
+      },
+      "turunan_dari": [
+        "harga-2026-04-30",
+        "harga-2026-05-04-buka"
+      ],
+      "tersedia_sejak": "2026-05-04",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "volume-2026-09-17",
+      "klaim": "Volume perdagangan 17 September 2026 adalah 20.220.500 lembar.",
+      "nilai": 20220500,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-09-17",
+          "berkas_cache": "ULTJ-daily-2026q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-09-17",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    },
+    {
+      "fact_id": "volume-2026-09-18",
+      "klaim": "Volume perdagangan 18 September 2026 adalah 123.380.100 lembar.",
+      "nilai": 123380100,
+      "satuan": "lembar",
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/v2/daily/ULTJ/",
+        "berkas": null,
+        "parameter": {
+          "tanggal": "2026-09-18",
+          "berkas_cache": "ULTJ-daily-2026q3.json"
+        },
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2026-09-18",
+      "status": "TERVERIFIKASI",
+      "awam": null
+    }
+  ],
+  "fakta_terlihat": [
+    "div-2026-05-04",
+    "beda-turun-dividen",
+    "dividen-tercatat",
+    "tahun-berdividen",
+    "fil-2026-01-06-01",
+    "fil-2026-01-06-02",
+    "tambahan-jan-2026"
+  ],
+  "soal": [
+    {
+      "soal_id": "turun-di-tanggal-ex",
+      "kartu": [
+        "div-2026-05-04",
+        "beda-turun-dividen"
+      ],
+      "istilah": [
+        {
+          "kata": "Tanggal ex",
+          "arti": "Mulai tanggal ini pembeli baru tidak lagi kebagian dividen yang sudah diumumkan; yang sudah pegang sebelumnya tetap kebagian."
+        },
+        {
+          "kata": "Dividen tunai",
+          "arti": "Bagian laba yang dibayarkan perusahaan kepada pemilik sahamnya; uangnya benar-benar keluar dari kas perusahaan."
+        }
+      ],
+      "pesan": {
+        "nama": "Nadia",
+        "jam": "17.58",
+        "isi": "Baru buka aplikasi. Saham U pagi tadi bukanya anjlok. Oh, ternyata hari ini tanggal ex dividennya. Tapi turunnya kayaknya jauh lebih gede dari dividennya, pasti ada sebab lain."
+      },
+      "tanya": "Omongan Nadia cocok dengan dokumennya?",
+      "petunjuk": "Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.",
+      "kartu_penentu": [
+        "beda-turun-dividen"
+      ],
+      "pilihan": [
+        {
+          "kunci": "a",
+          "teks": "Betul, turunnya kira-kira dua kali lipat dividen per lembarnya."
+        },
+        {
+          "kunci": "b",
+          "teks": "Keliru, turunnya cuma sekitar lima belas rupiah lebih besar."
+        },
+        {
+          "kunci": "c",
+          "teks": "Betul, dividennya hanya menjelaskan sekitar sepertiga dari turunnya."
+        },
+        {
+          "kunci": "d",
+          "teks": "Keliru, turunnya justru lebih kecil daripada dividen per lembarnya."
+        }
+      ],
+      "jawaban": "b",
+      "penjelasan": "Nadia sudah benar setengah jalan: hari ini memang tanggal ex dividennya. Yang belum ia cek adalah seberapa besar. Kartu kedua sudah menghitungnya — penutupan terakhir [[harga-2026-04-30|Rp1.690]], pembukaan hari ini [[harga-2026-05-04-buka|Rp1.545]], turun [[turun-2026-05-04|Rp145]], sementara dividen yang keluar dari perusahaan [[div-2026-05-04|Rp130 per lembar]]. Bedanya [[beda-turun-dividen|Rp15]], bukan \"jauh lebih gede\". Pada tanggal ex, uang sebesar dividen itu memang berpindah dari perusahaan ke pemilik saham, jadi harga per lembarnya menyesuaikan; penurunan seperti itu adalah tanggal di kalender, bukan kabar. Yang tidak dikatakan kartu mana pun: apakah sisanya punya sebab, dan harga akan ke mana sesudah ini. Salah-kaprah yang umum: mencari berita untuk setiap penurunan harga, lalu berhenti sebelum membandingkan besarnya dengan angka yang sudah tertulis di dokumen.",
+      "fact_ids": [
+        "beda-turun-dividen",
+        "div-2026-05-04"
+      ]
+    },
+    {
+      "soal_id": "riwayat-dividen",
+      "kartu": [
+        "dividen-tercatat",
+        "tahun-berdividen"
+      ],
+      "istilah": [
+        {
+          "kata": "Per lembar",
+          "arti": "Dividen dihitung untuk tiap satu lembar saham, bukan per lot dan bukan per orang."
+        }
+      ],
+      "pesan": {
+        "nama": "Fajar",
+        "jam": "18.11",
+        "isi": "Gue baru buka riwayat dividennya. Perusahaan U ini bagi dividen tiap tahun tanpa putus sejak 2020, dan jumlah per lembarnya naik terus tiap tahun. Rapi banget."
+      },
+      "tanya": "Omongan Fajar cocok dengan dokumennya?",
+      "petunjuk": null,
+      "kartu_penentu": [
+        "tahun-berdividen"
+      ],
+      "pilihan": [
+        {
+          "kunci": "a",
+          "teks": "Keliru, tiap tahun memang ada, tetapi jumlahnya pernah turun jauh."
+        },
+        {
+          "kunci": "b",
+          "teks": "Betul, tiap tahun ada pembagian dan jumlahnya naik di tahun berikutnya."
+        },
+        {
+          "kunci": "c",
+          "teks": "Betul, jumlahnya sempat datar dua tahun, tetapi tidak pernah turun."
+        },
+        {
+          "kunci": "d",
+          "teks": "Keliru, ada satu tahun tanpa pembagian sama sekali di tengah deret."
+        }
+      ],
+      "jawaban": "a",
+      "penjelasan": "Setengah omongan Fajar cocok dengan dokumen: ada pembagian di tiap tahun, [[tahun-berdividen|tujuh tahun berturut-turut]]. Setengahnya lagi tidak: jumlah per lembarnya pernah turun jauh, dari [[div-2021-09-01|Rp85 di 2021]] ke [[div-2022-08-04|Rp25 di 2022]], sebelum naik lagi tiap tahun sampai [[div-2026-05-04|Rp130]]. Kartu kedua sudah membandingkan tahun demi tahun, jadi tidak ada yang perlu kamu hitung. Perhatikan juga apa yang **tidak** ada di kartu ini: berapa dividen tahun depan, dan kenapa jumlahnya berubah — dokumen hanya mencatat yang sudah terjadi. Salah-kaprah yang umum: satu kalimat yang setengahnya benar dibaca sebagai seluruhnya benar, dan bagian yang terdengar paling meyakinkan justru yang paling jarang dicek.",
+      "fact_ids": [
+        "dividen-tercatat",
+        "tahun-berdividen"
+      ]
+    },
+    {
+      "soal_id": "siapa-yang-membeli",
+      "kartu": [
+        "fil-2026-01-06-01",
+        "fil-2026-01-06-02",
+        "tambahan-jan-2026"
+      ],
+      "istilah": [
+        {
+          "kata": "Orang dalam",
+          "arti": "Pemilik besar, pengurus, atau pihak terafiliasi perusahaan; tiap jual-belinya wajib dilaporkan dan diumumkan ke publik."
+        }
+      ],
+      "pesan": {
+        "nama": "Rio",
+        "jam": "18.26",
+        "isi": "Jangan kegeeran dulu. Gue baca laporan Januari: yang nambah bukan cuma orang dalam berporsi kecil — pemilik terbesarnya yang 53 persen itu juga ikut beli."
+      },
+      "tanya": "Omongan Rio cocok dengan dokumennya?",
+      "petunjuk": null,
+      "kartu_penentu": [
+        "fil-2026-01-06-01",
+        "tambahan-jan-2026"
+      ],
+      "pilihan": [
+        {
+          "kunci": "a",
+          "teks": "Keliru, pemilik terbesarnya tidak tercatat membeli satu lembar pun."
+        },
+        {
+          "kunci": "b",
+          "teks": "Betul, pemilik terbesarnya tercatat membeli lewat satu laporan besar."
+        },
+        {
+          "kunci": "c",
+          "teks": "Keliru, yang tercatat membeli bulan itu justru pemilik terbesar sendirian."
+        },
+        {
+          "kunci": "d",
+          "teks": "Betul, pemilik terbesarnya tercatat membeli sejuta lembar di dua laporan."
+        }
+      ],
+      "jawaban": "d",
+      "penjelasan": "Rio betul, dan kartu pertama yang membuktikannya: pemilik terbesar memang tercatat membeli — [[fil-jan-pemilik-terbesar-laporan|dua laporan]], [[fil-2026-01-06-01|700.000]] lalu [[fil-2026-01-07-01|300.000 lembar]], seluruhnya [[fil-jan-pemilik-terbesar|1 juta lembar]] menurut kartu ketiga. Ia bukan satu-satunya: orang dalam lain menambah [[fil-jan-orang-dalam-lain|16,07 juta lembar]] lewat [[fil-jan-orang-dalam-lain-laporan|enam laporan]]. Perhatikan seberapa jauh angka itu menggerakkan porsi mereka — dari [[fil-jan-pemilik-terbesar-persen-awal|53,16%]] ke [[fil-jan-pemilik-terbesar-persen-akhir|53,17%]], dan dari [[fil-jan-orang-dalam-lain-persen-awal|1,21%]] ke [[fil-jan-orang-dalam-lain-persen-akhir|1,37%]]. Perhatikan juga tanggalnya: [[laporan-jan-2026|kedelapan laporan]] itu terbit Januari, hampir empat bulan sebelum hari ini. Kenapa mereka membeli, dan apa artinya untuk harga, tidak ada di dokumen mana pun. Salah-kaprah yang umum: membaca \"orang dalam membeli\" sebagai satu blok besar, tanpa melihat siapa, berapa, dan kapan laporannya terbit.",
+      "fact_ids": [
+        "fil-2026-01-06-01",
+        "tambahan-jan-2026"
+      ]
+    }
+  ],
+  "pembukaan": {
+    "fact_ids": [
+      "harga-2026-05-05",
+      "fil-2026-05-22-01",
+      "harga-2026-06-08",
+      "harga-2026-06-08-terendah",
+      "harga-2026-09-18",
+      "harga-2026-09-18-tertinggi",
+      "volume-2026-09-17",
+      "volume-2026-09-18",
+      "rups-2026-10-27"
+    ],
+    "paragraf": [
+      "[[harga-2026-05-05|Hari bursa berikutnya]] ditutup [[harga-2026-05-05|Rp1.700]], di atas [[harga-2026-04-30|Rp1.690]] — penutupan terakhir sebelum tanggal ex.",
+      "[[fil-2026-05-22-01|Terbit lagi satu laporan pembelian orang dalam, 3.000.000 lembar]]; [[div-2026-05-04-bayar|di hari yang sama]] dividen [[div-2026-05-04|Rp130 per lembar]] dibayarkan.",
+      "[[harga-2026-06-08-terendah|Harga menyentuh Rp1.210]] di dalam hari dan ditutup [[harga-2026-06-08|Rp1.245]], angka terendah sepanjang deret tahun itu.",
+      "[[harga-2026-09-18-tertinggi|Harga menyentuh Rp2.190]] dan ditutup [[harga-2026-09-18|Rp2.060]], tertinggi sepanjang deret; volume sehari [[volume-2026-09-18|123.380.100 lembar]], enam kali volume [[volume-2026-09-17|hari sebelumnya]].",
+      "[[rups-2026-10-27|Satu rapat umum pemegang saham lagi dijadwalkan]]. Teks keputusannya belum ada di data mana pun, jadi isinya tidak bisa dikutip di sini."
+    ],
+    "bisa_dibaca": [
+      "Dividen tunai [[div-2026-05-04|Rp130 per lembar]] dengan tanggal ex hari ini; pembagian yang tercatat di [[tahun-berdividen|tujuh tahun beruntun]]; dan [[laporan-jan-2026|delapan laporan orang dalam]] yang terbit Januari, seluruhnya pembelian — [[tambahan-jan-2026|17,07 juta lembar]].",
+      "Turunnya harga pada tanggal ex, kalau dibandingkan: [[turun-2026-05-04|Rp145]] terasa seperti kabar sampai diletakkan di sebelah [[div-2026-05-04|Rp130]] yang sudah tertulis di pengumuman dividen, tiga baris di atasnya."
+    ],
+    "tidak_bisa_dibaca": [
+      "Ke mana harga akan bergerak. Pada [[harga-2026-06-08|8 Juni harga tutup Rp1.245]], lebih rendah daripada hari ini; pada [[harga-2026-09-18|18 September Rp2.060]], lebih tinggi. Tidak satu pun kartu memuat itu, dan produk ini tidak pernah memintamu menebaknya.",
+      "Kenapa orang dalam membeli. Laporan mencatat berapa lembar dan kapan, tidak pernah alasannya — dan tidak ada dokumen lain di data ini yang mengatakannya."
+    ],
+    "disingkirkan": [
+      "Nama orang tidak dipakai kartu mana pun. Sumber mengeja orang yang sama dengan dua cara, sehingga satu orang bisa terbaca sebagai dua; kartu memakai perannya — pemilik terbesar, orang dalam lain. Pemeriksaan kami sendiri yang menemukannya, dan ia ada di jejak di bawah.",
+      "Harga yang ditulis laporan juga tidak dipakai. Satu laporan Januari menulis harga rata-rata jauh di bawah harga tiap butir transaksinya sendiri, karena butir yang harganya kosong ikut dihitung sebagai nol. Yang dipakai kartu hanya jumlah lembar dan porsinya.",
+      "Rantai laporan orang dalam lain putus sesudah hari ini: ada lembar yang bertambah tanpa laporan di antaranya. Karena putusnya sesudah hari ini, tidak ada kartu yang terkena — dan tidak ada butir garis waktu di atas yang menjumlahkan melintasi jeda itu.",
+      "Laba per lembar tidak dijadikan kartu. Penyebutnya berganti antar tahun, jadi dua angkanya tidak bisa dibandingkan langsung; dan tanggal terbit laporan keuangan tahunan tidak ada di data mana pun, jadi tidak bisa dipastikan angka itu sudah bisa dibaca hari ini."
+    ]
+  },
+  "penutup": {
+    "kepala": "Ini kasus yang kedua.",
+    "isi": "Kasus lain: perusahaan yang harganya melonjak sementara pemilik besarnya menjual."
+  },
+  "temuan": [
+    {
+      "temuan_id": "R25-parameter-ULTJ",
+      "aturan": "R25",
+      "keparahan": "catatan",
+      "ringkasan": "Halaman laporan ULTJ tidak menggantung, tetapi parameter permintaannya tidak tersimpan di gudang, jadi tidak bisa dibuktikan bahwa berkas-berkas ini benar-benar menanyakan seluruh rentang untuk emiten ini. Kelengkapannya tidak diketahui.",
+      "angka": [
+        {
+          "label": "berkas laporan",
+          "nilai": 1,
+          "satuan": "berkas"
+        },
+        {
+          "label": "baris yang terbaca",
+          "nilai": 9,
+          "satuan": "baris"
+        },
+        {
+          "label": "respons kosong yang tidak bisa dialamatkan ke emiten mana pun",
+          "nilai": 3,
+          "satuan": "berkas"
+        }
+      ],
+      "fakta_terkait": [],
+      "rujukan": [
+        "ULTJ-filings.json",
+        "COCO-filings-sebelum.json",
+        "MERK-filings.json",
+        "dada-news-2025.json"
+      ]
+    },
+    {
+      "temuan_id": "R22-sabanaprawirawidjaja",
+      "aturan": "R22",
+      "keparahan": "peringatan",
+      "ringkasan": "Satu pemegang saham ditulis dengan 2 ejaan berbeda: \"Sabana Prawira Widjaja\", \"Sabana Prawirawidjaja\". Tanpa disatukan, rantainya terbaca sebagai 2 pemegang yang berbeda.",
+      "angka": [
+        {
+          "label": "ejaan berbeda",
+          "nilai": 2,
+          "satuan": "ejaan"
+        }
+      ],
+      "fakta_terkait": [],
+      "rujukan": [
+        "sumber nama: laporan",
+        "sumber nama: potret kepemilikan"
+      ]
+    },
+    {
+      "temuan_id": "R22-suhendraprawirawidjaja",
+      "aturan": "R22",
+      "keparahan": "peringatan",
+      "ringkasan": "Satu pemegang saham ditulis dengan 2 ejaan berbeda: \"Suhendra Prawira Widjaja\", \"Suhendra Prawirawidjaja\". Tanpa disatukan, rantainya terbaca sebagai 2 pemegang yang berbeda.",
+      "angka": [
+        {
+          "label": "ejaan berbeda",
+          "nilai": 2,
+          "satuan": "ejaan"
+        }
+      ],
+      "fakta_terkait": [],
+      "rujukan": [
+        "sumber nama: laporan",
+        "sumber nama: potret kepemilikan"
+      ]
+    },
+    {
+      "temuan_id": "R20-ULTJ",
+      "aturan": "R20",
+      "keparahan": "peringatan",
+      "ringkasan": "Laba per lembar ULTJ tidak dihitung atas jumlah saham yang sama tiap tahun. Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — memberi 10.398.175.200 lembar untuk tahun buku 2025 dan 11.553.750.000 lembar untuk tahun buku 2020, selisih 11,11%. Dua angka laba per lembar dari tahun yang berbeda karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari jumlah sahamnya, bukan dari labanya.",
+      "angka": [
+        {
+          "label": "basis saham paling sedikit",
+          "nilai": 10398175200,
+          "satuan": "lembar"
+        },
+        {
+          "label": "basis saham paling banyak",
+          "nilai": 11553750000,
+          "satuan": "lembar"
+        },
+        {
+          "label": "selisih",
+          "nilai": 11.11,
+          "satuan": "persen"
+        }
+      ],
+      "fakta_terkait": [],
+      "rujukan": [
+        "tahun buku 2020: 11.553.750.000 lembar",
+        "tahun buku 2021: 11.553.503.184 lembar",
+        "tahun buku 2022: 11.553.220.338 lembar",
+        "tahun buku 2023: 11.553.528.000 lembar",
+        "tahun buku 2024: 11.553.528.000 lembar",
+        "tahun buku 2025: 10.398.175.200 lembar"
+      ]
+    },
+    {
+      "temuan_id": "R32-ULTJ-2025",
+      "aturan": "R32",
+      "keparahan": "peringatan",
+      "ringkasan": "Jumlah saham ULTJ menjadi 0,9 kali lipat antara tahun buku 2024 dan 2025 — dari 11.553.528.000 lembar menjadi 10.398.175.200 lembar. Tidak ada aksi korporasi tercatat sepanjang tahun buku itu. Penyebabnya tidak diketahui.",
+      "angka": [
+        {
+          "label": "lembar tahun buku 2024",
+          "nilai": 11553528000,
+          "satuan": "lembar"
+        },
+        {
+          "label": "lembar tahun buku 2025",
+          "nilai": 10398175200,
+          "satuan": "lembar"
+        },
+        {
+          "label": "kali lipat",
+          "nilai": 0.9,
+          "satuan": "kali"
+        }
+      ],
+      "fakta_terkait": [],
+      "rujukan": []
+    },
+    {
+      "temuan_id": "R17B-agregat-ULTJ|2026-01-13T15:56:50|LK-13012026-5201-00.pdf-0.pdf",
+      "aturan": "R17B",
+      "keparahan": "catatan",
+      "ringkasan": "Laporan 2026-01-13T15:56:50 punya 2 butir transaksi tanpa harga. Medan harga gabungan laporan ini (Rp910,143) adalah rata-rata tertimbang yang menghitung butir tanpa harga sebagai Rp0, jadi ia lebih rendah daripada harga transaksi yang sebenarnya dan tidak boleh dipakai sebagai harga.",
+      "angka": [
+        {
+          "label": "butir tanpa harga",
+          "nilai": 2,
+          "satuan": "butir"
+        },
+        {
+          "label": "medan harga gabungan laporan",
+          "nilai": 910.143,
+          "satuan": "rupiah per lembar"
+        }
+      ],
+      "fakta_terkait": [],
+      "rujukan": [
+        "2026-01-13T15:56:50 · LK-13012026-5201-00.pdf-0.pdf"
+      ]
+    },
+    {
+      "temuan_id": "R34-ULTJ",
+      "aturan": "R34",
+      "keparahan": "catatan",
+      "ringkasan": "7 dari 8 aksi korporasi ULTJ tidak punya harga harian di kedua sisinya, jadi tidak ada satu pun pemeriksaan harga yang bisa dijalankan atasnya, antara lain: pemecahan saham 2017-08-10 (1 lembar menjadi 4), dividen tunai 2020-09-03 (Rp12 per lembar), dividen tunai 2021-09-01 (Rp85 per lembar). Ini daftar pekerjaan penarikan data, bukan tanda bahwa ada yang salah.",
+      "angka": [
+        {
+          "label": "aksi tanpa harga di kedua sisi",
+          "nilai": 7,
+          "satuan": "aksi"
+        },
+        {
+          "label": "aksi korporasi seluruhnya",
+          "nilai": 8,
+          "satuan": "aksi"
+        }
+      ],
+      "fakta_terkait": [],
+      "rujukan": [
+        "pemecahan saham 2017-08-10",
+        "dividen tunai 2020-09-03",
+        "dividen tunai 2021-09-01",
+        "dividen tunai 2022-08-04",
+        "dividen tunai 2023-07-03",
+        "dividen tunai 2024-06-28",
+        "dividen tunai 2025-05-15"
+      ]
+    }
+  ],
+  "pemeriksaan": [
+    {
+      "aturan": "R25",
+      "judul": "Kelengkapan halaman laporan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 1
+    },
+    {
+      "aturan": "R12",
+      "judul": "Tanggal di nama berkas laporan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R22",
+      "judul": "Ejaan nama pemegang saham",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 2
+    },
+    {
+      "aturan": "R20",
+      "judul": "Basis saham di laba per lembar",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 1
+    },
+    {
+      "aturan": "R32",
+      "judul": "Perubahan jumlah saham dijelaskan aksi korporasi",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 1
+    },
+    {
+      "aturan": "R21",
+      "judul": "Jumlah saham beda antar sumber",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R33",
+      "judul": "Kestabilan jumlah saham tersirat",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R15",
+      "judul": "Aritmetika per laporan, termasuk transaksi jenis lain",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R1",
+      "judul": "Aritmetika per laporan",
+      "dijalankan": false,
+      "alasan_lewat": "Digantikan R15, yang memeriksa hal yang sama dan juga menangani transaction_type \"others\". Menjalankan keduanya akan melahirkan dua temuan untuk satu cacat data.",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R11a",
+      "judul": "Penyebut dua sisi satu laporan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R11b",
+      "judul": "Satu penyebut untuk seluruh rantai",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R7",
+      "judul": "Persen dihitung ulang terhadap saham beredar pada tanggal laporan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R14",
+      "judul": "Rantai kepemilikan putus",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R16",
+      "judul": "Jam terbit laporan terhadap urutan rantai",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R2",
+      "judul": "Kontinuitas rantai",
+      "dijalankan": false,
+      "alasan_lewat": "Digantikan R14, yang memeriksa hal yang sama tetapi mengurutkan rantai dengan tanggal nama berkas (R12) dan menyatukan ejaan nama pemegang (R22).",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R13",
+      "judul": "Lembar dilaporkan melebihi saham beredar",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R3",
+      "judul": "Laporan ganda",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R4",
+      "judul": "Tanggal ketersediaan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R5",
+      "judul": "Rekonsiliasi dengan potret kepemilikan",
+      "dijalankan": false,
+      "alasan_lewat": "Tidak ada sumber kedua (potret kepemilikan atau saldo awal laporan berikutnya) untuk dibandingkan.",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R8",
+      "judul": "Tanda repo",
+      "dijalankan": false,
+      "alasan_lewat": "Kolom repurchase agreement tidak ada di data API dan belum ada PDF laporan yang diurai, sehingga tanda repo tidak bisa diperiksa.",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R9",
+      "judul": "Field terstruktur vs teks",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R17B",
+      "judul": "Harga laporan terhadap rentang harga hari transaksinya",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 1
+    },
+    {
+      "aturan": "R6",
+      "judul": "Subjek laporan dan rentang harga",
+      "dijalankan": false,
+      "alasan_lewat": "Pemeriksaan rentang harganya digantikan R17B, yang membandingkan tiap butir transaksi dengan rentang harga tanggalnya sendiri. Pemeriksaan simbolnya tidak berarti di gudang ini: pemuat mengelompokkan laporan menurut simbol di dalam barisnya sendiri, jadi ia selalu hijau tanpa memeriksa apa pun.",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R18a",
+      "judul": "Hari bervolume nol tanpa baris suspensi",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R10",
+      "judul": "Hari tanpa volume",
+      "dijalankan": false,
+      "alasan_lewat": "Digantikan R18a, yang memeriksa hal yang sama tetapi menjawab TIDAK_LENGKAP alih-alih KONFLIK: daftar suspensi hanya mencatat hari mulai berhenti, bukan tiap harinya.",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R19a",
+      "judul": "Harga datar pada hari tanpa transaksi",
+      "dijalankan": false,
+      "alasan_lewat": "Tidak ada hari yang harga buka, tertinggi, terendah, dan tutupnya sama.",
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R19b",
+      "judul": "Runtun hari datar",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R28",
+      "judul": "Label deret harga di sekitar aksi korporasi",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R35",
+      "judul": "Harga ekstrem ringkasan terjangkau deret harian",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R23",
+      "judul": "Laba di keputusan RUPS versus laporan keuangan",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R31",
+      "judul": "Dividen di keputusan RUPS versus medan dividend",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R26",
+      "judul": "Pembagian laba terhadap laba tahun buku",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R27",
+      "judul": "Medan rasio siap pakai",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R29",
+      "judul": "Gerakan harga di tanggal ex dividen",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 0
+    },
+    {
+      "aturan": "R34",
+      "judul": "Aksi korporasi dengan harga di kedua sisinya",
+      "dijalankan": true,
+      "alasan_lewat": null,
+      "jumlah_temuan": 1
+    }
+  ],
+  "kartu_konsep": [
+    {
+      "kode": "B1",
+      "judul": "Dividen dan tanggal cum/ex"
+    },
+    {
+      "kode": "C1",
+      "judul": "Pengendali"
+    },
+    {
+      "kode": "C3",
+      "judul": "Tanggal transaksi dan tanggal laporan"
+    }
+  ],
+  "disclaimer": [
+    "Data di halaman ini menggambarkan keadaan pada 4 Mei 2026 dan bukan kondisi perusahaan sekarang.",
+    "Produk ini tidak menyarankan membeli atau menjual efek apa pun.",
+    "Setiap angka di halaman ini bisa ditelusuri ke sumbernya."
+  ]
+}

@@ -112,6 +112,19 @@ describe('pustakaGudang — dividen, RUPS, suspensi', () => {
     expect(ambilFakta(pustaka(), 'div-2026-04-10-bayar').tersedia_sejak).toBe('2026-04-10');
   });
 
+  it('daftar dividennya sendiri menjadi satu fakta bersumber API, bukan turunan', () => {
+    const fakta = ambilFakta(pustaka(), 'dividen-tercatat');
+    // Yang dikatakannya adalah isi satu medan respons, bukan hitungan kami
+    // atasnya; bedanya terbaca pemain sebagai garis kepala lembar yang utuh.
+    expect(fakta.sumber.jenis).toBe('api');
+    expect(fakta.nilai).toBe(1);
+    expect(fakta.tersedia_sejak).toBe('2026-04-10');
+  });
+
+  it('daftar dividen tidak mengaku habis — daftar aksi korporasi tidak bisa dibuktikan habis', () => {
+    expect(ambilFakta(pustaka(), 'dividen-tercatat').klaim).toContain('tidak bisa dibuktikan habis');
+  });
+
   it('imbal hasil tidak pernah menjadi fakta — ia null untuk sebagian dividen', () => {
     expect(pustaka().some((f) => f.fact_id.includes('imbal'))).toBe(false);
   });
