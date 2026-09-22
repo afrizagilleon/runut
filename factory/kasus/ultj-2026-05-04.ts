@@ -164,8 +164,7 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
       kepala: 'Pengumuman dividen · ex 4 Mei 2026',
       isi:
         `Perusahaan U membagikan dividen tunai [[${DIV_T}|Rp130 per lembar]]. ` +
-        'Hari ini tanggal ex-nya: pembeli yang baru masuk hari ini tidak lagi kebagian. ' +
-        `Uangnya dibayarkan [[${DIV_BAYAR}|22 Mei 2026]].`,
+        `Tanggal ex-nya hari ini; uangnya dibayarkan [[${DIV_BAYAR}|22 Mei 2026]].`,
     },
     [BEDA]: {
       kepala: 'Dihitung dari data harga',
@@ -197,8 +196,9 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
       isi:
         `Pemilik terbesar Perusahaan U melaporkan [[${BESAR}-laporan|dua pembelian]], terbit ` +
         `[[${LAPOR_BESAR_1}|6]] dan [[${LAPOR_BESAR_2}|7 Januari 2026]]: ` +
-        `[[${LAPOR_BESAR_1}|700.000]] lalu [[${LAPOR_BESAR_2}|300.000 lembar]]. Porsinya ` +
-        `bergerak dari [[${BESAR}-persen-awal|53,16%]] ke [[${BESAR}-persen-akhir|53,17%]].`,
+        `[[${LAPOR_BESAR_1}|700.000]] lalu [[${LAPOR_BESAR_2}|300.000 lembar]]. Porsinya hanya ` +
+        `naik sehelai — dari [[${BESAR}-persen-awal|53,16%]] ke ` +
+        `[[${BESAR}-persen-akhir|53,17%]] — tapi itu [[${BESAR}|1 juta lembar]].`,
     },
     [LAPOR_LAIN_1]: {
       kepala: 'Laporan orang dalam lain · Jan',
@@ -225,7 +225,10 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
       istilah: [
         {
           kata: 'Tanggal ex',
-          arti: 'Mulai tanggal ini pembeli baru tidak lagi kebagian dividen yang sudah diumumkan; yang sudah pegang sebelumnya tetap kebagian.',
+          arti:
+            'Mulai tanggal ini pembeli baru tidak lagi kebagian dividen yang sudah diumumkan; ' +
+            'yang sudah pegang sebelumnya tetap kebagian. Uang sebesar dividen itu keluar dari ' +
+            'kas perusahaan pada rangkaian tanggal ini, jadi harga per lembarnya menyesuaikan.',
         },
         {
           kata: 'Dividen tunai',
@@ -315,8 +318,8 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
         nama: 'Rio',
         jam: '18.26',
         isi:
-          'Jangan kegeeran dulu. Gue baca laporan Januari: yang nambah bukan cuma orang dalam ' +
-          'berporsi kecil — pemilik terbesarnya yang 53 persen itu juga ikut beli.',
+          'Jangan kegeeran dulu. Gue baca laporan Januari: pemilik terbesarnya yang 53 persen itu ' +
+          'ikut beli juga, bukan cuma orang dalam yang porsinya kecil.',
       },
       tanya: 'Omongan Rio cocok dengan dokumennya?',
       petunjuk: null,
