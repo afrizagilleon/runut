@@ -132,6 +132,34 @@ describe('R20 — basis saham di laba per lembar', () => {
     expect(h.alasan_lewat).toContain('Kurang dari dua tahun buku');
   });
 
+  it('memakai laba dibagi laba per lembar, bukan jumlah saham yang diterbitkan', () => {
+    // Pola ARNA: jumlah saham yang diterbitkan turun 1,7% dari 2022 ke 2025
+    // (pembelian kembali saham), sementara basis laba per lembar tetap
+    // 7.341.430.976. R20 menanyakan basisnya, bukan jumlah yang diterbitkan —
+    // kalau tertukar, ARNA merah tanpa sebab.
+    const baris = [
+      [2022, 7_341_430_976, 7_270_833_619],
+      [2023, 7_341_430_976, 7_265_340_760],
+      [2025, 7_341_430_976, 7_160_306_042],
+    ] as const;
+    const h = r20BasisLabaPerLembar(
+      ktx({
+        simbol: 'ARNA',
+        keuangan_tahunan: baris.map(([t, basis, diterbitkan]) => ({
+          tahun: t,
+          laba: basis,
+          pendapatan: null,
+          ekuitas: null,
+          aset: null,
+          laba_kotor: null,
+          lembar: diterbitkan,
+        })),
+        eps_tahunan: baris.map(([t]) => ({ tahun: t, eps: 1 })),
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0 });
+  });
+
   it('membuang tahun yang labanya nol, bukan menghitungnya sebagai basis nol', () => {
     const kosong = ktx({
       keuangan_tahunan: [
