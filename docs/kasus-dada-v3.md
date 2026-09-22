@@ -20,11 +20,19 @@ Lahir dari uji pemilik di ponsel (21 Sep 2026): layar v2 "ramai, masih terasa AI
 Halaman kalender besar (`OKTOBER 2025` / `8` / `RABU`), lalu:
 
 - Judul: **Kita mundur ke Rabu, 8 Oktober 2025.**
-- Satu kalimat: *Grup obrolanmu lagi ramai soal satu saham yang harganya melonjak. Cek omongan mereka ke dokumen resminya.*
+- Satu kalimat: *Teman-temanmu di grup lagi ngomongin satu saham yang harganya melonjak. Cek omongan mereka ke dokumen resminya.*
 - Tombol: **Mulai kasus**
+- Baris meta di bawah tombol: *3 soal · sekitar 5 menit · tanpa akun, tanpa skor*
 - Kaki halaman: tiga kalimat tetap.
 
 Tiga baris aturan main dari v2 dihapus.
+
+Kalimat dan baris meta itu diputuskan M3.5 sesudah uji duduk 22 Sep: ditanya
+"tadi aku minta kamu ngapain?", penguji menjawab *"cari tahu orang ngerti saham
+atau enggak"* — "grup obrolanmu" terbaca sebagai kata benda tentang aplikasi,
+bukan sebagai orang. Alasan berhenti yang diucapkan: *"ga tau berapa soalnya;
+lebih suka soal dikit biar fokus, kalau banyak males"*. Jumlah soal di baris meta
+dibaca dari data (`kasus.soal.length`), menitnya dari `kasus.pembuka.menit`.
 
 ## Soal 1 — Bayu, 19.38
 

@@ -127,6 +127,10 @@ dilihat browser tanpa membuka browser.
 | Bidang sentuh terlalu pendek | `tata-letak.spec.ts` E-12e | `gaya.css`: `.lembar-kaki` setinggi 20 px |
 | Teks redup tidak terbaca | `tata-letak.spec.ts` E-12f | `gaya.css`: `--tinta-redup` dipucatkan |
 | Cincin fokus hilang | `papan-ketik.spec.ts` E-13 | `gaya.css`: semua `outline: 2px solid var(--stempel)` → `none` |
+| Layar pertama tidak mengatakan berapa soal ("ga tau berapa soalnya") | `permainan.spec.ts` E-10 | `Aplikasi.tsx`: baris `data-uid="meta-pembuka"` dihapus · `pembuka.ts`: jumlah soal ditulis mati `'3 soal'` (tes unit) |
+| Pemain tidak tahu chat itu tanggal berapa | `balon-tanggal.spec.ts` E-14 | `Aplikasi.tsx`: baris `.pesan-tanggal` dihapus · `aria-label` balon dikembalikan ke nama + jam saja · `tanggal.ts`: `BULAN_SINGKAT` diambil dari `BULAN_PENDEK` yang berhuruf kapital (tes unit) |
+| Sesudah mengunci, cap dan kartu penentu ada di bawah lipatan dan pemain langsung "next" | `gulir-ke-cap.spec.ts` E-15 | `Aplikasi.tsx`: pemanggilan `scrollIntoView` di `useGulirKeCap` dihapus |
+| Gulir halus ikut pindah layar: layar berikutnya lahir sudah tergulir | `gulir-ke-cap.spec.ts` E-15b | `Aplikasi.tsx`: pengulangan `window.scrollTo(0, 0)` di `requestAnimationFrame` dihapus |
 
 ## Menambah tes ketika cacat baru ditemukan
 
@@ -187,6 +191,12 @@ dilihat browser tanpa membuka browser.
   viewport yang sama, sehingga subyek dan pembandingnya ada di satu tes, dan
   merah kalau tidak ada satu pun layar yang muat — hijau atas nol subyek adalah
   hiasan, bukan penjaga.
+- **Gulir halus yang belum selesai adalah keadaan, bukan kedipan.** E-15b lahir
+  karena menekan "Lanjut" *selagi* layar masih meluncur membawa sisa luncuran
+  itu ke layar berikutnya. Sisanya kecil di mesin yang lengang (4–69 px
+  terukur) dan besar di bawah beban — satu putaran penuh membuka layar
+  pembukaan tepat di ringkasannya. Tes yang menunggu gulirnya selesai lebih
+  dulu tidak akan pernah melihatnya; E-15b sengaja **tidak** menunggu.
 - **Tangkapan layar diambil saat halaman diam.** `simpanLayar()` menunggu
   gulirnya berhenti dan memeriksa `scrollY` tidak berubah selama gambarnya
   diambil. Gambar bahan review yang menyesatkan membuat orang mengejar cacat

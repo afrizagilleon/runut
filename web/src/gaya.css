@@ -613,23 +613,14 @@ summary:focus-visible,
   border-radius: 4px 16px 16px 16px;
 }
 
-.pesan-jam {
-  display: block;
-  text-align: right;
-  font-family: var(--baca);
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.2;
-  color: var(--tinta-redup);
-  margin-top: 2px;
-}
-
 /*
- * Tanggal balon (M3.5 D-2). Bentuknya sama persis dengan `.pesan-jam` yang
- * sudah ada — satu baris 12 px, peran *meta* — hanya tempatnya yang berbeda:
- * di puncak balon, tepat di bawah nama pengirim, seperti aplikasi pesan.
- * Jamnya di kanan bawah tetap.
+ * Dua baris 12 px di dalam balon: tanggal di puncaknya (M3.5 D-2) dan jam di
+ * kanan bawah. Rupanya ditulis **sekali**, di sini — dua baris yang berjanji
+ * sama tetapi punya angka sendiri-sendiri adalah dua baris yang akan
+ * berselisih diam-diam. Yang berbeda hanya tempatnya, dan itu saja yang ditulis
+ * terpisah di bawah.
  */
+.pesan-jam,
 .pesan-tanggal {
   display: block;
   font-family: var(--baca);
@@ -637,6 +628,18 @@ summary:focus-visible,
   font-weight: 400;
   line-height: 1.2;
   color: var(--tinta-redup);
+}
+
+.pesan-jam {
+  text-align: right;
+  margin-top: 2px;
+}
+
+/*
+ * Tanggal balon: tepat di bawah nama pengirim, seperti aplikasi pesan. Teman
+ * pemilik membaca ketiga pesan tanpa pernah tahu kapan pesan itu dikirim.
+ */
+.pesan-tanggal {
   margin: 0 0 6px;
 }
 

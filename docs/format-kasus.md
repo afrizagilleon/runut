@@ -22,7 +22,7 @@ soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
 | `emiten` | Simbol, nama resmi, papan pencatatan, dan sektor emiten yang sebenarnya. |
 | `nama_samaran` | Nama yang dipakai di batang soal supaya jawabannya tidak bisa dicari di mesin pencari. |
 | `tanggal_t` | Tanggal beku kasus; fakta yang baru tersedia sesudahnya tidak boleh terlihat pemain. |
-| `pembuka` | Layar pertama: **satu** `kalimat`, paling panjang 160 karakter. Tiga baris aturan main versi 2 dihapus di versi 3 — pemilik tidak membacanya; cara mainnya sekarang `petunjuk` di soal pertama. |
+| `pembuka` | Layar pertama: **satu** `kalimat`, paling panjang 160 karakter, ditambah `menit` yang opsional. Tiga baris aturan main versi 2 dihapus di versi 3 — pemilik tidak membacanya; cara mainnya sekarang `petunjuk` di soal pertama. |
 | `fakta` | Seluruh fakta berlabel, termasuk yang hanya muncul di pembukaan. |
 | `fakta_terlihat` | Daftar `fact_id` yang menjadi kartu. **Harus sama persis dengan gabungan seluruh `kartu` di semua soal.** |
 | `soal` | Tiga soal beserta pesan teman, kartu, istilah, pilihan, kunci, dan penjelasan. |
@@ -31,6 +31,24 @@ soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
 | `pemeriksaan` | Catatan kesepuluh aturan: mana yang jalan, mana yang dilewati, dan alasannya. Aturan yang hilang atau dilewati tanpa alasan membuat validator menolak kasus. |
 | `kartu_konsep` | Kartu konsep yang dipakai kasus ini. |
 | `disclaimer` | Tiga kalimat tetap yang selalu terlihat di halaman kasus. |
+
+## Layar pertama (`pembuka`)
+
+| field | arti |
+|---|---|
+| `kalimat` | Satu kalimat, paling panjang 160 karakter, tanpa angka telanjang (`ANGKA_TANPA_FACT_ID`) dan tanpa tautan ke fakta yang belum tersedia pada `tanggal_t`. |
+| `menit` | **Opsional.** Kira-kira berapa menit kasus ini dimainkan; bilangan bulat 1–30 (`PEMBUKA_MENIT`). |
+
+`menit` dipakai satu tempat saja: baris meta di bawah tombol "Mulai kasus",
+`3 soal · sekitar 5 menit · tanpa akun, tanpa skor`. Jumlah soalnya dibaca dari
+`soal.length`, jadi ia tidak pernah bisa berbohong; kasus yang tidak menulis
+`menit` kehilangan potongan tengahnya, bukan menebak angkanya.
+
+Kenapa medan ini ada: di uji duduk 22 Sep tidak satu pun dari tiga penguji bisa
+mengatakan aplikasi ini apa, dan alasan berhenti yang diucapkan adalah *"ga tau
+berapa soalnya; lebih suka soal dikit biar fokus, kalau banyak males"*. Angkanya
+sendiri datang dari data, bukan dari selera: median durasi penyelesai alpha
+±5–10 menit, jadi DADA menulis `5`.
 
 ## Fakta
 
@@ -189,6 +207,9 @@ Baru di versi 3, tentang pesan teman dan judul pertanyaan:
 `OPSI_DITEBALKAN` · `UCAPAN_BERTAUT` · `TANYA_KOSONG` · `TANYA_PANJANG` ·
 `TANYA_TANPA_NAMA` · `PETUNJUK_BUKAN_SOAL_PERTAMA` · `PETUNJUK_HILANG` ·
 `PEMBUKA_KOSONG` · `PEMBUKA_PANJANG`
+
+Baru di M3.5, tentang lama main yang dijanjikan layar pertama:
+`PEMBUKA_MENIT`
 
 Dihapus di versi 3 bersama medannya: `PEMBUKA_ATURAN` ("layar pertama harus
 tepat tiga baris aturan").
