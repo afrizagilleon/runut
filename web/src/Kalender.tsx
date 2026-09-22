@@ -27,12 +27,32 @@ export function HalamanKalender({ hari }: { hari: Penanda }): JSX.Element {
   );
 }
 
-export function KepingKalender({ hari }: { hari: Penanda }): JSX.Element {
+/**
+ * Keping yang menempel di layar soal.
+ *
+ * `berdenyut` (M3.6 D-3): titik pemisahnya berdenyut satu detik ketika keping
+ * ini pertama tampil, yaitu di soal pertama. Teman FEB pemilik tidak pernah
+ * melihat keping ini sama sekali — ia berpatokan pada tiga bulatan kemajuan —
+ * dan yang diam memang tidak menarik mata. Sesudah satu detik ia diam untuk
+ * seterusnya; `prefers-reduced-motion` mematikannya sama sekali.
+ *
+ * Yang bergerak sengaja hanya titiknya: menggerakkan tanggalnya akan membuat
+ * keping ini terbaca sebagai pemberitahuan, dan ia bukan itu.
+ */
+export function KepingKalender({
+  hari,
+  berdenyut = false,
+}: {
+  hari: Penanda;
+  berdenyut?: boolean;
+}): JSX.Element {
   return (
     <p className="kalender-keping">
       <span className="kalender-label">Hari ini</span>
       <span className="kalender-tanggal">
-        {hari.hariBesar} · {hari.pendek}
+        {hari.hariBesar}{' '}
+        <span className={berdenyut ? 'keping-titik keping-titik-denyut' : 'keping-titik'}>·</span>{' '}
+        {hari.pendek}
       </span>
     </p>
   );
@@ -41,13 +61,15 @@ export function KepingKalender({ hari }: { hari: Penanda }): JSX.Element {
 /**
  * Halaman yang tersobek dan jatuh **keluar dari tempatnya**.
  *
- * Gerak satu-satunya yang diatur di seluruh aplikasi. Tiga hal yang membuat
+ * Gerak pertama dari dua yang diatur di seluruh aplikasi (yang kedua: denyut
+ * titik keping di soal pertama, M3.6 D-3). Tiga hal yang membuat
  * versi pertama meniadakan dirinya sendiri, dan sudah diperbaiki: ruangnya
  * `overflow: hidden` sehingga halaman terpotong begitu mulai jatuh; ruang itu
  * menyusut bersamaan dengan jatuhnya, bukan sesudahnya; dan sobekan dimulai
  * tepat ketika layar melompat ke atas. Sekarang: `overflow: visible`, mulai
- * 250 ms sesudah layar tampil, dan ruangnya baru menutup 200 ms sesudah
- * sobekan dimulai.
+ * 500 ms sesudah layar tampil (M3.6 D-4: pemilik menilai sobekannya "kurang
+ * terasa" pada 250 ms — mata belum sampai ke kalender), dan ruangnya baru
+ * menutup 200 ms sesudah sobekan dimulai.
  *
  * Dengan `prefers-reduced-motion`, sobekan diganti pergantian langsung.
  */

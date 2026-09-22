@@ -415,7 +415,12 @@ export function Aplikasi(): JSX.Element {
         <header className="penanda" role="banner" data-uid="keping">
           {/* Kolomnya dibungkus, bukan ditempel ke tiap anak: lihat .penanda-kolom (A4-T2). */}
           <div className="penanda-kolom">
-            <KepingKalender hari={hari} />
+            {/*
+              Denyut hanya di soal pertama (M3.6 D-3): sekali menarik mata ke
+              tanggalnya sudah cukup, dan gerak yang berulang tiap layar
+              berubah dari penunjuk menjadi gangguan.
+            */}
+            <KepingKalender hari={hari} berdenyut={layar.nomor === 0} />
             <TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />
           </div>
         </header>
@@ -595,6 +600,49 @@ export function angkaKata(n: number): string {
 /** Gerak halus hanya kalau pemain tidak memintanya dihentikan. */
 function gerakHalus(): ScrollBehavior {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+/**
+ * Gulir ke sebuah sasaran, lalu **ulangi** sesudah tata letak berhenti bergerak
+ * (F-M36-1).
+ *
+ * Ditemukan e2e ketika D-4 memundurkan sobekan kalender 250 ms: E-10 di proyek
+ * `lebar` merah tiga dari tiga putaran, dan hijau lagi begitu tundanya
+ * dikembalikan. Sebabnya bukan tundanya melainkan yang sudah ada sejak dulu —
+ * ruang sobekan menyusut 176 px menjadi 0 (`tutup-ruang`), dan **gulir halus
+ * menghitung tujuannya satu kali di awal**. Pemain yang menekan "Langsung ke
+ * ringkasan ↓" selagi kalender masih menutup ruangnya mendarat 176 px meleset:
+ * judul ringkasan berhenti di luar layar, rasio 0 diukur selama 15 detik penuh.
+ * Jendela itu dulu 0,85 detik dan sekarang 1,10 detik — jadi D-4 melebarkan
+ * cacatnya, bukan melahirkannya.
+ *
+ * Guliran pertama tetap berangkat segera supaya ketukan terasa langsung;
+ * guliran kedua membetulkan pendaratannya begitu animasinya selesai. Di layar
+ * ini satu-satunya animasi adalah sobekan itu, dan dengan
+ * `prefers-reduced-motion` tidak ada animasi sama sekali sehingga tidak ada
+ * guliran kedua.
+ */
+function gulirKeSasaran(id: string): void {
+  const sasaran = document.getElementById(id);
+  if (sasaran === null) return;
+  const pilihan: ScrollIntoViewOptions = { behavior: gerakHalus(), block: 'start' };
+  sasaran.scrollIntoView(pilihan);
+
+  const bergerak = document
+    .getAnimations()
+    .filter((gerak) => gerak.playState === 'running' || gerak.playState === 'paused');
+  if (bergerak.length === 0) return;
+  void Promise.all(
+    bergerak.map(async (gerak) => {
+      try {
+        await gerak.finished;
+      } catch {
+        /* dibatalkan: tidak ada tata letak yang masih akan bergeser karenanya */
+      }
+    }),
+  ).then(() => {
+    sasaran.scrollIntoView(pilihan);
+  });
 }
 
 /**
@@ -1267,12 +1315,10 @@ function LayarPembukaan({
           data-uid="loncat"
           onClick={() => {
             kirim({ jenis: 'loncat_ke_ringkasan' });
-            // Gerak halus hanya kalau pemain tidak memintanya dihentikan.
-            const diam = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            document.getElementById('judul-bacaan')?.scrollIntoView({
-              behavior: diam ? 'auto' : 'smooth',
-              block: 'start',
-            });
+            // Gerak halus hanya kalau pemain tidak memintanya dihentikan, dan
+            // pendaratannya dibetulkan sesudah sobekan kalender selesai
+            // menutup ruangnya (F-M36-1).
+            gulirKeSasaran('judul-bacaan');
           }}
         >
           Langsung ke ringkasan ↓

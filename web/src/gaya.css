@@ -6,7 +6,8 @@
  *
  * Dua bahan: lembar dokumen (kertas bersudut 2 px, suara resmi) dan pesan teman
  * (satu-satunya bentuk membulat). Satu tanda tangan: halaman kalender sobek.
- * Satu gerak yang diatur: sobekan.
+ * Dua gerak yang diatur: sobekan kalender, dan denyut titik keping di soal
+ * pertama (M3.6 D-3, penyimpangan sadar dari docs/desain.md baris 65).
  *
  * Skala huruf v3: 12 · 14 · 16 · 17 · 20 · 28 · 72, ditambah satu pengecualian
  * bernama `.opsi-huruf` 13 px yang datang dari patokan. Empat peran teks
@@ -14,7 +15,8 @@
  * tulisan kapital: keping kalender dan cap umpan balik.
  *
  * Sengaja tidak ada: gradasi, bayangan, efek kaca, emoji sebagai ikon, ilustrasi
- * stok, grafik harga, angka skor, animasi selain sobekan dan transisi keadaan.
+ * stok, grafik harga, angka skor, animasi selain sobekan, denyut titik keping,
+ * dan transisi keadaan.
  */
 
 :root {
@@ -320,6 +322,40 @@ summary:focus-visible,
   font-weight: 700;
 }
 
+/*
+ * Titik pemisah keping, dan satu-satunya gerak di luar sobekan kalender
+ * (M3.6 D-3).
+ *
+ * `docs/desain.md` baris 65 melarang "animasi selain sobekan kalender dan
+ * transisi 120-160 ms". Ini penyimpangan sadar, dan sebabnya bukan selera:
+ * teman FEB pemilik bermain sampai habis tanpa pernah melihat keping ini — ia
+ * berpatokan pada tiga bulatan kemajuan, dan karena itu tidak pernah tahu
+ * kasusnya bertanggal berapa. Kepingnya sendiri sudah `sticky` di puncak layar;
+ * yang kurang adalah satu isyarat bahwa ia ada. Patokan dan dokumen desainnya
+ * tidak diubah; penyimpangannya dicatat di ledger M3.6 T-03.
+ *
+ * `inline-block` bukan hiasan: `transform` tidak berlaku pada kotak inline.
+ * Tiga detak 333 ms = 999 ms, lalu diam — yang berdenyut selamanya bukan
+ * isyarat, melainkan gangguan.
+ */
+.keping-titik {
+  display: inline-block;
+}
+
+.keping-titik-denyut {
+  animation: denyut 333ms ease-in-out 3 forwards;
+}
+
+@keyframes denyut {
+  from,
+  to {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.6);
+  }
+}
+
 .titik-soal {
   display: flex;
   gap: 6px;
@@ -404,26 +440,33 @@ summary:focus-visible,
   padding: 0 0 12px;
 }
 
-/* Satu-satunya gerak yang diatur di seluruh aplikasi (D-8). */
+/* Gerak pertama dari dua yang diatur di seluruh aplikasi (D-8). */
 /*
  * Sobekan (`docs/desain.md`). Tiga hal yang membuat versi pertama meniadakan
  * dirinya sendiri, semuanya diperbaiki di sini:
  *   1. `overflow: hidden` memotong halaman begitu ia mulai jatuh -> `visible`;
  *   2. ruangnya menyusut BERSAMAAN dengan jatuhnya -> baru menutup 200 ms
  *      sesudah sobekan dimulai;
- *   3. sobekan mulai tepat saat layar melompat ke atas -> ditunda 250 ms.
+ *   3. sobekan mulai tepat saat layar melompat ke atas -> ditunda 250 ms,
+ *      lalu 500 ms sejak M3.6 D-4: pemilik menonton temannya dan menilai
+ *      sobekannya "kurang terasa" -- mata belum sampai ke kalender ketika
+ *      halamannya sudah jatuh. Jeda +0,25 detik, kata pemilik.
+ *
+ * Tunda `tutup-ruang` ikut bergeser 450 -> 700 ms supaya jarak 200 ms itu
+ * tetap: kalau hanya sobekannya yang mundur, ruangnya mulai menyusut sebelum
+ * halamannya bergerak, dan yang terlihat adalah lompatan, bukan sobekan.
  */
 .kalender-sobek {
   display: flex;
   justify-content: center;
   overflow: visible;
   height: 176px;
-  animation: tutup-ruang 400ms ease-in 450ms forwards;
+  animation: tutup-ruang 400ms ease-in 700ms forwards;
 }
 
 .kalender-jatuh {
   margin: 0;
-  animation: sobek 700ms ease-in 250ms forwards;
+  animation: sobek 700ms ease-in 500ms forwards;
   transform-origin: top center;
 }
 
@@ -456,6 +499,11 @@ summary:focus-visible,
   .kalender-jatuh {
     animation: none;
     opacity: 0;
+  }
+
+  /* M3.6 D-3: isyarat yang bergerak diganti tidak bergerak sama sekali. */
+  .keping-titik-denyut {
+    animation: none;
   }
 }
 

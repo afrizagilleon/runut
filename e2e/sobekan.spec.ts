@@ -176,9 +176,16 @@ test('E-05 sobekan kalender benar-benar berjalan dan selesai', async ({ page }) 
    * yang kepanjangan tanpa juga gagal karena mesin yang sibuk, dan asersi yang
    * merah karena dua sebab berbeda tidak memberi tahu yang mana.
    */
+  /*
+   * Batasnya 1.750 ms sejak M3.6 D-4: pemilik meminta jeda sebelum sobekan
+   * bertambah 0,25 detik ("kurang terasa"), jadi `sobek` kini 700 ms sesudah
+   * tunda 500 ms dan `tutup-ruang` 400 ms sesudah tunda 700 ms. Yang terpanjang
+   * dijanjikan 1.200 ms; 1.750 memberi ruang satu langkah lagi tanpa pernah
+   * memaafkan animasi yang menggantung.
+   */
   const terlama = Math.max(...gerak.dijanjikan);
-  expect(terlama, `tiap animasi dijanjikan selesai dalam <= 1,5 detik (terlama ${String(terlama)} ms)`)
-    .toBeLessThanOrEqual(1500);
+  expect(terlama, `tiap animasi dijanjikan selesai dalam <= 1,75 detik (terlama ${String(terlama)} ms)`)
+    .toBeLessThanOrEqual(1750);
   expect(gerak.keadaan.every((k) => k === 'finished'), `playState akhir: ${gerak.keadaan.join(', ')}`).toBe(
     true,
   );
