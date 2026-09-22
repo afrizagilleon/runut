@@ -108,7 +108,7 @@ export function penanda(iso: string): Penanda {
 const BULAN_SINGKAT: readonly string[] = BULAN.map((nama) => nama.slice(0, 3));
 
 /**
- * Tanggal satu balon chat (M3.5 D-2): `Rabu, 8 Okt 2025 · 19.38`.
+ * Tanggal satu balon chat (M3.5 D-2): `Rabu, 8 Okt 2025`.
  *
  * Teman pemilik membaca ketiga pesan tanpa pernah tahu kapan pesan itu dikirim:
  * *"tidak tahu chat-nya di hari sesudah dokumen rilis atau sebelumnya"*. Keping
@@ -116,14 +116,19 @@ const BULAN_SINGKAT: readonly string[] = BULAN.map((nama) => nama.slice(0, 3));
  * berpatokan pada tiga bulatan kemajuan. Maka tanggalnya dibawa balonnya
  * sendiri, seperti aplikasi pesan.
  *
+ * **Tanpa jam** sejak M3.6 D-2 (amandemen A-1 pemilik): jam pesan kembali ke
+ * pojok kanan bawah balon seperti patokan, dan angka yang sama tidak boleh
+ * tertulis dua kali dalam satu balon. Yang dirender berdampingan dengan tanggal
+ * ini sekarang adalah nama pengirimnya.
+ *
  * `pesan` di berkas kasus **tidak** bertambah medan: setiap pesan terjadi pada
  * tanggal beku kasus, dan menyalin tanggal itu ke tiap pesan hanya membuka
  * kemungkinan keduanya berselisih.
  */
-export function tanggalBalon(tanggal_t: string, jam: string): string {
+export function tanggalBalon(tanggal_t: string): string {
   const hari = penanda(tanggal_t);
   const bulan = BULAN_SINGKAT[Number(tanggal_t.slice(5, 7)) - 1] ?? '';
-  return `${hari.hari}, ${hari.angka} ${bulan} ${tanggal_t.slice(0, 4)} · ${jam}`;
+  return `${hari.hari}, ${hari.angka} ${bulan} ${tanggal_t.slice(0, 4)}`;
 }
 
 /**

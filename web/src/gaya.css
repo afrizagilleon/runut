@@ -596,13 +596,17 @@ summary:focus-visible,
   margin: 8px 0 24px;
 }
 
+/*
+ * Nama pengirim, sejak M3.6 D-2 **di dalam** balon dan sebaris dengan tanggal.
+ *
+ * Dulu ia `figcaption` 14 px yang berdiri di atas balon, dan celah antara
+ * keduanya yang membuat pemilik tidak nyaman di ponselnya. Sekarang ia sepotong
+ * teks di dalam baris meta 12 px: ukurannya ikut baris itu, yang tetap miliknya
+ * sendiri hanya warna `--nama` dan tebal 600.
+ */
 .pesan-nama {
-  font-family: var(--baca);
-  font-size: 14px;
   font-weight: 600;
-  line-height: 1.3;
   color: var(--nama);
-  margin: 0 0 4px 12px;
 }
 
 .pesan-balon {
@@ -614,13 +618,14 @@ summary:focus-visible,
 }
 
 /*
- * Dua baris 12 px di dalam balon: tanggal di puncaknya (M3.5 D-2) dan jam di
- * kanan bawah. Rupanya ditulis **sekali**, di sini — dua baris yang berjanji
- * sama tetapi punya angka sendiri-sendiri adalah dua baris yang akan
- * berselisih diam-diam. Yang berbeda hanya tempatnya, dan itu saja yang ditulis
- * terpisah di bawah.
+ * Dua baris 12 px di dalam balon: baris kepala di puncaknya (M3.5 D-2, M3.6
+ * D-2) dan jam di kanan bawah (patokan; dipulihkan M3.6 D-2 amandemen A-1).
+ * Rupanya ditulis **sekali**, di sini — dua baris yang berjanji sama tetapi
+ * punya angka sendiri-sendiri adalah dua baris yang akan berselisih diam-diam.
+ * Yang berbeda hanya tempatnya, dan itu saja yang ditulis terpisah di bawah.
  */
-.pesan-tanggal {
+.pesan-jam,
+.pesan-meta {
   display: block;
   font-family: var(--baca);
   font-size: 12px;
@@ -629,12 +634,17 @@ summary:focus-visible,
   color: var(--tinta-redup);
 }
 
+.pesan-jam {
+  text-align: right;
+  margin-top: 2px;
+}
 
 /*
- * Tanggal balon: tepat di bawah nama pengirim, seperti aplikasi pesan. Teman
- * pemilik membaca ketiga pesan tanpa pernah tahu kapan pesan itu dikirim.
+ * Baris kepala balon: nama pengirim lalu tanggal, satu baris, seperti aplikasi
+ * pesan. Teman pemilik membaca ketiga pesan tanpa pernah tahu kapan pesan itu
+ * dikirim; pemilik sendiri menemukan celah di atas balon terasa tidak nyaman.
  */
-.pesan-tanggal {
+.pesan-meta {
   margin: 0 0 6px;
 }
 

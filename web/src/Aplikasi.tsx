@@ -900,7 +900,7 @@ function LayarSoal({
   const acuanOpsi = usePengamatOpsi(soal.soal_id, kirim);
   const bilah = bilahBawah(s, nomor, kasus.soal.length);
   // D-2: tanggalnya lahir dari fungsi murni, tidak diketik tangan di data.
-  const tanggal = tanggalBalon(kasus.tanggal_t, soal.pesan.jam);
+  const tanggal = tanggalBalon(kasus.tanggal_t);
   const gulirKeCap = useGulirKeCap(soal.soal_id, s.dikunci);
 
   return (
@@ -927,21 +927,34 @@ function LayarSoal({
       <figure
         className="pesan"
         data-uid="pesan"
-        aria-label={`Pesan dari ${soal.pesan.nama}, ${tanggal}`}
+        /*
+         * Nama untuk pembaca layar: tidak berubah sejak M3.5 D-2, kata demi
+         * kata. Jamnya ikut di sini walau tanggal di layar tidak lagi
+         * membawanya — yang membaca dengan telinga tidak melihat pojok kanan
+         * bawah balon.
+         */
+        aria-label={`Pesan dari ${soal.pesan.nama}, ${tanggal} · ${soal.pesan.jam}`}
       >
-        <figcaption className="pesan-nama">{soal.pesan.nama}</figcaption>
         <blockquote className="pesan-balon">
           {/*
-            Tanggal balon (M3.5 D-2), tepat di bawah nama pengirim seperti
-            aplikasi pesan. Teman pemilik membaca ketiga pesan tanpa pernah tahu
-            kapan pesan itu dikirim — ia tidak melihat keping tanggal yang
-            menempel di puncak layar, dan balonnya hanya berbunyi "19.42".
+            Baris kepala balon (M3.5 D-2, dipindahkan ke dalam balon di M3.6
+            D-2): nama pengirim dan tanggal, satu baris, seperti aplikasi pesan.
+
+            Dua temuan berbeda bertemu di baris ini. Yang pertama dari teman
+            pemilik: ia membaca ketiga pesan tanpa pernah tahu kapan pesan itu
+            dikirim — ia tidak melihat keping tanggal yang menempel di puncak
+            layar, dan balonnya hanya berbunyi "19.42". Yang kedua dari pemilik
+            sendiri, 22 Sep: nama yang berdiri di ATAS balon meninggalkan celah
+            kosong yang terasa tidak nyaman. Jadi namanya masuk, dan tidak ada
+            lagi elemen di atas balon.
 
             Ia **menyimpang dari patokan** `docs/contoh/layar-soal.html`, yang
             tidak memuat baris ini; patokannya sendiri tidak diubah. Alasannya
-            temuan pemilik 22 Sep, dan ukurannya ditempel di ledger.
+            temuan pemilik, dan ukurannya ditempel di ledger.
           */}
-          <p className="pesan-tanggal">{tanggal}</p>
+          <p className="pesan-meta">
+            <span className="pesan-nama">{soal.pesan.nama}</span> · {tanggal}
+          </p>
           {/*
             Dirender POLOS, tanpa Teks: angka di dalam ucapan orang adalah
             ucapan, bukan fakta (INV-4). Menautkannya membuat kabar tampak sudah
@@ -950,11 +963,14 @@ function LayarSoal({
           */}
           <p className="isi">{soal.pesan.isi}</p>
           {/*
-            Jamnya sudah ada di baris tanggal di atas (M3.5 D-2). Dulu ia juga
-            ditulis di pojok kanan bawah; sesudah baris tanggal masuk, angka
-            yang sama tampil dua kali dalam satu balon — dan milestone ini
-            berjanji mengurangi kata, bukan menambah. Reviewer, 22 Sep 2026.
+            Jam di pojok kanan bawah, seperti patokan (M3.6 D-2 amandemen A-1:
+            "jam sudah tepat di kanan bawah", pemilik). R-1 sempat
+            menghapusnya karena angka yang sama tampil dua kali dalam satu
+            balon; yang dibuang sekarang adalah salinannya di baris kepala,
+            bukan yang di pojok. Jadi jamnya tetap tertulis **sekali**, di
+            tempat yang sudah disetujui mata pemilik.
           */}
+          <time className="pesan-jam">{soal.pesan.jam}</time>
         </blockquote>
       </figure>
 

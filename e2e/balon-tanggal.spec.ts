@@ -102,3 +102,155 @@ test('E-14 tiap balon chat memuat tanggal T dan jam pesannya', async ({ page }) 
   // dan penyimpangan yang tidak diukur tidak bisa ditimbang siapa pun.
   console.log(`D-2 tinggi balon (${test.info().project.name}):\n  ${tinggi.join('\n  ')}`);
 });
+
+/**
+ * E-14b — nama pengirim masuk KE DALAM balon, satu baris dengan tanggal; jamnya
+ * tetap di pojok kanan bawah (M3.6 D-2 beserta amandemen A-1 pemilik).
+ *
+ * Temuan kedua pemilik di ponselnya: celah kosong antara nama "Dimas" dan
+ * balonnya terasa tidak nyaman. Namanya karena itu pindah ke dalam balon,
+ * sebaris dengan tanggal — `Dimas · Rabu, 8 Okt 2025` — dan tidak ada lagi
+ * elemen di atas balon. Jamnya kembali ke tempat yang sudah disetujui pemilik
+ * ("jam sudah tepat di kanan bawah"), jadi angka jam tetap tampil **sekali**.
+ *
+ * Ini penyimpangan sadar dari patokan `docs/contoh/layar-soal.html`, yang tidak
+ * diubah; ukurannya dilaporkan, bukan dinilai.
+ */
+test('E-14b nama ada di dalam balon sebaris dengan tanggal, jam sekali di kanan bawah', async ({
+  page,
+}) => {
+  const kasus = bacaKasus();
+  const tanggal = tanggalPendek(kasus.tanggal_t);
+
+  await buka(page, penandaBaru());
+  await mulaiKasus(page);
+
+  const ukuran: string[] = [];
+  for (const [nomor, soal] of kasus.soal.entries()) {
+    await tungguSoal(page, nomor + 1);
+    await tungguGulirBerhenti(page);
+
+    const pesan = page.locator('[data-uid="pesan"]');
+    const balon = pesan.locator('blockquote');
+
+    // Tidak ada lagi apa pun di atas balon: figure hanya berisi balonnya.
+    await expect(
+      pesan.locator('figcaption'),
+      `soal ${String(nomor + 1)}: tidak boleh ada elemen nama di atas balon lagi (D-2)`,
+    ).toHaveCount(0);
+
+    const isiBalon = (await balon.innerText()).replace(/\s+/g, ' ');
+    expect(
+      isiBalon,
+      `soal ${String(nomor + 1)}: nama "${soal.pesan.nama}" harus terbaca DI DALAM balon; ` +
+        `yang ada: ${isiBalon}`,
+    ).toContain(soal.pesan.nama);
+
+    /*
+     * Satu baris, bukan dua: nama dan tanggal diukur berada di kotak baris yang
+     * sama. Dua elemen yang kebetulan bertetangga di DOM masih bisa terpisah
+     * baris; yang ditanya pemilik adalah rupanya.
+     */
+    const sebaris = await balon.evaluate((el) => {
+      const kotakNama = el.querySelector('.pesan-nama');
+      const kotakMeta = el.querySelector('.pesan-meta');
+      const jam = el.querySelector('time.pesan-jam');
+      const badan = el.querySelector('p.isi');
+      if (kotakNama === null || kotakMeta === null || badan === null) {
+        return {
+          adaNama: kotakNama !== null,
+          adaMeta: kotakMeta !== null,
+          adaJam: jam !== null,
+          teksNama: '',
+          teksMeta: '',
+          selisihBaris: -1,
+          jamDiBawahBadan: false,
+          jarakJamKeTepiKanan: -1,
+          tebalNama: '',
+          warnaNama: '',
+          warnaMeta: '',
+        };
+      }
+      const rNama = kotakNama.getBoundingClientRect();
+      const rMeta = kotakMeta.getBoundingClientRect();
+      const rBadan = badan.getBoundingClientRect();
+      const rBalon = el.getBoundingClientRect();
+      const rJam = jam?.getBoundingClientRect() ?? null;
+      const gayaBalon = getComputedStyle(el);
+      return {
+        adaNama: true,
+        adaMeta: true,
+        adaJam: jam !== null,
+        teksNama: kotakNama.textContent ?? '',
+        teksMeta: (kotakMeta.textContent ?? '').replace(/\s+/g, ' ').trim(),
+        // Nama duduk di dalam baris meta yang sama: puncaknya tidak boleh
+        // berbeda lebih dari satu baris 12 px.
+        selisihBaris: Math.abs(rNama.top - rMeta.top),
+        jamDiBawahBadan: rJam !== null && rJam.top >= rBadan.bottom - 1,
+        jarakJamKeTepiKanan:
+          rJam === null
+            ? -1
+            : rBalon.right - Number.parseFloat(gayaBalon.paddingRight) - rJam.right,
+        tebalNama: getComputedStyle(kotakNama).fontWeight,
+        warnaNama: getComputedStyle(kotakNama).color,
+        warnaMeta: getComputedStyle(kotakMeta).color,
+      };
+    });
+
+    expect(sebaris.adaMeta, `soal ${String(nomor + 1)}: balon harus punya baris meta`).toBe(true);
+    expect(sebaris.adaNama, `soal ${String(nomor + 1)}: nama harus ada di dalam balon`).toBe(true);
+    expect(sebaris.teksNama.trim()).toBe(soal.pesan.nama);
+    /*
+     * Urutannya yang diikat, bukan ejaan nama harinya: "Rabu" lahir dari
+     * `penanda()` di produk, dan menuliskannya ulang di sini hanya akan membuat
+     * tes setuju dengan salinannya sendiri. Yang dijaga: nama lebih dulu,
+     * pemisah titik tengah, lalu tanggal yang berakhir pada tanggal pendek
+     * kasus ini.
+     */
+    expect(
+      sebaris.teksMeta,
+      `baris meta soal ${String(nomor + 1)} harus berbunyi "nama · <hari>, ${tanggal}"`,
+    ).toMatch(new RegExp(`^${soal.pesan.nama} · .*${tanggal.replace(/\./g, '\.')}$`));
+    expect(
+      sebaris.selisihBaris,
+      `nama dan tanggal harus satu baris; selisih puncak ${sebaris.selisihBaris.toFixed(1)} px`,
+    ).toBeLessThanOrEqual(1);
+    expect(sebaris.tebalNama, 'nama tetap 600').toBe('600');
+    expect(
+      sebaris.warnaNama === sebaris.warnaMeta,
+      `nama memakai --nama (${sebaris.warnaNama}), sisanya --tinta-redup (${sebaris.warnaMeta})`,
+    ).toBe(false);
+
+    /* --- jam: tepat sekali, di pojok kanan bawah ----------------------- */
+    expect(sebaris.adaJam, `soal ${String(nomor + 1)}: jam harus ada di balon`).toBe(true);
+    const kemunculanJam = isiBalon.split(soal.pesan.jam).length - 1;
+    expect(
+      kemunculanJam,
+      `jam "${soal.pesan.jam}" harus tampil TEPAT SEKALI di balon; yang ada: ${isiBalon}`,
+    ).toBe(1);
+    expect(sebaris.jamDiBawahBadan, 'jam berada di bawah isi pesan').toBe(true);
+    expect(
+      sebaris.jarakJamKeTepiKanan,
+      `jam rata kanan: sisa ${sebaris.jarakJamKeTepiKanan.toFixed(1)} px ke tepi dalam balon`,
+    ).toBeLessThanOrEqual(1);
+    expect(sebaris.jarakJamKeTepiKanan, 'jaraknya hasil ukur, bukan penanda').toBeGreaterThanOrEqual(
+      -1,
+    );
+
+    const kotak = await balon.boundingBox();
+    const kotakPesan = await pesan.boundingBox();
+    ukuran.push(
+      `soal-${String(nomor + 1)}: balon tinggi=${(kotak?.height ?? -1).toFixed(2)} ` +
+        `lebar=${(kotak?.width ?? -1).toFixed(2)} | seluruh blok pesan tinggi=` +
+        `${(kotakPesan?.height ?? -1).toFixed(2)} | meta="${sebaris.teksMeta}"`,
+    );
+
+    if (nomor + 1 < kasus.soal.length) {
+      await pilihOpsi(page, soal.jawaban);
+      await kunciJawaban(page);
+      await lanjut(page, `Lanjut ke soal ${String(nomor + 2)}`);
+    }
+  }
+
+  console.log(`D-2 balon sesudah (${test.info().project.name}):\n  ${ukuran.join('\n  ')}`);
+});
