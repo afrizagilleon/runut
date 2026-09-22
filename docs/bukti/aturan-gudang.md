@@ -17,6 +17,9 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R25 | emiten | 12 | 0 | 0 | 12 | 0 |
 | R12 | laporan | 57 | 57 | 0 | 0 | 64 |
 | R22 | nama pemegang | 74 | 62 | 12 | 0 | 0 |
+| R21 | pasang sumber | 7 | 6 | 1 | 0 | 1.069 |
+| R20 | emiten | 11 | 6 | 5 | 0 | 0 |
+| R32 | pergantian tahun buku | 50 | 49 | 1 | 0 | 0 |
 | R33 | pasang hari | 2.414 | 2.374 | 19 | 21 | 0 |
 | R15 | laporan | 121 | 121 | 0 | 0 | 0 |
 | R1 | laporan | 0 | 0 | 0 | 0 | 121 |
@@ -37,10 +40,10 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R10 | baris harga | 0 | 0 | 0 | 0 | 121 |
 | R19a | hari datar | 369 | 174 | 195 | 0 | 2.059 |
 | R19b | hari bursa | 2.428 | 1.942 | 486 | 0 | 0 |
-| R28 | aksi korporasi | 16 | 5 | 0 | 11 | 0 |
+| R28 | aksi korporasi | 17 | 5 | 0 | 12 | 0 |
 | R35 | nilai harga ekstrem | 104 | 46 | 3 | 55 | 0 |
 
-[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R22, R28, R33), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
+[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R20, R21, R22, R28, R32, R33), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
 
 ### R25 — Kelengkapan halaman laporan
 
@@ -72,6 +75,43 @@ Alasan dilewati:
 Contoh nyata:
 - **BIRD** — Satu pemegang saham ditulis dengan 2 ejaan berbeda: "Chandra Investama", "PT Chandra Investama". Tanpa disatukan, rantainya terbaca sebagai 2 pemegang yang berbeda.
 - **BIRD** — Satu pemegang saham ditulis dengan 2 ejaan berbeda: "PT Pusaka Citra Djokosoetono", "Pusaka Citra Djokosoetono". Tanpa disatukan, rantainya terbaca sebagai 2 pemegang yang berbeda.
+
+### R21 — Jumlah saham beda antar sumber
+
+Kami menandai dua sumber yang menyebut jumlah saham berbeda untuk tanggal yang sama, dan tidak mengadu dua angka yang diukur pada waktu yang berbeda.
+
+Diperiksa 7 pasang sumber: 6 tidak bermasalah, 1 ditandai, 0 datanya tidak cukup untuk memutuskan. 1.069 pasang sumber tidak masuk pemeriksaan ini. Aturannya jalan untuk 12 emiten dan dilewati untuk 291.
+
+Alasan dilewati:
+- Kurang dari dua sumber jumlah saham, jadi tidak ada yang bisa diadu.
+
+Contoh nyata:
+- **ARNA** — Dua sumber menyebut jumlah saham ARNA yang berbeda untuk tanggal yang sama, 2025-12-31: 7.160.306.042 lembar menurut jumlah saham yang diterbitkan menurut laporan keuangan tahun buku 2025; 7.341.430.976 lembar menurut nilai pasar dibagi harga tutup 2025-12-30, hari bursa terdekat dengan akhir tahun buku 2025. Selisihnya 2.53%. Karena keduanya berbicara tentang hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak terbaca dari data ini.
+
+### R20 — Basis saham di laba per lembar
+
+Kami menandai emiten yang laba per lembarnya tidak dihitung atas jumlah saham yang sama tiap tahun, karena dua angka seperti itu tidak bisa dibandingkan langsung.
+
+Diperiksa 11 emiten: 6 tidak bermasalah, 5 ditandai, 0 datanya tidak cukup untuk memutuskan. 0 emiten tidak masuk pemeriksaan ini. Aturannya jalan untuk 11 emiten dan dilewati untuk 292.
+
+Alasan dilewati:
+- Kurang dari dua tahun buku yang punya laba sekaligus laba per lembar, jadi tidak ada dua basis yang bisa dibandingkan.
+
+Contoh nyata:
+- **COCO** — Laba per lembar COCO tidak dihitung atas jumlah saham yang sama tiap tahun. Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — memberi 560.000.000 lembar untuk tahun buku 2020 dan 3.559.455.924 lembar untuk tahun buku 2025, selisih 535.62%. Dua angka laba per lembar dari tahun yang berbeda karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari jumlah sahamnya, bukan dari labanya.
+- **KRYA** — Laba per lembar KRYA tidak dihitung atas jumlah saham yang sama tiap tahun. Laba dibagi laba per lembar — yaitu jumlah saham yang dipakai sebagai penyebutnya — memberi 1.625.490.196 lembar untuk tahun buku 2022 dan 1.663.943.474 lembar untuk tahun buku 2023, selisih 2.37%. Dua angka laba per lembar dari tahun yang berbeda karena itu tidak bisa dibandingkan langsung: sebagian perubahannya berasal dari jumlah sahamnya, bukan dari labanya.
+
+### R32 — Perubahan jumlah saham dijelaskan aksi korporasi
+
+Kami menandai perubahan jumlah saham dari satu tahun buku ke tahun berikutnya yang tidak ada satu pun aksi korporasi tercatat untuk menjelaskannya.
+
+Diperiksa 50 pergantian tahun buku: 49 tidak bermasalah, 1 ditandai, 0 datanya tidak cukup untuk memutuskan. 0 pergantian tahun buku tidak masuk pemeriksaan ini. Aturannya jalan untuk 11 emiten dan dilewati untuk 292.
+
+Alasan dilewati:
+- Kurang dari dua tahun buku yang basis sahamnya bisa dihitung, jadi tidak ada pergantian tahun untuk diperiksa.
+
+Contoh nyata:
+- **ULTJ** — Jumlah saham ULTJ menjadi 0.9 kali lipat antara tahun buku 2024 dan 2025 — dari 11.553.528.000 lembar menjadi 10.398.175.200 lembar. Tidak ada aksi korporasi tercatat sepanjang tahun buku itu. Penyebabnya tidak diketahui.
 
 ### R33 — Kestabilan jumlah saham tersirat
 
@@ -300,7 +340,7 @@ Contoh nyata:
 
 Kami memberi label pada deret harga di sekitar aksi korporasi, dan melarang kartu harga melintasi tanggal stock split.
 
-Diperiksa 16 aksi korporasi: 5 tidak bermasalah, 0 ditandai, 11 datanya tidak cukup untuk memutuskan. 0 aksi korporasi tidak masuk pemeriksaan ini. Aturannya jalan untuk 11 emiten dan dilewati untuk 292.
+Diperiksa 17 aksi korporasi: 5 tidak bermasalah, 0 ditandai, 12 datanya tidak cukup untuk memutuskan. 0 aksi korporasi tidak masuk pemeriksaan ini. Aturannya jalan untuk 12 emiten dan dilewati untuk 291.
 
 Alasan dilewati:
 - Tidak ada aksi korporasi tercatat untuk emiten ini.

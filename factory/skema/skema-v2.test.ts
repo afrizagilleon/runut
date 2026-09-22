@@ -108,7 +108,7 @@ describe('M2a D-1 — skema generasi kedua', () => {
     expect(kode).toContain('TEMUAN_ATURAN_TAK_DIKENAL');
   });
 
-  it('memperluas KodeAturan dengan tepat lima belas aturan M2a', () => {
+  it('memperluas KodeAturan dengan aturan M2a dan M2b, tanpa memakai ulang nomor lama', () => {
     expect(SEMUA_KODE_ATURAN.slice(0, SEMUA_ATURAN.length)).toEqual([...SEMUA_ATURAN]);
     const baru = SEMUA_KODE_ATURAN.filter((k) => !SEMUA_ATURAN.includes(k));
     expect(baru).toEqual([
@@ -122,9 +122,12 @@ describe('M2a D-1 — skema generasi kedua', () => {
       'R18a',
       'R19a',
       'R19b',
+      'R20',
+      'R21',
       'R22',
       'R25',
       'R28',
+      'R32',
       'R33',
       'R35',
     ]);

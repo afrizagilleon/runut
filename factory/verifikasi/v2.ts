@@ -38,6 +38,11 @@ import {
   r33SahamTersiratGoyah,
   r35AllTimePrice,
 } from './aturan-v2.ts';
+import {
+  r20BasisLabaPerLembar,
+  r21SahamBedaSumber,
+  r32PerubahanSahamVsAksi,
+} from './aturan-keuangan.ts';
 
 export interface EntriAturan {
   kode: KodeAturan;
@@ -59,19 +64,23 @@ function digantikan(
 }
 
 /**
- * Urutan jalan. Gerbang lebih dulu, lalu penyebut, lalu rantai, lalu harga,
- * lalu label. Nomornya sama dengan urutan yang diputuskan uji lawan 6.1,
- * dipadatkan ke aturan yang masuk lingkup M2a.
+ * Urutan jalan, mengikuti uji lawan §6.1: gerbang lebih dulu, lalu penyebut,
+ * lalu rantai, lalu harga, lalu label, lalu kelompok keuangan dan peristiwa
+ * korporasi. Aturan lama yang digantikan ditaruh tepat sesudah penggantinya,
+ * supaya pembaca melihat apa yang diganti oleh apa.
  */
 export const ATURAN_V2: readonly EntriAturan[] = [
   { kode: 'R25', urutan: 1, bergantung: [], jalankan: r25KelengkapanHalaman },
   { kode: 'R12', urutan: 2, bergantung: [], jalankan: r12TanggalNamaBerkas },
   { kode: 'R22', urutan: 3, bergantung: ['R12'], jalankan: r22NamaPemegang },
-  { kode: 'R33', urutan: 4, bergantung: [], jalankan: r33SahamTersiratGoyah },
-  { kode: 'R15', urutan: 5, bergantung: [], jalankan: r15Aritmetika },
+  { kode: 'R21', urutan: 4, bergantung: [], jalankan: r21SahamBedaSumber },
+  { kode: 'R20', urutan: 5, bergantung: [], jalankan: r20BasisLabaPerLembar },
+  { kode: 'R32', urutan: 6, bergantung: ['R21', 'R20'], jalankan: r32PerubahanSahamVsAksi },
+  { kode: 'R33', urutan: 7, bergantung: [], jalankan: r33SahamTersiratGoyah },
+  { kode: 'R15', urutan: 8, bergantung: [], jalankan: r15Aritmetika },
   {
     kode: 'R1',
-    urutan: 6,
+    urutan: 9,
     bergantung: ['R15'],
     jalankan: digantikan(
       'R1',
@@ -80,13 +89,13 @@ export const ATURAN_V2: readonly EntriAturan[] = [
       'Digantikan R15, yang memeriksa hal yang sama dan juga menangani transaction_type "others". Menjalankan keduanya akan melahirkan dua temuan untuk satu cacat data.',
     ),
   },
-  { kode: 'R11a', urutan: 7, bergantung: [], jalankan: r11aPenyebutDuaSisi },
-  { kode: 'R7', urutan: 8, bergantung: ['R33'], jalankan: r7PersenPerTanggal },
-  { kode: 'R14', urutan: 9, bergantung: ['R25', 'R12', 'R22'], jalankan: r14RantaiPutus },
-  { kode: 'R16', urutan: 10, bergantung: ['R12', 'R14'], jalankan: r16JamTerbit },
+  { kode: 'R11a', urutan: 10, bergantung: [], jalankan: r11aPenyebutDuaSisi },
+  { kode: 'R7', urutan: 11, bergantung: ['R33'], jalankan: r7PersenPerTanggal },
+  { kode: 'R14', urutan: 12, bergantung: ['R25', 'R12', 'R22'], jalankan: r14RantaiPutus },
+  { kode: 'R16', urutan: 13, bergantung: ['R12', 'R14'], jalankan: r16JamTerbit },
   {
     kode: 'R2',
-    urutan: 11,
+    urutan: 14,
     bergantung: ['R14'],
     jalankan: digantikan(
       'R2',
@@ -95,16 +104,16 @@ export const ATURAN_V2: readonly EntriAturan[] = [
       'Digantikan R14, yang memeriksa hal yang sama tetapi mengurutkan rantai dengan tanggal nama berkas (R12) dan menyatukan ejaan nama pemegang (R22).',
     ),
   },
-  { kode: 'R13', urutan: 12, bergantung: ['R33'], jalankan: r13LembarLebihBesarDariModal },
-  { kode: 'R3', urutan: 13, bergantung: [], jalankan: r3LaporanGanda },
-  { kode: 'R4', urutan: 14, bergantung: ['R12'], jalankan: r4TanggalKetersediaan },
-  { kode: 'R5', urutan: 15, bergantung: [], jalankan: r5Rekonsiliasi },
-  { kode: 'R8', urutan: 16, bergantung: [], jalankan: r8TandaRepo },
-  { kode: 'R9', urutan: 17, bergantung: [], jalankan: r9TeksVersusField },
-  { kode: 'R17B', urutan: 18, bergantung: ['R8'], jalankan: r17bHargaHariTransaksi },
+  { kode: 'R13', urutan: 15, bergantung: ['R33'], jalankan: r13LembarLebihBesarDariModal },
+  { kode: 'R3', urutan: 16, bergantung: [], jalankan: r3LaporanGanda },
+  { kode: 'R4', urutan: 17, bergantung: ['R12'], jalankan: r4TanggalKetersediaan },
+  { kode: 'R5', urutan: 18, bergantung: [], jalankan: r5Rekonsiliasi },
+  { kode: 'R8', urutan: 19, bergantung: [], jalankan: r8TandaRepo },
+  { kode: 'R9', urutan: 20, bergantung: [], jalankan: r9TeksVersusField },
+  { kode: 'R17B', urutan: 21, bergantung: ['R8'], jalankan: r17bHargaHariTransaksi },
   {
     kode: 'R6',
-    urutan: 19,
+    urutan: 22,
     bergantung: ['R17B'],
     jalankan: digantikan(
       'R6',
@@ -113,10 +122,10 @@ export const ATURAN_V2: readonly EntriAturan[] = [
       'Pemeriksaan rentang harganya digantikan R17B, yang membandingkan tiap butir transaksi dengan rentang harga tanggalnya sendiri. Pemeriksaan simbolnya tidak berarti di gudang ini: pemuat mengelompokkan laporan menurut simbol di dalam barisnya sendiri, jadi ia selalu hijau tanpa memeriksa apa pun.',
     ),
   },
-  { kode: 'R18a', urutan: 20, bergantung: [], jalankan: r18aVolumeNolTanpaSuspensi },
+  { kode: 'R18a', urutan: 23, bergantung: [], jalankan: r18aVolumeNolTanpaSuspensi },
   {
     kode: 'R10',
-    urutan: 21,
+    urutan: 24,
     bergantung: ['R18a'],
     jalankan: digantikan(
       'R10',
@@ -125,10 +134,10 @@ export const ATURAN_V2: readonly EntriAturan[] = [
       'Digantikan R18a, yang memeriksa hal yang sama tetapi menjawab TIDAK_LENGKAP alih-alih KONFLIK: daftar suspensi hanya mencatat hari mulai berhenti, bukan tiap harinya.',
     ),
   },
-  { kode: 'R19a', urutan: 22, bergantung: [], jalankan: r19aDatarTanpaVolume },
-  { kode: 'R19b', urutan: 23, bergantung: ['R19a'], jalankan: r19bRuntunDatar },
-  { kode: 'R28', urutan: 24, bergantung: ['R33'], jalankan: r28LabelDeretHarga },
-  { kode: 'R35', urutan: 25, bergantung: ['R28'], jalankan: r35AllTimePrice },
+  { kode: 'R19a', urutan: 25, bergantung: [], jalankan: r19aDatarTanpaVolume },
+  { kode: 'R19b', urutan: 26, bergantung: ['R19a'], jalankan: r19bRuntunDatar },
+  { kode: 'R28', urutan: 27, bergantung: ['R33'], jalankan: r28LabelDeretHarga },
+  { kode: 'R35', urutan: 28, bergantung: ['R28'], jalankan: r35AllTimePrice },
 ];
 
 export interface HasilVerifikasiV2 {

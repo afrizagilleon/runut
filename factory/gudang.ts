@@ -4,7 +4,7 @@
  * Menjalankan himpunan aturan generasi kedua atas **setiap emiten** di
  * `.cache/sectors/` dan menulis dua berkas:
  *
- * - `.cache/m2a/gudang.json` — hasil lengkap per emiten x aturan, termasuk
+ * - `.cache/m2b/gudang.json` — hasil lengkap per emiten x aturan, termasuk
  *   tiap temuan. Tidak ikut repo: ia memuat data mentah turunan.
  * - `docs/bukti/aturan-gudang.md` — ikut repo, hanya agregat: per aturan satu
  *   kalimat awam, hitungannya, dan paling banyak dua contoh nyata.
@@ -50,9 +50,18 @@ const KALIMAT_AWAM: Record<string, string> = {
   R19b:
     'Kami menandai runtun hari bursa yang tiap harinya hanya mencatat satu angka untuk buka, ' +
     'tertinggi, terendah, dan tutup — entah harganya diam, entah berganti tiap hari.',
+  R20:
+    'Kami menandai emiten yang laba per lembarnya tidak dihitung atas jumlah saham yang sama tiap ' +
+    'tahun, karena dua angka seperti itu tidak bisa dibandingkan langsung.',
+  R21:
+    'Kami menandai dua sumber yang menyebut jumlah saham berbeda untuk tanggal yang sama, dan ' +
+    'tidak mengadu dua angka yang diukur pada waktu yang berbeda.',
   R22: 'Kami menandai satu pemegang saham yang ditulis dengan lebih dari satu ejaan, supaya rantainya tidak terbaca sebagai dua orang.',
   R25: 'Kami menolak bukti negatif kalau daftar laporannya belum terbukti habis.',
   R28: 'Kami memberi label pada deret harga di sekitar aksi korporasi, dan melarang kartu harga melintasi tanggal stock split.',
+  R32:
+    'Kami menandai perubahan jumlah saham dari satu tahun buku ke tahun berikutnya yang tidak ada ' +
+    'satu pun aksi korporasi tercatat untuk menjelaskannya.',
   R33: 'Kami menandai hari yang jumlah saham tersiratnya melompat, karena penyebut persen tidak boleh diambil dari hari seperti itu.',
   R35: 'Kami menolak kartu kalau harga tertinggi atau terendah yang disebut ringkasan tidak terjangkau deret harga hariannya sendiri.',
 };
@@ -75,8 +84,11 @@ export const ATURAN_PENANDA: readonly KodeAturan[] = [
   'R18a',
   'R19a',
   'R19b',
+  'R20',
+  'R21',
   'R22',
   'R28',
+  'R32',
   'R33',
 ];
 
@@ -343,8 +355,8 @@ export function susunDokumenBukti(laporan: LaporanGudang): string {
 function utama(): number {
   const laporan = susunLaporanGudang();
 
-  mkdirSync(`${AKAR}.cache/m2a`, { recursive: true });
-  writeFileSync(`${AKAR}.cache/m2a/gudang.json`, keJson(laporan), 'utf8');
+  mkdirSync(`${AKAR}.cache/m2b`, { recursive: true });
+  writeFileSync(`${AKAR}.cache/m2b/gudang.json`, keJson(laporan), 'utf8');
 
   mkdirSync(`${AKAR}docs/bukti`, { recursive: true });
   writeFileSync(`${AKAR}docs/bukti/aturan-gudang.md`, susunDokumenBukti(laporan), 'utf8');
@@ -365,7 +377,7 @@ function utama(): number {
     );
   }
   console.log('');
-  console.log('  ditulis: .cache/m2a/gudang.json dan docs/bukti/aturan-gudang.md');
+  console.log('  ditulis: .cache/m2b/gudang.json dan docs/bukti/aturan-gudang.md');
   return 0;
 }
 

@@ -37,7 +37,9 @@ export const KEPARAHAN_BAWAAN: Keparahan = 'konflik';
  * kasus. Sisanya lahir di M2a dari uji lawan `.context/aturan-R-uji-lawan.md`
  * dan hanya berjalan di `ATURAN_V2` (`npm run verifikasi:gudang`).
  * Nomor lama tidak pernah dipakai ulang; `R17B` adalah pengganti R17 usulan
- * yang dibuang, jadi ia memakai nama sendiri.
+ * yang dibuang, jadi ia memakai nama sendiri. Kelompok keuangan dan peristiwa
+ * korporasi (R20, R21, R23, R26, R27, R29, R31, R32, R34, dan R11b) lahir di
+ * M2b dari putusan uji lawan yang sama.
  */
 export type KodeAturan =
   | 'R1'
@@ -51,6 +53,7 @@ export type KodeAturan =
   | 'R9'
   | 'R10'
   | 'R11a'
+  | 'R11b'
   | 'R12'
   | 'R13'
   | 'R14'
@@ -60,10 +63,19 @@ export type KodeAturan =
   | 'R18a'
   | 'R19a'
   | 'R19b'
+  | 'R20'
+  | 'R21'
   | 'R22'
+  | 'R23'
   | 'R25'
+  | 'R26'
+  | 'R27'
   | 'R28'
+  | 'R29'
+  | 'R31'
+  | 'R32'
   | 'R33'
+  | 'R34'
   | 'R35';
 
 export type JenisSumber = 'api' | 'berkas' | 'turunan';
@@ -169,6 +181,13 @@ export const SEMUA_ATURAN: readonly KodeAturan[] = [
 ];
 
 /** Semua kode aturan yang dikenal skema, termasuk aturan M2a. */
+/**
+ * Semua kode aturan yang sungguh dijalankan mesin, yaitu isi `ATURAN_V2`.
+ *
+ * Daftar ini tumbuh **bersama** himpunan V2, satu task satu aturan: kode yang
+ * ada di `KodeAturan` tetapi belum ada di sini adalah aturan yang nomornya
+ * sudah dipesan dan kodenya belum ditulis.
+ */
 export const SEMUA_KODE_ATURAN: readonly KodeAturan[] = [
   ...SEMUA_ATURAN,
   'R11a',
@@ -181,9 +200,12 @@ export const SEMUA_KODE_ATURAN: readonly KodeAturan[] = [
   'R18a',
   'R19a',
   'R19b',
+  'R20',
+  'R21',
   'R22',
   'R25',
   'R28',
+  'R32',
   'R33',
   'R35',
 ];
