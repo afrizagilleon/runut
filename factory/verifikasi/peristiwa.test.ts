@@ -17,6 +17,7 @@ import {
   r32PerubahanSahamVsAksi,
   tahunTerjelaskan,
 } from './aturan-keuangan.ts';
+import { keparahanTemuan } from '../skema/tipe.ts';
 import { PENOLAK_PERISTIWA, PERISTIWA, susunDokumenBukti, susunLaporanGudang } from '../gudang.ts';
 
 const ktx = (ubah: Partial<DataEmiten> = {}) => konteksGudang(ubah);
@@ -166,17 +167,65 @@ describe('D-4 — tabel peristiwa di dokumen bukti', () => {
   });
 
   it('memakai hanya aturan penolak yang mengenai peristiwa sebagai penghalang', () => {
-    // Kalau seluruh aturan penolak dipakai, satu rantai laporan kepemilikan
-    // yang putus akan menolak kartu dividen emiten yang sama — kartu yang benar.
     expect([...PENOLAK_PERISTIWA]).toEqual(['R23', 'R31', 'R35']);
     for (const kode of PENOLAK_PERISTIWA) {
       expect(ATURAN_V2.some((e) => e.kode === kode), kode).toBe(true);
     }
   });
 
+  it('tidak menolak kartu dividen hanya karena rantai laporan emiten itu putus', () => {
+    // MTLA punya satu temuan berkeparahan konflik dari R14 — rantai kepemilikan
+    // putus — dan tidak satu pun dari R23, R31, atau R35. Dividennya
+    // 2025-06-12 punya harga di kedua sisi, jadi ia harus tetap terhitung
+    // lolos. Kalau seluruh aturan penolak dipakai sebagai penghalang, kartu
+    // yang benar ini ikut tertolak.
+    const mtla = laporan.emiten.find((e) => e.simbol === 'MTLA');
+    expect(mtla).toBeDefined();
+    const konflikDiLuarPeristiwa = (mtla?.pemeriksaan ?? []).filter(
+      (p) =>
+        !PENOLAK_PERISTIWA.includes(p.aturan) &&
+        p.temuan.some((t) => keparahanTemuan(t) === 'konflik'),
+    );
+    expect(konflikDiLuarPeristiwa.map((p) => p.aturan)).toContain('R14');
+    const konflikPeristiwa = (mtla?.pemeriksaan ?? []).filter(
+      (p) =>
+        PENOLAK_PERISTIWA.includes(p.aturan) &&
+        p.temuan.some((t) => keparahanTemuan(t) === 'konflik'),
+    );
+    expect(konflikPeristiwa).toHaveLength(0);
+
+    // Enam dividen di gudang punya harga di kedua sisinya: DADA, MLPT dua
+    // kali, MTLA, RAJA, dan ULTJ. Lima di antaranya lolos; yang tidak adalah
+    // RAJA, yang R31-nya berkeparahan konflik (dividen Rp28 di keputusan RUPS
+    // tidak ada di medan dividen). Kalau seluruh aturan penolak dipakai sebagai
+    // penghalang, MTLA dan ULTJ ikut tertolak dan angka ini turun.
+    const dividen = laporan.peristiwa.find((p) => p.jenis === 'dividen tunai');
+    expect(dividen?.emiten).toContain('MTLA');
+    expect(dividen?.berharga).toBe(6);
+    expect(dividen?.lolos).toBe(5);
+
+    const raja = laporan.emiten.find((e) => e.simbol === 'RAJA');
+    expect(
+      (raja?.pemeriksaan ?? [])
+        .filter((p) => p.temuan.some((t) => keparahanTemuan(t) === 'konflik'))
+        .map((p) => p.aturan),
+    ).toContain('R31');
+  });
+
   it('memberi tiap jenis peristiwa satu kalimat tentang apa yang wajib dijelaskan', () => {
+    // Bukan sekadar "ada kalimatnya": tiap kalimat harus menyebut hal yang
+    // memang membedakan jenis peristiwa itu dari yang lain.
+    const harusMenyebut: Record<string, RegExp> = {
+      'dividen tunai': /tanggal ex — hari pertama pembeli baru tidak lagi kebagian/,
+      'penerbitan saham baru': /tidak bisa dibandingkan langsung/,
+      'pemecahan saham': /tidak boleh melintasi tanggal pemecahan saham/,
+      'saham bonus': /jumlah lembar bertambah tanpa uang baru masuk/,
+      'pembelian kembali saham': /tanpa jumlah dan tanpa tanggal/,
+      'keluar dari bursa': /tidak bisa diperiksa sama sekali/,
+    };
     for (const p of laporan.peristiwa) {
       expect(p.wajib.length, p.jenis).toBeGreaterThan(40);
+      expect(p.wajib, p.jenis).toMatch(harusMenyebut[p.jenis] ?? /$^/);
       expect(dokumen).toContain('**' + p.jenis + '** — ' + p.wajib);
     }
   });
