@@ -5,7 +5,7 @@ import type { AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 // @ts-expect-error — pengumpul sengaja JavaScript bawaan Node, tanpa langkah build.
-import { HOST_BAWAAN, buatKolektor, periksaPeristiwa } from './kolektor.mjs';
+import { HOST_BAWAAN, SKEMA, buatKolektor, periksaPeristiwa } from './kolektor.mjs';
 /*
  * M3.4a D-2. Yang diimpor di sini adalah **tes**, bukan pengumpul: aturan
  * "pengumpul tidak boleh mengimpor apa pun dari aplikasi" tetap utuh
@@ -102,7 +102,9 @@ describe('kolektor — jalur sehat', () => {
   it('GET /sehat menjawab 200', async () => {
     const jawaban = await fetch(`${alamat}/sehat`);
     expect(jawaban.status).toBe(200);
-    expect((await jawaban.text()).trim()).toBe('sehat');
+    // Baris PERTAMA tetap `sehat` kata demi kata: deploy/README.md
+    // menjanjikannya, dan nomor versi (M3.7) datang di baris berikutnya.
+    expect((await jawaban.text()).split('\n')[0]).toBe('sehat');
   });
 
   it('mendengarkan di loopback, bukan di semua antarmuka', () => {
@@ -780,5 +782,156 @@ describe('kolektor — gulir bertingkat M3.4a (D-2)', () => {
         galat?: string;
       }).galat,
     ).toBeUndefined();
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Balon chat melayang (M3.7 D-3)                                      */
+/* ------------------------------------------------------------------ */
+
+describe('kolektor — peristiwa balon (M3.7 D-3)', () => {
+  const balon = (urut: number, isi: Record<string, unknown>): Record<string, unknown> =>
+    peristiwa({ nama: 'balon', urut, isi });
+
+  it('menerima keempat gabungan yang sah dan menulisnya apa adanya', async () => {
+    const balas = await kirim(
+      JSON.stringify([
+        balon(401, { layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' }),
+        balon(402, { layar: 'soal-1', keadaan: 'intip', cara: 'ketuk' }),
+        balon(403, { layar: 'soal-2', keadaan: 'turun', cara: 'tarik' }),
+        balon(404, { layar: 'soal-2', keadaan: 'intip', cara: 'tarik' }),
+      ]),
+    );
+    expect(balas.status).toBe(204);
+
+    const baris = barisTertulis().map(
+      (b) => JSON.parse(b) as { urut: number; nama: string; isi: Record<string, unknown> },
+    );
+    const tercatat = baris.filter((b) => b.urut >= 401 && b.urut <= 404);
+    expect(tercatat).toHaveLength(4);
+    for (const b of tercatat) {
+      expect(b.nama).toBe('balon');
+      expect(Object.keys(b.isi).sort()).toEqual(['cara', 'keadaan', 'layar']);
+    }
+    expect(tercatat.map((b) => b.isi['keadaan'])).toEqual(['turun', 'intip', 'turun', 'intip']);
+    expect(tercatat.map((b) => b.isi['cara'])).toEqual(['ketuk', 'ketuk', 'tarik', 'tarik']);
+  });
+
+  /*
+   * Validasi ketat, bukan "teks apa pun" (D-3).
+   *
+   * Medan enum yang diterima apa adanya adalah medan teks bebas yang menyamar:
+   * ia lolos sebagai kolom di ringkasan, lalu diam-diam menambah kategori yang
+   * tidak pernah ada di produk — dan yang membacanya akan mengira produknya
+   * memang punya keadaan ketiga. Yang lebih buruk: ia jalan masuk bagi teks
+   * kiriman sembarang ke berkas yang dijanjikan hanya memuat nama yang kita
+   * tulis sendiri (INV-9).
+   */
+  it('menolak nilai di luar daftar, untuk keadaan maupun cara', async () => {
+    const sebelum = barisTertulis().length;
+    for (const isi of [
+      { layar: 'soal-1', keadaan: 'melompat', cara: 'ketuk' },
+      { layar: 'soal-1', keadaan: 'TURUN', cara: 'ketuk' },
+      { layar: 'soal-1', keadaan: 'turun', cara: 'geser' },
+      { layar: 'soal-1', keadaan: 'turun', cara: 'Ketuk' },
+      { layar: 'soal-1', keadaan: 'turun', cara: '' },
+      { layar: 'soal-1', keadaan: 3, cara: 'ketuk' },
+      { layar: 'soal-1', keadaan: true, cara: 'ketuk' },
+    ]) {
+      const balas = await kirim(JSON.stringify([balon(420, isi)]));
+      expect(balas.status, JSON.stringify(isi)).toBe(400);
+      expect(await balas.text()).toContain('tidak sah');
+    }
+    expect(barisTertulis().length).toBe(sebelum);
+  });
+
+  it('menolak medan yang hilang dan medan yang tidak dikenal', async () => {
+    const kurang = await kirim(JSON.stringify([balon(430, { layar: 'soal-1', keadaan: 'turun' })]));
+    expect(kurang.status).toBe(400);
+    const lebih = await kirim(
+      JSON.stringify([
+        balon(431, { layar: 'soal-1', keadaan: 'turun', cara: 'ketuk', piksel: 128 }),
+      ]),
+    );
+    expect(lebih.status).toBe(400);
+    expect(await lebih.text()).toContain('piksel');
+  });
+
+  it('nilai null tidak sah: ketiga medannya wajib berisi', () => {
+    for (const medan of ['layar', 'keadaan', 'cara']) {
+      const isi: Record<string, unknown> = {
+        layar: 'soal-1',
+        keadaan: 'turun',
+        cara: 'ketuk',
+      };
+      isi[medan] = null;
+      expect(
+        (periksaPeristiwa(peristiwa({ nama: 'balon', isi })) as { galat?: string }).galat,
+        medan,
+      ).toBeDefined();
+    }
+  });
+
+  it('SEMUA keluaran reducer yang sungguhan lolos validator yang sungguhan', () => {
+    const aksi: Aksi[] = [
+      { jenis: 'mulai', lebar_layar: 360 },
+      { jenis: 'lanjut' },
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: true },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'intip', cara: 'tarik' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'tarik' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+      { jenis: 'sakelar_balon', layar: 'soal-2', keadaan: 'turun', cara: 'ketuk' },
+      { jenis: 'tutup' },
+    ];
+    let keadaan = keadaanAwal({
+      sesi: '2f1a1d6c-0000-4000-8000-000000000010',
+      kasus_id: 'dada-2025-10-08',
+      urutanSoal: ['s1', 's2', 's3'],
+      kunciBenar: { s1: 'b', s2: 'a', s3: 'c' },
+      kartuSoal: { s1: ['k1'], s2: ['k2'], s3: ['k3'] },
+    });
+    const semua: Array<{ nama: string; isi: Record<string, unknown> }> = [];
+    let waktu = 1_000;
+    for (const a of aksi) {
+      waktu += 250;
+      const hasil = langkah(keadaan, a, waktu);
+      keadaan = hasil.keadaan;
+      semua.push(...hasil.peristiwa);
+    }
+
+    // Jalur ini memang melahirkan balon; kalau tidak, tes ini tidak menguji apa-apa.
+    expect(semua.filter((p) => p.nama === 'balon')).toHaveLength(4);
+
+    for (const p of semua) {
+      const hasil = periksaPeristiwa(p) as { galat?: string };
+      expect(hasil.galat, `${p.nama} ${JSON.stringify(p.isi)}`).toBeUndefined();
+    }
+  });
+});
+
+describe('kolektor — versi skema (M3.7 D-3)', () => {
+  /*
+   * Kenapa pengumpul punya nomor versi sejak sekarang.
+   *
+   * Pengumpul di server sungguhan TIDAK ikut di-deploy bersama web, dan daftar
+   * peristiwanya tertutup: satu nama yang belum dikenal membuatnya menjawab 400
+   * untuk SELURUH kelompok, sehingga peristiwa lain di kelompok itu ikut
+   * hilang. Sampai M3.6 satu-satunya cara mengetahui versi yang terpasang
+   * adalah membaca berkasnya di server. Sekarang ia mengatakannya sendiri di
+   * `/sehat`, jadi pemasangan bisa **diperiksa** sebelum web dikirim.
+   */
+  it('`/sehat` menyebut nomor versinya', async () => {
+    const jawaban = await fetch(`${alamat}/sehat`);
+    expect(jawaban.status).toBe(200);
+    const teks = await jawaban.text();
+    expect(teks.split('\n')[0]).toBe('sehat');
+    expect(teks).toContain(`skema=${String(SKEMA)}`);
+  });
+
+  it('versinya 2 sejak `balon` masuk daftar', () => {
+    expect(SKEMA).toBe(2);
   });
 });

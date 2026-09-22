@@ -10,6 +10,21 @@
  * nol memakai field yang lolos validator — bukan dari penyalinan badan
  * permintaan — supaya kiriman tidak bisa menyelundupkan field tambahan.
  *
+ * ## Versi skema: 2
+ *
+ * Nomor ini naik setiap kali **daftar nama peristiwa atau bentuk medannya**
+ * berubah, dan ia ada karena satu sifat pengumpul ini: daftarnya tertutup, dan
+ * satu nama yang belum dikenal membuat SELURUH kelompok kiriman dijawab 400 —
+ * peristiwa lain di kelompok yang sama ikut hilang, tanpa jejak di sisi
+ * pengirim. Pengumpul tidak ikut di-deploy bersama web, jadi urutan
+ * pemasangannya penting dan harus bisa diperiksa, bukan diingat.
+ *
+ *   1  M3.2–M3.6  17 nama, sampai `tutup`
+ *   2  M3.7       + `balon { layar, keadaan, cara }` (balon chat melayang)
+ *
+ * `GET /sehat` menyebutkan nomornya, jadi versi yang **terpasang** bisa dibaca
+ * dari luar sebelum web yang membutuhkannya dikirim.
+ *
  * Konfigurasi hanya lewat variabel lingkungan. Tidak membaca `.env`.
  *
  *   HOST             alamat dengar, default 127.0.0.1 (loopback)
@@ -25,6 +40,15 @@
 import { createServer } from 'node:http';
 import { appendFileSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+
+/**
+ * Versi skema pengumpul (M3.7 D-3). Lihat komentar kepala berkas.
+ *
+ * Web M3.7 melahirkan peristiwa `balon` dan karena itu **membutuhkan pengumpul
+ * versi 2 atau lebih**; memasang webnya lebih dulu berarti setiap kelompok
+ * kiriman yang memuat `balon` ditolak seluruhnya.
+ */
+export const SKEMA = 2;
 
 /** Badan permintaan paling besar yang diterima (D-9). */
 export const MAKS_BADAN = 8 * 1024;
@@ -90,13 +114,15 @@ const MEDAN_ISI = {
   ketuk_dibatasi: { layar: 'teks', batas: 'angka' },
   gulir: { layar: 'teks', maks: 'rasio' },
   /*
-   * M3.7 D-2: balon chat melayang di bawah keping. Didaftarkan di sini lebih
-   * dulu supaya daftar tertutup pengumpul dan daftar reducer tidak pernah
-   * berselisih walau sesaat — satu nama yang belum dikenal membuat pengumpul
-   * menolak SELURUH kelompok kiriman dengan 400, dan peristiwa lain di
-   * kelompok yang sama ikut hilang.
+   * M3.7: balon chat melayang di bawah keping.
+   *
+   * Kedua medan keadaannya bertipe **enum**, bukan teks. Medan enum yang
+   * diterima apa adanya adalah medan teks bebas yang menyamar: ia akan lolos
+   * sebagai kolom di ringkasan dan diam-diam menambah kategori yang tidak
+   * pernah ada di produk, dan ia jalan masuk bagi teks kiriman sembarang ke
+   * berkas yang dijanjikan hanya memuat nama yang kita tulis sendiri (INV-9).
    */
-  balon: { layar: 'teks', keadaan: 'teks', cara: 'teks' },
+  balon: { layar: 'teks', keadaan: 'balon-keadaan', cara: 'balon-cara' },
   akhir_kirim: {
     rating: 'angka?',
     terasa: 'teks?',
@@ -119,6 +145,18 @@ const POLA_UUID_V4 = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0
 
 /** Kode penanda dari `?k=` (D-9). */
 const POLA_PENANDA = /^[a-z0-9]{1,8}$/;
+
+/**
+ * Medan yang hanya boleh berisi satu dari daftar nilai yang dieja (M3.7 D-3).
+ *
+ * Cocoknya **persis**, termasuk huruf besar-kecil: "TURUN" bukan "turun", dan
+ * menerimanya akan membuat satu keadaan yang sama terbelah menjadi dua baris
+ * di setiap tabel ringkasan.
+ */
+const NILAI_ENUM = {
+  'balon-keadaan': ['intip', 'turun'],
+  'balon-cara': ['ketuk', 'tarik'],
+};
 
 function teksSah(nilai, batas) {
   return typeof nilai === 'string' && nilai.length > 0 && nilai.length <= batas;
@@ -145,6 +183,9 @@ function medanSah(bentuk, nilai) {
   if (inti === 'uuid') return typeof nilai === 'string' && POLA_UUID_V4.test(nilai);
   if (inti === 'kunjungan') {
     return Number.isInteger(nilai) && nilai >= 1 && nilai <= MAKS_KUNJUNGAN;
+  }
+  if (Object.prototype.hasOwnProperty.call(NILAI_ENUM, inti)) {
+    return typeof nilai === 'string' && NILAI_ENUM[inti].includes(nilai);
   }
   return false;
 }
@@ -247,7 +288,15 @@ export function buatKolektor(env = process.env) {
       return;
     }
     if (permintaan.method === 'GET' && jalur === '/sehat') {
-      jawaban.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' }).end('sehat\n');
+      /*
+       * Baris pertama tetap `sehat` persis, kata demi kata: `deploy/README.md`
+       * dan pemeriksaan kesiapan Playwright membacanya. Nomor versi datang di
+       * baris kedua, jadi pemasangan bisa diperiksa dari luar tanpa membuka
+       * berkas di server.
+       */
+      jawaban
+        .writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' })
+        .end(`sehat\nskema=${String(SKEMA)}\n`);
       return;
     }
     if (permintaan.method !== 'POST' || jalur !== '/e') {

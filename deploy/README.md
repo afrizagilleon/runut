@@ -7,6 +7,9 @@ Hasil akhirnya: satu subdomain yang menyajikan aplikasi statis, dengan `/e` dan
 `/sehat` diteruskan ke pengumpul peristiwa di loopback. Aplikasi dan pengumpul
 berada di **satu asal**, jadi tidak ada CORS sama sekali.
 
+> **Pengumpul dulu, baru web.** Web M3.7 membutuhkan **pengumpul skema ≥ 2**.
+> Lihat "Versi skema pengumpul" di bawah sebelum menerbitkan.
+
 ```
 laptop  --tar.gz lewat ssh-->  runut-terima  -->  /var/www/runut-alpha
                                                         ^
@@ -75,7 +78,8 @@ Salin `server/kolektor.mjs` dari repo ke `/opt/runut/server/kolektor.mjs`, lalu:
 sudo cp deploy/kolektor.contoh.service /etc/systemd/system/runut-kolektor.service
 sudo systemctl daemon-reload
 sudo systemctl enable --now runut-kolektor
-curl -s http://127.0.0.1:8787/sehat        # harus mencetak: sehat
+curl -s http://127.0.0.1:8787/sehat        # sehat
+                                           # skema=2
 ```
 
 Pengumpul **hanya** mendengarkan di `127.0.0.1`. Firewall VPS ini tidak aktif,
@@ -148,6 +152,36 @@ Host runut-alpha-data
     IdentityFile ~/.ssh/runut-data
     IdentitiesOnly yes
 ```
+
+## Versi skema pengumpul
+
+Daftar nama peristiwa di pengumpul **tertutup**, dan satu nama yang belum
+dikenal membuatnya menjawab `400` untuk **seluruh kelompok kiriman** — bukan
+hanya untuk peristiwa yang asing. Peristiwa lain di kelompok itu ikut hilang,
+dan pengirim di peramban tidak punya cara memberitahu siapa pun.
+
+Pengumpul **tidak** ikut terkirim oleh `deploy/kirim.sh`: skrip itu hanya
+mengirim berkas statis aplikasi. Jadi urutannya selalu sama, dan tidak boleh
+dibalik:
+
+1. salin `server/kolektor.mjs` yang baru ke `/opt/runut/server/kolektor.mjs`;
+2. `sudo systemctl restart runut-kolektor`;
+3. periksa versinya;
+4. baru `bash deploy/kirim.sh`.
+
+```bash
+curl -s https://<subdomain>/sehat
+# sehat
+# skema=2
+```
+
+| skema | dipasang sejak | yang ditambahkan |
+|---|---|---|
+| 1 | M3.2 | 17 nama peristiwa, sampai `tutup` |
+| 2 | M3.7 | `balon { layar, keadaan, cara }` — balon chat melayang |
+
+**Web M3.7 membutuhkan pengumpul skema ≥ 2.** Kalau `skema=` tidak muncul sama
+sekali, yang terpasang adalah versi 1 dan web M3.7 belum boleh dikirim ke sana.
 
 ## Menerbitkan
 
