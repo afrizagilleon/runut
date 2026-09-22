@@ -39,6 +39,7 @@ import {
   r34AksiTanpaHarga,
   penyebutRantai,
   r11bPenyebutRantai,
+  rupiahMilli,
 } from './aturan-keuangan.ts';
 
 const ktx = (ubah: Partial<DataEmiten> = {}): KonteksGudang => konteksGudang(ubah);
@@ -700,6 +701,51 @@ describe('R31 — dividen di keputusan RUPS versus medan dividend', () => {
 
 // --- M2b T-05: R26 dan R27 ---------------------------------------------------
 
+describe('kata-kata temuan kelompok keuangan (D-5)', () => {
+  it('menulis uang berpecahan dengan dua angka desimal, bukan satu', () => {
+    // Rp133,50 adalah uang; Rp133,5 adalah angka.
+    expect(rupiahMilli(133_500)).toBe('133,50');
+    expect(rupiahMilli(3_200)).toBe('3,20');
+    expect(rupiahMilli(2_140)).toBe('2,14');
+    expect(rupiahMilli(28_000)).toBe('28');
+    // Pecahan yang lebih halus dari sen tetap utuh: dividen RAJA Rp1,046.
+    expect(rupiahMilli(1_046)).toBe('1,046');
+  });
+
+  it('menulis rupiah negatif sebagai "minus Rp", bukan "Rp-"', () => {
+    const h = r27RasioSiapPakai(
+      konteksGudang({
+        simbol: 'TIRT',
+        rasio: [{ tahun: 2025, kelompok: 'profitability', nama: 'roe', nilai: -33_358_663_046 / -635_584_467_177 }],
+        keuangan_tahunan: [
+          {
+            tahun: 2025,
+            laba: -33_358_663_046,
+            pendapatan: null,
+            ekuitas: -635_584_467_177,
+            aset: null,
+            laba_kotor: null,
+            lembar: null,
+          },
+        ],
+      }),
+    );
+    expect(h.temuan[0]?.ringkasan).toContain('minus Rp33.358.663.046');
+    expect(h.temuan[0]?.ringkasan).not.toContain('Rp-');
+  });
+
+  it('menulis angka rasio dengan pemisah desimal Indonesia dan tanpa ekor tujuh belas angka', () => {
+    const h = r27RasioSiapPakai(
+      konteksGudang({
+        simbol: 'TLDN',
+        rasio: [{ tahun: 2025, kelompok: 'profitability', nama: 'roe', nilai: 262.52311103536 }],
+      }),
+    );
+    expect(h.temuan[0]?.ringkasan).toContain('262,5231');
+    expect(h.temuan[0]?.ringkasan).not.toContain('262.52311103536');
+  });
+});
+
 describe('R26 — pembagian laba terhadap laba tahun buku', () => {
   /** Tahun buku dengan laba dan laba per lembar yang memberi jumlah saham persis. */
   const tahunBuku = (t: number, laba: number, lembar: number): Partial<DataEmiten> => ({
@@ -1348,6 +1394,41 @@ describe('R11b — satu penyebut untuk seluruh rantai', () => {
     // daripada lebar selangnya akan menyatukan kedelapannya.
     expect(pilihan?.dari).toBe(8);
     expect(pilihan?.didukung).toBe(4);
+  });
+
+  it('memilih cabang kalimat menurut seberapa banyak rantainya sepakat (D-5)', () => {
+    // Pola FOLK: 14 dari 16 sisi sepakat. "Angka yang paling banyak cocok"
+    // benar di sini.
+    const banyak = r11bPenyebutRantai(
+      ktx({
+        simbol: 'FOLK',
+        laporan: [
+          sisi('2026-01-05T10:00:00', 900_000_000, 880_000_000, 3_948_108_393),
+          sisi('2026-02-05T10:00:00', 880_000_000, 860_000_000, 3_948_108_393),
+          sisi('2026-03-05T10:00:00', 860_000_000, 840_000_000, 3_948_108_393),
+          sisi('2026-05-19T12:50:02', 840_000_000, 820_000_000, 4_091_357_544),
+        ],
+      }),
+    );
+    expect(banyak.temuan[0]?.ringkasan).toContain('Angka yang paling banyak cocok adalah');
+    expect(banyak.temuan[0]?.ringkasan).not.toContain('hanya menjelaskan');
+
+    // Pola COCO: tidak ada satu angka pun yang menjelaskan sebagian besar
+    // rantainya. Kalimat yang sama akan membuatnya terbaca seperti FOLK.
+    const sedikit = r11bPenyebutRantai(
+      ktx({
+        simbol: 'COCO',
+        laporan: [
+          sisi('2025-09-30T19:55:29', 543_842_937, 543_350_037, 889_800_000),
+          sisi('2025-09-30T21:06:57', 533_288_237, 526_288_237, 909_600_000),
+          sisi('2025-10-08T19:58:50', 519_101_337, 459_637_051, 1_014_000_000),
+          sisi('2025-10-14T07:44:00', 459_056_551, 456_716_151, 1_020_000_000),
+        ],
+      }),
+    );
+    expect(sedikit.temuan[0]?.ringkasan).toContain('Tidak ada satu jumlah saham beredar pun yang menjelaskan sebagian besar');
+    expect(sedikit.temuan[0]?.ringkasan).toContain('hanya menjelaskan');
+    expect(sedikit.temuan[0]?.ringkasan).not.toContain('lebih banyak daripada angka lain mana pun');
   });
 
   it('memberi jawaban yang sama pada dua kali panggilan (INV-C)', () => {

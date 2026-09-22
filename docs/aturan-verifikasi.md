@@ -208,6 +208,180 @@ diperiksa** karena tanggalnya di luar deret harga yang kita punya.
 
 ---
 
+# Aturan keuangan dan peristiwa perusahaan (M2b)
+
+Kelompok ini menjawab satu pertanyaan yang tidak bisa dijawab aturan mana pun
+di atas: **kalau perusahaan melakukan sesuatu — membagi dividen, menerbitkan
+saham baru, memecah saham — angka mana yang masih boleh dipakai di kartu?**
+
+Angka di sekitar peristiwa adalah yang paling licin di seluruh data ini. Tiga
+contoh yang semuanya nyata di gudang:
+
+- **Jumlah saham berubah di tengah jendela.** COCO menerbitkan saham baru dua
+  kali berturut-turut, masing-masing satu lembar lama berhak atas tiga lembar
+  baru. Jumlah sahamnya menjadi empat kali lipat, lalu empat kali lipat lagi:
+  889.863.981 → 3.559.455.924 → 14.237.823.696. Persen kepemilikan sebelum dan
+  sesudahnya dibagi angka yang berbeda.
+- **Laba per lembar berganti basis.** Laba per lembar ULTJ naik dari 98 ke 130,
+  yang terbaca seperti tumbuh 32%. Tetapi penyebut yang dipakai menghitungnya
+  turun dari 11,55 miliar lembar ke 10,40 miliar. Pada basis yang sama,
+  pertumbuhannya 19%.
+- **Dua medan dari endpoint yang sama memakai dasar berbeda.** Dividen MLPT di
+  data sudah dibagi rasio pemecahan saham 25, sementara deret harganya belum.
+  Membandingkan keduanya apa adanya meleset 25 kali lipat.
+
+## R11b — Satu penyebut untuk seluruh rantai
+Kalau satu emiten melaporkan persen yang tidak bisa berasal dari satu jumlah
+saham beredar yang sama, salah satu laporannya memakai pembagi yang berbeda.
+Aturan ini mencari angka yang paling banyak cocok, lalu menyebut sisi mana yang
+tidak.
+
+**Aturan serinya ditulis, dan itulah sebabnya aturan ini boleh ada.** Definisi
+usulan hanya berbunyi "cari satu nilai yang masuk selang sebanyak mungkin",
+tanpa menyebut apa yang terjadi kalau dua nilai sama banyaknya — sehingga
+hasilnya berbeda tergantung urutan pemeriksaan. Sekarang: kelompok terbanyak
+menang dengan titik tengah irisannya; kalau seri, yang paling dekat ke nilai
+pasar dibagi harga tutup pada tanggal laporan terakhir; kalau masih seri, yang
+lembarnya paling sedikit. Pilihan yang lahir dari aturan seri **disebutkan di
+temuannya**.
+
+Peringatan, bukan penolakan: perusahaan memang boleh menerbitkan saham di
+tengah rantai.
+
+## R20 — Laba per lembar berganti basis saham
+Laba per lembar adalah laba dibagi jumlah saham. Kalau jumlah saham yang
+dipakai membaginya berbeda dari tahun ke tahun, dua angka laba per lembar dari
+tahun yang berbeda **tidak bisa dibandingkan langsung** — sebagian
+perubahannya berasal dari pembaginya, bukan dari labanya.
+
+Ambangnya satu persen. **Alasannya bukan pembulatan.** Data memberi laba per
+lembar dengan empat belas sampai tujuh belas angka penting, jadi pembulatan
+tidak bisa menjelaskan gerakan apa pun. Alasan yang benar: penyebut laba per
+lembar adalah jumlah saham **rata-rata tertimbang sepanjang tahun**, yang
+memang bergeser sedikit pada tahun yang ada penerbitan kecil.
+
+## R21 — Jumlah saham berbeda antar sumber
+Data menyebut jumlah saham beredar di empat tempat sekaligus. Aturan ini
+membandingkan **hanya yang berlaku pada tanggal yang sama**.
+
+Itu bukan kehati-hatian berlebihan, itu inti aturannya. Jumlah saham memang
+berubah; membandingkan angka Desember dengan angka September berarti menemukan
+perubahan dan menyebutnya pertentangan, dan setiap perusahaan yang pernah
+menerbitkan saham akan merah. Angka yang merupakan **rata-rata sepanjang satu
+tahun** tidak diadu dengan angka bertanggal sama sekali, dan potret pemegang
+saham — yang tidak menyebutkan kapan ia berlaku — dilewati beserta alasannya.
+
+## R23 — Laba di keputusan RUPS versus laporan keuangan
+Angka laba bersih yang disebut keputusan rapat pemegang saham harus sama dengan
+angka di laporan keuangan tahun buku itu. Kalau berbeda, temuannya menyebut
+**kedua** angka dan tidak memutuskan mana yang benar: keputusan rapat bisa
+menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh
+kelompok usaha, dan keduanya sah. Yang mengikat: angka laba di kartu harus
+menyebut dari mana ia diambil.
+
+Koma di teks keputusan adalah **pemisah ribuan gaya Inggris**, bukan koma
+desimal: `Rp400,475,916,944` adalah empat ratus miliar.
+
+## R26 — Pembagian laba terhadap laba tahun buku
+Dividen per lembar dikali jumlah saham, dibagi laba tahun buku itu, harus
+berada antara nol dan dua ratus persen.
+
+Dua hal yang menentukan:
+
+1. **Dijumlahkan per tahun buku lebih dulu.** Dua dividen untuk tahun buku yang
+   sama bisa lolos satu-satu dan tidak lolos bersama-sama. RAJA tahun buku 2025
+   membagi Rp5 lalu Rp40; keduanya masuk akal sendirian, jumlahnya 208,6%.
+2. **Penyebutnya jumlah saham tahun buku itu**, bukan jumlah saham hari ini.
+
+Kalau keputusan rapat menyatakan **tidak** membagi dividen untuk tahun buku itu
+sementara data memuat pembagian yang kami petakan ke sana, itu ditandai. Yang
+paling mungkin bukan salah satunya salah, melainkan aturan pemetaan tahun buku
+kami yang tidak berlaku untuk emiten itu — dan memang tidak ada satu medan pun
+di data yang menyebutkan tahun buku sebuah dividen.
+
+## R27 — Medan rasio siap pakai
+Angka rasio yang sudah dihitungkan penyedia data diperiksa dua kali: apakah ia
+bisa dihitung ulang dari laporan keuangan tahun yang sama, dan apakah **tandanya
+menipu**.
+
+Yang kedua yang menangkap sesuatu. Imbal hasil ekuitas TIRT tahun buku 2023
+adalah **+5%** — angka positif, dan ia positif hanya karena laba −Rp33,4 miliar
+dibagi ekuitas −Rp635,6 miliar. Hitungannya benar; bacaannya menipu, karena
+angka positif itu terbaca seperti untung padahal tahun buku itu rugi.
+
+Marjin dan rasio lancar sengaja **tidak** diberi selang "masuk akal". Keduanya
+dibagi pendapatan atau utang lancar, yang bisa mengecil sampai hampir nol tanpa
+ada yang salah: pendapatan TIRT 2023 adalah Rp22 juta sementara laba kotornya
+minus Rp29 miliar, jadi marjinnya −1.306 kali dan angka itu betul-betul begitu.
+
+## R29 — Gerakan harga di tanggal ex dividen
+**Tanggal ex adalah hari pertama pembeli baru tidak lagi kebagian dividen itu.**
+Harga biasanya membuka lebih rendah pada hari itu, kira-kira sebesar
+dividennya, dan tidak ada yang rugi karenanya.
+
+Selangnya **tidak simetris**: harga boleh turun sampai tiga kali besar dividen,
+dan boleh naik sampai satu kali. Selang lama membolehkan turun tiga kali tetapi
+tidak membolehkan naik sama sekali, sehingga kenaikan Rp1 pada dividen Rp3,20
+dihitung sama beratnya dengan kenaikan Rp7 pada dividen Rp0,14.
+
+Dividen yang lebih kecil daripada satu langkah harga bursa **dilewati**, bukan
+ditandai. DADA membagikan Rp0,14 per lembar pada saham seharga Rp72, dan
+langkah harga terkecil di situ adalah Rp1 — tujuh kali dividennya. Dividen
+sebesar itu tidak mungkin terlihat di harga.
+
+Peringatan, bukan penolakan: harga bergerak karena banyak sebab sekaligus.
+
+## R31 — Dividen di keputusan RUPS versus medan dividen
+Angka "Rp… per lembar" di teks keputusan rapat harus ada di medan dividen.
+Tiga jawaban:
+
+- cocok apa adanya → tidak bermasalah;
+- cocok **hanya sesudah dikali rasio pemecahan saham** → ditandai, dan itulah
+  tanda bahwa medan dividen sudah dibagi rasio itu sementara deret harganya
+  belum;
+- tidak cocok sama sekali → ditolak, dengan kedua angka disebutkan.
+
+Dua jebakan pembacaan ada di aturannya. Angka harus **menempel** pada "per
+lembar": ARNA menulis "Rp330.364.393.920 untuk dividen tunai sebesar Rp45 per
+lembar", dan pembacaan longgar akan mengira total Rp330 miliar itu angka per
+lembar. Dan angka yang didahului "nilai nominal" adalah nilai nominal saham,
+bukan dividen: MLPT pernah menulis "mengubah nilai nominal dari Rp100 menjadi
+Rp4 per lembar", yang sama sekali bukan pengumuman dividen.
+
+Hasil aturan ini dipakai R26 dan R29. Tanpa itu, pembagian laba MLPT terhitung
+25 kali terlalu kecil dan gerakan harganya dibandingkan dengan dividen yang 25
+kali terlalu kecil.
+
+## R32 — Perubahan jumlah saham harus dijelaskan aksi korporasi
+Kalau jumlah saham berubah lebih dari lima persen dari satu tahun buku ke tahun
+berikutnya, harus ada aksi korporasi di tahun itu yang rasionya menjelaskan
+perubahan sebesar itu.
+
+COCO 2025 adalah contohnya: 889.863.981 menjadi 3.559.455.924, tepat empat kali
+lipat, dan penerbitan saham baru satu berbanding tiga pada 9 Oktober 2025
+menjelaskannya persis. ULTJ 2025 adalah kebalikannya: jumlah sahamnya berkurang
+sepuluh persen dan **tidak ada satu pun aksi korporasi tercatat sepanjang tahun
+itu**. Penyebabnya tidak diketahui.
+
+Ambangnya lima persen, bukan satu. Alasannya sama dengan R20: jumlah saham
+rata-rata tertimbang memang bergeser satu sampai dua persen pada tahun yang ada
+penerbitan kecil.
+
+Aturan ini **membatalkan** temuan R21 untuk tahun buku yang perubahannya sudah
+terjelaskan. Satu cacat data hanya boleh melahirkan satu temuan.
+
+## R34 — Aksi korporasi dengan harga di kedua sisinya
+Aksi yang mau dijadikan kartu harus punya baris harga harian sebelum dan pada
+atau sesudah tanggalnya. Kalau tidak, tidak ada satu pun pemeriksaan harga yang
+bisa berbunyi tentangnya.
+
+Ini **daftar kerja penarikan data, bukan tanda ada yang salah.** Dari 72 aksi
+korporasi di gudang, 11 punya harga di kedua sisinya. Yang paling disayangkan:
+satu-satunya saham bonus di seluruh data, MTLA tahun 2015, tanpa harga harian
+tahun itu.
+
+---
+
 ## Aturan yang sengaja tidak diterapkan
 
 - **R17 bentuk lama** (jendela 40 hari) — dibuang, diganti R17B. Premisnya
@@ -220,5 +394,6 @@ diperiksa** karena tanggalnya di luar deret harga yang kita punya.
   membagi dividen, dan medan yang kosong justru benar.
 - **R30** (urutan tanggal aksi) — ditunda sampai tanggal cum tersedia untuk
   aksi lama.
-- **R11b, R20, R21, R23, R26, R27, R29, R31, R32, R34** — kelompok keuangan
-  dan aksi korporasi, milestone berikutnya.
+- **R17 lama, R18b, R24** tetap dibuang; **R30** tetap ditunda. Kelompok
+  keuangan dan aksi korporasi (R11b, R20, R21, R23, R26, R27, R29, R31, R32,
+  R34) **sudah diterapkan** — lihat bagian di atas.

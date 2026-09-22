@@ -141,7 +141,7 @@ export function sumberSaham(konteks: KonteksGudang): SumberSaham[] {
   for (const t of data.saham_tahunan) {
     const akhir = akhirTahun(t.tahun);
     daftar.push({
-      nama: `jumlah saham yang diterbitkan menurut laporan keuangan tahun buku ${String(t.tahun)}`,
+      nama: `laporan keuangan tahun buku ${String(t.tahun)}, yang menyebut jumlah saham yang diterbitkan`,
       lembar: t.lembar,
       jenis: 'tanggal',
       kunci: akhir,
@@ -160,7 +160,7 @@ export function sumberSaham(konteks: KonteksGudang): SumberSaham[] {
     }
     if (wakil !== undefined) {
       daftar.push({
-        nama: `nilai pasar dibagi harga tutup ${wakil.tanggal}, hari bursa terdekat dengan akhir tahun buku ${String(t.tahun)}`,
+        nama: `nilai pasar dibagi harga tutup pada ${wakil.tanggal}, hari bursa terakhir tahun buku ${String(t.tahun)}`,
         lembar: Math.round(wakil.nilai_pasar / wakil.tutup),
         jenis: 'tanggal',
         // Sengaja dikunci ke 31 Desember, bukan ke tanggal barisnya: hari bursa
@@ -807,12 +807,19 @@ export function cariCocokDividen(
   return null;
 }
 
-/** Tulis nilai seperseribu rupiah sebagai rupiah, tanpa nol berekor. */
+/**
+ * Tulis nilai seperseribu rupiah sebagai rupiah.
+ *
+ * Uang ditulis dengan **dua angka desimal kalau ada pecahannya**, bukan dengan
+ * nol berekor dibuang: Rp133,50 adalah uang, Rp133,5 adalah angka. Pecahan yang
+ * lebih halus dari sen tetap ditulis utuh (dividen RAJA Rp1,046).
+ */
 export function rupiahMilli(milli: number): string {
   const bulat = Math.trunc(milli / 1000);
   const sisa = Math.abs(milli % 1000);
   if (sisa === 0) return angka(bulat);
-  return angka(bulat) + ',' + String(sisa).padStart(3, '0').replace(/0+$/, '');
+  const desimal = String(sisa).padStart(3, '0').replace(/0+$/, '');
+  return angka(bulat) + ',' + (desimal.length === 1 ? desimal + '0' : desimal);
 }
 
 /** Angka rupiah di teks RUPS yang menempel pada "per share" dan bukan nilai nominal. */
@@ -1247,7 +1254,7 @@ export function r27RasioSiapPakai(konteks: KonteksGudang): HasilAturan {
         keparahan: 'peringatan',
         ringkasan:
           'Medan rasio siap pakai `' + r.nama + '` ' + konteks.simbol + ' untuk tahun buku ' +
-          String(r.tahun) + ' bernilai ' + String(r.nilai) + ', di luar selang ' +
+          String(r.tahun) + ' bernilai ' + angka(Number(r.nilai.toFixed(4))) + ', di luar selang ' +
           String(selang.bawah) + ' sampai ' + String(selang.atas) + ' yang kami anggap mungkin. ' +
           'Penyebabnya tidak diketahui. Angka itu tidak boleh dipakai di kartu apa pun.',
         angka: [{ label: r.nama + ' tahun buku ' + String(r.tahun), nilai: r.nilai, satuan: 'rasio' }],
@@ -1283,11 +1290,12 @@ export function r27RasioSiapPakai(konteks: KonteksGudang): HasilAturan {
           keparahan: 'peringatan',
           ringkasan:
             'Medan rasio siap pakai `' + r.nama + '` ' + konteks.simbol + ' untuk tahun buku ' +
-            String(r.tahun) + ' bernilai ' + String(r.nilai) + ', yaitu angka positif — tetapi ia ' +
-            'positif hanya karena kedua angka yang dibagi sama-sama negatif: ' +
-            'Rp' + angka(Math.round(bahan.atas)) + ' dibagi Rp' + angka(Math.round(bahan.bawah)) + '. ' +
-            'Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu ' +
-            'rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.',
+            String(r.tahun) + ' bernilai ' + angka(Number(r.nilai.toFixed(4))) + ', yaitu angka ' +
+            'positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: ' +
+            'minus Rp' + angka(Math.round(-bahan.atas)) + ' dibagi minus Rp' +
+            angka(Math.round(-bahan.bawah)) + '. Dibaca apa adanya, angka positif itu terbaca ' +
+            'seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu ' +
+            'tanpa menyebut kedua angka asalnya.',
           angka: [
             { label: r.nama + ' siap pakai', nilai: r.nilai, satuan: 'rasio' },
             { label: 'yang dibagi', nilai: Math.round(bahan.atas), satuan: 'rupiah' },
@@ -1308,8 +1316,9 @@ export function r27RasioSiapPakai(konteks: KonteksGudang): HasilAturan {
       keparahan: 'peringatan',
       ringkasan:
         'Medan rasio siap pakai `' + r.nama + '` ' + konteks.simbol + ' untuk tahun buku ' +
-        String(r.tahun) + ' bernilai ' + String(r.nilai) + ', sementara menghitungnya ulang dari ' +
-        'angka laporan keuangan tahun yang sama memberi ' + String(dihitung) + '. Rumus yang ' +
+        String(r.tahun) + ' bernilai ' + angka(Number(r.nilai.toFixed(6))) + ', sementara ' +
+        'menghitungnya ulang dari angka laporan keuangan tahun yang sama memberi ' +
+        angka(dihitung) + '. Rumus yang ' +
         'dipakai penyedia data karena itu bukan rumus yang kami kira. Angka itu tidak boleh ' +
         'dipakai di kartu sebelum rumusnya diketahui.',
       angka: [
@@ -1872,14 +1881,25 @@ export function r11bPenyebutRantai(konteks: KonteksGudang): HasilAturan {
   if (meleset.length > 0) {
     const contoh = meleset.slice(0, 2);
     const terjauh = meleset.reduce((a, b) => (Math.abs(b.jauh) > Math.abs(a.jauh) ? b : a));
+    // Dua cabang, dipilih dari data: "sebagian besar rantai sepakat, satu-dua
+    // sisi tidak" adalah cerita yang berbeda dari "tidak ada satu angka pun
+    // yang menjelaskan sebagian besar rantai ini". Menuliskan keduanya dengan
+    // kalimat yang sama akan membuat COCO — 4 dari 22 — terbaca seperti FOLK,
+    // yang 14 dari 16.
+    const sebagianBesar = pilihan.didukung * 2 > pilihan.dari;
+    const pembuka = sebagianBesar
+      ? 'Rantai laporan ' + konteks.simbol + ' tidak bisa dijelaskan satu jumlah saham beredar. ' +
+        'Angka yang paling banyak cocok adalah ' + angka(pilihan.lembar) + ' lembar. ' + pilihan.alasan
+      : 'Tidak ada satu jumlah saham beredar pun yang menjelaskan sebagian besar rantai laporan ' +
+        konteks.simbol + '. Angka yang paling banyak cocok, ' + angka(pilihan.lembar) + ' lembar, ' +
+        'hanya menjelaskan ' + String(pilihan.didukung) + ' dari ' + String(pilihan.dari) +
+        ' sisi laporan.';
     temuan.push({
       temuan_id: 'R11b-' + konteks.simbol,
       aturan: 'R11b',
       keparahan: 'peringatan',
       ringkasan:
-        'Rantai laporan ' + konteks.simbol + ' tidak bisa dijelaskan satu jumlah saham beredar. ' +
-        'Angka yang paling banyak cocok adalah ' + angka(pilihan.lembar) + ' lembar. ' +
-        pilihan.alasan + ' Sisanya, ' + String(meleset.length) + ' sisi laporan, menyiratkan ' +
+        pembuka + ' Sisanya, ' + String(meleset.length) + ' sisi laporan, menyiratkan ' +
         'jumlah saham yang lain: ' +
         contoh.map((m) => m.label + ' menulis ' + angka(m.persen) + '%, yang baru mungkin kalau sahamnya ' + angka(m.tersirat) + ' lembar').join('; ') +
         '. Yang paling jauh meleset ' + angka(Math.abs(terjauh.jauh)) + '% dari angka pilihan. ' +

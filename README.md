@@ -44,7 +44,7 @@ emiten di `.cache/sectors/`, bukan atas satu kasus:
 npm run verifikasi:gudang
 ```
 
-Perintah itu menulis hasil lengkapnya ke `.cache/m2a/gudang.json` dan
+Perintah itu menulis hasil lengkapnya ke `.cache/m2b/gudang.json` dan
 agregatnya ke `docs/bukti/aturan-gudang.md`. Ia tidak membaca jaringan, jam
 dinding, maupun angka acak, jadi dua kali jalan atas data yang sama memberi
 berkas yang sama persis.
@@ -54,6 +54,16 @@ berapa yang merah, dan tiap temuan punya berat: `konflik` menolak kartu,
 `peringatan` menandai yang janggal, `catatan` adalah label atau keterbatasan.
 Fakta yang datanya tidak cukup untuk diputuskan berstatus `TIDAK_LENGKAP` —
 bukan konflik, dan bukan "belum diperiksa".
+
+Kelompok terakhir yang masuk menjawab pertanyaan yang lain: **kalau perusahaan
+melakukan sesuatu — membagi dividen, menerbitkan saham baru, memecah saham —
+angka mana yang masih boleh dipakai di kartu?** Di sekitar peristiwa seperti
+itu, jumlah saham berubah di tengah jendela, laba per lembar berganti basis,
+dan dua medan dari endpoint yang sama bisa memakai dasar yang berbeda. Hasilnya
+ada di bagian "Peristiwa perusahaan" di `docs/bukti/aturan-gudang.md`: per jenis
+peristiwa, berapa kejadiannya, berapa yang punya harga di kedua sisi tanggalnya,
+berapa yang lolos jadi bahan kartu, dan satu kalimat tentang apa yang **wajib
+dijelaskan** di kartu tentang jenis itu.
 
 ## Uji di browser sungguhan
 

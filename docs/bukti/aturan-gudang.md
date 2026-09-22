@@ -140,7 +140,7 @@ Alasan dilewati:
 - Kurang dari dua sumber jumlah saham, jadi tidak ada yang bisa diadu.
 
 Contoh nyata:
-- **ARNA** — Dua sumber menyebut jumlah saham ARNA yang berbeda untuk tanggal yang sama, 2025-12-31: 7.160.306.042 lembar menurut jumlah saham yang diterbitkan menurut laporan keuangan tahun buku 2025; 7.341.430.976 lembar menurut nilai pasar dibagi harga tutup 2025-12-30, hari bursa terdekat dengan akhir tahun buku 2025. Selisihnya 2,53%. Karena keduanya berbicara tentang hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak terbaca dari data ini.
+- **ARNA** — Dua sumber menyebut jumlah saham ARNA yang berbeda untuk tanggal yang sama, 2025-12-31: 7.160.306.042 lembar menurut laporan keuangan tahun buku 2025, yang menyebut jumlah saham yang diterbitkan; 7.341.430.976 lembar menurut nilai pasar dibagi harga tutup pada 2025-12-30, hari bursa terakhir tahun buku 2025. Selisihnya 2,53%. Karena keduanya berbicara tentang hari yang sama, setidaknya satu di antaranya tidak bisa benar; mana yang benar tidak terbaca dari data ini.
 
 ### R33 — Kestabilan jumlah saham tersirat
 
@@ -196,7 +196,7 @@ Alasan dilewati:
 - Kurang dari dua laporan, jadi tidak ada rantai yang perlu satu penyebut bersama.
 
 Contoh nyata:
-- **COCO** — Rantai laporan COCO tidak bisa dijelaskan satu jumlah saham beredar. Angka yang paling banyak cocok adalah 912.371.503 lembar. Angka ini masuk ke dalam selang 4 dari 22 sisi laporan, lebih banyak daripada angka lain mana pun. Sisanya, 18 sisi laporan, menyiratkan jumlah saham yang lain: 2025-09-30T19:55:29 sebelum transaksi menulis 61,12%, yang baru mungkin kalau sahamnya 889.795.381 lembar; 2025-09-30T19:55:29 sesudah transaksi menulis 61,03%, yang baru mungkin kalau sahamnya 890.299.913 lembar. Yang paling jauh meleset 12,01% dari angka pilihan. Perusahaan boleh menerbitkan saham di tengah rantai, jadi ini belum tentu kesalahan — tetapi dua persen dari rantai ini tidak boleh dibandingkan langsung sebelum diketahui keduanya memakai pembagi yang sama.
+- **COCO** — Tidak ada satu jumlah saham beredar pun yang menjelaskan sebagian besar rantai laporan COCO. Angka yang paling banyak cocok, 912.371.503 lembar, hanya menjelaskan 4 dari 22 sisi laporan. Sisanya, 18 sisi laporan, menyiratkan jumlah saham yang lain: 2025-09-30T19:55:29 sebelum transaksi menulis 61,12%, yang baru mungkin kalau sahamnya 889.795.381 lembar; 2025-09-30T19:55:29 sesudah transaksi menulis 61,03%, yang baru mungkin kalau sahamnya 890.299.913 lembar. Yang paling jauh meleset 12,01% dari angka pilihan. Perusahaan boleh menerbitkan saham di tengah rantai, jadi ini belum tentu kesalahan — tetapi dua persen dari rantai ini tidak boleh dibandingkan langsung sebelum diketahui keduanya memakai pembagi yang sama.
 - **FOLK** — Rantai laporan FOLK tidak bisa dijelaskan satu jumlah saham beredar. Angka yang paling banyak cocok adalah 3.948.108.393 lembar. Angka ini masuk ke dalam selang 14 dari 16 sisi laporan, lebih banyak daripada angka lain mana pun. Sisanya, 2 sisi laporan, menyiratkan jumlah saham yang lain: 2026-05-19T12:50:02 sebelum transaksi menulis 22,08%, yang baru mungkin kalau sahamnya 4.091.169.751 lembar; 2026-05-19T12:50:02 sesudah transaksi menulis 20,77%, yang baru mungkin kalau sahamnya 4.091.308.045 lembar. Yang paling jauh meleset 3,63% dari angka pilihan. Perusahaan boleh menerbitkan saham di tengah rantai, jadi ini belum tentu kesalahan — tetapi dua persen dari rantai ini tidak boleh dibandingkan langsung sebelum diketahui keduanya memakai pembagi yang sama.
 
 ### R7 — Persen dihitung ulang terhadap saham beredar pada tanggal laporan
@@ -422,7 +422,7 @@ Alasan dilewati:
 - Emiten ini tidak punya satu pun RUPS tercatat.
 
 Contoh nyata:
-- **MLPT** — Keputusan RUPS MLPT pada 2026-04-29 menyebut dividen Rp133,5 per lembar, tetapi medan dividen memberi Rp2,14 dengan tanggal ex 2025-11-07 ditambah Rp3,2 dengan tanggal ex 2026-05-11 — 25 kali lebih kecil. Angkanya baru cocok sesudah dikali 25, yaitu rasio pemecahan saham yang tercatat untuk emiten ini. Artinya medan dividen sudah dibagi rasio pemecahan saham sementara deret harganya belum, jadi dividen dan harga di data ini tidak memakai satuan yang sama. Kartu dividen yang melintasi tanggal pemecahan saham tidak boleh memakai medan itu apa adanya.
+- **MLPT** — Keputusan RUPS MLPT pada 2026-04-29 menyebut dividen Rp133,50 per lembar, tetapi medan dividen memberi Rp2,14 dengan tanggal ex 2025-11-07 ditambah Rp3,20 dengan tanggal ex 2026-05-11 — 25 kali lebih kecil. Angkanya baru cocok sesudah dikali 25, yaitu rasio pemecahan saham yang tercatat untuk emiten ini. Artinya medan dividen sudah dibagi rasio pemecahan saham sementara deret harganya belum, jadi dividen dan harga di data ini tidak memakai satuan yang sama. Kartu dividen yang melintasi tanggal pemecahan saham tidak boleh memakai medan itu apa adanya.
 - **RAJA** — Keputusan RUPS RAJA pada 2026-06-23 menyebut dividen Rp28 per lembar, dan angka itu tidak ada di medan dividen. Yang ada di sana untuk rentang waktu yang sama: Rp12 (ex 2025-05-14), Rp5 (ex 2026-01-09), Rp40 (ex 2026-07-02). Tidak ada satu pun yang sama dengannya, tidak ada dua yang jumlahnya sama dengannya, dan tidak ada pula yang cocok sesudah dikali rasio pemecahan saham yang tercatat. Mana yang benar tidak terbaca dari data ini.
 
 ### R26 — Pembagian laba terhadap laba tahun buku
@@ -448,8 +448,8 @@ Alasan dilewati:
 - Emiten ini tidak punya satu pun medan rasio siap pakai.
 
 Contoh nyata:
-- **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2020 bernilai 1.0616813578468016, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: Rp-414.398.439.415 dibagi Rp-390.322.799.164. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
-- **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2021 bernilai 0.2457842344731376, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: Rp-126.517.856.201 dibagi Rp-514.751.714.943. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
+- **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2020 bernilai 1,0617, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: minus Rp414.398.439.415 dibagi minus Rp390.322.799.164. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
+- **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2021 bernilai 0,2458, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: minus Rp126.517.856.201 dibagi minus Rp514.751.714.943. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
 
 ### R29 — Gerakan harga di tanggal ex dividen
 
