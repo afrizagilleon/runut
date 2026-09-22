@@ -649,9 +649,15 @@ summary:focus-visible,
   margin: 0 0 8px;
 }
 
-/* Keping menempel setinggi ~64 px; tanpa ini sasaran gulir tertutup olehnya. */
+/*
+ * Keping menempel setinggi ~64 px; tanpa ini sasaran gulir tertutup olehnya.
+ * `.kunci-jawaban` ikut sejak M3.5 D-3: sesudah mengunci, layar bergulir ke
+ * cap umpan balik, dan cap yang mendarat di balik keping sama saja dengan cap
+ * yang tidak pernah terlihat.
+ */
 .antar,
-.tanya {
+.tanya,
+.kunci-jawaban {
   scroll-margin-top: 64px;
 }
 

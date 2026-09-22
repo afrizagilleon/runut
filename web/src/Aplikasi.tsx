@@ -290,11 +290,34 @@ export function Aplikasi(): JSX.Element {
   const layar = keadaan.layar;
   const namaLayarKini = namaLayar(layar);
 
-  // Berpindah layar mengembalikan gulir ke atas. Tanpa ini pemain yang menggulir
-  // sampai tombol lalu menekannya mendarat di tengah kartu soal berikutnya dan
-  // tidak pernah melihat kartu yang pertama — persis kegagalan yang dijaga D-4.
+  /*
+   * Berpindah layar mengembalikan gulir ke atas. Tanpa ini pemain yang
+   * menggulir sampai tombol lalu menekannya mendarat di tengah kartu soal
+   * berikutnya dan tidak pernah melihat kartu yang pertama — persis kegagalan
+   * yang dijaga D-4.
+   *
+   * Diulang sekali di frame berikutnya sejak M3.5 T-03, dan itu bukan
+   * kehati-hatian melainkan hasil ukur. Pemain yang menekan "Lanjut" **sementara
+   * gulir halus masih berjalan** — sekarang jalan yang biasa, karena mengunci
+   * jawaban menggulir layar ke cap — membawa luncuran itu ke layar berikutnya:
+   * `scrollTo(0, 0)` memang membatalkan animasinya, tetapi satu frame yang
+   * sudah telanjur dikirim ke kompositor tetap mendarat sesudahnya. Terukur
+   * lewat pendengar `scroll` di Chromium mesin ini: `1016 → 1025 → 1045 → 69`,
+   * lalu diam di 69. Di bawah beban, sisa itu pernah membuka layar pembukaan
+   * tepat di ringkasannya (E-10 merah dua putaran berturut-turut).
+   *
+   * Satu frame cukup: sesudah frame telat itu tidak ada lagi yang menulis
+   * posisi gulir. `cancelAnimationFrame` di pembersih menjaga agar permintaan
+   * yang belum sempat jalan tidak menimpa layar yang sudah berganti lagi.
+   */
   useEffect(() => {
     window.scrollTo(0, 0);
+    const pinta = requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
+    return () => {
+      cancelAnimationFrame(pinta);
+    };
   }, [namaLayarKini]);
 
   /*
@@ -654,6 +677,65 @@ function usePengamatOpsi(
 }
 
 /**
+ * Sesudah "Kunci jawaban", layar bergulir sampai cap umpan balik terlihat
+ * (M3.5 D-3).
+ *
+ * Kenapa ini sebuah efek dan bukan satu baris di dalam `onClick`: saat penangan
+ * ketuk berjalan, `dispatch` baru saja dikirim dan cap **belum dirender sama
+ * sekali** — wadah `role="status"` memang sudah ada sejak layar lahir, tetapi
+ * ia masih kosong, jadi menggulir ke sana akan mendaratkan pemain di tempat
+ * yang isinya belum ada. Yang ditinggalkan penangan ketuk hanyalah permintaan;
+ * yang memenuhinya adalah efek ini, sesudah melihat bahwa soalnya memang jadi
+ * terkunci. Reducer tidak berubah dan tidak ada peristiwa baru: ini kerja
+ * tampilan.
+ *
+ * Keadaan **sesudahnya** yang diperiksa, bukan sebelumnya. Kalau reducer
+ * menolak aksinya, `dikunci` tetap `false` dan tidak ada yang bergulir.
+ *
+ * `prefers-reduced-motion` dihormati lewat `gerakHalus()`: lompat, bukan
+ * meluncur.
+ */
+function useGulirKeCap(soal_id: string, dikunci: boolean): () => void {
+  const diminta = useRef(false);
+  useEffect(() => {
+    if (!diminta.current) return;
+    if (!dikunci) return;
+    diminta.current = false;
+    document
+      .getElementById(`kunci-${soal_id}`)
+      ?.scrollIntoView({ block: 'start', behavior: gerakHalus() });
+  }, [soal_id, dikunci]);
+  /*
+   * Meninggalkan layar soal membatalkan dua hal.
+   *
+   * Yang pertama permintaan yang belum terpenuhi: tanpa ini, sebuah ketukan
+   * yang ditolak reducer akan menggulir soal BERIKUTNYA begitu ia dikunci —
+   * gerak yang datangnya dari ketukan di layar lain.
+   *
+   * Yang kedua gulir halus yang masih berjalan, dan ini terukur, bukan
+   * kehati-hatian. Pemain yang menekan "Lanjut" sementara layar masih meluncur
+   * ke cap membawa luncuran itu ke layar berikutnya: `window.scrollTo(0, 0)`
+   * di `Aplikasi` memang berjalan, tetapi animasinya menimpanya sesudah itu.
+   * Terukur di Chromium mesin ini lewat pendengar `scroll` —
+   * `1016 → 1025 → 1045 → 39` — dan akibatnya layar pembukaan lahir sudah
+   * tergulir. Di bawah beban, angka 39 itu bisa jauh lebih besar; satu putaran
+   * `npm run e2e` menemukan layar pembukaan yang terbuka tepat di ringkasannya.
+   *
+   * `behavior: 'instant'` adalah gulir tanpa animasi yang **membatalkan**
+   * animasi yang sedang berjalan; menyetel posisi yang sama dengan posisi
+   * sekarang berarti tidak ada yang bergerak karenanya.
+   */
+  useEffect(() => {
+    return () => {
+      diminta.current = false;
+    };
+  }, [soal_id]);
+  return useCallback(() => {
+    diminta.current = true;
+  }, []);
+}
+
+/**
  * Isi yang terbuka DI DALAM lembar (D-5). Apa yang tampil ditentukan
  * `isiSumber()`, fungsi murni yang dites; komponen ini hanya menatanya.
  */
@@ -833,6 +915,7 @@ function LayarSoal({
   const bilah = bilahBawah(s, nomor, kasus.soal.length);
   // D-2: tanggalnya lahir dari fungsi murni, tidak diketik tangan di data.
   const tanggal = tanggalBalon(kasus.tanggal_t, soal.pesan.jam);
+  const gulirKeCap = useGulirKeCap(soal.soal_id, s.dikunci);
 
   return (
     <section className="layar layar-soal" aria-labelledby={`judul-${soal.soal_id}`}>
@@ -994,7 +1077,13 @@ function LayarSoal({
         Wadah `role="status"` ada sejak layar dirender; isinya yang berubah.
         Wadah yang lahir bersama isinya kadang tidak terbaca pembaca layar.
       */}
-      <div className="kunci-jawaban" role="status" aria-live="polite" data-uid="sesudah-dikunci">
+      <div
+        className="kunci-jawaban"
+        role="status"
+        aria-live="polite"
+        id={`kunci-${soal.soal_id}`}
+        data-uid="sesudah-dikunci"
+      >
         {s.dikunci && (
           <>
             <p className={`cap${s.benar === true ? ' cap-cocok' : ' cap-belum'}`}>
@@ -1094,6 +1183,11 @@ function LayarSoal({
               }
               if (bilah.jenis === 'kunci') {
                 kirim({ jenis: 'kunci_jawaban', soal_id: soal.soal_id });
+                // Gulirnya TIDAK dikerjakan di sini: saat baris ini berjalan,
+                // cap belum dirender. Yang ditinggalkan hanya permintaan;
+                // yang memenuhinya adalah efek di atas, sesudah melihat bahwa
+                // soalnya memang jadi terkunci.
+                gulirKeCap();
                 return;
               }
               kirim({ jenis: 'lanjut' });
