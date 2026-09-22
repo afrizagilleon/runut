@@ -47,3 +47,43 @@ export function ambangOpsiProduk(): number {
   }
   return angka;
 }
+
+/**
+ * Satu konstanta bernama, dibaca dari teks sumber produk (M3.7).
+ *
+ * Alasannya sama dengan `ambangOpsiProduk` dan ditulis sekali di kepala berkas
+ * ini: angka yang disalin ke dalam tes adalah angka yang diam ketika aslinya
+ * berubah. Melempar, bukan menebak — konstanta yang hilang harus menghentikan
+ * rangkaian, bukan meluluskannya di atas angka karangan.
+ */
+function konstantaProduk(nama: string, sah: (n: number) => boolean): number {
+  const sumber = readFileSync(BERKAS, 'utf8');
+  const cocok = new RegExp(`export const ${nama}\\s*=\\s*([0-9.]+)\\s*;`).exec(sumber);
+  if (cocok === null) {
+    throw new Error(
+      `${nama} tidak ditemukan di ${BERKAS}. Rangkaian e2e membacanya dari kode ` +
+        'produk supaya tidak ada dua angka yang bisa berselisih; kalau konstanta ' +
+        'itu diganti nama atau dihapus, tes harus berhenti, bukan menebak.',
+    );
+  }
+  const angka = Number(cocok[1]);
+  if (!Number.isFinite(angka) || !sah(angka)) {
+    throw new Error(`${nama} bukan nilai yang masuk akal: ${String(cocok[1])}`);
+  }
+  return angka;
+}
+
+/** `AMBANG_BALON_MELAYANG`: bagian balon asli yang masih terlihat di bawah keping. */
+export function ambangBalonProduk(): number {
+  return konstantaProduk('AMBANG_BALON_MELAYANG', (n) => n > 0 && n < 1);
+}
+
+/** `INTIP_BALON_PX`: tepi balon yang tetap terlihat saat mengintip. */
+export function intipBalonProduk(): number {
+  return konstantaProduk('INTIP_BALON_PX', (n) => n > 0 && n < 200);
+}
+
+/** `BAGI_AMBANG_TARIK`: pembagi tinggi balon yang menjadi ambang tarikan. */
+export function bagiAmbangTarikProduk(): number {
+  return konstantaProduk('BAGI_AMBANG_TARIK', (n) => n >= 2 && n <= 10);
+}
