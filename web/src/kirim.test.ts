@@ -218,4 +218,15 @@ describe('kirim — A-1: kunjungan tidak boleh hilang', () => {
     expect(PENTING.has('ketuk')).toBe(false);
     expect(PENTING.size).toBe(9);
   });
+
+  /*
+   * M3.7 D-2. `balon` sengaja **tidak** penting: ia bisa lahir berkali-kali di
+   * satu layar, dan satu `sendBeacon` per goyangan jari adalah persis kiriman
+   * yang tidak layak menunda apa pun. Ia menumpang kelompok berikutnya, seperti
+   * `ketuk` dan `gulir`.
+   */
+  it('`balon` tidak termasuk PENTING — ia menumpang kelompok berikutnya', () => {
+    expect(PENTING.has('balon')).toBe(false);
+    expect(perluSiram([peristiwa('balon', 6, { layar: 'soal-1' })])).toBe(false);
+  });
 });

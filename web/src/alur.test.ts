@@ -10,7 +10,9 @@ import {
   LABEL_TURUN,
   bilahBawah,
   LABEL_PILIHAN_PEMAIN,
+  BATAS_BALON,
   BATAS_KETUK,
+  keadaanBalon,
   NAMA_PERISTIWA,
   namaLayar,
   layarDariNama,
@@ -800,8 +802,8 @@ describe('alur — jalan pintas ke ringkasan (A4-T5)', () => {
   it('namanya ada di daftar tertutup D-6', () => {
     expect(NAMA_PERISTIWA).toContain('loncat_ke_ringkasan');
     // 13 nama M3.1 + tiga nama pelacak M3.2 (ketuk, ketuk_dibatasi, gulir)
-    // + istilah_buka (A-2).
-    expect(NAMA_PERISTIWA).toHaveLength(17);
+    // + istilah_buka (A-2) + balon (M3.7 D-2, satu-satunya nama baru sejak).
+    expect(NAMA_PERISTIWA).toHaveLength(18);
     expect(NAMA_PERISTIWA).toContain('istilah_buka');
   });
 });
@@ -1406,7 +1408,8 @@ describe('alur — perpindahan lewat tombol peramban (A1-T2, C-1)', () => {
       for (const p of [...mundur.peristiwa, ...maju.peristiwa]) {
         expect(NAMA_PERISTIWA).toContain(p.nama);
       }
-      expect(NAMA_PERISTIWA).toHaveLength(17);
+      // 17 sampai M3.6; + `balon` di M3.7 D-2.
+      expect(NAMA_PERISTIWA).toHaveLength(18);
     });
 
     it('maju TIDAK mengubah jawaban yang sudah dikunci', () => {
@@ -1622,5 +1625,187 @@ describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
     const salinan = JSON.stringify(sebelum);
     langkah(sebelum, { jenis: 'catat_gulir', persen: 100 }, 9_999);
     expect(JSON.stringify(sebelum)).toBe(salinan);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* Balon chat melayang (M3.7 D-2)                                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Daftar nama peristiwa seperti yang berlaku di M3.6, disalin apa adanya.
+ *
+ * Ia ditulis ulang di sini **dengan sengaja**: satu-satunya cara membuktikan
+ * "daftarnya bertambah tepat satu" adalah membandingkan dengan daftar yang
+ * dibekukan, bukan dengan daftar yang ikut berubah kalau kodenya berubah.
+ * Kontrak M3.7 mengizinkan tepat satu nama baru (`balon`), dan pengumpul di
+ * server sungguhan menolak **seluruh kelompok** kiriman dengan 400 kalau ada
+ * satu nama tak dikenal di dalamnya — jadi nama kedua yang lolos diam-diam
+ * menghapus data sesi orang, bukan sekadar menambah satu kolom.
+ */
+const NAMA_M36: readonly string[] = [
+  'mulai',
+  'layar_masuk',
+  'kartu_buka',
+  'istilah_buka',
+  'kembali_ke_kartu',
+  'pilih',
+  'kunci_jawaban',
+  'lihat_balik',
+  'pembukaan_masuk',
+  'loncat_ke_ringkasan',
+  'pembukaan_selesai',
+  'minat_kasus_lain',
+  'akhir_kirim',
+  'ketuk',
+  'ketuk_dibatasi',
+  'gulir',
+  'tutup',
+];
+
+/** Sampai layar soal 1, tempat balon melayang hidup. */
+const KE_SOAL_1: Array<Aksi | [Aksi, number]> = [MULAI, { jenis: 'lanjut' }];
+
+describe('alur — daftar nama peristiwa (M3.7)', () => {
+  it('bertambah TEPAT SATU nama (`balon`) dibanding M3.6, tanpa ada yang hilang', () => {
+    const tambahan = (NAMA_PERISTIWA as readonly string[]).filter((n) => !NAMA_M36.includes(n));
+    const hilang = NAMA_M36.filter((n) => !(NAMA_PERISTIWA as readonly string[]).includes(n));
+    expect(tambahan).toEqual(['balon']);
+    expect(hilang).toEqual([]);
+    expect(NAMA_PERISTIWA).toHaveLength(NAMA_M36.length + 1);
+  });
+});
+
+describe('alur — keadaan balon melayang hidup di reducer (M3.7 D-2)', () => {
+  it('keadaan bawaannya mengintip, per layar', () => {
+    const { keadaan } = jalankan(KE_SOAL_1);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('intip');
+    expect(keadaan.balon).toEqual({});
+  });
+
+  it('turun lewat ketuk melahirkan satu peristiwa `balon` dan mengubah keadaan', () => {
+    const { keadaan, peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
+    ]);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('turun');
+    const balon = peristiwa.filter((p) => p.nama === 'balon');
+    expect(balon).toHaveLength(1);
+    expect(balon[0]?.isi).toEqual({ layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' });
+  });
+
+  it('bentuk medannya persis { layar, keadaan, cara } — tidak lebih', () => {
+    const { peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'tarik' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'intip', cara: 'tarik' },
+    ]);
+    for (const p of peristiwa.filter((x) => x.nama === 'balon')) {
+      expect(Object.keys(p.isi).sort()).toEqual(['cara', 'keadaan', 'layar']);
+    }
+  });
+
+  it('tarik yang berakhir di keadaan yang sama tidak melahirkan peristiwa', () => {
+    const { keadaan, peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      // Sudah mengintip; tarikan yang jatuh kembali ke mengintip bukan perubahan.
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'intip', cara: 'tarik' },
+    ]);
+    expect(peristiwa.filter((p) => p.nama === 'balon')).toHaveLength(0);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('intip');
+  });
+
+  it('peristiwa lahir per perubahan keadaan, bukan per gerakan jari', () => {
+    const { peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'tarik' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'tarik' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'intip', cara: 'ketuk' },
+    ]);
+    expect(
+      peristiwa.filter((p) => p.nama === 'balon').map((p) => [p.isi.keadaan, p.isi.cara]),
+    ).toEqual([
+      ['turun', 'tarik'],
+      ['intip', 'ketuk'],
+    ]);
+  });
+
+  it('keadaannya milik layar masing-masing', () => {
+    const { keadaan } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'lanjut' },
+    ]);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('turun');
+    expect(keadaanBalon(keadaan, 'soal-2')).toBe('intip');
+  });
+
+  it('salinan yang tidak lagi melayang kembali mengintip, tanpa peristiwa', () => {
+    const { keadaan, peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: true },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: false },
+    ]);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('intip');
+    expect(keadaan.balonMelayang['soal-1'] ?? false).toBe(false);
+    // Satu peristiwa saja: yang dari ketukan. Melayang atau tidak bukan gerakan pemain.
+    expect(peristiwa.filter((p) => p.nama === 'balon')).toHaveLength(1);
+  });
+
+  it('`balon_melayang` tidak pernah melahirkan peristiwa apa pun', () => {
+    const { peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: true },
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: false },
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: true },
+    ]);
+    expect(peristiwa.filter((p) => p.nama === 'balon')).toHaveLength(0);
+  });
+});
+
+describe('alur — batas 40 peristiwa balon per sesi (M3.7 D-2)', () => {
+  it('berhenti mencatat di 40, tanpa peristiwa "dibatasi" apa pun', () => {
+    const goyang: Aksi[] = [];
+    for (let n = 0; n < 60; n += 1) {
+      goyang.push({
+        jenis: 'sakelar_balon',
+        layar: 'soal-1',
+        keadaan: n % 2 === 0 ? 'turun' : 'intip',
+        cara: 'ketuk',
+      });
+    }
+    const { keadaan, peristiwa } = jalankan([...KE_SOAL_1, ...goyang]);
+    expect(BATAS_BALON).toBe(40);
+    expect(peristiwa.filter((p) => p.nama === 'balon')).toHaveLength(BATAS_BALON);
+    expect(peristiwa.filter((p) => p.nama === 'ketuk_dibatasi')).toHaveLength(0);
+    // Yang berhenti hanyalah pencatatannya: balonnya sendiri tetap bergerak.
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('intip');
+    expect(keadaan.balonDicatat).toBe(BATAS_BALON);
+  });
+
+  it('tidak memakai kuota 300 ketukan', () => {
+    const { keadaan } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'intip', cara: 'tarik' },
+    ]);
+    expect(keadaan.ketukan).toBe(0);
+    expect(keadaan.ketukDibatasi).toBe(false);
+  });
+
+  it('`urut` tetap satu deret bersama peristiwa lain', () => {
+    const { peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'intip', cara: 'tarik' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'tutup' },
+    ]);
+    expect(peristiwa.map((p) => p.urut)).toEqual(peristiwa.map((_, nomor) => nomor + 1));
   });
 });

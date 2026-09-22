@@ -89,6 +89,14 @@ const MEDAN_ISI = {
   ketuk: { layar: 'teks', uid: 'uid?', x: 'rasio', y: 'rasio', mati: 'boolean' },
   ketuk_dibatasi: { layar: 'teks', batas: 'angka' },
   gulir: { layar: 'teks', maks: 'rasio' },
+  /*
+   * M3.7 D-2: balon chat melayang di bawah keping. Didaftarkan di sini lebih
+   * dulu supaya daftar tertutup pengumpul dan daftar reducer tidak pernah
+   * berselisih walau sesaat — satu nama yang belum dikenal membuat pengumpul
+   * menolak SELURUH kelompok kiriman dengan 400, dan peristiwa lain di
+   * kelompok yang sama ikut hilang.
+   */
+  balon: { layar: 'teks', keadaan: 'teks', cara: 'teks' },
   akhir_kirim: {
     rating: 'angka?',
     terasa: 'teks?',

@@ -760,8 +760,13 @@ describe('kolektor — gulir bertingkat M3.4a (D-2)', () => {
       .filter((n) => (periksaPeristiwa({ nama: n }) as { galat?: string }).galat !== `nama peristiwa "${n}" tidak ada di daftar tertutup`)
       .sort();
     expect(dikenalPengumpul).toEqual([...NAMA_PERISTIWA].sort());
-    // Angka yang dibekukan: 17 nama, sama seperti sebelum M3.4a.
-    expect(NAMA_PERISTIWA).toHaveLength(17);
+    /*
+     * Angka yang dibekukan: 17 nama sampai M3.6, **18** sejak M3.7 — kontrak
+     * M3.7 mengizinkan tepat satu nama baru (`balon`) dan reviewer memasang
+     * pengumpulnya di server sebelum web di-deploy. Yang ke-19 harus merah.
+     */
+    expect(NAMA_PERISTIWA).toHaveLength(18);
+    expect([...NAMA_PERISTIWA]).toContain('balon');
   });
 
   it('maks di luar 0–1 tetap ditolak, jadi 50 dan 100 harus rasio', () => {

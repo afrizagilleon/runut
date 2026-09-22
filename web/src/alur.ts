@@ -50,6 +50,24 @@ export const NAMA_PERISTIWA = [
   'ketuk',
   'ketuk_dibatasi',
   'gulir',
+  /*
+   * M3.7 D-2 — satu-satunya nama yang ditambahkan milestone ini, dan
+   * penambahannya diizinkan kontrak secara tertulis.
+   *
+   * Uji duduk 22 Sep: orang menggulir bolak-balik jauh antara balon chat dan
+   * pilihan (gulir balik ke kartu 2,5x di soal 2). Jawabannya adalah balon
+   * melayang yang bisa ditarik — dan pemilik meminta satu hal lagi: "pastikan
+   * kita bisa melacak dia membuka, mengintip, atau tidak menggunakan sama
+   * sekali". Tanpa peristiwa ini, satu-satunya yang terbaca dari data adalah
+   * gulir balik yang turun, tanpa ada yang bisa mengatakan **karena apa**.
+   *
+   * Ia lahir per **perubahan keadaan**, bukan per gerakan jari, dan berhenti
+   * dicatat di `BATAS_BALON`. Pengumpul di server sungguhan memvalidasi daftar
+   * tertutup ini: nama ini harus sudah terpasang di sana SEBELUM web M3.7
+   * di-deploy, kalau tidak seluruh kelompok kiriman dijawab 400 dan peristiwa
+   * lain di kelompok yang sama ikut hilang (lihat `deploy/README.md`).
+   */
+  'balon',
   'tutup',
 ] as const;
 
@@ -81,6 +99,23 @@ export const MAKS_TEKS_AKHIR = 500;
  * setiap angka "uid teratas" tanpa ada yang menyadarinya.
  */
 export const BATAS_KETUK = 300;
+
+/** Balon chat melayang: mengintip di bawah keping, atau turun utuh (M3.7 D-1). */
+export type KeadaanBalon = 'intip' | 'turun';
+
+/** Bagaimana keadaan balon berubah: satu ketukan, atau satu tarikan jari. */
+export type CaraBalon = 'ketuk' | 'tarik';
+
+/**
+ * Peristiwa `balon` paling banyak yang dicatat satu sesi (M3.7 D-2).
+ *
+ * Sesudahnya **tidak** ada peristiwa "dibatasi" — pencatatannya berhenti, itu
+ * saja. Beda dengan `ketuk`, yang batasnya menandai sesi aneh dan karena itu
+ * pantas dilaporkan: balon yang digoyang empat puluh kali sudah menjawab
+ * pertanyaannya sendiri ("orang ini bermain dengan balonnya"), dan peristiwa
+ * ke-41 hanya menghabiskan kuota kiriman tanpa menambah satu pun informasi.
+ */
+export const BATAS_BALON = 40;
 
 export type Layar =
   | { jenis: 'pembuka' }
@@ -195,6 +230,31 @@ export interface Keadaan {
   sumberTerbuka: readonly string[];
   /** Baris "Arti istilah" sedang terbuka di layar ini (A-2). */
   istilahTerbuka: boolean;
+  /**
+   * Keadaan balon chat melayang **per layar** (M3.7 D-2); yang tidak ada di
+   * peta ini berarti masih mengintip, keadaan bawaannya.
+   *
+   * Ia hidup di sini dan bukan di DOM karena alasan yang sama dengan baris
+   * istilah (A-2): keadaan yang tinggal di komponen tidak bisa dibuktikan tes
+   * mana pun, dan tidak ada satu pun peristiwanya yang bisa dilahirkan dari
+   * tempat yang tidak dilewati reducer.
+   *
+   * Per layar, bukan satu nilai: pemain yang menurunkan balon di soal 1 tidak
+   * sedang mengatakan apa pun tentang soal 2.
+   */
+  balon: Record<string, KeadaanBalon>;
+  /**
+   * Salinan melayang sedang aktif di layar ini — yaitu balon aslinya sudah
+   * lewat lebih dari separuh ke atas keping (M3.7 D-1).
+   *
+   * Fakta TAMPILAN, seperti `opsiTerlihat`: pengamatnya di komponen hanya
+   * `dispatch`, dan tidak ada satu pun peristiwa yang lahir darinya. Ia ada di
+   * keadaan supaya "apakah balon melayang sekarang" bisa dirender dari fungsi
+   * yang sama yang dites, bukan dari `classList.toggle` di dalam pendengar.
+   */
+  balonMelayang: Record<string, boolean>;
+  /** Berapa `balon` yang sudah dilahirkan sesi ini; berhenti di `BATAS_BALON`. */
+  balonDicatat: number;
   akhir: JawabanAkhir;
   /** Sudah menekan Selesai. */
   akhirTerkirim: boolean;
@@ -257,6 +317,22 @@ export type Aksi =
    */
   | { jenis: 'sakelar_sumber'; fact_id: string; soal_id: string | null }
   | { jenis: 'sakelar_istilah'; soal_id: string }
+  /*
+   * Balon chat melayang (M3.7 D-2). Komponen mengirim keadaan TUJUAN, bukan
+   * "balik arah": tarikan jari sudah tahu ke mana ia jatuh (ambang sepertiga
+   * tinggi), dan ketukan sudah tahu ia membalik. Kalau reducer yang menebak
+   * arahnya, tarikan yang berakhir di tempat semula akan terbaca sebagai
+   * perubahan — dan melahirkan peristiwa untuk gerakan yang tidak mengubah apa
+   * pun di layar.
+   */
+  | { jenis: 'sakelar_balon'; layar: string; keadaan: KeadaanBalon; cara: CaraBalon }
+  /*
+   * Salinan melayang muncul atau menghilang. Fakta tampilan, tanpa peristiwa —
+   * persis seperti `opsi_terlihat`. Menghilang mengembalikan keadaannya ke
+   * mengintip, seperti patokan v3d: balon yang kembali ke alirannya tidak
+   * boleh menyimpan "turun" untuk kemunculan berikutnya.
+   */
+  | { jenis: 'balon_melayang'; layar: string; melayang: boolean }
   | { jenis: 'pilih'; soal_id: string; kunci: string }
   | { jenis: 'kunci_jawaban'; soal_id: string }
   | { jenis: 'lanjut' }
@@ -327,6 +403,9 @@ export function keadaanAwal({
     soal,
     sumberTerbuka: [],
     istilahTerbuka: false,
+    balon: {},
+    balonMelayang: {},
+    balonDicatat: 0,
     akhir: { rating: null, terasa: null, sumber_jawaban: null, teks: null },
     akhirTerkirim: false,
     minatDitekan: false,
@@ -338,6 +417,21 @@ export function keadaanAwal({
     urut: 0,
     tertutup: false,
   };
+}
+
+/**
+ * Keadaan balon melayang di sebuah layar (M3.7 D-2).
+ *
+ * Satu fungsi, dipakai reducer maupun komponen. Menuliskan `?? 'intip'` di dua
+ * tempat berarti dua bawaan yang bisa berselisih diam-diam.
+ */
+export function keadaanBalon(keadaan: Keadaan, layar: string): KeadaanBalon {
+  return keadaan.balon[layar] ?? 'intip';
+}
+
+/** Salinan melayang sedang aktif di layar ini (M3.7 D-1). */
+export function balonMelayang(keadaan: Keadaan, layar: string): boolean {
+  return keadaan.balonMelayang[layar] ?? false;
 }
 
 /** Soal yang sedang dibuka, atau `null` kalau layarnya bukan layar soal. */
@@ -786,6 +880,61 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       if (!sudahTerbuka) catat.tambah('istilah_buka', { soal_id: aksi.soal_id });
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...keadaan, istilahTerbuka: !sudahTerbuka, urut }, peristiwa };
+    }
+
+    /*
+     * Balon chat melayang berpindah keadaan (M3.7 D-2).
+     *
+     * Dua penjaga, dan keduanya soal kejujuran data:
+     *
+     * - Keadaan yang tidak berubah tidak melahirkan peristiwa. Tarikan jari
+     *   yang jatuh kembali ke tempat semula memang terjadi, tetapi ia bukan
+     *   "pemain menurunkan balon"; mencatatnya akan membuat setiap goyangan
+     *   terbaca sebagai pemakaian.
+     * - Sesudah `BATAS_BALON`, keadaannya tetap berubah — balonnya harus tetap
+     *   bergerak di bawah jari — tetapi pencatatannya berhenti. Diam, tanpa
+     *   peristiwa penanda: daftar nama peristiwa milestone ini hanya boleh
+     *   bertambah satu, dan satu-satunya yang boleh lahir adalah `balon`.
+     */
+    case 'sakelar_balon': {
+      if (keadaanBalon(keadaan, aksi.layar) === aksi.keadaan) return abaikan(keadaan);
+      const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      let berikut: Keadaan = {
+        ...keadaan,
+        balon: { ...keadaan.balon, [aksi.layar]: aksi.keadaan },
+      };
+      if (keadaan.balonDicatat < BATAS_BALON) {
+        catat.tambah('balon', {
+          layar: aksi.layar,
+          keadaan: aksi.keadaan,
+          cara: aksi.cara,
+        });
+        berikut = { ...berikut, balonDicatat: keadaan.balonDicatat + 1 };
+      }
+      const { peristiwa, urut } = catat.hasil;
+      return { keadaan: { ...berikut, urut }, peristiwa };
+    }
+
+    /*
+     * Salinan melayang muncul atau menghilang (M3.7 D-1). Fakta tampilan:
+     * tidak ada peristiwa, sama seperti `opsi_terlihat`. Yang menghilang
+     * kembali mengintip — patokan v3d melepas kelas `turun` begitu salinannya
+     * tidak aktif, dan tanpa itu balon yang pernah diturunkan akan muncul
+     * kembali sudah terbentang, menutupi bacaan yang justru sedang dibuka.
+     */
+    case 'balon_melayang': {
+      if (balonMelayang(keadaan, aksi.layar) === aksi.melayang) return abaikan(keadaan);
+      const balon = aksi.melayang
+        ? keadaan.balon
+        : { ...keadaan.balon, [aksi.layar]: 'intip' as KeadaanBalon };
+      return {
+        keadaan: {
+          ...keadaan,
+          balon,
+          balonMelayang: { ...keadaan.balonMelayang, [aksi.layar]: aksi.melayang },
+        },
+        peristiwa: [],
+      };
     }
 
     case 'pilih': {
