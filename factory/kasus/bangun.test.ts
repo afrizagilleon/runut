@@ -27,6 +27,16 @@ describe('berkas kasus yang ikut repo', () => {
     expect(kasus.disclaimer).toHaveLength(3);
   });
 
+  it('membawa kalimat pembuka v3.5 dan lama main yang dibaca baris meta (M3.5 D-1)', () => {
+    const kasus = muatBerkas();
+    expect(kasus.pembuka.kalimat).toBe(
+      'Teman-temanmu di grup lagi ngomongin satu saham yang harganya melonjak. ' +
+        'Cek omongan mereka ke dokumen resminya.',
+    );
+    expect(kasus.pembuka.kalimat.length).toBeLessThanOrEqual(120);
+    expect(kasus.pembuka.menit).toBe(5);
+  });
+
   it('membawa delapan fakta terlihat, yaitu gabungan seluruh kartu (D-1)', () => {
     const kasus = muatBerkas();
     expect(kasus.fakta_terlihat).toHaveLength(8);

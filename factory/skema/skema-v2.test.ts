@@ -160,9 +160,25 @@ describe('M2a D-1 — skema generasi kedua', () => {
     expect(periksaKasus(muatKasus())).toEqual([]);
   });
 
+  /*
+   * INV-A menjaga berkas kasus dari perubahan yang **tidak diminta siapa pun**:
+   * aturan baru, medan baru, urutan kunci yang bergeser. Ia bukan larangan
+   * mengubah isi kasus ketika pemiliknya memang memutuskan begitu.
+   *
+   * SHA di bawah diperbarui satu kali di M3.5 (D-1), dan hanya `pembuka` yang
+   * berubah: kalimat layar pertama diganti sesudah uji duduk 22 Sep, dan medan
+   * `menit` lahir untuk baris meta. Diff-nya dua baris, ditempel di ledger.
+   * Perubahan lain di berkas ini tetap merah di sini.
+   */
   it('INV-A: berkas kasus yang sedang dimainkan tetap byte-identik', () => {
     const sha = createHash('sha256').update(readFileSync(BERKAS_KASUS)).digest('hex');
-    expect(sha).toBe('76de546d4b1b859308578ac8f464ae4fa035f441324b8e5b999875effbc176bc');
+    expect(sha).toBe('62ebd0ccff3e25eea7257a9fb819a3cd6c75aba017d5fbd3d86340fb36e3af36');
+  });
+
+  it('M3.5 D-1: yang berubah di berkas kasus hanya blok pembuka', () => {
+    const kasus = muatKasus();
+    expect(Object.keys(kasus.pembuka).sort()).toEqual(['kalimat', 'menit']);
+    expect(kasus.pembuka.menit).toBe(5);
   });
 
   it('tidak menulis medan keparahan ke berkas kasus jalur lama', () => {

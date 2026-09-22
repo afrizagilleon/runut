@@ -294,6 +294,19 @@ export interface PesanTeman {
  */
 export interface Pembuka {
   kalimat: string;
+  /**
+   * Kira-kira berapa menit kasus ini dimainkan (M3.5 D-1), dipakai baris meta
+   * di bawah tombol "Mulai kasus": *"3 soal · sekitar 5 menit · tanpa akun,
+   * tanpa skor"*.
+   *
+   * Opsional, supaya berkas kasus yang tidak menuliskannya tetap sah — baris
+   * metanya lalu menghilangkan potongan itu, bukan menebak angkanya. Kalau
+   * ditulis: bilangan bulat 1–30 (validator).
+   *
+   * Angkanya datang dari data, bukan dari selera: median durasi penyelesai
+   * alpha ±5–10 menit, jadi DADA menulis 5.
+   */
+  menit?: number;
 }
 
 export interface Pembukaan {

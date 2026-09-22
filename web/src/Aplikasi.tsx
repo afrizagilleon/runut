@@ -39,6 +39,7 @@ import { perintahRiwayat } from './riwayat.ts';
 import { isiSumber, type Emiten } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
 import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
+import { barisMeta } from './pembuka.ts';
 
 /**
  * Komponen hanya `dispatch` dan merender (D-5).
@@ -544,6 +545,16 @@ function LayarPembuka({
         >
           Mulai kasus
         </button>
+        {/*
+          D-1: satu baris keterangan, bukan kalimat kedua. Ia hidup DI DALAM
+          bilah bawah yang `fixed`, jadi ia terbaca tanpa menggulir — dan
+          pertanyaan "ini apa, berapa soal, tanpa apa" terjawab di tempat yang
+          sama dengan keputusan "mulai atau tidak". Isinya fungsi murni yang
+          dites; komponen hanya menempatkannya.
+        */}
+        <p className="meta baris-meta" data-uid="meta-pembuka">
+          {barisMeta(kasus)}
+        </p>
       </div>
     </section>
   );

@@ -32,6 +32,15 @@ const MAKS_KEPALA = 36;
 /* --- v3: pesan teman, judul pertanyaan, petunjuk (D-2) ------------------- */
 /** Kalimat layar pertama; satu kalimat, bukan paragraf. */
 const MAKS_KALIMAT_PEMBUKA = 160;
+/**
+ * Lama main yang boleh dijanjikan baris meta layar pertama (M3.5 D-1).
+ *
+ * Batas bawah 1: "sekitar 0 menit" bukan janji, ia salah ketik. Batas atas 30:
+ * lebih dari itu bukan kasus singkat lagi, dan pemain yang membaca angkanya
+ * memutuskan lanjut atau tidak berdasarkan janji itu.
+ */
+const MIN_MENIT = 1;
+const MAKS_MENIT = 30;
 /** Pesan obrolan: panjang yang masih terbaca sekali lihat di 360 px. */
 const MAKS_PESAN = 220;
 /** Judul pertanyaan satu baris. */
@@ -284,6 +293,17 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
       `Kalimat layar pertama ${String(teksPolos(kasus.pembuka.kalimat).length)} karakter, ` +
         `lebih dari ${String(MAKS_KALIMAT_PEMBUKA)}.`,
     );
+  }
+  const menit = kasus.pembuka.menit;
+  if (menit !== undefined) {
+    if (!Number.isInteger(menit) || menit < MIN_MENIT || menit > MAKS_MENIT) {
+      tambah(
+        masalah,
+        'PEMBUKA_MENIT',
+        `Lama main layar pertama ${String(menit)} bukan bilangan bulat ` +
+          `${String(MIN_MENIT)}–${String(MAKS_MENIT)}.`,
+      );
+    }
   }
 
   // --- fakta yang terlihat pemain ---------------------------------------

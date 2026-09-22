@@ -527,6 +527,54 @@ describe('layar pertama', () => {
     kasus.pembuka.kalimat = 'Harga naik 22 kali lipat. Siapa yang betul?';
     expect(kode(kasus)).toContain('ANGKA_TANPA_FACT_ID');
   });
+
+  /*
+   * `menit` (M3.5 D-1): berapa lama kasus ini kira-kira dimainkan, dipakai
+   * baris meta di bawah tombol "Mulai kasus". Ia opsional — berkas kasus yang
+   * tidak menuliskannya tetap sah — tetapi kalau ditulis, ia harus bilangan
+   * bulat 1–30. Angka yang mustahil di situ bukan salah ketik yang tidak
+   * berbahaya: ia janji kepada pemain, dan pemain memutuskan lanjut atau tidak
+   * berdasarkan janji itu.
+   */
+  it('menerima layar pertama tanpa medan menit — ia opsional', () => {
+    expect(kode(kasusMinimal())).not.toContain('PEMBUKA_MENIT');
+  });
+
+  it('menolak menit nol dan menit negatif', () => {
+    for (const nilai of [0, -1, -30]) {
+      const kasus = kasusMinimal();
+      kasus.pembuka.menit = nilai;
+      expect(kode(kasus), String(nilai)).toContain('PEMBUKA_MENIT');
+    }
+  });
+
+  it('menolak menit di atas 30', () => {
+    const kasus = kasusMinimal();
+    kasus.pembuka.menit = 31;
+    expect(kode(kasus)).toContain('PEMBUKA_MENIT');
+  });
+
+  it('menolak menit yang bukan bilangan bulat', () => {
+    for (const nilai of [5.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      const kasus = kasusMinimal();
+      kasus.pembuka.menit = nilai;
+      expect(kode(kasus), String(nilai)).toContain('PEMBUKA_MENIT');
+    }
+  });
+
+  it('menerima 1 dan 30 — batasnya benar-benar di situ', () => {
+    for (const nilai of [1, 5, 30]) {
+      const kasus = kasusMinimal();
+      kasus.pembuka.menit = nilai;
+      expect(kode(kasus), String(nilai)).not.toContain('PEMBUKA_MENIT');
+    }
+  });
+
+  it('menyebut angkanya di pesan masalah, bukan hanya kodenya', () => {
+    const kasus = kasusMinimal();
+    kasus.pembuka.menit = 99;
+    expect(pesan(kasus)).toContain('99');
+  });
 });
 
 describe('layar pembukaan', () => {

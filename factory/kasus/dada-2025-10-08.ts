@@ -65,9 +65,22 @@ export const DADA_2025_10_08: DefinisiKasus = {
    * tidak bisa dibuka adalah janji kosong.
    */
   pembuka: {
+    /*
+     * Diganti di M3.5 (D-1). Uji duduk 22 Sep: ditanya "tadi aku minta kamu
+     * ngapain?", penguji menjawab "cari tahu orang ngerti saham atau enggak" —
+     * "grup obrolanmu" terbaca sebagai kata benda tentang aplikasi, bukan
+     * sebagai orang. "Teman-temanmu di grup lagi ngomongin" menyebut orangnya
+     * lebih dulu, dan orang itulah yang omongannya dicek.
+     */
     kalimat:
-      'Grup obrolanmu lagi ramai soal satu saham yang harganya melonjak. ' +
+      'Teman-temanmu di grup lagi ngomongin satu saham yang harganya melonjak. ' +
       'Cek omongan mereka ke dokumen resminya.',
+    /*
+     * Median durasi penyelesai di data alpha ±5–10 menit; baris meta menulis
+     * "sekitar 5 menit" supaya janjinya tidak lebih panjang daripada
+     * kenyataannya.
+     */
+    menit: 5,
   },
 
   // Gabungan seluruh `kartu`; validator menolak kalau tidak sama persis.

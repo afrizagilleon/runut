@@ -56,6 +56,16 @@ test('E-10 satu permainan penuh, tanpa galat konsol, dengan tangkapan layar', as
   const tombolMulai = page.getByRole('button', { name: LABEL_MULAI });
   await expect(tombolMulai).toBeVisible();
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Kita mundur ke');
+  /*
+   * M3.5 D-1. Jumlah soalnya dibaca dari berkas kasus, bukan ditulis di tes:
+   * angka yang disalin akan berselisih diam-diam begitu kasus berikutnya punya
+   * empat soal, dan yang sedang dijaga justru "baris itu menyebut data".
+   */
+  const meta = page.locator('[data-uid="meta-pembuka"]');
+  await expect(meta, 'baris meta layar pertama harus terlihat tanpa menggulir').toBeVisible();
+  await expect(meta).toContainText(`${String(kasus.soal.length)} soal`);
+  await expect(meta).toContainText(`sekitar ${String(kasus.pembuka.menit ?? 0)} menit`);
+  await expect(meta).toContainText('tanpa akun, tanpa skor');
   await simpanLayar(page, 1, 'layar-pertama');
 
   await mulaiKasus(page);
