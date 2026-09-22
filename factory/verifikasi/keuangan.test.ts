@@ -1307,6 +1307,49 @@ describe('R11b — satu penyebut untuk seluruh rantai', () => {
     expect(hasilSeri?.alasan).toContain('yang lembarnya paling sedikit dipilih');
   });
 
+  it('membandingkan batas selang secara eksak, bukan lewat pembagian yang dibulatkan', () => {
+    // Selang satu sisi laporan selebar kira-kira sepersepuluh ribu penyebutnya.
+    // Kalau perbandingan batasnya dibulatkan lebih kasar daripada itu, irisan
+    // kelompok salah dan titik tengahnya jatuh di luar sebagian selang.
+    const beredar = 889_863_981;
+    const persis = (waktu: string, sebelum: number, sesudah: number) =>
+      laporan({
+        laporan_id: 'lap-' + waktu,
+        dilaporkan_pada: waktu,
+        sumber_dokumen: undefined,
+        sebelum,
+        sesudah,
+        persen_sebelum: Number(((sebelum / beredar) * 100).toFixed(2)),
+        persen_sesudah: Number(((sesudah / beredar) * 100).toFixed(2)),
+      });
+    const lain = beredar + 445_000; // 0,05% lebih banyak
+    const persisLain = (waktu: string, sebelum: number, sesudah: number) =>
+      laporan({
+        laporan_id: 'lap-' + waktu,
+        dilaporkan_pada: waktu,
+        sumber_dokumen: undefined,
+        sebelum,
+        sesudah,
+        persen_sebelum: Number(((sebelum / lain) * 100).toFixed(2)),
+        persen_sesudah: Number(((sesudah / lain) * 100).toFixed(2)),
+      });
+    const pilihan = penyebutRantai(
+      ktx({
+        laporan: [
+          persis('2025-09-30T19:55:29', 543_842_937, 543_350_037),
+          persis('2025-09-30T20:31:05', 542_487_737, 533_288_237),
+          persisLain('2025-10-14T07:44:00', 543_842_937, 543_350_037),
+          persisLain('2025-10-15T07:44:00', 542_487_737, 533_288_237),
+        ],
+      }),
+    );
+    // Dua kelompok yang selangnya terpisah, masing-masing empat sisi. Satu
+    // kelompok saja yang boleh menang; perbandingan yang dibulatkan lebih kasar
+    // daripada lebar selangnya akan menyatukan kedelapannya.
+    expect(pilihan?.dari).toBe(8);
+    expect(pilihan?.didukung).toBe(4);
+  });
+
   it('memberi jawaban yang sama pada dua kali panggilan (INV-C)', () => {
     const buat = () =>
       ktx({
