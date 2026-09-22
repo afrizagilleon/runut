@@ -183,6 +183,21 @@ Bagian sebelum `|` adalah `fact_id`, bagian sesudahnya adalah teks yang dilihat 
 dan bisa diketuk untuk membuka sumbernya. Angka yang berdiri sendiri tanpa rujukan
 membuat validator menolak kasus itu (INV-4).
 
+**Yang ditautkan adalah angkanya, bukan seluruh klausanya.** Teks yang tampil
+di dalam sebuah rujukan paling panjang 36 karakter (`RUJUKAN_PANJANG`), dan
+batas itu bukan kerapian: `Teks.tsx` membungkus tautan beserta tanda bacanya di
+dalam `.tanpa-putus` supaya titik sesudah tautan tidak terlempar ke baris
+berikutnya, sehingga label rujukan **tidak bisa putus baris sama sekali**. Satu
+label 64 karakter di layar pembukaan ULTJ membuat halaman meluap mendatar
+(`scrollWidth` 568 melawan `clientWidth` 360) dan ketukan mendarat di tempat
+yang salah — terukur, bukan dikira.
+
+**Tanda tebal `**…**` tidak diuraikan siapa pun.** Tidak ada satu baris pun di
+`web/src` yang mengubahnya menjadi huruf tebal, jadi bintangnya terbaca pemain
+apa adanya. Validator menolaknya di seluruh teks yang dirender
+(`TEKS_DITEBALKAN`), bukan hanya di pesan teman dan opsi. Yang ditebalkan di
+layar ditentukan **medannya** — teks di dalam rujukan, dan `penutup.kepala`.
+
 Dua pengecualian, keduanya penanda yang bukan `fact_id`:
 
 - **`misal`** — angka andaian yang diciptakan soal itu sendiri, misalnya
@@ -236,8 +251,9 @@ Baru di versi 3, tentang pesan teman dan judul pertanyaan:
 Baru di M3.5, tentang lama main yang dijanjikan layar pertama:
 `PEMBUKA_MENIT`
 
-Baru di M4, tentang pesan penutup kasus:
-`PENUTUP_KOSONG` · `PENUTUP_BERTAUT` · `PENUTUP_DITEBALKAN` · `PENUTUP_PANJANG`
+Baru di M4, tentang pesan penutup kasus dan teks yang dirender apa adanya:
+`PENUTUP_KOSONG` · `PENUTUP_BERTAUT` · `PENUTUP_DITEBALKAN` · `PENUTUP_PANJANG` ·
+`RUJUKAN_PANJANG` · `TEKS_DITEBALKAN`
 
 Dihapus di versi 3 bersama medannya: `PEMBUKA_ATURAN` ("layar pertama harus
 tepat tiga baris aturan").

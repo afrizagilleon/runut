@@ -19,6 +19,7 @@ Dibangun untuk Sectors Hackathon 2026, Track 01 (AI Agents & Assistants). Protot
 ```bash
 npm install
 npm run build:case -- dada-2025-10-08   # bangun berkas kasus dari data (butuh .cache/)
+npm run build:case -- ultj-2026-05-04
 npm run dev                             # pemain di http://localhost:5173
 ```
 
@@ -28,17 +29,40 @@ sudut membulat, dua tulisan kapital, dan tidak ada tombol utama yang tampil mati
 
 Berkas kasus sudah ikut di repo, jadi `npm run dev` jalan tanpa `build:case`.
 
+## Kasus mana yang dimainkan
+
+Ada dua kasus sekarang, dan pemain tidak memilih sendiri:
+
+| kasus | tanggal beku | pelajarannya |
+|---|---|---|
+| `dada-2025-10-08` | 8 Oktober 2025 | harga melonjak sementara pemilik besarnya menjual |
+| `ultj-2026-05-04` | 4 Mei 2026 | dividen tiap tahun, orang dalam membeli, dan tanggal ex |
+
+- **Kunjungan pertama:** satu kasus dipilih acak seragam.
+- **Kunjungan berikutnya:** kasus yang **belum** dimainkan dari peramban itu.
+  Daftarnya disimpan di `localStorage` (`kasus_dimainkan`). Kalau semuanya sudah
+  dimainkan, kasusnya acak lagi.
+- **"Mau coba kasus lain"** di layar terima kasih **langsung membuka** kasus
+  berikutnya yang belum dimainkan — sesi baru, pengunjung yang sama. Kalau tidak
+  ada lagi, barulah pesan penutup kasus itu tampil.
+- **`?kasus=<id>`** memaksa satu kasus, untuk juri dan untuk uji. Nilai yang
+  tidak dikenal diabaikan diam-diam, seperti `?k=`.
+
+Label tiap kasus adalah **peristiwanya**, bukan penilaian atas sahamnya: tidak
+ada kata "sehat", "bagus", atau "buruk" di teks kasus mana pun, dan itu dijaga
+tes.
+
 ## Mesin verifikasi
 
 Produk ini menjanjikan satu hal: setiap angka di kartu sudah diperiksa. Yang
 memeriksanya adalah sekumpulan aturan yang berjalan **tanpa LLM**, ditulis di
 `docs/aturan-verifikasi.md`.
 
-Ada dua himpunan. Himpunan pertama (R1–R10) membangun berkas kasus yang
-dimainkan orang. Himpunan kedua menambahkan aturan yang lahir dari uji lawan:
-satu agent mengusulkan aturan baru, agent lain berusaha mematahkannya dan
-menulis ulang tiap aturan dari nol. Himpunan kedua berjalan atas **seluruh**
-emiten di `.cache/sectors/`, bukan atas satu kasus:
+Ada dua himpunan. Himpunan pertama (R1–R10) membangun kasus DADA. Himpunan
+kedua (35 aturan) membangun kasus ULTJ **dan** berjalan atas seluruh gudang. Himpunan kedua lahir dari uji lawan: satu agent
+mengusulkan aturan baru, agent lain berusaha mematahkannya dan menulis ulang
+tiap aturan dari nol. Ia berjalan atas **seluruh** emiten di `.cache/sectors/`,
+bukan atas satu kasus:
 
 ```bash
 npm run verifikasi:gudang
@@ -54,6 +78,14 @@ berapa yang merah, dan tiap temuan punya berat: `konflik` menolak kartu,
 `peringatan` menandai yang janggal, `catatan` adalah label atau keterbatasan.
 Fakta yang datanya tidak cukup untuk diputuskan berstatus `TIDAK_LENGKAP` —
 bukan konflik, dan bukan "belum diperiksa".
+
+Sebuah kasus **diverifikasi dengan dokumen yang sudah terbit pada tanggal
+bekunya**, bukan dengan seluruh data yang ada hari ini. Alasannya sama dengan
+alasan kasus itu ada: yang ditanyakan adalah apa yang bisa dibaca pada hari itu.
+Satu laporan yang terbit tiga minggu sesudah tanggal beku bisa membuat kartu
+yang pada hari itu tidak punya cacat apa pun tiba-tiba gugur — dan pemain
+kehilangan kartu karena sesuatu yang belum ada di dokumen mana pun. Yang
+terjadi sesudah tanggal beku tetap muncul, di layar pembukaan.
 
 Kelompok terakhir yang masuk menjawab pertanyaan yang lain: **kalau perusahaan
 melakukan sesuatu — membagi dividen, menerbitkan saham baru, memecah saham —
@@ -73,9 +105,11 @@ npm run e2e:lihat    # sama, tetapi kelihatan
 ```
 
 `npm run e2e` menyalakan servernya sendiri di port miliknya (8797, 5183, 4183,
-4184) dan mematikannya lagi, lalu memainkan satu kasus penuh terhadap **build
-produksi dengan pengumpul peristiwa yang sungguhan**. Tiap layar disimpan sebagai
-PNG di `.cache/e2e/layar/`, supaya bisa dilihat tanpa membuka browser.
+4184) dan mematikannya lagi, lalu memainkan **tiap kasus** penuh terhadap
+**build produksi dengan pengumpul peristiwa yang sungguhan**. Tiap layar
+disimpan sebagai PNG di `.cache/e2e/layar/<proyek>/` (kasus kedua dan
+seterusnya di anak foldernya sendiri), supaya bisa dilihat tanpa membuka
+browser.
 
 Ia ada karena tes unit tidak bisa melihat apa yang dilihat pemain: repo ini
 sengaja tanpa jsdom, dan peramban tanpa frame tidak menjalankan
@@ -321,7 +355,7 @@ sesi. Berkas mentahnya tidak pernah diubah.
 | `alat/` | Perkakas: ringkasan data alpha menjadi tabel Markdown, dan gate `periksa:desain` |
 | `deploy/` | Berkas dan skrip untuk menerbitkan alpha; tidak pernah dijalankan otomatis |
 | `e2e/` | Uji ujung-ke-ujung di Chromium sungguhan; lihat `docs/uji-e2e.md` |
-| `docs/` | Catatan arsitektur, aturan verifikasi, dan sumber |
+| `docs/` | Catatan arsitektur, aturan verifikasi, isi tiap kasus, dan sumber |
 
 ## Sumber data
 

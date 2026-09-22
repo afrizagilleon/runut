@@ -82,4 +82,4 @@ dibaca dari data (`kasus.soal.length`), menitnya dari `kasus.pembuka.menit`.
 
 Seperti v2, dengan dua perubahan:
 - Kalimat di bawah tombol Selesai: *Kami mencatat apa yang diketuk dan seberapa jauh layar digulir, dan menyimpan satu nomor acak di browsermu supaya tahu kalau kamu kembali. Bukan nama, bukan akun, bukan alamat IP; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak dicatat, kecuali kotak masukan ini.* Layar terima kasih: "Jawabanmu tercatat tanpa nama dan tanpa akun." Klaim "tanpa cookie" tidak dipakai di mana pun: nomor acak itu memang bukan cookie, tetapi janji tidak boleh terdengar lebih bersih dari kenyataannya.
-- Pesan "Mau coba kasus lain": **Tidak semua saham seperti ini.** Kasus berikutnya adalah perusahaan yang sehat — sedang kami siapkan. Selamat belajar membaca data.
+- Pesan penutup (M4): **Tidak semua saham seperti ini.** Kasus berikutnya: perusahaan yang membagi dividen tiap tahun. Selamat belajar membaca data, folks. Sejak M4 ia tinggal di medan `penutup` berkas kasus, bukan di kode komponen, dan hanya tampil ketika tidak ada lagi kasus yang belum dimainkan — kalau masih ada, tombol "Mau coba kasus lain" langsung membukanya.

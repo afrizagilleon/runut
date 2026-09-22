@@ -144,7 +144,7 @@ Judul: **Tiga pertanyaan singkat**. Anak judul: "Semuanya boleh dilewati. Di baw
 
 Semua opsional; tombol **Selesai** selalu aktif. Di bawahnya satu tombol lagi: **"Mau coba kasus lain"** — untuk alpha ia menampilkan pesan di bawah ini, dan ketukannya dicatat sebagai ukuran minat.
 
-> **Tidak semua saham seperti ini.** Kasus berikutnya adalah perusahaan yang sehat — sedang kami siapkan. Selamat belajar membaca data, folks.
+> **Tidak semua saham seperti ini.** Kasus berikutnya: perusahaan yang membagi dividen tiap tahun. Selamat belajar membaca data, folks.
 
 (Sengaja tanpa "happy trading/investing": produk ini tidak pernah mengajak bertransaksi, INV-5.)
 

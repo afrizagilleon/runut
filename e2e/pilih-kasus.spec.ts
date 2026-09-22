@@ -19,6 +19,7 @@ import {
   mulaiKasus,
   penandaBaru,
   pilihOpsi,
+  tandaiDimainkan,
   tungguSoal,
 } from './bantu/main.ts';
 import { mulaiDenganPenanda, peristiwaSesi, tungguSatuSesi, tungguSesi } from './bantu/peristiwa.ts';
@@ -50,29 +51,39 @@ function kasusSesi(sesi: string): string {
   return awal?.kasus_id ?? '';
 }
 
-test('E-20a `?kasus=` memaksa kasus itu, dan kasus_id-nya sampai ke pengumpul', async ({
+for (const kasus_id of ID_KASUS) {
+test(`E-20a [${kasus_id}] \`?kasus=\` memaksa kasus itu, dan kasus_id-nya sampai ke pengumpul`, async ({
   page,
 }) => {
   const galat = awasiGalat(page);
   const penanda = penandaBaru();
-  const kasus = bacaKasus();
 
-  await buka(page, penanda, kasus.kasus_id);
+  /*
+   * Kasus yang diminta ditandai **sudah dimainkan** lebih dulu, dan itu bukan
+   * kerapian: kalau `?kasus=` diabaikan, pemilihan acak akan menghindari kasus
+   * yang sudah dimainkan dan mendarat di kasus yang lain — dengan pasti, bukan
+   * dengan lemparan koin. Tanpa penanda ini, tes ini tetap hijau separuh waktu
+   * atas aplikasi yang sudah berhenti menghormati `?kasus=` (terukur waktu
+   * sabotase T-04).
+   */
+  await tandaiDimainkan(page, [kasus_id]);
+  await buka(page, penanda, kasus_id);
   await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
 
   const sesi = await tungguSatuSesi(penanda);
-  expect(kasusSesi(sesi), `?kasus=${kasus.kasus_id} harus menentukan kasus yang dimainkan`).toBe(
-    kasus.kasus_id,
+  expect(kasusSesi(sesi), `?kasus=${kasus_id} harus menentukan kasus yang dimainkan`).toBe(
+    kasus_id,
   );
 
   expect(
     await dimainkanDiPeramban(page),
     'kasus yang dibuka harus tercatat di localStorage; tanpa itu kunjungan berikutnya mengulanginya',
-  ).toEqual([kasus.kasus_id]);
+  ).toEqual([kasus_id]);
 
   expect(galat.kode(), 'tidak boleh ada galat konsol').toEqual([]);
   expect(gagalYangBerarti(galat.permintaanGagal())).toEqual([]);
 });
+}
 
 test('E-20b `?kasus=` yang tak dikenal DIABAIKAN — kasus sungguhan tetap terbuka', async ({
   page,

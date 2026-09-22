@@ -71,7 +71,8 @@ Semuanya ke `.cache/e2e/`, yang sudah di-gitignore:
 
 | jalur | isi |
 |---|---|
-| `.cache/e2e/layar/<proyek>/NN-nama.png` | tangkapan layar tiap tahap permainan |
+| `.cache/e2e/layar/<proyek>/NN-nama.png` | tangkapan layar tiap tahap permainan (kasus bawaan) |
+| `.cache/e2e/layar/<proyek>/<kasus>/NN-nama.png` | sama, untuk kasus lain — mis. `ultj/` |
 | `.cache/e2e/laporan/` | laporan HTML |
 | `.cache/e2e/hasil/` | jejak dan lampiran tes yang gagal |
 | `.cache/e2e/data/` | berkas JSONL pengumpul uji (dikosongkan tiap putaran) |
@@ -93,7 +94,7 @@ dilihat browser tanpa membuka browser.
 | `dev` | `vite` dev (5183) | 360 × 640 sentuh | E-01, E-06a, E-10 |
 | `tanpa-pengumpul` | preview 4184 | 360 × 640 | E-08 (tanpa) |
 | `lebar` | build + pengumpul | 1280 × 800, tanpa sentuh | E-10, E-12d, E-13 |
-| `alpha` | **hanya bila `E2E_ALPHA_URL` diset** | 360 × 640 sentuh | E-10 dengan `?k=uji` |
+| `alpha` | **hanya bila `E2E_ALPHA_URL` diset** | 360 × 640 sentuh | E-10 dengan `?k=uji`, kasus bawaan saja |
 
 ## Cacat yang pernah lolos → tes yang menjaganya → sabotase yang membuktikannya
 
@@ -138,6 +139,11 @@ dilihat browser tanpa membuka browser.
 | **M3.6-4** Sobekan kalender "kurang terasa" | `sobekan.spec.ts` E-05 | `gaya.css`: `animation-delay` sobekan dijadikan 2.000 ms (janji animasi 2.700 ms > batas 1.750 ms) |
 | **M3.6-5** "rantai laporan kepemilikan" terdengar seperti rantai komando; "sepuluh aturan" ditulis mati padahal mesin V2 punya 31 | `jejak-verifikasi.spec.ts` E-18 | `jejak.ts`: angka ditulis mati lagi · kata "rantai" dikembalikan · ringkasan lipatan memakai angka lain daripada kalimat pembukanya |
 | **F-M36-1** "Langsung ke ringkasan" mendarat 176 px meleset ketika diketuk selagi kalender masih menutup ruangnya | `permainan.spec.ts` E-10 (proyek `lebar`) | `Aplikasi.tsx`: guliran kedua di `gulirKeSasaran()` dihapus |
+| Halaman meluap mendatar karena satu label rujukan tidak bisa putus baris; Chromium lalu melebarkan layout viewport dan ketukan mendarat di elemen lain (E-10 menggantung 90 detik) | `tata-letak.spec.ts` E-12a untuk tiap kasus | `factory/kasus/ultj-2026-05-04.ts`: kembalikan label rujukan sepanjang satu klausa · `validator.ts`: `MAKS_LABEL_RUJUKAN` dinaikkan melewati panjang label itu |
+| Pemain yang sudah main satu kasus disodori kasus yang sama lagi | `pilih-kasus.spec.ts` E-20a, E-20e, E-20f | `Aplikasi.tsx`: `catatDimainkan` tidak menulis apa-apa · `pilih-kasus.ts`: `pilihKasus` mengabaikan daftar yang sudah dimainkan · `kasusBerikut` selalu `null` |
+| `?kasus=` tidak dihormati, sehingga seluruh rangkaian mengukur kasus yang salah | `pilih-kasus.spec.ts` E-20a (tiap kasus), `identitas.spec.ts` E-09b | `Aplikasi.tsx`: `paksa: kodeKasus(...)` menjadi `paksa: null` |
+| Pesan penutup ditulis mati di kode, jadi tiap kasus menutup dengan janji yang sama | `pilih-kasus.spec.ts` E-20d | `Aplikasi.tsx`: kalimat penutup lama dikembalikan ke JSX |
+| Peristiwa `minat_kasus_lain` hilang ketika kasus berganti di ketukan yang sama | `pilih-kasus.spec.ts` E-20e (tes meja: `bungkus.test.ts`) | `bungkus.ts`: `kasusBaru` membuang antrean lama |
 | **M3.7-1** Pesan teman hilang dari layar justru ketika pemain menjawab: gulir balik ke kartu 2,5× di soal 2 (uji duduk 22 Sep) | `balon-melayang.spec.ts` E-19a–g | `Aplikasi.tsx`: ketukan tidak men-dispatch `sakelar_balon` (5 dari 7 merah) · ambang `AMBANG_BALON_MELAYANG` 0,5 → 0,001 (E-19e) · `INTIP_BALON_PX` 28 → 4 (E-19a) · tarikan tidak pernah melewati ambang (E-19c) · `gaya.css`: `overflow: hidden` pada `.melayang` dihapus (E-19a) · aturan `prefers-reduced-motion` balon dihapus (E-19f) |
 
 ## Menambah tes ketika cacat baru ditemukan
@@ -173,6 +179,13 @@ dilihat browser tanpa membuka browser.
 - **Ketukan sungguhan di proyek sentuh:** `ketuk()` memakai `locator.tap()`,
   bukan `click()`. Cacat kaki lembar lolos justru karena yang diuji "ketuk
   sekali", bukan jari yang mengetuk dua kali.
+- **Tiap tes menyebut kasusnya.** Sejak ada lebih dari satu kasus, `/` memilih
+  **acak**, dan seluruh rangkaian ini menyandingkan apa yang tampil di layar
+  dengan isi berkas kasus. `buka()` karena itu menambahkan
+  `&kasus=dada-2025-10-08` secara bawaan; `bukaTanpaKasus()` ada untuk tes yang
+  justru ingin melihat keacakannya, dan `tandaiDimainkan()` untuk tes yang
+  butuh keadaan akhir yang pasti (pesan penutup hanya tampil ketika tidak ada
+  lagi kasus yang menunggu).
 - **Sesi dikenali lewat penanda.** Tiap tes membuka `/?k=<8 karakter acak>`,
   lalu `tungguSatuSesi(penanda)` menemukan id sesinya dari peristiwa `mulai` di
   berkas pengumpul. Karena itu tes boleh berjalan paralel.
