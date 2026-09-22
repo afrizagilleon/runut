@@ -113,6 +113,7 @@ describe('M2a D-1 — skema generasi kedua', () => {
     const baru = SEMUA_KODE_ATURAN.filter((k) => !SEMUA_ATURAN.includes(k));
     expect(baru).toEqual([
       'R11a',
+      'R11b',
       'R12',
       'R13',
       'R14',

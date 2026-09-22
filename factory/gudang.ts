@@ -39,6 +39,9 @@ const KALIMAT_AWAM: Record<string, string> = {
   R9: 'Kami menolak kartu kalau angka di teks laporan berbeda dari angka di kolomnya sendiri.',
   R10: 'Kami menandai hari yang tidak mencatat satu lembar pun berpindah tangan.',
   R11a: 'Kami menolak kartu kalau dua persen di dalam satu laporan tidak mungkin berasal dari jumlah saham beredar yang sama.',
+  R11b:
+    'Kami menandai rantai laporan satu emiten yang persennya tidak bisa berasal dari satu jumlah ' +
+    'saham beredar yang sama.',
   R12: 'Kami menandai laporan yang tanggal di nama berkasnya berbeda dari jam terbitnya, dan memakai tanggal nama berkas untuk mengurutkan rantai.',
   R13: 'Kami menolak kartu kalau satu pemegang dilaporkan memegang lebih banyak lembar daripada yang diterbitkan.',
   R14: 'Kami menolak kartu kalau ada lembar yang berpindah tangan tanpa laporan di antara dua laporan berurutan.',
@@ -97,6 +100,7 @@ const KALIMAT_AWAM: Record<string, string> = {
  */
 export const ATURAN_PENANDA: readonly KodeAturan[] = [
   'R10',
+  'R11b',
   'R12',
   'R16',
   'R18a',

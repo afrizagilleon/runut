@@ -8,7 +8,7 @@
  * yang di usulan lama merah karena dua tanggal yang berbeda diadu.
  */
 import { describe, expect, it } from 'vitest';
-import { dataEmiten, harga, konteks } from './contoh.ts';
+import { harga, konteksGudang, laporan } from './contoh.ts';
 import type { DataEmiten, KonteksGudang } from './tipe.ts';
 import {
   AMBANG_R20,
@@ -37,16 +37,11 @@ import {
   pasanganSekitarEx,
   r29HargaDiTanggalEx,
   r34AksiTanpaHarga,
+  penyebutRantai,
+  r11bPenyebutRantai,
 } from './aturan-keuangan.ts';
 
-function ktx(ubah: Partial<DataEmiten> = {}): KonteksGudang {
-  const data = dataEmiten(ubah);
-  return {
-    ...konteks({ simbol: data.simbol, harga: data.harga, laporan: data.laporan }),
-    data,
-    berkas_kosong: [],
-  };
-}
+const ktx = (ubah: Partial<DataEmiten> = {}): KonteksGudang => konteksGudang(ubah);
 
 /** Tahun buku dengan laba dan laba per lembar yang memberi basis saham persis `lembar`. */
 function tahun(t: number, lembar: number, laba = 1_000_000_000): {
@@ -1164,5 +1159,192 @@ describe('R34 — aksi korporasi dengan harga di kedua sisinya', () => {
     const h = r34AksiTanpaHarga(ktx());
     expect(h.dijalankan).toBe(false);
     expect(h.alasan_lewat).toContain('tidak punya satu pun aksi korporasi');
+  });
+});
+
+// --- M2b T-07: R11b ----------------------------------------------------------
+
+describe('R11b — satu penyebut untuk seluruh rantai', () => {
+  /** Laporan yang persennya dihitung persis dari `beredar`, dengan dua desimal. */
+  const sisi = (waktu: string, sebelum: number, sesudah: number, beredar: number) =>
+    laporan({
+      laporan_id: 'lap-' + waktu,
+      dilaporkan_pada: waktu,
+      sumber_dokumen: undefined,
+      sebelum,
+      sesudah,
+      persen_sebelum: Number(((sebelum / beredar) * 100).toFixed(2)),
+      persen_sesudah: Number(((sesudah / beredar) * 100).toFixed(2)),
+    });
+
+  it('hijau kalau seluruh rantai bisa dijelaskan satu jumlah saham', () => {
+    const beredar = 3_948_108_393;
+    const h = r11bPenyebutRantai(
+      ktx({
+        laporan: [
+          sisi('2026-01-05T10:00:00', 900_000_000, 880_000_000, beredar),
+          sisi('2026-02-05T10:00:00', 880_000_000, 860_000_000, beredar),
+          sisi('2026-03-05T10:00:00', 860_000_000, 840_000_000, beredar),
+        ],
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ satuan: 'sisi laporan', diperiksa: 6, hijau: 6, merah: 0 });
+    expect(h.temuan).toHaveLength(0);
+  });
+
+  it('merah untuk pola FOLK: satu laporan memakai penyebut yang berbeda', () => {
+    // Tujuh laporan sepakat 3.948 juta; laporan terakhir memakai 4.091 juta,
+    // yaitu sesudah FOLK menerbitkan saham baru.
+    const lama = 3_948_108_393;
+    const baru = 4_091_357_544;
+    const h = r11bPenyebutRantai(
+      ktx({
+        simbol: 'FOLK',
+        laporan: [
+          sisi('2026-01-05T10:00:00', 900_000_000, 880_000_000, lama),
+          sisi('2026-02-05T10:00:00', 880_000_000, 860_000_000, lama),
+          sisi('2026-03-05T10:00:00', 860_000_000, 840_000_000, lama),
+          sisi('2026-05-19T12:50:02', 840_000_000, 820_000_000, baru),
+        ],
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 8, merah: 2 });
+    expect(h.temuan[0]?.keparahan).toBe('peringatan');
+    expect(h.temuan[0]?.ringkasan).toContain('2026-05-19T12:50:02');
+    // Angka yang dipilih adalah titik tengah irisan kelompok terbanyak, jadi ia
+    // tidak persis sama dengan penyebut yang saya pakai menyusun bahan ujinya —
+    // tetapi ia harus jatuh di dalam seperseribu dari angka itu.
+    const pilihan = penyebutRantai(
+      ktx({
+        simbol: 'FOLK',
+        laporan: [
+          sisi('2026-01-05T10:00:00', 900_000_000, 880_000_000, lama),
+          sisi('2026-02-05T10:00:00', 880_000_000, 860_000_000, lama),
+          sisi('2026-03-05T10:00:00', 860_000_000, 840_000_000, lama),
+          sisi('2026-05-19T12:50:02', 840_000_000, 820_000_000, baru),
+        ],
+      }),
+    );
+    expect(pilihan?.didukung).toBe(6);
+    expect(Math.abs((pilihan?.lembar ?? 0) - lama) / lama).toBeLessThan(0.001);
+    expect(h.temuan[0]?.ringkasan).toContain('belum tentu kesalahan');
+  });
+
+  it('memilih kelompok terbanyak, bukan kelompok yang lebih dulu disapu', () => {
+    // Dua laporan memakai penyebut A, empat memakai penyebut B. Kalau
+    // pemilihannya bergantung urutan sapuan, yang pertama yang menang.
+    const a = 1_000_000_000;
+    const b = 2_000_000_000;
+    const h = r11bPenyebutRantai(
+      ktx({
+        laporan: [
+          sisi('2026-01-05T10:00:00', 400_000_000, 390_000_000, a),
+          sisi('2026-02-05T10:00:00', 800_000_000, 780_000_000, b),
+          sisi('2026-03-05T10:00:00', 760_000_000, 740_000_000, b),
+          sisi('2026-04-05T10:00:00', 720_000_000, 700_000_000, b),
+        ],
+      }),
+    );
+    expect(penyebutRantai(ktx({
+      laporan: [
+        sisi('2026-01-05T10:00:00', 400_000_000, 390_000_000, a),
+        sisi('2026-02-05T10:00:00', 800_000_000, 780_000_000, b),
+        sisi('2026-03-05T10:00:00', 760_000_000, 740_000_000, b),
+        sisi('2026-04-05T10:00:00', 720_000_000, 700_000_000, b),
+      ],
+    }))?.didukung).toBe(6);
+    expect(h.hitungan.merah).toBe(2);
+  });
+
+  it('memakai aturan seri yang tertulis, dan mencatat bahwa ia terpakai', () => {
+    // Dua laporan memakai penyebut A, dua memakai penyebut B: seri 4 lawan 4.
+    // Yang menang adalah yang paling dekat ke nilai pasar dibagi harga tutup
+    // pada tanggal laporan terakhir.
+    const a = 1_000_000_000;
+    const b = 2_000_000_000;
+    const daftar = [
+      sisi('2026-01-05T10:00:00', 400_000_000, 390_000_000, a),
+      sisi('2026-02-05T10:00:00', 380_000_000, 370_000_000, a),
+      sisi('2026-03-05T10:00:00', 760_000_000, 740_000_000, b),
+      sisi('2026-04-05T10:00:00', 720_000_000, 700_000_000, b),
+    ];
+    const dekatB = penyebutRantai(
+      ktx({
+        laporan: daftar,
+        harga: [
+          harga({ tanggal: '2026-04-05', tutup: 100, buka: 100, tertinggi: 100, terendah: 100, nilai_pasar: 100 * b }),
+        ],
+      }),
+    );
+    expect(dekatB?.lembar).toBeGreaterThan(1_500_000_000);
+    expect(dekatB?.alasan).toContain('paling dekat ke nilai pasar dibagi harga tutup');
+
+    const dekatA = penyebutRantai(
+      ktx({
+        laporan: daftar,
+        harga: [
+          harga({ tanggal: '2026-04-05', tutup: 100, buka: 100, tertinggi: 100, terendah: 100, nilai_pasar: 100 * a }),
+        ],
+      }),
+    );
+    expect(dekatA?.lembar).toBeLessThan(1_500_000_000);
+  });
+
+  it('memilih yang lembarnya lebih sedikit kalau tidak ada nilai pasar untuk menengahi', () => {
+    const a = 1_000_000_000;
+    const b = 2_000_000_000;
+    const hasilSeri = penyebutRantai(
+      ktx({
+        laporan: [
+          sisi('2026-01-05T10:00:00', 400_000_000, 390_000_000, a),
+          sisi('2026-02-05T10:00:00', 380_000_000, 370_000_000, a),
+          sisi('2026-03-05T10:00:00', 760_000_000, 740_000_000, b),
+          sisi('2026-04-05T10:00:00', 720_000_000, 700_000_000, b),
+        ],
+      }),
+    );
+    expect(hasilSeri?.lembar).toBeLessThan(1_500_000_000);
+    expect(hasilSeri?.alasan).toContain('yang lembarnya paling sedikit dipilih');
+  });
+
+  it('memberi jawaban yang sama pada dua kali panggilan (INV-C)', () => {
+    const buat = () =>
+      ktx({
+        laporan: [
+          sisi('2026-01-05T10:00:00', 400_000_000, 390_000_000, 1_000_000_000),
+          sisi('2026-02-05T10:00:00', 800_000_000, 780_000_000, 2_000_000_000),
+          sisi('2026-03-05T10:00:00', 760_000_000, 740_000_000, 2_000_000_000),
+        ],
+      });
+    expect(JSON.stringify(penyebutRantai(buat()))).toBe(JSON.stringify(penyebutRantai(buat())));
+  });
+
+  it('dilewati beserta alasannya kalau rantainya kurang dari dua laporan', () => {
+    const h = r11bPenyebutRantai(ktx({ laporan: [sisi('2026-01-05T10:00:00', 400_000_000, 390_000_000, 1_000_000_000)] }));
+    expect(h.dijalankan).toBe(false);
+    expect(h.alasan_lewat).toContain('Kurang dari dua laporan');
+  });
+
+  it('menjawab TIDAK_LENGKAP untuk sisi yang persennya nol', () => {
+    const nol = laporan({
+      laporan_id: 'lap-nol',
+      dilaporkan_pada: '2026-05-05T10:00:00',
+      sumber_dokumen: undefined,
+      sebelum: 100_000_000,
+      sesudah: 90_000_000,
+      persen_sebelum: 0,
+      persen_sesudah: 0,
+    });
+    const h = r11bPenyebutRantai(
+      ktx({
+        laporan: [
+          sisi('2026-01-05T10:00:00', 400_000_000, 390_000_000, 1_000_000_000),
+          sisi('2026-02-05T10:00:00', 390_000_000, 380_000_000, 1_000_000_000),
+          nol,
+        ],
+      }),
+    );
+    expect(h.hitungan.tidak_lengkap).toBe(2);
+    expect(h.hitungan.alasan_dilewati.join(' ')).toContain('Persen yang dilaporkan nol');
   });
 });

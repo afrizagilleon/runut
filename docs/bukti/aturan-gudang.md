@@ -24,6 +24,7 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R15 | laporan | 121 | 121 | 0 | 0 | 0 |
 | R1 | laporan | 0 | 0 | 0 | 0 | 121 |
 | R11a | laporan | 121 | 103 | 12 | 6 | 0 |
+| R11b | sisi laporan | 238 | 204 | 26 | 8 | 4 |
 | R7 | sisi laporan | 242 | 172 | 29 | 41 | 0 |
 | R14 | sambungan | 93 | 76 | 17 | 0 | 0 |
 | R16 | sambungan | 93 | 88 | 5 | 0 | 0 |
@@ -49,7 +50,7 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R29 | dividen | 54 | 5 | 0 | 49 | 1 |
 | R34 | aksi korporasi | 72 | 11 | 0 | 61 | 0 |
 
-[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R20, R21, R22, R26, R27, R28, R29, R32, R33, R34), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
+[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R11b, R12, R16, R18a, R19a, R19b, R20, R21, R22, R26, R27, R28, R29, R32, R33, R34), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
 
 ### R25 — Kelengkapan halaman laporan
 
@@ -162,6 +163,19 @@ Alasan dilewati:
 Contoh nyata:
 - **COCO** — Laporan 2025-09-30T19:55:29 menulis 61.12% sebelum dan 61.03% sesudah, tetapi tidak ada satu jumlah saham beredar pun yang menjelaskan keduanya: sisi sebelum menuntut 889.722.596-889.868.178 lembar, sisi sesudah menuntut 890.226.980-890.372.859 lembar.
 - **COCO** — Laporan 2025-09-30T20:31:05 menulis 61.03% sebelum dan 60.87% sesudah, tetapi tidak ada satu jumlah saham beredar pun yang menjelaskan keduanya: sisi sebelum menuntut 890.226.980-890.372.859 lembar, sisi sesudah menuntut 891.150.287-891.296.701 lembar.
+
+### R11b — Satu penyebut untuk seluruh rantai
+
+Kami menandai rantai laporan satu emiten yang persennya tidak bisa berasal dari satu jumlah saham beredar yang sama.
+
+Diperiksa 238 sisi laporan: 204 tidak bermasalah, 26 ditandai, 8 datanya tidak cukup untuk memutuskan. 4 sisi laporan tidak masuk pemeriksaan ini. Aturannya jalan untuk 10 emiten dan dilewati untuk 293.
+
+Alasan dilewati:
+- Kurang dari dua laporan, jadi tidak ada rantai yang perlu satu penyebut bersama.
+
+Contoh nyata:
+- **COCO** — Rantai laporan COCO tidak bisa dijelaskan satu jumlah saham beredar. Angka yang paling banyak cocok adalah 912.371.503 lembar. Angka ini masuk ke dalam selang 4 dari 22 sisi laporan, lebih banyak daripada angka lain mana pun. Sisanya, 18 sisi laporan, menyiratkan jumlah saham yang lain: 2025-09-30T19:55:29 sebelum transaksi menulis 61,12%, yang baru mungkin kalau sahamnya 889.795.381 lembar; 2025-09-30T19:55:29 sesudah transaksi menulis 61,03%, yang baru mungkin kalau sahamnya 890.299.913 lembar. Yang paling jauh meleset 12,01% dari angka pilihan. Perusahaan boleh menerbitkan saham di tengah rantai, jadi ini belum tentu kesalahan — tetapi dua persen dari rantai ini tidak boleh dibandingkan langsung sebelum diketahui keduanya memakai pembagi yang sama.
+- **FOLK** — Rantai laporan FOLK tidak bisa dijelaskan satu jumlah saham beredar. Angka yang paling banyak cocok adalah 3.948.108.393 lembar. Angka ini masuk ke dalam selang 14 dari 16 sisi laporan, lebih banyak daripada angka lain mana pun. Sisanya, 2 sisi laporan, menyiratkan jumlah saham yang lain: 2026-05-19T12:50:02 sebelum transaksi menulis 22,08%, yang baru mungkin kalau sahamnya 4.091.169.751 lembar; 2026-05-19T12:50:02 sesudah transaksi menulis 20,77%, yang baru mungkin kalau sahamnya 4.091.308.045 lembar. Yang paling jauh meleset 3,63% dari angka pilihan. Perusahaan boleh menerbitkan saham di tengah rantai, jadi ini belum tentu kesalahan — tetapi dua persen dari rantai ini tidak boleh dibandingkan langsung sebelum diketahui keduanya memakai pembagi yang sama.
 
 ### R7 — Persen dihitung ulang terhadap saham beredar pada tanggal laporan
 

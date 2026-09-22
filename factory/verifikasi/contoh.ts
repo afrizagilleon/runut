@@ -19,6 +19,7 @@ import type {
 } from './tipe.ts';
 import { cariBlokUlangan } from './aturan.ts';
 import { SAHAM_BEREDAR_DADA } from './rantai-dada.ts';
+import { bangunSahamBeredarPada, titikPenyebut } from './penyebut.ts';
 
 /** Laporan netral yang tidak melanggar aturan apa pun; ubah satu field untuk menguji satu aturan. */
 export function laporan(ubah: Partial<Laporan> = {}): Laporan {
@@ -119,12 +120,15 @@ export function dataEmiten(ubah: Partial<DataEmiten> = {}): DataEmiten {
  */
 export function konteksGudang(ubah: Partial<DataEmiten> = {}): KonteksGudang {
   const data = dataEmiten(ubah);
+  const titik = titikPenyebut(data);
   return {
     ...konteks({
       simbol: data.simbol,
       laporan: data.laporan,
       harga: data.harga,
       suspensi: data.suspensi,
+      saham_beredar: titik.at(-1)?.lembar ?? null,
+      sahamBeredarPada: bangunSahamBeredarPada(titik),
     }),
     data,
     berkas_kosong: [],

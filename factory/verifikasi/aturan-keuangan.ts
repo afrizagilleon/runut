@@ -23,7 +23,8 @@ import type {
   StockSplit,
 } from './tipe.ts';
 import { angka, hasil, hitung, lewat } from './dasar.ts';
-import { barisHargaCacat, fraksiHarga } from './aturan-v2.ts';
+import { barisHargaCacat, fraksiHarga, urutR12 } from './aturan-v2.ts';
+import { DESIMAL_PERSEN, persenKonsisten } from './penyebut.ts';
 
 // --- perkakas bersama kelompok ini -------------------------------------------
 
@@ -1612,5 +1613,280 @@ export function r34AksiTanpaHarga(konteks: KonteksGudang): HasilAturan {
     judul,
     temuan,
     hitung(satuan, { diperiksa: aksi.length, merah: 0, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R11b satu penyebut untuk seluruh rantai ---------------------------------
+
+/**
+ * Selang penyebut satu sisi laporan, disimpan sebagai **pecahan bilangan
+ * bulat** supaya perbandingannya eksak (INV-D).
+ *
+ * `bawah = lembar x 100 x skala / (q + 5)` dan `atas = … / (q - 5)` dengan
+ * `q = persen x skala` dibulatkan. Disimpan sebagai pembilang dan penyebut,
+ * bukan sebagai hasil baginya, karena seluruh aturan ini adalah perbandingan
+ * selang dan satu pembulatan di tempat yang salah memindahkan batasnya.
+ */
+interface SelangPecahan {
+  label: string;
+  lembar: number;
+  persen: number;
+  bawahAtas: bigint;
+  bawahBawah: bigint;
+  atasAtas: bigint;
+  atasBawah: bigint;
+}
+
+/** Bandingkan dua pecahan `a/b` dan `c/d` dengan penyebut positif. */
+function bandingPecahan(a: bigint, b: bigint, c: bigint, d: bigint): number {
+  const kiri = a * d;
+  const kanan = c * b;
+  return kiri < kanan ? -1 : kiri > kanan ? 1 : 0;
+}
+
+function selangSisi(
+  label: string,
+  lembar: number,
+  persen: number,
+  desimal: number = DESIMAL_PERSEN,
+): SelangPecahan | null {
+  if (!Number.isFinite(persen) || persen <= 0 || lembar <= 0) return null;
+  const skala = 10 ** (desimal + 1);
+  const q = Math.round(persen * skala);
+  if (q <= 5) return null;
+  const pembilang = BigInt(Math.round(lembar)) * BigInt(100 * skala);
+  return {
+    label,
+    lembar,
+    persen,
+    bawahAtas: pembilang,
+    bawahBawah: BigInt(q + 5),
+    atasAtas: pembilang,
+    atasBawah: BigInt(q - 5),
+  };
+}
+
+export interface PenyebutRantai {
+  /** Jumlah saham beredar yang paling banyak menjelaskan rantai ini. */
+  lembar: number;
+  /** Berapa sisi laporan yang selangnya memuat angka itu. */
+  didukung: number;
+  /** Berapa sisi laporan yang punya selang sama sekali. */
+  dari: number;
+  /** Kenapa angka itu yang dipilih — termasuk aturan seri kalau terpakai. */
+  alasan: string;
+}
+
+/**
+ * Pilih satu jumlah saham beredar yang menjelaskan sebanyak mungkin sisi
+ * laporan satu emiten.
+ *
+ * **Aturan serinya ditulis, dan itulah yang membuat R11b bisa dibangun ulang.**
+ * Uji lawan §R11b menunjuk tepat ke sini: definisi lama berbunyi "cari satu
+ * nilai penyebut yang masuk selang sebanyak mungkin" tanpa menyebut apa yang
+ * terjadi kalau dua nilai sama banyaknya, sehingga hasilnya bergantung urutan
+ * sapuan — dan itulah sebab hitungan BEEF penulis dan penguji berbeda.
+ *
+ * Aturan yang dipakai di sini, berurutan:
+ *
+ * 1. Calon titik adalah **batas bawah tiap selang**. Setiap kelompok selang
+ *    yang saling beririsan pasti memuat salah satunya, jadi tidak ada kelompok
+ *    yang terlewat.
+ * 2. Untuk tiap calon, hitung berapa selang yang memuatnya. Yang terbanyak
+ *    menang, dan angka yang dipakai adalah **titik tengah irisan** kelompok itu.
+ * 3. Kalau dua kelompok sama banyaknya, yang menang adalah yang titik tengahnya
+ *    **paling dekat ke nilai pasar dibagi harga tutup pada tanggal laporan
+ *    terakhir**.
+ * 4. Kalau masih seri, yang lembarnya lebih kecil menang.
+ *
+ * Langkah 3 dan 4 dicatat di `alasan`, supaya pembaca tahu pilihannya tidak
+ * bulat.
+ */
+export function penyebutRantai(konteks: KonteksGudang): PenyebutRantai | null {
+  const selang: SelangPecahan[] = [];
+  for (const l of urutR12(konteks.laporan)) {
+    const sebelum = selangSisi(l.laporan_id + ' sebelum', l.sebelum, l.persen_sebelum);
+    const sesudah = selangSisi(l.laporan_id + ' sesudah', l.sesudah, l.persen_sesudah);
+    if (sebelum !== null) selang.push(sebelum);
+    if (sesudah !== null) selang.push(sesudah);
+  }
+  if (selang.length === 0) return null;
+
+  // Patokan aturan seri: nilai pasar dibagi harga tutup pada tanggal laporan terakhir.
+  const terakhir = urutR12(konteks.laporan).at(-1);
+  const cari = konteks.sahamBeredarPada;
+  const patokan =
+    terakhir === undefined || cari === undefined
+      ? null
+      : (cari(terakhir.dilaporkan_pada.slice(0, 10))?.lembar ?? null);
+
+  interface Calon {
+    lembar: bigint;
+    didukung: number;
+    jarak: bigint | null;
+  }
+  const calon: Calon[] = [];
+
+  for (const titik of selang) {
+    // Kelompok = semua selang yang memuat batas bawah selang ini.
+    const kelompok = selang.filter(
+      (s) =>
+        bandingPecahan(s.bawahAtas, s.bawahBawah, titik.bawahAtas, titik.bawahBawah) <= 0 &&
+        bandingPecahan(s.atasAtas, s.atasBawah, titik.bawahAtas, titik.bawahBawah) >= 0,
+    );
+    if (kelompok.length === 0) continue;
+
+    // Irisan kelompok: batas bawah terbesar dan batas atas terkecil.
+    let bA = kelompok[0]?.bawahAtas ?? 0n;
+    let bB = kelompok[0]?.bawahBawah ?? 1n;
+    let aA = kelompok[0]?.atasAtas ?? 0n;
+    let aB = kelompok[0]?.atasBawah ?? 1n;
+    for (const s of kelompok) {
+      if (bandingPecahan(s.bawahAtas, s.bawahBawah, bA, bB) > 0) {
+        bA = s.bawahAtas;
+        bB = s.bawahBawah;
+      }
+      if (bandingPecahan(s.atasAtas, s.atasBawah, aA, aB) < 0) {
+        aA = s.atasAtas;
+        aB = s.atasBawah;
+      }
+    }
+    // Titik tengah irisan, dibulatkan ke lembar utuh: (bA/bB + aA/aB) / 2.
+    const pembilang = bA * aB + aA * bB;
+    const penyebut = 2n * bB * aB;
+    const tengah = (pembilang + penyebut / 2n) / penyebut;
+    calon.push({
+      lembar: tengah,
+      didukung: kelompok.length,
+      jarak: patokan === null ? null : (tengah > BigInt(patokan) ? tengah - BigInt(patokan) : BigInt(patokan) - tengah),
+    });
+  }
+  if (calon.length === 0) return null;
+
+  calon.sort((a, b) => {
+    if (a.didukung !== b.didukung) return b.didukung - a.didukung;
+    if (a.jarak !== null && b.jarak !== null && a.jarak !== b.jarak) return a.jarak < b.jarak ? -1 : 1;
+    return a.lembar < b.lembar ? -1 : a.lembar > b.lembar ? 1 : 0;
+  });
+  const menang = calon[0];
+  if (menang === undefined) return null;
+
+  const seri = calon.filter((c) => c.didukung === menang.didukung && c.lembar !== menang.lembar);
+  const alasan =
+    seri.length === 0
+      ? 'Angka ini masuk ke dalam selang ' + String(menang.didukung) + ' dari ' + String(selang.length) + ' sisi laporan, lebih banyak daripada angka lain mana pun.'
+      : patokan === null
+        ? 'Ada ' + String(seri.length + 1) + ' angka yang sama-sama masuk ke ' + String(menang.didukung) + ' selang; yang lembarnya paling sedikit dipilih, karena tidak ada nilai pasar bertanggal untuk menengahi.'
+        : 'Ada ' + String(seri.length + 1) + ' angka yang sama-sama masuk ke ' + String(menang.didukung) + ' selang; yang dipilih adalah yang paling dekat ke nilai pasar dibagi harga tutup pada tanggal laporan terakhir (' + angka(patokan) + ' lembar).';
+
+  return {
+    lembar: Number(menang.lembar),
+    didukung: menang.didukung,
+    dari: selang.length,
+    alasan,
+  };
+}
+
+/**
+ * R11b — satu penyebut harus menjelaskan seluruh rantai satu emiten.
+ *
+ * Kalau satu emiten melaporkan persen yang tidak bisa berasal dari satu jumlah
+ * saham beredar yang sama, salah satu laporannya memakai penyebut yang berbeda
+ * — dan kartu apa pun yang membandingkan dua persen dari rantai itu akan
+ * membandingkan dua hal yang berbeda.
+ *
+ * Berkeparahan **peringatan**, bukan konflik: jumlah saham beredar memang
+ * berubah, dan rantai yang melintasi penerbitan saham baru memang tidak bisa
+ * dijelaskan satu angka.
+ */
+export function r11bPenyebutRantai(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Satu penyebut untuk seluruh rantai';
+  const satuan = 'sisi laporan';
+  if (konteks.laporan.length < 2) {
+    return lewat(
+      'R11b',
+      judul,
+      'Kurang dari dua laporan, jadi tidak ada rantai yang perlu satu penyebut bersama.',
+      satuan,
+      konteks.laporan.length * 2,
+    );
+  }
+
+  const pilihan = penyebutRantai(konteks);
+  if (pilihan === null) {
+    return lewat(
+      'R11b',
+      judul,
+      'Tidak ada satu pun persen yang bisa memberi selang penyebut di rantai ini.',
+      satuan,
+      konteks.laporan.length * 2,
+    );
+  }
+
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+  const meleset: Array<{ label: string; persen: number; tersirat: number; jauh: number }> = [];
+
+  for (const l of urutR12(konteks.laporan)) {
+    const pasangan: Array<[string, number, number]> = [
+      ['sebelum transaksi', l.sebelum, l.persen_sebelum],
+      ['sesudah transaksi', l.sesudah, l.persen_sesudah],
+    ];
+    for (const [sisi, lembar, persen] of pasangan) {
+      diperiksa += 1;
+      if (selangSisi('x', lembar, persen) === null) {
+        tidakLengkap += 1;
+        alasan.push('Persen yang dilaporkan nol atau kosong, jadi selang penyebutnya tidak ada.');
+        continue;
+      }
+      if (persenKonsisten(lembar, pilihan.lembar, persen)) continue;
+      merah += 1;
+      const tersirat = Math.round(lembar / (persen / 100));
+      const jauh = Number((((tersirat - pilihan.lembar) / pilihan.lembar) * 100).toFixed(2));
+      meleset.push({
+        label: l.dilaporkan_pada + ' ' + sisi,
+        persen,
+        tersirat,
+        jauh,
+      });
+    }
+  }
+
+  if (meleset.length > 0) {
+    const contoh = meleset.slice(0, 2);
+    const terjauh = meleset.reduce((a, b) => (Math.abs(b.jauh) > Math.abs(a.jauh) ? b : a));
+    temuan.push({
+      temuan_id: 'R11b-' + konteks.simbol,
+      aturan: 'R11b',
+      keparahan: 'peringatan',
+      ringkasan:
+        'Rantai laporan ' + konteks.simbol + ' tidak bisa dijelaskan satu jumlah saham beredar. ' +
+        'Angka yang paling banyak cocok adalah ' + angka(pilihan.lembar) + ' lembar. ' +
+        pilihan.alasan + ' Sisanya, ' + String(meleset.length) + ' sisi laporan, menyiratkan ' +
+        'jumlah saham yang lain: ' +
+        contoh.map((m) => m.label + ' menulis ' + angka(m.persen) + '%, yang baru mungkin kalau sahamnya ' + angka(m.tersirat) + ' lembar').join('; ') +
+        '. Yang paling jauh meleset ' + angka(Math.abs(terjauh.jauh)) + '% dari angka pilihan. ' +
+        'Perusahaan boleh menerbitkan saham di tengah rantai, jadi ini belum tentu kesalahan — ' +
+        'tetapi dua persen dari rantai ini tidak boleh dibandingkan langsung sebelum diketahui ' +
+        'keduanya memakai pembagi yang sama.',
+      angka: [
+        { label: 'jumlah saham yang paling banyak cocok', nilai: pilihan.lembar, satuan: 'lembar' },
+        { label: 'sisi laporan yang cocok', nilai: pilihan.didukung, satuan: 'sisi laporan' },
+        { label: 'sisi laporan yang tidak cocok', nilai: meleset.length, satuan: 'sisi laporan' },
+        { label: 'selisih terjauh', nilai: Math.abs(terjauh.jauh), satuan: 'persen' },
+      ],
+      fakta_terkait: [],
+      rujukan: meleset.map((m) => m.label),
+    });
+  }
+
+  return hasil(
+    'R11b',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
   );
 }

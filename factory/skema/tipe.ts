@@ -191,6 +191,7 @@ export const SEMUA_ATURAN: readonly KodeAturan[] = [
 export const SEMUA_KODE_ATURAN: readonly KodeAturan[] = [
   ...SEMUA_ATURAN,
   'R11a',
+  'R11b',
   'R12',
   'R13',
   'R14',
