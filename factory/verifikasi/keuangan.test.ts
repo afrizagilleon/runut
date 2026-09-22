@@ -465,6 +465,30 @@ describe('cariCocokDividen — perbandingan dalam seperseribu rupiah (INV-D)', (
     expect(cariCocokDividen(3_200, dividen, [25])?.lipat).toBe(1);
   });
 
+  it('menjawab "cocok apa adanya" kalau satu angka cocok dengan dan tanpa pengali', () => {
+    // Rp25 ada di medan apa adanya, dan Rp1 dikali rasio 25 juga memberi Rp25.
+    // Kalau pengali dicoba lebih dulu, dividen yang sebenarnya cocok akan
+    // dilaporkan sebagai "disesuaikan pemecahan saham" — peringatan palsu.
+    const dua = [
+      { ex_date: '2025-03-01', nilai_per_lembar: 1 },
+      { ex_date: '2025-09-01', nilai_per_lembar: 25 },
+    ];
+    expect(cariCocokDividen(25_000, dua, [25])).toEqual({
+      cara: 'satu',
+      lipat: 1,
+      ex: ['2025-09-01'],
+      milli: 25_000,
+    });
+  });
+
+  it('mengubah rupiah ke seperseribu rupiah dengan pembulatan, bukan perkalian pecahan', () => {
+    // 2,01 x 1.000 dalam pecahan memberi 2.009,9999999999998; tanpa pembulatan
+    // dividen sebesar itu tidak akan pernah cocok dengan angka mana pun.
+    expect(2.01 * 1000).not.toBe(2010);
+    const h = cariCocokDividen(2_010, [{ ex_date: '2025-03-01', nilai_per_lembar: 2.01 }], []);
+    expect(h).toEqual({ cara: 'satu', lipat: 1, ex: ['2025-03-01'], milli: 2_010 });
+  });
+
   it('tidak menemukan RAJA Rp28: tidak ada satu, tidak ada dua, tidak ada yang dikali lima', () => {
     const raja = [
       { ex_date: '2025-05-14', nilai_per_lembar: 12 },
