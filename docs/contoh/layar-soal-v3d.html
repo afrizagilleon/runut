@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Layar contoh v3d — balon melayang yang bisa ditarik (usulan 22 Sep malam)</title>
+<!-- PATOKAN KEDUA (balon melayang), disetujui pemilik di ponsel 22 Sep 2026 malam ("oke mantap, ini yang aku maksud"). Mengikat bersama layar-soal.html untuk: balon melayang di bawah keping sesudah 50% badannya lewat, mengintip secara bawaan, ditarik/diketuk untuk turun utuh, nama di dalam balon, jam kanan bawah, penanda "sesudahnya" di bulatan. Skrip hanya supaya contoh bisa dirasakan. Nilai token, empat peran teks, radius, bantalan, dan urutan elemen di sini mengikat docs/desain.md versi 3. Skrip di bawah hanya supaya contoh bisa dirasakan. -->
+<style>
+  :root {
+    --kertas: #F3F5F7; --lembar: #FFFFFF; --tinta: #14213D; --tinta-redup: #4A5670;
+    --stempel: #4B3FA7; --merah-kalender: #D7263D; --obrolan: #DFF3E4; --nama: #1F6B45;
+    --garis: rgba(20,33,61,.12); --garis-kontrol: rgba(20,33,61,.5);
+    --baca: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+    --mesin-tik: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --kertas: #0F1524; --lembar: #182038; --tinta: #E8ECF4; --tinta-redup: #A4AEC4;
+      --stempel: #A99BFF; --merah-kalender: #FF5C6F; --obrolan: #1F3A2E; --nama: #7FD6A6;
+      --garis: rgba(232,236,244,.14); --garis-kontrol: rgba(232,236,244,.5);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--kertas); color: var(--tinta); font: 400 17px/1.45 var(--baca); }
+  .kolom { max-width: 560px; margin: 0 auto; padding: 0 16px 96px; }
+
+  /* Empat peran teks. Tidak ada yang kelima. */
+  .judul { font: 600 20px/1.3 var(--baca); margin: 0; }
+  .isi   { font: 400 17px/1.45 var(--baca); margin: 0; }
+  .meta  { font: 400 14px/1.35 var(--baca); color: var(--tinta-redup); margin: 0; }
+  .aksi  { font: 500 16px/1.4 var(--baca); }
+  b { font-weight: 700; }
+  /* Permintaan pemilik: angka penting di lembar berwarna tinta stempel. Hanya di lembar. */
+  .lembar-badan b { color: var(--stempel); }
+
+  /* Satu-satunya tulisan kapital ber-spasi di layar ini: keping kalender. */
+  .keping { position: sticky; top: 0; z-index: 2; background: var(--kertas); padding: 8px 0 8px; }
+  .keping-dalam {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: var(--lembar); border: 1px solid var(--garis); border-top: 0; padding: 10px 12px 8px;
+    clip-path: polygon(0 6px, 3% 0, 6% 6px, 9% 0, 12% 6px, 15% 0, 18% 6px, 21% 0, 24% 6px, 27% 0, 30% 6px, 33% 0, 36% 6px, 39% 0, 42% 6px, 45% 0, 48% 6px, 51% 0, 54% 6px, 57% 0, 60% 6px, 63% 0, 66% 6px, 69% 0, 72% 6px, 75% 0, 78% 6px, 81% 0, 84% 6px, 87% 0, 90% 6px, 93% 0, 96% 6px, 100% 0, 100% 100%, 0 100%);
+  }
+  .keping-tanggal { font: 600 12px/1 var(--mesin-tik); letter-spacing: .06em; text-transform: uppercase; }
+  .keping-tanggal span { color: var(--merah-kalender); }
+  .titik { display: flex; gap: 6px; }
+  .titik i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--tinta-redup); }
+  .titik i.lewat, .titik i.kini { background: var(--stempel); border-color: var(--stempel); }
+  .titik { align-items: center; }
+  .titik .sesudah { width: 10px; height: 8px; border-radius: 0; border: 1.5px solid var(--tinta-redup); margin-left: 4px; clip-path: polygon(0 3px, 25% 0, 50% 3px, 75% 0, 100% 3px, 100% 100%, 0 100%); }
+
+  /* Pesan teman: hal pertama yang dibaca. */
+  .pesan { margin: 8px 0 24px; }
+  .pesan-nama { font: 600 14px/1.3 var(--baca); color: var(--nama); margin: 0 0 4px 12px; }
+  .pesan-balon {
+    max-width: 86%; background: var(--obrolan); padding: 10px 12px 6px;
+    border-radius: 4px 16px 16px 16px;
+  }
+  .pesan-jam { display: block; text-align: right; font: 400 12px/1.2 var(--baca); color: var(--tinta-redup); margin-top: 2px; }
+
+  .antar { margin: 0 0 8px; }
+
+  /* Kertas bersudut, obrolan membulat: satu-satunya bentuk bulat di layar adalah pesan teman
+     (dan lingkaran huruf opsi). Lembar dokumen: satu pintu per kartu, di kakinya. */
+  .lembar { background: var(--lembar); border: 1px solid var(--garis); border-top: 2px solid var(--stempel); border-radius: 2px; margin: 0 0 8px; }
+  .lembar.hitung { border-top-style: dashed; }
+  .lembar-badan { padding: 10px 12px 8px; }
+  .lembar-badan .meta { margin-bottom: 4px; }
+  .lembar-kaki {
+    display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px;
+    padding: 0 12px; border: 0; border-top: 1px solid var(--garis); background: none; color: var(--stempel);
+    font: 500 14px/1 var(--baca); cursor: pointer; text-align: left;
+  }
+  .lembar-kaki:active, .baris-istilah:active, .opsi:active { background: var(--garis); }
+  .panah { font-size: 18px; line-height: 1; transition: transform .14s; }
+  .lembar-kaki[aria-expanded="true"] .panah, .baris-istilah[aria-expanded="true"] .panah { transform: rotate(90deg); }
+  .buka { display: none; padding: 4px 12px 12px; border-top: 1px solid var(--garis); }
+  .buka.tampil { display: block; }
+  .buka p { margin: 8px 0 0; }
+  .istilah-buka { margin: -16px 0 24px; padding: 4px 12px 12px; border: 1px solid var(--garis); border-top: 0; border-radius: 0 0 2px 2px; background: var(--lembar); }
+  .antar, .tanya { scroll-margin-top: 64px; }
+
+  .baris-istilah {
+    display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px;
+    padding: 0 12px; margin: 0 0 24px; border: 1px solid var(--garis); border-radius: 2px; background: var(--lembar);
+    color: var(--tinta); font: 400 14px/1.3 var(--baca); cursor: pointer; text-align: left;
+  }
+  .baris-istilah u { text-decoration-thickness: 1px; text-underline-offset: 3px; }
+
+  .tanya { margin: 0 0 12px; }
+  .opsi {
+    display: flex; gap: 12px; align-items: flex-start; width: 100%; min-height: 56px; padding: 12px;
+    margin: 0 0 8px; background: var(--lembar); border: 1px solid var(--garis-kontrol); border-radius: 3px;
+    color: var(--tinta); text-align: left; cursor: pointer;
+  }
+  .opsi-huruf { flex: none; width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--garis-kontrol); display: grid; place-items: center; font: 500 13px/1 var(--baca); }
+  .opsi[aria-pressed="true"] { border: 2px solid var(--stempel); padding: 11px; }
+  .opsi[aria-pressed="true"] .opsi-huruf { background: var(--stempel); border-color: var(--stempel); color: var(--lembar); }
+
+  .kembali { display: inline-flex; align-items: center; min-height: 44px; color: var(--stempel); font: 500 14px/1 var(--baca); background: none; border: 0; padding: 0; cursor: pointer; }
+
+  .tindakan { position: fixed; left: 0; right: 0; bottom: 0; padding: 12px 16px; background: var(--kertas); border-top: 1px solid var(--garis); }
+  .tindakan[hidden] { display: none; }
+  .tindakan button.turun { background: var(--lembar); color: var(--stempel); border: 1.5px solid var(--stempel); }
+  .tindakan button { display: block; width: 100%; max-width: 528px; margin: 0 auto; min-height: 52px; border: 0; border-radius: 3px; background: var(--stempel); color: var(--lembar); font: 600 17px/1 var(--baca); cursor: pointer; }
+  @media (prefers-color-scheme: dark) { .tindakan button { color: #0F1524; } }
+
+  /* --- v3d: balon melayang --- */
+  .pesan-balon .pesan-kepala { display: block; font: 400 12px/1.2 var(--baca); color: var(--tinta-redup); margin: 0 0 4px; }
+  .pesan-balon .pesan-kepala b { color: var(--nama); font-weight: 600; }
+  .pesan { margin: 8px 0 24px; }
+  .pesan-balon { max-width: 100%; }
+  /* Salinan melayang: di luar aliran, tepat di bawah keping, tidak pernah menutupi keping. */
+  .melayang { position: fixed; left: 16px; right: 16px; top: var(--tinggi-keping, 47px); bottom: 0; z-index: 1; pointer-events: none;
+    opacity: 0; transition: opacity .18s ease; overflow: hidden; }
+  .keping { z-index: 3; }
+  .melayang.aktif { opacity: 1; }
+  .melayang .pesan-balon { margin: 0; pointer-events: auto; box-shadow: 0 2px 0 var(--garis); transition: transform .26s ease; will-change: transform;
+    transform: translateY(calc(var(--intip, 28px) - 100%)); }
+  .melayang.turun .pesan-balon { transform: translateY(0); }
+  .melayang.menarik .pesan-balon { transition: none; }
+  /* Grip: tepi bawah balon yang tetap terlihat saat mengintip. */
+  .grip { display: block; height: 28px; margin: 4px -12px -6px; display: grid; place-items: center; cursor: grab; touch-action: none; }
+  .grip i { width: 36px; height: 4px; border-radius: 2px; background: var(--tinta-redup); opacity: .55; }
+  @media (prefers-reduced-motion: reduce) { .melayang .pesan-balon, .melayang { transition: none; } }
+</style>
+</head>
+<body>
+<div class="kolom">
+
+  <div class="keping"><div class="keping-dalam">
+    <span class="keping-tanggal">Hari ini · <span>Rabu</span> 8 Okt 2025</span>
+    <span class="titik" aria-label="Soal 2 dari 3, lalu apa yang terjadi sesudahnya"><i class="lewat"></i><i class="kini"></i><i></i><i class="sesudah" title="Sesudahnya"></i></span>
+  </div></div>
+
+  <figure class="pesan" id="pesan" aria-label="Pesan dari Dimas, Rabu 8 Okt 2025 pukul 19.42">
+    <blockquote class="pesan-balon" style="margin:0">
+      <span class="pesan-kepala"><b>Dimas</b> · Rabu, 8 Okt 2025</span>
+      <p class="isi">Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.</p>
+      <time class="pesan-jam">19.42</time>
+    </blockquote>
+  </figure>
+  <div class="melayang" id="melayang" aria-hidden="true">
+    <blockquote class="pesan-balon" style="margin:0">
+      <span class="pesan-kepala"><b>Dimas</b> · Rabu, 8 Okt 2025</span>
+      <p class="isi">Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.</p>
+      <time class="pesan-jam">19.42</time>
+      <span class="grip" id="grip"><i></i></span></blockquote>
+  </div>
+
+  <p class="meta antar" id="antar">Cek omongan Dimas ke dua dokumen ini:</p>
+
+  <section class="lembar">
+    <div class="lembar-badan">
+      <p class="meta">Pengumuman dividen · ex 16 Sep 2025</p>
+      <p class="isi">Perusahaan D membagikan dividen tunai <b>Rp0,14 per lembar</b> (sebelum pajak).</p>
+    </div>
+    <button class="lembar-kaki" type="button" aria-expanded="false">Buka dokumennya <span class="panah" aria-hidden="true">›</span></button>
+    <div class="buka">
+      <p class="meta">Kalimat resminya</p>
+      <p class="isi">Dividen tunai Rp0,14 per lembar dengan tanggal ex 16 September 2025.</p>
+      <p class="meta">Sudah bisa dibaca publik sejak 16 September 2025. Asalnya: data aksi korporasi Sectors.</p>
+    </div>
+  </section>
+
+  <section class="lembar hitung">
+    <div class="lembar-badan">
+      <p class="meta">Dihitung dari kartu di atas</p>
+      <p class="isi">Untuk 10 lot (1.000 lembar): dividennya <b>Rp140</b>, sedangkan nilai 10 lot itu di harga hari ini, Rp178, adalah <b>Rp178.000</b>.</p>
+    </div>
+    <button class="lembar-kaki" type="button" aria-expanded="false">Lihat hitungannya <span class="panah" aria-hidden="true">›</span></button>
+    <div class="buka">
+      <p class="isi">1.000 lembar × Rp0,14 = Rp140.<br>1.000 lembar × Rp178 = Rp178.000.</p>
+      <p class="meta">Dihitung dari pengumuman dividen di atas dan harga penutupan 8 Oktober 2025.</p>
+    </div>
+  </section>
+
+  <button class="baris-istilah" type="button" aria-expanded="false"><span>Arti istilah: <u>lot</u> · <u>tanggal ex</u></span><span class="panah" aria-hidden="true">›</span></button>
+  <div class="buka istilah-buka">
+    <p class="isi"><b>Lot</b> — satuan jual-beli saham; 1 lot = 100 lembar.</p>
+    <p class="isi"><b>Tanggal ex</b> — mulai tanggal ini pembeli baru tidak lagi kebagian dividen tersebut; yang sudah pegang sebelumnya tetap kebagian.</p>
+  </div>
+
+  <h1 class="judul tanya" id="tanya">Omongan Dimas cocok dengan dokumennya?</h1>
+
+  <button class="opsi aksi" type="button" aria-pressed="false"><span class="opsi-huruf">a</span><span>Betul, ia kebagian dividen dan jumlahnya cuma Rp140.</span></button>
+  <button class="opsi aksi" type="button" aria-pressed="false"><span class="opsi-huruf">b</span><span>Betul, malah ia tidak kebagian karena tanggal ex-nya.</span></button>
+  <button class="opsi aksi" type="button" aria-pressed="false"><span class="opsi-huruf">c</span><span>Keliru, ia kebagian Rp14.000 untuk 10 lot miliknya.</span></button>
+  <button class="opsi aksi" type="button" aria-pressed="false"><span class="opsi-huruf">d</span><span>Keliru, Rp140 itu sudah besar dibanding nilai sahamnya.</span></button>
+
+  <button class="kembali" type="button">↑ Kembali ke dokumen</button>
+</div>
+
+<div class="tindakan" id="tindakan"><button type="button" class="turun" id="tombol-bawah">↓ Jawab di bawah</button></div>
+
+<script>
+  // Hanya supaya contoh ini bisa dirasakan. Bilah bawah selalu punya satu tindakan yang masuk akal:
+  // opsi belum terlihat → "↓ Jawab di bawah"; opsi terlihat tapi belum memilih → bilah hilang;
+  // sudah memilih → "Kunci jawaban".
+  const bilah = document.getElementById('tindakan'), tombol = document.getElementById('tombol-bawah');
+  const opsi = [...document.querySelectorAll('.opsi')];
+  let terpilih = false, opsiTerlihat = false;
+  function segarkan() {
+    if (terpilih) { bilah.hidden = false; tombol.className = ''; tombol.textContent = 'Kunci jawaban'; }
+    else if (!opsiTerlihat) { bilah.hidden = false; tombol.className = 'turun'; tombol.textContent = '↓ Jawab di bawah'; }
+    else { bilah.hidden = true; }
+  }
+  opsi.forEach((o) => o.addEventListener('click', () => {
+    opsi.forEach((x) => x.setAttribute('aria-pressed', String(x === o))); terpilih = true; segarkan();
+  }));
+  tombol.addEventListener('click', () => { if (!terpilih) document.getElementById('tanya').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  new IntersectionObserver((e) => { opsiTerlihat = e[0].isIntersecting; segarkan(); }, { threshold: 0.6 }).observe(opsi[0]);
+  document.querySelectorAll('.lembar-kaki, .baris-istilah').forEach((k) => k.addEventListener('click', () => {
+    const buka = k.nextElementSibling, kini = k.getAttribute('aria-expanded') === 'true';
+    k.setAttribute('aria-expanded', String(!kini)); buka.classList.toggle('tampil', !kini);
+  }));
+  // v3d: salinan melayang aktif hanya sesudah balon asli lewat ke atas layar.
+  const asli = document.getElementById('pesan'), melayang = document.getElementById('melayang'), grip = document.getElementById('grip');
+  const balonMelayang = melayang.querySelector('.pesan-balon');
+  document.documentElement.style.setProperty('--tinggi-keping', document.querySelector('.keping').getBoundingClientRect().height + 'px');
+  // Salinan melayang muncul begitu SEPARUH badan balon asli sudah lewat ke atas (bukan menunggu hilang seluruhnya).
+  const tinggiKeping = document.querySelector('.keping').getBoundingClientRect().height;
+  new IntersectionObserver((e) => { const r = e[0].boundingClientRect; const terlihat = Math.max(0, r.bottom - tinggiKeping) / r.height; const lewat = r.top < tinggiKeping && terlihat < 0.5; melayang.classList.toggle('aktif', lewat); if (!lewat) melayang.classList.remove('turun'); }, { threshold: [0, .25, .4, .5, .6, .75, 1], rootMargin: '-' + Math.round(tinggiKeping) + 'px 0px 0px 0px' }).observe(asli);
+  // Ketuk grip (atau balon saat turun) = berganti keadaan. Tarik = ikut jari, lepas = jatuh ke keadaan terdekat.
+  let mulaiY = null, tinggi = 0, turunAwal = false, bergerak = false;
+  const INTIP = 28;
+  function posisi(dy) { const penuh = 0, intip = INTIP - tinggi; let y = (turunAwal ? penuh : intip) + dy; y = Math.max(intip, Math.min(penuh, y)); balonMelayang.style.transform = 'translateY(' + y + 'px)'; return y; }
+  balonMelayang.addEventListener('pointerdown', (e) => { mulaiY = e.clientY; tinggi = balonMelayang.getBoundingClientRect().height; turunAwal = melayang.classList.contains('turun'); bergerak = false; melayang.classList.add('menarik'); balonMelayang.setPointerCapture(e.pointerId); });
+  balonMelayang.addEventListener('pointermove', (e) => { if (mulaiY === null) return; const dy = e.clientY - mulaiY; if (Math.abs(dy) > 6) bergerak = true; if (bergerak) posisi(dy); });
+  function lepas(e) { if (mulaiY === null) return; melayang.classList.remove('menarik'); balonMelayang.style.transform = '';
+    if (!bergerak) { melayang.classList.toggle('turun'); } else { const dy = e.clientY - mulaiY; const turun = turunAwal ? dy > -(tinggi / 3) : dy > tinggi / 3; melayang.classList.toggle('turun', turun); }
+    mulaiY = null; }
+  balonMelayang.addEventListener('pointerup', lepas); balonMelayang.addEventListener('pointercancel', lepas);
+  // Kembali ke dokumen: ke atas halaman, tempat balon ada di alirannya — tidak ada yang tertutup.
+  document.querySelector('.kembali').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  segarkan();
+</script>
+</body>
+</html>
