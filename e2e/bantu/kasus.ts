@@ -18,6 +18,8 @@ export interface SoalUji {
   soal_id: string;
   tanya: string;
   jawaban: string;
+  /** Teks kunci yang tampil sesudah jawaban dikunci (M3.6 D-1). */
+  penjelasan: string;
   pilihan: PilihanUji[];
   kartu: string[];
   kartu_penentu: string[];
@@ -33,6 +35,16 @@ export interface KasusUji {
   /** Layar pertama; `menit` opsional (M3.5 D-1). */
   pembuka: { kalimat: string; menit?: number };
   soal: SoalUji[];
+  /** Layar pembukaan; paragraf garis waktu dan ketiga daftar ringkasan (M3.6 D-1). */
+  pembukaan: {
+    paragraf: string[];
+    bisa_dibaca: string[];
+    tidak_bisa_dibaca: string[];
+    disingkirkan: string[];
+  };
+  /** Aturan verifikasi yang dijalankan atas kasus ini (M3.6 D-5). */
+  pemeriksaan: { aturan: string; judul: string; dijalankan: boolean }[];
+  temuan: { temuan_id: string }[];
   disclaimer: string[];
 }
 

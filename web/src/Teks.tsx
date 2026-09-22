@@ -1,4 +1,6 @@
+import { Fragment, type ReactNode } from 'react';
 import {
+  PENANDA_BUKAN_FAKTA,
   RUJUKAN_ANDAIAN,
   RUJUKAN_HARI_INI,
   pecahTeks,
@@ -29,6 +31,16 @@ export interface TeksProps {
    * bawah paragraf.
    */
   terbuka?: readonly string[];
+  /**
+   * Penjelasan sebaris untuk satu fakta, disisipkan **di dalam paragraf** (D-1
+   * M3.6).
+   *
+   * Pemanggil hanya menyediakan isinya; yang memutuskan **di mana** ia muncul
+   * adalah berkas ini, karena hanya di sini kalimat-kalimatnya diketahui.
+   * Ketiadaan prop ini berarti paragraf itu memang tidak punya penjelasan yang
+   * bisa dibuka (kartu, opsi, kalimat pembuka), dan tidak ada yang disisipkan.
+   */
+  penjelasan?: (fact_id: string) => ReactNode;
   /**
    * `false` untuk teks yang berada di dalam label pilihan: tombol di dalam label
    * akan ikut memilih radio-nya, jadi di sana angka dirender datar. Angka yang
@@ -87,6 +99,116 @@ export function ikatTandaBaca(bagian: BagianTeks[]): PotonganTeks[] {
   return hasil;
 }
 
+/* ------------------------------------------------------------------ */
+/* Kalimat: memotong paragraf, lalu menyelipkan penjelasan (D-1 M3.6)  */
+/* ------------------------------------------------------------------ */
+
+export interface Kalimat {
+  potongan: PotonganTeks[];
+  /** fact_id yang bisa dibuka dari kalimat ini; penanda bukan-fakta tidak ikut. */
+  fact_ids: string[];
+}
+
+/** Batas kalimat: titik, seru, atau tanya yang diikuti spasi. */
+const BATAS_KALIMAT = /[.!?](?=\s)/;
+
+function faktaDalam(potongan: readonly PotonganTeks[]): string[] {
+  const id: string[] = [];
+  for (const { bagian } of potongan) {
+    if (bagian.jenis !== 'rujukan') continue;
+    if (PENANDA_BUKAN_FAKTA.includes(bagian.fact_id)) continue;
+    if (!id.includes(bagian.fact_id)) id.push(bagian.fact_id);
+  }
+  return id;
+}
+
+/**
+ * Potong paragraf yang sudah dipecah menjadi **kalimat**.
+ *
+ * Kenapa ini ada, dan kenapa ia murni: pemilik mengetuk "9 Oktober 2025" di
+ * layar pembukaan dan tidak melihat apa-apa. Penjelasannya memang terbuka —
+ * 289 px di bawah tautannya, di luar layar 640 px, karena ia dirender sesudah
+ * **seluruh** paragraf yang panjangnya empat kalimat. Yang dibutuhkan adalah
+ * tempat sisip yang lebih dekat, dan satu-satunya batas yang bisa dihitung dari
+ * teks tanpa tahu apa-apa tentang peramban adalah batas kalimat.
+ *
+ * Batasnya sengaja sempit — `. `, `! `, `? ` — dan itu aman di sini justru
+ * karena INV-4: setiap angka wajib ditulis sebagai rujukan `[[fact_id|teks]]`,
+ * jadi titik di dalam "5.112.760.000" tidak pernah berada di teks biasa. Tanda
+ * baca yang sudah dipindahkan `ikatTandaBaca` ke dalam `ekor` sebuah rujukan
+ * ikut dihitung: tanpa itu, kalimat yang **ditutup** oleh tautannya sendiri
+ * ("…tutup di Rp152.") tidak akan pernah punya batas.
+ */
+export function potongKalimat(potongan: readonly PotonganTeks[]): Kalimat[] {
+  const hasil: Kalimat[] = [];
+  let kini: PotonganTeks[] = [];
+
+  const tutup = (): void => {
+    if (kini.length === 0) return;
+    hasil.push({ potongan: kini, fact_ids: faktaDalam(kini) });
+    kini = [];
+  };
+
+  for (const [nomor, p] of potongan.entries()) {
+    if (p.bagian.jenis === 'rujukan') {
+      kini.push(p);
+      if (!/[.!?]$/.test(p.ekor)) continue;
+      // Spasi sesudahnya menandai batas; tanpa spasi, tanda baca itu bagian
+      // dari kalimat yang masih berjalan (mis. singkatan di tengah kata).
+      const berikut = potongan[nomor + 1];
+      const berbatas =
+        berikut === undefined ||
+        (berikut.bagian.jenis === 'utuh' && /^\s/.test(berikut.bagian.teks));
+      if (berbatas) tutup();
+      continue;
+    }
+
+    let sisa = p.bagian.teks;
+    for (;;) {
+      const cocok = BATAS_KALIMAT.exec(sisa);
+      if (cocok === null) break;
+      const potong = cocok.index + 1;
+      kini.push({ bagian: { jenis: 'utuh', teks: sisa.slice(0, potong) }, ekor: '' });
+      tutup();
+      sisa = sisa.slice(potong);
+    }
+    if (sisa !== '') kini.push({ bagian: { jenis: 'utuh', teks: sisa }, ekor: '' });
+  }
+  tutup();
+  return hasil;
+}
+
+export interface Sisipan {
+  /** Nomor kalimat yang penjelasannya disisipkan tepat sesudahnya. */
+  nomor: number;
+  fact_id: string;
+}
+
+/**
+ * Pilih **satu** penjelasan untuk paragraf ini: yang paling baru dibuka.
+ *
+ * `sumberTerbuka` di reducer adalah daftar, dan urutannya urutan membuka —
+ * `sakelar_sumber` menambahkan di ekor. Jadi "yang lebih baru menutup yang
+ * lama" bisa diputuskan di tampilan, tanpa satu baris pun berubah di
+ * `alur.ts`: telusuri daftar itu dari belakang, dan ambil id pertama yang
+ * memang ada di paragraf ini.
+ *
+ * Satu paragraf pembukaan memuat lima tautan; tanpa aturan ini, lima kartu bisa
+ * terbuka bertumpuk di satu paragraf.
+ */
+export function selipkanPenjelasan(
+  kalimat: readonly Kalimat[],
+  terbuka: readonly string[],
+): Sisipan | null {
+  for (let i = terbuka.length - 1; i >= 0; i -= 1) {
+    const fact_id = terbuka[i];
+    if (fact_id === undefined) continue;
+    const nomor = kalimat.findIndex((k) => k.fact_ids.includes(fact_id));
+    if (nomor >= 0) return { nomor, fact_id };
+  }
+  return null;
+}
+
 /**
  * Render kalimat yang angkanya ditulis sebagai rujukan `[[fact_id|teks]]`.
  *
@@ -100,12 +222,14 @@ export function Teks({
   teks,
   sakelarSumber,
   terbuka = [],
+  penjelasan,
   interaktif = true,
   tebalSaja = false,
 }: TeksProps): JSX.Element {
-  return (
-    <>
-      {ikatTandaBaca(pecahTeks(teks)).map(({ bagian, ekor }, nomor) => {
+  const kalimat = potongKalimat(ikatTandaBaca(pecahTeks(teks)));
+  const sisipan = penjelasan === undefined ? null : selipkanPenjelasan(kalimat, terbuka);
+
+  const potong = ({ bagian, ekor }: PotonganTeks, nomor: number): JSX.Element | null => {
         if (bagian.jenis === 'utuh') {
           return <span key={nomor}>{bagian.teks}</span>;
         }
@@ -141,7 +265,31 @@ export function Teks({
             </span>
           );
         }
-        const sedangTerbuka = terbuka.includes(bagian.fact_id);
+        /*
+         * Yang dikatakan `aria-expanded` harus sama dengan yang dilihat mata.
+         * Ketika paragraf ini memang punya penjelasan sebaris, yang tampil
+         * hanya satu — jadi tautan yang tercatat terbuka di reducer tetapi
+         * kalah baru di paragraf ini **tidak** boleh mengaku terbuka.
+         */
+        const sedangTerbuka =
+          penjelasan === undefined
+            ? terbuka.includes(bagian.fact_id)
+            : sisipan?.fact_id === bagian.fact_id;
+        /*
+         * Tautan yang kalah baru: masih ada di `sumberTerbuka`, tetapi tidak
+         * terlihat. Satu ketukan di sini hanya akan mengeluarkannya dari daftar
+         * dan **tidak mengubah apa pun di layar** — persis "kontrol yang diketuk
+         * tanpa akibat" yang sudah pernah sampai ke pemilik (M3.2 §10c).
+         *
+         * Jadi ketukannya dikirim dua kali: menutup, lalu membuka lagi, sehingga
+         * ia menjadi yang paling baru dan tampil. Keduanya aksi `sakelar_sumber`
+         * yang sudah ada — reducer tidak berubah, tidak ada nama peristiwa baru,
+         * dan jumlah peristiwa yang lahir sama dengan satu ketukan biasa
+         * (menutup tidak melahirkan apa pun, membuka melahirkan satu
+         * `kartu_buka`).
+         */
+        const kalahBaru =
+          penjelasan !== undefined && !sedangTerbuka && terbuka.includes(bagian.fact_id);
         const tombol = (
           <button
             type="button"
@@ -159,6 +307,7 @@ export function Teks({
             aria-expanded={sedangTerbuka}
             aria-controls={sedangTerbuka ? idPenjelasan(bagian.fact_id) : undefined}
             onClick={() => {
+              if (kalahBaru) sakelarSumber(bagian.fact_id);
               sakelarSumber(bagian.fact_id);
             }}
             aria-label={`${bagian.teks} — lihat sumber angka ini`}
@@ -175,7 +324,24 @@ export function Teks({
             {ekor}
           </span>
         );
-      })}
+  };
+
+  /*
+   * `data-kalimat` bukan `data-uid`: pelacak ketukan membaca `data-uid`
+   * terdekat ke atas (`bacaSasaran`), jadi menamai kalimat dengan uid akan
+   * mengubah nama setiap ketukan di badan teks. Yang dibutuhkan hanya pegangan
+   * untuk mengukur, dan itulah yang diberikan.
+   */
+  return (
+    <>
+      {kalimat.map((k, nomor) => (
+        <Fragment key={nomor}>
+          <span data-kalimat={nomor}>{k.potongan.map(potong)}</span>
+          {sisipan !== null && sisipan.nomor === nomor && penjelasan !== undefined
+            ? penjelasan(sisipan.fact_id)
+            : null}
+        </Fragment>
+      ))}
     </>
   );
 }

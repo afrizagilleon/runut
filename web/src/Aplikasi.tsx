@@ -839,7 +839,7 @@ function BarisIstilah({
 
 /**
  * Penjelasan sebaris untuk angka yang ditautkan di teks kunci dan pembukaan
- * (D-5, dilengkapi A-2).
+ * (D-5, dilengkapi A-2, dipindahkan ke dalam paragraf di M3.6 D-1).
  *
  * Sebelum A-2, tautan angka di kedua tempat itu **memanggil `sakelarSumber` tetapi
  * tidak menampilkan apa pun**: satu-satunya yang merender `sumberTerbuka`
@@ -847,44 +847,30 @@ function BarisIstilah({
  * bisa diketuk tanpa akibat lebih buruk daripada kontrol yang tidak bisa
  * ditutup — audit A2-T2 menemukannya, dan ini perbaikannya.
  *
- * Penjelasannya muncul tepat di bawah paragrafnya, bukan di dialog: pola yang
- * sama dengan kaki lembar.
+ * Sampai M3.5 ia dirender sesudah **seluruh** paragraf, dan itulah temuan
+ * pertama pemilik di M3.6: ia mengetuk "9 Oktober 2025" di kalimat pertama
+ * sebuah paragraf empat kalimat, dan blok penjelasannya mendarat 289 px di
+ * bawah tautan itu — di luar layar 640 px. Terukur, bukan dugaan. Sekarang
+ * `Teks` yang menempatkannya, tepat sesudah kalimat yang memuat tautannya, dan
+ * komponen ini tinggal satu blok untuk satu fakta.
  */
 function PenjelasanSebaris({
-  teks,
+  fact_id,
   indeks,
-  terbuka,
   emiten,
   sudahDibuka,
 }: {
-  teks: string;
+  fact_id: string;
   indeks: ReadonlyMap<string, Fakta>;
-  terbuka: readonly string[];
   emiten: Emiten;
   sudahDibuka: boolean;
 }): JSX.Element | null {
-  const dibuka = ambilRujukan(teks)
-    .map((r) => r.fact_id)
-    .filter((id) => !PENANDA_BUKAN_FAKTA.includes(id) && terbuka.includes(id));
-  const unik = [...new Set(dibuka)];
-  if (unik.length === 0) return null;
+  const fakta = indeks.get(fact_id);
+  if (fakta === undefined) return null;
   return (
-    <>
-      {unik.map((id) => {
-        const fakta = indeks.get(id);
-        if (fakta === undefined) return null;
-        return (
-          <div className="buka penjelasan-sebaris" key={id} id={idPenjelasan(id)}>
-            <IsiLembarTerbuka
-              fakta={fakta}
-              indeks={indeks}
-              emiten={emiten}
-              sudahDibuka={sudahDibuka}
-            />
-          </div>
-        );
-      })}
-    </>
+    <div className="buka penjelasan-sebaris" id={idPenjelasan(fact_id)}>
+      <IsiLembarTerbuka fakta={fakta} indeks={indeks} emiten={emiten} sudahDibuka={sudahDibuka} />
+    </div>
   );
 }
 
@@ -1138,20 +1124,27 @@ function LayarSoal({
                 ))}
             </div>
 
-            <p className="teks-kunci" data-uid="teks-kunci">
+            {/*
+              `div`, bukan `p` (M3.6 D-1): penjelasan sebaris adalah blok
+              berbingkai yang kini hidup DI DALAM paragraf ini, dan blok di
+              dalam `<p>` bukan susunan yang sah. Jaraknya ditulis di
+              `.teks-kunci` supaya rupanya tidak berubah.
+            */}
+            <div className="teks-kunci" data-uid="teks-kunci">
               <Teks
                 teks={soal.penjelasan}
                 sakelarSumber={sakelarSumber}
                 terbuka={keadaan.sumberTerbuka}
+                penjelasan={(fact_id) => (
+                  <PenjelasanSebaris
+                    fact_id={fact_id}
+                    indeks={indeks}
+                    emiten={kasus.emiten}
+                    sudahDibuka={false}
+                  />
+                )}
               />
-            </p>
-            <PenjelasanSebaris
-              teks={soal.penjelasan}
-              indeks={indeks}
-              terbuka={keadaan.sumberTerbuka}
-              emiten={kasus.emiten}
-              sudahDibuka={false}
-            />
+            </div>
           </>
         )}
       </div>
@@ -1231,6 +1224,14 @@ function LayarPembukaan({
    * `loncat_ke_ringkasan` tetap terisi dari sana — reducer menyetel ulang
    * angkanya tiap ganti layar, jadi yang terbaca memang guliran layar ini saja.
    */
+  /*
+   * Satu penjelasan untuk satu fakta, ditulis sekali dan dipakai keempat tempat
+   * bertautan di layar ini (M3.6 D-1). Di mana ia muncul diputuskan `Teks`,
+   * yang satu-satunya tahu di kalimat mana tautannya berada.
+   */
+  const penjelasanSebaris = (fact_id: string): JSX.Element | null => (
+    <PenjelasanSebaris fact_id={fact_id} indeks={indeks} emiten={kasus.emiten} sudahDibuka />
+  );
   return (
     <section className="layar layar-pembukaan" aria-labelledby="judul-pembukaan">
       <KalenderSobek hari={hari} />
@@ -1270,13 +1271,11 @@ function LayarPembukaan({
         {kasus.pembukaan.paragraf.map((paragraf, nomor) => (
           <li key={nomor}>
             <KepingTanggal kasus={kasus} teks={paragraf} />
-            <Teks teks={paragraf} sakelarSumber={sakelarSumber} terbuka={terbuka} />
-            <PenjelasanSebaris
+            <Teks
               teks={paragraf}
-              indeks={indeks}
+              sakelarSumber={sakelarSumber}
               terbuka={terbuka}
-              emiten={kasus.emiten}
-              sudahDibuka
+              penjelasan={penjelasanSebaris}
             />
           </li>
         ))}
@@ -1288,13 +1287,11 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} sakelarSumber={sakelarSumber} terbuka={terbuka} />
-              <PenjelasanSebaris
+              <Teks
                 teks={baris}
-                indeks={indeks}
+                sakelarSumber={sakelarSumber}
                 terbuka={terbuka}
-                emiten={kasus.emiten}
-                sudahDibuka
+                penjelasan={penjelasanSebaris}
               />
             </li>
           ))}
@@ -1303,13 +1300,11 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.tidak_bisa_dibaca.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} sakelarSumber={sakelarSumber} terbuka={terbuka} />
-              <PenjelasanSebaris
+              <Teks
                 teks={baris}
-                indeks={indeks}
+                sakelarSumber={sakelarSumber}
                 terbuka={terbuka}
-                emiten={kasus.emiten}
-                sudahDibuka
+                penjelasan={penjelasanSebaris}
               />
             </li>
           ))}
@@ -1318,13 +1313,11 @@ function LayarPembukaan({
         <ul>
           {kasus.pembukaan.disingkirkan.map((baris, nomor) => (
             <li key={nomor}>
-              <Teks teks={baris} sakelarSumber={sakelarSumber} terbuka={terbuka} />
-              <PenjelasanSebaris
+              <Teks
                 teks={baris}
-                indeks={indeks}
+                sakelarSumber={sakelarSumber}
                 terbuka={terbuka}
-                emiten={kasus.emiten}
-                sudahDibuka
+                penjelasan={penjelasanSebaris}
               />
             </li>
           ))}
