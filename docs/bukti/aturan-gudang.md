@@ -46,8 +46,10 @@ Tidak ada berkas yang jenisnya tidak bisa dikenali dari isinya.
 | R31 | angka dividen di keputusan RUPS | 6 | 4 | 2 | 0 | 95 |
 | R26 | tahun buku berdividen | 50 | 34 | 3 | 13 | 0 |
 | R27 | medan rasio | 988 | 306 | 6 | 676 | 0 |
+| R29 | dividen | 54 | 5 | 0 | 49 | 1 |
+| R34 | aksi korporasi | 72 | 11 | 0 | 61 | 0 |
 
-[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R20, R21, R22, R26, R27, R28, R32, R33), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
+[^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R12, R16, R18a, R19a, R19b, R20, R21, R22, R26, R27, R28, R29, R32, R33, R34), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
 
 ### R25 — Kelengkapan halaman laporan
 
@@ -412,6 +414,24 @@ Alasan dilewati:
 Contoh nyata:
 - **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2020 bernilai 1.0616813578468016, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: Rp-414.398.439.415 dibagi Rp-390.322.799.164. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
 - **TIRT** — Medan rasio siap pakai `roe` TIRT untuk tahun buku 2021 bernilai 0.2457842344731376, yaitu angka positif — tetapi ia positif hanya karena kedua angka yang dibagi sama-sama negatif: Rp-126.517.856.201 dibagi Rp-514.751.714.943. Dibaca apa adanya, angka positif itu terbaca seperti untung, padahal tahun buku itu rugi. Angka ini tidak boleh dipakai di kartu tanpa menyebut kedua angka asalnya.
+
+### R29 — Gerakan harga di tanggal ex dividen
+
+Kami menandai dividen yang gerakan harganya pada tanggal ex — hari pertama pembeli baru tidak lagi kebagian — tidak sejalan dengan besar dividen itu.
+
+Diperiksa 54 dividen: 5 tidak bermasalah, 0 ditandai, 49 datanya tidak cukup untuk memutuskan. 1 dividen tidak masuk pemeriksaan ini. Aturannya jalan untuk 9 emiten dan dilewati untuk 294.
+
+Alasan dilewati:
+- Emiten ini tidak punya satu pun dividen tercatat.
+
+### R34 — Aksi korporasi dengan harga di kedua sisinya
+
+Kami memberi tanda pada aksi korporasi yang tidak punya harga harian di kedua sisinya, karena tidak ada satu pun pemeriksaan harga yang bisa dijalankan atasnya.
+
+Diperiksa 72 aksi korporasi: 11 tidak bermasalah, 0 ditandai, 61 datanya tidak cukup untuk memutuskan. 0 aksi korporasi tidak masuk pemeriksaan ini. Aturannya jalan untuk 15 emiten dan dilewati untuk 288.
+
+Alasan dilewati:
+- Emiten ini tidak punya satu pun aksi korporasi tercatat.
 
 ## Yang tidak bisa diperiksa dari data ini
 

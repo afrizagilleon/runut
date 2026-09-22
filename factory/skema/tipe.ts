@@ -208,9 +208,11 @@ export const SEMUA_KODE_ATURAN: readonly KodeAturan[] = [
   'R26',
   'R27',
   'R28',
+  'R29',
   'R31',
   'R32',
   'R33',
+  'R34',
   'R35',
 ];
 

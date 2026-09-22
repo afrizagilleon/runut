@@ -74,7 +74,13 @@ const KALIMAT_AWAM: Record<string, string> = {
   R31:
     'Kami menolak kartu kalau dividen per lembar yang disebut keputusan RUPS tidak ada di medan ' +
     'dividen, atau baru cocok sesudah dikali rasio pemecahan saham.',
+  R29:
+    'Kami menandai dividen yang gerakan harganya pada tanggal ex — hari pertama pembeli baru ' +
+    'tidak lagi kebagian — tidak sejalan dengan besar dividen itu.',
   R33: 'Kami menandai hari yang jumlah saham tersiratnya melompat, karena penyebut persen tidak boleh diambil dari hari seperti itu.',
+  R34:
+    'Kami memberi tanda pada aksi korporasi yang tidak punya harga harian di kedua sisinya, ' +
+    'karena tidak ada satu pun pemeriksaan harga yang bisa dijalankan atasnya.',
   R35: 'Kami menolak kartu kalau harga tertinggi atau terendah yang disebut ringkasan tidak terjangkau deret harga hariannya sendiri.',
 };
 
@@ -102,8 +108,10 @@ export const ATURAN_PENANDA: readonly KodeAturan[] = [
   'R26',
   'R27',
   'R28',
+  'R29',
   'R32',
   'R33',
+  'R34',
 ];
 
 function penanda(aturan: KodeAturan): boolean {

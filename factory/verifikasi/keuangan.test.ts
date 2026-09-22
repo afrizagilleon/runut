@@ -31,6 +31,12 @@ import {
   menyatakanTanpaDividen,
   r26PembagianLaba,
   r27RasioSiapPakai,
+  daftarAksi,
+  gerakanSejalan,
+  hargaDiKeduaSisi,
+  pasanganSekitarEx,
+  r29HargaDiTanggalEx,
+  r34AksiTanpaHarga,
 } from './aturan-keuangan.ts';
 
 function ktx(ubah: Partial<DataEmiten> = {}): KonteksGudang {
@@ -960,5 +966,203 @@ describe('R27 — medan rasio siap pakai', () => {
     const h = r27RasioSiapPakai(ktx());
     expect(h.dijalankan).toBe(false);
     expect(h.alasan_lewat).toContain('tidak punya satu pun medan rasio');
+  });
+});
+
+// --- M2b T-06: R29 dan R34 ---------------------------------------------------
+
+describe('R29 — gerakan harga di tanggal ex dividen', () => {
+  const hari = (tanggal: string, buka: number, tutup: number) =>
+    harga({ tanggal, buka, tutup, tertinggi: Math.max(buka, tutup), terendah: Math.min(buka, tutup) });
+  const dividen = (ex: string, nilai: number) => ({ ex_date: ex, tanggal_bayar: null, nilai_per_lembar: nilai });
+
+  it('hijau untuk pola ULTJ: turun Rp145 pada dividen Rp130', () => {
+    const h = r29HargaDiTanggalEx(
+      ktx({
+        simbol: 'ULTJ',
+        dividen: [dividen('2026-05-04', 130)],
+        harga: [hari('2026-04-30', 1700, 1690), hari('2026-05-04', 1545, 1550)],
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ satuan: 'dividen', diperiksa: 1, hijau: 1, merah: 0 });
+  });
+
+  it('hijau untuk pola MTLA: harga tidak bergerak sama sekali dari tutup ke buka', () => {
+    const h = r29HargaDiTanggalEx(
+      ktx({
+        simbol: 'MTLA',
+        dividen: [dividen('2025-06-12', 11.25)],
+        harga: [hari('2025-06-11', 426, 426), hari('2025-06-12', 426, 430)],
+      }),
+    );
+    expect(h.hitungan.merah).toBe(0);
+  });
+
+  it('hijau untuk kenaikan Rp1 pada dividen Rp3,20: selangnya asimetris', () => {
+    // Selang lama [0, 3 x dividen] menghitung kenaikan Rp1 sebagai merah sama
+    // beratnya dengan kenaikan Rp7 pada dividen Rp0,14. Selang baru membolehkan
+    // kenaikan sampai satu kali dividen.
+    const h = r29HargaDiTanggalEx(
+      ktx({
+        simbol: 'MLPT',
+        dividen: [dividen('2026-05-11', 3.2)],
+        harga: [hari('2026-05-08', 840, 845), hari('2026-05-11', 846, 850)],
+      }),
+    );
+    expect(h.hitungan.merah).toBe(0);
+    expect(gerakanSejalan(-1_000, 3_200)).toBe(true);
+  });
+
+  it('merah kalau harga naik lebih dari satu kali besar dividen', () => {
+    const h = r29HargaDiTanggalEx(
+      ktx({
+        dividen: [dividen('2026-05-11', 10)],
+        harga: [hari('2026-05-08', 840, 845), hari('2026-05-11', 860, 865)],
+      }),
+    );
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.keparahan).toBe('peringatan');
+    expect(h.temuan[0]?.ringkasan).toContain('naik Rp15');
+    expect(h.temuan[0]?.ringkasan).toContain('hari pertama pembeli baru tidak lagi kebagian');
+  });
+
+  it('merah kalau harga turun lebih dari tiga kali besar dividen', () => {
+    const h = r29HargaDiTanggalEx(
+      ktx({
+        dividen: [dividen('2026-05-11', 10)],
+        harga: [hari('2026-05-08', 840, 845), hari('2026-05-11', 800, 805)],
+      }),
+    );
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('turun Rp45');
+  });
+
+  it('hijau tepat di kedua tepi selang', () => {
+    expect(gerakanSejalan(30_000, 10_000)).toBe(true);
+    expect(gerakanSejalan(30_001, 10_000)).toBe(false);
+    expect(gerakanSejalan(-10_000, 10_000)).toBe(true);
+    expect(gerakanSejalan(-10_001, 10_000)).toBe(false);
+  });
+
+  it('melewati dividen DADA Rp0,14, karena satu fraksi harga saja tujuh kali lebih besar', () => {
+    const h = r29HargaDiTanggalEx(
+      ktx({
+        simbol: 'DADA',
+        dividen: [dividen('2025-09-16', 0.14)],
+        harga: [hari('2025-09-15', 70, 72), hari('2025-09-16', 79, 80)],
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 0, merah: 0, dilewati: 1 });
+    expect(h.hitungan.alasan_dilewati.join(' ')).toContain('lebih kecil daripada satu fraksi harga bursa');
+  });
+
+  it('mengalikan kembali dividen yang R31 buktikan sudah dibagi rasio pemecahan saham', () => {
+    // MLPT ex 2025-11-07: tutup Rp3.180 lalu buka Rp3.192, naik Rp12.
+    // Medan dividen memberi Rp2,14 — lebih kecil daripada satu fraksi harga
+    // Rp5 di tingkat harga itu, jadi tanpa koreksi dividen ini bahkan tidak
+    // bisa diperiksa. Dengan koreksi ia Rp53,50, dan kenaikan Rp12 sejalan.
+    const hargaMlpt = [hari('2025-11-06', 3170, 3180), hari('2025-11-07', 3192, 3200)];
+    const tanpaBukti = r29HargaDiTanggalEx(
+      ktx({ simbol: 'MLPT', dividen: [dividen('2025-11-07', 2.14)], harga: hargaMlpt }),
+    );
+    expect(tanpaBukti.hitungan).toMatchObject({ diperiksa: 0, merah: 0, dilewati: 1 });
+
+    const denganBukti = r29HargaDiTanggalEx(
+      ktx({
+        simbol: 'MLPT',
+        dividen: [dividen('2025-11-07', 2.14), dividen('2026-05-11', 3.2)],
+        harga: [...hargaMlpt, hari('2026-05-08', 840, 845), hari('2026-05-11', 846, 850)],
+        stock_split: [{ tanggal: '2026-07-21', rasio: 25, sumber: 'MLPT-corpactions.json' }],
+        rups: [
+          {
+            tanggal: '2026-04-29',
+            ringkasan: 'approved a total cash dividend of Rp133.50 per share for the 2025 fiscal year',
+          },
+        ],
+      }),
+    );
+    expect(denganBukti.hitungan).toMatchObject({ diperiksa: 2, hijau: 2, merah: 0, dilewati: 0 });
+  });
+
+  it('mencoba hari bursa tetangga, karena tanggal ex dipercaya kurang lebih satu hari', () => {
+    // Gerakan pada pasangan utama tidak sejalan, tetapi pasangan sehari
+    // sebelumnya sejalan. Aturan penanda tidak menuduh kalau masih ada bacaan
+    // yang masuk akal.
+    const h = r29HargaDiTanggalEx(
+      ktx({
+        dividen: [dividen('2026-05-12', 10)],
+        harga: [
+          hari('2026-05-08', 850, 850),
+          hari('2026-05-11', 830, 830),
+          hari('2026-05-12', 780, 780),
+        ],
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0 });
+    expect(pasanganSekitarEx(h.temuan.length === 0 ? [] : [], '2026-05-12')).toEqual([]);
+  });
+
+  it('menjawab TIDAK_LENGKAP kalau tidak ada harga di kedua sisi tanggal ex', () => {
+    const h = r29HargaDiTanggalEx(
+      ktx({ dividen: [dividen('2026-05-11', 10)], harga: [hari('2026-05-12', 100, 100)] }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, tidak_lengkap: 1, merah: 0 });
+  });
+});
+
+describe('R34 — aksi korporasi dengan harga di kedua sisinya', () => {
+  const hari = (tanggal: string) => harga({ tanggal, buka: 100, tutup: 100, tertinggi: 100, terendah: 100 });
+
+  it('menghitung seluruh jenis aksi korporasi dalam satu daftar terurut', () => {
+    const k = ktx({
+      dividen: [{ ex_date: '2026-05-11', tanggal_bayar: null, nilai_per_lembar: 3.2 }],
+      right_issue: [{ ex_date: '2025-10-09', rasio_lama: 1, rasio_baru: 3, sumber: 'x' }],
+      stock_split: [{ tanggal: '2026-07-21', rasio: 25, sumber: 'x' }],
+      bonus: [{ ex_date: '2015-08-21', sumber: 'x', rasio_lama: 100, rasio_baru: 1 }],
+    });
+    expect(daftarAksi(k).map((a) => a.jenis + ' ' + a.tanggal)).toEqual([
+      'saham bonus 2015-08-21',
+      'penerbitan saham baru 2025-10-09',
+      'dividen tunai 2026-05-11',
+      'pemecahan saham 2026-07-21',
+    ]);
+  });
+
+  it('hijau kalau ada baris harga sebelum dan pada tanggal aksinya', () => {
+    const h = r34AksiTanpaHarga(
+      ktx({
+        stock_split: [{ tanggal: '2026-07-21', rasio: 25, sumber: 'x' }],
+        harga: [hari('2026-07-20'), hari('2026-07-21')],
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ satuan: 'aksi korporasi', diperiksa: 1, hijau: 1, merah: 0, tidak_lengkap: 0 });
+  });
+
+  it('TIDAK_LENGKAP, bukan merah, kalau salah satu sisinya tidak ada', () => {
+    // Satu-satunya saham bonus di seluruh gudang, MTLA 2015, tanpa harga 2015.
+    const h = r34AksiTanpaHarga(
+      ktx({
+        simbol: 'MTLA',
+        bonus: [{ ex_date: '2015-08-21', sumber: 'x', rasio_lama: 100, rasio_baru: 1 }],
+        harga: [hari('2025-06-11'), hari('2025-06-12')],
+      }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0, tidak_lengkap: 1 });
+    expect(h.temuan[0]?.keparahan).toBe('catatan');
+    expect(h.temuan[0]?.ringkasan).toContain('saham bonus 2015-08-21');
+    expect(h.temuan[0]?.ringkasan).toContain('daftar pekerjaan penarikan data, bukan tanda bahwa ada yang salah');
+  });
+
+  it('tidak menghitung baris harga cacat sebagai sisi yang ada', () => {
+    const cacat = harga({ tanggal: '2026-07-20', buka: 0, tutup: 0, tertinggi: 0, terendah: 0 });
+    cacat.buka_kosong = true;
+    expect(hargaDiKeduaSisi([cacat, hari('2026-07-21')], '2026-07-21')).toBe(false);
+    expect(hargaDiKeduaSisi([hari('2026-07-20'), hari('2026-07-21')], '2026-07-21')).toBe(true);
+  });
+
+  it('dilewati beserta alasannya kalau emiten tidak punya aksi korporasi', () => {
+    const h = r34AksiTanpaHarga(ktx());
+    expect(h.dijalankan).toBe(false);
+    expect(h.alasan_lewat).toContain('tidak punya satu pun aksi korporasi');
   });
 });

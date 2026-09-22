@@ -14,6 +14,7 @@
  */
 import type { Temuan } from '../skema/tipe.ts';
 import type {
+  BarisHarga,
   HasilAturan,
   KeuanganTahunan,
   KonteksGudang,
@@ -22,6 +23,7 @@ import type {
   StockSplit,
 } from './tipe.ts';
 import { angka, hasil, hitung, lewat } from './dasar.ts';
+import { barisHargaCacat, fraksiHarga } from './aturan-v2.ts';
 
 // --- perkakas bersama kelompok ini -------------------------------------------
 
@@ -1309,5 +1311,306 @@ export function r27RasioSiapPakai(konteks: KonteksGudang): HasilAturan {
     judul,
     temuan,
     hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R29 gerakan harga di tanggal ex dividen ---------------------------------
+
+/**
+ * Selang gerakan harga yang dianggap sejalan dengan dividen, **asimetris**.
+ *
+ * Harga boleh turun paling banyak tiga kali besar dividen, dan boleh **naik**
+ * paling banyak satu kali besar dividen. Usulan lama memakai `[0, 3 x dividen]`,
+ * yang simetris hanya pada namanya: kenaikan Rp1 pada dividen Rp3,20 dihitung
+ * merah sama beratnya dengan kenaikan Rp7 pada dividen Rp0,14. Aturan ini
+ * sebenarnya menanyakan "apakah harganya turun kira-kira sebesar dividen?",
+ * bukan "apakah harganya turun tepat sebesar dividen?".
+ */
+export const SELANG_R29 = { turunMaks: 3, naikMaks: 1 } as const;
+
+/** Satu pasang hari bursa yang mengapit tanggal ex. */
+interface PasangEx {
+  cum: BarisHarga;
+  ex: BarisHarga;
+}
+
+/**
+ * Hari bursa terakhir sebelum `exDate` dan hari bursa pertama pada atau
+ * sesudahnya, ditambah dua pasangan tetangga.
+ *
+ * `ex_date` di data ini dipercaya **kurang lebih satu hari bursa**: §K-02 3.3
+ * menunjukkan pendekatan "hari bursa terakhir sebelum ex_date" meleset satu
+ * hari pada COCO. Karena aturan ini penanda, bukan penolak, ketiga pasangan
+ * dicoba dan satu saja yang masuk selang sudah cukup untuk hijau.
+ */
+export function pasanganSekitarEx(harga: BarisHarga[], exDate: string): PasangEx[] {
+  const bersih = harga
+    .filter((h) => !barisHargaCacat(h))
+    .sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+  const batas = bersih.findIndex((h) => h.tanggal >= exDate);
+  if (batas <= 0) return [];
+  const keluar: PasangEx[] = [];
+  for (const geser of [0, -1, 1]) {
+    const i = batas + geser;
+    const cum = bersih[i - 1];
+    const ex = bersih[i];
+    if (cum === undefined || ex === undefined) continue;
+    keluar.push({ cum, ex });
+  }
+  return keluar;
+}
+
+/**
+ * Apakah gerakan `turun` (tutup hari cum dikurangi buka hari ex) sejalan dengan
+ * dividen sebesar `dividen`?
+ *
+ * Dibandingkan sebagai bilangan bulat seperseribu rupiah (INV-D).
+ */
+export function gerakanSejalan(turunMilli: number, dividenMilli: number): boolean {
+  return (
+    turunMilli <= SELANG_R29.turunMaks * dividenMilli &&
+    turunMilli >= -SELANG_R29.naikMaks * dividenMilli
+  );
+}
+
+/**
+ * R29 — harga di tanggal ex dividen.
+ *
+ * Tanggal ex adalah hari pertama pembeli baru **tidak lagi kebagian** dividen
+ * itu, jadi harga biasanya membuka lebih rendah kira-kira sebesar dividennya.
+ *
+ * Dividen yang lebih kecil daripada satu fraksi harga bursa **dilewati**, bukan
+ * ditandai: DADA membagikan Rp0,14 per lembar pada saham seharga Rp72, dan
+ * fraksi harga terkecil di situ adalah Rp1 — tujuh kali dividennya. Dividen
+ * sebesar itu tidak mungkin terlihat di harga, jadi menandainya berarti
+ * menandai sesuatu yang tidak pernah bisa lulus.
+ *
+ * Kalau R31 membuktikan medan dividen sudah dibagi rasio pemecahan saham,
+ * angkanya dikalikan kembali lebih dulu: tanpa itu dividen MLPT yang sudah
+ * dibagi 25 dibandingkan dengan harga yang belum, dan perbandingannya meleset
+ * 25 kali lipat.
+ */
+export function r29HargaDiTanggalEx(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Gerakan harga di tanggal ex dividen';
+  const satuan = 'dividen';
+  const dividen = konteks.data.dividen;
+  if (dividen.length === 0) {
+    return lewat('R29', judul, 'Emiten ini tidak punya satu pun dividen tercatat.', satuan);
+  }
+
+  const penyesuaian = penyesuaianSplitDividen(konteks);
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  let dilewati = 0;
+  const alasan: string[] = [];
+
+  for (const d of dividen) {
+    const pasangan = pasanganSekitarEx(konteks.harga, d.ex_date);
+    const utama = pasangan[0];
+    if (utama === undefined) {
+      diperiksa += 1;
+      tidakLengkap += 1;
+      alasan.push(
+        'Tidak ada baris harga di kedua sisi tanggal ex dividen ini, jadi gerakannya tidak bisa diukur.',
+      );
+      continue;
+    }
+
+    const dividenMilli = Math.round(d.nilai_per_lembar * 1000) * penyesuaian.lipat;
+    const fraksi = fraksiHarga(utama.cum.tutup);
+    if (dividenMilli <= 0 || dividenMilli < fraksi * 1000) {
+      dilewati += 1;
+      alasan.push(
+        'Dividennya lebih kecil daripada satu fraksi harga bursa, jadi ia tidak mungkin terlihat di harga.',
+      );
+      continue;
+    }
+
+    diperiksa += 1;
+    const cocok = pasangan.find((p) =>
+      gerakanSejalan(Math.round((p.cum.tutup - p.ex.buka) * 1000), dividenMilli),
+    );
+    if (cocok !== undefined) continue;
+
+    merah += 1;
+    const turun = Math.round((utama.cum.tutup - utama.ex.buka) * 1000);
+    const arah = turun < 0 ? 'naik' : 'turun';
+    const besar = Math.abs(turun);
+    const catatanSplit =
+      penyesuaian.lipat > 1
+        ? ' Dividen di sini sudah dikalikan kembali ' +
+          String(penyesuaian.lipat) +
+          ', karena medan dividen emiten ini terbukti sudah dibagi rasio pemecahan saham sementara ' +
+          'deret harganya belum.'
+        : '';
+    temuan.push({
+      temuan_id: 'R29-' + konteks.simbol + '-' + d.ex_date,
+      aturan: 'R29',
+      keparahan: 'peringatan',
+      ringkasan:
+        'Pada tanggal ex ' +
+        d.ex_date +
+        ' — hari pertama pembeli baru tidak lagi kebagian dividen ini — harga ' +
+        konteks.simbol +
+        ' ' +
+        arah +
+        ' Rp' +
+        rupiahMilli(besar) +
+        ', dari tutup Rp' +
+        angka(utama.cum.tutup) +
+        ' pada ' +
+        utama.cum.tanggal +
+        ' ke buka Rp' +
+        angka(utama.ex.buka) +
+        ' pada ' +
+        utama.ex.tanggal +
+        '. Dividennya Rp' +
+        rupiahMilli(dividenMilli) +
+        ' per lembar, jadi gerakan itu di luar rentang yang kami anggap sejalan dengan dividen ' +
+        'sebesar itu (turun paling banyak ' +
+        String(SELANG_R29.turunMaks) +
+        ' kali dividen, naik paling banyak ' +
+        String(SELANG_R29.naikMaks) +
+        ' kali).' +
+        catatanSplit +
+        ' Harga bergerak karena banyak sebab sekaligus, jadi ini bukan tuduhan bahwa datanya ' +
+        'salah — hanya tanda bahwa dividen tidak bisa dipakai untuk menjelaskan gerakan hari itu.',
+      angka: [
+        { label: 'tutup hari terakhir masih kebagian', nilai: utama.cum.tutup, satuan: 'rupiah' },
+        { label: 'buka hari pertama tidak kebagian', nilai: utama.ex.buka, satuan: 'rupiah' },
+        { label: 'dividen per lembar', nilai: dividenMilli / 1000, satuan: 'rupiah per lembar' },
+      ],
+      fakta_terkait: [],
+      rujukan: ['harga harian ' + utama.cum.tanggal, 'harga harian ' + utama.ex.tanggal],
+    });
+  }
+
+  return hasil(
+    'R29',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, dilewati, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R34 aksi korporasi tanpa harga di kedua sisi ----------------------------
+
+export interface AksiKorporasi {
+  jenis: string;
+  tanggal: string;
+  keterangan: string;
+}
+
+/** Semua aksi korporasi satu emiten, satu daftar, urutan tetap. */
+export function daftarAksi(konteks: KonteksGudang): AksiKorporasi[] {
+  const d = konteks.data;
+  const keluar: AksiKorporasi[] = [
+    ...d.dividen.map((x) => ({
+      jenis: 'dividen tunai',
+      tanggal: x.ex_date,
+      keterangan: 'Rp' + angka(x.nilai_per_lembar) + ' per lembar',
+    })),
+    ...d.right_issue.map((x) => ({
+      jenis: 'penerbitan saham baru',
+      tanggal: x.ex_date,
+      keterangan:
+        x.rasio_lama === null || x.rasio_baru === null
+          ? 'rasionya tidak tercatat'
+          : String(x.rasio_lama) + ' berbanding ' + String(x.rasio_baru),
+    })),
+    ...d.stock_split.map((x) => ({
+      jenis: 'pemecahan saham',
+      tanggal: x.tanggal,
+      keterangan: '1 lembar menjadi ' + String(x.rasio),
+    })),
+    ...d.bonus.map((x) => ({
+      jenis: 'saham bonus',
+      tanggal: x.ex_date,
+      keterangan:
+        x.rasio_lama === undefined || x.rasio_lama === null || x.rasio_baru === undefined || x.rasio_baru === null
+          ? 'rasionya tidak tercatat'
+          : String(x.rasio_lama) + ' berbanding ' + String(x.rasio_baru),
+    })),
+  ];
+  return keluar.sort(
+    (a, b) => a.tanggal.localeCompare(b.tanggal) || a.jenis.localeCompare(b.jenis) || a.keterangan.localeCompare(b.keterangan),
+  );
+}
+
+/** Apakah ada baris harga sebelum dan pada atau sesudah `tanggal`? */
+export function hargaDiKeduaSisi(harga: BarisHarga[], tanggal: string): boolean {
+  let sebelum = false;
+  let sesudah = false;
+  for (const h of harga) {
+    if (barisHargaCacat(h)) continue;
+    if (h.tanggal < tanggal) sebelum = true;
+    else sesudah = true;
+    if (sebelum && sesudah) return true;
+  }
+  return false;
+}
+
+/**
+ * R34 — aksi korporasi tanpa harga harian di kedua sisinya.
+ *
+ * Ini **daftar kerja penarikan data, bukan kesalahan**. Aksi yang mau dijadikan
+ * kartu harus punya baris harga sebelum dan pada atau sesudah tanggalnya;
+ * kalau tidak, tidak ada satu pun aturan harga yang bisa berbunyi tentangnya.
+ * Statusnya `TIDAK_LENGKAP`, dan nol merah adalah hasil yang diharapkan.
+ */
+export function r34AksiTanpaHarga(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Aksi korporasi dengan harga di kedua sisinya';
+  const satuan = 'aksi korporasi';
+  const aksi = daftarAksi(konteks);
+  if (aksi.length === 0) {
+    return lewat('R34', judul, 'Emiten ini tidak punya satu pun aksi korporasi tercatat.', satuan);
+  }
+
+  const temuan: Temuan[] = [];
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+  const kurang: AksiKorporasi[] = [];
+
+  for (const a of aksi) {
+    if (hargaDiKeduaSisi(konteks.harga, a.tanggal)) continue;
+    tidakLengkap += 1;
+    alasan.push('Tidak ada baris harga harian di kedua sisi tanggal aksi ini.');
+    kurang.push(a);
+  }
+
+  if (kurang.length > 0) {
+    const contoh = kurang.slice(0, 3);
+    temuan.push({
+      temuan_id: 'R34-' + konteks.simbol,
+      aturan: 'R34',
+      keparahan: 'catatan',
+      ringkasan:
+        String(kurang.length) +
+        ' dari ' +
+        String(aksi.length) +
+        ' aksi korporasi ' +
+        konteks.simbol +
+        ' tidak punya harga harian di kedua sisinya, jadi tidak ada satu pun pemeriksaan harga ' +
+        'yang bisa dijalankan atasnya' +
+        (kurang.length > contoh.length ? ', antara lain' : '') +
+        ': ' +
+        contoh.map((a) => a.jenis + ' ' + a.tanggal + ' (' + a.keterangan + ')').join(', ') +
+        '. Ini daftar pekerjaan penarikan data, bukan tanda bahwa ada yang salah.',
+      angka: [
+        { label: 'aksi tanpa harga di kedua sisi', nilai: kurang.length, satuan: 'aksi' },
+        { label: 'aksi korporasi seluruhnya', nilai: aksi.length, satuan: 'aksi' },
+      ],
+      fakta_terkait: [],
+      rujukan: kurang.map((a) => a.jenis + ' ' + a.tanggal),
+    });
+  }
+
+  return hasil(
+    'R34',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa: aksi.length, merah: 0, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
   );
 }
