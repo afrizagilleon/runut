@@ -61,6 +61,7 @@ Menjalankan sebagian:
 npx playwright test --project=ponsel-terang        # satu proyek
 npx playwright test buka-tutup                     # satu berkas
 npx playwright test --grep "E-04"                  # satu tes
+npx playwright test penjelasan-sebaris             # temuan M3.6 D-1
 npx playwright show-report .cache/e2e/laporan      # laporan HTML putaran terakhir
 ```
 
@@ -128,9 +129,15 @@ dilihat browser tanpa membuka browser.
 | Teks redup tidak terbaca | `tata-letak.spec.ts` E-12f | `gaya.css`: `--tinta-redup` dipucatkan |
 | Cincin fokus hilang | `papan-ketik.spec.ts` E-13 | `gaya.css`: semua `outline: 2px solid var(--stempel)` → `none` |
 | Layar pertama tidak mengatakan berapa soal ("ga tau berapa soalnya") | `permainan.spec.ts` E-10 | `Aplikasi.tsx`: baris `data-uid="meta-pembuka"` dihapus · `pembuka.ts`: jumlah soal ditulis mati `'3 soal'` (tes unit) |
-| Pemain tidak tahu chat itu tanggal berapa | `balon-tanggal.spec.ts` E-14 | `Aplikasi.tsx`: baris `.pesan-tanggal` dihapus · `aria-label` balon dikembalikan ke nama + jam saja · `tanggal.ts`: `BULAN_SINGKAT` diambil dari `BULAN_PENDEK` yang berhuruf kapital (tes unit) |
+| Pemain tidak tahu chat itu tanggal berapa | `balon-tanggal.spec.ts` E-14 | `Aplikasi.tsx`: baris `.pesan-meta` dihapus · `aria-label` balon dikembalikan ke nama + jam saja · `tanggal.ts`: `BULAN_SINGKAT` diambil dari `BULAN_PENDEK` yang berhuruf kapital (tes unit) |
 | Sesudah mengunci, cap dan kartu penentu ada di bawah lipatan dan pemain langsung "next" | `gulir-ke-cap.spec.ts` E-15 | `Aplikasi.tsx`: pemanggilan `scrollIntoView` di `useGulirKeCap` dihapus |
 | Gulir halus ikut pindah layar: layar berikutnya lahir sudah tergulir | `gulir-ke-cap.spec.ts` E-15b | `Aplikasi.tsx`: pengulangan `window.scrollTo(0, 0)` di `requestAnimationFrame` dihapus |
+| **M3.6-1** Mengetuk "9 Oktober 2025" di paragraf panjang tidak memperlihatkan apa-apa: penjelasannya terbuka 289 px di bawah, di luar layar | `penjelasan-sebaris.spec.ts` E-16a–d | `Teks.tsx`: `selipkanPenjelasan` mengembalikan kalimat terakhir (blok kembali ke ujung paragraf) · daftar `terbuka` ditelusuri dari depan (yang lama menang) · ketukan ganda untuk tautan yang kalah baru dihapus (satu ketukan jadi tanpa akibat) |
+| **M3.6-2** Celah antara nama pengirim dan balonnya; jam pernah hilang dari pojok kanan bawah | `balon-tanggal.spec.ts` E-14b | `Aplikasi.tsx`: nama dikeluarkan lagi dari balon · `<time class="pesan-jam">` dihapus · `tanggal.ts`: `tanggalBalon` membawa jam lagi (angka jam jadi dua kali) |
+| **M3.6-3** Keping "HARI INI · RABU 8 OKT 2025" tidak pernah dilihat pemain | `titik-keping.spec.ts` E-17a–c | `Aplikasi.tsx`: `berdenyut` diberikan ke semua soal · `gaya.css`: jumlah detak dibuat `infinite` · aturan `prefers-reduced-motion` untuk `.keping-titik-denyut` dihapus |
+| **M3.6-4** Sobekan kalender "kurang terasa" | `sobekan.spec.ts` E-05 | `gaya.css`: `animation-delay` sobekan dijadikan 2.000 ms (janji animasi 2.700 ms > batas 1.750 ms) |
+| **M3.6-5** "rantai laporan kepemilikan" terdengar seperti rantai komando; "sepuluh aturan" ditulis mati padahal mesin V2 punya 31 | `jejak-verifikasi.spec.ts` E-18 | `jejak.ts`: angka ditulis mati lagi · kata "rantai" dikembalikan · ringkasan lipatan memakai angka lain daripada kalimat pembukanya |
+| **F-M36-1** "Langsung ke ringkasan" mendarat 176 px meleset ketika diketuk selagi kalender masih menutup ruangnya | `permainan.spec.ts` E-10 (proyek `lebar`) | `Aplikasi.tsx`: guliran kedua di `gulirKeSasaran()` dihapus |
 
 ## Menambah tes ketika cacat baru ditemukan
 
@@ -197,6 +204,15 @@ dilihat browser tanpa membuka browser.
   terukur) dan besar di bawah beban — satu putaran penuh membuka layar
   pembukaan tepat di ringkasannya. Tes yang menunggu gulirnya selesai lebih
   dulu tidak akan pernah melihatnya; E-15b sengaja **tidak** menunggu.
+- **Halaman yang animasinya belum selesai belum boleh diukur.** Layar pembukaan
+  menutup ruang sobekan kalender setinggi 176 px (`tutup-ruang`). Mengukur
+  posisi gulir sebelum itu selesai memberi dua jawaban berbeda untuk keadaan
+  yang sama — terukur 401 px dan 227 px di mesin ini, selisihnya persis 176.
+  Yang ditunggu animasinya (`Promise.all` atas `getAnimations()`), bukan jamnya.
+- **`tap()` menggulir halamannya sendiri sebelum mengetuk.** Ia memusatkan
+  sasarannya, dan berapa jauh berbeda tiap putaran. Tes yang bertanya "apakah
+  ini terlihat dari tempat pemain mengetuk" harus mengembalikan posisi gulirnya
+  lebih dulu; kalau tidak, yang diukur adalah guliran alat uji.
 - **Tangkapan layar diambil saat halaman diam.** `simpanLayar()` menunggu
   gulirnya berhenti dan memeriksa `scrollY` tidak berubah selama gambarnya
   diambil. Gambar bahan review yang menyesatkan membuat orang mengejar cacat
