@@ -963,7 +963,12 @@ function LayarSoal({
             di sini lewat mode ketat 'ucapan' (T-01).
           */}
           <p className="isi">{soal.pesan.isi}</p>
-          <time className="pesan-jam">{soal.pesan.jam}</time>
+          {/*
+            Jamnya sudah ada di baris tanggal di atas (M3.5 D-2). Dulu ia juga
+            ditulis di pojok kanan bawah; sesudah baris tanggal masuk, angka
+            yang sama tampil dua kali dalam satu balon — dan milestone ini
+            berjanji mengurangi kata, bukan menambah. Reviewer, 22 Sep 2026.
+          */}
         </blockquote>
       </figure>
 

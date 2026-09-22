@@ -620,7 +620,6 @@ summary:focus-visible,
  * berselisih diam-diam. Yang berbeda hanya tempatnya, dan itu saja yang ditulis
  * terpisah di bawah.
  */
-.pesan-jam,
 .pesan-tanggal {
   display: block;
   font-family: var(--baca);
@@ -630,10 +629,6 @@ summary:focus-visible,
   color: var(--tinta-redup);
 }
 
-.pesan-jam {
-  text-align: right;
-  margin-top: 2px;
-}
 
 /*
  * Tanggal balon: tepat di bawah nama pengirim, seperti aplikasi pesan. Teman
