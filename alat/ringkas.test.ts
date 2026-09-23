@@ -22,6 +22,17 @@ import {
   perPenanda,
   pisahkanKecuali,
   ringkasSesi,
+  asalPerPenanda,
+  corongPerPenanda,
+  emberJam,
+  emberLebar,
+  galatPerPesan,
+  jamPerHari,
+  keluarMasuk,
+  kinerjaPer,
+  p90,
+  perPerangkat,
+  pergiCepat,
   type KapanLayar,
   type Peristiwa,
   type RingkasSesi,
@@ -1354,5 +1365,353 @@ describe('perKasus — angka alpha dipecah menurut kasus (M4 D-4)', () => {
     const teks = laporan(lengkap());
     expect(teks).toContain('## Per kasus');
     expect(teks).toContain('dada-2025-10-08');
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 D-7 — pelacak lengkap: delapan bagian baru                     */
+/* ------------------------------------------------------------------ */
+
+/*
+ * `alat/contoh/peristiwa-pelacak-lengkap.jsonl`: enam sesi yang ditulis supaya
+ * setiap angka di bawah bisa dihitung dengan tangan dari berkasnya.
+ *
+ *   A threads · android/threads · gelap · 360 · 4g · perujuk threads · 21.00 Sel
+ *     pembuka → soal-1, lalu `tampak sembunyi` 4 d kemudian tanpa ketukan: PERGI CEPAT soal-1
+ *   B threads · ios/instagram · terang · 390 · 3g · perujuk instagram · 08.00 Sab
+ *     pembuka, `tutup` 3 d kemudian tanpa ketukan: PERGI CEPAT pembuka
+ *   C sekree (orang P3) · android/tidak · 412 · 4g · langsung · 14.00 Min
+ *     SELESAI sampai akhir; sembunyi 12 d lalu kembali; galat X di soal-2
+ *   D sekree · windows/tidak · halus · 1280 · lambat · google · 23.00 Jum
+ *     sampai pembukaan; kembali sekali (3 d), lalu berakhir tersembunyi; galat Y (luar) di soal-1, galat X di soal-3
+ *   E berkas LAMA (skema 2): tanpa penanda, tanpa medan perangkat; berhenti di soal-2 dengan ketukan
+ *   F sekree (orang P3 lagi, kunjungan 2) · 412 · 4g · langsung · 15.00 Min
+ *     soal-1 lalu `tutup` sesudah 20 d tanpa ketukan: TIDAK cepat (≥ 15 d)
+ */
+const CONTOH_LENGKAP = fileURLToPath(
+  new URL('./contoh/peristiwa-pelacak-lengkap.jsonl', import.meta.url),
+);
+const sesiLengkap = (): RingkasSesi[] =>
+  kelompokkanSesi(bacaJsonl(readFileSync(CONTOH_LENGKAP, 'utf8'), 'peristiwa-pelacak-lengkap.jsonl')).filter(
+    (s) => s.lengkap,
+  );
+const satu = (awalan: string): RingkasSesi => {
+  const s = sesiLengkap().find((x) => x.sesi.startsWith(awalan));
+  if (s === undefined) throw new Error(`sesi ${awalan} tidak ada di contoh`);
+  return s;
+};
+
+describe('ringkas M3.8 — ringkasan per sesi membaca medan baru', () => {
+  it('enam sesi lengkap', () => {
+    expect(sesiLengkap()).toHaveLength(6);
+  });
+
+  it('perangkat dibaca dari mulai; berkas lama = null (ketiadaan data, bukan kategori)', () => {
+    expect(satu('sesi-a').perangkat?.['os']).toBe('android');
+    expect(satu('sesi-a').perangkat?.['peramban_dalam']).toBe('threads');
+    expect(satu('sesi-e').perangkat).toBeNull();
+  });
+
+  it('kinerja, galat, tampak, pergi cepat', () => {
+    expect(satu('sesi-a').kinerja).toEqual({ ms_ke_tampil: 812, ms_ke_interaktif: 2100 });
+    expect(satu('sesi-e').kinerja).toBeNull();
+    expect(satu('sesi-d').galat.map((g) => [g.layar, g.jenis, g.sumber])).toEqual([
+      ['soal-1', 'penolakan', 'luar'],
+      ['soal-3', 'error', 'aplikasi'],
+    ]);
+    expect(satu('sesi-d').tampak).toEqual({
+      sembunyi: 2,
+      kembali: 1,
+      ms_sembunyi: [3000],
+      berakhir_tersembunyi: true,
+    });
+    expect(satu('sesi-a').pergi_cepat).toEqual({ layar: 'soal-1', ms: 4000 });
+    expect(satu('sesi-b').pergi_cepat).toEqual({ layar: 'pembuka', ms: 3000 });
+    expect(satu('sesi-c').pergi_cepat).toBeNull();
+    expect(satu('sesi-e').pergi_cepat).toBeNull(); // ada ketukan
+    expect(satu('sesi-f').pergi_cepat).toBeNull(); // 20 d
+    expect(satu('sesi-c').sampai_akhir).toBe(true);
+    expect(satu('sesi-d').sampai_akhir).toBe(false);
+  });
+
+  it('pergi cepat berbatas KETAT: 14.999 d cepat, 15 d tidak', () => {
+    const dasar = (t: number): Peristiwa[] => [
+      { nama: 'mulai', sesi: 'x', kasus_id: 'k', t_ms: 0, urut: 1, isi: { lebar_layar: 360, penanda: null } },
+      { nama: 'layar_masuk', sesi: 'x', kasus_id: 'k', t_ms: 0, urut: 2, isi: { layar: 'pembuka' } },
+      { nama: 'tutup', sesi: 'x', kasus_id: 'k', t_ms: t, urut: 3, isi: { layar_terakhir: 'pembuka' } },
+    ];
+    expect(ringkasSesi(dasar(14_999)).pergi_cepat).toEqual({ layar: 'pembuka', ms: 14_999 });
+    expect(ringkasSesi(dasar(15_000)).pergi_cepat).toBeNull();
+  });
+
+  it('sembunyi yang DIIKUTI kembali bukan pergi', () => {
+    const p: Peristiwa[] = [
+      { nama: 'mulai', sesi: 'y', kasus_id: 'k', t_ms: 0, urut: 1, isi: { lebar_layar: 360, penanda: null } },
+      { nama: 'layar_masuk', sesi: 'y', kasus_id: 'k', t_ms: 0, urut: 2, isi: { layar: 'pembuka' } },
+      { nama: 'tampak', sesi: 'y', kasus_id: 'k', t_ms: 1000, urut: 3, isi: { layar: 'pembuka', keadaan: 'sembunyi', ms_sembunyi: null } },
+      { nama: 'tampak', sesi: 'y', kasus_id: 'k', t_ms: 9000, urut: 4, isi: { layar: 'pembuka', keadaan: 'kembali', ms_sembunyi: 8000 } },
+    ];
+    expect(ringkasSesi(p).pergi_cepat).toBeNull();
+  });
+});
+
+describe('ringkas M3.8 D-7.1 — corong per penanda', () => {
+  it('angka yang dihitung reviewer dengan tangan kini keluaran bawaan', () => {
+    const c = corongPerPenanda(sesiLengkap());
+    const baris = (p: string): (typeof c.baris)[number] | undefined => c.baris.find((b) => b.penanda === p);
+    expect(c.layarSoal).toEqual(['soal-1', 'soal-2', 'soal-3']);
+    expect(baris('semua')).toEqual({
+      penanda: 'semua', sesi: 6, orang: 5, soal: [5, 3, 2], pembukaan: 2, akhir: 1,
+    });
+    expect(baris('threads')).toEqual({
+      penanda: 'threads', sesi: 2, orang: 2, soal: [1, 0, 0], pembukaan: 0, akhir: 0,
+    });
+    expect(baris('sekree')).toEqual({
+      penanda: 'sekree', sesi: 3, orang: 2, soal: [3, 2, 2], pembukaan: 2, akhir: 1,
+    });
+    expect(baris(TANPA_PENANDA)).toEqual({
+      penanda: TANPA_PENANDA, sesi: 1, orang: 1, soal: [1, 1, 0], pembukaan: 0, akhir: 0,
+    });
+  });
+});
+
+describe('ringkas M3.8 D-7.2 — pergi cepat per layar per penanda', () => {
+  it('hanya A (soal-1) dan B (pembuka), keduanya threads', () => {
+    expect(pergiCepat(sesiLengkap())).toEqual([
+      { layar: 'akhir', penanda: 'sekree', berhenti: 1, cepat: 0 },
+      { layar: 'pembuka', penanda: 'threads', berhenti: 1, cepat: 1 },
+      { layar: 'pembukaan', penanda: 'sekree', berhenti: 1, cepat: 0 },
+      { layar: 'soal-1', penanda: 'sekree', berhenti: 1, cepat: 0 },
+      { layar: 'soal-1', penanda: 'threads', berhenti: 1, cepat: 1 },
+      { layar: 'soal-2', penanda: TANPA_PENANDA, berhenti: 1, cepat: 0 },
+    ]);
+  });
+});
+
+describe('ringkas M3.8 D-7.3 — perangkat, dengan sampai soal 1 dan sampai akhir', () => {
+  it('os × peramban dalam aplikasi; berkas lama = —', () => {
+    expect(perPerangkat(sesiLengkap(), 'os-dalam')).toEqual([
+      { nilai: 'android · threads', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+      { nilai: 'android · tidak', sesi: 2, sampai_soal_1: 2, sampai_akhir: 1 },
+      { nilai: 'ios · instagram', sesi: 1, sampai_soal_1: 0, sampai_akhir: 0 },
+      { nilai: 'windows · tidak', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+      { nilai: '—', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+    ]);
+  });
+
+  it('skema warna, penunjuk, koneksi', () => {
+    expect(perPerangkat(sesiLengkap(), 'skema_warna')).toEqual([
+      { nilai: 'gelap', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+      { nilai: 'terang', sesi: 4, sampai_soal_1: 3, sampai_akhir: 1 },
+      { nilai: '—', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+    ]);
+    expect(perPerangkat(sesiLengkap(), 'penunjuk')).toEqual([
+      { nilai: 'halus', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+      { nilai: 'kasar', sesi: 4, sampai_soal_1: 3, sampai_akhir: 1 },
+      { nilai: '—', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+    ]);
+    expect(perPerangkat(sesiLengkap(), 'koneksi')).toEqual([
+      { nilai: '3g', sesi: 1, sampai_soal_1: 0, sampai_akhir: 0 },
+      { nilai: '4g', sesi: 3, sampai_soal_1: 3, sampai_akhir: 1 },
+      { nilai: 'lambat', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+      { nilai: '—', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+    ]);
+  });
+
+  it('lebar dalam ember <400, 400–479, 480–799, ≥800 — urut ember, bukan abjad; ember kosong tetap tercetak', () => {
+    expect(emberLebar(399)).toBe('<400');
+    expect(emberLebar(400)).toBe('400–479');
+    expect(emberLebar(479)).toBe('400–479');
+    expect(emberLebar(480)).toBe('480–799');
+    expect(emberLebar(799)).toBe('480–799');
+    expect(emberLebar(800)).toBe('≥800');
+    expect(emberLebar(null)).toBeNull();
+    expect(perPerangkat(sesiLengkap(), 'lebar')).toEqual([
+      { nilai: '<400', sesi: 3, sampai_soal_1: 2, sampai_akhir: 0 },
+      { nilai: '400–479', sesi: 2, sampai_soal_1: 2, sampai_akhir: 1 },
+      { nilai: '480–799', sesi: 0, sampai_soal_1: 0, sampai_akhir: 0 },
+      { nilai: '≥800', sesi: 1, sampai_soal_1: 1, sampai_akhir: 0 },
+    ]);
+  });
+});
+
+describe('ringkas M3.8 D-7.4 — asal: perujuk × penanda', () => {
+  it('menghitung sesi per pasangan', () => {
+    expect(asalPerPenanda(sesiLengkap())).toEqual([
+      { perujuk: 'google', penanda: 'sekree', sesi: 1 },
+      { perujuk: 'instagram', penanda: 'threads', sesi: 1 },
+      { perujuk: 'langsung', penanda: 'sekree', sesi: 2 },
+      { perujuk: 'threads', penanda: 'threads', sesi: 1 },
+      { perujuk: '—', penanda: TANPA_PENANDA, sesi: 1 },
+    ]);
+  });
+});
+
+describe('ringkas M3.8 D-7.5 — jam setempat (ember 3 jam) × hari', () => {
+  it('ember', () => {
+    expect(emberJam(0)).toBe('00–02');
+    expect(emberJam(14)).toBe('12–14');
+    expect(emberJam(15)).toBe('15–17');
+    expect(emberJam(23)).toBe('21–23');
+    expect(emberJam(null)).toBeNull();
+  });
+
+  it('sesi dan selesai per sel; berkas lama di baris —', () => {
+    expect(jamPerHari(sesiLengkap())).toEqual([
+      { ember: '06–08', hari: 6, sesi: 1, selesai: 0 },
+      { ember: '12–14', hari: 0, sesi: 1, selesai: 1 },
+      { ember: '15–17', hari: 0, sesi: 1, selesai: 0 },
+      { ember: '21–23', hari: 2, sesi: 1, selesai: 0 },
+      { ember: '21–23', hari: 5, sesi: 1, selesai: 0 },
+      { ember: '—', hari: null, sesi: 1, selesai: 0 },
+    ]);
+  });
+});
+
+describe('ringkas M3.8 D-7.6 — kinerja: median dan p90 ms_ke_tampil', () => {
+  it('p90 memakai peringkat terdekat, bukan interpolasi', () => {
+    expect(p90([])).toBeNull();
+    expect(p90([5])).toBe(5);
+    expect(p90([600, 700, 812])).toBe(812);
+    expect(p90([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])).toBe(9);
+    expect(p90([10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 11])).toBe(10);
+  });
+
+  it('per os dan per koneksi; nilai tanpa kinerja = — di median, bukan 0', () => {
+    expect(kinerjaPer(sesiLengkap(), 'os')).toEqual([
+      { nilai: 'android', sesi: 3, median: 700, p90: 812 },
+      { nilai: 'ios', sesi: 1, median: 2500, p90: 2500 },
+      { nilai: 'windows', sesi: 1, median: 1200, p90: 1200 },
+      { nilai: '—', sesi: 0, median: null, p90: null },
+    ]);
+    expect(kinerjaPer(sesiLengkap(), 'koneksi')).toEqual([
+      { nilai: '3g', sesi: 1, median: 2500, p90: 2500 },
+      { nilai: '4g', sesi: 3, median: 700, p90: 812 },
+      { nilai: 'lambat', sesi: 1, median: 1200, p90: 1200 },
+      { nilai: '—', sesi: 0, median: null, p90: null },
+    ]);
+  });
+});
+
+describe('ringkas M3.8 D-7.7 — galat per pesan', () => {
+  it('pesan × jumlah SESI (bukan kejadian) × layar', () => {
+    expect(galatPerPesan(sesiLengkap())).toEqual([
+      {
+        pesan: 'TypeError: Cannot read properties of undefined (reading ‹url›)',
+        jenis: 'error',
+        sumber: 'aplikasi',
+        sesi: 2,
+        layar: ['soal-2', 'soal-3'],
+      },
+      { pesan: 'Error: gagal ‹url›', jenis: 'penolakan', sumber: 'luar', sesi: 1, layar: ['soal-1'] },
+    ]);
+  });
+});
+
+describe('ringkas M3.8 D-7.8 — keluar-masuk', () => {
+  it('kembali vs tidak kembali; median ms_sembunyi; berkas lama dipisah', () => {
+    expect(keluarMasuk(sesiLengkap())).toEqual({
+      sesi_sembunyi: 3,
+      pernah_kembali: 2,
+      tidak_pernah_kembali: 1,
+      berakhir_tersembunyi: 2,
+      tanpa_sembunyi: 2,
+      berkas_lama: 1,
+      median_ms_sembunyi: 7500,
+    });
+  });
+});
+
+describe('ringkas M3.8 — laporan mencetak kedelapan bagian', () => {
+  const teks = (): string => laporan(sesiLengkap(), []);
+
+  it('kedelapan judul ada, urut', () => {
+    const t = teks();
+    const judul = [
+      '## Corong per penanda',
+      '## Pergi cepat',
+      '## Perangkat',
+      '## Asal',
+      '## Jam setempat',
+      '## Kinerja',
+      '## Galat',
+      '## Keluar-masuk',
+    ];
+    const posisi = judul.map((j) => t.indexOf(j));
+    for (const [n, p] of posisi.entries()) expect(p, judul[n]).toBeGreaterThan(-1);
+    expect([...posisi].sort((a, b) => a - b)).toEqual(posisi);
+  });
+
+  it('baris corong "semua" tercetak dengan angkanya', () => {
+    expect(teks()).toContain('| semua | 6 | 5 | 5 | 3 | 2 | 2 | 1 |');
+  });
+
+  it('baris pergi cepat, perangkat, jam, kinerja, galat, keluar-masuk tercetak', () => {
+    const t = teks();
+    expect(t).toContain('| soal-1 | threads | 1 | 1 |');
+    expect(t).toContain('| android · tidak | 2 | 2 | 1 |');
+    expect(t).toContain('| 480–799 | 0 | 0 | 0 |');
+    expect(t).toContain('| 12–14 |');
+    expect(t).toContain('| android | 3 | 700 ms | 812 ms |');
+    expect(t).toContain('| TypeError: Cannot read properties of undefined (reading ‹url›) | error | aplikasi | 2 | soal-2, soal-3 |');
+    expect(t).toContain('median lama tersembunyi sebelum kembali: **7.5 d**');
+  });
+
+  it('berkas LAMA saja: tiap bagian baru tercetak dengan —, bukan angka nol', () => {
+    const t = laporan(lengkap());
+    for (const j of ['## Corong per penanda', '## Perangkat', '## Kinerja', '## Galat', '## Keluar-masuk']) {
+      expect(t, j).toContain(j);
+    }
+    const kinerja = t.slice(t.indexOf('## Kinerja'), t.indexOf('## Galat'));
+    expect(kinerja).toContain('| — | 0 | — | — |');
+    const galat = t.slice(t.indexOf('## Galat'), t.indexOf('## Keluar-masuk'));
+    expect(galat).toContain('Tidak ada satu pun peristiwa `galat`');
+    const km = t.slice(t.indexOf('## Keluar-masuk'));
+    expect(km).toContain('median lama tersembunyi sebelum kembali: **—**');
+  });
+});
+
+describe('ringkas M3.8 — ambang gulir 25/75 dikenali sebagai ambang (D-5)', () => {
+  it('jeda yang berakhir di gulir 0,25 diberi label ambang', () => {
+    const p: Peristiwa[] = [
+      { nama: 'mulai', sesi: 'z', kasus_id: 'k', t_ms: 0, urut: 1, isi: { lebar_layar: 360, penanda: null } },
+      { nama: 'layar_masuk', sesi: 'z', kasus_id: 'k', t_ms: 0, urut: 2, isi: { layar: 'soal-1' } },
+      { nama: 'gulir', sesi: 'z', kasus_id: 'k', t_ms: 40_000, urut: 3, isi: { layar: 'soal-1', maks: 0.25 } },
+    ];
+    const k = kapanPerLayar(p).find((x) => x.layar === 'soal-1');
+    expect(k?.jeda_antara).toEqual(['layar_masuk', 'gulir(ambang 25%)']);
+  });
+});
+
+describe('ringkas M3.8 — dua aturan yang tidak diikat berkas contoh (ditambahkan sesudah sabotase)', () => {
+  const p = (urut: number, nama: string, t_ms: number, isi: Record<string, unknown>): Peristiwa => ({
+    nama,
+    sesi: 'w',
+    kasus_id: 'k',
+    t_ms,
+    urut,
+    isi,
+  });
+
+  it('kunjungan singkat yang BERISI ketukan bukan pergi cepat', () => {
+    const s = ringkasSesi([
+      p(1, 'mulai', 0, { lebar_layar: 360, penanda: null }),
+      p(2, 'layar_masuk', 0, { layar: 'pembuka' }),
+      p(3, 'ketuk', 1_000, { layar: 'pembuka', uid: 'bilah', x: 0.5, y: 0.9, mati: true }),
+      p(4, 'tutup', 3_000, { layar_terakhir: 'pembuka' }),
+    ]);
+    expect(s.pergi_cepat).toBeNull();
+  });
+
+  it('galat dihitung per SESI: pesan yang sama dua kali di satu sesi tetap satu', () => {
+    const s = ringkasSesi([
+      p(1, 'mulai', 0, { lebar_layar: 360, penanda: null }),
+      p(2, 'layar_masuk', 0, { layar: 'soal-1' }),
+      p(3, 'galat', 100, { jenis: 'error', pesan: 'X', sumber: 'aplikasi' }),
+      p(4, 'galat', 200, { jenis: 'error', pesan: 'X', sumber: 'aplikasi' }),
+    ]);
+    expect(galatPerPesan([s])).toEqual([
+      { pesan: 'X', jenis: 'error', sumber: 'aplikasi', sesi: 1, layar: ['soal-1'] },
+    ]);
   });
 });

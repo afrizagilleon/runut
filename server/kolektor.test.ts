@@ -1316,3 +1316,16 @@ describe('kolektor — SKEMA 3 (M3.8 D-6)', () => {
     expect((POLA_PENGUMPUL as RegExp).flags).toBe(POLA_KLIEN.flags);
   });
 });
+
+describe('kolektor — berkas contoh ringkasan M3.8 adalah bentuk yang sungguh diterima', () => {
+  it('setiap baris alat/contoh/peristiwa-pelacak-lengkap.jsonl lolos validator SKEMA 3', () => {
+    const isi = readFileSync(new URL('../alat/contoh/peristiwa-pelacak-lengkap.jsonl', import.meta.url), 'utf8');
+    const baris = isi.split(/\r?\n/).filter((b) => b.trim() !== '');
+    expect(baris.length).toBeGreaterThan(50);
+    for (const b of baris) {
+      const p = JSON.parse(b) as Record<string, unknown>;
+      // `sesi` contoh bukan UUID dan boleh begitu (medan sesi hanya teks ≤ 64).
+      expect((periksaPeristiwa(p) as { galat?: string }).galat, b.slice(0, 80)).toBeUndefined();
+    }
+  });
+});

@@ -111,6 +111,39 @@ export interface BalonLayar {
   gulir_balik: number | null;
 }
 
+/** Satu `galat` (M3.8 D-3), pesannya sudah disamarkan klien. */
+export interface GalatSesi {
+  jenis: string | null;
+  pesan: string;
+  sumber: string | null;
+  /** Layar kunjungan tempat ia lahir; `galat` sendiri tidak membawa nama layar. */
+  layar: string;
+}
+
+/** `tampak` satu sesi (M3.8 D-2). */
+export interface TampakSesi {
+  sembunyi: number;
+  kembali: number;
+  /** `ms_sembunyi` tiap `kembali`, urut. */
+  ms_sembunyi: number[];
+  /** `tampak` terakhir sesi ini adalah `sembunyi`: halaman tidak pernah terlihat lagi. */
+  berakhir_tersembunyi: boolean;
+}
+
+/**
+ * Pergi cepat (M3.8 D-7.2): kunjungan layar TERAKHIR sesi ini berakhir dengan
+ * `tutup` atau `tampak sembunyi` yang tidak diikuti `kembali`, kurang dari
+ * `BATAS_PERGI_CEPAT_MS` sesudah `layar_masuk`, tanpa satu `ketuk` pun di
+ * kunjungan itu.
+ */
+export interface PergiCepat {
+  layar: string;
+  ms: number;
+}
+
+/** Batas "pergi cepat", milidetik (M3.8 D-7.2). Kurang dari, bukan sampai dengan. */
+export const BATAS_PERGI_CEPAT_MS = 15_000;
+
 /** Satu ketukan seperti yang dicatat pelacak (D-8). */
 export interface KetukSesi {
   layar: string;
@@ -171,6 +204,78 @@ export interface RingkasSesi {
   layar_terakhir: string;
   minat_kasus_lain: boolean;
   akhir: Record<string, unknown> | null;
+  /*
+   * M3.8 D-7. Semua medan di bawah bisa kosong untuk berkas lama, dan
+   * kekosongan itu dibedakan dari nol: `perangkat: null` berarti mulai-nya
+   * tidak membawa satu pun medan perangkat (web sebelum M3.8), bukan "tidak
+   * diketahui"; `kinerja: null` berarti tidak ada peristiwanya.
+   */
+  /** Kelima belas medan perangkat dari `mulai`; `null` = berkas sebelum M3.8. */
+  perangkat: Record<string, string | number | boolean | null> | null;
+  /** Layar yang pernah dimasuki (`layar_masuk`), tanpa ulangan, urut nama. */
+  layar_dikunjungi: string[];
+  sampai_akhir: boolean;
+  kinerja: { ms_ke_tampil: number | null; ms_ke_interaktif: number | null } | null;
+  galat: GalatSesi[];
+  tampak: TampakSesi;
+  pergi_cepat: PergiCepat | null;
+}
+
+/** Medan perangkat `mulai` (M3.8 D-1), disalin dari `web/src/perangkat.ts`. */
+const MEDAN_PERANGKAT = [
+  'tinggi_layar',
+  'rasio_piksel',
+  'skema_warna',
+  'penunjuk',
+  'os',
+  'peramban_dalam',
+  'perujuk',
+  'bahasa',
+  'jam_lokal',
+  'hari_lokal',
+  'zona_menit',
+  'koneksi',
+  'hemat_data',
+  'gerak_dikurangi',
+  'mandiri',
+] as const;
+
+function perangkatDari(mulai: Peristiwa | undefined): RingkasSesi['perangkat'] {
+  if (mulai === undefined) return null;
+  const ada = MEDAN_PERANGKAT.filter((m) => Object.prototype.hasOwnProperty.call(mulai.isi, m));
+  if (ada.length === 0) return null;
+  const keluar: Record<string, string | number | boolean | null> = {};
+  for (const m of MEDAN_PERANGKAT) {
+    const v = mulai.isi[m];
+    keluar[m] = typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean' ? v : null;
+  }
+  return keluar;
+}
+
+/**
+ * Pergi cepat dari kunjungan layar terakhir (M3.8 D-7.2). Lihat `PergiCepat`.
+ *
+ * Tanpa `tutup` maupun `sembunyi`, sesi itu TIDAK dihitung pergi cepat: tidak
+ * ada bukti ia pergi, hanya bukti bahwa kiriman berikutnya tidak sampai.
+ */
+function pergiCepatDari(urut: Peristiwa[]): PergiCepat | null {
+  const kunjungan = kunjunganLayar(urut);
+  const terakhir = kunjungan[kunjungan.length - 1];
+  const masuk = terakhir?.isi[0];
+  if (terakhir === undefined || masuk === undefined) return null;
+  if (terakhir.isi.some((p) => p.nama === 'ketuk')) return null;
+  let pergi: Peristiwa | null = null;
+  for (const p of terakhir.isi) {
+    if (p.nama === 'tutup') {
+      pergi ??= p;
+      break;
+    }
+    if (p.nama === 'tampak' && p.isi['keadaan'] === 'sembunyi') pergi ??= p;
+    if (p.nama === 'tampak' && p.isi['keadaan'] === 'kembali') pergi = null;
+  }
+  if (pergi === null) return null;
+  const ms = pergi.t_ms - masuk.t_ms;
+  return ms < BATAS_PERGI_CEPAT_MS ? { layar: terakhir.layar, ms: Math.max(0, ms) } : null;
 }
 
 function angka(nilai: unknown): number | null {
@@ -345,7 +450,10 @@ export function kapanPerLayar(peristiwa: Peristiwa[]): KapanLayar[] {
       if (p.nama !== 'gulir') return p.nama;
       const maks = angka(p.isi['maks']);
       if (tinggalkan.has(nomorAsli.get(p) ?? -1)) return `gulir(pindah ${persen(maks)})`;
-      if (maks === 0.5 || maks === 1) return `gulir(ambang ${persen(maks)})`;
+      // M3.8 D-5: 25 % dan 75 % juga ambang.
+      if (maks === 0.25 || maks === 0.5 || maks === 0.75 || maks === 1) {
+        return `gulir(ambang ${persen(maks)})`;
+      }
       return `gulir(${persen(maks)})`;
     };
 
@@ -508,6 +616,31 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
     gulir.set(layar, Math.max(gulir.get(layar) ?? 0, maks));
   }
 
+  // M3.8 D-7: galat per kunjungan layar (galat tidak membawa nama layar).
+  const galat: GalatSesi[] = [];
+  for (const k of kunjunganLayar(urut)) {
+    for (const p of k.isi) {
+      if (p.nama !== 'galat') continue;
+      galat.push({
+        jenis: teks(p.isi['jenis']),
+        pesan: teks(p.isi['pesan']) ?? '(tanpa pesan)',
+        sumber: teks(p.isi['sumber']),
+        layar: k.layar,
+      });
+    }
+  }
+  const semuaTampak = urut.filter((p) => p.nama === 'tampak');
+  const tampak: TampakSesi = {
+    sembunyi: semuaTampak.filter((p) => p.isi['keadaan'] === 'sembunyi').length,
+    kembali: semuaTampak.filter((p) => p.isi['keadaan'] === 'kembali').length,
+    ms_sembunyi: semuaTampak
+      .filter((p) => p.isi['keadaan'] === 'kembali')
+      .map((p) => angka(p.isi['ms_sembunyi']))
+      .filter((n): n is number => n !== null),
+    berakhir_tersembunyi: semuaTampak[semuaTampak.length - 1]?.isi['keadaan'] === 'sembunyi',
+  };
+  const kinerja = urut.find((p) => p.nama === 'kinerja');
+
   return {
     sesi: pertama?.sesi ?? '(tanpa sesi)',
     kasus_id: pertama?.kasus_id ?? '(tanpa kasus)',
@@ -532,6 +665,16 @@ export function ringkasSesi(peristiwa: Peristiwa[]): RingkasSesi {
     layar_terakhir: layarTerakhir,
     minat_kasus_lain: urut.some((p) => p.nama === 'minat_kasus_lain'),
     akhir: kirimAkhir === undefined ? null : kirimAkhir.isi,
+    perangkat: perangkatDari(mulai),
+    layar_dikunjungi: [...new Set(layarMasuk.map((p) => teks(p.isi['layar'])).filter((l): l is string => l !== null))].sort(),
+    sampai_akhir: layarMasuk.some((p) => p.isi['layar'] === 'akhir'),
+    kinerja:
+      kinerja === undefined
+        ? null
+        : { ms_ke_tampil: angka(kinerja.isi['ms_ke_tampil']), ms_ke_interaktif: angka(kinerja.isi['ms_ke_interaktif']) },
+    galat,
+    tampak,
+    pergi_cepat: pergiCepatDari(urut),
   };
 }
 
@@ -1094,6 +1237,280 @@ export function perBalonSoal(semua: RingkasSesi[]): RingkasBalonSoal[] {
   return [...per.values()].sort((a, b) => a.layar.localeCompare(b.layar));
 }
 
+/* ------------------------------------------------------------------ */
+/* M3.8 D-7 — pelacak lengkap: delapan bagian                          */
+/* ------------------------------------------------------------------ */
+
+/** Nama baris untuk sesi yang tidak punya datanya (berkas lama): ketiadaan, bukan kategori. */
+export const TANPA_DATA = '—';
+
+/** Urutkan nilai abjad, dengan "—" selalu di belakang. */
+function urutNilai(a: string, b: string): number {
+  if (a === TANPA_DATA) return b === TANPA_DATA ? 0 : 1;
+  if (b === TANPA_DATA) return -1;
+  return a.localeCompare(b);
+}
+
+function sampaiSoal1(s: RingkasSesi): boolean {
+  return s.layar_dikunjungi.includes('soal-1');
+}
+
+export interface BarisCorong {
+  penanda: string;
+  sesi: number;
+  /** Pengunjung unik (D-13); sesi tanpa nomor tidak ikut. */
+  orang: number;
+  /** Sampai tiap layar soal, urut `layarSoal`. */
+  soal: number[];
+  pembukaan: number;
+  akhir: number;
+}
+
+/**
+ * 1. Corong per penanda (M3.8 D-7.1): sesi · orang · sampai soal 1…n ·
+ * pembukaan · akhir. Reviewer menghitungnya dengan tangan dari data 23 Sep;
+ * sekarang ia keluaran bawaan. "Sampai" = pernah `layar_masuk` ke sana.
+ */
+export function corongPerPenanda(semua: RingkasSesi[]): { layarSoal: string[]; baris: BarisCorong[] } {
+  const layarSoal = [
+    ...new Set(semua.flatMap((s) => s.layar_dikunjungi.filter((l) => /^soal-\d+$/.test(l)))),
+  ].sort((a, b) => Number(a.slice(5)) - Number(b.slice(5)));
+  const baris = (penanda: string, daftar: RingkasSesi[]): BarisCorong => ({
+    penanda,
+    sesi: daftar.length,
+    orang: hitungOrang(daftar).pengunjung_unik,
+    soal: layarSoal.map((l) => daftar.filter((s) => s.layar_dikunjungi.includes(l)).length),
+    pembukaan: daftar.filter((s) => s.sampai_pembukaan).length,
+    akhir: daftar.filter((s) => s.sampai_akhir).length,
+  });
+  const per = new Map<string, RingkasSesi[]>();
+  for (const s of semua) {
+    const k = s.penanda ?? TANPA_PENANDA;
+    per.set(k, [...(per.get(k) ?? []), s]);
+  }
+  return {
+    layarSoal,
+    baris: [
+      baris('semua', semua),
+      ...[...per.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([k, d]) => baris(k, d)),
+    ],
+  };
+}
+
+/**
+ * 2. Pergi cepat per layar per penanda (M3.8 D-7.2): dari sesi yang BERHENTI
+ * di layar itu, berapa yang pergi dalam < 15 d tanpa satu ketukan.
+ */
+export function pergiCepat(
+  semua: RingkasSesi[],
+): Array<{ layar: string; penanda: string; berhenti: number; cepat: number }> {
+  const per = new Map<string, { layar: string; penanda: string; berhenti: number; cepat: number }>();
+  for (const s of semua) {
+    const penanda = s.penanda ?? TANPA_PENANDA;
+    const kunci = `${s.layar_terakhir}\u0000${penanda}`;
+    const b = per.get(kunci) ?? { layar: s.layar_terakhir, penanda, berhenti: 0, cepat: 0 };
+    b.berhenti += 1;
+    if (s.pergi_cepat !== null) b.cepat += 1;
+    per.set(kunci, b);
+  }
+  return [...per.values()].sort((a, b) => a.layar.localeCompare(b.layar) || a.penanda.localeCompare(b.penanda));
+}
+
+/** Ember lebar layar (M3.8 D-7.3), dalam piksel CSS. */
+export const EMBER_LEBAR = ['<400', '400–479', '480–799', '≥800'] as const;
+
+export function emberLebar(lebar: number | null): string | null {
+  if (lebar === null) return null;
+  if (lebar < 400) return '<400';
+  if (lebar < 480) return '400–479';
+  if (lebar < 800) return '480–799';
+  return '≥800';
+}
+
+export type DimensiPerangkat = 'os-dalam' | 'skema_warna' | 'penunjuk' | 'lebar' | 'koneksi';
+
+function nilaiPerangkat(s: RingkasSesi, dimensi: DimensiPerangkat): string {
+  if (dimensi === 'lebar') return emberLebar(s.lebar_layar) ?? TANPA_DATA;
+  const p = s.perangkat;
+  if (p === null) return TANPA_DATA;
+  if (dimensi === 'os-dalam') {
+    const os = p['os'];
+    const dalam = p['peramban_dalam'];
+    if (os === null && dalam === null) return TANPA_DATA;
+    return `${String(os ?? TANPA_DATA)} · ${String(dalam ?? TANPA_DATA)}`;
+  }
+  const v = p[dimensi];
+  return v === null || v === undefined ? TANPA_DATA : String(v);
+}
+
+/**
+ * 3. Perangkat (M3.8 D-7.3): satu dimensi, dengan kolom "sampai soal 1" dan
+ * "sampai akhir". Lebar memakai ember tetap dan ember yang kosong tetap
+ * dicetak — ember yang hilang dari tabel terbaca sebagai "tidak diukur".
+ */
+export function perPerangkat(
+  semua: RingkasSesi[],
+  dimensi: DimensiPerangkat,
+): Array<{ nilai: string; sesi: number; sampai_soal_1: number; sampai_akhir: number }> {
+  const per = new Map<string, { nilai: string; sesi: number; sampai_soal_1: number; sampai_akhir: number }>();
+  if (dimensi === 'lebar') {
+    for (const e of EMBER_LEBAR) per.set(e, { nilai: e, sesi: 0, sampai_soal_1: 0, sampai_akhir: 0 });
+  }
+  for (const s of semua) {
+    const nilai = nilaiPerangkat(s, dimensi);
+    const b = per.get(nilai) ?? { nilai, sesi: 0, sampai_soal_1: 0, sampai_akhir: 0 };
+    b.sesi += 1;
+    if (sampaiSoal1(s)) b.sampai_soal_1 += 1;
+    if (s.sampai_akhir) b.sampai_akhir += 1;
+    per.set(nilai, b);
+  }
+  const baris = [...per.values()];
+  if (dimensi === 'lebar') {
+    const urutan: readonly string[] = [...EMBER_LEBAR, TANPA_DATA];
+    return baris.sort((a, b) => urutan.indexOf(a.nilai) - urutan.indexOf(b.nilai));
+  }
+  return baris.sort((a, b) => urutNilai(a.nilai, b.nilai));
+}
+
+/** 4. Asal (M3.8 D-7.4): perujuk × penanda, jumlah sesi. */
+export function asalPerPenanda(semua: RingkasSesi[]): Array<{ perujuk: string; penanda: string; sesi: number }> {
+  const per = new Map<string, { perujuk: string; penanda: string; sesi: number }>();
+  for (const s of semua) {
+    const v = s.perangkat?.['perujuk'];
+    const perujuk = v === null || v === undefined ? TANPA_DATA : String(v);
+    const penanda = s.penanda ?? TANPA_PENANDA;
+    const kunci = `${perujuk}\u0000${penanda}`;
+    const b = per.get(kunci) ?? { perujuk, penanda, sesi: 0 };
+    b.sesi += 1;
+    per.set(kunci, b);
+  }
+  return [...per.values()].sort((a, b) => urutNilai(a.perujuk, b.perujuk) || a.penanda.localeCompare(b.penanda));
+}
+
+/** Ember tiga jam: 00–02, 03–05, …, 21–23. */
+export function emberJam(jam: number | null): string | null {
+  if (jam === null || !Number.isInteger(jam) || jam < 0 || jam > 23) return null;
+  const awal = Math.floor(jam / 3) * 3;
+  return `${String(awal).padStart(2, '0')}–${String(awal + 2).padStart(2, '0')}`;
+}
+
+export const NAMA_HARI = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'] as const;
+
+/**
+ * 5. Jam setempat × hari (M3.8 D-7.5): sesi dan yang selesai (sampai layar
+ * akhir). Hanya sel yang berisi yang dikembalikan; berkas lama di baris "—".
+ */
+export function jamPerHari(
+  semua: RingkasSesi[],
+): Array<{ ember: string; hari: number | null; sesi: number; selesai: number }> {
+  const per = new Map<string, { ember: string; hari: number | null; sesi: number; selesai: number }>();
+  for (const s of semua) {
+    const jam = s.perangkat?.['jam_lokal'];
+    const hari = s.perangkat?.['hari_lokal'];
+    const ember = emberJam(typeof jam === 'number' ? jam : null) ?? TANPA_DATA;
+    const h = ember === TANPA_DATA || typeof hari !== 'number' ? null : hari;
+    const kunci = `${ember}\u0000${String(h)}`;
+    const b = per.get(kunci) ?? { ember, hari: h, sesi: 0, selesai: 0 };
+    b.sesi += 1;
+    if (s.sampai_akhir) b.selesai += 1;
+    per.set(kunci, b);
+  }
+  return [...per.values()].sort((a, b) => urutNilai(a.ember, b.ember) || (a.hari ?? 99) - (b.hari ?? 99));
+}
+
+/** Persentil 90 dengan peringkat terdekat: nilai ke-⌈0,9·n⌉ dari yang terurut. */
+export function p90(nilai: number[]): number | null {
+  if (nilai.length === 0) return null;
+  const urut = [...nilai].sort((a, b) => a - b);
+  return urut[Math.ceil(0.9 * urut.length) - 1] ?? null;
+}
+
+/**
+ * 6. Kinerja (M3.8 D-7.6): median dan p90 `ms_ke_tampil` per os atau per
+ * koneksi. Nilai yang ada di sesi tetapi tanpa satu pun `kinerja` tetap
+ * dicetak dengan `sesi 0` dan "—": ketiadaan data, bukan halaman yang cepat.
+ */
+export function kinerjaPer(
+  semua: RingkasSesi[],
+  dimensi: 'os' | 'koneksi',
+): Array<{ nilai: string; sesi: number; median: number | null; p90: number | null }> {
+  const per = new Map<string, number[]>();
+  for (const s of semua) {
+    const v = s.perangkat?.[dimensi];
+    const nilai = v === null || v === undefined ? TANPA_DATA : String(v);
+    const daftar = per.get(nilai) ?? [];
+    const ms = s.kinerja?.ms_ke_tampil ?? null;
+    if (ms !== null) daftar.push(ms);
+    per.set(nilai, daftar);
+  }
+  return [...per.entries()]
+    .sort((a, b) => urutNilai(a[0], b[0]))
+    .map(([nilai, ms]) => ({ nilai, sesi: ms.length, median: median(ms), p90: p90(ms) }));
+}
+
+/**
+ * 7. Galat (M3.8 D-7.7): pesan (sudah disamarkan klien) × jumlah SESI × layar.
+ * Sesi, bukan kejadian: satu sesi yang melempar lima kali tetap satu orang
+ * yang melihat halaman rusak.
+ */
+export function galatPerPesan(
+  semua: RingkasSesi[],
+): Array<{ pesan: string; jenis: string | null; sumber: string | null; sesi: number; layar: string[] }> {
+  const per = new Map<
+    string,
+    { pesan: string; jenis: string | null; sumber: string | null; sesi: Set<string>; layar: Set<string> }
+  >();
+  for (const s of semua) {
+    for (const g of s.galat) {
+      const kunci = `${g.pesan}\u0000${String(g.jenis)}\u0000${String(g.sumber)}`;
+      const b = per.get(kunci) ?? { pesan: g.pesan, jenis: g.jenis, sumber: g.sumber, sesi: new Set(), layar: new Set() };
+      b.sesi.add(s.sesi);
+      b.layar.add(g.layar);
+      per.set(kunci, b);
+    }
+  }
+  return [...per.values()]
+    .map((b) => ({ pesan: b.pesan, jenis: b.jenis, sumber: b.sumber, sesi: b.sesi.size, layar: [...b.layar].sort() }))
+    .sort((a, b) => b.sesi - a.sesi || a.pesan.localeCompare(b.pesan));
+}
+
+/**
+ * 8. Keluar-masuk (M3.8 D-7.8): dari sesi yang pernah tersembunyi, berapa yang
+ * kembali dan berapa yang tidak. Berkas lama tidak punya `tampak` sama sekali,
+ * jadi mereka dihitung terpisah — "tidak pernah tersembunyi" hanya bisa
+ * dikatakan tentang sesi yang memang bisa melaporkannya.
+ */
+export function keluarMasuk(semua: RingkasSesi[]): {
+  sesi_sembunyi: number;
+  pernah_kembali: number;
+  tidak_pernah_kembali: number;
+  berakhir_tersembunyi: number;
+  tanpa_sembunyi: number;
+  berkas_lama: number;
+  median_ms_sembunyi: number | null;
+} {
+  const lama = semua.filter((s) => s.perangkat === null);
+  const baru = semua.filter((s) => s.perangkat !== null);
+  const sembunyi = semua.filter((s) => s.tampak.sembunyi > 0);
+  return {
+    sesi_sembunyi: sembunyi.length,
+    pernah_kembali: sembunyi.filter((s) => s.tampak.kembali > 0).length,
+    tidak_pernah_kembali: sembunyi.filter((s) => s.tampak.kembali === 0).length,
+    berakhir_tersembunyi: sembunyi.filter((s) => s.tampak.berakhir_tersembunyi).length,
+    tanpa_sembunyi: baru.filter((s) => s.tampak.sembunyi === 0).length,
+    berkas_lama: lama.filter((s) => s.tampak.sembunyi === 0).length,
+    median_ms_sembunyi: median(semua.flatMap((s) => s.tampak.ms_sembunyi)),
+  };
+}
+
+/**
+ * Milidetik apa adanya, untuk kinerja (M3.8 D-7.6): selisih 700 dan 812 ms
+ * hilang kalau dibulatkan ke 0,1 detik. "—" untuk yang memang tidak ada.
+ */
+function msAtau(ms: number | null): string {
+  return ms === null ? '—' : `${String(Math.round(ms))} ms`;
+}
+
 function detik(ms: number): string {
   return `${(ms / 1000).toFixed(1)} d`;
 }
@@ -1208,6 +1625,27 @@ export function laporan(
     baris.push(
       `| ${kode} | ${String(hitung.sesi)} | ${String(hitung.pengunjung_unik)} | ` +
         `${String(hitung.kembali)} | ${String(hitung.sesi_tanpa_nomor)} |`,
+    );
+  }
+  baris.push('');
+
+  /*
+   * M3.8 D-7.1 — corong per penanda, keluaran bawaan. Angka inilah yang
+   * dihitung reviewer dengan tangan dari data 23 Sep.
+   */
+  const corong = corongPerPenanda(sesi);
+  baris.push('## Corong per penanda');
+  baris.push('');
+  baris.push('"Sampai" = pernah masuk layar itu. **orang** = pengunjung unik (sesi tanpa nomor tidak ikut).');
+  baris.push('');
+  baris.push(
+    `| penanda | sesi | orang | ${corong.layarSoal.map((l) => `sampai ${l}`).join(' | ')} | pembukaan | akhir |`,
+  );
+  baris.push(`|---|---|---|${corong.layarSoal.map(() => '---').join('|')}|---|---|`);
+  for (const b of corong.baris) {
+    baris.push(
+      `| ${b.penanda} | ${String(b.sesi)} | ${String(b.orang)} | ${b.soal.map(String).join(' | ')} | ` +
+        `${String(b.pembukaan)} | ${String(b.akhir)} |`,
     );
   }
   baris.push('');
@@ -1536,6 +1974,137 @@ export function laporan(
     }
     baris.push('');
   }
+
+  /*
+   * M3.8 D-7 — tujuh bagian sesudah corong. Ditaruh sebelum "Titik berhenti"
+   * karena semuanya menjawab pertanyaan yang sama dari sisi berbeda: SIAPA
+   * yang berhenti, dan dalam keadaan apa. Berkas lama tetap terbaca: medan
+   * yang tidak ada dicetak "—", yang berarti ketiadaan data, bukan nol.
+   */
+  baris.push('## Pergi cepat (< 15 d, tanpa ketukan)');
+  baris.push('');
+  baris.push(
+    'Dari sesi yang **berhenti** di sebuah layar: berapa yang pergi — `tutup`, atau `tampak sembunyi`',
+  );
+  baris.push(
+    'yang tidak pernah diikuti `kembali` — kurang dari 15 detik sesudah masuk layar itu, tanpa satu',
+  );
+  baris.push('ketukan pun. Sesi tanpa `tutup` maupun `sembunyi` tidak dihitung pergi: tidak ada buktinya.');
+  baris.push('');
+  baris.push('| layar | penanda | berhenti di sini | pergi cepat |');
+  baris.push('|---|---|---|---|');
+  for (const b of pergiCepat(sesi)) {
+    baris.push(`| ${b.layar} | ${b.penanda} | ${String(b.berhenti)} | ${String(b.cepat)} |`);
+  }
+  baris.push('');
+
+  baris.push('## Perangkat');
+  baris.push('');
+  baris.push(
+    'Kategori kasar dari peristiwa `mulai` (M3.8). **—** = sesi dari berkas sebelum M3.8, atau',
+  );
+  baris.push('keterangan itu memang tidak tersedia di perambannya: ketiadaan data, bukan kategori.');
+  baris.push('');
+  const judulPerangkat: Array<[DimensiPerangkat, string]> = [
+    ['os-dalam', 'os · peramban dalam aplikasi'],
+    ['skema_warna', 'skema warna'],
+    ['penunjuk', 'penunjuk'],
+    ['lebar', 'lebar layar (px)'],
+    ['koneksi', 'koneksi'],
+  ];
+  for (const [dimensi, judul] of judulPerangkat) {
+    baris.push(`### ${judul}`);
+    baris.push('');
+    baris.push(`| ${judul} | sesi | sampai soal 1 | sampai akhir |`);
+    baris.push('|---|---|---|---|');
+    for (const b of perPerangkat(sesi, dimensi)) {
+      baris.push(
+        `| ${b.nilai} | ${String(b.sesi)} | ${String(b.sampai_soal_1)} | ${String(b.sampai_akhir)} |`,
+      );
+    }
+    baris.push('');
+  }
+
+  baris.push('## Asal (perujuk × penanda)');
+  baris.push('');
+  baris.push(
+    'Perujuk dari **nama host** saja. `langsung` = tanpa perujuk — termasuk aplikasi yang tidak',
+  );
+  baris.push('memberinya (WhatsApp dan Telegram sering begitu), jadi ia bukan berarti "bukan dari grup".');
+  baris.push('');
+  baris.push('| perujuk | penanda | sesi |');
+  baris.push('|---|---|---|');
+  for (const b of asalPerPenanda(sesi)) {
+    baris.push(`| ${b.perujuk} | ${b.penanda} | ${String(b.sesi)} |`);
+  }
+  baris.push('');
+
+  baris.push('## Jam setempat');
+  baris.push('');
+  baris.push('Jam di perangkat pengunjung, ember tiga jam. Sel = `sesi / selesai` (sampai layar akhir).');
+  baris.push('');
+  baris.push(`| jam | ${NAMA_HARI.join(' | ')} | tanpa hari |`);
+  baris.push(`|---|${NAMA_HARI.map(() => '---').join('|')}|---|`);
+  const sel = jamPerHari(sesi);
+  for (const ember of [...new Set(sel.map((b) => b.ember))]) {
+    const kolom = [...NAMA_HARI.map((_, h) => h), null].map((h) => {
+      const b = sel.find((x) => x.ember === ember && x.hari === h);
+      return b === undefined ? '' : `${String(b.sesi)} / ${String(b.selesai)}`;
+    });
+    baris.push(`| ${ember} | ${kolom.join(' | ')} |`);
+  }
+  baris.push('');
+
+  baris.push('## Kinerja');
+  baris.push('');
+  baris.push(
+    '`ms_ke_tampil` = dari awal muat halaman sampai layar pertama dirender. Median dan p90 (peringkat',
+  );
+  baris.push('terdekat). **sesi** = yang membawa angka ini; 0 dengan "—" berarti tidak ada datanya.');
+  baris.push('');
+  for (const [dimensi, judul] of [['os', 'os'], ['koneksi', 'koneksi']] as const) {
+    baris.push(`| ${judul} | sesi | median | p90 |`);
+    baris.push('|---|---|---|---|');
+    for (const b of kinerjaPer(sesi, dimensi)) {
+      baris.push(
+        `| ${b.nilai} | ${String(b.sesi)} | ${msAtau(b.median)} | ${msAtau(b.p90)} |`,
+      );
+    }
+    baris.push('');
+  }
+
+  baris.push('## Galat');
+  baris.push('');
+  const galat = galatPerPesan(sesi);
+  if (galat.length === 0) {
+    baris.push(
+      'Tidak ada satu pun peristiwa `galat` di berkas ini (berkas sebelum M3.8 tidak bisa mencatatnya).',
+    );
+  } else {
+    baris.push('Pesan sudah disamarkan di peramban (alamat → ‹url›, angka panjang → ‹n›). **sesi** = sesi yang');
+    baris.push('mengalaminya, bukan jumlah kejadian.');
+    baris.push('');
+    baris.push('| pesan | jenis | sumber | sesi | layar |');
+    baris.push('|---|---|---|---|---|');
+    for (const g of galat) {
+      baris.push(
+        `| ${g.pesan.replace(/\|/g, '\\|')} | ${g.jenis ?? '—'} | ${g.sumber ?? '—'} | ` +
+          `${String(g.sesi)} | ${g.layar.join(', ')} |`,
+      );
+    }
+  }
+  baris.push('');
+
+  baris.push('## Keluar-masuk');
+  baris.push('');
+  const km = keluarMasuk(sesi);
+  baris.push(`- sesi yang pernah tersembunyi (pindah aplikasi, kunci layar): **${String(km.sesi_sembunyi)}**`);
+  baris.push(`  - pernah kembali: **${String(km.pernah_kembali)}** · tidak pernah kembali: **${String(km.tidak_pernah_kembali)}**`);
+  baris.push(`  - berakhir tersembunyi (terakhir terlihat: pergi): **${String(km.berakhir_tersembunyi)}**`);
+  baris.push(`- sesi M3.8 yang tidak pernah tersembunyi: **${String(km.tanpa_sembunyi)}**`);
+  baris.push(`- sesi dari berkas sebelum M3.8 (tidak bisa melaporkannya): **${String(km.berkas_lama)}**`);
+  baris.push(`- median lama tersembunyi sebelum kembali: **${detikAtau(km.median_ms_sembunyi)}**`);
+  baris.push('');
 
   baris.push('## Titik berhenti');
   baris.push('');
