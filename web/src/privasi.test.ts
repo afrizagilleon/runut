@@ -4,7 +4,13 @@ import { describe, expect, it } from 'vitest';
 import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
 
 /**
- * D-11: yang dicatat, dikatakan — dan dikatakan **kata demi kata**.
+ * D-11 (M3.2), diperbarui M3.8 D-9: yang dicatat, dikatakan — dan dikatakan
+ * **kata demi kata**.
+ *
+ * M3.8 menambah yang dicatat (perangkat dan tampilan secara garis besar, jam
+ * setempat, asal tautan, kapan halaman ditinggalkan, kesalahan teknis), jadi
+ * kalimat lama tidak lagi jujur: ia menyebut dua hal yang dicatat padahal
+ * sekarang ada tujuh. Kalimatnya diganti, tesnya diperbarui — bukan dihapus.
  *
  * Kalimat ini bukan salinan longgar: ia diputuskan pemilik sesudah D-13, dan ia
  * menggantikan kalimat privasi di `docs/kasus-dada-v3.md` yang ditulis sebelum
@@ -13,10 +19,12 @@ import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
  * sudah menjanjikan hal lain.
  */
 const D11 =
-  'Kami mencatat apa yang diketuk dan seberapa jauh layar digulir, dan menyimpan ' +
-  'satu nomor acak di browsermu supaya tahu kalau kamu kembali. Bukan nama, bukan ' +
-  'akun, bukan alamat IP; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak ' +
-  'dicatat, kecuali kotak masukan ini.';
+  'Kami mencatat apa yang diketuk, seberapa jauh layar digulir, kapan halaman ' +
+  'ditinggalkan, dan kesalahan teknisnya; juga jenis perangkat dan pengaturan tampilan ' +
+  'secara garis besar, jam setempat, dan asal tautan — tanpa alamat IP dan tanpa ' +
+  'identitas. Kami menyimpan satu nomor acak di browsermu supaya tahu kalau kamu ' +
+  'kembali. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang kamu ' +
+  'ketik tidak dicatat, kecuali kotak masukan ini.';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 const baca = (jalur: string): string => readFileSync(AKAR + jalur, 'utf8');
@@ -31,6 +39,25 @@ describe('D-11 — kalimat privasi', () => {
     expect(KALIMAT_PRIVASI).toContain('seberapa jauh layar digulir');
     expect(KALIMAT_PRIVASI).toContain('satu nomor acak di browsermu');
     expect(KALIMAT_PRIVASI).toContain('kecuali kotak masukan ini');
+  });
+
+  it('M3.8 D-9: menyebut yang baru dicatat, dengan bahasa awam, dan batasnya', () => {
+    expect(KALIMAT_PRIVASI).toContain(
+      'jenis perangkat dan pengaturan tampilan secara garis besar, jam setempat, dan asal tautan',
+    );
+    expect(KALIMAT_PRIVASI).toContain('tanpa alamat IP dan tanpa identitas');
+    // `tampak` dan `galat` juga dicatat; kalimat yang diam tentang keduanya tidak jujur.
+    expect(KALIMAT_PRIVASI).toContain('kapan halaman ditinggalkan');
+    expect(KALIMAT_PRIVASI).toContain('kesalahan teknisnya');
+    // Bahasa awam: tidak ada istilah teknis di kalimat untuk pemain.
+    for (const istilah of ['User-Agent', 'UA', 'referrer', 'perujuk', 'IP address', 'cookie', 'JavaScript']) {
+      expect(KALIMAT_PRIVASI, istilah).not.toContain(istilah);
+    }
+  });
+
+  it('dokumen di docs/ yang mengutip kalimat privasi memuat kalimat yang sama', () => {
+    const dok = baca('docs/kasus-dada-v3.md').replace(/\s+/g, ' ');
+    expect(dok).toContain(D11);
   });
 
   it('dirender di layar akhir, sesudah kotak teks dan sebelum tombol kirim', () => {

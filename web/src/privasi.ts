@@ -1,5 +1,13 @@
 /**
- * Apa yang dicatat, dikatakan (D-11).
+ * Apa yang dicatat, dikatakan (D-11; diperbarui M3.8 D-9).
+ *
+ * M3.8 menambah yang dicatat: jenis perangkat dan pengaturan tampilan secara
+ * garis besar (os, peramban di dalam aplikasi, mode gelap, jenis layar
+ * sentuh), jam setempat, asal tautan (nama situsnya saja), kapan halaman
+ * ditinggalkan (`tampak`), dan kesalahan teknis (`galat`, disamarkan). Kalimat
+ * lama hanya menyebut ketukan dan gulir — tidak lagi jujur, jadi ia diganti.
+ * Batasnya ikut dikatakan dengan bahasa awam: tanpa alamat IP, tanpa
+ * identitas.
  *
  * Kalimat ini **menggantikan** kalimat privasi di `docs/kasus-dada-v3.md`, yang
  * ditulis sebelum nomor pengunjung (D-13) diputuskan. Ia tinggal di berkasnya
@@ -13,10 +21,12 @@
  * kenyataannya tidak boleh ada.
  */
 export const KALIMAT_PRIVASI =
-  'Kami mencatat apa yang diketuk dan seberapa jauh layar digulir, dan menyimpan ' +
-  'satu nomor acak di browsermu supaya tahu kalau kamu kembali. Bukan nama, bukan ' +
-  'akun, bukan alamat IP; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak ' +
-  'dicatat, kecuali kotak masukan ini.';
+  'Kami mencatat apa yang diketuk, seberapa jauh layar digulir, kapan halaman ' +
+  'ditinggalkan, dan kesalahan teknisnya; juga jenis perangkat dan pengaturan tampilan ' +
+  'secara garis besar, jam setempat, dan asal tautan — tanpa alamat IP dan tanpa ' +
+  'identitas. Kami menyimpan satu nomor acak di browsermu supaya tahu kalau kamu ' +
+  'kembali. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang kamu ' +
+  'ketik tidak dicatat, kecuali kotak masukan ini.';
 
 /** Kalimat layar terima kasih (D-11). Dua janji, dan keduanya benar. */
 export const KALIMAT_TERIMA_KASIH = 'Jawabanmu tercatat tanpa nama dan tanpa akun.';

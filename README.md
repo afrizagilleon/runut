@@ -132,10 +132,12 @@ Kalau alamat pengumpul diisi saat build — yang hanya dilakukan untuk uji coba
 terbatas — kalimat inilah yang dibaca pemain di layar akhir, dan ia dimaksudkan
 harfiah:
 
-> Kami mencatat apa yang diketuk dan seberapa jauh layar digulir, dan menyimpan
-> satu nomor acak di browsermu supaya tahu kalau kamu kembali. Bukan nama, bukan
-> akun, bukan alamat IP; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak
-> dicatat, kecuali kotak masukan ini.
+> Kami mencatat apa yang diketuk, seberapa jauh layar digulir, kapan halaman
+> ditinggalkan, dan kesalahan teknisnya; juga jenis perangkat dan pengaturan
+> tampilan secara garis besar, jam setempat, dan asal tautan — tanpa alamat IP dan
+> tanpa identitas. Kami menyimpan satu nomor acak di browsermu supaya tahu kalau
+> kamu kembali. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang
+> kamu ketik tidak dicatat, kecuali kotak masukan ini.
 
 Yang tercatat adalah perilaku di halaman, bukan orangnya:
 
