@@ -935,3 +935,70 @@ describe('kolektor — versi skema (M3.7 D-3)', () => {
     expect(SKEMA).toBe(2);
   });
 });
+
+/* ------------------------------------------------------------------ */
+/* M3.8 T-01 — mulai membawa keterangan perangkat                      */
+/* ------------------------------------------------------------------ */
+
+describe('kolektor — mulai M3.8 membawa perangkat (T-01)', () => {
+  /*
+   * Diterima di T-01 supaya pohon kerja tidak merah selama satu commit
+   * (pola M3.7 keputusan 2); validasi ketatnya — enum per medan, rentang
+   * angka, SKEMA 3 — datang di T-05, dengan siklus merah-dulunya sendiri.
+   */
+  const PERANGKAT_UJI = {
+    tinggi_layar: 640,
+    rasio_piksel: 2,
+    skema_warna: 'gelap',
+    penunjuk: 'kasar',
+    os: 'android',
+    peramban_dalam: 'threads',
+    perujuk: 'threads',
+    bahasa: 'id',
+    jam_lokal: 21,
+    hari_lokal: 2,
+    zona_menit: 420,
+    koneksi: '4g',
+    hemat_data: false,
+    gerak_dikurangi: false,
+    mandiri: false,
+  } as const;
+
+  it('keluaran reducer dengan perangkat lengkap lolos validator', () => {
+    const keadaan = keadaanAwal({
+      sesi: '2f1a1d6c-0000-4000-8000-000000000011',
+      kasus_id: 'dada-2025-10-08',
+      urutanSoal: ['s1'],
+      kunciBenar: { s1: 'b' },
+      kartuSoal: { s1: ['k1'] },
+    });
+    const hasil = langkah(
+      keadaan,
+      { jenis: 'mulai', lebar_layar: 360, perangkat: { ...PERANGKAT_UJI } },
+      1_000,
+    );
+    for (const p of hasil.peristiwa) {
+      expect((periksaPeristiwa(p) as { galat?: string }).galat, p.nama).toBeUndefined();
+    }
+  });
+
+  it('bentuk lama (empat medan, dari tab yang masih memuat web M3.7) tetap diterima server', async () => {
+    const balas = await kirim(
+      JSON.stringify([peristiwa({ nama: 'mulai', urut: 1101, isi: { ...MULAI_ISI } })]),
+    );
+    expect(balas.status).toBe(204);
+  });
+
+  it('bentuk baru diterima server dan ditulis dengan kelima belas medannya', async () => {
+    const balas = await kirim(
+      JSON.stringify([
+        peristiwa({ nama: 'mulai', urut: 1102, isi: { ...MULAI_ISI, ...PERANGKAT_UJI } }),
+      ]),
+    );
+    expect(balas.status).toBe(204);
+    const tertulis = barisTertulis()
+      .map((b) => JSON.parse(b) as { urut: number; isi: Record<string, unknown> })
+      .find((b) => b.urut === 1102);
+    expect(tertulis?.isi).toEqual({ ...MULAI_ISI, ...PERANGKAT_UJI });
+  });
+});

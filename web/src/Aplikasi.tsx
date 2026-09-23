@@ -53,6 +53,7 @@ import { isiSumber, type Emiten } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
 import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
 import { barisMeta } from './pembuka.ts';
+import { bacaPerangkat, type InfoKoneksi, type Perangkat } from './perangkat.ts';
 import { kalimatJejak, ringkasanJejak } from './jejak.ts';
 
 /**
@@ -133,6 +134,43 @@ function kasusSekali(): Kasus {
   return kasusPemuatanIni;
 }
 
+/**
+ * Bahan mentah untuk `bacaPerangkat` (M3.8 D-1), dikumpulkan dari peramban.
+ *
+ * Satu-satunya tempat `navigator.userAgent` dan `document.referrer` disentuh
+ * di seluruh aplikasi — dan keduanya tidak disimpan di mana pun: mereka
+ * diserahkan ke fungsi murni yang hanya mengembalikan kategori. Tiap akses
+ * dibungkus, karena peramban dalam aplikasi kadang melempar untuk API yang
+ * dimatikannya, dan pembuka sesi yang melempar berarti sesi tanpa `mulai`.
+ */
+function perangkatDariPeramban(): Perangkat | null {
+  try {
+    const sekarang = new Date();
+    const cocokMedia =
+      typeof window.matchMedia === 'function'
+        ? (kueri: string): boolean => window.matchMedia(kueri).matches
+        : null;
+    const koneksi =
+      (navigator as Navigator & { connection?: InfoKoneksi }).connection ?? null;
+    return bacaPerangkat({
+      ua: navigator.userAgent,
+      titikSentuh: navigator.maxTouchPoints,
+      perujuk: document.referrer,
+      hostSendiri: window.location.hostname,
+      bahasa: navigator.language,
+      cocokMedia,
+      tinggi: window.innerHeight,
+      rasioPiksel: window.devicePixelRatio,
+      jamLokal: sekarang.getHours(),
+      hariLokal: sekarang.getDay(),
+      offsetZona: sekarang.getTimezoneOffset(),
+      koneksi,
+    });
+  } catch {
+    return null;
+  }
+}
+
 export function Aplikasi(): JSX.Element {
   const [bungkus, dispatch] = useReducer(reduksi, null, () => awalBungkus(kasusSekali(), sesiBaru()));
   const { kasus, keadaan } = bungkus;
@@ -182,6 +220,7 @@ export function Aplikasi(): JSX.Element {
       penanda: kodePenanda(window.location.search),
       pengunjung,
       kunjungan_ke,
+      perangkat: perangkatDariPeramban(),
     });
     /*
      * `keadaan.sesi` ikut sebagai ketergantungan sejak M4 D-4: membuka kasus

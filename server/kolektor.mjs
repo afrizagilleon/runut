@@ -80,6 +80,27 @@ const MEDAN_ISI = {
     penanda: 'penanda?',
     pengunjung: 'uuid?',
     kunjungan_ke: 'kunjungan?',
+    /*
+     * M3.8 D-1: keterangan kasar perangkat dan asal. Awalan `~` berarti medan
+     * itu BOLEH TIDAK ADA — tab yang masih memuat web lama mengirim bentuk
+     * empat medan, dan menolaknya berarti kehilangan sesinya (D-6).
+     * (T-01: diterima longgar; diperketat menjadi enum dan rentang di T-05.)
+     */
+    tinggi_layar: '~angka?',
+    rasio_piksel: '~angka?',
+    skema_warna: '~teks?',
+    penunjuk: '~teks?',
+    os: '~teks?',
+    peramban_dalam: '~teks?',
+    perujuk: '~teks?',
+    bahasa: '~teks?',
+    jam_lokal: '~angka?',
+    hari_lokal: '~angka?',
+    zona_menit: '~angka?',
+    koneksi: '~teks?',
+    hemat_data: '~boolean?',
+    gerak_dikurangi: '~boolean?',
+    mandiri: '~boolean?',
   },
   layar_masuk: { layar: 'teks' },
   kartu_buka: { soal_id: 'teks', fact_id: 'teks' },
@@ -214,7 +235,12 @@ export function periksaPeristiwa(mentah) {
 
   const bentuk = MEDAN_ISI[nama];
   const isiBersih = {};
-  for (const [medan, jenis] of Object.entries(bentuk)) {
+  for (const [medan, jenisMentah] of Object.entries(bentuk)) {
+    const bolehTiada = jenisMentah.startsWith('~');
+    const jenis = bolehTiada ? jenisMentah.slice(1) : jenisMentah;
+    // Medan yang boleh tidak ada dan memang tidak ada: tidak ditulis sama
+    // sekali, supaya berkas membedakan "web lama" dari "web baru, nilai null".
+    if (bolehTiada && !Object.prototype.hasOwnProperty.call(isi, medan)) continue;
     if (!medanSah(jenis, isi[medan])) {
       return { galat: `medan "${medan}" di peristiwa "${nama}" tidak sah` };
     }

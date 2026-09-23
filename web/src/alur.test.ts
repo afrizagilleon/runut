@@ -22,6 +22,7 @@ import {
   tandaOpsi,
   tujuanRiwayat,
 } from './alur.ts';
+import { MEDAN_PERANGKAT, PERANGKAT_KOSONG, type Perangkat } from './perangkat.ts';
 
 const AWAL = {
   sesi: 'sesi-uji',
@@ -1136,6 +1137,7 @@ describe('alur — penanda tautan dan nomor pengunjung di peristiwa mulai (D-9, 
       penanda: 'grup1',
       pengunjung: '11111111-2222-4333-a444-555555555555',
       kunjungan_ke: 2,
+      ...PERANGKAT_KOSONG,
     });
   });
 
@@ -1146,7 +1148,72 @@ describe('alur — penanda tautan dan nomor pengunjung di peristiwa mulai (D-9, 
       penanda: null,
       pengunjung: null,
       kunjungan_ke: null,
+      ...PERANGKAT_KOSONG,
     });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 D-1 — keterangan kasar tentang perangkat di peristiwa mulai    */
+/* ------------------------------------------------------------------ */
+
+describe('alur — perangkat di peristiwa mulai (M3.8 D-1)', () => {
+  const PERANGKAT: Perangkat = {
+    tinggi_layar: 740,
+    rasio_piksel: 2.6,
+    skema_warna: 'gelap',
+    penunjuk: 'kasar',
+    os: 'android',
+    peramban_dalam: 'threads',
+    perujuk: 'threads',
+    bahasa: 'id',
+    jam_lokal: 21,
+    hari_lokal: 2,
+    zona_menit: 420,
+    koneksi: '4g',
+    hemat_data: null,
+    gerak_dikurangi: false,
+    mandiri: false,
+  };
+
+  it('kelima belas medan ikut di mulai, apa adanya, sesudah empat medan lama', () => {
+    const { peristiwa } = jalankan([{ ...MULAI, perangkat: PERANGKAT }]);
+    const isi = peristiwa[0]?.isi ?? {};
+    expect(Object.keys(isi)).toEqual([
+      'lebar_layar',
+      'penanda',
+      'pengunjung',
+      'kunjungan_ke',
+      ...MEDAN_PERANGKAT,
+    ]);
+    expect(isi).toEqual({
+      lebar_layar: 375,
+      penanda: null,
+      pengunjung: null,
+      kunjungan_ke: null,
+      ...PERANGKAT,
+    });
+  });
+
+  it('medan yang tidak disebut pemanggil tetap ADA, bernilai null', () => {
+    const { peristiwa } = jalankan([
+      { ...MULAI, perangkat: { os: 'ios' } as unknown as Perangkat },
+    ]);
+    const isi = peristiwa[0]?.isi ?? {};
+    for (const medan of MEDAN_PERANGKAT) expect(Object.hasOwn(isi, medan)).toBe(true);
+    expect(isi['os']).toBe('ios');
+    expect(isi['koneksi']).toBeNull();
+  });
+
+  it('medan yang TIDAK dikenal dari pemanggil tidak ikut ke peristiwa', () => {
+    const { peristiwa } = jalankan([
+      {
+        ...MULAI,
+        perangkat: { ...PERANGKAT, ua: 'Mozilla/5.0 AppleWebKit' } as unknown as Perangkat,
+      },
+    ]);
+    expect(JSON.stringify(peristiwa)).not.toMatch(/Mozilla|AppleWebKit/);
+    expect(Object.hasOwn(peristiwa[0]?.isi ?? {}, 'ua')).toBe(false);
   });
 });
 

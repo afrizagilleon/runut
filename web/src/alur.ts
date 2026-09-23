@@ -12,6 +12,7 @@
  */
 
 import { MAKS_UID } from './pelacak.ts';
+import { MEDAN_PERANGKAT, type Perangkat } from './perangkat.ts';
 
 /** Daftar peristiwa tertutup (D-6). Apa pun di luar daftar ini ditolak pengumpul. */
 export const NAMA_PERISTIWA = [
@@ -303,6 +304,12 @@ export type Aksi =
       /** Nomor pengunjung dari `localStorage` (D-13); `null` kalau tidak bisa disimpan. */
       pengunjung?: string | null;
       kunjungan_ke?: number | null;
+      /**
+       * Keterangan kasar perangkat dan asal (M3.8 D-1), sudah berupa kategori.
+       * Diturunkan `bacaPerangkat()` di komponen; reducer hanya menyalin
+       * kelima belas medannya — dan HANYA itu, lihat `isiPerangkat`.
+       */
+      perangkat?: Perangkat | null;
     }
   | { jenis: 'ketuk'; uid: string | null; x: number; y: number; mati: boolean }
   | { jenis: 'kartu_masuk_layar'; soal_id: string }
@@ -760,6 +767,19 @@ function masukLayar(
   return berikut;
 }
 
+/**
+ * Kelima belas medan perangkat untuk peristiwa `mulai` (M3.8 D-1).
+ *
+ * Dibangun dari **daftar medan**, bukan dengan menyebar objek pemanggil: medan
+ * yang tidak dikenal — misalnya `ua` yang terselip dari komponen — tidak punya
+ * jalan ke peristiwa, dan medan yang tidak disebut tetap ada sebagai `null`.
+ */
+function isiPerangkat(perangkat: Perangkat | null): Record<string, NilaiIsi> {
+  const isi: Record<string, NilaiIsi> = {};
+  for (const medan of MEDAN_PERANGKAT) isi[medan] = perangkat?.[medan] ?? null;
+  return isi;
+}
+
 /** Jaga-jaga terakhir untuk koordinat relatif: 0–1, tiga desimal (D-8). */
 function rasioTiga(nilai: number): number {
   if (!Number.isFinite(nilai)) return 0;
@@ -795,6 +815,7 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
         penanda: aksi.penanda ?? null,
         pengunjung: aksi.pengunjung ?? null,
         kunjungan_ke: aksi.kunjungan_ke ?? null,
+        ...isiPerangkat(aksi.perangkat ?? null),
       });
       const berikut = masukLayar(dimulai, { jenis: 'pembuka' }, waktu, catat, false);
       const { peristiwa, urut } = catat.hasil;
