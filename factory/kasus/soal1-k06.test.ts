@@ -17,11 +17,15 @@
  * dan atas seluruh fakta yang menjadi kartunya.
  */
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { ambilRujukan, teksPolos } from '../skema/rujukan.ts';
 import type { Kasus, Soal } from '../skema/tipe.ts';
+import { bangunKasusUmum } from './bangun.ts';
+import { keJson } from './json.ts';
+import { ULTJ_2026_05_04 } from './ultj-2026-05-04.ts';
+import { muatGudang } from '../muat/gudang.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 
@@ -72,6 +76,43 @@ const DADA = {
     '"investor asing" di kartu mana pun. Kartu harga hanya memberi tahu bahwa harganya naik ' +
     '22 kali, bukan kenapa. Salah-kaprah yang umum: menganggap harga yang naik sebagai ' +
     'semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.',
+} as const;
+
+const ULTJ = {
+  pesan: 'Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!',
+  kartu: ['div-2026-05-04', 'turun-2026-05-04'],
+  div: {
+    // Tanpa "ex" (keputusan reviewer 24 Sep sesudah K-06).
+    kepala: 'Pengumuman dividen · 4 Mei 2026',
+    isi: 'Dividen tunai Rp130 per lembar. Pembeli mulai hari ini tidak kebagian.',
+  },
+  turun: {
+    kepala: 'Dihitung dari data harga',
+    isi: 'Hari ini dibuka Rp145 di bawah penutupan terakhir.',
+  },
+  /** "arti versi hidup dipakai apa adanya" — disalin dari berkas di dabc82a. */
+  istilah: [
+    {
+      kata: 'Tanggal ex',
+      arti:
+        'Mulai tanggal ini pembeli baru tidak lagi kebagian dividen yang sudah diumumkan; ' +
+        'yang sudah pegang sebelumnya tetap kebagian. Uang sebesar dividen itu keluar dari ' +
+        'kas perusahaan pada rangkaian tanggal ini, jadi harga per lembarnya menyesuaikan.',
+    },
+  ],
+  pilihan: [
+    ['a', 'Betul, dividennya memang cuma Rp45 per lembar.'],
+    ['b', 'Keliru, dividennya Rp130, bukan Rp45.'],
+    ['c', 'Betul, turunnya lebih dari tiga kali dividennya.'],
+    ['d', 'Keliru, dividennya Rp160, bukan Rp45.'],
+  ],
+  penjelasan:
+    'Nadia memakai angka yang keliru: dividen yang tanggal ex-nya hari ini Rp130 per lembar, ' +
+    'bukan Rp45. Turunnya Rp145 hanya Rp15 lebih besar dari dividen itu (penutupan terakhir ' +
+    'Rp1.690, pembukaan hari ini Rp1.545). Pada tanggal ex, uang sebesar dividen berpindah dari ' +
+    'perusahaan ke pemilik saham, jadi harga per lembarnya menyesuaikan. Yang tidak dikatakan ' +
+    'kartu mana pun: apakah sisa Rp15 itu punya sebab. Salah-kaprah yang umum: mencari kabar ' +
+    'buruk untuk setiap penurunan harga sebelum mencocokkan angkanya dengan dokumen hari itu.',
 } as const;
 
 /* --- sidik soal 2–3 di dasar `dabc82a` ----------------------------------- */
@@ -141,6 +182,94 @@ describe('M3.9 D-4 — soal 1 DADA sama persis dengan kontrak', () => {
     expect(kasus.pembuka.ajak).toBe('Betul atau keliru?');
   });
 });
+
+describe('M3.9 D-4 — soal 1 ULTJ sama persis dengan kontrak', () => {
+  const kasus = muat('ultj-2026-05-04');
+  const soal = soalPertama(kasus);
+
+  it('pesan Nadia 17.58, huruf demi huruf — "Rp45" dibiarkan (dividen 2025 yang tercatat)', () => {
+    expect(soal.pesan).toEqual({ nama: 'Nadia', jam: '17.58', isi: ULTJ.pesan });
+  });
+
+  it('pemanasan: tanpa petunjuk; istilah hanya "Tanggal ex" dengan arti versi hidup', () => {
+    expect(soal.petunjuk).toBeNull();
+    expect(soal.istilah).toEqual(ULTJ.istilah);
+  });
+
+  it('kartu dividen (penentu) PERTAMA, kartu turun menggantikan kartu selisih', () => {
+    expect(soal.kartu).toEqual(ULTJ.kartu);
+    expect(soal.kartu_penentu).toEqual(['div-2026-05-04']);
+    expect(soal.kartu).not.toContain('beda-turun-dividen');
+    expect(kasus.fakta_terlihat).not.toContain('beda-turun-dividen');
+    expect(kasus.fakta_terlihat).toContain('turun-2026-05-04');
+  });
+
+  it('teks kedua kartu sama dengan kontrak, dan kepala dividen tanpa "ex"', () => {
+    const div = awam(kasus, 'div-2026-05-04');
+    expect(div.kepala).toBe(ULTJ.div.kepala);
+    expect(div.kepala).not.toMatch(/\bex\b/);
+    expect(teksPolos(div.isi)).toBe(ULTJ.div.isi);
+    const turun = awam(kasus, 'turun-2026-05-04');
+    expect(turun.kepala).toBe(ULTJ.turun.kepala);
+    expect(teksPolos(turun.isi)).toBe(ULTJ.turun.isi);
+  });
+
+  it('angka kartu menunjuk fakta bernilai itu; kartu turun dihitung dari kedua harga', () => {
+    expect(ambilRujukan(awam(kasus, 'div-2026-05-04').isi)).toEqual([
+      { fact_id: 'div-2026-05-04', teks: 'Rp130 per lembar' },
+    ]);
+    expect(ambilRujukan(awam(kasus, 'turun-2026-05-04').isi)).toEqual([
+      { fact_id: 'turun-2026-05-04', teks: 'Rp145' },
+    ]);
+    const turun = kasus.fakta.find((f) => f.fact_id === 'turun-2026-05-04');
+    expect(turun?.sumber.jenis).toBe('turunan');
+    expect(turun?.nilai).toBe(145);
+    expect(turun?.turunan_dari).toEqual(['harga-2026-04-30', 'harga-2026-05-04-buka']);
+    const nilai = (id: string): unknown => kasus.fakta.find((f) => f.fact_id === id)?.nilai;
+    expect(nilai('harga-2026-04-30')).toBe(1690);
+    expect(nilai('harga-2026-05-04-buka')).toBe(1545);
+  });
+
+  it('empat opsi dan kuncinya b', () => {
+    expect(soal.pilihan.map((p) => [p.kunci, teksPolos(p.teks)])).toEqual(ULTJ.pilihan);
+    expect(soal.jawaban).toBe('b');
+  });
+
+  it('teks kunci sama dengan kontrak', () => {
+    expect(teksPolos(soal.penjelasan)).toBe(ULTJ.penjelasan);
+  });
+
+  it('layar pertama membawa judul dan ajakan yang sama dengan DADA', () => {
+    expect(kasus.pembuka.judul).toBe('Cek omongan saham di grup ke dokumen resminya.');
+    expect(kasus.pembuka.ajak).toBe('Betul atau keliru?');
+  });
+});
+
+/*
+ * `cases/*.json` hanya boleh berubah LEWAT pembangun (§0 M3.9). DADA sudah
+ * dijaga `bangun.test.ts` ("menghasilkan berkas yang sama persis"); ULTJ belum
+ * punya penjaga itu — sabotase T-03 menemukannya: definisi yang diubah tanpa
+ * membangun ulang tetap hijau di seluruh Vitest.
+ */
+describe.runIf(existsSync(`${AKAR}.cache/sectors/ULTJ-filings.json`))(
+  'M3.9 — berkas ULTJ di repo = hasil bangun definisinya',
+  () => {
+    it('byte-identik dengan keluaran pembangun', () => {
+      const gudang = muatGudang();
+      const data = gudang.emiten.get(ULTJ_2026_05_04.simbol);
+      if (data === undefined) throw new Error('gudang tidak memuat ULTJ');
+      const kosong = gudang.berkas
+        .filter((b) => b.jenis === 'paginasi-kosong')
+        .map((b) => b.berkas);
+      const { kasus } = bangunKasusUmum(ULTJ_2026_05_04, data, gudang.asal, kosong);
+      const berkas = readFileSync(`${AKAR}cases/ultj-2026-05-04.json`, 'utf8').replace(
+        /\r\n/g,
+        '\n',
+      );
+      expect(keJson(kasus) === berkas, 'cases/ultj-2026-05-04.json harus hasil build:case').toBe(true);
+    });
+  },
+);
 
 describe('M3.9 — soal 2 dan 3 kedua kasus tidak disentuh', () => {
   for (const [kasus_id, dasar] of Object.entries(SIDIK_DASAR)) {

@@ -35,10 +35,7 @@
       ],
       "tersedia_sejak": "2026-05-04",
       "status": "TERVERIFIKASI",
-      "awam": {
-        "kepala": "Dihitung dari data harga",
-        "isi": "Hari bursa terakhir sebelum hari ini, [[harga-2026-04-30|Kamis 30 April]], ditutup [[harga-2026-04-30|Rp1.690]]. Hari ini dibuka [[harga-2026-05-04-buka|Rp1.545]] — turun [[turun-2026-05-04|Rp145]]. Dividen per lembarnya [[div-2026-05-04|Rp130]], jadi bedanya [[beda-turun-dividen|Rp15]]."
-      }
+      "awam": null
     },
     {
       "fact_id": "div-2020-09-03",
@@ -193,8 +190,8 @@
       "tersedia_sejak": "2026-05-04",
       "status": "TERVERIFIKASI",
       "awam": {
-        "kepala": "Pengumuman dividen · ex 4 Mei 2026",
-        "isi": "Perusahaan U membagikan dividen tunai [[div-2026-05-04|Rp130 per lembar]]. Tanggal ex-nya hari ini; uangnya dibayarkan [[div-2026-05-04-bayar|22 Mei 2026]]."
+        "kepala": "Pengumuman dividen · 4 Mei 2026",
+        "isi": "Dividen tunai [[div-2026-05-04|Rp130 per lembar]]. Pembeli mulai hari ini tidak kebagian."
       }
     },
     {
@@ -888,7 +885,10 @@
       ],
       "tersedia_sejak": "2026-05-04",
       "status": "TERVERIFIKASI",
-      "awam": null
+      "awam": {
+        "kepala": "Dihitung dari data harga",
+        "isi": "Hari ini dibuka [[turun-2026-05-04|Rp145]] di bawah penutupan terakhir."
+      }
     },
     {
       "fact_id": "volume-2026-09-17",
@@ -935,7 +935,7 @@
   ],
   "fakta_terlihat": [
     "div-2026-05-04",
-    "beda-turun-dividen",
+    "turun-2026-05-04",
     "dividen-tercatat",
     "tahun-berdividen",
     "fil-2026-01-06-01",
@@ -947,51 +947,47 @@
       "soal_id": "turun-di-tanggal-ex",
       "kartu": [
         "div-2026-05-04",
-        "beda-turun-dividen"
+        "turun-2026-05-04"
       ],
       "istilah": [
         {
           "kata": "Tanggal ex",
           "arti": "Mulai tanggal ini pembeli baru tidak lagi kebagian dividen yang sudah diumumkan; yang sudah pegang sebelumnya tetap kebagian. Uang sebesar dividen itu keluar dari kas perusahaan pada rangkaian tanggal ini, jadi harga per lembarnya menyesuaikan."
-        },
-        {
-          "kata": "Dividen tunai",
-          "arti": "Bagian laba yang dibayarkan perusahaan kepada pemilik sahamnya; uangnya benar-benar keluar dari kas perusahaan."
         }
       ],
       "pesan": {
         "nama": "Nadia",
         "jam": "17.58",
-        "isi": "Baru buka aplikasi. Saham U pagi tadi bukanya anjlok. Oh, ternyata hari ini tanggal ex dividennya. Tapi turunnya kayaknya jauh lebih gede dari dividennya, pasti ada sebab lain."
+        "isi": "Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!"
       },
       "tanya": "Omongan Nadia cocok dengan dokumennya?",
-      "petunjuk": "Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.",
+      "petunjuk": null,
       "kartu_penentu": [
-        "beda-turun-dividen"
+        "div-2026-05-04"
       ],
       "pilihan": [
         {
           "kunci": "a",
-          "teks": "Betul, turunnya kira-kira dua kali lipat dividen per lembarnya."
+          "teks": "Betul, dividennya memang cuma [[div-2025-05-15|Rp45]] per lembar."
         },
         {
           "kunci": "b",
-          "teks": "Keliru, turunnya cuma sekitar lima belas rupiah lebih besar."
+          "teks": "Keliru, dividennya [[div-2026-05-04|Rp130]], bukan [[div-2025-05-15|Rp45]]."
         },
         {
           "kunci": "c",
-          "teks": "Betul, dividennya hanya menjelaskan sekitar sepertiga dari turunnya."
+          "teks": "Betul, turunnya lebih dari tiga kali dividennya."
         },
         {
           "kunci": "d",
-          "teks": "Keliru, turunnya justru lebih kecil daripada dividen per lembarnya."
+          "teks": "Keliru, dividennya [[misal|Rp160]], bukan [[div-2025-05-15|Rp45]]."
         }
       ],
       "jawaban": "b",
-      "penjelasan": "Nadia sudah benar setengah jalan: hari ini memang tanggal ex dividennya. Yang belum ia cek adalah seberapa besar. Kartu kedua sudah menghitungnya — penutupan terakhir [[harga-2026-04-30|Rp1.690]], pembukaan hari ini [[harga-2026-05-04-buka|Rp1.545]], turun [[turun-2026-05-04|Rp145]], sementara dividen yang keluar dari perusahaan [[div-2026-05-04|Rp130 per lembar]]. Bedanya [[beda-turun-dividen|Rp15]], bukan \"jauh lebih gede\". Pada tanggal ex, uang sebesar dividen itu memang berpindah dari perusahaan ke pemilik saham, jadi harga per lembarnya menyesuaikan; penurunan seperti itu adalah tanggal di kalender, bukan kabar. Yang tidak dikatakan kartu mana pun: apakah sisanya punya sebab, dan harga akan ke mana sesudah ini. Salah-kaprah yang umum: mencari berita untuk setiap penurunan harga, lalu berhenti sebelum membandingkan besarnya dengan angka yang sudah tertulis di dokumen.",
+      "penjelasan": "Nadia memakai angka yang keliru: dividen yang tanggal ex-nya hari ini [[div-2026-05-04|Rp130 per lembar]], bukan [[div-2025-05-15|Rp45]]. Turunnya [[turun-2026-05-04|Rp145]] hanya [[beda-turun-dividen|Rp15]] lebih besar dari dividen itu (penutupan terakhir [[harga-2026-04-30|Rp1.690]], pembukaan hari ini [[harga-2026-05-04-buka|Rp1.545]]). Pada tanggal ex, uang sebesar dividen berpindah dari perusahaan ke pemilik saham, jadi harga per lembarnya menyesuaikan. Yang tidak dikatakan kartu mana pun: apakah sisa [[beda-turun-dividen|Rp15]] itu punya sebab. Salah-kaprah yang umum: mencari kabar buruk untuk setiap penurunan harga sebelum mencocokkan angkanya dengan dokumen hari itu.",
       "fact_ids": [
-        "beda-turun-dividen",
-        "div-2026-05-04"
+        "div-2026-05-04",
+        "turun-2026-05-04"
       ]
     },
     {

@@ -5,7 +5,9 @@
  * peristiwa, bukan penilaian — perusahaan membagi dividen tunai tiap tahun, dan
  * orang dalamnya melaporkan pembelian. Tidak satu kata penilaian saham pun
  * ("sehat", "bagus", "buruk") ada di berkas ini; yang menjaga itu bukan niat
- * melainkan satu grep di gate regresi.
+ * melainkan satu grep di gate regresi. Satu-satunya pengecualian bernama:
+ * frasa "kabar buruk" di soal 1 (M3.9 D-4) — ia menilai kabar yang
+ * dibayangkan Nadia, bukan sahamnya (lihat `ultj.test.ts`).
  *
  * **Tidak ada satu angka pun yang ditulis di berkas ini.** Setiap angka yang
  * dibaca pemain adalah rujukan `[[fact_id|teks]]` ke fakta yang lahir di
@@ -29,6 +31,8 @@ import {
 
 /* fact_id yang disebut lebih dari sekali; ditulis sekali supaya tidak bisa salah ketik. */
 const DIV_T = 'div-2026-05-04';
+/** Dividen 2025 yang tercatat — "Rp45" yang dikutip keliru di pesan soal 1. */
+const DIV_2025 = 'div-2025-05-15';
 const DIV_BAYAR = 'div-2026-05-04-bayar';
 const DIV_RIWAYAT = 'dividen-tercatat';
 const TAHUN_DIVIDEN = 'tahun-berdividen';
@@ -160,22 +164,26 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
     menit: 5,
   },
 
-  fakta_terlihat: [DIV_T, BEDA, DIV_RIWAYAT, TAHUN_DIVIDEN, LAPOR_BESAR_1, LAPOR_LAIN_1, TAMBAHAN],
+  fakta_terlihat: [DIV_T, TURUN, DIV_RIWAYAT, TAHUN_DIVIDEN, LAPOR_BESAR_1, LAPOR_LAIN_1, TAMBAHAN],
 
   awam: {
+    /*
+     * Dua kartu soal 1, M3.9 D-4. Kepala dividen tanpa "ex": keputusan reviewer
+     * 24 Sep sesudah K-06 — kata itu keluhan utama penguji ULTJ, dan isi
+     * kartunya sudah mengatakan artinya ("Pembeli mulai hari ini tidak
+     * kebagian"). Istilah "Tanggal ex" tetap ada untuk teks kunci.
+     *
+     * Kartu turun: angka yang dibaca pemain hanya Rp145; kedua harga asalnya
+     * (penutupan 30 April Rp1.690, pembukaan hari ini Rp1.545) ada di panel
+     * "Lihat cara menghitungnya" — kalimat resminya dan daftar "Dihitung dari".
+     */
     [DIV_T]: {
-      kepala: 'Pengumuman dividen · ex 4 Mei 2026',
-      isi:
-        `Perusahaan U membagikan dividen tunai [[${DIV_T}|Rp130 per lembar]]. ` +
-        `Tanggal ex-nya hari ini; uangnya dibayarkan [[${DIV_BAYAR}|22 Mei 2026]].`,
+      kepala: 'Pengumuman dividen · 4 Mei 2026',
+      isi: `Dividen tunai [[${DIV_T}|Rp130 per lembar]]. Pembeli mulai hari ini tidak kebagian.`,
     },
-    [BEDA]: {
+    [TURUN]: {
       kepala: 'Dihitung dari data harga',
-      isi:
-        `Hari bursa terakhir sebelum hari ini, [[${HARGA_SEBELUM}|Kamis 30 April]], ditutup ` +
-        `[[${HARGA_SEBELUM}|Rp1.690]]. Hari ini dibuka [[${BUKA_T}|Rp1.545]] — turun ` +
-        `[[${TURUN}|Rp145]]. Dividen per lembarnya [[${DIV_T}|Rp130]], jadi bedanya ` +
-        `[[${BEDA}|Rp15]].`,
+      isi: `Hari ini dibuka [[${TURUN}|Rp145]] di bawah penutupan terakhir.`,
     },
     [DIV_RIWAYAT]: {
       kepala: 'Riwayat dividen · 2020–2026',
@@ -222,9 +230,26 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
   },
 
   soal: [
+    /*
+     * Soal 1 = pemanasan (M3.9 D-4, varian A uji K-06, disetujui pemilik
+     * 24 Sep 2026). Versi lama bisa ditebak TANPA kartu (3/3 di uji tebak
+     * buta); versi ini 0/3. Seluruh kata disalin PERSIS dari kontrak dan dijaga
+     * huruf demi huruf oleh `soal1-k06.test.ts`.
+     *
+     * "Rp45" di pesan Nadia adalah dividen 2025 yang tercatat (kartu riwayat di
+     * soal 2) — angka keliru yang sungguh ada, jangan "dibetulkan". Di opsi dan
+     * teks kunci ia ditautkan ke fakta dividen 2025 itu, bukan ke `misal`:
+     * mengetuknya membuka dokumen yang memang menulis Rp45. "Rp160" tidak
+     * tercatat di mana pun, jadi ia pengandaian (`misal`).
+     *
+     * Kartu penentu (dividen hari ini) PERTAMA; kartu kedua kini kartu turun
+     * (`turun-2026-05-04`), menggantikan kartu selisih `beda-turun-dividen`
+     * yang menyebutkan jawabannya sendiri. Fakta selisih itu tetap lahir —
+     * teks kunci merujuknya untuk "Rp15".
+     */
     {
       soal_id: 'turun-di-tanggal-ex',
-      kartu: [DIV_T, BEDA],
+      kartu: [DIV_T, TURUN],
       istilah: [
         {
           kata: 'Tanggal ex',
@@ -233,41 +258,35 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
             'yang sudah pegang sebelumnya tetap kebagian. Uang sebesar dividen itu keluar dari ' +
             'kas perusahaan pada rangkaian tanggal ini, jadi harga per lembarnya menyesuaikan.',
         },
-        {
-          kata: 'Dividen tunai',
-          arti: 'Bagian laba yang dibayarkan perusahaan kepada pemilik sahamnya; uangnya benar-benar keluar dari kas perusahaan.',
-        },
       ],
       pesan: {
         nama: 'Nadia',
         jam: '17.58',
-        isi:
-          'Baru buka aplikasi. Saham U pagi tadi bukanya anjlok. Oh, ternyata hari ini tanggal ex ' +
-          'dividennya. Tapi turunnya kayaknya jauh lebih gede dari dividennya, pasti ada sebab lain.',
+        isi: 'Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!',
       },
       tanya: 'Omongan Nadia cocok dengan dokumennya?',
-      petunjuk: 'Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.',
-      kartu_penentu: [BEDA],
+      petunjuk: null,
+      kartu_penentu: [DIV_T],
       pilihan: [
-        { kunci: 'a', teks: 'Betul, turunnya kira-kira dua kali lipat dividen per lembarnya.' },
-        { kunci: 'b', teks: 'Keliru, turunnya cuma sekitar lima belas rupiah lebih besar.' },
-        { kunci: 'c', teks: 'Betul, dividennya hanya menjelaskan sekitar sepertiga dari turunnya.' },
-        { kunci: 'd', teks: 'Keliru, turunnya justru lebih kecil daripada dividen per lembarnya.' },
+        {
+          kunci: 'a',
+          teks: `Betul, dividennya memang cuma [[${DIV_2025}|Rp45]] per lembar.`,
+        },
+        { kunci: 'b', teks: `Keliru, dividennya [[${DIV_T}|Rp130]], bukan [[${DIV_2025}|Rp45]].` },
+        { kunci: 'c', teks: 'Betul, turunnya lebih dari tiga kali dividennya.' },
+        { kunci: 'd', teks: `Keliru, dividennya [[misal|Rp160]], bukan [[${DIV_2025}|Rp45]].` },
       ],
       jawaban: 'b',
       penjelasan:
-        'Nadia sudah benar setengah jalan: hari ini memang tanggal ex dividennya. Yang belum ia ' +
-        `cek adalah seberapa besar. Kartu kedua sudah menghitungnya — penutupan terakhir ` +
-        `[[${HARGA_SEBELUM}|Rp1.690]], pembukaan hari ini [[${BUKA_T}|Rp1.545]], turun ` +
-        `[[${TURUN}|Rp145]], sementara dividen yang keluar dari perusahaan ` +
-        `[[${DIV_T}|Rp130 per lembar]]. Bedanya [[${BEDA}|Rp15]], bukan "jauh lebih gede". Pada ` +
-        'tanggal ex, uang sebesar dividen itu memang berpindah dari perusahaan ke pemilik saham, ' +
-        'jadi harga per lembarnya menyesuaikan; penurunan seperti itu adalah tanggal di kalender, ' +
-        'bukan kabar. Yang tidak dikatakan kartu mana pun: apakah sisanya punya sebab, dan harga ' +
-        'akan ke mana sesudah ini. Salah-kaprah yang umum: mencari berita untuk setiap penurunan ' +
-        'harga, lalu berhenti sebelum membandingkan besarnya dengan angka yang sudah tertulis di ' +
-        'dokumen.',
-      fact_ids: [BEDA, DIV_T],
+        `Nadia memakai angka yang keliru: dividen yang tanggal ex-nya hari ini ` +
+        `[[${DIV_T}|Rp130 per lembar]], bukan [[${DIV_2025}|Rp45]]. Turunnya ` +
+        `[[${TURUN}|Rp145]] hanya [[${BEDA}|Rp15]] lebih besar dari dividen itu (penutupan ` +
+        `terakhir [[${HARGA_SEBELUM}|Rp1.690]], pembukaan hari ini [[${BUKA_T}|Rp1.545]]). ` +
+        'Pada tanggal ex, uang sebesar dividen berpindah dari perusahaan ke pemilik saham, jadi ' +
+        'harga per lembarnya menyesuaikan. Yang tidak dikatakan kartu mana pun: apakah sisa ' +
+        `[[${BEDA}|Rp15]] itu punya sebab. Salah-kaprah yang umum: mencari kabar buruk untuk ` +
+        'setiap penurunan harga sebelum mencocokkan angkanya dengan dokumen hari itu.',
+      fact_ids: [DIV_T, TURUN],
     },
     {
       soal_id: 'riwayat-dividen',

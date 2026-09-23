@@ -275,6 +275,25 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
     expect(k.fakta.filter((f) => f.status !== 'TERVERIFIKASI')).toEqual([]);
   });
 
+  /*
+   * M3.9: satu frasa dikecualikan, dan hanya frasa itu — "kabar buruk". Kontrak
+   * M3.9 D-4 menulisnya di pesan Nadia ("Pasti ada kabar buruk!") dan di teks
+   * kunci ("mencari kabar buruk untuk setiap penurunan harga"), disalin persis
+   * karena kata-kata soal 1 sudah diuji tebak buta. "Buruk" di situ menilai
+   * KABAR yang dibayangkan orang, bukan sahamnya — dan justru salah-kaprah
+   * itulah yang diajarkan soalnya. Kata "buruk" di luar frasa itu tetap merah
+   * (tes di bawah membuktikannya).
+   */
+  const FRASA_BUKAN_PENILAIAN = /kabar buruk/g;
+  const bersihkan = (teks: string): string =>
+    teks.toLowerCase().replace(FRASA_BUKAN_PENILAIAN, 'kabar');
+
+  it('pengecualian "kabar buruk" sempit: "buruk" di luar frasa itu tetap tertangkap', () => {
+    expect(bersihkan('Pasti ada kabar buruk!')).not.toContain('buruk');
+    expect(bersihkan('Kinerja perusahaan ini buruk.')).toContain('buruk');
+    expect(bersihkan('Kabar buruk, sahamnya buruk.')).toContain('buruk');
+  });
+
   it('tidak memuat kata penilaian saham di teks mana pun yang dilihat pemain', () => {
     const k = kasus();
     const semua = [
@@ -292,7 +311,7 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
       ...k.pembukaan.disingkirkan,
     ].join(' \n ');
     for (const kata of ['sehat', 'bagus', 'buruk', 'layak', 'prospek', 'murah', 'mahal']) {
-      expect(semua.toLowerCase(), `kata penilaian saham "${kata}"`).not.toContain(kata);
+      expect(bersihkan(semua), `kata penilaian saham "${kata}"`).not.toContain(kata);
     }
   });
 
@@ -325,6 +344,37 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
       expect(kartu, `nama orang "${nama}"`).not.toContain(nama);
     }
     expect(kartu).toContain('Pemilik terbesar');
+  });
+
+  /*
+   * M3.9 D-4: kartu kedua soal 1 kini `turun-2026-05-04` ("Hari ini dibuka
+   * Rp145 di bawah penutupan terakhir"). Angkanya dihitung ulang di sini dari
+   * baris harga MENTAH, dan kedua harga asalnya harus benar-benar penutupan
+   * 30 April dan pembukaan 4 Mei — bukan hanya selisih yang kebetulan 145.
+   */
+  it.runIf(adaCache)('kartu turun soal 1 = penutupan 30 Apr − pembukaan 4 Mei dari cache mentah', () => {
+    const baris = new Map<string, BarisHargaMentah>();
+    for (const nama of readdirSync(GUDANG).filter((n) => /^ULTJ-daily-.*\.json$/.test(n)).sort()) {
+      for (const b of JSON.parse(readFileSync(`${GUDANG}/${nama}`, 'utf8')) as BarisHargaMentah[]) {
+        if (!baris.has(b.date)) baris.set(b.date, b);
+      }
+    }
+    const tutup = baris.get('2026-04-30')?.close;
+    const buka = baris.get('2026-05-04')?.open;
+    expect(tutup).toBe(1690);
+    expect(buka).toBe(1545);
+
+    const k = kasus();
+    const kartu = k.fakta.find((f) => f.fact_id === 'turun-2026-05-04');
+    expect(k.soal[0]?.kartu).toContain('turun-2026-05-04');
+    expect(kartu?.nilai).toBe((tutup ?? 0) - (buka ?? 0));
+    expect(kartu?.turunan_dari).toEqual(['harga-2026-04-30', 'harga-2026-05-04-buka']);
+    const asal = kartu?.turunan_dari.map((id) => k.fakta.find((f) => f.fact_id === id)?.nilai);
+    expect(asal).toEqual([tutup, buka]);
+    // Satu-satunya angka yang dibaca di kartunya adalah selisih itu sendiri.
+    expect(ambilRujukan(kartu?.awam?.isi ?? '')).toEqual([
+      { fact_id: 'turun-2026-05-04', teks: `Rp${String((tutup ?? 0) - (buka ?? 0))}` },
+    ]);
   });
 
   it('tiap kartu penentu benar-benar kartu soal itu, dan tidak lebih dari dua', () => {
