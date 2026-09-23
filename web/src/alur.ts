@@ -401,7 +401,18 @@ export type Aksi =
    * kalau komponen yang memutuskan, ia harus menyimpan keadaan sendiri, dan
    * keadaan yang hidup di komponen tidak bisa dibuktikan tes mana pun.
    */
-  | { jenis: 'sakelar_sumber'; fact_id: string; soal_id: string | null }
+  | {
+      jenis: 'sakelar_sumber';
+      fact_id: string;
+      soal_id: string | null;
+      /**
+       * Semua fact_id yang bisa dibuka di PARAGRAF tempat tautan ini berada
+       * (M3.8 D-8), atau tidak ada untuk kaki lembar kartu. Dengan medan ini,
+       * paragraf itu hanya pernah punya satu penjelasan terbuka: membuka satu
+       * menutup saudaranya, dan menutup yang terlihat mengosongkan paragrafnya.
+       */
+      saudara?: readonly string[];
+    }
   | { jenis: 'sakelar_istilah'; soal_id: string }
   /*
    * Balon chat melayang (M3.7 D-2). Komponen mengirim keadaan TUJUAN, bukan
@@ -863,6 +874,51 @@ function masukLayar(
 }
 
 /**
+ * Daftar sumber yang terbuka sesudah satu ketukan (A-2; M3.8 D-8).
+ *
+ * **Tanpa `saudara`** (kaki lembar kartu): sakelar biasa — tiap lembar mandiri,
+ * seperti patokan `docs/contoh/layar-soal.html`.
+ *
+ * **Dengan `saudara`** (tautan angka di dalam paragraf yang punya penjelasan
+ * sebaris): paragraf itu hanya boleh punya SATU penjelasan terbuka, dan yang
+ * memutuskannya di sini, di reducer — bukan di tampilan. Versi M3.6 membiarkan
+ * semuanya di daftar dan hanya MENAMPILKAN yang paling baru; menutup yang
+ * terlihat lalu memunculkan kembali yang lama, yang tidak pernah keluar dari
+ * daftar. Pemilik menemukannya di ponselnya: buka "laporan 19 Oktober 2025" →
+ * buka "laporan 26 Oktober 2025" → tutup 26 → **19 muncul kembali**.
+ *
+ * Yang "terlihat" di paragraf ini dihitung dengan aturan yang sama dengan
+ * `selipkanPenjelasan` di `Teks.tsx`: yang paling baru di antara saudaranya.
+ * Mengetuk yang terlihat menutupnya DAN semua saudaranya; mengetuk yang lain
+ * membuka yang diketuk dan menutup saudaranya — satu ketukan, apa pun yang
+ * sebelumnya terjadi di paragraf lain.
+ */
+function sakelarDaftar(
+  terbuka: readonly string[],
+  fact_id: string,
+  saudara: readonly string[] | undefined,
+): { daftar: readonly string[]; membuka: boolean } {
+  if (saudara === undefined || saudara.length === 0) {
+    const sudah = terbuka.includes(fact_id);
+    return {
+      daftar: sudah ? terbuka.filter((f) => f !== fact_id) : [...terbuka, fact_id],
+      membuka: !sudah,
+    };
+  }
+  let terlihat: string | null = null;
+  for (let i = terbuka.length - 1; i >= 0; i -= 1) {
+    const f = terbuka[i];
+    if (f !== undefined && (saudara.includes(f) || f === fact_id)) {
+      terlihat = f;
+      break;
+    }
+  }
+  const tanpaParagraf = terbuka.filter((f) => f !== fact_id && !saudara.includes(f));
+  const membuka = terlihat !== fact_id;
+  return { daftar: membuka ? [...tanpaParagraf, fact_id] : tanpaParagraf, membuka };
+}
+
+/**
  * `kinerja` sekali per sesi (M3.8 D-4), kalau belum dan kalau ada angkanya.
  *
  * Dipanggil dari tiga tempat — ketukan hidup pertama, halaman tersembunyi,
@@ -989,13 +1045,10 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
      * tercatat sebagai `ketuk` biasa lewat pelacak (D-8).
      */
     case 'sakelar_sumber': {
-      const sudahTerbuka = keadaan.sumberTerbuka.includes(aksi.fact_id);
-      const daftar = sudahTerbuka
-        ? keadaan.sumberTerbuka.filter((f) => f !== aksi.fact_id)
-        : [...keadaan.sumberTerbuka, aksi.fact_id];
+      const { daftar, membuka } = sakelarDaftar(keadaan.sumberTerbuka, aksi.fact_id, aksi.saudara);
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
       let berikut: Keadaan = { ...keadaan, sumberTerbuka: daftar };
-      if (!sudahTerbuka && aksi.soal_id !== null && keadaan.soal[aksi.soal_id] !== undefined) {
+      if (membuka && aksi.soal_id !== null && keadaan.soal[aksi.soal_id] !== undefined) {
         catat.tambah('kartu_buka', { soal_id: aksi.soal_id, fact_id: aksi.fact_id });
         berikut = ubahSoal(berikut, aksi.soal_id, (lama) => ({
           ...lama,

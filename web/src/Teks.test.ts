@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { pecahTeks } from '../../factory/skema/rujukan.ts';
-import { ikatTandaBaca, potongKalimat, selipkanPenjelasan } from './Teks.tsx';
+import { faktaParagraf, ikatTandaBaca, potongKalimat, selipkanPenjelasan } from './Teks.tsx';
 
 /*
  * F-A1-2: tautan angka dirender sebagai <button>, yang selalu menjadi kotak
@@ -226,5 +226,22 @@ describe('opsi: penanda rujukan dilepas, bukan ikut terbaca', () => {
     // tombol yang membuka sumber, dan ucapan teman tampak sudah terverifikasi
     // sebelum pemain memeriksanya (D-2, mode ketat 'ucapan').
     expect(opsi).toContain('interaktif={false}');
+  });
+});
+
+describe('faktaParagraf (M3.8 D-8)', () => {
+  const potong = (teks: string) => potongKalimat(ikatTandaBaca(pecahTeks(teks)));
+
+  it('semua fact_id yang bisa dibuka di paragraf ini, urut kemunculan, tanpa ulangan', () => {
+    const p = potong(
+      'Laporan terbit: [[fil-19|laporan 19 Oktober 2025]] dan [[fil-26|laporan 26 Oktober 2025]]. ' +
+        'Lihat [[fil-19|yang pertama]] lagi.',
+    );
+    expect(faktaParagraf(p)).toEqual(['fil-19', 'fil-26']);
+  });
+
+  it('penanda bukan-fakta (andaian, hari ini) tidak ikut: mereka tidak punya penjelasan', () => {
+    const p = potong('Misal [[misal|Rp100]] pada [[hari-ini|8 Okt]], lalu [[a|X]].');
+    expect(faktaParagraf(p)).toEqual(['a']);
   });
 });

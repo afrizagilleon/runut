@@ -30,8 +30,9 @@ import { bacaKasus } from './bantu/kasus.ts';
  *   2. ia masuk layar tanpa pemain harus menggulir lagi;
  *   3. **satu blok per paragraf**: tautan kedua di paragraf yang sama menutup
  *      yang pertama;
- *   4. tautan yang kalah baru tetap bisa dibuka lagi dengan **satu** ketukan —
- *      kontrol yang diketuk tanpa akibat adalah cacat tersendiri.
+ *   4. tautan yang tertutup oleh tautan kedua bisa dibuka lagi dengan **satu**
+ *      ketukan — kontrol yang diketuk tanpa akibat adalah cacat tersendiri;
+ *   5. (M3.8 D-8) menutup yang terlihat meninggalkan paragraf TANPA penjelasan.
  *
  * Tidak satu pun angka di bawah disalin dari kode produk: semuanya diukur dari
  * halaman yang sungguh dilukis.
@@ -355,8 +356,8 @@ test('E-16c satu blok per paragraf, dan tautan yang kalah baru tetap bisa dibuka
 
   /*
    * Ketukan yang tidak berakibat apa-apa adalah cacat tersendiri (M3.2 §10c).
-   * Tautan pertama masih tercatat terbuka di reducer, tetapi kalah baru; SATU
-   * ketukan harus mengembalikannya, bukan dua.
+   * Sejak M3.8 D-8 tautan pertama sudah DITUTUP reducer ketika tautan kedua
+   * dibuka; SATU ketukan harus membukanya lagi (dan menutup yang kedua).
    */
   await ketuk(satu);
   const kembali = await ukurPenjelasan(satu);
@@ -439,4 +440,47 @@ test('E-16d teks kunci sesudah dikunci: penjelasan menyusup ke kalimatnya, bukan
       `${String(ukur.jumlahKalimat)} jarak-dari-kalimat=${ukur.jarakDariKalimat.toFixed(1)}px ` +
       `jarak-dari-tautan=${ukur.jarakDariTautan.toFixed(1)}px`,
   );
+});
+
+/**
+ * E-16e — urutan PERSIS yang dilakukan pemilik (M3.8 D-8).
+ *
+ * Layar "Waktu berjalan lagi" DADA, paragraf yang memuat dua laporan:
+ * buka "laporan 19 Oktober 2025" → buka "laporan 26 Oktober 2025" (menutupi
+ * 19) → ketuk 26 lagi untuk menutup → **19 muncul kembali**. Sebabnya: 19 tidak
+ * pernah keluar dari daftar yang terbuka, ia hanya kalah baru.
+ *
+ * Yang dijaga: sesudah menutup yang terlihat, paragraf itu kosong dari
+ * penjelasan, dan kedua tautan mengatakan dirinya tertutup.
+ */
+test('E-16e buka A, buka B, tutup B: tidak ada penjelasan, kedua tautan aria-expanded false', async ({
+  page,
+}) => {
+  await sampaiPembukaan(page);
+  const paragraf = page
+    .locator('[data-uid="garis-waktu"] > li')
+    .filter({ hasText: 'laporan 19 Oktober 2025' })
+    .filter({ hasText: 'laporan 26 Oktober 2025' });
+  await expect(paragraf, 'paragraf pemilik ada, tepat satu').toHaveCount(1);
+  const a = paragraf.locator('[data-uid="angka:fil-2025-10-19"]');
+  const b = paragraf.locator('[data-uid="angka:fil-2025-10-26"]');
+  await expect(a).toHaveCount(1);
+  await expect(b).toHaveCount(1);
+  const blok = paragraf.locator('.penjelasan-sebaris');
+
+  await letakkanDiPuncak(page, a);
+  await ketuk(a);
+  await expect(blok).toHaveCount(1);
+  await expect(a).toHaveAttribute('aria-expanded', 'true');
+
+  await ketuk(b);
+  await expect(blok).toHaveCount(1);
+  await expect(b).toHaveAttribute('aria-expanded', 'true');
+  await expect(a).toHaveAttribute('aria-expanded', 'false');
+
+  await ketuk(b);
+  await expect(blok, 'menutup yang terlihat meninggalkan paragraf TANPA penjelasan').toHaveCount(0);
+  await expect(a, 'A tidak muncul kembali').toHaveAttribute('aria-expanded', 'false');
+  await expect(b).toHaveAttribute('aria-expanded', 'false');
+  console.log('E-16e buka 19 → buka 26 → tutup 26: blok=0, aria-expanded 19=false 26=false');
 });

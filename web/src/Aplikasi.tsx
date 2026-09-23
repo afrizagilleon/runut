@@ -21,7 +21,7 @@ import {
 } from './alur.ts';
 import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { KartuFakta } from './KartuFakta.tsx';
-import { Teks, idPenjelasan } from './Teks.tsx';
+import { Teks, idPenjelasan, type SakelarSumber } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { DAFTAR_KASUS, indeksFakta, kartuSoal } from './kasus.ts';
 import { awalBungkus, reduksi } from './bungkus.ts';
@@ -589,10 +589,14 @@ export function Aplikasi(): JSX.Element {
    * menutup. Komponen tidak tahu mana yang sedang terjadi dan tidak perlu
    * tahu: ia mengirim satu aksi, reducer yang memutuskan.
    */
-  const sakelarSumber = useCallback(
-    (fact_id: string): void => {
+  const sakelarSumber = useCallback<SakelarSumber>(
+    (fact_id, saudara): void => {
       const soal_id = layar.jenis === 'soal' ? (keadaan.urutanSoal[layar.nomor] ?? null) : null;
-      kirim({ jenis: 'sakelar_sumber', fact_id, soal_id });
+      kirim(
+        saudara === undefined
+          ? { jenis: 'sakelar_sumber', fact_id, soal_id }
+          : { jenis: 'sakelar_sumber', fact_id, soal_id, saudara },
+      );
     },
     [kirim, layar, keadaan.urutanSoal],
   );
@@ -745,7 +749,7 @@ function LayarPembuka({
   kasus: Kasus;
   hari: ReturnType<typeof penanda>;
   kirim: (aksi: Aksi) => void;
-  sakelarSumber: (fact_id: string) => void;
+  sakelarSumber: SakelarSumber;
 }): JSX.Element {
   return (
     <section className="layar layar-pembuka" aria-labelledby="judul-pembuka">
@@ -1453,7 +1457,7 @@ function LayarSoal({
   keadaan: Keadaan;
   nomor: number;
   kirim: (aksi: Aksi) => void;
-  sakelarSumber: (fact_id: string) => void;
+  sakelarSumber: SakelarSumber;
   indeks: ReadonlyMap<string, Fakta>;
 }): JSX.Element {
   const soal: Soal | undefined = kasus.soal[nomor];
@@ -1823,7 +1827,7 @@ function LayarPembukaan({
   kasus: Kasus;
   hari: ReturnType<typeof penanda>;
   kirim: (aksi: Aksi) => void;
-  sakelarSumber: (fact_id: string) => void;
+  sakelarSumber: SakelarSumber;
   indeks: ReadonlyMap<string, Fakta>;
   terbuka: readonly string[];
 }): JSX.Element {

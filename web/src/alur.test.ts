@@ -2245,3 +2245,82 @@ describe('alur — kunci jawaban mengembalikan balon yang turun ke intip (M3.8 D
     expect(keadaanBalon(keadaan, 'soal-1')).toBe('turun');
   });
 });
+
+/* ------------------------------------------------------------------ */
+/* M3.8 D-8 — satu penjelasan per paragraf, sungguhan                 */
+/* ------------------------------------------------------------------ */
+
+describe('alur — satu penjelasan per paragraf (M3.8 D-8)', () => {
+  const PARAGRAF = ['fil-19', 'fil-26'];
+  const ketukDi = (fact_id: string, saudara: readonly string[] = PARAGRAF): Aksi => ({
+    jenis: 'sakelar_sumber',
+    fact_id,
+    soal_id: null,
+    saudara,
+  });
+  const terbuka = (aksi: Aksi[]): readonly string[] =>
+    jalankan([MULAI, ...aksi]).keadaan.sumberTerbuka;
+
+  it('urutan pemilik: buka A → buka B → tutup B ⇒ tidak ada yang terbuka di paragraf itu', () => {
+    expect(terbuka([ketukDi('fil-19')])).toEqual(['fil-19']);
+    expect(terbuka([ketukDi('fil-19'), ketukDi('fil-26')])).toEqual(['fil-26']);
+    expect(terbuka([ketukDi('fil-19'), ketukDi('fil-26'), ketukDi('fil-26')])).toEqual([]);
+  });
+
+  it('buka A → buka B → ketuk A ⇒ A terbuka dengan SATU ketukan, B tertutup', () => {
+    expect(terbuka([ketukDi('fil-19'), ketukDi('fil-26'), ketukDi('fil-19')])).toEqual(['fil-19']);
+  });
+
+  it('yang terbuka di paragraf LAIN tidak disentuh', () => {
+    const lain: Aksi = { jenis: 'sakelar_sumber', fact_id: 'x', soal_id: null, saudara: ['x', 'y'] };
+    expect(terbuka([lain, ketukDi('fil-19'), ketukDi('fil-26'), ketukDi('fil-26')])).toEqual(['x']);
+  });
+
+  it('fakta yang juga ada di paragraf lain: menutup yang TERLIHAT di sini tetap mengosongkan paragraf ini', () => {
+    // Paragraf P2 memuat fil-26 dan z. Ia membuka fil-26 sesudah P1 membuka fil-19,
+    // sehingga di P1 yang terlihat adalah fil-26 (paling baru). Menutupnya dari P1
+    // tidak boleh memunculkan fil-19 kembali.
+    const diP2 = (fact_id: string): Aksi => ({
+      jenis: 'sakelar_sumber',
+      fact_id,
+      soal_id: null,
+      saudara: ['fil-26', 'z'],
+    });
+    expect(terbuka([ketukDi('fil-19'), diP2('fil-26'), ketukDi('fil-26')])).toEqual([]);
+  });
+
+  it('peristiwa: kartu_buka HANYA saat membuka, satu per pembukaan, termasuk membuka ulang yang tertutupi', () => {
+    const ketukSoal = (fact_id: string): Aksi => ({
+      jenis: 'sakelar_sumber',
+      fact_id,
+      soal_id: 's1',
+      saudara: ['k1', 'k2'],
+    });
+    const { peristiwa, keadaan } = jalankan([
+      MULAI,
+      { jenis: 'lanjut' },
+      ketukSoal('k1'),
+      ketukSoal('k2'),
+      ketukSoal('k1'),
+      ketukSoal('k1'),
+    ]);
+    expect(peristiwa.filter((p) => p.nama === 'kartu_buka').map((p) => p.isi['fact_id'])).toEqual([
+      'k1',
+      'k2',
+      'k1',
+    ]);
+    expect(keadaan.sumberTerbuka).toEqual([]);
+    expect(keadaan.soal['s1']?.kartuDibuka).toBe(3);
+  });
+
+  it('tanpa `saudara` (kaki lembar kartu) perilakunya tetap: lembar-lembar mandiri', () => {
+    const kaki = (fact_id: string): Aksi => ({ jenis: 'sakelar_sumber', fact_id, soal_id: null });
+    expect(terbuka([kaki('k1'), kaki('k2')])).toEqual(['k1', 'k2']);
+    expect(terbuka([kaki('k1'), kaki('k2'), kaki('k2')])).toEqual(['k1']);
+  });
+
+  it('tidak ada nama peristiwa baru untuk ini', () => {
+    const { peristiwa } = jalankan([MULAI, ketukDi('fil-19'), ketukDi('fil-26'), ketukDi('fil-26')]);
+    for (const p of peristiwa) expect(NAMA_PERISTIWA as readonly string[]).toContain(p.nama);
+  });
+});

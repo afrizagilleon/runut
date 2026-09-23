@@ -18,10 +18,18 @@ export function idPenjelasan(fact_id: string): string {
   return `penjelasan-${fact_id}`;
 }
 
+/**
+ * Ketukan pada sebuah angka (A-2). `saudara` = semua fact_id yang bisa dibuka
+ * di paragraf yang sama, dan hanya dikirim oleh paragraf yang punya penjelasan
+ * sebaris (M3.8 D-8): reducer memakainya untuk menjaga satu penjelasan per
+ * paragraf.
+ */
+export type SakelarSumber = (fact_id: string, saudara?: readonly string[]) => void;
+
 export interface TeksProps {
   teks: string;
   /** Dipanggil saat pemain mengetuk sebuah angka; membuka sumber fakta itu. */
-  sakelarSumber: (fact_id: string) => void;
+  sakelarSumber: SakelarSumber;
   /**
    * `fact_id` yang penjelasan sebarisnya sedang terbuka (C-2).
    *
@@ -178,6 +186,19 @@ export function potongKalimat(potongan: readonly PotonganTeks[]): Kalimat[] {
   return hasil;
 }
 
+/**
+ * Semua fact_id yang bisa dibuka di paragraf ini, urut kemunculan, tanpa
+ * ulangan (M3.8 D-8). Penanda bukan-fakta tidak ikut — mereka tidak punya
+ * penjelasan. Inilah `saudara` yang dikirim bersama setiap ketukan.
+ */
+export function faktaParagraf(kalimat: readonly Kalimat[]): string[] {
+  const id: string[] = [];
+  for (const k of kalimat) {
+    for (const f of k.fact_ids) if (!id.includes(f)) id.push(f);
+  }
+  return id;
+}
+
 export interface Sisipan {
   /** Nomor kalimat yang penjelasannya disisipkan tepat sesudahnya. */
   nomor: number;
@@ -187,14 +208,13 @@ export interface Sisipan {
 /**
  * Pilih **satu** penjelasan untuk paragraf ini: yang paling baru dibuka.
  *
- * `sumberTerbuka` di reducer adalah daftar, dan urutannya urutan membuka —
- * `sakelar_sumber` menambahkan di ekor. Jadi "yang lebih baru menutup yang
- * lama" bisa diputuskan di tampilan, tanpa satu baris pun berubah di
- * `alur.ts`: telusuri daftar itu dari belakang, dan ambil id pertama yang
- * memang ada di paragraf ini.
- *
- * Satu paragraf pembukaan memuat lima tautan; tanpa aturan ini, lima kartu bisa
- * terbuka bertumpuk di satu paragraf.
+ * Sejak M3.8 D-8 reducer sendiri yang menjaga "satu per paragraf" — membuka
+ * sebuah tautan menutup saudaranya, dan menutup yang terlihat mengosongkan
+ * paragrafnya (`sakelarDaftar` di `alur.ts`). Fungsi ini tetap memilih yang
+ * paling baru karena satu fakta bisa ditautkan dari DUA paragraf: paragraf
+ * lain boleh membukanya, dan di sini ia lalu menjadi yang terlihat. Aturan
+ * "paling baru" yang sama dipakai reducer untuk menentukan yang terlihat,
+ * jadi keduanya tidak bisa berselisih.
  */
 export function selipkanPenjelasan(
   kalimat: readonly Kalimat[],
@@ -228,6 +248,8 @@ export function Teks({
 }: TeksProps): JSX.Element {
   const kalimat = potongKalimat(ikatTandaBaca(pecahTeks(teks)));
   const sisipan = penjelasan === undefined ? null : selipkanPenjelasan(kalimat, terbuka);
+  // Saudara hanya dikirim oleh paragraf yang memang punya penjelasan sebaris.
+  const saudara = penjelasan === undefined ? undefined : faktaParagraf(kalimat);
 
   const potong = ({ bagian, ekor }: PotonganTeks, nomor: number): JSX.Element | null => {
         if (bagian.jenis === 'utuh') {
@@ -268,28 +290,16 @@ export function Teks({
         /*
          * Yang dikatakan `aria-expanded` harus sama dengan yang dilihat mata.
          * Ketika paragraf ini memang punya penjelasan sebaris, yang tampil
-         * hanya satu — jadi tautan yang tercatat terbuka di reducer tetapi
-         * kalah baru di paragraf ini **tidak** boleh mengaku terbuka.
+         * hanya satu, dan hanya tautan itu yang mengaku terbuka. Sejak M3.8
+         * D-8 reducer menjaga paragraf ini tidak pernah punya dua yang
+         * terbuka; yang tersisa hanyalah fakta yang dibuka dari paragraf LAIN
+         * (satu fakta bisa ditautkan dua paragraf), dan di sini ia terbuka
+         * hanya kalau memang ia yang tampil.
          */
         const sedangTerbuka =
           penjelasan === undefined
             ? terbuka.includes(bagian.fact_id)
             : sisipan?.fact_id === bagian.fact_id;
-        /*
-         * Tautan yang kalah baru: masih ada di `sumberTerbuka`, tetapi tidak
-         * terlihat. Satu ketukan di sini hanya akan mengeluarkannya dari daftar
-         * dan **tidak mengubah apa pun di layar** — persis "kontrol yang diketuk
-         * tanpa akibat" yang sudah pernah sampai ke pemilik (M3.2 §10c).
-         *
-         * Jadi ketukannya dikirim dua kali: menutup, lalu membuka lagi, sehingga
-         * ia menjadi yang paling baru dan tampil. Keduanya aksi `sakelar_sumber`
-         * yang sudah ada — reducer tidak berubah, tidak ada nama peristiwa baru,
-         * dan jumlah peristiwa yang lahir sama dengan satu ketukan biasa
-         * (menutup tidak melahirkan apa pun, membuka melahirkan satu
-         * `kartu_buka`).
-         */
-        const kalahBaru =
-          penjelasan !== undefined && !sedangTerbuka && terbuka.includes(bagian.fact_id);
         const tombol = (
           <button
             type="button"
@@ -306,9 +316,13 @@ export function Teks({
              */
             aria-expanded={sedangTerbuka}
             aria-controls={sedangTerbuka ? idPenjelasan(bagian.fact_id) : undefined}
+            /*
+             * Satu ketukan, satu aksi. Yang memutuskan membuka atau menutup —
+             * dan menutup saudara-saudaranya di paragraf ini — adalah reducer
+             * (M3.8 D-8), bukan tombol ini.
+             */
             onClick={() => {
-              if (kalahBaru) sakelarSumber(bagian.fact_id);
-              sakelarSumber(bagian.fact_id);
+              sakelarSumber(bagian.fact_id, saudara);
             }}
             aria-label={`${bagian.teks} — lihat sumber angka ini`}
           >
