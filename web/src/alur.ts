@@ -13,6 +13,7 @@
 
 import { MAKS_UID } from './pelacak.ts';
 import { MEDAN_PERANGKAT, type Perangkat } from './perangkat.ts';
+import { samarkanPesan, type JenisGalat, type SumberGalat } from './galat.ts';
 
 /** Daftar peristiwa tertutup (D-6). Apa pun di luar daftar ini ditolak pengumpul. */
 export const NAMA_PERISTIWA = [
@@ -78,6 +79,12 @@ export const NAMA_PERISTIWA = [
    * ini lahir dari `visibilitychange` dan memisahkan keduanya.
    */
   'tampak',
+  /*
+   * M3.8 D-3 — nama kedua dari tiga. Galat JavaScript di ponsel orang, dengan
+   * pesan yang sudah disamarkan (`web/src/galat.ts`). Tanpa ini, "halamannya
+   * rusak" dan "orangnya tidak tertarik" menghasilkan data yang sama: diam.
+   */
+  'galat',
   'tutup',
 ] as const;
 
@@ -139,6 +146,13 @@ export type KeadaanTampak = 'sembunyi' | 'kembali';
  * penanda, karena daftar nama milestone ini dihitung per nama.
  */
 export const BATAS_TAMPAK = 30;
+
+/**
+ * Galat paling banyak yang dicatat satu sesi (M3.8 D-3), dan pesan yang sama
+ * hanya dicatat sekali. Perulangan yang melempar tiap frame akan melahirkan
+ * ribuan galat identik dalam semenit; yang berguna darinya hanya satu baris.
+ */
+export const BATAS_GALAT = 5;
 
 export type Layar =
   | { jenis: 'pembuka' }
@@ -285,6 +299,8 @@ export interface Keadaan {
   sembunyiPada: number | null;
   /** Berapa `tampak` yang sudah dilahirkan sesi ini; berhenti di `BATAS_TAMPAK`. */
   tampakDicatat: number;
+  /** Pesan galat (sudah disamarkan) yang sudah dicatat sesi ini; paling banyak `BATAS_GALAT`. */
+  galatDicatat: readonly string[];
   akhir: JawabanAkhir;
   /** Sudah menekan Selesai. */
   akhirTerkirim: boolean;
@@ -375,6 +391,11 @@ export type Aksi =
    * pendengar yang menghitung sendiri adalah pendengar yang tidak bisa dites.
    */
   | { jenis: 'tampak'; keadaan: KeadaanTampak }
+  /*
+   * Galat JavaScript (M3.8 D-3). `pesan` di sini boleh mentah: reducer yang
+   * menyamarkannya, jadi tidak ada pemanggil yang bisa lupa.
+   */
+  | { jenis: 'galat'; jenis_galat: JenisGalat; pesan: string; sumber: SumberGalat }
   | { jenis: 'pilih'; soal_id: string; kunci: string }
   | { jenis: 'kunci_jawaban'; soal_id: string }
   | { jenis: 'lanjut' }
@@ -450,6 +471,7 @@ export function keadaanAwal({
     balonDicatat: 0,
     sembunyiPada: null,
     tampakDicatat: 0,
+    galatDicatat: [],
     akhir: { rating: null, terasa: null, sumber_jawaban: null, teks: null },
     akhirTerkirim: false,
     minatDitekan: false,
@@ -1024,6 +1046,24 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       const { peristiwa, urut } = catat.hasil;
       return {
         keadaan: { ...berikut, tampakDicatat: keadaan.tampakDicatat + 1, urut },
+        peristiwa,
+      };
+    }
+
+    /*
+     * Galat JavaScript (M3.8 D-3). Disamarkan DI SINI, lalu pesan yang sudah
+     * disamarkan dipakai sebagai kunci "sudah pernah": dua galat yang hanya
+     * berbeda alamatnya adalah galat yang sama.
+     */
+    case 'galat': {
+      const pesan = samarkanPesan(aksi.pesan);
+      if (keadaan.galatDicatat.includes(pesan)) return abaikan(keadaan);
+      if (keadaan.galatDicatat.length >= BATAS_GALAT) return abaikan(keadaan);
+      const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      catat.tambah('galat', { jenis: aksi.jenis_galat, pesan, sumber: aksi.sumber });
+      const { peristiwa, urut } = catat.hasil;
+      return {
+        keadaan: { ...keadaan, galatDicatat: [...keadaan.galatDicatat, pesan], urut },
         peristiwa,
       };
     }

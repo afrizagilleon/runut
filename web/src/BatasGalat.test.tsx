@@ -84,6 +84,15 @@ describe('BatasGalat — sesudah render jatuh', () => {
     expect(isi.komponen).toContain('Aplikasi');
   });
 
+  it('M3.8 D-3: galat render juga dilaporkan sebagai peristiwa, lewat pelapor yang disuntikkan', () => {
+    const lapor = vi.fn();
+    const batas = buat({ lapor, catat: vi.fn() });
+    const galat = new TypeError('x is undefined');
+    batas.componentDidCatch(galat, { componentStack: '    at Aplikasi' });
+    expect(lapor).toHaveBeenCalledTimes(1);
+    expect(lapor.mock.calls[0]?.[0]).toBe(galat);
+  });
+
   it('tombolnya memanggil pemuat ulang yang disuntikkan', () => {
     const muatUlang = vi.fn();
     const batas = buat({ muatUlang });

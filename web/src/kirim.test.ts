@@ -212,11 +212,21 @@ describe('kirim — A-1: kunjungan tidak boleh hilang', () => {
     expect(perluSiram([peristiwa('pilih', 5, {})])).toBe(false);
   });
 
-  it('daftar PENTING memuat kedua nama A-1, dan tetap sembilan nama', () => {
+  it('daftar PENTING memuat kedua nama A-1, dan sepuluh nama sejak `galat` (M3.8)', () => {
     expect(PENTING.has('mulai')).toBe(true);
     expect(PENTING.has('layar_masuk')).toBe(true);
     expect(PENTING.has('ketuk')).toBe(false);
-    expect(PENTING.size).toBe(9);
+    expect(PENTING.size).toBe(10);
+  });
+
+  /*
+   * M3.8 D-3. Galat dikirim SEGERA: halaman yang baru saja melempar adalah
+   * halaman yang mungkin tidak hidup cukup lama untuk kelompok berikutnya.
+   * Batas 5 per sesi di reducer menjaga biaya beacon-nya tetap kecil.
+   */
+  it('`galat` termasuk PENTING', () => {
+    expect(PENTING.has('galat')).toBe(true);
+    expect(perluSiram([peristiwa('galat', 6, { jenis: 'error' })])).toBe(true);
   });
 
   /*

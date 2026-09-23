@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { laporGalatAkar } from './galat.ts';
 
 /**
  * Batas galat di akar (A3-T2).
@@ -23,6 +24,11 @@ export interface BatasGalatProps {
   muatUlang?: () => void;
   /** Disuntikkan di tes; `console.error` di peramban. */
   catat?: (pesan: string, galat: unknown) => void;
+  /**
+   * Disuntikkan di tes; `laporGalatAkar` di peramban (M3.8 D-3). Galat render
+   * juga menjadi peristiwa `galat`, dengan pesan yang disamarkan reducer.
+   */
+  lapor?: (galat: unknown) => void;
 }
 
 export interface BatasGalatState {
@@ -49,6 +55,8 @@ export class BatasGalat extends Component<BatasGalatProps, BatasGalatState> {
     });
     // Ke konsol, bukan ke layar.
     catat('Runut: render gagal.', { galat, komponen: info.componentStack });
+    // Dan ke pengumpul, sebagai `galat` yang disamarkan — juga bukan ke layar.
+    (this.props.lapor ?? laporGalatAkar)(galat);
   }
 
   override render(): ReactNode {

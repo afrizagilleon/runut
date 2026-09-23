@@ -12,6 +12,7 @@ import {
   LABEL_PILIHAN_PEMAIN,
   BATAS_BALON,
   BATAS_TAMPAK,
+  BATAS_GALAT,
   BATAS_KETUK,
   keadaanBalon,
   NAMA_PERISTIWA,
@@ -1753,7 +1754,7 @@ describe('alur — daftar nama peristiwa (M3.7)', () => {
  * task-nya; di T-04 ia harus sama persis dengan ketiganya (tes di bawah).
  */
 const NAMA_M37: readonly string[] = [...NAMA_M36, 'balon'];
-const TAMBAHAN_M38: readonly string[] = ['tampak'];
+const TAMBAHAN_M38: readonly string[] = ['tampak', 'galat'];
 
 describe('alur — daftar nama peristiwa (M3.8)', () => {
   it('tambahan dibanding M3.7 hanya nama yang diizinkan kontrak, urut, tanpa yang hilang', () => {
@@ -1972,5 +1973,75 @@ describe('alur — peristiwa tampak (M3.8 D-2)', () => {
   it('sesudah tutup tidak ada tampak lagi', () => {
     const { peristiwa } = jalankan([MULAI, { jenis: 'tutup' }, SEMBUNYI]);
     expect(peristiwa.filter((p) => p.nama === 'tampak')).toHaveLength(0);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 D-3 — galat JavaScript, disamarkan                             */
+/* ------------------------------------------------------------------ */
+
+describe('alur — peristiwa galat (M3.8 D-3)', () => {
+  const galat = (pesan: string, jenis_galat: 'error' | 'penolakan' = 'error'): Aksi => ({
+    jenis: 'galat',
+    jenis_galat,
+    pesan,
+    sumber: 'aplikasi',
+  });
+
+  it('bentuknya persis { jenis, pesan, sumber }', () => {
+    const { peristiwa } = jalankan([MULAI, galat('TypeError: x is undefined')]);
+    const g = peristiwa.filter((p) => p.nama === 'galat');
+    expect(g).toHaveLength(1);
+    expect(g[0]?.isi).toEqual({ jenis: 'error', pesan: 'TypeError: x is undefined', sumber: 'aplikasi' });
+    expect(Object.keys(g[0]?.isi ?? {})).toEqual(['jenis', 'pesan', 'sumber']);
+  });
+
+  it('reducer SENDIRI yang menyamarkan: alamat, jalur, angka panjang tidak lewat, apa pun pemanggilnya', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      galat('gagal https://rahasia.contoh/x?k=1 di /assets/a.js:1:2 id 12345678', 'penolakan'),
+    ]);
+    const g = peristiwa.find((p) => p.nama === 'galat');
+    expect(g?.isi['pesan']).toBe('gagal ‹url› di ‹url› id ‹n›');
+    expect(g?.isi['jenis']).toBe('penolakan');
+    expect(JSON.stringify(peristiwa)).not.toMatch(/rahasia|:\/\/|12345678/);
+  });
+
+  it('galat berulang yang sama dicatat SEKALI — juga bila hanya alamatnya yang berbeda', () => {
+    const { peristiwa } = jalankan([
+      MULAI,
+      galat('boom di https://a.contoh/1'),
+      galat('boom di https://a.contoh/1'),
+      galat('boom di https://b.contoh/2'),
+    ]);
+    expect(peristiwa.filter((p) => p.nama === 'galat')).toHaveLength(1);
+  });
+
+  it(`paling banyak ${String(5)} per sesi, lalu diam`, () => {
+    const aksi: Aksi[] = [MULAI];
+    for (let i = 0; i < 9; i += 1) aksi.push(galat(`galat ke-${String(i)}`));
+    const { peristiwa, keadaan } = jalankan(aksi);
+    expect(BATAS_GALAT).toBe(5);
+    expect(peristiwa.filter((p) => p.nama === 'galat')).toHaveLength(BATAS_GALAT);
+    expect(keadaan.galatDicatat).toHaveLength(BATAS_GALAT);
+    expect(peristiwa.map((p) => p.urut)).toEqual(peristiwa.map((_, n) => n + 1));
+  });
+
+  it('perulangan galat yang sama seribu kali tetap satu peristiwa', () => {
+    const aksi: Aksi[] = [MULAI];
+    for (let i = 0; i < 1000; i += 1) aksi.push(galat('Maximum call stack size exceeded'));
+    const { peristiwa } = jalankan(aksi);
+    expect(peristiwa.filter((p) => p.nama === 'galat')).toHaveLength(1);
+  });
+
+  it('tidak memakai kuota ketukan, dan diam sesudah tutup', () => {
+    const { keadaan, peristiwa } = jalankan([
+      MULAI,
+      galat('a'),
+      { jenis: 'tutup' },
+      galat('b'),
+    ]);
+    expect(keadaan.ketukan).toBe(0);
+    expect(peristiwa.filter((p) => p.nama === 'galat')).toHaveLength(1);
   });
 });

@@ -44,6 +44,12 @@ export const PENTING: ReadonlySet<NamaPeristiwa> = new Set<NamaPeristiwa>([
   'pembukaan_selesai',
   'minat_kasus_lain',
   'akhir_kirim',
+  /*
+   * M3.8 D-3: halaman yang baru saja melempar mungkin tidak hidup cukup lama
+   * untuk kelompok berikutnya. Biayanya dibatasi reducer: paling banyak lima
+   * per sesi, pesan yang sama sekali saja.
+   */
+  'galat',
   'tutup',
 ]);
 

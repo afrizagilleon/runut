@@ -55,6 +55,7 @@ import { angkaBesarSatuan } from './angka.ts';
 import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
 import { barisMeta } from './pembuka.ts';
 import { bacaPerangkat, type InfoKoneksi, type Perangkat } from './perangkat.ts';
+import { berkasDariTumpukan, pasangPelaporAkar, pesanDari, sumberGalat } from './galat.ts';
 import { kalimatJejak, ringkasanJejak } from './jejak.ts';
 
 /**
@@ -204,6 +205,9 @@ export function Aplikasi(): JSX.Element {
   // Cermin keadaan terakhir, hanya untuk jalur `pagehide` di bawah.
   const acuanKeadaan = useRef(keadaan);
   acuanKeadaan.current = keadaan;
+  // Cermin antrean yang belum diserahkan, hanya untuk jalur batas galat (M3.8 D-3).
+  const acuanAntre = useRef(bungkus.antre);
+  acuanAntre.current = bungkus.antre;
 
   /*
    * Satu-satunya tempat waktu dibaca untuk peristiwa pembuka.
@@ -348,6 +352,68 @@ export function Aplikasi(): JSX.Element {
       document.removeEventListener('visibilitychange', berubah);
     };
   }, [kirim]);
+
+  /*
+   * Galat JavaScript (M3.8 D-3): `error` dan `unhandledrejection` di jendela.
+   *
+   * Pendengar hanya menyerahkan bahan mentahnya — pesan dan berkas asal. Yang
+   * menyamarkan pesan, menolak yang kembar, dan berhenti di lima adalah
+   * reducer; yang memutuskan "aplikasi atau luar" adalah `sumberGalat`, fungsi
+   * murni. Tidak ada `stack` yang ikut: tumpukan hanya dibaca untuk mencari
+   * berkas asal sebuah penolakan, lalu dibuang.
+   */
+  useEffect(() => {
+    const asal = window.location.origin;
+    const galat = (peristiwa: ErrorEvent): void => {
+      kirim({
+        jenis: 'galat',
+        jenis_galat: 'error',
+        pesan: peristiwa.message !== '' ? peristiwa.message : pesanDari(peristiwa.error),
+        sumber: sumberGalat(peristiwa.filename, asal),
+      });
+    };
+    const tolak = (peristiwa: PromiseRejectionEvent): void => {
+      const alasan: unknown = peristiwa.reason;
+      const tumpukan = alasan instanceof Error ? alasan.stack : undefined;
+      kirim({
+        jenis: 'galat',
+        jenis_galat: 'penolakan',
+        pesan: pesanDari(alasan),
+        sumber: sumberGalat(berkasDariTumpukan(tumpukan), asal),
+      });
+    };
+    window.addEventListener('error', galat);
+    window.addEventListener('unhandledrejection', tolak);
+    return () => {
+      window.removeEventListener('error', galat);
+      window.removeEventListener('unhandledrejection', tolak);
+    };
+  }, [kirim]);
+
+  /*
+   * Galat RENDER tidak sampai ke pendengar di atas: React menangkapnya dan
+   * menyerahkannya ke batas galat di akar, yang berada di luar komponen ini
+   * dan tidak punya `dispatch`. Jadi komponen ini meninggalkan pelapor yang
+   * menghitung peristiwanya dari keadaan terakhir — pola jalur `pagehide` —
+   * dan ikut menyerahkan antrean yang belum sempat diserahkan efek, karena
+   * render yang jatuh tidak pernah menjalankan efeknya.
+   *
+   * Tidak dilepas saat dibongkar: ketika batas galat memanggilnya, komponen
+   * ini justru sedang dibongkar, dan urutan pembersihan efek terhadap
+   * `componentDidCatch` bukan janji React yang boleh diandalkan.
+   */
+  useEffect(() => {
+    pasangPelaporAkar((galat) => {
+      catatPeristiwa(acuanAntre.current);
+      const hasil = langkah(
+        acuanKeadaan.current,
+        { jenis: 'galat', jenis_galat: 'error', pesan: pesanDari(galat), sumber: 'aplikasi' },
+        Date.now(),
+      );
+      catatPeristiwa(hasil.peristiwa);
+      siramPeristiwa();
+    });
+  }, []);
 
   /*
    * `pagehide` adalah kesempatan terakhir; halaman bisa mati sebelum React

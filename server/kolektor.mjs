@@ -149,6 +149,11 @@ const MEDAN_ISI = {
    * pada `kembali`. (T-02: diterima longgar; diperketat di T-05.)
    */
   tampak: { layar: 'teks', keadaan: 'teks', ms_sembunyi: 'angka?' },
+  /*
+   * M3.8 D-3: galat JavaScript, pesan sudah disamarkan di klien.
+   * (T-03: diterima longgar; enum, batas 120, dan penolakan alamat di T-05.)
+   */
+  galat: { jenis: 'teks', pesan: 'teks', sumber: 'teks' },
   akhir_kirim: {
     rating: 'angka?',
     terasa: 'teks?',

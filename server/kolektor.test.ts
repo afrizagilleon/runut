@@ -24,7 +24,7 @@ import { type Aksi, NAMA_PERISTIWA, keadaanAwal, langkah } from '../web/src/alur
 const UA_UJI = 'RunutUjiAgent/1.0 (agen-uji-yang-tidak-boleh-tercatat)';
 
 /** Nama peristiwa yang ditambahkan M3.8 sejauh ini (lihat `web/src/alur.test.ts`). */
-const TAMBAHAN_M38: readonly string[] = ['tampak'];
+const TAMBAHAN_M38: readonly string[] = ['tampak', 'galat'];
 
 let server: Server;
 let alamat: string;
@@ -1051,5 +1051,44 @@ describe('kolektor — peristiwa tampak (M3.8 D-2)', () => {
     for (const p of semua) {
       expect((periksaPeristiwa(p) as { galat?: string }).galat, p.nama).toBeUndefined();
     }
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 T-03 — galat                                                   */
+/* ------------------------------------------------------------------ */
+
+describe('kolektor — peristiwa galat (M3.8 D-3)', () => {
+  it('keluaran reducer yang sungguhan — pesan yang sudah disamarkan — lolos validator dan server', async () => {
+    let keadaan = keadaanAwal({
+      sesi: '2f1a1d6c-0000-4000-8000-000000000013',
+      kasus_id: 'dada-2025-10-08',
+      urutanSoal: ['s1'],
+      kunciBenar: { s1: 'b' },
+      kartuSoal: { s1: ['k1'] },
+    });
+    const semua: Array<Record<string, unknown> & { nama: string }> = [];
+    let waktu = 1_000;
+    for (const a of [
+      { jenis: 'mulai', lebar_layar: 360 },
+      {
+        jenis: 'galat',
+        jenis_galat: 'error',
+        pesan: 'Failed to fetch https://rahasia.contoh/e?k=1 XMLHttpRequest Mozilla/5.0 www.a.b 1234567',
+        sumber: 'aplikasi',
+      },
+      { jenis: 'galat', jenis_galat: 'penolakan', pesan: 'x'.repeat(400), sumber: 'luar' },
+    ] as Aksi[]) {
+      waktu += 100;
+      const hasil = langkah(keadaan, a, waktu);
+      keadaan = hasil.keadaan;
+      semua.push(...(hasil.peristiwa as unknown as Array<Record<string, unknown> & { nama: string }>));
+    }
+    expect(semua.filter((p) => p.nama === 'galat')).toHaveLength(2);
+    for (const p of semua) {
+      expect((periksaPeristiwa(p) as { galat?: string }).galat, p.nama).toBeUndefined();
+    }
+    const balas = await kirim(JSON.stringify(semua));
+    expect(balas.status).toBe(204);
   });
 });
