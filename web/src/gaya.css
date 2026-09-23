@@ -1347,6 +1347,11 @@ summary:focus-visible,
  * `text-decoration` mengikuti tiap potongan baris, jadi setiap baris tautan
  * bergaris dan garisnya menempel pada hurufnya. Bantalan 8 px dipertahankan:
  * ia yang membuat bidang sentuh tetap >= 44 px (A2-T2).
+ *
+ * Garis UTUH 1,5 px berjarak 4 px, huruf 600 (M3.10 D-2, kritik K-4a). Sampai
+ * M3.9 garisnya titik-titik 1 px, dan angka diam di kartu (tebal `--stempel`)
+ * hanya dibedakan dari tautan oleh garis setipis rambut itu. Warna angka di
+ * lembar tidak diubah — itu keputusan pemilik (K-4b menunggu matanya).
  */
 .rujukan {
   background: none;
@@ -1354,12 +1359,12 @@ summary:focus-visible,
   padding: 8px 2px;
   margin: -8px 0;
   font: inherit;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--stempel);
   text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
+  text-decoration-style: solid;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
   cursor: pointer;
 }
 
@@ -1393,6 +1398,21 @@ summary:focus-visible,
 }
 
 .rujukan-datar {
+  font-weight: inherit;
+}
+
+/*
+ * Teks kunci: satu teknik penekanan per elemen (M3.10 D-2, kritik K-4a). Yang
+ * tebal di sana hanya tautan — tebal + garis utuh + `--stempel` adalah SATU
+ * isyarat "bisa diketuk". Angka andaian ("1.000 lembar") yang ikut tebal tanpa
+ * bisa diketuk menjadi penekanan kedua yang bersaing dengan tautannya, dan
+ * tidak bisa dibedakan darinya di layar sempit. Di layar pembukaan aturan
+ * lamanya tetap (bukan bagian D-2).
+ */
+.teks-kunci b,
+.teks-kunci strong,
+.teks-kunci .andaian,
+.teks-kunci .hari-ini {
   font-weight: inherit;
 }
 
