@@ -26,7 +26,11 @@ export interface Bungkus {
 
 export type Pesan =
   | { aksi: Aksi; waktu: number }
-  | { bersihkan: number }
+  /**
+   * Peristiwa yang SUDAH diserahkan ke `kirim.ts`, disebut satu per satu —
+   * bukan jumlahnya (F-1, M3.8). Lihat `reduksi`.
+   */
+  | { bersihkan: readonly Peristiwa[] }
   /**
    * Kasus lain dibuka: **sesi baru, pengunjung sama** (D-4).
    *
@@ -34,6 +38,11 @@ export type Pesan =
    * tetap murni — sama seperti waktu yang selalu disuntikkan ke `langkah()`.
    */
   | { kasusBaru: Kasus; sesi: string };
+
+/** Identitas sebuah peristiwa: satu sesi tidak pernah memakai `urut` yang sama dua kali. */
+function kunciPeristiwa(p: Peristiwa): string {
+  return `${p.sesi}#${String(p.urut)}`;
+}
 
 export function awalBungkus(kasus: Kasus, sesi: string): Bungkus {
   return {
@@ -51,7 +60,25 @@ export function awalBungkus(kasus: Kasus, sesi: string): Bungkus {
 
 export function reduksi(bungkus: Bungkus, pesan: Pesan): Bungkus {
   if ('bersihkan' in pesan) {
-    return { ...bungkus, antre: bungkus.antre.slice(pesan.bersihkan) };
+    /*
+     * Dibuang menurut IDENTITAS (sesi + urut), bukan menurut jumlah (F-1).
+     *
+     * Versi lama membuang `n` peristiwa terdepan. Itu benar hanya kalau setiap
+     * `bersihkan` diterapkan pada antrean yang sama dengan yang diserahkan —
+     * dan React tidak menjanjikannya: pembaruan dari efek (lajur bawaan)
+     * dilewati ketika pembaruan dari klik (lajur sinkron) diproses lebih dulu,
+     * lalu semuanya diterapkan ulang menurut urutan masuknya. Dua pembersih
+     * yang menghitung dari antrean berbeda lalu membuang satu peristiwa lebih
+     * banyak — terukur di e2e: `mulai` kasus kedua hilang, `layar_masuk`-nya
+     * tiba. Sesi tanpa `mulai` tidak masuk penyebut mana pun di ringkasan.
+     *
+     * Membuang menurut identitas tidak bisa membuang yang belum diserahkan.
+     * Yang diserahkan dua kali tidak berbahaya: `saringYangBaru` di
+     * `kirim.ts` menolak `(sesi, urut)` yang sudah pernah lewat.
+     */
+    const diserahkan = new Set(pesan.bersihkan.map(kunciPeristiwa));
+    const antre = bungkus.antre.filter((p) => !diserahkan.has(kunciPeristiwa(p)));
+    return antre.length === bungkus.antre.length ? bungkus : { ...bungkus, antre };
   }
   if ('kasusBaru' in pesan) {
     /*

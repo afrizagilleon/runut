@@ -474,9 +474,10 @@ export function Aplikasi(): JSX.Element {
   // harus tetap murni, dan React boleh memanggilnya dua kali di StrictMode.
   useEffect(() => {
     if (bungkus.antre.length === 0) return;
-    const jumlah = bungkus.antre.length;
-    catatPeristiwa(bungkus.antre.slice(0, jumlah));
-    dispatch({ bersihkan: jumlah });
+    // Yang diserahkan disebut satu per satu, bukan jumlahnya (F-1, bungkus.ts).
+    const diserahkan = bungkus.antre;
+    catatPeristiwa([...diserahkan]);
+    dispatch({ bersihkan: diserahkan });
   }, [bungkus.antre]);
 
   const indeks = useMemo(() => indeksFakta(kasus), [kasus]);
