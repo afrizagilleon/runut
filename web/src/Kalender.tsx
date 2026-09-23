@@ -59,7 +59,14 @@ export function KepingKalender({
       <p className="kalender-keping-tanggal">
         <span className="kalender-label">Hari ini</span>
         <span className="kalender-tanggal">
-          {hari.hariBesar}{' '}
+          {/*
+            Nama hari punya elemennya sendiri (M3.10 D-1, kritik K-3): ia yang
+            berwarna merah kalender, seperti `.keping-tanggal span` di patokan
+            `docs/contoh/layar-soal.html` dan `docs/desain.md` §Tanda tangan.
+            Sampai M3.9 ia ikut berwarna tinta, dan layar soal kehilangan
+            satu-satunya merahnya.
+          */}
+          <span className="kalender-hari-nama">{hari.hariBesar}</span>{' '}
           <span className={berdenyut ? 'keping-titik keping-titik-denyut' : 'keping-titik'}>·</span>{' '}
           {hari.pendek}
         </span>

@@ -54,6 +54,13 @@
   /* Nama pengirim pesan (v3, patokan). Kontras dihitung di ledger T-02. */
   --nama: #1f6b45;
 
+  /*
+   * Merah untuk TEKS kalender (nama hari di keping, M3.10 D-1). Alias
+   * `--merah-kalender`, dihitung di akar sehingga ikut nilai gelapnya juga —
+   * bukan warna palet baru. Palet menunggu pemilik (kritik K-1).
+   */
+  --merah-teks: var(--merah-kalender);
+
   --kalender: 'Avenir Next Condensed', Bahnschrift, 'Roboto Condensed',
     sans-serif-condensed, 'Arial Narrow', sans-serif;
   --baca: system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', sans-serif;
@@ -345,6 +352,19 @@ summary:focus-visible,
 .kalender-tanggal {
   color: var(--tinta);
   font-weight: 700;
+}
+
+/*
+ * Nama hari di keping: merah kalender (M3.10 D-1, kritik K-3). Patokan
+ * `docs/contoh/layar-soal.html`: `.keping-tanggal span { color:
+ * var(--merah-kalender) }`. Lewat `--merah-teks`, yang di kedua mode SAMA
+ * dengan `--merah-kalender` (alias, bukan warna baru): kalau pemilik kelak
+ * memberi merah teks sendiri untuk mode gelap (kritik K-1), yang berubah hanya
+ * satu baris token, bukan pemakainya. Kontras terhitung: terang #D7263D di
+ * atas lembar #FFF 4,96:1; gelap #FF5C6F di atas #182038 5,38:1.
+ */
+.kalender-hari-nama {
+  color: var(--merah-teks);
 }
 
 /*
