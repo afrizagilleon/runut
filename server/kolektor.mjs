@@ -10,7 +10,7 @@
  * nol memakai field yang lolos validator — bukan dari penyalinan badan
  * permintaan — supaya kiriman tidak bisa menyelundupkan field tambahan.
  *
- * ## Versi skema: 2
+ * ## Versi skema: 3
  *
  * Nomor ini naik setiap kali **daftar nama peristiwa atau bentuk medannya**
  * berubah, dan ia ada karena satu sifat pengumpul ini: daftarnya tertutup, dan
@@ -21,6 +21,9 @@
  *
  *   1  M3.2–M3.6  17 nama, sampai `tutup`
  *   2  M3.7       + `balon { layar, keadaan, cara }` (balon chat melayang)
+ *   3  M3.8       + `tampak`, `galat`, `kinerja`; `mulai` + 15 medan perangkat
+ *                 OPSIONAL (bentuk skema 2 tetap diterima); ambang `gulir`
+ *                 25/75 (bentuk `gulir` tidak berubah)
  *
  * `GET /sehat` menyebutkan nomornya, jadi versi yang **terpasang** bisa dibaca
  * dari luar sebelum web yang membutuhkannya dikirim.
@@ -45,10 +48,12 @@ import { join } from 'node:path';
  * Versi skema pengumpul (M3.7 D-3). Lihat komentar kepala berkas.
  *
  * Web M3.7 melahirkan peristiwa `balon` dan karena itu **membutuhkan pengumpul
- * versi 2 atau lebih**; memasang webnya lebih dulu berarti setiap kelompok
- * kiriman yang memuat `balon` ditolak seluruhnya.
+ * versi 2 atau lebih**. Web M3.8 melahirkan `tampak`, `galat`, `kinerja`, dan
+ * `mulai` dengan medan perangkat, dan karena itu **membutuhkan versi 3**;
+ * memasang webnya lebih dulu berarti setiap kelompok kiriman yang memuat salah
+ * satunya ditolak seluruhnya.
  */
-export const SKEMA = 2;
+export const SKEMA = 3;
 
 /** Badan permintaan paling besar yang diterima (D-9). */
 export const MAKS_BADAN = 8 * 1024;
@@ -84,20 +89,22 @@ const MEDAN_ISI = {
      * M3.8 D-1: keterangan kasar perangkat dan asal. Awalan `~` berarti medan
      * itu BOLEH TIDAK ADA — tab yang masih memuat web lama mengirim bentuk
      * empat medan, dan menolaknya berarti kehilangan sesinya (D-6).
-     * (T-01: diterima longgar; diperketat menjadi enum dan rentang di T-05.)
+     * Semuanya ENUM atau angka berentang (SKEMA 3): tidak satu pun medan teks
+     * bebas, jadi UA mentah atau alamat perujuk tidak punya tempat untuk
+     * menumpang.
      */
-    tinggi_layar: '~angka?',
-    rasio_piksel: '~angka?',
-    skema_warna: '~teks?',
-    penunjuk: '~teks?',
-    os: '~teks?',
-    peramban_dalam: '~teks?',
-    perujuk: '~teks?',
-    bahasa: '~teks?',
-    jam_lokal: '~angka?',
-    hari_lokal: '~angka?',
-    zona_menit: '~angka?',
-    koneksi: '~teks?',
+    tinggi_layar: '~tinggi?',
+    rasio_piksel: '~rasio-piksel?',
+    skema_warna: '~skema-warna?',
+    penunjuk: '~penunjuk?',
+    os: '~os?',
+    peramban_dalam: '~peramban-dalam?',
+    perujuk: '~perujuk?',
+    bahasa: '~bahasa?',
+    jam_lokal: '~jam?',
+    hari_lokal: '~hari?',
+    zona_menit: '~zona?',
+    koneksi: '~koneksi?',
     hemat_data: '~boolean?',
     gerak_dikurangi: '~boolean?',
     mandiri: '~boolean?',
@@ -146,20 +153,21 @@ const MEDAN_ISI = {
   balon: { layar: 'teks', keadaan: 'balon-keadaan', cara: 'balon-cara' },
   /*
    * M3.8 D-2: halaman tersembunyi / terlihat lagi. `ms_sembunyi` hanya terisi
-   * pada `kembali`. (T-02: diterima longgar; diperketat di T-05.)
+   * pada `kembali`.
    */
-  tampak: { layar: 'teks', keadaan: 'teks', ms_sembunyi: 'angka?' },
+  tampak: { layar: 'teks', keadaan: 'tampak-keadaan', ms_sembunyi: 'ms?' },
   /*
-   * M3.8 D-3: galat JavaScript, pesan sudah disamarkan di klien.
-   * (T-03: diterima longgar; enum, batas 120, dan penolakan alamat di T-05.)
+   * M3.8 D-3: galat JavaScript. `pesan` adalah satu-satunya teks yang tidak
+   * kita tulis sendiri, jadi ia punya tipe sendiri: ≤ 120 karakter dan
+   * DITOLAK bila masih memuat alamat atau UA — pertahanan kedua sesudah
+   * penyamaran di klien (`web/src/galat.ts`).
    */
-  galat: { jenis: 'teks', pesan: 'teks', sumber: 'teks' },
+  galat: { jenis: 'galat-jenis', pesan: 'pesan-galat', sumber: 'galat-sumber' },
   /*
    * M3.8 D-4: sekali per sesi. `ms_ke_interaktif` null = tidak ada ketukan
    * hidup sebelum halaman tersembunyi atau ditutup.
-   * (T-04: diterima longgar; rentang di T-05.)
    */
-  kinerja: { ms_ke_tampil: 'angka', ms_ke_interaktif: 'angka?' },
+  kinerja: { ms_ke_tampil: 'ms', ms_ke_interaktif: 'ms?' },
   akhir_kirim: {
     rating: 'angka?',
     terasa: 'teks?',
@@ -190,10 +198,68 @@ const POLA_PENANDA = /^[a-z0-9]{1,8}$/;
  * menerimanya akan membuat satu keadaan yang sama terbelah menjadi dua baris
  * di setiap tabel ringkasan.
  */
-const NILAI_ENUM = {
+export const NILAI_ENUM = {
   'balon-keadaan': ['intip', 'turun'],
   'balon-cara': ['ketuk', 'tarik'],
+  /*
+   * M3.8. Disalin dari `web/src/perangkat.ts` dan `web/src/alur.ts`, bukan
+   * diimpor — pengumpul tidak mengimpor apa pun dari aplikasi. Tes pengumpul
+   * mengadu tiap daftar dengan daftar klien, jadi keduanya tidak bisa
+   * berselisih diam-diam.
+   */
+  os: ['android', 'ios', 'windows', 'mac', 'linux', 'lain'],
+  'peramban-dalam': [
+    'threads',
+    'instagram',
+    'facebook',
+    'whatsapp',
+    'tiktok',
+    'line',
+    'telegram',
+    'x',
+    'lain',
+    'tidak',
+  ],
+  perujuk: [
+    'threads',
+    'instagram',
+    'facebook',
+    'whatsapp',
+    'google',
+    'x',
+    'tiktok',
+    'telegram',
+    'langsung',
+    'lain',
+  ],
+  bahasa: ['id', 'en', 'lain'],
+  koneksi: ['4g', '3g', '2g', 'lambat', 'tidak-tahu'],
+  'skema-warna': ['terang', 'gelap'],
+  penunjuk: ['kasar', 'halus', 'tidak'],
+  'tampak-keadaan': ['sembunyi', 'kembali'],
+  'galat-jenis': ['error', 'penolakan'],
+  'galat-sumber': ['aplikasi', 'luar'],
 };
+
+/**
+ * Yang tidak boleh ada di `pesan` galat, dalam huruf apa pun (M3.8 D-6).
+ *
+ * SAMA PERSIS dengan `POLA_TERLARANG_PESAN` di `web/src/galat.ts`, yang dipakai
+ * klien untuk sapuan terakhirnya — tes mengadu keduanya. Kalau pengumpul lebih
+ * ketat daripada klien, pesan yang sudah disamarkan pun ditolak, dan seluruh
+ * kelompok kiriman ikut hilang bersamanya.
+ */
+export const POLA_TERLARANG_PESAN = /http|:\/\/|www\.|mozilla|applewebkit/i;
+
+/** Panjang `pesan` galat paling besar (M3.8 D-3). */
+const MAKS_PESAN_GALAT = 120;
+
+/** Milidetik paling besar yang masuk akal untuk `kinerja` dan `tampak`: sehari. */
+const MAKS_MS = 86_400_000;
+
+function bulatDalam(nilai, min, maks) {
+  return Number.isInteger(nilai) && nilai >= min && nilai <= maks;
+}
 
 function teksSah(nilai, batas) {
   return typeof nilai === 'string' && nilai.length > 0 && nilai.length <= batas;
@@ -220,6 +286,25 @@ function medanSah(bentuk, nilai) {
   if (inti === 'uuid') return typeof nilai === 'string' && POLA_UUID_V4.test(nilai);
   if (inti === 'kunjungan') {
     return Number.isInteger(nilai) && nilai >= 1 && nilai <= MAKS_KUNJUNGAN;
+  }
+  /*
+   * M3.8 D-6: angka perangkat dan waktu, masing-masing dengan rentangnya.
+   * Bilangan bulat di mana klien memang membulatkan; pecahan di sana berarti
+   * pengirimnya bukan web ini.
+   */
+  if (inti === 'tinggi') return bulatDalam(nilai, 1, 10_000);
+  if (inti === 'rasio-piksel') return angkaSah(nilai) && nilai > 0 && nilai <= 10;
+  if (inti === 'jam') return bulatDalam(nilai, 0, 23);
+  if (inti === 'hari') return bulatDalam(nilai, 0, 6);
+  if (inti === 'zona') return bulatDalam(nilai, -720, 840);
+  if (inti === 'ms') return bulatDalam(nilai, 0, MAKS_MS);
+  if (inti === 'pesan-galat') {
+    return (
+      typeof nilai === 'string' &&
+      nilai.length > 0 &&
+      nilai.length <= MAKS_PESAN_GALAT &&
+      !POLA_TERLARANG_PESAN.test(nilai)
+    );
   }
   if (Object.prototype.hasOwnProperty.call(NILAI_ENUM, inti)) {
     return typeof nilai === 'string' && NILAI_ENUM[inti].includes(nilai);

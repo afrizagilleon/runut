@@ -5,7 +5,14 @@ import type { AddressInfo } from 'node:net';
 import type { Server } from 'node:http';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 // @ts-expect-error — pengumpul sengaja JavaScript bawaan Node, tanpa langkah build.
-import { HOST_BAWAAN, SKEMA, buatKolektor, periksaPeristiwa } from './kolektor.mjs';
+import {
+  HOST_BAWAAN,
+  NILAI_ENUM,
+  POLA_TERLARANG_PESAN as POLA_PENGUMPUL,
+  SKEMA,
+  buatKolektor,
+  periksaPeristiwa,
+} from './kolektor.mjs';
 /*
  * M3.4a D-2. Yang diimpor di sini adalah **tes**, bukan pengumpul: aturan
  * "pengumpul tidak boleh mengimpor apa pun dari aplikasi" tetap utuh
@@ -14,6 +21,16 @@ import { HOST_BAWAAN, SKEMA, buatKolektor, periksaPeristiwa } from './kolektor.m
  * keluaran reducer yang sesungguhnya diadu dengan validator yang sesungguhnya.
  */
 import { type Aksi, NAMA_PERISTIWA, keadaanAwal, langkah } from '../web/src/alur.ts';
+import { POLA_TERLARANG_PESAN as POLA_KLIEN } from '../web/src/galat.ts';
+import {
+  NILAI_BAHASA,
+  NILAI_KONEKSI,
+  NILAI_OS,
+  NILAI_PENUNJUK,
+  NILAI_PERAMBAN_DALAM,
+  NILAI_PERUJUK,
+  NILAI_SKEMA_WARNA,
+} from '../web/src/perangkat.ts';
 
 /**
  * Seluruh blok ini menjalankan server sungguhan di port acak (RQ-06), bukan
@@ -936,8 +953,9 @@ describe('kolektor — versi skema (M3.7 D-3)', () => {
     expect(teks).toContain(`skema=${String(SKEMA)}`);
   });
 
-  it('versinya 2 sejak `balon` masuk daftar', () => {
-    expect(SKEMA).toBe(2);
+  it('versinya 3 sejak M3.8 (tampak, galat, kinerja, perangkat di mulai)', () => {
+    // 2 sejak `balon` (M3.7); 3 sejak M3.8 D-6.
+    expect(SKEMA).toBe(3);
   });
 });
 
@@ -1128,5 +1146,173 @@ describe('kolektor — kinerja dan ambang 25/75 (M3.8 D-4, D-5)', () => {
     }
     const balas = await kirim(JSON.stringify(semua));
     expect(balas.status).toBe(204);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 T-05 — SKEMA 3: validasi ketat, bentuk lama tetap diterima     */
+/* ------------------------------------------------------------------ */
+
+describe('kolektor — SKEMA 3 (M3.8 D-6)', () => {
+  const SAH = {
+    tinggi_layar: 640,
+    rasio_piksel: 2.6,
+    skema_warna: 'terang',
+    penunjuk: 'kasar',
+    os: 'ios',
+    peramban_dalam: 'instagram',
+    perujuk: 'langsung',
+    bahasa: 'en',
+    jam_lokal: 0,
+    hari_lokal: 6,
+    zona_menit: -720,
+    koneksi: 'tidak-tahu',
+    hemat_data: null,
+    gerak_dikurangi: null,
+    mandiri: true,
+  } as const;
+  const mulai = (urut: number, tambahan: Record<string, unknown>): Record<string, unknown> =>
+    peristiwa({ nama: 'mulai', urut, isi: { ...MULAI_ISI, ...tambahan } });
+  const galatDari = (isi: Record<string, unknown>): string | undefined =>
+    (periksaPeristiwa(peristiwa({ nama: 'galat', isi })) as { galat?: string }).galat;
+
+  it('`/sehat` mengatakan skema=3', async () => {
+    const teks = await (await fetch(`${alamat}/sehat`)).text();
+    expect(teks.split('\n')[0]).toBe('sehat');
+    expect(teks).toContain('skema=3');
+  });
+
+  it('SERVER SUNGGUHAN: bentuk lama (skema 2, empat medan mulai) diterima', async () => {
+    const balas = await kirim(JSON.stringify([mulai(1301, {})]));
+    expect(balas.status).toBe(204);
+  });
+
+  it('SERVER SUNGGUHAN: bentuk baru (15 medan, semua boleh null) diterima', async () => {
+    const semuaNull = Object.fromEntries(Object.keys(SAH).map((k) => [k, null]));
+    const balas = await kirim(JSON.stringify([mulai(1302, SAH), mulai(1303, semuaNull)]));
+    expect(balas.status).toBe(204);
+  });
+
+  it('SERVER SUNGGUHAN: enum asing ditolak — dan SELURUH kelompok ikut ditolak', async () => {
+    const sebelum = barisTertulis().length;
+    for (const [medan, nilai] of [
+      ['os', 'Android'],
+      ['os', 'blackberry'],
+      ['skema_warna', 'dark'],
+      ['penunjuk', 'coarse'],
+      ['peramban_dalam', 'Instagram'],
+      ['perujuk', 'https://www.threads.net/@a'],
+      ['perujuk', 'threads.net'],
+      ['bahasa', 'id-ID'],
+      ['koneksi', 'slow-2g'],
+    ] as const) {
+      const balas = await kirim(JSON.stringify([mulai(1310, {}), mulai(1311, { ...SAH, [medan]: nilai })]));
+      expect(balas.status, `${medan}=${nilai}`).toBe(400);
+      expect(await balas.text()).toContain(medan);
+    }
+    expect(barisTertulis().length).toBe(sebelum);
+  });
+
+  it('SERVER SUNGGUHAN: UA-seperti-teks ditolak di medan mana pun yang bisa membawanya', async () => {
+    const UA =
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
+    for (const [nama, isi] of [
+      ['mulai', { ...MULAI_ISI, ...SAH, peramban_dalam: UA }],
+      ['mulai', { ...MULAI_ISI, ...SAH, os: UA }],
+      ['galat', { jenis: 'error', pesan: UA.slice(0, 110), sumber: 'luar' }],
+      ['galat', { jenis: 'error', pesan: 'agen AppleWebKit saja', sumber: 'luar' }],
+    ] as const) {
+      const balas = await kirim(JSON.stringify([peristiwa({ nama, urut: 1320, isi })]));
+      expect(balas.status, `${nama} ${JSON.stringify(isi).slice(0, 60)}`).toBe(400);
+    }
+  });
+
+  it('angka di luar rentangnya ditolak', () => {
+    for (const [medan, nilai] of [
+      ['jam_lokal', 24],
+      ['jam_lokal', -1],
+      ['jam_lokal', 7.5],
+      ['hari_lokal', 7],
+      ['zona_menit', 841],
+      ['zona_menit', -721],
+      ['zona_menit', 420.5],
+      ['tinggi_layar', 0],
+      ['tinggi_layar', 20_000],
+      ['rasio_piksel', 0],
+      ['rasio_piksel', 11],
+      ['hemat_data', 'ya'],
+      ['mandiri', 1],
+    ] as const) {
+      const hasil = periksaPeristiwa(mulai(1330, { ...SAH, [medan]: nilai })) as { galat?: string };
+      expect(hasil.galat, `${medan}=${String(nilai)}`).toBeDefined();
+    }
+  });
+
+  it('medan mulai baru BOLEH tidak ada, tetapi yang ADA harus sah (tidak ada jalan tengah)', () => {
+    expect((periksaPeristiwa(mulai(1340, { os: 'android' })) as { galat?: string }).galat).toBeUndefined();
+    expect((periksaPeristiwa(mulai(1341, { os: 'Android' })) as { galat?: string }).galat).toBeDefined();
+    // Medan lama tetap WAJIB: bentuk skema 2 tidak berarti medan skema 1 boleh hilang.
+    const tanpaPenanda = peristiwa({ nama: 'mulai', urut: 1342, isi: { lebar_layar: 360, pengunjung: null, kunjungan_ke: null } });
+    expect((periksaPeristiwa(tanpaPenanda) as { galat?: string }).galat).toBeDefined();
+  });
+
+  it('tampak: keadaan enum; ms_sembunyi bilangan bulat tak negatif atau null', () => {
+    const periksa = (isi: Record<string, unknown>): string | undefined =>
+      (periksaPeristiwa(peristiwa({ nama: 'tampak', isi })) as { galat?: string }).galat;
+    expect(periksa({ layar: 'soal-1', keadaan: 'sembunyi', ms_sembunyi: null })).toBeUndefined();
+    expect(periksa({ layar: 'soal-1', keadaan: 'kembali', ms_sembunyi: 4321 })).toBeUndefined();
+    expect(periksa({ layar: 'soal-1', keadaan: 'hidden', ms_sembunyi: null })).toBeDefined();
+    expect(periksa({ layar: 'soal-1', keadaan: 'kembali', ms_sembunyi: -1 })).toBeDefined();
+    expect(periksa({ layar: 'soal-1', keadaan: 'kembali', ms_sembunyi: 1.5 })).toBeDefined();
+  });
+
+  it('galat: pesan ≤ 120, tanpa http / :// / www. / UA (pertahanan kedua), enum jenis & sumber', () => {
+    expect(galatDari({ jenis: 'error', pesan: 'TypeError: x', sumber: 'aplikasi' })).toBeUndefined();
+    expect(galatDari({ jenis: 'penolakan', pesan: 'x'.repeat(120), sumber: 'luar' })).toBeUndefined();
+    expect(galatDari({ jenis: 'penolakan', pesan: 'x'.repeat(121), sumber: 'luar' })).toBeDefined();
+    expect(galatDari({ jenis: 'error', pesan: '', sumber: 'luar' })).toBeDefined();
+    for (const kotor of [
+      'gagal https://a.b/c',
+      'gagal http tanpa titik dua',
+      'XMLHttpRequest is not defined',
+      'aneh:// sisa',
+      'lihat www.contoh',
+      'WWW.CONTOH',
+      'mozilla',
+    ]) {
+      expect(galatDari({ jenis: 'error', pesan: kotor, sumber: 'luar' }), kotor).toBeDefined();
+    }
+    expect(galatDari({ jenis: 'Error', pesan: 'x', sumber: 'luar' })).toBeDefined();
+    expect(galatDari({ jenis: 'error', pesan: 'x', sumber: 'pihak-ketiga' })).toBeDefined();
+  });
+
+  it('kinerja: milidetik bulat, tak negatif, dengan batas atas yang masuk akal', () => {
+    const periksa = (isi: Record<string, unknown>): string | undefined =>
+      (periksaPeristiwa(peristiwa({ nama: 'kinerja', isi })) as { galat?: string }).galat;
+    expect(periksa({ ms_ke_tampil: 640, ms_ke_interaktif: null })).toBeUndefined();
+    expect(periksa({ ms_ke_tampil: 640, ms_ke_interaktif: 2_100 })).toBeUndefined();
+    expect(periksa({ ms_ke_tampil: null, ms_ke_interaktif: 2_100 })).toBeDefined();
+    expect(periksa({ ms_ke_tampil: -1, ms_ke_interaktif: null })).toBeDefined();
+    expect(periksa({ ms_ke_tampil: 640.5, ms_ke_interaktif: null })).toBeDefined();
+    expect(periksa({ ms_ke_tampil: 90_000_000, ms_ke_interaktif: null })).toBeDefined();
+  });
+
+  it('daftar enum pengumpul SAMA PERSIS dengan daftar klien — dua salinan yang tidak boleh berselisih', () => {
+    const e = NILAI_ENUM as Record<string, readonly string[]>;
+    expect(e['os']).toEqual([...NILAI_OS]);
+    expect(e['peramban-dalam']).toEqual([...NILAI_PERAMBAN_DALAM]);
+    expect(e['perujuk']).toEqual([...NILAI_PERUJUK]);
+    expect(e['bahasa']).toEqual([...NILAI_BAHASA]);
+    expect(e['koneksi']).toEqual([...NILAI_KONEKSI]);
+    expect(e['skema-warna']).toEqual([...NILAI_SKEMA_WARNA]);
+    expect(e['penunjuk']).toEqual([...NILAI_PENUNJUK]);
+    expect(e['tampak-keadaan']).toEqual(['sembunyi', 'kembali']);
+    expect(e['galat-jenis']).toEqual(['error', 'penolakan']);
+    expect(e['galat-sumber']).toEqual(['aplikasi', 'luar']);
+  });
+
+  it('pola penolak pesan pengumpul SAMA PERSIS dengan pola sapuan terakhir klien', () => {
+    expect((POLA_PENGUMPUL as RegExp).source).toBe(POLA_KLIEN.source);
+    expect((POLA_PENGUMPUL as RegExp).flags).toBe(POLA_KLIEN.flags);
   });
 });

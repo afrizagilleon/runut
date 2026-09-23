@@ -7,8 +7,8 @@ Hasil akhirnya: satu subdomain yang menyajikan aplikasi statis, dengan `/e` dan
 `/sehat` diteruskan ke pengumpul peristiwa di loopback. Aplikasi dan pengumpul
 berada di **satu asal**, jadi tidak ada CORS sama sekali.
 
-> **Pengumpul dulu, baru web.** Web M3.7 membutuhkan **pengumpul skema ≥ 2**.
-> Lihat "Versi skema pengumpul" di bawah sebelum menerbitkan.
+> **Pengumpul dulu, baru web.** Web M3.8 membutuhkan **pengumpul skema ≥ 3**
+> (web M3.7: ≥ 2). Lihat "Versi skema pengumpul" di bawah sebelum menerbitkan.
 
 ```
 laptop  --tar.gz lewat ssh-->  runut-terima  -->  /var/www/runut-alpha
@@ -79,7 +79,7 @@ sudo cp deploy/kolektor.contoh.service /etc/systemd/system/runut-kolektor.servic
 sudo systemctl daemon-reload
 sudo systemctl enable --now runut-kolektor
 curl -s http://127.0.0.1:8787/sehat        # sehat
-                                           # skema=2
+                                           # skema=3
 ```
 
 Pengumpul **hanya** mendengarkan di `127.0.0.1`. Firewall VPS ini tidak aktif,
@@ -172,16 +172,24 @@ dibalik:
 ```bash
 curl -s https://<subdomain>/sehat
 # sehat
-# skema=2
+# skema=3
 ```
 
 | skema | dipasang sejak | yang ditambahkan |
 |---|---|---|
 | 1 | M3.2 | 17 nama peristiwa, sampai `tutup` |
 | 2 | M3.7 | `balon { layar, keadaan, cara }` — balon chat melayang |
+| 3 | M3.8 | `tampak`, `galat`, `kinerja`; `mulai` + 15 medan perangkat (enum/angka berentang, **opsional** — bentuk skema 2 tetap diterima); `pesan` galat ditolak bila memuat alamat atau UA |
 
-**Web M3.7 membutuhkan pengumpul skema ≥ 2.** Kalau `skema=` tidak muncul sama
-sekali, yang terpasang adalah versi 1 dan web M3.7 belum boleh dikirim ke sana.
+**Web M3.8 membutuhkan pengumpul skema ≥ 3.** Web M3.7 membutuhkan ≥ 2. Kalau
+`skema=` tidak muncul sama sekali, yang terpasang adalah versi 1; kalau
+`skema=2`, web M3.8 belum boleh dikirim ke sana — setiap kelompok kiriman yang
+memuat `tampak`, `galat`, `kinerja`, atau `mulai` bermedan perangkat akan
+dijawab `400` seluruhnya.
+
+Pengumpul skema 3 **tetap menerima** kiriman web M3.7 (tab lama yang masih
+terbuka di ponsel orang): medan perangkat di `mulai` boleh tidak ada. Jadi
+urutan "pengumpul dulu, baru web" aman untuk kedua arah.
 
 ## Menerbitkan
 
