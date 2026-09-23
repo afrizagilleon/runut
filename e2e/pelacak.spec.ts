@@ -567,9 +567,21 @@ test('E-06h ambang gulir 25/50/75/100% lahir sekali, sebelum kunci_jawaban', asy
  * subyek DAN pembanding sekaligus. Kalau ternyata tidak ada yang muat, ia
  * mengatakannya dan merah: hijau diam-diam atas nol subyek adalah persis
  * hiasan yang dilarang repo ini.
+ *
+ * **M3.9 memindahkan subyeknya.** Layar pertama varian A (D-2) sengaja TIDAK
+ * PERNAH muat sejendela lagi: kaki tiga kalimat harus mulai di bawah lipatan
+ * di tinggi jendela berapa pun (E-27d/e), jadi dokumennya selalu jendela + kaki.
+ * Terukur di 360 x 760 sesudah perubahan itu, tidak satu layar pun muat — tes
+ * ini merah "tidak punya subyek". Layar terpendek sekarang soal 1 pemanasan
+ * (1160 px di lebar 360); layar berikutnya soal 2 (1302) dan layar akhir
+ * (1318). Maka 360 x 1250: satu-satunya tinggi bulat tempat TEPAT soal 1 yang
+ * muat, dengan sisa ±90 px ke atas dan ±50 px ke layar berikutnya. Ini bukan
+ * ukuran ponsel; ia ukuran yang memberi tes ini subyek dan pembanding. Di
+ * 768 x 1024 (tablet) soal 1 dan layar akhir sama-sama tepat 1024 — tepi yang
+ * terlalu tipis untuk dijadikan penjaga, jadi tidak dipakai.
  */
 test('E-06i layar yang muat satu jendela melahirkan keempat ambang di detik nol', async ({ page }) => {
-  await page.setViewportSize({ width: 360, height: 760 });
+  await page.setViewportSize({ width: 360, height: 1250 });
 
   const kasus = bacaKasus();
   const penanda = penandaBaru();
@@ -613,7 +625,7 @@ test('E-06i layar yang muat satu jendela melahirkan keempat ambang di detik nol'
 
   // eslint-disable-next-line no-console
   console.log(
-    `E-06i sesi=${sesi} viewport=360x760 ${ukuran
+    `E-06i sesi=${sesi} viewport=360x1250 ${ukuran
       .map(([nama, u]) => `${nama}=${String(u.tinggi)}/${String(u.jendela)}${u.muat ? '(muat)' : ''}`)
       .join(' ')}`,
   );

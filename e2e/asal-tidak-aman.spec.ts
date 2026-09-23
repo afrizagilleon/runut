@@ -9,6 +9,7 @@ import {
   penandaBaru,
 } from './bantu/main.ts';
 import { mulaiDenganPenanda, tungguSatuSesi } from './bantu/peristiwa.ts';
+import { bacaKasus } from './bantu/kasus.ts';
 
 /**
  * E-01 — asal yang tidak aman tidak memutihkan halaman.
@@ -71,7 +72,10 @@ test('E-01 halaman hidup di asal http yang bukan localhost, dan mulai tetap samp
 
   /* --- halamannya hidup ----------------------------------------------- */
   await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Kita mundur ke');
+  // M3.9 D-2: judul layar pertama dibaca dari berkas kasus bawaan.
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    bacaKasus(KASUS_BAWAAN).pembuka.judul,
+  );
   const panjangAkar = await page.evaluate(
     () => document.getElementById('akar')?.innerHTML.length ?? 0,
   );

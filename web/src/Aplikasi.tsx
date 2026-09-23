@@ -53,7 +53,7 @@ import { perintahRiwayat } from './riwayat.ts';
 import { isiSumber, type Emiten } from './sumber.ts';
 import { angkaBesarSatuan } from './angka.ts';
 import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
-import { barisMeta } from './pembuka.ts';
+import { barisMeta, contohPembuka } from './pembuka.ts';
 import { bacaPerangkat, type InfoKoneksi, type Perangkat } from './perangkat.ts';
 import { berkasDariTumpukan, pasangPelaporAkar, pesanDari, sumberGalat } from './galat.ts';
 import { kalimatJejak, ringkasanJejak } from './jejak.ts';
@@ -659,7 +659,9 @@ export function Aplikasi(): JSX.Element {
         )}
       </main>
 
-      {(layar.jenis === 'pembuka' || layar.jenis === 'akhir') && <Kaki kasus={kasus} />}
+      {(layar.jenis === 'pembuka' || layar.jenis === 'akhir') && (
+        <Kaki kasus={kasus} diBawahBilah={layar.jenis === 'pembuka'} />
+      )}
 
     </>
   );
@@ -751,26 +753,48 @@ function LayarPembuka({
   kirim: (aksi: Aksi) => void;
   sakelarSumber: SakelarSumber;
 }): JSX.Element {
+  const contoh = contohPembuka(kasus);
+  useTinggiBilah();
   return (
     <section className="layar layar-pembuka" aria-labelledby="judul-pembuka">
+      {/*
+        M3.9 D-2 (varian A uji K-06, disetujui pemilik 24 Sep 2026): kalender
+        besar → judul → SATU contoh gelembung → ajakan → "Mulai kasus".
+
+        "Kita mundur ke …" hilang dari layar ini: tanggalnya dibawa kalender
+        di atas dan kaki di bawah. Yang dijawab layar ini sekarang "ini apa" —
+        data alpha 23 Sep: 13 orang asing, nol selesai; tiga orang uji duduk
+        balik bertanya "ini aplikasi apa?".
+      */}
       <div data-uid="kalender">
         <HalamanKalender hari={hari} />
       </div>
       <h1 id="judul-pembuka" className="mundur">
-        Kita mundur ke {hari.hari}, {hari.panjang}.
+        <Teks teks={kasus.pembuka.judul} sakelarSumber={sakelarSumber} />
       </h1>
       {/*
-        D-6: satu kalimat, satu tombol. Tiga baris aturan main v2 dihapus —
-        pemilik tidak membacanya; cara mainnya kini muncul sebagai `petunjuk`
-        di soal 1, tempat ia sedang melihat.
+        Contoh gelembung DIBACA dari `soal[0].pesan` (`contohPembuka`), tidak
+        ditulis kedua kali. Nama pengirim saja — tanpa tanggal, tanpa jam — dan
+        tidak bisa diketuk: ia contoh, bukan pesan yang masuk, dan bukan
+        salinan melayang M3.7. Isinya polos seperti di soal: ucapan, bukan
+        fakta (INV-4).
       */}
-      {/*
-        M3.9 T-01 (jembatan): medan `kalimat` sudah dihapus dari skema; susunan
-        layar pertama yang baru (judul → contoh gelembung → ajakan) lahir di
-        T-04. Sampai di sana, tempat kalimat lama membawa judul barunya.
-      */}
-      <p className="isi hook" data-uid="kalimat-pembuka">
-        <Teks teks={kasus.pembuka.judul} sakelarSumber={sakelarSumber} />
+      {contoh !== null && (
+        <figure
+          className="pesan"
+          data-uid="contoh-pesan"
+          aria-label={`Contoh omongan dari ${contoh.nama}`}
+        >
+          <blockquote className="pesan-balon">
+            <p className="pesan-meta">
+              <span className="pesan-nama">{contoh.nama}</span>
+            </p>
+            <p className="isi">{contoh.isi}</p>
+          </blockquote>
+        </figure>
+      )}
+      <p className="isi" data-uid="ajak">
+        <Teks teks={kasus.pembuka.ajak} sakelarSumber={sakelarSumber} />
       </p>
       <div className="tindakan" data-uid="bilah">
         <button
@@ -795,6 +819,35 @@ function LayarPembuka({
       </div>
     </section>
   );
+}
+
+/**
+ * Tinggi bilah bawah layar pertama, DIUKUR, diserahkan ke CSS sebagai
+ * `--tinggi-bilah` di akar dokumen (M3.9 D-2).
+ *
+ * Kaki tiga kalimat tetap berada di bawah bilah `fixed` itu. Bantalan bawahnya
+ * harus setinggi bilah supaya kalimat terakhirnya bisa digulir ke atas bilah
+ * dan terbaca; tingginya tidak ditebak karena baris meta di dalam bilah bisa
+ * menjadi dua baris di layar sempit atau huruf yang diperbesar.
+ */
+function useTinggiBilah(): void {
+  useLayoutEffect(() => {
+    const akar = document.documentElement;
+    const pasang = (): void => {
+      const bilah = document.querySelector('.layar-pembuka [data-uid="bilah"]');
+      if (bilah === null) return;
+      akar.style.setProperty(
+        '--tinggi-bilah',
+        `${String(Math.ceil(bilah.getBoundingClientRect().height))}px`,
+      );
+    };
+    pasang();
+    window.addEventListener('resize', pasang, { passive: true });
+    return () => {
+      window.removeEventListener('resize', pasang);
+      akar.style.removeProperty('--tinggi-bilah');
+    };
+  }, []);
 }
 
 /**
@@ -2189,9 +2242,22 @@ function LayarAkhir({
   );
 }
 
-function Kaki({ kasus }: { kasus: Kasus }): JSX.Element {
+/**
+ * Tiga kalimat tetap.
+ *
+ * `diBawahBilah` (M3.9 D-2): di layar pertama kaki ini berada di bawah bilah
+ * bawah yang `fixed`. Ia tetap di bawah lipatan — garisnya tidak boleh
+ * mengintip di atas tombol "Mulai kasus" — dan bantalan bawahnya setinggi
+ * bilah TERUKUR, supaya kalimat terakhirnya bisa digulir ke atas bilah dan
+ * terbaca. Layar akhir tidak disentuh (batas kerja M3.9).
+ */
+function Kaki({ kasus, diBawahBilah = false }: { kasus: Kasus; diBawahBilah?: boolean }): JSX.Element {
   return (
-    <footer className="kaki" aria-label="Tiga kalimat tetap" data-uid="kaki-halaman">
+    <footer
+      className={diBawahBilah ? 'kaki kaki-berbilah' : 'kaki'}
+      aria-label="Tiga kalimat tetap"
+      data-uid="kaki-halaman"
+    >
       <ul>
         {kasus.disclaimer.map((kalimat) => (
           <li key={kalimat}>{kalimat}</li>

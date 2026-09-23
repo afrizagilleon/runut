@@ -31,9 +31,10 @@ async function layarSekarang(page: Page): Promise<string> {
   return await page.evaluate(() => {
     const titik = document.querySelector('[aria-label^="Soal "]');
     if (titik !== null) return titik.getAttribute('aria-label') ?? '';
-    const judul = document.querySelector('h1')?.textContent ?? '';
-    if (judul.startsWith('Kita mundur ke')) return 'layar pertama';
-    return judul;
+    // Layar pertama dikenali dari judulnya yang ber-id, bukan dari kalimatnya:
+    // sejak M3.9 D-2 kalimat "Kita mundur ke …" tidak ada lagi di sana.
+    if (document.getElementById('judul-pembuka') !== null) return 'layar pertama';
+    return document.querySelector('h1')?.textContent ?? '';
   });
 }
 

@@ -1604,3 +1604,27 @@ textarea {
   margin: 0 0 4px;
 }
 
+
+/*
+ * Kaki di layar pertama (M3.9 D-2): ia berada di bawah bilah bawah yang
+ * `fixed`. Bantalan bawahnya = tinggi bilah TERUKUR (`--tinggi-bilah`, dipasang
+ * `useTinggiBilah`) ditambah jarak biasa, supaya kalimat tetap terakhir bisa
+ * digulir ke atas bilah dan terbaca utuh. Cadangan 128 px hanya berlaku
+ * sebelum ukuran pertama terpasang.
+ */
+.kaki-berbilah {
+  padding-bottom: calc(var(--tinggi-bilah, 128px) + 16px);
+}
+
+/*
+ * Layar pertama setinggi jendela (M3.9 D-2): kaki tiga kalimat selalu mulai DI
+ * BAWAH lipatan, apa pun tinggi ponselnya. Isi varian A pendek (tepi bawah
+ * ajakan ±419 px di 360 × 640), jadi tanpa ini garis kaki mengintip 21 px di
+ * atas tombol "Mulai kasus" (terukur: kaki.atas 515, bilah.atas 536). 112 px =
+ * bantalan atas 16 + bantalan bawah 96 milik `.halaman`, sehingga tepi atas
+ * kaki = tinggi jendela.
+ */
+.layar-pembuka {
+  min-height: calc(100vh - 112px);
+  min-height: calc(100svh - 112px);
+}

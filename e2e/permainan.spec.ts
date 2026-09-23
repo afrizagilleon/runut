@@ -85,7 +85,8 @@ test(`E-10 [${kasus_id}] satu permainan penuh, tanpa galat konsol, dengan tangka
   /* --- layar pertama ------------------------------------------------- */
   const tombolMulai = page.getByRole('button', { name: LABEL_MULAI });
   await expect(tombolMulai).toBeVisible();
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Kita mundur ke');
+  // M3.9 D-2: judul layar pertama dibaca dari berkas kasus.
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(kasus.pembuka.judul);
   /*
    * M3.5 D-1. Jumlah soalnya dibaca dari berkas kasus, bukan ditulis di tes:
    * angka yang disalin akan berselisih diam-diam begitu kasus berikutnya punya

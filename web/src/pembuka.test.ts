@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Soal } from '../../factory/skema/tipe.ts';
-import { barisMeta } from './pembuka.ts';
+import { barisMeta, contohPembuka } from './pembuka.ts';
 
 /**
  * Soal kosong sebanyak yang diminta. Yang diuji di sini hanya **berapa**
@@ -55,5 +55,30 @@ describe('baris meta layar pertama (D-1)', () => {
   it('murni: dua pemanggilan menghasilkan teks yang sama', () => {
     const kasus = { soal: soalPalsu(3), pembuka: { judul: 'Halo.', ajak: 'Ya?', menit: 5 } };
     expect(barisMeta(kasus)).toBe(barisMeta(kasus));
+  });
+});
+
+/*
+ * M3.9 D-1/D-2: contoh gelembung layar pertama DIBACA dari `soal[0].pesan`.
+ * Tidak ada medan kedua di berkas kasus, jadi layar pertama dan soal 1 tidak
+ * bisa berselisih kata — dan yang dibawa hanya nama dan isi: tanpa jam, tanpa
+ * tanggal (kontrak D-2).
+ */
+describe('contoh gelembung layar pertama (M3.9 D-2)', () => {
+  it('membawa nama dan isi pesan soal PERTAMA, bukan soal lain', () => {
+    const soal = soalPalsu(3).map((s, i) => ({
+      ...s,
+      pesan: { nama: `Nama${String(i)}`, jam: `19.3${String(i)}`, isi: `Isi ke-${String(i)}.` },
+    }));
+    expect(contohPembuka({ soal })).toEqual({ nama: 'Nama0', isi: 'Isi ke-0.' });
+  });
+
+  it('tidak membawa jam: yang dikembalikan hanya dua medan', () => {
+    const contoh = contohPembuka({ soal: soalPalsu(1) });
+    expect(Object.keys(contoh ?? {}).sort()).toEqual(['isi', 'nama']);
+  });
+
+  it('kasus tanpa soal tidak punya contoh — null, bukan teks karangan', () => {
+    expect(contohPembuka({ soal: [] })).toBeNull();
   });
 });

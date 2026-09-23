@@ -31,3 +31,25 @@ export function barisMeta(kasus: Pick<Kasus, 'soal' | 'pembuka'>): string {
   potongan.push(META_TANPA);
   return potongan.join(PEMISAH);
 }
+
+/**
+ * Contoh gelembung layar pertama (M3.9 D-1/D-2, varian A uji K-06).
+ *
+ * Dibaca dari `soal[0].pesan`, bukan dari medan sendiri: satu contoh omongan
+ * menjawab "ini aplikasi apa?" 9/10 di uji K-06, dan omongan itu harus PERSIS
+ * omongan yang akan dicek di soal 1. Dua teks yang berjanji sama adalah dua
+ * teks yang akan berselisih diam-diam.
+ *
+ * Hanya nama dan isi — tanpa jam dan tanpa tanggal (D-2): di layar pertama ia
+ * contoh, bukan pesan yang masuk. Tanggalnya dibawa kalender besar di atasnya.
+ */
+export interface ContohPembuka {
+  nama: string;
+  isi: string;
+}
+
+export function contohPembuka(kasus: Pick<Kasus, 'soal'>): ContohPembuka | null {
+  const pertama = kasus.soal[0];
+  if (pertama === undefined) return null;
+  return { nama: pertama.pesan.nama, isi: pertama.pesan.isi };
+}
