@@ -8,7 +8,9 @@ import {
   LABEL_COCOK,
   LABEL_KUNCI,
   LABEL_TURUN,
+  angkaKata,
   bilahBawah,
+  kalimatAntar,
   LABEL_PILIHAN_PEMAIN,
   BATAS_BALON,
   BATAS_TAMPAK,
@@ -878,11 +880,44 @@ describe('alur — tombol kembali peramban (A1-T7)', () => {
   });
 });
 
+/*
+ * M3.9 D-3: kalimat pengantar di atas tumpukan kartu, SAMA untuk semua soal.
+ * Pertanyaannya ("Betul atau keliru?") datang lebih dulu, lalu jumlah dokumen
+ * yang dieja — bukan lagi "Cek omongan {nama} ke … dokumen ini:".
+ */
+describe('alur — kalimat pengantar kartu (M3.9 D-3)', () => {
+  it('dua, tiga, empat dokumen — dieja, persis kalimat kontrak', () => {
+    expect(kalimatAntar(2)).toBe('Betul atau keliru? Cek ke dua dokumen ini:');
+    expect(kalimatAntar(3)).toBe('Betul atau keliru? Cek ke tiga dokumen ini:');
+    expect(kalimatAntar(4)).toBe('Betul atau keliru? Cek ke empat dokumen ini:');
+  });
+
+  it('tidak menyebut nama pengirim: kalimatnya sama di tiap soal', () => {
+    expect(kalimatAntar(2)).not.toContain('omongan');
+  });
+
+  it('angka kecil dieja, angka di luar daftar tetap angka', () => {
+    expect(angkaKata(2)).toBe('dua');
+    expect(angkaKata(4)).toBe('empat');
+    expect(angkaKata(12)).toBe('12');
+  });
+});
+
 describe('alur — bilah bawah tiga keadaan (D-4, T-04)', () => {
   const soalBaru = (): Parameters<typeof bilahBawah>[0] =>
     jalankan([MULAI, { jenis: 'lanjut' }]).keadaan.soal['s1'];
 
-  it('belum memilih dan opsi BELUM terlihat: tawarkan "↓ Jawab di bawah"', () => {
+  /*
+   * M3.9 D-3: labelnya disalin persis dari kontrak (varian A uji K-06).
+   * "Jawab di bawah" terbaca sebagai perintah menjawab sebelum membaca;
+   * "Pilih jawaban" menyebut apa yang ada di bawah sana.
+   */
+  it('label bilah turun = "↓ Pilih jawaban" (M3.9 D-3)', () => {
+    expect(LABEL_TURUN).toBe('\u2193 Pilih jawaban');
+    expect(LABEL_TURUN).toBe('↓ Pilih jawaban');
+  });
+
+  it('belum memilih dan opsi BELUM terlihat: tawarkan "↓ Pilih jawaban"', () => {
     const s = soalBaru();
     expect(s?.opsiTerlihat).toBe(false);
     expect(bilahBawah(s, 0, 3)).toEqual({ jenis: 'turun', label: LABEL_TURUN });

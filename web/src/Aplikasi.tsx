@@ -13,6 +13,7 @@ import {
   LABEL_COCOK,
   balonMelayang,
   bilahBawah,
+  kalimatAntar,
   keadaanBalon,
   langkah,
   namaLayar,
@@ -850,15 +851,6 @@ function useTinggiBilah(): void {
   }, []);
 }
 
-/**
- * "dua dokumen", bukan "2 dokumen" — kalimat pengantar dibaca sebagai kalimat,
- * dan angka kecil yang dieja tidak bersaing dengan angka di dalam lembar.
- */
-export function angkaKata(n: number): string {
-  const kata = ['nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan'];
-  return kata[n] ?? String(n);
-}
-
 /** Gerak halus hanya kalau pemain tidak memintanya dihentikan. */
 function gerakHalus(): ScrollBehavior {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
@@ -945,7 +937,7 @@ function usePengamatOpsi(
   useEffect(() => {
     const simpul = acuan.current;
     if (simpul === null || typeof IntersectionObserver === 'undefined') {
-      // Tanpa pengamat, bilah "Jawab di bawah" akan menetap selamanya dan
+      // Tanpa pengamat, bilah "Pilih jawaban" akan menetap selamanya dan
       // menutupi opsi. Lebih baik menganggapnya terlihat.
       kirim({ jenis: 'opsi_terlihat', soal_id, terlihat: true });
       return;
@@ -965,7 +957,7 @@ function usePengamatOpsi(
          * putusan yang sudah kedaluwarsa. Sesudah itu tidak ada perlintasan
          * baru, jadi tidak ada panggilan balik baru: keadaannya membeku pada
          * nilai basi sampai pemain berpindah layar. Yang terlihat pemain adalah
-         * bilah "Jawab di bawah" yang hilang padahal opsinya masih jauh di
+         * bilah "Pilih jawaban" yang hilang padahal opsinya masih jauh di
          * bawah lipatan — satu-satunya petunjuk jalan di layar, lenyap.
          *
          * Terukur: 1 dari 15 putaran di bawah beban, dengan opsi pertama di
@@ -1624,7 +1616,7 @@ function LayarSoal({
       />
 
       <p className="meta antar" id={`antar-${soal.soal_id}`} data-uid="antar">
-        Cek omongan {soal.pesan.nama} ke {angkaKata(kartu.length)} dokumen ini:
+        {kalimatAntar(kartu.length)}
       </p>
 
       <div className="tumpukan" ref={acuanTumpukan}>
@@ -1835,7 +1827,7 @@ function LayarSoal({
 
         `data-uid` menyebut KEADAAN bilahnya, bukan sekadar "bilah" (D-10):
         `bilah:turun` / `bilah:kunci` / `bilah:lanjut`. Tanpa itu, ringkasan
-        tidak bisa menjawab "berapa sesi mengetuk ↓ Jawab di bawah" —
+        tidak bisa menjawab "berapa sesi mengetuk ↓ Pilih jawaban (dulu ↓ Jawab di bawah)" —
         satu-satunya angka yang memberi tahu apakah opsi pertama memang tidak
         terlihat di ponsel pemilik.
       */}

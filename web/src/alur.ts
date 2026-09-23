@@ -630,8 +630,34 @@ export type BilahBawah =
   | { jenis: 'kunci'; label: string }
   | { jenis: 'lanjut'; label: string };
 
-export const LABEL_TURUN = '\u2193 Jawab di bawah';
+/**
+ * M3.9 D-3 (varian A uji K-06): dulu "↓ Jawab di bawah". Label baru menyebut
+ * apa yang ada di bawah sana — pilihan jawaban — bukan menyuruh menjawab
+ * sebelum membaca kartunya. Disalin persis dari kontrak.
+ */
+export const LABEL_TURUN = '\u2193 Pilih jawaban';
 export const LABEL_KUNCI = 'Kunci jawaban';
+
+/**
+ * "dua dokumen", bukan "2 dokumen" — kalimat pengantar dibaca sebagai kalimat,
+ * dan angka kecil yang dieja tidak bersaing dengan angka di dalam lembar.
+ * (Dipindah dari `Aplikasi.tsx` di M3.9 supaya kalimat pengantarnya bisa
+ * menjadi fungsi murni yang dites.)
+ */
+export function angkaKata(n: number): string {
+  const kata = ['nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan'];
+  return kata[n] ?? String(n);
+}
+
+/**
+ * Kalimat pengantar di atas tumpukan kartu (M3.9 D-3, varian A uji K-06), SAMA
+ * untuk semua soal: pertanyaannya lebih dulu, lalu berapa dokumen yang dicek.
+ * Dulu "Cek omongan {nama} ke {n} dokumen ini:" — penguji K-06 yang sampai di
+ * kartu masih "belum tahu harus jawab apa" 10/10; dengan kalimat ini 3/10.
+ */
+export function kalimatAntar(jumlahKartu: number): string {
+  return `Betul atau keliru? Cek ke ${angkaKata(jumlahKartu)} dokumen ini:`;
+}
 
 export function bilahBawah(
   soal: KeadaanSoal | undefined,

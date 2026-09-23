@@ -23,7 +23,7 @@ import { DIR_LAYAR } from './jalur.ts';
 import { ambangOpsiProduk } from './ambang.ts';
 
 /** Label bilah bawah, disalin dari `web/src/alur.ts` (LABEL_TURUN, LABEL_KUNCI). */
-export const LABEL_TURUN = '↓ Jawab di bawah';
+export const LABEL_TURUN = '↓ Pilih jawaban';
 export const LABEL_KUNCI = 'Kunci jawaban';
 export const LABEL_MULAI = 'Mulai kasus';
 export const LABEL_KEMBALI_KARTU = '↑ Kembali ke dokumen';
