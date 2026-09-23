@@ -145,6 +145,15 @@ dilihat browser tanpa membuka browser.
 | Pesan penutup ditulis mati di kode, jadi tiap kasus menutup dengan janji yang sama | `pilih-kasus.spec.ts` E-20d | `Aplikasi.tsx`: kalimat penutup lama dikembalikan ke JSX |
 | Peristiwa `minat_kasus_lain` hilang ketika kasus berganti di ketukan yang sama | `pilih-kasus.spec.ts` E-20e (tes meja: `bungkus.test.ts`) | `bungkus.ts`: `kasusBaru` membuang antrean lama |
 | **M3.7-1** Pesan teman hilang dari layar justru ketika pemain menjawab: gulir balik ke kartu 2,5× di soal 2 (uji duduk 22 Sep) | `balon-melayang.spec.ts` E-19a–g | `Aplikasi.tsx`: ketukan tidak men-dispatch `sakelar_balon` (5 dari 7 merah) · ambang `AMBANG_BALON_MELAYANG` 0,5 → 0,001 (E-19e) · `INTIP_BALON_PX` 28 → 4 (E-19a) · tarikan tidak pernah melewati ambang (E-19c) · `gaya.css`: `overflow: hidden` pada `.melayang` dihapus (E-19a) · aturan `prefers-reduced-motion` balon dihapus (E-19f) |
+| **M3.8** Tidak ada yang bisa mengatakan ponsel apa yang dipakai 13 orang asing yang pergi, dibuka di Threads atau di peramban, mode gelap atau terang | `perangkat.spec.ts` E-21a–c | `perangkat.ts`: penanda Threads (`Barcelona`) dicabut → `Expected "threads" Received "lain"` · `Aplikasi.tsx`: `perangkat: null` → tiga medan `null` |
+| **M3.8** "Pindah aplikasi lalu kembali" tidak terbedakan dari "pergi" | `tampak.spec.ts` E-22a | `Aplikasi.tsx`: `sembunyi` di-dispatch tanpa `flushSync` → `tampak sembunyi` tidak pernah tiba · `alur.ts`: `ms_sembunyi` selalu 0 |
+| **M3.8** Galat JavaScript di ponsel orang tidak terlihat, dan pesannya bisa membawa alamat, token, dan UA | `galat.spec.ts` E-23a–b | `alur.ts`: reducer tidak menyamarkan · galat kembar tidak ditolak · batas lima dicabut · `galat.ts`: tanpa berkas = `aplikasi` · `kirim.ts`: `galat` keluar dari `PENTING` |
+| **M3.8** "Halamannya lambat" tidak bisa dibuktikan maupun dibantah | `kinerja.spec.ts` E-24a–b | `alur.ts`: `kinerja` tidak lahir saat tersembunyi · penjaga sekali-per-sesi dicabut · `Aplikasi.tsx`: `ms_ke_tampil` tidak dikirim |
+| **M3.8** Pemilik (DADA): buka "laporan 19 Oktober 2025" → buka "laporan 26 Oktober 2025" → tutup 26 → **19 muncul kembali** | `penjelasan-sebaris.spec.ts` E-16e (dan E-16c) | `alur.ts`: `saudara` diabaikan (perilaku M3.6) · `Teks.tsx`: `saudara` tidak dikirim |
+| **M3.8 A-1** Sesudah "Kunci jawaban", cap mendarat DI BALIK balon melayang (cap.top 65,5 lawan balon.bottom 92,0) | `cap-di-bawah-balon.spec.ts` E-25a–b (DADA dan ULTJ, `ponsel-terang`) | `gaya.css`: `scroll-margin-top` kembali `64px` · `alur.ts`: kunci tidak mengembalikan balon turun ke intip · `Aplikasi.tsx`: `--tepi-atas` tanpa tinggi balon |
+| **M3.8 F-1** `mulai` kasus KEDUA hilang (sesi tak masuk penyebut mana pun); E-20e merah 1–3 dari 8 putaran, sudah sejak `da820db` | `pilih-kasus.spec.ts` E-20e `--repeat-each` (tes meja: `bungkus.test.ts`, urutan terapan-ulang React) | `bungkus.ts`: `bersihkan` kembali membuang MENURUT JUMLAH (`slice(n)`) |
+| **M3.8 T-09** E-10 [ULTJ] di proyek `lebar` merah ±1/20: prasyarat "ringkasan di luar layar" diukur selagi sobekan kalender masih menutup ruangnya (judul y ≈ 813–893 selama animasi, ≈ 717 sesudahnya — di DALAM layar 800 px) | `permainan.spec.ts` E-10 (di ponsel prasyaratnya tetap wajib; di `lebar` dicatat sebagai anotasi bila tidak berlaku — tes TIDAK menunggu animasinya, karena justru ketukan di tengah animasi yang dijaga F-M36-1) | — (cacat TES, bukan produk). **Catatan:** sabotase F-M36-1 di baris atas ("guliran kedua dihapus") ternyata HIJAU, juga di `da820db` (6/6) — penjaga itu tidak lagi menggigit di mesin ini; belum diperbaiki di M3.8 |
+| **M3.8** INV: UA mentah, perujuk lengkap, atau alamat di pesan galat meninggalkan ponsel | `kiriman-privasi.spec.ts` E-26 (memotret badan tiap kiriman `/e`) | `perangkat.ts`: `peramban_dalam` = UA mentah · `perujuk` = alamat lengkap · `alur.ts`: galat tidak disamarkan — ketiganya `nol "Mozilla"` / `nol "://"` merah |
 
 ## Menambah tes ketika cacat baru ditemukan
 
@@ -161,6 +170,26 @@ dilihat browser tanpa membuka browser.
    dan pastikan tesnya merah. Pulihkan dengan `git checkout -- <berkas>` dan
    pastikan `git status --short` bersih.
 6. Tambahkan barisnya ke tabel di atas.
+
+### Tes yang menunggu berkas pengumpul bisa merah untuk alasan yang salah (M3.8)
+
+Pengumpul SKEMA 3 menolak kiriman yang membawa bahan mentah (pertahanan
+kedua). Tes privasi yang MENUNGGU berkas pengumpul akan merah karena
+"peristiwa tidak tiba" — dan asersi yang sebenarnya dituju tidak pernah
+berjalan. E-26 karena itu menunggu **antrean kirimannya sendiri**
+(`page.route('**/e')`, lalu `rute.continue()`), dan asersi INV berada di
+depan asersi lain. Badan kiriman `tutup` (lahir di `pagehide`) tidak bisa
+dipotret dengan cara ini — halamannya sudah pergi — jadi `tutup` diperiksa
+lewat berkas pengumpul.
+
+### Halaman tersembunyi ditirukan, bukan dilakukan (M3.8)
+
+Chromium headless tidak pernah menyembunyikan halamannya. E-22/E-24/E-26
+menimpa `document.visibilityState` di halaman lalu menyalakan
+`visibilitychange` — urutan persis yang dilihat pendengar aplikasi di ponsel.
+Lama tersembunyi yang diasersikan diukur dari jam halaman sendiri, dan
+selangnya ditunggu ≥ 400 ms lewat `expect.poll` atas `Date.now()` halaman —
+bukan `waitForTimeout`: yang diukur memang waktu, jadi waktu harus lewat.
 
 ### Aturan menulis tes di sini
 

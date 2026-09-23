@@ -201,10 +201,33 @@ test(`E-10 [${kasus_id}] satu permainan penuh, tanpa galat konsol, dengan tangka
   await simpanLayar(page, 9, 'pembukaan-penuh', true, subfolder);
 
   const ringkasan = page.getByRole('heading', { name: 'Apa yang bisa dan tidak bisa dibaca' });
+  /*
+   * M3.8 T-09: prasyarat "ringkasan di luar layar" di proyek `lebar` bergantung
+   * jam. Jalan pintas SENGAJA diketuk selagi sobekan kalender masih menutup
+   * ruangnya (176 px) — itulah cacat F-M36-1 yang dijaga di sini, jadi tes ini
+   * TIDAK boleh menunggu animasinya selesai (dicoba, dan sabotase F-M36-1
+   * langsung hijau). Akibatnya, terukur di mesin ini, judul ringkasan ULTJ di
+   * 1280 × 800 berada di y ≈ 813–893 selama animasi dan ≈ 717 sesudahnya: DI
+   * DALAM layar begitu ruangnya tertutup. Prasyarat itu lalu gagal ±1 dari 20
+   * putaran — merah karena balapan, bukan karena produk.
+   *
+   * Jadi di `lebar` prasyarat yang tidak berlaku dicatat sebagai anotasi,
+   * bukan kegagalan; pendaratannya tetap diperiksa di bawah. Di ponsel
+   * prasyaratnya tetap wajib. DADA di `lebar` (judul ≈ 974 sesudah animasi)
+   * selalu memenuhinya, jadi penjaga F-M36-1 tetap utuh di sana.
+   */
+  const rasioSebelumLoncat = await rasioDiViewport(ringkasan);
+  const prasyaratBerlaku = rasioSebelumLoncat < 0.5;
+  if (!prasyaratBerlaku) {
+    test.info().annotations.push({
+      type: 'prasyarat',
+      description: `ringkasan sudah terlihat (rasio ${rasioSebelumLoncat.toFixed(2)}) sebelum jalan pintas di ${test.info().project.name}`,
+    });
+  }
   expect(
-    await rasioDiViewport(ringkasan),
-    'ringkasan harus berada di luar layar sebelum jalan pintas diketuk',
-  ).toBeLessThan(0.5);
+    prasyaratBerlaku || test.info().project.name === 'lebar',
+    'ringkasan harus berada di luar layar sebelum jalan pintas diketuk (di ponsel: selalu)',
+  ).toBe(true);
   await ketuk(page.getByRole('button', { name: LABEL_LONCAT }));
   await tungguMasukLayar(
     ringkasan,

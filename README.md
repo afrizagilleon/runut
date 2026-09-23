@@ -143,7 +143,7 @@ Yang tercatat adalah perilaku di halaman, bukan orangnya:
 
 | dicatat | artinya |
 |---|---|
-| `mulai` | permainan dibuka: lebar layar, kode penanda tautan, nomor pengunjung, dan kunjungan ke berapa |
+| `mulai` | permainan dibuka: lebar layar, kode penanda tautan, nomor pengunjung, kunjungan ke berapa, dan (sejak M3.8) keterangan **kasar** perangkat dan asal — lihat "Perangkat dan asal" di bawah |
 | `layar_masuk` | pindah ke layar mana |
 | `kartu_buka` | sumber sebuah lembar dokumen dibuka |
 | `pilih` | pilihan jawaban dipindah, dan sudah berapa kali |
@@ -151,18 +151,21 @@ Yang tercatat adalah perilaku di halaman, bukan orangnya:
 | `lihat_balik` | kembali melihat soal yang sudah dikunci |
 | `ketuk` | satu ketukan: di layar mana, pada blok bernama apa, di bagian layar sebelah mana (0–1), dan apakah sasarannya memang bisa diketuk |
 | `ketuk_dibatasi` | sesi ini menabrak batas 300 ketukan; sesudahnya ketukan tidak dicatat lagi |
-| `gulir` | sejauh mana layar itu digulir (0–1): saat meninggalkan layar, **dan** saat 50 % lalu 100 % pertama kali terlewat di layar itu |
+| `gulir` | sejauh mana layar itu digulir (0–1): saat meninggalkan layar, **dan** saat 25 %, 50 %, 75 %, lalu 100 % pertama kali terlewat di layar itu |
 | `balon` | balon chat melayang diturunkan utuh atau dikembalikan mengintip, dan dengan cara apa: ketukan atau tarikan jari |
 | `pembukaan_masuk`, `pembukaan_selesai`, `loncat_ke_ringkasan` | sampai ke layar pembukaan, lama membacanya, seberapa jauh menggulir |
 | `minat_kasus_lain` | tombol "Mau coba kasus lain" ditekan |
 | `akhir_kirim` | isian tiga pertanyaan dan kotak teks di layar akhir |
+| `tampak` | halaman tersembunyi (pindah aplikasi, kunci layar) atau terlihat lagi, di layar mana, dan berapa lama tersembunyi; paling banyak 30 per sesi |
+| `galat` | kesalahan JavaScript: jenisnya, pesannya **yang sudah disamarkan** (alamat → `‹url›`, angka ≥ 6 digit → `‹n›`, potongan UA → `‹ua›`, dipangkas 120 huruf), dan apakah asalnya aplikasi atau luar; paling banyak 5 per sesi, pesan yang sama sekali saja |
+| `kinerja` | sekali per sesi: milidetik sampai layar pertama dirender, dan sampai ketukan hidup pertama (atau kosong bila tidak ada) |
 | `tutup` | tab ditutup, di layar mana |
 
 Daftar peristiwa di atas tertutup: pengumpul menolak apa pun di luarnya.
 
-**Kapan, bukan hanya seberapa jauh.** `gulir` lahir tiga kali di satu kunjungan
-layar: ketika 50 % pertama kali terlewat, ketika 100 % pertama kali terlewat,
-dan ketika layarnya ditinggalkan. Ketiganya berbentuk sama (`{ layar, maks }`) —
+**Kapan, bukan hanya seberapa jauh.** `gulir` lahir di tiap ambang yang pertama
+kali terlewat di satu kunjungan layar — 25 %, 50 %, 75 %, 100 % (25 dan 75 sejak
+M3.8) — dan sekali lagi ketika layarnya ditinggalkan. Semuanya berbentuk sama (`{ layar, maks }`) —
 tidak ada nama baru dan tidak ada medan baru, karena daftar itu tertutup dan
 pengumpul di server memvalidasinya. Yang membedakan adalah urutannya: `gulir`
 yang diikuti `layar_masuk` atau `tutup` pada milidetik yang sama adalah yang
@@ -196,6 +199,34 @@ pertanyaannya sendiri, dan peristiwa ke-41 hanya menghabiskan kuota kiriman.
 tidak berpindah keadaan. Ringkasan karena itu membaca "hanya mengintip" dari
 fakta lain — pemain sampai ke pilihan jawaban di layar itu, dan pilihan berada
 jauh di bawah balon aslinya.
+
+### Perangkat dan asal (M3.8)
+
+Data 23 Sep: dari 13 orang asing, nol yang selesai, dan tidak ada yang bisa
+mengatakan apa pun tentang mereka. Peristiwa `mulai` kini membawa lima belas
+keterangan **kasar**, semuanya kategori atau angka berentang:
+
+| medan | isi |
+|---|---|
+| `os` | `android`, `ios`, `windows`, `mac`, `linux`, `lain` |
+| `peramban_dalam` | `threads`, `instagram`, `facebook`, `whatsapp`, `tiktok`, `line`, `telegram`, `x`, `lain` (tampilan-web tanpa nama), `tidak` (peramban biasa) |
+| `perujuk` | `threads`, `instagram`, `facebook`, `whatsapp`, `google`, `x`, `tiktok`, `telegram`, `langsung`, `lain` — dari **nama host** saja |
+| `skema_warna`, `penunjuk`, `koneksi`, `bahasa` | `terang`/`gelap` · `kasar`/`halus`/`tidak` · `4g`/`3g`/`2g`/`lambat`/`tidak-tahu` · `id`/`en`/`lain` |
+| `jam_lokal`, `hari_lokal`, `zona_menit` | jam 0–23, hari 0–6, zona dalam menit ke timur (WIB = 420) |
+| `tinggi_layar`, `rasio_piksel` | tinggi jendela, rasio piksel satu desimal |
+| `hemat_data`, `gerak_dikurangi`, `mandiri` | ya/tidak; `null` bila perambannya tidak mengatakan |
+
+User-Agent dibaca **hanya di peramban**, oleh fungsi murni
+`web/src/perangkat.ts`, dan yang keluar hanya dua kategorinya. Alamat perujuk
+tidak pernah disimpan — path dan query-nya (tempat Threads dan Instagram
+menaruh kode pelacaknya) dibuang sebelum apa pun dikirim. E-26 membuktikannya
+dari antrean kiriman satu permainan penuh dengan UA dan perujuk sungguhan:
+nol `Mozilla`, nol `AppleWebKit`, nol `://`. Pengumpul SKEMA 3 menolak apa pun
+di luar daftar kategori itu (pertahanan kedua).
+
+Tidak ada lebar/tinggi layar fisik, daftar huruf, kanvas, atau sidik jari
+lain: yang ditanyakan adalah pertanyaan desain ("apakah opsi pertama terlihat
+tanpa menggulir di ponsel ini"), bukan "siapa orang ini".
 
 ### Ketukan: nama, bukan isi
 
@@ -318,6 +349,30 @@ npm run alpha:ringkas -- alat/contoh/peristiwa-contoh.jsonl alat/contoh/peristiw
 | soal-1 | 7    | 2               | 3               | 2                 | 0.0 (2 sesi)              | 0.7 (3 sesi)              |
 | soal-2 | 5    | 0               | 3               | 2                 | 0.5 (2 sesi)              | 2.0 (2 sesi)              |
 ```
+
+Delapan bagian M3.8 — **corong per penanda** (sesi · orang · sampai soal 1…n ·
+pembukaan · akhir, keluaran bawaan), **pergi cepat** (< 15 d tanpa ketukan,
+per layar per penanda), **perangkat** (os × peramban dalam aplikasi, skema
+warna, penunjuk, ember lebar, koneksi — tiap baris dengan "sampai soal 1" dan
+"sampai akhir"), **asal** (perujuk × penanda), **jam setempat** (ember 3 jam ×
+hari), **kinerja** (median dan p90 `ms_ke_tampil` per os dan koneksi),
+**galat** (pesan × sesi × layar), dan **keluar-masuk**. Contohnya, enam sesi
+yang tiap angkanya bisa dihitung tangan, di
+[`alat/contoh/peristiwa-pelacak-lengkap.jsonl`](alat/contoh/peristiwa-pelacak-lengkap.jsonl):
+
+```bash
+npm run alpha:ringkas -- alat/contoh/peristiwa-pelacak-lengkap.jsonl --kecuali ""
+```
+
+```
+| penanda | sesi | orang | sampai soal-1 | sampai soal-2 | sampai soal-3 | pembukaan | akhir |
+| semua | 6 | 5 | 5 | 3 | 2 | 2 | 1 |
+| sekree | 3 | 2 | 3 | 2 | 2 | 2 | 1 |
+| threads | 2 | 2 | 1 | 0 | 0 | 0 | 0 |
+```
+
+Berkas sebelum M3.8 tetap terbaca: medan yang tidak ada dicetak "—" —
+ketiadaan data, bukan nol.
 
 Berkas yang terkumpul **sebelum** balon melayang ada tidak punya peristiwa
 `balon` sama sekali; di sana ketiga kotak hanya menggambarkan seberapa jauh
