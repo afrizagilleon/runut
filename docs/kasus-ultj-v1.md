@@ -33,40 +33,66 @@ saham ULTJ satu-satunya tercatat 10 Agustus 2017, jauh di luar jendela, dan
 klaim; kartu hanya menyebut "hari bursa terakhir sebelum hari ini", yang murni
 fakta harga.
 
-## Layar pertama
+## Layar pertama (M3.9, varian A uji K-06)
 
 Halaman kalender besar (`MEI 2026` / `4` / `SENIN`), lalu:
 
-- Judul: **Kita mundur ke Senin, 4 Mei 2026.**
-- Satu kalimat: *Grup obrolanmu ramai soal satu saham yang pagi tadi bukanya jatuh. Cek omongan mereka ke dokumen resminya.*
+- Judul: **Cek omongan saham di grup ke dokumen resminya.** (sama dengan DADA)
+- Satu contoh gelembung, dibaca dari pesan soal 1: **Nadia** · *Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!*
+- Ajakan: **Betul atau keliru?**
 - Tombol: **Mulai kasus**
 - Baris meta: *3 soal · sekitar 5 menit · tanpa akun, tanpa skor*
-- Kaki halaman: tiga kalimat tetap.
+- Kaki halaman: tiga kalimat tetap, di bawah lipatan.
 
-## Soal 1 — Nadia, 17.58
+"Kita mundur ke Senin, 4 Mei 2026." dan kalimat "Grup obrolanmu ramai…" dihapus (alasannya di
+`docs/kasus-dada-v3.md`, bagian layar pertama). Patokan gambarnya: `docs/contoh/k06/a-ultj-*.png`.
 
-**Petunjuk (hanya di soal ini):** Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.
+## Soal 1 — Nadia, 17.58 (M3.9: pemanasan, varian A uji K-06)
 
-**Pesan:** Baru buka aplikasi. Saham U pagi tadi bukanya anjlok. Oh, ternyata
-hari ini tanggal ex dividennya. Tapi turunnya kayaknya jauh lebih gede dari
-dividennya, pasti ada sebab lain.
+**Soal 1 lama gagal tebak buta 3/3** — penguji yang TIDAK melihat kartu menebak jawabannya tiga dari tiga kali (turunnya
+"jauh lebih gede" dari dividen terjawab dari pesannya sendiri). **Versi ini 0/3** (uji K-06). Seluruh kata disalin
+persis dari kontrak M3.9 D-4 dan dijaga huruf demi huruf oleh `factory/kasus/soal1-k06.test.ts`.
 
-**Kartu 1 — `div-2026-05-04`** · *Pengumuman dividen · ex 4 Mei 2026*
-> Perusahaan U membagikan dividen tunai **Rp130 per lembar**. Tanggal ex-nya hari ini; uangnya dibayarkan **22 Mei 2026**.
+**Petunjuk:** tidak ada.
 
-**Kartu 2 — `beda-turun-dividen`** (turunan) · *Dihitung dari data harga*
-> Hari bursa terakhir sebelum hari ini, **Kamis 30 April**, ditutup **Rp1.690**. Hari ini dibuka **Rp1.545** — turun **Rp145**. Dividen per lembarnya **Rp130**, jadi bedanya **Rp15**.
+**Pesan:** Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!
 
-**Arti istilah:** Tanggal ex; Dividen tunai.
+"Rp45" adalah dividen 2025 yang tercatat (kartu riwayat di soal 2) — angka keliru yang sungguh ada; ia tidak
+"dibetulkan". "Kabar buruk" adalah satu-satunya pengecualian bernama dari kata terlarang `ultj.test.ts`: ia menilai
+kabar yang dibayangkan Nadia, bukan sahamnya.
+
+**Pengantar kartu:** Betul atau keliru? Cek ke dua dokumen ini:
+
+**Kartu 1 (penentu) — `div-2026-05-04`** · *Pengumuman dividen · 4 Mei 2026* (tanpa "ex" — keputusan reviewer
+24 Sep sesudah K-06: kata itu keluhan utama penguji ULTJ, dan isi kartunya sudah mengatakan artinya)
+> Dividen tunai **Rp130 per lembar**. Pembeli mulai hari ini tidak kebagian.
+
+**Kartu 2 — `turun-2026-05-04`** (turunan, menggantikan `beda-turun-dividen`) · *Dihitung dari data harga*
+> Hari ini dibuka **Rp145** di bawah penutupan terakhir.
+
+"Lihat cara menghitungnya" di kartu 2 memperlihatkan kedua harga asalnya: penutupan 30 April 2026 Rp1.690 dan
+pembukaan 4 Mei 2026 Rp1.545 (`.cache/sectors/ULTJ-daily-2026q2.json`; 1.690 − 1.545 = 145, dihitung ulang dari
+baris mentah di `ultj.test.ts`).
+
+**Arti istilah:** Tanggal ex (arti versi M4 apa adanya). "Dividen tunai" keluar dari soal ini.
 
 **Judul pertanyaan:** Omongan Nadia cocok dengan dokumennya?
 
-- a. Betul, turunnya kira-kira dua kali lipat dividen per lembarnya.
-- **b. Keliru, turunnya cuma sekitar lima belas rupiah lebih besar.** ← jawaban
-- c. Betul, dividennya hanya menjelaskan sekitar sepertiga dari turunnya.
-- d. Keliru, turunnya justru lebih kecil daripada dividen per lembarnya.
+- a. Betul, dividennya memang cuma Rp45 per lembar.
+- **b. Keliru, dividennya Rp130, bukan Rp45.** ← jawaban
+- c. Betul, turunnya lebih dari tiga kali dividennya.
+- d. Keliru, dividennya Rp160, bukan Rp45.
 
-**Kartu penentu:** Kartu 2.
+**Kartu penentu:** Kartu 1.
+
+**Teks kunci:** Nadia memakai angka yang keliru: dividen yang tanggal ex-nya hari ini Rp130 per lembar, bukan Rp45.
+Turunnya Rp145 hanya Rp15 lebih besar dari dividen itu (penutupan terakhir Rp1.690, pembukaan hari ini Rp1.545). Pada
+tanggal ex, uang sebesar dividen berpindah dari perusahaan ke pemilik saham, jadi harga per lembarnya menyesuaikan.
+Yang tidak dikatakan kartu mana pun: apakah sisa Rp15 itu punya sebab. Salah-kaprah yang umum: mencari kabar buruk
+untuk setiap penurunan harga sebelum mencocokkan angkanya dengan dokumen hari itu.
+
+(Rujukan angka: Rp45 → `div-2025-05-15`, Rp160 → pengandaian, Rp15 → `beda-turun-dividen`, fakta yang tetap lahir
+walau bukan kartu lagi.)
 
 ## Soal 2 — Fajar, 18.11
 

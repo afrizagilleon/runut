@@ -307,8 +307,9 @@ npm run alpha:ringkas -- data/*.jsonl --kecuali ""      # jangan kecualikan apa 
 
 Keluarannya tabel Markdown: berapa orang (bukan berapa sesi), sepuluh `uid`
 teratas per layar beserta ketukan matinya, kedalaman gulir median, dan per layar
-soal berapa sesi yang mengetuk "↓ Jawab di bawah", membuka sumber, atau membuka
-baris istilah.
+soal berapa sesi yang mengetuk bilah turun (uid `bilah:turun`; labelnya "↓ Pilih
+jawaban" sejak M3.9, dulu "↓ Jawab di bawah" — tabel ringkasannya masih memakai
+label lama), membuka sumber, atau membuka baris istilah.
 
 Bagian **"Kapan, bukan hanya seberapa jauh"** menjawab per sesi × layar: detik
 ke ketukan pertama, detik ke 50 %, detik ke 100 %, dan jeda diam terpanjang

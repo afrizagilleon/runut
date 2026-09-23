@@ -6,53 +6,71 @@ Lahir dari uji pemilik di ponsel (21 Sep 2026): layar v2 "ramai, masih terasa AI
 
 ## Aturan penulisan tambahan (berlaku untuk semua kasus berikutnya)
 
-1. **Urutan layar soal:** pesan teman → "Cek omongan {nama} ke {n} dokumen ini:" → kartu → arti istilah → judul pertanyaan → opsi.
+1. **Urutan layar soal:** pesan teman → "Betul atau keliru? Cek ke {n} dokumen ini:" (sejak M3.9; dulu "Cek omongan {nama} ke {n} dokumen ini:") → kartu → arti istilah → judul pertanyaan → opsi.
 2. **Pesan teman adalah pesan obrolan sungguhan**: nama pengirim, isi paling banyak 220 karakter, jam. Konteks yang dulu ditulis di batang soal ("pegang 10 lot sejak Juli") masuk ke dalam pesannya. Tanggal tidak diulang — keping kalender yang memegangnya.
 3. **Jam pesan sesudah bursa tutup pada tanggal T** (sesudah 16.00 WIB), karena pesan-pesan itu membicarakan harga penutupan hari itu.
 4. **Tiap soal pengirim berbeda**, supaya terasa grup obrolan dan tidak ada satu nama yang selalu salah. Nama pendek yang umum, tanpa nama tokoh nyata.
 5. **Angka di dalam pesan dan opsi adalah ucapan, bukan fakta**: tidak ditebalkan, tidak diwarnai, tidak ditautkan. Angka di lembar tebal dan berwarna tinta stempel.
 6. **Judul pertanyaan selalu berbentuk sama:** "Omongan {nama} cocok dengan dokumennya?" — isi jawabannya ada di opsi.
-7. **Petunjuk cara main hanya di soal pertama**, satu kalimat, tepat di bawah keping kalender.
+7. **Petunjuk cara main hanya di soal pertama**, satu kalimat, tepat di bawah keping kalender — dan sejak M3.9 **boleh tidak ada**: kedua kasus tidak memakainya, karena layar pertama dan kalimat pengantar sudah mengatakan cara mainnya.
 8. Teks kunci menyebut nama pengirimnya, bukan "temanmu".
 
-## Layar pertama
+## Layar pertama (M3.9, varian A uji K-06)
 
 Halaman kalender besar (`OKTOBER 2025` / `8` / `RABU`), lalu:
 
-- Judul: **Kita mundur ke Rabu, 8 Oktober 2025.**
-- Satu kalimat: *Teman-temanmu di grup lagi ngomongin satu saham yang harganya melonjak. Cek omongan mereka ke dokumen resminya.*
+- Judul (`pembuka.judul`): **Cek omongan saham di grup ke dokumen resminya.**
+- Satu contoh gelembung — dibaca dari pesan soal 1, bukan ditulis kedua kali: **Bayu** · *Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.* (tanpa tanggal, tanpa jam, tidak bisa diketuk)
+- Ajakan (`pembuka.ajak`): **Betul atau keliru?**
 - Tombol: **Mulai kasus**
 - Baris meta di bawah tombol: *3 soal · sekitar 5 menit · tanpa akun, tanpa skor*
-- Kaki halaman: tiga kalimat tetap.
+- Kaki halaman: tiga kalimat tetap, di bawah lipatan.
 
-Tiga baris aturan main dari v2 dihapus.
+"Kita mundur ke Rabu, 8 Oktober 2025." dan kalimat M3.5 dihapus. Kenapa: data alpha 23 Sep 2026 mencatat 13 orang
+asing dan nol yang selesai; ±9 sesi masuk soal 1 lalu pergi dalam 1–15 detik tanpa ketukan; tiga orang uji duduk
+balik bertanya "ini aplikasi apa?". Di uji K-06 (155 penguji tanpa konteks + 10 penilai buta; pengujinya model
+bahasa, derau ±2/5) varian ini menjawab "ini apa" 9/10 (kalimat lama 10/20). Pemilik menyetujui rupanya 24 Sep 2026
+dini hari. Patokan gambarnya: `docs/contoh/k06/`.
 
-Kalimat dan baris meta itu diputuskan M3.5 sesudah uji duduk 22 Sep: ditanya
+Riwayat: kalimat dan baris meta M3.5 diputuskan sesudah uji duduk 22 Sep: ditanya
 "tadi aku minta kamu ngapain?", penguji menjawab *"cari tahu orang ngerti saham
 atau enggak"* — "grup obrolanmu" terbaca sebagai kata benda tentang aplikasi,
 bukan sebagai orang. Alasan berhenti yang diucapkan: *"ga tau berapa soalnya;
 lebih suka soal dikit biar fokus, kalau banyak males"*. Jumlah soal di baris meta
 dibaca dari data (`kasus.soal.length`), menitnya dari `kasus.pembuka.menit`.
 
-## Soal 1 — Bayu, 19.38
+## Soal 1 — Bayu, 19.38 (M3.9: pemanasan, varian A uji K-06)
 
-**Petunjuk (hanya di soal ini, di bawah keping kalender):** Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.
+Disalin persis dari kontrak M3.9 D-4 dan dijaga huruf demi huruf oleh `factory/kasus/soal1-k06.test.ts`.
 
-**Pesan:** Gila, saham D naik 22 kali dari Agustus! Pasti karena mau dibeli investor asing. Bursa juga udah kasih pengumuman soal saham ini.
+**Petunjuk:** tidak ada. **Istilah:** tidak ada.
 
-**Pengantar kartu:** Cek omongan Bayu ke dua dokumen ini:
+**Pesan:** Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.
 
-**Kartu, istilah, opsi, jawaban (b), kartu penentu:** seperti v2.
+**Pengantar kartu:** Betul atau keliru? Cek ke dua dokumen ini:
+
+**Kartu 1 (penentu) — `susp-2025-06-30`** · *Pengumuman bursa · 30 Jun 2025*
+> Bursa menyetop sementara jual-beli saham ini: laporan keuangan tahunannya belum diserahkan. Per **1 Agustus** dibuka lagi.
+
+**Kartu 2 — `kelipatan-2025-08-01-2025-10-08`** (turunan) · *Dihitung dari data harga*
+> **Rp8** pada **1 Agustus**, **Rp178** hari ini: naik **22 kali**.
 
 **Judul pertanyaan:** Omongan Bayu cocok dengan dokumennya?
 
-**Teks kunci:** Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain dari yang dikira Bayu: jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata "investor asing" atau "akuisisi" di dokumen mana pun. Kartu harga hanya memberi tahu *bahwa* harganya naik 22 kali, bukan *kenapa*. Salah-kaprah yang umum: menganggap harga yang naik sebagai semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.
+- a. Betul, pengumuman bursanya soal investor asing.
+- **b. Keliru, pengumumannya soal laporan keuangan telat.** ← jawaban
+- c. Betul, pengumuman itu yang bikin harganya naik 22 kali.
+- d. Keliru, pengumumannya soal harga yang naik terlalu cepat.
+
+**Teks kunci:** Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain dari yang dikira Bayu: jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata "investor asing" di kartu mana pun. Kartu harga hanya memberi tahu bahwa harganya naik 22 kali, bukan kenapa. Salah-kaprah yang umum: menganggap harga yang naik sebagai semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.
+
+Kenapa berubah: di uji K-06, penguji yang sampai di kartu soal 1 lama "belum tahu harus jawab apa" 10/10; versi ini 3/10, dan kata sebelum opsi pertama turun 116 → 72. Kartu penentu kini pertama, jadi di 360 × 640 ia terlihat utuh tanpa menggulir.
 
 ## Soal 2 — Dimas, 19.42
 
 **Pesan:** Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.
 
-**Pengantar kartu:** Cek omongan Dimas ke dua dokumen ini:
+**Pengantar kartu:** Betul atau keliru? Cek ke dua dokumen ini: (sejak M3.9 sama di semua soal; isi soal 2 tidak berubah)
 
 **Kartu, istilah, opsi, jawaban (a), kartu penentu:** seperti v2.
 
@@ -64,7 +82,7 @@ dibaca dari data (`kasus.soal.length`), menitnya dari `kasus.pembuka.menit`.
 
 **Pesan:** Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik.
 
-**Pengantar kartu:** Cek omongan Rara ke empat dokumen ini:
+**Pengantar kartu:** Betul atau keliru? Cek ke empat dokumen ini: (sejak M3.9 sama di semua soal; isi soal 3 tidak berubah)
 
 **Kartu, istilah, opsi, jawaban (c), kartu penentu:** seperti v2.
 

@@ -2,6 +2,8 @@
 
 Dokumen ini mengikat, **bersama layar contoh `docs/contoh/layar-soal.html`**. Kalau kata-kata di sini dan contoh itu berbeda, **contoh yang menang**: pemilik menyetujuinya dengan matanya di ponsel (21 Sep 2026) sesudah menolak tiga versi yang ditafsirkan dari dokumen kata-kata. Yang tidak disebut di sini dan tidak ada di contoh tidak ditambahkan.
 
+Patokan kedua `docs/contoh/layar-soal-v3d.html` (22 Sep 2026) mengikat balon melayang dan penanda "sesudahnya" di keping. Patokan ketiga `docs/contoh/k06/` (varian A uji K-06, **disetujui pemilik pada 24 Sep 2026 dini hari**: *"rupanya oke, lanjut varian A ke produk"*) mengikat **isi dan urutan** layar pertama dan soal 1 — tidak mengikat keping; untuk keping, dua patokan pertama yang berlaku.
+
 ## Subjek, pembaca, tugas halaman
 
 - **Subjek:** satu hari yang dibekukan di Bursa Efek Indonesia. Seseorang di grup obrolan memberi kabar; pemain memeriksanya ke dokumen resmi. *Orang kasih kabar, kita verify.*
@@ -20,7 +22,7 @@ Apa pun yang merupakan suara *kami* di luar kartu (temuan jejak verifikasi, pesa
 
 ## Tanda tangan: kalender sobek
 
-Tidak berubah dari versi 2 dan sudah terbukti di ponsel pemilik: halaman kalender besar bergerigi di layar pertama; keping bergerigi yang menempel di layar soal ("HARI INI · RABU 8 OKT 2025", nama hari berwarna `--merah-kalender`); sobekan 700 ms di layar pembukaan yang mulai 250 ms sesudah layar tampil; kalender "Kamu kembali ke hari ini" di layar terima kasih; pergantian langsung untuk `prefers-reduced-motion`. **Keping kalender adalah satu-satunya tulisan kapital ber-spasi di layar soal sebelum dikunci**; sesudah dikunci ia ditemani cap umpan balik, dan hanya itu.
+Tidak berubah dari versi 2 dan sudah terbukti di ponsel pemilik: halaman kalender besar bergerigi di layar pertama; keping bergerigi yang menempel di layar soal ("HARI INI · RABU 8 OKT 2025", nama hari berwarna `--merah-kalender`) — **satu baris: tanggal di kiri, bulatan kemajuan di kanan** (seperti patokan; sejak M3.2 sampai M3.9 produk keliru menaruh bulatan di bawah tanggal), dan di kanan bulatan satu **penanda "sesudahnya"**: kotak 10 × 8 bertepi atas bergerigi, halaman kalender yang belum disobek, bernama "Lalu apa yang terjadi sesudahnya"; sobekan 700 ms di layar pembukaan yang mulai 250 ms sesudah layar tampil; kalender "Kamu kembali ke hari ini" di layar terima kasih; pergantian langsung untuk `prefers-reduced-motion`. **Keping kalender adalah satu-satunya tulisan kapital ber-spasi di layar soal sebelum dikunci**; sesudah dikunci ia ditemani cap umpan balik, dan hanya itu.
 
 ## Empat peran teks — tidak ada yang kelima
 
@@ -44,13 +46,17 @@ Token versi 2 tetap (`--kertas`, `--lembar`, `--tinta`, `--tinta-redup`, `--stem
 - **Satu pintu per lembar, di kakinya:** baris setinggi ≥ 44 px, "Lihat sumbernya ›" atau "Lihat cara menghitungnya ›", berwarna `--stempel`, panah berputar saat terbuka. Isinya **terbuka di tempat**, di dalam lembar itu. Tidak ada laci, dialog, atau lembar bawah.
 - **Baris istilah:** "Arti istilah: lot · tanggal ex ›" — berbingkai, kata bergaris bawah, panah; artinya terbuka di bawahnya.
 - **Opsi:** berbentuk tombol selebar kolom, ≥ 56 px, tepi `--garis-kontrol`; terpilih = tepi 2 px `--stempel` dan huruf opsi terisi.
-- **Bilah bawah selalu membawa satu tindakan yang masuk akal:** opsi belum terlihat → tombol garis tepi "↓ Jawab di bawah"; opsi terlihat dan belum memilih → bilah tidak ada; sudah memilih → "Kunci jawaban"; sesudah dikunci → "Lanjut ke soal n" / "Lihat yang terjadi sesudahnya". Tombol utama tidak pernah tampil mati.
+- **Bilah bawah selalu membawa satu tindakan yang masuk akal:** opsi belum terlihat → tombol garis tepi "↓ Pilih jawaban"; opsi terlihat dan belum memilih → bilah tidak ada; sudah memilih → "Kunci jawaban"; sesudah dikunci → "Lanjut ke soal n" / "Lihat yang terjadi sesudahnya". Tombol utama tidak pernah tampil mati.
 - Yang bukan kontrol tidak boleh tampak seperti kontrol: tidak ada panah, garis bawah, atau warna tautan pada benda yang diam.
 - Umpan tekan (`:active`) pada semua kontrol; fokus papan ketik 2 px `--stempel`.
 
+## Urutan layar pertama
+
+Varian A uji K-06 (M3.9, disetujui pemilik 24 Sep 2026 dini hari): halaman kalender besar → **judul** (`pembuka.judul`, grotesk rapat 28 px, satu-satunya judul layar ini) → **satu contoh gelembung** — nama pengirim dan isi pesan soal 1 (dibaca dari `soal[0].pesan`, tidak ditulis kedua kali), tanpa tanggal, tanpa jam, tidak bisa diketuk → **ajakan** (`pembuka.ajak`, peran *isi*) → bilah bawah "Mulai kasus" + baris meta. "Kita mundur ke …" tidak ada lagi di layar ini; tanggalnya dibawa kalender dan kaki. Di 360 × 640 keempatnya terlihat tanpa menggulir. Kaki tiga kalimat selalu di bawah lipatan (layar ini setinggi jendela) dan bantalan bawahnya setinggi bilah terukur, supaya garisnya tidak mengintip di atas tombol dan kalimat terakhirnya bisa digulir ke atas bilah.
+
 ## Urutan layar soal
 
-Keping kalender → (soal 1 saja: satu kalimat petunjuk) → pesan teman → "Cek omongan {nama} ke {n} dokumen ini:" → lembar-lembar → baris istilah → judul pertanyaan → opsi → "↑ Kembali ke dokumen" (mendarat di kalimat pengantar, tidak tertutup keping). Kaki halaman tiga kalimat hanya di layar pertama dan layar akhir.
+Keping kalender → pesan teman → "Betul atau keliru? Cek ke {n} dokumen ini:" ({n} dieja: dua/tiga/empat; sama di semua soal) → lembar-lembar (di soal 1, **kartu penentu lebih dulu**) → baris istilah → judul pertanyaan → opsi → "↑ Kembali ke dokumen". Soal 1 adalah pemanasan: tanpa baris petunjuk (medan `petunjuk` tetap ada di skema dan tidak dirender bila kosong) dan tanpa istilah di DADA. Kaki halaman tiga kalimat hanya di layar pertama dan layar akhir.
 
 ## Sesudah dikunci
 
@@ -58,7 +64,7 @@ Cap miring "COCOK DENGAN KARTU" / "BELUM COCOK DENGAN KARTU" tetap seperti versi
 
 ## Kata-kata
 
-**Mulai kasus** → **↓ Jawab di bawah** → **Kunci jawaban** → **Lanjut ke soal 2 / 3** → **Lihat yang terjadi sesudahnya** → **Langsung ke ringkasan ↓** → **Lanjut: tiga pertanyaan singkat** → **Selesai** · **Mau coba kasus lain**. Di lembar: **Lihat sumbernya**, **Lihat cara menghitungnya**; di soal: **Arti istilah**, **↑ Kembali ke dokumen**. Huruf kalimat, tanpa tanda seru. Umpan balik berbicara tentang kartu, bukan orangnya. Kosakata pabrik hanya di dalam "Rincian teknis".
+**Mulai kasus** → **↓ Pilih jawaban** (sejak M3.9; dulu "↓ Jawab di bawah") → **Kunci jawaban** → **Lanjut ke soal 2 / 3** → **Lihat yang terjadi sesudahnya** → **Langsung ke ringkasan ↓** → **Lanjut: tiga pertanyaan singkat** → **Selesai** · **Mau coba kasus lain**. Di layar pertama: judul **Cek omongan saham di grup ke dokumen resminya.** dan ajakan **Betul atau keliru?** (keduanya dari berkas kasus). Di atas kartu: **Betul atau keliru? Cek ke {n} dokumen ini:**. Di lembar: **Lihat sumbernya**, **Lihat cara menghitungnya**; di soal: **Arti istilah**, **↑ Kembali ke dokumen**. Kata-kata varian A sudah diuji tebak buta (K-05/K-06); satu frasa yang diubah bisa membalik hasilnya, jadi ia tidak dirapikan atas selera. Huruf kalimat, tanpa tanda seru. Umpan balik berbicara tentang kartu, bukan orangnya. Kosakata pabrik hanya di dalam "Rincian teknis".
 
 ## Yang sengaja tidak ada
 

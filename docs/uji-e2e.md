@@ -154,6 +154,19 @@ dilihat browser tanpa membuka browser.
 | **M3.8 F-1** `mulai` kasus KEDUA hilang (sesi tak masuk penyebut mana pun); E-20e merah 1–3 dari 8 putaran, sudah sejak `da820db` | `pilih-kasus.spec.ts` E-20e `--repeat-each` (tes meja: `bungkus.test.ts`, urutan terapan-ulang React) | `bungkus.ts`: `bersihkan` kembali membuang MENURUT JUMLAH (`slice(n)`) |
 | **M3.8 T-09** E-10 [ULTJ] di proyek `lebar` merah ±1/20: prasyarat "ringkasan di luar layar" diukur selagi sobekan kalender masih menutup ruangnya (judul y ≈ 813–893 selama animasi, ≈ 717 sesudahnya — di DALAM layar 800 px) | `permainan.spec.ts` E-10 (di ponsel prasyaratnya tetap wajib; di `lebar` dicatat sebagai anotasi bila tidak berlaku — tes TIDAK menunggu animasinya, karena justru ketukan di tengah animasi yang dijaga F-M36-1) | — (cacat TES, bukan produk). **Catatan:** sabotase F-M36-1 di baris atas ("guliran kedua dihapus") ternyata HIJAU, juga di `da820db` (6/6) — penjaga itu tidak lagi menggigit di mesin ini; belum diperbaiki di M3.8 |
 | **M3.8** INV: UA mentah, perujuk lengkap, atau alamat di pesan galat meninggalkan ponsel | `kiriman-privasi.spec.ts` E-26 (memotret badan tiap kiriman `/e`) | `perangkat.ts`: `peramban_dalam` = UA mentah · `perujuk` = alamat lengkap · `alur.ts`: galat tidak disamarkan — ketiganya `nol "Mozilla"` / `nol "://"` merah |
+| **M3.9** 13 orang asing, nol selesai; tiga penguji bertanya "ini aplikasi apa?" — layar pertama tidak mengatakan dirinya | `layar-pertama.spec.ts` E-27a–e (kedua kasus) | `Aplikasi.tsx`: contoh gelembung diganti teks tetap (E-27b) · judul kembali "Kita mundur ke …" (E-27a) · ajakan di atas contoh (E-27c) · `gaya.css`: `min-height` layar pertama dicabut → garis kaki mengintip 21 px di atas tombol (E-27d/e) · kaki tanpa bantalan setinggi bilah (E-27d) |
+| **M3.9** Pengantar kartu dan label bilah varian A; soal 1 tanpa petunjuk | `layar-soal-k06.spec.ts` E-28 (kedua kasus) | `alur.ts`: `kalimatAntar` kalimat lama · `LABEL_TURUN` "↓ Jawab di bawah" · `Aplikasi.tsx`: petunjuk cadangan dirender saat `null` (hanya e2e yang merah; Vitest hijau) |
+| **M3.9** Keping: bulatan di BAWAH tanggal sejak M3.2 (patokan: satu baris), penanda "sesudahnya" tidak pernah dibangun | `keping-satu-baris.spec.ts` E-29 (tabel kesetiaan dicetak) · `balon-melayang.spec.ts` E-19 | `gaya.css`: keping kembali `baseline` tanpa `space-between` · bulatan dipaksa ke baris kedua · gerigi penanda dicabut · `Aplikasi.tsx`: penanda dicabut · balon memakai tinggi keping lama 62 (E-19a/b/c/f) |
+| **M3.9** D-6: sepuluh detik pertama muat di 360 × 640 | `sepuluh-detik.spec.ts` E-30 (kedua kasus) | `factory/kasus/dada-2025-10-08.ts`: urutan kartu soal 1 dikembalikan · `Aplikasi.tsx`: contoh gelembung teks tetap · "Kita mundur ke" kembali · `gaya.css`: `.tanya` didorong 200 px (opsi a > 260 px) |
+
+Tiga tes lama ikut berubah di M3.9, dan ketiganya dibuktikan masih menggigit:
+`umpan-tekan.spec.ts` (C-4) kini mencari soal beristilah dari berkas kasus — soal 1
+pemanasan tidak punya baris istilah — dan menekan kontrolnya di tengah layar,
+bukan di balik bilah bawah; `pelacak.spec.ts` E-06i pindah ke 360 × 1250 karena
+layar pertama varian A sengaja tidak pernah muat sejendela (kaki di bawah
+lipatan), dan layar terpendek kini soal 1; `riwayat.spec.ts`, `permainan.spec.ts`,
+dan `asal-tidak-aman.spec.ts` mengenali layar pertama dari judulnya di berkas
+kasus, bukan dari kalimat "Kita mundur ke".
 
 ## Menambah tes ketika cacat baru ditemukan
 
