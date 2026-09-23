@@ -528,9 +528,48 @@ test('E-19g balon yang bergerak tidak menambah satu animasi pun di keping', asyn
   await tungguBalonDiam(page);
   const sebelum = await ukur(page);
 
+  /*
+   * "Saat balon bergerak" dipotret DI DALAM halaman, pada `transitionrun`
+   * balonnya — bukan lewat `ukur()` sesudah `expect.poll` melihat kelas
+   * `melayang-turun`. Di bawah beban CPU (M3.9 T-09, `e2e:beban` putaran 5)
+   * jarak antara ketukan dan panggilan `ukur()` berikutnya melewati 260 ms
+   * transisinya, sehingga "sedang bergerak" terbaca nol animasi dan prasyarat
+   * tes ini sendiri merah. Yang diukur tetap sama: jumlah animasi di keping
+   * ketika balon memang sedang bergerak.
+   */
+  await page.evaluate(() => {
+    const balon = document.querySelector('[data-uid="balon"]');
+    const keping = document.querySelector('[data-uid="keping"]');
+    if (balon === null || keping === null) return;
+    const w = window as unknown as { __e19g?: { balon: number; keping: number } };
+    balon.addEventListener(
+      'transitionrun',
+      () => {
+        w.__e19g = {
+          balon: balon.getAnimations().length,
+          keping: keping.getAnimations({ subtree: true }).length,
+        };
+      },
+      { once: true },
+    );
+  });
   await ketukTepiBalon(page);
   await expect.poll(async () => (await ukur(page)).turun).toBe(true);
-  const sedang = await ukur(page);
+  const potret = await expect
+    .poll(
+      async () =>
+        page.evaluate(
+          () => (window as unknown as { __e19g?: { balon: number; keping: number } }).__e19g ?? null,
+        ),
+      { message: 'transisi balon harus benar-benar berjalan' },
+    )
+    .not.toBeNull()
+    .then(async () =>
+      page.evaluate(
+        () => (window as unknown as { __e19g: { balon: number; keping: number } }).__e19g,
+      ),
+    );
+  const sedang = { animasiBalon: potret.balon, animasiKeping: potret.keping };
   await tungguBalonDiam(page);
   const sesudah = await ukur(page);
 
