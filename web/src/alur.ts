@@ -1172,7 +1172,7 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
         ms_kartu_terlihat_sebelum: msKartu,
         gulir_balik_ke_kartu: s.gulirBalik,
       });
-      const berikut = ubahSoal(keadaan, aksi.soal_id, (lama) => ({
+      const dikunci = ubahSoal(keadaan, aksi.soal_id, (lama) => ({
         ...lama,
         dikunci: true,
         benar,
@@ -1181,6 +1181,23 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
         msKartuTerlihatSaatKunci: msKartu,
         gulirBalikSaatKunci: lama.gulirBalik,
       }));
+      /*
+       * M3.8 D-10 (amandemen A-1). Sesudah mengunci, layar bergulir ke cap —
+       * dan balon yang sedang TURUN utuh menutupi ±200 px puncak layar, tepat
+       * di tempat cap akan mendarat. Balonnya dikembalikan mengintip di sini,
+       * di reducer, supaya tampilan dan data tetap satu sumber.
+       *
+       * TANPA peristiwa `balon`: yang ditekan pemain adalah "Kunci jawaban",
+       * bukan balonnya. `balon` mencatat apa yang orang lakukan terhadap
+       * balon, dan mencatat ini akan membuat setiap penguncian terbaca sebagai
+       * "menaikkan balon". Pola yang sama dengan `balon_melayang` yang juga
+       * mengembalikan balon ke intip tanpa mencatat apa pun.
+       */
+      const layarKini = namaLayar(keadaan.layar);
+      const berikut =
+        keadaanBalon(dikunci, layarKini) === 'turun'
+          ? { ...dikunci, balon: { ...dikunci.balon, [layarKini]: 'intip' as KeadaanBalon } }
+          : dikunci;
       const { peristiwa, urut } = catat.hasil;
       return { keadaan: { ...berikut, urut }, peristiwa };
     }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useReducer, useRef } from 'react';
 import { flushSync } from 'react-dom';
 // `PointerEvent` milik React dialiaskan: nama itu sudah dipakai jenis DOM di
 // pelacak ketukan di bawah, dan dua benda berbeda bernama sama adalah cara
@@ -1153,6 +1153,13 @@ export const INTIP_BALON_PX = 28;
  */
 export const BAGI_AMBANG_TARIK = 3;
 
+/**
+ * Jarak antara tepi bawah balon melayang dan sasaran gulir (M3.8 D-10), piksel.
+ * Menampung garis `0 2px 0` di bawah balon dan sedikit napas; tanpa jarak, cap
+ * menempel ke grip dan terbaca sebagai bagian balon.
+ */
+const JARAK_DI_BAWAH_BALON = 8;
+
 /** Gerak jari paling jauh yang masih dianggap ketukan, bukan tarikan (patokan v3d). */
 const GESER_TARIK = 6;
 
@@ -1280,6 +1287,45 @@ function BalonMelayang({
       kirim({ jenis: 'balon_melayang', layar, melayang: false });
     };
   }, [layar, kirim, acuanAsli]);
+
+  /*
+   * M3.8 D-10 (amandemen A-1): selama salinan ini aktif, ia ikut menutupi
+   * puncak layar — dan sasaran gulir (`.tanya`, `.kunci-jawaban`, `.antar`)
+   * harus mendarat DI BAWAHNYA, bukan hanya di bawah keping. Tepi itu diukur
+   * di sini dan diserahkan ke CSS lewat `--tepi-atas` di akar dokumen.
+   *
+   * Dihitung dari keadaan, bukan dari kotak balon yang sedang bergerak: saat
+   * mengunci, balon yang turun sedang meluncur kembali ke intip (260 ms), dan
+   * kotaknya di tengah luncuran bukan tempat ia akan berhenti. Yang diukur
+   * adalah hal yang tidak ikut bergerak: puncak wadah (= tinggi keping yang
+   * terukur), `--intip` terhitung, dan tinggi balon tanpa transformasi.
+   *
+   * `useLayoutEffect`, bukan `useEffect`: efek gulir di `useGulirKeCap` adalah
+   * efek biasa milik induknya, dan ia harus membaca angka yang sudah baru.
+   */
+  useLayoutEffect(() => {
+    const akar = document.documentElement;
+    const wadah = acuanWadah.current;
+    const balon = wadah?.querySelector<HTMLElement>('.melayang-balon') ?? null;
+    if (!aktif || wadah === null || balon === null) {
+      akar.style.removeProperty('--tepi-atas');
+      return;
+    }
+    const pasang = (): void => {
+      const intip = parseFloat(getComputedStyle(wadah).getPropertyValue('--intip'));
+      const turunUtuh = keadaan === 'turun';
+      const bawah =
+        wadah.getBoundingClientRect().top +
+        (turunUtuh ? balon.offsetHeight : Number.isFinite(intip) ? intip : INTIP_BALON_PX);
+      akar.style.setProperty('--tepi-atas', `${String(Math.ceil(bawah + JARAK_DI_BAWAH_BALON))}px`);
+    };
+    pasang();
+    window.addEventListener('resize', pasang, { passive: true });
+    return () => {
+      window.removeEventListener('resize', pasang);
+      akar.style.removeProperty('--tepi-atas');
+    };
+  }, [aktif, keadaan]);
 
   const mulaiTarik = (peristiwa: PointerReact<HTMLButtonElement>): void => {
     const simpul = peristiwa.currentTarget;

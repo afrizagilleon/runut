@@ -851,11 +851,18 @@ summary:focus-visible,
  * `.kunci-jawaban` ikut sejak M3.5 D-3: sesudah mengunci, layar bergulir ke
  * cap umpan balik, dan cap yang mendarat di balik keping sama saja dengan cap
  * yang tidak pernah terlihat.
+ *
+ * M3.8 D-10: sejak M3.7 bukan hanya keping yang menempel di puncak — balon
+ * melayang yang mengintip ikut menutupi 28 px + garisnya di bawah keping, dan
+ * cap mendarat di baliknya (terukur: cap.top 65,5 lawan balon.bottom 92,0).
+ * `--tepi-atas` DIUKUR oleh `BalonMelayang` selama salinannya aktif (tepi
+ * bawah balon yang terlihat, ditambah jarak); 64 px tetap bawaannya ketika
+ * tidak ada balon yang melayang.
  */
 .antar,
 .tanya,
 .kunci-jawaban {
-  scroll-margin-top: 64px;
+  scroll-margin-top: var(--tepi-atas, 64px);
 }
 
 /* --- baris istilah -------------------------------------------------------- */

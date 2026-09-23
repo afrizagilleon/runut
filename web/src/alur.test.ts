@@ -1867,11 +1867,16 @@ describe('alur — keadaan balon melayang hidup di reducer (M3.7 D-2)', () => {
   });
 
   it('keadaannya milik layar masing-masing', () => {
+    /*
+     * Sejak M3.8 D-10 mengunci mengembalikan balon layar itu ke intip, jadi
+     * balonnya diturunkan SESUDAH dikunci — pemain yang membaca pesannya lagi
+     * sebelum lanjut. Yang diuji tetap sama: keadaan soal-1 tidak bocor ke soal-2.
+     */
     const { keadaan } = jalankan([
       ...KE_SOAL_1,
-      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
       { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
       { jenis: 'kunci_jawaban', soal_id: 's1' },
+      { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' },
       { jenis: 'lanjut' },
     ]);
     expect(keadaanBalon(keadaan, 'soal-1')).toBe('turun');
@@ -2196,5 +2201,47 @@ describe('alur — daftar nama peristiwa bertambah TEPAT TIGA di M3.8', () => {
     expect(tambahan).toEqual(['tampak', 'galat', 'kinerja']);
     expect(NAMA_PERISTIWA).toHaveLength(NAMA_M37.length + 3);
     expect(NAMA_M37).toHaveLength(18);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 A-1 (D-10) — mengunci mengembalikan balon ke intip             */
+/* ------------------------------------------------------------------ */
+
+describe('alur — kunci jawaban mengembalikan balon yang turun ke intip (M3.8 D-10)', () => {
+  const TURUN: Aksi = { jenis: 'sakelar_balon', layar: 'soal-1', keadaan: 'turun', cara: 'ketuk' };
+
+  it('balon turun → kunci → intip, TANPA peristiwa balon baru (bukan tindakan pemain atas balon)', () => {
+    const { keadaan, peristiwa } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: true },
+      TURUN,
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('intip');
+    expect(peristiwa.filter((p) => p.nama === 'balon').map((p) => p.isi['keadaan'])).toEqual(['turun']);
+    // Hitungan kuota balon tidak berubah oleh kunci.
+    expect(keadaan.balonDicatat).toBe(1);
+  });
+
+  it('balon yang mengintip tetap mengintip; layar lain tidak tersentuh', () => {
+    const { keadaan } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'pilih', soal_id: 's1', kunci: 'b' },
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('intip');
+    expect(keadaan.balon['soal-2']).toBeUndefined();
+  });
+
+  it('kunci yang DITOLAK (tanpa pilihan) tidak menyentuh balon', () => {
+    const { keadaan } = jalankan([
+      ...KE_SOAL_1,
+      { jenis: 'balon_melayang', layar: 'soal-1', melayang: true },
+      TURUN,
+      { jenis: 'kunci_jawaban', soal_id: 's1' },
+    ]);
+    expect(keadaanBalon(keadaan, 'soal-1')).toBe('turun');
   });
 });
