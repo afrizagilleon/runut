@@ -30,8 +30,13 @@ const MAKS_AWAM = 220;
 const MAKS_KEPALA = 36;
 
 /* --- v3: pesan teman, judul pertanyaan, petunjuk (D-2) ------------------- */
-/** Kalimat layar pertama; satu kalimat, bukan paragraf. */
-const MAKS_KALIMAT_PEMBUKA = 160;
+/**
+ * Judul layar pertama (M3.9 D-1): dua baris besar di 360 px, tidak lebih.
+ * Varian A uji K-06 memakai 46 karakter.
+ */
+const MAKS_JUDUL_PEMBUKA = 60;
+/** Ajakan di bawah contoh gelembung layar pertama (M3.9 D-1): satu baris. */
+const MAKS_AJAK_PEMBUKA = 40;
 /**
  * Lama main yang boleh dijanjikan baris meta layar pertama (M3.5 D-1).
  *
@@ -306,17 +311,36 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
     }
   };
 
-  // --- layar pertama (v3: satu kalimat) -----------------------------------
-  periksaTeks(kasus.pembuka.kalimat, 'pembuka (kalimat)', 'pemain');
-  if (kasus.pembuka.kalimat.trim() === '') {
-    tambah(masalah, 'PEMBUKA_KOSONG', 'Layar pertama tidak punya kalimat pembuka.');
+  // --- layar pertama (M3.9 D-1: judul + contoh gelembung + ajakan) --------
+  const bagianPembuka: Array<[nama: 'judul' | 'ajak', batas: number, kodePanjang: string]> = [
+    ['judul', MAKS_JUDUL_PEMBUKA, 'PEMBUKA_JUDUL_PANJANG'],
+    ['ajak', MAKS_AJAK_PEMBUKA, 'PEMBUKA_AJAK_PANJANG'],
+  ];
+  for (const [nama, batas, kodePanjang] of bagianPembuka) {
+    // Berkas JSON tidak membawa tipe: medan yang tidak ditulis sama sekali
+    // adalah medan kosong, bukan medan yang boleh dilewati.
+    const nilai: unknown = kasus.pembuka[nama];
+    const teks = typeof nilai === 'string' ? nilai : '';
+    if (teks.trim() === '') {
+      tambah(masalah, 'PEMBUKA_KOSONG', `Layar pertama tidak punya ${nama}.`);
+      continue;
+    }
+    periksaTeks(teks, `pembuka (${nama})`, 'pemain');
+    const panjang = teksPolos(teks).length;
+    if (panjang > batas) {
+      tambah(
+        masalah,
+        kodePanjang,
+        `Medan ${nama} layar pertama ${String(panjang)} karakter polos, lebih dari ${String(batas)}.`,
+      );
+    }
   }
-  if (teksPolos(kasus.pembuka.kalimat).length > MAKS_KALIMAT_PEMBUKA) {
+  if (Object.prototype.hasOwnProperty.call(kasus.pembuka, 'kalimat')) {
     tambah(
       masalah,
-      'PEMBUKA_PANJANG',
-      `Kalimat layar pertama ${String(teksPolos(kasus.pembuka.kalimat).length)} karakter, ` +
-        `lebih dari ${String(MAKS_KALIMAT_PEMBUKA)}.`,
+      'PEMBUKA_KALIMAT_USANG',
+      'Layar pertama masih membawa medan "kalimat", yang sudah dihapus di M3.9 D-1 dan tidak ' +
+        'lagi dirender; tulis "judul" dan "ajak". Contoh gelembungnya dibaca dari soal pertama.',
     );
   }
   const menit = kasus.pembuka.menit;
@@ -471,7 +495,7 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
    * tempat: aturan yang diperiksa per bagian akan lupa bagian berikutnya.
    */
   const teksBerujukan: Array<[string, string]> = [
-    ['pembuka (kalimat)', kasus.pembuka.kalimat],
+    ...teksPembuka(kasus),
     ...kasus.fakta
       .filter((f) => f.awam !== null)
       .map((f): [string, string] => [`kartu "${f.fact_id}"`, f.awam?.isi ?? '']),
@@ -625,7 +649,7 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
   // --- INV-5: tidak ada ajakan bertransaksi -------------------------------
   const semuaTeks: Array<[string, string]> = [
     ['judul', kasus.judul],
-    ['pembuka (kalimat)', kasus.pembuka.kalimat],
+    ...teksPembuka(kasus),
     ...kasus.fakta.map((f): [string, string] => [`fakta "${f.fact_id}"`, f.klaim]),
     ...kasus.fakta
       .filter((f) => f.awam !== null)
@@ -682,6 +706,19 @@ export function periksaKasus(kasus: Kasus): MasalahValidasi[] {
   }
 
   return masalah;
+}
+
+/**
+ * Teks layar pertama yang dibaca pemain, dengan nama tempatnya. Medan yang
+ * tidak ditulis dilewati di sini; ketiadaannya sudah dilaporkan `PEMBUKA_KOSONG`.
+ */
+function teksPembuka(kasus: Kasus): Array<[string, string]> {
+  const hasil: Array<[string, string]> = [];
+  for (const nama of ['judul', 'ajak'] as const) {
+    const nilai: unknown = kasus.pembuka[nama];
+    if (typeof nilai === 'string') hasil.push([`pembuka (${nama})`, nilai]);
+  }
+  return hasil;
 }
 
 /**

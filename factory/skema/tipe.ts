@@ -287,13 +287,25 @@ export interface PesanTeman {
 }
 
 /**
- * Layar pertama (v3): satu kalimat saja.
+ * Layar pertama (M3.9 D-1, varian A uji K-06): judul, satu contoh omongan,
+ * dan ajakan.
  *
- * Tiga baris aturan main v2 dihapus — pemilik tidak membacanya, ia langsung
- * mengetuk dan menggulir. Cara mainnya pindah ke `Soal.petunjuk` di soal 1.
+ * Urutan di layar: kalender besar → `judul` → contoh gelembung → `ajak` →
+ * tombol "Mulai kasus". Contoh gelembungnya **tidak punya medan sendiri**: ia
+ * dibaca dari `soal[0].pesan`, jadi layar pertama dan soal 1 tidak bisa
+ * berselisih kata. Data alpha 23 Sep: 13 orang asing, nol selesai, dan tiga
+ * orang uji duduk balik bertanya "ini aplikasi apa?" — satu kalimat pembuka
+ * tidak menjawabnya; satu contoh omongan menjawabnya 9/10 di uji K-06.
+ *
+ * Medan `kalimat` versi v3/M3.5 **dihapus**, dan validator menolak berkas yang
+ * masih membawanya (`PEMBUKA_KALIMAT_USANG`): kalimat yang tertinggal di berkas
+ * akan diam-diam tidak pernah tampil.
  */
 export interface Pembuka {
-  kalimat: string;
+  /** Judul layar pertama, paling banyak 60 karakter polos. */
+  judul: string;
+  /** Ajakan di bawah contoh gelembung, paling banyak 40 karakter polos. */
+  ajak: string;
   /**
    * Kira-kira berapa menit kasus ini dimainkan (M3.5 D-1), dipakai baris meta
    * di bawah tombol "Mulai kasus": *"3 soal · sekitar 5 menit · tanpa akun,

@@ -25,35 +25,35 @@ function soalPalsu(jumlah: number): Soal[] {
 
 describe('baris meta layar pertama (D-1)', () => {
   it('menyebut jumlah soal dari data: kasus tiga soal berkata "3 soal"', () => {
-    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { kalimat: 'Halo.', menit: 5 } });
+    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { judul: 'Halo.', ajak: 'Ya?', menit: 5 } });
     expect(baris).toBe('3 soal · sekitar 5 menit · tanpa akun, tanpa skor');
   });
 
   it('menyebut jumlah soal dari data: kasus empat soal berkata "4 soal"', () => {
-    const baris = barisMeta({ soal: soalPalsu(4), pembuka: { kalimat: 'Halo.', menit: 5 } });
+    const baris = barisMeta({ soal: soalPalsu(4), pembuka: { judul: 'Halo.', ajak: 'Ya?', menit: 5 } });
     expect(baris).toContain('4 soal');
     expect(baris).not.toContain('3 soal');
   });
 
   it('memakai menit dari data, bukan angka tetap', () => {
-    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { kalimat: 'Halo.', menit: 12 } });
+    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { judul: 'Halo.', ajak: 'Ya?', menit: 12 } });
     expect(baris).toBe('3 soal · sekitar 12 menit · tanpa akun, tanpa skor');
   });
 
   it('menghilangkan potongan menit kalau kasusnya tidak menuliskannya', () => {
-    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { kalimat: 'Halo.' } });
+    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { judul: 'Halo.', ajak: 'Ya?' } });
     expect(baris).toBe('3 soal · tanpa akun, tanpa skor');
     expect(baris).not.toContain('menit');
   });
 
   it('tidak menambah kalimat: hanya tiga potongan, dipisah titik tengah', () => {
-    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { kalimat: 'Halo.', menit: 5 } });
+    const baris = barisMeta({ soal: soalPalsu(3), pembuka: { judul: 'Halo.', ajak: 'Ya?', menit: 5 } });
     expect(baris.split(' · ')).toHaveLength(3);
     expect(baris).not.toContain('.');
   });
 
   it('murni: dua pemanggilan menghasilkan teks yang sama', () => {
-    const kasus = { soal: soalPalsu(3), pembuka: { kalimat: 'Halo.', menit: 5 } };
+    const kasus = { soal: soalPalsu(3), pembuka: { judul: 'Halo.', ajak: 'Ya?', menit: 5 } };
     expect(barisMeta(kasus)).toBe(barisMeta(kasus));
   });
 });

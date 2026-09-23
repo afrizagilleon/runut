@@ -279,7 +279,8 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
     const k = kasus();
     const semua = [
       k.judul,
-      k.pembuka.kalimat,
+      k.pembuka.judul,
+      k.pembuka.ajak,
       k.penutup.kepala,
       k.penutup.isi,
       ...k.fakta.map((f) => f.klaim),
@@ -304,7 +305,8 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
   it('nama dan kode emiten tidak muncul di satu pun teks sebelum layar pembukaan', () => {
     const k = kasus();
     const sebelumDibuka = [
-      k.pembuka.kalimat,
+      k.pembuka.judul,
+      k.pembuka.ajak,
       ...k.fakta.filter((f) => f.awam !== null).map((f) => f.awam?.isi ?? ''),
       ...k.soal.flatMap((s) => [s.pesan.isi, s.tanya, s.penjelasan, ...s.pilihan.map((p) => p.teks)]),
     ].join(' \n ');

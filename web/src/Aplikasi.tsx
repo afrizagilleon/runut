@@ -764,8 +764,13 @@ function LayarPembuka({
         pemilik tidak membacanya; cara mainnya kini muncul sebagai `petunjuk`
         di soal 1, tempat ia sedang melihat.
       */}
+      {/*
+        M3.9 T-01 (jembatan): medan `kalimat` sudah dihapus dari skema; susunan
+        layar pertama yang baru (judul → contoh gelembung → ajakan) lahir di
+        T-04. Sampai di sana, tempat kalimat lama membawa judul barunya.
+      */}
       <p className="isi hook" data-uid="kalimat-pembuka">
-        <Teks teks={kasus.pembuka.kalimat} sakelarSumber={sakelarSumber} />
+        <Teks teks={kasus.pembuka.judul} sakelarSumber={sakelarSumber} />
       </p>
       <div className="tindakan" data-uid="bilah">
         <button

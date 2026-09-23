@@ -41,7 +41,8 @@ function kasusMinimal(): Kasus {
     nama_samaran: 'Perusahaan X',
     tanggal_t: '2025-10-08',
     pembuka: {
-      kalimat: 'Grup obrolanmu ramai soal satu saham. Cek omongan mereka ke dokumen resminya.',
+      judul: 'Cek omongan saham di grup ke dokumen resminya.',
+      ajak: 'Betul atau keliru?',
     },
     fakta: [
       fakta({
@@ -515,28 +516,99 @@ describe('penanda hari-ini', () => {
 });
 
 describe('layar pertama', () => {
-  it('menolak layar pertama tanpa kalimat', () => {
+  /*
+   * M3.9 D-1: layar pertama tidak lagi membawa satu kalimat pembuka, melainkan
+   * judul (peran judul layar pertama) dan ajakan di bawah contoh gelembung.
+   * Contoh gelembungnya TIDAK punya medan sendiri: ia dibaca dari
+   * `soal[0].pesan`, jadi tidak ada teks kedua yang bisa berselisih dengannya.
+   */
+  it('menolak layar pertama tanpa judul', () => {
     const kasus = kasusMinimal();
-    kasus.pembuka.kalimat = '   ';
+    kasus.pembuka.judul = '   ';
     expect(kode(kasus)).toContain('PEMBUKA_KOSONG');
+    expect(pesan(kasus)).toContain('judul');
   });
 
-  it('menolak kalimat layar pertama yang melampaui 160 karakter', () => {
+  it('menolak layar pertama tanpa ajakan', () => {
     const kasus = kasusMinimal();
-    kasus.pembuka.kalimat = 'a'.repeat(161);
-    expect(kode(kasus)).toContain('PEMBUKA_PANJANG');
+    kasus.pembuka.ajak = '';
+    expect(kode(kasus)).toContain('PEMBUKA_KOSONG');
+    expect(pesan(kasus)).toContain('ajak');
   });
 
-  it('menerima kalimat tepat 160 karakter — batasnya benar-benar di situ', () => {
+  it('menolak berkas yang sama sekali tidak menulis judul atau ajakan', () => {
     const kasus = kasusMinimal();
-    kasus.pembuka.kalimat = 'a'.repeat(160);
-    expect(kode(kasus)).not.toContain('PEMBUKA_PANJANG');
+    const pembuka = kasus.pembuka as unknown as Record<string, unknown>;
+    delete pembuka['judul'];
+    delete pembuka['ajak'];
+    expect(kode(kasus).filter((k) => k === 'PEMBUKA_KOSONG')).toHaveLength(2);
   });
 
-  it('menolak angka telanjang di kalimat pembuka', () => {
+  it('menolak judul layar pertama yang melampaui 60 karakter', () => {
     const kasus = kasusMinimal();
-    kasus.pembuka.kalimat = 'Harga naik 22 kali lipat. Siapa yang betul?';
-    expect(kode(kasus)).toContain('ANGKA_TANPA_FACT_ID');
+    kasus.pembuka.judul = 'a'.repeat(61);
+    expect(kode(kasus)).toContain('PEMBUKA_JUDUL_PANJANG');
+    expect(pesan(kasus)).toContain('61');
+  });
+
+  it('menerima judul tepat 60 karakter — batasnya benar-benar di situ', () => {
+    const kasus = kasusMinimal();
+    kasus.pembuka.judul = 'a'.repeat(60);
+    expect(kode(kasus)).not.toContain('PEMBUKA_JUDUL_PANJANG');
+  });
+
+  it('menolak ajakan yang melampaui 40 karakter', () => {
+    const kasus = kasusMinimal();
+    kasus.pembuka.ajak = 'b'.repeat(41);
+    expect(kode(kasus)).toContain('PEMBUKA_AJAK_PANJANG');
+    expect(pesan(kasus)).toContain('41');
+  });
+
+  it('menerima ajakan tepat 40 karakter — batasnya benar-benar di situ', () => {
+    const kasus = kasusMinimal();
+    kasus.pembuka.ajak = 'b'.repeat(40);
+    expect(kode(kasus)).not.toContain('PEMBUKA_AJAK_PANJANG');
+  });
+
+  it('mengukur panjangnya atas teks polos, sesudah penanda rujukan dilepas', () => {
+    const kasus = kasusMinimal();
+    // 60 karakter tampil; penandanya sendiri tidak dibaca siapa pun.
+    kasus.pembuka.judul = `${'a'.repeat(54)} [[harga-akhir|Rp178]]`;
+    expect(kode(kasus)).not.toContain('PEMBUKA_JUDUL_PANJANG');
+  });
+
+  it('menolak angka telanjang di judul dan di ajakan', () => {
+    const judul = kasusMinimal();
+    judul.pembuka.judul = 'Harga naik 22 kali lipat.';
+    expect(kode(judul)).toContain('ANGKA_TANPA_FACT_ID');
+    expect(pesan(judul)).toContain('pembuka (judul)');
+
+    const ajak = kasusMinimal();
+    ajak.pembuka.ajak = 'Betul atau keliru, 3 soal?';
+    expect(kode(ajak)).toContain('ANGKA_TANPA_FACT_ID');
+    expect(pesan(ajak)).toContain('pembuka (ajak)');
+  });
+
+  it('menolak ajakan bertransaksi dan tanda tebal di layar pertama', () => {
+    const transaksi = kasusMinimal();
+    transaksi.pembuka.ajak = 'Beli sekarang atau tidak?';
+    expect(kode(transaksi)).toContain('AJAKAN_TRANSAKSI');
+
+    const tebal = kasusMinimal();
+    tebal.pembuka.judul = 'Cek **omongan** saham di grup.';
+    expect(kode(tebal)).toContain('TEKS_DITEBALKAN');
+  });
+
+  /*
+   * Medan lama dihapus dari skema, dan validator menolak berkas yang masih
+   * membawanya. Tanpa penolakan ini, kalimat lama yang tertinggal di sebuah
+   * berkas kasus akan diam-diam tidak pernah tampil — dan penulisnya mengira
+   * ia sedang mengubah layar pertama.
+   */
+  it('menolak medan kalimat lama yang tidak lagi dirender (M3.9 D-1)', () => {
+    const kasus = kasusMinimal();
+    (kasus.pembuka as unknown as Record<string, unknown>)['kalimat'] = 'Kalimat lama.';
+    expect(kode(kasus)).toContain('PEMBUKA_KALIMAT_USANG');
   });
 
   /*

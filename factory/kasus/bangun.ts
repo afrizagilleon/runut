@@ -101,7 +101,7 @@ type DefinisiBerfakta = Pick<
 /** Semua fact_id yang disebut definisi kasus, baik lewat daftar maupun lewat teks. */
 function idYangDisebut(def: DefinisiBerfakta): string[] {
   const id: string[] = [...def.fakta_terlihat, ...def.pembukaan.fact_ids];
-  id.push(...rujukanDalamTeks(def.pembuka.kalimat));
+  id.push(...rujukanDalamTeks(def.pembuka.judul), ...rujukanDalamTeks(def.pembuka.ajak));
   for (const s of def.soal) {
     /*
      * `pesan` dan `tanya` sengaja TIDAK ikut: keduanya ucapan orang, dan

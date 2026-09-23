@@ -57,24 +57,23 @@ export const DADA_2025_10_08: DefinisiKasus = {
   },
 
   /*
-   * Layar pertama v3: SATU kalimat. Tiga baris aturan main v2 dihapus —
-   * pemilik tidak membacanya (uji ponsel 22 Sep), ia langsung mengetuk.
-   * Cara mainnya pindah ke `petunjuk` di soal 1, tempat ia sedang melihat.
+   * Layar pertama M3.9 (varian A uji K-06, disetujui pemilik 24 Sep 2026):
+   * judul, satu contoh omongan, lalu ajakan. Contoh omongannya TIDAK ditulis
+   * di sini — layar pertama membacanya dari `soal[0].pesan`, jadi keduanya
+   * tidak bisa berselisih kata.
+   *
+   * Kalimat M3.5 ("Teman-temanmu di grup lagi ngomongin…") diganti karena data
+   * alpha 23 Sep: 13 orang asing, nol selesai, dan tiga orang uji duduk balik
+   * bertanya "ini aplikasi apa?". Di uji K-06, "ini apa" terjawab 9/10 dengan
+   * judul ini, 10/20 dengan kalimat lama. Kata-katanya disalin PERSIS dari
+   * kontrak M3.9 D-4; satu frasa bisa membalik uji tebak buta.
    *
    * Tanpa rujukan angka: layar ini belum punya kartu, dan angka bertaut yang
    * tidak bisa dibuka adalah janji kosong.
    */
   pembuka: {
-    /*
-     * Diganti di M3.5 (D-1). Uji duduk 22 Sep: ditanya "tadi aku minta kamu
-     * ngapain?", penguji menjawab "cari tahu orang ngerti saham atau enggak" —
-     * "grup obrolanmu" terbaca sebagai kata benda tentang aplikasi, bukan
-     * sebagai orang. "Teman-temanmu di grup lagi ngomongin" menyebut orangnya
-     * lebih dulu, dan orang itulah yang omongannya dicek.
-     */
-    kalimat:
-      'Teman-temanmu di grup lagi ngomongin satu saham yang harganya melonjak. ' +
-      'Cek omongan mereka ke dokumen resminya.',
+    judul: 'Cek omongan saham di grup ke dokumen resminya.',
+    ajak: 'Betul atau keliru?',
     /*
      * Median durasi penyelesai di data alpha ±5–10 menit; baris meta menulis
      * "sekitar 5 menit" supaya janjinya tidak lebih panjang daripada

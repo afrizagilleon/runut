@@ -173,12 +173,16 @@ describe('M2a D-1 — skema generasi kedua', () => {
    * 2. **M4 D-4** — hanya `penutup`: pesan penutup pindah dari kode komponen ke
    *    berkas kasus, dan kalimatnya diganti dari "perusahaan yang **sehat**"
    *    (penilaian saham) menjadi peristiwanya (4 baris).
+   * 3. **M3.9 D-1/D-4** — layar pertama (`pembuka.judul`/`ajak` menggantikan
+   *    `kalimat`) dan soal 1 (varian A uji K-06). Soal 2 dan 3 tidak disentuh;
+   *    itu dijaga `factory/kasus/soal1-k06.test.ts` per bagian, bukan hanya di
+   *    SHA seluruh berkas.
    *
    * Perubahan lain di berkas ini tetap merah di sini.
    */
   it('INV-A: berkas kasus yang sedang dimainkan tetap byte-identik', () => {
     const sha = createHash('sha256').update(readFileSync(BERKAS_KASUS)).digest('hex');
-    expect(sha).toBe('c4433ab18028973d7774e4f1b594f0c3756035298cadd91e20d88c8de66e97e2');
+    expect(sha).toBe('174eea9a69cb2e6b84e959100e62c0bc7365f9cc9d14448e6e0ceeae68e90eb9');
   });
 
   /*
@@ -196,9 +200,9 @@ describe('M2a D-1 — skema generasi kedua', () => {
     }
   });
 
-  it('M3.5 D-1: yang berubah di berkas kasus hanya blok pembuka', () => {
+  it('M3.9 D-1: blok pembuka membawa judul, ajakan, dan lama main — bukan kalimat lama', () => {
     const kasus = muatKasus();
-    expect(Object.keys(kasus.pembuka).sort()).toEqual(['kalimat', 'menit']);
+    expect(Object.keys(kasus.pembuka).sort()).toEqual(['ajak', 'judul', 'menit']);
     expect(kasus.pembuka.menit).toBe(5);
   });
 

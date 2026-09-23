@@ -74,7 +74,8 @@ function kasusContohUmum(): DefinisiKasusUmum {
       return [naik, ...pemegang.fakta];
     },
     pembuka: {
-      kalimat: 'Grup obrolanmu ramai soal satu saham. Cek omongan mereka ke dokumennya.',
+      judul: 'Cek omongan saham di grup ke dokumen resminya.',
+      ajak: 'Betul atau keliru?',
       menit: 4,
     },
     fakta_terlihat: [

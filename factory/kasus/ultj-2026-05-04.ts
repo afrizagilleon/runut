@@ -150,10 +150,13 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
     return [turun, beda, tahun, ...besar.fakta, ...lain.fakta, jumlahLaporan, tambahan];
   },
 
+  /*
+   * Layar pertama M3.9 D-4: judul dan ajakan sama dengan DADA; contoh
+   * omongannya dibaca dari `soal[0].pesan` kasus ini (lihat `Pembuka`).
+   */
   pembuka: {
-    kalimat:
-      'Grup obrolanmu ramai soal satu saham yang pagi tadi bukanya jatuh. ' +
-      'Cek omongan mereka ke dokumen resminya.',
+    judul: 'Cek omongan saham di grup ke dokumen resminya.',
+    ajak: 'Betul atau keliru?',
     menit: 5,
   },
 

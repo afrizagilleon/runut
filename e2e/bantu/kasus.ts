@@ -32,8 +32,8 @@ export interface KasusUji {
   kasus_id: string;
   tanggal_t: string;
   emiten: { simbol: string; nama: string; papan: string; sektor: string };
-  /** Layar pertama; `menit` opsional (M3.5 D-1). */
-  pembuka: { kalimat: string; menit?: number };
+  /** Layar pertama (M3.9 D-1): judul, ajakan; `menit` opsional (M3.5 D-1). */
+  pembuka: { judul: string; ajak: string; menit?: number };
   soal: SoalUji[];
   /** Layar pembukaan; paragraf garis waktu dan ketiga daftar ringkasan (M3.6 D-1). */
   pembukaan: {

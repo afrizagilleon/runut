@@ -27,13 +27,12 @@ describe('berkas kasus yang ikut repo', () => {
     expect(kasus.disclaimer).toHaveLength(3);
   });
 
-  it('membawa kalimat pembuka v3.5 dan lama main yang dibaca baris meta (M3.5 D-1)', () => {
+  it('membawa judul dan ajakan layar pertama M3.9 dan lama main baris meta (M3.5 D-1)', () => {
     const kasus = muatBerkas();
-    expect(kasus.pembuka.kalimat).toBe(
-      'Teman-temanmu di grup lagi ngomongin satu saham yang harganya melonjak. ' +
-        'Cek omongan mereka ke dokumen resminya.',
-    );
-    expect(kasus.pembuka.kalimat.length).toBeLessThanOrEqual(120);
+    // Disalin PERSIS dari kontrak M3.9 D-4 (varian A uji K-06).
+    expect(kasus.pembuka.judul).toBe('Cek omongan saham di grup ke dokumen resminya.');
+    expect(kasus.pembuka.ajak).toBe('Betul atau keliru?');
+    expect(Object.keys(kasus.pembuka).sort()).toEqual(['ajak', 'judul', 'menit']);
     expect(kasus.pembuka.menit).toBe(5);
   });
 
@@ -122,7 +121,8 @@ describe('berkas kasus yang ikut repo', () => {
     const kasus = muatBerkas();
     const disingkirkan = ['fil-2025-08-25', 'fil-2025-09-29', 'fil-2025-09-29-01'];
     const teksPemain = [
-      kasus.pembuka.kalimat,
+      kasus.pembuka.judul,
+      kasus.pembuka.ajak,
       ...kasus.soal.flatMap((s) => [
         s.pesan.isi,
         s.penjelasan,

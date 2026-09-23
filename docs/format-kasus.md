@@ -10,7 +10,7 @@ soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
 |---|---|
 | `soal.batang` (satu paragraf: konteks + tanggal + pertanyaan) | `soal.pesan { nama, jam, isi }` + `soal.tanya` |
 | — | `soal.petunjuk` (satu kalimat, hanya di soal pertama) |
-| `kasus.pembuka { hook, aturan[3] }` | `kasus.pembuka { kalimat }` |
+| `kasus.pembuka { hook, aturan[3] }` | `kasus.pembuka { kalimat }` → sejak M3.9 `kasus.pembuka { judul, ajak }` |
 
 ## Kasus
 
@@ -22,7 +22,7 @@ soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
 | `emiten` | Simbol, nama resmi, papan pencatatan, dan sektor emiten yang sebenarnya. |
 | `nama_samaran` | Nama yang dipakai di batang soal supaya jawabannya tidak bisa dicari di mesin pencari. |
 | `tanggal_t` | Tanggal beku kasus; fakta yang baru tersedia sesudahnya tidak boleh terlihat pemain. |
-| `pembuka` | Layar pertama: **satu** `kalimat`, paling panjang 160 karakter, ditambah `menit` yang opsional. Tiga baris aturan main versi 2 dihapus di versi 3 — pemilik tidak membacanya; cara mainnya sekarang `petunjuk` di soal pertama. |
+| `pembuka` | Layar pertama (M3.9): `judul` (≤ 60 karakter) dan `ajak` (≤ 40 karakter), ditambah `menit` yang opsional. Contoh gelembung di antara keduanya **tidak punya medan sendiri** — ia dibaca dari `soal[0].pesan`. Medan `kalimat` lama dihapus. |
 | `fakta` | Seluruh fakta berlabel, termasuk yang hanya muncul di pembukaan. |
 | `fakta_terlihat` | Daftar `fact_id` yang menjadi kartu. **Harus sama persis dengan gabungan seluruh `kartu` di semua soal.** |
 | `soal` | Tiga soal beserta pesan teman, kartu, istilah, pilihan, kunci, dan penjelasan. |
@@ -37,8 +37,23 @@ soal dibaca sebagai kabar dari teman yang harus dicek ke dokumen:
 
 | field | arti |
 |---|---|
-| `kalimat` | Satu kalimat, paling panjang 160 karakter, tanpa angka telanjang (`ANGKA_TANPA_FACT_ID`) dan tanpa tautan ke fakta yang belum tersedia pada `tanggal_t`. |
+| `judul` | **Wajib.** Judul layar pertama, paling panjang 60 karakter polos (`PEMBUKA_JUDUL_PANJANG`), tanpa angka telanjang (`ANGKA_TANPA_FACT_ID`) dan tanpa tautan ke fakta yang belum tersedia pada `tanggal_t`. Kosong atau tidak ditulis: `PEMBUKA_KOSONG`. |
+| `ajak` | **Wajib.** Ajakan di bawah contoh gelembung, paling panjang 40 karakter polos (`PEMBUKA_AJAK_PANJANG`); aturan angka dan tautannya sama dengan `judul`. |
 | `menit` | **Opsional.** Kira-kira berapa menit kasus ini dimainkan; bilangan bulat 1–30 (`PEMBUKA_MENIT`). |
+
+Urutan layar pertama (M3.9 D-2): kalender besar → `judul` → **satu contoh
+gelembung** (nama pengirim dan isi `soal[0].pesan`, tanpa tanggal dan tanpa jam,
+tidak bisa diketuk) → `ajak` → tombol "Mulai kasus" dan baris meta. Contohnya
+sengaja dibaca dari soal pertama, bukan ditulis kedua kali: dua teks yang
+berjanji sama adalah dua teks yang akan berselisih diam-diam.
+
+Medan `kalimat` (v3, M3.5) **dihapus** dari skema, dan validator menolak berkas
+yang masih membawanya (`PEMBUKA_KALIMAT_USANG`) — kalimat yang tertinggal di
+berkas tidak pernah tampil, dan penulisnya akan mengira ia sedang mengubah
+layar pertama. Kenapa diganti: data alpha 23 Sep 2026 mencatat 13 orang asing
+dan nol yang selesai, dan tiga orang uji duduk balik bertanya "ini aplikasi
+apa?". Di uji K-06 (varian A, disetujui pemilik 24 Sep 2026) judul dan satu
+contoh omongan menjawab "ini apa" 9 dari 10 kali; kalimat lama 10 dari 20.
 
 `menit` dipakai satu tempat saja: baris meta di bawah tombol "Mulai kasus",
 `3 soal · sekitar 5 menit · tanpa akun, tanpa skor`. Jumlah soalnya dibaca dari
