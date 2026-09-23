@@ -85,6 +85,12 @@ export const NAMA_PERISTIWA = [
    * rusak" dan "orangnya tidak tertarik" menghasilkan data yang sama: diam.
    */
   'galat',
+  /*
+   * M3.8 D-4 — nama ketiga dan terakhir. "Halamannya lambat dimuat" adalah
+   * penjelasan yang wajar untuk orang yang pergi dalam lima detik, dan sampai
+   * sekarang tidak bisa dibuktikan maupun dibantah. Sekali per sesi.
+   */
+  'kinerja',
   'tutup',
 ] as const;
 
@@ -153,6 +159,11 @@ export const BATAS_TAMPAK = 30;
  * ribuan galat identik dalam semenit; yang berguna darinya hanya satu baris.
  */
 export const BATAS_GALAT = 5;
+
+/** Angka milidetik yang layak dikirim: hingga, tidak negatif, dibulatkan. */
+function msSah(nilai: number | null | undefined): number | null {
+  return typeof nilai === 'number' && Number.isFinite(nilai) && nilai >= 0 ? Math.round(nilai) : null;
+}
 
 export type Layar =
   | { jenis: 'pembuka' }
@@ -301,6 +312,14 @@ export interface Keadaan {
   tampakDicatat: number;
   /** Pesan galat (sudah disamarkan) yang sudah dicatat sesi ini; paling banyak `BATAS_GALAT`. */
   galatDicatat: readonly string[];
+  /**
+   * `ms_ke_tampil` dari aksi `mulai` (M3.8 D-4); `null` kalau sesi ini bukan
+   * yang pertama di pemuatan halamannya — dan sesi seperti itu tidak pernah
+   * melahirkan `kinerja`.
+   */
+  msKeTampil: number | null;
+  /** `kinerja` sudah lahir; ia hanya lahir sekali per sesi. */
+  kinerjaDicatat: boolean;
   akhir: JawabanAkhir;
   /** Sudah menekan Selesai. */
   akhirTerkirim: boolean;
@@ -355,8 +374,23 @@ export type Aksi =
        * kelima belas medannya — dan HANYA itu, lihat `isiPerangkat`.
        */
       perangkat?: Perangkat | null;
+      /**
+       * Milidetik dari `performance.timeOrigin` ke efek pertama React (M3.8
+       * D-4). Hanya sesi PERTAMA sebuah pemuatan halaman yang membawanya: kasus
+       * kedua yang dibuka tanpa memuat ulang tidak punya waktu muat sendiri.
+       * Ia bukan medan `mulai` — ia disimpan, lalu lahir sebagai `kinerja`.
+       */
+      ms_ke_tampil?: number | null;
     }
-  | { jenis: 'ketuk'; uid: string | null; x: number; y: number; mati: boolean }
+  | {
+      jenis: 'ketuk';
+      uid: string | null;
+      x: number;
+      y: number;
+      mati: boolean;
+      /** `performance.now()` saat jari diangkat (M3.8 D-4); tidak ikut ke `ketuk`. */
+      ms_muat?: number | null;
+    }
   | { jenis: 'kartu_masuk_layar'; soal_id: string }
   | { jenis: 'kartu_keluar_layar'; soal_id: string }
   | { jenis: 'kembali_ke_kartu'; soal_id: string }
@@ -472,6 +506,8 @@ export function keadaanAwal({
     sembunyiPada: null,
     tampakDicatat: 0,
     galatDicatat: [],
+    msKeTampil: null,
+    kinerjaDicatat: false,
     akhir: { rating: null, terasa: null, sumber_jawaban: null, teks: null },
     akhirTerkirim: false,
     minatDitekan: false,
@@ -746,7 +782,7 @@ function catatGulirLayar(keadaan: Keadaan, catat: Catatan): void {
  *
  * Urut naik; `catatAmbangGulir` bergantung pada urutan itu.
  */
-export const AMBANG_GULIR = [50, 100] as const;
+export const AMBANG_GULIR = [25, 50, 75, 100] as const;
 
 /**
  * `gulir` ambang: pertama kali 50 % dan pertama kali 100 % di tiap kunjungan
@@ -827,6 +863,19 @@ function masukLayar(
 }
 
 /**
+ * `kinerja` sekali per sesi (M3.8 D-4), kalau belum dan kalau ada angkanya.
+ *
+ * Dipanggil dari tiga tempat — ketukan hidup pertama, halaman tersembunyi,
+ * dan `tutup` — dan yang pertama menang. Tanpa ketukan, `ms_ke_interaktif`
+ * `null`: ketiadaan, bukan nol.
+ */
+function catatKinerja(keadaan: Keadaan, catat: Catatan, msInteraktif: number | null): Keadaan {
+  if (keadaan.kinerjaDicatat || keadaan.msKeTampil === null) return keadaan;
+  catat.tambah('kinerja', { ms_ke_tampil: keadaan.msKeTampil, ms_ke_interaktif: msInteraktif });
+  return { ...keadaan, kinerjaDicatat: true };
+}
+
+/**
  * Kelima belas medan perangkat untuk peristiwa `mulai` (M3.8 D-1).
  *
  * Dibangun dari **daftar medan**, bukan dengan menyebar objek pemanggil: medan
@@ -864,7 +913,11 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
   switch (aksi.jenis) {
     case 'mulai': {
       if (keadaan.mulaiPada !== null) return abaikan(keadaan);
-      const dimulai: Keadaan = { ...keadaan, mulaiPada: waktu };
+      const dimulai: Keadaan = {
+        ...keadaan,
+        mulaiPada: waktu,
+        msKeTampil: msSah(aksi.ms_ke_tampil),
+      };
       const catat = new Catatan(dimulai, waktu, dimulai.urut);
       catat.tambah('mulai', {
         lebar_layar: aksi.lebar_layar,
@@ -1033,8 +1086,14 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
         ...keadaan,
         sembunyiPada: sembunyi ? waktu : null,
       };
-      if (keadaan.tampakDicatat >= BATAS_TAMPAK) return { keadaan: berikut, peristiwa: [] };
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      // Halaman yang tersembunyi mungkin tidak pernah terlihat lagi: `kinerja`
+      // yang belum lahir lahir SEKARANG, sebelum `tampak`, supaya ikut disiram.
+      const denganKinerja = sembunyi ? catatKinerja(berikut, catat, null) : berikut;
+      if (keadaan.tampakDicatat >= BATAS_TAMPAK) {
+        const hasil = catat.hasil;
+        return { keadaan: { ...denganKinerja, urut: hasil.urut }, peristiwa: hasil.peristiwa };
+      }
       catat.tambah('tampak', {
         layar: namaLayar(keadaan.layar),
         keadaan: aksi.keadaan,
@@ -1045,7 +1104,7 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
       });
       const { peristiwa, urut } = catat.hasil;
       return {
-        keadaan: { ...berikut, tampakDicatat: keadaan.tampakDicatat + 1, urut },
+        keadaan: { ...denganKinerja, tampakDicatat: keadaan.tampakDicatat + 1, urut },
         peristiwa,
       };
     }
@@ -1286,8 +1345,13 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
         y: rasioTiga(aksi.y),
         mati: aksi.mati,
       });
+      // Ketukan HIDUP pertama yang membawa waktunya menutup `kinerja` (D-4).
+      // Ketukan mati tidak "ditangani" siapa pun, jadi ia bukan tanda interaktif.
+      const msMuat = msSah(aksi.ms_muat);
+      const berikut =
+        !aksi.mati && msMuat !== null ? catatKinerja(keadaan, catat, msMuat) : keadaan;
       const { peristiwa, urut } = catat.hasil;
-      return { keadaan: { ...keadaan, ketukan: keadaan.ketukan + 1, urut }, peristiwa };
+      return { keadaan: { ...berikut, ketukan: keadaan.ketukan + 1, urut }, peristiwa };
     }
 
     case 'catat_gulir': {
@@ -1338,6 +1402,8 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
 
     case 'tutup': {
       const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      // Kesempatan terakhir untuk `kinerja` sesi yang tidak pernah diketuk.
+      catatKinerja(keadaan, catat, null);
       // Layar terakhir juga punya kedalaman gulir, dan justru layar tempat
       // orang berhenti yang paling ingin diketahui pemilik.
       catatGulirLayar(keadaan, catat);

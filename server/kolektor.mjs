@@ -154,6 +154,12 @@ const MEDAN_ISI = {
    * (T-03: diterima longgar; enum, batas 120, dan penolakan alamat di T-05.)
    */
   galat: { jenis: 'teks', pesan: 'teks', sumber: 'teks' },
+  /*
+   * M3.8 D-4: sekali per sesi. `ms_ke_interaktif` null = tidak ada ketukan
+   * hidup sebelum halaman tersembunyi atau ditutup.
+   * (T-04: diterima longgar; rentang di T-05.)
+   */
+  kinerja: { ms_ke_tampil: 'angka', ms_ke_interaktif: 'angka?' },
   akhir_kirim: {
     rating: 'angka?',
     terasa: 'teks?',

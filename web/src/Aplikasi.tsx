@@ -173,6 +173,24 @@ function perangkatDariPeramban(): Perangkat | null {
   }
 }
 
+/**
+ * Waktu muat halaman untuk `kinerja` (M3.8 D-4), sekali per PEMUATAN.
+ *
+ * Diambil di efek pertama React — saat layar pertama sudah dirender — dan
+ * hanya diberikan kepada sesi pertama pemuatan ini. Kasus kedua yang dibuka
+ * tanpa memuat ulang tidak punya waktu muat sendiri; memberinya angka yang
+ * sama akan menggandakan satu pengukuran menjadi dua baris di ringkasan.
+ * `StrictMode` menjalankan efek dua kali di mode pengembangan: yang kedua
+ * membaca angka yang sama, dan reducer mengabaikan `mulai` kedua.
+ */
+let tampilPemuatanIni: { sesi: string; ms: number } | null = null;
+
+function msKeTampil(sesi: string): number | null {
+  if (typeof performance === 'undefined') return null;
+  tampilPemuatanIni ??= { sesi, ms: performance.now() };
+  return tampilPemuatanIni.sesi === sesi ? tampilPemuatanIni.ms : null;
+}
+
 export function Aplikasi(): JSX.Element {
   const [bungkus, dispatch] = useReducer(reduksi, null, () => awalBungkus(kasusSekali(), sesiBaru()));
   const { kasus, keadaan } = bungkus;
@@ -226,6 +244,7 @@ export function Aplikasi(): JSX.Element {
       pengunjung,
       kunjungan_ke,
       perangkat: perangkatDariPeramban(),
+      ms_ke_tampil: msKeTampil(keadaan.sesi),
     });
     /*
      * `keadaan.sesi` ikut sebagai ketergantungan sejak M4 D-4: membuka kasus
@@ -305,6 +324,9 @@ export function Aplikasi(): JSX.Element {
         mati,
         x: rasioLayar(peristiwa.clientX, window.innerWidth),
         y: rasioLayar(peristiwa.clientY, window.innerHeight),
+        // M3.8 D-4: waktu sejak halaman mulai dimuat. Reducer memakainya
+        // sekali, untuk ketukan hidup pertama; ia tidak ikut ke `ketuk`.
+        ms_muat: typeof performance === 'undefined' ? null : performance.now(),
       });
     };
 

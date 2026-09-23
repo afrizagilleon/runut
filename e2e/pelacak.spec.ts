@@ -17,7 +17,6 @@ import { bacaKasus } from './bantu/kasus.ts';
 import {
   mulaiDenganPenanda,
   peristiwaSesi,
-  tungguCocok,
   tungguPeristiwa,
   tungguSatuSesi,
   type BarisPeristiwa,
@@ -245,11 +244,18 @@ test('E-06d gulir tercatat, dan angkanya cocok dengan scrollY (OQ-4)', async ({ 
   await page.goBack();
   await expect(page.getByRole('button', { name: 'Mulai kasus' })).toBeVisible();
 
-  const gulir = await tungguCocok(
-    sesi,
-    (p) => p.nama === 'gulir' && p.isi.layar === 'soal-1',
-    'menunggu peristiwa gulir untuk layar soal-1',
-  );
+  /*
+   * `gulir` TINGGALKAN-layar, bukan `gulir` pertama. Sejak M3.8 D-5 ambang
+   * 25 % ikut lahir di tengah geseran ini, jadi `gulir` pertama soal-1 adalah
+   * ambangnya (0,25) — bukan kedalaman terjauh yang sedang diuji di sini.
+   */
+  await expect
+    .poll(() => pisahGulir(peristiwaSesi(sesi), 'soal-1').tinggalkan.length, {
+      timeout: 20_000,
+      message: 'menunggu gulir tinggalkan-layar untuk soal-1',
+    })
+    .toBeGreaterThanOrEqual(1);
+  const gulir = pisahGulir(peristiwaSesi(sesi), 'soal-1').tinggalkan;
   const maksTercatat = Number(gulir[0]?.isi.maks ?? -1);
   const maksDihitung = Math.round(maksUji) / 100;
 
@@ -427,7 +433,7 @@ function pisahGulir(
  * dituntut D-1 ("ikut kelompok biasa"), dan tes ini membuktikan ia tidak hilang
  * karena menunggu.
  */
-test('E-06h ambang gulir 50% lalu 100% lahir sekali, sebelum kunci_jawaban', async ({ page }) => {
+test('E-06h ambang gulir 25/50/75/100% lahir sekali, sebelum kunci_jawaban', async ({ page }) => {
   const kasus = bacaKasus();
   const soal = kasus.soal[0];
   expect(soal).toBeDefined();
@@ -496,14 +502,19 @@ test('E-06h ambang gulir 50% lalu 100% lahir sekali, sebelum kunci_jawaban', asy
   const sebelumKunci = peristiwaSesi(sesi).filter((p) => p.urut <= (kunci?.urut ?? 0));
   const { ambang } = pisahGulir(sebelumKunci, 'soal-1');
 
+  // M3.8 D-5: 25 % dan 75 % ikut lahir, di antara keduanya.
   expect(
     ambang.map((p) => p.isi.maks),
-    'tepat dua ambang, 0,5 lalu 1, keduanya sebelum kunci_jawaban',
-  ).toEqual([0.5, 1]);
-  expect(ambang[0]?.urut ?? 0).toBeLessThan(ambang[1]?.urut ?? 0);
-  expect(ambang[1]?.urut ?? 0).toBeLessThan(kunci?.urut ?? 0);
-  expect(ambang[1]?.t_ms ?? 0, 't_ms ambang 100% harus lebih besar daripada 50%').toBeGreaterThan(
-    ambang[0]?.t_ms ?? 0,
+    'tepat empat ambang, 0,25 · 0,5 · 0,75 · 1, semuanya sebelum kunci_jawaban',
+  ).toEqual([0.25, 0.5, 0.75, 1]);
+  for (let i = 1; i < ambang.length; i += 1) {
+    expect(ambang[i - 1]?.urut ?? 0).toBeLessThan(ambang[i]?.urut ?? 0);
+  }
+  const a50 = ambang[1];
+  const a100 = ambang[3];
+  expect(a100?.urut ?? 0).toBeLessThan(kunci?.urut ?? 0);
+  expect(a100?.t_ms ?? 0, 't_ms ambang 100% harus lebih besar daripada 50%').toBeGreaterThan(
+    a50?.t_ms ?? 0,
   );
 
   // Pindah layar: `gulir` tinggalkan-layar TETAP lahir seperti sebelum M3.4a.
@@ -517,7 +528,9 @@ test('E-06h ambang gulir 50% lalu 100% lahir sekali, sebelum kunci_jawaban', asy
     soal1.tinggalkan.map((p) => p.isi.maks),
     'tepat satu gulir tinggalkan-layar untuk soal-1',
   ).toEqual([1]);
-  expect(soal1.ambang.map((p) => p.isi.maks), 'ambangnya tidak lahir ulang').toEqual([0.5, 1]);
+  expect(soal1.ambang.map((p) => p.isi.maks), 'ambangnya tidak lahir ulang').toEqual([
+    0.25, 0.5, 0.75, 1,
+  ]);
 
   // Dan tidak satu pun medan baru menyelinap masuk lewat jalur sungguhan.
   for (const p of semua.filter((x) => x.nama === 'gulir')) {
@@ -528,7 +541,8 @@ test('E-06h ambang gulir 50% lalu 100% lahir sekali, sebelum kunci_jawaban', asy
   console.log(
     `E-06h sesi=${sesi} tinggi-gulir=${String(tinggiGulir)}px langkah=${String(langkahPx)}px ` +
       `jejak=${jejak.map((p) => p.toFixed(0)).join('>')}% ` +
-      `t_ms 50%=${String(ambang[0]?.t_ms)} 100%=${String(ambang[1]?.t_ms)} ` +
+      `t_ms 25%=${String(ambang[0]?.t_ms)} 50%=${String(a50?.t_ms)} 75%=${String(ambang[2]?.t_ms)} ` +
+      `100%=${String(a100?.t_ms)} ` +
       `kunci_jawaban=${String(kunci?.t_ms)} · gulir soal-1: ambang=${String(soal1.ambang.length)} ` +
       `tinggalkan=${String(soal1.tinggalkan.length)}`,
   );
@@ -554,7 +568,7 @@ test('E-06h ambang gulir 50% lalu 100% lahir sekali, sebelum kunci_jawaban', asy
  * mengatakannya dan merah: hijau diam-diam atas nol subyek adalah persis
  * hiasan yang dilarang repo ini.
  */
-test('E-06i layar yang muat satu jendela melahirkan kedua ambang di detik nol', async ({ page }) => {
+test('E-06i layar yang muat satu jendela melahirkan keempat ambang di detik nol', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 760 });
 
   const kasus = bacaKasus();
@@ -612,7 +626,7 @@ test('E-06i layar yang muat satu jendela melahirkan kedua ambang di detik nol', 
   ).toBeGreaterThan(0);
   expect(panjang.length, 'dan harus ada pembandingnya: layar yang TIDAK muat').toBeGreaterThan(0);
 
-  /* --- layar yang muat: kedua ambang tepat sesudah layar_masuk, t_ms sama --- */
+  /* --- layar yang muat: keempat ambang tepat sesudah layar_masuk (M3.8 D-5) --- */
   for (const nama of pendek) {
     const masuk = semua.find((p) => p.nama === 'layar_masuk' && p.isi.layar === nama);
     expect(masuk, `layar_masuk untuk ${nama}`).toBeDefined();
@@ -620,9 +634,9 @@ test('E-06i layar yang muat satu jendela melahirkan kedua ambang di detik nol', 
       (p) => p.urut > (masuk?.urut ?? 0) && p.nama === 'gulir' && p.isi.layar === nama,
     );
     expect(
-      sesudah.slice(0, 2).map((p) => p.isi.maks),
-      `kedua ambang ${nama} lahir segera sesudah layar_masuk`,
-    ).toEqual([0.5, 1]);
+      sesudah.slice(0, 4).map((p) => p.isi.maks),
+      `keempat ambang ${nama} lahir segera sesudah layar_masuk`,
+    ).toEqual([0.25, 0.5, 0.75, 1]);
     expect(sesudah[0]?.urut, `ambang ${nama} tepat sesudah layar_masuk`).toBe((masuk?.urut ?? 0) + 1);
     /*
      * "Detik nol", bukan "milidetik yang sama". `layar_masuk` lahir di efek
@@ -632,7 +646,7 @@ test('E-06i layar yang muat satu jendela melahirkan kedua ambang di detik nol', 
      * ketat daripada itu. Selisih terukurnya ikut dicetak, jadi pergeseran
      * sekecil apa pun kelihatan tanpa membuat tes bergantung pada jam.
      */
-    for (const p of sesudah.slice(0, 2)) {
+    for (const p of sesudah.slice(0, 4)) {
       const jarak = p.t_ms - (masuk?.t_ms ?? 0);
       expect(jarak, `ambang ${nama} tidak boleh mendahului layar_masuk`).toBeGreaterThanOrEqual(0);
       expect(jarak, `ambang ${nama} lahir pada detik nol layar itu`).toBeLessThan(500);
@@ -641,7 +655,7 @@ test('E-06i layar yang muat satu jendela melahirkan kedua ambang di detik nol', 
     console.log(
       `E-06i ${nama} MUAT: layar_masuk urut=${String(masuk?.urut)} t_ms=${String(masuk?.t_ms)} ` +
         `ambang=${sesudah
-          .slice(0, 2)
+          .slice(0, 4)
           .map(
             (p) =>
               `${String(p.isi.maks)}@urut${String(p.urut)}/t${String(p.t_ms)}(+${String(

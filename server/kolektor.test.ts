@@ -24,7 +24,7 @@ import { type Aksi, NAMA_PERISTIWA, keadaanAwal, langkah } from '../web/src/alur
 const UA_UJI = 'RunutUjiAgent/1.0 (agen-uji-yang-tidak-boleh-tercatat)';
 
 /** Nama peristiwa yang ditambahkan M3.8 sejauh ini (lihat `web/src/alur.test.ts`). */
-const TAMBAHAN_M38: readonly string[] = ['tampak', 'galat'];
+const TAMBAHAN_M38: readonly string[] = ['tampak', 'galat', 'kinerja'];
 
 let server: Server;
 let alamat: string;
@@ -1085,6 +1085,44 @@ describe('kolektor — peristiwa galat (M3.8 D-3)', () => {
       semua.push(...(hasil.peristiwa as unknown as Array<Record<string, unknown> & { nama: string }>));
     }
     expect(semua.filter((p) => p.nama === 'galat')).toHaveLength(2);
+    for (const p of semua) {
+      expect((periksaPeristiwa(p) as { galat?: string }).galat, p.nama).toBeUndefined();
+    }
+    const balas = await kirim(JSON.stringify(semua));
+    expect(balas.status).toBe(204);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 T-04 — kinerja, dan ambang 25/75                               */
+/* ------------------------------------------------------------------ */
+
+describe('kolektor — kinerja dan ambang 25/75 (M3.8 D-4, D-5)', () => {
+  it('keluaran reducer yang sungguhan lolos validator dan server', async () => {
+    let keadaan = keadaanAwal({
+      sesi: '2f1a1d6c-0000-4000-8000-000000000014',
+      kasus_id: 'dada-2025-10-08',
+      urutanSoal: ['s1'],
+      kunciBenar: { s1: 'b' },
+      kartuSoal: { s1: ['k1'] },
+    });
+    const semua: Array<Record<string, unknown> & { nama: string; isi: Record<string, unknown> }> = [];
+    let waktu = 1_000;
+    for (const a of [
+      { jenis: 'mulai', lebar_layar: 360, ms_ke_tampil: 640.4 },
+      { jenis: 'catat_gulir', persen: 100 },
+      { jenis: 'ketuk', uid: 'mulai', x: 0.5, y: 0.9, mati: false, ms_muat: 2_100.2 },
+      { jenis: 'tutup' },
+    ] as Aksi[]) {
+      waktu += 100;
+      const hasil = langkah(keadaan, a, waktu);
+      keadaan = hasil.keadaan;
+      semua.push(...(hasil.peristiwa as unknown as typeof semua));
+    }
+    const k = semua.filter((p) => p.nama === 'kinerja');
+    expect(k.map((p) => p.isi)).toEqual([{ ms_ke_tampil: 640, ms_ke_interaktif: 2_100 }]);
+    const maks = semua.filter((p) => p.nama === 'gulir').map((p) => p.isi['maks']);
+    expect(maks).toEqual(expect.arrayContaining([0.25, 0.5, 0.75, 1]));
     for (const p of semua) {
       expect((periksaPeristiwa(p) as { galat?: string }).galat, p.nama).toBeUndefined();
     }

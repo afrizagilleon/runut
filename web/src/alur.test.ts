@@ -13,6 +13,7 @@ import {
   BATAS_BALON,
   BATAS_TAMPAK,
   BATAS_GALAT,
+  AMBANG_GULIR,
   BATAS_KETUK,
   keadaanBalon,
   NAMA_PERISTIWA,
@@ -110,7 +111,9 @@ describe('alur — jalur tuntas', () => {
       'pembukaan_masuk',
       'gulir', // meninggalkan soal-3
       'layar_masuk', // pembukaan
-      'gulir', // M3.4a: ambang 50% dilewati di pembukaan (persen 80)
+      'gulir', // M3.8 D-5: ambang 25% dilewati di pembukaan (persen 80)
+      'gulir', // M3.4a: ambang 50%
+      'gulir', // M3.8 D-5: ambang 75%
       'pembukaan_selesai',
       'gulir', // meninggalkan pembukaan
       'layar_masuk', // akhir
@@ -1071,11 +1074,12 @@ describe('alur — kedalaman gulir per layar (D-8)', () => {
       { jenis: 'catat_gulir', persen: 20 },
       { jenis: 'lanjut' },
     ]);
-    // Dua peristiwa: ambang 50% saat 72% dilewati (M3.4a D-1), lalu angka
-    // terjauh yang sebenarnya saat layarnya ditinggalkan. Turun ke 20% tidak
-    // melahirkan apa pun.
+    // Tiga peristiwa: ambang 25% saat 35% (M3.8 D-5), ambang 50% saat 72%
+    // (M3.4a D-1), lalu angka terjauh yang sebenarnya saat layarnya
+    // ditinggalkan. Turun ke 20% tidak melahirkan apa pun.
     const g = peristiwa.filter((p) => p.nama === 'gulir');
     expect(g.map((p) => p.isi)).toEqual([
+      { layar: 'pembuka', maks: 0.25 },
       { layar: 'pembuka', maks: 0.5 },
       { layar: 'pembuka', maks: 0.72 },
     ]);
@@ -1092,7 +1096,9 @@ describe('alur — kedalaman gulir per layar (D-8)', () => {
     ]);
     const g = peristiwa.filter((p) => p.nama === 'gulir');
     expect(g.map((p) => [p.isi['layar'], p.isi['maks']])).toEqual([
+      ['pembuka', 0.25], // ambang, M3.8 D-5
       ['pembuka', 0.5], // ambang, M3.4a
+      ['pembuka', 0.75], // ambang, M3.8 D-5
       ['pembuka', 0.9], // meninggalkan pembuka
       ['soal-1', 0], // soal-1 tidak digulir sama sekali
     ]);
@@ -1514,8 +1520,12 @@ describe('alur — perpindahan lewat tombol peramban (A1-T2, C-1)', () => {
 const gulirUrut = (peristiwa: Peristiwa[]): Array<[unknown, unknown]> =>
   peristiwa.filter((p) => p.nama === 'gulir').map((p) => [p.isi['layar'], p.isi['maks']]);
 
-describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
-  it('melahirkan 50% lalu 100% masing-masing tepat sekali, dalam satu kunjungan', () => {
+describe('alur — gulir ambang 25/50/75/100 % (M3.4a D-1, M3.8 D-5)', () => {
+  it('ambangnya empat, urut naik: 25, 50, 75, 100 (M3.8 D-5)', () => {
+    expect([...AMBANG_GULIR]).toEqual([25, 50, 75, 100]);
+  });
+
+  it('melahirkan 25, 50, 75, 100 masing-masing tepat sekali, dalam satu kunjungan', () => {
     const { peristiwa } = jalankan([
       MULAI,
       { jenis: 'catat_gulir', persen: 20 },
@@ -1524,31 +1534,52 @@ describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
       { jenis: 'catat_gulir', persen: 100 },
     ]);
     expect(gulirUrut(peristiwa)).toEqual([
+      ['pembuka', 0.25],
       ['pembuka', 0.5],
+      ['pembuka', 0.75],
       ['pembuka', 1],
     ]);
   });
 
-  it('50% lahir tepat di 50, bukan sesudahnya', () => {
+  it('50% lahir tepat di 50, bukan sesudahnya (dan 25% ikut lahir lebih dulu)', () => {
     const { peristiwa } = jalankan([MULAI, { jenis: 'catat_gulir', persen: 50 }]);
-    expect(gulirUrut(peristiwa)).toEqual([['pembuka', 0.5]]);
+    expect(gulirUrut(peristiwa)).toEqual([
+      ['pembuka', 0.25],
+      ['pembuka', 0.5],
+    ]);
   });
 
-  it('49% belum melahirkan apa pun', () => {
-    const { peristiwa } = jalankan([MULAI, { jenis: 'catat_gulir', persen: 49 }]);
-    expect(gulirUrut(peristiwa)).toEqual([]);
+  it('24% belum melahirkan apa pun; 25% tepat melahirkan ambang pertama', () => {
+    expect(gulirUrut(jalankan([MULAI, { jenis: 'catat_gulir', persen: 24 }]).peristiwa)).toEqual([]);
+    expect(gulirUrut(jalankan([MULAI, { jenis: 'catat_gulir', persen: 25 }]).peristiwa)).toEqual([
+      ['pembuka', 0.25],
+    ]);
   });
 
-  it('lompatan langsung dari 0 ke 100 tetap melahirkan KEDUANYA, 50% lebih dulu', () => {
+  it('49% hanya 25%; 74% sampai 50%; 75% melahirkan 75%', () => {
+    expect(gulirUrut(jalankan([MULAI, { jenis: 'catat_gulir', persen: 49 }]).peristiwa)).toEqual([
+      ['pembuka', 0.25],
+    ]);
+    expect(
+      gulirUrut(jalankan([MULAI, { jenis: 'catat_gulir', persen: 74 }]).peristiwa).map(([, m]) => m),
+    ).toEqual([0.25, 0.5]);
+    expect(
+      gulirUrut(jalankan([MULAI, { jenis: 'catat_gulir', persen: 75 }]).peristiwa).map(([, m]) => m),
+    ).toEqual([0.25, 0.5, 0.75]);
+  });
+
+  it('lompatan langsung dari 0 ke 100 tetap melahirkan KEEMPATNYA, urut naik', () => {
     const { peristiwa } = jalankan([MULAI, { jenis: 'catat_gulir', persen: 100 }]);
     expect(gulirUrut(peristiwa)).toEqual([
+      ['pembuka', 0.25],
       ['pembuka', 0.5],
+      ['pembuka', 0.75],
       ['pembuka', 1],
     ]);
-    // Keduanya lahir dari satu pemanggilan reducer, jadi `t_ms`-nya sama;
+    // Keempatnya lahir dari satu pemanggilan reducer, jadi `t_ms`-nya sama;
     // yang membedakan urutannya adalah `urut`, dan itu yang dibaca peringkas.
     const g = peristiwa.filter((p) => p.nama === 'gulir');
-    expect(g[1]?.urut).toBe((g[0]?.urut ?? 0) + 1);
+    for (let i = 1; i < g.length; i += 1) expect(g[i]?.urut).toBe((g[i - 1]?.urut ?? 0) + 1);
   });
 
   it('naik–turun–naik tidak melahirkan ambang yang sama dua kali', () => {
@@ -1560,7 +1591,11 @@ describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
       { jenis: 'catat_gulir', persen: 5 },
       { jenis: 'catat_gulir', persen: 90 },
     ]);
-    expect(gulirUrut(peristiwa)).toEqual([['pembuka', 0.5]]);
+    expect(gulirUrut(peristiwa)).toEqual([
+      ['pembuka', 0.25],
+      ['pembuka', 0.5],
+      ['pembuka', 0.75],
+    ]);
   });
 
   it('100% yang sudah dilaporkan tidak lahir lagi walau dilapor ulang', () => {
@@ -1574,7 +1609,7 @@ describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
     expect(gulirUrut(peristiwa).filter(([, m]) => m === 1)).toHaveLength(1);
   });
 
-  it('pindah layar mengulang hitungan: tiap kunjungan punya 50% sendiri', () => {
+  it('pindah layar mengulang hitungan: tiap kunjungan punya ambang sendiri', () => {
     const { peristiwa } = jalankan([
       MULAI,
       { jenis: 'catat_gulir', persen: 70 },
@@ -1582,9 +1617,11 @@ describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
       { jenis: 'catat_gulir', persen: 70 },
     ]);
     expect(gulirUrut(peristiwa)).toEqual([
-      ['pembuka', 0.5], // ambang di pembuka
+      ['pembuka', 0.25], // ambang di pembuka
+      ['pembuka', 0.5],
       ['pembuka', 0.7], // meninggalkan pembuka
-      ['soal-1', 0.5], // ambang di soal-1, hitungan mulai dari nol lagi
+      ['soal-1', 0.25], // ambang di soal-1, hitungan mulai dari nol lagi
+      ['soal-1', 0.5],
     ]);
   });
 
@@ -1598,15 +1635,19 @@ describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
     ]);
     const soal3 = gulirUrut(peristiwa).filter(([l]) => l === 'soal-3');
     expect(soal3).toEqual([
-      ['soal-3', 0.5], // ambang, kunjungan 1
-      ['soal-3', 1], // ambang, kunjungan 1
+      ['soal-3', 0.25], // ambang, kunjungan 1
+      ['soal-3', 0.5],
+      ['soal-3', 0.75],
+      ['soal-3', 1],
       ['soal-3', 1], // meninggalkan soal-3
-      ['soal-3', 0.5], // ambang, kunjungan 2 — lahir lagi
+      ['soal-3', 0.25], // ambang, kunjungan 2 — lahir lagi
+      ['soal-3', 0.5],
+      ['soal-3', 0.75],
       ['soal-3', 1],
     ]);
   });
 
-  it('layar yang muat satu jendela: kedua ambang lahir tepat sesudah layar_masuk', () => {
+  it('layar yang muat satu jendela: keempat ambang lahir tepat sesudah layar_masuk', () => {
     /*
      * Pelapor di komponen menghitung `tinggi <= 0` sebagai 100%, dan ia melapor
      * sekali tiap ganti layar. Jadi "layar muat sejendela" sampai ke reducer
@@ -1623,22 +1664,26 @@ describe('alur — gulir ambang 50% dan 100% (M3.4a D-1)', () => {
     expect(namaUrut(peristiwa)).toEqual([
       'mulai',
       'layar_masuk', // pembuka
-      'gulir', // 50% — pada t_ms yang sama dengan layar_masuk
+      'gulir', // 25% — pada t_ms yang sama dengan layar_masuk
+      'gulir', // 50%
+      'gulir', // 75%
       'gulir', // 100%
       'gulir', // meninggalkan pembuka
       'layar_masuk', // soal-1
+      'gulir', // 25%
       'gulir', // 50%
+      'gulir', // 75%
       'gulir', // 100%
     ]);
     const masukPembuka = peristiwa[1];
-    for (const g of peristiwa.slice(2, 4)) expect(g.t_ms).toBe(masukPembuka?.t_ms);
+    for (const g of peristiwa.slice(2, 6)) expect(g.t_ms).toBe(masukPembuka?.t_ms);
   });
 
-  it('paling banyak DUA peristiwa ambang per kunjungan layar', () => {
+  it('paling banyak EMPAT peristiwa ambang per kunjungan layar', () => {
     const langkahGulir: Aksi[] = [];
     for (let p = 1; p <= 100; p += 1) langkahGulir.push({ jenis: 'catat_gulir', persen: p });
     const { peristiwa } = jalankan([MULAI, ...langkahGulir]);
-    expect(peristiwa.filter((p) => p.nama === 'gulir')).toHaveLength(2);
+    expect(peristiwa.filter((p) => p.nama === 'gulir')).toHaveLength(4);
   });
 
   it('bentuk medannya tetap { layar, maks } — tanpa medan baru (D-2)', () => {
@@ -1754,7 +1799,7 @@ describe('alur — daftar nama peristiwa (M3.7)', () => {
  * task-nya; di T-04 ia harus sama persis dengan ketiganya (tes di bawah).
  */
 const NAMA_M37: readonly string[] = [...NAMA_M36, 'balon'];
-const TAMBAHAN_M38: readonly string[] = ['tampak', 'galat'];
+const TAMBAHAN_M38: readonly string[] = ['tampak', 'galat', 'kinerja'];
 
 describe('alur — daftar nama peristiwa (M3.8)', () => {
   it('tambahan dibanding M3.7 hanya nama yang diizinkan kontrak, urut, tanpa yang hilang', () => {
@@ -2043,5 +2088,113 @@ describe('alur — peristiwa galat (M3.8 D-3)', () => {
     ]);
     expect(keadaan.ketukan).toBe(0);
     expect(peristiwa.filter((p) => p.nama === 'galat')).toHaveLength(1);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 D-4 — kinerja: sekali per sesi                                 */
+/* ------------------------------------------------------------------ */
+
+describe('alur — peristiwa kinerja (M3.8 D-4)', () => {
+  const MULAI_TAMPIL: Aksi = { jenis: 'mulai', lebar_layar: 375, ms_ke_tampil: 812.6 };
+  const hidup = (ms_muat: number): Aksi => ({
+    jenis: 'ketuk',
+    uid: 'mulai',
+    x: 0.5,
+    y: 0.5,
+    mati: false,
+    ms_muat,
+  });
+  const mati = (ms_muat: number): Aksi => ({
+    jenis: 'ketuk',
+    uid: null,
+    x: 0.5,
+    y: 0.5,
+    mati: true,
+    ms_muat,
+  });
+  const kinerja = (peristiwa: Peristiwa[]): Peristiwa[] => peristiwa.filter((p) => p.nama === 'kinerja');
+
+  it('ketukan HIDUP pertama melahirkan kinerja dengan kedua angka, dibulatkan', () => {
+    const { peristiwa } = jalankan([MULAI_TAMPIL, mati(1_500.2), hidup(2_345.7), hidup(9_000)]);
+    const k = kinerja(peristiwa);
+    expect(k).toHaveLength(1);
+    expect(k[0]?.isi).toEqual({ ms_ke_tampil: 813, ms_ke_interaktif: 2_346 });
+    expect(Object.keys(k[0]?.isi ?? {})).toEqual(['ms_ke_tampil', 'ms_ke_interaktif']);
+    // Lahir SESUDAH ketukan yang membuatnya: urutan dibaca sebagai sebab-akibat.
+    const i = peristiwa.findIndex((p) => p.nama === 'kinerja');
+    expect(peristiwa[i - 1]?.nama).toBe('ketuk');
+  });
+
+  it('tanpa ketukan hidup: kinerja lahir saat halaman tersembunyi, ms_ke_interaktif null', () => {
+    const { peristiwa } = jalankan([MULAI_TAMPIL, mati(1_000), { jenis: 'tampak', keadaan: 'sembunyi' }]);
+    const k = kinerja(peristiwa);
+    expect(k).toHaveLength(1);
+    expect(k[0]?.isi).toEqual({ ms_ke_tampil: 813, ms_ke_interaktif: null });
+    // Sebelum `tampak`, supaya ikut disiram bersama `tampak sembunyi`.
+    const i = peristiwa.findIndex((p) => p.nama === 'kinerja');
+    expect(peristiwa[i + 1]?.nama).toBe('tampak');
+  });
+
+  it('tanpa ketukan dan tanpa sembunyi: kinerja lahir di tutup, sebelum gulir dan tutup', () => {
+    const { peristiwa } = jalankan([MULAI_TAMPIL, { jenis: 'tutup' }]);
+    expect(namaUrut(peristiwa).slice(-3)).toEqual(['kinerja', 'gulir', 'tutup']);
+    expect(kinerja(peristiwa)[0]?.isi['ms_ke_interaktif']).toBeNull();
+  });
+
+  it('SEKALI per sesi, apa pun yang terjadi sesudahnya', () => {
+    const { peristiwa } = jalankan([
+      MULAI_TAMPIL,
+      { jenis: 'tampak', keadaan: 'sembunyi' },
+      { jenis: 'tampak', keadaan: 'kembali' },
+      hidup(5_000),
+      { jenis: 'tampak', keadaan: 'sembunyi' },
+      { jenis: 'tutup' },
+    ]);
+    expect(kinerja(peristiwa)).toHaveLength(1);
+  });
+
+  it('sesi tanpa ms_ke_tampil (kasus kedua di pemuatan yang sama) tidak melahirkan kinerja', () => {
+    const { peristiwa } = jalankan([MULAI, hidup(5_000), { jenis: 'tampak', keadaan: 'sembunyi' }, { jenis: 'tutup' }]);
+    expect(kinerja(peristiwa)).toHaveLength(0);
+  });
+
+  it('ketukan tanpa ms_muat tidak dihitung sebagai interaktif', () => {
+    const { peristiwa } = jalankan([
+      MULAI_TAMPIL,
+      { jenis: 'ketuk', uid: 'mulai', x: 0.5, y: 0.5, mati: false },
+      { jenis: 'tutup' },
+    ]);
+    expect(kinerja(peristiwa)[0]?.isi['ms_ke_interaktif']).toBeNull();
+  });
+
+  it('angka yang tidak masuk akal tidak dikirim', () => {
+    const { peristiwa } = jalankan([
+      { jenis: 'mulai', lebar_layar: 375, ms_ke_tampil: Number.NaN },
+      hidup(100),
+      { jenis: 'tutup' },
+    ]);
+    expect(kinerja(peristiwa)).toHaveLength(0);
+    const neg = jalankan([MULAI_TAMPIL, hidup(-5), { jenis: 'tutup' }]).peristiwa;
+    expect(kinerja(neg)[0]?.isi['ms_ke_interaktif']).toBeNull();
+  });
+
+  it('`mulai` sendiri tidak berubah bentuk: ms_ke_tampil bukan medan mulai', () => {
+    const { peristiwa } = jalankan([MULAI_TAMPIL]);
+    expect(Object.hasOwn(peristiwa[0]?.isi ?? {}, 'ms_ke_tampil')).toBe(false);
+  });
+
+  it('`urut` tetap satu deret', () => {
+    const { peristiwa } = jalankan([MULAI_TAMPIL, hidup(3_000), { jenis: 'lanjut' }, { jenis: 'tutup' }]);
+    expect(peristiwa.map((p) => p.urut)).toEqual(peristiwa.map((_, n) => n + 1));
+  });
+});
+
+describe('alur — daftar nama peristiwa bertambah TEPAT TIGA di M3.8', () => {
+  it('tampak, galat, kinerja — tidak lebih, tidak kurang, tanpa ada yang hilang', () => {
+    const tambahan = (NAMA_PERISTIWA as readonly string[]).filter((n) => !NAMA_M37.includes(n));
+    expect(tambahan).toEqual(['tampak', 'galat', 'kinerja']);
+    expect(NAMA_PERISTIWA).toHaveLength(NAMA_M37.length + 3);
+    expect(NAMA_M37).toHaveLength(18);
   });
 });
