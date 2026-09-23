@@ -619,8 +619,11 @@ export function Aplikasi(): JSX.Element {
               tanggalnya sudah cukup, dan gerak yang berulang tiap layar
               berubah dari penunjuk menjadi gangguan.
             */}
-            <KepingKalender hari={hari} berdenyut={layar.nomor === 0} />
-            <TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />
+            <KepingKalender
+              hari={hari}
+              berdenyut={layar.nomor === 0}
+              kanan={<TitikSoal jumlah={kasus.soal.length} sekarang={layar.nomor} />}
+            />
           </div>
         </header>
       )}
@@ -726,7 +729,14 @@ function usePengamatKartu(
   return acuan;
 }
 
-/** Tiga titik: memang tiga soal berurutan, jadi penanda urutan dipakai di sini. */
+/**
+ * Tiga titik: memang tiga soal berurutan, jadi penanda urutan dipakai di sini.
+ *
+ * Ditambah satu **penanda "sesudahnya"** di ujung kanan (M3.9 D-5, patokan
+ * `docs/contoh/layar-soal-v3d.html`): kotak kecil bertepi atas bergerigi —
+ * halaman kalender yang belum disobek — yang memberi tahu bahwa sesudah soal
+ * terakhir masih ada satu layar lagi: apa yang terjadi sesudah tanggal ini.
+ */
 function TitikSoal({ jumlah, sekarang }: { jumlah: number; sekarang: number }): JSX.Element {
   return (
     <p className="titik-soal" aria-label={`Soal ${String(sekarang + 1)} dari ${String(jumlah)}`}>
@@ -739,9 +749,18 @@ function TitikSoal({ jumlah, sekarang }: { jumlah: number; sekarang: number }): 
           }`}
         />
       ))}
+      <span
+        className="titik titik-sesudah"
+        role="img"
+        aria-label={LABEL_PENANDA_SESUDAH}
+        title={LABEL_PENANDA_SESUDAH}
+      />
     </p>
   );
 }
+
+/** Nama penanda "sesudahnya" di keping (M3.9 D-5), untuk `title` dan pembaca layar. */
+const LABEL_PENANDA_SESUDAH = 'Lalu apa yang terjadi sesudahnya';
 
 function LayarPembuka({
   kasus,
@@ -1277,10 +1296,11 @@ function BalonMelayang({
     if (asli === null || wadah === null) return;
 
     /*
-     * Tinggi keping DIUKUR, tidak ditebak: ia berbeda dari patokan (keping di
-     * produk membawa tiga titik kemajuan di bawah tanggalnya), dan angka yang
-     * ditebak akan membuat balon mengintip di tempat yang salah tanpa ada yang
-     * tahu. Nilainya diserahkan ke CSS lewat satu variabel.
+     * Tinggi keping DIUKUR, tidak ditebak: huruf, gerigi, dan ukuran jendela
+     * semuanya ikut menentukannya, dan angka yang ditebak akan membuat balon
+     * mengintip di tempat yang salah tanpa ada yang tahu. Nilainya diserahkan
+     * ke CSS lewat satu variabel. (Sejak M3.9 D-5 keping satu baris seperti
+     * patokan: tanggal kiri, bulatan kanan.)
      */
     const ukurKeping = (): number =>
       document.querySelector('[data-uid="keping"]')?.getBoundingClientRect().height ?? 0;

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { Penanda } from './tanggal.ts';
 
 /**
@@ -38,23 +39,33 @@ export function HalamanKalender({ hari }: { hari: Penanda }): JSX.Element {
  *
  * Yang bergerak sengaja hanya titiknya: menggerakkan tanggalnya akan membuat
  * keping ini terbaca sebagai pemberitahuan, dan ia bukan itu.
+ *
+ * **Satu baris** (M3.9 D-5): tanggal di kiri, `kanan` (bulatan kemajuan) di
+ * kanan, disalin dari `.keping-dalam` patokan `docs/contoh/layar-soal.html`.
+ * Sejak M3.2 produk menaruh bulatan di BAWAH tanggal — penyimpangan yang lolos
+ * review, bukan keputusan; pemilik menemukannya 24 Sep 2026.
  */
 export function KepingKalender({
   hari,
   berdenyut = false,
+  kanan,
 }: {
   hari: Penanda;
   berdenyut?: boolean;
+  kanan?: ReactNode;
 }): JSX.Element {
   return (
-    <p className="kalender-keping">
-      <span className="kalender-label">Hari ini</span>
-      <span className="kalender-tanggal">
-        {hari.hariBesar}{' '}
-        <span className={berdenyut ? 'keping-titik keping-titik-denyut' : 'keping-titik'}>·</span>{' '}
-        {hari.pendek}
-      </span>
-    </p>
+    <div className="kalender-keping">
+      <p className="kalender-keping-tanggal">
+        <span className="kalender-label">Hari ini</span>
+        <span className="kalender-tanggal">
+          {hari.hariBesar}{' '}
+          <span className={berdenyut ? 'keping-titik keping-titik-denyut' : 'keping-titik'}>·</span>{' '}
+          {hari.pendek}
+        </span>
+      </p>
+      {kanan}
+    </div>
   );
 }
 

@@ -294,12 +294,21 @@ summary:focus-visible,
   padding-inline: var(--sisi);
 }
 
-/* Keping memakai gerigi yang sama: benda yang sama, ukuran lain. */
+/*
+ * Keping memakai gerigi yang sama: benda yang sama, ukuran lain.
+ *
+ * SATU baris (M3.9 D-5): tanggal kiri, bulatan kanan. Tiga baris pertama
+ * disalin dari `.keping-dalam` patokan `docs/contoh/layar-soal.html` —
+ * `display:flex; align-items:center; justify-content:space-between; gap:12px`.
+ * Sampai M3.9 bulatannya berdiri di baris kedua di bawah tanggal; keping lalu
+ * 62 px, kini ±48 px, dan balon melayang (yang MENGUKUR tinggi ini) ikut naik.
+ */
 .kalender-keping {
   --gigi: 4px;
   display: flex;
-  align-items: baseline;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin: 0;
   /* Patokan .keping-dalam: padding 10px 12px 8px; .keping-tanggal: 600 12px/1. */
   padding: 10px 12px 8px;
@@ -319,6 +328,14 @@ summary:focus-visible,
     72% var(--gigi), 76% 0, 80% var(--gigi), 84% 0, 88% var(--gigi), 92% 0,
     96% var(--gigi), 100% 0, 100% 100%, 0 100%
   );
+}
+
+/* Tanggal di sisi kiri keping: label dan tanggal sebaris, jaraknya tidak berubah. */
+.kalender-keping-tanggal {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
 }
 
 .kalender-label {
@@ -364,10 +381,12 @@ summary:focus-visible,
   }
 }
 
+/* Patokan `.titik`: `display:flex; gap:6px; align-items:center` (v3d). */
 .titik-soal {
   display: flex;
+  align-items: center;
   gap: 6px;
-  margin: 6px 0 0;
+  margin: 0;
 }
 
 .titik {
@@ -384,6 +403,21 @@ summary:focus-visible,
 .titik-kini {
   background: var(--stempel);
   border-color: var(--stempel);
+}
+
+/*
+ * Penanda "sesudahnya" (M3.9 D-5), disalin dari `.titik .sesudah` patokan
+ * `docs/contoh/layar-soal-v3d.html`: kotak 10 × 8, tepi atas bergerigi seperti
+ * halaman kalender yang belum disobek. Ia berkata bahwa sesudah soal terakhir
+ * masih ada satu layar: apa yang terjadi sesudah tanggal ini.
+ */
+.titik-sesudah {
+  width: 10px;
+  height: 8px;
+  border-radius: 0;
+  border: 1.5px solid var(--tinta-redup);
+  margin-left: 4px;
+  clip-path: polygon(0 3px, 25% 0, 50% 3px, 75% 0, 100% 3px, 100% 100%, 0 100%);
 }
 
 /* --- halaman kalender ------------------------------------------------------ */
@@ -733,8 +767,11 @@ summary:focus-visible,
   position: fixed;
   left: 0;
   right: 0;
-  /* Diukur komponen dari keping yang sungguhan, bukan ditebak. */
-  top: var(--tinggi-keping, 64px);
+  /*
+   * Diukur komponen dari keping yang sungguhan, bukan ditebak. Cadangannya
+   * hanya berlaku sebelum ukuran pertama: 48 px = keping satu baris (M3.9).
+   */
+  top: var(--tinggi-keping, 48px);
   bottom: 0;
   z-index: 1;
   /* Kolom yang sama persis dengan `.halaman`, jadi lebar salinan = lebar asli. */
