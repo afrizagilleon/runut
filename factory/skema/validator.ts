@@ -1083,11 +1083,17 @@ function periksaPetunjuk(soal: Soal, nomor: number, masalah: MasalahValidasi[]):
       `Soal "${soal.soal_id}" bukan soal pertama tetapi punya petunjuk; cara main hanya diberikan sekali.`,
     );
   }
-  if (pertama && (soal.petunjuk === null || soal.petunjuk.trim() === '')) {
+  /*
+   * M3.9 D-3: soal pertama BOLEH tanpa petunjuk (`null`) — varian A uji K-06
+   * menjadikannya pemanasan, dan cara mainnya dikatakan layar pertama serta
+   * kalimat pengantar. Yang tetap ditolak: petunjuk yang ditulis tetapi
+   * kosong, karena baris kosong tetap dirender.
+   */
+  if (pertama && soal.petunjuk !== null && soal.petunjuk.trim() === '') {
     tambah(
       masalah,
-      'PETUNJUK_HILANG',
-      `Soal pertama "${soal.soal_id}" tidak punya petunjuk; layar pertama tidak lagi memuat aturan main.`,
+      'PETUNJUK_KOSONG',
+      `Soal pertama "${soal.soal_id}" menulis petunjuk kosong; tulis null kalau memang tanpa petunjuk.`,
     );
   }
 }

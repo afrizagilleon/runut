@@ -43,10 +43,10 @@ describe('berkas kasus yang ikut repo', () => {
     expect([...gabungan].sort()).toEqual([...kasus.fakta_terlihat].sort());
   });
 
-  it('membawa kartu 2, 2, dan 4 beserta istilah 2, 2, dan 1', () => {
+  it('membawa kartu 2, 2, dan 4 beserta istilah 0, 2, dan 1 (soal 1 pemanasan, M3.9 D-4)', () => {
     const kasus = muatBerkas();
     expect(kasus.soal.map((s) => s.kartu.length)).toEqual([2, 2, 4]);
-    expect(kasus.soal.map((s) => s.istilah.length)).toEqual([2, 2, 1]);
+    expect(kasus.soal.map((s) => s.istilah.length)).toEqual([0, 2, 1]);
   });
 
   it('menunjuk satu kartu penentu per soal, semuanya benar-benar kartu soal itu (A1-T1)', () => {
@@ -162,7 +162,8 @@ describe('berkas kasus yang ikut repo', () => {
       expect(s.tanya, s.soal_id).toContain(s.pesan.nama);
       expect(s.pesan.isi, s.soal_id).not.toMatch(/\[\[/);
     }
-    expect(kasus.soal.map((s) => s.petunjuk !== null)).toEqual([true, false, false]);
+    // M3.9 D-3: soal 1 pun tanpa petunjuk.
+    expect(kasus.soal.map((s) => s.petunjuk !== null)).toEqual([false, false, false]);
   });
 
   it('menyebut di panel sumber bahwa tanggal pencabutan suspensi tidak ada di data', () => {

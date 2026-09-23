@@ -22,7 +22,6 @@ import type { DefinisiKasus } from './bangun.ts';
 
 const HARGA_AWAL = 'harga-2025-08-01';
 const HARGA_T = 'harga-2025-10-08';
-const HARI_BURSA = 'hari-bursa-2025-08-01-2025-10-08';
 const KELIPATAN = 'kelipatan-2025-08-01-2025-10-08';
 const SUSPENSI = 'susp-2025-06-30';
 const DIVIDEN = 'div-2025-09-16';
@@ -86,28 +85,32 @@ export const DADA_2025_10_08: DefinisiKasus = {
   fakta_terlihat: [KELIPATAN, SUSPENSI, DIVIDEN, DIV_LOT, JUAL_1, JUAL_2, JUAL_3, JUMLAH_JUAL],
 
   awam: {
+    /*
+     * Kedua kartu soal 1 ditulis ulang di M3.9 D-4 (varian A uji K-06),
+     * disalin persis dari kontrak. Keduanya hanya tampil di soal 1 — sebagai
+     * kartu dan sebagai salinan "Kartu yang menentukan"; kepalanya tidak
+     * berubah, jadi daftar "Dihitung dari" di layar lain tetap sama.
+     */
     [KELIPATAN]: {
       kepala: 'Dihitung dari data harga',
       isi:
-        'Dari [[' +
+        '[[' +
         HARGA_AWAL +
-        '|1 Agustus]] sampai hari ini, harga saham Perusahaan D naik dari [[' +
+        '|Rp8]] pada [[' +
         HARGA_AWAL +
-        '|Rp8]] ke [[' +
+        '|1 Agustus]], [[' +
         HARGA_T +
-        '|Rp178]] — [[' +
+        '|Rp178]] hari ini: naik [[' +
         KELIPATAN +
-        '|22 kali]] harga awalnya, dalam [[' +
-        HARI_BURSA +
-        '|47 hari bursa]].',
+        '|22 kali]].',
     },
     [SUSPENSI]: {
       kepala: 'Pengumuman bursa · 30 Jun 2025',
       isi:
-        'Bursa menghentikan sementara jual-beli saham ini karena perusahaan belum menyerahkan ' +
-        'laporan keuangan tahunan yang sudah diaudit. Per [[' +
+        'Bursa menyetop sementara jual-beli saham ini: laporan keuangan tahunannya belum ' +
+        'diserahkan. Per [[' +
         HARGA_AWAL +
-        '|1 Agustus]] sahamnya sudah diperdagangkan lagi.',
+        '|1 Agustus]] dibuka lagi.',
     },
     [DIVIDEN]: {
       kepala: 'Pengumuman dividen · ex 16 Sep 2025',
@@ -172,25 +175,22 @@ export const DADA_2025_10_08: DefinisiKasus = {
   },
 
   soal: [
+    /*
+     * Soal 1 = pemanasan (M3.9 D-4, varian A uji K-06, disetujui pemilik
+     * 24 Sep 2026). Seluruh kata disalin PERSIS dari kontrak dan dijaga huruf
+     * demi huruf oleh `soal1-k06.test.ts`; jangan "dirapikan" — satu frasa
+     * bisa membalik uji tebak buta.
+     *
+     * Kartu penentu (pengumuman bursa) kini PERTAMA: di 360 × 640 ia terlihat
+     * utuh tanpa menggulir. Tanpa istilah dan tanpa petunjuk: cara mainnya
+     * dikatakan layar pertama dan kalimat pengantar.
+     */
     {
       soal_id: 's1-kata-bursa',
-      kartu: [KELIPATAN, SUSPENSI],
+      kartu: [SUSPENSI, KELIPATAN],
       kartu_penentu: [SUSPENSI],
-      istilah: [
-        {
-          kata: 'Penghentian sementara (suspensi)',
-          arti: 'bursa menyetop jual-beli sebuah saham untuk sementara; pemiliknya tetap punya sahamnya, tetapi tidak bisa menjual atau membeli.',
-        },
-        {
-          kata: 'Hari bursa',
-          arti: 'hari ketika bursa buka, yaitu Senin–Jumat di luar hari libur.',
-        },
-      ],
-      /*
-       * Petunjuk hanya di soal pertama (D-2). Validator menolak kalau ia muncul
-       * di soal lain, dan menolak kalau soal pertama tidak punya.
-       */
-      petunjuk: 'Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.',
+      istilah: [],
+      petunjuk: null,
       /*
        * Pesan teman: angka di dalamnya UCAPAN, bukan fakta. Tidak ditebalkan,
        * tidak ditautkan (INV-4) — "22 kali" di sini adalah klaim Bayu, dan
@@ -199,37 +199,24 @@ export const DADA_2025_10_08: DefinisiKasus = {
       pesan: {
         nama: 'Bayu',
         jam: '19.38',
-        isi:
-          'Gila, saham D naik 22 kali dari Agustus! Pasti karena mau dibeli investor asing. ' +
-          'Bursa juga udah kasih pengumuman soal saham ini.',
+        isi: 'Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.',
       },
       tanya: 'Omongan Bayu cocok dengan dokumennya?',
       pilihan: [
-        {
-          kunci: 'a',
-          teks: 'Betul, pengumuman bursa itu memang soal rencana pembelian oleh investor asing.',
-        },
-        {
-          kunci: 'b',
-          teks: 'Keliru, pengumuman bursa itu soal laporan keuangan yang belum diserahkan.',
-        },
+        { kunci: 'a', teks: 'Betul, pengumuman bursanya soal investor asing.' },
+        { kunci: 'b', teks: 'Keliru, pengumumannya soal laporan keuangan telat.' },
         {
           kunci: 'c',
-          teks:
-            'Betul, pengumuman bursa itu menjelaskan kenapa harganya bisa naik [[' +
-            KELIPATAN +
-            '|22 kali]].',
+          // Opsi dirender polos (INV-4); penandanya hanya jejak untuk validator.
+          teks: 'Betul, pengumuman itu yang bikin harganya naik [[' + KELIPATAN + '|22 kali]].',
         },
-        {
-          kunci: 'd',
-          teks: 'Keliru, pengumuman bursa itu soal harga yang naik terlalu cepat.',
-        },
+        { kunci: 'd', teks: 'Keliru, pengumumannya soal harga yang naik terlalu cepat.' },
       ],
       jawaban: 'b',
       penjelasan:
-        'Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain: jual-beli disetop karena ' +
-        'laporan keuangan tahunan belum diserahkan. Tidak ada kata "investor asing" atau "akuisisi" ' +
-        'di kartu mana pun. Kartu harga hanya memberi tahu bahwa harganya naik [[' +
+        'Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain dari yang dikira Bayu: ' +
+        'jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata ' +
+        '"investor asing" di kartu mana pun. Kartu harga hanya memberi tahu bahwa harganya naik [[' +
         KELIPATAN +
         '|22 kali]], bukan kenapa. Salah-kaprah yang umum: menganggap harga yang naik sebagai ' +
         'semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.',

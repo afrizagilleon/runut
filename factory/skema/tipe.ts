@@ -255,8 +255,9 @@ export interface Soal {
   tanya: string;
   /**
    * Satu kalimat cara main, hanya di soal pertama. `null` di soal lain —
-   * validator menolak kalau bukan begitu. Pemilik tidak membaca tiga aturan di
-   * layar pertama, jadi petunjuknya dipindah ke tempat ia sedang melihat.
+   * validator menolak kalau bukan begitu. Sejak M3.9 D-3 soal pertama pun
+   * boleh `null` (kedua kasus memakainya): cara mainnya dikatakan layar
+   * pertama dan kalimat pengantar "Betul atau keliru? Cek ke … dokumen ini:".
    */
   petunjuk: string | null;
   pilihan: PilihanSoal[];

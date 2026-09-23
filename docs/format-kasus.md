@@ -115,7 +115,7 @@ yang menyembunyikan temuannya sama sekali.
 | `istilah` | 0–2 butir `{kata, arti}` berpenjelasan satu baris, tampil di bawah kartu. |
 | `pesan` | Kabar dari seorang teman: `{ nama, jam, isi }`. Nama 2–12 huruf tanpa angka, `jam` berbentuk `HH.MM` 24 jam (**titik**, bukan titik dua), `isi` paling panjang 220 karakter polos. |
 | `tanya` | Judul pertanyaan, paling panjang 60 karakter, dan **wajib menyebut nama pengirim pesannya** — pemain menjawab tentang omongan seseorang, bukan tentang soal yang melayang. |
-| `petunjuk` | Satu kalimat cara main, **hanya di soal pertama**; `null` di soal lain. |
+| `petunjuk` | Satu kalimat cara main, **hanya di soal pertama**; `null` di soal lain. Sejak M3.9 soal pertama pun boleh `null` (kedua kasus memakainya); yang ditulis tetapi kosong ditolak (`PETUNJUK_KOSONG`). Baris petunjuk tidak dirender bila `null`. |
 | `kartu_penentu` | `fact_id` yang menjadi dasar jawaban; ditegaskan sesudah jawaban dikunci. |
 | `pilihan` | Daftar `{kunci, teks}`. |
 | `jawaban` | `kunci` pilihan yang benar; harus ada di daftar pilihan. |
@@ -260,8 +260,7 @@ Baru di versi 2, tentang kartu dan bentuk soal:
 Baru di versi 3, tentang pesan teman dan judul pertanyaan:
 `PESAN_NAMA` · `PESAN_JAM` · `PESAN_KOSONG` · `PESAN_PANJANG` · `PESAN_DITEBALKAN` ·
 `OPSI_DITEBALKAN` · `UCAPAN_BERTAUT` · `TANYA_KOSONG` · `TANYA_PANJANG` ·
-`TANYA_TANPA_NAMA` · `PETUNJUK_BUKAN_SOAL_PERTAMA` · `PETUNJUK_HILANG` ·
-`PEMBUKA_KOSONG` · `PEMBUKA_PANJANG`
+`TANYA_TANPA_NAMA` · `PETUNJUK_BUKAN_SOAL_PERTAMA` · `PEMBUKA_KOSONG`
 
 Baru di M3.5, tentang lama main yang dijanjikan layar pertama:
 `PEMBUKA_MENIT`
@@ -270,8 +269,14 @@ Baru di M4, tentang pesan penutup kasus dan teks yang dirender apa adanya:
 `PENUTUP_KOSONG` · `PENUTUP_BERTAUT` · `PENUTUP_DITEBALKAN` · `PENUTUP_PANJANG` ·
 `RUJUKAN_PANJANG` · `TEKS_DITEBALKAN`
 
+Baru di M3.9, tentang layar pertama dan soal pemanasan:
+`PEMBUKA_JUDUL_PANJANG` · `PEMBUKA_AJAK_PANJANG` · `PEMBUKA_KALIMAT_USANG` ·
+`PETUNJUK_KOSONG`
+
 Dihapus di versi 3 bersama medannya: `PEMBUKA_ATURAN` ("layar pertama harus
-tepat tiga baris aturan").
+tepat tiga baris aturan"). Dihapus di M3.9: `PEMBUKA_PANJANG` (bersama medan
+`kalimat`) dan `PETUNJUK_HILANG` — soal pertama boleh tanpa petunjuk sejak
+varian A uji K-06 menjadikannya pemanasan.
 
 ## Apa yang dicatat aplikasi dari berkas ini
 

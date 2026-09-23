@@ -1100,16 +1100,29 @@ describe('D-2 v3 — pesan teman, judul pertanyaan, petunjuk', () => {
     expect(kode(kasus)).toContain('PETUNJUK_BUKAN_SOAL_PERTAMA');
   });
 
-  it('menolak soal pertama tanpa petunjuk', () => {
+  /*
+   * M3.9 D-3: soal 1 menjadi pemanasan tanpa baris petunjuk. Cara mainnya kini
+   * dikatakan layar pertama (judul + contoh omongan + "Betul atau keliru?")
+   * dan kalimat pengantar "Betul atau keliru? Cek ke dua dokumen ini:" —
+   * petunjuk "Baca pesannya, cek ke dokumen di bawahnya, lalu jawab." hanya
+   * menambah kata sebelum opsi pertama (116 → 72 kata di uji K-06).
+   */
+  it('menerima soal pertama tanpa petunjuk (M3.9 D-3)', () => {
     const kasus = kasusMinimal();
     kasus.soal[0]!.petunjuk = null;
-    expect(kode(kasus)).toContain('PETUNJUK_HILANG');
+    expect(periksaKasus(kasus)).toEqual([]);
+  });
+
+  it('menolak petunjuk soal pertama yang ditulis tetapi kosong', () => {
+    const kasus = kasusMinimal();
+    kasus.soal[0]!.petunjuk = '   ';
+    expect(kode(kasus)).toContain('PETUNJUK_KOSONG');
   });
 
   it('menerima soal kedua tanpa petunjuk', () => {
     const kasus = kasusMinimal();
     kasus.soal.push({ ...kasus.soal[0]!, soal_id: 's2', petunjuk: null });
     expect(kode(kasus)).not.toContain('PETUNJUK_BUKAN_SOAL_PERTAMA');
-    expect(kode(kasus)).not.toContain('PETUNJUK_HILANG');
+    expect(kode(kasus)).not.toContain('PETUNJUK_KOSONG');
   });
 });

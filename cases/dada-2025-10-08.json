@@ -1357,27 +1357,6 @@
       "awam": null
     },
     {
-      "fact_id": "hari-bursa-2025-08-01-2025-10-08",
-      "klaim": "Dari 1 Agustus 2025 sampai 8 Oktober 2025 ada 47 hari bursa, dan harga penutupan naik pada sebagian besar di antaranya.",
-      "nilai": 47,
-      "satuan": "hari bursa",
-      "sumber": {
-        "jenis": "turunan",
-        "endpoint": null,
-        "berkas": null,
-        "parameter": {},
-        "diambil_pada": null,
-        "keterangan": "penghitungan hari bursa antara 1 Agustus 2025 dan 8 Oktober 2025"
-      },
-      "turunan_dari": [
-        "harga-2025-08-01",
-        "harga-2025-10-08"
-      ],
-      "tersedia_sejak": "2025-10-08",
-      "status": "TERVERIFIKASI",
-      "awam": null
-    },
-    {
       "fact_id": "jumlah-jual-terverifikasi",
       "klaim": "Penjumlahan 3 laporan pengendali yang lolos seluruh aturan verifikasi: 70.000.000 + 179.500.000 + 50.000.000 = 299.500.000 lembar. Laporan yang tersangkut temuan tidak ikut dijumlahkan.",
       "nilai": 299500000,
@@ -1423,7 +1402,7 @@
       "status": "TERVERIFIKASI",
       "awam": {
         "kepala": "Dihitung dari data harga",
-        "isi": "Dari [[harga-2025-08-01|1 Agustus]] sampai hari ini, harga saham Perusahaan D naik dari [[harga-2025-08-01|Rp8]] ke [[harga-2025-10-08|Rp178]] — [[kelipatan-2025-08-01-2025-10-08|22 kali]] harga awalnya, dalam [[hari-bursa-2025-08-01-2025-10-08|47 hari bursa]]."
+        "isi": "[[harga-2025-08-01|Rp8]] pada [[harga-2025-08-01|1 Agustus]], [[harga-2025-10-08|Rp178]] hari ini: naik [[kelipatan-2025-08-01-2025-10-08|22 kali]]."
       }
     },
     {
@@ -1470,7 +1449,7 @@
       "status": "TERVERIFIKASI",
       "awam": {
         "kepala": "Pengumuman bursa · 30 Jun 2025",
-        "isi": "Bursa menghentikan sementara jual-beli saham ini karena perusahaan belum menyerahkan laporan keuangan tahunan yang sudah diaudit. Per [[harga-2025-08-01|1 Agustus]] sahamnya sudah diperdagangkan lagi."
+        "isi": "Bursa menyetop sementara jual-beli saham ini: laporan keuangan tahunannya belum diserahkan. Per [[harga-2025-08-01|1 Agustus]] dibuka lagi."
       }
     },
     {
@@ -1533,49 +1512,40 @@
     {
       "soal_id": "s1-kata-bursa",
       "kartu": [
-        "kelipatan-2025-08-01-2025-10-08",
-        "susp-2025-06-30"
+        "susp-2025-06-30",
+        "kelipatan-2025-08-01-2025-10-08"
       ],
       "kartu_penentu": [
         "susp-2025-06-30"
       ],
-      "istilah": [
-        {
-          "kata": "Penghentian sementara (suspensi)",
-          "arti": "bursa menyetop jual-beli sebuah saham untuk sementara; pemiliknya tetap punya sahamnya, tetapi tidak bisa menjual atau membeli."
-        },
-        {
-          "kata": "Hari bursa",
-          "arti": "hari ketika bursa buka, yaitu Senin–Jumat di luar hari libur."
-        }
-      ],
-      "petunjuk": "Baca pesannya, cek ke dokumen di bawahnya, lalu jawab.",
+      "istilah": [],
+      "petunjuk": null,
       "pesan": {
         "nama": "Bayu",
         "jam": "19.38",
-        "isi": "Gila, saham D naik 22 kali dari Agustus! Pasti karena mau dibeli investor asing. Bursa juga udah kasih pengumuman soal saham ini."
+        "isi": "Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin."
       },
       "tanya": "Omongan Bayu cocok dengan dokumennya?",
       "pilihan": [
         {
           "kunci": "a",
-          "teks": "Betul, pengumuman bursa itu memang soal rencana pembelian oleh investor asing."
+          "teks": "Betul, pengumuman bursanya soal investor asing."
         },
         {
           "kunci": "b",
-          "teks": "Keliru, pengumuman bursa itu soal laporan keuangan yang belum diserahkan."
+          "teks": "Keliru, pengumumannya soal laporan keuangan telat."
         },
         {
           "kunci": "c",
-          "teks": "Betul, pengumuman bursa itu menjelaskan kenapa harganya bisa naik [[kelipatan-2025-08-01-2025-10-08|22 kali]]."
+          "teks": "Betul, pengumuman itu yang bikin harganya naik [[kelipatan-2025-08-01-2025-10-08|22 kali]]."
         },
         {
           "kunci": "d",
-          "teks": "Keliru, pengumuman bursa itu soal harga yang naik terlalu cepat."
+          "teks": "Keliru, pengumumannya soal harga yang naik terlalu cepat."
         }
       ],
       "jawaban": "b",
-      "penjelasan": "Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain: jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata \"investor asing\" atau \"akuisisi\" di kartu mana pun. Kartu harga hanya memberi tahu bahwa harganya naik [[kelipatan-2025-08-01-2025-10-08|22 kali]], bukan kenapa. Salah-kaprah yang umum: menganggap harga yang naik sebagai semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.",
+      "penjelasan": "Bursa memang pernah mengumumkan sesuatu, tetapi isinya lain dari yang dikira Bayu: jual-beli disetop karena laporan keuangan tahunan belum diserahkan. Tidak ada kata \"investor asing\" di kartu mana pun. Kartu harga hanya memberi tahu bahwa harganya naik [[kelipatan-2025-08-01-2025-10-08|22 kali]], bukan kenapa. Salah-kaprah yang umum: menganggap harga yang naik sebagai semacam pengumuman, lalu mencocokkannya dengan kabar yang sedang ramai.",
       "fact_ids": [
         "kelipatan-2025-08-01-2025-10-08",
         "susp-2025-06-30"

@@ -182,7 +182,7 @@ describe('M2a D-1 — skema generasi kedua', () => {
    */
   it('INV-A: berkas kasus yang sedang dimainkan tetap byte-identik', () => {
     const sha = createHash('sha256').update(readFileSync(BERKAS_KASUS)).digest('hex');
-    expect(sha).toBe('174eea9a69cb2e6b84e959100e62c0bc7365f9cc9d14448e6e0ceeae68e90eb9');
+    expect(sha).toBe('7fbb5c12039c06fd3844ecdae47d2139135251806aa58c58d9d56a3466f43000');
   });
 
   /*
