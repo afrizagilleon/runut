@@ -34,7 +34,7 @@ import {
   simpanDimainkan,
   tambahDimainkan,
 } from './pilih-kasus.ts';
-import { hariIniIso, penanda, tanggalBalon, type Penanda } from './tanggal.ts';
+import { hariIniIso, penanda, tanggalBalon, tanggalSingkat, type Penanda } from './tanggal.ts';
 import {
   bacaPengunjung,
   buatIdSesi,
@@ -1944,7 +1944,13 @@ function LayarPembukaan({
           Langsung ke ringkasan ↓
         </button>
       </p>
-      <p className="mundur">Inilah yang terjadi sesudah {hari.panjang}.</p>
+      {/*
+        Rata kiri, bukan `.mundur` (M3.10 D-3, kritik K-5): sesudah judul
+        semuanya rata kiri. `.mundur` rata tengah adalah milik judul layar
+        pertama; di sini ia membuat satu kalimat berdiri sendirian di tengah
+        di antara teks yang rata kiri.
+      */}
+      <p>Inilah yang terjadi sesudah {hari.panjang}.</p>
       <p className="nama-asli">
         Nama aslinya: {kasus.emiten.nama} ({kasus.emiten.simbol}).
       </p>
@@ -2033,7 +2039,12 @@ function KepingTanggal({ kasus, teks }: { kasus: Kasus; teks: string }): JSX.Ele
   if (rujukan === undefined) return null;
   const fakta = kasus.fakta.find((f) => f.fact_id === rujukan.fact_id);
   if (fakta?.tersedia_sejak == null) return null;
-  return <span className="keping-tanggal">{penanda(fakta.tersedia_sejak).pendek}</span>;
+  /*
+   * Peran *meta* berhuruf kalimat ("9 Okt 2025"), bukan lagi keping mesin tik
+   * kapital berbingkai (M3.10 D-3): itu tulisan kapital ber-spasi yang ketiga,
+   * dan `docs/desain.md` mengizinkan tepat dua.
+   */
+  return <span className="keping-tanggal">{tanggalSingkat(fakta.tersedia_sejak)}</span>;
 }
 
 /**

@@ -35,10 +35,16 @@ const BULAN_PENDEK = [
   'JAN', 'FEB', 'MAR', 'APR', 'MEI', 'JUN', 'JUL', 'AGU', 'SEP', 'OKT', 'NOV', 'DES',
 ];
 
+/*
+ * Sejak M3.10 D-3 tanggal garis waktu berhuruf kalimat ("9 Okt 2025", peran
+ * meta), bukan lagi keping kapital ("9 OKT 2025"). Pengurainya menerima bulan
+ * dengan huruf apa pun dan menyamakannya ke daftar di atas; yang tetap dituntut:
+ * tiga huruf bulan yang memang ada, dan tanggal yang memang terurai.
+ */
 function uraiKeping(teks: string): string | null {
-  const cocok = /^(\d{1,2}) ([A-Z]{3}) (\d{4})$/.exec(teks);
+  const cocok = /^(\d{1,2}) ([A-Za-z]{3}) (\d{4})$/.exec(teks);
   if (cocok === null) return null;
-  const bulan = BULAN_PENDEK.indexOf(cocok[2] ?? '');
+  const bulan = BULAN_PENDEK.indexOf((cocok[2] ?? '').toUpperCase());
   if (bulan < 0) return null;
   return `${cocok[3] ?? ''}-${String(bulan + 1).padStart(2, '0')}-${(cocok[1] ?? '').padStart(2, '0')}`;
 }
@@ -115,7 +121,7 @@ async function tanggalGarisWaktu(page: Page): Promise<string[]> {
    * sesudahnya ("…9 OKT 2025Sehari sesudah tanggal kasus…"), jadi di sana tidak
    * ada batas kata. Pola dengan `\b` diam-diam tidak menemukan apa pun.
    */
-  const keping = teks.match(/\b\d{1,2} [A-Z]{3} \d{4}/g) ?? [];
+  const keping = teks.match(/\b\d{1,2} [A-Z][A-Za-z]{2} \d{4}/g) ?? [];
   return keping.map(uraiKeping).filter((t): t is string => t !== null);
 }
 

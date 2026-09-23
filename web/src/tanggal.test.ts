@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { TanggalTidakSah, hariIniIso, penanda, tanggalBalon } from './tanggal.ts';
+import { TanggalTidakSah, hariIniIso, penanda, tanggalBalon, tanggalSingkat } from './tanggal.ts';
 
 describe('penanda waktu beku', () => {
   it('menghitung nama hari kasus DADA dengan benar', () => {
@@ -108,6 +108,33 @@ describe('tanggal balon chat (D-2)', () => {
 
   it('murni: dua pemanggilan menghasilkan teks yang sama', () => {
     expect(tanggalBalon('2025-10-08')).toBe(tanggalBalon('2025-10-08'));
+  });
+});
+
+/**
+ * Tanggal di garis waktu layar pembukaan (M3.10 D-3, kritik K-5): peran *meta*
+ * berhuruf kalimat, "9 Okt 2025". Dulu `penanda().pendek` ("9 OKT 2025") dalam
+ * mesin tik berbingkai — tulisan kapital ber-spasi yang KETIGA di produk,
+ * padahal `docs/desain.md` mengizinkan tepat dua.
+ */
+describe('tanggal singkat garis waktu (M3.10 D-3)', () => {
+  it('huruf kalimat, tanpa nama hari', () => {
+    expect(tanggalSingkat('2025-10-09')).toBe('9 Okt 2025');
+    expect(tanggalSingkat('2026-07-16')).toBe('16 Jul 2026');
+    expect(tanggalSingkat('2025-05-20')).toBe('20 Mei 2025');
+  });
+
+  it('TIDAK berhuruf kapital (INV-11: kapital hanya keping kalender dan cap)', () => {
+    const teks = tanggalSingkat('2025-10-22');
+    expect(teks).not.toBe(teks.toUpperCase());
+  });
+
+  it('bagian tanggal sama dengan tanggal balon chat', () => {
+    expect(tanggalBalon('2025-10-08').endsWith(tanggalSingkat('2025-10-08'))).toBe(true);
+  });
+
+  it('melempar untuk tanggal yang tidak sah', () => {
+    expect(() => tanggalSingkat('2025-02-30')).toThrow(TanggalTidakSah);
   });
 });
 

@@ -132,7 +132,28 @@ export async function ukurLayar(page: Page): Promise<UkuranLayar> {
       const k = el.getBoundingClientRect();
       if (k.width <= 0 || k.height <= 0) continue;
       jumlahInteraktif += 1;
-      if (k.height < 44) {
+      /*
+       * Bidang sentuh = kotaknya, DITAMBAH `::after` yang ditempatkan absolut
+       * dan menjorok keluar (M3.10 D-3). Tautan angka tidak lagi memakai
+       * bantalan sebaris 8 px (itu yang membuat celah sebelum titik dan jarak
+       * baris 1,7); bidang sentuhnya kini pseudo-elemen setinggi 44,65 px.
+       * Yang dihitung hanya `::after` yang benar-benar ada, absolut, dan
+       * bertepi negatif — tanpa pseudo-elemen itu yang dihitung tetap kotaknya
+       * sendiri, jadi mencabut `::after` membuat tes ini merah lagi. Bahwa
+       * bidang itu memang MENERIMA ketukan diuji E-33b dengan
+       * `elementFromPoint`, bukan di sini.
+       */
+      const sesudah = getComputedStyle(el, '::after');
+      const lebihAtas = -parseFloat(sesudah.top);
+      const lebihBawah = -parseFloat(sesudah.bottom);
+      const tinggiSentuh =
+        sesudah.content !== 'none' &&
+        sesudah.position === 'absolute' &&
+        Number.isFinite(lebihAtas) &&
+        Number.isFinite(lebihBawah)
+          ? k.height + Math.max(0, lebihAtas) + Math.max(0, lebihBawah)
+          : k.height;
+      if (tinggiSentuh < 44) {
         sentuhKecil.push({
           uid: el.closest('[data-uid]')?.getAttribute('data-uid') ?? '(tanpa uid)',
           tag: el.tagName.toLowerCase(),

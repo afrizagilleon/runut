@@ -79,6 +79,12 @@ export interface IzinMesin {
   disahkan: boolean;
 }
 
+/*
+ * M3.10 D-3 (kritik K-5) MENCABUT tiga izin: `.keping-tanggal` (tanggal garis
+ * waktu, kini peran meta — patokan :44 yang dirujuknya adalah keping KALENDER,
+ * bukan tanggal garis waktu), `.bacaan h3`, dan `.jejak-rinci > summary`
+ * (keduanya warisan; kini huruf baca). Menulis mesin tik di sana lagi merah.
+ */
 export const MESIN_DIIZINKAN: readonly IzinMesin[] = [
   {
     selektor: '.kalender-keping',
@@ -105,33 +111,11 @@ export const MESIN_DIIZINKAN: readonly IzinMesin[] = [
     disahkan: true,
   },
   {
-    selektor: '.keping-tanggal',
-    alasan:
-      'keping tanggal di garis waktu; patokan memberi huruf mesin tik pada keping ' +
-      'tanggalnya sendiri (docs/contoh/layar-soal.html:44). Bentuknya keping, ' +
-      'isinya tanggal — keluarga yang sama dengan keping kalender',
-    disahkan: true,
-  },
-  {
     selektor: '.cap',
     alasan:
       'WARISAN, belum diputuskan. docs/desain.md menyebut cap sebagai satu dari dua ' +
       'tulisan kapital, tetapi tidak menyebut hurufnya. Mengubahnya mengubah rupa, ' +
       'jadi ia dilaporkan, bukan ditebak (A-2, D-B3)',
-    disahkan: false,
-  },
-  {
-    selektor: '.bacaan h3',
-    alasan:
-      'WARISAN, belum diputuskan. Judul bagian di layar pembukaan; layar itu tidak ' +
-      'ada di patokan, dan desain tidak menyebut hurufnya',
-    disahkan: false,
-  },
-  {
-    selektor: '.jejak-rinci > summary',
-    alasan:
-      'WARISAN, belum diputuskan. Pintu lipatan jejak verifikasi — dekat dengan ' +
-      '"rincian teknis" tetapi bukan itu; desain tidak menyebutnya',
     disahkan: false,
   },
   {

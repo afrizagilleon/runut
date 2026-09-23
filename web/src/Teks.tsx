@@ -326,7 +326,14 @@ export function Teks({
             }}
             aria-label={`${bagian.teks} — lihat sumber angka ini`}
           >
-            {bagian.teks}
+            {/*
+              Teksnya dibungkus sendiri (M3.10 D-3): bidang sentuh tautan kini
+              `::after` yang menjorok ±10 px ke baris di atas dan di bawahnya.
+              Teks tautan berdiri DI ATAS bidang sentuh tautan mana pun
+              (`.rujukan-teks`, `z-index: 1`), supaya ketukan pada teks sebuah
+              tautan tidak pernah jatuh ke tautan di baris sebelahnya.
+            */}
+            <span className="rujukan-teks">{bagian.teks}</span>
           </button>
         );
         // Tombol dan tanda bacanya diikat: keduanya tidak boleh terpisah baris.

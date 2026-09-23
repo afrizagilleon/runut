@@ -303,6 +303,15 @@ describe('periksa:desain — huruf mesin tik (D-B3)', () => {
     ]);
   });
 
+  it('layar pembukaan tidak lagi punya izin mesin tik (M3.10 D-3)', () => {
+    // Tiga warisan yang dulu dibenarkan daftar izin kini ditangkap gate.
+    expect(kode('.bacaan h3 { font-family: var(--mesin); }')).toEqual(['MESIN_TIK_DI_LUAR_DAFTAR']);
+    expect(kode('.jejak-rinci > summary { font-family: var(--mesin); }')).toEqual([
+      'MESIN_TIK_DI_LUAR_DAFTAR',
+    ]);
+    expect(kode('.keping-tanggal { font-family: var(--mesin); }')).toEqual(['MESIN_TIK_DI_LUAR_DAFTAR']);
+  });
+
   it('mendefinisikan --mesin di :root bukan pemakaian', () => {
     expect(kode(':root { --mesin: ui-monospace, monospace; }')).toEqual([]);
   });

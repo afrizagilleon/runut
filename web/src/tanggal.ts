@@ -127,8 +127,23 @@ const BULAN_SINGKAT: readonly string[] = BULAN.map((nama) => nama.slice(0, 3));
  */
 export function tanggalBalon(tanggal_t: string): string {
   const hari = penanda(tanggal_t);
-  const bulan = BULAN_SINGKAT[Number(tanggal_t.slice(5, 7)) - 1] ?? '';
-  return `${hari.hari}, ${hari.angka} ${bulan} ${tanggal_t.slice(0, 4)}`;
+  return `${hari.hari}, ${tanggalSingkat(tanggal_t)}`;
+}
+
+/**
+ * Tanggal berhuruf kalimat tanpa nama hari: `9 Okt 2025` (M3.10 D-3).
+ *
+ * Dipakai tanggal di garis waktu layar pembukaan, yang sejak M3.10 berperan
+ * *meta* biasa. Sampai M3.9 tanggal itu `penanda().pendek` ("9 OKT 2025") dalam
+ * huruf mesin tik berbingkai — tulisan kapital ber-spasi yang KETIGA di produk,
+ * padahal `docs/desain.md` mengizinkan tepat dua (keping kalender dan cap).
+ * Bagian tanggal balon chat memakai fungsi ini juga, supaya keduanya tidak bisa
+ * berselisih.
+ */
+export function tanggalSingkat(iso: string): string {
+  const hari = penanda(iso);
+  const bulan = BULAN_SINGKAT[Number(iso.slice(5, 7)) - 1] ?? '';
+  return `${hari.angka} ${bulan} ${iso.slice(0, 4)}`;
 }
 
 /**
