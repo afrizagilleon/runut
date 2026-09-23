@@ -23,6 +23,9 @@ import { type Aksi, NAMA_PERISTIWA, keadaanAwal, langkah } from '../web/src/alur
 
 const UA_UJI = 'RunutUjiAgent/1.0 (agen-uji-yang-tidak-boleh-tercatat)';
 
+/** Nama peristiwa yang ditambahkan M3.8 sejauh ini (lihat `web/src/alur.test.ts`). */
+const TAMBAHAN_M38: readonly string[] = ['tampak'];
+
 let server: Server;
 let alamat: string;
 let dataDir: string;
@@ -764,11 +767,13 @@ describe('kolektor — gulir bertingkat M3.4a (D-2)', () => {
     expect(dikenalPengumpul).toEqual([...NAMA_PERISTIWA].sort());
     /*
      * Angka yang dibekukan: 17 nama sampai M3.6, **18** sejak M3.7 — kontrak
-     * M3.7 mengizinkan tepat satu nama baru (`balon`) dan reviewer memasang
-     * pengumpulnya di server sebelum web di-deploy. Yang ke-19 harus merah.
+     * M3.7 mengizinkan tepat satu nama baru (`balon`). M3.8 mengizinkan tepat
+     * tiga lagi (`tampak`, `galat`, `kinerja`), satu per task; nama lain di
+     * luar `TAMBAHAN_M38` harus merah.
      */
-    expect(NAMA_PERISTIWA).toHaveLength(18);
+    expect(NAMA_PERISTIWA).toHaveLength(18 + TAMBAHAN_M38.length);
     expect([...NAMA_PERISTIWA]).toContain('balon');
+    for (const n of TAMBAHAN_M38) expect([...NAMA_PERISTIWA]).toContain(n);
   });
 
   it('maks di luar 0–1 tetap ditolak, jadi 50 dan 100 harus rasio', () => {
@@ -1000,5 +1005,51 @@ describe('kolektor — mulai M3.8 membawa perangkat (T-01)', () => {
       .map((b) => JSON.parse(b) as { urut: number; isi: Record<string, unknown> })
       .find((b) => b.urut === 1102);
     expect(tertulis?.isi).toEqual({ ...MULAI_ISI, ...PERANGKAT_UJI });
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 T-02 — tampak                                                   */
+/* ------------------------------------------------------------------ */
+
+describe('kolektor — peristiwa tampak (M3.8 D-2)', () => {
+  it('menerima sembunyi (ms null) dan kembali (ms angka) lewat server sungguhan', async () => {
+    const balas = await kirim(
+      JSON.stringify([
+        peristiwa({ nama: 'tampak', urut: 1201, isi: { layar: 'soal-1', keadaan: 'sembunyi', ms_sembunyi: null } }),
+        peristiwa({ nama: 'tampak', urut: 1202, isi: { layar: 'soal-1', keadaan: 'kembali', ms_sembunyi: 4321 } }),
+      ]),
+    );
+    expect(balas.status).toBe(204);
+    const tertulis = barisTertulis()
+      .map((b) => JSON.parse(b) as { nama: string; urut: number; isi: Record<string, unknown> })
+      .filter((b) => b.nama === 'tampak' && (b.urut === 1201 || b.urut === 1202));
+    expect(tertulis.map((b) => b.isi['keadaan'])).toEqual(['sembunyi', 'kembali']);
+  });
+
+  it('keluaran reducer yang sungguhan lolos validator', () => {
+    let keadaan = keadaanAwal({
+      sesi: '2f1a1d6c-0000-4000-8000-000000000012',
+      kasus_id: 'dada-2025-10-08',
+      urutanSoal: ['s1'],
+      kunciBenar: { s1: 'b' },
+      kartuSoal: { s1: ['k1'] },
+    });
+    const semua: Array<{ nama: string }> = [];
+    let waktu = 1_000;
+    for (const a of [
+      { jenis: 'mulai', lebar_layar: 360 },
+      { jenis: 'tampak', keadaan: 'sembunyi' },
+      { jenis: 'tampak', keadaan: 'kembali' },
+    ] as Aksi[]) {
+      waktu += 700;
+      const hasil = langkah(keadaan, a, waktu);
+      keadaan = hasil.keadaan;
+      semua.push(...hasil.peristiwa);
+    }
+    expect(semua.filter((p) => p.nama === 'tampak')).toHaveLength(2);
+    for (const p of semua) {
+      expect((periksaPeristiwa(p) as { galat?: string }).galat, p.nama).toBeUndefined();
+    }
   });
 });

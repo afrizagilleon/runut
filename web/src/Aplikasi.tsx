@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
+import { flushSync } from 'react-dom';
 // `PointerEvent` milik React dialiaskan: nama itu sudah dipakai jenis DOM di
 // pelacak ketukan di bawah, dan dua benda berbeda bernama sama adalah cara
 // tercepat membuat penangan yang salah terkompilasi diam-diam.
@@ -317,15 +318,36 @@ export function Aplikasi(): JSX.Element {
    * layar, tarik bilah notifikasi. Ia hanya **menyiram** antrean; peristiwa
    * `tutup` tetap milik `pagehide` supaya tidak lahir dua kali.
    */
+  /*
+   * M3.8 D-2: pendengar yang sama sekarang juga melahirkan `tampak`.
+   *
+   * `sembunyi` di-dispatch lewat `flushSync`, dan itu bukan kebiasaan. Halaman
+   * yang baru saja tersembunyi bisa dibekukan peramban kapan saja; render dan
+   * efek yang dijadwalkan "nanti" mungkin tidak pernah jalan. `flushSync`
+   * menjalankan reducer, render, dan efek penyerah antrean (`catatPeristiwa`)
+   * SEKARANG, sehingga `siramPeristiwa()` di baris berikutnya benar-benar ikut
+   * membawa `tampak sembunyi` — peristiwa yang justru paling ingin sampai,
+   * karena ialah bukti terakhir dari orang yang pergi.
+   *
+   * `kembali` tidak perlu terburu-buru: halamannya hidup lagi, jadi ia ikut
+   * antrean biasa.
+   */
   useEffect(() => {
-    const sembunyi = (): void => {
-      if (document.visibilityState === 'hidden') siramPeristiwa();
+    const berubah = (): void => {
+      if (document.visibilityState === 'hidden') {
+        flushSync(() => {
+          kirim({ jenis: 'tampak', keadaan: 'sembunyi' });
+        });
+        siramPeristiwa();
+        return;
+      }
+      if (document.visibilityState === 'visible') kirim({ jenis: 'tampak', keadaan: 'kembali' });
     };
-    document.addEventListener('visibilitychange', sembunyi);
+    document.addEventListener('visibilitychange', berubah);
     return () => {
-      document.removeEventListener('visibilitychange', sembunyi);
+      document.removeEventListener('visibilitychange', berubah);
     };
-  }, []);
+  }, [kirim]);
 
   /*
    * `pagehide` adalah kesempatan terakhir; halaman bisa mati sebelum React

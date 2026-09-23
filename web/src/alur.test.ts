@@ -11,6 +11,7 @@ import {
   bilahBawah,
   LABEL_PILIHAN_PEMAIN,
   BATAS_BALON,
+  BATAS_TAMPAK,
   BATAS_KETUK,
   keadaanBalon,
   NAMA_PERISTIWA,
@@ -803,8 +804,8 @@ describe('alur — jalan pintas ke ringkasan (A4-T5)', () => {
   it('namanya ada di daftar tertutup D-6', () => {
     expect(NAMA_PERISTIWA).toContain('loncat_ke_ringkasan');
     // 13 nama M3.1 + tiga nama pelacak M3.2 (ketuk, ketuk_dibatasi, gulir)
-    // + istilah_buka (A-2) + balon (M3.7 D-2, satu-satunya nama baru sejak).
-    expect(NAMA_PERISTIWA).toHaveLength(18);
+    // + istilah_buka (A-2) + balon (M3.7 D-2) + nama M3.8 yang sudah masuk.
+    expect(NAMA_PERISTIWA).toHaveLength(18 + TAMBAHAN_M38.length);
     expect(NAMA_PERISTIWA).toContain('istilah_buka');
   });
 });
@@ -1475,8 +1476,8 @@ describe('alur — perpindahan lewat tombol peramban (A1-T2, C-1)', () => {
       for (const p of [...mundur.peristiwa, ...maju.peristiwa]) {
         expect(NAMA_PERISTIWA).toContain(p.nama);
       }
-      // 17 sampai M3.6; + `balon` di M3.7 D-2.
-      expect(NAMA_PERISTIWA).toHaveLength(18);
+      // 17 sampai M3.6; + `balon` di M3.7 D-2; + nama M3.8.
+      expect(NAMA_PERISTIWA).toHaveLength(18 + TAMBAHAN_M38.length);
     });
 
     it('maju TIDAK mengubah jawaban yang sudah dikunci', () => {
@@ -1734,12 +1735,33 @@ const NAMA_M36: readonly string[] = [
 const KE_SOAL_1: Array<Aksi | [Aksi, number]> = [MULAI, { jenis: 'lanjut' }];
 
 describe('alur — daftar nama peristiwa (M3.7)', () => {
-  it('bertambah TEPAT SATU nama (`balon`) dibanding M3.6, tanpa ada yang hilang', () => {
+  it('M3.7 menambah TEPAT SATU nama (`balon`) dibanding M3.6, tanpa ada yang hilang', () => {
     const tambahan = (NAMA_PERISTIWA as readonly string[]).filter((n) => !NAMA_M36.includes(n));
     const hilang = NAMA_M36.filter((n) => !(NAMA_PERISTIWA as readonly string[]).includes(n));
-    expect(tambahan).toEqual(['balon']);
+    // Sesudah M3.7 hanya nama M3.8 yang boleh ikut; yang lain tetap merah.
+    expect(tambahan).toEqual(['balon', ...TAMBAHAN_M38]);
     expect(hilang).toEqual([]);
-    expect(NAMA_PERISTIWA).toHaveLength(NAMA_M36.length + 1);
+    expect(NAMA_PERISTIWA).toHaveLength(NAMA_M36.length + 1 + TAMBAHAN_M38.length);
+  });
+});
+
+/**
+ * Daftar M3.7 yang dibekukan, dan nama yang ditambahkan M3.8 **sejauh ini**.
+ *
+ * Kontrak M3.8 mengizinkan tepat tiga nama baru — `tampak`, `galat`,
+ * `kinerja` — dan tiap task menambah satu. `TAMBAHAN_M38` tumbuh bersama
+ * task-nya; di T-04 ia harus sama persis dengan ketiganya (tes di bawah).
+ */
+const NAMA_M37: readonly string[] = [...NAMA_M36, 'balon'];
+const TAMBAHAN_M38: readonly string[] = ['tampak'];
+
+describe('alur — daftar nama peristiwa (M3.8)', () => {
+  it('tambahan dibanding M3.7 hanya nama yang diizinkan kontrak, urut, tanpa yang hilang', () => {
+    const tambahan = (NAMA_PERISTIWA as readonly string[]).filter((n) => !NAMA_M37.includes(n));
+    const hilang = NAMA_M37.filter((n) => !(NAMA_PERISTIWA as readonly string[]).includes(n));
+    expect(tambahan).toEqual([...TAMBAHAN_M38]);
+    expect(hilang).toEqual([]);
+    for (const n of TAMBAHAN_M38) expect(['tampak', 'galat', 'kinerja']).toContain(n);
   });
 });
 
@@ -1874,5 +1896,81 @@ describe('alur — batas 40 peristiwa balon per sesi (M3.7 D-2)', () => {
       { jenis: 'tutup' },
     ]);
     expect(peristiwa.map((p) => p.urut)).toEqual(peristiwa.map((_, nomor) => nomor + 1));
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.8 D-2 — tampak: pindah aplikasi lalu kembali, atau pergi         */
+/* ------------------------------------------------------------------ */
+
+describe('alur — peristiwa tampak (M3.8 D-2)', () => {
+  const SEMBUNYI: Aksi = { jenis: 'tampak', keadaan: 'sembunyi' };
+  const KEMBALI: Aksi = { jenis: 'tampak', keadaan: 'kembali' };
+
+  it('sembunyi lalu kembali: dua peristiwa, ms_sembunyi = lama tersembunyi', () => {
+    const { peristiwa } = jalankan([MULAI, [SEMBUNYI, 100], [KEMBALI, 4_321]]);
+    const tampak = peristiwa.filter((p) => p.nama === 'tampak');
+    expect(tampak.map((p) => p.isi)).toEqual([
+      { layar: 'pembuka', keadaan: 'sembunyi', ms_sembunyi: null },
+      { layar: 'pembuka', keadaan: 'kembali', ms_sembunyi: 4_321 },
+    ]);
+  });
+
+  it('layar yang dicatat adalah layar yang sedang dibuka', () => {
+    const { peristiwa } = jalankan([MULAI, { jenis: 'lanjut' }, SEMBUNYI]);
+    const tampak = peristiwa.filter((p) => p.nama === 'tampak');
+    expect(tampak).toHaveLength(1);
+    expect(tampak[0]?.isi['layar']).toBe('soal-1');
+  });
+
+  it('kembali tanpa sembunyi sebelumnya diabaikan (tidak ada lama yang bisa diukur)', () => {
+    const { peristiwa, keadaan } = jalankan([MULAI, KEMBALI]);
+    expect(peristiwa.filter((p) => p.nama === 'tampak')).toHaveLength(0);
+    expect(keadaan.urut).toBe(2);
+  });
+
+  it('sembunyi dua kali berturut-turut hanya dicatat sekali, dan lamanya dari yang pertama', () => {
+    const { peristiwa } = jalankan([MULAI, [SEMBUNYI, 100], [SEMBUNYI, 500], [KEMBALI, 1_000]]);
+    const tampak = peristiwa.filter((p) => p.nama === 'tampak');
+    expect(tampak.map((p) => p.isi['keadaan'])).toEqual(['sembunyi', 'kembali']);
+    expect(tampak[1]?.isi['ms_sembunyi']).toBe(1_500);
+  });
+
+  it(`paling banyak ${String(30)} per sesi, lalu diam — tanpa peristiwa penanda`, () => {
+    const aksi: Array<Aksi | [Aksi, number]> = [MULAI];
+    for (let i = 0; i < 25; i += 1) aksi.push(SEMBUNYI, KEMBALI);
+    const { peristiwa, keadaan } = jalankan(aksi);
+    expect(BATAS_TAMPAK).toBe(30);
+    expect(peristiwa.filter((p) => p.nama === 'tampak')).toHaveLength(BATAS_TAMPAK);
+    expect(keadaan.tampakDicatat).toBe(BATAS_TAMPAK);
+    expect(peristiwa.filter((p) => p.nama === 'ketuk_dibatasi')).toHaveLength(0);
+    // `urut` tetap satu deret: yang berhenti adalah pencatatannya, bukan penomorannya.
+    expect(peristiwa.map((p) => p.urut)).toEqual(peristiwa.map((_, n) => n + 1));
+  });
+
+  it('sesudah batas, keadaan sembunyi tetap diikuti — kembali tidak mengarang lama', () => {
+    const aksi: Array<Aksi | [Aksi, number]> = [MULAI];
+    for (let i = 0; i < 15; i += 1) aksi.push(SEMBUNYI, KEMBALI);
+    aksi.push(SEMBUNYI);
+    const { keadaan } = jalankan(aksi);
+    expect(typeof keadaan.sembunyiPada).toBe('number');
+  });
+
+  it('tidak memakai kuota 300 ketukan', () => {
+    const { keadaan } = jalankan([MULAI, SEMBUNYI, KEMBALI]);
+    expect(keadaan.ketukan).toBe(0);
+  });
+
+  it('bentuk medannya persis { layar, keadaan, ms_sembunyi }', () => {
+    const { peristiwa } = jalankan([MULAI, SEMBUNYI, KEMBALI]);
+    expect(peristiwa.filter((x) => x.nama === 'tampak')).toHaveLength(2);
+    for (const p of peristiwa.filter((x) => x.nama === 'tampak')) {
+      expect(Object.keys(p.isi)).toEqual(['layar', 'keadaan', 'ms_sembunyi']);
+    }
+  });
+
+  it('sesudah tutup tidak ada tampak lagi', () => {
+    const { peristiwa } = jalankan([MULAI, { jenis: 'tutup' }, SEMBUNYI]);
+    expect(peristiwa.filter((p) => p.nama === 'tampak')).toHaveLength(0);
   });
 });

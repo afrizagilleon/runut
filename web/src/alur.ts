@@ -69,6 +69,15 @@ export const NAMA_PERISTIWA = [
    * lain di kelompok yang sama ikut hilang (lihat `deploy/README.md`).
    */
   'balon',
+  /*
+   * M3.8 D-2 — nama pertama dari tiga yang diizinkan kontrak M3.8.
+   *
+   * Data 23 Sep: ±9 sesi masuk soal 1 lalu "pergi" dalam 1–15 detik tanpa satu
+   * ketukan. Dari berkas peristiwa, "pindah ke aplikasi lain sebentar lalu
+   * kembali" dan "pergi selamanya" tidak bisa dibedakan: keduanya diam. Peristiwa
+   * ini lahir dari `visibilitychange` dan memisahkan keduanya.
+   */
+  'tampak',
   'tutup',
 ] as const;
 
@@ -117,6 +126,19 @@ export type CaraBalon = 'ketuk' | 'tarik';
  * ke-41 hanya menghabiskan kuota kiriman tanpa menambah satu pun informasi.
  */
 export const BATAS_BALON = 40;
+
+/** Keadaan halaman menurut `visibilitychange` (M3.8 D-2). */
+export type KeadaanTampak = 'sembunyi' | 'kembali';
+
+/**
+ * Peristiwa `tampak` paling banyak yang dicatat satu sesi (M3.8 D-2).
+ *
+ * Tiga puluh = lima belas kali pindah aplikasi lalu kembali: jauh di atas sesi
+ * yang wajar, dan cukup untuk mengatakan "orang ini bolak-balik". Sesudahnya
+ * pencatatannya berhenti diam-diam, seperti `balon` — tidak ada peristiwa
+ * penanda, karena daftar nama milestone ini dihitung per nama.
+ */
+export const BATAS_TAMPAK = 30;
 
 export type Layar =
   | { jenis: 'pembuka' }
@@ -256,6 +278,13 @@ export interface Keadaan {
   balonMelayang: Record<string, boolean>;
   /** Berapa `balon` yang sudah dilahirkan sesi ini; berhenti di `BATAS_BALON`. */
   balonDicatat: number;
+  /**
+   * Sejak kapan halaman tersembunyi (M3.8 D-2); `null` kalau sedang terlihat.
+   * Diikuti terus walau pencatatannya sudah berhenti di `BATAS_TAMPAK`.
+   */
+  sembunyiPada: number | null;
+  /** Berapa `tampak` yang sudah dilahirkan sesi ini; berhenti di `BATAS_TAMPAK`. */
+  tampakDicatat: number;
   akhir: JawabanAkhir;
   /** Sudah menekan Selesai. */
   akhirTerkirim: boolean;
@@ -340,6 +369,12 @@ export type Aksi =
    * boleh menyimpan "turun" untuk kemunculan berikutnya.
    */
   | { jenis: 'balon_melayang'; layar: string; melayang: boolean }
+  /*
+   * Halaman tersembunyi atau terlihat lagi (M3.8 D-2), dari `visibilitychange`.
+   * Lamanya dihitung DI SINI dari waktu yang disuntikkan, bukan di pendengar:
+   * pendengar yang menghitung sendiri adalah pendengar yang tidak bisa dites.
+   */
+  | { jenis: 'tampak'; keadaan: KeadaanTampak }
   | { jenis: 'pilih'; soal_id: string; kunci: string }
   | { jenis: 'kunci_jawaban'; soal_id: string }
   | { jenis: 'lanjut' }
@@ -413,6 +448,8 @@ export function keadaanAwal({
     balon: {},
     balonMelayang: {},
     balonDicatat: 0,
+    sembunyiPada: null,
+    tampakDicatat: 0,
     akhir: { rating: null, terasa: null, sumber_jawaban: null, teks: null },
     akhirTerkirim: false,
     minatDitekan: false,
@@ -955,6 +992,39 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
           balonMelayang: { ...keadaan.balonMelayang, [aksi.layar]: aksi.melayang },
         },
         peristiwa: [],
+      };
+    }
+
+    /*
+     * Pindah aplikasi lalu kembali, atau pergi (M3.8 D-2).
+     *
+     * `sembunyi` yang kedua sebelum `kembali` diabaikan — lamanya dihitung dari
+     * yang pertama. `kembali` tanpa `sembunyi` sebelumnya juga diabaikan: tidak
+     * ada lama yang bisa diukur, dan mengarang nol akan terbaca sebagai
+     * "kembali seketika".
+     */
+    case 'tampak': {
+      const sembunyi = aksi.keadaan === 'sembunyi';
+      if (sembunyi && keadaan.sembunyiPada !== null) return abaikan(keadaan);
+      if (!sembunyi && keadaan.sembunyiPada === null) return abaikan(keadaan);
+      const berikut: Keadaan = {
+        ...keadaan,
+        sembunyiPada: sembunyi ? waktu : null,
+      };
+      if (keadaan.tampakDicatat >= BATAS_TAMPAK) return { keadaan: berikut, peristiwa: [] };
+      const catat = new Catatan(keadaan, waktu, keadaan.urut);
+      catat.tambah('tampak', {
+        layar: namaLayar(keadaan.layar),
+        keadaan: aksi.keadaan,
+        ms_sembunyi:
+          sembunyi || keadaan.sembunyiPada === null
+            ? null
+            : Math.max(0, waktu - keadaan.sembunyiPada),
+      });
+      const { peristiwa, urut } = catat.hasil;
+      return {
+        keadaan: { ...berikut, tampakDicatat: keadaan.tampakDicatat + 1, urut },
+        peristiwa,
       };
     }
 

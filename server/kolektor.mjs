@@ -144,6 +144,11 @@ const MEDAN_ISI = {
    * berkas yang dijanjikan hanya memuat nama yang kita tulis sendiri (INV-9).
    */
   balon: { layar: 'teks', keadaan: 'balon-keadaan', cara: 'balon-cara' },
+  /*
+   * M3.8 D-2: halaman tersembunyi / terlihat lagi. `ms_sembunyi` hanya terisi
+   * pada `kembali`. (T-02: diterima longgar; diperketat di T-05.)
+   */
+  tampak: { layar: 'teks', keadaan: 'teks', ms_sembunyi: 'angka?' },
   akhir_kirim: {
     rating: 'angka?',
     terasa: 'teks?',
