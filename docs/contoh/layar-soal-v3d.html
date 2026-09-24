@@ -13,11 +13,13 @@
     --baca: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
     --mesin-tik: ui-monospace, "SF Mono", "Cascadia Mono", "Roboto Mono", monospace;
   }
+  /* Gelap: "kertas di meja pada malam hari" (M3.11 D-1, kritik K-1; diputuskan reviewer 24 Sep atas penilaian kritikus — pemilik menyerahkan penilaian rupa). */
   @media (prefers-color-scheme: dark) {
     :root {
-      --kertas: #0F1524; --lembar: #182038; --tinta: #E8ECF4; --tinta-redup: #A4AEC4;
-      --stempel: #A99BFF; --merah-kalender: #FF5C6F; --obrolan: #1F3A2E; --nama: #7FD6A6;
-      --garis: rgba(232,236,244,.14); --garis-kontrol: rgba(232,236,244,.5);
+      --kertas: #191816; --lembar: #23221F; --tinta: #E6E3DC; --tinta-redup: #ADA99F;
+      --stempel: #B1A8E6; --merah-kalender: #D7263D; --obrolan: #22332A; --nama: #8FD1A8;
+      --garis: rgba(230,227,220,.16); --garis-kontrol: rgba(230,227,220,.5);
+      --stempel-isi: #6A5FD0; --merah-teks: #F0707A;
     }
   }
   * { box-sizing: border-box; }
@@ -42,7 +44,7 @@
     clip-path: polygon(0 6px, 3% 0, 6% 6px, 9% 0, 12% 6px, 15% 0, 18% 6px, 21% 0, 24% 6px, 27% 0, 30% 6px, 33% 0, 36% 6px, 39% 0, 42% 6px, 45% 0, 48% 6px, 51% 0, 54% 6px, 57% 0, 60% 6px, 63% 0, 66% 6px, 69% 0, 72% 6px, 75% 0, 78% 6px, 81% 0, 84% 6px, 87% 0, 90% 6px, 93% 0, 96% 6px, 100% 0, 100% 100%, 0 100%);
   }
   .keping-tanggal { font: 600 12px/1 var(--mesin-tik); letter-spacing: .06em; text-transform: uppercase; }
-  .keping-tanggal span { color: var(--merah-kalender); }
+  .keping-tanggal span { color: var(--merah-teks, var(--merah-kalender)); }
   .titik { display: flex; gap: 6px; }
   .titik i { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid var(--tinta-redup); }
   .titik i.lewat, .titik i.kini { background: var(--stempel); border-color: var(--stempel); }
@@ -103,7 +105,7 @@
   .tindakan[hidden] { display: none; }
   .tindakan button.turun { background: var(--lembar); color: var(--stempel); border: 1.5px solid var(--stempel); }
   .tindakan button { display: block; width: 100%; max-width: 528px; margin: 0 auto; min-height: 52px; border: 0; border-radius: 3px; background: var(--stempel); color: var(--lembar); font: 600 17px/1 var(--baca); cursor: pointer; }
-  @media (prefers-color-scheme: dark) { .tindakan button { color: #0F1524; } }
+  @media (prefers-color-scheme: dark) { .tindakan button { background: var(--stempel-isi); color: #FFFFFF; } }
 
   /* --- v3d: balon melayang --- */
   .pesan-balon .pesan-kepala { display: block; font: 400 12px/1.2 var(--baca); color: var(--tinta-redup); margin: 0 0 4px; }

@@ -32,7 +32,13 @@ async function ukurProduk(page: Page): Promise<WarnaKeping> {
     const nama = tanggal?.querySelector('.kalender-hari-nama') ?? null;
     const coba = document.createElement('div');
     document.body.append(coba);
-    coba.style.color = 'var(--merah-kalender)';
+    /*
+     * `--merah-teks`, bukan `--merah-kalender`: sejak M3.11 D-1 mode gelap
+     * memberi teks merahnya sendiri (#F0707A; #D7263D hanya 3,21:1 di atas
+     * lembar gelap). Di terang keduanya sama. Patokan gelap ikut diperbarui,
+     * jadi perbandingan dengan patokan di bawah tetap berdampingan.
+     */
+    coba.style.color = 'var(--merah-teks)';
     const merah = getComputedStyle(coba).color;
     coba.style.color = 'var(--tinta)';
     const tinta = getComputedStyle(coba).color;
@@ -76,7 +82,7 @@ for (const kasus_id of ID_KASUS) {
       `|---|---|---|\n` +
       `| teks | ${p.nama} | ${u.nama} |\n` +
       `| warna terhitung | ${p.warna} | ${u.warnaNama} |\n` +
-      `| --merah-kalender produk | | ${u.merah} |\n` +
+      `| --merah-teks produk | | ${u.merah} |\n` +
       `| sisa tanggal (tetap --tinta ${u.tinta}) | | ${u.warnaSisa} |`;
     // eslint-disable-next-line no-console
     console.log(`E-31 [${test.info().project.name}] [${kasus_id}]\n${tabel}`);

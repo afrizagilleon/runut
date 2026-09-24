@@ -29,8 +29,16 @@
   --obrolan: #dff3e4;
   --cocok: #177052;
   --belum-cocok: #8a5300;
-  /* Teks di atas --stempel dan --merah-kalender; dihitung ≥ 4,5:1 di kedua mode. */
+  /* Teks di atas --stempel-isi dan --merah-kalender; dihitung ≥ 4,5:1 di kedua mode. */
   --di-atas-pekat: #ffffff;
+  /*
+   * Bidang tombol utama (M3.11 D-1, kritik K-1). Di terang sama dengan
+   * --stempel; di gelap ungu tua bertulisan putih, bukan lavender bertulisan
+   * hitam. Baris bawaan ini HARUS di atas blok gelap: kekhususannya sama
+   * (:root), jadi yang belakangan menang — ditaruh sesudahnya, mode gelap
+   * kembali ke tombol lavender bertulisan putih (2,18:1).
+   */
+  --stempel-isi: var(--stempel);
 
   /*
    * Garis tepi. Nilai rgba() ditulis lebih dulu sebagai cadangan: WebView
@@ -55,9 +63,9 @@
   --nama: #1f6b45;
 
   /*
-   * Merah untuk TEKS kalender (nama hari di keping, M3.10 D-1). Alias
-   * `--merah-kalender`, dihitung di akar sehingga ikut nilai gelapnya juga —
-   * bukan warna palet baru. Palet menunggu pemilik (kritik K-1).
+   * Merah untuk TEKS kalender (nama hari di keping, M3.10 D-1). Di terang sama
+   * dengan `--merah-kalender`; di gelap #F0707A (M3.11 D-1): #D7263D hanya
+   * 3,21:1 di atas lembar gelap, #F0707A 5,53:1.
    */
   --merah-teks: var(--merah-kalender);
 
@@ -82,26 +90,36 @@
   color-scheme: light dark;
 }
 
+/*
+ * Mode gelap: "kertas di meja pada malam hari" (M3.11 D-1, kritik K-1 + K-2;
+ * diputuskan reviewer 24 Sep atas penilaian kritikus — pemilik menyerahkan
+ * penilaian rupa). Nilai persis dari `.contracts/lampiran/M-0311/usulan.mjs`.
+ * Meja arang netral-hangat, lembar sedikit lebih terang, tinta tetap tinta;
+ * sampai M3.10 latarnya biru-hitam #0F1524 dengan tombol lavender bertulisan
+ * hitam — palet "tema gelap bawaan". Kontras ke-28 pasangan dijaga E-41a.
+ */
 @media (prefers-color-scheme: dark) {
   :root {
-    --kertas: #0f1524;
-    --lembar: #182038;
-    --tinta: #e8ecf4;
-    --tinta-redup: #a4aec4;
-    --stempel: #a99bff;
-    --merah-kalender: #ff5c6f;
-    --obrolan: #1f3a2e;
-    --cocok: #5fd3a6;
-    --belum-cocok: #f0b45a;
-    /* Di mode gelap, --stempel dan --merah-kalender terang, jadi teksnya gelap. */
-    --di-atas-pekat: #0f1524;
-    --garis: rgba(232, 236, 244, 0.18);
-    --garis: color-mix(in srgb, var(--tinta) 18%, transparent);
-    --garis-tegas: rgba(232, 236, 244, 0.3);
-    --garis-tegas: color-mix(in srgb, var(--tinta) 30%, transparent);
-    --garis-kontrol: rgba(232, 236, 244, 0.45);
-    --garis-kontrol: color-mix(in srgb, var(--tinta) 45%, transparent);
-    --nama: #7fd6a6;
+    --kertas: #191816;
+    --lembar: #23221f;
+    --tinta: #e6e3dc;
+    --tinta-redup: #ada99f;
+    --stempel: #b1a8e6;
+    --stempel-isi: #6a5fd0;
+    --merah-kalender: #d7263d;
+    --merah-teks: #f0707a;
+    --obrolan: #22332a;
+    --nama: #8fd1a8;
+    --cocok: #6fcb9f;
+    --belum-cocok: #e2a857;
+    /* Tulisan di tombol dan pita: putih di kedua mode. */
+    --di-atas-pekat: #ffffff;
+    --garis: rgba(230, 227, 220, 0.16);
+    --garis: color-mix(in srgb, var(--tinta) 16%, transparent);
+    --garis-tegas: rgba(230, 227, 220, 0.28);
+    --garis-tegas: color-mix(in srgb, var(--tinta) 28%, transparent);
+    --garis-kontrol: rgba(230, 227, 220, 0.5);
+    --garis-kontrol: color-mix(in srgb, var(--tinta) 50%, transparent);
   }
 }
 
@@ -357,11 +375,10 @@ summary:focus-visible,
 /*
  * Nama hari di keping: merah kalender (M3.10 D-1, kritik K-3). Patokan
  * `docs/contoh/layar-soal.html`: `.keping-tanggal span { color:
- * var(--merah-kalender) }`. Lewat `--merah-teks`, yang di kedua mode SAMA
- * dengan `--merah-kalender` (alias, bukan warna baru): kalau pemilik kelak
- * memberi merah teks sendiri untuk mode gelap (kritik K-1), yang berubah hanya
- * satu baris token, bukan pemakainya. Kontras terhitung: terang #D7263D di
- * atas lembar #FFF 4,96:1; gelap #FF5C6F di atas #182038 5,38:1.
+ * var(--merah-kalender) }`. Lewat `--merah-teks`: di terang sama dengan
+ * `--merah-kalender`, di gelap merah teks sendiri #F0707A (M3.11 D-1; patokan
+ * gelap ikut diperbarui). Kontras terhitung: terang #D7263D di atas lembar
+ * #FFF 4,96:1; gelap #F0707A di atas #23221F 5,53:1.
  */
 .kalender-hari-nama {
   color: var(--merah-teks);
@@ -500,6 +517,29 @@ summary:focus-visible,
   letter-spacing: 0.06em;
   color: var(--tinta-redup);
   padding: 0 0 12px;
+}
+
+/*
+ * Halaman kalender tetap KERTAS di mode gelap (M3.11 D-1, kritik K-2): kertas
+ * tidak berubah warna di malam hari, hanya lampunya yang redup. Berlaku di
+ * ketiga layar yang memakai `.kalender-halaman` — layar pertama, sobekan
+ * pembukaan, terima kasih. Keping di layar soal tidak ikut: ia `.kalender-keping`
+ * dan tetap `--lembar` gelap. `#E9EBEE` abu netral, bukan krem (desain.md
+ * melarang latar krem), dan tidak putih bersih supaya tidak menyilaukan.
+ *
+ * Blok ini HARUS sesudah `.kalender-halaman` dan `.kalender-hari` di atas:
+ * kekhususannya sama, jadi di blok gelap di puncak berkas ia akan kalah.
+ */
+@media (prefers-color-scheme: dark) {
+  .kalender-halaman {
+    background: #e9ebee;
+    color: #14213d;
+    border-color: transparent;
+  }
+
+  .kalender-halaman .kalender-hari {
+    color: #4a5670;
+  }
 }
 
 /* Gerak pertama dari dua yang diatur di seluruh aplikasi (D-8). */
@@ -1325,7 +1365,8 @@ summary:focus-visible,
   min-height: 52px;
   border: 0;
   border-radius: 3px;
-  background: var(--stempel);
+  /* Bidang: --stempel-isi (sama dengan --stempel di terang; #6A5FD0 di gelap). */
+  background: var(--stempel-isi);
   color: var(--di-atas-pekat);
   font-family: var(--baca);
   font-size: 17px;
