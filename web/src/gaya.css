@@ -1463,6 +1463,16 @@ summary:focus-visible,
 }
 
 /*
+ * Yang diikat hanya SAMBUNGAN tautan dan tanda bacanya (M3.10 D-8): teks
+ * tautannya sendiri tidak ikut `nowrap`, supaya tautan yang lebih panjang
+ * daripada sisa kolom masih bisa membungkus di dalam kotaknya alih-alih
+ * menjorok keluar.
+ */
+.tanpa-putus .rujukan {
+  white-space: normal;
+}
+
+/*
  * Jarak baris peran *isi*, 1,45, juga di mana tautan angka muncul (M3.10 D-3,
  * kritik K-5). Sampai M3.9 di sini 1,7 — ruang untuk bantalan tegak tautan —
  * dan teks kunci 17 px terbaca seperti karangan berspasi ganda. Bidang

@@ -2,7 +2,9 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { pecahTeks } from '../../factory/skema/rujukan.ts';
-import { faktaParagraf, ikatTandaBaca, potongKalimat, selipkanPenjelasan } from './Teks.tsx';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import { Teks, faktaParagraf, ikatTandaBaca, potongKalimat, selipkanPenjelasan } from './Teks.tsx';
 
 /*
  * F-A1-2: tautan angka dirender sebagai <button>, yang selalu menjadi kotak
@@ -243,5 +245,78 @@ describe('faktaParagraf (M3.8 D-8)', () => {
   it('penanda bukan-fakta (andaian, hari ini) tidak ikut: mereka tidak punya penjelasan', () => {
     const p = potong('Misal [[misal|Rp100]] pada [[hari-ini|8 Okt]], lalu [[a|X]].');
     expect(faktaParagraf(p)).toEqual(['a']);
+  });
+});
+
+/* ------------------------------------------------------------------ */
+/* M3.10 D-8 (kritik K-11) — tanda baca di luar elemen tebal           */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Sampai M3.9 ekor tanda baca yang diikat `ikatTandaBaca` ikut DI DALAM elemen
+ * tebalnya: "**Rp13.**", "**1 Agustus,** Rp178", "**(1.000 lembar):**"-nya
+ * angka andaian. Tanda baca bukan bagian angkanya, dan koma yang ikut tebal
+ * membuat dua angka tampak menyatu. Yang diikat tetap tanda baca itu (tidak
+ * boleh pindah baris sendirian), tetapi ia berdiri DI LUAR tebalnya.
+ */
+describe('tanda baca di luar elemen tebal (M3.10 D-8)', () => {
+  const render = (teks: string, pilihan: { tebalSaja?: boolean; interaktif?: boolean } = {}): string =>
+    renderToStaticMarkup(
+      createElement(Teks, {
+        teks,
+        sakelarSumber: () => undefined,
+        ...pilihan,
+      }),
+    );
+
+  /** Isi teks setiap elemen penekanan (strong, andaian, hari-ini, datar, tombol tautan). */
+  const isiTebal = (html: string): string[] =>
+    [
+      ...html.matchAll(
+        /<(strong|span class="(?:andaian|hari-ini|rujukan-datar)"|button)[^>]*>([\s\S]*?)<\/(?:strong|span|button)>/g,
+      ),
+    ].map((m) => (m[2] ?? '').replace(/<[^>]+>/g, ''));
+
+  const tabel: Array<{ nama: string; teks: string; pilihan: { tebalSaja?: boolean; interaktif?: boolean }; tebal: string[]; polos: string }> = [
+    { nama: '"Rp13." di lembar', teks: 'Tutup di [[a|Rp13]].', pilihan: { tebalSaja: true }, tebal: ['Rp13'], polos: 'Tutup di Rp13.' },
+    {
+      nama: '"1 Agustus, Rp178" di lembar',
+      teks: 'Per [[a|1 Agustus]], [[b|Rp178]] hari ini.',
+      pilihan: { tebalSaja: true },
+      tebal: ['1 Agustus', 'Rp178'],
+      polos: 'Per 1 Agustus, Rp178 hari ini.',
+    },
+    { nama: '"Rp140," tautan', teks: 'Dividen [[a|Rp140]], kecil.', pilihan: {}, tebal: ['Rp140'], polos: 'Dividen Rp140, kecil.' },
+    {
+      nama: '"(1.000 lembar):" andaian',
+      teks: 'Untuk [[misal|10 lot]] ([[misal|1.000 lembar]]): dividennya kecil.',
+      pilihan: {},
+      tebal: ['10 lot', '1.000 lembar'],
+      polos: 'Untuk 10 lot (1.000 lembar): dividennya kecil.',
+    },
+    { nama: 'hari ini + titik', teks: 'Hari ini [[hari-ini|8 Oktober 2025]].', pilihan: {}, tebal: ['8 Oktober 2025'], polos: 'Hari ini 8 Oktober 2025.' },
+    { nama: 'opsi datar + koma', teks: 'Betul, [[a|Rp45]], kecil.', pilihan: { interaktif: false }, tebal: ['Rp45'], polos: 'Betul, Rp45, kecil.' },
+  ];
+
+  for (const baris of tabel) {
+    it(baris.nama, () => {
+      const html = render(baris.teks, baris.pilihan);
+      expect(isiTebal(html)).toEqual(baris.tebal);
+      // Kata-katanya tidak berubah satu huruf pun.
+      expect(html.replace(/<[^>]+>/g, '')).toBe(baris.polos);
+    });
+  }
+
+  it('tidak ada elemen tebal yang teksnya berakhir dengan . , : ; )', () => {
+    for (const baris of tabel) {
+      for (const isi of isiTebal(render(baris.teks, baris.pilihan))) {
+        expect(isi, baris.nama).not.toMatch(/[.,:;)]$/);
+      }
+    }
+  });
+
+  it('tanda baca sesudah tautan tetap diikat ke tautannya (tidak pindah baris sendirian)', () => {
+    const html = render('Dividen [[a|Rp140]], kecil.');
+    expect(html).toMatch(/<span class="tanpa-putus"><button[\s\S]*?<\/button>,<\/span>/);
   });
 });

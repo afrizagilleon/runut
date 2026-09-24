@@ -255,36 +255,45 @@ export function Teks({
         if (bagian.jenis === 'utuh') {
           return <span key={nomor}>{bagian.teks}</span>;
         }
+        /*
+         * Tanda baca (`ekor`) berdiri DI LUAR elemen tebalnya (M3.10 D-8,
+         * kritik K-11): "Rp13." bukan "**Rp13.**", "1 Agustus, Rp178" bukan
+         * "**1 Agustus,** Rp178". Ia tetap menempel — di antara teks sebaris
+         * dan tanda baca tanpa spasi memang tidak ada kesempatan putus baris.
+         * Yang butuh pengikat `.tanpa-putus` hanya tombol tautan (kotak atom).
+         */
         if (bagian.fact_id === RUJUKAN_HARI_INI) {
           return (
-            <span key={nomor} className="hari-ini">
-              {bagian.teks}
+            <Fragment key={nomor}>
+              <span className="hari-ini">{bagian.teks}</span>
               {ekor}
-            </span>
+            </Fragment>
           );
         }
         if (tebalSaja) {
           return (
-            <strong key={nomor} className="angka-lembar">
-              {bagian.teks}
+            <Fragment key={nomor}>
+              <strong className="angka-lembar">{bagian.teks}</strong>
               {ekor}
-            </strong>
+            </Fragment>
           );
         }
         if (!interaktif) {
           return (
-            <span key={nomor} className="rujukan-datar">
-              {bagian.teks}
+            <Fragment key={nomor}>
+              <span className="rujukan-datar">{bagian.teks}</span>
               {ekor}
-            </span>
+            </Fragment>
           );
         }
         if (bagian.fact_id === RUJUKAN_ANDAIAN) {
           return (
-            <span key={nomor} className="andaian" title="angka andaian di soal, bukan fakta">
-              {bagian.teks}
+            <Fragment key={nomor}>
+              <span className="andaian" title="angka andaian di soal, bukan fakta">
+                {bagian.teks}
+              </span>
               {ekor}
-            </span>
+            </Fragment>
           );
         }
         /*
