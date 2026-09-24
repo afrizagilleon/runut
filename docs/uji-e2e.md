@@ -168,6 +168,12 @@ dilihat browser tanpa membuka browser.
 | **M3.10 K-10** "›" lembar menyembul di kanan balon yang mengintip | `pita-balon.spec.ts` E-38 (membaca PIKSEL tangkapan layar: pita `pointer-events: none` tidak terlihat `elementFromPoint`) | `gaya.css`: `.melayang-aktif::before` `content: none` |
 | **M3.10 K-11** "**Rp13.**", "**1 Agustus,** Rp178", "Rp140 ." | `tanda-baca.spec.ts` E-39 · `Teks.test.ts` (tabel) | `Teks.tsx`: ekor kembali ke dalam `<strong>` · `gaya.css`: `.rujukan` bantalan `0 2px` (celah diukur dari kotak TEKS tautan) · teks tautan ikut `nowrap` |
 | **M3.10 K-14** Pegangan balon 2,42:1 (gagal 1.4.11); cincin fokus tombol utama sewarna bidangnya; gaya `:disabled` tertinggal | `aksesibilitas-m310.spec.ts` E-40 | `gaya.css`: `.grip i` 0,55 · `outline-color: var(--stempel)` · `.tombol-utama:disabled` dikembalikan |
+| **M3.11 K-1/K-2** Mode gelap berpalet "tema gelap bawaan" (biru-hitam, tombol lavender bertulisan hitam), kalender jadi kotak biru dongker; urutan aturan yang keliru mengembalikan tombol lavender bertulisan putih (2,18:1) atau kalender dongker | `palet-gelap.spec.ts` E-41a (28 pasangan kontras dari warna TERHITUNG, terang + gelap; warna diurai kanvas, transisi ditunggu), E-41b (hue kertas/lembar gelap), E-41c (kalender kertas di layar pertama, sobekan pembukaan, terima kasih; keping `--lembar`) | `gaya.css`: `--stempel-isi` bawaan SESUDAH blok gelap (2,18) · blok kalender gelap dipindah ke blok gelap di puncak (kalah urutan) · `--kertas` gelap `#0f1524` · `--merah-teks` gelap dicabut (E-31) |
+| **M3.11 K-4b** Angka tebal ungu di kartu (diam) serupa tautan angka | `angka-kartu.spec.ts` E-42 (soal 1–3, semua kaki terbuka dan sesudah dikunci: tidak ada elemen non-kontrol di `.lembar` yang `--stempel`; kepala tetap `--stempel`) | `gaya.css`: `.angka-lembar` `--stempel` lagi · tebal 400 |
+| **M3.11 K-9** Bukti teknis terkuat terkubur di dasar pembukaan; kalimat baru dengan angka diketik tetap (benar untuk DADA, bohong untuk ULTJ) | `jejak-naik.spec.ts` E-43 (angka kalimat = bagian jejak = berkas kasus, DADA ≠ ULTJ; tautan membuka lipatan dan menggulir) · `jejak.test.ts` | `jejak.ts`: n = 10, m = 43 diketik · `Aplikasi.tsx`: tautan tidak membuka `details` · `::after` bidang sentuh dicabut (E-12e) |
+| **M3.11 K-12** Lembar putih larut di meja terang; `border-color` kritikus menimpa garis kepala ungu | `tepi-lembar.spec.ts` E-44 (sisi = `--garis-tegas` terang / `--garis` gelap; kepala = `--stempel` = patokan) | `gaya.css`: `border-color` sesudah `border-top` · `--tepi-lembar` terang `--garis` · baris istilah `--garis` |
+| **M3.11 R-04** Kaki kartu berupa baris tulisan yang tidak terbaca sebagai pintu (soal 1: 10/27 sesi membukanya) | `kaki-tombol.spec.ts` E-45 (button, tepi tertulis 1,5 px + terhitung = pembanding, `--stempel`, 3 px, lebar ≥ 85 %, jarak 12/12/12, ≥ 44, panah berputar; buka → tutup → buka), E-46 (kaki produk = kaki kedua patokan) | `gaya.css`: `border: 0` · `margin: 0; width: 100%` · tepi 1 px · selektor putar panah · sudut 2 px (E-46) · `sumber.ts`: label lama · patokan: kaki lama / label lama (E-46) |
+| **M3.11 D-8** `og:image` relatif (Threads/WhatsApp tanpa gambar), `theme-color` gelap palet lama | `kepala-halaman.spec.ts` E-35 (nilai persis `og:image`, `og:url`, `twitter:card`, theme-color) | `index.html`: `og:image` relatif · `og:url` dicabut · theme-color `#0f1524` · `summary` |
 
 Tiga tes lama ikut berubah di M3.9, dan ketiganya dibuktikan masih menggigit:
 `umpan-tekan.spec.ts` (C-4) kini mencari soal beristilah dari berkas kasus — soal 1
@@ -185,15 +191,30 @@ Dua tes lama ikut berubah di M3.10, dengan alasannya di komentar tesnya:
 `::after` absolut yang menjorok (tautan angka tidak lagi berbantalan sebaris) —
 tanpa `::after` hitungannya kembali ke kotak dan tesnya merah lagi.
 
-### Tangkapan layar untuk pemilik (M3.10 D-10)
+Dua tes lama ikut berubah di M3.11, dengan alasannya di komentar tesnya:
+`keping-merah.spec.ts` E-31 membandingkan nama hari dengan `--merah-teks`
+(mode gelap kini punya merah teks sendiri, `#F0707A`; patokan gelap ikut
+diperbarui, jadi perbandingan dengan patokan tetap berdampingan);
+`kepala-halaman.spec.ts` E-35 menuntut `og:image`/`og:url` absolut dan
+theme-color gelap `#191816` (gambarnya tetap diperiksa dari build lokal);
+tidak ada ambang posisi yang diubah — kaki kartu menambah tepat 12,0 px per
+lembar dan E-30/E-25/E-19/E-38 tetap hijau dengan angka lamanya.
+
+**Tepi 1,5 px di Chromium.** Chromium membulatkan lebar tepi antara 1 dan 2 px
+CSS ke bawah menjadi 1 px (terhitung dan terlukis). E-45 karena itu memeriksa
+nilai yang DITULIS di lembar gaya (CSSOM, singkatan `border`) dan menuntut
+nilai terhitung sama dengan pembanding ber-tepi 1,5 px di halaman yang sama.
+
+### Tangkapan layar untuk pemilik (M3.10 D-10) dan arsip reviewer (M3.11 D-7)
 
 ```bash
-node e2e/bantu/potret.ts
+node e2e/bantu/potret.ts              # -> .cache/e2e/layar-m310/
+node e2e/bantu/potret.ts layar-m311   # -> .cache/e2e/layar-m311/
 ```
 
 Terang dan gelap, 360 × 640 dan 1280 × 800, kedua kasus, tujuh layar (pertama,
 soal 1 dibuka, soal 1 dikunci, pembukaan atas, pembukaan penuh, akhir, terima
-kasih) → `.cache/e2e/layar-m310/<skema>-<lebar>/<kasus>/NN-nama.png`. Folder itu
+kasih) → `.cache/e2e/<folder>/<skema>-<lebar>/<kasus>/NN-nama.png`. Folder itu
 **tidak** dikosongkan `globalSetup` (yang dikosongkan hanya `layar/` dan
 `data/`). Tanpa server dan tanpa jaringan: build tanpa pengumpul ke
 `.cache/e2e/dist-potret`, semua permintaan dipenuhi dari cakram lewat

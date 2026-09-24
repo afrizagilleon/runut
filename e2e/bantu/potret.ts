@@ -1,9 +1,12 @@
 /**
- * `node e2e/bantu/potret.ts` — tangkapan layar untuk pemilik (M3.10 D-10).
+ * `node e2e/bantu/potret.ts [folder]` — tangkapan layar untuk pemilik (M3.10
+ * D-10) dan arsip reviewer (M3.11 D-7: `node e2e/bantu/potret.ts layar-m311`).
+ * Tanpa argumen folder tetap `layar-m310`; argumen hanya boleh berbentuk
+ * `layar-<nama>` dan selalu jatuh di dalam `.cache/e2e/`.
  *
  * Terang DAN gelap, 360 × 640 (ponsel sentuh) DAN 1280 × 800, kedua kasus,
  * tujuh layar: layar pertama, soal 1 dibuka, soal 1 dikunci, pembukaan atas,
- * pembukaan penuh, akhir, terima kasih. Hasilnya ke `.cache/e2e/layar-m310/`,
+ * pembukaan penuh, akhir, terima kasih. Hasilnya ke `.cache/e2e/<folder>/`,
  * folder yang TIDAK dikosongkan `globalSetup` rangkaian e2e (yang dikosongkan
  * hanya `.cache/e2e/layar/` dan `.cache/e2e/data/`).
  *
@@ -19,7 +22,9 @@ import { chromium, type Browser, type Page } from '@playwright/test';
 import { AKAR, CACHE, ID_KASUS, berkasKasus } from './jalur.ts';
 
 const DIST = join(CACHE, 'dist-potret');
-const KELUAR = join(CACHE, 'layar-m310');
+const FOLDER = process.argv[2] ?? 'layar-m310';
+if (!/^layar-[a-z0-9-]+$/.test(FOLDER)) throw new Error(`folder potret harus berbentuk layar-<nama>, bukan "${FOLDER}"`);
+const KELUAR = join(CACHE, FOLDER);
 const ASAL = 'http://localhost:4998';
 
 const TIPE: Record<string, string> = {
