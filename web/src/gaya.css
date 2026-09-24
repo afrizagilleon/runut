@@ -59,6 +59,15 @@
   --garis-kontrol: rgba(20, 33, 61, 0.5);
   --garis-kontrol: color-mix(in srgb, var(--tinta) 50%, transparent);
 
+  /*
+   * Tepi kiri, kanan, bawah lembar dan keempat tepi baris istilah (M3.11 D-4,
+   * kritik K-12 pilihan 1; diputuskan reviewer 24 Sep atas penilaian kritikus).
+   * Di terang lembar putih di atas meja #F3F5F7 hanya 1,09:1 dan tepi --garis
+   * 1,26:1 — kertasnya larut. Di gelap tidak diputuskan: tetap --garis.
+   * Garis KEPALA lembar tidak ikut (tetap 2 px --stempel).
+   */
+  --tepi-lembar: var(--garis-tegas);
+
   /* Nama pengirim pesan (v3, patokan). Kontras dihitung di ledger T-02. */
   --nama: #1f6b45;
 
@@ -120,6 +129,7 @@
     --garis-tegas: color-mix(in srgb, var(--tinta) 28%, transparent);
     --garis-kontrol: rgba(230, 227, 220, 0.5);
     --garis-kontrol: color-mix(in srgb, var(--tinta) 50%, transparent);
+    --tepi-lembar: var(--garis);
   }
 }
 
@@ -652,7 +662,8 @@ summary:focus-visible,
 
 .lembar {
   background: var(--lembar);
-  border: 1px solid var(--garis);
+  /* Kiri/kanan/bawah: --tepi-lembar (M3.11 D-4); kepala: --stempel, tidak ikut. */
+  border: 1px solid var(--tepi-lembar);
   border-top: 2px solid var(--stempel);
   border-radius: 2px;
   margin: 0;
@@ -1008,7 +1019,7 @@ summary:focus-visible,
   width: 100%;
   min-height: 44px;
   padding: 0 12px;
-  border: 1px solid var(--garis);
+  border: 1px solid var(--tepi-lembar);
   border-radius: 2px;
   background: var(--lembar);
   color: var(--tinta);
