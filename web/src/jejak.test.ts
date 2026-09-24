@@ -47,20 +47,21 @@ describe('jumlahPemeriksaan', () => {
     expect(jumlahPemeriksaan(kasusUji(0, 0))).toBe(0);
   });
 
-  it('memakai penyebut yang sama dengan kaki lipatan: semua aturan, bukan hanya yang jalan', () => {
+  it('hanya aturan yang DIJALANKAN, bukan yang dilewati (M3.11 A-1 D-9)', () => {
     const kasus = kasusUji(10, 8);
     const pemeriksaan = [...kasus.pemeriksaan];
     pemeriksaan[7] = { ...pemeriksaan[7], dijalankan: false, alasan_lewat: 'data tidak ada' } as never;
     const dengan = { ...kasus, pemeriksaan } as Kasus;
-    // Sembilan yang jalan, tetapi yang disebut tetap sepuluh -- dan kaki
-    // lipatan mengeja pengecualiannya ("1 dari 10"), jadi tidak ada yang
-    // dibulatkan diam-diam.
-    expect(jumlahPemeriksaan(dengan)).toBe(10);
-    expect(dengan.pemeriksaan.filter((p) => p.dijalankan).length).toBe(9);
+    // Sepuluh aturan terdaftar, sembilan dijalankan: "diperiksa 10
+    // pemeriksaan otomatis" mengaku lebih dari yang terjadi. Yang dilewati
+    // tetap dieja di kaki lipatan ("1 dari 10"), bukan di angka ini.
+    expect(jumlahPemeriksaan(dengan)).toBe(9);
+    expect(dengan.pemeriksaan.length).toBe(10);
   });
 
-  it('kasus DADA yang hidup: sepuluh aturan V1, bukan tiga puluh satu V2', () => {
-    expect(jumlahPemeriksaan(kasusAsli)).toBe(10);
+  it('kasus DADA yang hidup: 9 dijalankan dari 10 aturan V1 (R8 dilewati)', () => {
+    expect(jumlahPemeriksaan(kasusAsli)).toBe(9);
+    expect(kasusAsli.pemeriksaan.length).toBe(10);
   });
 });
 
@@ -188,8 +189,13 @@ describe('kalimatJejakNaik (M3.11 D-3)', () => {
   });
 
   it('DADA dan ULTJ yang hidup berbeda — angka yang diketik tidak bisa lolos keduanya', () => {
-    expect(kalimatJejakNaik(kasusAsli)).toContain('diperiksa 10 pemeriksaan otomatis; 43 angka dibuang.');
-    expect(kalimatJejakNaik(kasusUltj)).toContain('diperiksa 35 pemeriksaan otomatis; tidak ada angka yang dibuang.');
+    // Hanya yang dijalankan (M3.11 A-1 D-9): DADA 9 dari 10, ULTJ 28 dari 35.
+    expect(kalimatJejakNaik(kasusAsli)).toContain('diperiksa 9 pemeriksaan otomatis; 43 angka dibuang.');
+    expect(kalimatJejakNaik(kasusUltj)).toContain('diperiksa 28 pemeriksaan otomatis; tidak ada angka yang dibuang.');
+    expect(kalimatJejak(kasusAsli)).toContain('diperiksa dengan 9 pemeriksaan otomatis');
+    expect(kalimatJejak(kasusUltj)).toContain('diperiksa dengan 28 pemeriksaan otomatis');
+    expect(ringkasanJejak(kasusAsli)).toBe('Lihat 9 pemeriksaan dan hasilnya');
+    expect(ringkasanJejak(kasusUltj)).toBe('Lihat 28 pemeriksaan dan hasilnya');
     expect(kalimatJejakNaik(kasusAsli)).not.toBe(kalimatJejakNaik(kasusUltj));
   });
 

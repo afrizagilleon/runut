@@ -16,22 +16,24 @@
 import type { Kasus } from '../../factory/skema/tipe.ts';
 
 /**
- * Berapa aturan verifikasi yang dijalankan atas kasus ini.
+ * Berapa aturan verifikasi yang BENAR-BENAR DIJALANKAN atas kasus ini.
  *
- * `kasus.pemeriksaan` adalah daftar aturan yang **mesinnya jalankan untuk kasus
- * ini** — satu baris per aturan, lengkap dengan apakah ia bisa dijalankan dan
- * kenapa tidak. Panjang daftar itulah angka yang benar: bukan 31 (mesin V2,
- * yang tidak membangun kasus ini), dan bukan angka yang diketik tangan.
+ * `kasus.pemeriksaan` mendaftar setiap aturan mesin untuk kasus ini, lengkap
+ * dengan apakah ia dijalankan dan kenapa tidak (`alasan_lewat`). Yang dihitung
+ * hanya `dijalankan === true` (M3.11 amandemen A-1, D-9; diputuskan reviewer):
+ * DADA mendaftar 10 dan menjalankan 9 (R8, tanda repo, datanya tidak ada), ULTJ
+ * mendaftar 35 dan menjalankan 28. Sampai M3.11 T-08 fungsi ini mengembalikan
+ * panjang daftar, sehingga "diperiksa 35 pemeriksaan otomatis" mengaku lebih
+ * dari yang terjadi — untuk produk yang intinya "cek angkanya", itu tidak boleh.
  *
- * Yang **tidak** dipakai di sini: `filter(p => p.dijalankan).length`. Satu
- * aturan DADA (R8, tanda repo) tidak bisa dijalankan karena datanya tidak ada,
- * dan itu dikatakan apa adanya di kaki lipatan — "Aturan yang tidak bisa
- * dijalankan atas kasus ini: 1 dari 10". Kalau kalimat pembukanya memakai 9 dan
- * kakinya memakai 10, pembacanya harus menebak mana yang benar; sekarang
- * keduanya memakai penyebut yang sama dan pengecualiannya dieja.
+ * Satu fungsi untuk ketiga tempat yang menyebut angka ini: kalimat jejak di
+ * bawah "Waktu berjalan lagi", kalimat pembuka bagian jejak, dan pintu
+ * lipatannya. Yang dilewati tetap dieja apa adanya di kaki lipatan — "Aturan
+ * yang tidak bisa dijalankan atas kasus ini: 1 dari 10" — yang memang
+ * menyebut daftar lengkapnya.
  */
 export function jumlahPemeriksaan(kasus: Kasus): number {
-  return kasus.pemeriksaan.length;
+  return kasus.pemeriksaan.filter((p) => p.dijalankan === true).length;
 }
 
 /**
@@ -92,8 +94,8 @@ export function ringkasanJejak(kasus: Kasus): string {
  * dari SUMBER YANG SAMA dengan bagian jejak di sana (`jumlahPemeriksaan`,
  * `faktaGugur`): "angka dibuang" di sini adalah "angka yang karena itu tidak
  * boleh menjadi kartu" di sana. Tidak ada angka yang diketik tangan: DADA
- * 10/43, ULTJ 35/0, dan kalimat yang menulis "10 … 43" tetap akan berbohong
- * tentang ULTJ.
+ * 9/43, ULTJ 28/0 (hanya aturan yang dijalankan — amandemen A-1), dan
+ * kalimat yang menulis "9 … 43" tetap akan berbohong tentang ULTJ.
  */
 export function kalimatJejakNaik(kasus: Kasus): string {
   const n = jumlahPemeriksaan(kasus);

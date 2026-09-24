@@ -117,13 +117,21 @@ function angkaJejak(kalimat: string, pintu: string): { n: number; nPintu: number
   return { n: Number(n[1]), nPintu: Number(nPintu[1]), m: m === null ? 0 : Number(m[1]) };
 }
 
-/** Angka dari berkas kasus: panjang daftar pemeriksaan dan fakta yang gugur (bukan TERVERIFIKASI). */
-function angkaBerkas(kasus_id: string): { n: number; m: number } {
+/**
+ * Angka dari berkas kasus: aturan yang DIJALANKAN (`dijalankan === true`; yang
+ * dilewati tidak dihitung — M3.11 A-1 D-9) dan fakta yang gugur (bukan
+ * TERVERIFIKASI).
+ */
+function angkaBerkas(kasus_id: string): { n: number; m: number; terdaftar: number } {
   const isi = JSON.parse(readFileSync(berkasKasus(kasus_id), 'utf8')) as {
-    pemeriksaan: unknown[];
+    pemeriksaan: { dijalankan: boolean }[];
     fakta: { status: string }[];
   };
-  return { n: isi.pemeriksaan.length, m: isi.fakta.filter((f) => f.status !== 'TERVERIFIKASI').length };
+  return {
+    n: isi.pemeriksaan.filter((p) => p.dijalankan === true).length,
+    m: isi.fakta.filter((f) => f.status !== 'TERVERIFIKASI').length,
+    terdaftar: isi.pemeriksaan.length,
+  };
 }
 
 test('E-43 kalimat jejak di bawah judul pembukaan: angkanya = bagian jejak = berkas kasus, DADA ≠ ULTJ; tautannya membuka jejak', async ({
@@ -139,7 +147,7 @@ test('E-43 kalimat jejak di bawah judul pembukaan: angkanya = bagian jejak = ber
     // eslint-disable-next-line no-console
     console.log(
       `E-43 [${test.info().project.name}] [${kasus_id}] "${b.kalimat}"\n` +
-        `  kalimat n=${String(kalimat.n)} m=${String(kalimat.m)} · jejak n=${String(jejak.n)} pintu=${String(jejak.nPintu)} m=${String(jejak.m)} · berkas n=${String(berkas.n)} m=${String(berkas.m)}\n` +
+        `  kalimat n=${String(kalimat.n)} m=${String(kalimat.m)} · jejak n=${String(jejak.n)} pintu=${String(jejak.nPintu)} m=${String(jejak.m)} · berkas dijalankan=${String(berkas.n)} terdaftar=${String(berkas.terdaftar)} m=${String(berkas.m)}\n` +
         `  judul.bawah=${b.judulBawah.toFixed(1)} kalimat=${b.kalimatAtas.toFixed(1)}–${b.kalimatBawah.toFixed(1)} loncat.atas=${b.loncatAtas.toFixed(1)} ` +
         `garis-kiri=${b.garisKiri} ${b.garisKiriWarna} (--garis-tegas ${b.garisTegas}) rata=${b.rata} huruf=${b.huruf}`,
     );
@@ -156,7 +164,10 @@ test('E-43 kalimat jejak di bawah judul pembukaan: angkanya = bagian jejak = ber
     expect(b.huruf).toBe('400 17px/24.65px');
     expect(kalimat, 'angka kalimat = angka bagian jejak').toEqual({ n: jejak.n, m: jejak.m });
     expect(jejak.nPintu, 'pintu lipatan jejak menyebut n yang sama').toBe(jejak.n);
-    expect(kalimat, 'angka kalimat = berkas kasus').toEqual(berkas);
+    expect(kalimat, 'angka kalimat = berkas kasus (hanya yang dijalankan)').toEqual({ n: berkas.n, m: berkas.m });
+    // Kasus ini memang punya aturan yang dilewati: tanpa itu, tes tidak bisa
+    // membedakan "dijalankan" dari "terdaftar".
+    expect(berkas.terdaftar, 'ada aturan yang dilewati di kasus ini').toBeGreaterThan(berkas.n);
     hasil.set(kasus_id, kalimat);
 
     // Tautannya: menggulir ke bagian jejak dan membuka lipatannya.

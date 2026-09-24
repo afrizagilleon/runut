@@ -61,11 +61,17 @@ test('E-18 jejak verifikasi: angkanya dari data, dan kata "rantai" tidak dipakai
   const kalimat = page.locator('.jejak > p').first();
   const teks = (await kalimat.innerText()).replace(/\s+/g, ' ');
 
+  /*
+   * Hanya aturan yang DIJALANKAN (M3.11 A-1 D-9): DADA mendaftar 10 aturan dan
+   * menjalankan 9 (R8 dilewati, datanya tidak ada). "Diperiksa dengan 10
+   * pemeriksaan otomatis" mengaku lebih dari yang terjadi.
+   */
+  expect(dijalankan, 'kasus ini memang punya aturan yang dilewati').toBeLessThan(aturan);
   expect(
     teks,
-    `kalimat jejak harus menyebut ${String(aturan)} pemeriksaan (dibaca dari berkas kasus); ` +
+    `kalimat jejak harus menyebut ${String(dijalankan)} pemeriksaan yang dijalankan (dibaca dari berkas kasus); ` +
       `yang ada: ${teks}`,
-  ).toContain(`${String(aturan)} pemeriksaan otomatis`);
+  ).toContain(`diperiksa dengan ${String(dijalankan)} pemeriksaan otomatis`);
   expect(teks, `kalimat jejak harus menyebut ${String(temuan)} hal yang tidak cocok`).toContain(
     `${String(temuan)} hal yang tidak cocok`,
   );
@@ -84,7 +90,7 @@ test('E-18 jejak verifikasi: angkanya dari data, dan kata "rantai" tidak dipakai
   const ringkasan = page.locator('details[data-uid="jejak"] > summary');
   const teksRingkasan = (await ringkasan.innerText()).replace(/\s+/g, ' ').trim();
   expect(teksRingkasan, 'ringkasan lipatan menyebut angka yang sama').toBe(
-    `Lihat ${String(aturan)} pemeriksaan dan hasilnya`,
+    `Lihat ${String(dijalankan)} pemeriksaan dan hasilnya`,
   );
   expect(teksRingkasan.toLowerCase()).not.toContain('rantai');
 
