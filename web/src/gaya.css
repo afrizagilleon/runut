@@ -1152,8 +1152,18 @@ summary:focus-visible,
   color: var(--tinta-redup);
 }
 
-.opsi-keliru .opsi-tanda-pemain,
+/*
+ * Sebelum dikunci, "Pilihanmu" berwarna pilihan itu sendiri (`--stempel`, sama
+ * dengan tepi dan huruf opsinya), bukan warna peringatan (M3.10 D-5, kritik
+ * K-7): sampai M3.9 ia oranye `--belum-cocok` sebelum ada penilaian apa pun —
+ * juga ketika pilihannya benar. Oranye hanya untuk pilihan yang sesudah
+ * dikunci memang keliru. Kontras: terang 8,18:1, gelap 6,77:1 di atas lembar.
+ */
 .opsi-dipilih .opsi-tanda-pemain {
+  color: var(--stempel);
+}
+
+.opsi-keliru .opsi-tanda-pemain {
   color: var(--belum-cocok);
 }
 
