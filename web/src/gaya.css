@@ -677,14 +677,17 @@ summary:focus-visible,
 }
 
 /*
- * Angka penting di badan lembar: tebal DAN --stempel (permintaan pemilik,
- * 22 Sep). Hanya di lembar — tidak di pesan, opsi, atau judul. Ia tidak
- * interaktif, jadi ketukan padanya tercatat `mati: true` (D-1, D-8).
+ * Angka penting di badan lembar: tebal, berwarna TINTA (M3.11 D-2, kritik
+ * K-4b; diputuskan reviewer 24 Sep atas penilaian kritikus — pemilik
+ * menyerahkan penilaian rupa). Sampai M3.10 tebal DAN --stempel: rupa yang
+ * sama dengan tautan angka di teks kunci, padahal ia tidak interaktif
+ * (ketukannya tercatat `mati: true`). Ungu = bisa diketuk, atau garis kepala
+ * sumber resmi. Hanya di lembar — tidak di pesan, opsi, atau judul.
  */
 .lembar-badan b,
 .angka-lembar {
   font-weight: 700;
-  color: var(--stempel);
+  color: inherit;
 }
 
 .lembar-kaki {
