@@ -158,6 +158,16 @@ dilihat browser tanpa membuka browser.
 | **M3.9** Pengantar kartu dan label bilah varian A; soal 1 tanpa petunjuk | `layar-soal-k06.spec.ts` E-28 (kedua kasus) | `alur.ts`: `kalimatAntar` kalimat lama · `LABEL_TURUN` "↓ Jawab di bawah" · `Aplikasi.tsx`: petunjuk cadangan dirender saat `null` (hanya e2e yang merah; Vitest hijau) |
 | **M3.9** Keping: bulatan di BAWAH tanggal sejak M3.2 (patokan: satu baris), penanda "sesudahnya" tidak pernah dibangun | `keping-satu-baris.spec.ts` E-29 (tabel kesetiaan dicetak) · `balon-melayang.spec.ts` E-19 | `gaya.css`: keping kembali `baseline` tanpa `space-between` · bulatan dipaksa ke baris kedua · gerigi penanda dicabut · `Aplikasi.tsx`: penanda dicabut · balon memakai tinggi keping lama 62 (E-19a/b/c/f) |
 | **M3.9** D-6: sepuluh detik pertama muat di 360 × 640 | `sepuluh-detik.spec.ts` E-30 (kedua kasus) | `factory/kasus/dada-2025-10-08.ts`: urutan kartu soal 1 dikembalikan · `Aplikasi.tsx`: contoh gelembung teks tetap · "Kita mundur ke" kembali · `gaya.css`: `.tanya` didorong 200 px (opsi a > 260 px) |
+| **M3.10 K-3** Nama hari di keping tidak merah (desain.md dan patokan: merah kalender); layar soal tanpa merah sama sekali | `keping-merah.spec.ts` E-31 (patokan dimuat lewat `setContent`, warna terhitung dibandingkan) | `gaya.css`: `.kalender-hari-nama` `color: inherit` |
+| **M3.10 K-4a** Angka diam di kartu dan tautan angka hanya dibedakan garis titik 1 px; teks kunci punya dua penekanan | `tautan-jelas.spec.ts` E-32 | `gaya.css`: `.rujukan` kembali `dotted` · `.teks-kunci .andaian` dicabut dari aturan `inherit` |
+| **M3.10 K-5** "Waktu berjalan lagi": sembilan gaya teks, mesin tik di subjudul dan pintu jejak, kapital ber-spasi ketiga, rata tengah, jarak baris 1,7 | `pembukaan-peran.spec.ts` E-33 (juga mencetak `TINGGI-PEMBUKAAN`) · `periksa:desain` | `gaya.css`: `.bacaan h3` → `var(--mesin)` (gate + E-33) · `.bacaan li` 1,7 · `Aplikasi.tsx`: tanggal garis waktu kembali `penanda().pendek` |
+| **M3.10** Bidang sentuh tautan lewat `::after` menjorok ke baris sebelah dan merebut teks tautan lain; teks tautan menembus balon melayang | `pembukaan-peran.spec.ts` E-33b, E-33c (`elementFromPoint`) · `tata-letak.spec.ts` E-12e (menghitung `::after`) | `gaya.css`: `::after` `content: none` (E-33b, E-12e) · `.rujukan-teks` tanpa `z-index` (E-33b) · wadah tanpa `isolation: isolate` (E-33c) |
+| **M3.10 K-6** Laptop: tombol Mulai 315 px di bawah ajakan; tautan tanpa pratinjau, tab tanpa ikon, judul tab tak teruji | `tata-letak-lebar.spec.ts` E-12g (`lebar`) · `kepala-halaman.spec.ts` E-35 | `gaya.css`: bilah layar pertama `fixed` lagi di ≥ 768 px · `index.html`: ikon dicabut · `pratinjau.png` dihapus (vite preview menjawab `text/html`) |
+| **M3.10 K-7** "Pilihanmu" oranye (warna "belum cocok") sebelum dikunci | `pilihanmu.spec.ts` E-36 | `gaya.css`: `.opsi-dipilih .opsi-tanda-pemain` kembali `--belum-cocok` |
+| **M3.10 K-8** Terima kasih: judul di atas kalender, rata kiri; layar akhir: legend 700 dengan garis fieldset menyembul, jangkar mesin tik | `akhir-terima-kasih.spec.ts` E-37 | `gaya.css`: legend tanpa `float` · `.jangkar` mesin tik (gate + E-37) · `Aplikasi.tsx`: judul dipindah ke atas kalender |
+| **M3.10 K-10** "›" lembar menyembul di kanan balon yang mengintip | `pita-balon.spec.ts` E-38 (membaca PIKSEL tangkapan layar: pita `pointer-events: none` tidak terlihat `elementFromPoint`) | `gaya.css`: `.melayang-aktif::before` `content: none` |
+| **M3.10 K-11** "**Rp13.**", "**1 Agustus,** Rp178", "Rp140 ." | `tanda-baca.spec.ts` E-39 · `Teks.test.ts` (tabel) | `Teks.tsx`: ekor kembali ke dalam `<strong>` · `gaya.css`: `.rujukan` bantalan `0 2px` (celah diukur dari kotak TEKS tautan) · teks tautan ikut `nowrap` |
+| **M3.10 K-14** Pegangan balon 2,42:1 (gagal 1.4.11); cincin fokus tombol utama sewarna bidangnya; gaya `:disabled` tertinggal | `aksesibilitas-m310.spec.ts` E-40 | `gaya.css`: `.grip i` 0,55 · `outline-color: var(--stempel)` · `.tombol-utama:disabled` dikembalikan |
 
 Tiga tes lama ikut berubah di M3.9, dan ketiganya dibuktikan masih menggigit:
 `umpan-tekan.spec.ts` (C-4) kini mencari soal beristilah dari berkas kasus — soal 1
@@ -168,6 +178,28 @@ lipatan), dan layar terpendek kini soal 1; `riwayat.spec.ts`, `permainan.spec.ts
 dan `asal-tidak-aman.spec.ts` mengenali layar pertama dari judulnya di berkas
 kasus, bukan dari kalimat "Kita mundur ke".
 
+Dua tes lama ikut berubah di M3.10, dengan alasannya di komentar tesnya:
+`sobekan.spec.ts` E-05 membaca tanggal garis waktu yang kini berhuruf kalimat
+("9 Okt 2025", peran meta) dan tetap menuntut tanggal yang terurai dan > T;
+`bantu/ukur.ts` E-12e menghitung bidang sentuh sebagai kotak **ditambah**
+`::after` absolut yang menjorok (tautan angka tidak lagi berbantalan sebaris) —
+tanpa `::after` hitungannya kembali ke kotak dan tesnya merah lagi.
+
+### Tangkapan layar untuk pemilik (M3.10 D-10)
+
+```bash
+node e2e/bantu/potret.ts
+```
+
+Terang dan gelap, 360 × 640 dan 1280 × 800, kedua kasus, tujuh layar (pertama,
+soal 1 dibuka, soal 1 dikunci, pembukaan atas, pembukaan penuh, akhir, terima
+kasih) → `.cache/e2e/layar-m310/<skema>-<lebar>/<kasus>/NN-nama.png`. Folder itu
+**tidak** dikosongkan `globalSetup` (yang dikosongkan hanya `layar/` dan
+`data/`). Tanpa server dan tanpa jaringan: build tanpa pengumpul ke
+`.cache/e2e/dist-potret`, semua permintaan dipenuhi dari cakram lewat
+`page.route`, yang lain dibatalkan dan dilaporkan. Gambar pratinjau tautan
+dibuat dengan cara yang sama oleh `node alat/buat-pratinjau.ts`.
+
 ## Menambah tes ketika cacat baru ditemukan
 
 1. **Tulis tesnya dulu, dan pastikan ia merah.** Kalau ia langsung hijau,
@@ -175,7 +207,8 @@ kasus, bukan dari kalimat "Kita mundur ke".
 2. Taruh di `e2e/<nama>.spec.ts`. Pembantu ada di `e2e/bantu/`:
    `main.ts` (langkah permainan, ketukan, tangkapan layar, penunggu),
    `peristiwa.ts` (membaca berkas pengumpul), `kasus.ts` (membaca berkas kasus),
-   `ukur.ts` (tata letak dan kontras), `bundel.ts` (isi hasil build).
+   `ukur.ts` (tata letak dan kontras), `bundel.ts` (isi hasil build),
+   `png.ts` (membaca piksel tangkapan layar tanpa dependensi).
 3. Daftarkan berkasnya di proyek yang cocok di `playwright.config.ts`
    (`testMatch` / `testIgnore`).
 4. Perbaiki produknya. Jalankan lagi: harus hijau.

@@ -33,9 +33,9 @@ Tidak berubah dari versi 2 dan sudah terbukti di ponsel pemilik: halaman kalende
 | **meta** | 400, 14 px / 1,35, `--tinta-redup` (≥ 4,5:1) | kepala lembar, pengantar kartu, petunjuk, jam, keterangan |
 | **aksi** | 500, 16 px / 1,4 | opsi, kaki lembar, baris istilah, tautan tindakan; tombol utama 600, 17 px |
 
-Ditambah dua pemakaian khusus kalender: angka tanggal 72 px dan keping 12 px mesin tik. Skala ukuran yang sah: **12 · 14 · 16 · 17 · 20 · 28 · 72**. Satu teknik penekanan per elemen: tebal **atau** warna **atau** ukuran — kecuali angka di lembar (tebal + `--stempel`), keputusan pemilik. Tidak ada tebal, warna, atau tautan di dalam pesan teman dan opsi.
+Ditambah dua pemakaian khusus kalender: angka tanggal 72 px dan keping 12 px mesin tik. Layar yang tidak ada di patokan memakai peran yang sama (M3.10): di pembukaan tanggal garis waktu adalah *meta* berhuruf kalimat ("9 Okt 2025"), judul bagian adalah *judul*, subjudul dan penekanan adalah *isi* 600; di layar akhir judulnya *judul* 20 px dan pertanyaannya *isi* 600. Skala ukuran yang sah: **12 · 14 · 16 · 17 · 20 · 28 · 72**. Satu teknik penekanan per elemen: tebal **atau** warna **atau** ukuran — kecuali angka di lembar (tebal + `--stempel`), keputusan pemilik. Tidak ada tebal, warna, atau tautan di dalam pesan teman dan opsi.
 
-Huruf: tumpukan sistem untuk membaca; grotesk rapat hanya untuk kalender dan judul layar pertama; mesin tik hanya untuk keping kalender dan rincian teknis.
+Huruf: tumpukan sistem untuk membaca; grotesk rapat hanya untuk kalender dan judul layar pertama; mesin tik hanya untuk keping kalender dan rincian teknis. `npm run periksa:desain` menjaga daftarnya: sejak M3.10 tidak ada lagi pengecualian untuk layar pembukaan dan layar akhir; yang tersisa di luar kalender dan rincian teknis hanya cap umpan balik (warisan, rupanya belum diputuskan). (Judul "Waktu berjalan lagi" dan "Terima kasih." masih grotesk rapat — keputusannya menunggu pemilik.)
 
 ## Warna
 
@@ -47,12 +47,13 @@ Token versi 2 tetap (`--kertas`, `--lembar`, `--tinta`, `--tinta-redup`, `--stem
 - **Baris istilah:** "Arti istilah: lot · tanggal ex ›" — berbingkai, kata bergaris bawah, panah; artinya terbuka di bawahnya.
 - **Opsi:** berbentuk tombol selebar kolom, ≥ 56 px, tepi `--garis-kontrol`; terpilih = tepi 2 px `--stempel` dan huruf opsi terisi.
 - **Bilah bawah selalu membawa satu tindakan yang masuk akal:** opsi belum terlihat → tombol garis tepi "↓ Pilih jawaban"; opsi terlihat dan belum memilih → bilah tidak ada; sudah memilih → "Kunci jawaban"; sesudah dikunci → "Lanjut ke soal n" / "Lihat yang terjadi sesudahnya". Tombol utama tidak pernah tampil mati.
+- **Tautan angka** (teks kunci, pembukaan): tebal 600, `--stempel`, garis bawah **utuh** 1,5 px berjarak 4 px; bidang sentuhnya ≥ 44 px lewat `::after`, bukan bantalan, jadi tanda baca menempel dan jarak baris tetap 1,45. Di teks kunci hanya tautan yang tebal.
 - Yang bukan kontrol tidak boleh tampak seperti kontrol: tidak ada panah, garis bawah, atau warna tautan pada benda yang diam.
-- Umpan tekan (`:active`) pada semua kontrol; fokus papan ketik 2 px `--stempel`.
+- Umpan tekan (`:active`) pada semua kontrol; fokus papan ketik 2 px `--stempel` (tombol utama: `--tinta`, karena bidangnya sendiri `--stempel`; M3.10).
 
 ## Urutan layar pertama
 
-Varian A uji K-06 (M3.9, disetujui pemilik 24 Sep 2026 dini hari): halaman kalender besar → **judul** (`pembuka.judul`, grotesk rapat 28 px, satu-satunya judul layar ini) → **satu contoh gelembung** — nama pengirim dan isi pesan soal 1 (dibaca dari `soal[0].pesan`, tidak ditulis kedua kali), tanpa tanggal, tanpa jam, tidak bisa diketuk → **ajakan** (`pembuka.ajak`, peran *isi*) → bilah bawah "Mulai kasus" + baris meta. "Kita mundur ke …" tidak ada lagi di layar ini; tanggalnya dibawa kalender dan kaki. Di 360 × 640 keempatnya terlihat tanpa menggulir. Kaki tiga kalimat selalu di bawah lipatan (layar ini setinggi jendela) dan bantalan bawahnya setinggi bilah terukur, supaya garisnya tidak mengintip di atas tombol dan kalimat terakhirnya bisa digulir ke atas bilah.
+Varian A uji K-06 (M3.9, disetujui pemilik 24 Sep 2026 dini hari): halaman kalender besar → **judul** (`pembuka.judul`, grotesk rapat 28 px, satu-satunya judul layar ini) → **satu contoh gelembung** — nama pengirim dan isi pesan soal 1 (dibaca dari `soal[0].pesan`, tidak ditulis kedua kali), tanpa tanggal, tanpa jam, tidak bisa diketuk → **ajakan** (`pembuka.ajak`, peran *isi*) → bilah bawah "Mulai kasus" + baris meta. "Kita mundur ke …" tidak ada lagi di layar ini; tanggalnya dibawa kalender dan kaki. Di 360 × 640 keempatnya terlihat tanpa menggulir. Kaki tiga kalimat selalu di bawah lipatan (layar ini setinggi jendela) dan bantalan bawahnya setinggi bilah terukur, supaya garisnya tidak mengintip di atas tombol dan kalimat terakhirnya bisa digulir ke atas bilah. Di layar ≥ 768 px (laptop) bilah layar ini ikut aliran tepat sesudah ajakan, bukan menempel di dasar jendela (M3.10).
 
 ## Urutan layar soal
 
