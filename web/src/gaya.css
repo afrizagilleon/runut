@@ -903,7 +903,13 @@ summary:focus-visible,
   height: 4px;
   border-radius: 2px;
   background: var(--tinta-redup);
-  opacity: 0.55;
+  /*
+   * Penuh, bukan 0,55 (M3.10 D-9, kritik K-14): pada 0,55 pegangan ini hanya
+   * 2,42:1 di balon terang dan 2,75:1 di balon gelap — gagal WCAG 1.4.11
+   * (3:1), padahal ia satu-satunya isyarat bahwa balon bisa ditarik. Penuh:
+   * 6,33:1 terang, 5,54:1 gelap.
+   */
+  opacity: 1;
 }
 
 /*
@@ -1335,9 +1341,15 @@ summary:focus-visible,
   border: 1.5px solid var(--stempel);
 }
 
-.tombol-utama:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+/*
+ * Cincin fokus tombol utama berwarna `--tinta`, bukan `--stempel` (M3.10 D-9):
+ * bidang tombolnya sendiri `--stempel`, dan cincin yang sewarna menyatu
+ * dengannya di celah 2 px. Aturan `:disabled` yang dulu ada di sini dihapus —
+ * tombol utama tidak pernah tampil mati (`docs/desain.md`, INV-12), dan gaya
+ * yang menunggu dipakai adalah undangan untuk memakainya.
+ */
+.tombol-utama:focus-visible {
+  outline-color: var(--tinta);
 }
 
 .tombol-kedua {
