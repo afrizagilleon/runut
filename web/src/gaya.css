@@ -576,6 +576,11 @@ summary:focus-visible,
   text-align: center;
 }
 
+/* Kalimat penutup di bawah judul terima kasih, rata tengah seperti layar pertama (M3.10 D-6). */
+.terima-kalimat {
+  text-align: center;
+}
+
 /* --- layar pertama --------------------------------------------------------- */
 
 .mundur {
@@ -1669,30 +1674,52 @@ summary:focus-visible,
 /* --- layar akhir ----------------------------------------------------------- */
 
 /*
- * `fieldset` menggambar sisa bingkai di sekeliling legend di sebagian peramban;
- * `border: 0` pada keempat sisi lebih dulu, baru satu garis atas ditambahkan
- * lewat elemen pemisah sendiri.
+ * `fieldset` menggambar garis atasnya MENEMBUS legend yang "dirender": legend
+ * menumpang di garis, dan sisa garis menyembul di kanan legend satu baris
+ * ("Kasus tadi terasa seperti…——", kritik K-8). Sejak M3.10 D-6 legend
+ * di-`float` (bukan legend yang dirender lagi, jadi ia berdiri di BAWAH garis)
+ * dan garisnya hanya pemisah ANTARA dua pertanyaan: `.tanya-akhir + .tanya-akhir`.
  */
 .tanya-akhir {
   border: 0;
   margin: 0 0 16px;
   padding: 16px 0 0;
-  border-top: 1px solid var(--garis);
   min-width: 0;
 }
 
-.tanya-akhir legend {
-  padding: 0;
-  font-size: 17px;
-  font-weight: 700;
+.tanya-akhir + .tanya-akhir {
+  border-top: 1px solid var(--garis);
 }
 
-/* Jangkar skala 1-5: tanpa ini angka telanjang tidak berarti apa-apa. */
+/* Peran *isi* ditebalkan (600 17/1,45), bukan peran kelima 700 (M3.10 D-6). */
+.tanya-akhir legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  /* Jarak ke isi sesudahnya: margin atas elemen yang di-`clear` diserap jarak bersihnya. */
+  margin: 0 0 8px;
+  font-family: var(--baca);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.tanya-akhir legend + * {
+  clear: both;
+}
+
+/*
+ * Jangkar skala 1-5: tanpa ini angka telanjang tidak berarti apa-apa. Peran
+ * *meta* (400 14/1,35 huruf baca) sejak M3.10 D-6 — dulu mesin tik 12 px
+ * ber-spasi, padahal mesin tik hanya untuk keping kalender dan rincian teknis.
+ */
 .jangkar {
   margin: 8px 0 0;
-  font-family: var(--mesin);
-  font-size: 12px;
-  letter-spacing: 0.06em;
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: 0;
   color: var(--tinta-redup);
 }
 
@@ -1752,7 +1779,8 @@ summary:focus-visible,
 .label-teks {
   display: block;
   font-size: 17px;
-  font-weight: 700;
+  /* Sama dengan legend pertanyaan di atasnya (M3.10 D-6). */
+  font-weight: 600;
   margin-bottom: 12px;
 }
 

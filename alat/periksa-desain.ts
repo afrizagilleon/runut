@@ -84,6 +84,8 @@ export interface IzinMesin {
  * waktu, kini peran meta — patokan :44 yang dirujuknya adalah keping KALENDER,
  * bukan tanggal garis waktu), `.bacaan h3`, dan `.jejak-rinci > summary`
  * (keduanya warisan; kini huruf baca). Menulis mesin tik di sana lagi merah.
+ * M3.10 D-6 (kritik K-8) mencabut `.jangkar` (jangkar skala layar akhir, kini
+ * peran meta).
  */
 export const MESIN_DIIZINKAN: readonly IzinMesin[] = [
   {
@@ -116,13 +118,6 @@ export const MESIN_DIIZINKAN: readonly IzinMesin[] = [
       'WARISAN, belum diputuskan. docs/desain.md menyebut cap sebagai satu dari dua ' +
       'tulisan kapital, tetapi tidak menyebut hurufnya. Mengubahnya mengubah rupa, ' +
       'jadi ia dilaporkan, bukan ditebak (A-2, D-B3)',
-    disahkan: false,
-  },
-  {
-    selektor: '.jangkar',
-    alasan:
-      'WARISAN, belum diputuskan. Jangkar skala 1-5 di layar akhir; layar itu tidak ' +
-      'ada di patokan',
     disahkan: false,
   },
 ];

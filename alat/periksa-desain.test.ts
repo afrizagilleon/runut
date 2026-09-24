@@ -312,6 +312,10 @@ describe('periksa:desain — huruf mesin tik (D-B3)', () => {
     expect(kode('.keping-tanggal { font-family: var(--mesin); }')).toEqual(['MESIN_TIK_DI_LUAR_DAFTAR']);
   });
 
+  it('layar akhir tidak lagi punya izin mesin tik (M3.10 D-6)', () => {
+    expect(kode('.jangkar { font-family: var(--mesin); }')).toEqual(['MESIN_TIK_DI_LUAR_DAFTAR']);
+  });
+
   it('mendefinisikan --mesin di :root bukan pemakaian', () => {
     expect(kode(':root { --mesin: ui-monospace, monospace; }')).toEqual([]);
   });

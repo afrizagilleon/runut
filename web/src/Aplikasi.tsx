@@ -2113,9 +2113,16 @@ function LayarAkhir({
   if (keadaan.akhirTerkirim) {
     return (
       <section className="layar layar-akhir" aria-labelledby="judul-terima">
-        <h1 id="judul-terima">Terima kasih.</h1>
+        {/*
+          Urutan layar pertama (M3.10 D-6, kritik K-8): kalender → judul →
+          kalimat, rata tengah. Sampai M3.9 judulnya berdiri DI ATAS kalender
+          dan rata kiri, jadi layar ini terbaca dari "zaman" lain.
+        */}
         <div className="kembali-hari-ini" data-uid="kalender">
           <HalamanKalender hari={hariIni} />
+          <h1 id="judul-terima" className="mundur">
+            Terima kasih.
+          </h1>
           <p>Kamu kembali ke hari ini.</p>
         </div>
         {/*
@@ -2125,7 +2132,7 @@ function LayarAkhir({
           yang membacanya akan menyimpulkan "tidak ada apa pun yang disimpan di
           browser saya", dan sejak D-13 itu tidak benar.
         */}
-        <p>{KALIMAT_TERIMA_KASIH}</p>
+        <p className="terima-kalimat">{KALIMAT_TERIMA_KASIH}</p>
         {!keadaan.minatDitekan ? (
           <button
             type="button"
@@ -2166,7 +2173,14 @@ function LayarAkhir({
 
   return (
     <section className="layar layar-akhir" aria-labelledby="judul-akhir">
-      <h1 id="judul-akhir">Tiga pertanyaan singkat</h1>
+      {/*
+        Peran *judul* 20 px (M3.10 D-6): layar ini tanpa kalender, jadi tanpa
+        grotesk rapat — `docs/desain.md` memberi grotesk hanya kepada kalender
+        dan judul layar pertama.
+      */}
+      <h1 id="judul-akhir" className="judul">
+        Tiga pertanyaan singkat
+      </h1>
       <p className="meta">
         Semuanya boleh dilewati. Di bawahnya ada kotak kalau kamu mau menulis.
       </p>
