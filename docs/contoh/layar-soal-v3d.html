@@ -68,9 +68,10 @@
   .lembar.hitung { border-top-style: dashed; }
   .lembar-badan { padding: 10px 12px 8px; }
   .lembar-badan .meta { margin-bottom: 4px; }
+  /* Kaki lembar = tombol garis tepi di dalam lembar (M3.11 D-5, usulan uji duduk R-04 / v3b; diputuskan reviewer 24 Sep atas penilaian kritikus — pemilik menyerahkan penilaian rupa). */
   .lembar-kaki {
-    display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 44px;
-    padding: 0 12px; border: 0; border-top: 1px solid var(--garis); background: none; color: var(--stempel);
+    display: flex; align-items: center; justify-content: space-between; gap: 8px; width: calc(100% - 24px); min-height: 44px;
+    margin: 0 12px 12px; padding: 0 12px; border: 1.5px solid var(--stempel); border-radius: 3px; background: none; color: var(--stempel);
     font: 500 14px/1 var(--baca); cursor: pointer; text-align: left;
   }
   .lembar-kaki:active, .baris-istilah:active, .opsi:active { background: var(--garis); }

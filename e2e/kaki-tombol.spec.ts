@@ -14,7 +14,10 @@ import {
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
-import { ID_KASUS, berkasKasus } from './bantu/jalur.ts';
+import { join } from 'node:path';
+import { AKAR, ID_KASUS, berkasKasus } from './bantu/jalur.ts';
+
+const berkasPatokan = (nama: string): string => join(AKAR, 'docs', 'contoh', nama);
 
 /**
  * E-45 — kaki kartu adalah tombol yang tampak seperti tombol (M3.11 D-5,
@@ -232,3 +235,69 @@ for (const kasus_id of ID_KASUS) {
     await tungguSoal(page, 2);
   });
 }
+
+/**
+ * E-46 — kesetiaan kaki kartu pada KEDUA patokan (`docs/contoh/layar-soal.html`
+ * dan `layar-soal-v3d.html`, dimuat dari berkas di skema warna yang sama).
+ * `docs/desain.md`: kalau kata-kata dan patokan berbeda, patokan yang menang —
+ * jadi patokan yang tidak ikut diperbarui membuat produk "menyimpang" dari
+ * patokannya sendiri, dan tes kesetiaan lain menjadi bohong.
+ */
+interface RupaKaki {
+  teks: string[];
+  tepi: string;
+  corak: string;
+  warnaTepi: string;
+  sudut: string;
+  margin: string;
+  tinggiMin: string;
+  bantalan: string;
+  huruf: string;
+  warna: string;
+}
+
+const UKUR_RUPA_KAKI = (pemilih: string): RupaKaki => {
+  const semua = [...document.querySelectorAll(pemilih)];
+  const k = semua[0];
+  if (k === undefined) throw new Error(`tidak ada ${pemilih}`);
+  const g = getComputedStyle(k);
+  return {
+    teks: [
+      ...new Set(
+        semua.map((e) =>
+          [...e.childNodes]
+            .filter((n) => !(n instanceof Element && n.classList.contains('panah')))
+            .map((n) => n.textContent ?? '')
+            .join('')
+            .trim(),
+        ),
+      ),
+    ].sort(),
+    tepi: g.borderTopWidth,
+    corak: g.borderTopStyle,
+    warnaTepi: g.borderTopColor,
+    sudut: g.borderTopLeftRadius,
+    margin: `${g.marginLeft} ${g.marginRight} ${g.marginBottom}`,
+    tinggiMin: g.minHeight,
+    bantalan: `${g.paddingLeft} ${g.paddingRight}`,
+    huruf: `${g.fontWeight} ${g.fontSize}`,
+    warna: g.color,
+  };
+};
+
+test('E-46 kaki kartu produk = kaki kartu kedua patokan (rupa dan label)', async ({ page }) => {
+  await buka(page, penandaBaru(), 'dada-2025-10-08');
+  await mulaiKasus(page);
+  await tungguSoal(page, 1);
+  const produk = await page.evaluate(UKUR_RUPA_KAKI, '.lembar [data-uid^="kaki:"]');
+  for (const berkas of ['layar-soal.html', 'layar-soal-v3d.html']) {
+    const html = readFileSync(berkasPatokan(berkas), 'utf8');
+    const lain = await page.context().newPage();
+    await lain.setContent(html);
+    const patokan = await lain.evaluate(UKUR_RUPA_KAKI, '.lembar-kaki');
+    await lain.close();
+    // eslint-disable-next-line no-console
+    console.log(`E-46 [${test.info().project.name}] ${berkas}\n  patokan ${JSON.stringify(patokan)}\n  produk  ${JSON.stringify(produk)}`);
+    expect(produk, `kaki kartu produk = patokan ${berkas}`).toEqual(patokan);
+  }
+});
