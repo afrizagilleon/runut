@@ -55,3 +55,54 @@ test('E-12d tepi keping kalender = tepi kolom isi di layar lebar', async ({ page
       `lebar=${lembar.lebar.toFixed(1)} | kolom #isi kiri=${kolom.kiri.toFixed(1)} kanan=${kolom.kanan.toFixed(1)}`,
   );
 });
+
+/**
+ * E-12g — layar pertama di laptop tidak setengah kosong (M3.10 D-4a, kritik K-6).
+ *
+ * Juri kemungkinan membuka tautannya di laptop. Sampai `bcd4ac7`, di 1280 × 800
+ * "Betul atau keliru?" berakhir di y ≈ 395 sedangkan "Mulai kasus" menempel di
+ * dasar jendela (y ≈ 709): rongga ±310 px, dan bilah bawah membentang selebar
+ * jendela. Di layar ≥ 768 px bilah layar pertama ikut aliran, tepat sesudah
+ * ajakan. Di ponsel ia tetap menempel di dasar (dijaga E-04/E-28 di proyek
+ * ponsel).
+ */
+test('E-12g layar pertama 1280 × 800: tombol Mulai tepat sesudah ajakan, bukan di dasar jendela', async ({
+  page,
+}) => {
+  await buka(page, penandaBaru());
+  const tombol = page.getByRole('button', { name: 'Mulai kasus' });
+  await expect(tombol).toBeVisible();
+
+  const u = await page.evaluate(() => {
+    const ajak = document.querySelector('[data-uid="ajak"]')?.getBoundingClientRect();
+    const bilah = document.querySelector('.layar-pembuka [data-uid="bilah"]');
+    const t = bilah?.querySelector('button')?.getBoundingClientRect();
+    const meta = document.querySelector('[data-uid="meta-pembuka"]')?.getBoundingClientRect();
+    if (ajak === undefined || bilah === null || t === undefined || meta === undefined) {
+      throw new Error('layar pertama tidak lengkap');
+    }
+    return {
+      ajakBawah: ajak.bottom,
+      tombolAtas: t.top,
+      tombolBawah: t.bottom,
+      metaBawah: meta.bottom,
+      tinggiJendela: window.innerHeight,
+      posisi: getComputedStyle(bilah).position,
+      garisAtas: getComputedStyle(bilah).borderTopWidth,
+      lebarBilah: bilah.getBoundingClientRect().width,
+      lebarJendela: window.innerWidth,
+    };
+  });
+  const jarak = u.tombolAtas - u.ajakBawah;
+  // eslint-disable-next-line no-console
+  console.log(
+    `E-12g 1280x800: ajak.bawah=${u.ajakBawah.toFixed(1)} tombol.atas=${u.tombolAtas.toFixed(1)} ` +
+      `jarak=${jarak.toFixed(1)}px meta.bawah=${u.metaBawah.toFixed(1)} jendela=${String(u.tinggiJendela)} ` +
+      `bilah position=${u.posisi} garis-atas=${u.garisAtas} lebar=${u.lebarBilah.toFixed(0)}/${String(u.lebarJendela)}`,
+  );
+  expect(jarak, 'jarak ajakan -> tombol Mulai').toBeGreaterThanOrEqual(0);
+  expect(jarak, 'jarak ajakan -> tombol Mulai (tanpa rongga)').toBeLessThanOrEqual(48);
+  expect(u.metaBawah, 'tombol dan baris meta terlihat tanpa menggulir').toBeLessThanOrEqual(u.tinggiJendela);
+  expect(u.posisi, 'bilah layar pertama ikut aliran di layar lebar').toBe('static');
+  expect(u.lebarBilah, 'bilah tidak membentang selebar jendela').toBeLessThan(u.lebarJendela - 100);
+});

@@ -1826,3 +1826,32 @@ textarea {
   min-height: calc(100vh - 112px);
   min-height: calc(100svh - 112px);
 }
+
+/*
+ * Layar pertama di layar lebar (M3.10 D-4a, kritik K-6). Juri kemungkinan
+ * membuka tautannya di laptop: di 1280 × 800 ajakan berakhir di y ≈ 395 dan
+ * "Mulai kasus" menempel di dasar jendela (y ≈ 709) — rongga ±310 px, dan
+ * bilahnya membentang selebar jendela. Di sana bilah layar PERTAMA saja ikut
+ * aliran, tepat sesudah ajakan, di dalam kolom. Bilah layar lain tetap
+ * menempel di dasar (di sanalah ia menunjukkan jalan ke jawaban).
+ *
+ * Di ponsel tidak ada yang berubah: layar ini tetap setinggi jendela dan kaki
+ * tiga kalimat tetap di bawah lipatan (M3.9 D-2).
+ */
+@media (min-width: 768px) {
+  .layar-pembuka {
+    min-height: auto;
+  }
+
+  .layar-pembuka .tindakan {
+    position: static;
+    border-top: 0;
+    background: none;
+    padding: 24px 0 0;
+  }
+
+  /* Bilahnya tidak lagi menutupi kaki, jadi kaki tidak perlu menyisakan ruang untuknya. */
+  .kaki-berbilah {
+    padding-bottom: 32px;
+  }
+}
