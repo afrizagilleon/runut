@@ -96,7 +96,7 @@ export interface BarisRincian {
 }
 
 export interface IsiSumber {
-  /** "Lihat sumbernya" untuk sumber resmi, "Lihat cara menghitungnya" untuk hitungan. */
+  /** "Buka dokumennya" untuk sumber resmi, "Lihat hitungannya" untuk hitungan (M3.11 D-5). */
   pintu: string;
   /** Klaim formal fakta itu. Selalu ada. */
   kalimatResmi: string;
@@ -110,8 +110,14 @@ export interface IsiSumber {
   rincian: BarisRincian[];
 }
 
-export const PINTU_SUMBER = 'Lihat sumbernya';
-export const PINTU_HITUNG = 'Lihat cara menghitungnya';
+/*
+ * Label kaki lembar (M3.11 D-5; diputuskan reviewer 24 Sep atas penilaian
+ * kritikus — pemilik menyerahkan penilaian rupa). Sampai M3.10: "Lihat
+ * sumbernya" / "Lihat cara menghitungnya". KartuFakta memakai konstanta ini,
+ * jadi label di layar dan di fungsi murni tidak bisa berselisih.
+ */
+export const PINTU_SUMBER = 'Buka dokumennya';
+export const PINTU_HITUNG = 'Lihat hitungannya';
 
 function tanggalOrang(iso: string | null): string {
   if (iso === null) return 'tidak bisa ditentukan dari data';

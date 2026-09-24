@@ -189,14 +189,16 @@ describe('isiSumber — apa yang tampil saat sebuah fakta dibuka (D-5)', () => {
       },
     });
 
-  it('sumber resmi: pintunya "Lihat sumbernya", tanpa cara menghitung', () => {
+  it('sumber resmi: pintunya "Buka dokumennya", tanpa cara menghitung', () => {
+    expect(PINTU_SUMBER).toBe('Buka dokumennya');
     const isi = isiSumber(resmi(), petakan([resmi()]), EMITEN, DIBUKA);
     expect(isi.pintu).toBe(PINTU_SUMBER);
     expect(isi.caraHitung).toBeNull();
     expect(isi.dihitungDari).toEqual([]);
   });
 
-  it('hitungan: pintunya "Lihat cara menghitungnya", dengan cara menghitung', () => {
+  it('hitungan: pintunya "Lihat hitungannya", dengan cara menghitung', () => {
+    expect(PINTU_HITUNG).toBe('Lihat hitungannya');
     const isi = isiSumber(hitungan(), petakan([hitungan(), resmi()]), EMITEN, DIBUKA);
     expect(isi.pintu).toBe(PINTU_HITUNG);
     expect(isi.caraHitung).toContain('pengandaian 10 lot');

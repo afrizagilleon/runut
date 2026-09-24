@@ -701,15 +701,25 @@ summary:focus-visible,
   color: inherit;
 }
 
+/*
+ * Kaki lembar = tombol garis tepi (M3.11 D-5, usulan uji duduk 22 Sep R-04,
+ * layar contoh v3b baris ±117; diputuskan reviewer 24 Sep atas penilaian
+ * kritikus). Sampai M3.10 baris tulisan di bawah garis tipis selebar lembar:
+ * teman uji duduk tidak tahu itu bisa dibuka (soal 1: 10/27 sesi membukanya).
+ * Di dalam lembar, 12 px dari tepi kiri, kanan, bawah; 1,5 px --stempel;
+ * sudut 3 px seperti tombol lain. `:active` dan panah yang berputar tetap.
+ */
 .lembar-kaki {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  gap: 8px;
+  width: calc(100% - 24px);
   min-height: 44px;
+  margin: 0 12px 12px;
   padding: 0 12px;
-  border: 0;
-  border-top: 1px solid var(--garis);
+  border: 1.5px solid var(--stempel);
+  border-radius: 3px;
   background: none;
   color: var(--stempel);
   font-family: var(--baca);

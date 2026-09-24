@@ -1,4 +1,5 @@
 import type { Fakta } from '../../factory/skema/tipe.ts';
+import { PINTU_HITUNG, PINTU_SUMBER } from './sumber.ts';
 import { Teks } from './Teks.tsx';
 
 export interface KartuFaktaProps {
@@ -21,7 +22,9 @@ export interface KartuFaktaProps {
  * adalah pilihan bergandanya", 22 Sep). Dua hal di sini yang menjawab itu:
  * kepalanya ditulis biasa sebagai peran *meta* — bukan lagi tombol berhuruf
  * kapital yang tampak bisa dipilih — dan **satu-satunya pintu ada di kakinya**,
- * satu baris ≥ 44 px yang menyebut dirinya sendiri ("Lihat sumbernya ›").
+ * satu tombol garis tepi ≥ 44 px yang menyebut dirinya sendiri ("Buka
+ * dokumennya ›" / "Lihat hitungannya ›"; M3.11 D-5 — sampai M3.10 baris
+ * tulisan "Lihat sumbernya ›" yang tidak terbaca sebagai pintu).
  *
  * Garis kepala membawa arti, bukan hiasan: **utuh** untuk yang diumumkan pihak
  * lain, **putus-putus** untuk yang kami hitung sendiri. Kelasnya dipilih dari
@@ -65,7 +68,7 @@ export function KartuFakta({
           sakelarSumber(fakta.fact_id);
         }}
       >
-        {dihitung ? 'Lihat cara menghitungnya' : 'Lihat sumbernya'}
+        {dihitung ? PINTU_HITUNG : PINTU_SUMBER}
         <span className="panah" aria-hidden="true">
           ›
         </span>
