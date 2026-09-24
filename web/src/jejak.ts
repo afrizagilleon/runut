@@ -82,3 +82,25 @@ export function kalimatJejak(kasus: Kasus): string {
 export function ringkasanJejak(kasus: Kasus): string {
   return `Lihat ${String(jumlahPemeriksaan(kasus))} pemeriksaan dan hasilnya`;
 }
+
+/**
+ * Kalimat jejak yang NAIK ke bawah judul "Waktu berjalan lagi" (M3.11 D-3,
+ * kritik K-9; kata-kata diputuskan reviewer 24 Sep atas penilaian kritikus).
+ *
+ * Bukti kedalaman teknis terkuat — berapa pemeriksaan otomatis, berapa angka
+ * yang dibuang — sampai M3.10 hanya ada di dasar layar pembukaan. Angkanya
+ * dari SUMBER YANG SAMA dengan bagian jejak di sana (`jumlahPemeriksaan`,
+ * `faktaGugur`): "angka dibuang" di sini adalah "angka yang karena itu tidak
+ * boleh menjadi kartu" di sana. Tidak ada angka yang diketik tangan: DADA
+ * 10/43, ULTJ 35/0, dan kalimat yang menulis "10 … 43" tetap akan berbohong
+ * tentang ULTJ.
+ */
+export function kalimatJejakNaik(kasus: Kasus): string {
+  const n = jumlahPemeriksaan(kasus);
+  const m = faktaGugur(kasus);
+  const dibuang = m === 0 ? 'tidak ada angka yang dibuang' : `${String(m)} angka dibuang`;
+  return `Sebelum jadi kartu, laporan kasus ini diperiksa ${String(n)} pemeriksaan otomatis; ${dibuang}.`;
+}
+
+/** Tautan sesudah kalimat itu; "›" ditambahkan komponen sebagai isyarat mata. */
+export const TAUTAN_JEJAK_NAIK = 'Lihat pemeriksaannya';

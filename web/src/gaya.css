@@ -1584,6 +1584,55 @@ summary:focus-visible,
 }
 
 /*
+ * Kalimat jejak verifikasi di bawah judul (M3.11 D-3, kritik K-9). Bentuk
+ * "suara kami" dari `docs/desain.md`: langsung di atas kertas, garis kiri
+ * tipis — nilai `.contracts/lampiran/M-0311/usulan.mjs` (K9_CSS).
+ */
+.jejak-naik {
+  margin: 0 0 16px;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--garis-tegas);
+  text-align: left;
+  font: 400 17px/1.45 var(--baca);
+  color: var(--tinta);
+}
+
+/*
+ * Tautannya menggulir ke bagian jejak dan membuka lipatannya. `button`, bukan
+ * `a href="#…"`: tautan jangkar menambah entri riwayat, dan tombol kembali
+ * peramban di aplikasi ini berpindah LAYAR (C-1). Rupanya tautan usulan: tanpa
+ * garis bawah, tidak dipotong baris. Bidang sentuhnya `::after` seperti
+ * `.rujukan` (24,65 + 20 = 44,65 px), bukan bantalan.
+ *
+ * Berat 600, bukan 500 seperti usulan: 17 px/500 adalah gaya teks KETUJUH di
+ * layar ini (E-33 mengukur 7 dengan 500; batas M3.10 "empat peran" = 6).
+ * 17 px/600 sudah ada — tautan "Langsung ke ringkasan ↓" tepat di bawahnya —
+ * jadi dua tautan layar ini satu rupa. Rata kiri dari kalimatnya (tombol
+ * bawaan rata tengah).
+ */
+.jejak-naik-tautan {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  text-align: inherit;
+  color: var(--stempel);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.jejak-naik-tautan::after {
+  content: '';
+  position: absolute;
+  inset: -10px -2px;
+}
+
+/*
  * Jalan pintas ke ringkasan (A4-T5). Memakai bentuk tautan yang sudah ada —
  * bukan tombol baru — karena ia memang tautan ke bagian lain halaman yang
  * sama. Rata kiri sejak M3.10 D-3: sesudah judul semuanya rata kiri. Bidang

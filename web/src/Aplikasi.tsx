@@ -57,7 +57,7 @@ import { KALIMAT_PRIVASI, KALIMAT_TERIMA_KASIH } from './privasi.ts';
 import { barisMeta, contohPembuka } from './pembuka.ts';
 import { bacaPerangkat, type InfoKoneksi, type Perangkat } from './perangkat.ts';
 import { berkasDariTumpukan, pasangPelaporAkar, pesanDari, sumberGalat } from './galat.ts';
-import { kalimatJejak, ringkasanJejak } from './jejak.ts';
+import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } from './jejak.ts';
 
 /**
  * Komponen hanya `dispatch` dan merender (D-5).
@@ -1923,6 +1923,29 @@ function LayarPembukaan({
         Waktu berjalan lagi
       </h1>
       {/*
+        Jejak verifikasi, satu kalimat, tepat di bawah judul (M3.11 D-3, kritik
+        K-9): juri menilai kedalaman teknis 30 %, dan sampai M3.10 buktinya
+        hanya ada di dasar layar ini, ±2.500 px di bawah. Bentuk "suara kami"
+        (garis kiri tipis, bukan lembar). Angkanya dari sumber yang sama dengan
+        bagian jejak di bawah (`jejak.ts`), jadi keduanya tidak bisa berbeda.
+      */}
+      <p className="jejak-naik">
+        {kalimatJejakNaik(kasus)}{' '}
+        <button
+          type="button"
+          className="jejak-naik-tautan"
+          data-uid="jejak-naik"
+          onClick={() => {
+            const rinci = document.getElementById('jejak-rinci');
+            if (rinci instanceof HTMLDetailsElement) rinci.open = true;
+            gulirKeSasaran('judul-jejak');
+          }}
+        >
+          {TAUTAN_JEJAK_NAIK}{' '}
+          <span aria-hidden="true">›</span>
+        </button>
+      </p>
+      {/*
         Jalan pintas (A4-T5). Garis waktunya TIDAK disembunyikan dan TIDAK
         dilipat: ia isi layar ini, dan melipatnya akan menyembunyikan justru
         bagian yang membuat "waktu berjalan lagi" terasa. Yang ditambahkan hanya
@@ -2068,7 +2091,7 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
         satu arah begitu mesinnya berganti.
       */}
       <p>{kalimatJejak(kasus)}</p>
-      <details className="jejak-rinci" data-uid="jejak">
+      <details className="jejak-rinci" id="jejak-rinci" data-uid="jejak">
         <summary>{ringkasanJejak(kasus)}</summary>
         <ul className="daftar-temuan">
           {kasus.temuan.map((temuan) => (

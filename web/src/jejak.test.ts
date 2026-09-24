@@ -2,7 +2,14 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import type { Kasus } from '../../factory/skema/tipe.ts';
-import { faktaGugur, jumlahPemeriksaan, kalimatJejak, ringkasanJejak } from './jejak.ts';
+import {
+  TAUTAN_JEJAK_NAIK,
+  faktaGugur,
+  jumlahPemeriksaan,
+  kalimatJejak,
+  kalimatJejakNaik,
+  ringkasanJejak,
+} from './jejak.ts';
 
 /*
  * M3.6 D-5. Dua kegagalan yang dijaga di sini, keduanya sudah pernah terjadi:
@@ -143,5 +150,50 @@ describe('faktaGugur', () => {
 
   it('kasus DADA yang hidup memang menggugurkan kartu', () => {
     expect(faktaGugur(kasusAsli)).toBeGreaterThan(0);
+  });
+});
+
+/*
+ * M3.11 D-3 (kritik K-9). Kalimat yang naik ke bawah judul "Waktu berjalan
+ * lagi". Kegagalan yang paling mungkin: angkanya diketik tetap ("10 … 43"),
+ * benar untuk DADA dan bohong untuk ULTJ. Keduanya dibaca dari berkasnya.
+ */
+const kasusUltj = JSON.parse(
+  readFileSync(`${AKAR}cases/ultj-2026-05-04.json`, 'utf8'),
+) as unknown as Kasus;
+
+describe('kalimatJejakNaik (M3.11 D-3)', () => {
+  it('kata-kata persis kontrak, angka dari data', () => {
+    expect(kalimatJejakNaik(kasusUji(10, 8, 43))).toBe(
+      'Sebelum jadi kartu, laporan kasus ini diperiksa 10 pemeriksaan otomatis; 43 angka dibuang.',
+    );
+  });
+
+  it('m = 0: kalimat kedua jadi "tidak ada angka yang dibuang"', () => {
+    const teks = kalimatJejakNaik(kasusUji(35, 7, 0));
+    expect(teks).toBe(
+      'Sebelum jadi kartu, laporan kasus ini diperiksa 35 pemeriksaan otomatis; tidak ada angka yang dibuang.',
+    );
+    expect(teks).not.toContain('0 angka');
+  });
+
+  it('sumbernya sama dengan bagian jejak di dasar layar: jumlahPemeriksaan dan faktaGugur', () => {
+    for (const kasus of [kasusAsli, kasusUltj, kasusUji(31, 2, 5)]) {
+      const teks = kalimatJejakNaik(kasus);
+      expect(teks).toContain(`diperiksa ${String(jumlahPemeriksaan(kasus))} pemeriksaan otomatis`);
+      expect(kalimatJejak(kasus)).toContain(`${String(jumlahPemeriksaan(kasus))} pemeriksaan otomatis`);
+      const m = faktaGugur(kasus);
+      expect(teks).toContain(m === 0 ? 'tidak ada angka yang dibuang' : `${String(m)} angka dibuang`);
+    }
+  });
+
+  it('DADA dan ULTJ yang hidup berbeda — angka yang diketik tidak bisa lolos keduanya', () => {
+    expect(kalimatJejakNaik(kasusAsli)).toContain('diperiksa 10 pemeriksaan otomatis; 43 angka dibuang.');
+    expect(kalimatJejakNaik(kasusUltj)).toContain('diperiksa 35 pemeriksaan otomatis; tidak ada angka yang dibuang.');
+    expect(kalimatJejakNaik(kasusAsli)).not.toBe(kalimatJejakNaik(kasusUltj));
+  });
+
+  it('tautannya', () => {
+    expect(TAUTAN_JEJAK_NAIK).toBe('Lihat pemeriksaannya');
   });
 });
