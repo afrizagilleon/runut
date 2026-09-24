@@ -15,7 +15,16 @@ import { ID_KASUS } from './bantu/jalur.ts';
  * teks kepala halaman yang membawa kode atau nama emiten — identitas emiten
  * tersamar sampai pembukaan (INV C-3), dan pratinjau tautan terbaca SEBELUM
  * orang membuka apa pun.
+ *
+ * M3.11 D-8: `og:image` dan `og:url` ABSOLUT ke situs yang dinilai (Threads dan
+ * WhatsApp menuntut URL absolut; README menjelaskan cara menggantinya bila
+ * domain berubah), `twitter:card` `summary_large_image`, dan warna tema gelap =
+ * `--kertas` gelap baru `#191816`. Gambarnya sendiri tetap diperiksa dari
+ * build LOKAL (`/pratinjau.png` di asal uji) — tes ini tidak pernah menghubungi
+ * domain itu.
  */
+
+const SITUS = 'https://alpha.zaa.my.id/';
 
 const JUDUL = 'Cek omongan saham di grup ke dokumen resminya.';
 const DESKRIPSI = 'Kasus nyata dari bursa. 3 soal, sekitar 5 menit, tanpa akun.';
@@ -36,6 +45,8 @@ test('E-35 kepala halaman: judul, deskripsi, warna tema, ikon kalender, og:image
       ogJudul: meta('meta[property="og:title"]'),
       ogDeskripsi: meta('meta[property="og:description"]'),
       ogGambar: meta('meta[property="og:image"]'),
+      ogUrl: meta('meta[property="og:url"]'),
+      kartuTwitter: meta('meta[name="twitter:card"]'),
       ikon: [...document.querySelectorAll<HTMLLinkElement>('link[rel="icon"]')].map((l) => ({
         href: l.href,
         tipe: l.type,
@@ -49,10 +60,12 @@ test('E-35 kepala halaman: judul, deskripsi, warna tema, ikon kalender, og:image
   expect(kepala.deskripsi).toEqual([`|${DESKRIPSI}`]);
   expect(kepala.ogJudul).toEqual([`|${JUDUL}`]);
   expect(kepala.ogDeskripsi).toEqual([`|${DESKRIPSI}`]);
-  expect(kepala.ogGambar).toEqual(['|/pratinjau.png']);
-  // Warna tema = --kertas masing-masing mode (token tidak diubah).
+  expect(kepala.ogGambar, 'og:image absolut').toEqual([`|${SITUS}pratinjau.png`]);
+  expect(kepala.ogUrl, 'og:url absolut').toEqual([`|${SITUS}`]);
+  expect(kepala.kartuTwitter).toEqual(['|summary_large_image']);
+  // Warna tema = --kertas masing-masing mode (gelap: M3.11 D-1/D-8b).
   expect(kepala.tema.sort()).toEqual([
-    '(prefers-color-scheme: dark)|#0f1524',
+    '(prefers-color-scheme: dark)|#191816',
     '(prefers-color-scheme: light)|#f3f5f7',
   ]);
 

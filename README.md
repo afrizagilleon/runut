@@ -33,7 +33,8 @@ Berkas kasus sudah ikut di repo, jadi `npm run dev` jalan tanpa `build:case`.
 
 `web/index.html` memakai judul layar pertama yang lolos uji K-06 ("Cek omongan
 saham di grup ke dokumen resminya.") untuk `<title>` dan `og:title`, ikon
-halaman kalender `web/public/kalender.svg`, warna tema = `--kertas` tiap mode,
+halaman kalender `web/public/kalender.svg`, warna tema = `--kertas` tiap mode
+(terang `#f3f5f7`, gelap `#191816` sejak palet gelap M3.11),
 dan gambar pratinjau `web/public/pratinjau.png` (1200 × 630). Tidak ada kode
 atau nama emiten di sana: pratinjau tautan terbaca sebelum orang membuka apa
 pun, dan identitas emiten tersamar sampai pembukaan.
@@ -44,11 +45,17 @@ server dan tanpa jaringan (semua permintaan dipenuhi dari cakram, yang lain
 dibatalkan), dan gambar **tidak ditulis** bila teks layar memuat kode atau nama
 emiten kasus mana pun. Jalankan lagi bila layar pertama berubah.
 
-**`og:image` ditulis relatif (`/pratinjau.png`).** Sebagian platform (Facebook,
-Threads, WhatsApp, LinkedIn) hanya menerima URL **absolut** dan akan tampil tanpa
-gambar kalau jalurnya relatif. Kalau pratinjaunya tidak muncul sesudah deploy,
-ganti nilainya dengan alamat penuh situs yang di-deploy (mis.
-`https://<domain>/pratinjau.png`) — repo ini sengaja tidak menanam nama domain.
+**`og:image` dan `og:url` ditulis ABSOLUT ke situs yang dinilai** (M3.11 D-8):
+`https://alpha.zaa.my.id/pratinjau.png` dan `https://alpha.zaa.my.id/`, ditambah
+`twitter:card` = `summary_large_image`. Threads dan WhatsApp (juga Facebook dan
+LinkedIn) hanya menerima URL absolut dan tampil tanpa gambar bila jalurnya
+relatif. Meta itu hanya teks: halaman tidak memuat apa pun dari domain itu, dan
+e2e (E-35) memeriksa gambarnya dari build lokal, bukan dari domain tersebut.
+
+**Bila domain berubah**, ganti kedua nilai di `web/index.html` (`og:url` dan
+`og:image`, keduanya dengan domain baru dan garis miring penutup untuk `og:url`),
+lalu ganti konstanta `SITUS` di `e2e/kepala-halaman.spec.ts` dengan nilai yang
+sama — E-35 akan merah sampai keduanya cocok.
 
 ## Kasus mana yang dimainkan
 
