@@ -58,7 +58,12 @@ async function periksa(page: Page): Promise<Temuan> {
       rentang.setStart(ekor, 0);
       rentang.setEnd(ekor, 1);
       const kTanda = rentang.getBoundingClientRect();
-      const kTombol = tombol.getBoundingClientRect();
+      /*
+       * Diukur dari kotak TEKS tautannya, bukan kotak tombolnya: bantalan
+       * tombol berada di dalam kotaknya, jadi celah akibat bantalan tidak
+       * terlihat bila yang dibandingkan tepi tombol.
+       */
+      const kTombol = (tombol.querySelector('.rujukan-teks') ?? tombol).getBoundingClientRect();
       // Sebaris: tanda bacanya harus menempel ke sisi kanan tombolnya.
       if (Math.abs(kTanda.top - kTombol.top) < kTombol.height) {
         const jarak = kTanda.left - kTombol.right;
