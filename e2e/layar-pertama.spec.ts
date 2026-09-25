@@ -5,7 +5,7 @@ import { ID_KASUS } from './bantu/jalur.ts';
 
 /**
  * E-27 — layar pertama varian A (M3.9 D-2): kalender → judul → SATU contoh
- * gelembung → ajakan → "Mulai kasus".
+ * gelembung → ajakan → "Mulai simulasi".
  *
  * Kenapa ia ada: data alpha 23 Sep mencatat 13 orang asing dan nol yang
  * selesai; tiga orang uji duduk balik bertanya "ini aplikasi apa?". Di uji

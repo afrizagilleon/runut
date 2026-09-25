@@ -156,7 +156,7 @@ test('E-43 kalimat jejak di bawah judul pembukaan: angkanya = bagian jejak = ber
     expect(b.kalimatAtas).toBeGreaterThanOrEqual(b.judulBawah - 0.5);
     expect(b.kalimatBawah).toBeLessThanOrEqual(b.loncatAtas + 0.5);
     expect(b.kalimat, 'kalimat utuh dengan tautannya').toMatch(
-      /^Sebelum jadi kartu, laporan kasus ini diperiksa \d+ pemeriksaan otomatis; (?:\d+ angka dibuang|tidak ada angka yang dibuang)\. Lihat pemeriksaannya ›$/,
+      /^Sebelum jadi kartu, laporan di simulasi ini diperiksa \d+ pemeriksaan otomatis; (?:\d+ angka dibuang|tidak ada angka yang dibuang)\. Lihat pemeriksaannya ›$/,
     );
     expect(b.garisKiri, 'suara kami: garis kiri tipis').toBe('2px solid');
     expect(b.garisKiriWarna).toBe(b.garisTegas);

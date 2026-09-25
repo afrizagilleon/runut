@@ -242,7 +242,7 @@ test('E-06d gulir tercatat, dan angkanya cocok dengan scrollY (OQ-4)', async ({ 
   // Meninggalkan layar soal melahirkan `gulir`; `layar_masuk` sesudahnya ada di
   // PENTING, jadi keduanya tersiram bersama.
   await page.goBack();
-  await expect(page.getByRole('button', { name: 'Mulai kasus' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Mulai simulasi' })).toBeVisible();
 
   /*
    * `gulir` TINGGALKAN-layar, bukan `gulir` pertama. Sejak M3.8 D-5 ambang

@@ -40,7 +40,7 @@ export interface Emiten {
 export const SAMARAN = '•••';
 
 /** Baris pertama "Rincian teknis" selama identitasnya masih disamarkan. */
-export const CATATAN_SAMARAN = 'Kode saham disamarkan sampai kasus selesai.';
+export const CATATAN_SAMARAN = 'Kode saham disamarkan sampai simulasi selesai.';
 
 function lolosRegex(teks: string): string {
   return teks.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

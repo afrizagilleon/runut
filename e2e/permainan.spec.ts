@@ -76,7 +76,7 @@ test(`E-10 [${kasus_id}] satu permainan penuh, tanpa galat konsol, dengan tangka
    * sini adalah satu permainan penuh **sampai pesan penutupnya**, dan pesan
    * itu hanya tampil ketika tidak ada lagi kasus yang belum dimainkan. Tanpa
    * penanda ini, tes ini berubah perilakunya tiap kali satu kasus ditambahkan
-   * ke repo — dan "Mau coba kasus lain membuka kasus berikutnya" punya tesnya
+   * ke repo — dan "Coba simulasi lain membuka kasus berikutnya" punya tesnya
    * sendiri (E-20e).
    */
   await tandaiDimainkan(page, ID_KASUS);

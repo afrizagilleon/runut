@@ -14,7 +14,7 @@
  * penjaga ini gagal, gambarnya TIDAK ditulis.
  *
  * Gambar dipotret di jendela 1200 × 630 dengan `zoom` 1,2 pada akar dokumen,
- * supaya kalender, judul, contoh omongan, ajakan, dan tombol "Mulai kasus" tetap terbaca di kartu pratinjau yang kecil dan
+ * supaya kalender, judul, contoh omongan, ajakan, dan tombol "Mulai simulasi" tetap terbaca di kartu pratinjau yang kecil dan
  * masuk satu bingkai (kaki tiga kalimat jatuh di luarnya). Zoom itu hanya ada di halaman sekali-pakai milik skrip
  * ini; produk tidak menyentuhnya.
  */
@@ -94,7 +94,7 @@ async function utama(): Promise<void> {
     });
 
     await page.goto(`${ASAL}/?kasus=${KASUS}`);
-    await page.getByRole('button', { name: 'Mulai kasus' }).waitFor({ state: 'visible' });
+    await page.getByRole('button', { name: 'Mulai simulasi' }).waitFor({ state: 'visible' });
 
     const teks = (await page.evaluate(() => document.body.innerText)).toLowerCase();
     const bocor = identitasTerlarang().filter((kata) => teks.includes(kata));
@@ -105,9 +105,9 @@ async function utama(): Promise<void> {
     await page.evaluate((zoom) => {
       document.documentElement.style.setProperty('zoom', zoom);
     }, ZOOM);
-    const tombol = await page.getByRole('button', { name: 'Mulai kasus' }).boundingBox();
+    const tombol = await page.getByRole('button', { name: 'Mulai simulasi' }).boundingBox();
     if (tombol === null || tombol.y + tombol.height > TINGGI) {
-      throw new Error(`tombol "Mulai kasus" tidak masuk bingkai ${String(LEBAR)} × ${String(TINGGI)}`);
+      throw new Error(`tombol "Mulai simulasi" tidak masuk bingkai ${String(LEBAR)} × ${String(TINGGI)}`);
     }
 
     const png = await page.screenshot({ type: 'png' });

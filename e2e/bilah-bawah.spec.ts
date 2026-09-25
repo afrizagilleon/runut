@@ -95,7 +95,7 @@ test('E-04 empat keadaan bilah bawah, dan tidak pernah ada tombol mati', async (
     }
     await tidakAdaTombolMati(`soal ${String(nomor + 1)} sesudah turun`);
 
-    /* --- keadaan 3: sesudah memilih → "Kunci jawaban" ------------------- */
+    /* --- keadaan 3: sesudah memilih → "Cek jawabanku" ------------------- */
     await pilihOpsi(page, soal.jawaban);
     await expect(page.getByRole('button', { name: LABEL_KUNCI })).toBeVisible();
     await expect(page.getByRole('button', { name: LABEL_TURUN })).toHaveCount(0);

@@ -14,7 +14,7 @@ import {
 import { bacaKasus, kunciSalah } from './bantu/kasus.ts';
 
 /**
- * E-15 — sesudah "Kunci jawaban", layar menunjukkan hasilnya (M3.5 D-3).
+ * E-15 — sesudah "Cek jawabanku", layar menunjukkan hasilnya (M3.5 D-3).
  *
  * Cacat yang ditemukan manusia: di uji duduk 22 Sep ketiga penguji mengunci
  * lalu langsung menekan "Lanjut". Cap, kartu penentu, dan penjelasan semuanya
@@ -61,7 +61,7 @@ test('E-15 sesudah mengunci, layar bergulir sampai cap umpan balik terlihat', as
   const rasioSesudah = await tungguMasukLayar(
     cap,
     0.9,
-    'cap umpan balik harus masuk layar sesudah "Kunci jawaban", tanpa ketukan lain',
+    'cap umpan balik harus masuk layar sesudah "Cek jawabanku", tanpa ketukan lain',
   );
   await tungguGulirBerhenti(page);
   const scrollSesudah = await page.evaluate(() => window.scrollY);

@@ -24,13 +24,13 @@ import { ambangOpsiProduk } from './ambang.ts';
 
 /** Label bilah bawah, disalin dari `web/src/alur.ts` (LABEL_TURUN, LABEL_KUNCI). */
 export const LABEL_TURUN = '↓ Pilih jawaban';
-export const LABEL_KUNCI = 'Kunci jawaban';
-export const LABEL_MULAI = 'Mulai kasus';
+export const LABEL_KUNCI = 'Cek jawabanku';
+export const LABEL_MULAI = 'Mulai simulasi';
 export const LABEL_KEMBALI_KARTU = '↑ Kembali ke dokumen';
 export const LABEL_LONCAT = 'Langsung ke ringkasan ↓';
 export const LABEL_LANJUT_AKHIR = 'Lanjut: tiga pertanyaan singkat';
 export const LABEL_SELESAI = 'Selesai';
-export const LABEL_KASUS_LAIN = 'Mau coba kasus lain';
+export const LABEL_KASUS_LAIN = 'Coba simulasi lain';
 export const LABEL_SESUDAHNYA = 'Lihat yang terjadi sesudahnya';
 
 /**
@@ -84,7 +84,7 @@ export async function bukaTanpaKasus(page: Page, penanda: string): Promise<void>
  * (M4 D-4).
  *
  * Dipakai tes yang ingin keadaan akhir permainan **pasti**: sesudah semua
- * kasus dimainkan, "Mau coba kasus lain" menampilkan pesan penutup alih-alih
+ * kasus dimainkan, "Coba simulasi lain" menampilkan pesan penutup alih-alih
  * membuka kasus berikutnya. Tanpa ini, E-10 akan berubah perilakunya tiap kali
  * satu kasus ditambahkan ke repo — dan yang diujinya bukan itu.
  *

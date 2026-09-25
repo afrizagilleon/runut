@@ -29,7 +29,7 @@ import type { Kasus } from '../../factory/skema/tipe.ts';
  * Satu fungsi untuk ketiga tempat yang menyebut angka ini: kalimat jejak di
  * bawah "Waktu berjalan lagi", kalimat pembuka bagian jejak, dan pintu
  * lipatannya. Yang dilewati tetap dieja apa adanya di kaki lipatan — "Aturan
- * yang tidak bisa dijalankan atas kasus ini: 1 dari 10" — yang memang
+ * yang tidak bisa dijalankan atas simulasi ini: 1 dari 10" — yang memang
  * menyebut daftar lengkapnya.
  */
 export function jumlahPemeriksaan(kasus: Kasus): number {
@@ -101,7 +101,7 @@ export function kalimatJejakNaik(kasus: Kasus): string {
   const n = jumlahPemeriksaan(kasus);
   const m = faktaGugur(kasus);
   const dibuang = m === 0 ? 'tidak ada angka yang dibuang' : `${String(m)} angka dibuang`;
-  return `Sebelum jadi kartu, laporan kasus ini diperiksa ${String(n)} pemeriksaan otomatis; ${dibuang}.`;
+  return `Sebelum jadi kartu, laporan di simulasi ini diperiksa ${String(n)} pemeriksaan otomatis; ${dibuang}.`;
 }
 
 /** Tautan sesudah kalimat itu; "›" ditambahkan komponen sebagai isyarat mata. */

@@ -381,6 +381,8 @@ describe('isiSumber — identitas disamarkan sampai kasus selesai (A-1, C-3)', (
   it('baris pertama rincian mengatakan kenapa, supaya ••• tidak tampak seperti data hilang', () => {
     const isi = isiSumber(bocor(), petakan([bocor()]), emiten, DISAMARKAN);
     expect(isi.rincian[0]?.nilai).toBe(CATATAN_SAMARAN);
+    // M3.12 D-1: satuan permainan disebut "simulasi", bukan "kasus".
+    expect(CATATAN_SAMARAN).toBe('Kode saham disamarkan sampai simulasi selesai.');
   });
 
   it('SESUDAH dibuka, tiap nilai kembali utuh dan catatannya hilang', () => {

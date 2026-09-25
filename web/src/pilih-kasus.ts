@@ -160,7 +160,7 @@ export function pilihKasus({ daftar, dimainkan, paksa, acak }: PilihanKasus): Ka
 }
 
 /**
- * Kasus yang dibuka tombol "Mau coba kasus lain", atau `null` kalau tidak ada
+ * Kasus yang dibuka tombol "Coba simulasi lain", atau `null` kalau tidak ada
  * lagi — dan di situlah pesan penutup kasus ini tampil (D-4).
  *
  * Sengaja **tidak** acak: "kasus berikutnya" adalah janji tentang satu kasus

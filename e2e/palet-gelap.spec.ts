@@ -210,7 +210,7 @@ for (const kasus_id of ID_KASUS) {
     if (soal === undefined) throw new Error('kasus tanpa soal');
 
     await buka(page, penandaBaru(), kasus_id);
-    await expect(page.getByRole('button', { name: 'Mulai kasus' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Mulai simulasi' })).toBeVisible();
     const hasil: HasilPasangan[] = [];
     hasil.push(...(await ukurPasangan(page, LAYAR_PERTAMA)));
 
@@ -252,7 +252,7 @@ for (const kasus_id of ID_KASUS) {
 
 test('E-41b kertas dan lembar gelap tidak bernada biru-dongker (hue 215–235°, saturasi > 30 %)', async ({ page }) => {
   await buka(page, penandaBaru());
-  await expect(page.getByRole('button', { name: 'Mulai kasus' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Mulai simulasi' })).toBeVisible();
   const mode = await skema(page);
   const warna = await page.evaluate(() => {
     const coba = document.createElement('div');
@@ -347,7 +347,7 @@ test('E-41c halaman kalender tetap kertas terang di layar pertama, sobekan pembu
 }) => {
   const kasus = bacaKasus();
   await buka(page, penandaBaru());
-  await expect(page.getByRole('button', { name: 'Mulai kasus' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Mulai simulasi' })).toBeVisible();
   const mode = await skema(page);
   const lembar = await page.evaluate(() => {
     const coba = document.createElement('div');

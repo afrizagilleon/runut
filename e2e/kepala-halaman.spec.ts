@@ -27,7 +27,7 @@ import { ID_KASUS } from './bantu/jalur.ts';
 const SITUS = 'https://alpha.zaa.my.id/';
 
 const JUDUL = 'Cek omongan saham di grup ke dokumen resminya.';
-const DESKRIPSI = 'Kasus nyata dari bursa. 3 soal, sekitar 5 menit, tanpa akun.';
+const DESKRIPSI = 'Simulasi dari kejadian nyata di bursa. 3 soal, sekitar 5 menit, tanpa akun.';
 
 test('E-35 kepala halaman: judul, deskripsi, warna tema, ikon kalender, og:image 1200 × 630', async ({
   page,

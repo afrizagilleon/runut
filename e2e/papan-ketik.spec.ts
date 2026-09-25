@@ -84,7 +84,7 @@ test('E-13 soal 1 dijawab dan dikunci hanya dengan Tab, Space, dan Enter', async
 
   await buka(page, penandaBaru());
 
-  /* --- layar pertama: Tab sampai "Mulai kasus", lalu Enter ------------ */
+  /* --- layar pertama: Tab sampai "Mulai simulasi", lalu Enter ------------ */
   let jejak: Fokus[] = [];
   let ketemu = false;
   for (let n = 0; n < 12 && !ketemu; n += 1) {
@@ -92,9 +92,9 @@ test('E-13 soal 1 dijawab dan dikunci hanya dengan Tab, Space, dan Enter', async
     const f = await bacaFokus();
     jejak.push(f);
     const teks = await page.evaluate(() => document.activeElement?.textContent ?? '');
-    if (f.tag === 'button' && teks.includes('Mulai kasus')) ketemu = true;
+    if (f.tag === 'button' && teks.includes('Mulai simulasi')) ketemu = true;
   }
-  expect(ketemu, `Tab harus sampai ke tombol "Mulai kasus"; jejak: ${jejak.map((f) => f.tag).join(' > ')}`).toBe(
+  expect(ketemu, `Tab harus sampai ke tombol "Mulai simulasi"; jejak: ${jejak.map((f) => f.tag).join(' > ')}`).toBe(
     true,
   );
   const fokusMulai = await bacaFokus();
@@ -139,7 +139,7 @@ test('E-13 soal 1 dijawab dan dikunci hanya dengan Tab, Space, dan Enter', async
     'opsi terpilih hanya dengan papan ketik',
   ).toBeChecked();
 
-  /* --- Tab ke "Kunci jawaban", lalu Enter ------------------------------ */
+  /* --- Tab ke "Cek jawabanku", lalu Enter ------------------------------ */
   ketemu = false;
   jejak = [];
   for (let n = 0; n < 20 && !ketemu; n += 1) {
@@ -151,7 +151,7 @@ test('E-13 soal 1 dijawab dan dikunci hanya dengan Tab, Space, dan Enter', async
   }
   expect(
     ketemu,
-    `Tab harus sampai ke "Kunci jawaban"; jejak: ${jejak.map((f) => f.tag).join(' > ')}`,
+    `Tab harus sampai ke "Cek jawabanku"; jejak: ${jejak.map((f) => f.tag).join(' > ')}`,
   ).toBe(true);
   const fokusKunci = await bacaFokus();
   expect(cincinTerlihat(fokusKunci), 'tombol kunci berfokus punya cincin fokus').toBe(true);

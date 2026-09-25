@@ -39,7 +39,7 @@ test('E-40 pegangan balon >= 3:1, cincin fokus tombol utama --tinta, tanpa gaya 
   await buka(page, penandaBaru());
 
   // (2) Cincin fokus tombol utama, sebelum ada sentuhan apa pun (fokus papan ketik).
-  const fokus = await page.getByRole('button', { name: 'Mulai kasus' }).evaluate((el) => {
+  const fokus = await page.getByRole('button', { name: 'Mulai simulasi' }).evaluate((el) => {
     (el as HTMLElement).focus();
     const g = getComputedStyle(el);
     const coba = document.createElement('div');

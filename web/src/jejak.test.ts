@@ -166,14 +166,14 @@ const kasusUltj = JSON.parse(
 describe('kalimatJejakNaik (M3.11 D-3)', () => {
   it('kata-kata persis kontrak, angka dari data', () => {
     expect(kalimatJejakNaik(kasusUji(10, 8, 43))).toBe(
-      'Sebelum jadi kartu, laporan kasus ini diperiksa 10 pemeriksaan otomatis; 43 angka dibuang.',
+      'Sebelum jadi kartu, laporan di simulasi ini diperiksa 10 pemeriksaan otomatis; 43 angka dibuang.',
     );
   });
 
   it('m = 0: kalimat kedua jadi "tidak ada angka yang dibuang"', () => {
     const teks = kalimatJejakNaik(kasusUji(35, 7, 0));
     expect(teks).toBe(
-      'Sebelum jadi kartu, laporan kasus ini diperiksa 35 pemeriksaan otomatis; tidak ada angka yang dibuang.',
+      'Sebelum jadi kartu, laporan di simulasi ini diperiksa 35 pemeriksaan otomatis; tidak ada angka yang dibuang.',
     );
     expect(teks).not.toContain('0 angka');
   });

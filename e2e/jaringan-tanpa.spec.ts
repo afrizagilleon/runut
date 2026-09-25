@@ -43,7 +43,7 @@ test('E-08 tanpa pengumpul: nol permintaan ke asal lain, nol POST', async ({ pag
   /*
    * Semua kasus ditandai sudah dimainkan (M4 D-4): tes ini berakhir di pesan
    * penutup, dan pesan itu hanya tampil ketika tidak ada kasus lain yang
-   * menunggu. Tanpa penanda ini, "Mau coba kasus lain" membuka kasus kedua dan
+   * menunggu. Tanpa penanda ini, "Coba simulasi lain" membuka kasus kedua dan
    * tes jaringan ini mengukur layar yang salah.
    */
   await tandaiDimainkan(page, ID_KASUS);
@@ -68,7 +68,7 @@ test('E-08 tanpa pengumpul: nol permintaan ke asal lain, nol POST', async ({ pag
   await page.locator('textarea').fill('uji tanpa pengumpul');
   await lanjut(page, LABEL_SELESAI);
   await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
-  await ketuk(page.getByRole('button', { name: 'Mau coba kasus lain' }));
+  await ketuk(page.getByRole('button', { name: 'Coba simulasi lain' }));
   await expect(page.getByText(kasus.penutup.kepala)).toBeVisible();
 
   // Halaman ditinggalkan sungguhan: di sinilah `pagehide` menyala, dan di sinilah

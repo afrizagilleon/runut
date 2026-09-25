@@ -28,7 +28,7 @@ export const KASUS_ULTJ: Kasus = ultj as unknown as Kasus;
  * Seluruh kasus yang bisa dimainkan, dalam urutan tetap.
  *
  * Urutannya menentukan dua hal yang dilihat pemain: kasus mana yang dibuka
- * "Mau coba kasus lain" lebih dulu (`kasusBerikut`), dan pemetaan angka acak ke
+ * "Coba simulasi lain" lebih dulu (`kasusBerikut`), dan pemetaan angka acak ke
  * kasus pada kunjungan pertama. Karena itu ia ditulis di sini sekali, bukan
  * dihasilkan dari urutan berkas di cakram.
  */

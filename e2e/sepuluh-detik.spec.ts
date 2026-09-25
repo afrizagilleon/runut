@@ -19,7 +19,7 @@ import { ID_KASUS } from './bantu/jalur.ts';
  * TANPA menggulir, dan jarak ke opsi pertama pendek. Tes ini mengukur tiga janji
  * itu di peramban yang melukis, untuk kedua kasus:
  *
- * 1. layar pertama: judul, contoh gelembung, ajakan, dan tombol "Mulai kasus"
+ * 1. layar pertama: judul, contoh gelembung, ajakan, dan tombol "Mulai simulasi"
  *    semuanya `bottom ≤ innerHeight` tanpa gulir; tidak ada "Kita mundur ke";
  * 2. soal 1: kartu PENENTU (`kartu_penentu[0]` dari berkas kasus, bukan
  *    "kartu pertama di layar") adalah kartu pertama dan terlihat utuh di bawah

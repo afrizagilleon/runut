@@ -134,11 +134,11 @@ async function satuPutaran(
   };
 
   await page.goto(`${ASAL}/?kasus=${kasus_id}`);
-  await page.getByRole('button', { name: 'Mulai kasus' }).waitFor();
+  await page.getByRole('button', { name: 'Mulai simulasi' }).waitFor();
   await animasiSelesai(page);
   await potret('01-pertama');
 
-  await klik('Mulai kasus');
+  await klik('Mulai simulasi');
   await page.locator('[aria-label="Soal 1 dari 3"]').waitFor();
   await animasiSelesai(page);
   await potret('02-soal1-dibuka');
@@ -146,7 +146,7 @@ async function satuPutaran(
   for (const [nomor, soal] of kasus.soal.entries()) {
     await page.locator(`[aria-label="Soal ${String(nomor + 1)} dari 3"]`).waitFor();
     await page.locator(`[data-uid="opsi:${soal.jawaban}"]`).click();
-    await klik('Kunci jawaban');
+    await klik('Cek jawabanku');
     await page.locator('[data-uid="teks-kunci"]').waitFor();
     if (nomor === 0) await potret('03-soal1-dikunci');
     await klik(nomor === kasus.soal.length - 1 ? 'Lihat yang terjadi sesudahnya' : `Lanjut ke soal ${String(nomor + 2)}`);

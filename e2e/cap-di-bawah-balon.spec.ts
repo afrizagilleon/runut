@@ -20,7 +20,7 @@ import { intipBalonProduk } from './bantu/ambang.ts';
 import { peristiwaSesi, tungguCocok, tungguSatuSesi } from './bantu/peristiwa.ts';
 
 /**
- * E-25 — sesudah "Kunci jawaban", cap mendarat DI BAWAH balon melayang
+ * E-25 — sesudah "Cek jawabanku", cap mendarat DI BAWAH balon melayang
  * (M3.8 amandemen A-1, D-10).
  *
  * Cacat produk yang hidup sejak M3.7: `useGulirKeCap` menggulir cap dengan

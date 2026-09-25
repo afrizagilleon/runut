@@ -182,7 +182,7 @@ async function mainkanSampaiTerimaKasih(page: Page, kasus_id: string): Promise<v
   await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
 }
 
-test('E-20e "Mau coba kasus lain" membuka kasus yang BELUM dimainkan, sesi baru', async ({
+test('E-20e "Coba simulasi lain" membuka kasus yang BELUM dimainkan, sesi baru', async ({
   page,
 }) => {
   const galat = awasiGalat(page);
@@ -200,7 +200,7 @@ test('E-20e "Mau coba kasus lain" membuka kasus yang BELUM dimainkan, sesi baru'
   /*
    * Kasus berikutnya terbuka LANGSUNG — bukan pesan penutup. Yang diperiksa
    * adalah layar pertama kasus kedua, bukan sekadar "halaman berubah":
-   * tombol "Mulai kasus" ada lagi, dan baris meta menyebut jumlah soal kasus
+   * tombol "Mulai simulasi" ada lagi, dan baris meta menyebut jumlah soal kasus
    * itu sendiri.
    */
   await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();

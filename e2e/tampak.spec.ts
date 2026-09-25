@@ -56,7 +56,7 @@ test('E-22a sembunyi tiba tanpa gerakan berikutnya; kembali membawa lama yang se
   const saatKembali = await jadikan(page, 'visible');
   const selang = saatKembali - saatSembunyi;
 
-  // `kembali` bukan peristiwa penting; ketukan "Mulai kasus" menyiramnya
+  // `kembali` bukan peristiwa penting; ketukan "Mulai simulasi" menyiramnya
   // bersama `layar_masuk`, seperti yang terjadi pada pemain sungguhan.
   await ketuk(page.getByRole('button', { name: LABEL_MULAI }));
   const [kembali] = await tungguCocok(

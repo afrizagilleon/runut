@@ -932,7 +932,11 @@ describe('alur — bilah bawah tiga keadaan (D-4, T-04)', () => {
     expect(bilahBawah(keadaan.soal['s1'], 0, 3)).toEqual({ jenis: 'tidak-ada' });
   });
 
-  it('sudah memilih: "Kunci jawaban" — apa pun keadaan terlihatnya', () => {
+  it('label tombol kunci = "Cek jawabanku" (M3.12 D-1; dulu "Kunci jawaban")', () => {
+    expect(LABEL_KUNCI).toBe('Cek jawabanku');
+  });
+
+  it('sudah memilih: "Cek jawabanku" — apa pun keadaan terlihatnya', () => {
     for (const terlihat of [false, true]) {
       const { keadaan } = jalankan([
         MULAI,

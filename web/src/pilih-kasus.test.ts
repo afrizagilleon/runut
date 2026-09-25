@@ -245,7 +245,7 @@ describe('pilihKasus — daftar kosong', () => {
   });
 });
 
-describe('kasusBerikut — "Mau coba kasus lain"', () => {
+describe('kasusBerikut — "Coba simulasi lain"', () => {
   it('membuka kasus pertama yang belum dimainkan', () => {
     expect(kasusBerikut([A, B, C], ['aa-2026-01-01'])).toBe(B);
   });

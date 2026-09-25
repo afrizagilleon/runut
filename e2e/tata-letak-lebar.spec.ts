@@ -60,7 +60,7 @@ test('E-12d tepi keping kalender = tepi kolom isi di layar lebar', async ({ page
  * E-12g — layar pertama di laptop tidak setengah kosong (M3.10 D-4a, kritik K-6).
  *
  * Juri kemungkinan membuka tautannya di laptop. Sampai `bcd4ac7`, di 1280 × 800
- * "Betul atau keliru?" berakhir di y ≈ 395 sedangkan "Mulai kasus" menempel di
+ * "Betul atau keliru?" berakhir di y ≈ 395 sedangkan "Mulai simulasi" menempel di
  * dasar jendela (y ≈ 709): rongga ±310 px, dan bilah bawah membentang selebar
  * jendela. Di layar ≥ 768 px bilah layar pertama ikut aliran, tepat sesudah
  * ajakan. Di ponsel ia tetap menempel di dasar (dijaga E-04/E-28 di proyek
@@ -70,7 +70,7 @@ test('E-12g layar pertama 1280 × 800: tombol Mulai tepat sesudah ajakan, bukan 
   page,
 }) => {
   await buka(page, penandaBaru());
-  const tombol = page.getByRole('button', { name: 'Mulai kasus' });
+  const tombol = page.getByRole('button', { name: 'Mulai simulasi' });
   await expect(tombol).toBeVisible();
 
   const u = await page.evaluate(() => {

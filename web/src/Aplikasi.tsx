@@ -64,7 +64,7 @@ import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } fro
  *
  * Tidak ada satu pun `useState` di berkas ini: seluruh keadaan permainan —
  * termasuk lipatan kartu, panel sumber yang terbuka, isian layar akhir, dan
- * apakah tombol "Mau coba kasus lain" sudah ditekan — hidup di `alur.ts`.
+ * apakah tombol "Coba simulasi lain" sudah ditekan — hidup di `alur.ts`.
  * Waktu disuntikkan di sini, satu kali per aksi, supaya reducer tetap murni.
  */
 
@@ -779,7 +779,7 @@ function LayarPembuka({
     <section className="layar layar-pembuka" aria-labelledby="judul-pembuka">
       {/*
         M3.9 D-2 (varian A uji K-06, disetujui pemilik 24 Sep 2026): kalender
-        besar → judul → SATU contoh gelembung → ajakan → "Mulai kasus".
+        besar → judul → SATU contoh gelembung → ajakan → "Mulai simulasi".
 
         "Kita mundur ke …" hilang dari layar ini: tanggalnya dibawa kalender
         di atas dan kaki di bawah. Yang dijawab layar ini sekarang "ini apa" —
@@ -824,7 +824,7 @@ function LayarPembuka({
             kirim({ jenis: 'lanjut' });
           }}
         >
-          Mulai kasus
+          Mulai simulasi
         </button>
         {/*
           D-1: satu baris keterangan, bukan kalimat kedua. Ia hidup DI DALAM
@@ -998,7 +998,7 @@ function usePengamatOpsi(
 }
 
 /**
- * Sesudah "Kunci jawaban", layar bergulir sampai cap umpan balik terlihat
+ * Sesudah "Cek jawabanku", layar bergulir sampai cap umpan balik terlihat
  * (M3.5 D-3).
  *
  * Kenapa ini sebuah efek dan bukan satu baris di dalam `onClick`: saat penangan
@@ -2108,7 +2108,7 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
           ))}
         </ul>
         <p className="meta">
-          Aturan yang tidak bisa dijalankan atas kasus ini:{' '}
+          Aturan yang tidak bisa dijalankan atas simulasi ini:{' '}
           {kasus.pemeriksaan.filter((p) => !p.dijalankan).length} dari{' '}
           {kasus.pemeriksaan.length}.
         </p>
@@ -2181,7 +2181,7 @@ function LayarAkhir({
               if (berikut !== null) bukaKasusLain(berikut);
             }}
           >
-            Mau coba kasus lain
+            Coba simulasi lain
           </button>
         ) : (
           <div className="pesan-alpha" data-uid="pesan-alpha">
@@ -2209,7 +2209,7 @@ function LayarAkhir({
       </p>
 
       <fieldset className="tanya-akhir" data-uid="akhir:rating">
-        <legend>Seberapa layak kasus ini kamu bagikan ke teman?</legend>
+        <legend>Seberapa layak simulasi ini kamu bagikan ke teman?</legend>
         <p className="jangkar">1 = tidak akan kubagikan · 5 = langsung kubagikan</p>
         <div className="deret-pilihan">
           {[1, 2, 3, 4, 5].map((nilai) => (
@@ -2229,7 +2229,7 @@ function LayarAkhir({
       </fieldset>
 
       <fieldset className="tanya-akhir" data-uid="akhir:terasa">
-        <legend>Kasus tadi terasa seperti…</legend>
+        <legend>Simulasi tadi terasa seperti…</legend>
         <div className="deret-pilihan">
           {TERASA.map((nilai) => (
             <label key={nilai} className={`petak${keadaan.akhir.terasa === nilai ? ' petak-pilih' : ''}`}>
@@ -2307,7 +2307,7 @@ function LayarAkhir({
  *
  * `diBawahBilah` (M3.9 D-2): di layar pertama kaki ini berada di bawah bilah
  * bawah yang `fixed`. Ia tetap di bawah lipatan — garisnya tidak boleh
- * mengintip di atas tombol "Mulai kasus" — dan bantalan bawahnya setinggi
+ * mengintip di atas tombol "Mulai simulasi" — dan bantalan bawahnya setinggi
  * bilah TERUKUR, supaya kalimat terakhirnya bisa digulir ke atas bilah dan
  * terbaca. Layar akhir tidak disentuh (batas kerja M3.9).
  */

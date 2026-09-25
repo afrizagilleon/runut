@@ -323,7 +323,7 @@ export interface Keadaan {
   akhir: JawabanAkhir;
   /** Sudah menekan Selesai. */
   akhirTerkirim: boolean;
-  /** Sudah menekan "Mau coba kasus lain"; pesan alpha-nya lalu tampil. */
+  /** Sudah menekan "Coba simulasi lain"; pesan alpha-nya lalu tampil. */
   minatDitekan: boolean;
   /**
    * Gulir terjauh **di layar yang sedang dibuka**, dalam persen.
@@ -636,7 +636,7 @@ export type BilahBawah =
  * sebelum membaca kartunya. Disalin persis dari kontrak.
  */
 export const LABEL_TURUN = '\u2193 Pilih jawaban';
-export const LABEL_KUNCI = 'Kunci jawaban';
+export const LABEL_KUNCI = 'Cek jawabanku';
 
 /**
  * "dua dokumen", bukan "2 dokumen" — kalimat pengantar dibaca sebagai kalimat,
@@ -1266,7 +1266,7 @@ export function langkah(keadaan: Keadaan, aksi: Aksi, waktu: number): Hasil {
        * di tempat cap akan mendarat. Balonnya dikembalikan mengintip di sini,
        * di reducer, supaya tampilan dan data tetap satu sumber.
        *
-       * TANPA peristiwa `balon`: yang ditekan pemain adalah "Kunci jawaban",
+       * TANPA peristiwa `balon`: yang ditekan pemain adalah "Cek jawabanku",
        * bukan balonnya. `balon` mencatat apa yang orang lakukan terhadap
        * balon, dan mencatat ini akan membuat setiap penguncian terbaca sebagai
        * "menaikkan balon". Pola yang sama dengan `balon_melayang` yang juga
