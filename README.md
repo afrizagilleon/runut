@@ -70,7 +70,7 @@ Ada dua kasus sekarang, dan pemain tidak memilih sendiri:
 - **Kunjungan berikutnya:** kasus yang **belum** dimainkan dari peramban itu.
   Daftarnya disimpan di `localStorage` (`kasus_dimainkan`). Kalau semuanya sudah
   dimainkan, kasusnya acak lagi.
-- **"Mau coba kasus lain"** di layar terima kasih **langsung membuka** kasus
+- **"Coba simulasi lain"** (dulu "Mau coba kasus lain", M3.12) di layar terima kasih **langsung membuka** kasus
   berikutnya yang belum dimainkan — sesi baru, pengunjung yang sama. Kalau tidak
   ada lagi, barulah pesan penutup kasus itu tampil.
 - **`?kasus=<id>`** memaksa satu kasus, untuk juri dan untuk uji. Nilai yang
@@ -182,7 +182,7 @@ Yang tercatat adalah perilaku di halaman, bukan orangnya:
 | `gulir` | sejauh mana layar itu digulir (0–1): saat meninggalkan layar, **dan** saat 25 %, 50 %, 75 %, lalu 100 % pertama kali terlewat di layar itu |
 | `balon` | balon chat melayang diturunkan utuh atau dikembalikan mengintip, dan dengan cara apa: ketukan atau tarikan jari |
 | `pembukaan_masuk`, `pembukaan_selesai`, `loncat_ke_ringkasan` | sampai ke layar pembukaan, lama membacanya, seberapa jauh menggulir |
-| `minat_kasus_lain` | tombol "Mau coba kasus lain" ditekan |
+| `minat_kasus_lain` | tombol "Coba simulasi lain" (dulu "Mau coba kasus lain") ditekan; nama peristiwanya tetap |
 | `akhir_kirim` | isian tiga pertanyaan dan kotak teks di layar akhir |
 | `tampak` | halaman tersembunyi (pindah aplikasi, kunci layar) atau terlihat lagi, di layar mana, dan berapa lama tersembunyi; paling banyak 30 per sesi |
 | `galat` | kesalahan JavaScript: jenisnya, pesannya **yang sudah disamarkan** (alamat → `‹url›`, angka ≥ 6 digit → `‹n›`, potongan UA → `‹ua›`, dipangkas 120 huruf), dan apakah asalnya aplikasi atau luar; paling banyak 5 per sesi, pesan yang sama sekali saja |

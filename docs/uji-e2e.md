@@ -210,6 +210,7 @@ nilai terhitung sama dengan pembanding ber-tepi 1,5 px di halaman yang sama.
 ```bash
 node e2e/bantu/potret.ts              # -> .cache/e2e/layar-m310/
 node e2e/bantu/potret.ts layar-m311   # -> .cache/e2e/layar-m311/
+node e2e/bantu/potret.ts layar-m312   # -> .cache/e2e/layar-m312/ (kata "simulasi", M3.12)
 ```
 
 Terang dan gelap, 360 × 640 dan 1280 × 800, kedua kasus, tujuh layar (pertama,

@@ -40,7 +40,7 @@ Halaman kalender besar (`MEI 2026` / `4` / `SENIN`), lalu:
 - Judul: **Cek omongan saham di grup ke dokumen resminya.** (sama dengan DADA)
 - Satu contoh gelembung, dibaca dari pesan soal 1: **Nadia** · *Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!*
 - Ajakan: **Betul atau keliru?**
-- Tombol: **Mulai kasus**
+- Tombol: **Mulai simulasi** (M3.12; dulu "Mulai kasus")
 - Baris meta: *3 soal · sekitar 5 menit · tanpa akun, tanpa skor*
 - Kaki halaman: tiga kalimat tetap, di bawah lipatan.
 
@@ -173,8 +173,9 @@ nol); rantai laporan yang putus **sesudah** hari itu; dan laba per lembar
 (penyebutnya berganti antar tahun, dan tanggal terbit laporan tahunan tidak ada
 di data, jadi tidak bisa dipastikan angkanya sudah bisa dibaca pada T).
 
-**Pesan penutup kasus ini:** *Ini kasus yang kedua. Kasus lain: perusahaan yang
-harganya melonjak sementara pemilik besarnya menjual.* Ia hanya tampil ketika
+**Pesan penutup simulasi ini:** *Ini simulasi yang kedua. Simulasi lain: perusahaan yang
+harganya melonjak sementara pemilik besarnya menjual.* (M3.12; dulu "Ini kasus yang
+kedua. Kasus lain: …") Ia hanya tampil ketika
 tidak ada lagi kasus yang belum dimainkan.
 
 ## Jejak verifikasi
