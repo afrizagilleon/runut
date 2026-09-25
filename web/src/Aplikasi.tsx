@@ -737,7 +737,7 @@ function usePengamatKartu(
  * halaman kalender yang belum disobek — yang memberi tahu bahwa sesudah soal
  * terakhir masih ada satu layar lagi: apa yang terjadi sesudah tanggal ini.
  */
-function TitikSoal({ jumlah, sekarang }: { jumlah: number; sekarang: number }): JSX.Element {
+export function TitikSoal({ jumlah, sekarang }: { jumlah: number; sekarang: number }): JSX.Element {
   return (
     <p className="titik-soal" aria-label={`Soal ${String(sekarang + 1)} dari ${String(jumlah)}`}>
       {Array.from({ length: jumlah }, (_, nomor) => (
@@ -762,7 +762,7 @@ function TitikSoal({ jumlah, sekarang }: { jumlah: number; sekarang: number }): 
 /** Nama penanda "sesudahnya" di keping (M3.9 D-5), untuk `title` dan pembaca layar. */
 const LABEL_PENANDA_SESUDAH = 'Lalu apa yang terjadi sesudahnya';
 
-function LayarPembuka({
+export function LayarPembuka({
   kasus,
   hari,
   kirim,
@@ -1515,7 +1515,7 @@ function BalonMelayang({
   );
 }
 
-function LayarSoal({
+export function LayarSoal({
   kasus,
   keadaan,
   nomor,
@@ -1886,7 +1886,7 @@ function LayarSoal({
 
 /** Gelembung obrolan: satu-satunya bentuk gelembung di seluruh antarmuka (D-8). */
 
-function LayarPembukaan({
+export function LayarPembukaan({
   kasus,
   hari,
   kirim,
@@ -2120,7 +2120,7 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
 const TERASA = ['ujian hafalan', 'membaca data', 'menebak harga'] as const;
 const SUMBER_JAWABAN = ['kartu fakta', 'ingatan atau pengetahuan sendiri', 'tebakan'] as const;
 
-function LayarAkhir({
+export function LayarAkhir({
   kasus,
   keadaan,
   kirim,
@@ -2311,7 +2311,7 @@ function LayarAkhir({
  * bilah TERUKUR, supaya kalimat terakhirnya bisa digulir ke atas bilah dan
  * terbaca. Layar akhir tidak disentuh (batas kerja M3.9).
  */
-function Kaki({ kasus, diBawahBilah = false }: { kasus: Kasus; diBawahBilah?: boolean }): JSX.Element {
+export function Kaki({ kasus, diBawahBilah = false }: { kasus: Kasus; diBawahBilah?: boolean }): JSX.Element {
   return (
     <footer
       className={diBawahBilah ? 'kaki kaki-berbilah' : 'kaki'}
