@@ -354,15 +354,15 @@ export const DADA_2025_10_08: DefinisiKasus = {
     ],
     paragraf: [
       'Perusahaan D adalah PT Diamond Citra Propertindo Tbk, sandi DADA, tercatat di Papan Pengembangan.',
-      'Sehari sesudah tanggal kasus, pada [[susp-2025-10-09|9 Oktober 2025]], bursa menyetop lagi jual-beli saham ini — ' +
+      'Sehari sesudah tanggal simulasi, pada [[susp-2025-10-09|9 Oktober 2025]], bursa menyetop lagi jual-beli saham ini — ' +
         'kali ini karena harganya sudah naik terlalu jauh, supaya pasar mendingin dulu. ' +
         'Begitu dibuka kembali keesokan harinya, harga mulai di [[harga-2025-10-10-buka|Rp177]], sempat menyentuh [[harga-2025-10-10-tertinggi|Rp240]], lalu tutup di [[harga-2025-10-10|Rp152]]. ' +
-        'Hari itu [[volume-2025-10-10|5.112.760.000 lembar]] berpindah tangan. Harga tertinggi kasus ini justru tercapai sehari sesudah bursa menghentikannya.',
+        'Hari itu [[volume-2025-10-10|5.112.760.000 lembar]] berpindah tangan. Harga tertinggi di simulasi ini justru tercapai sehari sesudah bursa menghentikannya.',
       'Dua belas hari kemudian harga tinggal [[harga-2025-10-22|Rp50]]. ' +
-        'Laporan pemilik terbesar yang terbit sesudah tanggal kasus memperlihatkan kelanjutannya: ' +
+        'Laporan pemilik terbesar yang terbit sesudah tanggal simulasi memperlihatkan kelanjutannya: ' +
         '[[fil-2025-10-19|laporan 19 Oktober 2025]] dan [[fil-2025-10-26|laporan 26 Oktober 2025]].',
-      'Rantai laporan itu sendiri tidak bersih. Enam transaksi yang dilaporkan malam itu terbit dua kali dengan jumlah, harga, dan urutan yang persis sama, ' +
-        'dan ada dua lompatan saldo yang tidak dijelaskan laporan mana pun. Rinciannya ada di jejak verifikasi kasus ini, lengkap dengan angkanya.',
+      'Laporan-laporan itu sendiri tidak bersih. Enam transaksi yang dilaporkan malam itu terbit dua kali dengan jumlah, harga, dan urutan yang persis sama, ' +
+        'dan ada dua lompatan saldo yang tidak dijelaskan laporan mana pun. Rinciannya ada di jejak verifikasi simulasi ini, lengkap dengan angkanya.',
       'Setahun kemudian, rapat umum pemegang saham [[rups-2026-07-16-kuorum|16 Juli 2026]] gagal karena yang hadir ' +
         'hanya [[rups-2026-07-16-kuorum|22,32 persen]] saham, sehingga tidak ada satu pun agenda yang bisa diputuskan. ' +
         'Yang dihitung adalah jumlah saham yang hadir, bukan jumlah orang yang hadir.',
@@ -376,7 +376,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
         '|Rp140]] untuk saham senilai [[' +
         NILAI_LOT +
         '|Rp178.000]].',
-      'Satu-satunya pengumuman bursa sebelum tanggal kasus berbicara tentang [[' +
+      'Satu-satunya pengumuman bursa sebelum tanggal simulasi berbicara tentang [[' +
         SUSPENSI +
         '|laporan keuangan yang terlambat]], bukan tentang akuisisi.',
     ],
@@ -400,7 +400,7 @@ export const DADA_2025_10_08: DefinisiKasus = {
    */
   penutup: {
     kepala: 'Tidak semua saham seperti ini.',
-    isi: 'Kasus berikutnya: perusahaan yang membagi dividen tiap tahun. Selamat belajar membaca data, folks.',
+    isi: 'Simulasi berikutnya: perusahaan yang membagi dividen tiap tahun. Selamat belajar membaca data.',
   },
 
   kartu_konsep: [

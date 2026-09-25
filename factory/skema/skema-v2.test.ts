@@ -177,12 +177,16 @@ describe('M2a D-1 — skema generasi kedua', () => {
    *    `kalimat`) dan soal 1 (varian A uji K-06). Soal 2 dan 3 tidak disentuh;
    *    itu dijaga `factory/kasus/soal1-k06.test.ts` per bagian, bukan hanya di
    *    SHA seluruh berkas.
+   * 4. **M3.12 D-2** — hanya `pembukaan` (lima "kasus" -> "simulasi", termasuk tiga "tanggal
+   *    simulasi", "Rantai laporan" -> "Laporan-laporan") dan `penutup` ("Kasus
+   *    berikutnya" -> "Simulasi berikutnya", tanpa "folks"); soal 1-3 dijaga
+   *    `factory/kasus/kata-ringan.test.ts`.
    *
    * Perubahan lain di berkas ini tetap merah di sini.
    */
   it('INV-A: berkas kasus yang sedang dimainkan tetap byte-identik', () => {
     const sha = createHash('sha256').update(readFileSync(BERKAS_KASUS)).digest('hex');
-    expect(sha).toBe('7fbb5c12039c06fd3844ecdae47d2139135251806aa58c58d9d56a3466f43000');
+    expect(sha).toBe('608a22842064698a15b997bf2b2828f5462f3683619bad82664a6ff171e744a8');
   });
 
   /*

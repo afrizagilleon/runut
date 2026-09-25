@@ -429,8 +429,8 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
   },
 
   penutup: {
-    kepala: 'Ini kasus yang kedua.',
-    isi: 'Kasus lain: perusahaan yang harganya melonjak sementara pemilik besarnya menjual.',
+    kepala: 'Ini simulasi yang kedua.',
+    isi: 'Simulasi lain: perusahaan yang harganya melonjak sementara pemilik besarnya menjual.',
   },
 
   kartu_konsep: [
