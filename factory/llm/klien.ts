@@ -183,7 +183,36 @@ export async function chat(
       throw new GalatLlm(pesan, null);
     }
 
-    const teksRespons = await respons.text();
+    /*
+     * Batas waktu juga bisa jatuh SAAT MEMBACA BADAN, sesudah header tiba
+     * (terukur putaran 2: GLM-5.3 × TIRT, 900 detik). Versi pertama klien ini
+     * hanya membungkus `fetch`, sehingga galat itu lolos tanpa dicatat ke
+     * ledger — panggilan yang mungkin ditagih tidak masuk akumulasi pagu.
+     */
+    let teksRespons: string;
+    try {
+      teksRespons = await respons.text();
+    } catch (galat) {
+      const nama = galat instanceof Error ? galat.name : 'galat';
+      const pesan = samarkan(
+        `Panggilan ${opsi.model} gagal saat membaca respons: ${
+          nama === 'TimeoutError' || nama === 'AbortError'
+            ? `batas waktu ${String(Math.round(batasWaktu / 1000))} detik terlampaui`
+            : `galat jaringan (${nama})`
+        }.`,
+        rahasia,
+      );
+      kait.sesudahPercobaan?.({
+        percobaan,
+        status: respons.status,
+        token_masuk: null,
+        token_keluar: null,
+        latensi_ms: jam() - mulai,
+        galat: pesan,
+        mungkin_ditagih: true,
+      });
+      throw new GalatLlm(pesan, null);
+    }
     const latensi = jam() - mulai;
 
     if (!respons.ok) {
@@ -229,6 +258,27 @@ export async function chat(
     const masuk = data.usage?.prompt_tokens;
     const keluar = data.usage?.completion_tokens;
     const pilihan = data.choices?.[0];
+    /*
+     * HTTP 200 tanpa `choices` (terukur sekali di putaran 1, GLM-5.3: 200, tanpa
+     * usage, isi kosong, 10 detik). Badannya dulu tidak tersimpan; kini ia
+     * menjadi galat bertanda dengan potongan badan yang disamarkan.
+     */
+    if (pilihan === undefined) {
+      const pesan = samarkan(
+        `Panggilan ${opsi.model}: HTTP 200 tanpa choices — ${teksRespons.slice(0, 300).replace(/\s+/g, ' ')}`,
+        rahasia,
+      );
+      kait.sesudahPercobaan?.({
+        percobaan,
+        status: respons.status,
+        token_masuk: typeof masuk === 'number' ? masuk : null,
+        token_keluar: typeof keluar === 'number' ? keluar : null,
+        latensi_ms: latensi,
+        galat: pesan,
+        mungkin_ditagih: true,
+      });
+      throw new GalatLlm(pesan, respons.status);
+    }
     kait.sesudahPercobaan?.({
       percobaan,
       status: respons.status,

@@ -1,0 +1,195 @@
+{
+  "sel": "tirt--deepseek_ai_DeepSeek_V4.1_Flash",
+  "mulai": "2026-09-27T12:32:38.942Z",
+  "selesai": "2026-09-27T12:33:06.646Z",
+  "paket_id": "tirt",
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "suhu": 0.3,
+  "max_tokens": 32000,
+  "lolos": true,
+  "lolos_di": 1,
+  "percobaan": [
+    {
+      "ke": 1,
+      "teks_mentah": "{\n  \"omongan\": [\n    {\n      \"nama\": \"Sinta\",\n      \"jam\": \"19.42\",\n      \"pesan\": \"Eh, saham Perusahaan T katanya dihentikan sementara hari ini gara-gara harganya naik 9 hari bursa berturut-turut. Bener nggak sih?\",\n      \"angka_pesan\": [{\"teks\": \"9 hari\", \"fact_id\": \"hari-naik-beruntun\"}],\n      \"kartu\": [\"susp-2025-12-10\", \"hari-naik-beruntun\", \"harga-2025-12-09\"],\n      \"kartu_penentu\": [\"susp-2025-12-10\"],\n      \"pilihan\": {\n        \"a\": \"Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena harga naik kumulatif\",\n        \"b\": \"Keliru, penghentian itu karena keraguan atas kelangsungan usaha perseroan\",\n        \"c\": \"Betul, penghentiannya ini menyusul rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]\",\n        \"d\": \"Keliru, harganya justru turun [[naik-2025-11-26-2025-12-09|58 rupiah]] dalam sembilan hari bursa\"\n      },\n      \"kunci\": \"a\",\n      \"penjelasan\": \"Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menyebut perdagangan saham Perusahaan T dihentikan sementara hari itu, dengan alasan resmi kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Kartu harga mencatat penutupan [[harga-2025-12-09|9 Desember 2025]], dan hitungan paket menyebut naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Jadi omongan teman cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian sementara selalu berarti ada masalah di perusahaan, padahal dokumen kali ini menyebut alasannya kenaikan harga.\"\n    },\n    {\n      \"nama\": \"Gilang\",\n      \"jam\": \"20.15\",\n      \"pesan\": \"Suspend 21 Januari 2025 itu alasannya sama dong kayak yang sekarang, gara-gara harga naik juga kan?\",\n      \"angka_pesan\": [{\"teks\": \"21 Januari 2025\", \"fact_id\": \"susp-2025-01-21\"}],\n      \"kartu\": [\"susp-2025-01-21\", \"susp-2025-12-10\"],\n      \"kartu_penentu\": [\"susp-2025-01-21\"],\n      \"pilihan\": {\n        \"a\": \"Betul, alasan penghentian [[susp-2025-01-21|21 Januari 2025]] sama dengan yang sekarang\",\n        \"b\": \"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha\",\n        \"c\": \"Betul, yang [[susp-2025-01-21|21 Januari 2025]] itu juga karena harga naik kumulatif\",\n        \"d\": \"Keliru, yang [[susp-2025-01-21|21 Januari 2025]] itu karena harganya turun tajam\"\n      },\n      \"kunci\": \"d\",\n      \"penjelasan\": \"Pengumuman bursa [[susp-2025-01-21|21 Januari 2025]] menuliskan alasan resmi penghentian sementara waktu itu: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Pengumuman [[susp-2025-12-10|10 Desember 2025]] menuliskan alasan yang berbeda, yaitu kenaikan harga kumulatif yang signifikan sebagai cooling down. Jadi alasan keduanya tidak sama, dan omongan teman tidak cocok dengan dokumennya. Salah-kaprah yang umum: karena dua-duanya berupa penghentian sementara, orang menyimpulkan alasannya pasti sama.\"\n    },\n    {\n      \"nama\": \"Nadia\",\n      \"jam\": \"21.07\",\n      \"pesan\": \"Volume hari ini katanya 1.461.200 lembar, rame banget berarti banyak yang masuk. Cek dong.\",\n      \"angka_pesan\": [{\"teks\": \"1.461.200 lembar\", \"fact_id\": \"volume-2025-12-09\"}],\n      \"kartu\": [\"volume-2025-12-10\", \"volume-2025-12-09\", \"susp-2025-12-10\"],\n      \"kartu_penentu\": [\"volume-2025-12-10\"],\n      \"pilihan\": {\n        \"a\": \"Betul, volume [[volume-2025-12-09|1.461.200 lembar]] itu tercatat hari ini\",\n        \"b\": \"Keliru, volume hari ini [[volume-2025-12-10|0 lembar]] karena perdagangannya dihentikan\",\n        \"c\": \"Betul, [[volume-2025-12-09|1.461.200 lembar]] itu volume terakhir sebelum perdagangan dihentikan\",\n        \"d\": \"Keliru, [[volume-2025-12-09|1.461.200 lembar]] itu tercatat pada [[susp-2025-12-10|10 Desember 2025]]\"\n      },\n      \"kunci\": \"b\",\n      \"penjelasan\": \"Data perdagangan harian mencatat volume [[volume-2025-12-10|0 lembar]] pada hari penghentian, sementara angka [[volume-2025-12-09|1.461.200 lembar]] tercatat pada [[harga-2025-12-09|9 Desember 2025]], sehari sebelum perdagangannya dihentikan. Karena perdagangan sahamnya dihentikan sementara, tidak ada transaksi yang tercatat di hari penghentian. Salah-kaprah yang umum: angka ramai yang beredar di grup dianggap otomatis kejadian hari ini, padahal tanggalnya bisa berbeda.\"\n    }\n  ]\n}",
+      "penalaran": "Let me design three omongan.\n\nFacts available. Let's plan.\n\nOmongan 1 (Betul): someone says \"katanya saham Perusahaan T kena suspend hari ini karena harganya naik terus\" — matches susp-2025-12-10. Cards: susp-2025-12-10, hari-naik-beruntun, harga-2025-12-09. Penentu: susp-2025-12-10.\n\nNumbers in message: \"hari ini\" no number. Maybe mention \"9 hari\" — that's a number, must be referenced. Let's include \"naik 9 hari bursa berturut-turut\" → angka_pesan teks \"9 hari\" fact_id hari-naik-beruntun. Hmm, the teks must be exact potongan in pesan. \"9 hari\" appears. Good.\n\nActually careful: rule 2 says every number written in the message must be recorded. Let's keep numbers minimal.\n\nOmongan 1 message: \"Eh, saham Perusahaan T katanya dihentikan sementara hari ini gara-gara harganya naik 9 hari bursa berturut-turut. Bener nggak sih?\" — length ok (~130 chars). Numbers: \"9 hari\" → hari-naik-beruntun. Also \"hari ini\" no number.\n\nWait, but the message says \"dihentikan sementara hari ini\" — today is 10 Dec 2025, and susp-2025-12-10 says suspended 10 Dec 2025 with reason significant cumulative price increase, cooling down. So Betul.\n\nCards: susp-2025-12-10, hari-naik-beruntun, harga-2025-12-09. Penentu: susp-2025-12-10.\n\nOptions 2x2. Correct answer: Betul, karena pengumuman bursa 10 Desember menyebut kenaikan harga kumulatif signifikan sebagai alasan cooling down.\n\nOptions must have numbers as [[fact_id|teks]]. Hmm, options with numbers need references. Let's craft.\n\na: \"Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena kenaikan harga kumulatif\" — length? Let's count roughly: \"Betul, bursa menghentikannya 10 Desember 2025 karena kenaikan harga kumulatif\" ~ 74 chars. OK.\n\nb: \"Keliru, penghentian itu karena keraguan atas kelangsungan usaha perseroan\" ~ 72. But wait — that reason belongs to Jan 21 suspension. That's a plausible distractor.\n\nc: \"Betul, penghentiannya terkait rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]\" ~ hmm.\n\nd: \"Keliru, harga saham justru turun [[naik-2025-11-26-2025-12-09|58 rupiah]] selama sembilan hari bursa\" — hmm \"sembilan\" is a word number, allowed? Rule says kata bilangan tanpa angka boleh. \"sembilan hari bursa\" fine.\n\nNeed lengths similar: shortest ≥60% of longest, max 110 chars. Let's compute carefully later.\n\nKunci for omongan 1: a.\n\nOmongan 2 (Keliru): someone says \"kabarnya suspend Januari lalu karena harga naik juga, sama kayak sekarang\" — actually Jan suspension reason was keraguan kelangsungan usaha. So Keliru. Numbers: \"Januari lalu\" — no number. Maybe include \"21 Januari\" → fact susp-2025-01-21. Let's write: \"Suspend 21 Januari 2025 itu alasannya sama dong, gara-gara harga naik juga kan?\" Numbers: \"21 Januari 2025\" → susp-2025-01-21. That's a correct number but the claim is wrong (reason). Good — angka_pesan with fact_id.\n\nCards: susp-2025-01-21, susp-2025-12-10, maybe harga-2025-12-09? Let's use susp-2025-01-21, susp-2025-12-10. Penentu: susp-2025-01-21.\n\nHmm but need 2-4 cards. Two is fine.\n\nOptions: correct = Keliru, karena penghentian 21 Januari 2025 beralasan keraguan atas kelangsungan usaha.\n\nOmongan 3 (Keliru): someone says \"volume hari ini 1.461.200 lembar, ramai banget\" — actually volume 10 Dec is 0 lembar; 1.461.200 is 9 Dec. So Keliru. Numbers: \"1.461.200 lembar\" → volume-2025-12-09 (fact_id) — but it's a wrong claim about today. Hmm, rule 2: angka_pesan either fact_id of fact containing that number, or andaian:true for deliberately wrong numbers. Here the number 1.461.200 does exist in the package (volume-2025-12-09) but the claim attributes it to today. Is it \"angka keliru yang sengaja diucapkan teman\"? The number itself is right but the day is wrong. Safer: use fact_id volume-2025-12-09 since the number exists. Hmm, but the rule says angka andaian hanya boleh ada di omongan yang jawabannya KELIRU — it's allowed but not required. Using fact_id is fine since the number is in that fact. Actually the mapping is \"fakta paket yang memuat angka itu\" — volume-2025-12-09 contains 1.461.200. So fact_id is correct.\n\nBut wait, also \"hari ini\" — no number. Let's write: \"Volume hari ini katanya 1.461.200 lembar, rame banget berarti banyak yang masuk.\" Hmm \"rame\" fine. Avoid suggesting buy/sell. OK.\n\nCards: volume-2025-12-10, volume-2025-12-09, susp-2025-12-10. Penentu: volume-2025-12-10.\n\nCorrect: Keliru, karena volume 10 Desember 0 lembar (perdagangan dihentikan).\n\nHmm, but careful: is it fair? The suspension means trading halted so volume 0. Good.\n\nKunci letters: omongan1 = a, omongan2 = ?, omongan3 = ?. Must not all be same. Let's do a, c, b or something. Let's set omongan1 kunci \"a\", omongan2 kunci \"d\", omongan3 kunci \"b\". Not all same. Fine.\n\nNow options must be 2x2: exactly two start with \"Betul,\" and two with \"Keliru,\". And correct one is among them.\n\nLet me now write options for each, keeping lengths similar and ≤110 chars, and numbers as [[fact_id|teks]].\n\nNote: the character count for options — does the [[...]] markup count? Rule 5 says \"paling banyak 110 karakter\" for pilihan; rule 7 says numbers in pilihan written as reference. Rule 11 mentions penjelasan counted without markup. For pilihan, ambiguous; I'll keep displayed text short anyway.\n\nOmongan 1 options:\na: \"Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena kenaikan harga kumulatif\" \nDisplayed: \"Betul, bursa menghentikannya 10 Desember 2025 karena kenaikan harga kumulatif\" = let's count: \"Betul, \" 7; \"bursa \" 6 →13; \"menghentikannya \" 16 →29; \"10 Desember 2025 \" 17 →46; \"karena \" 7 →53; \"kenaikan \" 9 →62; \"harga \" 6 →68; \"kumulatif\" 9 →77. Good.\n\nb: \"Keliru, penghentian itu karena keraguan atas kelangsungan usaha perseroan\" = count: \"Keliru, \"8; \"penghentian \"12→20; \"itu \"4→24; \"karena \"7→31; \"keraguan \"9→40; \"atas \"5→45; \"kelangsungan \"13→58; \"usaha \"6→64; \"perseroan\"9→73. 73. Ratio 73/77 = 0.948 ok.\n\nc: \"Betul, penghentiannya menyusul rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]\" displayed: \"Betul, penghentiannya menyusul rapat umum pemegang saham 25 September 2025\" = 8+15=23... let's count: \"Betul, \"8; \"penghentiannya \"15→23; \"menyusul \"9→32; \"rapat \"6→38; \"umum \"5→43; \"pemegang \"9→52; \"saham \"6→58; \"25 September 2025\"17→75. Good 75.\n\nd: \"Keliru, harganya justru turun [[naik-2025-11-26-2025-12-09|58 rupiah]] dalam sembilan hari bursa\" displayed: \"Keliru, harganya justru turun 58 rupiah dalam sembilan hari bursa\" = 8+9=17... \"Keliru, \"8; \"harganya \"9→17; \"justru \"7→24; \"turun \"6→30; \"58 rupiah \"10→40; \"dalam \"6→46; \"sembilan \"9→55; \"hari \"5→60; \"bursa\"5→65. 65. Ratio 65/77=0.84 ok.\n\nKunci a. Good.\n\nOmongan 2 options: correct = Keliru (reason Jan was keraguan kelangsungan usaha).\na: \"Betul, dua-duanya dihentikan karena harga naik terus\" — hmm need numbers? Not required. But rule 7: every number in pilihan must be reference; no numbers here is fine.\n\nLet's craft:\na: \"Betul, alasan penghentian [[susp-2025-01-21|21 Januari 2025]] sama dengan yang sekarang\" displayed: \"Betul, alasan penghentian 21 Januari 2025 sama dengan yang sekarang\" = 8+7=15... count: \"Betul, \"8; \"alasan \"7→15; \"penghentian \"12→27; \"21 Januari 2025 \"16→43; \"sama \"5→48; \"dengan \"7→55; \"yang \"5→60; \"sekarang\"8→68. 68.\n\nb: \"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha\" displayed: 8+12=20... \"Keliru, \"8; \"penghentian \"12→20; \"21 Januari 2025 \"16→36; \"karena \"7→43; \"keraguan \"9→52; \"kelangsungan \"13→65; \"usaha\"5→70. 70.\n\nc: \"Betul, yang [[susp-2025-01-21|21 Januari 2025]] itu juga karena harga naik kumulatif\" displayed: \"Betul, yang 21 Januari 2025 itu juga karena harga naik kumulatif\" = 8+5=13; \"21 Januari 2025 \"16→29; \"itu \"4→33; \"juga \"5→38; \"karena \"7→45; \"harga \"6→51; \"naik \"5→56; \"kumulatif\"9→65. 65.\n\nd: \"Keliru, yang [[susp-2025-01-21|21 Januari 2025]] itu karena volume perdagangan nol lembar\" displayed: 8+5=13; +16=29; \"itu \"4→33; \"karena \"7→40; \"volume \"7→47; \"perdagangan \"12→59; \"nol \"4→63; \"lembar\"6→69. 69.\n\nKunci d. Hmm, but d is a plausible distractor? \"karena volume perdagangan nol lembar\" — hmm, that's a weird reason. Maybe better distractor: \"Keliru, yang 21 Januari 2025 itu karena harganya turun tajam\". Let's use that: \"Keliru, yang [[susp-2025-01-21|21 Januari 2025]] itu karena harganya turun tajam\" = 8+5=13;+16=29; \"itu \"4→33; \"karena \"7→40; \"harganya \"9→49; \"turun \"6→55; \"tajam\"5→60. 60. Ratio 60/70 = 0.857 ok.\n\nKunci d. Good.\n\nOmongan 3 options: correct = Keliru, volume 10 Des 0 lembar.\na: \"Betul, volume [[volume-2025-12-09|1.461.200 lembar]] itu tercatat hari ini\" displayed: \"Betul, volume 1.461.200 lembar itu tercatat hari ini\" = 8+7=15; \"1.461.200 lembar \"17→32; \"itu \"4→36; \"tercatat \"9→45; \"hari \"5→50; \"ini\"3→53. 53. Hmm short. Need ≥60% of longest. Let's make others not too long.\n\nb: \"Keliru, volume hari ini [[volume-2025-12-10|0 lembar]] karena perdagangannya dihentikan\" displayed: \"Keliru, volume hari ini 0 lembar karena perdagangannya dihentikan\" = 8+7=15; \"hari \"5→20; \"ini \"4→24; \"0 lembar \"9→33; \"karena \"7→40; \"perdagangannya \"16→56; \"dihentikan\"10→66. 66. Ratio 53/66 = 0.80 ok.\n\nc: \"Betul, [[volume-2025-12-09|1.461.200 lembar]] itu volume terakhir sebelum dihentikan\" displayed: \"Betul, 1.461.200 lembar itu volume terakhir sebelum dihentikan\" = 8+17=25; \"itu \"4→29; \"volume \"7→36; \"terakhir \"9→45; \"sebelum \"8→53; \"dihentikan\"10→63. 63.\n\nd: \"Keliru, volume [[volume-2025-12-09|1.461.200 lembar]] itu tercatat pada [[volume-2025-12-10|10 Desember 2025]]\" — hmm, volume-2025-12-10 is 0 lembar, so referencing \"10 Desember 2025\" to that fact is wrong (the fact's value is 0 lembar, not a date). Rule 7: teks tampil harus menyatakan angka yang memang ada di fakta itu. So can't. Use susp-2025-12-10 for the date: \"Keliru, volume 1.461.200 lembar itu tercatat pada [[susp-2025-12-10|10 Desember 2025]]\"? But that's factually wrong statement as a distractor — distractors can be wrong. But the reference must state a number in the fact. susp-2025-12-10 contains \"10 Desember 2025\". OK. Displayed: \"Keliru, volume 1.461.200 lembar itu tercatat pada 10 Desember 2025\" = 8+7=15; \"1.461.200 lembar \"17→32; \"itu \"4→36; \"tercatat \"9→45; \"pada \"5→50; \"10 Desember 2025\"16→66. 66.\n\nKunci b. Letters: a, d, b — not all same. Good.\n\nNow check rule 5: \"Pilihan yang benar tidak boleh selalu yang terpanjang atau yang paling hati-hati\". Correct ones: a (77, longest in omongan1 — hmm, 77 vs 75, 73, 65; it is the longest). Omongan2 correct d = 60, shortest. Omongan3 correct b = 66, tied longest with d. Hmm, \"tidak boleh selalu yang terpanjang\" — not always, so 2 of 3 being longest is borderline. Let me adjust omongan1 so correct isn't longest. Make option c longer or a shorter.\n\nOmongan1 a: \"Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena kenaikan harga kumulatif\" 77. Shorten: \"Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena harga naik kumulatif\" = 8+16=24... count: \"Betul, \"8; \"bursa \"6→14; \"menghentikannya \"16→30; \"10 Desember 2025 \"17→47; \"karena \"7→54; \"harga \"6→60; \"naik \"5→65; \"kumulatif\"9→74. Still 74. Hmm.\n\nMake c longer: \"Betul, penghentiannya menyusul rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]\" 75. Make it 80: \"Betul, penghentiannya ini menyusul rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]\" = +5 = 80. Then a=74, b=73, c=80, d=65. Ratio 65/80=0.81 ok. Correct a is second longest. Fine.\n\nOmongan3: correct b=66, d=66 tie. Make d shorter or b shorter. b: \"Keliru, volume hari ini [[volume-2025-12-10|0 lembar]] karena perdagangannya dihentikan\" 66. d: \"Keliru, volume [[volume-2025-12-09|1.461.200 lembar]] itu tercatat pada [[susp-2025-12-10|10 Desember 2025]]\" 66. Let's shorten d: \"Keliru, [[volume-2025-12-09|1.461.200 lembar]] itu tercatat pada [[susp-2025-12-10|10 Desember 2025]]\" = 8+17=25; \"itu \"4→29; \"tercatat \"9→38; \"pada \"5→43; \"10 Desember 2025\"16→59. 59. Now longest is b=66, a=53, c=63, d=59. 53/66 = 0.80 ok. Correct b is longest. Hmm. Make c longer: c: \"Betul, [[volume-2025-12-09|1.461.200 lembar]] itu volume terakhir sebelum perdagangan dihentikan\" = 8+17=25; \"itu \"4→29; \"volume \"7→36; \"terakhir \"9→45; \"sebelum \"8→53; \"perdagangan \"12→65; \"dihentikan\"10→75. 75. Then b=66 not longest. Ratio 53/75=0.71 ok.\n\nNow omongan2: correct d=60, shortest. Fine.\n\nNow, \"penjelasan\" for each: explain, reference at least one kartu_penentu, end with \"Salah-kaprah yang umum:\". Max 800 chars (excluding markup).\n\nNumbers in penjelasan must be [[fact_id|teks]].\n\nLet me write.\n\nOmongan 1 penjelasan:\n\"Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menyebut perdagangan saham Perusahaan T dihentikan sementara hari itu, dengan alasan resmi kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Kartu harga menunjukkan penutupan [[harga-2025-12-09|9 Desember 2025]] dan hitungannya menyebut naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Jadi omongan teman cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian sementara selalu berarti ada masalah di perusahaan, padahal dokumen kali ini menyebut alasannya kenaikan harga.\"\n\nCheck numbers: 10 Desember 2025 (in susp-2025-12-10 ✓), 9 Desember 2025 (harga-2025-12-09 ✓), 9 hari bursa (hari-naik-beruntun ✓). Good. Length ~ under 800.\n\nOmongan 2 penjelasan:\n\"Pengumuman [[susp-2025-01-21|21 Januari 2025]] menyebut alasan resmi penghentian sementara waktu itu: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Pengumuman [[susp-2025-12-10|10 Desember 2025]] menyebut alasan yang berbeda, yaitu kenaikan harga kumulatif yang signifikan. Jadi alasannya tidak sama. Salah-kaprah yang umum: karena dua-duanya penghentian sementara, orang menganggap alasannya pasti sama.\"\n\nNumbers: 21 Januari 2025 ✓, 10 Desember 2025 ✓.\n\nOmongan 3 penjelasan:\n\"Data volume [[volume-2025-12-10|10 Desember 2025]]... \" wait, volume-2025-12-10 value is 0 lembar, not a date. Teks tampil must state a number that exists in the fact. So use [[volume-2025-12-10|0 lembar]]. And the date reference must come from susp-2025-12-10.\n\n\"Data perdagangan harian menunjukkan volume [[volume-2025-12-10|0 lembar]] pada hari penghentian, sedangkan angka [[volume-2025-12-09|1.461.200 lembar]] tercatat sehari sebelumnya, [[harga-2025-12-09|9 Desember 2025]]. Karena perdagangannya dihentikan, tidak ada transaksi yang tercatat hari itu. Salah-kaprah yang umum: angka volume yang ramai di grup dianggap otomatis kejadian hari ini, padahal tanggalnya bisa beda.\"\n\nHmm \"sehari sebelumnya\" — fine, no number. Actually \"sehari\" is a word. OK.\n\nWait, harga-2025-12-09 is a price fact; referencing it for the date 9 Desember 2025 is fine (fact terbit 9 Desember 2025, and its isi mentions 9 Desember 2025). Good.\n\nNow kartu lists.\n\nOmongan 1: kartu: [\"susp-2025-12-10\", \"hari-naik-beruntun\", \"harga-2025-12-09\"], penentu: [\"susp-2025-12-10\"].\nOmongan 2: kartu: [\"susp-2025-01-21\", \"susp-2025-12-10\"], penentu: [\"susp-2025-01-21\"].\nOmongan 3: kartu: [\"volume-2025-12-10\", \"volume-2025-12-09\", \"susp-2025-12-10\"], penentu: [\"volume-2025-12-10\"].\n\nRule 4: kartu tidak boleh berulang within an omongan — ok. Across omongan reuse is fine.\n\nNames: not Bayu, Dimas, Rara. Use \"Sinta\", \"Gilang\", \"Nadia\". 2-12 letters, letters only. Good.\n\nTimes: 16.00–23.59. e.g., \"19.42\", \"20.15\", \"21.07\".\n\nMessages ≤220 chars, plain.\n\nOmongan 1 pesan: \"Eh, saham Perusahaan T katanya dihentikan sementara hari ini gara-gara harganya naik 9 hari bursa berturut-turut. Bener nggak sih?\" — count ~133. Numbers: \"9 hari\" → hari-naik-beruntun. Hmm, \"9 hari bursa berturut-turut\" — the exact potongan \"9 hari\" is in the message. Good.\n\nWait — does \"hari ini\" count as a number? No.\n\nOmongan 2 pesan: \"Suspend 21 Januari 2025 itu alasannya sama dong kayak yang sekarang, gara-gara harga naik juga kan?\" Numbers: \"21 Januari 2025\" → susp-2025-01-21. Good.\n\nOmongan 3 pesan: \"Volume hari ini katanya 1.461.200 lembar, rame banget berarti banyak yang masuk. Cek dong.\" Numbers: \"1.461.200 lembar\" → volume-2025-12-09. Good.\n\nHmm, \"rame banget berarti banyak yang masuk\" — is that suggesting buying? No, it's describing. Fine.\n\nNow check rule 10: no words bagus/jelek/sehat/buruk/murah/mahal. Check my texts: \"signifikan\" ok. \"melindungi investor\" ok. None of forbidden words. \"rame\" fine.\n\nAlso avoid \"naik tajam\"? fine.\n\nCheck rule 9: no stock code, no company name — using \"Perusahaan T\" which is the given pseudonym. Rule says \"Emiten disamarkan dengan nama samaran yang diberikan\" — so using \"Perusahaan T\" is fine. No person names.\n\nNow the JSON. angka_pesan format: array of objects.\n\nOmongan 1 angka_pesan: [{\"teks\": \"9 hari\", \"fact_id\": \"hari-naik-beruntun\"}].\nOmongan 2: [{\"teks\": \"21 Januari 2025\", \"fact_id\": \"susp-2025-01-21\"}].\nOmongan 3: [{\"teks\": \"1.461.200 lembar\", \"fact_id\": \"volume-2025-12-09\"}].\n\nHmm, rule 2 says angka andaian hanya boleh ada di omongan yang jawabannya KELIRU — we have none, that's fine.\n\nWait, omongan 3 is Keliru and the number 1.461.200 is attributed to today. Using fact_id is acceptable since the number exists in that fact. But is it \"angka keliru yang sengaja diucapkan teman\"? The number itself isn't wrong, the day is. I'll keep fact_id.\n\nHmm, but a machine check might verify that the fact_id's fact contains the number — yes it does. Fine.\n\nNow let me double check option character counts for omongan 1 again with final texts.\n\na: \"Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena harga naik kumulatif\"\nDisplayed count: \"Betul, \"=7, \"bursa \"=6 (13), \"menghentikannya \"=16 (29), \"10 Desember 2025 \"=17 (46), \"karena \"=7 (53), \"harga \"=6 (59), \"naik \"=5 (64), \"kumulatif\"=9 (73). 73.\n\nb: \"Keliru, penghentian itu karena keraguan atas kelangsungan usaha perseroan\" = 73 (computed earlier). ok.\n\nc: \"Betul, penghentiannya ini menyusul rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]\" displayed: 8+15=23, \"ini \"=4 (27), \"menyusul \"=9 (36), \"rapat \"=6 (42), \"umum \"=5 (47), \"pemegang \"=9 (56), \"saham \"=6 (62), \"25 September 2025\"=17 (79). 79.\n\nd: \"Keliru, harganya justru turun [[naik-2025-11-26-2025-12-09|58 rupiah]] dalam sembilan hari bursa\" = 65.\n\nRatio 65/79 = 0.82 ✓. Max 79 ≤110 ✓.\n\nOmongan 2:\na: \"Betul, alasan penghentian [[susp-2025-01-21|21 Januari 2025]] sama dengan yang sekarang\" = 68.\nb: \"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha\" = 70.\nc: \"Betul, yang [[susp-2025-01-21|21 Januari 2025]] itu juga karena harga naik kumulatif\" = 65.\nd: \"Keliru, yang [[susp-2025-01-21|21 Januari 2025]] itu karena harganya turun tajam\" = 60.\nRatio 60/70 = 0.857 ✓.\n\nOmongan 3:\na: \"Betul, volume [[volume-2025-12-09|1.461.200 lembar]] itu tercatat hari ini\" = 53.\nb: \"Keliru, volume hari ini [[volume-2025-12-10|0 lembar]] karena perdagangannya dihentikan\" = 66.\nc: \"Betul, [[volume-2025-12-09|1.461.200 lembar]] itu volume terakhir sebelum perdagangan dihentikan\" = 75.\nd: \"Keliru, [[volume-2025-12-09|1.461.200 lembar]] itu tercatat pada [[susp-2025-12-10|10 Desember 2025]]\" = 59.\nRatio 53/75 = 0.707 ✓.\n\nHmm, option a in omongan 3: \"Betul, volume 1.461.200 lembar itu tercatat hari ini\" — plausible distractor. Good.\n\nWait, option d in omongan 3 says the volume was recorded on 10 December — that's a wrong statement but it's a distractor, fine.\n\nHmm, but is d \"Keliru\" correct? Yes, d starts with Keliru, and the correct answer is b (also Keliru). Two Keliru options: b and d. Fine.\n\nNow, one concern: rule 5 \"tepat dua diawali 'Betul,' dan tepat dua diawali 'Keliru,'\" ✓.\n\nKunci: omongan1 \"a\", omongan2 \"d\", omongan3 \"b\". Not all same ✓.\n\nNow write penjelasan for omongan 2 and 3 fully.\n\nOmongan 2 penjelasan:\n\"Pengumuman bursa [[susp-2025-01-21|21 Januari 2025]] menuliskan alasan resmi penghentian sementara waktu itu: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Pengumuman [[susp-2025-12-10|10 Desember 2025]] menuliskan alasan yang berbeda, yaitu kenaikan harga kumulatif yang signifikan sebagai cooling down. Jadi alasan keduanya tidak sama, dan omongan teman tidak cocok dengan dokumennya. Salah-kaprah yang umum: karena dua-duanya berupa penghentian sementara, orang menyimpulkan alasannya pasti sama.\"\n\nNumbers: 21 Januari 2025 ✓ (susp-2025-01-21), 10 Desember 2025 ✓ (susp-2025-12-10). Good.\n\nOmongan 3 penjelasan:\n\"Data perdagangan harian mencatat volume [[volume-2025-12-10|0 lembar]] pada hari penghentian, sementara angka [[volume-2025-12-09|1.461.200 lembar]] tercatat pada [[harga-2025-12-09|9 Desember 2025]], sehari sebelum perdagangannya dihentikan. Karena perdagangan sahamnya dihentikan sementara, tidak ada transaksi yang tercatat di hari penghentian. Salah-kaprah yang umum: angka ramai yang beredar di grup dianggap otomatis kejadian hari ini, padahal tanggalnya bisa berbeda.\"\n\nHmm \"sehari sebelum\" — no numeral. Fine.\n\nOmongan 1 penjelasan final:\n\"Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menyebut perdagangan saham Perusahaan T dihentikan sementara hari itu, dengan alasan resmi kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Kartu harga mencatat penutupan [[harga-2025-12-09|9 Desember 2025]], dan hitungan paket menyebut naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Jadi omongan teman cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian sementara selalu berarti ada masalah di perusahaan, padahal dokumen kali ini menyebut alasannya kenaikan harga.\"\n\nGood.\n\nNow assemble JSON. Ensure no extra text.\n\nOne more check: rule 3 — at least one Betul ✓ (omongan 1).\n\nRule 6: no mental math needed; the 9 hari comes from a hitungan fact ✓.\n\nAlso check: omongan 1's message says \"dihentikan sementara hari ini\" — matches. Good.\n\nFinal JSON.",
+      "finish_reason": "stop",
+      "token_masuk": 3564,
+      "token_keluar": 9049,
+      "latensi_ms": 27693,
+      "biaya_usd": 0.004245752,
+      "draf": {
+        "omongan": [
+          {
+            "nama": "Sinta",
+            "jam": "19.42",
+            "pesan": "Eh, saham Perusahaan T katanya dihentikan sementara hari ini gara-gara harganya naik 9 hari bursa berturut-turut. Bener nggak sih?",
+            "angka_pesan": [
+              {
+                "teks": "9 hari",
+                "fact_id": "hari-naik-beruntun"
+              }
+            ],
+            "kartu": [
+              "susp-2025-12-10",
+              "hari-naik-beruntun",
+              "harga-2025-12-09"
+            ],
+            "kartu_penentu": [
+              "susp-2025-12-10"
+            ],
+            "pilihan": {
+              "a": "Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena harga naik kumulatif",
+              "b": "Keliru, penghentian itu karena keraguan atas kelangsungan usaha perseroan",
+              "c": "Betul, penghentiannya ini menyusul rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]",
+              "d": "Keliru, harganya justru turun [[naik-2025-11-26-2025-12-09|58 rupiah]] dalam sembilan hari bursa"
+            },
+            "kunci": "a",
+            "penjelasan": "Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menyebut perdagangan saham Perusahaan T dihentikan sementara hari itu, dengan alasan resmi kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Kartu harga mencatat penutupan [[harga-2025-12-09|9 Desember 2025]], dan hitungan paket menyebut naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Jadi omongan teman cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian sementara selalu berarti ada masalah di perusahaan, padahal dokumen kali ini menyebut alasannya kenaikan harga."
+          },
+          {
+            "nama": "Gilang",
+            "jam": "20.15",
+            "pesan": "Suspend 21 Januari 2025 itu alasannya sama dong kayak yang sekarang, gara-gara harga naik juga kan?",
+            "angka_pesan": [
+              {
+                "teks": "21 Januari 2025",
+                "fact_id": "susp-2025-01-21"
+              }
+            ],
+            "kartu": [
+              "susp-2025-01-21",
+              "susp-2025-12-10"
+            ],
+            "kartu_penentu": [
+              "susp-2025-01-21"
+            ],
+            "pilihan": {
+              "a": "Betul, alasan penghentian [[susp-2025-01-21|21 Januari 2025]] sama dengan yang sekarang",
+              "b": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha",
+              "c": "Betul, yang [[susp-2025-01-21|21 Januari 2025]] itu juga karena harga naik kumulatif",
+              "d": "Keliru, yang [[susp-2025-01-21|21 Januari 2025]] itu karena harganya turun tajam"
+            },
+            "kunci": "d",
+            "penjelasan": "Pengumuman bursa [[susp-2025-01-21|21 Januari 2025]] menuliskan alasan resmi penghentian sementara waktu itu: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Pengumuman [[susp-2025-12-10|10 Desember 2025]] menuliskan alasan yang berbeda, yaitu kenaikan harga kumulatif yang signifikan sebagai cooling down. Jadi alasan keduanya tidak sama, dan omongan teman tidak cocok dengan dokumennya. Salah-kaprah yang umum: karena dua-duanya berupa penghentian sementara, orang menyimpulkan alasannya pasti sama."
+          },
+          {
+            "nama": "Nadia",
+            "jam": "21.07",
+            "pesan": "Volume hari ini katanya 1.461.200 lembar, rame banget berarti banyak yang masuk. Cek dong.",
+            "angka_pesan": [
+              {
+                "teks": "1.461.200 lembar",
+                "fact_id": "volume-2025-12-09"
+              }
+            ],
+            "kartu": [
+              "volume-2025-12-10",
+              "volume-2025-12-09",
+              "susp-2025-12-10"
+            ],
+            "kartu_penentu": [
+              "volume-2025-12-10"
+            ],
+            "pilihan": {
+              "a": "Betul, volume [[volume-2025-12-09|1.461.200 lembar]] itu tercatat hari ini",
+              "b": "Keliru, volume hari ini [[volume-2025-12-10|0 lembar]] karena perdagangannya dihentikan",
+              "c": "Betul, [[volume-2025-12-09|1.461.200 lembar]] itu volume terakhir sebelum perdagangan dihentikan",
+              "d": "Keliru, [[volume-2025-12-09|1.461.200 lembar]] itu tercatat pada [[susp-2025-12-10|10 Desember 2025]]"
+            },
+            "kunci": "b",
+            "penjelasan": "Data perdagangan harian mencatat volume [[volume-2025-12-10|0 lembar]] pada hari penghentian, sementara angka [[volume-2025-12-09|1.461.200 lembar]] tercatat pada [[harga-2025-12-09|9 Desember 2025]], sehari sebelum perdagangannya dihentikan. Karena perdagangan sahamnya dihentikan sementara, tidak ada transaksi yang tercatat di hari penghentian. Salah-kaprah yang umum: angka ramai yang beredar di grup dianggap otomatis kejadian hari ini, padahal tanggalnya bisa berbeda."
+          }
+        ]
+      },
+      "masalah": [],
+      "lolos": true,
+      "galat": null
+    }
+  ],
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Sinta",
+        "jam": "19.42",
+        "pesan": "Eh, saham Perusahaan T katanya dihentikan sementara hari ini gara-gara harganya naik 9 hari bursa berturut-turut. Bener nggak sih?",
+        "angka_pesan": [
+          {
+            "teks": "9 hari",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "susp-2025-12-10",
+          "hari-naik-beruntun",
+          "harga-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, bursa menghentikannya [[susp-2025-12-10|10 Desember 2025]] karena harga naik kumulatif",
+          "b": "Keliru, penghentian itu karena keraguan atas kelangsungan usaha perseroan",
+          "c": "Betul, penghentiannya ini menyusul rapat umum pemegang saham [[rups-2025-09-25|25 September 2025]]",
+          "d": "Keliru, harganya justru turun [[naik-2025-11-26-2025-12-09|58 rupiah]] dalam sembilan hari bursa"
+        },
+        "kunci": "a",
+        "penjelasan": "Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menyebut perdagangan saham Perusahaan T dihentikan sementara hari itu, dengan alasan resmi kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Kartu harga mencatat penutupan [[harga-2025-12-09|9 Desember 2025]], dan hitungan paket menyebut naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Jadi omongan teman cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian sementara selalu berarti ada masalah di perusahaan, padahal dokumen kali ini menyebut alasannya kenaikan harga."
+      },
+      {
+        "nama": "Gilang",
+        "jam": "20.15",
+        "pesan": "Suspend 21 Januari 2025 itu alasannya sama dong kayak yang sekarang, gara-gara harga naik juga kan?",
+        "angka_pesan": [
+          {
+            "teks": "21 Januari 2025",
+            "fact_id": "susp-2025-01-21"
+          }
+        ],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Betul, alasan penghentian [[susp-2025-01-21|21 Januari 2025]] sama dengan yang sekarang",
+          "b": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha",
+          "c": "Betul, yang [[susp-2025-01-21|21 Januari 2025]] itu juga karena harga naik kumulatif",
+          "d": "Keliru, yang [[susp-2025-01-21|21 Januari 2025]] itu karena harganya turun tajam"
+        },
+        "kunci": "d",
+        "penjelasan": "Pengumuman bursa [[susp-2025-01-21|21 Januari 2025]] menuliskan alasan resmi penghentian sementara waktu itu: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Pengumuman [[susp-2025-12-10|10 Desember 2025]] menuliskan alasan yang berbeda, yaitu kenaikan harga kumulatif yang signifikan sebagai cooling down. Jadi alasan keduanya tidak sama, dan omongan teman tidak cocok dengan dokumennya. Salah-kaprah yang umum: karena dua-duanya berupa penghentian sementara, orang menyimpulkan alasannya pasti sama."
+      },
+      {
+        "nama": "Nadia",
+        "jam": "21.07",
+        "pesan": "Volume hari ini katanya 1.461.200 lembar, rame banget berarti banyak yang masuk. Cek dong.",
+        "angka_pesan": [
+          {
+            "teks": "1.461.200 lembar",
+            "fact_id": "volume-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "volume-2025-12-10",
+          "volume-2025-12-09",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, volume [[volume-2025-12-09|1.461.200 lembar]] itu tercatat hari ini",
+          "b": "Keliru, volume hari ini [[volume-2025-12-10|0 lembar]] karena perdagangannya dihentikan",
+          "c": "Betul, [[volume-2025-12-09|1.461.200 lembar]] itu volume terakhir sebelum perdagangan dihentikan",
+          "d": "Keliru, [[volume-2025-12-09|1.461.200 lembar]] itu tercatat pada [[susp-2025-12-10|10 Desember 2025]]"
+        },
+        "kunci": "b",
+        "penjelasan": "Data perdagangan harian mencatat volume [[volume-2025-12-10|0 lembar]] pada hari penghentian, sementara angka [[volume-2025-12-09|1.461.200 lembar]] tercatat pada [[harga-2025-12-09|9 Desember 2025]], sehari sebelum perdagangannya dihentikan. Karena perdagangan sahamnya dihentikan sementara, tidak ada transaksi yang tercatat di hari penghentian. Salah-kaprah yang umum: angka ramai yang beredar di grup dianggap otomatis kejadian hari ini, padahal tanggalnya bisa berbeda."
+      }
+    ]
+  },
+  "berhenti": null
+}

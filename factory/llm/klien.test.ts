@@ -271,6 +271,47 @@ LLM_MODEL=zai-org/GLM-5.3
   });
 });
 
+describe('batas waktu saat membaca badan respons', () => {
+  it('menjadi GalatLlm dan TETAP dicatat (mungkin ditagih), tanpa coba ulang', async () => {
+    let n = 0;
+    const f = (async () => {
+      n += 1;
+      const r = new Response('x', { status: 200 });
+      Object.defineProperty(r, 'text', {
+        value: async () => {
+          const g = new Error('The operation was aborted due to timeout');
+          g.name = 'TimeoutError';
+          throw g;
+        },
+      });
+      return r;
+    }) as typeof fetch;
+    const catatan: CatatanPercobaan[] = [];
+    const g = await chat({ baseUrl: BASE, apiKey: KUNCI, fetch: f, tidur: async () => {} }, OPSI, {
+      sesudahPercobaan: (c) => catatan.push(c),
+    }).catch((x: unknown) => x);
+    expect(g).toBeInstanceOf(GalatLlm);
+    expect(String((g as Error).message)).toMatch(/saat membaca respons: batas waktu/);
+    expect(n).toBe(1);
+    expect(catatan).toHaveLength(1);
+    expect(catatan[0]).toMatchObject({ status: 200, token_masuk: null, mungkin_ditagih: true });
+  });
+});
+
+describe('HTTP 200 tanpa choices', () => {
+  it('menjadi GalatLlm tersamar, dicatat mungkin ditagih', async () => {
+    const { fetch: f } = palsu([() => responsJson({ error: { message: `sibuk ${KUNCI}` } })]);
+    const catatan: CatatanPercobaan[] = [];
+    const g = await chat({ baseUrl: BASE, apiKey: KUNCI, fetch: f }, OPSI, {
+      sesudahPercobaan: (c) => catatan.push(c),
+    }).catch((x: unknown) => x);
+    expect(g).toBeInstanceOf(GalatLlm);
+    expect(String((g as Error).message)).toMatch(/HTTP 200 tanpa choices — .*sibuk/);
+    expect(String((g as Error).message)).not.toContain(KUNCI);
+    expect(catatan[0]?.mungkin_ditagih).toBe(true);
+  });
+});
+
 describe('daftarModel', () => {
   it('membaca data[].id dari GET /models', async () => {
     const { fetch: f, panggilan } = palsu([

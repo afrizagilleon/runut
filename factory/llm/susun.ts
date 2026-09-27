@@ -30,6 +30,19 @@ export const SUHU = 0.3;
  * jadi penalaran memang ikut dihitung sebagai token keluar.
  */
 export const MAX_TOKENS = 12_000;
+
+/**
+ * Putaran uji tanding. Putaran 1 memakai 12.000 token keluar. Terukur di
+ * putaran 1: kedua model GLM menghabiskan seluruh 12.000 token untuk penalaran
+ * (±33–36 ribu karakter `reasoning_content`, `finish_reason: length`, isi
+ * kosong) pada tiap percobaan DADA. Putaran 2 menaikkan batas untuk KETIGA
+ * model sekaligus — tetap satu nilai untuk semua — supaya yang diukur adalah
+ * tulisannya, bukan hanya panjang penalarannya. Kedua putaran dilaporkan.
+ */
+export const PUTARAN: Readonly<Record<1 | 2, { maxTokens: number }>> = {
+  1: { maxTokens: MAX_TOKENS },
+  2: { maxTokens: 32_000 },
+};
 export const MAKS_PERCOBAAN = 3;
 
 const JALUR_PROMPT = fileURLToPath(new URL('./prompt-susun.md', import.meta.url));
@@ -156,12 +169,15 @@ export interface OpsiSusun {
   panggil: (pesan: PesanChat[], setelan: SetelanPanggil) => Promise<JawabanModel>;
   validasi: (draf: unknown, paket: PaketFakta) => MasalahDraf[];
   maksPercobaan?: number;
+  /** Putaran uji tanding (menentukan `max_tokens`, sama untuk semua model). Bawaan 1. */
+  putaran?: 1 | 2;
   /** Galat yang harus menghentikan seluruh uji (mis. pagu tercapai), bukan hanya sel ini. */
   hentikanSemua?: (galat: unknown) => boolean;
 }
 
 export async function susun(opsi: OpsiSusun): Promise<HasilSusun> {
   const maks = opsi.maksPercobaan ?? MAKS_PERCOBAAN;
+  const maxTokens = PUTARAN[opsi.putaran ?? 1].maxTokens;
   const pesan: PesanChat[] = [
     { role: 'system', content: promptSistem() },
     { role: 'user', content: pesanPaket(opsi.paket) },
@@ -170,7 +186,7 @@ export async function susun(opsi: OpsiSusun): Promise<HasilSusun> {
     paket_id: opsi.paket.paket_id,
     model: opsi.model,
     suhu: SUHU,
-    max_tokens: MAX_TOKENS,
+    max_tokens: maxTokens,
     lolos: false,
     lolos_di: null,
     percobaan: [],
@@ -181,7 +197,7 @@ export async function susun(opsi: OpsiSusun): Promise<HasilSusun> {
   for (let ke = 1; ke <= maks; ke++) {
     let jawaban: JawabanModel;
     try {
-      jawaban = await opsi.panggil([...pesan], { suhu: SUHU, maxTokens: MAX_TOKENS });
+      jawaban = await opsi.panggil([...pesan], { suhu: SUHU, maxTokens });
     } catch (galat) {
       const teks = galat instanceof Error ? `${galat.name}: ${galat.message}` : 'galat tak dikenal';
       hasil.percobaan.push({

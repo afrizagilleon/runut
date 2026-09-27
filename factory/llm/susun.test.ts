@@ -15,6 +15,7 @@ import type { PaketFakta } from './paket.ts';
 import {
   MAKS_PERCOBAAN,
   MAX_TOKENS,
+  PUTARAN,
   SUHU,
   pesanPaket,
   pesanUmpanBalik,
@@ -143,6 +144,27 @@ describe('susun — lingkar umpan balik', () => {
     expect(new Set(setelan.map((s) => `${String(s.suhu)}/${String(s.maxTokens)}`))).toEqual(
       new Set([`${String(SUHU)}/${String(MAX_TOKENS)}`]),
     );
+  });
+});
+
+describe('putaran 2 — batas token dinaikkan untuk semua model sekaligus', () => {
+  it('setiap panggilan putaran 2 memakai PUTARAN[2].maxTokens; putaran 1 tetap MAX_TOKENS', async () => {
+    const dipakai: number[] = [];
+    for (const [model, putaran] of [['a', 2], ['b', 2], ['c', 2], ['a', 1]] as const) {
+      const h = await susun({
+        paket: PAKET,
+        model,
+        putaran,
+        panggil: async (_p, s) => {
+          dipakai.push(s.maxTokens);
+          return jawab(SAH);
+        },
+        validasi: tolakKecualiSah,
+      });
+      expect(h.max_tokens).toBe(PUTARAN[putaran].maxTokens);
+    }
+    expect(dipakai).toEqual([PUTARAN[2].maxTokens, PUTARAN[2].maxTokens, PUTARAN[2].maxTokens, MAX_TOKENS]);
+    expect(PUTARAN[2].maxTokens).toBeGreaterThan(MAX_TOKENS);
   });
 });
 

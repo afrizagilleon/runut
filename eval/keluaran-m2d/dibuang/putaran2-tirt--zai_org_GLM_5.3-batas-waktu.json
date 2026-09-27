@@ -1,0 +1,29 @@
+{
+  "sel": "tirt--zai_org_GLM_5.3",
+  "mulai": "2026-09-27T12:35:54.296Z",
+  "selesai": "2026-09-27T12:50:54.322Z",
+  "paket_id": "tirt",
+  "model": "zai-org/GLM-5.3",
+  "suhu": 0.3,
+  "max_tokens": 32000,
+  "lolos": false,
+  "lolos_di": null,
+  "percobaan": [
+    {
+      "ke": 1,
+      "teks_mentah": "",
+      "penalaran": null,
+      "finish_reason": null,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "latensi_ms": 0,
+      "biaya_usd": 0,
+      "draf": null,
+      "masalah": [],
+      "lolos": false,
+      "galat": "TimeoutError: The operation was aborted due to timeout"
+    }
+  ],
+  "draf": null,
+  "berhenti": "TimeoutError: The operation was aborted due to timeout"
+}

@@ -1,0 +1,333 @@
+{
+  "sel": "dada--deepseek_ai_DeepSeek_V4.1_Flash",
+  "mulai": "2026-09-27T11:22:05.214Z",
+  "selesai": "2026-09-27T11:22:46.135Z",
+  "paket_id": "dada",
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "suhu": 0.3,
+  "max_tokens": 12000,
+  "lolos": true,
+  "lolos_di": 2,
+  "percobaan": [
+    {
+      "ke": 1,
+      "teks_mentah": "{\n  \"omongan\": [\n    {\n      \"nama\": \"Nia\",\n      \"jam\": \"16.42\",\n      \"pesan\": \"Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Cepet banget. Aku baru denger nih.\",\n      \"angka_pesan\": [\n        {\"teks\": \"22,25 kali\", \"fact_id\": \"kelipatan-2025-08-01-2025-10-08\"},\n        {\"teks\": \"Rp8\", \"fact_id\": \"harga-2025-08-01\"},\n        {\"teks\": \"Rp178\", \"fact_id\": \"harga-2025-10-08\"}\n      ],\n      \"kartu\": [\"harga-2025-08-01\", \"harga-2025-10-08\", \"kelipatan-2025-08-01-2025-10-08\"],\n      \"kartu_penentu\": [\"kelipatan-2025-08-01-2025-10-08\"],\n      \"pilihan\": {\n        \"a\": \"Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\",\n        \"b\": \"Betul, naiknya karena dividen tunai [[div-2025-09-16|Rp0,14]] per lembar.\",\n        \"c\": \"Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar, sama seperti awal.\",\n        \"d\": \"Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga.\"\n      },\n      \"kunci\": \"a\",\n      \"penjelasan\": \"Data harga harian bursa mencatat penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] membandingkan dua angka itu, jadi omongan di grup cocok dengan dokumen. Salah-kaprah yang umum: mengira harga yang bergerak cepat pasti disertai kabar resmi baru, padahal yang bisa dicek cuma angka penutupan di data bursa.\"\n    },\n    {\n      \"nama\": \"Fajar\",\n      \"jam\": \"19.05\",\n      \"pesan\": \"Katanya Perusahaan D dihentikan sementara 30 Juni 2025 gara-gara dividen tunai belum dibayar ke pemegang saham.\",\n      \"angka_pesan\": [\n        {\"teks\": \"30 Juni 2025\", \"fact_id\": \"susp-2025-06-30\"}\n      ],\n      \"kartu\": [\"susp-2025-06-30\", \"div-2025-09-16\", \"rups-2025-09-04\"],\n      \"kartu_penentu\": [\"susp-2025-06-30\"],\n      \"pilihan\": {\n        \"a\": \"Betul, [[susp-2025-06-30|30 Juni 2025]] dihentikan karena dividen belum dibayar.\",\n        \"b\": \"Keliru, alasannya laporan keuangan auditan tahunan belum disampaikan.\",\n        \"c\": \"Betul, penghentian itu terkait rapat pemegang saham [[rups-2025-09-04|4 September]].\",\n        \"d\": \"Keliru, [[susp-2025-06-30|30 Juni 2025]] itu tanggal pencabutan, bukan penghentian.\"\n      },\n      \"kunci\": \"b\",\n      \"penjelasan\": \"Pengumuman bursa tertanggal [[susp-2025-06-30|30 Juni 2025]] menuliskan alasan resminya: laporan keuangan auditan tahunan belum disampaikan. Tidak ada dokumen di paket ini yang menyebut dividen sebagai penyebab penghentian, dan kartu dividen [[div-2025-09-16|Rp0,14]] per lembar terbit belakangan, jadi tidak bisa menjelaskan penghentian itu. Salah-kaprah yang umum: begitu dengar perdagangan dihentikan sementara, orang langsung mengaitkannya dengan aksi korporasi seperti dividen, padahal alasan resminya tertulis jelas di pengumuman bursa.\"\n    },\n    {\n      \"nama\": \"Tio\",\n      \"jam\": \"21.30\",\n      \"pesan\": \"Pemilik terbesar Perusahaan D katanya udah jual 250.000.000 lembar. Bener nggak sih?\",\n      \"angka_pesan\": [\n        {\"teks\": \"250.000.000 lembar\", \"andaian\": true}\n      ],\n      \"kartu\": [\"fil-2025-08-25-03\", \"fil-2025-08-25-04\", \"fil-2025-09-01-01\", \"jumlah-jual-terverifikasi\"],\n      \"kartu_penentu\": [\"jumlah-jual-terverifikasi\"],\n      \"pilihan\": {\n        \"a\": \"Betul, [[fil-2025-08-25-03|70.000.000 lembar]] itu total seluruh penjualannya.\",\n        \"b\": \"Keliru, totalnya [[jumlah-jual-terverifikasi|299.500.000 lembar]].\",\n        \"c\": \"Betul, angkanya cocok dengan [[fil-2025-08-25-04|179.500.000 lembar]].\",\n        \"d\": \"Keliru, pemilik terbesar tidak pernah melaporkan penjualan saham.\"\n      },\n      \"kunci\": \"b\",\n      \"penjelasan\": \"Tiga laporan kepemilikan yang diumumkan ke publik mencatat penjualan pemilik terbesar: [[fil-2025-08-25-03|70.000.000 lembar]], [[fil-2025-08-25-04|179.500.000 lembar]], dan [[fil-2025-09-01-01|50.000.000 lembar]]. Kartu hitungan [[jumlah-jual-terverifikasi|299.500.000 lembar]] menjumlahkan ketiganya, jadi angka di pesan tidak cocok dengan dokumen. Salah-kaprah yang umum: percaya angka bulat yang disebut di grup tanpa mengecek satu per satu laporan yang sudah diumumkan ke publik.\"\n    }\n  ]\n}",
+      "penalaran": "Let me construct three omongan.\n\nFacts available. Let me design.\n\nOmongan 1 (Betul): about price rising multiple. \"Harga saham Perusahaan D naik dari Rp8 jadi Rp178 dalam dua bulan\" — angka: 8 → harga-2025-08-01, 178 → harga-2025-10-08. Also \"22,25 kali\" → kelipatan. Cards: harga-2025-08-01, harga-2025-10-08, kelipatan-2025-08-01-2025-10-08. Penentu: kelipatan.\n\nWait, but message must be plain chat style, max 220 chars. Names: not Bayu, Dimas, Rara. Use \"Nia\", \"Fajar\", \"Sari\"? Sari is fine. Let's use \"Nia\", \"Fajar\", \"Tio\".\n\nOmongan 1 (Betul): Nia 16.42: \"Harga Perusahaan D katanya udah 22,25 kali lipat dari awal Agustus. Dari Rp8 sekarang Rp178? Serius naik segitu?\" Hmm, that's a question. Fine.\n\nActually careful: angka in pesan must be recorded with fact_id. \"22,25\" → kelipatan fact. \"8\" → harga-2025-08-01. \"178\" → harga-2025-10-08. But \"Rp8\" — teks potongan persis. Let's write \"Rp8\" as teks. Hmm the rule says teks is \"<potongan persis seperti di pesan>\". So teks: \"Rp8\". Fine.\n\nBut careful: \"awal Agustus\" no number. OK.\n\nOmongan 2 (Keliru): about suspension — someone says perdagangan dihentikan karena dividen / atau \"suspensi udah dicabut\" — but fact says pencabutan date not in data. So a claim \"suspensi udah dicabut tanggal ...\" would be andaian. Let's do: Fajar: \"Katanya suspensi Perusahaan D udah dicabut 10 Juli 2025, jadi sekarang aman.\" That's keliru because data doesn't say; the fact says tanggal pencabutan tidak ada di data. Angka \"10 Juli 2025\" → andaian true. Hmm but is it \"keliru\"? The claim asserts a date not in data — the correct answer is Keliru because no document supports it. Good. But careful: rule 8 says no events after T; andaian is fine as a wrong guess.\n\nAlternatively make it about the reason: \"dihentikan karena dividen\" — keliru, reason was laporan keuangan auditan. That's cleaner. Let's combine: Fajar: \"Suspensi Juni itu katanya gara-gara telat bagi dividen, dan udah dicabut 10 Juli 2025.\" Hmm two claims. Maybe simpler: \"Perusahaan D disuspensi 30 Juni 2025 karena belum setor dividen ke pemegang saham.\" Keliru — reason was laporan keuangan auditan. Angka \"30 Juni 2025\" → susp-2025-06-30 (correct number, but the reason is wrong). Hmm, but angka_pesan records numbers; the wrong part is the reason, not a number. That's allowed — andaian only for wrong numbers. Fine, no andaian needed.\n\nBut maybe better to have an andaian example. Let's do omongan 3 with andaian.\n\nOmongan 3 (Keliru): about dividend: \"Dividen Rp0,14 per lembar, punya 10 lot dapet Rp140. Tapi katanya pemilik terbesar malah jual 299.500.000 lembar.\" Hmm that's actually Betul. Let's make omongan 3 Keliru with andaian: \"Pemilik terbesar cuma jual 2 laporan, totalnya 250.000.000 lembar.\" → andaian for \"2 laporan\" and \"250.000.000 lembar\". Correct is 3 laporan, 299.500.000 lembar.\n\nThen omongan 2 must be... we need at least one Betul; omongan 1 Betul. Omongan 2 and 3 Keliru. That's fine (not all wrong).\n\nLet's make omongan 2 about suspension reason (Keliru). And omongan 3 about penjualan pemilik terbesar (Keliru, with andaian).\n\nHmm, but maybe better to have omongan 2 be about dividend being Betul? No, we need variety. Two Betul one Keliru or one Betul two Keliru. Let's do omongan 2 = Betul about dividen? Then omongan 3 Keliru. Actually let's keep: 1 Betul (harga), 2 Keliru (suspensi reason), 3 Keliru (penjualan). Hmm, but then only one Betul. That's allowed (\"minimal satu\").\n\nActually let's make omongan 2 about dividen Betul, and omongan 3 about penjualan Keliru. Then 2 Betul, 1 Keliru. Hmm. Either fine. Let's do: 1 Betul (harga), 2 Keliru (suspensi), 3 Keliru (penjualan). Wait, but I want the dividend fact used somewhere. Could be in omongan 3's cards? Not needed.\n\nLet me reconsider: maybe omongan 2: \"Perusahaan D bagi dividen Rp0,14 per lembar, ex date 16 September 2025. Punya 10 lot berarti dapat Rp140.\" That's Betul (andai-10-lot-dividen fact). Cards: div-2025-09-16, andai-10-lot-dividen. Penentu: both? kartu_penentu 1-2. Use both.\n\nThen omongan 3 Keliru about penjualan pemilik terbesar with andaian numbers.\n\nAnd omongan 1 Betul about harga. That gives 2 Betul, 1 Keliru. Kunci letters must not all be same. Fine.\n\nHmm, but maybe better to have 2 Keliru to make it interesting. Let's do omongan 2 = suspensi Keliru, omongan 3 = penjualan Keliru, and put dividend in omongan 2's cards? No, cards should support the answer.\n\nLet me just do: 1 Betul (harga), 2 Keliru (suspensi alasan), 3 Keliru (penjualan jumlah). And dividend fact unused — that's fine, paket has 14 facts, we don't need all.\n\nHmm, actually maybe use dividend in omongan 3 as a distractor card? Cards are fact_ids that the player matches. Rule 4: tiap omongan membawa 2-4 kartu. They should be relevant. Let's keep relevant.\n\nActually, let me reconsider making omongan 2 about dividen being Betul, since it's a nice \"Betul\" case, and omongan 3 about suspensi Keliru... but then penjualan fact unused. Hmm.\n\nLet's do three:\n1. Nia — harga naik 22,25 kali — Betul.\n2. Fajar — suspensi karena belum bagi dividen, dan udah dicabut — Keliru.\n3. Tio — pemilik terbesar jual 2 laporan total 250 juta lembar — Keliru (andaian).\n\nHmm, but I'd like dividend used. Could add to omongan 2's cards as distractor? Rule says kartu are fact_ids from paket, 2-4, and kartu_penentu subset. Distractor cards are fine — the player matches omongan with 2-4 documents. Actually the cards are the documents the player compares against. Including a distractor is plausible. But safer to keep them relevant.\n\nLet me instead make omongan 2: \"Suspensi 30 Juni 2025 itu karena belum setor dividen tunai ke pemegang saham.\" Cards: susp-2025-06-30, div-2025-09-16. Penentu: susp-2025-06-30. That uses dividend as a card. Good — the player checks the suspension announcement and the dividend list.\n\nHmm, but div-2025-09-16 is dated after 30 June, so it doesn't explain. Fine, it's a card to check.\n\nActually simpler: cards for omongan 2: susp-2025-06-30, div-2025-09-16, rups-2025-09-04. Penentu: susp-2025-06-30.\n\nNow omongan 3: Tio: \"Pemilik terbesar cuma lapor jual 2 kali, total 250.000.000 lembar.\" Cards: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, jumlah-jual-terverifikasi, laporan-jual-terverifikasi — max 4. Use: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, jumlah-jual-terverifikasi. Penentu: jumlah-jual-terverifikasi, laporan-jual-terverifikasi? laporan-jual-terverifikasi not in kartu then. Let's use kartu: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, jumlah-jual-terverifikasi (4). Penentu: jumlah-jual-terverifikasi. Hmm but \"2 laporan\" wrong needs laporan-jual-terverifikasi. Let's swap: kartu: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, laporan-jual-terverifikasi. Penentu: laporan-jual-terverifikasi. But then jumlah 250 juta... the penentu should prove both. Hmm, 4 cards max. Let's make the message only about the count: \"Pemilik terbesar cuma lapor jual 2 kali sepanjang Agustus.\" Then andaian \"2\" and penentu laporan-jual-terverifikasi. Cards: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, laporan-jual-terverifikasi. Good.\n\nBut then no jumlah-jual usage. Fine.\n\nHmm, but \"2 kali\" — is that a number in pesan? Yes, \"2\". andaian: true.\n\nActually wait — rule 2: angka andaian hanya boleh ada di omongan yang jawabannya KELIRU. Good.\n\nAlternatively make omongan 3 about total: \"total jualnya 250.000.000 lembar\" with andaian. Let's do both? \"cuma 2 laporan, total 250.000.000 lembar\" — two andaian numbers. Then penentu needs both laporan-jual-terverifikasi and jumlah-jual-terverifikasi. kartu: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, jumlah-jual-terverifikasi — but then laporan-jual-terverifikasi not a card, can't be penentu. Max 4 cards. Hmm.\n\nLet's just do one andaian: total 250.000.000 lembar. Message: \"Pemilik terbesar udah jual 250.000.000 lembar, katanya.\" Cards: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, jumlah-jual-terverifikasi. Penentu: jumlah-jual-terverifikasi.\n\nGood.\n\nNow omongan 1: Nia, Betul. Message: \"Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Dua bulan doang?\" Hmm, \"dua bulan\" is a word-number, allowed (kata bilangan tanpa angka). Actually \"dua bulan\" is fine.\n\nangka_pesan: {\"teks\":\"22,25 kali\",\"fact_id\":\"kelipatan-2025-08-01-2025-10-08\"}, {\"teks\":\"Rp8\",\"fact_id\":\"harga-2025-08-01\"}, {\"teks\":\"Rp178\",\"fact_id\":\"harga-2025-10-08\"}.\n\nHmm, \"Rp8\" — in the fact the value is \"8 rupiah per lembar\". The teks must be potongan persis seperti di pesan. So teks \"Rp8\". OK.\n\nCards: harga-2025-08-01, harga-2025-10-08, kelipatan-2025-08-01-2025-10-08. Penentu: kelipatan-2025-08-01-2025-10-08.\n\nNow pilihan: 2x2, two start \"Betul,\" two \"Keliru,\", max 110 chars each, shortest ≥60% of longest. Correct answer not always longest/most careful. Kunci letters not all same.\n\nOmongan 1 (Betul, kunci a):\na: \"Betul, harga 8 Oktober 2025 memang 22,25 kali harga 1 Agustus 2025.\" — with [[fact|teks]] references. Wait, rule 7: every number in pilihan and penjelasan must be written as [[fact_id|teks tampil]]. So \"8 Oktober 2025\" → [[harga-2025-10-08|8 Oktober 2025]]. Hmm, teks tampil max 36 chars and must state the number that's in the fact. The fact harga-2025-10-08 contains \"7 Oktober 2025\"? No — it's \"Harga penutupan 7 Oktober 2025 adalah Rp162\" for harga-2025-10-07. harga-2025-10-08 contains \"8 Oktober 2025\" and \"178\". OK.\n\nSo pilihan a: \"Betul, [[harga-2025-10-08|8 Oktober 2025]] memang [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] [[harga-2025-08-01|1 Agustus 2025]].\"\n\nHmm, that's a bit awkward. Let me phrase: \"Betul, harga [[harga-2025-10-08|8 Oktober]] itu [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\"\n\nLength check: roughly 100 chars. OK.\n\nb: \"Keliru, kenaikannya cuma [[misal|3 kali]] dari harga [[harga-2025-08-01|1 Agustus]].\" — hmm, misal in pilihan allowed? Rule 7 says \"Angka pengandaian di pilihan ditulis [[misal|teks]].\" Yes.\n\nc: \"Betul, harga naik karena dividen [[div-2025-09-16|Rp0,14]] per lembar.\" — hmm, that's a Betul option but wrong reasoning... Actually the correct answer is \"Betul, ...\" with correct reason. Distractors: one \"Betul,\" with wrong reason, one \"Keliru,\" with wrong reason. That works.\n\nHmm, but \"Betul, harga naik karena dividen\" — is that a plausible distractor? Yes.\n\nd: \"Keliru, itu harga [[harga-2025-08-01|1 Agustus]], bukan [[harga-2025-10-08|8 Oktober]].\" Hmm confusing.\n\nLet me design cleaner distractors.\n\nOmongan 1 options:\na: \"Betul, [[harga-2025-10-08|8 Oktober]] = [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\" (correct)\nb: \"Betul, naiknya karena dividen [[div-2025-09-16|Rp0,14]] per lembar.\" (wrong reason)\nc: \"Keliru, [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar.\" (wrong)\nd: \"Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga.\" (wrong)\n\nLengths: a ~ 95, b ~ 62, c ~ 75, d ~ 85. Shortest 62 vs longest 95 → 65% ≥ 60%. OK, tight. Let me lengthen b a bit.\n\nActually let me count more carefully later.\n\nOmongan 2 (Keliru, kunci b or c):\nMessage: \"Katanya Perusahaan D disuspensi 30 Juni 2025 gara-gara belum bayar dividen tunai ke pemegang saham.\"\nangka_pesan: {\"teks\":\"30 Juni 2025\",\"fact_id\":\"susp-2025-06-30\"}.\nCards: susp-2025-06-30, div-2025-09-16, rups-2025-09-04. Penentu: susp-2025-06-30.\n\nOptions:\na: \"Betul, [[susp-2025-06-30|30 Juni 2025]] dihentikan karena dividen belum dibayar.\"\nb: \"Keliru, alasannya laporan keuangan auditan belum disampaikan.\" — need number? No numbers needed. But rule 7 says every number written must be a reference; no numbers here is fine.\nc: \"Betul, penghentiannya terkait rapat pemegang saham [[rups-2025-09-04|4 September]].\"\nd: \"Keliru, [[susp-2025-06-30|30 Juni 2025]] itu tanggal pencabutan, bukan penghentian.\"\n\nCorrect: b.\n\nHmm, d is a decent distractor. OK.\n\nOmongan 3 (Keliru, kunci c):\nMessage: \"Pemilik terbesar udah jual 250.000.000 lembar, kata orang di grup sebelah.\"\nangka_pesan: {\"teks\":\"250.000.000 lembar\",\"andaian\":true}.\nCards: fil-2025-08-25-03, fil-2025-08-25-04, fil-2025-09-01-01, jumlah-jual-terverifikasi. Penentu: jumlah-jual-terverifikasi.\n\nOptions:\na: \"Betul, jumlahnya [[jumlah-jual-terverifikasi|299.500.000 lembar]].\" — hmm that's Betul but the message said 250 juta, so it's Keliru. Careful: option a says \"Betul, jumlahnya 299.500.000\" — that's contradictory (Betul but different number). Bad. Let's make a: \"Betul, [[jumlah-jual-terverifikasi|299.500.000 lembar]] itu angka yang beredar.\" Hmm still weird.\n\nBetter distractors:\na: \"Betul, angkanya sama dengan [[jumlah-jual-terverifikasi|299.500.000 lembar]].\" — no, that's wrong-ish.\n\nLet me redo. Correct answer: \"Keliru, totalnya [[jumlah-jual-terverifikasi|299.500.000 lembar]] dari [[laporan-jual-terverifikasi|3 laporan]].\" But laporan-jual-terverifikasi isn't a card... it can still be referenced in pilihan? Rule 7 says numbers must be referenced with fact_id; doesn't require it be a card. But safer to keep to cards. Hmm, actually referencing a fact not in kartu is fine I think. But let's avoid.\n\nOptions for omongan 3:\na: \"Betul, [[jumlah-jual-terverifikasi|299.500.000 lembar]] itu total jualnya.\" — Betul but contradicts message (250 juta). Confusing.\n\nHmm. The 2x2 structure: two \"Betul,\" two \"Keliru,\". The correct one is \"Keliru, ...\". The other \"Keliru,\" is a wrong reason. The two \"Betul,\" are wrong.\n\na: \"Betul, [[fil-2025-08-25-03|70.000.000 lembar]] itu total seluruh penjualannya.\" (wrong)\nb: \"Keliru, totalnya [[jumlah-jual-terverifikasi|299.500.000 lembar]].\" (correct)\nc: \"Betul, angkanya cocok dengan [[fil-2025-08-25-04|179.500.000 lembar]].\" (wrong)\nd: \"Keliru, pemilik terbesar tidak pernah melapor jual saham.\" (wrong)\n\nHmm d is a bit extreme but plausible-ish. Lengths: a ~ 78, b ~ 55, c ~ 72, d ~ 60. Shortest 55 / longest 78 = 70%. OK.\n\nHmm, but b is shortest and correct — rule says correct answer must not always be the longest or most careful. It's fine as long as not always. Let's check omongan 1 correct = a (longest ~95). Omongan 2 correct = b (medium). Omongan 3 correct = b (shortest). Mixed. Good.\n\nKunci: a, b, b — \"tidak boleh sama semua\" — a,b,b is fine (not all same).\n\nNow penjelasan for each, max 800 chars (excluding [[...|...]] markup), must reference at least one kartu_penentu, end with \"Salah-kaprah yang umum:\".\n\nAlso rule 10: no words bagus, jelek, sehat, buruk, murah, mahal. Careful. Also no buy/sell advice.\n\nRule 9: no stock codes, company names, person names; use roles.\n\nLet me now write the JSON.\n\nOmongan 1:\nnama: \"Nia\", jam: \"16.42\"\npesan: \"Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Dua bulan doang? Aku baru denger nih.\"\nLength: let's count: \"Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Dua bulan doang? Aku baru denger nih.\" ≈ 96 chars. OK.\n\nangka_pesan: [{\"teks\":\"22,25 kali\",\"fact_id\":\"kelipatan-2025-08-01-2025-10-08\"},{\"teks\":\"Rp8\",\"fact_id\":\"harga-2025-08-01\"},{\"teks\":\"Rp178\",\"fact_id\":\"harga-2025-10-08\"}]\n\nkartu: [\"harga-2025-08-01\",\"harga-2025-10-08\",\"kelipatan-2025-08-01-2025-10-08\"]\nkartu_penentu: [\"kelipatan-2025-08-01-2025-10-08\"]\n\npilihan:\na: \"Betul, [[harga-2025-10-08|8 Oktober]] = [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\"\nb: \"Betul, naiknya karena dividen tunai [[div-2025-09-16|Rp0,14]] per lembar.\"\nc: \"Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar.\"\nd: \"Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga.\"\n\nCount chars (including markup? \"paling banyak 110 karakter\" — probably raw text including markup). Let's count raw:\na: \"Betul, [[harga-2025-10-08|8 Oktober]] = [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\"\nCount: \"Betul, \" 7; \"[[harga-2025-10-08|8 Oktober]]\" = 2+16+1+9+2 = 30 → 37; \" = \" 3 → 40; \"[[kelipatan-2025-08-01-2025-10-08|22,25 kali]]\" = 2+35+1+10+2 = 50 → 90; \" harga \" 7 → 97; \"[[harga-2025-08-01|1 Agustus]]\" = 2+16+1+9+2=30 → 127; \".\" → 128. Too long (>110).\n\nHmm. Need shorter. Maybe the 110 limit counts displayed text? Ambiguous. Safer to keep raw ≤110.\n\nLet me shorten fact ids usage... fact ids are long. Hmm. \"kelipatan-2025-08-01-2025-10-08\" is 32 chars. That's heavy.\n\nAlternative: avoid referencing kelipatan in pilihan a; instead: \"Betul, [[harga-2025-10-08|8 Oktober]] [[harga-2025-10-08|Rp178]] dari [[harga-2025-08-01|Rp8]] [[harga-2025-08-01|1 Agustus]].\" Hmm messy.\n\nLet me reconsider: maybe the 110-char limit applies to the visible text (after replacing [[id|teks]] with teks). That's more sensible for a UI. But risky. The rule says \"paling banyak 110 karakter\" for pilihan. And rule 11 says penjelasan counted without [[...|...]] markup. For pilihan it doesn't say that. Hmm. So probably raw count for pilihan. Ugh.\n\nLet's try to keep raw ≤110 while still referencing numbers.\n\nOption a: \"Betul, [[harga-2025-10-08|8 Oktober]] = [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] [[harga-2025-08-01|1 Agustus]].\"\nCount: 7 + 30 + 3 + 50 + 1 + 30 = 121. Still too long.\n\nHmm. Drop one reference. \"Betul, [[harga-2025-10-08|8 Oktober]] = [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga awal.\" \n= 7 + 30 + 3 + 50 + 11 = 101. OK! \"harga awal\" no number. Good.\n\nBut wait, does \"harga awal\" count as a number? No. Fine.\n\nHmm but then we don't reference harga-2025-08-01. That's fine.\n\nActually, better: \"Betul, [[harga-2025-10-08|8 Oktober]] = [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\" = 7+30+3+50+7+30+1 = 128. Too long.\n\nOK use the 101 version.\n\nb: \"Betul, naiknya karena dividen tunai [[div-2025-09-16|Rp0,14]] per lembar.\"\nCount: \"Betul, naiknya karena dividen tunai \" = 37; \"[[div-2025-09-16|Rp0,14]]\" = 2+15+1+6+2 = 26 → 63; \" per lembar.\" = 12 → 75. OK.\n\nc: \"Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar.\"\n= \"Keliru, harga \" 14 + 30 + \" masih \" 7 + \"[[harga-2025-08-01|Rp8]]\" = 2+16+1+3+2 = 24 → 75 + \" per lembar.\" 12 = 87. OK.\n\nd: \"Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga.\"\n= \"Keliru, \" 8 + 50 + \" itu hitungan volume, bukan harga.\" 33 = 91. OK.\n\nLengths: 101, 75, 87, 91. Shortest 75 / longest 101 = 74%. Good.\n\nKunci: a.\n\nPenjelasan 1: must reference at least one kartu_penentu (kelipatan-...), end with \"Salah-kaprah yang umum:\". Max 800 chars excluding markup.\n\n\"Kartu data harga harian bursa menunjukkan penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] membandingkan keduanya, jadi angka di pesan cocok dengan dokumen. Salah-kaprah yang umum: mengira lonjakan harga selalu berarti ada kabar baru dari perusahaan, padahal yang bisa dicek cuma angka penutupan di data bursa.\"\n\nHmm \"Rp8\" appears twice with same fact — fine. Actually \"[[harga-2025-08-01|Rp8]]\" — teks tampil \"Rp8\" states the number 8 in the fact. OK.\n\nWait, careful: rule 7 says teks tampil must state the number that's in the fact. \"1 Agustus\" is a date in the fact. OK.\n\nLength without markup: let's estimate ~ 400 chars. Fine.\n\nOmongan 2:\nnama: \"Fajar\", jam: \"19.05\"\npesan: \"Katanya Perusahaan D dihentikan sementara 30 Juni 2025 gara-gara dividen tunai belum dibayar ke pemegang saham.\"\nCount: ~113. OK under 220.\n\nangka_pesan: [{\"teks\":\"30 Juni 2025\",\"fact_id\":\"susp-2025-06-30\"}]\n\nkartu: [\"susp-2025-06-30\",\"div-2025-09-16\",\"rups-2025-09-04\"]\nkartu_penentu: [\"susp-2025-06-30\"]\n\npilihan:\na: \"Betul, [[susp-2025-06-30|30 Juni 2025]] dihentikan karena dividen belum dibayar.\"\nCount: \"Betul, \" 7 + \"[[susp-2025-06-30|30 Juni 2025]]\" = 2+16+1+12+2 = 33 → 40 + \" dihentikan karena dividen belum dibayar.\" 41 = 81. OK.\nb: \"Keliru, alasannya laporan keuangan auditan tahunan belum disampaikan.\"\nCount: 70. OK.\nc: \"Betul, penghentian itu terkait rapat pemegang saham [[rups-2025-09-04|4 September]].\"\nCount: \"Betul, penghentian itu terkait rapat pemegang saham \" 52 + \"[[rups-2025-09-04|4 September]]\" = 2+16+1+11+2 = 32 → 84 + \".\" = 85. OK.\nd: \"Keliru, [[susp-2025-06-30|30 Juni 2025]] itu tanggal pencabutan, bukan penghentian.\"\nCount: 8 + 33 + \" itu tanggal pencabutan, bukan penghentian.\" 43 = 84. OK.\n\nLengths: 81, 70, 85, 84. Shortest 70/85 = 82%. Good.\n\nKunci: b.\n\nPenjelasan 2: \"Pengumuman bursa [[susp-2025-06-30|30 Juni 2025]] menyebut alasan resminya: laporan keuangan auditan tahunan belum disampaikan. Di paket ini tidak ada dokumen yang menyebut dividen sebagai alasan penghentian, dan kartu dividen [[div-2025-09-16|Rp0,14]] per lembar terbit jauh setelahnya, jadi tidak bisa dipakai untuk menjelaskan penghentian itu. Salah-kaprah yang umum: mendengar kata penghentian sementara lalu mengaitkannya dengan aksi korporasi seperti dividen, padahal alasan resminya tertulis di pengumuman bursa.\"\n\nHmm, \"terbit jauh setelahnya\" — 16 September vs 30 Juni, that's fine, no numbers.\n\nWait, rule 8: no events after T. Fine.\n\nAlso I should mention that the cancellation date isn't in the data? Not necessary.\n\nOmongan 3:\nnama: \"Tio\", jam: \"21.30\"\npesan: \"Pemilik terbesar Perusahaan D katanya udah jual 250.000.000 lembar. Bener nggak sih?\"\nCount: ~85. OK.\n\nangka_pesan: [{\"teks\":\"250.000.000 lembar\",\"andaian\":true}]\n\nkartu: [\"fil-2025-08-25-03\",\"fil-2025-08-25-04\",\"fil-2025-09-01-01\",\"jumlah-jual-terverifikasi\"]\nkartu_penentu: [\"jumlah-jual-terverifikasi\"]\n\npilihan:\na: \"Betul, [[fil-2025-08-25-03|70.000.000 lembar]] itu total seluruh penjualannya.\"\nCount: 7 + \"[[fil-2025-08-25-03|70.000.000 lembar]]\" = 2+18+1+18+2 = 41 → 48 + \" itu total seluruh penjualannya.\" 32 = 80. OK.\nb: \"Keliru, totalnya [[jumlah-jual-terverifikasi|299.500.000 lembar]].\"\nCount: 8 + \"[[jumlah-jual-terverifikasi|299.500.000 lembar]]\" = 2+24+1+18+2 = 47 → 55 + \".\" = 56. OK.\nc: \"Betul, angkanya cocok dengan [[fil-2025-08-25-04|179.500.000 lembar]].\"\nCount: \"Betul, angkanya cocok dengan \" 29 + \"[[fil-2025-08-25-04|179.500.000 lembar]]\" = 2+18+1+18+2 = 41 → 70 + \".\" = 71. OK.\nd: \"Keliru, pemilik terbesar tidak pernah melaporkan penjualan saham.\"\nCount: 62. OK.\n\nLengths: 80, 56, 71, 62. Shortest 56/80 = 70%. OK.\n\nKunci: b.\n\nHmm, kunci: a, b, b. Not all same. OK.\n\nPenjelasan 3: \"Tiga laporan kepemilikan yang diumumkan ke publik mencatat penjualan pemilik terbesar: [[fil-2025-08-25-03|70.000.000 lembar]], [[fil-2025-08-25-04|179.500.000 lembar]], dan [[fil-2025-09-01-01|50.000.000 lembar]]. Kartu hitungan [[jumlah-jual-terverifikasi|299.500.000 lembar]] menjumlahkan ketiganya, jadi angka di pesan tidak cocok dengan dokumen. Salah-kaprah yang umum: percaya angka bulat yang disebut di grup tanpa mengecek satu per satu laporan yang sudah diumumkan ke publik.\"\n\nHmm, \"Tiga laporan\" — kata bilangan tanpa angka, allowed.\n\nWait, but rule 7 says every number in penjelasan must be a reference. \"Tiga\" is a word, fine.\n\nNow check rule 5: \"Pilihan yang benar tidak boleh selalu yang terpanjang atau yang paling hati-hati\". Omongan 1 correct = a (longest, 101). Omongan 2 correct = b (shortest, 70). Omongan 3 correct = b (shortest, 56). Hmm, two of three are shortest. Maybe adjust omongan 1 to make correct not longest. Let's make a shorter and another longer.\n\nOmongan 1: make d longer, a shorter.\na: \"Betul, [[harga-2025-10-08|8 Oktober]] = [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga awal.\" = 101.\nHmm, let's shorten a: \"Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\" = 7 + 50 + 7 + 30 + 1 = 95. Hmm still longest-ish.\n\nMake c longer: \"Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar, sama seperti awal.\" = 87 + \", sama seperti awal.\" 19 = 106. Then longest = 106, shortest = 75 (b). a=95 is not longest. Good.\n\nHmm but 106 vs 75 = 71%. Fine.\n\nActually let me recheck: is it a problem that correct answer is 2nd longest? No.\n\nLet me finalize lengths:\na: 95\nb: 75\nc: 106\nd: 91\nShortest/longest = 75/106 = 70.8%. Good.\n\nNow, also check: rule 5 says \"tepat dua diawali 'Betul,' dan tepat dua diawali 'Keliru,'\". Yes.\n\nNow check angka in pilihan: all numbers are inside [[...]]. Let me verify each option:\n\nOmongan 1:\na: \"22,25 kali\" inside ref, \"1 Agustus\" inside ref. OK.\nb: \"Rp0,14\" inside ref. OK.\nc: \"8 Oktober\" ref, \"Rp8\" ref. OK.\nd: \"22,25 kali\" ref. OK.\n\nOmongan 2:\na: \"30 Juni 2025\" ref. OK.\nb: no numbers. OK.\nc: \"4 September\" ref. OK.\nd: \"30 Juni 2025\" ref. OK.\n\nOmongan 3:\na: \"70.000.000 lembar\" ref. OK.\nb: \"299.500.000 lembar\" ref. OK.\nc: \"179.500.000 lembar\" ref. OK.\nd: no numbers. OK.\n\nPenjelasan numbers all in refs. Check penjelasan 1: \"Rp8\", \"Rp178\", \"22,25 kali\" — all in refs. \"1 Agustus\", \"8 Oktober\" in refs. Good.\n\nPenjelasan 2: \"30 Juni 2025\" ref, \"Rp0,14\" ref. Good.\n\nPenjelasan 3: numbers in refs. Good.\n\nNow rule 10: avoid words bagus, jelek, sehat, buruk, murah, mahal. Check: none used. \"lonjakan\" fine.\n\nRule 9: no company names/codes. \"Perusahaan D\" is the given alias — allowed? Rule 9 says \"Emiten disamarkan dengan nama samaran yang diberikan\" — so using \"Perusahaan D\" is fine. Actually \"Jangan menulis kode saham, nama perusahaan, atau nama orang; pakai peran\". Perusahaan D is the samaran given. I'll use it in pesan (chat style) — that's fine. In penjelasan maybe avoid. I used \"bursa\" etc. Fine.\n\nHmm, in penjelasan 1 I didn't mention Perusahaan D. Fine.\n\nNow, \"angka_pesan\" for omongan 1: teks \"Rp8\" — but in the message I wrote \"dari Rp8 jadi Rp178\". The potongan persis is \"Rp8\". OK. And \"Rp178\". OK.\n\nWait — the message also has \"22,25 kali\". Good.\n\nHmm, one issue: in omongan 1 pesan, \"Dua bulan doang?\" — \"Dua\" is a word, not a number digit. Rule 2 says \"Setiap angka yang ditulis di pesan (termasuk tanggal, tahun, persen, rupiah, lembar, lot)\". \"Dua\" written as word... risky. Let me remove it to be safe. Replace with \"Cepet banget?\" \n\nNew pesan 1: \"Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Cepet banget. Aku baru denger nih.\"\nCount: ~95. OK.\n\nOmongan 2 pesan: \"Katanya Perusahaan D dihentikan sementara 30 Juni 2025 gara-gara dividen tunai belum dibayar ke pemegang saham.\" — contains \"30 Juni 2025\". Good, no other numbers.\n\nOmongan 3 pesan: \"Pemilik terbesar Perusahaan D katanya udah jual 250.000.000 lembar. Bener nggak sih?\" Good.\n\nNow jam: 16.42, 19.05, 21.30. All between 16.00 and 23.59. Good.\n\nNames: Nia, Fajar, Tio. Not Bayu/Dimas/Rara. 2-12 letters, letters only. Good.\n\nNow let me double check rule 4: kartu 2-4, no repeats across... \"tidak boleh berulang\" — within an omongan presumably. Fine.\n\nOmongan 1 kartu: 3. Omongan 2: 3. Omongan 3: 4. Good.\n\nkartu_penentu subset of kartu: yes.\n\nNow write final JSON.\n\nOne more check on penjelasan length ≤800 chars excluding markup. Fine.\n\nAlso rule 11: \"rujuk minimal satu kartu penentu\" — done.\n\nLet me write it out.\n\nFor penjelasan 1, let me refine wording for beginners:\n\n\"Data harga harian bursa mencatat penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] membandingkan dua angka itu, jadi omongan di grup cocok dengan dokumen. Salah-kaprah yang umum: mengira harga yang bergerak cepat pasti disertai kabar resmi baru, padahal yang bisa dicek cuma angka penutupan di data bursa.\"\n\nGood.\n\nPenjelasan 2:\n\"Pengumuman bursa tertanggal [[susp-2025-06-30|30 Juni 2025]] menuliskan alasan resminya: laporan keuangan auditan tahunan belum disampaikan. Tidak ada dokumen di paket ini yang menyebut dividen sebagai penyebab penghentian, dan kartu dividen [[div-2025-09-16|Rp0,14]] per lembar terbit belakangan, jadi tidak bisa menjelaskan penghentian itu. Salah-kaprah yang umum: begitu dengar perdagangan dihentikan sementara, orang langsung mengaitkannya dengan aksi korporasi seperti dividen, padahal alasan resminya tertulis jelas di pengumuman bursa.\"\n\nPenjelasan 3:\n\"Tiga laporan kepemilikan yang diumumkan ke publik mencatat penjualan pemilik terbesar: [[fil-2025-08-25-03|70.000.000 lembar]], [[fil-2025-08-25-04|179.500.000 lembar]], dan [[fil-2025-09-01-01|50.000.000 lembar]]. Kartu hitungan [[jumlah-jual-terverifikasi|299.500.000 lembar]] menjumlahkan ketiganya, jadi angka di pesan tidak cocok dengan dokumen. Salah-kaprah yang umum: percaya angka bulat yang disebut di grup tanpa mengecek satu per satu laporan yang sudah diumumkan ke publik.\"\n\nGood. Now output JSON only.\n\nWait, one thing: rule 7 says teks tampil max 36 chars. \"299.500.000 lembar\" = 18. OK. \"22,25 kali\" 10. OK.\n\nAlso \"teks tampil ... harus menyatakan angka yang memang ada di fakta itu\". \"1 Agustus\" — fact harga-2025-08-01 contains \"1 Agustus 2025\". OK. \"8 Oktober\" — fact contains \"8 Oktober 2025\". OK.\n\nFor susp-2025-06-30, teks \"30 Juni 2025\" — fact contains it. OK.\n\nFor div-2025-09-16, \"Rp0,14\" — fact has \"Rp0,14\". OK.\n\nFor rups-2025-09-04, \"4 September\" — fact has \"4 September 2025\". OK.\n\nFor fil-2025-08-25-03, \"70.000.000 lembar\" — fact has \"70.000.000 lembar\". OK.\n\nFor jumlah-jual-terverifikasi, \"299.500.000 lembar\" — fact has it. OK.\n\nGood. Output.",
+      "finish_reason": "stop",
+      "token_masuk": 3002,
+      "token_keluar": 11803,
+      "latensi_ms": 30518,
+      "biaya_usd": 0.005215168,
+      "draf": {
+        "omongan": [
+          {
+            "nama": "Nia",
+            "jam": "16.42",
+            "pesan": "Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Cepet banget. Aku baru denger nih.",
+            "angka_pesan": [
+              {
+                "teks": "22,25 kali",
+                "fact_id": "kelipatan-2025-08-01-2025-10-08"
+              },
+              {
+                "teks": "Rp8",
+                "fact_id": "harga-2025-08-01"
+              },
+              {
+                "teks": "Rp178",
+                "fact_id": "harga-2025-10-08"
+              }
+            ],
+            "kartu": [
+              "harga-2025-08-01",
+              "harga-2025-10-08",
+              "kelipatan-2025-08-01-2025-10-08"
+            ],
+            "kartu_penentu": [
+              "kelipatan-2025-08-01-2025-10-08"
+            ],
+            "pilihan": {
+              "a": "Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].",
+              "b": "Betul, naiknya karena dividen tunai [[div-2025-09-16|Rp0,14]] per lembar.",
+              "c": "Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar, sama seperti awal.",
+              "d": "Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga."
+            },
+            "kunci": "a",
+            "penjelasan": "Data harga harian bursa mencatat penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] membandingkan dua angka itu, jadi omongan di grup cocok dengan dokumen. Salah-kaprah yang umum: mengira harga yang bergerak cepat pasti disertai kabar resmi baru, padahal yang bisa dicek cuma angka penutupan di data bursa."
+          },
+          {
+            "nama": "Fajar",
+            "jam": "19.05",
+            "pesan": "Katanya Perusahaan D dihentikan sementara 30 Juni 2025 gara-gara dividen tunai belum dibayar ke pemegang saham.",
+            "angka_pesan": [
+              {
+                "teks": "30 Juni 2025",
+                "fact_id": "susp-2025-06-30"
+              }
+            ],
+            "kartu": [
+              "susp-2025-06-30",
+              "div-2025-09-16",
+              "rups-2025-09-04"
+            ],
+            "kartu_penentu": [
+              "susp-2025-06-30"
+            ],
+            "pilihan": {
+              "a": "Betul, [[susp-2025-06-30|30 Juni 2025]] dihentikan karena dividen belum dibayar.",
+              "b": "Keliru, alasannya laporan keuangan auditan tahunan belum disampaikan.",
+              "c": "Betul, penghentian itu terkait rapat pemegang saham [[rups-2025-09-04|4 September]].",
+              "d": "Keliru, [[susp-2025-06-30|30 Juni 2025]] itu tanggal pencabutan, bukan penghentian."
+            },
+            "kunci": "b",
+            "penjelasan": "Pengumuman bursa tertanggal [[susp-2025-06-30|30 Juni 2025]] menuliskan alasan resminya: laporan keuangan auditan tahunan belum disampaikan. Tidak ada dokumen di paket ini yang menyebut dividen sebagai penyebab penghentian, dan kartu dividen [[div-2025-09-16|Rp0,14]] per lembar terbit belakangan, jadi tidak bisa menjelaskan penghentian itu. Salah-kaprah yang umum: begitu dengar perdagangan dihentikan sementara, orang langsung mengaitkannya dengan aksi korporasi seperti dividen, padahal alasan resminya tertulis jelas di pengumuman bursa."
+          },
+          {
+            "nama": "Tio",
+            "jam": "21.30",
+            "pesan": "Pemilik terbesar Perusahaan D katanya udah jual 250.000.000 lembar. Bener nggak sih?",
+            "angka_pesan": [
+              {
+                "teks": "250.000.000 lembar",
+                "andaian": true
+              }
+            ],
+            "kartu": [
+              "fil-2025-08-25-03",
+              "fil-2025-08-25-04",
+              "fil-2025-09-01-01",
+              "jumlah-jual-terverifikasi"
+            ],
+            "kartu_penentu": [
+              "jumlah-jual-terverifikasi"
+            ],
+            "pilihan": {
+              "a": "Betul, [[fil-2025-08-25-03|70.000.000 lembar]] itu total seluruh penjualannya.",
+              "b": "Keliru, totalnya [[jumlah-jual-terverifikasi|299.500.000 lembar]].",
+              "c": "Betul, angkanya cocok dengan [[fil-2025-08-25-04|179.500.000 lembar]].",
+              "d": "Keliru, pemilik terbesar tidak pernah melaporkan penjualan saham."
+            },
+            "kunci": "b",
+            "penjelasan": "Tiga laporan kepemilikan yang diumumkan ke publik mencatat penjualan pemilik terbesar: [[fil-2025-08-25-03|70.000.000 lembar]], [[fil-2025-08-25-04|179.500.000 lembar]], dan [[fil-2025-09-01-01|50.000.000 lembar]]. Kartu hitungan [[jumlah-jual-terverifikasi|299.500.000 lembar]] menjumlahkan ketiganya, jadi angka di pesan tidak cocok dengan dokumen. Salah-kaprah yang umum: percaya angka bulat yang disebut di grup tanpa mengecek satu per satu laporan yang sudah diumumkan ke publik."
+          }
+        ]
+      },
+      "masalah": [
+        {
+          "kode": "OPSI_PANJANG_TIMPANG",
+          "omongan": 1,
+          "pesan": "Panjang pilihan timpang: 34 lawan 64 karakter; yang terpendek harus ≥ 60% yang terpanjang."
+        },
+        {
+          "kode": "OPSI_PANJANG_TIMPANG",
+          "omongan": 3,
+          "pesan": "Panjang pilihan timpang: 36 lawan 65 karakter; yang terpendek harus ≥ 60% yang terpanjang."
+        }
+      ],
+      "lolos": false,
+      "galat": null
+    },
+    {
+      "ke": 2,
+      "teks_mentah": "{\n  \"omongan\": [\n    {\n      \"nama\": \"Nia\",\n      \"jam\": \"16.42\",\n      \"pesan\": \"Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Cepet banget. Aku baru denger nih.\",\n      \"angka_pesan\": [\n        {\"teks\": \"22,25 kali\", \"fact_id\": \"kelipatan-2025-08-01-2025-10-08\"},\n        {\"teks\": \"Rp8\", \"fact_id\": \"harga-2025-08-01\"},\n        {\"teks\": \"Rp178\", \"fact_id\": \"harga-2025-10-08\"}\n      ],\n      \"kartu\": [\"harga-2025-08-01\", \"harga-2025-10-08\", \"kelipatan-2025-08-01-2025-10-08\"],\n      \"kartu_penentu\": [\"kelipatan-2025-08-01-2025-10-08\"],\n      \"pilihan\": {\n        \"a\": \"Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga penutupan [[harga-2025-08-01|1 Agustus]] lalu.\",\n        \"b\": \"Betul, naiknya karena dividen tunai [[div-2025-09-16|Rp0,14]] per lembar.\",\n        \"c\": \"Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar, sama seperti awal.\",\n        \"d\": \"Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga.\"\n      },\n      \"kunci\": \"a\",\n      \"penjelasan\": \"Data harga harian bursa mencatat penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] membandingkan dua angka itu, jadi omongan di grup cocok dengan dokumen. Salah-kaprah yang umum: mengira harga yang bergerak cepat pasti disertai kabar resmi baru, padahal yang bisa dicek cuma angka penutupan di data bursa.\"\n    },\n    {\n      \"nama\": \"Fajar\",\n      \"jam\": \"19.05\",\n      \"pesan\": \"Katanya Perusahaan D dihentikan sementara 30 Juni 2025 gara-gara dividen tunai belum dibayar ke pemegang saham.\",\n      \"angka_pesan\": [\n        {\"teks\": \"30 Juni 2025\", \"fact_id\": \"susp-2025-06-30\"}\n      ],\n      \"kartu\": [\"susp-2025-06-30\", \"div-2025-09-16\", \"rups-2025-09-04\"],\n      \"kartu_penentu\": [\"susp-2025-06-30\"],\n      \"pilihan\": {\n        \"a\": \"Betul, [[susp-2025-06-30|30 Juni 2025]] dihentikan karena dividen belum dibayar.\",\n        \"b\": \"Keliru, alasannya laporan keuangan auditan tahunan belum disampaikan.\",\n        \"c\": \"Betul, penghentian itu terkait rapat pemegang saham [[rups-2025-09-04|4 September]].\",\n        \"d\": \"Keliru, [[susp-2025-06-30|30 Juni 2025]] itu tanggal pencabutan, bukan penghentian.\"\n      },\n      \"kunci\": \"b\",\n      \"penjelasan\": \"Pengumuman bursa tertanggal [[susp-2025-06-30|30 Juni 2025]] menuliskan alasan resminya: laporan keuangan auditan tahunan belum disampaikan. Tidak ada dokumen di paket ini yang menyebut dividen sebagai penyebab penghentian, dan kartu dividen [[div-2025-09-16|Rp0,14]] per lembar terbit belakangan, jadi tidak bisa menjelaskan penghentian itu. Salah-kaprah yang umum: begitu dengar perdagangan dihentikan sementara, orang langsung mengaitkannya dengan aksi korporasi seperti dividen, padahal alasan resminya tertulis jelas di pengumuman bursa.\"\n    },\n    {\n      \"nama\": \"Tio\",\n      \"jam\": \"21.30\",\n      \"pesan\": \"Pemilik terbesar Perusahaan D katanya udah jual 250.000.000 lembar. Bener nggak sih?\",\n      \"angka_pesan\": [\n        {\"teks\": \"250.000.000 lembar\", \"andaian\": true}\n      ],\n      \"kartu\": [\"fil-2025-08-25-03\", \"fil-2025-08-25-04\", \"fil-2025-09-01-01\", \"jumlah-jual-terverifikasi\"],\n      \"kartu_penentu\": [\"jumlah-jual-terverifikasi\"],\n      \"pilihan\": {\n        \"a\": \"Betul, [[fil-2025-08-25-03|70.000.000 lembar]] itu total seluruh penjualannya.\",\n        \"b\": \"Keliru, totalnya justru [[jumlah-jual-terverifikasi|299.500.000 lembar]].\",\n        \"c\": \"Betul, angkanya cocok dengan [[fil-2025-08-25-04|179.500.000 lembar]].\",\n        \"d\": \"Keliru, pemilik terbesar tidak pernah melaporkan penjualan saham.\"\n      },\n      \"kunci\": \"b\",\n      \"penjelasan\": \"Tiga laporan kepemilikan yang diumumkan ke publik mencatat penjualan pemilik terbesar: [[fil-2025-08-25-03|70.000.000 lembar]], [[fil-2025-08-25-04|179.500.000 lembar]], dan [[fil-2025-09-01-01|50.000.000 lembar]]. Kartu hitungan [[jumlah-jual-terverifikasi|299.500.000 lembar]] menjumlahkan ketiganya, jadi angka di pesan tidak cocok dengan dokumen. Salah-kaprah yang umum: percaya angka bulat yang disebut di grup tanpa mengecek satu per satu laporan yang sudah diumumkan ke publik.\"\n    }\n  ]\n}",
+      "penalaran": "Let me fix the option lengths. Need each omongan's four options within 60% of longest.\n\nOmongan 1: options currently 34, ~?, ~?, 64. Let me rewrite all four to be similar length, ~55-70 chars.\n\nNote: the displayed text inside [[...|...]] — how is length counted? Probably the raw string including markup, or maybe the displayed text. The checker said 34 vs 64. Let's just make raw strings similar length.\n\nOmongan 1 options:\na: \"Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\" — that's long raw.\nHmm, raw length includes fact ids which are long. Let me count: \"Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga [[harga-2025-08-01|1 Agustus]].\" = let's count: \"Betul, \" 7 + \"[[kelipatan-2025-08-01-2025-10-08|22,25 kali]]\" = 2+34+1+10+2 = 49 → 56 + \" harga \" 7 = 63 + \"[[harga-2025-08-01|1 Agustus]]\" = 2+16+1+10+2=31 → 94 + \".\" = 95.\n\nHmm but checker said 34 vs 64. So maybe it counts displayed text only? Displayed: \"Betul, 22,25 kali harga 1 Agustus.\" = 34. Yes! So length counted on displayed text (without markup). Good.\n\nSo I need displayed text lengths within 60%.\n\nOmongan 1 displayed options:\na: \"Betul, 22,25 kali harga 1 Agustus.\" = 34\nb: \"Betul, naiknya karena dividen tunai Rp0,14 per lembar.\" = 54\nc: \"Keliru, harga 8 Oktober masih Rp8 per lembar, sama seperti awal.\" = 64\nd: \"Keliru, 22,25 kali itu hitungan volume, bukan harga.\" = 52\n\nSo need all ≥ 60% of longest. Make them all ~55-60.\n\nLet me craft:\n\na: \"Betul, 22,25 kali harga penutupan 1 Agustus.\" → count: \"Betul, \" 7 + \"22,25 kali harga penutupan 1 Agustus.\" 37 = 44. Hmm.\n\nLet's target ~58-62 chars each.\n\na: \"Betul, 22,25 kali harga penutupan 1 Agustus lalu.\" = 7+41=48? count \"22,25 kali harga penutupan 1 Agustus lalu.\" = 5+1+4+1+5+1+9+1+1+1+7+1+4 = let's just count chars: \"22,25\"=5, \" \"=1(6), \"kali\"=4(10), \" \"=1(11), \"harga\"=5(16), \" \"=1(17), \"penutupan\"=9(26), \" \"=1(27), \"1\"=1(28), \" \"=1(29), \"Agustus\"=7(36), \" \"=1(37), \"lalu.\"=5(42). Total 42+7=49.\n\nb: \"Betul, naiknya karena dividen tunai Rp0,14 per lembar.\" = 54.\nc: \"Keliru, harga 8 Oktober masih Rp8 per lembar, sama seperti awal.\" = 64.\nd: \"Keliru, 22,25 kali itu hitungan volume, bukan harga.\" = 52.\n\nRange 49-64: 49/64 = 76.5% ✓. Good, all fine. Actually 49 ≥ 38.4. Fine.\n\nWait but need to double check c=64, 60% = 38.4, all above. Good.\n\nOmongan 3: displayed:\na: \"Betul, 70.000.000 lembar itu total seluruh penjualannya.\" = count: \"Betul, \"7 + \"70.000.000\"10 =17 + \" lembar\"7=24 + \" itu\"4=28 + \" total\"6=34 + \" seluruh\"8=42 + \" penjualannya.\"14=56. So 56.\nb: \"Keliru, totalnya 299.500.000 lembar.\" = 7+ \"totalnya\"8=15 + \" \"1=16 + \"299.500.000\"11=27 + \" lembar.\"8=35. So 35.\nc: \"Betul, angkanya cocok dengan 179.500.000 lembar.\" = 7+\"angkanya\"8=15+\" \"1=16+\"cocok\"5=21+\" \"1=22+\"dengan\"6=28+\" \"1=29+\"179.500.000\"11=40+\" lembar.\"8=48. So 48.\nd: \"Keliru, pemilik terbesar tidak pernah melaporkan penjualan saham.\" = 7+\"pemilik\"7=14+\" \"1=15+\"terbesar\"8=23+\" \"1=24+\"tidak\"5=29+\" \"1=30+\"pernah\"6=36+\" \"1=37+\"melaporkan\"10=47+\" \"1=48+\"penjualan\"9=57+\" \"1=58+\"saham.\"6=64. So 64.\n\nRange 35-64: 35/64=54.7% ✗. Need to lengthen b.\n\nb: \"Keliru, totalnya justru 299.500.000 lembar.\" = 7+8=15+1=16+\"justru\"6=22+1=23+\"299.500.000\"11=34+\" lembar.\"8=42. 42/64=65.6% ✓.\n\nHmm but also check a=56, c=48, d=64. 48/64=75% ✓. Good.\n\nBut wait — is \"Betul, 70.000.000 lembar itu total seluruh penjualannya\" a plausible distractor? It says the 70 million is the total — that's wrong since total is 299.5M. Fine.\n\nActually let me reconsider: option a is \"Betul, ...\" but the answer is Keliru. Fine, distractors.\n\nNow also check omongan 2 lengths:\na: \"Betul, 30 Juni 2025 dihentikan karena dividen belum dibayar.\" = 7+\"30 Juni 2025\"12=19+\" dihentikan\"11=30+\" karena\"7=37+\" dividen\"8=45+\" belum\"6=51+\" dibayar.\"9=60. So 60.\nb: \"Keliru, alasannya laporan keuangan auditan tahunan belum disampaikan.\" = 7+\"alasannya\"9=16+\" \"1=17+\"laporan\"7=24+\" \"1=25+\"keuangan\"8=33+\" \"1=34+\"auditan\"7=41+\" \"1=42+\"tahunan\"7=49+\" \"1=50+\"belum\"5=55+\" \"1=56+\"disampaikan.\"13=69. So 69.\nc: \"Betul, penghentian itu terkait rapat pemegang saham 4 September.\" = 7+\"penghentian\"11=18+\" itu\"4=22+\" terkait\"8=30+\" rapat\"6=36+\" pemegang\"9=45+\" saham\"6=51+\" 4\"2=53+\" September.\"11=64. So 64.\nd: \"Keliru, 30 Juni 2025 itu tanggal pencabutan, bukan penghentian.\" = 7+\"30 Juni 2025\"12=19+\" itu\"4=23+\" tanggal\"8=31+\" pencabutan,\"12=43+\" bukan\"6=49+\" penghentian.\"13=62. So 62.\n\nRange 60-69: 60/69=87% ✓. Fine, no issue reported. Keep.\n\nNow also verify rule: kunci letters not all same. a, b, b — fine (not all same).\n\nAlso rule 7: every number in pilihan and penjelasan must be a reference. Check omongan 1 penjelasan: \"Data harga harian bursa mencatat penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]]...\" OK all numbers referenced.\n\nOmongan 2 penjelasan: \"[[susp-2025-06-30|30 Juni 2025]]\", \"[[div-2025-09-16|Rp0,14]]\" — fine.\n\nOmongan 3 penjelasan: 70.000.000, 179.500.000, 50.000.000, 299.500.000 — all referenced. Good.\n\nAlso check \"angka_pesan\" for omongan 1: \"22,25 kali\" appears in pesan as \"22,25 kali\" ✓; \"Rp8\" ✓; \"Rp178\" ✓.\n\nOmongan 2 pesan: \"30 Juni 2025\" ✓.\n\nOmongan 3 pesan: \"250.000.000 lembar\" andaian ✓.\n\nRule 3: at least one Betul — omongan 1 is Betul ✓.\n\nRule 4: each omongan 2-4 kartu, no repeats. Omongan 1: 3 kartu. Omongan 2: 3. Omongan 3: 4. ✓\n\nRule 10: no forbidden words. Check: \"bagus, jelek, sehat, buruk, murah, mahal\" — none. ✓\n\nRule 9: no stock codes/company names. \"Perusahaan D\" is the given alias — allowed. ✓\n\nRule 11: penjelasan ends with \"Salah-kaprah yang umum:\" ✓, ≤800 chars ✓.\n\nNow output JSON.\n\nWait, one more check on omongan 1 option lengths with the new a: 49, b 54, c 64, d 52. 49/64 = 76.6% ✓.\n\nHmm, but the checker might count including markup? Earlier it reported 34 vs 64 which matches displayed-text counting for a (34) and c (64). So displayed text. Good.\n\nLet me finalize.",
+      "finish_reason": "stop",
+      "token_masuk": 4677,
+      "token_keluar": 3950,
+      "latensi_ms": 10370,
+      "biaya_usd": 0.002465092,
+      "draf": {
+        "omongan": [
+          {
+            "nama": "Nia",
+            "jam": "16.42",
+            "pesan": "Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Cepet banget. Aku baru denger nih.",
+            "angka_pesan": [
+              {
+                "teks": "22,25 kali",
+                "fact_id": "kelipatan-2025-08-01-2025-10-08"
+              },
+              {
+                "teks": "Rp8",
+                "fact_id": "harga-2025-08-01"
+              },
+              {
+                "teks": "Rp178",
+                "fact_id": "harga-2025-10-08"
+              }
+            ],
+            "kartu": [
+              "harga-2025-08-01",
+              "harga-2025-10-08",
+              "kelipatan-2025-08-01-2025-10-08"
+            ],
+            "kartu_penentu": [
+              "kelipatan-2025-08-01-2025-10-08"
+            ],
+            "pilihan": {
+              "a": "Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga penutupan [[harga-2025-08-01|1 Agustus]] lalu.",
+              "b": "Betul, naiknya karena dividen tunai [[div-2025-09-16|Rp0,14]] per lembar.",
+              "c": "Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar, sama seperti awal.",
+              "d": "Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga."
+            },
+            "kunci": "a",
+            "penjelasan": "Data harga harian bursa mencatat penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] membandingkan dua angka itu, jadi omongan di grup cocok dengan dokumen. Salah-kaprah yang umum: mengira harga yang bergerak cepat pasti disertai kabar resmi baru, padahal yang bisa dicek cuma angka penutupan di data bursa."
+          },
+          {
+            "nama": "Fajar",
+            "jam": "19.05",
+            "pesan": "Katanya Perusahaan D dihentikan sementara 30 Juni 2025 gara-gara dividen tunai belum dibayar ke pemegang saham.",
+            "angka_pesan": [
+              {
+                "teks": "30 Juni 2025",
+                "fact_id": "susp-2025-06-30"
+              }
+            ],
+            "kartu": [
+              "susp-2025-06-30",
+              "div-2025-09-16",
+              "rups-2025-09-04"
+            ],
+            "kartu_penentu": [
+              "susp-2025-06-30"
+            ],
+            "pilihan": {
+              "a": "Betul, [[susp-2025-06-30|30 Juni 2025]] dihentikan karena dividen belum dibayar.",
+              "b": "Keliru, alasannya laporan keuangan auditan tahunan belum disampaikan.",
+              "c": "Betul, penghentian itu terkait rapat pemegang saham [[rups-2025-09-04|4 September]].",
+              "d": "Keliru, [[susp-2025-06-30|30 Juni 2025]] itu tanggal pencabutan, bukan penghentian."
+            },
+            "kunci": "b",
+            "penjelasan": "Pengumuman bursa tertanggal [[susp-2025-06-30|30 Juni 2025]] menuliskan alasan resminya: laporan keuangan auditan tahunan belum disampaikan. Tidak ada dokumen di paket ini yang menyebut dividen sebagai penyebab penghentian, dan kartu dividen [[div-2025-09-16|Rp0,14]] per lembar terbit belakangan, jadi tidak bisa menjelaskan penghentian itu. Salah-kaprah yang umum: begitu dengar perdagangan dihentikan sementara, orang langsung mengaitkannya dengan aksi korporasi seperti dividen, padahal alasan resminya tertulis jelas di pengumuman bursa."
+          },
+          {
+            "nama": "Tio",
+            "jam": "21.30",
+            "pesan": "Pemilik terbesar Perusahaan D katanya udah jual 250.000.000 lembar. Bener nggak sih?",
+            "angka_pesan": [
+              {
+                "teks": "250.000.000 lembar",
+                "andaian": true
+              }
+            ],
+            "kartu": [
+              "fil-2025-08-25-03",
+              "fil-2025-08-25-04",
+              "fil-2025-09-01-01",
+              "jumlah-jual-terverifikasi"
+            ],
+            "kartu_penentu": [
+              "jumlah-jual-terverifikasi"
+            ],
+            "pilihan": {
+              "a": "Betul, [[fil-2025-08-25-03|70.000.000 lembar]] itu total seluruh penjualannya.",
+              "b": "Keliru, totalnya justru [[jumlah-jual-terverifikasi|299.500.000 lembar]].",
+              "c": "Betul, angkanya cocok dengan [[fil-2025-08-25-04|179.500.000 lembar]].",
+              "d": "Keliru, pemilik terbesar tidak pernah melaporkan penjualan saham."
+            },
+            "kunci": "b",
+            "penjelasan": "Tiga laporan kepemilikan yang diumumkan ke publik mencatat penjualan pemilik terbesar: [[fil-2025-08-25-03|70.000.000 lembar]], [[fil-2025-08-25-04|179.500.000 lembar]], dan [[fil-2025-09-01-01|50.000.000 lembar]]. Kartu hitungan [[jumlah-jual-terverifikasi|299.500.000 lembar]] menjumlahkan ketiganya, jadi angka di pesan tidak cocok dengan dokumen. Salah-kaprah yang umum: percaya angka bulat yang disebut di grup tanpa mengecek satu per satu laporan yang sudah diumumkan ke publik."
+          }
+        ]
+      },
+      "masalah": [],
+      "lolos": true,
+      "galat": null
+    }
+  ],
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Nia",
+        "jam": "16.42",
+        "pesan": "Serius Perusahaan D naik 22,25 kali dari Rp8 jadi Rp178? Cepet banget. Aku baru denger nih.",
+        "angka_pesan": [
+          {
+            "teks": "22,25 kali",
+            "fact_id": "kelipatan-2025-08-01-2025-10-08"
+          },
+          {
+            "teks": "Rp8",
+            "fact_id": "harga-2025-08-01"
+          },
+          {
+            "teks": "Rp178",
+            "fact_id": "harga-2025-10-08"
+          }
+        ],
+        "kartu": [
+          "harga-2025-08-01",
+          "harga-2025-10-08",
+          "kelipatan-2025-08-01-2025-10-08"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-08-01-2025-10-08"
+        ],
+        "pilihan": {
+          "a": "Betul, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] harga penutupan [[harga-2025-08-01|1 Agustus]] lalu.",
+          "b": "Betul, naiknya karena dividen tunai [[div-2025-09-16|Rp0,14]] per lembar.",
+          "c": "Keliru, harga [[harga-2025-10-08|8 Oktober]] masih [[harga-2025-08-01|Rp8]] per lembar, sama seperti awal.",
+          "d": "Keliru, [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] itu hitungan volume, bukan harga."
+        },
+        "kunci": "a",
+        "penjelasan": "Data harga harian bursa mencatat penutupan [[harga-2025-08-01|1 Agustus]] di [[harga-2025-08-01|Rp8]] per lembar dan penutupan [[harga-2025-10-08|8 Oktober]] di [[harga-2025-10-08|Rp178]] per lembar. Kartu hitungan [[kelipatan-2025-08-01-2025-10-08|22,25 kali]] membandingkan dua angka itu, jadi omongan di grup cocok dengan dokumen. Salah-kaprah yang umum: mengira harga yang bergerak cepat pasti disertai kabar resmi baru, padahal yang bisa dicek cuma angka penutupan di data bursa."
+      },
+      {
+        "nama": "Fajar",
+        "jam": "19.05",
+        "pesan": "Katanya Perusahaan D dihentikan sementara 30 Juni 2025 gara-gara dividen tunai belum dibayar ke pemegang saham.",
+        "angka_pesan": [
+          {
+            "teks": "30 Juni 2025",
+            "fact_id": "susp-2025-06-30"
+          }
+        ],
+        "kartu": [
+          "susp-2025-06-30",
+          "div-2025-09-16",
+          "rups-2025-09-04"
+        ],
+        "kartu_penentu": [
+          "susp-2025-06-30"
+        ],
+        "pilihan": {
+          "a": "Betul, [[susp-2025-06-30|30 Juni 2025]] dihentikan karena dividen belum dibayar.",
+          "b": "Keliru, alasannya laporan keuangan auditan tahunan belum disampaikan.",
+          "c": "Betul, penghentian itu terkait rapat pemegang saham [[rups-2025-09-04|4 September]].",
+          "d": "Keliru, [[susp-2025-06-30|30 Juni 2025]] itu tanggal pencabutan, bukan penghentian."
+        },
+        "kunci": "b",
+        "penjelasan": "Pengumuman bursa tertanggal [[susp-2025-06-30|30 Juni 2025]] menuliskan alasan resminya: laporan keuangan auditan tahunan belum disampaikan. Tidak ada dokumen di paket ini yang menyebut dividen sebagai penyebab penghentian, dan kartu dividen [[div-2025-09-16|Rp0,14]] per lembar terbit belakangan, jadi tidak bisa menjelaskan penghentian itu. Salah-kaprah yang umum: begitu dengar perdagangan dihentikan sementara, orang langsung mengaitkannya dengan aksi korporasi seperti dividen, padahal alasan resminya tertulis jelas di pengumuman bursa."
+      },
+      {
+        "nama": "Tio",
+        "jam": "21.30",
+        "pesan": "Pemilik terbesar Perusahaan D katanya udah jual 250.000.000 lembar. Bener nggak sih?",
+        "angka_pesan": [
+          {
+            "teks": "250.000.000 lembar",
+            "andaian": true
+          }
+        ],
+        "kartu": [
+          "fil-2025-08-25-03",
+          "fil-2025-08-25-04",
+          "fil-2025-09-01-01",
+          "jumlah-jual-terverifikasi"
+        ],
+        "kartu_penentu": [
+          "jumlah-jual-terverifikasi"
+        ],
+        "pilihan": {
+          "a": "Betul, [[fil-2025-08-25-03|70.000.000 lembar]] itu total seluruh penjualannya.",
+          "b": "Keliru, totalnya justru [[jumlah-jual-terverifikasi|299.500.000 lembar]].",
+          "c": "Betul, angkanya cocok dengan [[fil-2025-08-25-04|179.500.000 lembar]].",
+          "d": "Keliru, pemilik terbesar tidak pernah melaporkan penjualan saham."
+        },
+        "kunci": "b",
+        "penjelasan": "Tiga laporan kepemilikan yang diumumkan ke publik mencatat penjualan pemilik terbesar: [[fil-2025-08-25-03|70.000.000 lembar]], [[fil-2025-08-25-04|179.500.000 lembar]], dan [[fil-2025-09-01-01|50.000.000 lembar]]. Kartu hitungan [[jumlah-jual-terverifikasi|299.500.000 lembar]] menjumlahkan ketiganya, jadi angka di pesan tidak cocok dengan dokumen. Salah-kaprah yang umum: percaya angka bulat yang disebut di grup tanpa mengecek satu per satu laporan yang sudah diumumkan ke publik."
+      }
+    ]
+  },
+  "berhenti": null
+}
