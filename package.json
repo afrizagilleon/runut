@@ -26,7 +26,8 @@
     "eval:nilai": "node --experimental-strip-types eval/penilai.ts",
     "eval:bukti": "node --experimental-strip-types eval/bukti-penilai.ts",
     "eval:laporan": "node --experimental-strip-types eval/laporan.ts",
-    "eval:laporan-a1": "node --experimental-strip-types eval/laporan-a1.ts"
+    "eval:laporan-a1": "node --experimental-strip-types eval/laporan-a1.ts",
+    "llm:model": "node --experimental-strip-types factory/llm/cek-model.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

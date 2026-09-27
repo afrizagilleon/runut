@@ -1,0 +1,25 @@
+{
+  "diperiksa_pada": "2026-09-27T10:58:24.891Z",
+  "katalog": {
+    "status_http": 404,
+    "pesan": "GET /models gagal: HTTP 404 — Gone."
+  },
+  "model": [
+    {
+      "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "tersedia": "tidak-diketahui",
+      "entri": null
+    },
+    {
+      "id": "zai-org/GLM-5.3-Flash",
+      "tersedia": "tidak-diketahui",
+      "entri": null
+    },
+    {
+      "id": "zai-org/GLM-5.3",
+      "tersedia": "tidak-diketahui",
+      "entri": null
+    }
+  ],
+  "catatan": "Katalog model penyedia tidak bisa dibaca, jadi ketersediaan ketiga model TIDAK terverifikasi tanpa biaya. Ketersediaan sesungguhnya tercatat per model di percobaan pertamanya (eval/keluaran-m2d/, dan ledger biaya)."
+}

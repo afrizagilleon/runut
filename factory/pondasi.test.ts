@@ -39,6 +39,9 @@ describe('pondasi proyek', () => {
     // M2a D-6: mesin verifikasi generasi kedua atas seluruh gudang data.
     // Disebut namanya, bukan diloloskan lewat awalan baru.
     const M2A = ['verifikasi:gudang'];
+    // M2d D-1/D-5/D-6: penyusun LLM dan uji tanding tiga model. Kontraknya
+    // menamai `npm run llm:tanding`; keempatnya disebut satu per satu.
+    const M2D = ['llm:model', 'llm:tanding', 'llm:penguji', 'llm:laporan'];
     const skrip = Object.keys(paket.scripts).sort();
     for (const wajib of [...M1, ...M32, ...M33, ...A3, ...M2A]) {
       expect(skrip).toContain(wajib);
@@ -51,7 +54,8 @@ describe('pondasi proyek', () => {
         !M32.includes(s) &&
         !M33.includes(s) &&
         !A3.includes(s) &&
-        !M2A.includes(s),
+        !M2A.includes(s) &&
+        !M2D.includes(s),
     );
     expect(takDikenal).toEqual([]);
   });
