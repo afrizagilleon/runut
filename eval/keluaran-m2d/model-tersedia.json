@@ -21,5 +21,40 @@
       "entri": null
     }
   ],
-  "catatan": "Katalog model penyedia tidak bisa dibaca, jadi ketersediaan ketiga model TIDAK terverifikasi tanpa biaya. Ketersediaan sesungguhnya tercatat per model di percobaan pertamanya (eval/keluaran-m2d/, dan ledger biaya)."
+  "catatan": "Katalog model penyedia tidak bisa dibaca, jadi ketersediaan ketiga model TIDAK terverifikasi tanpa biaya. Ketersediaan sesungguhnya tercatat per model di percobaan pertamanya (eval/keluaran-m2d/, dan ledger biaya).",
+  "sonda": {
+    "diperiksa_pada": "2026-09-27T11:03:15.522Z",
+    "model": [
+      {
+        "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+        "tersedia": "ya",
+        "model_dilaporkan": "deepseek-ai/DeepSeek-V4.1-Flash",
+        "finish_reason": "length",
+        "token_masuk": 38,
+        "token_keluar": 16,
+        "latensi_ms": 2733,
+        "biaya_usd": 0.00001372
+      },
+      {
+        "id": "zai-org/GLM-5.3-Flash",
+        "tersedia": "ya",
+        "model_dilaporkan": "zai-org/GLM-5.3-Flash",
+        "finish_reason": "length",
+        "token_masuk": 20,
+        "token_keluar": 16,
+        "latensi_ms": 777,
+        "biaya_usd": 0.000011
+      },
+      {
+        "id": "zai-org/GLM-5.3",
+        "tersedia": "ya",
+        "model_dilaporkan": "zai-org/GLM-5.3",
+        "finish_reason": "length",
+        "token_masuk": 20,
+        "token_keluar": 16,
+        "latensi_ms": 818,
+        "biaya_usd": 0.000068
+      }
+    ]
+  }
 }

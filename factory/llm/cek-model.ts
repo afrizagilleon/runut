@@ -11,10 +11,16 @@
  * found", jadi ini rute yang sengaja dihentikan, bukan salah alamat). Katalog
  * model tidak bisa dibaca tanpa biaya. Hasil itu dicatat apa adanya; tidak ada
  * model yang dianggap tersedia hanya karena namanya ada di kontrak.
+ *
+ * `npm run llm:model -- --sonda` lalu menjalankan satu panggilan chat terkecil
+ * per model (`max_tokens` 16, suhu 0) **di bawah pagu dan ledger** — satu-satunya
+ * cara tersisa untuk tahu apakah id model dikenali penyedia. Biayanya tercatat
+ * di ledger seperti panggilan lain.
  */
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { AKAR, bacaKonfigLlm } from './env.ts';
 import { GalatLlm, daftarModel } from './klien.ts';
+import { JALUR_LEDGER, PaguTercapai, PencatatBiaya, chatBerpagu } from './pagu.ts';
 import { MODEL_TANDING } from './model.ts';
 
 const TUJUAN = `${AKAR}eval/keluaran-m2d/model-tersedia.json`;
@@ -57,7 +63,49 @@ async function utama(): Promise<number> {
   }
 }
 
-utama().then(
+/** Satu panggilan terkecil per model, di bawah pagu. */
+async function sonda(): Promise<number> {
+  const konfig = bacaKonfigLlm();
+  const pencatat = new PencatatBiaya({ paguUsd: konfig.paguUsd, jalurLedger: JALUR_LEDGER });
+  const hasil: Array<Record<string, unknown>> = [];
+  for (const model of MODEL_TANDING) {
+    try {
+      const r = await chatBerpagu(
+        { baseUrl: konfig.baseUrl, apiKey: konfig.apiKey, cobaUlang: 0 },
+        pencatat,
+        { model, pesan: [{ role: 'user', content: 'Balas dengan satu kata: siap' }], suhu: 0, maxTokens: 16 },
+        `sonda/${model}`,
+      );
+      hasil.push({
+        id: model,
+        tersedia: 'ya',
+        model_dilaporkan: r.model,
+        finish_reason: r.finish_reason,
+        token_masuk: r.token_masuk,
+        token_keluar: r.token_keluar,
+        latensi_ms: r.latensi_ms,
+        biaya_usd: r.biaya_usd,
+      });
+    } catch (galat) {
+      if (galat instanceof PaguTercapai) throw galat;
+      const status = galat instanceof GalatLlm ? galat.status : null;
+      hasil.push({
+        id: model,
+        tersedia: status !== null && status >= 400 && status < 500 ? 'tidak' : 'tidak-diketahui',
+        status_http: status,
+        pesan: galat instanceof Error ? galat.message : 'galat tak dikenal',
+      });
+    }
+  }
+  const berkas = JSON.parse(readFileSync(TUJUAN, 'utf8')) as Record<string, unknown>;
+  berkas['sonda'] = { diperiksa_pada: new Date().toISOString(), model: hasil };
+  writeFileSync(TUJUAN, JSON.stringify(berkas, null, 2) + '\n', 'utf8');
+  for (const h of hasil) console.log(`  sonda ${String(h['tersedia']).toUpperCase().padEnd(15)} ${JSON.stringify(h)}`);
+  console.log(`Akumulasi ledger: US$${pencatat.total().toFixed(6)} dari pagu US$${konfig.paguUsd.toFixed(2)}.`);
+  return hasil.every((h) => h['tersedia'] === 'ya') ? 0 : 2;
+}
+
+(process.argv.includes('--sonda') ? sonda() : utama()).then(
   (kode) => {
     process.exitCode = kode;
   },
