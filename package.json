@@ -29,7 +29,8 @@
     "eval:laporan-a1": "node --experimental-strip-types eval/laporan-a1.ts",
     "llm:model": "node --experimental-strip-types factory/llm/cek-model.ts",
     "llm:tanding": "node --experimental-strip-types factory/llm/tanding.ts",
-    "llm:penguji": "node --experimental-strip-types factory/llm/penguji.ts"
+    "llm:penguji": "node --experimental-strip-types factory/llm/penguji.ts",
+    "llm:laporan": "node --experimental-strip-types factory/llm/laporan.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

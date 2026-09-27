@@ -430,6 +430,25 @@ dikecualikan lewat nomor pengunjung dicetak **terpisah** dari yang lewat penanda
 beserta berapa pengunjung, supaya ketiga angkanya menjumlah kembali ke seluruh
 sesi. Berkas mentahnya tidak pernah diubah.
 
+## Penyusun LLM (M2d, eksperimen — belum dipasang ke produk)
+
+`factory/llm/` menyusun draf simulasi dengan LLM **di bawah validator**: paket
+fakta ringkas yang sudah lolos mesin verifikasi (tanpa JSON mentah Sectors) →
+model lewat klien OpenAI-compatible buatan sendiri → validator deterministik
+(setiap angka berjejak ke fakta, tanpa tanggal sesudah T, bentuk 2×2) → umpan
+balik → tulis ulang, paling banyak tiga kali. Pagu dolar ditegakkan kode
+**sebelum** tiap panggilan; ledger biaya di `.cache/llm/` (tidak di-commit).
+
+```bash
+npm run llm:model                          # GET /models (tanpa biaya)
+LLM_PAGU_USD=5 npm run llm:tanding         # uji tanding 3 model × 3 paket (berbayar, di bawah pagu)
+npm run llm:penguji && npm run llm:laporan # bahan uji buta, lalu docs/bukti/uji-tanding-model.md
+```
+
+Butuh `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`, dan `LLM_PAGU_USD` di `.env`
+(atau lingkungan proses; `.env` menang). Hasil dan rekomendasi model:
+`docs/bukti/uji-tanding-model.md`; keluaran mentah: `eval/keluaran-m2d/`.
+
 ## Susunan
 
 | Folder | Isi |

@@ -1,0 +1,1260 @@
+{
+  "suhu": 0.3,
+  "putaran": {
+    "1": {
+      "maxTokens": 12000
+    },
+    "2": {
+      "maxTokens": 32000
+    }
+  },
+  "aturan_peringkat": "1. jumlah sel yang lolos validator, dijumlah atas kedua putaran (dari 6) — draf yang tidak lolos tidak bisa dipakai sama sekali;\n2. proporsi omongan yang lolos uji tebak buta K-05 (≤ 1 dari 3 penguji benar dan rata-rata keyakinan penebak benar < 40%);\n3. rata-rata skor kealamian bahasa Indonesia;\n4. biaya per simulasi yang lolos, atas kedua putaran (lebih murah lebih baik);\n5. rata-rata percobaan sampai lolos (lebih sedikit lebih baik).",
+  "per_model": [
+    {
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "lolos_p1": 3,
+      "lolos_p2": 3,
+      "sel_per_putaran": 3,
+      "percobaan_sampai_lolos": [
+        2,
+        2,
+        1,
+        2,
+        1,
+        1
+      ],
+      "terpotong": [
+        1,
+        0
+      ],
+      "percobaan": [
+        5,
+        4
+      ],
+      "tebak_lolos": 2,
+      "tebak_total": 9,
+      "tebak_benar_rata": 2.111111111111111,
+      "alami_rata": 3,
+      "alami_n": 9,
+      "token_masuk": [
+        20521,
+        15734
+      ],
+      "token_keluar": [
+        44835,
+        43727
+      ],
+      "biaya": [
+        0.021597435999999998,
+        0.020224847999999997
+      ],
+      "biaya_per_lolos": 0.006970380666666665,
+      "latensi_rata_ms": [
+        23934.6,
+        28575.25
+      ],
+      "alasan_tolak": [
+        [
+          "OPSI_PANJANG_TIMPANG",
+          2
+        ],
+        [
+          "JSON_RUSAK",
+          1
+        ]
+      ]
+    },
+    {
+      "model": "zai-org/GLM-5.3-Flash",
+      "lolos_p1": 0,
+      "lolos_p2": 3,
+      "sel_per_putaran": 3,
+      "percobaan_sampai_lolos": [
+        1,
+        2,
+        1
+      ],
+      "terpotong": [
+        9,
+        1
+      ],
+      "percobaan": [
+        9,
+        4
+      ],
+      "tebak_lolos": 0,
+      "tebak_total": 9,
+      "tebak_benar_rata": 2.888888888888889,
+      "alami_rata": 3.2222222222222223,
+      "alami_n": 9,
+      "token_masuk": [
+        34869,
+        15988
+      ],
+      "token_keluar": [
+        108000,
+        91477
+      ],
+      "biaya": [
+        0.05923035,
+        0.0481367
+      ],
+      "biaya_per_lolos": 0.035789016666666666,
+      "latensi_rata_ms": [
+        98210.33333333333,
+        177424.25
+      ],
+      "alasan_tolak": [
+        [
+          "JSON_RUSAK",
+          10
+        ]
+      ]
+    },
+    {
+      "model": "zai-org/GLM-5.3",
+      "lolos_p1": 0,
+      "lolos_p2": 2,
+      "sel_per_putaran": 3,
+      "percobaan_sampai_lolos": [
+        2,
+        2
+      ],
+      "terpotong": [
+        8,
+        4
+      ],
+      "percobaan": [
+        9,
+        7
+      ],
+      "tebak_lolos": 1,
+      "tebak_total": 6,
+      "tebak_benar_rata": 2.1666666666666665,
+      "alami_rata": 4,
+      "alami_n": 6,
+      "token_masuk": [
+        29920,
+        26686
+      ],
+      "token_keluar": [
+        96000,
+        196152
+      ],
+      "biaya": [
+        0.36703399999999997,
+        0.721692
+      ],
+      "biaya_per_lolos": 0.544363,
+      "latensi_rata_ms": [
+        146601.25,
+        334343.28571428574
+      ],
+      "alasan_tolak": [
+        [
+          "JSON_RUSAK",
+          13
+        ],
+        [
+          "ANDAIAN_DI_PENJELASAN",
+          1
+        ],
+        [
+          "OPSI_PANJANG_TIMPANG",
+          1
+        ]
+      ]
+    }
+  ],
+  "manusia_alami_rata": 5,
+  "peringkat": [
+    "deepseek-ai/DeepSeek-V4.1-Flash",
+    "zai-org/GLM-5.3-Flash",
+    "zai-org/GLM-5.3"
+  ],
+  "tebak": [
+    {
+      "bundel": "B1",
+      "id": "Q1",
+      "paket": "ultj",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "c",
+      "jawaban": [
+        {
+          "pilihan": "c",
+          "yakin": 50
+        },
+        {
+          "pilihan": "c",
+          "yakin": 45
+        },
+        {
+          "pilihan": "c",
+          "yakin": 40
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 45,
+      "lolos": false
+    },
+    {
+      "bundel": "B1",
+      "id": "Q2",
+      "paket": "dada",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "c",
+      "jawaban": [
+        {
+          "pilihan": "c",
+          "yakin": 55
+        },
+        {
+          "pilihan": "c",
+          "yakin": 55
+        },
+        {
+          "pilihan": "c",
+          "yakin": 55
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 55,
+      "lolos": false
+    },
+    {
+      "bundel": "B1",
+      "id": "Q3",
+      "paket": "dada",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 50
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 53.333333333333336,
+      "lolos": false
+    },
+    {
+      "bundel": "B1",
+      "id": "Q4",
+      "paket": "ultj",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 55
+        },
+        {
+          "pilihan": "b",
+          "yakin": 45
+        },
+        {
+          "pilihan": "b",
+          "yakin": 50
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 50,
+      "lolos": false
+    },
+    {
+      "bundel": "B1",
+      "id": "Q5",
+      "paket": "dada",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 40
+        },
+        {
+          "pilihan": "b",
+          "yakin": 35
+        },
+        {
+          "pilihan": "b",
+          "yakin": 45
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 40,
+      "lolos": false
+    },
+    {
+      "bundel": "B1",
+      "id": "Q6",
+      "paket": "ultj",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 60
+        },
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 60
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 58.333333333333336,
+      "lolos": false
+    },
+    {
+      "bundel": "B2",
+      "id": "Q1",
+      "paket": "dada",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "d",
+      "jawaban": [
+        {
+          "pilihan": "d",
+          "yakin": 55
+        },
+        {
+          "pilihan": "d",
+          "yakin": 55
+        },
+        {
+          "pilihan": "d",
+          "yakin": 60
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 56.666666666666664,
+      "lolos": false
+    },
+    {
+      "bundel": "B2",
+      "id": "Q2",
+      "paket": "ultj",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 45
+        },
+        {
+          "pilihan": "b",
+          "yakin": 45
+        },
+        {
+          "pilihan": "b",
+          "yakin": 50
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 46.666666666666664,
+      "lolos": false
+    },
+    {
+      "bundel": "B2",
+      "id": "Q3",
+      "paket": "tirt",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "d",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 50
+        },
+        {
+          "pilihan": "b",
+          "yakin": 50
+        },
+        {
+          "pilihan": "b",
+          "yakin": 50
+        }
+      ],
+      "benar": 0,
+      "yakinBenar": null,
+      "lolos": true
+    },
+    {
+      "bundel": "B2",
+      "id": "Q4",
+      "paket": "ultj",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 40
+        },
+        {
+          "pilihan": "b",
+          "yakin": 40
+        },
+        {
+          "pilihan": "b",
+          "yakin": 40
+        }
+      ],
+      "benar": 0,
+      "yakinBenar": null,
+      "lolos": true
+    },
+    {
+      "bundel": "B2",
+      "id": "Q5",
+      "paket": "dada",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 45
+        },
+        {
+          "pilihan": "a",
+          "yakin": 45
+        },
+        {
+          "pilihan": "a",
+          "yakin": 50
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 46.666666666666664,
+      "lolos": false
+    },
+    {
+      "bundel": "B2",
+      "id": "Q6",
+      "paket": "dada",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 55
+        },
+        {
+          "pilihan": "b",
+          "yakin": 65
+        },
+        {
+          "pilihan": "b",
+          "yakin": 65
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 61.666666666666664,
+      "lolos": false
+    },
+    {
+      "bundel": "B2",
+      "id": "Q7",
+      "paket": "tirt",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "d",
+          "yakin": 45
+        },
+        {
+          "pilihan": "d",
+          "yakin": 45
+        },
+        {
+          "pilihan": "d",
+          "yakin": 45
+        }
+      ],
+      "benar": 0,
+      "yakinBenar": null,
+      "lolos": true
+    },
+    {
+      "bundel": "B2",
+      "id": "Q8",
+      "paket": "ultj",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "d",
+      "jawaban": [
+        {
+          "pilihan": "c",
+          "yakin": 40
+        },
+        {
+          "pilihan": "d",
+          "yakin": 40
+        },
+        {
+          "pilihan": "c",
+          "yakin": 40
+        }
+      ],
+      "benar": 1,
+      "yakinBenar": 40,
+      "lolos": false
+    },
+    {
+      "bundel": "B2",
+      "id": "Q9",
+      "paket": "tirt",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 60
+        },
+        {
+          "pilihan": "a",
+          "yakin": 55
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 56.666666666666664,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q1",
+      "paket": "ultj",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 55
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 55,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q2",
+      "paket": "ultj",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "c",
+      "jawaban": [
+        {
+          "pilihan": "d",
+          "yakin": 40
+        },
+        {
+          "pilihan": "c",
+          "yakin": 45
+        },
+        {
+          "pilihan": "d",
+          "yakin": 40
+        }
+      ],
+      "benar": 1,
+      "yakinBenar": 45,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q3",
+      "paket": "dada",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "c",
+      "jawaban": [
+        {
+          "pilihan": "c",
+          "yakin": 70
+        },
+        {
+          "pilihan": "c",
+          "yakin": 50
+        },
+        {
+          "pilihan": "c",
+          "yakin": 70
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 63.333333333333336,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q4",
+      "paket": "dada",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 70
+        },
+        {
+          "pilihan": "a",
+          "yakin": 70
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 65,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q5",
+      "paket": "ultj",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 50
+        },
+        {
+          "pilihan": "b",
+          "yakin": 45
+        },
+        {
+          "pilihan": "b",
+          "yakin": 50
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 48.333333333333336,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q6",
+      "paket": "tirt",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 1,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 60
+        }
+      ],
+      "benar": 2,
+      "yakinBenar": 57.5,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q7",
+      "paket": "tirt",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 3,
+      "kunci": "d",
+      "jawaban": [
+        {
+          "pilihan": "d",
+          "yakin": 60
+        },
+        {
+          "pilihan": "d",
+          "yakin": 60
+        },
+        {
+          "pilihan": "d",
+          "yakin": 70
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 63.333333333333336,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q8",
+      "paket": "dada",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 65
+        },
+        {
+          "pilihan": "b",
+          "yakin": 60
+        },
+        {
+          "pilihan": "b",
+          "yakin": 65
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 63.333333333333336,
+      "lolos": false
+    },
+    {
+      "bundel": "B3",
+      "id": "Q9",
+      "paket": "tirt",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "omongan": 2,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 65
+        },
+        {
+          "pilihan": "b",
+          "yakin": 60
+        },
+        {
+          "pilihan": "b",
+          "yakin": 70
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 65,
+      "lolos": false
+    },
+    {
+      "bundel": "BM",
+      "id": "Q1",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "putaran": null,
+      "omongan": 1,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "b",
+          "yakin": 35
+        },
+        {
+          "pilihan": "b",
+          "yakin": 35
+        },
+        {
+          "pilihan": "b",
+          "yakin": 35
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 35,
+      "lolos": false
+    },
+    {
+      "bundel": "BM",
+      "id": "Q2",
+      "paket": "dada",
+      "sumber": "manusia",
+      "putaran": null,
+      "omongan": 1,
+      "kunci": "b",
+      "jawaban": [
+        {
+          "pilihan": "d",
+          "yakin": 75
+        },
+        {
+          "pilihan": "d",
+          "yakin": 70
+        },
+        {
+          "pilihan": "d",
+          "yakin": 70
+        }
+      ],
+      "benar": 0,
+      "yakinBenar": null,
+      "lolos": true
+    },
+    {
+      "bundel": "BM",
+      "id": "Q3",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "putaran": null,
+      "omongan": 2,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 40
+        },
+        {
+          "pilihan": "a",
+          "yakin": 40
+        },
+        {
+          "pilihan": "a",
+          "yakin": 40
+        }
+      ],
+      "benar": 3,
+      "yakinBenar": 40,
+      "lolos": false
+    },
+    {
+      "bundel": "BM",
+      "id": "Q4",
+      "paket": "dada",
+      "sumber": "manusia",
+      "putaran": null,
+      "omongan": 3,
+      "kunci": "c",
+      "jawaban": [
+        {
+          "pilihan": "c",
+          "yakin": 40
+        },
+        {
+          "pilihan": "d",
+          "yakin": 40
+        },
+        {
+          "pilihan": "d",
+          "yakin": 35
+        }
+      ],
+      "benar": 1,
+      "yakinBenar": 40,
+      "lolos": false
+    },
+    {
+      "bundel": "BM",
+      "id": "Q5",
+      "paket": "dada",
+      "sumber": "manusia",
+      "putaran": null,
+      "omongan": 2,
+      "kunci": "a",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 35
+        },
+        {
+          "pilihan": "b",
+          "yakin": 40
+        },
+        {
+          "pilihan": "a",
+          "yakin": 40
+        }
+      ],
+      "benar": 2,
+      "yakinBenar": 37.5,
+      "lolos": false
+    },
+    {
+      "bundel": "BM",
+      "id": "Q6",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "putaran": null,
+      "omongan": 3,
+      "kunci": "d",
+      "jawaban": [
+        {
+          "pilihan": "a",
+          "yakin": 40
+        },
+        {
+          "pilihan": "a",
+          "yakin": 45
+        },
+        {
+          "pilihan": "a",
+          "yakin": 45
+        }
+      ],
+      "benar": 0,
+      "yakinBenar": null,
+      "lolos": true
+    }
+  ],
+  "alami": [
+    {
+      "penilai": "alami-p1",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "A",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesannya hidup seperti obrolan grup (\"Woi cek dong\", \"udah buang\"), tetapi \"Kata orang dalam beneran segitu\" agak janggal, dan penjelasannya kaku karena terus mengulang pola \"Kartu ... menulis/menyebut\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "B",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesan dan pilihannya wajar, tetapi penjelasannya memakai frasa kaku seperti \"Kartu hitungan 22,25 kali membandingkan\" dan \"angka yang disebut di omongan\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "C",
+      "sumber": "manusia",
+      "putaran": null,
+      "skor": 5,
+      "alasan": "Pesannya sangat alami (\"buat bayar parkir motor aja kurang\", \"nggak kedengeran jual\"), dan penjelasannya mengalir seperti teman yang menerangkan (\"jual-beli disetop\", \"Perhatikan juga tanggalnya\"); hanya ada satu frasa yang sedikit ganjil, \"semacam pengumuman\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "D",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesan Sinta terbaca seperti pengumuman, bukan obrolan; pilihan \"Rp140 sepuluh lot\" terlalu dipadatkan; dan \"bilangan di omongan\" tidak lazim bagi penutur asli."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "A",
+      "sumber": "manusia",
+      "putaran": null,
+      "skor": 5,
+      "alasan": "Pesannya terasa asli (\"Jangan kegeeran dulu\", \"Rapi banget\"), dan penjelasannya runtut serta bernada teman; hanya satu kalimat yang sedikit formal, yaitu \"Yang tidak dikatakan kartu mana pun\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "B",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesannya wajar, tetapi penjelasannya janggal: \"Rp130 per lembar\" ditulis dua kali (\"dividen per lembar Rp130 per lembar\"), lalu ada \"jarak ... turun Rp145\", \"selisih keduanya lebih Rp15\", dan \"laporannya beli\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "C",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Obrolan dan penjelasannya cukup luwes, tetapi ada salah ketik \"dividenya\" yang berulang, dan \"jarak dari penutupan ... ke pembukaan\" terasa kaku."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "D",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 2,
+      "alasan": "Pesannya datar seperti pernyataan data (\"orang dalam lain nambah\"), sedangkan penjelasannya berulang dan mekanis (\"kartu data harga harian bursa mencatat\" ditulis dua kali, \"Kartu daftar aksi korporasi menegaskan ... tercatat di daftar\", \"dihitung di paket\")."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 3,
+      "paket": "tirt",
+      "label": "A",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesannya alami, tetapi penjelasannya berisi potongan yang rusak seperti tempelan nama kolom, yaitu \"sebagai perlindungan investor penghentian 10 Desember 2025\" dan \"untuk cooling down penghentian 10 Desember 2025\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "kelompok": 3,
+      "paket": "tirt",
+      "label": "B",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesan dan penjelasannya umumnya wajar, tetapi masih ada istilah internal \"hitungan paket\" dan frasa ganjil \"penghentiannya ini menyusul\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "A",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pembuka pesan terasa obrolan (\"Woi cek dong\"), tetapi tanggal lengkap dan \"per lembar\" yang diulang di pesan grup tidak wajar, dan penjelasannya kaku seperti templat (\"Kartu hitungannya mengandaikan pemegang 10 lot yaitu 1.000 lembar\")."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "B",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesannya hidup dan wajar (\"Aku baru denger dari grup sebelah\"), tetapi penjelasannya memuat frasa janggal seperti \"angka yang disebut di omongan\" dan \"Kartu hitungan 22,25 kali membandingkan\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "C",
+      "sumber": "manusia",
+      "putaran": null,
+      "skor": 5,
+      "alasan": "Pesannya terdengar seperti grup sungguhan (\"buat bayar parkir motor aja kurang\", \"nggak kedengeran jual\"), dan penjelasannya mengalir seperti teman yang menerangkan (\"jual-beli disetop\", \"kebagian\"). Hanya ada sedikit frasa ganjil."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "D",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesan-pesannya lebih mirip laporan daripada obrolan (\"ex date 16 September 2025. Yang punya 10 lot dapat Rp140.\"), pilihannya terpotong janggal (\"Rp140 sepuluh lot\"), dan \"bilangan di omongan\" tidak lazim."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "A",
+      "sumber": "manusia",
+      "putaran": null,
+      "skor": 5,
+      "alasan": "Pesannya alami dan berkarakter (\"Jangan kegeeran dulu\", \"Rapi banget\"), dan penjelasannya lancar serta menyapa pembaca dengan wajar (\"jadi tidak ada yang perlu kamu hitung\"), meskipun agak panjang."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "B",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesannya wajar, tetapi penjelasannya berisi pengulangan dan frasa kaku seperti \"dividen per lembar Rp130 per lembar\", \"selisih keduanya lebih Rp15\", dan \"salah satu laporannya beli 6.338.600 lembar\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "C",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesannya terasa seperti obrolan (\"Btw ... pada beli saham sendiri lho\") dan penjelasannya cukup lancar, tetapi ada salah ketik berulang \"dividenya\" dan beberapa kalimat masih bergaya templat."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "D",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 2,
+      "alasan": "Pesannya datar seperti pernyataan data, bukan obrolan. Penjelasannya mengulang subjek yang sama secara mekanis (\"kartu data harga harian bursa mencatat ... dan kartu data harga harian bursa mencatat\") dan membocorkan istilah internal (\"sudah dihitung di paket\")."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 3,
+      "paket": "tirt",
+      "label": "A",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesannya wajar, dengan campur kode \"dicooling down\" yang lazim di obrolan, tetapi penjelasannya dua kali memuat sisipan patah seperti hasil templat (\"sebagai perlindungan investor penghentian 10 Desember 2025\")."
+    },
+    {
+      "penilai": "alami-p2",
+      "kelompok": 3,
+      "paket": "tirt",
+      "label": "B",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesannya alami (\"Suspend 21 Januari 2025 itu alasannya sama dong\") dan penjelasannya umumnya lancar, tetapi ada istilah internal (\"hitungan paket\") dan pilihan yang janggal (\"penghentiannya ini menyusul\")."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "A",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesannya hidup seperti obrolan grup ('Woi cek dong', 'Gila, katanya...'), tetapi penjelasannya agak seperti templat dengan frasa kaku seperti 'Kartu hitungannya mengandaikan pemegang 10 lot yaitu 1.000 lembar'."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "B",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Obrolannya wajar, tetapi ada frasa benda yang kaku ('Kartu hitungan 22,25 kali membandingkan...') dan kalimat longgar seperti 'penjualan pemegang saham besar selalu ada laporan kepemilikannya'."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "C",
+      "sumber": "manusia",
+      "putaran": null,
+      "skor": 5,
+      "alasan": "Pesannya sangat alami ('buat bayar parkir motor aja kurang', 'nggak kedengeran jual') dan penjelasannya mengalir seperti teman yang menjelaskan; hanya 'harga yang naik sebagai semacam pengumuman' yang sedikit janggal."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 1,
+      "paket": "dada",
+      "label": "D",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesannya datar seperti pengumuman, bukan obrolan (terutama pesan Sinta), pilihannya dipadatkan dengan janggal ('Rp140 sepuluh lot'), dan penjelasannya kaku ('bilangan di omongan sama dengan yang tertulis')."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "A",
+      "sumber": "manusia",
+      "putaran": null,
+      "skor": 5,
+      "alasan": "Terdengar ditulis penutur asli: pesannya luwes ('Jangan kegeeran dulu', 'Rapi banget') dan penjelasannya bernada teman yang menuntun dengan 'Perhatikan juga...'."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "B",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Pesannya wajar, tetapi penjelasannya berisi pengulangan dan frasa janggal seperti 'dividen per lembar Rp130 per lembar', 'selisih keduanya lebih Rp15', dan 'salah satu laporannya beli 6.338.600 lembar'."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "C",
+      "sumber": "zai-org/GLM-5.3",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesan dan penjelasannya umumnya alami, tetapi ada salah ketik 'dividenya' (dua kali) dan beberapa kalimat penjelasan agak kaku ('Contohnya kartu pembelian 700.000 lembar oleh pemilik terbesar')."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": "D",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 2,
+      "alasan": "Pesannya berupa pernyataan datar yang tidak terasa seperti obrolan, dan penjelasannya berulang secara mekanis ('kartu data harga harian bursa mencatat... dan kartu data harga harian bursa mencatat', 'sudah dihitung di paket') seperti keluaran mesin."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 3,
+      "paket": "tirt",
+      "label": "A",
+      "sumber": "zai-org/GLM-5.3-Flash",
+      "putaran": 2,
+      "skor": 3,
+      "alasan": "Obrolannya alami, tetapi penjelasannya memuat potongan label yang tertempel dan merusak kalimat ('sebagai perlindungan investor penghentian 10 Desember 2025', 'untuk cooling down penghentian 10 Desember 2025')."
+    },
+    {
+      "penilai": "alami-p3",
+      "kelompok": 3,
+      "paket": "tirt",
+      "label": "B",
+      "sumber": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "putaran": 2,
+      "skor": 4,
+      "alasan": "Pesan dan penjelasannya umumnya wajar, tetapi ada istilah dari dalam sistem ('hitungan paket') dan pilihan yang agak kaku ('penghentiannya ini menyusul rapat umum pemegang saham')."
+    }
+  ],
+  "total_ledger_usd": 1.2380080539999998
+}

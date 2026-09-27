@@ -263,6 +263,28 @@ function utama(): number {
     kunci.alami.push({ kelompok, paket, label, putaran: putaranLabel });
   });
   writeFileSync(`${FOLDER_PENGUJI}/alami.md`, bagian.join('\n'), 'utf8');
+
+  // --- kalibrasi: omongan manusia yang hidup, prosedur tebak buta yang sama.
+  // Acak tersendiri (benih + 1) dan dibangun paling akhir, supaya bundel dan
+  // label di atas tidak bergeser satu byte pun karena bagian ini ditambahkan.
+  const rm = acak(BENIH + 1);
+  const butirManusia: Array<{ b: ButirTebak; o: OmonganPolos }> = [];
+  for (const paket of ['dada', 'ultj'] as const) {
+    const m = manusia[paket];
+    if (m === undefined) continue;
+    m.omongan.forEach((o, n) => {
+      butirManusia.push({ b: { id: '', paket, sumber: 'manusia', putaran: null, omongan: n + 1, kunci: o.kunci }, o });
+    });
+  }
+  const urutManusia = kocok(butirManusia, rm);
+  urutManusia.forEach((x, k) => (x.b.id = `Q${String(k + 1)}`));
+  kunci.tebak.push({ bundel: 'BM', butir: urutManusia.map((x) => x.b) });
+  writeFileSync(
+    `${FOLDER_PENGUJI}/tebak-BM.md`,
+    [PETUNJUK_TEBAK, '', ...urutManusia.map((x) => tulisSoalTebak(x.b.id, x.o) + '\n')].join('\n'),
+    'utf8',
+  );
+  console.log(`tebak-BM.md (kalibrasi manusia): ${String(urutManusia.length)} soal`);
   writeFileSync(`${FOLDER_PENGUJI}/kunci.json`, JSON.stringify(kunci, null, 2) + '\n', 'utf8');
   console.log(`alami.md: ${String(kunci.alami.reduce((a, k) => a + Object.keys(k.label).length, 0))} draf`);
   return 0;
