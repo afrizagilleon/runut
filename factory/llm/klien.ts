@@ -71,6 +71,8 @@ export interface KonfigKlien {
 export interface HasilChat {
   model: string;
   teks: string;
+  /** Penalaran model bila penyedia mengirimnya terpisah (`reasoning_content`); `null` kalau tidak. */
+  penalaran: string | null;
   finish_reason: string | null;
   token_masuk: number;
   token_keluar: number;
@@ -118,7 +120,10 @@ function dapatDiulang(status: number): boolean {
 
 interface ResponsChat {
   model?: string;
-  choices?: Array<{ message?: { content?: string | null }; finish_reason?: string | null }>;
+  choices?: Array<{
+    message?: { content?: string | null; reasoning_content?: string | null; reasoning?: string | null };
+    finish_reason?: string | null;
+  }>;
   usage?: { prompt_tokens?: number; completion_tokens?: number };
 }
 
@@ -236,6 +241,7 @@ export async function chat(
     return {
       model: data.model ?? opsi.model,
       teks: pilihan?.message?.content ?? '',
+      penalaran: pilihan?.message?.reasoning_content ?? pilihan?.message?.reasoning ?? null,
       finish_reason: pilihan?.finish_reason ?? null,
       token_masuk: typeof masuk === 'number' ? masuk : 0,
       token_keluar: typeof keluar === 'number' ? keluar : 0,
