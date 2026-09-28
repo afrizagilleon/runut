@@ -1,0 +1,548 @@
+{
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "maks_putaran": 5,
+  "setelan_penyusun": {
+    "suhu": 0.3,
+    "maxTokens": 32768
+  },
+  "per_simulasi": [
+    {
+      "paket": "tirt",
+      "tanggal_t": "2025-12-10",
+      "lolos": false,
+      "putaran": 5,
+      "berhenti": "batas 5 putaran tercapai; omongan terkunci: 1, 2",
+      "panggilan": 56,
+      "token_masuk": 101440,
+      "token_keluar": 389968,
+      "biaya_jejak": 0.1727497,
+      "biaya_ledger": 0.17274969599999995,
+      "durasi_ms": 3830980,
+      "status_per_putaran": [
+        [
+          "tidak-ada",
+          "ditolak-tebak",
+          "ditolak-tebak"
+        ],
+        [
+          "lolos",
+          "ditolak-tebak",
+          "ditolak-tebak"
+        ],
+        [
+          "terkunci-sebelumnya",
+          "lolos",
+          "ditolak-tebak"
+        ],
+        [
+          "terkunci-sebelumnya",
+          "terkunci-sebelumnya",
+          "ditolak-tebak"
+        ],
+        [
+          "terkunci-sebelumnya",
+          "terkunci-sebelumnya",
+          "ditolak-tebak"
+        ]
+      ]
+    },
+    {
+      "paket": "dada",
+      "tanggal_t": "2025-10-08",
+      "lolos": false,
+      "putaran": 5,
+      "berhenti": "batas 5 putaran tercapai; omongan terkunci: 1",
+      "panggilan": 70,
+      "token_masuk": 115026,
+      "token_keluar": 493650,
+      "biaya_jejak": 0.2160559,
+      "biaya_ledger": 0.23170355600000006,
+      "durasi_ms": 5040172,
+      "status_per_putaran": [
+        [
+          "ditolak-tebak",
+          "ditolak-validator",
+          "ditolak-tebak"
+        ],
+        [
+          "ditolak-tebak",
+          "ditolak-tebak",
+          "ditolak-validator"
+        ],
+        [
+          "ditolak-tebak",
+          "ditolak-validator",
+          "ditolak-tebak"
+        ],
+        [
+          "lolos",
+          "ditolak-tebak",
+          "ditolak-tebak"
+        ],
+        [
+          "terkunci-sebelumnya",
+          "ditolak-tebak",
+          "ditolak-tebak"
+        ]
+      ]
+    },
+    {
+      "paket": "ultj",
+      "tanggal_t": "2026-05-04",
+      "lolos": false,
+      "putaran": 5,
+      "berhenti": "batas 5 putaran tercapai; omongan terkunci: tidak ada",
+      "panggilan": 54,
+      "token_masuk": 143226,
+      "token_keluar": 478301,
+      "biaya_jejak": 0.21556629,
+      "biaya_ledger": 0.23253733999999995,
+      "durasi_ms": 6140233,
+      "status_per_putaran": [
+        [
+          "tidak-ada",
+          "ditolak-tebak",
+          "ditolak-tebak"
+        ],
+        [
+          "ditolak-tebak",
+          "ditolak-validator",
+          "ditolak-tebak"
+        ],
+        [
+          "ditolak-validator",
+          "ditolak-validator",
+          "ditolak-validator"
+        ],
+        [
+          "ditolak-tebak",
+          "ditolak-kartu",
+          "ditolak-tebak"
+        ],
+        [
+          "ditolak-validator",
+          "ditolak-tebak",
+          "ditolak-validator"
+        ]
+      ]
+    }
+  ],
+  "luar": [
+    {
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "b",
+      "putaran": 2,
+      "tebak_dalam": {
+        "benar": 0,
+        "yakin_benar": null,
+        "tebakan": [
+          {
+            "pilihan": "d",
+            "yakin": 65
+          },
+          {
+            "pilihan": "d",
+            "yakin": 75
+          },
+          {
+            "pilihan": "d",
+            "yakin": 75
+          }
+        ]
+      },
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "yakin": 75
+          },
+          {
+            "pilihan": "b",
+            "yakin": 70
+          },
+          {
+            "pilihan": "b",
+            "yakin": 55
+          }
+        ],
+        "benar": 3,
+        "yakinBenar": 66.66666666666667,
+        "lolos": false
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "b",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "b",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          1
+        ]
+      }
+    },
+    {
+      "paket": "tirt",
+      "no": 2,
+      "kunci": "a",
+      "putaran": 3,
+      "tebak_dalam": {
+        "benar": 0,
+        "yakin_benar": null,
+        "tebakan": [
+          {
+            "pilihan": "d",
+            "yakin": 60
+          },
+          {
+            "pilihan": "d",
+            "yakin": 60
+          },
+          {
+            "pilihan": "d",
+            "yakin": 60
+          }
+        ]
+      },
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "yakin": 40
+          },
+          {
+            "pilihan": "b",
+            "yakin": 35
+          },
+          {
+            "pilihan": "b",
+            "yakin": 35
+          }
+        ],
+        "benar": 0,
+        "yakinBenar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "kartu": [
+              3,
+              4
+            ],
+            "bingung": "Gilang bilang \"naiknya pelan banget\", tapi dari Rp48 ke Rp106 dalam 9 hari itu lebih dari dua kali lipat, jadi menurut gue nggak pelan. Nggak ada pilihan yang bilang itu keliru. Pilihan a dan c juga isinya hampir sama (\"pelan tapi beruntun\" vs \"pelan tapi jalan terus tanpa henti\"), jadi gue nggak yakin bedanya di mana."
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              3,
+              4
+            ],
+            "bingung": "Gilang bilang 'naiknya pelan banget, sehari cuma naik dikit-dikit', padahal dari Rp48 ke Rp106 itu lebih dari dua kali lipat, jadi rasanya tidak pelan. Tapi tidak ada pilihan 'Keliru' yang menyebut itu. Pilihan a ('naiknya memang pelan tapi beruntun, dan itu yang bikin disetop') dan c ('setopnya karena naiknya pelan tapi jalan terus tanpa henti') terbaca hampir sama, jadi saya bingung harus pilih yang mana."
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              3,
+              4
+            ],
+            "bingung": "a) Betul, naiknya memang pelan tapi beruntun, dan itu yang bikin disetop. / c) Betul, setopnya karena naiknya pelan tapi jalan terus tanpa henti. — dua pilihan ini rasanya sama saja, dan dari Rp48 ke Rp106 kok disebut pelan?"
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          3,
+          4
+        ]
+      }
+    },
+    {
+      "paket": "dada",
+      "no": 1,
+      "kunci": "a",
+      "putaran": 4,
+      "tebak_dalam": {
+        "benar": 0,
+        "yakin_benar": null,
+        "tebakan": [
+          {
+            "pilihan": "d",
+            "yakin": 65
+          },
+          {
+            "pilihan": "d",
+            "yakin": 80
+          },
+          {
+            "pilihan": "d",
+            "yakin": 70
+          }
+        ]
+      },
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "d",
+            "yakin": 55
+          },
+          {
+            "pilihan": "d",
+            "yakin": 55
+          },
+          {
+            "pilihan": "d",
+            "yakin": 45
+          }
+        ],
+        "benar": 0,
+        "yakinBenar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "kartu": [
+              3
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              3
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              3
+            ],
+            "bingung": "Kepemilikan tercatat berubah dari 4.662.137.600 menjadi 4.592.137.600 lembar, yaitu dari 62,73 persen menjadi 61,788 persen saham."
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          3
+        ]
+      }
+    }
+  ],
+  "setuju": {
+    "lolos_dalam_lolos_luar": 2,
+    "lolos_dalam_gagal_luar": 1,
+    "kartu_lolos_dalam_lolos_luar": 3,
+    "kartu_lolos_dalam_benar_luar_3": 3
+  },
+  "alami": [
+    {
+      "penilai": "alami-p1",
+      "paket": "tirt",
+      "sumber": "agen-m2d2",
+      "skor": 4,
+      "alasan": "Pesan-pesannya terasa seperti obrolan grup sungguhan (\"naiknya pelan banget, sehari cuma naik dikit-dikit\"), tetapi penjelasannya agak kaku dan berulang (\"tercatat 48 rupiah per lembar\" muncul dua kali dengan susunan yang sama), \"Jadi setopnya kayak nggak masuk akal\" terdengar sedikit janggal, dan \"salah-kaprah\" tidak perlu diberi tanda hubung."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "tirt",
+      "sumber": "m2d1-deepseek",
+      "skor": 3,
+      "alasan": "Pesan dan sebagian besar penjelasannya wajar, tetapi \"Kartu harga mencatat... dan hitungan paket menyebut\" bocoran istilah sistem yang tidak akan dipakai penutur asli, dan pilihan \"penghentiannya ini menyusul rapat umum\" terasa kaku."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "dada",
+      "sumber": "agen-m2d2",
+      "skor": 4,
+      "alasan": "Pesannya alami dan penjelasannya bernada teman (\"Angka 59,375 persen yang mungkin kamu lihat\"), hanya kalimat salah kaprahnya terlalu panjang dan mengulang angka yang sama."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "dada",
+      "sumber": "m2d1-deepseek",
+      "skor": 2,
+      "alasan": "Pesannya wajar, tetapi penjelasannya mekanis dan terasa seperti hasil mesin (\"Kartu hitungan 22,25 kali membandingkan dua angka itu, jadi bilangan di omongan sama dengan yang tertulis di dokumen\"), dan beberapa pilihan jawaban terlalu dipadatkan (\"Rp140 sepuluh lot\")."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "dada",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya sangat hidup (\"buat bayar parkir motor aja kurang\", \"nggak kedengeran jual\") dan penjelasannya seperti teman yang sedang menjelaskan, tetapi masih ada rujukan \"kartu\" yang terasa seperti istilah sistem, dan frasa \"menganggap harga yang naik sebagai semacam pengumuman\" agak janggal."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "tirt",
+      "sumber": "agen-m2d2",
+      "skor": 3,
+      "alasan": "Pesannya cukup santai, tetapi 'setopnya kayak nggak masuk akal' dan 'setopnya' yang terus diulang terdengar janggal; penutur asli lebih biasa bilang 'disuspen' atau 'kena suspend', dan penjelasannya agak kaku seperti laporan."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "tirt",
+      "sumber": "m2d1-deepseek",
+      "skor": 4,
+      "alasan": "Pesan grupnya wajar ('Bener nggak sih?', 'rame banget', 'Cek dong'), tetapi penjelasannya memuat istilah internal yang kaku ('kartu harga', 'hitungan paket', 'omongan teman cocok dengan dokumennya')."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "dada",
+      "sumber": "agen-m2d2",
+      "skor": 4,
+      "alasan": "Pesan dan penjelasannya mengalir dan ramah ('yang mungkin kamu lihat'), tetapi kalimat salah-kaprah di akhir kepanjangan dan diulang-ulang, dan pesannya penuh angka panjang sehingga kurang terasa seperti obrolan."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "dada",
+      "sumber": "m2d1-deepseek",
+      "skor": 2,
+      "alasan": "Frasa seperti 'bilangan di omongan', 'Kartu hitungan 22,25 kali membandingkan', dan pilihan yang dipotong-potong 'Rp140 sepuluh lot' terasa seperti isian templat mesin, bukan teman yang menjelaskan."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "dada",
+      "sumber": "manusia",
+      "skor": 5,
+      "alasan": "Pesannya terdengar seperti grup sungguhan ('buat bayar parkir motor aja kurang', 'tenang-tenang, nggak kedengeran jual') dan penjelasannya bernada teman yang menerangkan, hanya sedikit tersendat pada penyebutan 'kartu'."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "tirt",
+      "sumber": "agen-m2d2",
+      "skor": 4,
+      "alasan": "Pesan grupnya terdengar wajar (\"Nggak heran lama-lama disetop juga\"), tetapi \"setopnya\" dan sisipan \"sebagai cooling down\" di penjelasan agak kaku dan terasa seperti bahasa dokumen."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "tirt",
+      "sumber": "m2d1-deepseek",
+      "skor": 3,
+      "alasan": "Pesan-pesannya alami seperti obrolan sungguhan, tetapi penjelasannya memakai istilah sistem seperti \"kartu harga\" dan \"hitungan paket\" serta pola berulang \"omongan teman cocok dengan dokumennya\", yang tidak lazim diucapkan teman."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "dada",
+      "sumber": "agen-m2d2",
+      "skor": 4,
+      "alasan": "Bahasanya lancar dan bernada teman (\"yang mungkin kamu lihat\"), tetapi penjelasannya panjang dan mengulang-ulang angka sehingga terasa agak seperti laporan."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "dada",
+      "sumber": "m2d1-deepseek",
+      "skor": 2,
+      "alasan": "Penjelasannya mekanis dan terasa ditulis mesin (\"Kartu hitungan 22,25 kali membandingkan dua angka itu, jadi bilangan di omongan sama...\"), dan beberapa pilihan jawaban terpotong-potong seperti \"Rp140 sepuluh lot\"."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "dada",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya sangat hidup (\"buat bayar parkir motor aja kurang\") dan penjelasannya bernada teman yang menerangkan, hanya saja masih ada rujukan \"kartu\" dan frasa janggal \"menganggap harga yang naik sebagai semacam pengumuman\"."
+    }
+  ],
+  "alami_rata": {
+    "agen_m2d2": {
+      "rata": 3.8333333333333335,
+      "n": 6
+    },
+    "m2d1_deepseek": {
+      "rata": 2.6666666666666665,
+      "n": 6
+    },
+    "manusia": {
+      "rata": 4.333333333333333,
+      "n": 3
+    }
+  },
+  "m2d1": {
+    "tebak_lolos_semua": "3/24",
+    "deepseek": {
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "lolos_p1": 3,
+      "lolos_p2": 3,
+      "sel_per_putaran": 3,
+      "percobaan_sampai_lolos": [
+        2,
+        2,
+        1,
+        2,
+        1,
+        1
+      ],
+      "terpotong": [
+        1,
+        0
+      ],
+      "percobaan": [
+        5,
+        4
+      ],
+      "tebak_lolos": 2,
+      "tebak_total": 9,
+      "tebak_benar_rata": 2.111111111111111,
+      "alami_rata": 3,
+      "alami_n": 9,
+      "token_masuk": [
+        20521,
+        15734
+      ],
+      "token_keluar": [
+        44835,
+        43727
+      ],
+      "biaya": [
+        0.021597435999999998,
+        0.020224847999999997
+      ],
+      "biaya_per_lolos": 0.006970380666666665,
+      "latensi_rata_ms": [
+        23934.6,
+        28575.25
+      ],
+      "alasan_tolak": [
+        [
+          "OPSI_PANJANG_TIMPANG",
+          2
+        ],
+        [
+          "JSON_RUSAK",
+          1
+        ]
+      ]
+    },
+    "manusia_alami_rata": 5
+  },
+  "biaya": {
+    "milestone_ledger_usd": 1.0364945240000003,
+    "ledger_kumulatif_usd": 2.274502577999999,
+    "panggilan": 286
+  }
+}

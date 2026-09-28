@@ -32,7 +32,8 @@
     "llm:penguji": "node --experimental-strip-types factory/llm/penguji.ts",
     "llm:laporan": "node --experimental-strip-types factory/llm/laporan.ts",
     "agen:susun": "node --experimental-strip-types factory/llm/agen-susun.ts",
-    "agen:penguji": "node --experimental-strip-types factory/llm/agen-penguji.ts"
+    "agen:penguji": "node --experimental-strip-types factory/llm/agen-penguji.ts",
+    "agen:laporan": "node --experimental-strip-types factory/llm/agen-laporan.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

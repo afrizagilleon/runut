@@ -60,7 +60,7 @@ export const JUMLAH_OMONGAN = 3;
  * - **Mode berpikir tetap menyala.** Jalan 5 mematikannya
  *   (`chat_template_kwargs.thinking = false`, `klien.ts` `tambahanBadan`):
  *   cepat (±10 detik per omongan) tetapi dua kegagalan terukur — kunci yang
- *   salah menurut kartunya sendiri (tertangkap gerbang kartu, lima putaran
+ *   salah menurut kartunya sendiri (tertangkap gerbang kartu, empat putaran
  *   berturut-turut untuk omongan yang sama) dan versi yang ditolak dikirim
  *   ulang hampir kata per kata. Nol omongan terkunci dalam 5 putaran.
  * - Yang membuat penalaran tidak berujung di jalan 1–4 adalah aturan 12 versi

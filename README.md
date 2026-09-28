@@ -449,6 +449,22 @@ Butuh `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`, dan `LLM_PAGU_USD` di `.env`
 (atau lingkungan proses; `.env` menang). Hasil dan rekomendasi model:
 `docs/bukti/uji-tanding-model.md`; keluaran mentah: `eval/keluaran-m2d/`.
 
+**Lingkar agen (M2d-2).** `factory/llm/agen.ts` menulis satu omongan per
+panggilan, lalu validator → gerbang jawab-dengan-kartu (pembaca yang memegang
+kartu harus benar) → gerbang tebak buta (tiga penebak tanpa kartu tidak boleh
+benar, kriteria K-05); omongan yang lolos dikunci kode, yang ditolak ditulis
+ulang dengan umpan balik, paling banyak 5 putaran. Setiap langkah dicatat kode
+saat terjadi di `jejak-agen.json` (skema `factory/llm/jejak-agen.skema.json`).
+
+```bash
+npm run agen:susun -- tirt                 # satu simulasi sungguhan (berbayar, di bawah pagu)
+npm run agen:penguji && npm run agen:laporan  # bahan penguji eksternal, lalu docs/bukti/lingkar-agen.md
+```
+
+Hasil jujurnya — belum ada simulasi yang lolos penuh — ada di
+`docs/bukti/lingkar-agen.md`; keluaran mentah dan jalan yang dibuang di
+`eval/keluaran-m2d2/`.
+
 ## Susunan
 
 | Folder | Isi |
