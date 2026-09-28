@@ -20,6 +20,7 @@ import type { PesanChat } from './klien.ts';
 import type { PaketFakta } from './paket.ts';
 import type { JawabanModel } from './susun.ts';
 import { validasiDraf } from './validasi.ts';
+import { rencanaSudut, type Sudut } from './sudut.ts';
 
 const BANK = bacaBank();
 const POLA_PENILAIAN = /(?<![\p{L}])(bagus|jelek|sehat|buruk|murah|mahal)\p{L}*/giu;
@@ -124,14 +125,18 @@ describe('bank gaya — hanya sampai ke penulis', () => {
       if (info.peran === 'penebak') return j(JSON.stringify({ pilihan: kunci === 'a' ? 'c' : 'a', yakin: 50, alasan: '-' }));
       return j(JSON.stringify({ keberatan: [], arahan: '' }));
     };
-    await jalankanPeran({ paket: PAKET, panggil, validasi: validasiDraf, jam: () => new Date('2026-09-28T00:00:00Z') });
+    const semua = rencanaSudut(PAKET);
+    const awal = DRAF.omongan.map((o) => semua.find((x) => x.fact_id === o.kartu_penentu[0]) as Sudut);
+    const sudut = [...awal, ...semua.filter((x) => !awal.includes(x))];
+    await jalankanPeran({ paket: PAKET, panggil, validasi: validasiDraf, jam: () => new Date('2026-09-28T00:00:00Z'), rencanaSudut: sudut });
     const penulis = rekaman.filter((r) => r.info.peran === 'penulis');
     expect(penulis).toHaveLength(3);
     for (const [i, r] of penulis.entries()) {
       const t = r.pesan[1]?.content ?? '';
       const nada = nadaUntuk(i + 1);
       expect(t).toContain(`NADA YANG DIMINTA untuk pesan omongan ini: ${nada}.`);
-      const contoh = pilihContoh({ topik: topikDariTeks(PAKET.peristiwa), nada, paket_id: 'tirt' });
+      const topikSudut = awal[i]?.topik ?? 'harga';
+      const contoh = pilihContoh({ topik: [topikSudut, ...topikDariTeks(PAKET.peristiwa).filter((t) => t !== topikSudut)], nada, paket_id: 'tirt' });
       expect(t).toContain(tulisContoh(nada, contoh));
       expect(contoh.length).toBeGreaterThanOrEqual(2);
     }

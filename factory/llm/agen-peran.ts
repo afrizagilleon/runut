@@ -29,9 +29,15 @@ import { kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
 import { MODEL_PERAN, type PeranModel } from './model.ts';
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
+import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
 import { pesanPaket, promptSistem, uraiKeluaran, type JawabanModel, type SetelanPanggil } from './susun.ts';
 
-export const MAKS_PUTARAN_PERAN = 5;
+/**
+ * Batas putaran satu simulasi: 5 putaran per sudut × paling banyak 3 sudut
+ * per posisi (D-4). Posisi yang habis ketiga sudutnya menghentikan simulasi
+ * lebih awal (tidak terbit).
+ */
+export const MAKS_PUTARAN_PERAN = MAKS_PUTARAN_SUDUT * MAKS_SUDUT;
 
 /**
  * Petunjuk penebak M2d-3 = petunjuk M2d-2 + satu kalimat eksplisit untuk
@@ -104,6 +110,15 @@ export type StatusPeran =
   | 'galat-gerbang'
   | 'lolos';
 
+/** Sudut satu posisi pada satu putaran (untuk riwayat). */
+export interface SudutPutaran {
+  no: number;
+  ke: number;
+  fact_id: string;
+  /** Putaran ke berapa di sudut ini (1–5). */
+  putaran_sudut: number;
+}
+
 export interface PemeriksaanPeran {
   no: number;
   status: StatusPeran;
@@ -136,6 +151,10 @@ export interface PanggilanPenulis {
 
 export interface PutaranPeran {
   putaran: number;
+  /** Sudut tiap posisi yang aktif pada putaran ini. */
+  sudut: SudutPutaran[];
+  /** Sudut yang dibuang di akhir putaran ini (gagal 5 putaran). */
+  dibuang: Array<{ no: number; ke: number; fact_id: string; pengganti: string | null }>;
   /** Omongan yang ditulis penulis pada putaran ini. */
   ditulis: number[];
   /** Omongan yang dibawa dari putaran sebelumnya tanpa ditulis ulang. */
@@ -155,6 +174,10 @@ export interface HasilPeran {
   jumlah_putaran: number;
   berhenti: string | null;
   draf: DrafSimulasi | null;
+  /** Daftar sudut dari perencana, dalam urutan pakai. */
+  rencana_sudut: Sudut[];
+  /** Riwayat sudut per posisi omongan 1–3. */
+  sudut: CatatanSudut[][];
   riwayat: PutaranPeran[];
 }
 
@@ -165,6 +188,8 @@ export interface OpsiPeran {
   maksPutaran?: number;
   jam?: () => Date;
   jejak?: PencatatJejak;
+  /** Pengganti daftar sudut perencana (tes); bawaan `rencanaSudut(paket)`. */
+  rencanaSudut?: Sudut[];
 }
 
 function adalahObyek(n: unknown): n is Record<string, unknown> {
@@ -188,6 +213,8 @@ export interface PermintaanPenulis {
   umpan: readonly string[] | undefined;
   /** Nada yang diminta perencana + contoh bank gaya (D-3). */
   gaya?: { nada: Nada; contoh: readonly KalimatGaya[] };
+  /** Sudut omongan ini (D-4): fakta yang harus menjadi kartu penentunya. */
+  sudut?: { ke: number; fact_id: string; klaim: string; dibuang: readonly string[] };
 }
 
 /** Pesan pengguna untuk penulis: omongan lain sebagai konteks, versi ditolak + umpan balik, bentuk keluaran. */
@@ -213,6 +240,16 @@ export function pesanPenulis(p: PermintaanPenulis): string {
     syarat.push(`huruf kunci omongan ini tidak boleh "${String(ada[0]?.kunci)}" (kedua omongan lain sudah "${String(ada[0]?.kunci)}")`);
   }
   if (syarat.length > 0) baris.push(`Aturan antar-omongan untuk omongan ${String(no)}: ${syarat.join('; ')}.`, '');
+  if (p.sudut !== undefined) {
+    baris.push(
+      `SUDUT OMONGAN INI (sudut ke-${String(p.sudut.ke)}, dari perencana): kartu_penentu HARUS memuat "${p.sudut.fact_id}" — ` +
+        `"${p.sudut.klaim}". Bangun klaim teman di sekitar fakta ini.`,
+      ...(p.sudut.dibuang.length > 0
+        ? [`Sudut yang sudah dibuang untuk posisi ini (gagal ${String(MAKS_PUTARAN_SUDUT)} putaran; jangan dipakai sebagai penentu): ${p.sudut.dibuang.join(', ')}.`]
+        : []),
+      '',
+    );
+  }
   if (p.gaya !== undefined) baris.push(tulisContoh(p.gaya.nada, p.gaya.contoh), '');
   const sebelumnya = draf[no - 1];
   if (umpan !== undefined && umpan.length > 0) {
@@ -261,6 +298,8 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
     jumlah_putaran: 0,
     berhenti: null,
     draf: null,
+    rencana_sudut: [],
+    sudut: [[], [], []],
     riwayat: [],
   };
   const akhiri = (): HasilPeran => {
@@ -273,12 +312,52 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
   /** Omongan yang versinya dibawa tanpa ditulis ulang (kritikus tidak menjawab). */
   let bawa = new Set<number>();
 
+  // --- 0. PERENCANA (kode): daftar sudut dan sudut awal tiap posisi.
+  const daftarSudut = opsi.rencanaSudut ?? rencanaSudut(opsi.paket);
+  hasil.rencana_sudut = daftarSudut;
+  const klaim = new Map(opsi.paket.fakta.map((f) => [f.fact_id, f.klaim]));
+  /** fact_id yang tidak boleh lagi dipakai sebagai sudut baru: sedang dipakai, pernah dibuang, atau penentu omongan terkunci. */
+  const terpakai = new Set<string>();
+  const sudutKini = new Map<number, CatatanSudut>();
+  const mulaiRencana = jam().toISOString();
+  for (const no of [1, 2, 3]) {
+    const s = sudutBerikutnya(daftarSudut, terpakai);
+    if (s === null) break;
+    terpakai.add(s.fact_id);
+    const c: CatatanSudut = { ke: 1, fact_id: s.fact_id, topik: s.topik, putaran_mulai: 1, putaran_akhir: null, hasil: 'berjalan' };
+    sudutKini.set(no, c);
+    hasil.sudut[no - 1]?.push(c);
+  }
+  catat({
+    putaran: 1, jenis: 'rencana-sudut', omongan: null, waktu_mulai: mulaiRencana, waktu_selesai: jam().toISOString(),
+    model: null, panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0,
+    putusan: sudutKini.size === JUMLAH_OMONGAN ? 'lolos' : 'tolak',
+    alasan: [
+      `${String(daftarSudut.length)} sudut dari paket; sudut awal: ` +
+        [1, 2, 3].map((no) => `omongan ${String(no)} = ${sudutKini.get(no)?.fact_id ?? '(tidak ada)'}`).join(', '),
+    ],
+    sha256_prompt: null,
+    rincian: { daftar: daftarSudut, awal: [1, 2, 3].map((no) => sudutKini.get(no)?.fact_id ?? null) },
+    peran: 'perencana',
+  });
+  if (sudutKini.size < JUMLAH_OMONGAN) {
+    hasil.berhenti = `paket hanya memberi ${String(sudutKini.size)} sudut; simulasi tidak terbit`;
+    return akhiri();
+  }
+  /** Putaran yang sudah dijalani posisi itu di sudutnya sekarang. */
+  const putaranSudut = new Map<number, number>([[1, 0], [2, 0], [3, 0]]);
+
   for (let putaran = 1; putaran <= maks; putaran++) {
     hasil.jumlah_putaran = putaran;
     const aktif = [1, 2, 3].filter((no) => !terkunci.has(no));
     const ditulis = aktif.filter((no) => !bawa.has(no));
+    for (const no of aktif) putaranSudut.set(no, (putaranSudut.get(no) ?? 0) + 1);
     const catatan: PutaranPeran = {
       putaran,
+      sudut: aktif.map((no) => ({
+        no, ke: sudutKini.get(no)?.ke ?? 0, fact_id: sudutKini.get(no)?.fact_id ?? '', putaran_sudut: putaranSudut.get(no) ?? 0,
+      })),
+      dibuang: [],
       ditulis,
       dibawa: aktif.filter((no) => bawa.has(no)),
       panggilan: [],
@@ -290,16 +369,21 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
     };
     hasil.riwayat.push(catatan);
     const jenisTulis = putaran === 1 ? 'susun' : 'tulis-ulang';
+    const riwayatDibuang = (no: number): string[] =>
+      (hasil.sudut[no - 1] ?? []).filter((c) => c.hasil === 'dibuang').map((c) => c.fact_id);
 
     // --- 1. PENULIS: satu omongan per panggilan; cadangan tanpa berpikir bila
     // panggilan berpikir tidak menghasilkan omongan terbaca (M2d-2).
     const gabung = [...draf] as unknown[];
     const tidakAda = new Map<number, string>();
     for (const no of ditulis) {
-      const nada = nadaUntuk(no);
-      const contoh = pilihContoh({ topik: topikDariTeks(opsi.paket.peristiwa), nada, paket_id: opsi.paket.paket_id });
+      const sk = sudutKini.get(no) as CatatanSudut;
+      const nada = nadaUntuk(no, sk.ke);
+      const topik = [sk.topik, ...topikDariTeks(opsi.paket.peristiwa).filter((t) => t !== sk.topik)];
+      const contoh = pilihContoh({ topik, nada, paket_id: opsi.paket.paket_id });
       const permintaan = pesanPenulis({
         no, draf: gabung as Array<OmonganDraf | null>, terkunci, umpan: umpan.get(no), gaya: { nada, contoh },
+        sudut: { ke: sk.ke, fact_id: sk.fact_id, klaim: klaim.get(sk.fact_id) ?? '', dibuang: riwayatDibuang(no) },
       });
       const pesan: PesanChat[] = [
         { role: 'system', content: promptPenulis() },
@@ -365,6 +449,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
             terurai, diabaikan: ambil.lain, finish_reason: jawaban.finish_reason,
             panjang_penalaran: jawaban.penalaran?.length ?? 0, suhu: u.setelan.suhu, max_tokens: u.setelan.maxTokens,
             mode_berpikir: u.berpikir, nada, contoh_gaya: contoh.map((c) => c.id),
+            sudut: { ke: sk.ke, fact_id: sk.fact_id, putaran_sudut: putaranSudut.get(no) ?? 0 },
           },
           peran: 'penulis',
         });
@@ -454,6 +539,16 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           },
           peran: 'pemeriksa',
         });
+      }
+      const sk = sudutKini.get(no);
+      if (o !== null && o !== undefined && !bentukRusak && sk !== undefined) {
+        const penentu = (o as OmonganDraf).kartu_penentu;
+        if (!Array.isArray(penentu) || !penentu.includes(sk.fact_id)) {
+          butir.push(
+            `[pemeriksa: SUDUT] kartu_penentu omongan ini harus memuat "${sk.fact_id}" (sudut ke-${String(sk.ke)} dari perencana); ` +
+              `yang ditulis: ${JSON.stringify(penentu)}.`,
+          );
+        }
       }
       if (butir.length > 0 || o === null || o === undefined) {
         tolak({
@@ -587,6 +682,65 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
     umpan = umpanBaru;
     bawa = bawaBaru;
 
+    // --- 4. PERENCANA (kode): sudut yang lolos ditutup; sudut yang gagal
+    // 5 putaran dibuang dan posisinya mendapat sudut berikutnya.
+    let habis: number | null = null;
+    for (const no of aktif) {
+      const sk = sudutKini.get(no) as CatatanSudut;
+      if (terkunci.has(no)) {
+        sk.hasil = 'lolos';
+        sk.putaran_akhir = putaran;
+        for (const id of draf[no - 1]?.kartu_penentu ?? []) terpakai.add(id);
+        continue;
+      }
+      if ((putaranSudut.get(no) ?? 0) < MAKS_PUTARAN_SUDUT) continue;
+      sk.hasil = 'dibuang';
+      sk.putaran_akhir = putaran;
+      const baru = sk.ke < MAKS_SUDUT ? sudutBerikutnya(daftarSudut, terpakai) : null;
+      const mulaiBuang = jam().toISOString();
+      catatan.dibuang.push({ no, ke: sk.ke, fact_id: sk.fact_id, pengganti: baru?.fact_id ?? null });
+      catat({
+        putaran, jenis: 'buang-sudut', omongan: no, waktu_mulai: mulaiBuang, waktu_selesai: jam().toISOString(), model: null,
+        panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: 'tolak',
+        alasan: [
+          `omongan ${String(no)} gagal ${String(MAKS_PUTARAN_SUDUT)} putaran di sudut ke-${String(sk.ke)} (${sk.fact_id}); versi terakhirnya dibuang`,
+          baru === null
+            ? sk.ke >= MAKS_SUDUT
+              ? `batas ${String(MAKS_SUDUT)} sudut per posisi tercapai`
+              : 'tidak ada fakta sudut yang belum dipakai'
+            : `sudut ke-${String(sk.ke + 1)}: ${baru.fact_id}`,
+        ],
+        sha256_prompt: null,
+        rincian: {
+          sudut_dibuang: { ke: sk.ke, fact_id: sk.fact_id, putaran_mulai: sk.putaran_mulai },
+          sudut_baru: baru,
+          umpan_terakhir: umpan.get(no) ?? [],
+        },
+        peran: 'perencana',
+      });
+      if (baru === null) {
+        habis = no;
+        continue;
+      }
+      terpakai.add(baru.fact_id);
+      const c: CatatanSudut = {
+        ke: sk.ke + 1, fact_id: baru.fact_id, topik: baru.topik, putaran_mulai: putaran + 1, putaran_akhir: null, hasil: 'berjalan',
+      };
+      sudutKini.set(no, c);
+      hasil.sudut[no - 1]?.push(c);
+      putaranSudut.set(no, 0);
+      // Omongan yang dibuang tidak ditunjukkan lagi; sudut baru mulai dari nol.
+      draf[no - 1] = null;
+      umpan.delete(no);
+      bawa.delete(no);
+    }
+    if (habis !== null) {
+      const h = hasil.sudut[habis - 1] ?? [];
+      hasil.berhenti =
+        `omongan ${String(habis)} gagal di ${String(h.length)} sudut (${h.map((c) => c.fact_id).join(', ')}); simulasi tidak terbit`;
+      return akhiri();
+    }
+
     if (terkunci.size === JUMLAH_OMONGAN) {
       const akhir: DrafSimulasi = { omongan: draf as OmonganDraf[] };
       const sisa = opsi.validasi(akhir, opsi.paket);
@@ -599,6 +753,6 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       return akhiri();
     }
   }
-  hasil.berhenti = `batas ${String(maks)} putaran tercapai; omongan terkunci: ${[...terkunci].sort().join(', ') || 'tidak ada'}`;
+  hasil.berhenti = `batas ${String(maks)} putaran tercapai; omongan terkunci: ${[...terkunci].sort().join(', ') || 'tidak ada'}; simulasi tidak terbit`;
   return akhiri();
 }

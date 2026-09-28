@@ -32,8 +32,10 @@ export type JenisLangkah =
   | 'gerbang-kartu'
   | 'gerbang-tebak'
   // M2d-3 (lingkar berperan, `agen-peran.ts`)
+  | 'rencana-sudut'
   | 'gerbang-g'
-  | 'kritikus';
+  | 'kritikus'
+  | 'buang-sudut';
 /** Peran pelaku langkah (M2d-3, `factory/llm/peran.md`); jejak M2d-2 tidak memuatnya. */
 export type PeranLangkah = 'perencana' | 'penulis' | 'pemeriksa' | 'penebak' | 'pembaca-kartu' | 'kritikus';
 export type PembuatJejak = 'factory/llm/agen.ts' | 'factory/llm/agen-peran.ts';

@@ -101,7 +101,7 @@ describe('jejak — skema terlacak', () => {
     expect(rusak((j) => (j['kunci_api'] = 'x'))).toContain('$: medan "kunci_api" tidak dikenal skema');
     expect(rusak((j) => ((j.langkah[0] as unknown as Record<string, unknown>)['prompt_penuh'] = 'x')).join()).toContain('tidak dikenal skema');
     expect(rusak((j) => (j.langkah[1]!.biaya_usd = -1)).join()).toContain('< 0');
-    expect(rusak((j) => (j.langkah[0]!.putaran = 6)).join()).toContain('> 5');
+    expect(rusak((j) => (j.langkah[0]!.putaran = 16)).join()).toContain('> 15');
     expect(rusak((j) => (j.prompt.sha256_sistem = 'abc')).join()).toContain('tidak cocok pola');
   });
 

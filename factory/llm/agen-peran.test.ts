@@ -25,6 +25,7 @@ import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { pesanPaket, type JawabanModel, type SetelanPanggil } from './susun.ts';
 import { validasiDraf } from './validasi.ts';
+import { rencanaSudut, type Sudut } from './sudut.ts';
 
 const PAKET = JSON.parse(readFileSync(`${AKAR}eval/keluaran-m2d/paket/tirt.json`, 'utf8')) as PaketFakta;
 const DRAF = (
@@ -35,6 +36,15 @@ const DRAF = (
 const om = (no: number): OmonganDraf => JSON.parse(JSON.stringify(DRAF.omongan[no - 1])) as OmonganDraf;
 const KUNCI = [om(1).kunci, om(2).kunci, om(3).kunci];
 const lain = (k: KunciOpsi): KunciOpsi => (k === 'a' ? 'c' : 'a');
+/**
+ * Sudut untuk tes: tiga yang pertama = kartu penentu draf fixture (supaya
+ * fixture memenuhi pemeriksa SUDUT), sisanya dari perencana sungguhan.
+ */
+const SUDUT_FIXTURE: Sudut[] = (() => {
+  const awal = [1, 2, 3].map((no) => om(no).kartu_penentu[0] as string);
+  const semua = rencanaSudut(PAKET);
+  return [...awal.map((id) => semua.find((x) => x.fact_id === id) as Sudut), ...semua.filter((x) => !awal.includes(x.fact_id))];
+})();
 
 interface Rekaman {
   pesan: PesanChat[];
@@ -46,6 +56,8 @@ interface Skenario {
   tertebak?: (no: number, putaran: number) => boolean;
   /** Jawaban kritikus (teks + finish_reason), atau galat yang dilempar. */
   kritikus?: (no: number, putaran: number, ulang: number) => { teks: string; finish?: string } | Error;
+  /** Keluaran penulis pengganti untuk (omongan, putaran); bawaan: omongan fixture. */
+  penulis?: (no: number, putaran: number) => string | undefined;
 }
 
 const TANPA_KEBERATAN = JSON.stringify({ keberatan: [], arahan: '' });
@@ -59,6 +71,8 @@ function palsu(s: Skenario): { panggil: PanggilPeran; rekaman: Rekaman[] } {
     });
     const no = info.omongan ?? 0;
     if (info.jenis === 'susun' || info.jenis === 'tulis-ulang') {
+      const ganti = s.penulis?.(no, info.putaran);
+      if (ganti !== undefined) return j(ganti);
       return j(JSON.stringify({ lolos: true, jejak: ['semua lolos'], omongan: [{ no, ...om(no) }] }));
     }
     const kunci = KUNCI[no - 1] ?? 'a';
@@ -77,6 +91,7 @@ function palsu(s: Skenario): { panggil: PanggilPeran; rekaman: Rekaman[] } {
 async function jalan(
   s: Skenario,
   maksPutaran?: number,
+  sudut: Sudut[] = SUDUT_FIXTURE,
 ): Promise<{ hasil: HasilPeran; rekaman: Rekaman[]; jejak: PencatatJejak }> {
   const { panggil, rekaman } = palsu(s);
   const jam = (): Date => new Date('2026-09-28T00:00:00Z');
@@ -86,7 +101,7 @@ async function jalan(
     modelPeran: { penulis: MODEL_AGEN, penebak: MODEL_AGEN, 'pembaca-kartu': MODEL_AGEN, kritikus: MODEL_KRITIKUS },
   });
   const hasil = await jalankanPeran({
-    paket: PAKET, panggil, validasi: validasiDraf, jam, jejak, ...(maksPutaran === undefined ? {} : { maksPutaran }),
+    paket: PAKET, panggil, validasi: validasiDraf, jam, jejak, rencanaSudut: sudut, ...(maksPutaran === undefined ? {} : { maksPutaran }),
   });
   return { hasil, rekaman, jejak };
 }
@@ -222,7 +237,7 @@ describe('peran — pemeriksa: gerbang G dan petunjuk berhitung penebak (D-2)', 
       }
       return panggil(pesan, setelan, info);
     };
-    const hasil = await jalankanPeran({ paket: PAKET, panggil: bungkus, validasi: validasiDraf, jam: () => new Date('2026-09-28T00:00:00Z') });
+    const hasil = await jalankanPeran({ paket: PAKET, panggil: bungkus, validasi: validasiDraf, jam: () => new Date('2026-09-28T00:00:00Z'), rencanaSudut: SUDUT_FIXTURE });
     expect(validasiDraf({ omongan: [bocor, om(2), om(3)] }, PAKET)).toEqual([]);
     const o1 = hasil.riwayat[0]?.omongan[0];
     expect(o1).toMatchObject({ status: 'ditolak-pemeriksa', suara: { pemeriksa: false, kartu: null, tebak: null, kritikus: null } });
@@ -247,7 +262,7 @@ describe('peran — jejak', () => {
       rincian: { menjawab: true, terpotong: false, keberatan: [{ jenis: 'ambigu', bagian: 'pilihan', alasan: 'a dan c nyaris sama' }], arahan: 'Bedakan a dan c.' },
     });
     expect(new Set(j.langkah.map((l) => `${l.jenis}:${String(l.peran)}`))).toEqual(
-      new Set(['susun:penulis', 'tulis-ulang:penulis', 'validator:pemeriksa', 'gerbang-g:pemeriksa', 'gerbang-kartu:pembaca-kartu', 'gerbang-tebak:penebak', 'kritikus:kritikus']),
+      new Set(['rencana-sudut:perencana', 'susun:penulis', 'tulis-ulang:penulis', 'validator:pemeriksa', 'gerbang-g:pemeriksa', 'gerbang-kartu:pembaca-kartu', 'gerbang-tebak:penebak', 'kritikus:kritikus']),
     );
   });
 });
@@ -346,5 +361,80 @@ describe('peran — kritikus yang tidak menjawab adalah keberatan', () => {
     expect(u?.arahan.length).toBeLessThanOrEqual(400);
     expect(u?.diabaikan).toEqual(['pesan_baru']);
     expect(uraiKritik(JSON.stringify({ keberatan: [{ jenis: 'tidak-menjawab', alasan: 'palsu' }] }))?.keberatan[0]?.jenis).toBe('lain');
+  });
+});
+
+describe('sudut — buang & coba sudut lain (D-4)', () => {
+  const tulisPenulis = (r: Rekaman[], no: number): Rekaman[] => dari(r, 'penulis').filter((x) => x.info.omongan === no);
+
+  it('penulis menerima sudutnya; omongan yang kartu penentunya tidak memuat sudut ditolak PEMERIKSA', async () => {
+    const tukar = [SUDUT_FIXTURE[1] as Sudut, SUDUT_FIXTURE[0] as Sudut, ...SUDUT_FIXTURE.slice(2)];
+    const { hasil, rekaman } = await jalan({}, 1, tukar);
+    expect(tulisPenulis(rekaman, 1)[0]?.pesan[1]?.content).toContain(`kartu_penentu HARUS memuat "${tukar[0]?.fact_id ?? ''}"`);
+    const o1 = hasil.riwayat[0]?.omongan[0];
+    expect(o1?.status).toBe('ditolak-pemeriksa');
+    expect(o1?.umpan.join('\n')).toContain(`[pemeriksa: SUDUT] kartu_penentu omongan ini harus memuat "${tukar[0]?.fact_id ?? ''}"`);
+    expect(hasil.riwayat[0]?.omongan[2]?.status).toBe('lolos');
+  });
+
+  it('gagal 5 putaran → versi dibuang, sudut berikutnya yang belum dipakai; penulis mulai dari nol dan diberi tahu sudut yang dibuang', async () => {
+    const sudut: Sudut[] = [SUDUT_FIXTURE[0] as Sudut, { fact_id: 'hari-naik-beruntun', topik: 'harga' }, SUDUT_FIXTURE[2] as Sudut, SUDUT_FIXTURE[1] as Sudut];
+    const { hasil, rekaman, jejak } = await jalan({}, undefined, sudut);
+    expect(hasil).toMatchObject({ lolos: true, jumlah_putaran: 6, berhenti: null });
+    expect(hasil.sudut[1]).toEqual([
+      { ke: 1, fact_id: 'hari-naik-beruntun', topik: 'harga', putaran_mulai: 1, putaran_akhir: 5, hasil: 'dibuang' },
+      { ke: 2, fact_id: 'susp-2025-01-21', topik: 'suspensi', putaran_mulai: 6, putaran_akhir: 6, hasil: 'lolos' },
+    ]);
+    const p2 = tulisPenulis(rekaman, 2);
+    expect(p2.map((r) => r.info.putaran)).toEqual([1, 2, 3, 4, 5, 6]);
+    const t6 = p2[5]?.pesan[1]?.content ?? '';
+    expect(t6).toContain('SUDUT OMONGAN INI (sudut ke-2, dari perencana): kartu_penentu HARUS memuat "susp-2025-01-21"');
+    expect(t6).toContain('Sudut yang sudah dibuang untuk posisi ini (gagal 5 putaran; jangan dipakai sebagai penentu): hari-naik-beruntun.');
+    expect(t6).not.toContain('Versi sebelumnya omongan 2 DITOLAK');
+    expect(p2[4]?.pesan[1]?.content).toContain('Versi sebelumnya omongan 2 DITOLAK');
+    expect(hasil.riwayat[4]?.dibuang).toEqual([{ no: 2, ke: 1, fact_id: 'hari-naik-beruntun', pengganti: 'susp-2025-01-21' }]);
+    const buang = jejak.jejak().langkah.filter((l) => l.jenis === 'buang-sudut');
+    expect(buang).toHaveLength(1);
+    expect(buang[0]).toMatchObject({ putaran: 5, omongan: 2, peran: 'perencana', rincian: { sudut_dibuang: { ke: 1, fact_id: 'hari-naik-beruntun' }, sudut_baru: { fact_id: 'susp-2025-01-21' } } });
+    expect(validasiJejak(jejak.jejak())).toEqual([]);
+  });
+
+  it('versi yang dibuang tidak pernah diperiksa lagi: penulis sudut baru gagal menulis → "tidak-ada", bukan versi lama', async () => {
+    const sudut: Sudut[] = [SUDUT_FIXTURE[0] as Sudut, { fact_id: 'hari-naik-beruntun', topik: 'harga' }, SUDUT_FIXTURE[2] as Sudut, SUDUT_FIXTURE[1] as Sudut];
+    const { hasil, rekaman } = await jalan({ penulis: (no, p) => (no === 2 && p === 6 ? 'bukan json' : undefined) }, undefined, sudut);
+    expect(hasil.riwayat[5]?.omongan[1]).toMatchObject({ status: 'tidak-ada', g: null });
+    expect(hasil.riwayat[5]?.draf[1]).toBeNull();
+    expect(dari(rekaman, 'pembaca-kartu').filter((r) => r.info.putaran === 6)).toHaveLength(0);
+    expect(dari(rekaman, 'penulis').filter((r) => r.info.putaran === 7 && r.info.omongan === 2)[0]?.pesan[1]?.content).toContain('- omongan 1 (TERKUNCI)');
+    expect(hasil).toMatchObject({ lolos: true, jumlah_putaran: 7 });
+  });
+
+  it('paling banyak 3 sudut × 5 putaran per posisi: tetap gagal → simulasi TIDAK TERBIT sesudah putaran 15', async () => {
+    const { hasil, rekaman, jejak } = await jalan({ tertebak: (no) => no === 2 });
+    expect(hasil.lolos).toBe(false);
+    expect(hasil.jumlah_putaran).toBe(15);
+    expect(hasil.berhenti).toMatch(/^omongan 2 gagal di 3 sudut \(susp-2025-01-21, .+, .+\); simulasi tidak terbit$/);
+    expect(hasil.sudut[1]?.map((c) => [c.ke, c.putaran_mulai, c.putaran_akhir, c.hasil])).toEqual([
+      [1, 1, 5, 'dibuang'], [2, 6, 10, 'dibuang'], [3, 11, 15, 'dibuang'],
+    ]);
+    expect(tulisPenulis(rekaman, 2)).toHaveLength(15);
+    expect(tulisPenulis(rekaman, 1)).toHaveLength(1);
+    const buang = jejak.jejak().langkah.filter((l) => l.jenis === 'buang-sudut');
+    expect(buang.map((l) => [l.putaran, (l.rincian['sudut_baru'] as Sudut | null)?.fact_id ?? null])).toEqual([
+      [5, hasil.sudut[1]?.[1]?.fact_id], [10, hasil.sudut[1]?.[2]?.fact_id], [15, null],
+    ]);
+    expect(buang[2]?.alasan[1]).toBe('batas 3 sudut per posisi tercapai');
+    // Sudut baru tidak pernah memakai sudut posisi lain atau penentu omongan terkunci.
+    const penentuTerkunci = [om(1).kartu_penentu, om(3).kartu_penentu].flat();
+    for (const c of hasil.sudut[1] ?? []) expect(penentuTerkunci).not.toContain(c.fact_id);
+    expect(validasiJejak(jejak.jejak())).toEqual([]);
+  });
+
+  it('daftar sudut habis sebelum sudut ke-3 → berhenti, tidak terbit, alasannya dicatat', async () => {
+    const sudut = SUDUT_FIXTURE.slice(0, 4);
+    const { hasil, jejak } = await jalan({ tertebak: (no) => no === 2 }, undefined, sudut);
+    expect(hasil).toMatchObject({ lolos: false, jumlah_putaran: 10 });
+    expect(hasil.berhenti).toContain('simulasi tidak terbit');
+    expect(jejak.jejak().langkah.filter((l) => l.jenis === 'buang-sudut').at(-1)?.alasan[1]).toBe('tidak ada fakta sudut yang belum dipakai');
   });
 });
