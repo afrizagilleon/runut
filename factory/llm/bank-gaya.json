@@ -1,0 +1,333 @@
+{
+  "keterangan": "Bank gaya M2d-3 (D-3): contoh GAYA bahasa omongan teman di grup obrolan untuk penulis (factory/llm/bank-gaya.ts memilih 2–3 per panggilan). Dua sumber: (1) 'manusia-<kasus>' = pesan teman di kasus yang hidup (cases/dada-2025-10-08.json, cases/ultj-2026-05-04.json), apa adanya; pesan Nadia (ULTJ) TIDAK dimasukkan karena memuat kata penilaian 'buruk' yang ditolak validator draf, sehingga menjadi contoh yang menjebak; (2) 'tulis-baru' = kalimat yang ditulis baru oleh eksekutor M2d-3 khusus sebagai contoh gaya (bukan disalin dari orang atau sumber mana pun), emiten fiktif 'Saham X', tanpa angka, tanpa ajakan membeli/menjual. Label: register (santai | sangat santai), nada (yakin | ragu | sok tahu | panik | pamer), topik (dividen | harga | suspensi | pemilik | laporan).",
+  "kalimat": [
+    {
+      "id": "b01",
+      "teks": "Gue udah cek jadwalnya, Saham X bagi dividen minggu ini. Yang pegang dari bulan lalu pasti kebagian, udah jelas itu.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b02",
+      "teks": "Eh, dividen Saham X itu dibagi tiap tahun atau cuma sekali-sekali ya? Gue lupa pernah baca di mana.",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b03",
+      "teks": "Santai, dividen mah otomatis masuk rekening, nggak usah ngapa-ngapain. Gue udah paham banget polanya.",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b04",
+      "teks": "Loh kok harganya langsung turun pas tanggal dividennya?? Ini ada yang nggak beres nih kayaknya.",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b05",
+      "teks": "Gue dapet dividen dari Saham X lagi dong, lumayan buat traktir kopi satu tongkrongan.",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b06",
+      "teks": "Dividennya receh sih, tapi tiap tahun nongol terus. Konsisten banget pokoknya, nggak pernah absen.",
+      "register": "sangat santai",
+      "nada": "yakin",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b07",
+      "teks": "Kok dividennya belum masuk juga ya, padahal tanggalnya udah lewat? Gue takut kelewat.",
+      "register": "santai",
+      "nada": "panik",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b08",
+      "teks": "Dividen gede itu tanda perusahaannya lagi kebanjiran untung, rumusnya emang gitu.",
+      "register": "santai",
+      "nada": "sok tahu",
+      "topik": "dividen",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b09",
+      "teks": "Harganya naik terus seminggu ini, nggak ada merahnya sama sekali. Pasti ada kabar gede yang belum keluar.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "harga",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b10",
+      "teks": "Ini harga Saham X naiknya kenceng banget ya, atau gue salah liat grafiknya? Coba ada yang cek.",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "harga",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b11",
+      "teks": "Udah, kalau volumenya sepi gitu artinya nggak ada yang minat. Gue udah hafal pola ginian.",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "harga",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b12",
+      "teks": "Waduh, dibuka langsung anjlok dalem banget! Ada apaan sih sama Saham X hari ini?",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "harga",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b13",
+      "teks": "Gue udah liat harga segini dari awal bulan, cuma kalian aja yang telat nyadar.",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "harga",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b14",
+      "teks": "Naiknya berlipat-lipat dalam dua bulan, masuk akal nggak sih itu? Kok gue jadi curiga.",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "harga",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b15",
+      "teks": "Volume hari ini kosong melompong, nggak ada yang transaksi sama sekali. Jangan-jangan mau ada apa-apa.",
+      "register": "santai",
+      "nada": "panik",
+      "topik": "harga",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b16",
+      "teks": "Saham X disetop bursa hari ini, pasti gara-gara perusahaannya lagi ada masalah.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b17",
+      "teks": "Disuspen itu artinya perusahaannya bangkrut, apa cuma disetop sebentar doang? Gue beneran nggak ngerti.",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b18",
+      "teks": "Suspensi mah biasa, besok juga dibuka lagi. Dari dulu ceritanya gitu-gitu aja.",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b19",
+      "teks": "Sahamnya digembok bursa, gue nggak bisa ngapa-ngapain! Ini gimana nasib duit gue?",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b20",
+      "teks": "Gue udah baca pengumuman bursanya duluan sebelum grup ini rame. Alasannya bukan yang kalian kira.",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b21",
+      "teks": "Kena setop lagi? Fix ini gara-gara harganya naik kebablasan, bukan karena hal lain.",
+      "register": "sangat santai",
+      "nada": "yakin",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b22",
+      "teks": "Untung gue udah baca alasan setopnya dari pagi, jadi nggak ikut heboh kayak kalian.",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b23",
+      "teks": "Ini setop yang kedua tahun ini apa yang pertama ya? Gue agak lupa, tolong ingetin.",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b24",
+      "teks": "Pemilik terbesarnya lagi nambah sahamnya sendiri terus-terusan, berarti dia yakin banget sama perusahaannya.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "pemilik",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b25",
+      "teks": "Katanya orang dalamnya nambah lagi, tapi banyak atau cuma sedikit ya? Gue belum sempet baca laporannya.",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b26",
+      "teks": "Kalau yang punya perusahaan diem aja, berarti aman. Orang dalam tuh selalu tau duluan.",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b27",
+      "teks": "Pemilik terbesarnya ngelepas sahamnya berkali-kali! Apa dia tau sesuatu yang kita nggak tau?",
+      "register": "santai",
+      "nada": "panik",
+      "topik": "pemilik",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b28",
+      "teks": "Gue udah ngikutin laporan kepemilikan Saham X dari awal tahun, kalian baru ngeh sekarang kan.",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "pemilik",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b29",
+      "teks": "Porsi pemilik terbesarnya berubah dikit doang padahal katanya nambah banyak. Aneh nggak sih?",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b30",
+      "teks": "Laporan keuangannya belum masuk juga ke bursa, pasti ada yang disembunyiin.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "laporan",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b31",
+      "teks": "Laporan tahunan Saham X udah keluar belum sih? Gue nyari di mana-mana nggak ketemu.",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "laporan",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b32",
+      "teks": "Rapat pemegang sahamnya kemarin pasti mutusin bagi dividen gede, biasanya kan gitu.",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "laporan",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b33",
+      "teks": "Laporannya telat lagi?! Jangan-jangan perusahaannya lagi kenapa-kenapa nih.",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "laporan",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b34",
+      "teks": "Gue baca laporan kepemilikan sampai halaman terakhir, detail banget pokoknya. Jarang ada yang niat kayak gue.",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "laporan",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b35",
+      "teks": "Tiga laporan penjualan dalam sebulan, udah jelas dia mau cabut dari Saham X.",
+      "register": "sangat santai",
+      "nada": "yakin",
+      "topik": "laporan",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "b36",
+      "teks": "Laporan pembeliannya jelas kok, yang nambah cuma orang dalam kecil-kecil, bukan pemilik terbesarnya.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "laporan",
+      "sumber": "tulis-baru"
+    },
+    {
+      "id": "m-dada-1",
+      "teks": "Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "harga",
+      "sumber": "manusia-dada"
+    },
+    {
+      "id": "m-dada-2",
+      "teks": "Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "dividen",
+      "sumber": "manusia-dada"
+    },
+    {
+      "id": "m-dada-3",
+      "teks": "Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "pemilik",
+      "sumber": "manusia-dada"
+    },
+    {
+      "id": "m-ultj-4",
+      "teks": "Gue baru buka riwayat dividennya. Perusahaan U ini bagi dividen tiap tahun tanpa putus sejak 2020, dan jumlah per lembarnya naik terus tiap tahun. Rapi banget.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "dividen",
+      "sumber": "manusia-ultj"
+    },
+    {
+      "id": "m-ultj-5",
+      "teks": "Jangan kegeeran dulu. Gue baca laporan Januari: pemilik terbesarnya yang 53 persen itu ikut beli juga, bukan cuma orang dalam yang porsinya kecil.",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "pemilik",
+      "sumber": "manusia-ultj"
+    }
+  ]
+}

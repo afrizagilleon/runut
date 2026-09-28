@@ -18,6 +18,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { teksPolos } from '../skema/rujukan.ts';
 import { SETELAN_CADANGAN, SETELAN_PENYUSUN, ambilOmongan } from './agen.ts';
+import { nadaUntuk, pilihContoh, topikDariTeks, tulisContoh, type KalimatGaya, type Nada } from './bank-gaya.ts';
 import type { DrafSimulasi, MasalahDraf, OmonganDraf } from './draf.ts';
 import { gerbangG, type PutusanG } from './gerbang-g.ts';
 import { gerbangKartu, type PutusanKartu } from './gerbang-kartu.ts';
@@ -185,6 +186,8 @@ export interface PermintaanPenulis {
   draf: ReadonlyArray<OmonganDraf | null>;
   terkunci: ReadonlySet<number>;
   umpan: readonly string[] | undefined;
+  /** Nada yang diminta perencana + contoh bank gaya (D-3). */
+  gaya?: { nada: Nada; contoh: readonly KalimatGaya[] };
 }
 
 /** Pesan pengguna untuk penulis: omongan lain sebagai konteks, versi ditolak + umpan balik, bentuk keluaran. */
@@ -210,6 +213,7 @@ export function pesanPenulis(p: PermintaanPenulis): string {
     syarat.push(`huruf kunci omongan ini tidak boleh "${String(ada[0]?.kunci)}" (kedua omongan lain sudah "${String(ada[0]?.kunci)}")`);
   }
   if (syarat.length > 0) baris.push(`Aturan antar-omongan untuk omongan ${String(no)}: ${syarat.join('; ')}.`, '');
+  if (p.gaya !== undefined) baris.push(tulisContoh(p.gaya.nada, p.gaya.contoh), '');
   const sebelumnya = draf[no - 1];
   if (umpan !== undefined && umpan.length > 0) {
     baris.push(
@@ -292,7 +296,11 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
     const gabung = [...draf] as unknown[];
     const tidakAda = new Map<number, string>();
     for (const no of ditulis) {
-      const permintaan = pesanPenulis({ no, draf: gabung as Array<OmonganDraf | null>, terkunci, umpan: umpan.get(no) });
+      const nada = nadaUntuk(no);
+      const contoh = pilihContoh({ topik: topikDariTeks(opsi.paket.peristiwa), nada, paket_id: opsi.paket.paket_id });
+      const permintaan = pesanPenulis({
+        no, draf: gabung as Array<OmonganDraf | null>, terkunci, umpan: umpan.get(no), gaya: { nada, contoh },
+      });
       const pesan: PesanChat[] = [
         { role: 'system', content: promptPenulis() },
         { role: 'user', content: `${pesanPaket(opsi.paket)}\n\n${permintaan}` },
@@ -356,7 +364,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           rincian: {
             terurai, diabaikan: ambil.lain, finish_reason: jawaban.finish_reason,
             panjang_penalaran: jawaban.penalaran?.length ?? 0, suhu: u.setelan.suhu, max_tokens: u.setelan.maxTokens,
-            mode_berpikir: u.berpikir,
+            mode_berpikir: u.berpikir, nada, contoh_gaya: contoh.map((c) => c.id),
           },
           peran: 'penulis',
         });
