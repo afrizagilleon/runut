@@ -12,7 +12,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ajakanBertransaksi } from '../skema/validator.ts';
 import { jalankanPeran, pesanPenulis, type InfoPeran, type PanggilPeran } from './agen-peran.ts';
-import { NADA, REGISTER, TOPIK, bacaBank, nadaUntuk, pilihContoh, topikDariTeks, tulisContoh } from './bank-gaya.ts';
+import { NADA, NADA_V1, REGISTER, TOPIK, bacaBank, nadaUntuk, pilihContoh, topikDariTeks, tulisContoh } from './bank-gaya.ts';
 import type { DrafSimulasi } from './draf.ts';
 import { AKAR } from './env.ts';
 import { gKaku } from './gerbang-g.ts';
@@ -40,7 +40,9 @@ describe('bank gaya — isi', () => {
       expect(k.sumber).toMatch(/^(tulis-baru|manusia-(dada|ultj))$/);
     }
     const baru = BANK.filter((k) => k.sumber === 'tulis-baru');
-    for (const t of TOPIK) for (const n of NADA) expect(baru.some((k) => k.topik === t && k.nada === n), `${t} × ${n}`).toBe(true);
+    // Bank v1 memakai lima nada M2d-3; "ikut-ikutan" baru di bank v2 (M2d-4).
+    expect(BANK.every((k) => (NADA_V1 as readonly string[]).includes(k.nada))).toBe(true);
+    for (const t of TOPIK) for (const n of NADA_V1) expect(baru.some((k) => k.topik === t && k.nada === n), `${t} × ${n}`).toBe(true);
   });
 
   it('semua kalimat lolos G-kaku, tanpa ajakan beli/jual, tanpa kata penilaian', () => {

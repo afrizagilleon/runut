@@ -19,7 +19,10 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
-export const NADA = ['yakin', 'ragu', 'sok tahu', 'panik', 'pamer'] as const;
+/** Nada bank v1 (M2d-3). */
+export const NADA_V1 = ['yakin', 'ragu', 'sok tahu', 'panik', 'pamer'] as const;
+/** Semua nada yang dikenal; "ikut-ikutan" baru di bank v2 (M2d-4 D-4, K-07). */
+export const NADA = [...NADA_V1, 'ikut-ikutan'] as const;
 export const TOPIK = ['dividen', 'harga', 'suspensi', 'pemilik', 'laporan'] as const;
 export const REGISTER = ['santai', 'sangat santai'] as const;
 export type Nada = (typeof NADA)[number];
@@ -31,14 +34,29 @@ export interface KalimatGaya {
   register: (typeof REGISTER)[number];
   nada: Nada;
   topik: Topik;
-  /** `tulis-baru` atau `manusia-<paket>`. */
+  /** `tulis-baru`, `manusia-<paket>` (v1), atau `tulis-baru-v2` (v2). */
   sumber: string;
+  /** v2: asal gaya (statistik korpus; bukan kutipan). */
+  asal?: string;
+  /** v2: jumlah kata (informatif). */
+  n_kata?: number;
 }
 
 const JALUR_BANK = fileURLToPath(new URL('./bank-gaya.json', import.meta.url));
+/**
+ * Bank gaya v2 (M2d-4 D-4): 90 kalimat dari K-07, semuanya ditulis baru
+ * mengikuti statistik gaya korpus santai berlisensi MIT (STIF-Indonesia;
+ * IndoNLU EmoT/SmSA) — tidak ada kalimat korpus yang disalin. Tanpa "gue";
+ * "gw"/"aku", "ga/gak", partikel penutup, "!" jarang. Salinan byte-sama dari
+ * lampiran kontrak M2d-4; atribusi di `docs/bukti/lingkar-agen-gaya.md`.
+ */
+const JALUR_BANK_V2 = fileURLToPath(new URL('./bank-gaya-v2.json', import.meta.url));
 
-export function bacaBank(): KalimatGaya[] {
-  return (JSON.parse(readFileSync(JALUR_BANK, 'utf8')) as { kalimat: KalimatGaya[] }).kalimat;
+export type VersiBank = 1 | 2;
+
+/** Bank gaya v1 (M2d-3, bawaan) atau v2 (M2d-4). v1 tetap ada untuk pembanding. */
+export function bacaBank(versi: VersiBank = 1): KalimatGaya[] {
+  return (JSON.parse(readFileSync(versi === 2 ? JALUR_BANK_V2 : JALUR_BANK, 'utf8')) as { kalimat: KalimatGaya[] }).kalimat;
 }
 
 /** Topik yang disebut kalimat peristiwa paket, dalam urutan kemunculan. */
@@ -63,8 +81,11 @@ export function topikDariTeks(teks: string): Topik[] {
  * di lima nada supaya tiga omongan satu simulasi tidak bernada sama, dan sudut
  * baru mendapat nada baru.
  */
-export function nadaUntuk(no: number, sudut = 1): Nada {
-  const urut: readonly Nada[] = ['yakin', 'sok tahu', 'ragu', 'panik', 'pamer'];
+export const URUT_NADA_V1: readonly Nada[] = ['yakin', 'sok tahu', 'ragu', 'panik', 'pamer'];
+/** Urutan nada M2d-4: enam nada bank v2; sudut ke-2 mendapat panik, pamer, ikut-ikutan. */
+export const URUT_NADA_V2: readonly Nada[] = ['yakin', 'sok tahu', 'ragu', 'panik', 'pamer', 'ikut-ikutan'];
+
+export function nadaUntuk(no: number, sudut = 1, urut: readonly Nada[] = URUT_NADA_V1): Nada {
   return urut[(no - 1 + 3 * (sudut - 1)) % urut.length] ?? 'yakin';
 }
 

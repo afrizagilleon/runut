@@ -1,0 +1,905 @@
+{
+  "keterangan": "Bank gaya v2 (K-07): contoh GAYA omongan teman di grup obrolan untuk penulis soal. Skema sama dengan factory/llm/bank-gaya.json + medan `asal` (+ `n_kata` informatif). Semua kalimat ditulis baru (sumber \"tulis-baru-v2\") mengikuti statistik gaya korpus santai berlisensi MIT (lihat SUMBER.md, STATISTIK-GAYA.md); tidak ada kalimat korpus yang disalin (diperiksa: nol 6-gram bersama). Emiten fiktif \"Saham X\", tanpa angka, tanpa ajakan transaksi, tanpa kata penilaian validator, tanpa \"gue\" (pemilik: pakai \"gw\"/\"aku\"). Nada: yakin | ragu | sok tahu | panik | pamer | ikut-ikutan (ikut-ikutan BARU: NADA di factory/llm/bank-gaya.ts perlu ditambah bila dipakai). Topik: dividen | harga | suspensi | pemilik | laporan. Register: santai | sangat santai.",
+  "kalimat": [
+    {
+      "id": "v2-001",
+      "teks": "Dividen Saham X tiap tahun keluar terus kok, dari dulu ga pernah bolos.",
+      "register": "sangat santai",
+      "nada": "yakin",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-002",
+      "teks": "Udah pasti dapet dividen lah, aku pegang dari sebelum tanggal cum-nya.",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-003",
+      "teks": "Pembagian dividennya udah diumumin di bursa, tinggal nunggu masuk rekening aja",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-004",
+      "teks": "eh dividen yang kemarin itu udah cair belum sih? aku belum sempet ngecek",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-005",
+      "teks": "Aku masih bingung, yang dapet dividen itu yang pegang pas tanggal kapan ya",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-006",
+      "teks": "Dividennya naik apa turun dibanding tahun lalu? kok aku liat angkanya beda-beda",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-007",
+      "teks": "Santai, dividen tuh nanti nyampe sendiri ke rekening. Aku udah sering ngalamin",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-008",
+      "teks": "Dividen gede tuh artinya perusahaannya lagi kebanyakan duit, gitu doang kok rumusnya",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-009",
+      "teks": "Harga turun abis dividen itu wajar, semua saham juga gitu. Gausah dibahas lagi deh",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 14
+    },
+    {
+      "id": "v2-010",
+      "teks": "Kok dividennya ga nongol-nongol ya, kalender aku bilang harusnya udah cair",
+      "register": "santai",
+      "nada": "panik",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-011",
+      "teks": "Loh abis dividen kok grafiknya nyungsep, ini wajar apa gimana sih",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-012",
+      "teks": "Aduh aku lepas sebelum tanggalnya, berarti dividennya ga dapet dong?",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-013",
+      "teks": "Dividen Saham X udah masuk ke rekening gw dari pagi, lumayan buat jajan seminggu wkwk",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 15
+    },
+    {
+      "id": "v2-014",
+      "teks": "Dividen tahun ini udah masuk lagi, enaknya pegang dari lama ya gini",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-015",
+      "teks": "Aku udah tau jadwal dividennya dari bulan lalu, makanya ga kaget",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-016",
+      "teks": "Katanya Saham X mau bagi dividen gede ya? di grup sebelah pada ngomongin itu",
+      "register": "santai",
+      "nada": "ikut-ikutan",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 14
+    },
+    {
+      "id": "v2-017",
+      "teks": "semua orang lagi bahas dividen Saham X, aku jadi ikut penasaran deh",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-018",
+      "teks": "Temen kantor pada nungguin dividennya, aku ikut nungguin aja",
+      "register": "santai",
+      "nada": "ikut-ikutan",
+      "topik": "dividen",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-019",
+      "teks": "Seminggu ijo terus tanpa jeda, pasti ada berita yang lagi ditahan",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-020",
+      "teks": "Ini sih jelas naiknya karena rame dibahas, bukan karena kinerjanya",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-021",
+      "teks": "Udah jelas, kalo volumenya segede ini berarti ada yang lagi masuk banyak",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-022",
+      "teks": "Ini grafiknya beneran nanjak segitunya ya, apa aplikasi aku yang lagi ngaco?",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-023",
+      "teks": "Naik berkali-kali lipat dalam sebulan, itu masuk akal ga sih",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-024",
+      "teks": "kok aku ngerasa naiknya aneh ya, tapi ga tau juga sih alasannya apa",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-025",
+      "teks": "Udah biasa itu, kalo volumenya sepi berarti ga ada yang minat. Gw hafal polanya",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 14
+    },
+    {
+      "id": "v2-026",
+      "teks": "Pola begini mah naik dulu terus turun lagi, dari dulu juga gitu",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-027",
+      "teks": "Aku bilang juga apa, grafiknya udah keliatan dari minggu lalu",
+      "register": "santai",
+      "nada": "sok tahu",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-028",
+      "teks": "Waduh baru buka pasar udah merah semua, Saham X kenapa lagi coba",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-029",
+      "teks": "Kok tiba-tiba sepi banget transaksinya? jangan-jangan ada apa-apa nih",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-030",
+      "teks": "Aduh turunnya dalem banget dari pagi, aku ga berani buka aplikasinya lagi",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-031",
+      "teks": "Gw udah pantau level ini dari awal bulan, kalian aja pada ketinggalan",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-032",
+      "teks": "Aku udah nebak naiknya dari minggu kemarin, sayang ga ada yang percaya wkwk",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-033",
+      "teks": "Grafik Saham X tuh udah gw pantengin tiap hari, jadi gerakannya ga bikin kaget",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 14
+    },
+    {
+      "id": "v2-034",
+      "teks": "Grup sebelah rame banget bahas Saham X, katanya lagi naik gila-gilaan",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-035",
+      "teks": "temen aku semua pada ngomongin harga Saham X, emang lagi kenapa sih?",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-036",
+      "teks": "Aku liat di medsos pada heboh soal harganya, jadi ikut kepo deh",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "harga",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-037",
+      "teks": "Pasti disetop gara-gara naiknya kebablasan, ga ada alasan lain lah",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-038",
+      "teks": "Fix disuspen karena loncatannya ga wajar, udah keliatan dari grafiknya",
+      "register": "sangat santai",
+      "nada": "yakin",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-039",
+      "teks": "Kena setop lagi kan, udah ketebak dari kemarin kok",
+      "register": "sangat santai",
+      "nada": "yakin",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-040",
+      "teks": "Kalo disuspen itu duit kita ilang apa cuma dibekuin sementara sih?",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-041",
+      "teks": "Perasaan tahun ini udah pernah disetop juga deh, atau aku salah inget?",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-042",
+      "teks": "kok bisa disetop ya, perasaan kemarin masih jalan biasa aja",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-043",
+      "teks": "Suspensi mah bentar doang, paling lusa udah bisa ditransaksiin lagi",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-044",
+      "teks": "Disetop itu tandanya bursa lagi ngecek, ga usah lebay deh",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-045",
+      "teks": "Aku udah bilang kan, saham yang naiknya liar pasti ujungnya disetop",
+      "register": "santai",
+      "nada": "sok tahu",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-046",
+      "teks": "Sahamnya digembok bursa, aku mau keluar juga ga bisa! Duit aku nyangkut dong",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-047",
+      "teks": "Loh kok ga bisa transaksi sama sekali? aplikasinya error apa emang disetop",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-048",
+      "teks": "Duh kalo disetopnya lama gimana, aku udah terlanjur masuk kemarin",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-049",
+      "teks": "Pengumuman bursanya udah gw baca dari subuh sih, alasannya ga seheboh yang di grup",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 14
+    },
+    {
+      "id": "v2-050",
+      "teks": "Untung aku ngecek pengumumannya pagi-pagi, jadi santai aja pas grup pada ribut",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-051",
+      "teks": "Gw udah keluar sehari sebelum disetop, feeling aja sih",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-052",
+      "teks": "Katanya Saham X disetop ya? di grup kantor pada panik semua",
+      "register": "santai",
+      "nada": "ikut-ikutan",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-053",
+      "teks": "Aku ga ngerti suspensi itu apa, tapi semua orang lagi ngomongin jadi ikut deg-degan",
+      "register": "santai",
+      "nada": "ikut-ikutan",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 14
+    },
+    {
+      "id": "v2-054",
+      "teks": "Temen aku bilang bakal lama disetopnya, yaudah aku percaya aja deh",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "suspensi",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-055",
+      "teks": "Pemilik terbesarnya nambah terus, ga mungkin dia buang duit kalo ga percaya perusahaannya",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-056",
+      "teks": "Kalo pemiliknya aja diem, ya aman lah. Ga mungkin dia tinggal diem kalo ada masalah",
+      "register": "sangat santai",
+      "nada": "yakin",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 15
+    },
+    {
+      "id": "v2-057",
+      "teks": "Orang dalemnya ikut nambah juga, udah jelas ini sinyal kuat",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-058",
+      "teks": "Katanya orang dalemnya nambah lagi, itu jumlahnya gede apa receh ya? aku belum sempet baca",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 15
+    },
+    {
+      "id": "v2-059",
+      "teks": "porsi pemiliknya kok cuma geser tipis ya, katanya nambahnya banyak. aneh ga sih",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-060",
+      "teks": "Yang ngelepas itu pemilik terbesarnya apa orang lain sih? aku bingung bacanya",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-061",
+      "teks": "Pemilik diem itu tanda aman, orang dalem mah pasti tau duluan kalo ada apa-apa",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 14
+    },
+    {
+      "id": "v2-062",
+      "teks": "Pemilik nambah saham itu cuma buat naikin harga doang, gw udah sering liat",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-063",
+      "teks": "Orang dalem ngelepas dikit mah biasa, paling buat kebutuhan pribadi",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-064",
+      "teks": "Pemilik terbesarnya ngelepas saham terus-terusan, jangan-jangan dia udah tau sesuatu",
+      "register": "santai",
+      "nada": "panik",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-065",
+      "teks": "Kok pemiliknya ganti tiba-tiba? aku takut ada yang disembunyiin nih",
+      "register": "santai",
+      "nada": "panik",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-066",
+      "teks": "Aduh orang dalemnya pada keluar semua, ini pertanda apaan sih",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-067",
+      "teks": "Laporan kepemilikannya gw ikutin dari awal tahun sih, jadi ini ga terlalu ngagetin",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-068",
+      "teks": "Pas pemiliknya nambah aku udah liat duluan kok, cuma males ngabarin aja",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-069",
+      "teks": "Nama-nama pemegang saham gedenya gw udah apal, soalnya tiap bulan gw cek",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-070",
+      "teks": "Katanya pemiliknya mau ganti ya? grup sebelah pada heboh bahas itu",
+      "register": "santai",
+      "nada": "ikut-ikutan",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-071",
+      "teks": "semua orang bilang orang dalemnya lagi nambah, aku sih ikut percaya aja",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-072",
+      "teks": "Temen aku bilang pemiliknya mau keluar, beneran ga sih?",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "pemilik",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-073",
+      "teks": "Laporan keuangannya telat nyampe, udah pasti ada angka yang lagi ditutupin",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-074",
+      "teks": "Udah jelas dari laporannya, untungnya naik terus tiap kuartal",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-075",
+      "teks": "Di laporannya keliatan kok, pembelinya cuma direksi, jumlahnya receh doang",
+      "register": "santai",
+      "nada": "yakin",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-076",
+      "teks": "laporan tahunannya udah terbit belum sih? aku cari di web bursa ga nemu",
+      "register": "sangat santai",
+      "nada": "ragu",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 13
+    },
+    {
+      "id": "v2-077",
+      "teks": "Ini untungnya beneran naik apa cuma karena ngelepas aset ya",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-078",
+      "teks": "Aku baca laporannya tapi ga ngerti bagian utangnya, ada yang paham ga?",
+      "register": "santai",
+      "nada": "ragu",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-079",
+      "teks": "Abis RUPS biasanya dividennya gede, dari dulu polanya gitu",
+      "register": "santai",
+      "nada": "sok tahu",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-080",
+      "teks": "Laporan telat itu udah biasa, ga usah dibesar-besarin deh",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-081",
+      "teks": "Liat angka untungnya doang udah cukup, sisanya mah formalitas",
+      "register": "sangat santai",
+      "nada": "sok tahu",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-082",
+      "teks": "Laporannya molor lagi? aduh perasaan aku ga enak nih",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 9
+    },
+    {
+      "id": "v2-083",
+      "teks": "kok di laporan terbaru untungnya anjlok gitu, aku jadi deg-degan",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-084",
+      "teks": "Waduh auditornya ga mau kasih pendapat, itu artinya gimana sih",
+      "register": "sangat santai",
+      "nada": "panik",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 10
+    },
+    {
+      "id": "v2-085",
+      "teks": "Semalem gw baca laporannya sampe abis, ngantuk sih tapi jadi ngerti",
+      "register": "sangat santai",
+      "nada": "pamer",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-086",
+      "teks": "Aku udah baca laporan kuartalnya duluan, makanya ga kaget pas grup rame",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    },
+    {
+      "id": "v2-087",
+      "teks": "Laporan keuangan Saham X udah gw bikin catetan sendiri, kalo ada yang mau tinggal minta",
+      "register": "santai",
+      "nada": "pamer",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 15
+    },
+    {
+      "id": "v2-088",
+      "teks": "Katanya laporannya bikin orang pada kabur ya? grup sebelah rame banget",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-089",
+      "teks": "Aku belum baca laporannya sih, tapi semua orang bilang untungnya naik",
+      "register": "santai",
+      "nada": "ikut-ikutan",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 11
+    },
+    {
+      "id": "v2-090",
+      "teks": "Temen aku share potongan laporannya, katanya penting. Aku ikut simpen aja deh",
+      "register": "sangat santai",
+      "nada": "ikut-ikutan",
+      "topik": "laporan",
+      "sumber": "tulis-baru-v2",
+      "asal": "tulis-baru K-07; gaya disarikan dari statistik STIF-Indonesia (MIT) + IndoNLU EmoT/SmSA (MIT); tidak menyalin kalimat korpus",
+      "n_kata": 12
+    }
+  ]
+}

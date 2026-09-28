@@ -18,7 +18,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { teksPolos } from '../skema/rujukan.ts';
 import { SETELAN_CADANGAN, SETELAN_PENYUSUN, ambilOmongan } from './agen.ts';
-import { nadaUntuk, pilihContoh, topikDariTeks, tulisContoh, type KalimatGaya, type Nada } from './bank-gaya.ts';
+import { URUT_NADA_V1, URUT_NADA_V2, bacaBank, nadaUntuk, pilihContoh, topikDariTeks, tulisContoh, type KalimatGaya, type Nada } from './bank-gaya.ts';
 import type { DrafSimulasi, MasalahDraf, OmonganDraf } from './draf.ts';
 import { gerbangG, type PutusanG } from './gerbang-g.ts';
 import { batasPanjang, gerbangGaya, type PutusanGaya } from './gerbang-gaya.ts';
@@ -95,11 +95,19 @@ export interface Generasi {
   promptPenulis: () => string;
   /** Pemeriksa menjalankan gerbang gaya (G-panjang, G-satu-klausa, G-register) selain gerbang G. */
   gerbangGaya: boolean;
+  /** Bank gaya yang dipakai pemilih heuristik. */
+  bank: () => KalimatGaya[];
+  /** Urutan nada per posisi/sudut. */
+  urutNada: readonly Nada[];
 }
 
-export const GENERASI_M2D3: Generasi = { nama: 'm2d3', promptPenulis, gerbangGaya: false };
+export const GENERASI_M2D3: Generasi = {
+  nama: 'm2d3', promptPenulis, gerbangGaya: false, bank: () => bacaBank(1), urutNada: URUT_NADA_V1,
+};
 
-export const GENERASI_M2D4: Generasi = { nama: 'm2d4', promptPenulis: promptPenulisGaya, gerbangGaya: true };
+export const GENERASI_M2D4: Generasi = {
+  nama: 'm2d4', promptPenulis: promptPenulisGaya, gerbangGaya: true, bank: () => bacaBank(2), urutNada: URUT_NADA_V2,
+};
 
 /** Keterangan satu panggilan: peran pemanggil dan model yang ditetapkan kode untuk peran itu. */
 export interface InfoPeran extends InfoPanggil {
@@ -426,9 +434,9 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
     const tidakAda = new Map<number, string>();
     for (const no of ditulis) {
       const sk = sudutKini.get(no) as CatatanSudut;
-      const nada = nadaUntuk(no, sk.ke);
+      const nada = nadaUntuk(no, sk.ke, gen.urutNada);
       const topik = [sk.topik, ...topikDariTeks(opsi.paket.peristiwa).filter((t) => t !== sk.topik)];
-      const contoh = pilihContoh({ topik, nada, paket_id: opsi.paket.paket_id });
+      const contoh = pilihContoh({ topik, nada, paket_id: opsi.paket.paket_id }, gen.bank());
       const permintaan = pesanPenulis({
         no, draf: gabung as Array<OmonganDraf | null>, terkunci, umpan: umpan.get(no), gaya: { nada, contoh },
         sudut: { ke: sk.ke, fact_id: sk.fact_id, klaim: klaim.get(sk.fact_id) ?? '', dibuang: riwayatDibuang(no) },

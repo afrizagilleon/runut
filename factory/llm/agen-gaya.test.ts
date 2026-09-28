@@ -12,6 +12,7 @@ import type { DrafSimulasi, KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
 import { PencatatJejak, validasiJejak } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
+import { bacaBank } from './bank-gaya.ts';
 import { MODEL_AGEN, MODEL_KRITIKUS } from './model.ts';
 import type { PaketFakta } from './paket.ts';
 import { rencanaSudut, type Sudut } from './sudut.ts';
@@ -147,5 +148,42 @@ describe('M2d-4 — pemeriksa: gerbang gaya (D-1–D-3)', () => {
     // Generasi M2d-3: gerbang gaya tidak dijalankan; omongan yang sama lolos pemeriksa.
     const m2d3 = await jalan({ penulis: s.penulis, kritikus: () => ({ teks: JSON.stringify({ keberatan: [], arahan: '' }) }) }, GENERASI_M2D3);
     expect(m2d3.hasil.riwayat[0]?.omongan[0]).toMatchObject({ status: 'lolos', gaya: null });
+  });
+});
+
+describe('M2d-4 — bank gaya v2 sampai ke penulis (D-4)', () => {
+  it('penulis M2d-4 menerima contoh dari bank v2 (nada enam-putar); penulis M2d-3 tetap dari bank v1', async () => {
+    const v2 = new Set(bacaBank(2).map((k) => k.teks));
+    const v1 = new Set(bacaBank(1).map((k) => k.teks));
+    const contoh = (r: Rekaman): string[] =>
+      (r.pesan[1]?.content ?? '').split('\n').filter((b) => b.startsWith('- "')).map((b) => b.slice(3, b.lastIndexOf('" (nada')));
+    const { rekaman, jejak } = await jalan({});
+    const penulis = dari(rekaman, 'penulis');
+    expect(penulis).toHaveLength(3);
+    for (const r of penulis) {
+      const c = contoh(r);
+      expect(c.length).toBeGreaterThanOrEqual(2);
+      expect(c.every((t) => v2.has(t))).toBe(true);
+    }
+    const ids = jejak.jejak().langkah.filter((l) => l.jenis === 'susun').map((l) => l.rincian['contoh_gaya'] as string[]);
+    expect(ids.flat().every((id) => id.startsWith('v2-'))).toBe(true);
+    expect(jejak.jejak().langkah.filter((l) => l.jenis === 'susun').map((l) => l.rincian['nada'])).toEqual(['yakin', 'sok tahu', 'ragu']);
+    const m2d3 = await jalan({ kritikus: () => ({ teks: JSON.stringify({ keberatan: [], arahan: '' }) }) }, GENERASI_M2D3);
+    for (const r of dari(m2d3.rekaman, 'penulis')) expect(contoh(r).every((t) => v1.has(t))).toBe(true);
+  });
+});
+
+describe('M2d-4 — nada enam-putar di lingkar (D-4)', () => {
+  it('sudut ke-2 omongan 3 meminta nada "ikut-ikutan" (M2d-3: "yakin")', async () => {
+    const nadaPutaran6 = async (g: Generasi): Promise<unknown> => {
+      const { jejak } = await jalan(
+        { tertebak: (no) => no === 3, kritikus: g.nama === 'm2d3' ? () => ({ teks: JSON.stringify({ keberatan: [], arahan: '' }) }) : undefined },
+        g,
+        6,
+      );
+      return jejak.jejak().langkah.find((l) => l.jenis === 'tulis-ulang' && l.putaran === 6 && l.omongan === 3)?.rincian['nada'];
+    };
+    expect(await nadaPutaran6(GENERASI_M2D4)).toBe('ikut-ikutan');
+    expect(await nadaPutaran6(GENERASI_M2D3)).toBe('yakin');
   });
 });
