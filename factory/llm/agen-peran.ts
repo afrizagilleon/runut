@@ -21,6 +21,7 @@ import { SETELAN_CADANGAN, SETELAN_PENYUSUN, ambilOmongan } from './agen.ts';
 import { nadaUntuk, pilihContoh, topikDariTeks, tulisContoh, type KalimatGaya, type Nada } from './bank-gaya.ts';
 import type { DrafSimulasi, MasalahDraf, OmonganDraf } from './draf.ts';
 import { gerbangG, type PutusanG } from './gerbang-g.ts';
+import { batasPanjang, gerbangGaya, type PutusanGaya } from './gerbang-gaya.ts';
 import { gerbangKartu, type PutusanKartu } from './gerbang-kartu.ts';
 import { PETUNJUK_PENEBAK, gerbangTebak, type InfoPanggil, type PanggilLlm, type PutusanTebak } from './gerbang-tebak.ts';
 import { hashPesan, type LangkahJejak, type PencatatJejak, type PeranLangkah } from './jejak.ts';
@@ -60,11 +61,45 @@ export const JUMLAH_OMONGAN = 3;
 export const MAX_TOKENS_PENEBAK_PERAN = 16_000;
 
 const JALUR_PENULIS = fileURLToPath(new URL('./prompt-penulis.md', import.meta.url));
+const JALUR_PENULIS_GAYA = fileURLToPath(new URL('./prompt-penulis-gaya.md', import.meta.url));
 
 /** Prompt sistem penulis = aturan M2d-1 (`prompt-susun.md`) + tambahan lingkar berperan (`prompt-penulis.md`). */
 export function promptPenulis(): string {
   return `${promptSistem()}\n\n${readFileSync(JALUR_PENULIS, 'utf8').replace(/\r\n/g, '\n').trim()}`;
 }
+
+/**
+ * Prompt sistem penulis M2d-4 = aturan M2d-1 (`prompt-susun.md`) + tambahan
+ * gaya & makna (`prompt-penulis-gaya.md`, menggantikan `prompt-penulis.md`):
+ * "gw/aku" bukan "gue", batas panjang dari soal manusia, satu klausa per
+ * pilihan. Batas kata diisi dari `batasPanjang()` — angka yang sama dengan
+ * yang dipakai pemeriksa.
+ */
+export function promptPenulisGaya(): string {
+  const b = batasPanjang();
+  const tambahan = readFileSync(JALUR_PENULIS_GAYA, 'utf8')
+    .replace(/\r\n/g, '\n')
+    .trim()
+    .replaceAll('{BATAS_PESAN}', String(b.pesan))
+    .replaceAll('{BATAS_PILIHAN}', String(b.pilihan));
+  return `${promptSistem()}\n\n${tambahan}`;
+}
+
+/**
+ * Generasi lingkar berperan. M2d-3 (bawaan) tidak diubah supaya jalannya bisa
+ * diulang dan tesnya tetap berlaku; M2d-4 menambah yang diputus kontraknya.
+ * Satu-satunya tempat perbedaan kedua generasi.
+ */
+export interface Generasi {
+  nama: 'm2d3' | 'm2d4';
+  promptPenulis: () => string;
+  /** Pemeriksa menjalankan gerbang gaya (G-panjang, G-satu-klausa, G-register) selain gerbang G. */
+  gerbangGaya: boolean;
+}
+
+export const GENERASI_M2D3: Generasi = { nama: 'm2d3', promptPenulis, gerbangGaya: false };
+
+export const GENERASI_M2D4: Generasi = { nama: 'm2d4', promptPenulis: promptPenulisGaya, gerbangGaya: true };
 
 /** Keterangan satu panggilan: peran pemanggil dan model yang ditetapkan kode untuk peran itu. */
 export interface InfoPeran extends InfoPanggil {
@@ -137,6 +172,8 @@ export interface PemeriksaanPeran {
   kritik: PutusanKritik | null;
   /** Gerbang G (pemeriksa); `null` bila omongan tidak ada atau bentuknya rusak. */
   g?: PutusanG | null;
+  /** Gerbang gaya (pemeriksa, M2d-4); `null` bila tidak dijalankan. */
+  gaya?: PutusanGaya | null;
   /** Versi ini dibawa ke putaran berikutnya tanpa ditulis ulang (kritikus tidak menjawab). */
   dibawa: boolean;
 }
@@ -198,6 +235,8 @@ export interface OpsiPeran {
   jejak?: PencatatJejak;
   /** Pengganti daftar sudut perencana (tes); bawaan `rencanaSudut(paket)`. */
   rencanaSudut?: Sudut[];
+  /** Generasi lingkar; bawaan M2d-3. */
+  generasi?: Generasi;
 }
 
 function adalahObyek(n: unknown): n is Record<string, unknown> {
@@ -293,6 +332,7 @@ type CatatLangkah = Omit<LangkahJejak, 'no' | 'peran'> & { peran: PeranLangkah }
 
 export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
   const maks = opsi.maksPutaran ?? MAKS_PUTARAN_PERAN;
+  const gen = opsi.generasi ?? GENERASI_M2D3;
   const jam = opsi.jam ?? (() => new Date());
   const jejak = opsi.jejak ?? null;
   const catat = (l: CatatLangkah): void => {
@@ -394,7 +434,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         sudut: { ke: sk.ke, fact_id: sk.fact_id, klaim: klaim.get(sk.fact_id) ?? '', dibuang: riwayatDibuang(no) },
       });
       const pesan: PesanChat[] = [
-        { role: 'system', content: promptPenulis() },
+        { role: 'system', content: gen.promptPenulis() },
         { role: 'user', content: `${pesanPaket(opsi.paket)}\n\n${permintaan}` },
       ];
       const upaya = [
@@ -530,20 +570,35 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       // bentuknya terbaca, juga bila validator menolak — umpan baliknya
       // digabung supaya penulis melihat semua keberatan pemeriksa sekaligus.
       let g: PutusanG | null = null;
+      let gaya: PutusanGaya | null = null;
       const bentukRusak = masalahNyata.some((m) => m.omongan === no && m.kode === 'SKEMA');
       if (o !== null && o !== undefined && !bentukRusak) {
         const mulaiG = jam().toISOString();
         g = gerbangG(o as OmonganDraf);
         butir.push(...g.umpan);
+        if (gen.gerbangGaya) {
+          gaya = gerbangGaya(o as OmonganDraf);
+          butir.push(...gaya.umpan);
+        }
+        const tolakG = g.tolak || gaya?.tolak === true;
         catat({
           putaran, jenis: 'gerbang-g', omongan: no, waktu_mulai: mulaiG, waktu_selesai: jam().toISOString(), model: null,
-          panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: g.tolak ? 'tolak' : 'lolos',
-          alasan: g.tolak ? g.umpan : ['G-angka-cukup dan G-kaku tidak keberatan'],
+          panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: tolakG ? 'tolak' : 'lolos',
+          alasan: tolakG
+            ? [...g.umpan, ...(gaya?.umpan ?? [])]
+            : [gaya === null ? 'G-angka-cukup dan G-kaku tidak keberatan' : 'G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan'],
           sha256_prompt: null,
           rincian: {
             pesan: teksPolos((o as OmonganDraf).pesan),
             angka_cukup: { tolak: g.angka_cukup.tolak, bukti: g.angka_cukup.bukti },
             kaku: { tolak: g.kaku.tolak, penanda: g.kaku.penanda, panjang: g.kaku.panjang, kalimat_panjang: g.kaku.kalimat_panjang },
+            ...(gaya === null
+              ? {}
+              : {
+                  panjang: { tolak: gaya.panjang.tolak, kata_pesan: gaya.panjang.kata_pesan, kata_pilihan: gaya.panjang.kata_pilihan, batas: gaya.panjang.batas },
+                  satu_klausa: { tolak: gaya.klausa.tolak, masalah: gaya.klausa.masalah },
+                  register: { tolak: gaya.register.tolak, kata: gaya.register.kata },
+                }),
           },
           peran: 'pemeriksa',
         });
@@ -561,7 +616,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       if (butir.length > 0 || o === null || o === undefined) {
         tolak({
           status: o === null || o === undefined ? 'tidak-ada' : 'ditolak-pemeriksa',
-          suara, umpan: butir, kartu: null, tebak: null, kritik: null, g,
+          suara, umpan: butir, kartu: null, tebak: null, kritik: null, g, gaya,
         });
         continue;
       }
@@ -668,21 +723,21 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           return akhiri();
         }
         const butirGalat = `[galat penyedia saat ${tahap}] ${teksGalat(galat).slice(0, 200)}; omongan ini diperiksa lagi sesudah ditulis ulang.`;
-        tolak({ status: 'galat-gerbang', suara, umpan: [butirGalat], kartu, tebak, kritik: kr, g });
+        tolak({ status: 'galat-gerbang', suara, umpan: [butirGalat], kartu, tebak, kritik: kr, g, gaya });
         continue;
       }
 
       if (putusanAkhir(suara)) {
-        catatan.omongan.push({ no, status: 'lolos', suara, umpan: [], kartu, tebak, kritik: kr, g, dibawa: false });
+        catatan.omongan.push({ no, status: 'lolos', suara, umpan: [], kartu, tebak, kritik: kr, g, gaya, dibawa: false });
         terkunci.add(no);
       } else if (kartu !== null && !kartu.lolos) {
-        tolak({ status: 'ditolak-kartu', suara, umpan: [`[pembaca kartu] ${kartu.alasan}`], kartu, tebak, kritik: kr, g });
+        tolak({ status: 'ditolak-kartu', suara, umpan: [`[pembaca kartu] ${kartu.alasan}`], kartu, tebak, kritik: kr, g, gaya });
       } else if (tebak !== null && !tebak.lolos) {
-        tolak({ status: 'ditolak-tebak', suara, umpan: [`[penebak tanpa kartu] ${tebak.alasan}`], kartu, tebak, kritik: kr, g });
+        tolak({ status: 'ditolak-tebak', suara, umpan: [`[penebak tanpa kartu] ${tebak.alasan}`], kartu, tebak, kritik: kr, g, gaya });
       } else if (kr !== null && !kr.menjawab) {
-        tolak({ status: 'kritikus-tidak-menjawab', suara, umpan: umpanKritik(kr), kartu, tebak, kritik: kr, g, dibawa: true });
+        tolak({ status: 'kritikus-tidak-menjawab', suara, umpan: umpanKritik(kr), kartu, tebak, kritik: kr, g, gaya, dibawa: true });
       } else {
-        tolak({ status: 'ditolak-kritikus', suara, umpan: kr === null ? ['[kritikus] tidak dijalankan.'] : umpanKritik(kr), kartu, tebak, kritik: kr, g });
+        tolak({ status: 'ditolak-kritikus', suara, umpan: kr === null ? ['[kritikus] tidak dijalankan.'] : umpanKritik(kr), kartu, tebak, kritik: kr, g, gaya });
       }
     }
     draf = gabung.map((x) => (x === undefined ? null : (x as OmonganDraf | null)));
