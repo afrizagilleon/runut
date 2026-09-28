@@ -92,16 +92,40 @@ export function hargaModel(model: string, tabel: Readonly<Record<string, HargaMo
   return harga;
 }
 
+/**
+ * Pagu milestone (M2d-3 D-0): selain pagu kumulatif `LLM_PAGU_USD`, satu
+ * milestone berhenti sendiri bila biayanya — jumlah entri ledger yang tagnya
+ * berawalan `awalanTag` — ditambah perkiraan maksimum panggilan berikutnya
+ * melebihi `usd`. Setiap panggilan milestone WAJIB bertag awalan itu; tag lain
+ * ditolak sebelum kirim, supaya tidak ada panggilan yang lolos dari hitungan.
+ */
+export interface PaguMilestone {
+  usd: number;
+  awalanTag: string;
+}
+
+export class PaguMilestoneTercapai extends PaguTercapai {
+  constructor(biayaMilestone: number, perkiraan: number, m: PaguMilestone, model: string) {
+    super(biayaMilestone, perkiraan, m.usd, model);
+    this.name = 'PaguMilestoneTercapai';
+    this.message =
+      `Pagu milestone tercapai: biaya milestone (tag ${m.awalanTag}*) US$${biayaMilestone.toFixed(6)} + perkiraan maksimum ` +
+      `US$${perkiraan.toFixed(6)} untuk ${model} > pagu milestone US$${m.usd.toFixed(2)}. Panggilan tidak dikirim.`;
+  }
+}
+
 export interface OpsiPencatat {
   paguUsd: number;
   /** `null` = hanya di memori (tes). */
   jalurLedger: string | null;
   harga?: Readonly<Record<string, HargaModel>>;
   jam?: () => Date;
+  paguMilestone?: PaguMilestone;
 }
 
 export class PencatatBiaya {
   readonly paguUsd: number;
+  readonly paguMilestone: PaguMilestone | null;
   private readonly jalur: string | null;
   private readonly harga: Readonly<Record<string, HargaModel>>;
   private readonly jam: () => Date;
@@ -112,6 +136,13 @@ export class PencatatBiaya {
       throw new Error('Pagu harus angka positif; tanpa pagu tidak ada panggilan berbayar.');
     }
     this.paguUsd = opsi.paguUsd;
+    if (opsi.paguMilestone !== undefined) {
+      const m = opsi.paguMilestone;
+      if (!Number.isFinite(m.usd) || m.usd <= 0 || m.awalanTag.trim() === '') {
+        throw new Error('Pagu milestone harus angka positif dengan awalan tag yang tidak kosong.');
+      }
+    }
+    this.paguMilestone = opsi.paguMilestone ?? null;
     this.jalur = opsi.jalurLedger;
     this.harga = opsi.harga ?? HARGA;
     this.jam = opsi.jam ?? (() => new Date());
@@ -132,6 +163,13 @@ export class PencatatBiaya {
     return this.entri;
   }
 
+  /** Biaya milestone: entri ledger bertag awalan milestone; 0 bila tanpa pagu milestone. */
+  totalMilestone(): number {
+    const m = this.paguMilestone;
+    if (m === null) return 0;
+    return this.entri.filter((e) => e.tag.startsWith(m.awalanTag)).reduce((a, e) => a + e.biaya_usd, 0);
+  }
+
   /** Perkiraan biaya maksimum satu panggilan. */
   perkiraan(model: string, pesan: readonly PesanChat[], maxTokens: number): number {
     return biayaUsd(hargaModel(model, this.harga), batasAtasTokenMasuk(pesan), maxTokens);
@@ -141,11 +179,19 @@ export class PencatatBiaya {
    * Lempar `PaguTercapai` kalau akumulasi + perkiraan > pagu. Dipanggil SEBELUM
    * kirim. Mengembalikan perkiraannya untuk dicatat.
    */
-  periksa(model: string, pesan: readonly PesanChat[], maxTokens: number): number {
+  periksa(model: string, pesan: readonly PesanChat[], maxTokens: number, tag?: string): number {
     const perkiraan = this.perkiraan(model, pesan, maxTokens);
     const akumulasi = this.total();
     if (akumulasi + perkiraan > this.paguUsd) {
       throw new PaguTercapai(akumulasi, perkiraan, this.paguUsd, model);
+    }
+    const m = this.paguMilestone;
+    if (m !== null) {
+      if (tag === undefined || !tag.startsWith(m.awalanTag)) {
+        throw new Error(`Panggilan bertag "${String(tag)}" di luar awalan milestone "${m.awalanTag}"; tidak dikirim.`);
+      }
+      const milestone = this.totalMilestone();
+      if (milestone + perkiraan > m.usd) throw new PaguMilestoneTercapai(milestone, perkiraan, m, model);
     }
     return perkiraan;
   }
@@ -203,7 +249,7 @@ export async function chatBerpagu(
   let biaya = 0;
   const hasil = await chat(klien, opsi, {
     sebelumKirim: () => {
-      perkiraan = pencatat.periksa(opsi.model, opsi.pesan, opsi.maxTokens);
+      perkiraan = pencatat.periksa(opsi.model, opsi.pesan, opsi.maxTokens, tag);
     },
     sesudahPercobaan: (c) => {
       biaya += pencatat.catat(opsi.model, tag, c, perkiraan).biaya_usd;

@@ -1,0 +1,89 @@
+{
+  "paket_id": "ultj",
+  "model_peran": {
+    "penulis": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "penebak": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "pembaca-kartu": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "kritikus": "zai-org/GLM-5.3"
+  },
+  "terbit": true,
+  "berhenti": null,
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Wulan",
+        "jam": "18.35",
+        "pesan": "Gila, orang dalam Perusahaan U ada 8 laporan sepanjang Januari, dan ada yang isinya jual. Ini pasti ada yang disembunyiin, gue panik nih.",
+        "angka_pesan": [
+          {
+            "teks": "8 laporan",
+            "fact_id": "laporan-jan-2026"
+          }
+        ],
+        "kartu": [
+          "laporan-jan-2026",
+          "fil-jan-pemilik-terbesar-laporan",
+          "fil-jan-orang-dalam-lain-laporan"
+        ],
+        "kartu_penentu": [
+          "laporan-jan-2026"
+        ],
+        "pilihan": {
+          "a": "Betul, ada juga laporan yang isinya pengurangan saham.",
+          "b": "Keliru, semua laporan itu isinya penambahan saham.",
+          "c": "Betul, laporan itu terbitnya cuma dari pemilik terbesar.",
+          "d": "Keliru, laporan itu terbitnya bukan cuma dari pemilik terbesar."
+        },
+        "kunci": "b",
+        "penjelasan": "Kalau kamu buka daftar laporan kepemilikan yang terbit Januari, isinya seragam: semuanya penambahan saham, nggak ada satu pun yang pengurangan. Jumlahnya sudah dirapikan jadi [[laporan-jan-2026|8 laporan]], dan yang mengirim bukan cuma satu pihak, pemilik terbesar lewat [[fil-jan-pemilik-terbesar-laporan|2 laporan]] dan orang dalam lain lewat [[fil-jan-orang-dalam-lain-laporan|6 laporan]]. Jadi kabar soal ada laporan yang isinya jual itu nggak ketemu di catatannya. Salah-kaprah yang umum: orang dengar kabar orang dalam jual langsung panik, padahal yang bisa dibaca cuma isi laporannya, dan di sini semuanya beli."
+      },
+      {
+        "nama": "Fajar",
+        "jam": "19.50",
+        "pesan": "Gue denger katanya kalau lagi bagi dividen, harga jatuh sebanyak dividennya. Di Perusahaan U kayaknya pas banget deh, nggak ada selisihnya. Bener nggak sih? Gue ragu nih.",
+        "angka_pesan": [],
+        "kartu": [
+          "beda-turun-dividen",
+          "turun-2026-05-04",
+          "div-2026-05-04",
+          "harga-2026-04-30"
+        ],
+        "kartu_penentu": [
+          "beda-turun-dividen"
+        ],
+        "pilihan": {
+          "a": "Betul, jatuhnya hari ini persis sebanyak dividen tunai yang dibagikan.",
+          "b": "Keliru, jatuhnya hari ini lebih dalam dari dividen tunai yang dibagikan.",
+          "c": "Betul, jatuhnya hari ini lebih dangkal dari dividen tunai yang dibagikan.",
+          "d": "Keliru, harganya hari ini nggak jatuh sama sekali dari penutupan terakhir."
+        },
+        "kunci": "b",
+        "penjelasan": "Kalau kamu buka catatan harga, penutupan terakhir sebelum tanggal ex ada di [[harga-2026-04-30|Rp1.690 per lembar]]. Selisih dengan harga buka hari ini sudah dirapikan jadi [[turun-2026-05-04|Rp145 per lembar]], sementara dividen tunai hari ini [[div-2026-05-04|Rp130 per lembar]]. Dari situ kelihatan masih ada beda [[beda-turun-dividen|Rp15 per lembar]], jadi jatuhnya nggak pas sama dividennya. Kabar bahwa jatuhnya persis sebanyak dividen itu nggak ketemu di catatannya. Salah-kaprah yang umum: orang mengira harga di tanggal ex selalu turun persis sebanyak dividennya, padahal catatannya bisa beda."
+      },
+      {
+        "nama": "Sinta",
+        "jam": "21.40",
+        "pesan": "Katanya kalau lagi bagi dividen harga turun sebanyak dividennya, tapi di Perusahaan U hari ini kok jatuhnya nggak sama ya? Gue ragu nih, takut salah baca.",
+        "angka_pesan": [],
+        "kartu": [
+          "turun-2026-05-04",
+          "div-2026-05-04",
+          "harga-2026-04-30",
+          "harga-2026-05-04-buka"
+        ],
+        "kartu_penentu": [
+          "turun-2026-05-04",
+          "div-2026-05-04"
+        ],
+        "pilihan": {
+          "a": "Betul, turunnya hari ini lebih besar dari dividen tunai yang dibagikan.",
+          "b": "Betul, turunnya hari ini lebih kecil dari dividen tunai yang dibagikan.",
+          "c": "Keliru, turunnya hari ini persis sama dengan dividen tunai yang dibagikan.",
+          "d": "Keliru, harga bukanya tidak jatuh dari penutupan terakhir."
+        },
+        "kunci": "a",
+        "penjelasan": "Penutupan terakhir sebelum tanggal ex tercatat [[harga-2026-04-30|Rp1.690 per lembar]], dan harga buka hari ini [[harga-2026-05-04-buka|Rp1.545 per lembar]]. Selisih keduanya sudah dihitung jadi [[turun-2026-05-04|Rp145 per lembar]], sedangkan dividen tunai yang dibagikan hari ini [[div-2026-05-04|Rp130 per lembar]]. Dua angka itu memang nggak sama, jadi kabar bahwa jatuhnya nggak sama kayak dividen cocok dengan catatannya. Salah-kaprah yang umum: orang mengira harga di tanggal ex selalu turun persis sama banyak dengan dividennya, padahal catatannya menunjukkan angka yang beda."
+      }
+    ]
+  }
+}

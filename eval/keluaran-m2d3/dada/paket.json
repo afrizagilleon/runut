@@ -1,0 +1,249 @@
+{
+  "paket_id": "dada",
+  "simbol": "DADA",
+  "nama_emiten": "PT Diamond Citra Propertindo Tbk",
+  "nama_samaran": "Perusahaan D",
+  "tanggal_t": "2025-10-08",
+  "peristiwa": "Harga saham naik berlipat dalam dua bulan, sementara pemilik terbesarnya melaporkan penjualan. Sebelumnya bursa menghentikan sementara perdagangannya karena laporan keuangan auditan tahunan belum disampaikan, dan perusahaan membagi dividen tunai.",
+  "fakta": [
+    {
+      "fact_id": "harga-2025-08-01",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2025-08-01",
+      "klaim": "Harga penutupan 1 Agustus 2025 adalah Rp8 per lembar.",
+      "nilai": 8,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "harga-2025-10-07",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2025-10-07",
+      "klaim": "Harga penutupan 7 Oktober 2025 adalah Rp162 per lembar.",
+      "nilai": 162,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "harga-2025-10-08",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2025-10-08",
+      "klaim": "Harga penutupan 8 Oktober 2025 adalah Rp178 per lembar.",
+      "nilai": 178,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "volume-2025-10-08",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2025-10-08",
+      "klaim": "Volume perdagangan 8 Oktober 2025 adalah 324.690.400 lembar.",
+      "nilai": 324690400,
+      "satuan": "lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "susp-2025-06-30",
+      "jenis": "dokumen",
+      "asal": "pengumuman penghentian sementara perdagangan oleh bursa",
+      "terbit": "2025-06-30",
+      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 30 Juni 2025. Alasan resmi: Belum menyampaikan laporan keuangan auditan tahunan. Tanggal pencabutan penghentian ini tidak ada di data, jadi lamanya tidak bisa dipastikan dari sumber mana pun yang dipakai kasus ini.",
+      "nilai": null,
+      "satuan": null,
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "div-2025-09-16",
+      "jenis": "dokumen",
+      "asal": "daftar aksi korporasi (dividen)",
+      "terbit": "2025-09-16",
+      "klaim": "Dividen tunai Rp0,14 per lembar dengan tanggal ex 16 September 2025.",
+      "nilai": 0.14,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "rups-2025-09-04",
+      "jenis": "dokumen",
+      "asal": "daftar aksi korporasi (rapat umum pemegang saham)",
+      "terbit": "2025-09-04",
+      "klaim": "Rapat umum pemegang saham dijadwalkan 4 September 2025. Teks keputusannya tidak ada di data, jadi isinya tidak bisa dikutip.",
+      "nilai": null,
+      "satuan": null,
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "fil-2025-08-25-03",
+      "jenis": "dokumen",
+      "asal": "laporan kepemilikan saham yang diumumkan ke publik",
+      "terbit": "2025-08-25",
+      "klaim": "Pemilik terbesar melaporkan penjualan 70.000.000 lembar atas transaksi 12 Agustus 2025, dilaporkan 25 Agustus 2025. Kepemilikan tercatat berubah dari 4.662.137.600 menjadi 4.592.137.600 lembar, yaitu dari 62,73 persen menjadi 61,788 persen saham.",
+      "nilai": 70000000,
+      "satuan": "lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "fil-2025-08-25-04",
+      "jenis": "dokumen",
+      "asal": "laporan kepemilikan saham yang diumumkan ke publik",
+      "terbit": "2025-08-25",
+      "klaim": "Pemilik terbesar melaporkan penjualan 179.500.000 lembar atas transaksi 13 Agustus 2025, dilaporkan 25 Agustus 2025. Kepemilikan tercatat berubah dari 4.592.137.600 menjadi 4.412.637.600 lembar, yaitu dari 61,79 persen menjadi 59,375 persen saham.",
+      "nilai": 179500000,
+      "satuan": "lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "fil-2025-09-01-01",
+      "jenis": "dokumen",
+      "asal": "laporan kepemilikan saham yang diumumkan ke publik",
+      "terbit": "2025-09-01",
+      "klaim": "Pemilik terbesar melaporkan penjualan 50.000.000 lembar atas transaksi 14 Agustus 2025, dilaporkan 1 September 2025. Kepemilikan tercatat berubah dari 4.412.637.600 menjadi 4.362.637.600 lembar, yaitu dari 59,38 persen menjadi 58,7 persen saham.",
+      "nilai": 50000000,
+      "satuan": "lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "kelipatan-2025-08-01-2025-10-08",
+      "jenis": "hitungan",
+      "asal": "dihitung dari fakta lain di paket ini",
+      "terbit": "2025-10-08",
+      "klaim": "Harga penutupan 8 Oktober 2025 (Rp178) adalah 22,25 kali harga penutupan 1 Agustus 2025 (Rp8), dibulatkan dua angka di belakang koma.",
+      "nilai": 22.25,
+      "satuan": "kali",
+      "turunan_dari": [
+        "harga-2025-08-01",
+        "harga-2025-10-08"
+      ],
+      "catatan": []
+    },
+    {
+      "fact_id": "andai-10-lot-dividen",
+      "jenis": "hitungan",
+      "asal": "dihitung dari fakta lain di paket ini",
+      "terbit": "2025-09-16",
+      "klaim": "Pengandaian: pemilik 10 lot (1.000 lembar) menerima 1.000 × Rp0,14 = Rp140 dividen tunai sebelum pajak.",
+      "nilai": 140,
+      "satuan": "rupiah",
+      "turunan_dari": [
+        "div-2025-09-16"
+      ],
+      "catatan": []
+    },
+    {
+      "fact_id": "jumlah-jual-terverifikasi",
+      "jenis": "hitungan",
+      "asal": "dihitung dari fakta lain di paket ini",
+      "terbit": "2025-09-01",
+      "klaim": "Penjualan pemilik terbesar di laporan yang lolos seluruh pemeriksaan: 70.000.000 + 179.500.000 + 50.000.000 = 299.500.000 lembar.",
+      "nilai": 299500000,
+      "satuan": "lembar",
+      "turunan_dari": [
+        "fil-2025-08-25-03",
+        "fil-2025-08-25-04",
+        "fil-2025-09-01-01"
+      ],
+      "catatan": []
+    },
+    {
+      "fact_id": "laporan-jual-terverifikasi",
+      "jenis": "hitungan",
+      "asal": "dihitung dari fakta lain di paket ini",
+      "terbit": "2025-09-01",
+      "klaim": "Laporan penjualan pemilik terbesar yang lolos seluruh pemeriksaan: 3 laporan.",
+      "nilai": 3,
+      "satuan": "laporan",
+      "turunan_dari": [
+        "fil-2025-08-25-03",
+        "fil-2025-08-25-04",
+        "fil-2025-09-01-01"
+      ],
+      "catatan": []
+    }
+  ],
+  "kata_terlarang": [
+    "DADA",
+    "DADA.JK",
+    "PT Diamond Citra Propertindo Tbk",
+    "Diamond Citra",
+    "Karya Permata",
+    "Karya Permata Inovasi Indonesia"
+  ],
+  "disingkirkan": [
+    {
+      "fact_id": "div-2025-09-16-bayar",
+      "alasan": "kalimatnya menyebut tanggal sesudah T: 9 Oktober 2025"
+    },
+    {
+      "fact_id": "fil-2025-08-25-01",
+      "alasan": "KONFLIK: temuan R14 berkeparahan konflik: Rantai Karya Permata Inovasi Indonesia putus: laporan 2025-08-25T17:00:51 berakhir di 4.692.137.600 lembar, tetapi laporan berikutnya 2025-08-25T17:03:44 mulai "
+    },
+    {
+      "fact_id": "fil-2025-08-25-02",
+      "alasan": "KONFLIK: temuan R14 berkeparahan konflik: Rantai Karya Permata Inovasi Indonesia putus: laporan 2025-08-25T17:00:51 berakhir di 4.692.137.600 lembar, tetapi laporan berikutnya 2025-08-25T17:03:44 mulai "
+    },
+    {
+      "fact_id": "fil-2025-09-29-01",
+      "alasan": "KONFLIK: temuan R17B berkeparahan konflik: Laporan 2025-09-29T16:45:08 menyebut transaksi 2025-09-26 pada harga Rp165, padahal harga saham hari itu hanya bergerak Rp135-Rp163."
+    }
+  ],
+  "pemeriksaan": {
+    "aturan_dijalankan": 23,
+    "aturan_dilewati": 12,
+    "temuan": [
+      {
+        "aturan": "R25",
+        "keparahan": "catatan",
+        "ringkasan": "Halaman laporan Perusahaan D tidak menggantung, tetapi parameter permintaannya tidak tersimpan di gudang, jadi tidak bisa dibuktikan bahwa berkas-berkas ini benar-benar menanyakan seluruh rentang untuk emiten ini. Kelengkapannya tidak diketahui."
+      },
+      {
+        "aturan": "R14",
+        "keparahan": "konflik",
+        "ringkasan": "Rantai Pemilik terbesar putus: laporan 2025-08-25T17:00:51 berakhir di 4.692.137.600 lembar, tetapi laporan berikutnya 2025-08-25T17:03:44 mulai dari 4.682.137.600 lembar. Ada 10.000.000 lembar yang berkurang tanpa laporan."
+      },
+      {
+        "aturan": "R17B",
+        "keparahan": "konflik",
+        "ringkasan": "Laporan 2025-09-29T16:45:08 menyebut transaksi 2025-09-26 pada harga Rp165, padahal harga saham hari itu hanya bergerak Rp135-Rp163."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 4 hari bursa berturut-turut, dari 2025-08-05 sampai 2025-08-08, harga Perusahaan D tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp10 di awal, Rp11 di akhir)."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 9 dari 10 hari bursa antara 2025-08-05 dan 2025-08-19, harga Perusahaan D tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp10 di awal, Rp17 di akhir)."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 31 hari bursa berturut-turut, dari 2025-08-12 sampai 2025-09-25, harga Perusahaan D tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp13 di awal, Rp149 di akhir)."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 9 dari 10 hari bursa antara 2025-09-15 dan 2025-09-26, harga Perusahaan D tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp72 di awal, Rp135 di akhir)."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 3 hari bursa berturut-turut, dari 2025-09-29 sampai 2025-10-01, harga Perusahaan D tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp122 di awal, Rp147 di akhir)."
+      }
+    ]
+  }
+}

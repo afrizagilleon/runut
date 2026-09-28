@@ -169,6 +169,8 @@ export interface OpsiGerbang {
   jam?: () => Date;
   /** Petunjuk sistem penebak; bawaan `PETUNJUK_PENEBAK` (M2d-2). M2d-3 menambah petunjuk berhitung. */
   petunjuk?: string;
+  /** `max_tokens` penebak; bawaan `MAX_TOKENS_GERBANG` (M2d-2). */
+  maxTokens?: number;
 }
 
 /** Satu panggilan gerbang yang dicatat, diulang sekali bila jawabannya tak terbaca. */
@@ -218,7 +220,7 @@ export async function gerbangTebak(o: OmonganDraf, opsi: OpsiGerbang): Promise<P
   for (let ke = 1; ke <= JUMLAH_PENEBAK; ke++) {
     const { hasil, panggilan } = await panggilTerbaca(
       () => pesanPenebak(soal, opsi.petunjuk),
-      { suhu: SUHU_TEBAK, maxTokens: MAX_TOKENS_GERBANG },
+      { suhu: SUHU_TEBAK, maxTokens: opsi.maxTokens ?? MAX_TOKENS_GERBANG },
       { jenis: 'gerbang-tebak', putaran: opsi.putaran, omongan: opsi.omongan, ke },
       opsi,
       uraiTebakan,

@@ -11,7 +11,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { PETUNJUK_PENEBAK_PERAN, jalankanPeran, promptPenulis, putusanAkhir, type HasilPeran, type InfoPeran, type PanggilPeran, type SuaraPenilai } from './agen-peran.ts';
+import { MAX_TOKENS_PENEBAK_PERAN, PETUNJUK_PENEBAK_PERAN, jalankanPeran, promptPenulis, putusanAkhir, type HasilPeran, type InfoPeran, type PanggilPeran, type SuaraPenilai } from './agen-peran.ts';
 import type { DrafSimulasi, KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
 import { PETUNJUK_PENEBAK } from './gerbang-tebak.ts';
@@ -124,6 +124,7 @@ describe('peran — model dan urutan ditetapkan kode', () => {
     ]);
     for (const r of rekaman) expect(r.info.model).toBe(r.info.peran === 'kritikus' ? MODEL_KRITIKUS : MODEL_AGEN);
     expect(dari(rekaman, 'kritikus').every((r) => r.setelan.maxTokens === MAX_TOKENS_KRITIKUS)).toBe(true);
+    expect(dari(rekaman, 'penebak').every((r) => r.setelan.maxTokens === MAX_TOKENS_PENEBAK_PERAN && r.setelan.suhu === 1)).toBe(true);
     expect(hasil.riwayat[0]?.omongan.map((o) => o.suara)).toEqual(
       Array.from({ length: 3 }, () => ({ pemeriksa: true, kartu: true, tebak: true, kritikus: true })),
     );

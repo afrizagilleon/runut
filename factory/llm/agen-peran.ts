@@ -50,6 +50,14 @@ export const PETUNJUK_PENEBAK_PERAN = [
   PETUNJUK_PENEBAK.split('\n').at(-1) ?? '',
 ].join('\n');
 export const JUMLAH_OMONGAN = 3;
+/**
+ * `max_tokens` penebak M2d-3. Dengan petunjuk berhitung, DeepSeek menalar
+ * lebih panjang: di jalan TIRT ke-1 (dibuang, `eval/keluaran-m2d3/dibuang/
+ * tirt-jalan1/`) dua dari empat panggilan penebak habis di 8.000 token tanpa
+ * JSON — dan tebakan tak terbaca dihitung BENAR/100 (menolak). 16.000 memberi
+ * ruang; perkiraan maksimum per panggilan tetap ±US$0,0065.
+ */
+export const MAX_TOKENS_PENEBAK_PERAN = 16_000;
 
 const JALUR_PENULIS = fileURLToPath(new URL('./prompt-penulis.md', import.meta.url));
 
@@ -587,7 +595,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         if (kartu.lolos) {
           tahap = 'gerbang-tebak';
           mulaiGerbang = jam().toISOString();
-          tebak = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: PETUNJUK_PENEBAK_PERAN });
+          tebak = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: PETUNJUK_PENEBAK_PERAN, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
           suara.tebak = tebak.lolos;
           const semua = tebak.tebakan.flatMap((t) => t.panggilan);
           catat({

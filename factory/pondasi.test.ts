@@ -45,6 +45,8 @@ describe('pondasi proyek', () => {
     // M2d-2 D-5/D-6/D-7: lingkar agen. Kontraknya menamai `npm run agen:susun`;
     // bahan penguji eksternal dan laporannya disebut satu per satu juga.
     const M2D2 = ['agen:susun', 'agen:penguji', 'agen:laporan'];
+    // M2d-3 D-6/D-7/D-8: lingkar agen berperan (penulis ≠ penilai), disebut satu per satu.
+    const M2D3 = ['peran:susun', 'peran:penguji', 'peran:laporan'];
     const skrip = Object.keys(paket.scripts).sort();
     for (const wajib of [...M1, ...M32, ...M33, ...A3, ...M2A]) {
       expect(skrip).toContain(wajib);
@@ -59,7 +61,8 @@ describe('pondasi proyek', () => {
         !A3.includes(s) &&
         !M2A.includes(s) &&
         !M2D.includes(s) &&
-        !M2D2.includes(s),
+        !M2D2.includes(s) &&
+        !M2D3.includes(s),
     );
     expect(takDikenal).toEqual([]);
   });

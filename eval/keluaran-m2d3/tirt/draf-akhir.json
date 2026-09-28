@@ -1,0 +1,105 @@
+{
+  "paket_id": "tirt",
+  "model_peran": {
+    "penulis": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "penebak": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "pembaca-kartu": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "kritikus": "zai-org/GLM-5.3"
+  },
+  "terbit": true,
+  "berhenti": null,
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Nadia",
+        "jam": "19.47",
+        "pesan": "Gila gue panik, Perusahaan T udah naik 2,21 kali dari 26 November! Ini gara-gara ada yang ngeborong gede ya? Gue takut banget kejebak.",
+        "angka_pesan": [
+          {
+            "teks": "2,21 kali",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          },
+          {
+            "teks": "26 November",
+            "fact_id": "harga-2025-11-26"
+          }
+        ],
+        "kartu": [
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "kelipatan-2025-11-26-2025-12-09",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] itu dari penutupan dibanding penutupan, jadi naiknya nyata.",
+          "b": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] itu dari harga pembukaan, jadi wajar panik.",
+          "c": "Keliru, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] itu jumlah lembar yang ditransaksikan, bukan harga.",
+          "d": "Keliru, penutupan terakhir masih di bawah penutupan akhir November, jadi belum naik."
+        },
+        "kunci": "a",
+        "penjelasan": "Penutupan [[harga-2025-11-26|26 November 2025]] ada di [[harga-2025-11-26|Rp48 per lembar]] dan penutupan [[harga-2025-12-09|9 Desember 2025]] ada di [[harga-2025-12-09|Rp106 per lembar]]. Bandingkan dua-duanya, hasilnya [[kelipatan-2025-11-26-2025-12-09|2,21 kali]], jadi angka yang diteriakkan temanmu itu bukan karangan. Yang bikin orang salah kalau angka itu disangka datang dari harga pembukaan atau dari jumlah lembar yang diperdagangkan, karena dasarnya penutupan dibanding penutupan. Soal kenapa naik, yang tertulis cuma peningkatan harga kumulatif di [[susp-2025-12-10|pengumuman 10 Desember 2025]], bukan soal ada yang ngeborong. Salah-kaprah yang umum: dengar angka naik besar langsung dicap hoaks, padahal cukup bandingkan dua penutupan yang tertulis."
+      },
+      {
+        "nama": "Rizky",
+        "jam": "20.15",
+        "pesan": "Gue udah liat Perusahaan T naik terus dari 26 November sampai 9 Desember, nggak ada putusnya. Kalian telat nyadar aja, gue dari dulu pantau.",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "harga-2025-11-26"
+          },
+          {
+            "teks": "9 Desember",
+            "fact_id": "harga-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2025-11-26",
+          "harga-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, naiknya nggak putus karena tiap hari jumlah lembar yang ditransaksikan nambah.",
+          "b": "Betul, tiap hari bursa penutupannya lebih tinggi dari hari sebelumnya, nggak putus.",
+          "c": "Keliru, di rentang itu ada hari bursa yang penutupannya lebih rendah dari hari sebelumnya.",
+          "d": "Keliru, yang naik beruntun cuma harga tertinggi harian, penutupannya diam aja."
+        },
+        "kunci": "b",
+        "penjelasan": "Kalau catatan harganya dibuka, penutupan [[harga-2025-11-26|26 November 2025]] ada di [[harga-2025-11-26|Rp48 per lembar]] dan penutupan [[harga-2025-12-09|9 Desember 2025]] ada di [[harga-2025-12-09|Rp106 per lembar]]. Yang bikin naiknya disebut beruntun ada di ringkasan [[hari-naik-beruntun|sembilan hari bursa]]: tiap hari bursa penutupannya lebih tinggi dari hari sebelumnya, jadi memang nggak ada hari yang turun. Alasan soal jumlah lembar yang ditransaksikan makin nambah itu nggak ada catatannya, jadi nggak bisa dipakai. Salah-kaprah yang umum: dengar naik beruntun panjang langsung dikira mustahil dan dicap hoaks, padahal cukup lihat catatan penutupan hariannya."
+      },
+      {
+        "nama": "Santi",
+        "jam": "21.08",
+        "pesan": "Perusahaan T disetop lagi hari ini, terus yang 21 Januari dulu juga. Itu dulu gara-gara harganya naik juga kan? Gue ragu sih, kayaknya gitu.",
+        "angka_pesan": [
+          {
+            "teks": "21 Januari",
+            "fact_id": "susp-2025-01-21"
+          }
+        ],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10",
+          "hari-naik-beruntun"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Betul, setop awal tahun juga karena kenaikan harga kumulatif, sama seperti setop hari ini.",
+          "b": "Betul, setop awal tahun karena harganya naik beruntun, jadi sama saja dengan yang sekarang.",
+          "c": "Keliru, setop awal tahun karena bursa ragu usaha bakal lanjut, bukan soal harga.",
+          "d": "Keliru, setop awal tahun karena sahamnya nggak ada yang beli, bukan soal harga."
+        },
+        "kunci": "c",
+        "penjelasan": "Setop yang [[susp-2025-01-21|21 Januari 2025]] alasannya beda dari setop hari ini. Waktu itu bursa menulis ragu soal kelanjutan usaha perusahaannya, sedangkan yang sekarang pemicunya kenaikan harga kumulatif, terbaca di [[susp-2025-12-10|pengumuman 10 Desember 2025]]. Jadi kalau anggapannya dua setop itu sama-sama gara-gara harga, itu nggak cocok dengan tulisan bursa sendiri. Lamanya setop juga nggak ada di dokumen, jadi nggak bisa dipastikan. Salah-kaprah yang umum: orang mengira semua setop bursa pemicunya sama, padahal yang awal tahun ragu soal kelanjutan usaha, yang sekarang soal harga."
+      }
+    ]
+  }
+}
