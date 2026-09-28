@@ -19,8 +19,9 @@ import { fileURLToPath } from 'node:url';
 import { teksPolos } from '../skema/rujukan.ts';
 import { SETELAN_CADANGAN, SETELAN_PENYUSUN, ambilOmongan } from './agen.ts';
 import type { DrafSimulasi, MasalahDraf, OmonganDraf } from './draf.ts';
+import { gerbangG, type PutusanG } from './gerbang-g.ts';
 import { gerbangKartu, type PutusanKartu } from './gerbang-kartu.ts';
-import { gerbangTebak, type InfoPanggil, type PanggilLlm, type PutusanTebak } from './gerbang-tebak.ts';
+import { PETUNJUK_PENEBAK, gerbangTebak, type InfoPanggil, type PanggilLlm, type PutusanTebak } from './gerbang-tebak.ts';
 import { hashPesan, type LangkahJejak, type PencatatJejak, type PeranLangkah } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
 import { kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
@@ -30,6 +31,17 @@ import type { PaketFakta } from './paket.ts';
 import { pesanPaket, promptSistem, uraiKeluaran, type JawabanModel, type SetelanPanggil } from './susun.ts';
 
 export const MAKS_PUTARAN_PERAN = 5;
+
+/**
+ * Petunjuk penebak M2d-3 = petunjuk M2d-2 + satu kalimat eksplisit untuk
+ * berhitung (D-2): di M2d-2 penebak DeepSeek tidak menghitung 106 ÷ 48,
+ * sedangkan ketiga penguji luar menghitungnya.
+ */
+export const PETUNJUK_PENEBAK_PERAN = [
+  PETUNJUK_PENEBAK.split('\n').slice(0, -1).join('\n'),
+  'Sebelum menebak, coba hitung dari angka yang ada di pesan dan pilihan (selisih, kali lipat, persen); kalau hitunganmu menunjuk satu pilihan, pakai itu.',
+  PETUNJUK_PENEBAK.split('\n').at(-1) ?? '',
+].join('\n');
 export const JUMLAH_OMONGAN = 3;
 
 const JALUR_PENULIS = fileURLToPath(new URL('./prompt-penulis.md', import.meta.url));
@@ -99,6 +111,8 @@ export interface PemeriksaanPeran {
   kartu: PutusanKartu | null;
   tebak: PutusanTebak | null;
   kritik: PutusanKritik | null;
+  /** Gerbang G (pemeriksa); `null` bila omongan tidak ada atau bentuknya rusak. */
+  g?: PutusanG | null;
   /** Versi ini dibawa ke putaran berikutnya tanpa ditulis ulang (kritikus tidak menjawab). */
   dibawa: boolean;
 }
@@ -411,10 +425,32 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       for (const m of masalahNyata.filter((x) => x.omongan === no)) butir.push(`[pemeriksa: ${m.kode}] ${m.pesan}`);
       for (const m of global) butir.push(`[pemeriksa: ${m.kode}, seluruh draf] ${m.pesan}`);
       const o = gabung[no - 1];
+      // Gerbang G (pemeriksa, kode): dijalankan pada setiap omongan yang
+      // bentuknya terbaca, juga bila validator menolak — umpan baliknya
+      // digabung supaya penulis melihat semua keberatan pemeriksa sekaligus.
+      let g: PutusanG | null = null;
+      const bentukRusak = masalahNyata.some((m) => m.omongan === no && m.kode === 'SKEMA');
+      if (o !== null && o !== undefined && !bentukRusak) {
+        const mulaiG = jam().toISOString();
+        g = gerbangG(o as OmonganDraf);
+        butir.push(...g.umpan);
+        catat({
+          putaran, jenis: 'gerbang-g', omongan: no, waktu_mulai: mulaiG, waktu_selesai: jam().toISOString(), model: null,
+          panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: g.tolak ? 'tolak' : 'lolos',
+          alasan: g.tolak ? g.umpan : ['G-angka-cukup dan G-kaku tidak keberatan'],
+          sha256_prompt: null,
+          rincian: {
+            pesan: teksPolos((o as OmonganDraf).pesan),
+            angka_cukup: { tolak: g.angka_cukup.tolak, bukti: g.angka_cukup.bukti },
+            kaku: { tolak: g.kaku.tolak, penanda: g.kaku.penanda, panjang: g.kaku.panjang, kalimat_panjang: g.kaku.kalimat_panjang },
+          },
+          peran: 'pemeriksa',
+        });
+      }
       if (butir.length > 0 || o === null || o === undefined) {
         tolak({
           status: o === null || o === undefined ? 'tidak-ada' : 'ditolak-pemeriksa',
-          suara, umpan: butir, kartu: null, tebak: null, kritik: null,
+          suara, umpan: butir, kartu: null, tebak: null, kritik: null, g,
         });
         continue;
       }
@@ -448,7 +484,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         if (kartu.lolos) {
           tahap = 'gerbang-tebak';
           mulaiGerbang = jam().toISOString();
-          tebak = await gerbangTebak(omongan, opsiGerbang);
+          tebak = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: PETUNJUK_PENEBAK_PERAN });
           suara.tebak = tebak.lolos;
           const semua = tebak.tebakan.flatMap((t) => t.panggilan);
           catat({
@@ -521,21 +557,21 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           return akhiri();
         }
         const butirGalat = `[galat penyedia saat ${tahap}] ${teksGalat(galat).slice(0, 200)}; omongan ini diperiksa lagi sesudah ditulis ulang.`;
-        tolak({ status: 'galat-gerbang', suara, umpan: [butirGalat], kartu, tebak, kritik: kr });
+        tolak({ status: 'galat-gerbang', suara, umpan: [butirGalat], kartu, tebak, kritik: kr, g });
         continue;
       }
 
       if (putusanAkhir(suara)) {
-        catatan.omongan.push({ no, status: 'lolos', suara, umpan: [], kartu, tebak, kritik: kr, dibawa: false });
+        catatan.omongan.push({ no, status: 'lolos', suara, umpan: [], kartu, tebak, kritik: kr, g, dibawa: false });
         terkunci.add(no);
       } else if (kartu !== null && !kartu.lolos) {
-        tolak({ status: 'ditolak-kartu', suara, umpan: [`[pembaca kartu] ${kartu.alasan}`], kartu, tebak, kritik: kr });
+        tolak({ status: 'ditolak-kartu', suara, umpan: [`[pembaca kartu] ${kartu.alasan}`], kartu, tebak, kritik: kr, g });
       } else if (tebak !== null && !tebak.lolos) {
-        tolak({ status: 'ditolak-tebak', suara, umpan: [`[penebak tanpa kartu] ${tebak.alasan}`], kartu, tebak, kritik: kr });
+        tolak({ status: 'ditolak-tebak', suara, umpan: [`[penebak tanpa kartu] ${tebak.alasan}`], kartu, tebak, kritik: kr, g });
       } else if (kr !== null && !kr.menjawab) {
-        tolak({ status: 'kritikus-tidak-menjawab', suara, umpan: umpanKritik(kr), kartu, tebak, kritik: kr, dibawa: true });
+        tolak({ status: 'kritikus-tidak-menjawab', suara, umpan: umpanKritik(kr), kartu, tebak, kritik: kr, g, dibawa: true });
       } else {
-        tolak({ status: 'ditolak-kritikus', suara, umpan: kr === null ? ['[kritikus] tidak dijalankan.'] : umpanKritik(kr), kartu, tebak, kritik: kr });
+        tolak({ status: 'ditolak-kritikus', suara, umpan: kr === null ? ['[kritikus] tidak dijalankan.'] : umpanKritik(kr), kartu, tebak, kritik: kr, g });
       }
     }
     draf = gabung.map((x) => (x === undefined ? null : (x as OmonganDraf | null)));

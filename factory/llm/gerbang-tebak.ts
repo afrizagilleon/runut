@@ -104,9 +104,9 @@ export const PETUNJUK_PENEBAK = [
 ].join('\n');
 
 /** Pesan untuk SATU penebak: percakapan baru, dua pesan, tanpa apa pun dari penyusun. */
-export function pesanPenebak(s: SoalTebak): PesanChat[] {
+export function pesanPenebak(s: SoalTebak, petunjuk: string = PETUNJUK_PENEBAK): PesanChat[] {
   return [
-    { role: 'system', content: PETUNJUK_PENEBAK },
+    { role: 'system', content: petunjuk },
     { role: 'user', content: tulisSoal(s) },
   ];
 }
@@ -167,6 +167,8 @@ export interface OpsiGerbang {
   putaran: number;
   omongan: number;
   jam?: () => Date;
+  /** Petunjuk sistem penebak; bawaan `PETUNJUK_PENEBAK` (M2d-2). M2d-3 menambah petunjuk berhitung. */
+  petunjuk?: string;
 }
 
 /** Satu panggilan gerbang yang dicatat, diulang sekali bila jawabannya tak terbaca. */
@@ -215,7 +217,7 @@ export async function gerbangTebak(o: OmonganDraf, opsi: OpsiGerbang): Promise<P
   const tebakan: Tebakan[] = [];
   for (let ke = 1; ke <= JUMLAH_PENEBAK; ke++) {
     const { hasil, panggilan } = await panggilTerbaca(
-      () => pesanPenebak(soal),
+      () => pesanPenebak(soal, opsi.petunjuk),
       { suhu: SUHU_TEBAK, maxTokens: MAX_TOKENS_GERBANG },
       { jenis: 'gerbang-tebak', putaran: opsi.putaran, omongan: opsi.omongan, ke },
       opsi,

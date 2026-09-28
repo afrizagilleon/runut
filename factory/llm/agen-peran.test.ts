@@ -11,7 +11,7 @@
  */
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { jalankanPeran, promptPenulis, putusanAkhir, type HasilPeran, type InfoPeran, type PanggilPeran, type SuaraPenilai } from './agen-peran.ts';
+import { PETUNJUK_PENEBAK_PERAN, jalankanPeran, promptPenulis, putusanAkhir, type HasilPeran, type InfoPeran, type PanggilPeran, type SuaraPenilai } from './agen-peran.ts';
 import type { DrafSimulasi, KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
 import { PETUNJUK_PENEBAK } from './gerbang-tebak.ts';
@@ -129,7 +129,7 @@ describe('peran — isi pesan yang dikirim ke tiap peran (peran.md)', () => {
     expect(tebak).toHaveLength(9);
     for (const r of tebak) {
       expect(r.pesan).toHaveLength(2);
-      expect(r.pesan[0]?.content).toBe(PETUNJUK_PENEBAK);
+      expect(r.pesan[0]?.content).toBe(PETUNJUK_PENEBAK_PERAN);
       const t = semuaTeks(r);
       for (const f of PAKET.fakta) {
         expect(t).not.toContain(f.fact_id);
@@ -195,6 +195,43 @@ describe('peran — isi pesan yang dikirim ke tiap peran (peran.md)', () => {
   });
 });
 
+describe('peran — pemeriksa: gerbang G dan petunjuk berhitung penebak (D-2)', () => {
+  it('petunjuk penebak M2d-3 = petunjuk M2d-2 + satu kalimat berhitung; bentuk jawaban JSON tetap di baris terakhir', () => {
+    expect(PETUNJUK_PENEBAK_PERAN).toContain('coba hitung dari angka yang ada di pesan dan pilihan');
+    expect(PETUNJUK_PENEBAK_PERAN.split('\n').at(-1)).toBe(PETUNJUK_PENEBAK.split('\n').at(-1));
+    expect(PETUNJUK_PENEBAK_PERAN.split('\n')).toHaveLength(PETUNJUK_PENEBAK.split('\n').length + 1);
+  });
+
+  it('omongan yang kuncinya bisa dihitung ditolak PEMERIKSA sebelum peran model mana pun dipanggil', async () => {
+    const bocor = { ...om(1), pesan: 'Harga dari 48 ke 106 dalam sembilan hari, berarti naik 2,21 kali lipat lho.',
+      angka_pesan: [{ teks: '48', fact_id: 'harga-2025-11-26' }, { teks: '106', fact_id: 'harga-2025-12-09' }, { teks: '2,21', fact_id: 'kelipatan-2025-11-26-2025-12-09' }],
+      kartu: ['kelipatan-2025-11-26-2025-12-09', 'harga-2025-11-26', 'harga-2025-12-09'], kartu_penentu: ['kelipatan-2025-11-26-2025-12-09'],
+      pilihan: {
+        a: 'Betul, sebab [[harga-2025-12-09|106]] memang [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] [[harga-2025-11-26|48]].',
+        b: 'Keliru, kenaikannya cuma [[misal|2,21 persen]] dari [[harga-2025-11-26|48]].',
+        c: 'Betul, tapi setopnya karena keraguan kelangsungan usahanya.',
+        d: 'Keliru, harganya justru turun selama sembilan hari itu.',
+      },
+      kunci: 'a' as KunciOpsi,
+      penjelasan: 'Harga [[harga-2025-12-09|106 rupiah]] itu [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga [[harga-2025-11-26|48 rupiah]]. Salah-kaprah yang umum: kali disamakan dengan persen.' };
+    const { panggil, rekaman } = palsu({});
+    const bungkus: PanggilPeran = async (pesan, setelan, info) => {
+      if (info.peran === 'penulis' && info.omongan === 1 && info.putaran === 1) {
+        rekaman.push({ pesan, setelan, info });
+        return { teks: JSON.stringify({ omongan: [{ no: 1, ...bocor }] }), token_masuk: 1, token_keluar: 1, latensi_ms: 1, finish_reason: 'stop', biaya_usd: 0.001 };
+      }
+      return panggil(pesan, setelan, info);
+    };
+    const hasil = await jalankanPeran({ paket: PAKET, panggil: bungkus, validasi: validasiDraf, jam: () => new Date('2026-09-28T00:00:00Z') });
+    expect(validasiDraf({ omongan: [bocor, om(2), om(3)] }, PAKET)).toEqual([]);
+    const o1 = hasil.riwayat[0]?.omongan[0];
+    expect(o1).toMatchObject({ status: 'ditolak-pemeriksa', suara: { pemeriksa: false, kartu: null, tebak: null, kritikus: null } });
+    expect(o1?.umpan.join('\n')).toContain('[pemeriksa: G-angka-cukup] Pilihan kunci a bisa dihitung');
+    expect(rekaman.filter((r) => r.info.putaran === 1 && r.info.omongan === 1 && r.info.peran !== 'penulis')).toHaveLength(0);
+    expect(hasil.lolos).toBe(true);
+  });
+});
+
 describe('peran — jejak', () => {
   it('setiap langkah membawa perannya; langkah kritikus mencatat keberatan, arahan, terpotong, token, biaya; sah menurut skema', async () => {
     const keberatan = JSON.stringify({ keberatan: [{ jenis: 'ambigu', bagian: 'pilihan', alasan: 'a dan c nyaris sama' }], arahan: 'Bedakan a dan c.' });
@@ -210,7 +247,7 @@ describe('peran — jejak', () => {
       rincian: { menjawab: true, terpotong: false, keberatan: [{ jenis: 'ambigu', bagian: 'pilihan', alasan: 'a dan c nyaris sama' }], arahan: 'Bedakan a dan c.' },
     });
     expect(new Set(j.langkah.map((l) => `${l.jenis}:${String(l.peran)}`))).toEqual(
-      new Set(['susun:penulis', 'tulis-ulang:penulis', 'validator:pemeriksa', 'gerbang-kartu:pembaca-kartu', 'gerbang-tebak:penebak', 'kritikus:kritikus']),
+      new Set(['susun:penulis', 'tulis-ulang:penulis', 'validator:pemeriksa', 'gerbang-g:pemeriksa', 'gerbang-kartu:pembaca-kartu', 'gerbang-tebak:penebak', 'kritikus:kritikus']),
     );
   });
 });
