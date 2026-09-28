@@ -9,6 +9,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { GENERASI_M2D3, GENERASI_M2D4, MAX_TOKENS_PENEBAK_PERAN, PETUNJUK_PENEBAK_KUAT, PETUNJUK_PENEBAK_PERAN, jalankanPeran, promptPenulis, promptPenulisGaya, type Generasi, type HasilPeran, type InfoPeran, type PanggilPeran } from './agen-peran.ts';
 import { PETUNJUK_PENEBAK } from './gerbang-tebak.ts';
+import { KEBERATAN_TIDAK_MENJAWAB, MAX_TOKENS_KRITIKUS, promptKritikus, promptKritikusMakna } from './kritikus.ts';
 import type { DrafSimulasi, KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
 import { PencatatJejak, validasiJejak } from './jejak.ts';
@@ -247,5 +248,116 @@ describe('M2d-4 — penebak lebih kuat (D-5)', () => {
       expect(l.model).toBe(`${MODEL_AGEN} ×2 + ${MODEL_KRITIKUS} ×1`);
       expect((l.rincian['tebakan'] as Array<{ model: string; biaya_usd: number }>).map((x) => x.model)).toEqual([MODEL_AGEN, MODEL_AGEN, MODEL_KRITIKUS]);
     }
+  });
+});
+
+describe('M2d-4 — kritikus lebih awal + cek makna (D-6)', () => {
+  const semuaTeks = (r: Rekaman): string => r.pesan.map((p) => p.content).join('\n');
+  const cek = (x: { tak?: string[]; pasti?: boolean; juga?: string[]; keberatan?: unknown[]; arahan?: string }): string =>
+    JSON.stringify({
+      cek_klaim: { bagian_tak_tercek: x.tak ?? [], kunci_menyatakan_tak_pasti: x.pasti ?? false },
+      cek_pilihan: { juga_benar: x.juga ?? [], alasan: x.juga === undefined ? '' : 'kartu juga membenarkannya' },
+      keberatan: x.keberatan ?? [],
+      arahan: x.arahan ?? '',
+    });
+
+  it('urutan per omongan: pembaca kartu → KRITIKUS (GLM, prompt makna) → penebak ×3; M2d-3 tetap kartu → penebak → kritikus', async () => {
+    const { hasil, rekaman } = await jalan({});
+    expect(hasil).toMatchObject({ lolos: true, jumlah_putaran: 1 });
+    expect(rekaman.map((r) => `${r.info.peran}:${String(r.info.omongan)}`)).toEqual([
+      'penulis:1', 'penulis:2', 'penulis:3',
+      ...[1, 2, 3].flatMap((no) => [`pembaca-kartu:${no}`, `kritikus:${no}`, `penebak:${no}`, `penebak:${no}`, `penebak:${no}`]),
+    ]);
+    for (const r of dari(rekaman, 'kritikus')) {
+      expect(r.info.model).toBe(MODEL_KRITIKUS);
+      expect(r.setelan.maxTokens).toBe(MAX_TOKENS_KRITIKUS);
+      expect(r.pesan[0]?.content).toBe(promptKritikusMakna());
+    }
+    const m2d3 = await jalan({ kritikus: () => ({ teks: JSON.stringify({ keberatan: [], arahan: '' }) }) }, GENERASI_M2D3);
+    expect(m2d3.rekaman.slice(3, 8).map((r) => r.info.peran)).toEqual(['pembaca-kartu', 'penebak', 'penebak', 'penebak', 'kritikus']);
+    for (const r of dari(m2d3.rekaman, 'kritikus')) expect(r.pesan[0]?.content).toBe(promptKritikus());
+  });
+
+  it('kritikus melihat kunci, isi kartu + tanda penentu, penjelasan, jawaban pembaca kartu; penebak disebut "dijalankan SESUDAH kritikus"', async () => {
+    const { rekaman } = await jalan({});
+    const kr = dari(rekaman, 'kritikus');
+    expect(kr).toHaveLength(3);
+    for (const [i, r] of kr.entries()) {
+      const t = r.pesan[1]?.content ?? '';
+      const o = om(i + 1);
+      expect(t).toContain(`KUNCI: ${o.kunci}`);
+      for (const id of o.kartu) expect(t).toContain(PAKET.fakta.find((f) => f.fact_id === id)?.klaim ?? '?');
+      expect(t).toContain('[KARTU PENENTU]');
+      expect(t).toContain('Salah-kaprah yang umum');
+      expect(t).toContain(`memilih "${o.kunci}"`);
+      expect(t).toContain('- tiga penebak tanpa kartu: dijalankan SESUDAH kritikus (hasilnya belum ada).');
+    }
+    const p = promptKritikusMakna();
+    expect(p).toContain('Apakah SETIAP BAGIAN klaim dalam omongan teman bisa dicek dari kartu?');
+    expect(p).toContain('Apakah ada LEBIH DARI SATU pilihan yang benar menurut kartu?');
+  });
+
+  it('kritikus keberatan → penebak TIDAK dipanggil; keberatan sampai ke penulis tetapi tidak pernah ke penebak', async () => {
+    const keberatan = cek({ keberatan: [{ jenis: 'makna', bagian: 'pesan', alasan: 'klaim "rame" tidak ada di kartu volume' }], arahan: 'Ganti klaim teman.' });
+    const { hasil, rekaman } = await jalan({ kritikus: (no, p) => (no === 2 && p === 1 ? { teks: keberatan } : { teks: TANPA_KEBERATAN_M2D4 }) });
+    expect(hasil.riwayat[0]?.omongan[1]).toMatchObject({ status: 'ditolak-kritikus', suara: { pemeriksa: true, kartu: true, kritikus: false, tebak: null } });
+    expect(dari(rekaman, 'penebak').filter((r) => r.info.putaran === 1).map((r) => r.info.omongan)).toEqual([1, 1, 1, 3, 3, 3]);
+    const ulang = dari(rekaman, 'penulis').filter((r) => r.info.putaran === 2);
+    expect(ulang.map((r) => r.info.omongan)).toEqual([2]);
+    expect(ulang[0]?.pesan[1]?.content).toContain('- [kritikus: makna, pesan] klaim "rame" tidak ada di kartu volume');
+    for (const r of dari(rekaman, 'penebak')) expect(semuaTeks(r)).not.toMatch(/rame" tidak ada|Ganti klaim teman|kritikus|keberatan/);
+    expect(hasil).toMatchObject({ lolos: true, jumlah_putaran: 2 });
+  });
+
+  it('kritikus tanpa keberatan tidak meloloskan sendirian: penebak sesudahnya tetap bisa menolak', async () => {
+    const { hasil } = await jalan({ tertebak: (no, p) => no === 3 && p === 1 }, GENERASI_M2D4, 1);
+    expect(hasil.riwayat[0]?.omongan[2]).toMatchObject({ status: 'ditolak-tebak', suara: { kritikus: true, tebak: false } });
+    expect(hasil.lolos).toBe(false);
+  });
+
+  it('cek makna (1): bagian klaim tak tercek + kunci "Betul" → keberatan makna yang MENOLAK, walau larik keberatan kritikus kosong', async () => {
+    expect(om(1).pilihan[om(1).kunci]).toMatch(/^Betul,/);
+    const tak = cek({ tak: ['gara-gara ada yang ngeborong'] });
+    const { hasil, rekaman, jejak } = await jalan({ kritikus: (no, p) => (no === 1 && p === 1 ? { teks: tak } : { teks: TANPA_KEBERATAN_M2D4 }) });
+    const o1 = hasil.riwayat[0]?.omongan[0];
+    expect(o1).toMatchObject({ status: 'ditolak-kritikus', suara: { kritikus: false, tebak: null } });
+    expect(o1?.kritik?.keberatan[0]).toMatchObject({ jenis: 'makna', bagian: 'kunci' });
+    expect(o1?.kritik?.keberatan[0]?.alasan).toContain('"gara-gara ada yang ngeborong"');
+    expect(o1?.kritik?.cek_makna).toMatchObject({ bagian_tak_tercek: ['gara-gara ada yang ngeborong'], kunci_menyatakan_tak_pasti: false });
+    expect(dari(rekaman, 'penulis').find((r) => r.info.putaran === 2)?.pesan[1]?.content).toContain('[kritikus: makna, kunci] Bagian klaim teman yang tidak bisa dicek dari kartu');
+    const l = jejak.jejak().langkah.find((x) => x.jenis === 'kritikus' && x.omongan === 1 && x.putaran === 1);
+    expect(l).toMatchObject({ putusan: 'tolak', rincian: { cek_makna: { bagian_tak_tercek: ['gara-gara ada yang ngeborong'] }, sebelum_penebak: true } });
+    expect(validasiJejak(jejak.jejak())).toEqual([]);
+  });
+
+  it('cek makna (1): tidak menolak bila kunci "Keliru" atau pilihan kunci menyatakan bagian itu tak bisa dipastikan', async () => {
+    expect(om(2).pilihan[om(2).kunci]).toMatch(/^Keliru,/);
+    const keliru = await jalan({ kritikus: (no) => ({ teks: no === 2 ? cek({ tak: ['alasan yang dulu'] }) : TANPA_KEBERATAN_M2D4 }) }, GENERASI_M2D4, 1);
+    expect(keliru.hasil.riwayat[0]?.omongan[1]).toMatchObject({ status: 'lolos' });
+    const pasti = await jalan({ kritikus: (no) => ({ teks: no === 1 ? cek({ tak: ['siapa yang membeli'], pasti: true }) : TANPA_KEBERATAN_M2D4 }) }, GENERASI_M2D4, 1);
+    expect(pasti.hasil.riwayat[0]?.omongan[0]).toMatchObject({ status: 'lolos' });
+  });
+
+  it('cek makna (2): pilihan lain yang juga benar menurut kartu → keberatan kunci yang MENOLAK; menyebut kunci sendiri bukan keberatan', async () => {
+    const k3 = om(3).kunci;
+    const lainK3 = lain(k3);
+    const { hasil } = await jalan({ kritikus: (no, p) => ({ teks: no === 3 && p === 1 ? cek({ juga: [k3, lainK3.toUpperCase()] }) : TANPA_KEBERATAN_M2D4 }) }, GENERASI_M2D4, 1);
+    const o3 = hasil.riwayat[0]?.omongan[2];
+    expect(o3).toMatchObject({ status: 'ditolak-kritikus', kritik: { cek_makna: { juga_benar: [k3, lainK3] } } });
+    expect(o3?.kritik?.keberatan).toEqual([
+      { jenis: 'kunci', bagian: 'pilihan', alasan: `Pilihan ${lainK3} juga benar menurut kartu (kartu juga membenarkannya); hanya satu pilihan yang boleh benar.` },
+    ]);
+    const sendiri = await jalan({ kritikus: () => ({ teks: cek({ juga: [k3] }) }) }, GENERASI_M2D4, 1);
+    expect(sendiri.hasil.riwayat[0]?.omongan[2]).toMatchObject({ status: 'lolos' });
+  });
+
+  it('jawaban tanpa dua pertanyaan wajib = tak terbaca: diulang sekali, lalu keberatan "tidak menjawab" (dibawa tanpa ditulis ulang)', async () => {
+    const polos = JSON.stringify({ keberatan: [], arahan: '' });
+    const { hasil, rekaman } = await jalan({ kritikus: (no, p) => ({ teks: no === 1 && p === 1 ? polos : TANPA_KEBERATAN_M2D4 }) });
+    expect(dari(rekaman, 'kritikus').filter((r) => r.info.putaran === 1 && r.info.omongan === 1).map((r) => r.info.ulang)).toEqual([0, 1]);
+    expect(hasil.riwayat[0]?.omongan[0]).toMatchObject({
+      status: 'kritikus-tidak-menjawab', dibawa: true, kritik: { menjawab: false, cek_makna: null, keberatan: [{ jenis: 'tidak-menjawab', alasan: KEBERATAN_TIDAK_MENJAWAB }] },
+    });
+    expect(hasil).toMatchObject({ lolos: true, jumlah_putaran: 2 });
   });
 });

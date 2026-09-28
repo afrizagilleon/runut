@@ -17,6 +17,20 @@
  *   tak terbaca, atau galat penyedia → dicoba ulang SEKALI; bila tetap gagal,
  *   keberatan "kritikus tidak menjawab". Jawaban yang terpotong tidak pernah
  *   dibaca sebagai "tidak keberatan", walau potongannya kebetulan JSON sah.
+ *
+ * **Cek makna (M2d-4 D-6).** Di M2d-3 kritikus dipanggil paling akhir dan
+ * melewatkan masalah makna yang dilihat penguji luar (TIRT 1: "gara-gara ada
+ * yang ngeborong" tak bisa dicek, tetapi kuncinya "Betul"; ULTJ 1: pilihan d
+ * ikut benar). Dengan `cekMakna`, kritikus WAJIB menjawab dua pertanyaan
+ * (`prompt-kritikus-makna.md`) dan KODE — bukan model — mengubah jawabannya
+ * menjadi keberatan yang menolak:
+ *   (1) ada bagian klaim yang tak bisa dicek dari kartu, label kunci "Betul",
+ *       dan pilihan kunci tidak menyatakan bagian itu tak bisa dipastikan →
+ *       keberatan `makna`;
+ *   (2) ada pilihan selain kunci yang juga benar menurut kartu → keberatan
+ *       `kunci`.
+ * Jawaban tanpa kedua medan itu = tak terbaca (diulang sekali, lalu "tidak
+ * menjawab"). Kritikus tetap tidak menulis ulang dan tidak bisa meloloskan.
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
@@ -51,9 +65,15 @@ export interface Keberatan {
 }
 
 const JALUR_PROMPT = fileURLToPath(new URL('./prompt-kritikus.md', import.meta.url));
+const JALUR_PROMPT_MAKNA = fileURLToPath(new URL('./prompt-kritikus-makna.md', import.meta.url));
 
 export function promptKritikus(): string {
   return readFileSync(JALUR_PROMPT, 'utf8').replace(/\r\n/g, '\n').trim();
+}
+
+/** Prompt kritikus M2d-4: dipanggil sebelum penebak; dua pertanyaan makna wajib. */
+export function promptKritikusMakna(): string {
+  return readFileSync(JALUR_PROMPT_MAKNA, 'utf8').replace(/\r\n/g, '\n').trim();
 }
 
 /** Hasil peran lain yang boleh (dan perlu) dilihat kritikus. */
@@ -61,6 +81,8 @@ export interface KonteksKritik {
   no: number;
   kartu: { pilihan: string | null; kartu_ditunjuk_no: number[]; alasan: string } | null;
   tebakan: Array<{ pilihan: string; yakin: number }>;
+  /** M2d-4: penebak dijalankan SESUDAH kritikus (hasilnya belum ada). */
+  penebakSesudah?: boolean;
 }
 
 /** Pesan pengguna untuk kritikus: seluruh soal, kunci, kartu penentu, penjelasan, hasil peran lain. */
@@ -93,16 +115,18 @@ export function tulisSoalKritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKri
       : `- pembaca yang memegang kartu (tanpa tahu kunci) memilih "${String(k.kartu.pilihan)}"` +
         `${k.kartu.kartu_ditunjuk_no.length > 0 ? `, menunjuk kartu ${k.kartu.kartu_ditunjuk_no.join(' dan ')}` : ''}; ` +
         `alasannya: "${k.kartu.alasan}"`,
-    k.tebakan.length === 0
+    k.penebakSesudah === true
+      ? '- tiga penebak tanpa kartu: dijalankan SESUDAH kritikus (hasilnya belum ada).'
+      : k.tebakan.length === 0
       ? '- tiga penebak tanpa kartu: belum dijalankan.'
       : `- tiga penebak TANPA kartu memilih: ${k.tebakan.map((t) => `${t.pilihan} (yakin ${String(t.yakin)})`).join(', ')}`,
   ];
   return baris.join('\n');
 }
 
-export function pesanKritikus(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik): PesanChat[] {
+export function pesanKritikus(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik, cekMakna = false): PesanChat[] {
   return [
-    { role: 'system', content: promptKritikus() },
+    { role: 'system', content: cekMakna ? promptKritikusMakna() : promptKritikus() },
     { role: 'user', content: tulisSoalKritik(o, paket, k) },
   ];
 }
@@ -149,6 +173,71 @@ export function uraiKritik(teks: string): KritikTerurai | null {
   };
 }
 
+/** Jawaban kritikus atas dua pertanyaan makna wajib (M2d-4 D-6). */
+export interface CekMakna {
+  /** (1) Bagian klaim teman yang tidak bisa dicek dari kartu. */
+  bagian_tak_tercek: string[];
+  /** Pilihan kunci sendiri menyatakan bagian itu tak bisa dipastikan. */
+  kunci_menyatakan_tak_pasti: boolean;
+  /** (2) Huruf pilihan SELAIN kunci yang juga benar menurut kartu. */
+  juga_benar: string[];
+  alasan_juga_benar: string;
+}
+
+const MEDAN_CEK = ['cek_klaim', 'cek_pilihan'];
+
+/** Urai dua jawaban wajib; `null` bila salah satunya tidak ada atau bentuknya salah. */
+export function uraiCekMakna(n: Record<string, unknown>): CekMakna | null {
+  const klaim = n['cek_klaim'];
+  const pilihan = n['cek_pilihan'];
+  if (typeof klaim !== 'object' || klaim === null || Array.isArray(klaim)) return null;
+  if (typeof pilihan !== 'object' || pilihan === null || Array.isArray(pilihan)) return null;
+  const k = klaim as Record<string, unknown>;
+  const p = pilihan as Record<string, unknown>;
+  const bagian = k['bagian_tak_tercek'];
+  const juga = p['juga_benar'];
+  if (!Array.isArray(bagian) || !Array.isArray(juga)) return null;
+  if (typeof k['kunci_menyatakan_tak_pasti'] !== 'boolean') return null;
+  return {
+    bagian_tak_tercek: bagian.filter((x): x is string => typeof x === 'string' && x.trim() !== '').map((x) => potong(x, 120)).slice(0, 6),
+    kunci_menyatakan_tak_pasti: k['kunci_menyatakan_tak_pasti'],
+    juga_benar: [...new Set(juga.filter((x): x is string => typeof x === 'string').map((x) => x.trim().toLowerCase().replace(/[^a-d]/g, '')).filter((x) => /^[a-d]$/.test(x)))],
+    alasan_juga_benar: typeof p['alasan'] === 'string' ? potong(p['alasan'], MAKS_ALASAN) : '',
+  };
+}
+
+/**
+ * Keberatan yang diturunkan KODE dari dua jawaban wajib (D-6): keduanya
+ * menolak. `labelKunci` dibaca dari pilihan kunci, bukan dari kritikus.
+ */
+export function keberatanMakna(c: CekMakna, o: OmonganDraf): Keberatan[] {
+  const hasil: Keberatan[] = [];
+  const labelKunci = teksPolos(o.pilihan[o.kunci] ?? '').trimStart().startsWith('Betul,') ? 'Betul' : 'Keliru';
+  if (c.bagian_tak_tercek.length > 0 && labelKunci === 'Betul' && !c.kunci_menyatakan_tak_pasti) {
+    hasil.push({
+      jenis: 'makna',
+      bagian: 'kunci',
+      alasan: potong(
+        `Bagian klaim teman yang tidak bisa dicek dari kartu: ${c.bagian_tak_tercek.map((b) => `"${b}"`).join(', ')}; ` +
+          'kunci tidak boleh "Betul" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan.',
+        MAKS_ALASAN,
+      ),
+    });
+  }
+  const lain = c.juga_benar.filter((x) => x !== o.kunci);
+  if (lain.length > 0) {
+    hasil.push({
+      jenis: 'kunci',
+      bagian: 'pilihan',
+      alasan: potong(
+        `Pilihan ${lain.join(' dan ')} juga benar menurut kartu${c.alasan_juga_benar === '' ? '' : ` (${c.alasan_juga_benar})`}; hanya satu pilihan yang boleh benar.`,
+        MAKS_ALASAN,
+      ),
+    });
+  }
+  return hasil;
+}
+
 export interface PutusanKritik {
   /** Benar HANYA bila kritikus menjawab terbaca dan larik keberatannya kosong. */
   tanpa_keberatan: boolean;
@@ -162,6 +251,8 @@ export interface PutusanKritik {
   panggilan: PanggilanGerbang[];
   /** Galat penyedia (bukan pagu) per percobaan, bila ada. */
   galat: string[];
+  /** M2d-4: jawaban dua pertanyaan makna wajib; `null` bila tidak diminta atau tidak menjawab. */
+  cek_makna?: CekMakna | null;
 }
 
 export interface OpsiKritik {
@@ -169,6 +260,8 @@ export interface OpsiKritik {
   putaran: number;
   omongan: number;
   jam?: () => Date;
+  /** M2d-4 D-6: prompt dua pertanyaan makna; jawaban tanpa keduanya = tak terbaca. */
+  cekMakna?: boolean;
 }
 
 export const KEBERATAN_TIDAK_MENJAWAB = 'kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali';
@@ -188,7 +281,7 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
     const mulai = jam().toISOString();
     let j;
     try {
-      j = await opsi.panggil(pesanKritikus(o, paket, k), { suhu: SUHU_KRITIKUS, maxTokens: MAX_TOKENS_KRITIKUS }, info);
+      j = await opsi.panggil(pesanKritikus(o, paket, k, opsi.cekMakna === true), { suhu: SUHU_KRITIKUS, maxTokens: MAX_TOKENS_KRITIKUS }, info);
     } catch (e) {
       if (e instanceof PaguTercapai) throw e;
       galat.push(e instanceof Error ? `${e.name}: ${e.message}`.slice(0, 300) : 'galat tak dikenal');
@@ -196,7 +289,22 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
     }
     const kena = j.finish_reason === 'length';
     terpotong ||= kena;
-    const hasil = kena ? null : uraiKritik(j.teks);
+    let hasil = kena ? null : uraiKritik(j.teks);
+    let cek: CekMakna | null = null;
+    if (hasil !== null && opsi.cekMakna === true) {
+      const u = uraiKeluaran(j.teks);
+      cek = u.ok ? uraiCekMakna(u.nilai as Record<string, unknown>) : null;
+      if (cek === null) {
+        hasil = null;
+      } else {
+        const turunan = keberatanMakna(cek, o);
+        hasil = {
+          keberatan: [...turunan, ...hasil.keberatan].slice(0, MAKS_KEBERATAN),
+          arahan: hasil.arahan,
+          diabaikan: hasil.diabaikan.filter((x) => !MEDAN_CEK.includes(x)),
+        };
+      }
+    }
     panggilan.push({
       waktu_mulai: mulai,
       waktu_selesai: jam().toISOString(),
@@ -218,6 +326,7 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
         diabaikan: hasil.diabaikan,
         panggilan,
         galat,
+        ...(opsi.cekMakna === true ? { cek_makna: cek } : {}),
       };
     }
   }
@@ -230,6 +339,7 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
     diabaikan: [],
     panggilan,
     galat,
+    ...(opsi.cekMakna === true ? { cek_makna: null } : {}),
   };
 }
 

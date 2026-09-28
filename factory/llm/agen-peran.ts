@@ -111,16 +111,20 @@ export interface Generasi {
   urutNada: readonly Nada[];
   /** Penebak tanpa kartu: petunjuk sistem dan model per tebakan ke-1..3. */
   penebak: { petunjuk: string; model: readonly ModelTanding[] };
+  /** Kritikus: dipanggil sebelum penebak (M2d-4) atau sesudahnya (M2d-3); dua pertanyaan makna wajib. */
+  kritikus: { sebelumPenebak: boolean; cekMakna: boolean };
 }
 
 export const GENERASI_M2D3: Generasi = {
   nama: 'm2d3', promptPenulis, gerbangGaya: false, bank: () => bacaBank(1), urutNada: URUT_NADA_V1,
   penebak: { petunjuk: PETUNJUK_PENEBAK_PERAN, model: [MODEL_PERAN.penebak, MODEL_PERAN.penebak, MODEL_PERAN.penebak] },
+  kritikus: { sebelumPenebak: false, cekMakna: false },
 };
 
 export const GENERASI_M2D4: Generasi = {
   nama: 'm2d4', promptPenulis: promptPenulisGaya, gerbangGaya: true, bank: () => bacaBank(2), urutNada: URUT_NADA_V2,
   penebak: { petunjuk: PETUNJUK_PENEBAK_KUAT, model: MODEL_PENEBAK_M2D4 },
+  kritikus: { sebelumPenebak: true, cekMakna: true },
 };
 
 /** Model penebak ke-`ke` (1–3) menurut generasi. */
@@ -668,8 +672,8 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       let tahap: 'gerbang-kartu' | 'gerbang-tebak' | 'kritikus' = 'gerbang-kartu';
       let mulaiGerbang = jam().toISOString();
       let kartu: PutusanKartu | null = null;
-      let tebak: PutusanTebak | null = null;
-      let kr: PutusanKritik | null = null;
+      let tebak = null as PutusanTebak | null;
+      let kr = null as PutusanKritik | null;
       try {
         // --- 3a. PEMBACA KARTU
         kartu = await gerbangKartu(omongan, opsi.paket, opsiGerbang);
@@ -687,69 +691,87 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           },
           peran: 'pembaca-kartu',
         });
-        // --- 3b. PENEBAK ×3 (hanya bila pembaca kartu tidak keberatan)
-        if (kartu.lolos) {
+        // --- 3b/3c. PENEBAK ×3 dan KRITIKUS. Urutannya menurut generasi:
+        // M2d-3 kartu → penebak → kritikus (murah → mahal); M2d-4 kartu →
+        // KRITIKUS → penebak (D-6: kritikus lebih awal, supaya masalah makna
+        // ditangkap sebelum soal disaring penebak). Peran berikutnya hanya
+        // dipanggil bila peran sebelumnya tidak keberatan.
+        const jalankanTebak = async (): Promise<PutusanTebak> => {
           tahap = 'gerbang-tebak';
           mulaiGerbang = jam().toISOString();
-          tebak = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
-          suara.tebak = tebak.lolos;
-          const semua = tebak.tebakan.flatMap((t) => t.panggilan);
+          const t = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
+          tebak = t;
+          suara.tebak = t.lolos;
+          const semua = t.tebakan.flatMap((x) => x.panggilan);
           catat({
             putaran, jenis: 'gerbang-tebak', omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),
             model: ringkasModelPenebak(gen), panggilan: semua.length,
             token_masuk: jumlah(semua, (p) => p.token_masuk), token_keluar: jumlah(semua, (p) => p.token_keluar),
-            biaya_usd: jumlah(semua, (p) => p.biaya_usd), putusan: tebak.lolos ? 'lolos' : 'tolak',
+            biaya_usd: jumlah(semua, (p) => p.biaya_usd), putusan: t.lolos ? 'lolos' : 'tolak',
             alasan: [
-              tebak.lolos
-                ? `${String(tebak.benar)}/3 penebak tanpa kartu memilih kunci "${omongan.kunci}"` +
-                  (tebak.yakin_benar === null ? '' : ` (rata-rata yakin ${String(Math.round(tebak.yakin_benar))})`)
-                : tebak.alasan,
+              t.lolos
+                ? `${String(t.benar)}/3 penebak tanpa kartu memilih kunci "${omongan.kunci}"` +
+                  (t.yakin_benar === null ? '' : ` (rata-rata yakin ${String(Math.round(t.yakin_benar))})`)
+                : t.alasan,
             ],
             sha256_prompt: null,
             rincian: {
-              pesan: pesanTeman, kunci: omongan.kunci, benar: tebak.benar, yakin_benar: tebak.yakin_benar,
-              tebakan: tebak.tebakan.map((t) => ({
-                ke: t.ke, model: modelPenebak(gen, t.ke), pilihan: t.pilihan, yakin: t.yakin, benar: t.benar, terbaca: t.terbaca, alasan: t.alasan,
-                biaya_usd: jumlah(t.panggilan, (p) => p.biaya_usd),
+              pesan: pesanTeman, kunci: omongan.kunci, benar: t.benar, yakin_benar: t.yakin_benar,
+              tebakan: t.tebakan.map((x) => ({
+                ke: x.ke, model: modelPenebak(gen, x.ke), pilihan: x.pilihan, yakin: x.yakin, benar: x.benar, terbaca: x.terbaca, alasan: x.alasan,
+                biaya_usd: jumlah(x.panggilan, (p) => p.biaya_usd),
               })),
             },
             peran: 'penebak',
           });
-        }
-        // --- 3c. KRITIKUS (hanya bila ketiga penilai sebelumnya tidak keberatan)
-        if (kartu.lolos && tebak?.lolos === true) {
+          return t;
+        };
+        const jalankanKritik = async (k: PutusanKartu): Promise<PutusanKritik> => {
           tahap = 'kritikus';
           mulaiGerbang = jam().toISOString();
-          kr = await kritik(
+          const r = await kritik(
             omongan,
             opsi.paket,
             {
               no,
               kartu: {
-                pilihan: kartu.pilihan,
-                kartu_ditunjuk_no: kartu.kartu_ditunjuk.map((id) => omongan.kartu.indexOf(id) + 1).filter((x) => x > 0),
-                alasan: kartu.alasan_penjawab,
+                pilihan: k.pilihan,
+                kartu_ditunjuk_no: k.kartu_ditunjuk.map((id) => omongan.kartu.indexOf(id) + 1).filter((x) => x > 0),
+                alasan: k.alasan_penjawab,
               },
-              tebakan: tebak.tebakan.map((t) => ({ pilihan: t.pilihan, yakin: t.yakin })),
+              tebakan: (tebak?.tebakan ?? []).map((t) => ({ pilihan: t.pilihan, yakin: t.yakin })),
+              penebakSesudah: gen.kritikus.sebelumPenebak,
             },
-            opsiGerbang,
+            { ...opsiGerbang, cekMakna: gen.kritikus.cekMakna },
           );
-          suara.kritikus = kr.tanpa_keberatan;
+          kr = r;
+          suara.kritikus = r.tanpa_keberatan;
           catat({
             putaran, jenis: 'kritikus', omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),
-            model: MODEL_PERAN.kritikus, panggilan: kr.panggilan.length,
-            token_masuk: jumlah(kr.panggilan, (p) => p.token_masuk), token_keluar: jumlah(kr.panggilan, (p) => p.token_keluar),
-            biaya_usd: jumlah(kr.panggilan, (p) => p.biaya_usd),
-            putusan: kr.tanpa_keberatan ? 'lolos' : 'tolak',
-            alasan: kr.tanpa_keberatan ? ['kritikus tidak keberatan'] : umpanKritik(kr),
+            model: MODEL_PERAN.kritikus, panggilan: r.panggilan.length,
+            token_masuk: jumlah(r.panggilan, (p) => p.token_masuk), token_keluar: jumlah(r.panggilan, (p) => p.token_keluar),
+            biaya_usd: jumlah(r.panggilan, (p) => p.biaya_usd),
+            putusan: r.tanpa_keberatan ? 'lolos' : 'tolak',
+            alasan: r.tanpa_keberatan ? ['kritikus tidak keberatan'] : umpanKritik(r),
             sha256_prompt: null,
             rincian: {
-              pesan: pesanTeman, menjawab: kr.menjawab, terpotong: kr.terpotong, keberatan: kr.keberatan, arahan: kr.arahan,
-              diabaikan: kr.diabaikan, galat: kr.galat,
-              finish_reason: kr.panggilan.map((p) => p.finish_reason),
+              pesan: pesanTeman, menjawab: r.menjawab, terpotong: r.terpotong, keberatan: r.keberatan, arahan: r.arahan,
+              diabaikan: r.diabaikan, galat: r.galat,
+              finish_reason: r.panggilan.map((p) => p.finish_reason),
+              ...(r.cek_makna === undefined ? {} : { cek_makna: r.cek_makna, sebelum_penebak: gen.kritikus.sebelumPenebak }),
             },
             peran: 'kritikus',
           });
+          return r;
+        };
+        if (kartu.lolos) {
+          if (gen.kritikus.sebelumPenebak) {
+            const r = await jalankanKritik(kartu);
+            if (r.tanpa_keberatan) await jalankanTebak();
+          } else {
+            const t = await jalankanTebak();
+            if (t.lolos) await jalankanKritik(kartu);
+          }
         }
       } catch (galat) {
         catatan.galat = [catatan.galat, teksGalat(galat)].filter((x) => x !== null).join(' | ');
