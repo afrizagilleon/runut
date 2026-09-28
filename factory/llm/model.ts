@@ -10,3 +10,10 @@ export const MODEL_TANDING = [
 ] as const;
 
 export type ModelTanding = (typeof MODEL_TANDING)[number];
+
+/**
+ * Model lingkar agen M2d-2 — penyusun DAN penebak. Pemenang uji tanding M2d-1
+ * (`docs/bukti/uji-tanding-model.md`: lolos validator 6/6, ±US$0,007 per
+ * simulasi, ±25 detik per panggilan). Kontrak M2d-2 melarang model lain.
+ */
+export const MODEL_AGEN: ModelTanding = 'deepseek-ai/DeepSeek-V4.1-Flash';
