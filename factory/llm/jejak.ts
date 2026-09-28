@@ -25,7 +25,17 @@ import type { PaketFakta } from './paket.ts';
 export const VERSI_JEJAK = 1;
 export const JALUR_SKEMA = fileURLToPath(new URL('./jejak-agen.skema.json', import.meta.url));
 
-export type JenisLangkah = 'susun' | 'tulis-ulang' | 'validator' | 'gerbang-kartu' | 'gerbang-tebak';
+export type JenisLangkah =
+  | 'susun'
+  | 'tulis-ulang'
+  | 'validator'
+  | 'gerbang-kartu'
+  | 'gerbang-tebak'
+  // M2d-3 (lingkar berperan, `agen-peran.ts`)
+  | 'kritikus';
+/** Peran pelaku langkah (M2d-3, `factory/llm/peran.md`); jejak M2d-2 tidak memuatnya. */
+export type PeranLangkah = 'perencana' | 'penulis' | 'pemeriksa' | 'penebak' | 'pembaca-kartu' | 'kritikus';
+export type PembuatJejak = 'factory/llm/agen.ts' | 'factory/llm/agen-peran.ts';
 export type Putusan = 'ditulis' | 'lolos' | 'tolak' | 'galat';
 
 export interface LangkahJejak {
@@ -44,6 +54,7 @@ export interface LangkahJejak {
   alasan: string[];
   sha256_prompt: string | null;
   rincian: Record<string, unknown>;
+  peran?: PeranLangkah;
 }
 
 export interface HasilJejak {
@@ -59,9 +70,11 @@ export interface HasilJejak {
 
 export interface JejakAgen {
   versi: number;
-  dibuat_oleh: 'factory/llm/agen.ts';
+  dibuat_oleh: PembuatJejak;
   simulasi: { paket_id: string; nama_samaran: string; tanggal_t: string; peristiwa: string };
   model: string;
+  /** M2d-3: model per peran (penulis, penebak, pembaca kartu, kritikus). */
+  model_peran?: Record<string, string>;
   paket: {
     aturan_dijalankan: number;
     aturan_dilewati: number;
@@ -95,6 +108,10 @@ export interface OpsiPencatatJejak {
   /** `null` = hanya di memori (tes). */
   jalur: string | null;
   jam?: () => Date;
+  /** Bawaan M2d-2: versi 1, `factory/llm/agen.ts`. */
+  versi?: number;
+  dibuatOleh?: PembuatJejak;
+  modelPeran?: Record<string, string>;
 }
 
 export class PencatatJejak {
@@ -109,8 +126,8 @@ export class PencatatJejak {
     const mulai = this.jam();
     this.mulaiMs = mulai.getTime();
     this.data = {
-      versi: VERSI_JEJAK,
-      dibuat_oleh: 'factory/llm/agen.ts',
+      versi: o.versi ?? VERSI_JEJAK,
+      dibuat_oleh: o.dibuatOleh ?? 'factory/llm/agen.ts',
       simulasi: {
         paket_id: o.paket.paket_id,
         nama_samaran: o.paket.nama_samaran,
@@ -118,6 +135,7 @@ export class PencatatJejak {
         peristiwa: o.paket.peristiwa,
       },
       model: o.model,
+      ...(o.modelPeran === undefined ? {} : { model_peran: { ...o.modelPeran } }),
       paket: {
         aturan_dijalankan: o.paket.pemeriksaan.aturan_dijalankan,
         aturan_dilewati: o.paket.pemeriksaan.aturan_dilewati,

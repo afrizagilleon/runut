@@ -1,14 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "runut/jejak-agen/1",
-  "title": "Jejak lingkar agen penyusun simulasi (M2d-2 D-4)",
-  "description": "Setiap langkah dicatat oleh factory/llm/agen.ts SAAT terjadi (bukan ditulis model). Tanpa rahasia dan tanpa isi prompt penuh: prompt diwakili sha256 + ringkasan. Divalidasi oleh validasiJejak() di factory/llm/jejak.ts, yang membaca berkas ini.",
+  "title": "Jejak lingkar agen penyusun simulasi (M2d-2 D-4; M2d-3 D-5)",
+  "description": "Setiap langkah dicatat oleh factory/llm/agen.ts (versi 1, M2d-2) atau factory/llm/agen-peran.ts (versi 2, M2d-3) SAAT terjadi (bukan ditulis model). Tanpa rahasia dan tanpa isi prompt penuh: prompt diwakili sha256 + ringkasan. Divalidasi oleh validasiJejak() di factory/llm/jejak.ts, yang membaca berkas ini.",
   "type": "object",
   "additionalProperties": false,
   "required": ["versi", "dibuat_oleh", "simulasi", "model", "paket", "prompt", "mulai", "selesai", "langkah", "hasil"],
   "properties": {
-    "versi": { "type": "integer", "enum": [1] },
-    "dibuat_oleh": { "type": "string", "enum": ["factory/llm/agen.ts"] },
+    "versi": { "type": "integer", "enum": [1, 2] },
+    "dibuat_oleh": { "type": "string", "enum": ["factory/llm/agen.ts", "factory/llm/agen-peran.ts"] },
     "simulasi": {
       "type": "object",
       "additionalProperties": false,
@@ -21,6 +21,17 @@
       }
     },
     "model": { "type": "string", "minLength": 1 },
+    "model_peran": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["penulis", "penebak", "pembaca-kartu", "kritikus"],
+      "properties": {
+        "penulis": { "type": "string", "minLength": 1 },
+        "penebak": { "type": "string", "minLength": 1 },
+        "pembaca-kartu": { "type": "string", "minLength": 1 },
+        "kritikus": { "type": "string", "minLength": 1 }
+      }
+    },
     "paket": {
       "type": "object",
       "additionalProperties": false,
@@ -66,7 +77,7 @@
         "properties": {
           "no": { "type": "integer", "minimum": 1 },
           "putaran": { "type": "integer", "minimum": 1, "maximum": 5 },
-          "jenis": { "type": "string", "enum": ["susun", "tulis-ulang", "validator", "gerbang-kartu", "gerbang-tebak"] },
+          "jenis": { "type": "string", "enum": ["susun", "tulis-ulang", "validator", "gerbang-kartu", "gerbang-tebak", "kritikus"] },
           "omongan": { "type": ["integer", "null"], "minimum": 1, "maximum": 3 },
           "waktu_mulai": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" },
           "waktu_selesai": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" },
@@ -78,7 +89,8 @@
           "putusan": { "type": "string", "enum": ["ditulis", "lolos", "tolak", "galat"] },
           "alasan": { "type": "array", "items": { "type": "string", "maxLength": 2000 } },
           "sha256_prompt": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
-          "rincian": { "type": "object" }
+          "rincian": { "type": "object" },
+          "peran": { "type": "string", "enum": ["perencana", "penulis", "pemeriksa", "penebak", "pembaca-kartu", "kritikus"] }
         }
       }
     },

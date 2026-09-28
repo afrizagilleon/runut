@@ -17,3 +17,24 @@ export type ModelTanding = (typeof MODEL_TANDING)[number];
  * simulasi, ±25 detik per panggilan). Kontrak M2d-2 melarang model lain.
  */
 export const MODEL_AGEN: ModelTanding = 'deepseek-ai/DeepSeek-V4.1-Flash';
+
+/**
+ * Model kritikus M2d-3 (`factory/llm/peran.md`): GLM-5.3, model penalaran
+ * yang BERBEDA dari penulis — penulis tidak boleh menilai karyanya sendiri.
+ * Kontrak M2d-3 hanya membolehkan dua model ini.
+ */
+export const MODEL_KRITIKUS: ModelTanding = 'zai-org/GLM-5.3';
+
+/** Peran yang memanggil model di lingkar M2d-3; perencana dan pemeriksa adalah kode. */
+export type PeranModel = 'penulis' | 'penebak' | 'pembaca-kartu' | 'kritikus';
+
+/** Satu-satunya tempat pemetaan peran → model M2d-3. */
+export const MODEL_PERAN: Readonly<Record<PeranModel, ModelTanding>> = {
+  penulis: MODEL_AGEN,
+  penebak: MODEL_AGEN,
+  'pembaca-kartu': MODEL_AGEN,
+  kritikus: MODEL_KRITIKUS,
+};
+
+/** Model yang boleh dipanggil M2d-3 (dicek lagi oleh skrip sebelum setiap panggilan). */
+export const MODEL_M2D3: readonly ModelTanding[] = [MODEL_AGEN, MODEL_KRITIKUS];
