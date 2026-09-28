@@ -38,3 +38,14 @@ export const MODEL_PERAN: Readonly<Record<PeranModel, ModelTanding>> = {
 
 /** Model yang boleh dipanggil M2d-3 (dicek lagi oleh skrip sebelum setiap panggilan). */
 export const MODEL_M2D3: readonly ModelTanding[] = [MODEL_AGEN, MODEL_KRITIKUS];
+
+/**
+ * Penebak M2d-4 (D-5), menurut urutan tebakan ke-1..3: dua DeepSeek + satu
+ * GLM-5.3 (penalaran). Di M2d-3 penebak DeepSeek — model yang sama dengan
+ * penulis — jauh lebih lunak dari penguji Opus di luar (5 dari 8 omongan yang
+ * lolos di dalam tertebak di luar). Ketiganya tetap TANPA kartu.
+ */
+export const MODEL_PENEBAK_M2D4: readonly ModelTanding[] = [MODEL_AGEN, MODEL_AGEN, MODEL_KRITIKUS];
+
+/** Model yang boleh dipanggil M2d-4 — sama dengan M2d-3. */
+export const MODEL_M2D4: readonly ModelTanding[] = [MODEL_AGEN, MODEL_KRITIKUS];

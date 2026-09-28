@@ -7,7 +7,8 @@
  */
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { GENERASI_M2D3, GENERASI_M2D4, jalankanPeran, promptPenulis, promptPenulisGaya, type Generasi, type HasilPeran, type InfoPeran, type PanggilPeran } from './agen-peran.ts';
+import { GENERASI_M2D3, GENERASI_M2D4, MAX_TOKENS_PENEBAK_PERAN, PETUNJUK_PENEBAK_KUAT, PETUNJUK_PENEBAK_PERAN, jalankanPeran, promptPenulis, promptPenulisGaya, type Generasi, type HasilPeran, type InfoPeran, type PanggilPeran } from './agen-peran.ts';
+import { PETUNJUK_PENEBAK } from './gerbang-tebak.ts';
 import type { DrafSimulasi, KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
 import { PencatatJejak, validasiJejak } from './jejak.ts';
@@ -42,6 +43,7 @@ interface Rekaman {
 
 interface Skenario {
   tertebak?: (no: number, putaran: number, ke: number) => boolean;
+  yakin?: (no: number, ke: number) => number;
   kritikus?: (no: number, putaran: number, ulang: number) => { teks: string; finish?: string } | Error;
   penulis?: (no: number, putaran: number) => OmonganDraf | string | undefined;
 }
@@ -70,7 +72,7 @@ function palsu(s: Skenario): { panggil: PanggilPeran; rekaman: Rekaman[] } {
     if (info.jenis === 'gerbang-kartu') return j(JSON.stringify({ pilihan: kunci, kartu: [1], alasan: 'dari kartu 1' }));
     if (info.jenis === 'gerbang-tebak') {
       const kena = s.tertebak?.(no, info.putaran, info.ke) ?? false;
-      return j(JSON.stringify({ pilihan: kena ? kunci : lain(kunci), yakin: 60, alasan: 'nadanya' }));
+      return j(JSON.stringify({ pilihan: kena ? kunci : lain(kunci), yakin: s.yakin?.(no, info.ke) ?? 60, alasan: 'nadanya' }));
     }
     const k = s.kritikus?.(no, info.putaran, info.ulang ?? 0) ?? { teks: TANPA_KEBERATAN_M2D4 };
     if (k instanceof Error) throw k;
@@ -185,5 +187,65 @@ describe('M2d-4 — nada enam-putar di lingkar (D-4)', () => {
     };
     expect(await nadaPutaran6(GENERASI_M2D4)).toBe('ikut-ikutan');
     expect(await nadaPutaran6(GENERASI_M2D3)).toBe('yakin');
+  });
+});
+
+describe('M2d-4 — penebak lebih kuat (D-5)', () => {
+  const semuaTeks = (r: Rekaman): string => r.pesan.map((p) => p.content).join('\n');
+
+  it('petunjuk: kalimat "pemain pintar" dari kontrak, bentuk JSON tetap di baris terakhir; M2d-3 tetap petunjuk berhitung', () => {
+    expect(PETUNJUK_PENEBAK_KUAT).toContain(
+      "Berpikirlah seperti pemain pintar yang tahu kebiasaan pasar: hitung dari angka yang ada, cari pilihan yang paling 'wajar secara umum', curigai pilihan yang terlalu spesifik atau yang mengulang omongan dengan rapi.",
+    );
+    expect(PETUNJUK_PENEBAK_KUAT.split('\n').at(-1)).toBe(PETUNJUK_PENEBAK.split('\n').at(-1));
+    expect(PETUNJUK_PENEBAK_KUAT).toContain('Kamu TIDAK diberi dokumen apa pun.');
+    expect(GENERASI_M2D3.penebak.petunjuk).toBe(PETUNJUK_PENEBAK_PERAN);
+  });
+
+  it('tiga penebak per omongan: ke-1 dan ke-2 DeepSeek, ke-3 GLM-5.3; KETIGANYA hanya menerima pesan + pertanyaan + pilihan', async () => {
+    const { rekaman } = await jalan({});
+    const tebak = dari(rekaman, 'penebak');
+    expect(tebak).toHaveLength(9);
+    expect(tebak.map((r) => `${String(r.info.omongan)}/${String(r.info.ke)}:${r.info.model}`)).toEqual(
+      [1, 2, 3].flatMap((no) => [`${no}/1:${MODEL_AGEN}`, `${no}/2:${MODEL_AGEN}`, `${no}/3:${MODEL_KRITIKUS}`]),
+    );
+    for (const r of tebak) {
+      expect(r.pesan).toHaveLength(2);
+      expect(r.pesan[0]?.content).toBe(PETUNJUK_PENEBAK_KUAT);
+      expect(r.setelan).toMatchObject({ suhu: 1, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
+      const t = semuaTeks(r);
+      for (const f of PAKET.fakta) {
+        expect(t, `${String(r.info.ke)}: ${f.fact_id}`).not.toContain(f.fact_id);
+        expect(t, `${String(r.info.ke)}: ${f.fact_id}`).not.toContain(f.klaim);
+      }
+      for (const no of [1, 2, 3]) expect(t).not.toContain(om(no).penjelasan.slice(0, 40));
+      expect(t).not.toMatch(/KUNCI|kunci:|PENENTU|Salah-kaprah|kritikus|keberatan|contoh gaya|Kartu \d/i);
+      // Isinya persis soal yang dilihat pemain sebelum membuka kartu.
+      const o = om(r.info.omongan ?? 0);
+      expect(r.pesan[1]?.content.split('\n')[1]).toBe(`Pertanyaan: Omongan ${o.nama} cocok dengan dokumennya?`);
+    }
+  });
+
+  it('putusan K-05: tolak bila ≥ 2/3 benar ATAU rata-rata yakin pada yang benar ≥ 40 — GLM sendirian bisa menolak', async () => {
+    const hanyaGlm = (yakin: number): Skenario => ({ tertebak: (no, p, ke) => no === 1 && p === 1 && ke === 3, yakin: () => yakin });
+    const a = await jalan(hanyaGlm(60), GENERASI_M2D4, 1);
+    expect(a.hasil.riwayat[0]?.omongan[0]).toMatchObject({ status: 'ditolak-tebak', tebak: { benar: 1, yakin_benar: 60 } });
+    expect(a.hasil.riwayat[0]?.omongan[0]?.umpan[0]).toMatch(/^\[penebak tanpa kartu\] 1\/3 penebak TANPA kartu memilih kunci/);
+    const b = await jalan(hanyaGlm(30), GENERASI_M2D4, 1);
+    expect(b.hasil.riwayat[0]?.omongan[0]).toMatchObject({ status: 'lolos', tebak: { benar: 1, yakin_benar: 30 } });
+    const c = await jalan({ tertebak: (no, p, ke) => no === 1 && p === 1 && ke !== 3, yakin: () => 20 }, GENERASI_M2D4, 1);
+    expect(c.hasil.riwayat[0]?.omongan[0]).toMatchObject({ status: 'ditolak-tebak', tebak: { benar: 2 } });
+  });
+
+  it('jejak: langkah penebak menyebut model campuran dan model + biaya tiap tebakan; sah menurut skema', async () => {
+    const { jejak } = await jalan({});
+    const j = jejak.jejak();
+    expect(validasiJejak(j)).toEqual([]);
+    const t = j.langkah.filter((l) => l.jenis === 'gerbang-tebak');
+    expect(t).toHaveLength(3);
+    for (const l of t) {
+      expect(l.model).toBe(`${MODEL_AGEN} ×2 + ${MODEL_KRITIKUS} ×1`);
+      expect((l.rincian['tebakan'] as Array<{ model: string; biaya_usd: number }>).map((x) => x.model)).toEqual([MODEL_AGEN, MODEL_AGEN, MODEL_KRITIKUS]);
+    }
   });
 });

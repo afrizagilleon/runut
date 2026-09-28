@@ -27,7 +27,7 @@ import { PETUNJUK_PENEBAK, gerbangTebak, type InfoPanggil, type PanggilLlm, type
 import { hashPesan, type LangkahJejak, type PencatatJejak, type PeranLangkah } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
 import { kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
-import { MODEL_PERAN, type PeranModel } from './model.ts';
+import { MODEL_PENEBAK_M2D4, MODEL_PERAN, type ModelTanding, type PeranModel } from './model.ts';
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
@@ -48,6 +48,16 @@ export const MAKS_PUTARAN_PERAN = MAKS_PUTARAN_SUDUT * MAKS_SUDUT;
 export const PETUNJUK_PENEBAK_PERAN = [
   PETUNJUK_PENEBAK.split('\n').slice(0, -1).join('\n'),
   'Sebelum menebak, coba hitung dari angka yang ada di pesan dan pilihan (selisih, kali lipat, persen); kalau hitunganmu menunjuk satu pilihan, pakai itu.',
+  PETUNJUK_PENEBAK.split('\n').at(-1) ?? '',
+].join('\n');
+/**
+ * Petunjuk penebak M2d-4 (D-5b) = petunjuk M2d-2 + satu kalimat "pemain
+ * pintar" dari kontrak; bentuk jawaban JSON tetap di baris terakhir. Penebak
+ * tetap TANPA kartu.
+ */
+export const PETUNJUK_PENEBAK_KUAT = [
+  PETUNJUK_PENEBAK.split('\n').slice(0, -1).join('\n'),
+  "Berpikirlah seperti pemain pintar yang tahu kebiasaan pasar: hitung dari angka yang ada, cari pilihan yang paling 'wajar secara umum', curigai pilihan yang terlalu spesifik atau yang mengulang omongan dengan rapi.",
   PETUNJUK_PENEBAK.split('\n').at(-1) ?? '',
 ].join('\n');
 export const JUMLAH_OMONGAN = 3;
@@ -99,15 +109,33 @@ export interface Generasi {
   bank: () => KalimatGaya[];
   /** Urutan nada per posisi/sudut. */
   urutNada: readonly Nada[];
+  /** Penebak tanpa kartu: petunjuk sistem dan model per tebakan ke-1..3. */
+  penebak: { petunjuk: string; model: readonly ModelTanding[] };
 }
 
 export const GENERASI_M2D3: Generasi = {
   nama: 'm2d3', promptPenulis, gerbangGaya: false, bank: () => bacaBank(1), urutNada: URUT_NADA_V1,
+  penebak: { petunjuk: PETUNJUK_PENEBAK_PERAN, model: [MODEL_PERAN.penebak, MODEL_PERAN.penebak, MODEL_PERAN.penebak] },
 };
 
 export const GENERASI_M2D4: Generasi = {
   nama: 'm2d4', promptPenulis: promptPenulisGaya, gerbangGaya: true, bank: () => bacaBank(2), urutNada: URUT_NADA_V2,
+  penebak: { petunjuk: PETUNJUK_PENEBAK_KUAT, model: MODEL_PENEBAK_M2D4 },
 };
+
+/** Model penebak ke-`ke` (1–3) menurut generasi. */
+export function modelPenebak(gen: Generasi, ke: number): ModelTanding {
+  const m = gen.penebak.model[ke - 1];
+  if (m === undefined) throw new Error(`Tidak ada model untuk penebak ke-${String(ke)}.`);
+  return m;
+}
+
+/** Nama model penebak untuk jejak: satu nama, atau "A ×2 + B ×1" bila campuran. */
+export function ringkasModelPenebak(gen: Generasi): string {
+  const hitung = new Map<string, number>();
+  for (const m of gen.penebak.model) hitung.set(m, (hitung.get(m) ?? 0) + 1);
+  return hitung.size === 1 ? [...hitung.keys()][0] ?? '' : [...hitung].map(([m, n]) => `${m} ×${String(n)}`).join(' + ');
+}
 
 /** Keterangan satu panggilan: peran pemanggil dan model yang ditetapkan kode untuk peran itu. */
 export interface InfoPeran extends InfoPanggil {
@@ -125,11 +153,16 @@ const PERAN_JENIS: Readonly<Record<InfoPanggil['jenis'], PeranModel>> = {
   kritikus: 'kritikus',
 };
 
-/** Tempelkan peran + model (dari `MODEL_PERAN`) ke setiap panggilan; gerbang M2d-2 tidak perlu tahu. */
-function lewatPeran(panggil: PanggilPeran): PanggilLlm {
+/**
+ * Tempelkan peran + model ke setiap panggilan; gerbang M2d-2 tidak perlu tahu.
+ * Model dari `MODEL_PERAN`, kecuali penebak: per tebakan ke-1..3 menurut
+ * generasi (M2d-4: dua DeepSeek + satu GLM-5.3).
+ */
+function lewatPeran(panggil: PanggilPeran, gen: Generasi): PanggilLlm {
   return (pesan, setelan, info) => {
     const peran = PERAN_JENIS[info.jenis];
-    return panggil(pesan, setelan, { ...info, peran, model: MODEL_PERAN[peran] });
+    const model = peran === 'penebak' ? modelPenebak(gen, info.ke) : MODEL_PERAN[peran];
+    return panggil(pesan, setelan, { ...info, peran, model });
   };
 }
 
@@ -346,7 +379,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
   const catat = (l: CatatLangkah): void => {
     jejak?.catat(l);
   };
-  const panggilGerbang = lewatPeran(opsi.panggil);
+  const panggilGerbang = lewatPeran(opsi.panggil, gen);
   const hasil: HasilPeran = {
     paket_id: opsi.paket.paket_id,
     model_peran: MODEL_PERAN,
@@ -658,12 +691,12 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         if (kartu.lolos) {
           tahap = 'gerbang-tebak';
           mulaiGerbang = jam().toISOString();
-          tebak = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: PETUNJUK_PENEBAK_PERAN, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
+          tebak = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
           suara.tebak = tebak.lolos;
           const semua = tebak.tebakan.flatMap((t) => t.panggilan);
           catat({
             putaran, jenis: 'gerbang-tebak', omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),
-            model: MODEL_PERAN.penebak, panggilan: semua.length,
+            model: ringkasModelPenebak(gen), panggilan: semua.length,
             token_masuk: jumlah(semua, (p) => p.token_masuk), token_keluar: jumlah(semua, (p) => p.token_keluar),
             biaya_usd: jumlah(semua, (p) => p.biaya_usd), putusan: tebak.lolos ? 'lolos' : 'tolak',
             alasan: [
@@ -675,7 +708,10 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
             sha256_prompt: null,
             rincian: {
               pesan: pesanTeman, kunci: omongan.kunci, benar: tebak.benar, yakin_benar: tebak.yakin_benar,
-              tebakan: tebak.tebakan.map((t) => ({ ke: t.ke, pilihan: t.pilihan, yakin: t.yakin, benar: t.benar, terbaca: t.terbaca, alasan: t.alasan })),
+              tebakan: tebak.tebakan.map((t) => ({
+                ke: t.ke, model: modelPenebak(gen, t.ke), pilihan: t.pilihan, yakin: t.yakin, benar: t.benar, terbaca: t.terbaca, alasan: t.alasan,
+                biaya_usd: jumlah(t.panggilan, (p) => p.biaya_usd),
+              })),
             },
             peran: 'penebak',
           });
