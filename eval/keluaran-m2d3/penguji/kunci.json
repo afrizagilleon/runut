@@ -1,0 +1,167 @@
+{
+  "benih": 20260929,
+  "tebak": [
+    {
+      "id": "Q1",
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "a",
+      "putaran": 7
+    },
+    {
+      "id": "Q2",
+      "paket": "dada",
+      "no": 1,
+      "kunci": "b",
+      "putaran": 8
+    },
+    {
+      "id": "Q3",
+      "paket": "dada",
+      "no": 3,
+      "kunci": "b",
+      "putaran": 3
+    },
+    {
+      "id": "Q4",
+      "paket": "ultj",
+      "no": 3,
+      "kunci": "a",
+      "putaran": 2
+    },
+    {
+      "id": "Q5",
+      "paket": "ultj",
+      "no": 2,
+      "kunci": "b",
+      "putaran": 12
+    },
+    {
+      "id": "Q6",
+      "paket": "tirt",
+      "no": 2,
+      "kunci": "b",
+      "putaran": 7
+    },
+    {
+      "id": "Q7",
+      "paket": "ultj",
+      "no": 1,
+      "kunci": "b",
+      "putaran": 7
+    },
+    {
+      "id": "Q8",
+      "paket": "tirt",
+      "no": 3,
+      "kunci": "c",
+      "putaran": 1
+    }
+  ],
+  "kartu": [
+    {
+      "id": "Q1",
+      "paket": "dada",
+      "no": 1,
+      "kunci": "b",
+      "penentu": [
+        1
+      ]
+    },
+    {
+      "id": "Q2",
+      "paket": "tirt",
+      "no": 2,
+      "kunci": "b",
+      "penentu": [
+        1
+      ]
+    },
+    {
+      "id": "Q3",
+      "paket": "tirt",
+      "no": 3,
+      "kunci": "c",
+      "penentu": [
+        1
+      ]
+    },
+    {
+      "id": "Q4",
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "a",
+      "penentu": [
+        3
+      ]
+    },
+    {
+      "id": "Q5",
+      "paket": "dada",
+      "no": 3,
+      "kunci": "b",
+      "penentu": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "Q6",
+      "paket": "ultj",
+      "no": 3,
+      "kunci": "a",
+      "penentu": [
+        1,
+        2
+      ]
+    },
+    {
+      "id": "Q7",
+      "paket": "ultj",
+      "no": 2,
+      "kunci": "b",
+      "penentu": [
+        1
+      ]
+    },
+    {
+      "id": "Q8",
+      "paket": "ultj",
+      "no": 1,
+      "kunci": "b",
+      "penentu": [
+        1
+      ]
+    }
+  ],
+  "alami": [
+    {
+      "kelompok": 1,
+      "paket": "tirt",
+      "label": {
+        "A": "m2d1-deepseek",
+        "B": "agen-m2d3",
+        "C": "agen-m2d2"
+      }
+    },
+    {
+      "kelompok": 2,
+      "paket": "dada",
+      "label": {
+        "A": "m2d1-deepseek",
+        "B": "manusia",
+        "C": "agen-m2d2",
+        "D": "agen-m2d3"
+      }
+    },
+    {
+      "kelompok": 3,
+      "paket": "ultj",
+      "label": {
+        "A": "manusia",
+        "B": "agen-m2d3",
+        "C": "m2d1-deepseek"
+      }
+    }
+  ]
+}
