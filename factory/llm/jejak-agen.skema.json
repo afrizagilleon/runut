@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "runut/jejak-agen/1",
+  "title": "Jejak lingkar agen penyusun simulasi (M2d-2 D-4)",
+  "description": "Setiap langkah dicatat oleh factory/llm/agen.ts SAAT terjadi (bukan ditulis model). Tanpa rahasia dan tanpa isi prompt penuh: prompt diwakili sha256 + ringkasan. Divalidasi oleh validasiJejak() di factory/llm/jejak.ts, yang membaca berkas ini.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["versi", "dibuat_oleh", "simulasi", "model", "paket", "prompt", "mulai", "selesai", "langkah", "hasil"],
+  "properties": {
+    "versi": { "type": "integer", "enum": [1] },
+    "dibuat_oleh": { "type": "string", "enum": ["factory/llm/agen.ts"] },
+    "simulasi": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["paket_id", "nama_samaran", "tanggal_t", "peristiwa"],
+      "properties": {
+        "paket_id": { "type": "string", "minLength": 1 },
+        "nama_samaran": { "type": "string", "minLength": 1 },
+        "tanggal_t": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+        "peristiwa": { "type": "string" }
+      }
+    },
+    "model": { "type": "string", "minLength": 1 },
+    "paket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["aturan_dijalankan", "aturan_dilewati", "temuan", "fakta_lolos", "fakta_tersingkir", "tersingkir"],
+      "properties": {
+        "aturan_dijalankan": { "type": "integer", "minimum": 0 },
+        "aturan_dilewati": { "type": "integer", "minimum": 0 },
+        "temuan": { "type": "integer", "minimum": 0 },
+        "fakta_lolos": { "type": "integer", "minimum": 0 },
+        "fakta_tersingkir": { "type": "integer", "minimum": 0 },
+        "tersingkir": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["fact_id", "alasan"],
+            "properties": { "fact_id": { "type": "string" }, "alasan": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "prompt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256_sistem", "sha256_paket", "ringkasan"],
+      "properties": {
+        "sha256_sistem": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "sha256_paket": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "ringkasan": { "type": "string", "maxLength": 400 }
+      }
+    },
+    "mulai": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" },
+    "selesai": { "type": ["string", "null"] },
+    "langkah": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "no", "putaran", "jenis", "omongan", "waktu_mulai", "waktu_selesai", "model", "panggilan",
+          "token_masuk", "token_keluar", "biaya_usd", "putusan", "alasan", "sha256_prompt", "rincian"
+        ],
+        "properties": {
+          "no": { "type": "integer", "minimum": 1 },
+          "putaran": { "type": "integer", "minimum": 1, "maximum": 5 },
+          "jenis": { "type": "string", "enum": ["susun", "tulis-ulang", "validator", "gerbang-kartu", "gerbang-tebak"] },
+          "omongan": { "type": ["integer", "null"], "minimum": 1, "maximum": 3 },
+          "waktu_mulai": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" },
+          "waktu_selesai": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T" },
+          "model": { "type": ["string", "null"] },
+          "panggilan": { "type": "integer", "minimum": 0 },
+          "token_masuk": { "type": "integer", "minimum": 0 },
+          "token_keluar": { "type": "integer", "minimum": 0 },
+          "biaya_usd": { "type": "number", "minimum": 0 },
+          "putusan": { "type": "string", "enum": ["ditulis", "lolos", "tolak", "galat"] },
+          "alasan": { "type": "array", "items": { "type": "string", "maxLength": 2000 } },
+          "sha256_prompt": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" },
+          "rincian": { "type": "object" }
+        }
+      }
+    },
+    "hasil": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["lolos", "putaran", "berhenti", "panggilan", "token_masuk", "token_keluar", "biaya_usd", "durasi_ms"],
+      "properties": {
+        "lolos": { "type": "boolean" },
+        "putaran": { "type": "integer", "minimum": 0, "maximum": 5 },
+        "berhenti": { "type": ["string", "null"] },
+        "panggilan": { "type": "integer", "minimum": 0 },
+        "token_masuk": { "type": "integer", "minimum": 0 },
+        "token_keluar": { "type": "integer", "minimum": 0 },
+        "biaya_usd": { "type": "number", "minimum": 0 },
+        "durasi_ms": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

@@ -31,11 +31,13 @@
  */
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { teksPolos } from '../skema/rujukan.ts';
 import type { PesanChat } from './klien.ts';
 import type { DrafSimulasi, MasalahDraf, OmonganDraf } from './draf.ts';
 import { gerbangKartu, type PutusanKartu } from './gerbang-kartu.ts';
 import { gerbangTebak, type InfoPanggil, type PanggilLlm, type PutusanTebak } from './gerbang-tebak.ts';
 import { MODEL_AGEN } from './model.ts';
+import { hashPesan, type PencatatJejak } from './jejak.ts';
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { PUTARAN, SUHU, pesanPaket, promptSistem, uraiKeluaran } from './susun.ts';
@@ -121,6 +123,8 @@ export interface OpsiAgen {
   validasi: (draf: unknown, paket: PaketFakta) => MasalahDraf[];
   maksPutaran?: number;
   jam?: () => Date;
+  /** Pencatat jejak (D-4): setiap langkah dicatat saat terjadi. */
+  jejak?: PencatatJejak;
 }
 
 function adalahObyek(n: unknown): n is Record<string, unknown> {
@@ -198,9 +202,19 @@ function kosong(n: number): Array<OmonganDraf | null> {
   return Array.from({ length: n }, () => null);
 }
 
+
+function teksGalat(galat: unknown): string {
+  return galat instanceof Error ? `${galat.name}: ${galat.message}` : 'galat tak dikenal';
+}
+
+function jumlah<T>(larik: readonly T[], f: (x: T) => number): number {
+  return larik.reduce((a, x) => a + f(x), 0);
+}
+
 export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
   const maks = opsi.maksPutaran ?? MAKS_PUTARAN;
   const jam = opsi.jam ?? (() => new Date());
+  const jejak = opsi.jejak ?? null;
   const hasil: HasilAgen = {
     paket_id: opsi.paket.paket_id,
     model: MODEL_AGEN,
@@ -209,6 +223,11 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
     berhenti: null,
     draf: null,
     riwayat: [],
+  };
+  /** Setiap jalan keluar menutup jejak: ringkasannya dihitung dari langkah yang tercatat. */
+  const akhiri = (): HasilAgen => {
+    jejak?.selesai(hasil.lolos, hasil.jumlah_putaran, hasil.berhenti);
+    return hasil;
   };
   let draf = kosong(JUMLAH_OMONGAN);
   const terkunci = new Set<number>();
@@ -256,21 +275,43 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
       galat: null,
     };
     hasil.riwayat.push(catatan);
+    const ringkasTulis =
+      jenis === 'susun'
+        ? `menyusun omongan ${diminta.join(', ')}`
+        : `menulis ulang omongan ${diminta.join(', ')}${terkunci.size > 0 ? ` (terkunci: ${[...terkunci].sort().join(', ')})` : ''}`;
 
+    // --- 1. penyusun
     const info: InfoPanggil = { jenis, putaran, omongan: null, ke: 1 };
     const mulai = jam().toISOString();
     let jawaban;
     try {
       jawaban = await opsi.panggil(pesan, { ...SETELAN_PENYUSUN }, info);
     } catch (galat) {
-      catatan.galat = galat instanceof Error ? `${galat.name}: ${galat.message}` : 'galat tak dikenal';
+      catatan.galat = teksGalat(galat);
       hasil.berhenti = galat instanceof PaguTercapai ? `pagu tercapai: ${galat.message}` : `galat penyusun: ${catatan.galat}`;
-      return hasil;
+      jejak?.catat({
+        putaran,
+        jenis,
+        omongan: null,
+        waktu_mulai: mulai,
+        waktu_selesai: jam().toISOString(),
+        model: MODEL_AGEN,
+        panggilan: 0,
+        token_masuk: 0,
+        token_keluar: 0,
+        biaya_usd: 0,
+        putusan: 'galat',
+        alasan: [hasil.berhenti],
+        sha256_prompt: hashPesan(pesan),
+        rincian: { diminta },
+      });
+      return akhiri();
     }
     teksTerakhir = jawaban.teks;
+    const selesaiTulis = jam().toISOString();
     catatan.panggilan = {
       waktu_mulai: mulai,
-      waktu_selesai: jam().toISOString(),
+      waktu_selesai: selesaiTulis,
       teks_mentah: jawaban.teks,
       panjang_penalaran: jawaban.penalaran?.length ?? 0,
       finish_reason: jawaban.finish_reason,
@@ -291,8 +332,37 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
       else tidakAda.push(no);
     }
     catatan.diabaikan = [...baru.keys()].filter((no) => terkunci.has(no) || no < 1 || no > JUMLAH_OMONGAN);
+    jejak?.catat({
+      putaran,
+      jenis,
+      omongan: null,
+      waktu_mulai: mulai,
+      waktu_selesai: selesaiTulis,
+      model: MODEL_AGEN,
+      panggilan: 1,
+      token_masuk: jawaban.token_masuk,
+      token_keluar: jawaban.token_keluar,
+      biaya_usd: jawaban.biaya_usd,
+      putusan: 'ditulis',
+      alasan: [
+        ringkasTulis,
+        ...(urai.ok ? [] : ['keluaran tidak bisa diurai sebagai JSON']),
+        ...(catatan.diabaikan.length > 0 ? [`versi baru omongan terkunci ${catatan.diabaikan.join(', ')} dibuang`] : []),
+      ],
+      sha256_prompt: hashPesan(pesan),
+      rincian: {
+        diminta,
+        terurai: urai.ok,
+        diabaikan: catatan.diabaikan,
+        finish_reason: jawaban.finish_reason,
+        panjang_penalaran: catatan.panggilan.panjang_penalaran,
+        suhu: SETELAN_PENYUSUN.suhu,
+        max_tokens: SETELAN_PENYUSUN.maxTokens,
+      },
+    });
 
-    // --- validator atas draf gabungan
+    // --- 2. validator atas draf gabungan
+    const mulaiValidasi = jam().toISOString();
     const masalah = urai.ok
       ? opsi.validasi({ omongan: gabung.filter((x) => x !== null) }, opsi.paket)
       : [
@@ -313,7 +383,33 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
     }));
     catatan.masalah = masalahNyata;
     const global = masalahNyata.filter((m) => m.omongan === null);
+    const tolakValidator = masalahNyata.length > 0 || tidakAda.length > 0;
+    jejak?.catat({
+      putaran,
+      jenis: 'validator',
+      omongan: null,
+      waktu_mulai: mulaiValidasi,
+      waktu_selesai: jam().toISOString(),
+      model: null,
+      panggilan: 0,
+      token_masuk: 0,
+      token_keluar: 0,
+      biaya_usd: 0,
+      putusan: tolakValidator ? 'tolak' : 'lolos',
+      alasan: [
+        ...(urai.ok ? tidakAda.map((no) => `omongan ${String(no)}: tidak ada di keluaran penyusun`) : []),
+        ...masalahNyata.map(
+          (m) => `${m.omongan === null ? 'seluruh draf' : `omongan ${String(m.omongan)}`}: [${m.kode}] ${m.pesan}`,
+        ),
+      ],
+      sha256_prompt: null,
+      rincian: {
+        diperiksa: [1, 2, 3].filter((no) => gabung[no - 1] !== null && gabung[no - 1] !== undefined),
+        kode: [...new Set(masalahNyata.map((m) => m.kode))].sort(),
+      },
+    });
 
+    // --- 3. gerbang per omongan yang belum terkunci
     const umpanBaru = new Map<number, string[]>();
     for (const no of [1, 2, 3]) {
       if (terkunci.has(no)) {
@@ -343,17 +439,103 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
         continue;
       }
       const omongan = o as OmonganDraf;
-      // --- gerbang jawab-dengan-kartu, lalu gerbang tebak buta
+      const pesanTeman = teksPolos(omongan.pesan);
+
+      // --- 3a. gerbang jawab-dengan-kartu
+      let tahap: 'gerbang-kartu' | 'gerbang-tebak' = 'gerbang-kartu';
+      let mulaiGerbang = jam().toISOString();
       let kartu: PutusanKartu;
       let tebak: PutusanTebak | null = null;
       try {
         kartu = await gerbangKartu(omongan, opsi.paket, { panggil: opsi.panggil, putaran, omongan: no, jam });
-        if (kartu.lolos) tebak = await gerbangTebak(omongan, { panggil: opsi.panggil, putaran, omongan: no, jam });
+        jejak?.catat({
+          putaran,
+          jenis: 'gerbang-kartu',
+          omongan: no,
+          waktu_mulai: mulaiGerbang,
+          waktu_selesai: jam().toISOString(),
+          model: MODEL_AGEN,
+          panggilan: kartu.panggilan.length,
+          token_masuk: jumlah(kartu.panggilan, (p) => p.token_masuk),
+          token_keluar: jumlah(kartu.panggilan, (p) => p.token_keluar),
+          biaya_usd: jumlah(kartu.panggilan, (p) => p.biaya_usd),
+          putusan: kartu.lolos ? 'lolos' : 'tolak',
+          alasan: [kartu.lolos ? `pembaca yang memegang kartu memilih "${String(kartu.pilihan)}" = kunci` : kartu.alasan],
+          sha256_prompt: null,
+          rincian: {
+            pesan: pesanTeman,
+            kunci: kartu.kunci,
+            pilihan: kartu.pilihan,
+            kartu_ditunjuk: kartu.kartu_ditunjuk,
+            menunjuk_penentu: kartu.menunjuk_penentu,
+            alasan_penjawab: kartu.alasan_penjawab,
+          },
+        });
+
+        // --- 3b. gerbang tebak buta (hanya bila pembaca kartu benar)
+        if (kartu.lolos) {
+          tahap = 'gerbang-tebak';
+          mulaiGerbang = jam().toISOString();
+          tebak = await gerbangTebak(omongan, { panggil: opsi.panggil, putaran, omongan: no, jam });
+          const semua = tebak.tebakan.flatMap((t) => t.panggilan);
+          jejak?.catat({
+            putaran,
+            jenis: 'gerbang-tebak',
+            omongan: no,
+            waktu_mulai: mulaiGerbang,
+            waktu_selesai: jam().toISOString(),
+            model: MODEL_AGEN,
+            panggilan: semua.length,
+            token_masuk: jumlah(semua, (p) => p.token_masuk),
+            token_keluar: jumlah(semua, (p) => p.token_keluar),
+            biaya_usd: jumlah(semua, (p) => p.biaya_usd),
+            putusan: tebak.lolos ? 'lolos' : 'tolak',
+            alasan: [
+              tebak.lolos
+                ? `${String(tebak.benar)}/3 penebak tanpa kartu memilih kunci "${omongan.kunci}"` +
+                  (tebak.yakin_benar === null ? '' : ` (rata-rata yakin ${String(Math.round(tebak.yakin_benar))})`)
+                : tebak.alasan,
+            ],
+            sha256_prompt: null,
+            rincian: {
+              pesan: pesanTeman,
+              kunci: omongan.kunci,
+              benar: tebak.benar,
+              yakin_benar: tebak.yakin_benar,
+              tebakan: tebak.tebakan.map((t) => ({
+                ke: t.ke,
+                pilihan: t.pilihan,
+                yakin: t.yakin,
+                benar: t.benar,
+                terbaca: t.terbaca,
+                alasan: t.alasan,
+              })),
+            },
+          });
+        }
       } catch (galat) {
-        catatan.galat = galat instanceof Error ? `${galat.name}: ${galat.message}` : 'galat tak dikenal';
+        catatan.galat = teksGalat(galat);
         hasil.berhenti = galat instanceof PaguTercapai ? `pagu tercapai: ${galat.message}` : `galat gerbang: ${catatan.galat}`;
         catatan.draf = gabung as Array<OmonganDraf | null>;
-        return hasil;
+        // Panggilan gerbang yang sudah terjadi sebelum galat ada di ledger
+        // biaya; jejak mencatat bahwa gerbang ini berhenti di tengah.
+        jejak?.catat({
+          putaran,
+          jenis: tahap,
+          omongan: no,
+          waktu_mulai: mulaiGerbang,
+          waktu_selesai: jam().toISOString(),
+          model: MODEL_AGEN,
+          panggilan: 0,
+          token_masuk: 0,
+          token_keluar: 0,
+          biaya_usd: 0,
+          putusan: 'galat',
+          alasan: [hasil.berhenti],
+          sha256_prompt: null,
+          rincian: { pesan: pesanTeman },
+        });
+        return akhiri();
       }
       if (!kartu.lolos) {
         catatan.omongan.push({ no, status: 'ditolak-kartu', umpan: [`[gerbang kartu] ${kartu.alasan}`], kartu, tebak: null });
@@ -377,13 +559,13 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
         // Tidak mungkin bila setiap omongan dikunci pada putaran tanpa masalah
         // validator; dijaga supaya draf yang tidak sah tidak pernah keluar.
         hasil.berhenti = `draf akhir ditolak validator: ${sisa.map((m) => m.kode).join(', ')}`;
-        return hasil;
+        return akhiri();
       }
       hasil.lolos = true;
       hasil.draf = akhir;
-      return hasil;
+      return akhiri();
     }
   }
   hasil.berhenti = `batas ${String(maks)} putaran tercapai; omongan terkunci: ${[...terkunci].sort().join(', ') || 'tidak ada'}`;
-  return hasil;
+  return akhiri();
 }
