@@ -150,8 +150,9 @@ export async function gerbangKartu(o: OmonganDraf, paket: PaketFakta, opsi: Opsi
     alasan: lolos
       ? ''
       : `Pembaca yang MEMEGANG kartu memilih "${hasil.pilihan}", padahal kunci "${o.kunci}" ` +
-        `(alasannya: "${hasil.alasan}"). Soal ambigu atau kartunya tidak cukup: buat kartu penentu ` +
-        'membuktikan kunci tanpa tafsir, dan pengecoh yang ia pilih jelas terbantah kartu.',
+        `(alasannya: "${hasil.alasan}"). Periksa dulu apakah kuncimu memang benar menurut kartu — ` +
+        'pembaca ini bisa jadi yang benar. Kalau kuncimu benar, soalnya ambigu atau kartunya tidak cukup: buat ' +
+        'kartu penentu membuktikan kunci tanpa tafsir, dan pengecoh yang ia pilih jelas terbantah kartu.',
     panggilan,
   };
 }

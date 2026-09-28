@@ -1,0 +1,69 @@
+
+> runut@0.1.0 agen:susun
+> node --experimental-strip-types factory/llm/agen-susun.ts tirt
+
+Paket TIRT: 20 fakta, 2 tersingkir, 12 aturan R dijalankan; sama persis dengan paket M2d-1: ya.
+Model deepseek-ai/DeepSeek-V4.1-Flash; pagu US$5.00; akumulasi ledger sebelum mulai US$1.637512.
+  agen/tirt/p1/susun/o1: masuk 4367 keluar 32768 US$0.013701 215.9 s; akumulasi US$1.651213
+  agen/tirt/p1/susun/o1/u1: masuk 4342 keluar 395 US$0.001006 4.1 s; akumulasi US$1.652219
+  agen/tirt/p1/susun/o2: masuk 4367 keluar 14221 US$0.006431 117.8 s; akumulasi US$1.658649
+  agen/tirt/p1/susun/o3: masuk 4847 keluar 29903 US$0.012672 172.7 s; akumulasi US$1.671321
+  agen/tirt/p1/gerbang-kartu/o2: masuk 644 keluar 805 US$0.000442 7.4 s; akumulasi US$1.671763
+  agen/tirt/p1/gerbang-tebak/o2/t1: masuk 335 keluar 2916 US$0.001209 29 s; akumulasi US$1.672972
+  agen/tirt/p1/gerbang-tebak/o2/t2: masuk 398 keluar 1869 US$0.000811 76.8 s; akumulasi US$1.673783
+  agen/tirt/p1/gerbang-tebak/o2/t3: masuk 335 keluar 439 US$0.000238 5.1 s; akumulasi US$1.674020
+  agen/tirt/p1/gerbang-kartu/o3: masuk 564 keluar 770 US$0.000412 7.3 s; akumulasi US$1.674433
+  agen/tirt/p1/gerbang-tebak/o3/t1: masuk 316 keluar 1330 US$0.000583 12.2 s; akumulasi US$1.675016
+  agen/tirt/p1/gerbang-tebak/o3/t2: masuk 316 keluar 1127 US$0.000504 12.9 s; akumulasi US$1.675520
+  agen/tirt/p1/gerbang-tebak/o3/t3: masuk 316 keluar 1944 US$0.000824 23 s; akumulasi US$1.676344
+  agen/tirt/p2/tulis-ulang/o1: masuk 5556 keluar 18870 US$0.008486 160.4 s; akumulasi US$1.684830
+  agen/tirt/p2/tulis-ulang/o2: masuk 6296 keluar 32768 US$0.014079 195.3 s; akumulasi US$1.698909
+  agen/tirt/p2/tulis-ulang/o2/u1: masuk 6271 keluar 450 US$0.001406 4.8 s; akumulasi US$1.700314
+  agen/tirt/p2/tulis-ulang/o3: masuk 6255 keluar 21507 US$0.009657 475.3 s; akumulasi US$1.709971
+  agen/tirt/p2/gerbang-kartu/o1: masuk 652 keluar 482 US$0.000317 15.8 s; akumulasi US$1.710288
+  agen/tirt/p2/gerbang-tebak/o1/t1: masuk 374 keluar 7903 US$0.003171 234.8 s; akumulasi US$1.713459
+  agen/tirt/p2/gerbang-tebak/o1/t2: masuk 311 keluar 8000 US$0.003197 45.1 s; akumulasi US$1.716656
+  agen/tirt/p2/gerbang-tebak/o1/t2/u1: masuk 311 keluar 3809 US$0.001554 21.9 s; akumulasi US$1.718210
+  agen/tirt/p2/gerbang-tebak/o1/t3: masuk 311 keluar 6143 US$0.002469 36.4 s; akumulasi US$1.720679
+  agen/tirt/p2/gerbang-kartu/o2: masuk 631 keluar 328 US$0.000252 4.4 s; akumulasi US$1.720931
+  agen/tirt/p2/gerbang-tebak/o2/t1: masuk 322 keluar 860 US$0.000400 7.3 s; akumulasi US$1.721332
+  agen/tirt/p2/gerbang-tebak/o2/t2: masuk 322 keluar 3373 US$0.001385 21.1 s; akumulasi US$1.722717
+  agen/tirt/p2/gerbang-tebak/o2/t3: masuk 385 keluar 316 US$0.000199 6.1 s; akumulasi US$1.722916
+  agen/tirt/p2/gerbang-kartu/o3: masuk 642 keluar 494 US$0.000319 9.6 s; akumulasi US$1.723236
+  agen/tirt/p2/gerbang-tebak/o3/t1: masuk 298 keluar 8000 US$0.003194 60.2 s; akumulasi US$1.726430
+  agen/tirt/p2/gerbang-tebak/o3/t1/u1: masuk 298 keluar 8000 US$0.003194 63.3 s; akumulasi US$1.729625
+  agen/tirt/p2/gerbang-tebak/o3/t2: masuk 298 keluar 4845 US$0.001958 28.1 s; akumulasi US$1.731582
+  agen/tirt/p2/gerbang-tebak/o3/t3: masuk 298 keluar 8000 US$0.003194 79.8 s; akumulasi US$1.734777
+  agen/tirt/p2/gerbang-tebak/o3/t3/u1: masuk 361 keluar 2279 US$0.000964 67.5 s; akumulasi US$1.735741
+  agen/tirt/p3/tulis-ulang/o2: masuk 6243 keluar 32768 US$0.014069 613.2 s; akumulasi US$1.749809
+  agen/tirt/p3/tulis-ulang/o2/u1: masuk 6155 keluar 489 US$0.001398 5.5 s; akumulasi US$1.751207
+  agen/tirt/p3/tulis-ulang/o3: masuk 6068 keluar 13132 US$0.006337 67.4 s; akumulasi US$1.757545
+  agen/tirt/p3/gerbang-kartu/o2: masuk 602 keluar 2362 US$0.001044 21.6 s; akumulasi US$1.758588
+  agen/tirt/p3/gerbang-tebak/o2/t1: masuk 321 keluar 1728 US$0.000740 18 s; akumulasi US$1.759329
+  agen/tirt/p3/gerbang-tebak/o2/t2: masuk 321 keluar 2978 US$0.001230 18.7 s; akumulasi US$1.760559
+  agen/tirt/p3/gerbang-tebak/o2/t3: masuk 321 keluar 7339 US$0.002940 72.8 s; akumulasi US$1.763499
+  agen/tirt/p3/gerbang-kartu/o3: masuk 555 keluar 1670 US$0.000763 11.9 s; akumulasi US$1.764262
+  agen/tirt/p3/gerbang-tebak/o3/t1: masuk 382 keluar 5728 US$0.002320 144.1 s; akumulasi US$1.766582
+  agen/tirt/p3/gerbang-tebak/o3/t2: masuk 319 keluar 8000 US$0.003199 73.2 s; akumulasi US$1.769781
+  agen/tirt/p3/gerbang-tebak/o3/t2/u1: masuk 319 keluar 7072 US$0.002835 44.4 s; akumulasi US$1.772616
+  agen/tirt/p3/gerbang-tebak/o3/t3: masuk 319 keluar 8000 US$0.003199 44.4 s; akumulasi US$1.775814
+  agen/tirt/p3/gerbang-tebak/o3/t3/u1: masuk 319 keluar 4341 US$0.001764 26.2 s; akumulasi US$1.777578
+  agen/tirt/p4/tulis-ulang/o3: masuk 6068 keluar 32768 US$0.014034 163.2 s; akumulasi US$1.791613
+  agen/tirt/p4/tulis-ulang/o3/u1: masuk 6106 keluar 456 US$0.001376 6.7 s; akumulasi US$1.792988
+  agen/tirt/p4/gerbang-kartu/o3: masuk 628 keluar 549 US$0.000338 24.4 s; akumulasi US$1.793327
+  agen/tirt/p4/gerbang-tebak/o3/t1: masuk 317 keluar 160 US$0.000125 2.9 s; akumulasi US$1.793452
+  agen/tirt/p4/gerbang-tebak/o3/t2: masuk 317 keluar 225 US$0.000150 3.2 s; akumulasi US$1.793602
+  agen/tirt/p4/gerbang-tebak/o3/t3: masuk 317 keluar 205 US$0.000142 3.5 s; akumulasi US$1.793744
+  agen/tirt/p5/tulis-ulang/o3: masuk 6122 keluar 32768 US$0.014045 188.9 s; akumulasi US$1.807789
+  agen/tirt/p5/tulis-ulang/o3/u1: masuk 6097 keluar 455 US$0.001373 19.9 s; akumulasi US$1.809163
+  agen/tirt/p5/gerbang-kartu/o3: masuk 703 keluar 282 US$0.000248 6.7 s; akumulasi US$1.809411
+  agen/tirt/p5/gerbang-tebak/o3/t1: masuk 394 keluar 995 US$0.000467 8 s; akumulasi US$1.809878
+  agen/tirt/p5/gerbang-tebak/o3/t2: masuk 394 keluar 426 US$0.000244 18 s; akumulasi US$1.810123
+  agen/tirt/p5/gerbang-tebak/o3/t3: masuk 394 keluar 158 US$0.000139 2.6 s; akumulasi US$1.810262
+TIDAK LOLOS sesudah 5 dari 5 putaran (batas 5 putaran tercapai; omongan terkunci: 1, 2); 56 panggilan, US$0.172750 menurut jejak, US$0.172750 menurut ledger; akumulasi ledger US$1.810262 dari pagu US$5.00.
+  putaran 1 (susun, omongan 1,2,3): 1=tidak-ada 2=ditolak-tebak 3=ditolak-tebak
+  putaran 2 (tulis-ulang, omongan 1,2,3): 1=lolos 2=ditolak-tebak 3=ditolak-tebak
+  putaran 3 (tulis-ulang, omongan 2,3): 1=terkunci-sebelumnya 2=lolos 3=ditolak-tebak
+  putaran 4 (tulis-ulang, omongan 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-tebak
+  putaran 5 (tulis-ulang, omongan 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-tebak
+EXIT=0

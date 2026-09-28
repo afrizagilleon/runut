@@ -1,17 +1,13 @@
 TAMBAHAN UNTUK LINGKAR AGEN (berlaku di atas aturan 1–11; semuanya tetap berlaku):
 
-12. JAWABAN BENAR HARUS MELAWAN DUGAAN PERTAMA. Setiap omongan diuji oleh pemeriksa terpisah sebelum diterima:
-   - tiga penebak yang TIDAK memegang kartu — mereka hanya melihat pesan teman, pertanyaan, dan empat pilihan. Kalau dua dari tiga menebak kunci, atau penebak yang benar rata-rata yakin 40 dari 100 atau lebih, omongan ditolak;
-   - satu pembaca yang memegang kartu omongan itu. Kalau ia salah pilih, omongan ditolak karena ambigu.
-   Jadi: tanpa kartu, orang harus condong ke pilihan yang SALAH; dengan kartu, jawabannya harus jelas. Cara yang bekerja:
-   a. Buat 2×2 yang sungguhan: label Betul/Keliru × satu alasan, dan alasan-alasannya berbeda di hal yang HANYA bisa diputus dengan membaca kartu (misalnya dua arah transaksi × dua kisaran harga, atau dua tanggal × dua alasan resmi). Bentuk contoh — isinya bukan untuk dipakai: "Betul, <pihak> tercatat <tindakan A> di <kisaran X>." / "Betul, <pihak> tercatat <tindakan A> di <kisaran Y>." / "Keliru, <pihak> tercatat <tindakan B> di <kisaran X>." / "Keliru, <pihak> tercatat <tindakan B> di <kisaran Y>." Keempatnya sama panjang, sama nadanya, dan hanya kartu yang memutus.
-   b. Nada pesan tidak boleh membocorkan jawabannya. Omongan yang heboh ("Pasti…", "Gila…") tidak selalu keliru, dan omongan yang tenang tidak selalu betul. Kadang yang terdengar paling mencurigakan justru cocok dengan dokumennya.
-   c. Pilihan kunci tidak boleh sekadar "membetulkan angka teman dengan angka resmi" sementara pengecohnya jelas mengada-ada ("bursa tidak mencatat apa pun", "tidak ada laporan sama sekali", "harganya justru turun"). Pengecoh harus sama spesifik dan sama masuk akalnya; paling baik pengecoh juga memakai hal yang benar-benar ada di paket, tetapi tidak menjawab pertanyaan ini.
-   d. Pilihan kunci tidak boleh yang paling hati-hati, paling bernuansa, paling lengkap, atau satu-satunya yang menyebut dokumen.
-   e. Letak kunci (a/b/c/d) dan labelnya (Betul/Keliru) tidak boleh bisa ditebak dari pola.
+CARA BEKERJA: kamu bagian dari sebuah lingkar. Setiap panggilan memintamu menulis SATU omongan (nomornya disebut di akhir pesan), dengan omongan lain sebagai konteks. Sesudah kamu menulis, pemeriksa otomatis, satu pembaca yang memegang kartu, dan tiga penebak yang tidak memegang kartu menguji omongan itu; kalau ditolak, kamu menerima alasannya dan menulis ulang. Kamu TIDAK perlu mensimulasikan para pemeriksa di kepalamu — itu tugas lingkar. Pikirkan secukupnya, pastikan kuncinya memang benar menurut kartu, lalu tulis JSON-nya.
 
-13. BAHASA YANG WAJAR. Bentuk dua pesan dari simulasi yang hidup — tiru GAYANYA saja; isi di dalam <…> sengaja dikosongkan, jangan menyalin frasanya, buat sendiri:
+12. JAWABAN BENAR HARUS MELAWAN DUGAAN PERTAMA PENEBAK. Orang yang hanya membaca pesan dan empat pilihan (tanpa kartu) harus condong ke pilihan yang SALAH; orang yang membaca kartu harus sampai ke kunci tanpa ragu. Pegangan singkat:
+   - buat 2×2 sungguhan: dua label (Betul/Keliru) × dua alasan yang berbeda di hal yang HANYA bisa diputus dengan membaca kartu; keempatnya sama panjang dan sama nadanya;
+   - nada pesan tidak boleh membocorkan jawaban: omongan yang heboh kadang betul, omongan yang tenang kadang keliru;
+   - pilihan kunci bukan sekadar "mengulang atau membetulkan angka teman", dan pengecohnya tidak boleh jelas mengada-ada.
+
+13. BAHASA YANG WAJAR. Bentuk dua pesan dari simulasi yang hidup — tiru GAYANYA saja; isi di dalam <…> sengaja dikosongkan, jangan menyalin frasanya:
    - "Gue pegang <jumlah> dari <bulan>. <Sesuatu>-nya receh banget, buat <perumpamaan sehari-hari> aja kurang. <Kesimpulan pribadi yang terburu-buru>."
    - "Jangan kegeeran dulu. Gue baca <dokumen>: <pihak> ikut <tindakan> juga, bukan cuma <pihak lain>."
-   Yang membuatnya alami: kata sehari-hari (gue, nggak, aja, banget, lho), satu klaim yang bisa dicek, kesimpulan pribadi yang terburu-buru, tanpa istilah resmi yang tidak biasa diucapkan orang. Tanggal lengkap hanya kalau tanggal itu inti klaimnya; selebihnya tulis seperti orang ngobrol ("kemarin", "awal bulan").
-   Di pilihan dan penjelasan, tulis seperti teman yang menerangkan. Jangan menulis kata "paket", "fakta", "fact_id", "omongan", "bilangan di omongan", atau "hitungan paket" — sebut dokumennya dengan nama biasa ("pengumuman bursa", "data harga harian", "kartu hitungan"). Jangan mengulang pola kalimat yang sama ("kartu … mencatat …") berkali-kali.
+   Yang membuatnya alami: kata sehari-hari (gue, nggak, aja, banget, lho), satu klaim yang bisa dicek, kesimpulan pribadi yang terburu-buru, tanpa istilah resmi yang tidak biasa diucapkan orang. Di pilihan dan penjelasan, tulis seperti teman yang menerangkan; jangan menulis kata "paket", "fakta", "fact_id", "omongan", atau "hitungan paket", dan jangan mengulang pola "kartu … mencatat …" berkali-kali.

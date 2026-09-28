@@ -78,6 +78,33 @@ describe('chat — bentuk permintaan dan respons', () => {
     expect(hasil.finish_reason).toBe('stop');
     expect(hasil.percobaan_http).toBe(1);
   });
+
+  it('tambahanBadan (M2d-2) ikut terkirim, tetapi tidak bisa menimpa model, pesan, suhu, max_tokens, atau stream', async () => {
+    const { fetch: f, panggilan } = palsu([() => responsJson(SUKSES)]);
+    await chat(
+      { baseUrl: BASE, apiKey: KUNCI, fetch: f },
+      {
+        ...OPSI,
+        tambahanBadan: {
+          chat_template_kwargs: { thinking: false },
+          model: 'model-lain',
+          max_tokens: 999_999,
+          stream: true,
+          temperature: 2,
+          messages: [],
+        },
+      },
+    );
+    const badan = JSON.parse(String(panggilan[0]?.init?.body)) as Record<string, unknown>;
+    expect(badan).toEqual({
+      chat_template_kwargs: { thinking: false },
+      model: 'zai-org/GLM-5.3',
+      messages: [{ role: 'user', content: 'halo' }],
+      temperature: 0.3,
+      max_tokens: 100,
+      stream: false,
+    });
+  });
 });
 
 describe('chat — coba ulang (D-1: 2 kali, hanya 429/5xx)', () => {

@@ -156,6 +156,8 @@ export interface HasilSusun {
 export interface SetelanPanggil {
   suhu: number;
   maxTokens: number;
+  /** Medan tambahan badan permintaan (M2d-2: mematikan mode berpikir penyusun). M2d-1 tidak memakainya. */
+  tambahanBadan?: Readonly<Record<string, unknown>>;
 }
 
 export interface OpsiSusun {

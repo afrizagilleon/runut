@@ -1,0 +1,94 @@
+{
+  "versi": 1,
+  "dibuat_oleh": "factory/llm/agen.ts",
+  "simulasi": {
+    "paket_id": "tirt",
+    "nama_samaran": "Perusahaan T",
+    "tanggal_t": "2025-12-10",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+  },
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "paket": {
+    "aturan_dijalankan": 12,
+    "aturan_dilewati": 23,
+    "temuan": 11,
+    "fakta_lolos": 20,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2025-11-25",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "harga-2025-12-10",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "992ccfb1272249cb31fb766c6a79c10d70476817e46c263b99e126ebdb829aa6",
+    "sha256_paket": "228f343b5f5aa7bc0fea42021297fbfa9d349e7599773d6c788c9ef43215a14b",
+    "ringkasan": "Prompt sistem = aturan penulisan M2d-1 (factory/llm/prompt-susun.md) + tambahan lingkar agen (factory/llm/prompt-agen.md); pesan pengguna = paket fakta terverifikasi. Isi penuh terlacak di repo; di sini hanya hash."
+  },
+  "mulai": "2026-09-28T01:28:53.042Z",
+  "selesai": null,
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T01:28:53.044Z",
+      "waktu_selesai": "2026-09-28T01:31:46.353Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 4668,
+      "token_keluar": 32768,
+      "biaya_usd": 0.013759984000000001,
+      "putusan": "ditulis",
+      "alasan": [
+        "menyusun omongan 1, 2, 3",
+        "keluaran tidak bisa diurai sebagai JSON"
+      ],
+      "sha256_prompt": "33a2adbf03cf18ed5c6f19113d41837c7facf160b3b14f8223a0d9a6d6b658ac",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terurai": false,
+        "diabaikan": [],
+        "finish_reason": "length",
+        "panjang_penalaran": 115363,
+        "suhu": 0.3,
+        "max_tokens": 32768
+      }
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T01:31:46.355Z",
+      "waktu_selesai": "2026-09-28T01:31:46.356Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "seluruh draf: [JSON_RUSAK] tidak ada objek JSON di keluaran (keluaran terpotong: batas token keluar tercapai)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [],
+        "kode": [
+          "JSON_RUSAK"
+        ]
+      }
+    }
+  ],
+  "hasil": null
+}

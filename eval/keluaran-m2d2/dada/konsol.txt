@@ -1,0 +1,83 @@
+
+> runut@0.1.0 agen:susun
+> node --experimental-strip-types factory/llm/agen-susun.ts dada
+
+Paket DADA: 14 fakta, 4 tersingkir, 23 aturan R dijalankan; sama persis dengan paket M2d-1: ya.
+Model deepseek-ai/DeepSeek-V4.1-Flash; pagu US$5.00; akumulasi ledger sebelum mulai US$1.810262.
+  agen/dada/p1/susun/o1: masuk 3868 keluar 14866 US$0.006586 144.9 s; akumulasi US$1.816847
+  agen/dada/p1/susun/o2: masuk 4349 keluar 11593 US$0.005397 569.5 s; akumulasi US$1.822244
+  agen/dada/p1/susun/o3/u1: masuk 4794 keluar 636 US$0.001189 4.9 s; akumulasi US$1.839081
+  agen/dada/p1/gerbang-kartu/o1: masuk 767 keluar 5262 US$0.002213 28.2 s; akumulasi US$1.841294
+  agen/dada/p1/gerbang-tebak/o1/t1: masuk 331 keluar 5797 US$0.002337 32.9 s; akumulasi US$1.843631
+  agen/dada/p1/gerbang-tebak/o1/t2: masuk 331 keluar 396 US$0.000220 4.7 s; akumulasi US$1.843851
+  agen/dada/p1/gerbang-tebak/o1/t3: masuk 331 keluar 5408 US$0.002185 56.1 s; akumulasi US$1.846036
+  agen/dada/p1/gerbang-kartu/o3: masuk 488 keluar 865 US$0.000435 6.9 s; akumulasi US$1.846471
+  agen/dada/p1/gerbang-tebak/o3/t1: masuk 336 keluar 488 US$0.000257 6.5 s; akumulasi US$1.846728
+  agen/dada/p1/gerbang-tebak/o3/t2: masuk 336 keluar 261 US$0.000168 3.4 s; akumulasi US$1.846896
+  agen/dada/p1/gerbang-tebak/o3/t3: masuk 336 keluar 197 US$0.000143 3.7 s; akumulasi US$1.847039
+  agen/dada/p2/tulis-ulang/o1: masuk 5703 keluar 17647 US$0.008035 96.4 s; akumulasi US$1.855075
+  agen/dada/p2/tulis-ulang/o2: masuk 5693 keluar 25338 US$0.011048 137.8 s; akumulasi US$1.866123
+  agen/dada/p2/tulis-ulang/o3: masuk 5711 keluar 32768 US$0.013964 199.4 s; akumulasi US$1.880087
+  agen/dada/p2/tulis-ulang/o3/u1: masuk 5686 keluar 551 US$0.001330 5 s; akumulasi US$1.881418
+  agen/dada/p2/gerbang-kartu/o1: masuk 517 keluar 1519 US$0.000697 10.2 s; akumulasi US$1.882114
+  agen/dada/p2/gerbang-tebak/o1/t1: masuk 331 keluar 8000 US$0.003201 46.1 s; akumulasi US$1.885315
+  agen/dada/p2/gerbang-tebak/o1/t1/u1: masuk 331 keluar 7521 US$0.003013 64.5 s; akumulasi US$1.888328
+  agen/dada/p2/gerbang-tebak/o1/t2: masuk 331 keluar 8000 US$0.003201 45.7 s; akumulasi US$1.891529
+  agen/dada/p2/gerbang-tebak/o1/t2/u1: masuk 331 keluar 8000 US$0.003201 43.8 s; akumulasi US$1.894730
+  agen/dada/p2/gerbang-tebak/o1/t3: masuk 331 keluar 8000 US$0.003201 82.7 s; akumulasi US$1.897931
+  agen/dada/p2/gerbang-tebak/o1/t3/u1: masuk 331 keluar 4743 US$0.001924 27.9 s; akumulasi US$1.899855
+  agen/dada/p2/gerbang-kartu/o2: masuk 638 keluar 1118 US$0.000563 23 s; akumulasi US$1.900419
+  agen/dada/p2/gerbang-tebak/o2/t1: masuk 324 keluar 4831 US$0.001957 44.1 s; akumulasi US$1.902376
+  agen/dada/p2/gerbang-tebak/o2/t2: masuk 324 keluar 7430 US$0.002976 61.7 s; akumulasi US$1.905352
+  agen/dada/p2/gerbang-tebak/o2/t3: masuk 324 keluar 3650 US$0.001494 24.9 s; akumulasi US$1.906846
+  agen/dada/p3/tulis-ulang/o1: masuk 5752 keluar 32768 US$0.013972 602.9 s; akumulasi US$1.920819
+  agen/dada/p3/tulis-ulang/o1/u1: masuk 5727 keluar 527 US$0.001329 8.7 s; akumulasi US$1.922148
+  agen/dada/p3/tulis-ulang/o2: masuk 5694 keluar 32768 US$0.013961 222.9 s; akumulasi US$1.936109
+  agen/dada/p3/tulis-ulang/o2/u1: masuk 5732 keluar 597 US$0.001357 20.6 s; akumulasi US$1.937466
+  agen/dada/p3/tulis-ulang/o3: masuk 5586 keluar 29562 US$0.012683 165.1 s; akumulasi US$1.950149
+  agen/dada/p3/gerbang-kartu/o1: masuk 558 keluar 431 US$0.000278 5.6 s; akumulasi US$1.950428
+  agen/dada/p3/gerbang-tebak/o1/t1: masuk 335 keluar 1289 US$0.000571 9.5 s; akumulasi US$1.950999
+  agen/dada/p3/gerbang-tebak/o1/t2: masuk 335 keluar 634 US$0.000314 7 s; akumulasi US$1.951313
+  agen/dada/p3/gerbang-tebak/o1/t3: masuk 335 keluar 2449 US$0.001026 16.9 s; akumulasi US$1.952339
+  agen/dada/p3/gerbang-kartu/o3: masuk 455 keluar 7925 US$0.003196 79 s; akumulasi US$1.955534
+  agen/dada/p3/gerbang-tebak/o3/t1: masuk 409 keluar 8000 US$0.003216 284.9 s; akumulasi US$1.958750
+  agen/dada/p3/gerbang-tebak/o3/t1/u1: masuk 346 keluar 3962 US$0.001621 37 s; akumulasi US$1.960371
+  agen/dada/p3/gerbang-tebak/o3/t2: masuk 346 keluar 1324 US$0.000587 13.3 s; akumulasi US$1.960958
+  agen/dada/p3/gerbang-tebak/o3/t3: masuk 346 keluar 6039 US$0.002435 35.7 s; akumulasi US$1.963393
+  agen/dada/p4/tulis-ulang/o1: masuk 5653 keluar 16528 US$0.007587 89.9 s; akumulasi US$1.970980
+  agen/dada/p4/tulis-ulang/o2: masuk 5927 keluar 5307 US$0.003242 91.8 s; akumulasi US$1.974222
+  agen/dada/p4/tulis-ulang/o3: masuk 5910 keluar 26699 US$0.011624 246.5 s; akumulasi US$1.985847
+  agen/dada/p4/gerbang-kartu/o1: masuk 724 keluar 421 US$0.000307 4.4 s; akumulasi US$1.986154
+  agen/dada/p4/gerbang-tebak/o1/t1: masuk 422 keluar 959 US$0.000459 74.7 s; akumulasi US$1.986612
+  agen/dada/p4/gerbang-tebak/o1/t2: masuk 359 keluar 989 US$0.000458 16.3 s; akumulasi US$1.987070
+  agen/dada/p4/gerbang-tebak/o1/t3: masuk 359 keluar 2317 US$0.000979 24.5 s; akumulasi US$1.988049
+  agen/dada/p4/gerbang-kartu/o2: masuk 546 keluar 595 US$0.000340 7.2 s; akumulasi US$1.988389
+  agen/dada/p4/gerbang-tebak/o2/t1: masuk 360 keluar 8000 US$0.003207 79.4 s; akumulasi US$1.991596
+  agen/dada/p4/gerbang-tebak/o2/t1/u1: masuk 360 keluar 8000 US$0.003207 78.3 s; akumulasi US$1.994802
+  agen/dada/p4/gerbang-tebak/o2/t2: masuk 360 keluar 8000 US$0.003207 82.9 s; akumulasi US$1.998009
+  agen/dada/p4/gerbang-tebak/o2/t2/u1: masuk 360 keluar 4238 US$0.001732 28.1 s; akumulasi US$1.999741
+  agen/dada/p4/gerbang-tebak/o2/t3: masuk 423 keluar 4111 US$0.001694 78.4 s; akumulasi US$2.001435
+  agen/dada/p4/gerbang-kartu/o3: masuk 535 keluar 816 US$0.000425 9.8 s; akumulasi US$2.001860
+  agen/dada/p4/gerbang-tebak/o3/t1: masuk 375 keluar 5637 US$0.002283 36.2 s; akumulasi US$2.004143
+  agen/dada/p4/gerbang-tebak/o3/t2: masuk 375 keluar 2329 US$0.000986 25.9 s; akumulasi US$2.005130
+  agen/dada/p4/gerbang-tebak/o3/t3: masuk 375 keluar 8000 US$0.003210 54.6 s; akumulasi US$2.008339
+  agen/dada/p4/gerbang-tebak/o3/t3/u1: masuk 375 keluar 8000 US$0.003210 52.4 s; akumulasi US$2.011549
+  agen/dada/p5/tulis-ulang/o2: masuk 6093 keluar 16229 US$0.007556 135.9 s; akumulasi US$2.019105
+  agen/dada/p5/tulis-ulang/o3: masuk 6124 keluar 16983 US$0.007858 130.7 s; akumulasi US$2.026962
+  agen/dada/p5/gerbang-kartu/o2: masuk 552 keluar 586 US$0.000338 5.4 s; akumulasi US$2.027300
+  agen/dada/p5/gerbang-tebak/o2/t1: masuk 400 keluar 2028 US$0.000873 21.4 s; akumulasi US$2.028174
+  agen/dada/p5/gerbang-tebak/o2/t2: masuk 400 keluar 1122 US$0.000518 9.6 s; akumulasi US$2.028692
+  agen/dada/p5/gerbang-tebak/o2/t3: masuk 400 keluar 1003 US$0.000472 8.2 s; akumulasi US$2.029163
+  agen/dada/p5/gerbang-kartu/o3: masuk 447 keluar 929 US$0.000452 8.9 s; akumulasi US$2.029615
+  agen/dada/p5/gerbang-tebak/o3/t1: masuk 324 keluar 8000 US$0.003200 52.1 s; akumulasi US$2.032815
+  agen/dada/p5/gerbang-tebak/o3/t1/u1: masuk 324 keluar 4791 US$0.001942 30.9 s; akumulasi US$2.034756
+  agen/dada/p5/gerbang-tebak/o3/t2: masuk 387 keluar 1873 US$0.000810 59 s; akumulasi US$2.035566
+  agen/dada/p5/gerbang-tebak/o3/t3: masuk 324 keluar 8000 US$0.003200 70.4 s; akumulasi US$2.038766
+  agen/dada/p5/gerbang-tebak/o3/t3/u1: masuk 324 keluar 8000 US$0.003200 72.3 s; akumulasi US$2.041965
+TIDAK LOLOS sesudah 5 dari 5 putaran (batas 5 putaran tercapai; omongan terkunci: 1); 70 panggilan, US$0.216056 menurut jejak, US$0.231704 menurut ledger; akumulasi ledger US$2.041965 dari pagu US$5.00.
+  putaran 1 (susun, omongan 1,2,3): 1=ditolak-tebak 2=ditolak-validator 3=ditolak-tebak
+  putaran 2 (tulis-ulang, omongan 1,2,3): 1=ditolak-tebak 2=ditolak-tebak 3=ditolak-validator
+  putaran 3 (tulis-ulang, omongan 1,2,3): 1=ditolak-tebak 2=ditolak-validator 3=ditolak-tebak
+  putaran 4 (tulis-ulang, omongan 1,2,3): 1=lolos 2=ditolak-tebak 3=ditolak-tebak
+  putaran 5 (tulis-ulang, omongan 2,3): 1=terkunci-sebelumnya 2=ditolak-tebak 3=ditolak-tebak
+EXIT=0

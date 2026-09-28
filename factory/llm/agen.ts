@@ -3,7 +3,7 @@
  * terbaca, tanpa kerangka agent:
  *
  *   paket fakta (M2d-1, lolos mesin verifikasi V2)
- *     → susun (model menulis tiga omongan)
+ *     → susun (model menulis tiap omongan)
  *     → validator deterministik (jejak angka, tanggal ≤ T, bentuk 2×2, …)
  *     → gerbang jawab-dengan-kartu (pembaca kartu harus benar)
  *     → gerbang tebak buta (tiga penebak TANPA kartu tidak boleh benar)
@@ -12,15 +12,21 @@
  *       omongan yang ditolak
  *   paling banyak 5 putaran per simulasi.
  *
- * Satu putaran = satu panggilan penyusun + pemeriksaan hasilnya. Penolakan
- * validator juga menghabiskan satu putaran: batasnya ada untuk melindungi
- * kredit, jadi setiap panggilan penyusun dihitung.
+ * **Satu panggilan penyusun per omongan.** Satu putaran = penyusun menulis
+ * setiap omongan yang belum terkunci (berurutan, satu panggilan untuk satu
+ * omongan, melihat versi terbaru omongan lain) + validator atas draf gabungan +
+ * gerbang. Terukur 28 Sep (`eval/keluaran-m2d2/dibuang/`): diminta menulis
+ * ketiga omongan sekaligus di bawah aturan 12, DeepSeek menalar ±110 ribu
+ * karakter — mensimulasikan penebak untuk tiap omongan — dan menghabiskan
+ * seluruh batas penyedia (32.768 token) tanpa satu karakter JSON, tiga kali
+ * berturut-turut. Satu omongan per panggilan memecah beban itu; batas 5
+ * putaran tetap berarti paling banyak 15 panggilan penyusun per simulasi.
  *
  * Yang dijaga kode, bukan model:
  *
- * - **Kunci omongan**: omongan yang lolos disimpan kode. Kalau model
- *   mengembalikan versi baru omongan terkunci, versi itu dibuang; draf yang
- *   diperiksa selalu gabungan omongan terkunci + omongan yang ditulis ulang.
+ * - **Kunci omongan**: omongan yang lolos disimpan kode dan tidak pernah
+ *   diminta lagi; kalau model tetap mengirim objek bernomor lain, objek itu
+ *   dibuang dan dicatat (`diabaikan`).
  * - **Masalah seluruh draf** (nama kembar, tidak ada yang Betul, kunci
  *   seragam) dibebankan ke omongan yang belum terkunci — hanya merekalah yang
  *   bisa memperbaikinya — dan gerbang tidak dijalankan pada putaran itu.
@@ -40,16 +46,46 @@ import { MODEL_AGEN } from './model.ts';
 import { hashPesan, type PencatatJejak } from './jejak.ts';
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
-import { PUTARAN, SUHU, pesanPaket, promptSistem, uraiKeluaran } from './susun.ts';
+import { SUHU, pesanPaket, promptSistem, uraiKeluaran } from './susun.ts';
 
 export const MAKS_PUTARAN = 5;
 export const JUMLAH_OMONGAN = 3;
 /**
- * Setelan penyusun: suhu M2d-1 (0,3) — supaya beda hasil tebak buta dengan
- * M2d-1 bisa dikaitkan ke lingkar dan prompt, bukan ke suhu — dan batas token
- * putaran 2 M2d-1 (32.000), yang tidak pernah terpotong untuk DeepSeek.
+ * Setelan penyusun — hasil lima jalan TIRT yang dibuang (28 Sep,
+ * `eval/keluaran-m2d2/dibuang/`, semuanya tercatat di ledger):
+ *
+ * - Suhu M2d-1 (0,3), supaya beda hasil tebak buta dengan M2d-1 bisa
+ *   dikaitkan ke lingkar dan prompt, bukan ke suhu.
+ * - `max_tokens` 32.768 = batas penyedia (64.000 ditolak HTTP 400, tanpa biaya).
+ * - **Mode berpikir tetap menyala.** Jalan 5 mematikannya
+ *   (`chat_template_kwargs.thinking = false`, `klien.ts` `tambahanBadan`):
+ *   cepat (±10 detik per omongan) tetapi dua kegagalan terukur — kunci yang
+ *   salah menurut kartunya sendiri (tertangkap gerbang kartu, lima putaran
+ *   berturut-turut untuk omongan yang sama) dan versi yang ditolak dikirim
+ *   ulang hampir kata per kata. Nol omongan terkunci dalam 5 putaran.
+ * - Yang membuat penalaran tidak berujung di jalan 1–4 adalah aturan 12 versi
+ *   panjang (lima "cara" + contoh) yang mengundang model mensimulasikan
+ *   penebak untuk setiap susunan pilihan; ia diringkas menjadi tiga pegangan,
+ *   dan prompt kini menyerahkan pemeriksaan ke lingkar ("CARA BEKERJA").
+ *   Penalaran yang tetap terpotong menjadi penolakan biasa dengan umpan balik.
  */
-export const SETELAN_PENYUSUN = { suhu: SUHU, maxTokens: PUTARAN[2].maxTokens } as const;
+export const SETELAN_PENYUSUN = { suhu: SUHU, maxTokens: 32_768 } as const;
+
+/**
+ * Cadangan untuk SATU omongan bila panggilan berpikir tidak menghasilkan
+ * omongan terbaca (terpotong 32.768 token, galat penyedia, JSON rusak) —
+ * terukur di jalan TIRT 6–7: 8 dari 16 panggilan penyusun berpikir berakhir
+ * begitu (6 terpotong, 2 HTTP 200 tanpa choices), dan tiap kali omongan itu
+ * kehilangan satu putaran penuh.
+ * Tanpa berpikir, model cepat tetapi lebih sering salah kunci (jalan 5); di
+ * sini itu tidak berbahaya karena hasilnya tetap melewati validator dan kedua
+ * gerbang. Paling banyak 2 panggilan penyusun per omongan per putaran.
+ */
+export const SETELAN_CADANGAN = {
+  suhu: SUHU,
+  maxTokens: 8_000,
+  tambahanBadan: { chat_template_kwargs: { thinking: false } },
+} as const;
 
 const JALUR_TAMBAHAN = fileURLToPath(new URL('./prompt-agen.md', import.meta.url));
 
@@ -64,6 +100,7 @@ export type StatusOmongan =
   | 'ditolak-validator'
   | 'ditolak-kartu'
   | 'ditolak-tebak'
+  | 'galat-gerbang'
   | 'lolos';
 
 export interface PemeriksaanOmongan {
@@ -76,6 +113,10 @@ export interface PemeriksaanOmongan {
 }
 
 export interface PanggilanPenyusun {
+  /** Omongan yang diminta pada panggilan ini. */
+  omongan: number;
+  /** Pesan pengguna yang dikirim (paket + permintaan). */
+  permintaan: string;
   waktu_mulai: string;
   waktu_selesai: string;
   teks_mentah: string;
@@ -86,6 +127,8 @@ export interface PanggilanPenyusun {
   token_keluar: number;
   biaya_usd: number;
   latensi_ms: number;
+  /** Keluaran memuat omongan yang diminta dalam JSON yang terbaca. */
+  terurai: boolean;
 }
 
 export interface PutaranAgen {
@@ -93,12 +136,8 @@ export interface PutaranAgen {
   jenis: 'susun' | 'tulis-ulang';
   /** Omongan yang diminta ditulis pada putaran ini. */
   diminta: number[];
-  /** Pesan pengguna terakhir yang dikirim ke penyusun (umpan balik / permintaan). */
-  permintaan: string;
-  panggilan: PanggilanPenyusun | null;
-  /** Keluaran model bisa diurai sebagai JSON. */
-  terurai: boolean;
-  /** Omongan terkunci yang coba diubah model (versinya dibuang). */
+  panggilan: PanggilanPenyusun[];
+  /** Nomor omongan lain yang dikirim model tanpa diminta (dibuang). */
   diabaikan: number[];
   masalah: MasalahDraf[];
   omongan: PemeriksaanOmongan[];
@@ -132,68 +171,89 @@ function adalahObyek(n: unknown): n is Record<string, unknown> {
 }
 
 function labelKunci(o: OmonganDraf): string {
-  const teks = o.pilihan[o.kunci] ?? '';
+  const teks = adalahObyek(o.pilihan) ? (o.pilihan[o.kunci] ?? '') : '';
   return teks.trimStart().startsWith('Betul,') ? 'Betul' : teks.trimStart().startsWith('Keliru,') ? 'Keliru' : '?';
 }
 
 /**
- * Ambil omongan baru dari keluaran model. Putaran penuh: `omongan` berisi tiga
- * objek berurutan. Tulis ulang: objek bermedan `no`; kalau model tetap
- * mengirim tiga objek tanpa `no`, posisinya yang dipakai.
+ * Ambil omongan nomor `no` dari keluaran model: objek bermedan `no` yang sama,
+ * atau — kalau hanya ada satu objek tanpa `no` — objek itu. Nomor lain yang
+ * dikirim model dikembalikan sebagai `lain` (dibuang pemanggil).
  */
-export function omonganBaru(nilai: unknown, penuh: boolean): Map<number, unknown> {
-  const hasil = new Map<number, unknown>();
-  if (!adalahObyek(nilai) || !Array.isArray(nilai['omongan'])) return hasil;
+export function ambilOmongan(nilai: unknown, no: number): { omongan: unknown; lain: number[] } {
+  if (!adalahObyek(nilai) || !Array.isArray(nilai['omongan'])) return { omongan: undefined, lain: [] };
   const larik = nilai['omongan'] as unknown[];
-  const bernomor = larik.every((x) => adalahObyek(x) && typeof x['no'] === 'number');
-  if (!penuh && bernomor) {
-    for (const x of larik) {
-      const { no, ...isi } = x as Record<string, unknown> & { no: number };
-      hasil.set(no, isi);
-    }
-    return hasil;
-  }
+  let omongan: unknown;
+  const lain: number[] = [];
   larik.forEach((x, i) => {
-    if (adalahObyek(x)) {
-      const { no: _no, ...isi } = x;
-      hasil.set(i + 1, isi);
+    const nomor = adalahObyek(x) && typeof x['no'] === 'number' ? x['no'] : larik.length === 1 ? no : i + 1;
+    if (nomor === no && omongan === undefined) {
+      if (adalahObyek(x)) {
+        const { no: _no, ...isi } = x;
+        omongan = isi;
+      } else {
+        omongan = x;
+      }
     } else {
-      hasil.set(i + 1, x);
+      lain.push(nomor);
     }
   });
-  return hasil;
+  return { omongan, lain };
 }
 
-/** Permintaan tulis ulang: siapa terkunci, siapa ditolak dan kenapa, bentuk keluaran. */
-export function pesanTulisUlang(
-  draf: Array<OmonganDraf | null>,
+function ringkasOmongan(no: number, o: OmonganDraf | null, terkunci: boolean): string {
+  if (o === null) return `- omongan ${String(no)}: belum ada`;
+  return `- omongan ${String(no)}${terkunci ? ' (TERKUNCI)' : ''}: ${JSON.stringify(adalahObyek(o) ? { no, ...o } : o)}`;
+}
+
+/**
+ * Permintaan untuk SATU omongan: omongan lain sebagai konteks (untuk aturan
+ * antar-omongan), versi yang ditolak + umpan baliknya bila ada, bentuk keluaran.
+ */
+export function pesanTulisOmongan(
+  no: number,
+  draf: ReadonlyArray<OmonganDraf | null>,
   terkunci: ReadonlySet<number>,
-  umpan: ReadonlyMap<number, string[]>,
+  umpan: readonly string[] | undefined,
 ): string {
-  const ditolak = [...umpan.keys()].sort((a, b) => a - b);
-  const baris: string[] = ['Draf di atas sudah diperiksa.'];
-  if (terkunci.size > 0) {
-    const daftar = [...terkunci]
-      .sort((a, b) => a - b)
-      .map((no) => {
-        const o = draf[no - 1];
-        return o === null || o === undefined ? `${String(no)}` : `${String(no)} (${o.nama}, kunci "${o.kunci}" = ${labelKunci(o)})`;
-      });
-    baris.push(`Omongan TERKUNCI — sudah lolos semua pemeriksaan, jangan diubah dan jangan dikirim ulang: ${daftar.join('; ')}.`);
+  const lain = [1, 2, 3].filter((x) => x !== no);
+  const baris: string[] = [
+    `TUGAS PANGGILAN INI: tulis HANYA omongan nomor ${String(no)} dari tiga omongan simulasi ini — satu omongan, bukan tiga.`,
+    '',
+    'Omongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):',
+    ...lain.map((x) => ringkasOmongan(x, draf[x - 1] ?? null, terkunci.has(x))),
+    '',
+  ];
+  const ada = lain.map((x) => draf[x - 1]).filter((x): x is OmonganDraf => adalahObyek(x) && typeof x.nama === 'string');
+  const syarat: string[] = [];
+  if (ada.length > 0) syarat.push(`nama pengirim berbeda dari ${ada.map((o) => `"${o.nama}"`).join(' dan ')}`);
+  if (ada.length === 2 && !ada.some((o) => labelKunci(o) === 'Betul')) {
+    syarat.push('omongan ini HARUS ternyata BETUL (kuncinya pilihan "Betul,"), karena kedua omongan lain Keliru');
+  } else if (!ada.some((o) => labelKunci(o) === 'Betul')) {
+    syarat.push('minimal satu dari tiga omongan harus ternyata BETUL');
   }
-  baris.push(`Omongan yang DITOLAK: ${ditolak.join(', ')}.`, '');
-  for (const no of ditolak) {
-    baris.push(`Omongan ${String(no)}:`);
-    for (const u of umpan.get(no) ?? []) baris.push(`- ${u}`);
-    baris.push('');
+  if (ada.length === 2 && ada[0]?.kunci === ada[1]?.kunci) {
+    syarat.push(`huruf kunci omongan ini tidak boleh "${String(ada[0]?.kunci)}" (kedua omongan lain sudah "${String(ada[0]?.kunci)}")`);
+  }
+  if (syarat.length > 0) baris.push(`Aturan antar-omongan untuk omongan ${String(no)}: ${syarat.join('; ')}.`, '');
+  const sebelumnya = draf[no - 1];
+  if (umpan !== undefined && umpan.length > 0) {
+    baris.push(
+      sebelumnya === null || sebelumnya === undefined
+        ? `Percobaan sebelumnya untuk omongan ${String(no)} DITOLAK:`
+        : `Versi sebelumnya omongan ${String(no)} DITOLAK: ${JSON.stringify(sebelumnya)}`,
+      ...umpan.map((u) => `- ${u}`),
+      '',
+      'Versi baru harus berbeda NYATA dari versi yang ditolak — mengirim ulang versi yang sama akan ditolak lagi ' +
+        'dengan alasan yang sama. Kalau ditolak penebak tanpa kartu, ubah klaim teman atau label kuncinya ' +
+        '(Betul↔Keliru), bukan hanya kata-katanya. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya ' +
+        'sepenuhnya, asal tetap dari paket fakta dan mematuhi aturan 1–13.',
+      '',
+    );
   }
   baris.push(
-    `Tulis ulang HANYA omongan ${ditolak.join(', ')}. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya ` +
-      'sepenuhnya, asal tetap dari paket fakta dan tetap mematuhi aturan 1–13 — termasuk aturan antar-omongan: ' +
-      'nama berbeda dari omongan lain, minimal satu omongan di seluruh simulasi BETUL, dan huruf kunci ketiga ' +
-      'omongan tidak sama semua.',
-    'Keluarkan JSON saja, satu objek per omongan yang ditulis ulang, dengan medan "no" = nomornya:',
-    `{"omongan": [{"no": ${String(ditolak[0] ?? 1)}, "nama": "...", "jam": "...", "pesan": "...", "angka_pesan": [], "kartu": [], "kartu_penentu": [], "pilihan": {"a": "...", "b": "...", "c": "...", "d": "..."}, "kunci": "...", "penjelasan": "..."}]}`,
+    'Keluarkan JSON saja, tepat satu objek dengan medan "no":',
+    `{"omongan": [{"no": ${String(no)}, "nama": "...", "jam": "...", "pesan": "...", "angka_pesan": [], "kartu": [], "kartu_penentu": [], "pilihan": {"a": "...", "b": "...", "c": "...", "d": "..."}, "kunci": "...", "penjelasan": "..."}]}`,
   );
   return baris.join('\n');
 }
@@ -201,7 +261,6 @@ export function pesanTulisUlang(
 function kosong(n: number): Array<OmonganDraf | null> {
   return Array.from({ length: n }, () => null);
 }
-
 
 function teksGalat(galat: unknown): string {
   return galat instanceof Error ? `${galat.name}: ${galat.message}` : 'galat tak dikenal';
@@ -233,41 +292,16 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
   const terkunci = new Set<number>();
   /** Umpan balik untuk putaran berikutnya, per omongan yang ditolak. */
   let umpan = new Map<number, string[]>();
-  let teksTerakhir = '';
 
   for (let putaran = 1; putaran <= maks; putaran++) {
     hasil.jumlah_putaran = putaran;
-    const adaDraf = draf.some((o) => o !== null);
-    const jenis: PutaranAgen['jenis'] = adaDraf ? 'tulis-ulang' : 'susun';
+    const jenis: PutaranAgen['jenis'] = putaran === 1 ? 'susun' : 'tulis-ulang';
     const diminta = [1, 2, 3].filter((no) => !terkunci.has(no));
-    const pesan: PesanChat[] = [
-      { role: 'system', content: promptAgen() },
-      { role: 'user', content: pesanPaket(opsi.paket) },
-    ];
-    let permintaan = '';
-    if (adaDraf) {
-      pesan.push({ role: 'assistant', content: JSON.stringify({ omongan: draf }, null, 2) });
-      permintaan = pesanTulisUlang(draf, terkunci, umpan);
-      pesan.push({ role: 'user', content: permintaan });
-    } else if (putaran > 1) {
-      // Putaran sebelumnya tidak menghasilkan satu omongan pun yang terbaca.
-      pesan.push({ role: 'assistant', content: teksTerakhir.slice(-4000) });
-      permintaan = [
-        'Keluaranmu tidak bisa dipakai:',
-        ...(umpan.get(1) ?? []).map((u) => `- ${u}`),
-        '',
-        'Tulis ulang SELURUH JSON (tiga omongan) sesuai aturan. Keluarkan JSON saja.',
-      ].join('\n');
-      pesan.push({ role: 'user', content: permintaan });
-    }
-
     const catatan: PutaranAgen = {
       putaran,
       jenis,
       diminta,
-      permintaan,
-      panggilan: null,
-      terurai: false,
+      panggilan: [],
       diabaikan: [],
       masalah: [],
       omongan: [],
@@ -275,115 +309,136 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
       galat: null,
     };
     hasil.riwayat.push(catatan);
-    const ringkasTulis =
-      jenis === 'susun'
-        ? `menyusun omongan ${diminta.join(', ')}`
-        : `menulis ulang omongan ${diminta.join(', ')}${terkunci.size > 0 ? ` (terkunci: ${[...terkunci].sort().join(', ')})` : ''}`;
 
-    // --- 1. penyusun
-    const info: InfoPanggil = { jenis, putaran, omongan: null, ke: 1 };
-    const mulai = jam().toISOString();
-    let jawaban;
-    try {
-      jawaban = await opsi.panggil(pesan, { ...SETELAN_PENYUSUN }, info);
-    } catch (galat) {
-      catatan.galat = teksGalat(galat);
-      hasil.berhenti = galat instanceof PaguTercapai ? `pagu tercapai: ${galat.message}` : `galat penyusun: ${catatan.galat}`;
-      jejak?.catat({
-        putaran,
-        jenis,
-        omongan: null,
-        waktu_mulai: mulai,
-        waktu_selesai: jam().toISOString(),
-        model: MODEL_AGEN,
-        panggilan: 0,
-        token_masuk: 0,
-        token_keluar: 0,
-        biaya_usd: 0,
-        putusan: 'galat',
-        alasan: [hasil.berhenti],
-        sha256_prompt: hashPesan(pesan),
-        rincian: { diminta },
-      });
-      return akhiri();
-    }
-    teksTerakhir = jawaban.teks;
-    const selesaiTulis = jam().toISOString();
-    catatan.panggilan = {
-      waktu_mulai: mulai,
-      waktu_selesai: selesaiTulis,
-      teks_mentah: jawaban.teks,
-      panjang_penalaran: jawaban.penalaran?.length ?? 0,
-      finish_reason: jawaban.finish_reason,
-      token_masuk: jawaban.token_masuk,
-      token_keluar: jawaban.token_keluar,
-      biaya_usd: jawaban.biaya_usd,
-      latensi_ms: jawaban.latensi_ms,
-    };
-
-    // --- gabungkan: omongan terkunci tetap, yang diminta diganti versi baru
-    const urai = uraiKeluaran(jawaban.teks);
-    catatan.terurai = urai.ok;
-    const baru = urai.ok ? omonganBaru(urai.nilai, !adaDraf) : new Map<number, unknown>();
+    // --- 1. penyusun: satu omongan per panggilan; bila panggilan berpikir tidak
+    // menghasilkan omongan terbaca (terpotong, galat penyedia, JSON rusak),
+    // SATU panggilan cadangan tanpa berpikir untuk omongan yang sama.
     const gabung = [...draf] as unknown[];
-    const tidakAda: number[] = [];
+    const tidakAda = new Map<number, string>();
     for (const no of diminta) {
-      if (baru.has(no)) gabung[no - 1] = baru.get(no);
-      else tidakAda.push(no);
+      const permintaan = pesanTulisOmongan(no, gabung as Array<OmonganDraf | null>, terkunci, umpan.get(no));
+      const pesan: PesanChat[] = [
+        { role: 'system', content: promptAgen() },
+        { role: 'user', content: `${pesanPaket(opsi.paket)}\n\n${permintaan}` },
+      ];
+      const upaya = [
+        { setelan: SETELAN_PENYUSUN, berpikir: true },
+        { setelan: SETELAN_CADANGAN, berpikir: false },
+      ] as const;
+      let gagal = '';
+      for (const [ulang, u] of upaya.entries()) {
+        const info: InfoPanggil = { jenis, putaran, omongan: no, ke: 1, ulang };
+        const label =
+          `${jenis === 'susun' ? 'menyusun' : 'menulis ulang'} omongan ${String(no)}` +
+          (umpan.has(no) ? ` dengan ${String(umpan.get(no)?.length ?? 0)} butir umpan balik` : '') +
+          (u.berpikir ? '' : ` — cadangan tanpa berpikir (${gagal})`);
+        const mulai = jam().toISOString();
+        let jawaban;
+        try {
+          jawaban = await opsi.panggil(pesan, { ...u.setelan }, info);
+        } catch (galat) {
+          catatan.galat = [catatan.galat, teksGalat(galat)].filter((x) => x !== null).join(' | ');
+          const pagu = galat instanceof PaguTercapai;
+          const alasan = pagu ? `pagu tercapai: ${galat.message}` : `galat penyedia: ${teksGalat(galat)}`;
+          jejak?.catat({
+            putaran, jenis, omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: MODEL_AGEN,
+            panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: 'galat', alasan: [label, alasan],
+            sha256_prompt: hashPesan(pesan), rincian: { mode_berpikir: u.berpikir },
+          });
+          if (pagu) {
+            hasil.berhenti = alasan;
+            catatan.draf = gabung as Array<OmonganDraf | null>;
+            return akhiri();
+          }
+          // Galat penyedia (mis. HTTP 200 tanpa choices, terukur di jalan TIRT 6
+          // dan 7) menggagalkan panggilan ini saja; biayanya tetap masuk ledger
+          // lewat chatBerpagu (perkiraan maksimum bila tanpa usage).
+          gagal = 'galat penyedia';
+          tidakAda.set(no, `[galat penyedia] panggilan untuk omongan ini gagal (${teksGalat(galat).slice(0, 200)}); tulis omongan ini lagi.`);
+          continue;
+        }
+        const selesai = jam().toISOString();
+        const urai = uraiKeluaran(jawaban.teks);
+        const ambil = urai.ok ? ambilOmongan(urai.nilai, no) : { omongan: undefined, lain: [] };
+        const terurai = ambil.omongan !== undefined;
+        catatan.diabaikan.push(...ambil.lain);
+        catatan.panggilan.push({
+          omongan: no,
+          permintaan,
+          waktu_mulai: mulai,
+          waktu_selesai: selesai,
+          teks_mentah: jawaban.teks,
+          panjang_penalaran: jawaban.penalaran?.length ?? 0,
+          finish_reason: jawaban.finish_reason,
+          token_masuk: jawaban.token_masuk,
+          token_keluar: jawaban.token_keluar,
+          biaya_usd: jawaban.biaya_usd,
+          latensi_ms: jawaban.latensi_ms,
+          terurai,
+        });
+        jejak?.catat({
+          putaran,
+          jenis,
+          omongan: no,
+          waktu_mulai: mulai,
+          waktu_selesai: selesai,
+          model: MODEL_AGEN,
+          panggilan: 1,
+          token_masuk: jawaban.token_masuk,
+          token_keluar: jawaban.token_keluar,
+          biaya_usd: jawaban.biaya_usd,
+          putusan: 'ditulis',
+          alasan: [
+            label,
+            ...(terurai ? [] : ['keluaran tidak memuat omongan yang terbaca']),
+            ...(ambil.lain.length > 0 ? [`objek omongan lain (${ambil.lain.join(', ')}) dibuang`] : []),
+          ],
+          sha256_prompt: hashPesan(pesan),
+          rincian: {
+            terurai,
+            diabaikan: ambil.lain,
+            finish_reason: jawaban.finish_reason,
+            panjang_penalaran: jawaban.penalaran?.length ?? 0,
+            suhu: u.setelan.suhu,
+            max_tokens: u.setelan.maxTokens,
+            mode_berpikir: u.berpikir,
+          },
+        });
+        if (terurai) {
+          gabung[no - 1] = ambil.omongan;
+          tidakAda.delete(no);
+          break;
+        }
+        gagal = jawaban.finish_reason === 'length' ? 'panggilan berpikir terpotong batas token' : 'keluaran tidak terbaca';
+        tidakAda.set(
+          no,
+          urai.ok
+            ? `[bentuk] keluaranmu tidak memuat omongan ${String(no)}; kirim tepat satu objek dengan "no": ${String(no)}.`
+            : `[bentuk] keluaran bukan JSON yang sah: ${urai.alasan}` +
+                (jawaban.finish_reason === 'length' ? ' (terpotong batas token: rencanakan lebih singkat)' : ''),
+        );
+      }
     }
-    catatan.diabaikan = [...baru.keys()].filter((no) => terkunci.has(no) || no < 1 || no > JUMLAH_OMONGAN);
-    jejak?.catat({
-      putaran,
-      jenis,
-      omongan: null,
-      waktu_mulai: mulai,
-      waktu_selesai: selesaiTulis,
-      model: MODEL_AGEN,
-      panggilan: 1,
-      token_masuk: jawaban.token_masuk,
-      token_keluar: jawaban.token_keluar,
-      biaya_usd: jawaban.biaya_usd,
-      putusan: 'ditulis',
-      alasan: [
-        ringkasTulis,
-        ...(urai.ok ? [] : ['keluaran tidak bisa diurai sebagai JSON']),
-        ...(catatan.diabaikan.length > 0 ? [`versi baru omongan terkunci ${catatan.diabaikan.join(', ')} dibuang`] : []),
-      ],
-      sha256_prompt: hashPesan(pesan),
-      rincian: {
-        diminta,
-        terurai: urai.ok,
-        diabaikan: catatan.diabaikan,
-        finish_reason: jawaban.finish_reason,
-        panjang_penalaran: catatan.panggilan.panjang_penalaran,
-        suhu: SETELAN_PENYUSUN.suhu,
-        max_tokens: SETELAN_PENYUSUN.maxTokens,
-      },
-    });
 
     // --- 2. validator atas draf gabungan
     const mulaiValidasi = jam().toISOString();
-    const masalah = urai.ok
-      ? opsi.validasi({ omongan: gabung.filter((x) => x !== null) }, opsi.paket)
-      : [
-          {
-            kode: 'JSON_RUSAK',
-            omongan: null,
-            pesan:
-              `${urai.alasan}` +
-              (jawaban.finish_reason === 'length' ? ' (keluaran terpotong: batas token keluar tercapai)' : ''),
-          },
-        ];
+    const ada = gabung.filter((x) => x !== null && x !== undefined);
+    // Kalau ada omongan yang belum terbaca, keluhan "harus tepat 3 omongan"
+    // (SKEMA seluruh draf) bukan salah omongan yang ada: omongan yang hilang
+    // sudah mendapat umpan baliknya sendiri, dan pemeriksaan antar-omongan
+    // validator memang hanya berjalan bila ketiganya ada.
+    const masalah = (ada.length > 0 ? opsi.validasi({ omongan: ada }, opsi.paket) : []).filter(
+      (m) => !(ada.length < JUMLAH_OMONGAN && m.omongan === null && m.kode === 'SKEMA'),
+    );
     // Nomor omongan validator mengikuti posisi di larik yang diperiksa; saat
     // semua posisi terisi (yang biasa), posisi = nomor.
-    const posisi = gabung.map((x, i) => (x === null ? null : i + 1)).filter((x): x is number => x !== null);
+    const posisi = gabung.map((x, i) => (x === null || x === undefined ? null : i + 1)).filter((x): x is number => x !== null);
     const masalahNyata: MasalahDraf[] = masalah.map((m) => ({
       ...m,
       omongan: m.omongan === null ? null : (posisi[m.omongan - 1] ?? m.omongan),
     }));
     catatan.masalah = masalahNyata;
     const global = masalahNyata.filter((m) => m.omongan === null);
-    const tolakValidator = masalahNyata.length > 0 || tidakAda.length > 0;
     jejak?.catat({
       putaran,
       jenis: 'validator',
@@ -395,18 +450,15 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
       token_masuk: 0,
       token_keluar: 0,
       biaya_usd: 0,
-      putusan: tolakValidator ? 'tolak' : 'lolos',
+      putusan: masalahNyata.length > 0 || tidakAda.size > 0 ? 'tolak' : 'lolos',
       alasan: [
-        ...(urai.ok ? tidakAda.map((no) => `omongan ${String(no)}: tidak ada di keluaran penyusun`) : []),
+        ...[...tidakAda.keys()].map((no) => `omongan ${String(no)}: tidak ada omongan terbaca dari penyusun`),
         ...masalahNyata.map(
           (m) => `${m.omongan === null ? 'seluruh draf' : `omongan ${String(m.omongan)}`}: [${m.kode}] ${m.pesan}`,
         ),
       ],
       sha256_prompt: null,
-      rincian: {
-        diperiksa: [1, 2, 3].filter((no) => gabung[no - 1] !== null && gabung[no - 1] !== undefined),
-        kode: [...new Set(masalahNyata.map((m) => m.kode))].sort(),
-      },
+      rincian: { diperiksa: posisi, kode: [...new Set(masalahNyata.map((m) => m.kode))].sort() },
     });
 
     // --- 3. gerbang per omongan yang belum terkunci
@@ -417,13 +469,8 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
         continue;
       }
       const butir: string[] = [];
-      if (tidakAda.includes(no)) {
-        butir.push(
-          urai.ok
-            ? `[bentuk] omongan ${String(no)} tidak ada di keluaranmu; kirim objeknya dengan "no": ${String(no)}.`
-            : `[bentuk] keluaran bukan JSON yang sah: ${urai.alasan}`,
-        );
-      }
+      const hilang = tidakAda.get(no);
+      if (hilang !== undefined) butir.push(hilang);
       for (const m of masalahNyata.filter((x) => x.omongan === no)) butir.push(`[validator ${m.kode}] ${m.pesan}`);
       for (const m of global) butir.push(`[validator ${m.kode}, seluruh draf] ${m.pesan}`);
       const o = gabung[no - 1];
@@ -514,9 +561,9 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
           });
         }
       } catch (galat) {
-        catatan.galat = teksGalat(galat);
-        hasil.berhenti = galat instanceof PaguTercapai ? `pagu tercapai: ${galat.message}` : `galat gerbang: ${catatan.galat}`;
-        catatan.draf = gabung as Array<OmonganDraf | null>;
+        catatan.galat = [catatan.galat, teksGalat(galat)].filter((x) => x !== null).join(' | ');
+        const pagu = galat instanceof PaguTercapai;
+        const alasanGalat = pagu ? `pagu tercapai: ${galat.message}` : `galat penyedia saat gerbang: ${teksGalat(galat)}`;
         // Panggilan gerbang yang sudah terjadi sebelum galat ada di ledger
         // biaya; jejak mencatat bahwa gerbang ini berhenti di tengah.
         jejak?.catat({
@@ -531,11 +578,21 @@ export async function jalankanAgen(opsi: OpsiAgen): Promise<HasilAgen> {
           token_keluar: 0,
           biaya_usd: 0,
           putusan: 'galat',
-          alasan: [hasil.berhenti],
+          alasan: [alasanGalat],
           sha256_prompt: null,
           rincian: { pesan: pesanTeman },
         });
-        return akhiri();
+        if (pagu) {
+          hasil.berhenti = alasanGalat;
+          catatan.draf = gabung as Array<OmonganDraf | null>;
+          return akhiri();
+        }
+        // Galat penyedia di gerbang: omongan ini tidak bisa diputus pada putaran
+        // ini; ia tidak dikunci dan diminta lagi dengan catatan galatnya.
+        const butirGalat = `[galat penyedia saat gerbang] ${teksGalat(galat).slice(0, 200)}; omongan ini diperiksa lagi sesudah ditulis ulang.`;
+        catatan.omongan.push({ no, status: 'galat-gerbang', umpan: [butirGalat], kartu: null, tebak: null });
+        umpanBaru.set(no, [butirGalat]);
+        continue;
       }
       if (!kartu.lolos) {
         catatan.omongan.push({ no, status: 'ditolak-kartu', umpan: [`[gerbang kartu] ${kartu.alasan}`], kartu, tebak: null });

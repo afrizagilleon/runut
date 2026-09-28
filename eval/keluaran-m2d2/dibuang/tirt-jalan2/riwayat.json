@@ -1,0 +1,27 @@
+{
+  "paket_id": "tirt",
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "lolos": false,
+  "jumlah_putaran": 1,
+  "berhenti": "galat penyusun: GalatLlm: Panggilan deepseek-ai/DeepSeek-V4.1-Flash gagal: HTTP 400 — {\"error\":{\"message\":\"The requested 'max_tokens' of 64000 exceeds the maximum allowed for this model, which is 32768. Please reduce 'max_tokens'.\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":\"max_tokens_exceeded\"}}",
+  "draf": null,
+  "riwayat": [
+    {
+      "putaran": 1,
+      "jenis": "susun",
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "permintaan": "",
+      "panggilan": null,
+      "terurai": false,
+      "diabaikan": [],
+      "masalah": [],
+      "omongan": [],
+      "draf": [],
+      "galat": "GalatLlm: Panggilan deepseek-ai/DeepSeek-V4.1-Flash gagal: HTTP 400 — {\"error\":{\"message\":\"The requested 'max_tokens' of 64000 exceeds the maximum allowed for this model, which is 32768. Please reduce 'max_tokens'.\",\"type\":\"invalid_request_error\",\"param\":null,\"code\":\"max_tokens_exceeded\"}}"
+    }
+  ]
+}

@@ -30,6 +30,13 @@ export interface OpsiChat {
   /** Suhu; uji tanding memakai nilai yang sama untuk semua model. */
   suhu: number;
   maxTokens: number;
+  /**
+   * Medan tambahan badan permintaan yang dikenal penyedia (mis.
+   * `chat_template_kwargs`). Tidak bisa menimpa model, pesan, suhu,
+   * `max_tokens`, atau `stream` — medan itu selalu dari opsi di atas, jadi
+   * pagu (yang memperkirakan biaya dari `maxTokens`) tidak bisa dikelabui.
+   */
+  tambahanBadan?: Readonly<Record<string, unknown>>;
 }
 
 /** Catatan satu percobaan HTTP, untuk ledger. Tidak memuat header maupun kunci. */
@@ -142,6 +149,7 @@ export async function chat(
   const rahasia = [konfig.apiKey];
   const url = `${konfig.baseUrl.replace(/\/+$/, '')}/chat/completions`;
   const badan = JSON.stringify({
+    ...(opsi.tambahanBadan ?? {}),
     model: opsi.model,
     messages: opsi.pesan,
     temperature: opsi.suhu,

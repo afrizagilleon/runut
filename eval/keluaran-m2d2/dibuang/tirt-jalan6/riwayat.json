@@ -1,0 +1,1347 @@
+{
+  "paket_id": "tirt",
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "lolos": false,
+  "jumlah_putaran": 5,
+  "berhenti": "galat penyusun: GalatLlm: Panggilan deepseek-ai/DeepSeek-V4.1-Flash: HTTP 200 tanpa choices —  {\"error\":{\"message\":\"The model produced no output. Please try again.\",\"type\":\"server_error\",\"code\":\"no_output\"}}",
+  "draf": null,
+  "riwayat": [
+    {
+      "putaran": 1,
+      "jenis": "susun",
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "panggilan": [
+        {
+          "omongan": 1,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 1 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 2: belum ada\n- omongan 3: belum ada\n\nAturan antar-omongan untuk omongan 1: minimal satu dari tiga omongan harus ternyata BETUL.\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 1, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T02:43:31.688Z",
+          "waktu_selesai": "2026-09-28T02:51:41.726Z",
+          "teks_mentah": "{\"omongan\": [{\"no\": 1, \"nama\": \"Wulan\", \"jam\": \"19.42\", \"pesan\": \"Gue baru ngeh, katanya saham Perusahaan T naik 9 hari bursa berturut-turut, dari Rp48 ke Rp106. Bursa stop hari ini karena kenaikan harga kumulatif itu.\", \"angka_pesan\": [{\"teks\": \"9 hari bursa\", \"fact_id\": \"hari-naik-beruntun\"}, {\"teks\": \"Rp48\", \"fact_id\": \"harga-2025-11-26\"}, {\"teks\": \"Rp106\", \"fact_id\": \"harga-2025-12-09\"}], \"kartu\": [\"hari-naik-beruntun\", \"harga-2025-11-26\", \"harga-2025-12-09\", \"susp-2025-12-10\"], \"kartu_penentu\": [\"hari-naik-beruntun\", \"susp-2025-12-10\"], \"pilihan\": {\"a\": \"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\", \"b\": \"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\", \"c\": \"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\", \"d\": \"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\"}, \"kunci\": \"a\", \"penjelasan\": \"Pesan itu bilang harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]]. Deretan angka penutupan di data harga harian memang naik terus tiap hari bursa tanpa putus. Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] juga menyebut alasan penghentiannya: kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Jadi kedua bagian pesan itu cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian perdagangan selalu karena ada masalah usaha, padahal alasan resminya bisa soal harga yang naik terus.\"}]}",
+          "panjang_penalaran": 64206,
+          "finish_reason": "stop",
+          "token_masuk": 4430,
+          "token_keluar": 20955,
+          "biaya_usd": 0.009082640000000001,
+          "latensi_ms": 490037,
+          "terurai": true
+        },
+        {
+          "omongan": 2,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 2 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 1: {\"no\":1,\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue baru ngeh, katanya saham Perusahaan T naik 9 hari bursa berturut-turut, dari Rp48 ke Rp106. Bursa stop hari ini karena kenaikan harga kumulatif itu.\",\"angka_pesan\":[{\"teks\":\"9 hari bursa\",\"fact_id\":\"hari-naik-beruntun\"},{\"teks\":\"Rp48\",\"fact_id\":\"harga-2025-11-26\"},{\"teks\":\"Rp106\",\"fact_id\":\"harga-2025-12-09\"}],\"kartu\":[\"hari-naik-beruntun\",\"harga-2025-11-26\",\"harga-2025-12-09\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"hari-naik-beruntun\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\",\"b\":\"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pesan itu bilang harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]]. Deretan angka penutupan di data harga harian memang naik terus tiap hari bursa tanpa putus. Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] juga menyebut alasan penghentiannya: kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Jadi kedua bagian pesan itu cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian perdagangan selalu karena ada masalah usaha, padahal alasan resminya bisa soal harga yang naik terus.\"}\n- omongan 3: belum ada\n\nAturan antar-omongan untuk omongan 2: nama pengirim berbeda dari \"Wulan\".\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 2, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T02:51:41.729Z",
+          "waktu_selesai": "2026-09-28T02:53:07.088Z",
+          "teks_mentah": "{\"omongan\": [{\"no\": 2, \"nama\": \"Nadia\", \"jam\": \"20.15\", \"pesan\": \"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\", \"angka_pesan\": [{\"teks\": \"21 Januari 2025\", \"fact_id\": \"susp-2025-01-21\"}], \"kartu\": [\"susp-2025-01-21\", \"susp-2025-12-10\"], \"kartu_penentu\": [\"susp-2025-01-21\", \"susp-2025-12-10\"], \"pilihan\": {\"a\": \"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\", \"b\": \"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\", \"c\": \"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\", \"d\": \"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"}, \"kunci\": \"c\", \"penjelasan\": \"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}]}",
+          "panjang_penalaran": 46477,
+          "finish_reason": "stop",
+          "token_masuk": 5022,
+          "token_keluar": 14520,
+          "biaya_usd": 0.006676152,
+          "latensi_ms": 85356,
+          "terurai": true
+        },
+        {
+          "omongan": 3,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 3 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 1: {\"no\":1,\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue baru ngeh, katanya saham Perusahaan T naik 9 hari bursa berturut-turut, dari Rp48 ke Rp106. Bursa stop hari ini karena kenaikan harga kumulatif itu.\",\"angka_pesan\":[{\"teks\":\"9 hari bursa\",\"fact_id\":\"hari-naik-beruntun\"},{\"teks\":\"Rp48\",\"fact_id\":\"harga-2025-11-26\"},{\"teks\":\"Rp106\",\"fact_id\":\"harga-2025-12-09\"}],\"kartu\":[\"hari-naik-beruntun\",\"harga-2025-11-26\",\"harga-2025-12-09\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"hari-naik-beruntun\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\",\"b\":\"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pesan itu bilang harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]]. Deretan angka penutupan di data harga harian memang naik terus tiap hari bursa tanpa putus. Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] juga menyebut alasan penghentiannya: kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Jadi kedua bagian pesan itu cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian perdagangan selalu karena ada masalah usaha, padahal alasan resminya bisa soal harga yang naik terus.\"}\n- omongan 2: {\"no\":2,\"nama\":\"Nadia\",\"jam\":\"20.15\",\"pesan\":\"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\",\"b\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\",\"d\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"},\"kunci\":\"c\",\"penjelasan\":\"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}\n\nAturan antar-omongan untuk omongan 3: nama pengirim berbeda dari \"Wulan\" dan \"Nadia\".\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 3, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T02:53:07.090Z",
+          "waktu_selesai": "2026-09-28T02:54:40.137Z",
+          "teks_mentah": "{\"omongan\":[{\"no\":3,\"nama\":\"Dewi\",\"jam\":\"21.07\",\"pesan\":\"Gue iseng buka data harian. 9 Desember volumenya 1.461.200 lembar, padahal 26 November cuma 178.100 lembar. Pantesan bursa stop sahamnya hari ini, transaksinya ramai banget.\",\"angka_pesan\":[{\"teks\":\"9 Desember\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"1.461.200 lembar\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"26 November\",\"fact_id\":\"volume-2025-11-26\"},{\"teks\":\"178.100 lembar\",\"fact_id\":\"volume-2025-11-26\"}],\"kartu\":[\"volume-2025-12-09\",\"volume-2025-11-26\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-12-10\",\"volume-2025-12-09\"],\"pilihan\":{\"a\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\",\"b\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"c\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"d\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\"},\"kunci\":\"b\",\"penjelasan\":\"Volumenya memang seperti di data harga harian: [[volume-2025-12-09|1.461.200 lembar]] pada [[volume-2025-12-09|9 Desember 2025]] dan [[volume-2025-11-26|178.100 lembar]] pada [[volume-2025-11-26|26 November 2025]]. Jadi angka di pesan itu tidak salah. Yang tidak cocok adalah alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara itu karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Soal ramainya transaksi tidak disebut di pengumuman itu. Buat yang belum pernah beli saham: setiap penghentian sementara ada pengumuman resminya yang menulis alasan, dan alasan itu yang dipakai, bukan kesan kita soal ramai atau sepi transaksi. Salah-kaprah yang umum: orang mengira saham dihentikan karena transaksinya sedang ramai, padahal bursa menulis alasan lain, misalnya harga yang naik terus.\"}]}",
+          "panjang_penalaran": 59319,
+          "finish_reason": "stop",
+          "token_masuk": 5640,
+          "token_keluar": 18241,
+          "biaya_usd": 0.008255912,
+          "latensi_ms": 93043,
+          "terurai": true
+        }
+      ],
+      "diabaikan": [],
+      "masalah": [],
+      "omongan": [
+        {
+          "no": 1,
+          "status": "ditolak-tebak",
+          "umpan": [
+            "[gerbang tebak buta] 2/3 penebak TANPA kartu memilih kunci \"a\", rata-rata keyakinan 70 (tebakan: c/85, a/75, a/65). Alasan mereka: \"Kenaikan 9 hari dari Rp48 ke Rp106 sangat mungkin memicu suspensi bursa karena kenaikan harga kumulatif, bukan karena keraguan kelangsungan usaha.\" \"Lonjakan 9 hari bursa dari Rp48 ke Rp106 sangat mungkin memicu penghentian sementara karena kenaikan harga kumulatif, sesuai pernyataan Wulan.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ],
+          "kartu": {
+            "lolos": true,
+            "pilihan": "a",
+            "kunci": "a",
+            "kartu_ditunjuk": [
+              "hari-naik-beruntun",
+              "susp-2025-12-10"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 1 membenarkan kenaikan 9 hari bursa dari Rp48 ke Rp106, dan Kartu 4 membenarkan penghentian perdagangan karena kenaikan harga kumulatif yang signifikan.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-28T02:54:40.156Z",
+                "waktu_selesai": "2026-09-28T02:55:03.011Z",
+                "token_masuk": 649,
+                "token_keluar": 3626,
+                "biaya_usd": 0.001548596,
+                "latensi_ms": 22852,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"a\", \"kartu\": [1, 4], \"alasan\": \"Kartu 1 membenarkan kenaikan 9 hari bursa dari Rp48 ke Rp106, dan Kartu 4 membenarkan penghentian perdagangan karena kenaikan harga kumulatif yang signifikan.\"}",
+                "terbaca": true
+              }
+            ]
+          },
+          "tebak": {
+            "lolos": false,
+            "benar": 2,
+            "yakin_benar": 70,
+            "tebakan": [
+              {
+                "pilihan": "c",
+                "yakin": 85,
+                "alasan": "Wulan keliru soal alasan stop; dokumen menyebut keraguan kelangsungan usaha, bukan kenaikan harga kumulatif.",
+                "ke": 1,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:55:03.013Z",
+                    "waktu_selesai": "2026-09-28T02:55:46.807Z",
+                    "token_masuk": 368,
+                    "token_keluar": 6185,
+                    "biaya_usd": 0.002496648,
+                    "latensi_ms": 43792,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"c\", \"yakin\": 85, \"alasan\": \"Wulan keliru soal alasan stop; dokumen menyebut keraguan kelangsungan usaha, bukan kenaikan harga kumulatif.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "a",
+                "yakin": 75,
+                "alasan": "Kenaikan 9 hari dari Rp48 ke Rp106 sangat mungkin memicu suspensi bursa karena kenaikan harga kumulatif, bukan karena keraguan kelangsungan usaha.",
+                "ke": 2,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:55:46.808Z",
+                    "waktu_selesai": "2026-09-28T02:56:19.984Z",
+                    "token_masuk": 368,
+                    "token_keluar": 4166,
+                    "biaya_usd": 0.0017052,
+                    "latensi_ms": 33175,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 75, \"alasan\": \"Kenaikan 9 hari dari Rp48 ke Rp106 sangat mungkin memicu suspensi bursa karena kenaikan harga kumulatif, bukan karena keraguan kelangsungan usaha.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "a",
+                "yakin": 65,
+                "alasan": "Lonjakan 9 hari bursa dari Rp48 ke Rp106 sangat mungkin memicu penghentian sementara karena kenaikan harga kumulatif, sesuai pernyataan Wulan.",
+                "ke": 3,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:56:19.984Z",
+                    "waktu_selesai": "2026-09-28T02:56:38.058Z",
+                    "token_masuk": 368,
+                    "token_keluar": 2649,
+                    "biaya_usd": 0.001110536,
+                    "latensi_ms": 18072,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 65, \"alasan\": \"Lonjakan 9 hari bursa dari Rp48 ke Rp106 sangat mungkin memicu penghentian sementara karena kenaikan harga kumulatif, sesuai pernyataan Wulan.\"}",
+                    "terbaca": true
+                  }
+                ]
+              }
+            ],
+            "alasan": "2/3 penebak TANPA kartu memilih kunci \"a\", rata-rata keyakinan 70 (tebakan: c/85, a/75, a/65). Alasan mereka: \"Kenaikan 9 hari dari Rp48 ke Rp106 sangat mungkin memicu suspensi bursa karena kenaikan harga kumulatif, bukan karena keraguan kelangsungan usaha.\" \"Lonjakan 9 hari bursa dari Rp48 ke Rp106 sangat mungkin memicu penghentian sementara karena kenaikan harga kumulatif, sesuai pernyataan Wulan.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          }
+        },
+        {
+          "no": 2,
+          "status": "lolos",
+          "umpan": [],
+          "kartu": {
+            "lolos": true,
+            "pilihan": "c",
+            "kunci": "c",
+            "kartu_ditunjuk": [
+              "susp-2025-01-21",
+              "susp-2025-12-10"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 1 menyebut 21 Jan 2025 karena keraguan kelangsungan usaha, sedangkan Kartu 2 menyebut 10 Des 2025 karena kenaikan harga kumulatif, jadi omongan Nadia keliru.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-28T02:56:38.061Z",
+                "waktu_selesai": "2026-09-28T02:56:42.412Z",
+                "token_masuk": 611,
+                "token_keluar": 337,
+                "biaya_usd": 0.00025186,
+                "latensi_ms": 4349,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"c\", \"kartu\": [1, 2], \"alasan\": \"Kartu 1 menyebut 21 Jan 2025 karena keraguan kelangsungan usaha, sedangkan Kartu 2 menyebut 10 Des 2025 karena kenaikan harga kumulatif, jadi omongan Nadia keliru.\"}",
+                "terbaca": true
+              }
+            ]
+          },
+          "tebak": {
+            "lolos": true,
+            "benar": 0,
+            "yakin_benar": null,
+            "tebakan": [
+              {
+                "pilihan": "d",
+                "yakin": 60,
+                "alasan": "Nadia benar soal 21 Jan 2025 yang di-stop karena kenaikan harga, tetapi penghentian 10 Des 2025 justru karena keraguan kelangsungan usaha, sehingga kesimpulannya tidak cocok dengan dokumen.",
+                "ke": 1,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:56:42.414Z",
+                    "waktu_selesai": "2026-09-28T02:57:00.996Z",
+                    "token_masuk": 375,
+                    "token_keluar": 2605,
+                    "biaya_usd": 0.0010946600000000001,
+                    "latensi_ms": 18580,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 60, \"alasan\": \"Nadia benar soal 21 Jan 2025 yang di-stop karena kenaikan harga, tetapi penghentian 10 Des 2025 justru karena keraguan kelangsungan usaha, sehingga kesimpulannya tidak cocok dengan dokumen.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "d",
+                "yakin": 60,
+                "alasan": "Nadia keliru karena suspensi 10 Des 2025 justru disebabkan keraguan kelangsungan usaha, bukan kenaikan harga seperti klaimnya.",
+                "ke": 2,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:57:00.996Z",
+                    "waktu_selesai": "2026-09-28T02:57:42.189Z",
+                    "token_masuk": 375,
+                    "token_keluar": 6517,
+                    "biaya_usd": 0.002628164,
+                    "latensi_ms": 41191,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 60, \"alasan\": \"Nadia keliru karena suspensi 10 Des 2025 justru disebabkan keraguan kelangsungan usaha, bukan kenaikan harga seperti klaimnya.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "d",
+                "yakin": 80,
+                "alasan": "Nadia benar bahwa 21 Jan 2025 karena kenaikan harga, tetapi suspensi 10 Des 2025 justru karena keraguan kelangsungan usaha, jadi kesimpulannya keliru.",
+                "ke": 3,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:57:42.189Z",
+                    "waktu_selesai": "2026-09-28T02:58:26.011Z",
+                    "token_masuk": 375,
+                    "token_keluar": 6368,
+                    "biaya_usd": 0.0025697560000000003,
+                    "latensi_ms": 43820,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 80, \"alasan\": \"Nadia benar bahwa 21 Jan 2025 karena kenaikan harga, tetapi suspensi 10 Des 2025 justru karena keraguan kelangsungan usaha, jadi kesimpulannya keliru.\"}",
+                    "terbaca": true
+                  }
+                ]
+              }
+            ],
+            "alasan": ""
+          }
+        },
+        {
+          "no": 3,
+          "status": "ditolak-tebak",
+          "umpan": [
+            "[gerbang tebak buta] 3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 72 (tebakan: b/70, b/75, b/70). Alasan mereka: \"Volume 9 Desember memang jauh lebih tinggi dari 26 November, tetapi alasan suspensi biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\" \"Volume yang disebut Dewi sesuai, tetapi alasan stop saham biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\" \"Volume memang jauh lebih tinggi, tetapi suspensi saham biasanya karena kenaikan harga kumulatif, bukan sekadar ramai transaksi.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ],
+          "kartu": {
+            "lolos": true,
+            "pilihan": "b",
+            "kunci": "b",
+            "kartu_ditunjuk": [
+              "susp-2025-12-10"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Volume sesuai Kartu 1 dan 2, tetapi alasan penghentian perdagangan menurut Kartu 3 adalah kenaikan harga kumulatif yang signifikan, bukan karena transaksi ramai.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-28T02:58:26.013Z",
+                "waktu_selesai": "2026-09-28T02:58:32.340Z",
+                "token_masuk": 607,
+                "token_keluar": 667,
+                "biaya_usd": 0.00038043600000000006,
+                "latensi_ms": 6325,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\":\"b\",\"kartu\":[3],\"alasan\":\"Volume sesuai Kartu 1 dan 2, tetapi alasan penghentian perdagangan menurut Kartu 3 adalah kenaikan harga kumulatif yang signifikan, bukan karena transaksi ramai.\"}",
+                "terbaca": true
+              }
+            ]
+          },
+          "tebak": {
+            "lolos": false,
+            "benar": 3,
+            "yakin_benar": 71.66666666666667,
+            "tebakan": [
+              {
+                "pilihan": "b",
+                "yakin": 70,
+                "alasan": "Volume 9 Desember memang jauh lebih tinggi dari 26 November, tetapi alasan suspensi biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.",
+                "ke": 1,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:58:32.341Z",
+                    "waktu_selesai": "2026-09-28T02:58:39.348Z",
+                    "token_masuk": 397,
+                    "token_keluar": 948,
+                    "biaya_usd": 0.00044942800000000003,
+                    "latensi_ms": 7006,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"b\", \"yakin\": 70, \"alasan\": \"Volume 9 Desember memang jauh lebih tinggi dari 26 November, tetapi alasan suspensi biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "b",
+                "yakin": 75,
+                "alasan": "Volume yang disebut Dewi sesuai, tetapi alasan stop saham biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.",
+                "ke": 2,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:58:39.348Z",
+                    "waktu_selesai": "2026-09-28T02:58:47.747Z",
+                    "token_masuk": 397,
+                    "token_keluar": 875,
+                    "biaya_usd": 0.000420812,
+                    "latensi_ms": 8397,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"b\", \"yakin\": 75, \"alasan\": \"Volume yang disebut Dewi sesuai, tetapi alasan stop saham biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "b",
+                "yakin": 70,
+                "alasan": "Volume memang jauh lebih tinggi, tetapi suspensi saham biasanya karena kenaikan harga kumulatif, bukan sekadar ramai transaksi.",
+                "ke": 3,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T02:58:47.747Z",
+                    "waktu_selesai": "2026-09-28T02:58:59.892Z",
+                    "token_masuk": 397,
+                    "token_keluar": 1394,
+                    "biaya_usd": 0.00062426,
+                    "latensi_ms": 12144,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"b\", \"yakin\": 70, \"alasan\": \"Volume memang jauh lebih tinggi, tetapi suspensi saham biasanya karena kenaikan harga kumulatif, bukan sekadar ramai transaksi.\"}",
+                    "terbaca": true
+                  }
+                ]
+              }
+            ],
+            "alasan": "3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 72 (tebakan: b/70, b/75, b/70). Alasan mereka: \"Volume 9 Desember memang jauh lebih tinggi dari 26 November, tetapi alasan suspensi biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\" \"Volume yang disebut Dewi sesuai, tetapi alasan stop saham biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\" \"Volume memang jauh lebih tinggi, tetapi suspensi saham biasanya karena kenaikan harga kumulatif, bukan sekadar ramai transaksi.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          }
+        }
+      ],
+      "draf": [
+        {
+          "nama": "Wulan",
+          "jam": "19.42",
+          "pesan": "Gue baru ngeh, katanya saham Perusahaan T naik 9 hari bursa berturut-turut, dari Rp48 ke Rp106. Bursa stop hari ini karena kenaikan harga kumulatif itu.",
+          "angka_pesan": [
+            {
+              "teks": "9 hari bursa",
+              "fact_id": "hari-naik-beruntun"
+            },
+            {
+              "teks": "Rp48",
+              "fact_id": "harga-2025-11-26"
+            },
+            {
+              "teks": "Rp106",
+              "fact_id": "harga-2025-12-09"
+            }
+          ],
+          "kartu": [
+            "hari-naik-beruntun",
+            "harga-2025-11-26",
+            "harga-2025-12-09",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "hari-naik-beruntun",
+            "susp-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.",
+            "b": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.",
+            "c": "Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.",
+            "d": "Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif."
+          },
+          "kunci": "a",
+          "penjelasan": "Pesan itu bilang harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]]. Deretan angka penutupan di data harga harian memang naik terus tiap hari bursa tanpa putus. Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] juga menyebut alasan penghentiannya: kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Jadi kedua bagian pesan itu cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian perdagangan selalu karena ada masalah usaha, padahal alasan resminya bisa soal harga yang naik terus."
+        },
+        {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.",
+            "b": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.",
+            "c": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.",
+            "d": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha."
+          },
+          "kunci": "c",
+          "penjelasan": "Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda."
+        },
+        {
+          "nama": "Dewi",
+          "jam": "21.07",
+          "pesan": "Gue iseng buka data harian. 9 Desember volumenya 1.461.200 lembar, padahal 26 November cuma 178.100 lembar. Pantesan bursa stop sahamnya hari ini, transaksinya ramai banget.",
+          "angka_pesan": [
+            {
+              "teks": "9 Desember",
+              "fact_id": "volume-2025-12-09"
+            },
+            {
+              "teks": "1.461.200 lembar",
+              "fact_id": "volume-2025-12-09"
+            },
+            {
+              "teks": "26 November",
+              "fact_id": "volume-2025-11-26"
+            },
+            {
+              "teks": "178.100 lembar",
+              "fact_id": "volume-2025-11-26"
+            }
+          ],
+          "kartu": [
+            "volume-2025-12-09",
+            "volume-2025-11-26",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-12-10",
+            "volume-2025-12-09"
+          ],
+          "pilihan": {
+            "a": "Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.",
+            "b": "Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.",
+            "c": "Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.",
+            "d": "Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi."
+          },
+          "kunci": "b",
+          "penjelasan": "Volumenya memang seperti di data harga harian: [[volume-2025-12-09|1.461.200 lembar]] pada [[volume-2025-12-09|9 Desember 2025]] dan [[volume-2025-11-26|178.100 lembar]] pada [[volume-2025-11-26|26 November 2025]]. Jadi angka di pesan itu tidak salah. Yang tidak cocok adalah alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara itu karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Soal ramainya transaksi tidak disebut di pengumuman itu. Buat yang belum pernah beli saham: setiap penghentian sementara ada pengumuman resminya yang menulis alasan, dan alasan itu yang dipakai, bukan kesan kita soal ramai atau sepi transaksi. Salah-kaprah yang umum: orang mengira saham dihentikan karena transaksinya sedang ramai, padahal bursa menulis alasan lain, misalnya harga yang naik terus."
+        }
+      ],
+      "galat": null
+    },
+    {
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "diminta": [
+        1,
+        3
+      ],
+      "panggilan": [
+        {
+          "omongan": 1,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 1 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 2 (TERKUNCI): {\"no\":2,\"nama\":\"Nadia\",\"jam\":\"20.15\",\"pesan\":\"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\",\"b\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\",\"d\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"},\"kunci\":\"c\",\"penjelasan\":\"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}\n- omongan 3: {\"no\":3,\"nama\":\"Dewi\",\"jam\":\"21.07\",\"pesan\":\"Gue iseng buka data harian. 9 Desember volumenya 1.461.200 lembar, padahal 26 November cuma 178.100 lembar. Pantesan bursa stop sahamnya hari ini, transaksinya ramai banget.\",\"angka_pesan\":[{\"teks\":\"9 Desember\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"1.461.200 lembar\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"26 November\",\"fact_id\":\"volume-2025-11-26\"},{\"teks\":\"178.100 lembar\",\"fact_id\":\"volume-2025-11-26\"}],\"kartu\":[\"volume-2025-12-09\",\"volume-2025-11-26\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-12-10\",\"volume-2025-12-09\"],\"pilihan\":{\"a\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\",\"b\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"c\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"d\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\"},\"kunci\":\"b\",\"penjelasan\":\"Volumenya memang seperti di data harga harian: [[volume-2025-12-09|1.461.200 lembar]] pada [[volume-2025-12-09|9 Desember 2025]] dan [[volume-2025-11-26|178.100 lembar]] pada [[volume-2025-11-26|26 November 2025]]. Jadi angka di pesan itu tidak salah. Yang tidak cocok adalah alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara itu karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Soal ramainya transaksi tidak disebut di pengumuman itu. Buat yang belum pernah beli saham: setiap penghentian sementara ada pengumuman resminya yang menulis alasan, dan alasan itu yang dipakai, bukan kesan kita soal ramai atau sepi transaksi. Salah-kaprah yang umum: orang mengira saham dihentikan karena transaksinya sedang ramai, padahal bursa menulis alasan lain, misalnya harga yang naik terus.\"}\n\nAturan antar-omongan untuk omongan 1: nama pengirim berbeda dari \"Nadia\" dan \"Dewi\"; omongan ini HARUS ternyata BETUL (kuncinya pilihan \"Betul,\"), karena kedua omongan lain Keliru.\n\nVersi sebelumnya omongan 1 DITOLAK: {\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue baru ngeh, katanya saham Perusahaan T naik 9 hari bursa berturut-turut, dari Rp48 ke Rp106. Bursa stop hari ini karena kenaikan harga kumulatif itu.\",\"angka_pesan\":[{\"teks\":\"9 hari bursa\",\"fact_id\":\"hari-naik-beruntun\"},{\"teks\":\"Rp48\",\"fact_id\":\"harga-2025-11-26\"},{\"teks\":\"Rp106\",\"fact_id\":\"harga-2025-12-09\"}],\"kartu\":[\"hari-naik-beruntun\",\"harga-2025-11-26\",\"harga-2025-12-09\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"hari-naik-beruntun\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\",\"b\":\"Betul, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, naik [[hari-naik-beruntun|9 hari bursa]] dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]], stop-nya karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pesan itu bilang harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] ke [[harga-2025-12-09|Rp106]]. Deretan angka penutupan di data harga harian memang naik terus tiap hari bursa tanpa putus. Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] juga menyebut alasan penghentiannya: kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Jadi kedua bagian pesan itu cocok dengan dokumennya. Salah-kaprah yang umum: orang mengira penghentian perdagangan selalu karena ada masalah usaha, padahal alasan resminya bisa soal harga yang naik terus.\"}\n- [gerbang tebak buta] 2/3 penebak TANPA kartu memilih kunci \"a\", rata-rata keyakinan 70 (tebakan: c/85, a/75, a/65). Alasan mereka: \"Kenaikan 9 hari dari Rp48 ke Rp106 sangat mungkin memicu suspensi bursa karena kenaikan harga kumulatif, bukan karena keraguan kelangsungan usaha.\" \"Lonjakan 9 hari bursa dari Rp48 ke Rp106 sangat mungkin memicu penghentian sementara karena kenaikan harga kumulatif, sesuai pernyataan Wulan.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu.\n\nVersi baru harus berbeda NYATA dari versi yang ditolak — mengirim ulang versi yang sama akan ditolak lagi dengan alasan yang sama. Kalau ditolak penebak tanpa kartu, ubah klaim teman atau label kuncinya (Betul↔Keliru), bukan hanya kata-katanya. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya sepenuhnya, asal tetap dari paket fakta dan mematuhi aturan 1–13.\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 1, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T02:58:59.895Z",
+          "waktu_selesai": "2026-09-28T03:00:31.960Z",
+          "teks_mentah": "{\"omongan\":[{\"no\":1,\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\",\"hari-naik-beruntun\"],\"kartu_penentu\":[\"susp-2025-01-21\"],\"pilihan\":{\"a\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"b\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\",\"c\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha.\"}]}",
+          "panjang_penalaran": 46607,
+          "finish_reason": "stop",
+          "token_masuk": 6680,
+          "token_keluar": 15186,
+          "biaya_usd": 0.007262192,
+          "latensi_ms": 92062,
+          "terurai": true
+        },
+        {
+          "omongan": 3,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 3 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 1: {\"no\":1,\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\",\"hari-naik-beruntun\"],\"kartu_penentu\":[\"susp-2025-01-21\"],\"pilihan\":{\"a\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"b\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\",\"c\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha.\"}\n- omongan 2 (TERKUNCI): {\"no\":2,\"nama\":\"Nadia\",\"jam\":\"20.15\",\"pesan\":\"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\",\"b\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\",\"d\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"},\"kunci\":\"c\",\"penjelasan\":\"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}\n\nAturan antar-omongan untuk omongan 3: nama pengirim berbeda dari \"Wulan\" dan \"Nadia\".\n\nVersi sebelumnya omongan 3 DITOLAK: {\"nama\":\"Dewi\",\"jam\":\"21.07\",\"pesan\":\"Gue iseng buka data harian. 9 Desember volumenya 1.461.200 lembar, padahal 26 November cuma 178.100 lembar. Pantesan bursa stop sahamnya hari ini, transaksinya ramai banget.\",\"angka_pesan\":[{\"teks\":\"9 Desember\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"1.461.200 lembar\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"26 November\",\"fact_id\":\"volume-2025-11-26\"},{\"teks\":\"178.100 lembar\",\"fact_id\":\"volume-2025-11-26\"}],\"kartu\":[\"volume-2025-12-09\",\"volume-2025-11-26\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-12-10\",\"volume-2025-12-09\"],\"pilihan\":{\"a\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\",\"b\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"c\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"d\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\"},\"kunci\":\"b\",\"penjelasan\":\"Volumenya memang seperti di data harga harian: [[volume-2025-12-09|1.461.200 lembar]] pada [[volume-2025-12-09|9 Desember 2025]] dan [[volume-2025-11-26|178.100 lembar]] pada [[volume-2025-11-26|26 November 2025]]. Jadi angka di pesan itu tidak salah. Yang tidak cocok adalah alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara itu karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Soal ramainya transaksi tidak disebut di pengumuman itu. Buat yang belum pernah beli saham: setiap penghentian sementara ada pengumuman resminya yang menulis alasan, dan alasan itu yang dipakai, bukan kesan kita soal ramai atau sepi transaksi. Salah-kaprah yang umum: orang mengira saham dihentikan karena transaksinya sedang ramai, padahal bursa menulis alasan lain, misalnya harga yang naik terus.\"}\n- [gerbang tebak buta] 3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 72 (tebakan: b/70, b/75, b/70). Alasan mereka: \"Volume 9 Desember memang jauh lebih tinggi dari 26 November, tetapi alasan suspensi biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\" \"Volume yang disebut Dewi sesuai, tetapi alasan stop saham biasanya karena kenaikan harga kumulatif, bukan karena transaksi ramai.\" \"Volume memang jauh lebih tinggi, tetapi suspensi saham biasanya karena kenaikan harga kumulatif, bukan sekadar ramai transaksi.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu.\n\nVersi baru harus berbeda NYATA dari versi yang ditolak — mengirim ulang versi yang sama akan ditolak lagi dengan alasan yang sama. Kalau ditolak penebak tanpa kartu, ubah klaim teman atau label kuncinya (Betul↔Keliru), bukan hanya kata-katanya. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya sepenuhnya, asal tetap dari paket fakta dan mematuhi aturan 1–13.\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 3, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T03:00:31.962Z",
+          "waktu_selesai": "2026-09-28T03:04:07.347Z",
+          "teks_mentah": "",
+          "panjang_penalaran": 119934,
+          "finish_reason": "length",
+          "token_masuk": 6545,
+          "token_keluar": 32768,
+          "biaya_usd": 0.014127876000000001,
+          "latensi_ms": 215383,
+          "terurai": false
+        }
+      ],
+      "diabaikan": [],
+      "masalah": [],
+      "omongan": [
+        {
+          "no": 1,
+          "status": "ditolak-tebak",
+          "umpan": [
+            "[gerbang tebak buta] 1/3 penebak TANPA kartu memilih kunci \"a\", rata-rata keyakinan 50 (tebakan: a/50, d/65, d/75). Alasan mereka: \"Pesan Wulan sendiri menyebut penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, sehingga opsi a paling sesuai.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ],
+          "kartu": {
+            "lolos": true,
+            "pilihan": "a",
+            "kunci": "a",
+            "kartu_ditunjuk": [
+              "susp-2025-01-21"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 1 mencatat penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, sesuai omongan Wulan.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-28T03:04:07.360Z",
+                "waktu_selesai": "2026-09-28T03:04:10.713Z",
+                "token_masuk": 717,
+                "token_keluar": 383,
+                "biaya_usd": 0.000290668,
+                "latensi_ms": 3352,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"a\", \"kartu\": [1], \"alasan\": \"Kartu 1 mencatat penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, sesuai omongan Wulan.\"}",
+                "terbaca": true
+              }
+            ]
+          },
+          "tebak": {
+            "lolos": false,
+            "benar": 1,
+            "yakin_benar": 50,
+            "tebakan": [
+              {
+                "pilihan": "a",
+                "yakin": 50,
+                "alasan": "Pesan Wulan sendiri menyebut penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, sehingga opsi a paling sesuai.",
+                "ke": 1,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:04:10.715Z",
+                    "waktu_selesai": "2026-09-28T03:04:15.547Z",
+                    "token_masuk": 408,
+                    "token_keluar": 429,
+                    "biaya_usd": 0.00024813600000000004,
+                    "latensi_ms": 4831,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 50, \"alasan\": \"Pesan Wulan sendiri menyebut penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, sehingga opsi a paling sesuai.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "d",
+                "yakin": 65,
+                "alasan": "Justru karena saham sekarang naik terus, penghentian 21 Januari 2025 lebih mungkin karena kenaikan harga kumulatif, sehingga ucapan Wulan keliru.",
+                "ke": 2,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:04:15.547Z",
+                    "waktu_selesai": "2026-09-28T03:04:54.301Z",
+                    "token_masuk": 408,
+                    "token_keluar": 2504,
+                    "biaya_usd": 0.001061536,
+                    "latensi_ms": 38752,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 65, \"alasan\": \"Justru karena saham sekarang naik terus, penghentian 21 Januari 2025 lebih mungkin karena kenaikan harga kumulatif, sehingga ucapan Wulan keliru.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "d",
+                "yakin": 75,
+                "alasan": "Pengumuman 21 Januari 2025 untuk saham Perusahaan T adalah suspensi karena kenaikan harga kumulatif, bukan keraguan kelangsungan usaha.",
+                "ke": 3,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:04:54.301Z",
+                    "waktu_selesai": "2026-09-28T03:06:46.607Z",
+                    "token_masuk": 408,
+                    "token_keluar": 3553,
+                    "biaya_usd": 0.0014727440000000002,
+                    "latensi_ms": 112305,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 75, \"alasan\": \"Pengumuman 21 Januari 2025 untuk saham Perusahaan T adalah suspensi karena kenaikan harga kumulatif, bukan keraguan kelangsungan usaha.\"}",
+                    "terbaca": true
+                  }
+                ]
+              }
+            ],
+            "alasan": "1/3 penebak TANPA kartu memilih kunci \"a\", rata-rata keyakinan 50 (tebakan: a/50, d/65, d/75). Alasan mereka: \"Pesan Wulan sendiri menyebut penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, sehingga opsi a paling sesuai.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          }
+        },
+        {
+          "no": 2,
+          "status": "terkunci-sebelumnya",
+          "umpan": [],
+          "kartu": null,
+          "tebak": null
+        },
+        {
+          "no": 3,
+          "status": "ditolak-validator",
+          "umpan": [
+            "[bentuk] keluaran bukan JSON yang sah: tidak ada objek JSON di keluaran (terpotong batas token: rencanakan lebih singkat)"
+          ],
+          "kartu": null,
+          "tebak": null
+        }
+      ],
+      "draf": [
+        {
+          "nama": "Wulan",
+          "jam": "19.42",
+          "pesan": "Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21"
+          ],
+          "pilihan": {
+            "a": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "b": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.",
+            "c": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "d": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif."
+          },
+          "kunci": "a",
+          "penjelasan": "Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha."
+        },
+        {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.",
+            "b": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.",
+            "c": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.",
+            "d": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha."
+          },
+          "kunci": "c",
+          "penjelasan": "Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda."
+        },
+        {
+          "nama": "Dewi",
+          "jam": "21.07",
+          "pesan": "Gue iseng buka data harian. 9 Desember volumenya 1.461.200 lembar, padahal 26 November cuma 178.100 lembar. Pantesan bursa stop sahamnya hari ini, transaksinya ramai banget.",
+          "angka_pesan": [
+            {
+              "teks": "9 Desember",
+              "fact_id": "volume-2025-12-09"
+            },
+            {
+              "teks": "1.461.200 lembar",
+              "fact_id": "volume-2025-12-09"
+            },
+            {
+              "teks": "26 November",
+              "fact_id": "volume-2025-11-26"
+            },
+            {
+              "teks": "178.100 lembar",
+              "fact_id": "volume-2025-11-26"
+            }
+          ],
+          "kartu": [
+            "volume-2025-12-09",
+            "volume-2025-11-26",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-12-10",
+            "volume-2025-12-09"
+          ],
+          "pilihan": {
+            "a": "Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.",
+            "b": "Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.",
+            "c": "Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.",
+            "d": "Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi."
+          },
+          "kunci": "b",
+          "penjelasan": "Volumenya memang seperti di data harga harian: [[volume-2025-12-09|1.461.200 lembar]] pada [[volume-2025-12-09|9 Desember 2025]] dan [[volume-2025-11-26|178.100 lembar]] pada [[volume-2025-11-26|26 November 2025]]. Jadi angka di pesan itu tidak salah. Yang tidak cocok adalah alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara itu karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Soal ramainya transaksi tidak disebut di pengumuman itu. Buat yang belum pernah beli saham: setiap penghentian sementara ada pengumuman resminya yang menulis alasan, dan alasan itu yang dipakai, bukan kesan kita soal ramai atau sepi transaksi. Salah-kaprah yang umum: orang mengira saham dihentikan karena transaksinya sedang ramai, padahal bursa menulis alasan lain, misalnya harga yang naik terus."
+        }
+      ],
+      "galat": null
+    },
+    {
+      "putaran": 3,
+      "jenis": "tulis-ulang",
+      "diminta": [
+        1,
+        3
+      ],
+      "panggilan": [
+        {
+          "omongan": 1,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 1 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 2 (TERKUNCI): {\"no\":2,\"nama\":\"Nadia\",\"jam\":\"20.15\",\"pesan\":\"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\",\"b\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\",\"d\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"},\"kunci\":\"c\",\"penjelasan\":\"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}\n- omongan 3: {\"no\":3,\"nama\":\"Dewi\",\"jam\":\"21.07\",\"pesan\":\"Gue iseng buka data harian. 9 Desember volumenya 1.461.200 lembar, padahal 26 November cuma 178.100 lembar. Pantesan bursa stop sahamnya hari ini, transaksinya ramai banget.\",\"angka_pesan\":[{\"teks\":\"9 Desember\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"1.461.200 lembar\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"26 November\",\"fact_id\":\"volume-2025-11-26\"},{\"teks\":\"178.100 lembar\",\"fact_id\":\"volume-2025-11-26\"}],\"kartu\":[\"volume-2025-12-09\",\"volume-2025-11-26\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-12-10\",\"volume-2025-12-09\"],\"pilihan\":{\"a\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\",\"b\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"c\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"d\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\"},\"kunci\":\"b\",\"penjelasan\":\"Volumenya memang seperti di data harga harian: [[volume-2025-12-09|1.461.200 lembar]] pada [[volume-2025-12-09|9 Desember 2025]] dan [[volume-2025-11-26|178.100 lembar]] pada [[volume-2025-11-26|26 November 2025]]. Jadi angka di pesan itu tidak salah. Yang tidak cocok adalah alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara itu karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Soal ramainya transaksi tidak disebut di pengumuman itu. Buat yang belum pernah beli saham: setiap penghentian sementara ada pengumuman resminya yang menulis alasan, dan alasan itu yang dipakai, bukan kesan kita soal ramai atau sepi transaksi. Salah-kaprah yang umum: orang mengira saham dihentikan karena transaksinya sedang ramai, padahal bursa menulis alasan lain, misalnya harga yang naik terus.\"}\n\nAturan antar-omongan untuk omongan 1: nama pengirim berbeda dari \"Nadia\" dan \"Dewi\"; omongan ini HARUS ternyata BETUL (kuncinya pilihan \"Betul,\"), karena kedua omongan lain Keliru.\n\nVersi sebelumnya omongan 1 DITOLAK: {\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\",\"hari-naik-beruntun\"],\"kartu_penentu\":[\"susp-2025-01-21\"],\"pilihan\":{\"a\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"b\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\",\"c\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha.\"}\n- [gerbang tebak buta] 1/3 penebak TANPA kartu memilih kunci \"a\", rata-rata keyakinan 50 (tebakan: a/50, d/65, d/75). Alasan mereka: \"Pesan Wulan sendiri menyebut penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, sehingga opsi a paling sesuai.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu.\n\nVersi baru harus berbeda NYATA dari versi yang ditolak — mengirim ulang versi yang sama akan ditolak lagi dengan alasan yang sama. Kalau ditolak penebak tanpa kartu, ubah klaim teman atau label kuncinya (Betul↔Keliru), bukan hanya kata-katanya. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya sepenuhnya, asal tetap dari paket fakta dan mematuhi aturan 1–13.\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 1, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T03:06:46.610Z",
+          "waktu_selesai": "2026-09-28T03:09:52.185Z",
+          "teks_mentah": "",
+          "panjang_penalaran": 115148,
+          "finish_reason": "length",
+          "token_masuk": 6508,
+          "token_keluar": 32768,
+          "biaya_usd": 0.014120624,
+          "latensi_ms": 185573,
+          "terurai": false
+        },
+        {
+          "omongan": 3,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 3 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 1: {\"no\":1,\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\",\"hari-naik-beruntun\"],\"kartu_penentu\":[\"susp-2025-01-21\"],\"pilihan\":{\"a\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"b\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\",\"c\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha.\"}\n- omongan 2 (TERKUNCI): {\"no\":2,\"nama\":\"Nadia\",\"jam\":\"20.15\",\"pesan\":\"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\",\"b\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\",\"d\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"},\"kunci\":\"c\",\"penjelasan\":\"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}\n\nAturan antar-omongan untuk omongan 3: nama pengirim berbeda dari \"Wulan\" dan \"Nadia\".\n\nVersi sebelumnya omongan 3 DITOLAK: {\"nama\":\"Dewi\",\"jam\":\"21.07\",\"pesan\":\"Gue iseng buka data harian. 9 Desember volumenya 1.461.200 lembar, padahal 26 November cuma 178.100 lembar. Pantesan bursa stop sahamnya hari ini, transaksinya ramai banget.\",\"angka_pesan\":[{\"teks\":\"9 Desember\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"1.461.200 lembar\",\"fact_id\":\"volume-2025-12-09\"},{\"teks\":\"26 November\",\"fact_id\":\"volume-2025-11-26\"},{\"teks\":\"178.100 lembar\",\"fact_id\":\"volume-2025-11-26\"}],\"kartu\":[\"volume-2025-12-09\",\"volume-2025-11-26\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-12-10\",\"volume-2025-12-09\"],\"pilihan\":{\"a\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\",\"b\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"c\":\"Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], tetapi stop-nya karena harga naik kumulatif.\",\"d\":\"Keliru, volumenya [[volume-2025-12-09|1.461.200 lembar]] jauh di atas [[volume-2025-11-26|178.100 lembar]], dan stop-nya karena ramai transaksi.\"},\"kunci\":\"b\",\"penjelasan\":\"Volumenya memang seperti di data harga harian: [[volume-2025-12-09|1.461.200 lembar]] pada [[volume-2025-12-09|9 Desember 2025]] dan [[volume-2025-11-26|178.100 lembar]] pada [[volume-2025-11-26|26 November 2025]]. Jadi angka di pesan itu tidak salah. Yang tidak cocok adalah alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara itu karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Soal ramainya transaksi tidak disebut di pengumuman itu. Buat yang belum pernah beli saham: setiap penghentian sementara ada pengumuman resminya yang menulis alasan, dan alasan itu yang dipakai, bukan kesan kita soal ramai atau sepi transaksi. Salah-kaprah yang umum: orang mengira saham dihentikan karena transaksinya sedang ramai, padahal bursa menulis alasan lain, misalnya harga yang naik terus.\"}\n- [bentuk] keluaran bukan JSON yang sah: tidak ada objek JSON di keluaran (terpotong batas token: rencanakan lebih singkat)\n\nVersi baru harus berbeda NYATA dari versi yang ditolak — mengirim ulang versi yang sama akan ditolak lagi dengan alasan yang sama. Kalau ditolak penebak tanpa kartu, ubah klaim teman atau label kuncinya (Betul↔Keliru), bukan hanya kata-katanya. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya sepenuhnya, asal tetap dari paket fakta dan mematuhi aturan 1–13.\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 3, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T03:09:52.187Z",
+          "waktu_selesai": "2026-09-28T03:12:18.203Z",
+          "teks_mentah": "{\"omongan\": [{\"no\": 3, \"nama\": \"Sari\", \"jam\": \"21.07\", \"pesan\": \"Gue cek data harga harian Perusahaan T. Dari 26 November ke 9 Desember naiknya cuma 58 rupiah, dari 48 ke 106. Kayaknya stop hari ini bukan karena kenaikan harga deh.\", \"angka_pesan\": [{\"teks\": \"26 November\", \"fact_id\": \"harga-2025-11-26\"}, {\"teks\": \"9 Desember\", \"fact_id\": \"harga-2025-12-09\"}, {\"teks\": \"58 rupiah\", \"fact_id\": \"naik-2025-11-26-2025-12-09\"}, {\"teks\": \"48\", \"fact_id\": \"harga-2025-11-26\"}, {\"teks\": \"106\", \"fact_id\": \"harga-2025-12-09\"}], \"kartu\": [\"harga-2025-11-26\", \"harga-2025-12-09\", \"naik-2025-11-26-2025-12-09\", \"susp-2025-12-10\"], \"kartu_penentu\": [\"susp-2025-12-10\", \"naik-2025-11-26-2025-12-09\"], \"pilihan\": {\"a\": \"Betul, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.\", \"b\": \"Betul, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.\", \"c\": \"Keliru, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga.\", \"d\": \"Keliru, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga.\"}, \"kunci\": \"c\", \"penjelasan\": \"Data harga harian mencatat penutupan [[harga-2025-11-26|26 November 2025]] di [[harga-2025-11-26|48 rupiah]] dan penutupan [[harga-2025-12-09|9 Desember 2025]] di [[harga-2025-12-09|106 rupiah]], selisihnya [[naik-2025-11-26-2025-12-09|58 rupiah]]. Jadi angka di pesan itu cocok. Yang tidak cocok alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara hari ini karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Alasan resminya justru kenaikan harga kumulatif, bukan sebab lain. Buat yang belum pernah beli saham: alasan penghentian selalu tertulis di pengumuman bursa, dan yang dipakai adalah tulisan itu. Salah-kaprah yang umum: orang melihat selisih rupiahnya terasa sedikit, lalu menyimpulkan bursa menghentikan sahamnya karena sebab lain, padahal pengumumannya justru menyebut kenaikan harga kumulatif.\"}]}",
+          "panjang_penalaran": 75868,
+          "finish_reason": "stop",
+          "token_masuk": 6405,
+          "token_keluar": 23353,
+          "biaya_usd": 0.010409756000000001,
+          "latensi_ms": 146015,
+          "terurai": true
+        }
+      ],
+      "diabaikan": [],
+      "masalah": [],
+      "omongan": [
+        {
+          "no": 1,
+          "status": "ditolak-validator",
+          "umpan": [
+            "[bentuk] keluaran bukan JSON yang sah: tidak ada objek JSON di keluaran (terpotong batas token: rencanakan lebih singkat)"
+          ],
+          "kartu": null,
+          "tebak": null
+        },
+        {
+          "no": 2,
+          "status": "terkunci-sebelumnya",
+          "umpan": [],
+          "kartu": null,
+          "tebak": null
+        },
+        {
+          "no": 3,
+          "status": "ditolak-tebak",
+          "umpan": [
+            "[gerbang tebak buta] 3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 67 (tebakan: c/65, c/65, c/70). Alasan mereka: \"Naik dari 48 ke 106 memang 58 rupiah, tetapi kenaikan itu besar sehingga stop justru mungkin karena kenaikan harga.\" \"Kenaikan 48 ke 106 memang 58 rupiah, tetapi lonjakan lebih dari 100% ini justru bisa menjadi alasan stop, sehingga kesimpulan Sari kemungkinan tidak cocok dengan dokumen.\" \"Selisih 106-48 memang 58, tetapi kenaikan lebih dari 100% membuat stop justru mungkin karena kenaikan harga.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ],
+          "kartu": {
+            "lolos": true,
+            "pilihan": "c",
+            "kunci": "c",
+            "kartu_ditunjuk": [
+              "susp-2025-12-10"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 4 menyatakan perdagangan dihentikan justru karena peningkatan harga kumulatif yang signifikan, sehingga meski kenaikan Rp58 benar, kesimpulan Sari bahwa stop bukan karena kenaikan harga adalah keliru.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-28T03:12:18.214Z",
+                "waktu_selesai": "2026-09-28T03:12:47.760Z",
+                "token_masuk": 667,
+                "token_keluar": 421,
+                "biaya_usd": 0.000295764,
+                "latensi_ms": 29544,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\":\"c\",\"kartu\":[4],\"alasan\":\"Kartu 4 menyatakan perdagangan dihentikan justru karena peningkatan harga kumulatif yang signifikan, sehingga meski kenaikan Rp58 benar, kesimpulan Sari bahwa stop bukan karena kenaikan harga adalah keliru.\"}",
+                "terbaca": true
+              }
+            ]
+          },
+          "tebak": {
+            "lolos": false,
+            "benar": 3,
+            "yakin_benar": 66.66666666666667,
+            "tebakan": [
+              {
+                "pilihan": "c",
+                "yakin": 65,
+                "alasan": "Naik dari 48 ke 106 memang 58 rupiah, tetapi kenaikan itu besar sehingga stop justru mungkin karena kenaikan harga.",
+                "ke": 1,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:12:47.762Z",
+                    "waktu_selesai": "2026-09-28T03:12:58.128Z",
+                    "token_masuk": 342,
+                    "token_keluar": 788,
+                    "biaya_usd": 0.000375928,
+                    "latensi_ms": 10364,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"c\", \"yakin\": 65, \"alasan\": \"Naik dari 48 ke 106 memang 58 rupiah, tetapi kenaikan itu besar sehingga stop justru mungkin karena kenaikan harga.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "c",
+                "yakin": 65,
+                "alasan": "Kenaikan 48 ke 106 memang 58 rupiah, tetapi lonjakan lebih dari 100% ini justru bisa menjadi alasan stop, sehingga kesimpulan Sari kemungkinan tidak cocok dengan dokumen.",
+                "ke": 2,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:12:58.128Z",
+                    "waktu_selesai": "2026-09-28T03:13:17.509Z",
+                    "token_masuk": 342,
+                    "token_keluar": 2910,
+                    "biaya_usd": 0.0012077519999999999,
+                    "latensi_ms": 19381,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"c\", \"yakin\": 65, \"alasan\": \"Kenaikan 48 ke 106 memang 58 rupiah, tetapi lonjakan lebih dari 100% ini justru bisa menjadi alasan stop, sehingga kesimpulan Sari kemungkinan tidak cocok dengan dokumen.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "c",
+                "yakin": 70,
+                "alasan": "Selisih 106-48 memang 58, tetapi kenaikan lebih dari 100% membuat stop justru mungkin karena kenaikan harga.",
+                "ke": 3,
+                "benar": true,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:13:17.509Z",
+                    "waktu_selesai": "2026-09-28T03:13:36.210Z",
+                    "token_masuk": 342,
+                    "token_keluar": 2663,
+                    "biaya_usd": 0.001110928,
+                    "latensi_ms": 18700,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"c\", \"yakin\": 70, \"alasan\": \"Selisih 106-48 memang 58, tetapi kenaikan lebih dari 100% membuat stop justru mungkin karena kenaikan harga.\"}",
+                    "terbaca": true
+                  }
+                ]
+              }
+            ],
+            "alasan": "3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 67 (tebakan: c/65, c/65, c/70). Alasan mereka: \"Naik dari 48 ke 106 memang 58 rupiah, tetapi kenaikan itu besar sehingga stop justru mungkin karena kenaikan harga.\" \"Kenaikan 48 ke 106 memang 58 rupiah, tetapi lonjakan lebih dari 100% ini justru bisa menjadi alasan stop, sehingga kesimpulan Sari kemungkinan tidak cocok dengan dokumen.\" \"Selisih 106-48 memang 58, tetapi kenaikan lebih dari 100% membuat stop justru mungkin karena kenaikan harga.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          }
+        }
+      ],
+      "draf": [
+        {
+          "nama": "Wulan",
+          "jam": "19.42",
+          "pesan": "Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21"
+          ],
+          "pilihan": {
+            "a": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "b": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.",
+            "c": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "d": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif."
+          },
+          "kunci": "a",
+          "penjelasan": "Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha."
+        },
+        {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.",
+            "b": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.",
+            "c": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.",
+            "d": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha."
+          },
+          "kunci": "c",
+          "penjelasan": "Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda."
+        },
+        {
+          "nama": "Sari",
+          "jam": "21.07",
+          "pesan": "Gue cek data harga harian Perusahaan T. Dari 26 November ke 9 Desember naiknya cuma 58 rupiah, dari 48 ke 106. Kayaknya stop hari ini bukan karena kenaikan harga deh.",
+          "angka_pesan": [
+            {
+              "teks": "26 November",
+              "fact_id": "harga-2025-11-26"
+            },
+            {
+              "teks": "9 Desember",
+              "fact_id": "harga-2025-12-09"
+            },
+            {
+              "teks": "58 rupiah",
+              "fact_id": "naik-2025-11-26-2025-12-09"
+            },
+            {
+              "teks": "48",
+              "fact_id": "harga-2025-11-26"
+            },
+            {
+              "teks": "106",
+              "fact_id": "harga-2025-12-09"
+            }
+          ],
+          "kartu": [
+            "harga-2025-11-26",
+            "harga-2025-12-09",
+            "naik-2025-11-26-2025-12-09",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-12-10",
+            "naik-2025-11-26-2025-12-09"
+          ],
+          "pilihan": {
+            "a": "Betul, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.",
+            "b": "Betul, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.",
+            "c": "Keliru, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga.",
+            "d": "Keliru, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga."
+          },
+          "kunci": "c",
+          "penjelasan": "Data harga harian mencatat penutupan [[harga-2025-11-26|26 November 2025]] di [[harga-2025-11-26|48 rupiah]] dan penutupan [[harga-2025-12-09|9 Desember 2025]] di [[harga-2025-12-09|106 rupiah]], selisihnya [[naik-2025-11-26-2025-12-09|58 rupiah]]. Jadi angka di pesan itu cocok. Yang tidak cocok alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara hari ini karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Alasan resminya justru kenaikan harga kumulatif, bukan sebab lain. Buat yang belum pernah beli saham: alasan penghentian selalu tertulis di pengumuman bursa, dan yang dipakai adalah tulisan itu. Salah-kaprah yang umum: orang melihat selisih rupiahnya terasa sedikit, lalu menyimpulkan bursa menghentikan sahamnya karena sebab lain, padahal pengumumannya justru menyebut kenaikan harga kumulatif."
+        }
+      ],
+      "galat": null
+    },
+    {
+      "putaran": 4,
+      "jenis": "tulis-ulang",
+      "diminta": [
+        1,
+        3
+      ],
+      "panggilan": [
+        {
+          "omongan": 1,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 1 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 2 (TERKUNCI): {\"no\":2,\"nama\":\"Nadia\",\"jam\":\"20.15\",\"pesan\":\"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\",\"b\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\",\"d\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"},\"kunci\":\"c\",\"penjelasan\":\"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}\n- omongan 3: {\"no\":3,\"nama\":\"Sari\",\"jam\":\"21.07\",\"pesan\":\"Gue cek data harga harian Perusahaan T. Dari 26 November ke 9 Desember naiknya cuma 58 rupiah, dari 48 ke 106. Kayaknya stop hari ini bukan karena kenaikan harga deh.\",\"angka_pesan\":[{\"teks\":\"26 November\",\"fact_id\":\"harga-2025-11-26\"},{\"teks\":\"9 Desember\",\"fact_id\":\"harga-2025-12-09\"},{\"teks\":\"58 rupiah\",\"fact_id\":\"naik-2025-11-26-2025-12-09\"},{\"teks\":\"48\",\"fact_id\":\"harga-2025-11-26\"},{\"teks\":\"106\",\"fact_id\":\"harga-2025-12-09\"}],\"kartu\":[\"harga-2025-11-26\",\"harga-2025-12-09\",\"naik-2025-11-26-2025-12-09\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-12-10\",\"naik-2025-11-26-2025-12-09\"],\"pilihan\":{\"a\":\"Betul, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.\",\"b\":\"Betul, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.\",\"c\":\"Keliru, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga.\",\"d\":\"Keliru, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga.\"},\"kunci\":\"c\",\"penjelasan\":\"Data harga harian mencatat penutupan [[harga-2025-11-26|26 November 2025]] di [[harga-2025-11-26|48 rupiah]] dan penutupan [[harga-2025-12-09|9 Desember 2025]] di [[harga-2025-12-09|106 rupiah]], selisihnya [[naik-2025-11-26-2025-12-09|58 rupiah]]. Jadi angka di pesan itu cocok. Yang tidak cocok alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara hari ini karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Alasan resminya justru kenaikan harga kumulatif, bukan sebab lain. Buat yang belum pernah beli saham: alasan penghentian selalu tertulis di pengumuman bursa, dan yang dipakai adalah tulisan itu. Salah-kaprah yang umum: orang melihat selisih rupiahnya terasa sedikit, lalu menyimpulkan bursa menghentikan sahamnya karena sebab lain, padahal pengumumannya justru menyebut kenaikan harga kumulatif.\"}\n\nAturan antar-omongan untuk omongan 1: nama pengirim berbeda dari \"Nadia\" dan \"Sari\"; omongan ini HARUS ternyata BETUL (kuncinya pilihan \"Betul,\"), karena kedua omongan lain Keliru; huruf kunci omongan ini tidak boleh \"c\" (kedua omongan lain sudah \"c\").\n\nVersi sebelumnya omongan 1 DITOLAK: {\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\",\"hari-naik-beruntun\"],\"kartu_penentu\":[\"susp-2025-01-21\"],\"pilihan\":{\"a\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"b\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\",\"c\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha.\"}\n- [bentuk] keluaran bukan JSON yang sah: tidak ada objek JSON di keluaran (terpotong batas token: rencanakan lebih singkat)\n\nVersi baru harus berbeda NYATA dari versi yang ditolak — mengirim ulang versi yang sama akan ditolak lagi dengan alasan yang sama. Kalau ditolak penebak tanpa kartu, ubah klaim teman atau label kuncinya (Betul↔Keliru), bukan hanya kata-katanya. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya sepenuhnya, asal tetap dari paket fakta dan mematuhi aturan 1–13.\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 1, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T03:13:36.213Z",
+          "waktu_selesai": "2026-09-28T03:17:00.528Z",
+          "teks_mentah": "",
+          "panjang_penalaran": 108721,
+          "finish_reason": "length",
+          "token_masuk": 6474,
+          "token_keluar": 32768,
+          "biaya_usd": 0.014113960000000002,
+          "latensi_ms": 204313,
+          "terurai": false
+        },
+        {
+          "omongan": 3,
+          "permintaan": "TUGAS PANGGILAN INI: tulis HANYA omongan nomor 3 dari tiga omongan simulasi ini — satu omongan, bukan tiga.\n\nOmongan lain di simulasi ini (jangan ditulis ulang; pakai untuk aturan antar-omongan):\n- omongan 1: {\"no\":1,\"nama\":\"Wulan\",\"jam\":\"19.42\",\"pesan\":\"Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\",\"hari-naik-beruntun\"],\"kartu_penentu\":[\"susp-2025-01-21\"],\"pilihan\":{\"a\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"b\":\"Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\",\"c\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.\",\"d\":\"Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.\"},\"kunci\":\"a\",\"penjelasan\":\"Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha.\"}\n- omongan 2 (TERKUNCI): {\"no\":2,\"nama\":\"Nadia\",\"jam\":\"20.15\",\"pesan\":\"Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.\",\"angka_pesan\":[{\"teks\":\"21 Januari 2025\",\"fact_id\":\"susp-2025-01-21\"}],\"kartu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-01-21\",\"susp-2025-12-10\"],\"pilihan\":{\"a\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.\",\"b\":\"Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.\",\"c\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.\",\"d\":\"Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha.\"},\"kunci\":\"c\",\"penjelasan\":\"Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda.\"}\n\nAturan antar-omongan untuk omongan 3: nama pengirim berbeda dari \"Wulan\" dan \"Nadia\".\n\nVersi sebelumnya omongan 3 DITOLAK: {\"nama\":\"Sari\",\"jam\":\"21.07\",\"pesan\":\"Gue cek data harga harian Perusahaan T. Dari 26 November ke 9 Desember naiknya cuma 58 rupiah, dari 48 ke 106. Kayaknya stop hari ini bukan karena kenaikan harga deh.\",\"angka_pesan\":[{\"teks\":\"26 November\",\"fact_id\":\"harga-2025-11-26\"},{\"teks\":\"9 Desember\",\"fact_id\":\"harga-2025-12-09\"},{\"teks\":\"58 rupiah\",\"fact_id\":\"naik-2025-11-26-2025-12-09\"},{\"teks\":\"48\",\"fact_id\":\"harga-2025-11-26\"},{\"teks\":\"106\",\"fact_id\":\"harga-2025-12-09\"}],\"kartu\":[\"harga-2025-11-26\",\"harga-2025-12-09\",\"naik-2025-11-26-2025-12-09\",\"susp-2025-12-10\"],\"kartu_penentu\":[\"susp-2025-12-10\",\"naik-2025-11-26-2025-12-09\"],\"pilihan\":{\"a\":\"Betul, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.\",\"b\":\"Betul, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], jadi stop bukan karena kenaikan harga.\",\"c\":\"Keliru, naiknya memang [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga.\",\"d\":\"Keliru, naiknya bukan [[naik-2025-11-26-2025-12-09|58 rupiah]], dan stop justru karena kenaikan harga.\"},\"kunci\":\"c\",\"penjelasan\":\"Data harga harian mencatat penutupan [[harga-2025-11-26|26 November 2025]] di [[harga-2025-11-26|48 rupiah]] dan penutupan [[harga-2025-12-09|9 Desember 2025]] di [[harga-2025-12-09|106 rupiah]], selisihnya [[naik-2025-11-26-2025-12-09|58 rupiah]]. Jadi angka di pesan itu cocok. Yang tidak cocok alasannya: pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis penghentian sementara hari ini karena peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Alasan resminya justru kenaikan harga kumulatif, bukan sebab lain. Buat yang belum pernah beli saham: alasan penghentian selalu tertulis di pengumuman bursa, dan yang dipakai adalah tulisan itu. Salah-kaprah yang umum: orang melihat selisih rupiahnya terasa sedikit, lalu menyimpulkan bursa menghentikan sahamnya karena sebab lain, padahal pengumumannya justru menyebut kenaikan harga kumulatif.\"}\n- [gerbang tebak buta] 3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 67 (tebakan: c/65, c/65, c/70). Alasan mereka: \"Naik dari 48 ke 106 memang 58 rupiah, tetapi kenaikan itu besar sehingga stop justru mungkin karena kenaikan harga.\" \"Kenaikan 48 ke 106 memang 58 rupiah, tetapi lonjakan lebih dari 100% ini justru bisa menjadi alasan stop, sehingga kesimpulan Sari kemungkinan tidak cocok dengan dokumen.\" \"Selisih 106-48 memang 58, tetapi kenaikan lebih dari 100% membuat stop justru mungkin karena kenaikan harga.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu.\n\nVersi baru harus berbeda NYATA dari versi yang ditolak — mengirim ulang versi yang sama akan ditolak lagi dengan alasan yang sama. Kalau ditolak penebak tanpa kartu, ubah klaim teman atau label kuncinya (Betul↔Keliru), bukan hanya kata-katanya. Boleh mengganti pesan, kartu, pilihan, dan penjelasannya sepenuhnya, asal tetap dari paket fakta dan mematuhi aturan 1–13.\n\nKeluarkan JSON saja, tepat satu objek dengan medan \"no\":\n{\"omongan\": [{\"no\": 3, \"nama\": \"...\", \"jam\": \"...\", \"pesan\": \"...\", \"angka_pesan\": [], \"kartu\": [], \"kartu_penentu\": [], \"pilihan\": {\"a\": \"...\", \"b\": \"...\", \"c\": \"...\", \"d\": \"...\"}, \"kunci\": \"...\", \"penjelasan\": \"...\"}]}",
+          "waktu_mulai": "2026-09-28T03:17:00.529Z",
+          "waktu_selesai": "2026-09-28T03:20:24.933Z",
+          "teks_mentah": "{\"omongan\": [{\"no\": 3, \"nama\": \"Tika\", \"jam\": \"21.30\", \"pesan\": \"Gue cek arsip. Waktu 21 Januari 2025 saham Perusahaan T di-stop karena kenaikan harga kumulatif, bukan karena masalah usaha. Sama kayak yang sekarang.\", \"angka_pesan\": [{\"teks\": \"21 Januari 2025\", \"fact_id\": \"susp-2025-01-21\"}], \"kartu\": [\"susp-2025-01-21\", \"susp-2025-12-10\", \"hari-naik-beruntun\"], \"kartu_penentu\": [\"susp-2025-01-21\"], \"pilihan\": {\"a\": \"Betul, [[susp-2025-01-21|21 Jan 2025]] di-stop karena kenaikan harga kumulatif.\", \"b\": \"Betul, [[susp-2025-01-21|21 Jan 2025]] di-stop karena keraguan kelangsungan usaha.\", \"c\": \"Keliru, [[susp-2025-01-21|21 Jan 2025]] di-stop karena keraguan kelangsungan usaha.\", \"d\": \"Keliru, [[susp-2025-01-21|21 Jan 2025]] di-stop karena kenaikan harga kumulatif.\"}, \"kunci\": \"c\", \"penjelasan\": \"Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu tidak cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha.\"}]}",
+          "panjang_penalaran": 101971,
+          "finish_reason": "stop",
+          "token_masuk": 6578,
+          "token_keluar": 32353,
+          "biaya_usd": 0.013971664,
+          "latensi_ms": 204401,
+          "terurai": true
+        }
+      ],
+      "diabaikan": [],
+      "masalah": [],
+      "omongan": [
+        {
+          "no": 1,
+          "status": "ditolak-validator",
+          "umpan": [
+            "[bentuk] keluaran bukan JSON yang sah: tidak ada objek JSON di keluaran (terpotong batas token: rencanakan lebih singkat)"
+          ],
+          "kartu": null,
+          "tebak": null
+        },
+        {
+          "no": 2,
+          "status": "terkunci-sebelumnya",
+          "umpan": [],
+          "kartu": null,
+          "tebak": null
+        },
+        {
+          "no": 3,
+          "status": "lolos",
+          "umpan": [],
+          "kartu": {
+            "lolos": true,
+            "pilihan": "c",
+            "kunci": "c",
+            "kartu_ditunjuk": [
+              "susp-2025-01-21"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 1 menyatakan penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, bukan karena kenaikan harga kumulatif seperti kata Tika.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-28T03:20:24.944Z",
+                "waktu_selesai": "2026-09-28T03:20:39.225Z",
+                "token_masuk": 638,
+                "token_keluar": 444,
+                "biaya_usd": 0.000299096,
+                "latensi_ms": 14279,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\":\"c\",\"kartu\":[1],\"alasan\":\"Kartu 1 menyatakan penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, bukan karena kenaikan harga kumulatif seperti kata Tika.\"}",
+                "terbaca": true
+              }
+            ]
+          },
+          "tebak": {
+            "lolos": true,
+            "benar": 0,
+            "yakin_benar": null,
+            "tebakan": [
+              {
+                "pilihan": "a",
+                "yakin": 65,
+                "alasan": "Pernyataan Tika secara eksplisit menyebut 21 Januari 2025 di-stop karena kenaikan harga kumulatif, sesuai isi pilihan a.",
+                "ke": 1,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:20:39.227Z",
+                    "waktu_selesai": "2026-09-28T03:20:44.880Z",
+                    "token_masuk": 329,
+                    "token_keluar": 548,
+                    "biaya_usd": 0.0002793,
+                    "latensi_ms": 5651,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 65, \"alasan\": \"Pernyataan Tika secara eksplisit menyebut 21 Januari 2025 di-stop karena kenaikan harga kumulatif, sesuai isi pilihan a.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "a",
+                "yakin": 75,
+                "alasan": "Pesan Tika secara eksplisit menyebut 21 Januari 2025 saham Perusahaan T di-stop karena kenaikan harga kumulatif.",
+                "ke": 2,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:20:44.880Z",
+                    "waktu_selesai": "2026-09-28T03:21:25.990Z",
+                    "token_masuk": 329,
+                    "token_keluar": 8000,
+                    "biaya_usd": 0.003200484,
+                    "latensi_ms": 41108,
+                    "finish_reason": "length",
+                    "teks_mentah": "",
+                    "terbaca": false
+                  },
+                  {
+                    "waktu_mulai": "2026-09-28T03:21:25.990Z",
+                    "waktu_selesai": "2026-09-28T03:21:30.303Z",
+                    "token_masuk": 329,
+                    "token_keluar": 631,
+                    "biaya_usd": 0.000311836,
+                    "latensi_ms": 4312,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 75, \"alasan\": \"Pesan Tika secara eksplisit menyebut 21 Januari 2025 saham Perusahaan T di-stop karena kenaikan harga kumulatif.\"}",
+                    "terbaca": true
+                  }
+                ]
+              },
+              {
+                "pilihan": "a",
+                "yakin": 70,
+                "alasan": "Pesan Tika secara eksplisit menyatakan 21 Januari 2025 di-stop karena kenaikan harga kumulatif, bukan masalah usaha.",
+                "ke": 3,
+                "benar": false,
+                "terbaca": true,
+                "panggilan": [
+                  {
+                    "waktu_mulai": "2026-09-28T03:21:30.303Z",
+                    "waktu_selesai": "2026-09-28T03:21:34.234Z",
+                    "token_masuk": 329,
+                    "token_keluar": 565,
+                    "biaya_usd": 0.00028596400000000004,
+                    "latensi_ms": 3930,
+                    "finish_reason": "stop",
+                    "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 70, \"alasan\": \"Pesan Tika secara eksplisit menyatakan 21 Januari 2025 di-stop karena kenaikan harga kumulatif, bukan masalah usaha.\"}",
+                    "terbaca": true
+                  }
+                ]
+              }
+            ],
+            "alasan": ""
+          }
+        }
+      ],
+      "draf": [
+        {
+          "nama": "Wulan",
+          "jam": "19.42",
+          "pesan": "Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21"
+          ],
+          "pilihan": {
+            "a": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "b": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.",
+            "c": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "d": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif."
+          },
+          "kunci": "a",
+          "penjelasan": "Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha."
+        },
+        {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.",
+            "b": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.",
+            "c": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.",
+            "d": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha."
+          },
+          "kunci": "c",
+          "penjelasan": "Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda."
+        },
+        {
+          "nama": "Tika",
+          "jam": "21.30",
+          "pesan": "Gue cek arsip. Waktu 21 Januari 2025 saham Perusahaan T di-stop karena kenaikan harga kumulatif, bukan karena masalah usaha. Sama kayak yang sekarang.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21"
+          ],
+          "pilihan": {
+            "a": "Betul, [[susp-2025-01-21|21 Jan 2025]] di-stop karena kenaikan harga kumulatif.",
+            "b": "Betul, [[susp-2025-01-21|21 Jan 2025]] di-stop karena keraguan kelangsungan usaha.",
+            "c": "Keliru, [[susp-2025-01-21|21 Jan 2025]] di-stop karena keraguan kelangsungan usaha.",
+            "d": "Keliru, [[susp-2025-01-21|21 Jan 2025]] di-stop karena kenaikan harga kumulatif."
+          },
+          "kunci": "c",
+          "penjelasan": "Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu tidak cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha."
+        }
+      ],
+      "galat": null
+    },
+    {
+      "putaran": 5,
+      "jenis": "tulis-ulang",
+      "diminta": [
+        1
+      ],
+      "panggilan": [],
+      "diabaikan": [],
+      "masalah": [],
+      "omongan": [],
+      "draf": [
+        {
+          "nama": "Wulan",
+          "jam": "19.42",
+          "pesan": "Gue iseng buka pengumuman lama. Waktu 21 Januari 2025 saham Perusahaan T di-stop, alasannya keraguan atas kelangsungan usaha, bukan harga naik. Aneh, kan sekarang malah naik terus.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21"
+          ],
+          "pilihan": {
+            "a": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "b": "Betul, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif.",
+            "c": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena keraguan kelangsungan usaha.",
+            "d": "Keliru, penghentian [[susp-2025-01-21|21 Januari 2025]] karena kenaikan harga kumulatif."
+          },
+          "kunci": "a",
+          "penjelasan": "Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha."
+        },
+        {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Gue udah cek. Perusahaan T kan 21 Januari 2025 juga pernah di-stop, dan waktu itu gara-gara harga naik kumulatif. Jadi stop hari ini alasannya serupa, bukan masalah usaha.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena kenaikan harga kumulatif.",
+            "b": "Betul, yang [[susp-2025-01-21|21 Jan 2025]] dan yang [[susp-2025-12-10|10 Des 2025]] dua-duanya karena keraguan kelangsungan usaha.",
+            "c": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena keraguan kelangsungan usaha, yang [[susp-2025-12-10|10 Des 2025]] karena kenaikan harga.",
+            "d": "Keliru, yang [[susp-2025-01-21|21 Jan 2025]] karena kenaikan harga, yang [[susp-2025-12-10|10 Des 2025]] karena keraguan kelangsungan usaha."
+          },
+          "kunci": "c",
+          "penjelasan": "Dua pengumuman penghentian perdagangan, dan alasannya tidak sama. Yang [[susp-2025-01-21|21 Jan 2025]] menulis alasan resminya: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Yang [[susp-2025-12-10|10 Des 2025]] menulis alasan lain: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi teman di grup itu keliru waktu bilang dua-duanya karena harga naik; alasan soal harga cuma ada di yang Desember, sedangkan yang Januari soal kelangsungan usaha. Buat yang belum pernah beli saham: tiap pengumuman penghentian menulis alasannya sendiri, dan alasannya bisa beda tiap kali. Salah-kaprah yang umum: orang menyamakan semua kabar penghentian dan mengira alasannya selalu sama, padahal tiap pengumuman bisa menyebut alasan yang berbeda."
+        },
+        {
+          "nama": "Tika",
+          "jam": "21.30",
+          "pesan": "Gue cek arsip. Waktu 21 Januari 2025 saham Perusahaan T di-stop karena kenaikan harga kumulatif, bukan karena masalah usaha. Sama kayak yang sekarang.",
+          "angka_pesan": [
+            {
+              "teks": "21 Januari 2025",
+              "fact_id": "susp-2025-01-21"
+            }
+          ],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21"
+          ],
+          "pilihan": {
+            "a": "Betul, [[susp-2025-01-21|21 Jan 2025]] di-stop karena kenaikan harga kumulatif.",
+            "b": "Betul, [[susp-2025-01-21|21 Jan 2025]] di-stop karena keraguan kelangsungan usaha.",
+            "c": "Keliru, [[susp-2025-01-21|21 Jan 2025]] di-stop karena keraguan kelangsungan usaha.",
+            "d": "Keliru, [[susp-2025-01-21|21 Jan 2025]] di-stop karena kenaikan harga kumulatif."
+          },
+          "kunci": "c",
+          "penjelasan": "Pengumuman bursa yang terbit [[susp-2025-01-21|21 Januari 2025]] menulis alasan penghentian sementara: bursa menilai ada keraguan atas kelangsungan usaha perseroan. Di situ tidak disebut kenaikan harga. Jadi kalimat teman di grup itu tidak cocok dengan pengumumannya. Bandingkan dengan pengumuman [[susp-2025-12-10|10 Desember 2025]] yang menyebut alasan berbeda, yaitu kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Dua penghentian, dua alasan yang berbeda. Buat yang belum pernah beli saham: alasan penghentian selalu ditulis di pengumuman bursa, dan bisa berbeda dari waktu ke waktu. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan terjadi karena harga naik, padahal pengumuman pertama tahun itu justru menulis alasan keraguan kelangsungan usaha."
+        }
+      ],
+      "galat": "GalatLlm: Panggilan deepseek-ai/DeepSeek-V4.1-Flash: HTTP 200 tanpa choices —  {\"error\":{\"message\":\"The model produced no output. Please try again.\",\"type\":\"server_error\",\"code\":\"no_output\"}}"
+    }
+  ]
+}
