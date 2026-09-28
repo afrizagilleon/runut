@@ -528,4 +528,6 @@ function tulis(
   return b.join('\n');
 }
 
-if (process.argv[1]?.endsWith('laporan.ts') === true) process.exitCode = utama();
+// Nama berkas persis: `agen-laporan.ts` (M2d-2) juga berakhiran "laporan.ts" dan mengimpor modul ini;
+// dengan endsWith saja, menjalankannya ikut membangun ulang keluaran M2d-1.
+if (/(^|[\\/])laporan\.ts$/.test(process.argv[1] ?? '')) process.exitCode = utama();

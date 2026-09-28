@@ -77,7 +77,7 @@ export interface DrafPolos {
   omongan: OmonganPolos[];
 }
 
-function polosDariDraf(paket: string, model: string, d: DrafSimulasi, putaran: 1 | 2): DrafPolos {
+export function polosDariDraf(paket: string, model: string, d: DrafSimulasi, putaran: 1 | 2): DrafPolos {
   return {
     sumber: model,
     paket,
@@ -98,7 +98,7 @@ function polosDariDraf(paket: string, model: string, d: DrafSimulasi, putaran: 1
   };
 }
 
-function polosDariKasus(paket: string, berkas: string): DrafPolos {
+export function polosDariKasus(paket: string, berkas: string): DrafPolos {
   const k = JSON.parse(readFileSync(`${AKAR}cases/${berkas}`, 'utf8')) as Kasus;
   return {
     sumber: 'manusia',
@@ -167,7 +167,7 @@ export const PETUNJUK_ALAMI = [
   '{"nilai": [{"kelompok": 1, "label": "A", "skor": 4, "alasan": "..."}, ...]}',
 ].join('\n');
 
-function tulisSoalTebak(id: string, o: OmonganPolos): string {
+export function tulisSoalTebak(id: string, o: OmonganPolos): string {
   return [
     `### ${id}`,
     `Pesan dari ${o.nama} (${o.jam}): "${o.pesan}"`,
@@ -179,7 +179,7 @@ function tulisSoalTebak(id: string, o: OmonganPolos): string {
   ].join('\n');
 }
 
-function tulisDrafAlami(label: string, d: DrafPolos): string {
+export function tulisDrafAlami(label: string, d: DrafPolos): string {
   const baris = [`#### Draf ${label}`];
   d.omongan.forEach((o, i) => {
     baris.push(
@@ -290,4 +290,6 @@ function utama(): number {
   return 0;
 }
 
-if (process.argv[1]?.endsWith('penguji.ts') === true) process.exitCode = utama();
+// Nama berkas persis: `agen-penguji.ts` (M2d-2) juga berakhiran "penguji.ts" dan mengimpor modul ini;
+// dengan endsWith saja, menjalankannya ikut membangun ulang keluaran M2d-1.
+if (/(^|[\\/])penguji\.ts$/.test(process.argv[1] ?? '')) process.exitCode = utama();

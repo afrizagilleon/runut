@@ -1,0 +1,75 @@
+{
+  "benih": 20260928,
+  "tebak": [
+    {
+      "id": "Q1",
+      "paket": "tirt",
+      "no": 2,
+      "kunci": "a",
+      "putaran": 3
+    },
+    {
+      "id": "Q2",
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "b",
+      "putaran": 2
+    },
+    {
+      "id": "Q3",
+      "paket": "dada",
+      "no": 1,
+      "kunci": "a",
+      "putaran": 4
+    }
+  ],
+  "kartu": [
+    {
+      "id": "Q1",
+      "paket": "dada",
+      "no": 1,
+      "kunci": "a",
+      "penentu": [
+        3
+      ]
+    },
+    {
+      "id": "Q2",
+      "paket": "tirt",
+      "no": 2,
+      "kunci": "a",
+      "penentu": [
+        3,
+        4
+      ]
+    },
+    {
+      "id": "Q3",
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "b",
+      "penentu": [
+        1
+      ]
+    }
+  ],
+  "alami": [
+    {
+      "kelompok": 1,
+      "paket": "tirt",
+      "label": {
+        "A": "agen-m2d2",
+        "B": "m2d1-deepseek"
+      }
+    },
+    {
+      "kelompok": 2,
+      "paket": "dada",
+      "label": {
+        "A": "agen-m2d2",
+        "B": "m2d1-deepseek",
+        "C": "manusia"
+      }
+    }
+  ]
+}
