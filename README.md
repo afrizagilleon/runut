@@ -465,6 +465,25 @@ Hasil jujurnya — belum ada simulasi yang lolos penuh — ada di
 `docs/bukti/lingkar-agen.md`; keluaran mentah dan jalan yang dibuang di
 `eval/keluaran-m2d2/`.
 
+**Lingkar berperan (M2d-3).** Penulis tidak menilai karyanya sendiri
+(`factory/llm/peran.md`): perencana (kode) memberi tiap omongan satu *sudut* —
+fakta yang wajib jadi kartu penentunya; penulis DeepSeek menulis dengan 2–3
+contoh dari bank gaya (`bank-gaya.json`); pemeriksa (kode) menjalankan
+validator + gerbang G (`gerbang-g.ts`: kunci yang bisa dihitung dari angka di
+teks, bahasa kaku); pembaca kartu dan tiga penebak DeepSeek; kritikus GLM-5.3
+yang melihat kunci dan kartu tetapi hanya boleh menyebut keberatan. Omongan
+dikunci hanya bila keempat penilai tidak keberatan; yang gagal 5 putaran
+dibuang dan mendapat sudut lain (paling banyak 3). Pagu milestone ditegakkan
+kode (`--pagu-milestone`).
+
+```bash
+npm run peran:susun -- tirt --pagu-milestone 2.00   # berbayar, di bawah pagu kumulatif dan pagu milestone
+npm run peran:penguji && npm run peran:laporan      # bahan penguji eksternal, lalu docs/bukti/lingkar-agen-peran.md
+```
+
+Hasil dan keterbatasannya: `docs/bukti/lingkar-agen-peran.md`; keluaran mentah
+di `eval/keluaran-m2d3/`.
+
 ## Susunan
 
 | Folder | Isi |
