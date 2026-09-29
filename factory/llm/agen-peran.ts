@@ -32,6 +32,7 @@ import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
 import { gMirip } from './gerbang-mirip.ts';
+import { gKembar } from './gerbang-kembar.ts';
 import { gPenilaian } from './gerbang-penilaian.ts';
 import { aturPosisiKunci, hurufKunciKode, periksaRujukanHuruf } from './posisi-kunci.ts';
 import { PENALARAN_M2D5, PENALAR_M2D6, badanPenalaran, badanUpaya, setelanPenalaran, setelanTanpaPenalaran } from './penalaran.ts';
@@ -174,6 +175,8 @@ export interface Generasi {
    * tulisan penulis menolak (kutipannya ke penulis), kalimat kartu paket dicatat.
    */
   kartuBingung?: boolean;
+  /** M2d-6 D-4: pemeriksa menjalankan G-pilihan-kembar (dua pilihan satu omongan yang isinya sama). */
+  gerbangKembar?: boolean;
   /** Setelan pembaca kartu (M2d-5: batas penalaran); bawaan M2d-2. */
   kartu?: { maxTokens: number; tambahanBadan?: Readonly<Record<string, unknown>> };
 }
@@ -237,11 +240,13 @@ export const GENERASI_M2D5: Generasi = {
  * - D-1: kritikus dan penebak GLM memakai `reasoning.effort` dan dijaga
  *   `penjaga-penalaran.ts` (token penalaran < ambang = tidak sah → diulang
  *   sekali dengan penyedia lain → tidak menjawab);
- * - penyedia yang terbukti melanggar dikecualikan di pagar (D-2, skrip).
+ * - penyedia yang terbukti melanggar dikecualikan di pagar (D-2, skrip);
+ * - D-4: G-pilihan-kembar di pemeriksa.
  */
 export const GENERASI_M2D6: Generasi = {
   ...GENERASI_M2D5,
   nama: 'm2d6',
+  gerbangKembar: true,
   penebak: {
     petunjuk: PETUNJUK_PENEBAK_KUAT,
     model: MODEL_PENEBAK_M2D5,
@@ -786,9 +791,11 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         butir.push(...huruf);
         const nilai = gen.gerbangMakna === true ? gPenilaian((o as OmonganDraf).pesan) : null;
         const mirip = gen.gerbangMakna === true ? gMirip(no, gabung as Array<OmonganDraf | null>, terkunci) : null;
+        const kembar = gen.gerbangKembar === true ? gKembar((o as OmonganDraf).pilihan) : null;
         const umpanMakna = [
           ...(nilai?.alasan ?? []).map((a) => `[pemeriksa: G-penilaian] ${a}`),
           ...(mirip?.alasan ?? []).map((a) => `[pemeriksa: G-mirip] ${a}`),
+          ...(kembar?.alasan ?? []).map((a) => `[pemeriksa: G-pilihan-kembar] ${a}`),
         ];
         butir.push(...umpanMakna);
         const tolakG = g.tolak || gaya?.tolak === true || huruf.length > 0 || umpanMakna.length > 0;
@@ -813,6 +820,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
             ...(gen.posisiKunci === true ? { huruf_pilihan: { tolak: huruf.length > 0, butir: huruf } } : {}),
             ...(nilai === null ? {} : { penilaian: { tolak: nilai.tolak, temuan: nilai.temuan } }),
             ...(mirip === null ? {} : { mirip: { tolak: mirip.tolak, ambang: mirip.ambang, pasangan: mirip.pasangan } }),
+            ...(kembar === null ? {} : { pilihan_kembar: { tolak: kembar.tolak, ambang: kembar.ambang, maks: kembar.maks, kembar: kembar.kembar } }),
           },
           peran: 'pemeriksa',
         });
