@@ -58,6 +58,7 @@ import { barisMeta, contohPembuka } from './pembuka.ts';
 import { bacaPerangkat, type InfoKoneksi, type Perangkat } from './perangkat.ts';
 import { berkasDariTumpukan, pasangPelaporAkar, pesanDari, sumberGalat } from './galat.ts';
 import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } from './jejak.ts';
+import { PARAM_DAPUR, TAUTAN_DAPUR } from './dapur.ts';
 
 /**
  * Komponen hanya `dispatch` dan merender (D-5).
@@ -2113,6 +2114,26 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
           {kasus.pemeriksaan.length}.
         </p>
       </details>
+      {/*
+        Pintu ke "Dapur agen" (M3.13 D-4), di dekat kalimat jejak: satu kalimat
+        suara kami yang lebih dulu menyatakan bahwa soal simulasi ini ditulis
+        manusia, lalu satu tautan. Tab baru: layar ini masih di tengah alur
+        (tiga pertanyaan singkat menunggu), dan pindah halaman di tab yang sama
+        akan membuang keadaannya.
+      */}
+      <p className="dapur-pintu">
+        Soal di simulasi ini ditulis manusia. Agen AI kami sedang belajar menulis soal baru, dan belum ada
+        yang tayang.{' '}
+        <a
+          className="dapur-tautan"
+          href={`?${PARAM_DAPUR}`}
+          target="_blank"
+          rel="noopener"
+          data-uid="dapur:jejak"
+        >
+          {TAUTAN_DAPUR} ›
+        </a>
+      </p>
     </section>
   );
 }
@@ -2190,6 +2211,16 @@ export function LayarAkhir({
             </p>
           </div>
         )}
+        {/*
+          Pintu ke "Dapur agen" (M3.13 D-4) di layar terakhir: permainan sudah
+          selesai dan jawaban sudah terkirim, jadi pindah halaman di tab yang
+          sama tidak membuang apa pun.
+        */}
+        <p className="dapur-pintu terima-kalimat">
+          <a className="dapur-tautan" href={`?${PARAM_DAPUR}`} data-uid="dapur:akhir">
+            {TAUTAN_DAPUR} ›
+          </a>
+        </p>
       </section>
     );
   }

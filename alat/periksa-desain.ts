@@ -445,6 +445,7 @@ export const MARKUP_BAWAAN = [
   'web/src/Kalender.tsx',
   'web/src/Teks.tsx',
   'web/src/BatasGalat.tsx',
+  'web/src/Dapur.tsx',
 ];
 
 const dijalankanLangsung =

@@ -2048,3 +2048,167 @@ textarea {
     padding-bottom: 32px;
   }
 }
+
+/* --- halaman "Dapur agen" (M3.13 D-4) --------------------------------------- */
+
+/*
+ * Halaman ini seluruhnya suara KAMI tentang pabrik, bukan dokumen resmi: tanpa
+ * lembar, tanpa kalender. Yang dipakai hanya bahan yang sudah ada — peran teks
+ * judul/isi/meta, garis kiri tipis untuk kutipan jejak (rupa `.daftar-temuan`),
+ * pintu lipatan `.jejak-rinci`, balon `.pesan` untuk draf omongan teman, dan
+ * `.rincian-teknis` untuk nama berkas. Tidak ada ukuran huruf, warna, atau
+ * radius baru.
+ */
+.dapur h1.judul {
+  margin: 8px 0 12px;
+}
+
+.dapur-balik {
+  margin: 0 0 8px;
+}
+
+/*
+ * Tautan halaman ini dan pintu masuknya: rupa `.jejak-naik-tautan` (600,
+ * --stempel, tanpa garis bawah, bidang sentuh `::after` >= 44 px), supaya
+ * tidak ada gaya tautan baru di layar pembukaan maupun di sini.
+ */
+.dapur-tautan {
+  position: relative;
+  font-weight: 600;
+  color: var(--stempel);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dapur-tautan::after {
+  content: '';
+  position: absolute;
+  inset: -10px -2px;
+}
+
+.dapur-tautan:active {
+  background: var(--garis);
+}
+
+.dapur-bagian,
+.dapur-jalan {
+  margin: 32px 0 0;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--garis);
+}
+
+.dapur h2.judul {
+  margin: 0 0 8px;
+}
+
+.dapur h3 {
+  font-family: var(--baca);
+  font-stretch: normal;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0;
+  color: var(--tinta);
+  margin: 20px 0 8px;
+}
+
+/* Status jujur satu jalan: suara kami, garis kiri — bukan cap, bukan lencana. */
+.dapur-status {
+  margin: 0 0 8px;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--stempel);
+  font-weight: 600;
+}
+
+.dapur-status-ditolak {
+  border-left-color: var(--tinta-redup);
+}
+
+.dapur-angka {
+  list-style: none;
+  padding: 0;
+  margin: 12px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+}
+
+.dapur-angka strong {
+  font-weight: 600;
+}
+
+.dapur-daftar {
+  margin: 0 0 12px;
+  padding: 0 0 0 20px;
+}
+
+.dapur-daftar > li {
+  margin: 0 0 8px;
+}
+
+.dapur-daftar strong {
+  font-weight: 600;
+}
+
+/* Alasan penolakan dikutip huruf demi huruf dari jejak: rupa `.daftar-temuan`. */
+.dapur-tolak {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dapur-tolak > li {
+  border-left: 2px solid var(--garis-tegas);
+  padding-left: 12px;
+}
+
+.dapur-tolak .meta {
+  margin: 0 0 4px;
+}
+
+.dapur-kutipan {
+  margin: 0 0 4px;
+  font-size: 14px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.dapur-lipat {
+  margin: 8px 0 16px;
+}
+
+.dapur-lipat[open] > summary {
+  margin-bottom: 12px;
+}
+
+.dapur-draf {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dapur-draf > li {
+  margin: 0 0 24px;
+}
+
+.dapur-draf .pesan {
+  margin: 0 0 12px;
+}
+
+.dapur-pilihan {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+
+.dapur-pilihan > li {
+  margin: 0 0 4px;
+}
+
+/* Pintu masuk di layar permainan (M3.13 D-4). */
+.dapur-pintu {
+  margin: 16px 0 0;
+}

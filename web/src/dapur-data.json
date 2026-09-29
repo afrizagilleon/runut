@@ -1,0 +1,808 @@
+{
+  "keterangan": "Dibangun `node --experimental-strip-types alat/dapur.ts` dari jejak mentah lingkar agen. Jangan disunting tangan.",
+  "sumber": [
+    "eval/keluaran-m2d4/ultj/jejak-agen.json",
+    "eval/keluaran-m2d4/ultj/riwayat.json",
+    "eval/keluaran-m2d4/ultj/draf-akhir.json",
+    "eval/keluaran-m2d4/ringkasan.json",
+    "eval/keluaran-m2d6/jalan-1/tirt/jejak-agen.json",
+    "eval/keluaran-m2d6/jalan-1/tirt/riwayat.json",
+    "eval/keluaran-m2d6/jalan-1/tirt/draf-akhir.json"
+  ],
+  "jalan": [
+    {
+      "id": "ultj-m2d4",
+      "milestone": "M2d-4",
+      "folder": "eval/keluaran-m2d4/ultj",
+      "simulasi": {
+        "paket_id": "ultj",
+        "nama_samaran": "Perusahaan U",
+        "tanggal_t": "2026-05-04",
+        "peristiwa": "Hari ini tanggal ex dividen tunai perusahaan; dividen tunai tercatat dibagikan tiap tahun sejak 2020; dan pada Januari orang dalam perusahaan melaporkan pembelian saham."
+      },
+      "terbit": true,
+      "berhenti": null,
+      "mulai": "2026-09-28T20:45:51.730Z",
+      "selesai": "2026-09-28T22:19:23.352Z",
+      "durasi_ms": 5611622,
+      "putaran": 9,
+      "panggilan": 58,
+      "token_masuk": 158860,
+      "token_keluar": 551122,
+      "biaya_usd": null,
+      "pemeriksaan": {
+        "aturan_dijalankan": 28,
+        "aturan_dilewati": 7,
+        "temuan": 7,
+        "fakta_lolos": 29,
+        "fakta_tersingkir": 1,
+        "tersingkir": [
+          {
+            "fact_id": "div-2026-05-04-bayar",
+            "alasan": "kalimatnya menyebut tanggal sesudah T: 22 Mei 2026"
+          }
+        ]
+      },
+      "peran": [
+        {
+          "peran": "perencana",
+          "model": null,
+          "langkah": 2,
+          "panggilan": 0,
+          "putusan": {
+            "lolos": 1,
+            "tolak": 1
+          }
+        },
+        {
+          "peran": "penulis",
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+          "langkah": 16,
+          "panggilan": 16,
+          "putusan": {
+            "ditulis": 16
+          }
+        },
+        {
+          "peran": "pemeriksa",
+          "model": null,
+          "langkah": 22,
+          "panggilan": 0,
+          "putusan": {
+            "tolak": 5,
+            "lolos": 17
+          }
+        },
+        {
+          "peran": "pembaca-kartu",
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+          "langkah": 9,
+          "panggilan": 9,
+          "putusan": {
+            "lolos": 9
+          }
+        },
+        {
+          "peran": "kritikus",
+          "model": "zai-org/GLM-5.3",
+          "langkah": 9,
+          "panggilan": 12,
+          "putusan": {
+            "lolos": 7,
+            "tolak": 2
+          }
+        },
+        {
+          "peran": "penebak",
+          "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+          "langkah": 7,
+          "panggilan": 21,
+          "putusan": {
+            "lolos": 3,
+            "tolak": 4
+          }
+        }
+      ],
+      "sudut": [
+        {
+          "omongan": 1,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "tahun-berdividen",
+              "hasil": "lolos",
+              "putaran_mulai": 1,
+              "putaran_akhir": 1
+            }
+          ]
+        },
+        {
+          "omongan": 2,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "fil-jan-orang-dalam-lain",
+              "hasil": "lolos",
+              "putaran_mulai": 1,
+              "putaran_akhir": 3
+            }
+          ]
+        },
+        {
+          "omongan": 3,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "turun-2026-05-04",
+              "hasil": "dibuang",
+              "putaran_mulai": 1,
+              "putaran_akhir": 5
+            },
+            {
+              "ke": 2,
+              "fact_id": "laporan-jan-2026",
+              "hasil": "lolos",
+              "putaran_mulai": 6,
+              "putaran_akhir": 9
+            }
+          ]
+        }
+      ],
+      "penolakan": [
+        {
+          "no": 6,
+          "putaran": 1,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 2: [KATA_PENILAIAN] Penjelasan memakai kata penilaian \"bagus\"; produk ini tidak menilai saham."
+          ]
+        },
+        {
+          "no": 11,
+          "putaran": 1,
+          "omongan": 2,
+          "peran": "pemeriksa",
+          "jenis": "gerbang-g",
+          "alasan": [
+            "[pemeriksa: G-panjang] Pilihan a 12 kata; paling banyak 11 kata (pilihan manusia terpanjang di kasus yang hidup). Satu label + satu klausa pendek."
+          ]
+        },
+        {
+          "no": 15,
+          "putaran": 1,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 80 (tebakan: c/80, c/85, c/75). Alasan mereka: \"Tio merasa penurunan buka terlalu besar untuk sekadar ex dividen, dan opsi c menyatakan turun Rp145 lebih besar dari dividen Rp130.\" \"Tio menilai penurunan buka terlalu besar untuk sekadar ex dividen, dan data turun Rp145 lebih besar dari dividen Rp130 mendukung anggapan itu.\" \"Tio ragu karena penurunan terasa 'kebesaran' untuk sekadar ex dividen, dan opsi c konsisten: buka turun Rp145 melebihi dividen Rp130 (misal tutup 1.690, buka 1.545), jadi kekhawatirannya memang beralasan.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 22,
+          "putaran": 2,
+          "omongan": 2,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus: makna, kunci] Bagian klaim teman yang tidak bisa dicek dari kartu: \"dia tau sesuatu (motif orang dalam membeli) — kartu hanya memuat transaksi dan jumlah lembar, tidak ada yang menunjukka…\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan.",
+            "[kritikus: kunci, pilihan] Pilihan c juga benar menurut kartu (Kartu 3 dan 4 membenarkan persis isi pilihan c — porsi naik dari 1,21 persen ke 1,37 persen — sehingga ada dua pilihan 'Betul,' yang sama-sama didukung kartu.); hanya satu pilihan yang boleh benar.",
+            "[kritikus: ambigu, pilihan] Pilihan c juga benar menurut kartu 3 dan 4, jadi pemain yang memilih c akan dianggap salah padahal alasannya cocok dengan dokumen.",
+            "[kritikus: kunci, kunci] Pilihan kunci 'Betul,' tidak menyatakan bahwa bagian 'dia tau sesuatu' tidak bisa dipastikan dari kartu, padahal penjelasan sendiri mengakui alasan pembelian tidak terbaca di laporan.",
+            "[kritikus: arahan] Ubah pilihan c atau angka di kartu 3 dan 4 supaya hanya ada satu pilihan 'Betul,' yang didukung kartu. Pilihan kunci juga perlu menyatakan bahwa klaim 'dia tau sesuatu' tidak bisa dipastikan dari laporan transaksi."
+          ]
+        },
+        {
+          "no": 26,
+          "putaran": 2,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 65 (tebakan: b/65, b/65, b/65). Alasan mereka: \"Angka turun Rp145 lebih besar dari dividen Rp130, jadi omongan Adit yang merasa turunnya lebih kecil justru keliru.\" \"Adit mengira penurunan lebih kecil dari dividen, tetapi opsi b menyebutkan penurunan Rp145 justru lebih besar dari dividen Rp130.\" \"Pola umum ex-dividend: jika angka konkretnya turun Rp145 vs dividen Rp130, maka turunnya justru lebih besar dari dividen sehingga keraguan Adit bahwa turunnya lebih kecil adalah keliru.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 30,
+          "putaran": 3,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 3: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 35 lawan 62 karakter; yang terpendek harus ≥ 60% yang terpanjang."
+          ]
+        },
+        {
+          "no": 38,
+          "putaran": 4,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 3: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 35 lawan 62 karakter; yang terpendek harus ≥ 60% yang terpanjang."
+          ]
+        },
+        {
+          "no": 45,
+          "putaran": 5,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 60 (tebakan: b/65, b/60, b/55). Alasan mereka: \"Jika dokumen menyebut turun Rp145 sedangkan dividennya Rp130, maka omongan Nadia yang merasa turunnya 'pas banget' tidak cocok.\" \"Nadia mengira penurunan harga persis sebesar dividen, tetapi opsi b menyebut turun Rp145 yang lebih besar dari dividen Rp130.\" \"Pada tanggal ex-dividen harga memang biasanya turun mendekati nilai dividen, tetapi turun persis sama (Rp130) jarang terjadi karena ada pergerakan pasar juga; opsi (a) hanya mengulang omongan Nadia dengan rapi sehingga mencurigakan, sementara penurunan sedikit lebih besar (Rp145) lebih wajar secara kebiasaan pasar dan konsisten dengan keraguan Nadia.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 46,
+          "putaran": 5,
+          "omongan": 3,
+          "peran": "perencana",
+          "jenis": "buang-sudut",
+          "alasan": [
+            "omongan 3 gagal 5 putaran di sudut ke-1 (turun-2026-05-04); versi terakhirnya dibuang",
+            "sudut ke-2: laporan-jan-2026"
+          ]
+        },
+        {
+          "no": 48,
+          "putaran": 6,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 3: [AJAKAN_TRANSAKSI] Pesan memuat ajakan bertransaksi: \"borong\"."
+          ]
+        },
+        {
+          "no": 54,
+          "putaran": 7,
+          "omongan": 3,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus] kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang."
+          ]
+        },
+        {
+          "no": 59,
+          "putaran": 8,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "2/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 55 (tebakan: a/60, b/60, b/50). Alasan mereka: \"Pesan Nadia hanya rumor; dokumen mencatat 8 laporan orang dalam Perusahaan U bulan Januari, sehingga tidak cocok.\" \"Pesan Nadia cuma desas-desus ('ikut-ikutan percaya'), dan pilihan (a) yang mengiyakan dengan rapi ('betul, cuma 6') terkesan seperti jebakan gema; koreksi dengan angka spesifik 8 laporan lebih khas jawaban benar untuk soal verifikasi begini.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        }
+      ],
+      "draf": [
+        {
+          "nama": "Wulan",
+          "jam": "19.42",
+          "pesan": "Dividen Perusahaan U tuh tiap tahun keluar terus, dari dulu ga pernah bolos. Aman lah.",
+          "pilihan": {
+            "a": "Betul, dividennya makin besar tiap tahun tanpa kecuali.",
+            "b": "Keliru, ada tahun yang bolos tanpa pembagian dividen.",
+            "c": "Betul, pembagiannya tercatat beruntun selama [[tahun-berdividen|7 tahun]].",
+            "d": "Keliru, yang tercatat cuma pembagian tahun ini saja."
+          },
+          "kunci": "c",
+          "penjelasan": "Kalau daftar aksi korporasinya dibuka, pembagian dividen tunai muncul tiap tahun tanpa ada tahun yang kosong, dan jumlahnya [[tahun-berdividen|7 tahun]] beruntun. Daftar yang sama juga memuat [[dividen-tercatat|7 pembagian]] dari yang paling lama sampai hari ini. Yang tidak terbaca di situ: nilainya tidak selalu naik, sebab ada tahun dengan [[div-2021-09-01|Rp85]] per lembar dan tahun sesudahnya [[div-2022-08-04|Rp25]] per lembar. Jadi soal rutinnya cocok, sedangkan yang bilang ada tahun bolos atau cuma sekali bagi tidak cocok. Salah-kaprah yang umum: orang menyamakan dividen yang rutin dengan dividen yang naik terus, padahal yang tercatat cuma soal rutinnya."
+        },
+        {
+          "nama": "Sinta",
+          "jam": "20.31",
+          "pesan": "Orang dalam lain itu beli terus sepanjang Januari, malah lebih banyak dari pemilik terbesarnya. Gw sih udah cek laporannya.",
+          "pilihan": {
+            "a": "Betul, dia nambah [[fil-jan-orang-dalam-lain|16,07 juta lembar]] sepanjang Januari.",
+            "b": "Keliru, yang nambah lebih banyak justru pemilik terbesarnya.",
+            "c": "Betul, dia nambahnya cuma lewat [[fil-jan-pemilik-terbesar-laporan|2 laporan]].",
+            "d": "Keliru, dia cuma menambah [[fil-jan-pemilik-terbesar|1 juta lembar]]."
+          },
+          "kunci": "a",
+          "penjelasan": "Kalau laporan kepemilikan sahamnya dibuka, orang dalam lain muncul berkali-kali sepanjang Januari dan semuanya pembelian. Kalau ditotal, tambahannya [[fil-jan-orang-dalam-lain|16,07 juta lembar]] yang tersebar di [[fil-jan-orang-dalam-lain-laporan|6 laporan]]. Bandingkan dengan pemilik terbesar, yang cuma menambah [[fil-jan-pemilik-terbesar|1 juta lembar]] lewat [[fil-jan-pemilik-terbesar-laporan|2 laporan]]. Jadi yang bilang orang dalam lain menambah lebih banyak dari pemilik terbesar itu cocok. Yang tidak terbaca di situ: alasan mereka membeli, sebab laporannya cuma memuat transaksi dan jumlah lembar. Salah-kaprah yang umum: orang mengira pemilik terbesar selalu yang paling banyak menambah, padahal yang tercatat di Januari justru sebaliknya."
+        },
+        {
+          "nama": "Fitri",
+          "jam": "21.15",
+          "pesan": "Katanya orang dalam Perusahaan U pada beli saham terus bulan Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
+          "pilihan": {
+            "a": "Betul, semuanya pembelian tanpa ada yang jual.",
+            "b": "Keliru, ada juga laporan yang isinya penjualan.",
+            "c": "Betul, yang beli cuma orang dalam lain.",
+            "d": "Keliru, laporannya cuma [[fil-jan-pemilik-terbesar-laporan|dua laporan]]."
+          },
+          "kunci": "a",
+          "penjelasan": "Kalau daftar laporan kepemilikan dibuka, sepanjang Januari ada [[laporan-jan-2026|8 laporan]] dan isinya pembelian semua, tidak ada satu pun yang penjualan. Yang lapor juga bukan cuma satu pihak: pemilik terbesar muncul [[fil-jan-pemilik-terbesar-laporan|2 laporan]] dan orang dalam lain [[fil-jan-orang-dalam-lain-laporan|6 laporan]]. Yang tidak terbaca di situ: alasan mereka membeli, sebab laporannya cuma memuat tanggal transaksi dan jumlah lembar. Jadi yang bilang ada laporan penjualan tidak cocok, begitu juga yang bilang yang beli cuma satu pihak atau laporannya cuma dua. Salah-kaprah yang umum: orang mengira laporan orang dalam selalu campur beli dan jual, padahal yang tercatat di Januari justru semuanya pembelian."
+        }
+      ],
+      "uji_luar": [
+        {
+          "omongan": 1,
+          "kunci": "c",
+          "tebak_benar": 0,
+          "tebak_n": 3,
+          "kartu_benar": 3,
+          "kartu_n": 3
+        },
+        {
+          "omongan": 2,
+          "kunci": "a",
+          "tebak_benar": 0,
+          "tebak_n": 3,
+          "kartu_benar": 3,
+          "kartu_n": 3
+        },
+        {
+          "omongan": 3,
+          "kunci": "a",
+          "tebak_benar": 0,
+          "tebak_n": 3,
+          "kartu_benar": 3,
+          "kartu_n": 3
+        }
+      ],
+      "alami": {
+        "agen": 3,
+        "manusia": 4,
+        "penilai": 3
+      }
+    },
+    {
+      "id": "tirt-m2d6",
+      "milestone": "M2d-6",
+      "folder": "eval/keluaran-m2d6/jalan-1/tirt",
+      "simulasi": {
+        "paket_id": "tirt",
+        "nama_samaran": "Perusahaan T",
+        "tanggal_t": "2025-12-10",
+        "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+      },
+      "terbit": false,
+      "berhenti": "omongan 3 gagal di 3 sudut (rups-2025-09-25, kelipatan-2025-11-26-2025-12-09, hari-naik-beruntun); simulasi tidak terbit",
+      "mulai": "2026-09-29T07:38:44.101Z",
+      "selesai": "2026-09-29T10:01:40.951Z",
+      "durasi_ms": 8576850,
+      "putaran": 15,
+      "panggilan": 133,
+      "token_masuk": 333142,
+      "token_keluar": 716566,
+      "biaya_usd": 1.83836842,
+      "pemeriksaan": {
+        "aturan_dijalankan": 13,
+        "aturan_dilewati": 24,
+        "temuan": 11,
+        "fakta_lolos": 20,
+        "fakta_tersingkir": 2,
+        "tersingkir": [
+          {
+            "fact_id": "harga-2025-11-25",
+            "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+          },
+          {
+            "fact_id": "harga-2025-12-10",
+            "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+          }
+        ]
+      },
+      "peran": [
+        {
+          "peran": "perencana",
+          "model": null,
+          "langkah": 5,
+          "panggilan": 0,
+          "putusan": {
+            "lolos": 1,
+            "tolak": 4
+          }
+        },
+        {
+          "peran": "penulis",
+          "model": "deepseek/deepseek-v4.1-flash",
+          "langkah": 32,
+          "panggilan": 32,
+          "putusan": {
+            "ditulis": 32
+          }
+        },
+        {
+          "peran": "pemeriksa",
+          "model": null,
+          "langkah": 38,
+          "panggilan": 0,
+          "putusan": {
+            "tolak": 5,
+            "lolos": 33
+          }
+        },
+        {
+          "peran": "pembaca-kartu",
+          "model": "deepseek/deepseek-v4.1-flash",
+          "langkah": 21,
+          "panggilan": 21,
+          "putusan": {
+            "lolos": 20,
+            "tolak": 1
+          }
+        },
+        {
+          "peran": "kritikus",
+          "model": "z-ai/glm-5.3",
+          "langkah": 20,
+          "panggilan": 30,
+          "putusan": {
+            "lolos": 12,
+            "tolak": 8
+          }
+        },
+        {
+          "peran": "penebak",
+          "model": "z-ai/glm-5.3",
+          "langkah": 12,
+          "panggilan": 50,
+          "putusan": {
+            "tolak": 10,
+            "lolos": 2
+          }
+        }
+      ],
+      "sudut": [
+        {
+          "omongan": 1,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "susp-2025-12-10",
+              "hasil": "dibuang",
+              "putaran_mulai": 1,
+              "putaran_akhir": 5
+            },
+            {
+              "ke": 2,
+              "fact_id": "susp-2025-01-21",
+              "hasil": "lolos",
+              "putaran_mulai": 6,
+              "putaran_akhir": 8
+            }
+          ]
+        },
+        {
+          "omongan": 2,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "naik-2025-11-26-2025-12-09",
+              "hasil": "lolos",
+              "putaran_mulai": 1,
+              "putaran_akhir": 3
+            }
+          ]
+        },
+        {
+          "omongan": 3,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "rups-2025-09-25",
+              "hasil": "dibuang",
+              "putaran_mulai": 1,
+              "putaran_akhir": 5
+            },
+            {
+              "ke": 2,
+              "fact_id": "kelipatan-2025-11-26-2025-12-09",
+              "hasil": "dibuang",
+              "putaran_mulai": 6,
+              "putaran_akhir": 10
+            },
+            {
+              "ke": 3,
+              "fact_id": "hari-naik-beruntun",
+              "hasil": "dibuang",
+              "putaran_mulai": 11,
+              "putaran_akhir": 15
+            }
+          ]
+        }
+      ],
+      "penolakan": [
+        {
+          "no": 6,
+          "putaran": 1,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 2: tidak ada omongan terbaca dari penulis"
+          ]
+        },
+        {
+          "no": 10,
+          "putaran": 1,
+          "omongan": 1,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 74 (tebakan: c/62, c/100, c/60). Alasan mereka: \"Pilihan a dan b sama-sama membenarkan Sinta sehingga tidak mungkin keduanya benar, dan pola lazimnya adalah setopan awal tahun karena going concern lalu setopan berikutnya karena lonjakan harga (URC/kenaikan harga kumulatif signifikan), yang membuat klaim Sinta keliru untuk hari ini.\" \"(tak terbaca)\" \"Pilihan a dan b isinya hampir sama (membenarkan klaim going concern) sehingga kemungkinan besar keduanya pengecoh; alasan penghentian yang paling lazim untuk saham yang 'disetop lagi' adalah kenaikan harga kumulatif signifikan (UMA), yang membuat omongan Sinta keliru.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 14,
+          "putaran": 1,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "1/3 penebak TANPA kartu memilih kunci \"d\", rata-rata keyakinan 60 (tebakan: d/60, b/42, b/60). Alasan mereka: \"Pilihan a dan b sama-sama membenarkan Aldi sehingga kemungkinan besar keduanya pengganggu, dan tanggal 25 September 2025 muncul di dua opsi yang mengklaim Aldi keliru, mengindikasikan jadwal RUPS memang tercatat di dokumen penghentian tersebut.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 23,
+          "putaran": 2,
+          "omongan": 1,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "2/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 67 (tebakan: c/65, a/65, c/68). Alasan mereka: \"Pengumuman suspensi (UMA/cooling down) di bursa biasanya tidak menyebutkan tanggal pembukaan perdagangan kembali, jadi keyakinan Tika 'besok bisa transaksi lagi' tidak didukung dokumen; pilihan 'selalu selesai dalam sehari' terlalu mutlak untuk benar.\" \"Pengumuman suspensi saham di BEI umumnya berlaku 'sampai pengumuman selanjutnya' tanpa janji dibuka besok, sehingga spekulasi Tika soal satu hari tidak didukung dokumen.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 27,
+          "putaran": 2,
+          "omongan": 2,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"d\", rata-rata keyakinan 87 (tebakan: d/60, d/100, d/100). Alasan mereka: \"Klaim Fajar spesifik soal selisih penutupan 26 November dan 9 Desember, dan pilihan d membenarkannya persis dengan tanggal yang ia sebut, sementara b/c nyaris duplikat dan a memakai tanggal berbeda.\" \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 31,
+          "putaran": 2,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "1/3 penebak TANPA kartu memilih kunci \"d\", rata-rata keyakinan 100 (tebakan: d/100, c/60, c/55). Alasan mereka: \"(tidak terbukti berpikir)\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 37,
+          "putaran": 3,
+          "omongan": 1,
+          "peran": "pembaca-kartu",
+          "jenis": "gerbang-kartu",
+          "alasan": [
+            "Pembaca yang memegang kartu bingung dengan kalimat tulisanmu: \"Setop 10 Desember itu cooling down gara-gara harga naik kumulatif, aku yakin ini yang pertama tahun ini.\" (pesan). Tulis ulang bagian itu dengan bahasa awam yang hanya bisa dibaca satu arti."
+          ]
+        },
+        {
+          "no": 44,
+          "putaran": 3,
+          "omongan": 3,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus: tertebak, pilihan] Kunci adalah satu-satunya opsi yang hanya mengulang isi omongan Tika, sementara a, b, dan c semuanya menambah klaim di luar pesan (pemicu setop, kelengkapan catatan, tanggal lain), sehingga penebak tanpa kartu bisa sampai ke d lewat jalur 'paling hati-hati' atau 'cermin omongan'.",
+            "[kritikus: arahan] Buat minimal satu pilihan 'Keliru' yang alasannya juga hanya bermain di isi catatan rapat itu (namun tetap salah menurut kartu), agar opsi cermin omongan tidak sendirian. Dengan begitu penebak tanpa kartu tidak bisa langsung menempel pada pilihan yang sekadar mengulang kata teman."
+          ]
+        },
+        {
+          "no": 51,
+          "putaran": 4,
+          "omongan": 1,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus: tertebak, pilihan] Pilihan kunci c mengulang isi pesan Sari nyaris kata per kata ('cooling down karena harga naik kumulatif'), sehingga pemain tanpa kartu bisa menjawab benar hanya dengan memilih pilihan yang meniru omongan.",
+            "[kritikus: aturan, pilihan] Pilihan a menyebut 'volume 0 lembar', angka dan peristiwa yang tidak ada di kartu mana pun, dan penjelasan tidak pernah menyanggahnya.",
+            "[kritikus: arahan] Redakan kemiripan kata per kata antara pesan Sari dan pilihan kunci agar jawaban tidak tertebak tanpa membaca kartu. Ganti atau sanggah 'volume 0 lembar' pada pilihan a karena tidak berakar pada dokumen mana pun."
+          ]
+        },
+        {
+          "no": 54,
+          "putaran": 4,
+          "omongan": 3,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus] kritikus tidak terbukti berpikir (token penalaran di bawah ambang) — diperlakukan seperti tidak menjawab; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang."
+          ]
+        },
+        {
+          "no": 57,
+          "putaran": 5,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 1: [AJAKAN_TRANSAKSI] Pilihan a memuat ajakan bertransaksi: \"borong\".",
+            "omongan 1: [AJAKAN_TRANSAKSI] Penjelasan memuat ajakan bertransaksi: \"borong\"."
+          ]
+        },
+        {
+          "no": 62,
+          "putaran": 5,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "1/3 penebak TANPA kartu memilih kunci \"d\", rata-rata keyakinan 100 (tebakan: a/55, d/100, a/55). Alasan mereka: \"(tidak terbukti berpikir)\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 63,
+          "putaran": 5,
+          "omongan": 1,
+          "peran": "perencana",
+          "jenis": "buang-sudut",
+          "alasan": [
+            "omongan 1 gagal 5 putaran di sudut ke-1 (susp-2025-12-10); versi terakhirnya dibuang",
+            "sudut ke-2: susp-2025-01-21"
+          ]
+        },
+        {
+          "no": 64,
+          "putaran": 5,
+          "omongan": 3,
+          "peran": "perencana",
+          "jenis": "buang-sudut",
+          "alasan": [
+            "omongan 3 gagal 5 putaran di sudut ke-1 (rups-2025-09-25); versi terakhirnya dibuang",
+            "sudut ke-2: kelipatan-2025-11-26-2025-12-09"
+          ]
+        },
+        {
+          "no": 68,
+          "putaran": 6,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 3: tidak ada omongan terbaca dari penulis"
+          ]
+        },
+        {
+          "no": 72,
+          "putaran": 6,
+          "omongan": 1,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 100 (tebakan: c/100, c/100, c/100). Alasan mereka: \"(tak terbaca)\" \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 76,
+          "putaran": 7,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 3: tidak ada omongan terbaca dari penulis"
+          ]
+        },
+        {
+          "no": 79,
+          "putaran": 7,
+          "omongan": 1,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus: tertebak, pilihan] Opsi (c) mengulang hampir kata per kata klaim Nia, sementara (b) mudah disingkirkan karena detail tak berdasar dan (d) karena bertentangan dengan premis 'disetop bursa', sehingga penebak tanpa kartu bisa mendarat di kunci lewat kemiripan bunyi, bukan lewat membaca kartu.",
+            "[kritikus: arahan] Perkuat opsi (b) dan (d) agar alasannya tidak bisa disingkirkan tanpa membaca kartu, supaya opsi (c) yang menyerupai bunyi pesan Nia tidak menjadi kandidat yang terlalu menonjol bagi penebak tanpa kartu."
+          ]
+        },
+        {
+          "no": 91,
+          "putaran": 8,
+          "omongan": 3,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus] kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang."
+          ]
+        },
+        {
+          "no": 95,
+          "putaran": 9,
+          "omongan": 3,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus: kunci, pilihan] Pilihan a dan b juga benar menurut kartu (Selisih Rp106 dan Rp48 memang Rp58 sesuai kartu, sehingga alasan opsi (a) benar menurut kartu dan opsi (b) memuat vonis 'Betul' yang benar disertai fakta kenaikan 58 rupiah yang juga benar.); hanya satu pilihan yang boleh benar.",
+            "[kritikus: ambigu, pilihan] Opsi (a) dan (b) sama-sama memuat fakta yang didukung kartu (penutupan 9 Desember memang 58 rupiah di atas 26 November), dan (b) bahkan memakai vonis 'Betul' yang benar, sehingga pemegang kartu bisa membenarkan lebih dari satu pilihan.",
+            "[kritikus: tertebak, pilihan] Kunci (d) bisa dipilih tanpa kartu karena hanya opsi itu yang mengulang bentuk 'kali' seperti klaim 'dua kali lipat' dengan rujukan akhir November, sementara (c) gugur sendiri karena menyebut 1 Desember.",
+            "[kritikus: arahan] Ubah angka atau vonis pada pilihan (a) dan (b) agar keduanya jelas tidak didukung kartu, karena selisih 58 rupiah saat ini benar menurut kartu. Pastikan juga kunci tidak tertebak hanya dengan mencocokkan kata 'kali' pada klaim tanpa membaca kartu."
+          ]
+        },
+        {
+          "no": 98,
+          "putaran": 10,
+          "omongan": null,
+          "peran": "pemeriksa",
+          "jenis": "validator",
+          "alasan": [
+            "omongan 3: [ANGKA_TANPA_RUJUKAN] Penjelasan memuat angka di luar rujukan: 2,21. Tulis tiap angka sebagai [[fact_id|teks]]."
+          ]
+        },
+        {
+          "no": 100,
+          "putaran": 10,
+          "omongan": 3,
+          "peran": "perencana",
+          "jenis": "buang-sudut",
+          "alasan": [
+            "omongan 3 gagal 5 putaran di sudut ke-2 (kelipatan-2025-11-26-2025-12-09); versi terakhirnya dibuang",
+            "sudut ke-3: hari-naik-beruntun"
+          ]
+        },
+        {
+          "no": 106,
+          "putaran": 11,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"d\", rata-rata keyakinan 60 (tebakan: d/55, d/55, d/70). Alasan mereka: \"Kenaikan 9 hari bursa berturut-turut itu wajar terjadi pada saham dalam tren kuat, dan opsi d membenarkan klaim Nia apa adanya; opsi a bisa disingkirkan karena 1–9 Desember selalu memuat akhir pekan sehingga tak mungkin berisi 9 hari bursa.\" \"Pilihan d membenarkan klaim Nia persis apa adanya (9 hari bursa berturut-turut naik), sedangkan pilihan a memberi tanggal 1–9 Desember yang rentan salah karena rentang itu bisa memuat akhir pekan sehingga bukan 9 hari bursa; b dan c menyangkal tanpa dasar kuat.\" \"Opsi d membenarkan klaim Nia secara langsung (penutupan naik tiap hari berturut-turut), sedangkan rentang 1–9 Desember di opsi a kemungkinan hanya 7 hari bursa karena ada akhir pekan, sehingga tidak konsisten dengan klaim 9 hari bursa.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 112,
+          "putaran": 12,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"d\", rata-rata keyakinan 71 (tebakan: d/68, d/45, d/100). Alasan mereka: \"1 Desember adalah hari Minggu (bukan hari bursa), dan 9 hari bursa berturut-turut yang berakhir awal Desember paling masuk akal dimulai 26 November, sehingga klaim Tia keliru.\" \"Klaim 9 hari bursa berturut-turut masuk akal, tapi karena 1 Desember 2024 bukan hari bursa, kemungkinan kenaikan itu sebenarnya sudah dimulai 26 November dan berakhir 6 Desember, sehingga tebakan tanggal Tia keliru.\" \"(tak terbaca)\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 118,
+          "putaran": 13,
+          "omongan": 3,
+          "peran": "penebak",
+          "jenis": "gerbang-tebak",
+          "alasan": [
+            "3/3 penebak TANPA kartu memilih kunci \"d\", rata-rata keyakinan 74 (tebakan: d/68, d/55, d/100). Alasan mereka: \"1 Desember bukan hari libur bursa di Indonesia, jadi kemungkinan besar saham tetap diperdagangkan hari itu dan keraguan Nadia keliru; pilihan a dan b sama-sama membenarkan Nadia sehingga tidak mungkin keduanya benar, dan c soal detail lain.\" \"1 Desember bukan hari libur bursa di Indonesia (setiap jatuh hari kerja, IDX tetap buka), jadi klaim Nadia soal 'libur bursa' keliru dan dokumen kemungkinan mencatat saham tetap diperdagangkan; pilihan a dan b sama-sama membenarkan Nadia sehingga keduanya bisa disingkirkan, sementara c menyangkut hal yang tidak Nadia klaim.\" \"(tak terbaca)\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+          ]
+        },
+        {
+          "no": 123,
+          "putaran": 14,
+          "omongan": 3,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus] kritikus tidak terbukti berpikir (token penalaran di bawah ambang) — diperlakukan seperti tidak menjawab; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang."
+          ]
+        },
+        {
+          "no": 127,
+          "putaran": 15,
+          "omongan": 3,
+          "peran": "kritikus",
+          "jenis": "kritikus",
+          "alasan": [
+            "[kritikus: tertebak, pilihan] Tanpa kartu pemain bisa memilih d karena ia satu-satunya pilihan 'Betul' yang sekadar mengulang isi pesan dengan rapi, sedangkan pasangannya (a) memuat tanggal yang wajib dicek ke kartu.",
+            "[kritikus: arahan] Pastikan alasan pada pilihan kunci memuat detail yang hanya bisa dipastikan lewat kartu (misalnya periode atau jumlah hari bursanya), karena saat ini d bisa tertebak hanya karena mengulang isi pesan."
+          ]
+        },
+        {
+          "no": 128,
+          "putaran": 15,
+          "omongan": 3,
+          "peran": "perencana",
+          "jenis": "buang-sudut",
+          "alasan": [
+            "omongan 3 gagal 5 putaran di sudut ke-3 (hari-naik-beruntun); versi terakhirnya dibuang",
+            "batas 3 sudut per posisi tercapai"
+          ]
+        }
+      ],
+      "draf": null,
+      "uji_luar": null,
+      "alami": null
+    }
+  ]
+}
