@@ -14,18 +14,31 @@
  * ada — tetapi mengetuk angka itu membuka tanggal pembayaran, bukan Rp130.
  * Pemeriksaan ini menemukannya sekali di draf pertama.
  */
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { periksaKasus } from '../skema/validator.ts';
 import { ambilRujukan, teksPolos } from '../skema/rujukan.ts';
 import { ATURAN_V2 } from '../verifikasi/v2.ts';
 import { keparahanTemuan, type Fakta, type Kasus } from '../skema/tipe.ts';
+import { bacaDaftarBeku } from '../muat/gudang-beku.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 const GUDANG = `${AKAR}.cache/sectors`;
 const BERKAS = `${AKAR}cases/ultj-2026-05-04.json`;
 const adaCache = existsSync(`${GUDANG}/ULTJ-filings.json`);
+
+/**
+ * Berkas harga ULTJ diambil dari daftar gudang beku (M4a A-1), bukan dari
+ * isi folder: berkas ULTJ yang ditambahkan kelak ke `.cache/sectors/` tidak
+ * boleh diam-diam ikut menghitung ulang angka kasus tayang.
+ */
+function berkasHargaUltj(): string[] {
+  return bacaDaftarBeku()
+    .berkas.map((b) => b.nama)
+    .filter((n) => /^ULTJ-daily-.*\.json$/.test(n))
+    .sort();
+}
 
 function kasus(): Kasus {
   return JSON.parse(readFileSync(BERKAS, 'utf8')) as unknown as Kasus;
@@ -76,7 +89,7 @@ function angkaDariCache(): Map<string, number | string> {
   harapan.set('tahun-berdividen', new Set(dividen.map((d) => d.ex_date.slice(0, 4))).size);
 
   const harga = new Map<string, BarisHargaMentah>();
-  for (const nama of readdirSync(GUDANG).filter((n) => /^ULTJ-daily-.*\.json$/.test(n)).sort()) {
+  for (const nama of berkasHargaUltj()) {
     for (const baris of JSON.parse(readFileSync(`${GUDANG}/${nama}`, 'utf8')) as BarisHargaMentah[]) {
       if (!harga.has(baris.date)) harga.set(baris.date, baris);
     }
@@ -354,7 +367,7 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
    */
   it.runIf(adaCache)('kartu turun soal 1 = penutupan 30 Apr − pembukaan 4 Mei dari cache mentah', () => {
     const baris = new Map<string, BarisHargaMentah>();
-    for (const nama of readdirSync(GUDANG).filter((n) => /^ULTJ-daily-.*\.json$/.test(n)).sort()) {
+    for (const nama of berkasHargaUltj()) {
       for (const b of JSON.parse(readFileSync(`${GUDANG}/${nama}`, 'utf8')) as BarisHargaMentah[]) {
         if (!baris.has(b.date)) baris.set(b.date, b);
       }

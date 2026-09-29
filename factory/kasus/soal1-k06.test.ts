@@ -25,7 +25,7 @@ import type { Kasus, Soal } from '../skema/tipe.ts';
 import { bangunKasusUmum } from './bangun.ts';
 import { keJson } from './json.ts';
 import { ULTJ_2026_05_04 } from './ultj-2026-05-04.ts';
-import { muatGudang } from '../muat/gudang.ts';
+import { muatGudangBeku } from '../muat/gudang-beku.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 
@@ -255,7 +255,9 @@ describe.runIf(existsSync(`${AKAR}.cache/sectors/ULTJ-filings.json`))(
   'M3.9 — berkas ULTJ di repo = hasil bangun definisinya',
   () => {
     it('byte-identik dengan keluaran pembangun', () => {
-      const gudang = muatGudang();
+      // Gudang beku (M4a A-1): kasus tayang dibangun dari 111 berkas yang
+      // sidiknya dibekukan, bukan dari seluruh isi `.cache/sectors/`.
+      const gudang = muatGudangBeku();
       const data = gudang.emiten.get(ULTJ_2026_05_04.simbol);
       if (data === undefined) throw new Error('gudang tidak memuat ULTJ');
       const kosong = gudang.berkas

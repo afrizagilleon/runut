@@ -1,0 +1,454 @@
+{
+  "keterangan": "Gudang beku untuk kasus tayang (M4a Amandemen A-1): 111 berkas .cache/sectors/ dari manifest commit aec0105, sebelum data M4a ditambahkan. build:case DADA/ULTJ dan tes yang mengunci angka dari gudang sungguhan hanya membaca berkas ini, dan menolak keras bila satu berkas hilang atau sha256-nya berbeda. Jangan disunting tangan.",
+  "sumber": {
+    "commit": "aec0105",
+    "berkas": "docs/bukti/gudang-manifest.json"
+  },
+  "jumlah_berkas": 111,
+  "berkas": [
+    {
+      "nama": "AGII-filings.json",
+      "sha256": "a0c189b7ece316947501f35abb8ed4bba5f2ed1c827aba45e7a49e06e80daaa4"
+    },
+    {
+      "nama": "ARNA-corpactions.json",
+      "sha256": "f94d092cf09d7f6dacf8015ff19d181c5319a24cd87cb7387ae4e4a0fbeb1c1b"
+    },
+    {
+      "nama": "ARNA-daily-2025q2.json",
+      "sha256": "5be6d3af219a78a57e26ad0eb54a0caaa3b8342c8743320f95094db940846ae7"
+    },
+    {
+      "nama": "ARNA-daily-2025q3.json",
+      "sha256": "47a487b6cf3142994707e5ad9291ef560a59415bb0a951e579e11796dad8c7af"
+    },
+    {
+      "nama": "ARNA-daily-2025q4.json",
+      "sha256": "3da29fd8080023c6f0f3ffb05cd2ac0e63beb003a070eb4a45178ac3e90a3c83"
+    },
+    {
+      "nama": "ARNA-filings.json",
+      "sha256": "a36eb7734b87cdaebd551b6800e3a81be3883adadbb123c339ba0ac879e8b8fd"
+    },
+    {
+      "nama": "ARNA-financials.json",
+      "sha256": "35cdd96c737724f84cd3f553d445d0400a3bb33949daeecbf05bf70aa4f8d49a"
+    },
+    {
+      "nama": "ARNA-overview.json",
+      "sha256": "3bd8681137c524a2efd66978d3a8324fea130687f8ee5a0ab15209cd42dc1b37"
+    },
+    {
+      "nama": "ARNA-ownership.json",
+      "sha256": "c59eb563cc242e9a7d844f9249a171e52e6e96ad814be27a2e6e8c6d1cf7d54a"
+    },
+    {
+      "nama": "BIRD-corpactions.json",
+      "sha256": "408ea6b0b284cacc049649c41956abcd83d5614cb4f977a45c8ee6288c91b6e9"
+    },
+    {
+      "nama": "BIRD-daily-2025q3.json",
+      "sha256": "26461c53bec01b5ec91664a39f7f2aeecbe1821625263f7ed0a842515c66e0d8"
+    },
+    {
+      "nama": "BIRD-daily-2025q4.json",
+      "sha256": "d7fd9e747e1005c8f29d5ada1bc0f23442658bd471db2bd8e98c1d72464a8081"
+    },
+    {
+      "nama": "BIRD-filings.json",
+      "sha256": "f3888d8a53d083ffde0bf4e0305de368bb87288b99fe7e8fc699bc626f9aac7f"
+    },
+    {
+      "nama": "BIRD-ownership.json",
+      "sha256": "745a55f6157b3b29897ee26274cf1af5c305e716a95282514d6c70ba07855c13"
+    },
+    {
+      "nama": "BIRD-report-overview-financials.json",
+      "sha256": "d56860dbb44703872081b35fc0ccc14b65f2a6fc2cfbd53e4f3a6d330d34fb10"
+    },
+    {
+      "nama": "COCO-corpactions.json",
+      "sha256": "be65744c4ddf546c74753e8ac47f3ff74979b2bc78c9e051ebb7326b66d26842"
+    },
+    {
+      "nama": "COCO-daily-2025q2.json",
+      "sha256": "bb42c5e2a0ba9658c10bcacf078f0dd58f63a775332790a4c15993251eab7fe7"
+    },
+    {
+      "nama": "COCO-daily-2025q3.json",
+      "sha256": "c64286953716365961e93a9d17d74feb71315b3823a60ced9b0dfa8d02cf5cba"
+    },
+    {
+      "nama": "COCO-daily-2025q4.json",
+      "sha256": "7c3f13a7d0e05744e7871a54498bb4fede82232be47d564a6b4d86b6619775b3"
+    },
+    {
+      "nama": "COCO-daily-2026q3.json",
+      "sha256": "fc57d05d7291cdaee0762e0f8b16333f13ae7c9912719d8cf3484a6180d2bffe"
+    },
+    {
+      "nama": "COCO-filings-sebelum.json",
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010"
+    },
+    {
+      "nama": "COCO-filings.json",
+      "sha256": "c5d36e87c16f964f9485ba07df458d2f8ced37fd5d73d93f8f935618e5670535"
+    },
+    {
+      "nama": "COCO-financials.json",
+      "sha256": "b4ae86e4c71bfe80adf3129f2407fd2dc49257a28de00ec38ee100c542f288f7"
+    },
+    {
+      "nama": "COCO-overview.json",
+      "sha256": "10be0d3796bed3469c98d67abbb973f45132d1261b2bdc91a1d4abb15d9476b0"
+    },
+    {
+      "nama": "COCO-ownership.json",
+      "sha256": "3fb44bbc56573609b4b94bc57bfb60b6ff02c8651c599dda5b3ca83a17011ee8"
+    },
+    {
+      "nama": "DADA-daily-2025q4.json",
+      "sha256": "8c7dfef2bba4dde39be4c16d96d05df8a0cf9ec55921bb6df25a09dccf67bbf0"
+    },
+    {
+      "nama": "FOLK-corpactions.json",
+      "sha256": "53c222a9ec998acb3596c8524b5bdcf2d2097533a5e0d55d6dde0ff7bc416a88"
+    },
+    {
+      "nama": "FOLK-daily-2025q3.json",
+      "sha256": "44a07bf8e90aa486d4aef2953fa17dd4a436689f29b64f1bfb2f78747dc29d5c"
+    },
+    {
+      "nama": "FOLK-daily-2025q4.json",
+      "sha256": "2e6d7150304eea79304fb5b7f2818242cc3d664ebadb002c987d46866c24ddb4"
+    },
+    {
+      "nama": "FOLK-filings.json",
+      "sha256": "42bd2a9703a9e092b22fc216a1c5338c1b084fd1eccf873ca3ac3366d259d093"
+    },
+    {
+      "nama": "FOLK-financials.json",
+      "sha256": "855948ba377f0738a4eb937160119d72ea6cfb1ff5706ce8f2274d52b33d07de"
+    },
+    {
+      "nama": "FOLK-overview.json",
+      "sha256": "f8b76c52ef51f6931b4d8c7e8fc453e71c2e4cfbcaa58576cf7fac70589c601c"
+    },
+    {
+      "nama": "HITS-corpactions.json",
+      "sha256": "f4b8046f37c5ba1a5a27f72a74e78b8b9a92997714fbea42689ec48060317b20"
+    },
+    {
+      "nama": "HITS-daily-2025q1.json",
+      "sha256": "69cca7645d77ed8b34b91433186dd77611599590c5624a21afa96873ea258ac7"
+    },
+    {
+      "nama": "HITS-daily-2025q2.json",
+      "sha256": "62d223e71d7c6a41440d17e83223903199ccb02e714276452d7fa4e4f0ea32ed"
+    },
+    {
+      "nama": "HITS-filings.json",
+      "sha256": "d8afa877cf88e92e51e004d28e3f2a76cf37199e14d01bd048472d28065239dd"
+    },
+    {
+      "nama": "HITS-ownership.json",
+      "sha256": "c7898d25adb329c739d4067b70750336b3d7a570268a9cda9e91619e11bbb59b"
+    },
+    {
+      "nama": "HITS-report-overview-financials.json",
+      "sha256": "901f7a336c28d87d448e0be9221a5684e1cd87e39039a8d3781ecedc62656a80"
+    },
+    {
+      "nama": "KRYA-corpactions.json",
+      "sha256": "70f3238287923e993e0e916d6e317854bac9f5737cb1fb785b0a271516a57338"
+    },
+    {
+      "nama": "KRYA-daily-2025q1.json",
+      "sha256": "7bed600db7a52857d41ad016d9776d5b00d3074363ba89437b476ee2bcb80fff"
+    },
+    {
+      "nama": "KRYA-daily-2025q2.json",
+      "sha256": "2b2ecd46369d6d1afcfc7114e5cf089ffed277548d997646f73077302ada65d3"
+    },
+    {
+      "nama": "KRYA-daily-2025q3.json",
+      "sha256": "e133510f429153efbc65496efc147f86fbe42647f59b183d87b2e8885f8fe367"
+    },
+    {
+      "nama": "KRYA-daily-2025q4.json",
+      "sha256": "9d20bd2676d9c40897eab7fbdf8df72987583b2b0969c3ea6a2e42a004d3000c"
+    },
+    {
+      "nama": "KRYA-daily-2026q1.json",
+      "sha256": "d0eaccbb1b02f24e2408448e41bf7d1abf20e3a1809cb6469a214122f2fc2ba2"
+    },
+    {
+      "nama": "KRYA-daily-2026q2.json",
+      "sha256": "5bfa34d3b9cb4d9c10424a578c1b72509088fd72f5f2d2d1239ab15431e70a1f"
+    },
+    {
+      "nama": "KRYA-daily-2026q3.json",
+      "sha256": "057eed329871657c8b7b1a773b4a174dada4c5ae9acb3bd45d66b6952e650718"
+    },
+    {
+      "nama": "KRYA-daily-2026q4.json",
+      "sha256": "1aebb5fa407923adcf20acb0534a3f4826274b880ed564b41ebee1878e3ec707"
+    },
+    {
+      "nama": "KRYA-filings.json",
+      "sha256": "e85c4c6b3b7d3014028bdcb8b2558daa43e9f8fea2c0cd1b026e1fe377a3ba59"
+    },
+    {
+      "nama": "KRYA-financials.json",
+      "sha256": "44674fe29229657d511a4ee91ee1043ed41bfbb4a694a8da7b6e3fce70400a32"
+    },
+    {
+      "nama": "KRYA-news.json",
+      "sha256": "6642f5a72190562343599a71dd41b516c05c323c20ce6e08a839800087dda0ca"
+    },
+    {
+      "nama": "KRYA-overview.json",
+      "sha256": "7431f24518b6373a3ef608bb55f835aed6aca2e167460b2c49a88d808b808d63"
+    },
+    {
+      "nama": "KRYA-ownership.json",
+      "sha256": "eabbf4ac3c5e5e3b37ede4e2c6cd2bc580c5b8284c378b5c57284f038399257d"
+    },
+    {
+      "nama": "MERK-corpactions.json",
+      "sha256": "fdfdba581c2d725c05a2e4bd6d9f3cfe99e91fb7e1acb80d1c9d1e72c7c607cc"
+    },
+    {
+      "nama": "MERK-daily-2025q3.json",
+      "sha256": "14be32cca25d71ae8690feebdb0e15acb752aba3f0b38620d4c22e1997625f38"
+    },
+    {
+      "nama": "MERK-daily-2025q4.json",
+      "sha256": "421524e0178c504051e846b6dc90f215e7f9b1b711fe2f746dc592d2972a3cc5"
+    },
+    {
+      "nama": "MERK-filings.json",
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010"
+    },
+    {
+      "nama": "MERK-ownership.json",
+      "sha256": "ded5f1992ab9b1fb4e4178d476680973447cee96640199ac43259c564c8be48b"
+    },
+    {
+      "nama": "MERK-report-overview-financials.json",
+      "sha256": "76033eb2e93f9c7be777846a41c4b113532ad5f64f7833d4aebbe8d32b0f968b"
+    },
+    {
+      "nama": "MLPT-corpactions.json",
+      "sha256": "83785110d4505e2f76422ce1a1d1e38c9f77941a055fab6f285cf2f175892fcf"
+    },
+    {
+      "nama": "MLPT-daily-2025q4.json",
+      "sha256": "7f8c93bc657333ccbe82f0d7b473c6c5075457f0491187d893338b89b87b690c"
+    },
+    {
+      "nama": "MLPT-daily-2026q2.json",
+      "sha256": "ade5c4f674e06ece9dd3dc35190a3d2b1ef7e3b48c42e76149ed5b2198036f24"
+    },
+    {
+      "nama": "MLPT-daily-2026q3.json",
+      "sha256": "0ded97a5169f5e2d9caf8de8d7ba68e58fd1b88ee69dadcd288d87c0dc36f0c4"
+    },
+    {
+      "nama": "MLPT-overview.json",
+      "sha256": "743cff61af85bc61facd752e397c7c9bf22b05acc77bf78837b2696c409c02bf"
+    },
+    {
+      "nama": "MTLA-corpactions.json",
+      "sha256": "25b3dd287ffa8435b77bfd0e4b473c2bce0a9238a3d5ebbab86ac1f3a109023c"
+    },
+    {
+      "nama": "MTLA-daily-2025q2.json",
+      "sha256": "b30e5ee75d543976fd61ce6118d2d57f31942142b1721cdf6bf26fa5299d2c41"
+    },
+    {
+      "nama": "MTLA-daily-2025q3.json",
+      "sha256": "5cbbbaaf973ce7551208fc58e67c18e4814240bd88eb1f6f914bfc43788f9f99"
+    },
+    {
+      "nama": "MTLA-daily-2025q4.json",
+      "sha256": "dd1ce78dc10d43aef80a792c1d9592b6bd155243cfdd2bc6c920f65c1593bb53"
+    },
+    {
+      "nama": "MTLA-filings.json",
+      "sha256": "73b5b70183f041c59b33c42f517a47fb1845482a949dac5e5613efa767f90439"
+    },
+    {
+      "nama": "MTLA-financials.json",
+      "sha256": "7550789b1e9a3d168e271af3b3f5397fe1756137eda2bb99bd9fdafe66c665c8"
+    },
+    {
+      "nama": "MTLA-overview.json",
+      "sha256": "5a615bc67fa2fa39392026ec6e4e95b85e831b8ac01335909c5531a4e55a3cad"
+    },
+    {
+      "nama": "MTLA-ownership.json",
+      "sha256": "1695dfd6f85e72645b98226c6f838d154e70ff76698a06e1aea715324f12a959"
+    },
+    {
+      "nama": "RAJA-corpactions.json",
+      "sha256": "0fcf9dd1b0557878fbcc61b1e662f864008926cd807f17c6a38731a973e35594"
+    },
+    {
+      "nama": "RAJA-daily-2026q2.json",
+      "sha256": "fe5c68c2202ec08f592b400d4f574cdf7a57b62c22d513d3ca6ddfba6a71d26b"
+    },
+    {
+      "nama": "RAJA-daily-2026q3.json",
+      "sha256": "71628128ae20734809339ff2d3e9dabdde41579baf60ef59676eb00b1e0c93cc"
+    },
+    {
+      "nama": "RAJA-report-overview-financials.json",
+      "sha256": "9d4a8b76d3500187296e4c14348e672e3c8019c4840cf94ba1dac4f989870c30"
+    },
+    {
+      "nama": "RLCO-corpactions.json",
+      "sha256": "d05a8aba8a08d78040b7f3697b298b4df49e0cf0304b6a8d95d09e0aa178659b"
+    },
+    {
+      "nama": "RLCO-daily-2025q4.json",
+      "sha256": "01a9ab41c3bb3e7e02f5e625443991315bd1f95d997cbcbd929cfcb884e411c4"
+    },
+    {
+      "nama": "RLCO-daily-2026q1.json",
+      "sha256": "618a7a56ab094d5c47e975aba62ffc208b37a142b3b8cba60275777fad722942"
+    },
+    {
+      "nama": "RLCO-daily-2026q2.json",
+      "sha256": "00eb4e8a0214f5fa4ddfc9a6507f576659d6f1f604eb13d40c22d7b5d380a366"
+    },
+    {
+      "nama": "RLCO-daily-2026q3.json",
+      "sha256": "16e13e03e2cb8d46bc51bb1b131eee836e495bda5d832314a0be71bdb38bb606"
+    },
+    {
+      "nama": "RLCO-filings.json",
+      "sha256": "ea9da21d802f936c5b86aaf99088982310125af6444d1e0b9c6aa211908b56c3"
+    },
+    {
+      "nama": "RLCO-financials.json",
+      "sha256": "e7614f4ca440b11f4e63c6b7161c33a86450c539229828b9d5a0e6777f21c763"
+    },
+    {
+      "nama": "RLCO-news.json",
+      "sha256": "7b02cd5ed8146dd7a06b5654f1631d59d097a8746ef5ad2b017ceca72f4c088e"
+    },
+    {
+      "nama": "RLCO-overview.json",
+      "sha256": "0f98aa17d00576d8715a073e4481de97334601357f852c2173b9c1bb0dbe306a"
+    },
+    {
+      "nama": "RLCO-ownership.json",
+      "sha256": "e0f6049bd69489768cf789385651562b98219e0b5bcf440d98e0ff4b46115e07"
+    },
+    {
+      "nama": "TIRT-corpactions.json",
+      "sha256": "b56df07e3f78aed4d4d4db1357380fefb7e1a303b0a27c537b0686a2b1779b1f"
+    },
+    {
+      "nama": "TIRT-daily-2025q4a.json",
+      "sha256": "934fdcf08bc62e48ebc13530c4b455ae83cd49dc9e6c2c301a58b62335a636db"
+    },
+    {
+      "nama": "TIRT-daily-2026q1.json",
+      "sha256": "d41c5dfb13072dcddd2b8a88a20898ece69c86c165b6959f9d6c383bd5832880"
+    },
+    {
+      "nama": "TIRT-daily-2026q2.json",
+      "sha256": "d260bda5152248f404b302f6a6f174018455dbf132688bd95db6926c0edd1d1b"
+    },
+    {
+      "nama": "TIRT-filings.json",
+      "sha256": "1d6ede0c8c06ad4123cd353953042d82d6fe2149420db83df308643f951eff13"
+    },
+    {
+      "nama": "TIRT-report-overview-financials.json",
+      "sha256": "c463dd9ad636ce5455d93065533b9d6e1cc2b0bccbe1c1137ca9ee4c7e50465a"
+    },
+    {
+      "nama": "ULTJ-corpactions.json",
+      "sha256": "417f8c52f6957ccb863372960b782be4d7766664189c717246a2a9e1b73d434e"
+    },
+    {
+      "nama": "ULTJ-daily-2025q3.json",
+      "sha256": "19ca72a75c736df4bcb66f37969befef1f356ce7f5f4f8626b90fe4dd082958f"
+    },
+    {
+      "nama": "ULTJ-daily-2025q4.json",
+      "sha256": "ef5daf1c1f7154d64f0a496b9b9a1c73e46df451ec4416bb78609c49c2ae808a"
+    },
+    {
+      "nama": "ULTJ-daily-2026q1.json",
+      "sha256": "86526bd1f5d009b5ee602c16292c42118072ed3637845c3840c486434e1929d5"
+    },
+    {
+      "nama": "ULTJ-daily-2026q2.json",
+      "sha256": "388e765984f54a0cff9b66c62f25115bf3b7b5f7c9c2e1ec62d63a30162d2b04"
+    },
+    {
+      "nama": "ULTJ-daily-2026q3.json",
+      "sha256": "9f04664b0960e2f7ccc0089fb16b2ff3a5b2a1eeb0321cfd655235bd73d74f35"
+    },
+    {
+      "nama": "ULTJ-filings.json",
+      "sha256": "2659d16d1b62b31c40cb211f06fb9e5824020518d39fcde6e827d50641efbb75"
+    },
+    {
+      "nama": "ULTJ-ownership.json",
+      "sha256": "a1a45644f55fc2066a58133bd40f3dcc0eea2d3f52eb6d12eab3051d7e131c78"
+    },
+    {
+      "nama": "ULTJ-report-overview-financials.json",
+      "sha256": "cbb57d4f7b5137eeb6d0ca7628d0c39a6f06c8a9dbda5a51bfc6d450c4e800f1"
+    },
+    {
+      "nama": "dada-corpactions.json",
+      "sha256": "232abaa86f238deba5ebbecd805a766da32278df80595fe7aae8f23cbe3629df"
+    },
+    {
+      "nama": "dada-daily-2025q3.json",
+      "sha256": "ce5da758a110ee23d695157dfe99f91be734ca67e4403a398ccc6bdf9f0c937e"
+    },
+    {
+      "nama": "dada-filings-2025-p20.json",
+      "sha256": "ea05e1c8056a0c333a1ad9d2cb59a3bc3e2b75b2744d9f0e1acda01b19622256"
+    },
+    {
+      "nama": "dada-filings-2025.json",
+      "sha256": "7e38fb0bfdc448df8ad5796bd81639d700a7ff1b542f0ce7df77a794555a3b1b"
+    },
+    {
+      "nama": "dada-filings-2026.json",
+      "sha256": "2a0349e79e2e426219c3af85ec1106175d046c35285858cad75171a735ac67a1"
+    },
+    {
+      "nama": "dada-news-2025.json",
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010"
+    },
+    {
+      "nama": "dada-suspensions.json",
+      "sha256": "6a0d855a6e4a38c8e4a8afdb66addc80317e2acba23990db692512c28c0e1a81"
+    },
+    {
+      "nama": "kalender-bonus.json",
+      "sha256": "85df959a30ed0fb80759b0ccd4ae5aa56545b93082508e7eb13d15172c4e22c4"
+    },
+    {
+      "nama": "kalender-right-issue.json",
+      "sha256": "22e09cfcbb90b4223c8ae0fdab603ec1d37bf58ae0b12a8702b4bbb81863b73a"
+    },
+    {
+      "nama": "kalender-stock-split.json",
+      "sha256": "0b8d2e87d9e0fc7ac58da04bfa99642e3a1fd5e58c17e219843823b63345f7a5"
+    },
+    {
+      "nama": "suspensions-all.json",
+      "sha256": "aa4bc1a6373dbb88b748274df9f892116a711c5267b764848faaed075b4b54b9"
+    }
+  ]
+}

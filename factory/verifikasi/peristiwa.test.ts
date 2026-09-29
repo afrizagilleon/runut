@@ -18,7 +18,11 @@ import {
   tahunTerjelaskan,
 } from './aturan-keuangan.ts';
 import { keparahanTemuan } from '../skema/tipe.ts';
+import { mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { PENOLAK_PERISTIWA, PERISTIWA, susunDokumenBukti, susunLaporanGudang } from '../gudang.ts';
+import { salinGudangBeku } from '../muat/gudang-beku.ts';
 
 const ktx = (ubah: Partial<DataEmiten> = {}) => konteksGudang(ubah);
 
@@ -150,7 +154,10 @@ describe('satu cacat data, satu temuan (RQ-04)', () => {
 });
 
 describe('D-4 — tabel peristiwa di dokumen bukti', () => {
-  const laporan = susunLaporanGudang();
+  // Angka di bawah (6 dividen berharga, 5 lolos, MTLA, RAJA) dikunci atas
+  // gudang beku M4a A-1 — 111 berkas yang sidiknya dibekukan — bukan atas
+  // seluruh isi `.cache/sectors/`, yang bertambah setiap ada audit baru.
+  const laporan = susunLaporanGudang(salinGudangBeku(mkdtempSync(join(tmpdir(), 'peristiwa-beku-'))));
   const dokumen = susunDokumenBukti(laporan);
 
   it('memuat tiap jenis peristiwa kurikulum, termasuk yang nol kejadian', () => {

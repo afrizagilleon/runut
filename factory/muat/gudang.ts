@@ -18,8 +18,9 @@
  *    dibangun ulang kalau aturan ini tidak tertulis.
  * 3. **Berkas yang tidak dikenali dilaporkan**, tidak dibuang diam-diam.
  */
-import { readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { GudangBekuRusak, sha256, type BerkasBeku } from './sidik.ts';
 import type {
   BarisHarga,
   BerkasLaporan,
@@ -710,10 +711,46 @@ function serapKalender(kumpul: Pengumpul, berkas: string, akar: Record<string, u
 
 // --- pintu utama -------------------------------------------------------------
 
-export function muatGudang(folder: string = FOLDER_GUDANG): Gudang {
-  const namaBerkas = readdirSync(folder)
-    .filter((n) => n.endsWith('.json'))
-    .sort();
+export interface OpsiMuat {
+  /**
+   * Daftar izin (M4a A-1): hanya berkas ini yang dibaca, dan tiap berkas harus
+   * ada dengan sha256 yang sama persis. Satu saja hilang atau berbeda →
+   * `GudangBekuRusak` yang menyebut nama berkasnya; tidak ada gudang setengah.
+   * Tanpa daftar izin, seluruh `*.json` di folder dibaca seperti sebelumnya.
+   */
+  izin?: readonly BerkasBeku[];
+}
+
+/** Isi berkas yang dibaca, sesudah sidiknya dicocokkan bila ada daftar izin. */
+function bacaIsiBerkas(folder: string, opsi: OpsiMuat): Array<{ nama: string; isi: string }> {
+  if (opsi.izin === undefined) {
+    return readdirSync(folder)
+      .filter((n) => n.endsWith('.json'))
+      .sort()
+      .map((nama) => ({ nama, isi: readFileSync(`${folder}/${nama}`, 'utf8') }));
+  }
+  const masalah: Array<{ nama: string; sebab: string }> = [];
+  const keluar: Array<{ nama: string; isi: string }> = [];
+  for (const b of [...opsi.izin].sort((x, y) => (x.nama < y.nama ? -1 : x.nama > y.nama ? 1 : 0))) {
+    const jalur = `${folder}/${b.nama}`;
+    if (!existsSync(jalur)) {
+      masalah.push({ nama: b.nama, sebab: 'berkas hilang' });
+      continue;
+    }
+    const mentah = readFileSync(jalur);
+    const sidik = sha256(mentah);
+    if (sidik !== b.sha256) {
+      masalah.push({ nama: b.nama, sebab: `sha256 ${sidik.slice(0, 12)}… ≠ beku ${b.sha256.slice(0, 12)}…` });
+      continue;
+    }
+    keluar.push({ nama: b.nama, isi: mentah.toString('utf8') });
+  }
+  if (masalah.length > 0) throw new GudangBekuRusak(masalah);
+  return keluar;
+}
+
+export function muatGudang(folder: string = FOLDER_GUDANG, opsi: OpsiMuat = {}): Gudang {
+  const berkasTerbaca = bacaIsiBerkas(folder, opsi);
 
   const kumpul: Pengumpul = {
     emiten: new Map(),
@@ -733,10 +770,10 @@ export function muatGudang(folder: string = FOLDER_GUDANG): Gudang {
   };
   const catatanBerkas: BerkasGudang[] = [];
 
-  for (const nama of namaBerkas) {
+  for (const { nama, isi: teksBerkas } of berkasTerbaca) {
     let isi: unknown;
     try {
-      isi = JSON.parse(readFileSync(`${folder}/${nama}`, 'utf8'));
+      isi = JSON.parse(teksBerkas);
     } catch (galat) {
       catatanBerkas.push({
         berkas: nama,

@@ -9,6 +9,9 @@ const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 
 export const FOLDER_CACHE = '.cache/sectors';
 
+/** Folder cache bawaan (absolut). Pembangun kasus tayang boleh menunjuk folder lain yang sudah diperiksa sidiknya (M4a A-1). */
+export const FOLDER_CACHE_ABSOLUT = AKAR + FOLDER_CACHE;
+
 export class CacheHilang extends Error {
   readonly berkas: string;
 
@@ -31,10 +34,10 @@ export class CacheTakSesuai extends Error {
 }
 
 /** Baca satu berkas JSON dari cache. Melempar, tidak pernah mengembalikan nilai kosong diam-diam. */
-export function bacaCache(berkas: string): unknown {
+export function bacaCache(berkas: string, folder: string = FOLDER_CACHE_ABSOLUT): unknown {
   let isi: string;
   try {
-    isi = readFileSync(AKAR + FOLDER_CACHE + '/' + berkas, 'utf8');
+    isi = readFileSync(folder + '/' + berkas, 'utf8');
   } catch (galat) {
     throw new CacheHilang(berkas, galat instanceof Error ? galat.message : String(galat));
   }
@@ -53,8 +56,8 @@ function obyek(nilai: unknown, berkas: string, tempat: string): Record<string, u
 }
 
 /** Ambil `results` dari respons berpaginasi. */
-export function hasilCache(berkas: string): Record<string, unknown>[] {
-  const akar = obyek(bacaCache(berkas), berkas, 'akar berkas');
+export function hasilCache(berkas: string, folder?: string): Record<string, unknown>[] {
+  const akar = obyek(bacaCache(berkas, folder), berkas, 'akar berkas');
   const hasil = akar['results'];
   if (!Array.isArray(hasil)) {
     throw new CacheTakSesuai(berkas, 'tidak memuat larik "results"');
@@ -63,16 +66,16 @@ export function hasilCache(berkas: string): Record<string, unknown>[] {
 }
 
 /** Ambil larik di akar berkas. */
-export function larikCache(berkas: string): Record<string, unknown>[] {
-  const akar = bacaCache(berkas);
+export function larikCache(berkas: string, folder?: string): Record<string, unknown>[] {
+  const akar = bacaCache(berkas, folder);
   if (!Array.isArray(akar)) {
     throw new CacheTakSesuai(berkas, 'akar berkas bukan larik');
   }
   return akar.map((baris, nomor) => obyek(baris, berkas, `[${String(nomor)}]`));
 }
 
-export function obyekCache(berkas: string): Record<string, unknown> {
-  return obyek(bacaCache(berkas), berkas, 'akar berkas');
+export function obyekCache(berkas: string, folder?: string): Record<string, unknown> {
+  return obyek(bacaCache(berkas, folder), berkas, 'akar berkas');
 }
 
 export function angka(

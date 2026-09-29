@@ -94,8 +94,8 @@ function namaBerkasSumber(url: string): string {
   return potongan[potongan.length - 1] ?? url;
 }
 
-function muatLaporan(asal: AsalBerkas): Laporan[] {
-  const baris = hasilCache(asal.berkas);
+function muatLaporan(asal: AsalBerkas, folder?: string): Laporan[] {
+  const baris = hasilCache(asal.berkas, folder);
   return baris.map((r, nomor): Laporan => {
     const tempat = `results[${String(nomor)}]`;
     const berkasSumber = namaBerkasSumber(teks(r, 'source', asal.berkas, tempat));
@@ -132,9 +132,9 @@ function muatLaporan(asal: AsalBerkas): Laporan[] {
   });
 }
 
-function muatHarga(): BarisHarga[] {
+function muatHarga(folder?: string): BarisHarga[] {
   const asal = BERKAS.harga;
-  const baris = larikCache(asal.berkas);
+  const baris = larikCache(asal.berkas, folder);
   const harga = baris.map((h, nomor): BarisHarga => {
     const tempat = `[${String(nomor)}]`;
     return {
@@ -150,9 +150,9 @@ function muatHarga(): BarisHarga[] {
   return harga.sort((a, b) => a.tanggal.localeCompare(b.tanggal));
 }
 
-function muatSuspensi(): Suspensi[] {
+function muatSuspensi(folder?: string): Suspensi[] {
   const asal = BERKAS.suspensi;
-  return hasilCache(asal.berkas)
+  return hasilCache(asal.berkas, folder)
     .map((s, nomor): Suspensi => {
       const tempat = `results[${String(nomor)}]`;
       return {
@@ -165,9 +165,9 @@ function muatSuspensi(): Suspensi[] {
 
 const POLA_KUORUM = /attendance was only ([\d.]+)% of shares/;
 
-function muatAksiKorporasi(): { dividen: Dividen[]; rups: HasilRups[] } {
+function muatAksiKorporasi(folder?: string): { dividen: Dividen[]; rups: HasilRups[] } {
   const asal = BERKAS.aksiKorporasi;
-  const akar = obyekCache(asal.berkas);
+  const akar = obyekCache(asal.berkas, folder);
   const aksi = akar['corporate_actions'];
   if (typeof aksi !== 'object' || aksi === null) {
     throw new Error(`${asal.berkas} tidak memuat "corporate_actions".`);
@@ -236,25 +236,29 @@ export function hitungSahamBeredar(harga: BarisHarga[]): SahamBeredar {
   };
 }
 
-/** Baca seluruh data DADA yang dipakai M1. Gagal keras kalau satu berkas hilang. */
-export function muatDada(): DataDada {
+/**
+ * Baca seluruh data DADA yang dipakai M1. Gagal keras kalau satu berkas hilang.
+ * `folder` bawaan = `.cache/sectors`; pembangun kasus tayang memberi folder
+ * yang sidiknya sudah dicocokkan dengan gudang beku (M4a A-1).
+ */
+export function muatDada(folder?: string): DataDada {
   const asal_laporan = new Map<string, AsalBerkas>();
   const catat = (asal: AsalBerkas): Laporan[] => {
-    const daftar = muatLaporan(asal);
+    const daftar = muatLaporan(asal, folder);
     for (const l of daftar) asal_laporan.set(l.laporan_id, asal);
     return daftar;
   };
 
   const laporan2025 = urutWaktu([...catat(BERKAS.filings2025), ...catat(BERKAS.filings2025p20)]);
   const laporan2026 = urutWaktu(catat(BERKAS.filings2026));
-  const harga = muatHarga();
-  const { dividen, rups } = muatAksiKorporasi();
+  const harga = muatHarga(folder);
+  const { dividen, rups } = muatAksiKorporasi(folder);
   return {
     simbol: 'DADA.JK',
     laporan2025,
     laporan2026,
     harga,
-    suspensi: muatSuspensi(),
+    suspensi: muatSuspensi(folder),
     dividen,
     rups,
     saham_beredar: hitungSahamBeredar(harga),

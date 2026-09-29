@@ -7,7 +7,7 @@
  * penyebabnya (INV-6).
  */
 import { writeFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { angkaId } from './format.ts';
 import {
   KasusTidakSah,
@@ -20,7 +20,8 @@ import { keJson } from './kasus/json.ts';
 import { DADA_2025_10_08 } from './kasus/dada-2025-10-08.ts';
 import { ULTJ_2026_05_04 } from './kasus/ultj-2026-05-04.ts';
 import { muatDada } from './muat/dada.ts';
-import { muatGudang } from './muat/gudang.ts';
+import { FOLDER_GUDANG } from './muat/gudang.ts';
+import { bacaDaftarBeku, muatGudangBeku, periksaGudangBeku, type DaftarBeku } from './muat/gudang-beku.ts';
 import type { HasilBangun } from './kasus/bangun.ts';
 
 const AKAR = fileURLToPath(new URL('../', import.meta.url));
@@ -41,8 +42,15 @@ const KASUS_UMUM: Record<string, DefinisiKasusUmum> = {
   'ultj-2026-05-04': ULTJ_2026_05_04,
 };
 
-function bangunUmum(def: DefinisiKasusUmum): HasilBangun {
-  const gudang = muatGudang();
+/**
+ * Kasus tayang dibangun dari **gudang beku** (M4a A-1): 111 berkas yang
+ * sidiknya dibekukan di `docs/bukti/gudang-beku-kasus.json`, bukan dari apa pun
+ * yang kebetulan ada di `.cache/sectors/`. Menambah data untuk audit tidak
+ * boleh menggeser kasus yang sedang dimainkan; satu berkas beku hilang atau
+ * berbeda satu byte → `GudangBekuRusak` yang menyebut nama berkasnya.
+ */
+function bangunUmum(def: DefinisiKasusUmum, folder: string, daftar: DaftarBeku): HasilBangun {
+  const gudang = muatGudangBeku(folder, daftar);
   const data = gudang.emiten.get(def.simbol);
   if (data === undefined) {
     throw new Error(
@@ -52,6 +60,24 @@ function bangunUmum(def: DefinisiKasusUmum): HasilBangun {
   }
   const kosong = gudang.berkas.filter((b) => b.jenis === 'paginasi-kosong').map((b) => b.berkas);
   return bangunKasusUmum(def, data, gudang.asal, kosong);
+}
+
+/** Bangun satu kasus tayang dari gudang beku di `folder`. Tidak menulis apa pun. */
+export function bangunKasusTayang(
+  kasus_id: string,
+  folder: string = FOLDER_GUDANG,
+  daftar: DaftarBeku = bacaDaftarBeku(),
+): HasilBangun {
+  const definisi = KASUS[kasus_id];
+  if (definisi !== undefined) {
+    // Pemuat DADA membaca berkasnya sendiri menurut nama; sidik seluruh gudang
+    // beku diperiksa lebih dulu, lalu berkas dibaca dari folder yang sama.
+    periksaGudangBeku(folder, daftar);
+    return bangunKasus(definisi, muatDada(folder));
+  }
+  const definisiUmum = KASUS_UMUM[kasus_id];
+  if (definisiUmum !== undefined) return bangunUmum(definisiUmum, folder, daftar);
+  throw new Error(`Kasus "${kasus_id}" tidak dikenal.`);
 }
 
 function utama(argumen: string[]): number {
@@ -75,8 +101,7 @@ function utama(argumen: string[]): number {
     return 1;
   }
 
-  const { kasus } =
-    definisi !== undefined ? bangunKasus(definisi, muatDada()) : bangunUmum(definisiUmum!);
+  const { kasus } = bangunKasusTayang(kasus_id);
 
   const tujuan = `${AKAR}cases/${kasus_id}.json`;
   writeFileSync(tujuan, keJson(kasus), 'utf8');
@@ -110,14 +135,18 @@ function utama(argumen: string[]): number {
   return 0;
 }
 
-try {
-  process.exitCode = utama(process.argv.slice(2));
-} catch (galat) {
-  if (galat instanceof KasusTidakSah) {
-    console.error('Kasus tidak dibangun karena tidak lolos validator:');
-    for (const m of galat.masalah) console.error(`  [${m.kode}] ${m.pesan}`);
-  } else {
-    console.error(galat instanceof Error ? `${galat.name}: ${galat.message}` : String(galat));
+const dijalankanLangsung =
+  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (dijalankanLangsung) {
+  try {
+    process.exitCode = utama(process.argv.slice(2));
+  } catch (galat) {
+    if (galat instanceof KasusTidakSah) {
+      console.error('Kasus tidak dibangun karena tidak lolos validator:');
+      for (const m of galat.masalah) console.error(`  [${m.kode}] ${m.pesan}`);
+    } else {
+      console.error(galat instanceof Error ? `${galat.name}: ${galat.message}` : String(galat));
+    }
+    process.exitCode = 1;
   }
-  process.exitCode = 1;
 }
