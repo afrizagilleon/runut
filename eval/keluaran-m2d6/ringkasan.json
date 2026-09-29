@@ -1,0 +1,3332 @@
+{
+  "setelan": {
+    "penalar": {
+      "kritikus": {
+        "effort": "high",
+        "maxTokens": 24000,
+        "ambang": 1000
+      },
+      "penebakGlm": {
+        "effort": "high",
+        "maxTokens": 8000,
+        "ambang": 300
+      }
+    },
+    "ambang_pilihan_kembar": {
+      "maks_manusia": 0.778,
+      "ambang": 0.889,
+      "pasangan": "cases/dada-2025-10-08.json soal 3 a–b"
+    },
+    "penebak": {
+      "petunjuk_sha": null,
+      "model": [
+        "z-ai/glm-5.3",
+        "z-ai/glm-5.3",
+        "z-ai/glm-5.3"
+      ]
+    },
+    "penyedia_dikecualikan": {
+      "deepseek/deepseek-v4.1-flash": [
+        "atlas-cloud"
+      ],
+      "z-ai/glm-5.3": [
+        "akashml",
+        "alibaba",
+        "atlas-cloud",
+        "baidu",
+        "gmicloud",
+        "inference-net",
+        "morph",
+        "novita",
+        "reka",
+        "relace",
+        "sail-research",
+        "z-ai"
+      ]
+    }
+  },
+  "pagu": {
+    "milestone_usd": 3.5,
+    "bagian": {
+      "probe": {
+        "usd": 0.4,
+        "awalanTag": "m2d6/probe/"
+      },
+      "kalibrasi": {
+        "usd": 0.8,
+        "awalanTag": "m2d6/kalibrasi/"
+      },
+      "kritikus": {
+        "usd": 0.3,
+        "awalanTag": "m2d6/kritikus/"
+      }
+    }
+  },
+  "temuan_m2d5": {
+    "penalaran": {
+      "kritikus": {
+        "n": 9,
+        "median": 84,
+        "maks": 260
+      },
+      "penebak GLM": {
+        "n": 9,
+        "median": 25,
+        "maks": 123
+      },
+      "penebak DeepSeek": {
+        "n": 18,
+        "median": 5390.5,
+        "maks": 15344
+      },
+      "pembaca-kartu": {
+        "n": 10,
+        "median": 553.5,
+        "maks": 3796
+      },
+      "penulis": {
+        "n": 13,
+        "median": 13035,
+        "maks": 20000
+      }
+    },
+    "kritikus_putusan": 9,
+    "kritikus_keberatan": 0,
+    "featherless_m2d4_kritikus": {
+      "n": 47,
+      "median_token_keluar": 17678
+    },
+    "luar": [
+      {
+        "no": 1,
+        "kunci": "c",
+        "tebak_dalam": [
+          {
+            "pilihan": "b",
+            "yakin": 65
+          },
+          {
+            "pilihan": "b",
+            "yakin": 50
+          },
+          {
+            "pilihan": "b",
+            "yakin": 40
+          }
+        ],
+        "tebak_luar": {
+          "jawaban": [
+            {
+              "pilihan": "b",
+              "yakin": 40
+            },
+            {
+              "pilihan": "b",
+              "yakin": 35
+            },
+            {
+              "pilihan": "c",
+              "yakin": 30
+            }
+          ],
+          "benar": 1,
+          "yakin_benar": 30,
+          "lolos": true
+        },
+        "kartu_luar": {
+          "jawaban": [
+            {
+              "pilihan": "c",
+              "kartu": [
+                2,
+                1
+              ],
+              "bingung": "",
+              "penilaian": ""
+            },
+            {
+              "pilihan": "c",
+              "kartu": [
+                2
+              ],
+              "bingung": "Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor.",
+              "penilaian": ""
+            },
+            {
+              "pilihan": "c",
+              "kartu": [
+                2,
+                1
+              ],
+              "bingung": "dalam rangka cooling down sebagai bentuk perlindungan bagi investor",
+              "penilaian": ""
+            }
+          ],
+          "benar": 3,
+          "menunjuk": 3,
+          "lolos": true,
+          "penentu": [
+            1,
+            2
+          ]
+        }
+      },
+      {
+        "no": 2,
+        "kunci": "d",
+        "tebak_dalam": [
+          {
+            "pilihan": "a",
+            "yakin": 60
+          },
+          {
+            "pilihan": "c",
+            "yakin": 60
+          },
+          {
+            "pilihan": "a",
+            "yakin": 55
+          }
+        ],
+        "tebak_luar": {
+          "jawaban": [
+            {
+              "pilihan": "d",
+              "yakin": 40
+            },
+            {
+              "pilihan": "d",
+              "yakin": 40
+            },
+            {
+              "pilihan": "d",
+              "yakin": 40
+            }
+          ],
+          "benar": 3,
+          "yakin_benar": 40,
+          "lolos": false
+        },
+        "kartu_luar": {
+          "jawaban": [
+            {
+              "pilihan": "d",
+              "kartu": [
+                1,
+                2,
+                3
+              ],
+              "bingung": "",
+              "penilaian": ""
+            },
+            {
+              "pilihan": "d",
+              "kartu": [
+                1
+              ],
+              "bingung": "",
+              "penilaian": "Gw udah hafal polanya"
+            },
+            {
+              "pilihan": "d",
+              "kartu": [
+                1,
+                2,
+                3
+              ],
+              "bingung": "",
+              "penilaian": ""
+            }
+          ],
+          "benar": 3,
+          "menunjuk": 3,
+          "lolos": true,
+          "penentu": [
+            1
+          ]
+        }
+      },
+      {
+        "no": 3,
+        "kunci": "d",
+        "tebak_dalam": [
+          {
+            "pilihan": "a",
+            "yakin": 60
+          },
+          {
+            "pilihan": "a",
+            "yakin": 50
+          },
+          {
+            "pilihan": "b",
+            "yakin": 60
+          }
+        ],
+        "tebak_luar": {
+          "jawaban": [
+            {
+              "pilihan": "d",
+              "yakin": 55
+            },
+            {
+              "pilihan": "d",
+              "yakin": 60
+            },
+            {
+              "pilihan": "d",
+              "yakin": 55
+            }
+          ],
+          "benar": 3,
+          "yakin_benar": 56.666666666666664,
+          "lolos": false
+        },
+        "kartu_luar": {
+          "jawaban": [
+            {
+              "pilihan": "d",
+              "kartu": [
+                1
+              ],
+              "bingung": "dalam rangka cooling down sebagai bentuk perlindungan bagi investor",
+              "penilaian": ""
+            },
+            {
+              "pilihan": "d",
+              "kartu": [
+                1
+              ],
+              "bingung": "Betul, hasil putusannya ada di catatan resmi.",
+              "penilaian": ""
+            },
+            {
+              "pilihan": "d",
+              "kartu": [
+                1
+              ],
+              "bingung": "a) Betul, hasil putusannya tercatat di dokumen. / b) Betul, hasil putusannya ada di catatan resmi.",
+              "penilaian": ""
+            }
+          ],
+          "benar": 3,
+          "menunjuk": 3,
+          "lolos": true,
+          "penentu": [
+            1
+          ]
+        }
+      }
+    ]
+  },
+  "probe": [
+    {
+      "tag": "m2d6/probe/p1/kritikus/high-1",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 3678,
+      "biaya_usd": 0.0179944808,
+      "catatan": "1 keberatan (bahasa); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p1/kritikus/high-2",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "PrimeIntellect",
+      "token_penalaran": 1731,
+      "biaya_usd": 0.011631,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p1/kritikus/high-3",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 7611,
+      "biaya_usd": 0.0354232168,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p1/kritikus/high-4",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 5126,
+      "biaya_usd": 0.0239216168,
+      "catatan": "0 keberatan (-); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p1/penebak-glm/high-1",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "Relace",
+      "token_penalaran": 685,
+      "biaya_usd": 0.0030204,
+      "catatan": "a/45 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p1/penebak-glm/high-2",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 267,
+      "biaya_usd": 0.0010374000000000002,
+      "catatan": "b/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p1/penebak-glm/high-3",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 98,
+      "biaya_usd": 0.00043092000000000006,
+      "catatan": "a/60 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p1/penebak-glm/high-4",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 263,
+      "biaya_usd": 0.0008139600000000002,
+      "catatan": "b/45 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p1/kritikus/medium-1",
+      "peran": "kritikus",
+      "effort": "medium",
+      "penyedia": "Wafer",
+      "token_penalaran": 125,
+      "biaya_usd": 0.0018748035,
+      "catatan": "0 keberatan (-); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p1/kritikus/medium-2",
+      "peran": "kritikus",
+      "effort": "medium",
+      "penyedia": "Wafer",
+      "token_penalaran": 20,
+      "biaya_usd": 0.0012063395,
+      "catatan": "0 keberatan (-); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p1/kritikus/medium-3",
+      "peran": "kritikus",
+      "effort": "medium",
+      "penyedia": "Wafer",
+      "token_penalaran": 238,
+      "biaya_usd": 0.0021699395,
+      "catatan": "0 keberatan (-); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p1/penebak-glm/medium-1",
+      "peran": "penebak",
+      "effort": "medium",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 175,
+      "biaya_usd": 0.0008139600000000002,
+      "catatan": "b/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p1/penebak-glm/medium-2",
+      "peran": "penebak",
+      "effort": "medium",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 0,
+      "biaya_usd": 0.00022800000000000004,
+      "catatan": "a/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p1/penebak-glm/medium-3",
+      "peran": "penebak",
+      "effort": "medium",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 0,
+      "biaya_usd": 0.00021432000000000002,
+      "catatan": "tak terbaca"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-1",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 181,
+      "biaya_usd": 0.0006657600000000002,
+      "catatan": "a/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-2",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 628,
+      "biaya_usd": 0.0016302000000000003,
+      "catatan": "b/40 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-3",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 311,
+      "biaya_usd": 0.0009530400000000002,
+      "catatan": "b/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-4",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 60,
+      "biaya_usd": 0.00036480000000000003,
+      "catatan": "a/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-5",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 111,
+      "biaya_usd": 0.0004674000000000001,
+      "catatan": "a/50 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-6",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "InferenceNet",
+      "token_penalaran": 329,
+      "biaya_usd": 0.0009416400000000001,
+      "catatan": "b/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p2/kritikus/high-1",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 11880,
+      "biaya_usd": 0.0541584168,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p2/kritikus/high-2",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 11040,
+      "biaya_usd": 0.0508276168,
+      "catatan": "2 keberatan (tertebak,bahasa); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p2/kritikus/high-3",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 6457,
+      "biaya_usd": 0.0299232168,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-1",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "Relace",
+      "token_penalaran": 161,
+      "biaya_usd": 0.0010404,
+      "catatan": "b/60 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-2",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "Sail Research",
+      "token_penalaran": 340,
+      "biaya_usd": 0.0015952,
+      "catatan": "b/45 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-3",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "Parasail",
+      "token_penalaran": 371,
+      "biaya_usd": 0.0025192,
+      "catatan": "b/55 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-4",
+      "peran": "penebak",
+      "effort": "high",
+      "penyedia": "Sail Research",
+      "token_penalaran": 615,
+      "biaya_usd": 0.00244425,
+      "catatan": "b/65 (kunci d)"
+    },
+    {
+      "tag": "m2d6/probe/p3/kritikus/high-1",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 6589,
+      "biaya_usd": 0.0303676168,
+      "catatan": "0 keberatan (-); tak tercek 0; juga benar -"
+    },
+    {
+      "tag": "m2d6/probe/p3/kritikus/high-2",
+      "peran": "kritikus",
+      "effort": "high",
+      "penyedia": "Wafer",
+      "token_penalaran": 7296,
+      "biaya_usd": 0.0338744168,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -"
+    }
+  ],
+  "penyedia": [
+    {
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "slug": "atlas-cloud",
+      "diperiksa": 16,
+      "melanggar": 10,
+      "jenis": [
+        "melewati-batas"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T04:47:33.583Z",
+          "tag": "m2d5/probe/penulis/r8000",
+          "rincian": "penalaran 14000 > batas 8000"
+        },
+        {
+          "waktu": "2026-09-29T04:52:51.522Z",
+          "tag": "m2d5/probe/p2/penulis/r16000-b",
+          "rincian": "penalaran 24000 > batas 16000"
+        },
+        {
+          "waktu": "2026-09-29T04:58:48.781Z",
+          "tag": "m2d5/tirt/p1/susun/o1",
+          "rincian": "penalaran 16881 > batas 12000"
+        },
+        {
+          "waktu": "2026-09-29T05:00:36.691Z",
+          "tag": "m2d5/tirt/p1/susun/o2",
+          "rincian": "penalaran 14550 > batas 12000"
+        },
+        {
+          "waktu": "2026-09-29T05:11:20.582Z",
+          "tag": "m2d5/tirt/p2/tulis-ulang/o2",
+          "rincian": "penalaran 20000 > batas 12000"
+        },
+        {
+          "waktu": "2026-09-29T05:14:04.634Z",
+          "tag": "m2d5/tirt/p2/tulis-ulang/o3",
+          "rincian": "penalaran 20000 > batas 12000"
+        },
+        {
+          "waktu": "2026-09-29T05:21:56.669Z",
+          "tag": "m2d5/tirt/p3/tulis-ulang/o1",
+          "rincian": "penalaran 19751 > batas 12000"
+        },
+        {
+          "waktu": "2026-09-29T05:23:36.366Z",
+          "tag": "m2d5/tirt/p3/tulis-ulang/o3",
+          "rincian": "penalaran 13035 > batas 12000"
+        },
+        {
+          "waktu": "2026-09-29T05:28:27.862Z",
+          "tag": "m2d5/tirt/p4/tulis-ulang/o1",
+          "rincian": "penalaran 15212 > batas 12000"
+        },
+        {
+          "waktu": "2026-09-29T05:29:55.078Z",
+          "tag": "m2d5/tirt/p4/tulis-ulang/o3",
+          "rincian": "penalaran 12517 > batas 12000"
+        }
+      ]
+    },
+    {
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "slug": "coreweave",
+      "diperiksa": 5,
+      "melanggar": 0,
+      "jenis": [],
+      "dikecualikan": false,
+      "bukti": []
+    },
+    {
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "slug": "deepinfra",
+      "diperiksa": 3,
+      "melanggar": 0,
+      "jenis": [],
+      "dikecualikan": false,
+      "bukti": []
+    },
+    {
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Together",
+      "slug": "together",
+      "diperiksa": 2,
+      "melanggar": 0,
+      "jenis": [],
+      "dikecualikan": false,
+      "bukti": []
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "slug": "sail-research",
+      "diperiksa": 35,
+      "melanggar": 19,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:40:39.205Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 48 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:42:19.102Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 126 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:42:34.490Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 41 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:44:03.219Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 136 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:47:35.590Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 75 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:48:23.304Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 168 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:15.975Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 270 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:53.004Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 78 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:56.463Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1",
+          "rincian": "effort \"high\" diminta, penalaran 45 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:56.956Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1",
+          "rincian": "effort \"high\" diminta, penalaran 1 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:57.884Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1",
+          "rincian": "effort \"high\" diminta, penalaran 125 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:00.416Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2",
+          "rincian": "effort \"high\" diminta, penalaran 173 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:03.516Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 55 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:04.569Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t1",
+          "rincian": "effort \"high\" diminta, penalaran 180 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:16.559Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2",
+          "rincian": "effort \"high\" diminta, penalaran 239 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:26.158Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2",
+          "rincian": "effort \"high\" diminta, penalaran 49 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:30.986Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 38 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:30.993Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1/u1",
+          "rincian": "effort \"high\" diminta, penalaran 41 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:34.150Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t2",
+          "rincian": "effort \"high\" diminta, penalaran 1 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "slug": "reka",
+      "diperiksa": 16,
+      "melanggar": 13,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:44:01.606Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 50 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:47:58.350Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 23 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:48:31.289Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 58 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:48:52.654Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 24 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:49:14.137Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 115 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:08.333Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 128 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:12.597Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1/u1",
+          "rincian": "effort \"high\" diminta, penalaran 186 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:21.363Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1",
+          "rincian": "effort \"high\" diminta, penalaran 46 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:25.032Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1/u1",
+          "rincian": "effort \"high\" diminta, penalaran 29 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:26.406Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1",
+          "rincian": "effort \"high\" diminta, penalaran 47 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:28.653Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2/u1",
+          "rincian": "effort \"high\" diminta, penalaran 47 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:29.027Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2/u1",
+          "rincian": "effort \"high\" diminta, penalaran 35 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:33.548Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 22 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "slug": "atlas-cloud",
+      "diperiksa": 9,
+      "melanggar": 8,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:49:34.485Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 227 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:10:55.432Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 49 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:10:59.168Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 205 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:12:33.519Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 184 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:12:43.323Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 52 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:19:30.376Z",
+          "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 55 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:30:49.644Z",
+          "tag": "m2d6/kritikus/m2d5-tirt-o3/s1/kritikus/u1",
+          "rincian": "effort \"high\" diminta, penalaran 537 < ambang 1000"
+        },
+        {
+          "waktu": "2026-09-29T07:35:06.373Z",
+          "tag": "m2d6/kritikus/m2d5-tirt-o2/s1/kritikus",
+          "rincian": "effort \"high\" diminta, penalaran 486 < ambang 1000"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "slug": "relace",
+      "diperiksa": 13,
+      "melanggar": 8,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:20:36.751Z",
+          "tag": "m2d6/probe/p3/penebak-glm/high-1",
+          "rincian": "effort \"high\" diminta, penalaran 161 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:40:37.765Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 48 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:42:36.954Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 70 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:45:39.254Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 62 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:12.087Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 52 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:55.237Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 85 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:51:58.599Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1/u1",
+          "rincian": "effort \"high\" diminta, penalaran 101 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:24.408Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1/u1",
+          "rincian": "effort \"high\" diminta, penalaran 114 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "slug": "inference-net",
+      "diperiksa": 9,
+      "melanggar": 6,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:15:54.164Z",
+          "tag": "m2d6/probe/p1/penebak-glm/high-2",
+          "rincian": "effort \"high\" diminta, penalaran 267 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:15:55.303Z",
+          "tag": "m2d6/probe/p1/penebak-glm/high-3",
+          "rincian": "effort \"high\" diminta, penalaran 98 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:15:56.978Z",
+          "tag": "m2d6/probe/p1/penebak-glm/high-4",
+          "rincian": "effort \"high\" diminta, penalaran 263 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:16:45.528Z",
+          "tag": "m2d6/probe/p2/penebak-glm/high-1",
+          "rincian": "effort \"high\" diminta, penalaran 181 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:16:51.850Z",
+          "tag": "m2d6/probe/p2/penebak-glm/high-4",
+          "rincian": "effort \"high\" diminta, penalaran 60 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:16:53.363Z",
+          "tag": "m2d6/probe/p2/penebak-glm/high-5",
+          "rincian": "effort \"high\" diminta, penalaran 111 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "slug": "novita",
+      "diperiksa": 5,
+      "melanggar": 4,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:42:59.512Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 60 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:11:26.602Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 34 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:19:18.669Z",
+          "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 193 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:28:12.651Z",
+          "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t2",
+          "rincian": "effort \"high\" diminta, penalaran 181 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "slug": "wafer",
+      "diperiksa": 64,
+      "melanggar": 4,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": false,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:52:18.881Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2/u1",
+          "rincian": "effort \"high\" diminta, penalaran 260 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:33.064Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 195 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:11:29.117Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 215 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:18:23.057Z",
+          "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 115 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "slug": "alibaba",
+      "diperiksa": 5,
+      "melanggar": 3,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:49:28.523Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 58 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:15:52.346Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 164 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:18:25.983Z",
+          "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 14 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AkashML",
+      "slug": "akashml",
+      "diperiksa": 3,
+      "melanggar": 2,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:52:02.000Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2/u1",
+          "rincian": "effort \"high\" diminta, penalaran 67 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:12:37.002Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 37 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Baidu",
+      "slug": "baidu",
+      "diperiksa": 2,
+      "melanggar": 2,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:45:42.118Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 35 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:12:39.761Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 0 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "slug": "gmicloud",
+      "diperiksa": 4,
+      "melanggar": 2,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:42:17.150Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 76 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:15:46.632Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 1 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "slug": "morph",
+      "diperiksa": 7,
+      "melanggar": 2,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:48:55.833Z",
+          "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 89 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T06:52:36.641Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 60 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Z.AI",
+      "slug": "z-ai",
+      "diperiksa": 2,
+      "melanggar": 2,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": true,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T07:10:53.670Z",
+          "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 32 < ambang 300"
+        },
+        {
+          "waktu": "2026-09-29T07:19:26.698Z",
+          "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 187 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Cloudflare",
+      "slug": "cloudflare",
+      "diperiksa": 1,
+      "melanggar": 1,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": false,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T07:30:39.619Z",
+          "tag": "m2d6/kritikus/m2d5-tirt-o3/s1/kritikus",
+          "rincian": "effort \"high\" diminta, penalaran 597 < ambang 1000"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Fireworks",
+      "slug": "fireworks",
+      "diperiksa": 2,
+      "melanggar": 1,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": false,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T07:31:01.899Z",
+          "tag": "m2d6/kritikus/m2d5-tirt-o3/s2/kritikus",
+          "rincian": "effort \"high\" diminta, penalaran 566 < ambang 1000"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Modal",
+      "slug": "modal",
+      "diperiksa": 2,
+      "melanggar": 1,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": false,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:52:26.238Z",
+          "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2",
+          "rincian": "effort \"high\" diminta, penalaran 54 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "slug": "phala",
+      "diperiksa": 4,
+      "melanggar": 1,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": false,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T07:19:16.866Z",
+          "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 36 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "slug": "siliconflow",
+      "diperiksa": 1,
+      "melanggar": 1,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": false,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:46:54.742Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t3",
+          "rincian": "effort \"high\" diminta, penalaran 74 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "slug": "venice",
+      "diperiksa": 2,
+      "melanggar": 1,
+      "jenis": [
+        "tidak-berpikir"
+      ],
+      "dikecualikan": false,
+      "bukti": [
+        {
+          "waktu": "2026-09-29T06:43:00.789Z",
+          "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3/u1",
+          "rincian": "effort \"high\" diminta, penalaran 39 < ambang 300"
+        }
+      ]
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Friendli",
+      "slug": "friendli",
+      "diperiksa": 3,
+      "melanggar": 0,
+      "jenis": [],
+      "dikecualikan": false,
+      "bukti": []
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Parasail",
+      "slug": "parasail",
+      "diperiksa": 1,
+      "melanggar": 0,
+      "jenis": [],
+      "dikecualikan": false,
+      "bukti": []
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "penyedia": "PrimeIntellect",
+      "slug": "primeintellect",
+      "diperiksa": 1,
+      "melanggar": 0,
+      "jenis": [],
+      "dikecualikan": false,
+      "bukti": []
+    }
+  ],
+  "kalibrasi": {
+    "matriks": [
+      {
+        "susunan": "K0",
+        "ringkas": "M2d-5: DeepSeek ×2 + GLM reasoning.max_tokens 3.000, petunjuk \"pemain pintar\"",
+        "sampel": 1,
+        "bocor_ditolak": 1,
+        "bocor_total": 4,
+        "aman_ditolak": 3,
+        "aman_total": 6,
+        "per_soal": {
+          "m2d5-tirt-o2": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d5-tirt-o3": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d4-tirt-o3": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d4-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o1": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d4-ultj-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o3": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d4-dada-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-dada-o1": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d5-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          }
+        },
+        "biaya_usd": 0.04703126899
+      },
+      {
+        "susunan": "K1",
+        "ringkas": "DeepSeek ×2 + GLM effort high (dijaga), petunjuk \"pemain pintar\"",
+        "sampel": 2,
+        "bocor_ditolak": 6,
+        "bocor_total": 8,
+        "aman_ditolak": 9,
+        "aman_total": 12,
+        "per_soal": {
+          "m2d5-tirt-o2": {
+            "ditolak": 2,
+            "sampel": 2
+          },
+          "m2d5-tirt-o3": {
+            "ditolak": 1,
+            "sampel": 2
+          },
+          "m2d4-tirt-o3": {
+            "ditolak": 2,
+            "sampel": 2
+          },
+          "m2d4-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 2
+          },
+          "m2d4-ultj-o1": {
+            "ditolak": 2,
+            "sampel": 2
+          },
+          "m2d4-ultj-o2": {
+            "ditolak": 2,
+            "sampel": 2
+          },
+          "m2d4-ultj-o3": {
+            "ditolak": 2,
+            "sampel": 2
+          },
+          "m2d4-dada-o2": {
+            "ditolak": 1,
+            "sampel": 2
+          },
+          "m2d4-dada-o1": {
+            "ditolak": 1,
+            "sampel": 2
+          },
+          "m2d5-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 2
+          }
+        },
+        "biaya_usd": 0.149639099215
+      },
+      {
+        "susunan": "K2",
+        "ringkas": "DeepSeek ×2 + GLM effort high (dijaga), petunjuk \"pemburu soal bocor\"",
+        "sampel": 1,
+        "bocor_ditolak": 4,
+        "bocor_total": 4,
+        "aman_ditolak": 6,
+        "aman_total": 6,
+        "per_soal": {
+          "m2d5-tirt-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d5-tirt-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-tirt-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-dada-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-dada-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d5-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          }
+        },
+        "biaya_usd": 0.070715791785
+      },
+      {
+        "susunan": "K3",
+        "ringkas": "GLM effort high ×3 (dijaga), petunjuk \"pemburu soal bocor\"",
+        "sampel": 1,
+        "bocor_ditolak": 4,
+        "bocor_total": 4,
+        "aman_ditolak": 4,
+        "aman_total": 6,
+        "per_soal": {
+          "m2d5-tirt-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d5-tirt-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-tirt-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-dada-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-dada-o1": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d5-tirt-o1": {
+            "ditolak": 0,
+            "sampel": 1
+          }
+        },
+        "biaya_usd": 0.13719470749999998
+      },
+      {
+        "susunan": "K4",
+        "ringkas": "DeepSeek ×3, petunjuk \"pemburu soal bocor\"",
+        "sampel": 1,
+        "bocor_ditolak": 3,
+        "bocor_total": 4,
+        "aman_ditolak": 4,
+        "aman_total": 6,
+        "per_soal": {
+          "m2d5-tirt-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d5-tirt-o3": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d4-tirt-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-tirt-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o1": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-ultj-o3": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-dada-o2": {
+            "ditolak": 1,
+            "sampel": 1
+          },
+          "m2d4-dada-o1": {
+            "ditolak": 0,
+            "sampel": 1
+          },
+          "m2d5-tirt-o1": {
+            "ditolak": 0,
+            "sampel": 1
+          }
+        },
+        "biaya_usd": 0.07469478375500001
+      }
+    ],
+    "pilihan": "K3",
+    "jalan": [
+      {
+        "susunan": "K0",
+        "sampel": 1,
+        "selesai": true,
+        "biaya_usd": 0.04703126899,
+        "soal": [
+          {
+            "id": "m2d5-tirt-o2",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": false,
+            "tebakan": [
+              "b/60",
+              "a/55",
+              "a/45"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": false,
+            "tebakan": [
+              "a/65",
+              "a/55",
+              "b/65"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": false,
+            "tebakan": [
+              "b/60",
+              "b/80",
+              "b/40"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o1",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "b/65",
+              "a/60"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": false,
+            "tebakan": [
+              "b/58",
+              "b/60",
+              "b/55"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o2",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "a/65",
+              "a/55"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o3",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": false,
+            "tebakan": [
+              "b/70",
+              "b/65",
+              "b/70"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o2",
+            "kelompok": "aman",
+            "kunci": "b",
+            "ditolak": true,
+            "tebakan": [
+              "b/62",
+              "d/55",
+              "b/60"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o1",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": false,
+            "tebakan": [
+              "c/61",
+              "c/78",
+              "c/45"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "b/60",
+              "c/55"
+            ]
+          }
+        ]
+      },
+      {
+        "susunan": "K1",
+        "sampel": 1,
+        "selesai": true,
+        "biaya_usd": 0.061781280599999995,
+        "soal": [
+          {
+            "id": "m2d5-tirt-o2",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "b/65",
+              "d/45"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": false,
+            "tebakan": [
+              "a/60",
+              "a/60",
+              "b/60"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "a/80",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o1",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "b/60",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "c/60",
+              "b/55",
+              "c/100!"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o2",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "a/62",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o3",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "b/65",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o2",
+            "kelompok": "aman",
+            "kunci": "b",
+            "ditolak": false,
+            "tebakan": [
+              "d/60",
+              "c/40",
+              "d/40"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o1",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "c/70",
+              "c/65",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": false,
+            "tebakan": [
+              "b/75",
+              "b/65",
+              "b/58"
+            ]
+          }
+        ]
+      },
+      {
+        "susunan": "K1",
+        "sampel": 2,
+        "selesai": true,
+        "biaya_usd": 0.087857818615,
+        "soal": [
+          {
+            "id": "m2d5-tirt-o2",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "d/60",
+              "d/100!"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "a/60",
+              "b/60",
+              "d/100!"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "a/85",
+              "b/65"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o1",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": false,
+            "tebakan": [
+              "b/70",
+              "b/65",
+              "b/60"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "b/60",
+              "c/100!"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o2",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "b/70",
+              "a/55"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o3",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "b/62",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o2",
+            "kelompok": "aman",
+            "kunci": "b",
+            "ditolak": true,
+            "tebakan": [
+              "c/40",
+              "d/65",
+              "b/100!"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o1",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": false,
+            "tebakan": [
+              "c/75",
+              "c/75",
+              "c/55"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "b/60",
+              "c/60",
+              "b/60"
+            ]
+          }
+        ]
+      },
+      {
+        "susunan": "K2",
+        "sampel": 1,
+        "selesai": true,
+        "biaya_usd": 0.070715791785,
+        "soal": [
+          {
+            "id": "m2d5-tirt-o2",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "d/78",
+              "d/86",
+              "d/100!"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "b/55",
+              "d/60",
+              "b/45"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/85",
+              "a/85",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o1",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/70",
+              "a/60",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "c/60",
+              "c/70",
+              "c/100!"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o2",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/78",
+              "a/60",
+              "a/60"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o3",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "b/70",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o2",
+            "kelompok": "aman",
+            "kunci": "b",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "b/70",
+              "b/62"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o1",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/60",
+              "c/75",
+              "a/28"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "b/65",
+              "c/100!"
+            ]
+          }
+        ]
+      },
+      {
+        "susunan": "K3",
+        "sampel": 1,
+        "selesai": true,
+        "biaya_usd": 0.13719470749999998,
+        "soal": [
+          {
+            "id": "m2d5-tirt-o2",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "d/100!",
+              "d/100!",
+              "d/60"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "d/35",
+              "d/40",
+              "b/45"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/100!",
+              "a/100!",
+              "a/60"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o1",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/100!",
+              "a/100!",
+              "a/100!"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "c/65",
+              "c/60",
+              "c/55"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o2",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/60",
+              "a/60",
+              "a/40"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o3",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/100!",
+              "a/45",
+              "b/60"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o2",
+            "kelompok": "aman",
+            "kunci": "b",
+            "ditolak": true,
+            "tebakan": [
+              "b/100!",
+              "b/100!",
+              "b/100!"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o1",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": false,
+            "tebakan": [
+              "c/55",
+              "b/85",
+              "c/60"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": false,
+            "tebakan": [
+              "b/55",
+              "b/55",
+              "b/55"
+            ]
+          }
+        ]
+      },
+      {
+        "susunan": "K3",
+        "sampel": 2,
+        "selesai": false,
+        "biaya_usd": 0.01935122616,
+        "soal": [
+          {
+            "id": "m2d5-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "d/45",
+              "d/55",
+              "a/55"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/65",
+              "a/55",
+              "a/60"
+            ]
+          }
+        ]
+      },
+      {
+        "susunan": "K4",
+        "sampel": 1,
+        "selesai": true,
+        "biaya_usd": 0.07469478375500001,
+        "soal": [
+          {
+            "id": "m2d5-tirt-o2",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": true,
+            "tebakan": [
+              "d/70",
+              "d/78",
+              "d/88"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "d",
+            "ditolak": false,
+            "tebakan": [
+              "b/65",
+              "b/60",
+              "b/58"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o3",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/75",
+              "a/72",
+              "b/60"
+            ]
+          },
+          {
+            "id": "m2d4-tirt-o1",
+            "kelompok": "bocor",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/60",
+              "a/70",
+              "a/60"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": true,
+            "tebakan": [
+              "c/75",
+              "c/70",
+              "c/65"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o2",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "a/85",
+              "a/60",
+              "a/65"
+            ]
+          },
+          {
+            "id": "m2d4-ultj-o3",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": true,
+            "tebakan": [
+              "b/65",
+              "a/70",
+              "b/65"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o2",
+            "kelompok": "aman",
+            "kunci": "b",
+            "ditolak": true,
+            "tebakan": [
+              "b/62",
+              "b/70",
+              "b/74"
+            ]
+          },
+          {
+            "id": "m2d4-dada-o1",
+            "kelompok": "aman",
+            "kunci": "a",
+            "ditolak": false,
+            "tebakan": [
+              "c/72",
+              "b/65",
+              "c/60"
+            ]
+          },
+          {
+            "id": "m2d5-tirt-o1",
+            "kelompok": "aman",
+            "kunci": "c",
+            "ditolak": false,
+            "tebakan": [
+              "b/70",
+              "b/65",
+              "b/70"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "kalibrasi_kritikus": {
+    "pagu_usd": 0.3,
+    "biaya_usd": 0.1303005311,
+    "setelan": {
+      "sebelumPenebak": true,
+      "cekMakna": true,
+      "maxTokens": 24000,
+      "tambahanBadan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "ambangPenalaran": 1000
+    },
+    "hasil": [
+      {
+        "omongan": 3,
+        "sampel": 1,
+        "g_pilihan_kembar": {
+          "tolak": true,
+          "kembar": [
+            {
+              "a": "a",
+              "b": "b",
+              "kemiripan": 1,
+              "identik": true
+            }
+          ]
+        },
+        "menjawab": false,
+        "tanpa_keberatan": false,
+        "keberatan": [
+          {
+            "jenis": "tidak-menjawab",
+            "bagian": "-",
+            "alasan": "kritikus tidak terbukti berpikir (token penalaran di bawah ambang) — diperlakukan seperti tidak menjawab"
+          }
+        ],
+        "arahan": "",
+        "cek_makna": null,
+        "penalaran_tidak_sah": [
+          "penalaran tidak terbukti: 597 token < ambang 1000 (penyedia Cloudflare)",
+          "penalaran tidak terbukti: 537 token < ambang 1000 (penyedia AtlasCloud)"
+        ],
+        "panggilan": [
+          {
+            "penyedia": "Cloudflare",
+            "token_penalaran": 597,
+            "token_keluar": 852,
+            "biaya_usd": 0.0065936,
+            "finish_reason": "stop",
+            "penalaran_sah": false,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 secara eksplisit menyatakan isi keputusan rapat tidak tercatat, sehingga hanya opsi d yang benar; a dan b bertentangan dengan kartu, dan c salah karena rapat memang dijadwalkan 25 September 2025.\"}, \"keberatan\": [{\"jenis\": \"ambigu\", \"bagian\": \"pilihan\", \"alasan\": \"Opsi a dan b pada dasarnya menyatakan hal yang sama (hasil putusan tercatat/ada di catatan resmi), sehingga opsi d menonjol sebagai satu-satunya yang berbeda dan bisa ditebak tanpa kartu.\"}], \"arahan\": \"Bedakan substansi opsi a dan b (misalnya satu menyebut aspek lain yang salah menurut kartu) agar keduanya tidak tampak kembar dan d tidak menonjol sebagai jawaban tunggal.\"}"
+          },
+          {
+            "penyedia": "AtlasCloud",
+            "token_penalaran": 537,
+            "token_keluar": 698,
+            "biaya_usd": 0.00254388,
+            "finish_reason": "stop",
+            "penalaran_sah": false,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Pilihan a dan b menyatakan hasil putusan tercatat/ada, yang bertentangan dengan kartu 1; pilihan c keliru karena rapat memang dijadwalkan 25 September 2025; hanya d yang sesuai kartu.\"}, \"keberatan\": [], \"arahan\": \"Pilihan a dan b nyaris kembar sehingga mudah dieliminasi tanpa kartu; bedakan redaksinya agar keduanya tidak terbaca sebagai pasangan duplikat.\"}"
+          }
+        ]
+      },
+      {
+        "omongan": 3,
+        "sampel": 2,
+        "g_pilihan_kembar": {
+          "tolak": true,
+          "kembar": [
+            {
+              "a": "a",
+              "b": "b",
+              "kemiripan": 1,
+              "identik": true
+            }
+          ]
+        },
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Pilihan a dan b nyaris berarti sama persis; ubah salah satunya agar keempat pilihan tidak redundan.",
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Pilihan a dan b menyatakan hasil putusan tercatat/ada di catatan resmi, bertentangan dengan Kartu 1 yang menulis isi keputusan rapatnya tidak tercatat; pilihan c juga bertentangan karena rapat justru dijadwalkan 25 September 2025, sehingga hanya d yang benar."
+        },
+        "penalaran_tidak_sah": [
+          "penalaran tidak terbukti: 566 token < ambang 1000 (penyedia Fireworks)"
+        ],
+        "panggilan": [
+          {
+            "penyedia": "Fireworks",
+            "token_penalaran": 566,
+            "token_keluar": 726,
+            "biaya_usd": 0.00603008,
+            "finish_reason": "stop",
+            "penalaran_sah": false,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 mencatat rapat dijadwalkan 25 September 2025 (membantah c) dan menyebut isi keputusannya tidak tercatat (membantah a dan b), sehingga hanya d yang benar.\"}, \"keberatan\": [], \"arahan\": \"Pilihan a dan b nyaris sama maknanya (tercatat di dokumen vs ada di catatan resmi); ubah salah satu agar keempat pilihan berbeda jelas.\"}"
+          },
+          {
+            "penyedia": "Wafer",
+            "token_penalaran": 5777,
+            "token_keluar": 5943,
+            "biaya_usd": 0.0267575787,
+            "finish_reason": "stop",
+            "penalaran_sah": true,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Pilihan a dan b menyatakan hasil putusan tercatat/ada di catatan resmi, bertentangan dengan Kartu 1 yang menulis isi keputusan rapatnya tidak tercatat; pilihan c juga bertentangan karena rapat justru dijadwalkan 25 September 2025, sehingga hanya d yang benar.\"}, \"keberatan\": [], \"arahan\": \"Pilihan a dan b nyaris berarti sama persis; ubah salah satunya agar keempat pilihan tidak redundan.\"}"
+          }
+        ]
+      },
+      {
+        "omongan": 3,
+        "sampel": 3,
+        "g_pilihan_kembar": {
+          "tolak": true,
+          "kembar": [
+            {
+              "a": "a",
+              "b": "b",
+              "kemiripan": 1,
+              "identik": true
+            }
+          ]
+        },
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Pilihan a dan b pada dasarnya menyampaikan klaim yang sama persis; ubah salah satunya menjadi alasan keliru yang berbeda supaya keempat pilihan benar-benar berbeda.",
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "apakah rapat pemegang saham itu benar-benar berlangsung pada 25 September 2025 — kartu hanya mencatat jadwalnya, bukan …"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya kunci (d) yang didukung kartu: a dan b bertentangan langsung dengan kartu 1 yang menyebut isi keputusan tidak tercatat, dan c salah karena rapat memang tercatat dijadwalkan 25 September 2025."
+        },
+        "penalaran_tidak_sah": [],
+        "panggilan": [
+          {
+            "penyedia": "Fireworks",
+            "token_penalaran": 1538,
+            "token_keluar": 1755,
+            "biaya_usd": 0.00825146,
+            "finish_reason": "stop",
+            "penalaran_sah": true,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [\"apakah rapat pemegang saham itu benar-benar berlangsung pada 25 September 2025 — kartu hanya mencatat jadwalnya, bukan pelaksanaannya\"], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Hanya kunci (d) yang didukung kartu: a dan b bertentangan langsung dengan kartu 1 yang menyebut isi keputusan tidak tercatat, dan c salah karena rapat memang tercatat dijadwalkan 25 September 2025.\"}, \"keberatan\": [], \"arahan\": \"Pilihan a dan b pada dasarnya menyampaikan klaim yang sama persis; ubah salah satunya menjadi alasan keliru yang berbeda supaya keempat pilihan benar-benar berbeda.\"}"
+          }
+        ]
+      },
+      {
+        "omongan": 1,
+        "sampel": 1,
+        "g_pilihan_kembar": {
+          "tolak": false,
+          "kembar": []
+        },
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Pastikan ringkasan 'Peristiwa hari itu' yang menyebut penghentian awal tahun 'dengan alasan lain' tidak ikut tampil ke pemain maupun penejak tanpa kartu, karena kalau tampil, pilihan c bisa ditebak tanpa membaca kartu mana pun.",
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu 2 mencatat penghentian 21 Januari 2025 dengan alasan resmi keraguan atas kelangsungan usaha, bukan kenaikan harga kumulatif (itu alasan penghentian Desember di Kartu 1), dan kartu itu sekaligus mematahkan a (penghentian awal tahun memang ada) serta d (alasan resminya jelas tercatat)."
+        },
+        "penalaran_tidak_sah": [],
+        "panggilan": [
+          {
+            "penyedia": "Wafer",
+            "token_penalaran": 15598,
+            "token_keluar": 15828,
+            "biaya_usd": 0.0702152804,
+            "finish_reason": "stop",
+            "penalaran_sah": true,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 2 mencatat penghentian 21 Januari 2025 dengan alasan resmi keraguan atas kelangsungan usaha, bukan kenaikan harga kumulatif (itu alasan penghentian Desember di Kartu 1), dan kartu itu sekaligus mematahkan a (penghentian awal tahun memang ada) serta d (alasan resminya jelas tercatat).\"}, \"keberatan\": [], \"arahan\": \"Pastikan ringkasan 'Peristiwa hari itu' yang menyebut penghentian awal tahun 'dengan alasan lain' tidak ikut tampil ke pemain maupun penejak tanpa kartu, karena kalau tampil, pilihan c bisa ditebak tanpa membaca kartu mana pun.\"}"
+          }
+        ]
+      },
+      {
+        "omongan": 2,
+        "sampel": 1,
+        "g_pilihan_kembar": {
+          "tolak": false,
+          "kembar": []
+        },
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Di penjelasan, sebutan 'kartu penentu' terdengar seperti istilah sistem yang pemain tidak kenal; ganti dengan rujukan yang terbaca alami, misalnya 'kartu hitungan'.",
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu 1 menghitung selisih Rp106−Rp48=Rp58 untuk periode 26 November–9 Desember, kartu 2–3 mencatat kedua harga itu, dan tidak ada kartu yang menyebut kenaikan sejak awal tahun, sehingga hanya d yang benar."
+        },
+        "penalaran_tidak_sah": [
+          "penalaran tidak terbukti: 486 token < ambang 1000 (penyedia AtlasCloud)"
+        ],
+        "panggilan": [
+          {
+            "penyedia": "AtlasCloud",
+            "token_penalaran": 486,
+            "token_keluar": 698,
+            "biaya_usd": 0.002568562,
+            "finish_reason": "stop",
+            "penalaran_sah": false,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 2 dan 3 mencatat kedua harga, kartu 1 menghitung selisihnya Rp58 untuk periode yang disebut, sehingga hanya d yang benar; a dan c salah karena perhitungan dan data harga jelas ada di kartu, dan b salah karena kartu mengukur dari 26 November bukan awal tahun.\"}, \"keberatan\": [], \"arahan\": \"Pilihan d mengulang angka dan periode dari pesan secara persis sehingga bisa tertebak tanpa kartu; pertimbangkan membuat ketiga pilihan keliru tidak sama-sama menyangkal keberadaan data, agar penebak tanpa kartu tidak cukup hanya mencocokkan angka.\"}"
+          },
+          {
+            "penyedia": "Alibaba",
+            "token_penalaran": 1119,
+            "token_keluar": 1303,
+            "biaya_usd": 0.00734009,
+            "finish_reason": "stop",
+            "penalaran_sah": true,
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 menghitung selisih Rp106−Rp48=Rp58 untuk periode 26 November–9 Desember, kartu 2–3 mencatat kedua harga itu, dan tidak ada kartu yang menyebut kenaikan sejak awal tahun, sehingga hanya d yang benar.\"}, \"keberatan\": [], \"arahan\": \"Di penjelasan, sebutan 'kartu penentu' terdengar seperti istilah sistem yang pemain tidak kenal; ganti dengan rujukan yang terbaca alami, misalnya 'kartu hitungan'.\"}"
+          }
+        ]
+      }
+    ]
+  },
+  "per_jalan": [
+    {
+      "jalan": 1,
+      "terbit": false,
+      "putaran": 15,
+      "berhenti": "omongan 3 gagal di 3 sudut (rups-2025-09-25, kelipatan-2025-11-26-2025-12-09, hari-naik-beruntun); simulasi tidak terbit",
+      "dikunci": [
+        {
+          "no": 1,
+          "putaran": 8,
+          "sudut": "susp-2025-01-21"
+        },
+        {
+          "no": 2,
+          "putaran": 3,
+          "sudut": "naik-2025-11-26-2025-12-09"
+        }
+      ],
+      "sudut": [
+        {
+          "no": 1,
+          "riwayat": [
+            "1. `susp-2025-12-10` → dibuang (1–5)",
+            "2. `susp-2025-01-21` → lolos (6–8)"
+          ]
+        },
+        {
+          "no": 2,
+          "riwayat": [
+            "1. `naik-2025-11-26-2025-12-09` → lolos (1–3)"
+          ]
+        },
+        {
+          "no": 3,
+          "riwayat": [
+            "1. `rups-2025-09-25` → dibuang (1–5)",
+            "2. `kelipatan-2025-11-26-2025-12-09` → dibuang (6–10)",
+            "3. `hari-naik-beruntun` → dibuang (11–15)"
+          ]
+        }
+      ],
+      "versi": 26,
+      "status": {
+        "ditolak-tebak": 10,
+        "tidak-ada": 3,
+        "ditolak-kartu": 1,
+        "lolos": 2,
+        "ditolak-kritikus": 5,
+        "kritikus-tidak-menjawab": 3,
+        "ditolak-pemeriksa": 2
+      },
+      "kode_pemeriksa": {
+        "AJAKAN_TRANSAKSI": 1,
+        "ANGKA_TANPA_RUJUKAN": 1
+      },
+      "g_pilihan_kembar": [],
+      "kritikus": {
+        "putusan": 20,
+        "menjawab": 17,
+        "tanpa_keberatan": 12,
+        "keberatan": {
+          "tertebak": 5,
+          "aturan": 1,
+          "tidak-menjawab": 3,
+          "kunci": 1,
+          "ambigu": 1
+        },
+        "penalaran": {
+          "n": 30,
+          "median": 6588,
+          "maks": 24002
+        }
+      },
+      "penjaga": {
+        "dijaga": 80,
+        "tidak_sah": 26,
+        "per_penyedia": {
+          "z-ai/glm-5.3 · SiliconFlow": {
+            "panggilan": 5,
+            "usd": 0.014755904,
+            "token_keluar": 2624
+          },
+          "z-ai/glm-5.3 · Wafer": {
+            "panggilan": 4,
+            "usd": 0.0059677796,
+            "token_keluar": 1240
+          },
+          "z-ai/glm-5.3 · Phala": {
+            "panggilan": 10,
+            "usd": 0.014618256000000001,
+            "token_keluar": 5667
+          },
+          "z-ai/glm-5.3 · PrimeIntellect": {
+            "panggilan": 1,
+            "usd": 0.0019064,
+            "token_keluar": 257
+          },
+          "z-ai/glm-5.3 · Modal": {
+            "panggilan": 1,
+            "usd": 0.0015722,
+            "token_keluar": 182
+          },
+          "z-ai/glm-5.3 · DigitalOcean": {
+            "panggilan": 1,
+            "usd": 0.0008177,
+            "token_keluar": 109
+          },
+          "z-ai/glm-5.3 · Venice": {
+            "panggilan": 1,
+            "usd": 0.0021996,
+            "token_keluar": 323
+          },
+          "z-ai/glm-5.3 · Together": {
+            "panggilan": 1,
+            "usd": 0.002028,
+            "token_keluar": 284
+          },
+          "z-ai/glm-5.3 · Parasail": {
+            "panggilan": 1,
+            "usd": 0.0060498,
+            "token_keluar": 716
+          },
+          "z-ai/glm-5.3 · Friendli": {
+            "panggilan": 1,
+            "usd": 0.00684234,
+            "token_keluar": 1067
+          }
+        },
+        "ulangan_lewati": 18
+      },
+      "penebak_glm_penalaran": {
+        "n": 50,
+        "median": 483.5,
+        "maks": 8002
+      },
+      "tebak_dalam_per_model": {
+        "z-ai/glm-5.3": {
+          "tebak": 36,
+          "benar": 13,
+          "tak_terbaca": 10
+        }
+      },
+      "penulis": {
+        "panggilan": 32,
+        "terpotong": 9,
+        "cadangan": 9
+      },
+      "panggilan_ledger": 133,
+      "biaya_ledger": 1.8383684211399998,
+      "durasi_ms": 8576850
+    }
+  ],
+  "biaya": {
+    "milestone_nyata_usd": 2.9854071753950002,
+    "panggilan": 442,
+    "dipotong": "2026-09-29T10:01:40.951Z",
+    "per_peran": {
+      "probe": {
+        "panggilan": 29,
+        "usd": 0.31255353090000004,
+        "token_keluar": 70538
+      },
+      "kalibrasi penebak": {
+        "panggilan": 272,
+        "usd": 0.7041846922549999,
+        "token_keluar": 615038
+      },
+      "kalibrasi kritikus": {
+        "panggilan": 8,
+        "usd": 0.1303005311,
+        "token_keluar": 27803
+      },
+      "penulis": {
+        "panggilan": 32,
+        "usd": 0.27987147789,
+        "token_keluar": 349990
+      },
+      "pembaca-kartu": {
+        "panggilan": 21,
+        "usd": 0.013248866350000001,
+        "token_keluar": 18461
+      },
+      "kritikus": {
+        "panggilan": 30,
+        "usd": 1.1167413411999998,
+        "token_keluar": 252171
+      },
+      "penebak GLM": {
+        "panggilan": 50,
+        "usd": 0.4285067357000001,
+        "token_keluar": 95944
+      }
+    },
+    "per_penyedia": {
+      "z-ai/glm-5.3 · Wafer": {
+        "panggilan": 106,
+        "usd": 2.0714856446,
+        "token_keluar": 464588
+      },
+      "z-ai/glm-5.3 · PrimeIntellect": {
+        "panggilan": 2,
+        "usd": 0.013537400000000002,
+        "token_keluar": 2251
+      },
+      "z-ai/glm-5.3 · Relace": {
+        "panggilan": 13,
+        "usd": 0.013301529999999999,
+        "token_keluar": 3060
+      },
+      "z-ai/glm-5.3 · InferenceNet": {
+        "panggilan": 12,
+        "usd": 0.008561400000000002,
+        "token_keluar": 3259
+      },
+      "z-ai/glm-5.3 · Sail Research": {
+        "panggilan": 32,
+        "usd": 0.0314369,
+        "token_keluar": 8483
+      },
+      "z-ai/glm-5.3 · Parasail": {
+        "panggilan": 3,
+        "usd": 0.0111752,
+        "token_keluar": 1591
+      },
+      "deepseek/deepseek-v4.1-flash · Makora": {
+        "panggilan": 1,
+        "usd": 0.0025461,
+        "token_keluar": 2035
+      },
+      "deepseek/deepseek-v4.1-flash · Relace": {
+        "panggilan": 61,
+        "usd": 0.17335299999999998,
+        "token_keluar": 284123
+      },
+      "deepseek/deepseek-v4.1-flash · DeepInfra": {
+        "panggilan": 25,
+        "usd": 0.07005878880000001,
+        "token_keluar": 164959
+      },
+      "z-ai/glm-5.3 · Modal": {
+        "panggilan": 3,
+        "usd": 0.0038028000000000003,
+        "token_keluar": 408
+      },
+      "deepseek/deepseek-v4.1-flash · InferenceNet": {
+        "panggilan": 20,
+        "usd": 0.032049412,
+        "token_keluar": 69217
+      },
+      "deepseek/deepseek-v4.1-flash · CoreWeave": {
+        "panggilan": 4,
+        "usd": 0.0128131,
+        "token_keluar": 19186
+      },
+      "z-ai/glm-5.3 · Morph": {
+        "panggilan": 4,
+        "usd": 0.003249618,
+        "token_keluar": 694
+      },
+      "deepseek/deepseek-v4.1-flash · Morph": {
+        "panggilan": 25,
+        "usd": 0.038292996494999995,
+        "token_keluar": 71795
+      },
+      "deepseek/deepseek-v4.1-flash · Modal": {
+        "panggilan": 4,
+        "usd": 0.0325161,
+        "token_keluar": 25014
+      },
+      "deepseek/deepseek-v4.1-flash · GMICloud": {
+        "panggilan": 6,
+        "usd": 0.0204235632,
+        "token_keluar": 27721
+      },
+      "z-ai/glm-5.3 · Reka": {
+        "panggilan": 15,
+        "usd": 0.005439662,
+        "token_keluar": 2461
+      },
+      "deepseek/deepseek-v4.1-flash · Ionstream": {
+        "panggilan": 1,
+        "usd": 0.00579153,
+        "token_keluar": 4947
+      },
+      "deepseek/deepseek-v4.1-flash · Wafer": {
+        "panggilan": 10,
+        "usd": 0.0301983614,
+        "token_keluar": 41322
+      },
+      "deepseek/deepseek-v4.1-flash · NextBit": {
+        "panggilan": 3,
+        "usd": 0.01946427,
+        "token_keluar": 21361
+      },
+      "deepseek/deepseek-v4.1-flash · Krea": {
+        "panggilan": 6,
+        "usd": 0.037790325,
+        "token_keluar": 38202
+      },
+      "z-ai/glm-5.3 · GMICloud": {
+        "panggilan": 4,
+        "usd": 0.006035596,
+        "token_keluar": 1678
+      },
+      "z-ai/glm-5.3 · Novita": {
+        "panggilan": 5,
+        "usd": 0.0043422002,
+        "token_keluar": 1370
+      },
+      "z-ai/glm-5.3 · Venice": {
+        "panggilan": 5,
+        "usd": 0.0798046,
+        "token_keluar": 17472
+      },
+      "z-ai/glm-5.3 · AtlasCloud": {
+        "panggilan": 9,
+        "usd": 0.010195472,
+        "token_keluar": 3178
+      },
+      "z-ai/glm-5.3 · Baidu": {
+        "panggilan": 2,
+        "usd": 0.0019136,
+        "token_keluar": 209
+      },
+      "deepseek/deepseek-v4.1-flash · DigitalOcean": {
+        "panggilan": 2,
+        "usd": 0.0086529,
+        "token_keluar": 6964
+      },
+      "z-ai/glm-5.3 · SiliconFlow": {
+        "panggilan": 6,
+        "usd": 0.015672863999999998,
+        "token_keluar": 2769
+      },
+      "deepseek/deepseek-v4.1-flash · Novita": {
+        "panggilan": 3,
+        "usd": 0.0132444702,
+        "token_keluar": 16789
+      },
+      "deepseek/deepseek-v4.1-flash · StreamLake": {
+        "panggilan": 3,
+        "usd": 0.0073653195,
+        "token_keluar": 10015
+      },
+      "z-ai/glm-5.3 · Alibaba": {
+        "panggilan": 5,
+        "usd": 0.0129982,
+        "token_keluar": 2239
+      },
+      "deepseek/deepseek-v4.1-flash · DekaLLM": {
+        "panggilan": 5,
+        "usd": 0.00645076,
+        "token_keluar": 13333
+      },
+      "z-ai/glm-5.3 · AkashML": {
+        "panggilan": 2,
+        "usd": 0.0021157199999999998,
+        "token_keluar": 266
+      },
+      "deepseek/deepseek-v4.1-flash · SiliconFlow": {
+        "panggilan": 3,
+        "usd": 0.047673155999999994,
+        "token_keluar": 37947
+      },
+      "deepseek/deepseek-v4.1-flash · Together": {
+        "panggilan": 1,
+        "usd": 0.0022326,
+        "token_keluar": 1732
+      },
+      "deepseek/deepseek-v4.1-flash · Fireworks": {
+        "panggilan": 3,
+        "usd": 0.01188374,
+        "token_keluar": 13257
+      },
+      "z-ai/glm-5.3 · Z.AI": {
+        "panggilan": 2,
+        "usd": 0.0029568,
+        "token_keluar": 392
+      },
+      "deepseek/deepseek-v4.1-flash · BaseTen": {
+        "panggilan": 1,
+        "usd": 0.0124173,
+        "token_keluar": 10259
+      },
+      "z-ai/glm-5.3 · Phala": {
+        "panggilan": 14,
+        "usd": 0.021815475999999997,
+        "token_keluar": 8339
+      },
+      "deepseek/deepseek-v4.1-flash · (tidak disebut)": {
+        "panggilan": 1,
+        "usd": 0.0197046,
+        "token_keluar": 0
+      },
+      "z-ai/glm-5.3 · Cloudflare": {
+        "panggilan": 2,
+        "usd": 0.009411,
+        "token_keluar": 1317
+      },
+      "z-ai/glm-5.3 · Fireworks": {
+        "panggilan": 2,
+        "usd": 0.01428154,
+        "token_keluar": 2481
+      },
+      "deepseek/deepseek-v4.1-flash · Alibaba": {
+        "panggilan": 1,
+        "usd": 0.0224403,
+        "token_keluar": 16979
+      },
+      "deepseek/deepseek-v4.1-flash · Phala": {
+        "panggilan": 1,
+        "usd": 0.0020748,
+        "token_keluar": 2303
+      },
+      "z-ai/glm-5.3 · Friendli": {
+        "panggilan": 2,
+        "usd": 0.00959076,
+        "token_keluar": 1587
+      },
+      "z-ai/glm-5.3 · DigitalOcean": {
+        "panggilan": 1,
+        "usd": 0.0008177,
+        "token_keluar": 109
+      },
+      "z-ai/glm-5.3 · Together": {
+        "panggilan": 1,
+        "usd": 0.002028,
+        "token_keluar": 284
+      }
+    },
+    "dasar_biaya": {
+      "usage-cost": {
+        "panggilan": 441,
+        "usd": 2.9657025753950004,
+        "token_keluar": 1429945
+      },
+      "perkiraan-maksimum (tanpa usage.cost)": {
+        "panggilan": 1,
+        "usd": 0.0197046,
+        "token_keluar": 0
+      }
+    }
+  },
+  "luar": [
+    {
+      "no": 1,
+      "kunci": "c",
+      "tebak_dalam": [
+        {
+          "pilihan": "a",
+          "yakin": 60
+        },
+        {
+          "pilihan": "a",
+          "yakin": 72
+        },
+        {
+          "pilihan": "a",
+          "yakin": 60
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "c",
+            "yakin": 55
+          },
+          {
+            "pilihan": "c",
+            "yakin": 50
+          },
+          {
+            "pilihan": "c",
+            "yakin": 50
+          }
+        ],
+        "benar": 3,
+        "yakin_benar": 51.666666666666664,
+        "lolos": false
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "c",
+            "kartu": [
+              2
+            ],
+            "bingung": "dalam rangka cooling down sebagai bentuk perlindungan bagi investor",
+            "penilaian": ""
+          },
+          {
+            "pilihan": "c",
+            "kartu": [
+              2
+            ],
+            "bingung": "",
+            "penilaian": ""
+          },
+          {
+            "pilihan": "c",
+            "kartu": [
+              2
+            ],
+            "bingung": "dalam rangka cooling down sebagai bentuk perlindungan bagi investor",
+            "penilaian": ""
+          }
+        ],
+        "benar": 3,
+        "lolos": true,
+        "penentu": [
+          2
+        ]
+      }
+    },
+    {
+      "no": 2,
+      "kunci": "d",
+      "tebak_dalam": [
+        {
+          "pilihan": "a",
+          "yakin": 55
+        },
+        {
+          "pilihan": "a",
+          "yakin": 40
+        },
+        {
+          "pilihan": "a",
+          "yakin": 60
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "yakin": 35
+          },
+          {
+            "pilihan": "b",
+            "yakin": 35
+          },
+          {
+            "pilihan": "a",
+            "yakin": 30
+          }
+        ],
+        "benar": 0,
+        "yakin_benar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "d",
+            "kartu": [
+              1,
+              2,
+              3
+            ],
+            "bingung": "",
+            "penilaian": "Gw hafal polanya."
+          },
+          {
+            "pilihan": "d",
+            "kartu": [
+              1,
+              2,
+              3
+            ],
+            "bingung": "",
+            "penilaian": "Gw hafal polanya."
+          },
+          {
+            "pilihan": "d",
+            "kartu": [
+              1
+            ],
+            "bingung": "",
+            "penilaian": ""
+          }
+        ],
+        "benar": 3,
+        "lolos": true,
+        "penentu": [
+          1
+        ]
+      }
+    }
+  ],
+  "setuju": {
+    "omongan": 2,
+    "tebak_lolos": 1,
+    "kartu_lolos": 2,
+    "ada_bingung": 1,
+    "ada_penilaian": 1
+  },
+  "layak_tayang": false,
+  "alami": [
+    {
+      "penilai": "alami-p1",
+      "paket": "tirt",
+      "sumber": "agen-m2d6",
+      "skor": 3,
+      "alasan": "Pesannya wajar, tetapi pilihannya terpotong-potong seperti telegram (\"alasan setop awal tahun kenaikan harga\"), dan penjelasannya kaku, misalnya \"tertulis di setop 10 Desember 2025, yang terjadi hari ini\" serta \"Yang terbaca:\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "tirt",
+      "sumber": "agen-m2d5",
+      "skor": 3,
+      "alasan": "Pesan grupnya terdengar alami, tetapi penjelasannya bertele-tele dan memakai istilah yang tidak lazim bagi penutur (\"kartu penentu\", \"beralasan tidak sama\"), sementara pilihan a dan b di soal 3 nyaris sama kalimatnya."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "tirt",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesan dan penjelasannya mengalir seperti teman yang menerangkan (\"naik kebablasan\", \"mendinginkan harga yang naik cepat\"), hanya beberapa kalimatnya panjang dan agak formal seperti bahasa dokumen."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya hidup dan khas obrolan (\"Gue\", \"Rapi banget\", \"Jangan kegeeran dulu\") dan penjelasannya luwes, tetapi istilah \"kartu\" dan pengulangan \"Perhatikan juga\" terasa seperti bahasa alat, bukan bahasa teman."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "ultj",
+      "sumber": "agen-m2d4",
+      "skor": 3,
+      "alasan": "Pesannya alami (\"ga pernah bolos\"), tetapi penjelasannya memakai pola yang sama berulang-ulang (\"Kalau daftar ... dibuka\", \"Yang tidak terbaca di situ\") dan ada frasa janggal atau berlebihan seperti \"jumlahnya 7 tahun beruntun\" dan \"laporannya cuma dua laporan\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "tirt",
+      "sumber": "agen-m2d6",
+      "skor": 3,
+      "alasan": "Pesannya wajar, tetapi pilihannya terpotong-potong seperti catatan (\"alasan setop awal tahun kenaikan harga\"), dan penjelasannya kaku (\"Yang terbaca:\", \"klaim teman bahwa angka itu beda dua penutupan cocok\")."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "tirt",
+      "sumber": "agen-m2d5",
+      "skor": 3,
+      "alasan": "Pesan dan pilihannya terdengar seperti obrolan sungguhan, tetapi penjelasannya memuat frasa janggal: \"21 Januari 2025 juga memuat penghentian\", \"beralasan tidak sama\", dan istilah sistem \"kartu penentu\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "tirt",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesan, pilihan, dan penjelasannya mengalir wajar (\"kebablasan\", \"mendinginkan harga yang naik cepat\"); hanya \"klaim teman ... cocok dengan dokumennya\" yang masih terasa seperti rumus."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya hidup (\"kegeeran\", \"Rapi banget\") dan penjelasannya lancar seperti teman yang menjelaskan, tetapi \"kartu\" dan \"tidak ada yang perlu kamu hitung\" terasa seperti bahasa sistem, dan \"Perhatikan juga\" diulang-ulang."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "ultj",
+      "sumber": "agen-m2d4",
+      "skor": 3,
+      "alasan": "Pesannya alami, tetapi penjelasannya berulang dengan pola yang sama (\"Kalau ... dibuka\", \"Yang tidak terbaca di situ\"), dan ada frasa tidak gramatikal atau berlebihan: \"pemilik terbesar muncul 2 laporan\", \"laporannya cuma dua laporan\"."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "tirt",
+      "sumber": "agen-m2d6",
+      "skor": 3,
+      "alasan": "Pesan grupnya wajar, tetapi pilihan jawabannya telegrafis dan tanpa kata kerja (mis. 'alasan setop awal tahun kenaikan harga'), pembuka penjelasan 'Yang terbaca:' kaku, dan 'salah kaprah' ditulis dengan tanda hubung."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "tirt",
+      "sumber": "agen-m2d5",
+      "skor": 3,
+      "alasan": "Pesannya terasa seperti obrolan sungguhan, tetapi penjelasannya memuat istilah teknis yang bocor ('kartu penentu'), frasa janggal seperti 'beralasan tidak sama', dan pilihan a/b di Soal 3 nyaris sama bunyinya."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "tirt",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesan dan penjelasannya luwes seperti teman yang menjelaskan ('kelewat batas', 'naik kebablasan'); yang mengganjal hanya kalimat yang agak panjang dan 'salah kaprah' yang ditulis dengan tanda hubung."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya hidup ('kegeeran', 'Rapi banget') dan penjelasannya runtut, tetapi rujukan seperti 'kartu pertama' dan 'kartu mana pun' terdengar seperti istilah sistem, bukan bahasa teman."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "ultj",
+      "sumber": "agen-m2d4",
+      "skor": 3,
+      "alasan": "Pesannya wajar ('ga pernah bolos'), tetapi penjelasannya mengulang pola yang sama ('Kalau ... dibuka', 'Yang tidak terbaca di situ:') dan ada frasa janggal seperti 'muncul 2 laporan', 'cuma sekali bagi', dan 'laporannya cuma dua laporan'."
+    }
+  ],
+  "alami_rata": {
+    "tirt_m2d6": 3,
+    "tirt_m2d5": 3,
+    "tirt_m2d4": 4,
+    "ultj_manusia": 4,
+    "ultj_m2d4": 3
+  },
+  "pembanding": {
+    "m2d4": {
+      "terbit": false,
+      "putaran": 15,
+      "dikunci": 2,
+      "tebak_lolos": 0,
+      "kartu_lolos": 2,
+      "biaya": 1.1810728840000002,
+      "kritikus_keberatan": null
+    },
+    "m2d5": {
+      "terbit": true,
+      "putaran": 4,
+      "dikunci": 3,
+      "tebak_lolos": 1,
+      "kartu_lolos": 3,
+      "biaya": 0.16087351319999996,
+      "kritikus_keberatan": 0
+    },
+    "m2d6": {
+      "terbit": false,
+      "putaran": 15,
+      "dikunci": 2,
+      "tebak_lolos": 1,
+      "kartu_lolos": 2,
+      "biaya": 1.8383684211399998,
+      "kritikus_keberatan": 11
+    }
+  }
+}

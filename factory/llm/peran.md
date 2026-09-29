@@ -4,7 +4,7 @@ Keputusan pemilik (28 Sep 2026): **tidak ada satu peran "maha kuasa"**. Penulis 
 
 | peran | pelaksana | melihat | wewenang |
 |---|---|---|---|
-| Perencana | kode (`paket.ts`, `sudut.ts`) | gudang + 31 aturan R | paket fakta; daftar sudut (fakta penentu per posisi omongan) dan nada yang diminta |
+| Perencana | kode (`paket.ts`, `sudut.ts`) | gudang + 33 aturan R aktif (`aturanAktif()` di `factory/verifikasi/v2.ts`; angka ini dites terhadap kode) | paket fakta; daftar sudut (fakta penentu per posisi omongan) dan nada yang diminta |
 | Penulis | `deepseek-ai/DeepSeek-V4.1-Flash` | paket fakta + sudut + 2–3 contoh bank gaya + umpan balik | menulis dan merevisi SATU omongan per panggilan |
 | Pemeriksa | kode (`validasi.ts`, `gerbang-g.ts`) | semua | validator deterministik + gerbang G (angka-cukup, kaku) + sudut dipakai |
 | Penebak ×3 | `deepseek-ai/DeepSeek-V4.1-Flash` | HANYA pesan + pertanyaan + empat pilihan | tolak bila tertebak (K-05) |
@@ -56,3 +56,17 @@ Peran, wewenang, dan urutan sama dengan M2d-4; yang berubah (kontrak M2d-5 D-1�
 | Pembaca kartu | memilih + menunjuk kartu | + mengutip kalimat yang membingungkan: tulisan penulis → menolak (kutipan ke penulis); teks kartu paket → dicatat |
 | Penebak ×3 | DeepSeek, DeepSeek, GLM | sama; penebak GLM dengan `reasoning.max_tokens` |
 | Kritikus | 24.576 token tanpa batas penalaran | `reasoning.max_tokens`; jawaban kosong = terpotong ("tidak menjawab") |
+
+## Generasi M2d-6 — penalar sungguhan (`GENERASI_M2D6` di `agen-peran.ts`)
+
+Peran, wewenang, dan urutan sama dengan M2d-5; yang berubah (kontrak M2d-6 D-1–D-4), semuanya ditetapkan kode:
+
+| peran | M2d-5 | M2d-6 |
+|---|---|---|
+| Semua (pagar) | pagar penyedia M2d-5 | + `provider.ignore` untuk penyedia yang TERBUKTI melanggar di ledger (`penyedia-bukti.ts`, ≥ 2 pelanggaran dan ≥ 1/3 panggilan sejenis): DeepSeek `atlas-cloud` (melewati batas penalaran); GLM `akashml`, `alibaba`, `atlas-cloud`, `baidu`, `gmicloud`, `inference-net`, `morph`, `novita`, `reka`, `relace`, `sail-research`, `z-ai` (tidak berpikir padahal `effort` diminta) |
+| Pemeriksa | validator + gerbang G + gerbang gaya + posisi kunci + G-penilaian + G-mirip | + G-pilihan-kembar (`gerbang-kembar.ts`): dua pilihan satu omongan yang isinya sama ditolak |
+| Kritikus | `reasoning.max_tokens` (batas atas saja; terukur 33–260 token penalaran) | `reasoning.effort: "high"`, `max_tokens` 24.000; **penjaga penalaran**: < 1.000 token penalaran (dari respons) = tidak sah → ulang sekali ke penyedia lain → "tidak menjawab" |
+| Penebak ×3 | DeepSeek, DeepSeek, GLM `reasoning.max_tokens`; petunjuk "pemain pintar" | **tiga GLM** `effort: "high"`, `max_tokens` 8.000, penjaga (< 300 token = tebakan tak terbaca, dihitung benar/100); petunjuk "pemburu soal bocor" — susunan K3, pilihan aturan kalibrasi dengan soal yang sudah diketahui bocor/aman (`penalar-kalibrasi.ts`) |
+
+- **Bukti berpikir dibaca dari respons** (`usage.completion_tokens_details.reasoning_tokens`), bukan dari badan permintaan; jawaban yang tidak terbukti berpikir tidak pernah dibaca sebagai "tidak keberatan" atau sebagai tebakan (`penjaga-penalaran.ts`).
+- **Tetap**: tidak ada peran yang bisa meloloskan sendirian; kritikus tidak menulis ulang; kritikus yang tidak menjawab (termasuk tidak terbukti berpikir) = keberatan, versi dibawa ke putaran berikutnya.

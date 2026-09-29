@@ -53,6 +53,7 @@
     "penalar:kritikus": "node --experimental-strip-types factory/llm/penalar-kritikus.ts",
     "penalar:susun": "node --experimental-strip-types factory/llm/penalar-susun.ts",
     "penalar:penguji": "node --experimental-strip-types factory/llm/penalar-penguji.ts",
+    "penalar:laporan": "node --experimental-strip-types factory/llm/penalar-laporan.ts",
     "sectors:ambil": "node --experimental-strip-types alat/sectors.ts",
     "sectors:manifest": "node --experimental-strip-types alat/manifest.ts",
     "audit:gudang": "node --experimental-strip-types alat/audit-gudang.ts",
