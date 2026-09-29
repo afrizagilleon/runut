@@ -40,7 +40,8 @@
     "gaya:arsip": "node --experimental-strip-types factory/llm/gaya-arsip.ts",
     "gaya:susun": "node --experimental-strip-types factory/llm/gaya-susun.ts",
     "gaya:penguji": "node --experimental-strip-types factory/llm/gaya-penguji.ts",
-    "gaya:laporan": "node --experimental-strip-types factory/llm/gaya-laporan.ts"
+    "gaya:laporan": "node --experimental-strip-types factory/llm/gaya-laporan.ts",
+    "sectors:ambil": "node --experimental-strip-types alat/sectors.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
