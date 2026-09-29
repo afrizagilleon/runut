@@ -1,9 +1,193 @@
 {
   "keterangan": "Sidik berkas .cache/sectors/ (isi data tidak ikut repo). Ditulis oleh `npm run sectors:manifest`; jangan disunting tangan. path_endpoint null = diambil sebelum M4a dengan skrip di luar repo.",
   "folder": ".cache/sectors",
-  "jumlah_berkas": 111,
-  "jumlah_byte": 882198,
+  "jumlah_berkas": 372,
+  "jumlah_byte": 2508985,
   "berkas": [
+    {
+      "nama": "ABMM-m4a-corpactions.json",
+      "ukuran": 3114,
+      "sha256": "93840c4cb2dbae698e5d8b6635bd4ef6a2a16a0bc2204c069da5d6f78ec4d042",
+      "path_endpoint": "/v2/company/corporate-actions/ABMM/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ABMM-m4a-daily-2025-04-23.json",
+      "ukuran": 7420,
+      "sha256": "1767261a4f6de9cc76c15cd388cac935ace4d9b745f6461b0eee5dd11ca03048",
+      "path_endpoint": "/v2/daily/ABMM/?start=2025-04-23&end=2025-07-21",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ABMM-m4a-daily-2026-04-27.json",
+      "ukuran": 7677,
+      "sha256": "446631bfb400cad79b54782b04e59cc01002e71dd4cffa21dd7c50e55fbef740",
+      "path_endpoint": "/v2/daily/ABMM/?start=2026-04-27&end=2026-07-25",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ABMM-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=ABMM&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ABMM-m4a-overview-financials.json",
+      "ukuran": 13742,
+      "sha256": "19b3427962f068a94faa5cde5e2bcad9ff4efdb1ecb1d652a1f0f9620c08a52e",
+      "path_endpoint": "/v2/company/report/ABMM/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ABMM-m4a-ownership.json",
+      "ukuran": 2500,
+      "sha256": "56b3bb54c12dbaaf47af1e2798c003f2d2ed6c353a1f5d5625756ae5f1b948b8",
+      "path_endpoint": "/v2/company/report/ABMM/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADHI-m4a-corpactions.json",
+      "ukuran": 5017,
+      "sha256": "a62025a7f0f3995c8f0f47abdd1b7f5784e4b4d00fc3a941ef208b3ffeeb8943",
+      "path_endpoint": "/v2/company/corporate-actions/ADHI/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADHI-m4a-daily-2025-07-17.json",
+      "ukuran": 8060,
+      "sha256": "a894af49b8ffc8b66dc0eb50d5c3d8a74ed14ab050cd2c77837059eed255dd18",
+      "path_endpoint": "/v2/daily/ADHI/?start=2025-07-17&end=2025-10-14",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADHI-m4a-filings-p0.json",
+      "ukuran": 5507,
+      "sha256": "41551d234b148f2e82aded8821b6bd9d5522f624d745dfdaca3f939e3987c8c1",
+      "path_endpoint": "/v2/filings/?symbol=ADHI&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADHI-m4a-overview-financials.json",
+      "ukuran": 13871,
+      "sha256": "243b596a669be6fe40f8239424384580c3d2f3c222fb2974417a7fe3ec89742f",
+      "path_endpoint": "/v2/company/report/ADHI/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADHI-m4a-ownership.json",
+      "ukuran": 2320,
+      "sha256": "2493c8406003af55b58d10d4b550976a7c26d50fb4cf18301ed808e12cb01e47",
+      "path_endpoint": "/v2/company/report/ADHI/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADRO-m4a-corpactions.json",
+      "ukuran": 5127,
+      "sha256": "347d48bfc60d3e11189101aba46cdd9817da4c2455a2d7a85780d2053d0b303a",
+      "path_endpoint": "/v2/company/corporate-actions/ADRO/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADRO-m4a-daily-2025-05-30.json",
+      "ukuran": 7979,
+      "sha256": "0cb5d341542888863bb318a46e25a39a0156c06dd12af19c1b8393b95b600d89",
+      "path_endpoint": "/v2/daily/ADRO/?start=2025-05-30&end=2025-08-27",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADRO-m4a-daily-2025-10-02.json",
+      "ukuran": 8398,
+      "sha256": "b783cdab0916b94b3e1331ce4a8c0e0b1d68b9b2fb580872d5e7489ccd5e1559",
+      "path_endpoint": "/v2/daily/ADRO/?start=2025-10-02&end=2025-12-30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADRO-m4a-daily-2026-05-07.json",
+      "ukuran": 7840,
+      "sha256": "2fe019883ef5102bd4bb6396e407b73c641ee7b47d8c4892491c165f6404ab54",
+      "path_endpoint": "/v2/daily/ADRO/?start=2026-05-07&end=2026-08-04",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADRO-m4a-filings-p0.json",
+      "ukuran": 2473,
+      "sha256": "16619b1e6f61eab82aaf2389c0c9240eaaeea51d85b0a1ddfd7fb0158f73cddb",
+      "path_endpoint": "/v2/filings/?symbol=ADRO&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADRO-m4a-overview-financials.json",
+      "ukuran": 14486,
+      "sha256": "03177912c30f4cc8951b324a0f5c661a0bb88814c499e83fa556b79c98e84325",
+      "path_endpoint": "/v2/company/report/ADRO/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ADRO-m4a-ownership.json",
+      "ukuran": 2664,
+      "sha256": "da5f40df2faff83f04037f9881dc0b8a5dd1c2dc8bade81ec9f76e0b77e47e1b",
+      "path_endpoint": "/v2/company/report/ADRO/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AGAR-m4a-corpactions.json",
+      "ukuran": 2636,
+      "sha256": "8f0df9c1fdf23db89c21a7dd02230700ce730b87f250c637c1445658f32d020a",
+      "path_endpoint": "/v2/company/corporate-actions/AGAR/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AGAR-m4a-daily-2026-07-01.json",
+      "ukuran": 7956,
+      "sha256": "fe1de6a82951a30201b11c7eb2f3837f76075870411861e7193144cfa43943d0",
+      "path_endpoint": "/v2/daily/AGAR/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AGAR-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=AGAR&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AGAR-m4a-overview-financials.json",
+      "ukuran": 14904,
+      "sha256": "05180120db8bb017086f3ae1a3629f624f8653af885d3d9720782497978f5e44",
+      "path_endpoint": "/v2/company/report/AGAR/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AGAR-m4a-ownership.json",
+      "ukuran": 540,
+      "sha256": "fb5ef5ab1b71ca847ac766094d52e8b13fcfba8fe8d3307e3553f4f92c745c51",
+      "path_endpoint": "/v2/company/report/AGAR/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
     {
       "nama": "AGII-filings.json",
       "ukuran": 4952,
@@ -11,6 +195,646 @@
       "path_endpoint": null,
       "tanggal_ambil": "2026-09-20",
       "sumber_tanggal": "waktu-ubah-berkas"
+    },
+    {
+      "nama": "AHAP-m4a-corpactions.json",
+      "ukuran": 3712,
+      "sha256": "c99d5d216a62972e15ce92acdf2c072e19c6c981f2ba80e85795ee946859f633",
+      "path_endpoint": "/v2/company/corporate-actions/AHAP/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AHAP-m4a-daily-2025-12-24.json",
+      "ukuran": 6802,
+      "sha256": "d7a1733e9f30601f8079884249074a6953ff2604d7d4f8c4d4bc76dab898b1e0",
+      "path_endpoint": "/v2/daily/AHAP/?start=2025-12-24&end=2026-03-23",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AHAP-m4a-daily-2026-07-01.json",
+      "ukuran": 7815,
+      "sha256": "1dff4e25601c620d904b80e15b08f671b52928eb7393a5a13ce9d082abb52c16",
+      "path_endpoint": "/v2/daily/AHAP/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AHAP-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=AHAP&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AHAP-m4a-overview-financials.json",
+      "ukuran": 13968,
+      "sha256": "ee4d6467a47862dcb4ad7aafbe17816d3b9932b3ec2dfef7dacea3a2d9913d57",
+      "path_endpoint": "/v2/company/report/AHAP/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AHAP-m4a-ownership.json",
+      "ukuran": 541,
+      "sha256": "6c93b3dc228fcf025d9bcc09712b139597bdeb75f2fe184a07a1115bc601d59d",
+      "path_endpoint": "/v2/company/report/AHAP/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AIMS-m4a-corpactions.json",
+      "ukuran": 1621,
+      "sha256": "3a3c358b2dcbfaa6a1fc6bd1a58601f1bfce0c73e7a53f19b3e429b18d2892e5",
+      "path_endpoint": "/v2/company/corporate-actions/AIMS/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AIMS-m4a-daily-2025-07-25.json",
+      "ukuran": 7785,
+      "sha256": "46da219a48012b1f2dccd22f91d6e09fdffbf31266ddb86e56031e67207b11bd",
+      "path_endpoint": "/v2/daily/AIMS/?start=2025-07-25&end=2025-10-22",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AIMS-m4a-daily-2026-01-09.json",
+      "ukuran": 6986,
+      "sha256": "1d909dd44692fb194aa998819359eeb6d55b5c1ccf53107c6841ec9394ca9789",
+      "path_endpoint": "/v2/daily/AIMS/?start=2026-01-09&end=2026-04-08",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AIMS-m4a-filings-p0.json",
+      "ukuran": 1139,
+      "sha256": "1f5d7dffa7877b23288625e228b6ae67f2e1fdd55a56424ced9b65d1fa8a2b0b",
+      "path_endpoint": "/v2/filings/?symbol=AIMS&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AIMS-m4a-overview-financials.json",
+      "ukuran": 12249,
+      "sha256": "8ca3ba5f9b1ba3e2f6005680e1f58c78a9a765a88297b104a91aaef9f820effa",
+      "path_endpoint": "/v2/company/report/AIMS/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AIMS-m4a-ownership.json",
+      "ukuran": 684,
+      "sha256": "577f241f71b1d2b1188ba0cd4880763081a80e0a85c19bf47a38728872a9b543",
+      "path_endpoint": "/v2/company/report/AIMS/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AKKU-m4a-corpactions.json",
+      "ukuran": 1495,
+      "sha256": "75e40b383b97ba9e1a9ceb369d9df7360a0c1faaaca49a14b540e39d64de3212",
+      "path_endpoint": "/v2/company/corporate-actions/AKKU/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AKKU-m4a-daily-2025-06-16.json",
+      "ukuran": 7360,
+      "sha256": "c700921c5d2a7f7cf2795e9a3427739bdb1d83a74a8a3e8ac1cbf89da4fcd763",
+      "path_endpoint": "/v2/daily/AKKU/?start=2025-06-16&end=2025-09-13",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AKKU-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=AKKU&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AKKU-m4a-overview-financials.json",
+      "ukuran": 15095,
+      "sha256": "e3879abe8935f7056a3b94646bbafc486c8280473d4ef2c0616d699f980db491",
+      "path_endpoint": "/v2/company/report/AKKU/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AKKU-m4a-ownership.json",
+      "ukuran": 781,
+      "sha256": "05da84943a659972966bea0e9c447d03c3ed6b57d16ea00c24a3940104503622",
+      "path_endpoint": "/v2/company/report/AKKU/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-corpactions.json",
+      "ukuran": 2825,
+      "sha256": "3bd18be08c188a48b9e5f367e8fc4958d0c3d83e43a9196df3b98dea7d571a0a",
+      "path_endpoint": "/v2/company/corporate-actions/ALII/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-daily-2025-01-01.json",
+      "ukuran": 7457,
+      "sha256": "d826da96ae7ee4408a29493f2f47f09ef8f6a134209e30c252adbd3c660a2133",
+      "path_endpoint": "/v2/daily/ALII/?start=2025-01-01&end=2025-03-31",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-daily-2025-07-04.json",
+      "ukuran": 8001,
+      "sha256": "9307f40f8f582933612416e0c0ee838653ecfe870aff1526c6beb9a082320573",
+      "path_endpoint": "/v2/daily/ALII/?start=2025-07-04&end=2025-10-01",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-daily-2025-09-23.json",
+      "ukuran": 8289,
+      "sha256": "ea8ccaa2dd469e6d53077f33a943368d7ababf97f9249ed504fe965630d79b50",
+      "path_endpoint": "/v2/daily/ALII/?start=2025-09-23&end=2025-12-21",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-daily-2025-12-04.json",
+      "ukuran": 7477,
+      "sha256": "b197a0003d12dc744ace3fae625ce8edde85a929ded486d9f4b50d869d80d39f",
+      "path_endpoint": "/v2/daily/ALII/?start=2025-12-04&end=2026-03-03",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-filings-p0.json",
+      "ukuran": 16480,
+      "sha256": "cecfe42cf3f130e7a4c43003d83df328b7cd9ae46f3431dc4977ebc14c324fbd",
+      "path_endpoint": "/v2/filings/?symbol=ALII&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-overview-financials.json",
+      "ukuran": 11504,
+      "sha256": "37c12c05aad587d59a5c5bc566ff052c1b0f2d908ec8546af50a446310c4868c",
+      "path_endpoint": "/v2/company/report/ALII/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALII-m4a-ownership.json",
+      "ukuran": 1576,
+      "sha256": "16797db9a66394ba7ab4b785ba3ac26d8acf378cf7b4487e4132d674d13eb600",
+      "path_endpoint": "/v2/company/report/ALII/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALKA-m4a-corpactions.json",
+      "ukuran": 1649,
+      "sha256": "b6659f3716dc5b8ab5bc5940f2cfb054533450414ea7b30d1023532bc493372b",
+      "path_endpoint": "/v2/company/corporate-actions/ALKA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALKA-m4a-daily-2025-01-01.json",
+      "ukuran": 7297,
+      "sha256": "60da32e95c1249e9bc335cf261c82b96154568d74727cf7087564d4452890435",
+      "path_endpoint": "/v2/daily/ALKA/?start=2025-01-01&end=2025-03-31",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALKA-m4a-daily-2026-02-27.json",
+      "ukuran": 6877,
+      "sha256": "f45f5aede0d5399db6624438208e446472b17acd7da2a691bf88983f77e63612",
+      "path_endpoint": "/v2/daily/ALKA/?start=2026-02-27&end=2026-05-27",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALKA-m4a-daily-2026-07-01.json",
+      "ukuran": 7976,
+      "sha256": "29d9995ecf4667d8040157bc868f48dfb4fe4ea3e0d4af842b89f77029b36436",
+      "path_endpoint": "/v2/daily/ALKA/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALKA-m4a-filings-p0.json",
+      "ukuran": 2832,
+      "sha256": "07738e2094eba1723355feb50112286f257bb12f12a1a5924769df0c6aac5669",
+      "path_endpoint": "/v2/filings/?symbol=ALKA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALKA-m4a-overview-financials.json",
+      "ukuran": 15005,
+      "sha256": "3535c2b0cda0e1242ce12f58f64f1a93a3705b65be6e1162ef7263bda68acde2",
+      "path_endpoint": "/v2/company/report/ALKA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALKA-m4a-ownership.json",
+      "ukuran": 729,
+      "sha256": "4acd9f11eb118dc1996bb180f9c8f9703a6db9c673fe0ef57d165330d4bfeb7e",
+      "path_endpoint": "/v2/company/report/ALKA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALTO-m4a-corpactions.json",
+      "ukuran": 1172,
+      "sha256": "f5b8fe21a5992791fb19ac2b02814f921ff1723edaddd173edb5dddbecd2807a",
+      "path_endpoint": "/v2/company/corporate-actions/ALTO/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALTO-m4a-daily-2025-06-16.json",
+      "ukuran": 7296,
+      "sha256": "e919b2c85266f836a94e3b2a9bb685e7c37d9f80576a4933e736ef3dc7d83624",
+      "path_endpoint": "/v2/daily/ALTO/?start=2025-06-16&end=2025-09-13",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALTO-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=ALTO&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALTO-m4a-overview-financials.json",
+      "ukuran": 11511,
+      "sha256": "683e606eb494ca69b434d842396bc0b42fb6255a710f4c426f0c53905557216e",
+      "path_endpoint": "/v2/company/report/ALTO/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ALTO-m4a-ownership.json",
+      "ukuran": 994,
+      "sha256": "d199072fc0c6ec482ca25fc7483fde89176bd33e2f952cfc13fe6fb9d3054792",
+      "path_endpoint": "/v2/company/report/ALTO/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMAG-m4a-corpactions.json",
+      "ukuran": 3976,
+      "sha256": "b971ca1c44b22b5ce2c0e3b69323e41f1c6797f2e741b0b5de21255674e14b68",
+      "path_endpoint": "/v2/company/corporate-actions/AMAG/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMAG-m4a-daily-2025-04-30.json",
+      "ukuran": 7133,
+      "sha256": "ad392f281f830d04a6884dec8d42e20dc87f2660fbed1be13689f4f361ee0c39",
+      "path_endpoint": "/v2/daily/AMAG/?start=2025-04-30&end=2025-07-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMAG-m4a-daily-2026-04-23.json",
+      "ukuran": 7239,
+      "sha256": "d16a6816d38bdfdd4c1036ebd8cab2e6c11f384c12b4ad7a9866cf9a8d334b82",
+      "path_endpoint": "/v2/daily/AMAG/?start=2026-04-23&end=2026-07-21",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMAG-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=AMAG&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMAG-m4a-overview-financials.json",
+      "ukuran": 13871,
+      "sha256": "62d9cf74fa6064588cbcb810687491224cad980efaa7323a368c10f9771f1591",
+      "path_endpoint": "/v2/company/report/AMAG/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMAG-m4a-ownership.json",
+      "ukuran": 1179,
+      "sha256": "7f0cb005903dc2a849f7eb8c75fd3f38ac57b267ca8cb0032ecf6c9e1d8808b4",
+      "path_endpoint": "/v2/company/report/AMAG/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-corpactions.json",
+      "ukuran": 2535,
+      "sha256": "3291b998cc48c12fcd01add60aa496f50ae3d15b3b4dc321bb971dbeee92357c",
+      "path_endpoint": "/v2/company/corporate-actions/AMMS/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-daily-2025-06-17.json",
+      "ukuran": 7666,
+      "sha256": "a85334fa4dad0178f8e811cc2401e63448df63530e0bd5d28f0b5523059ae252",
+      "path_endpoint": "/v2/daily/AMMS/?start=2025-06-17&end=2025-09-14",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-daily-2025-09-05.json",
+      "ukuran": 7981,
+      "sha256": "868f82b7031eb517e3d0055734b35e2a0f191a6da0c7cd7a7d16774b231a0d83",
+      "path_endpoint": "/v2/daily/AMMS/?start=2025-09-05&end=2025-12-03",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-daily-2025-10-16.json",
+      "ukuran": 7583,
+      "sha256": "dd5e75d58bda7c6fa742d124f10eb367db6f93d7875e9e33dd6acdfdc7c51c8b",
+      "path_endpoint": "/v2/daily/AMMS/?start=2025-10-16&end=2026-01-13",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-daily-2026-02-27.json",
+      "ukuran": 6857,
+      "sha256": "9a0e392a72d6c6a6879d6785e07b8f7c2a11286f7539796e0be4ab1edebc8485",
+      "path_endpoint": "/v2/daily/AMMS/?start=2026-02-27&end=2026-05-27",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-filings-p0.json",
+      "ukuran": 6123,
+      "sha256": "54bc751ee4611de79774f7b5f476887734eb82fff702e5b302e8ef4866f52d33",
+      "path_endpoint": "/v2/filings/?symbol=AMMS&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-overview-financials.json",
+      "ukuran": 7832,
+      "sha256": "83517e6d71068c2804bf6f2b5b93b6e71b66ed4dcef8eb2a8f2af9d325ba50d7",
+      "path_endpoint": "/v2/company/report/AMMS/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AMMS-m4a-ownership.json",
+      "ukuran": 535,
+      "sha256": "c71fc6ff422032badc6b3e9306e829171e1dfc2afd71241241543e2c44d01f18",
+      "path_endpoint": "/v2/company/report/AMMS/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "APEX-m4a-corpactions.json",
+      "ukuran": 3952,
+      "sha256": "dfe56341db29237828f7d2f0a5469c547b023252c227ed6e27f2b307adb69703",
+      "path_endpoint": "/v2/company/corporate-actions/APEX/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "APEX-m4a-daily-2025-06-10.json",
+      "ukuran": 7856,
+      "sha256": "bd7dcf1484b30349022a86aa565f0493eb35bd24b7368b3b0ea0fd76e48555e3",
+      "path_endpoint": "/v2/daily/APEX/?start=2025-06-10&end=2025-09-07",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "APEX-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=APEX&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "APEX-m4a-overview-financials.json",
+      "ukuran": 13566,
+      "sha256": "c826a3dd23354d95fb666a7ce81c1db1ba37a40e8eeae6db46d5b4b39c5b8d76",
+      "path_endpoint": "/v2/company/report/APEX/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "APEX-m4a-ownership.json",
+      "ukuran": 1004,
+      "sha256": "58d21a70d861cd9cce90b8563fe0e3a915247006f34a4faaefa7f3cf9ef5e986",
+      "path_endpoint": "/v2/company/report/APEX/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-corpactions.json",
+      "ukuran": 3105,
+      "sha256": "3b233573f0f4191c9e3aeda25a6a775dd56f8029d570e2ec53f42f79c8409bc1",
+      "path_endpoint": "/v2/company/corporate-actions/ARCI/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-daily-2025-06-09.json",
+      "ukuran": 7968,
+      "sha256": "2ad1c7b41d45d0c071ff7514e4d7338254ac2f633ab1e0ee3583fd2b335e805e",
+      "path_endpoint": "/v2/daily/ARCI/?start=2025-06-09&end=2025-09-06",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-daily-2025-11-24.json",
+      "ukuran": 7873,
+      "sha256": "29501c27100c597251b27edad784e0f8a6ca2d9cbc19eb3f32200ffc3ac37482",
+      "path_endpoint": "/v2/daily/ARCI/?start=2025-11-24&end=2026-02-21",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-daily-2026-03-23.json",
+      "ukuran": 7415,
+      "sha256": "0cb3f83d185e30e3b3836682e67b8446baac49c02d399178b9556e20dd9868bb",
+      "path_endpoint": "/v2/daily/ARCI/?start=2026-03-23&end=2026-06-20",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-daily-2026-06-09.json",
+      "ukuran": 8181,
+      "sha256": "947c0a303de7209d4c6f0926e59d42eb88fb6e49e8ec35d5daa39a1655fea6cf",
+      "path_endpoint": "/v2/daily/ARCI/?start=2026-06-09&end=2026-09-06",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-filings-p0.json",
+      "ukuran": 16593,
+      "sha256": "632d05828375d7df322dea89393448c5a71d2c4facbdf8496b1cf6b48c4fe030",
+      "path_endpoint": "/v2/filings/?symbol=ARCI&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-overview-financials.json",
+      "ukuran": 13703,
+      "sha256": "fc22906b7ed5daa0369cb6663a8d8b1a8855be04dc8b93e60dcd02ad22452300",
+      "path_endpoint": "/v2/company/report/ARCI/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARCI-m4a-ownership.json",
+      "ukuran": 2327,
+      "sha256": "a45d4b1bcca65b96e11b36eab3f1b23670d7ec14b88c4e5a726f5ab25636a1b9",
+      "path_endpoint": "/v2/company/report/ARCI/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AREA-m4a-corpactions.json",
+      "ukuran": 1550,
+      "sha256": "2a849301f174b420abedba98a3942ec16bbf2bb906dc7ceb850b4b1b01e725ca",
+      "path_endpoint": "/v2/company/corporate-actions/AREA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AREA-m4a-daily-2025-04-09.json",
+      "ukuran": 7040,
+      "sha256": "6e9e5583f01fd643a3d862c25901932a323dca69d736a3ba7597ef70cc9b1ced",
+      "path_endpoint": "/v2/daily/AREA/?start=2025-04-09&end=2025-07-07",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AREA-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=AREA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AREA-m4a-overview-financials.json",
+      "ukuran": 4592,
+      "sha256": "46667634baad6c1bde28b9c4ce89da7009413c6cacece0859fc5a1f256cbdf76",
+      "path_endpoint": "/v2/company/report/AREA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AREA-m4a-ownership.json",
+      "ukuran": 858,
+      "sha256": "de3bbd91960604b4d764cdcf218fe3ef528cdc5714b0053a3b38b0db04c5a98f",
+      "path_endpoint": "/v2/company/report/AREA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARGO-m4a-corpactions.json",
+      "ukuran": 1211,
+      "sha256": "4a40227692970a3515fb89889e38c9b5e9ae7984a845ca78326fc3e47d02b5d9",
+      "path_endpoint": "/v2/company/corporate-actions/ARGO/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARGO-m4a-daily-2025-07-04.json",
+      "ukuran": 8075,
+      "sha256": "acbcf44666ee4335bba7c1aa1238534c9493022424d00858f6dfe5156199a6c3",
+      "path_endpoint": "/v2/daily/ARGO/?start=2025-07-04&end=2025-10-01",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARGO-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=ARGO&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARGO-m4a-overview-financials.json",
+      "ukuran": 13619,
+      "sha256": "5a584953cc073ee3a846fdcb43cd80c32bbb172c55f4e010d6e73c18f87f1ccd",
+      "path_endpoint": "/v2/company/report/ARGO/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARGO-m4a-ownership.json",
+      "ukuran": 879,
+      "sha256": "8fcdfbc8c052f7c0200ed3b374b50cdf0bad729154ea4a684175f691f5bb3a8d",
+      "path_endpoint": "/v2/company/report/ARGO/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARKO-m4a-corpactions.json",
+      "ukuran": 2280,
+      "sha256": "83329832e4fadc05b3410b2361f350a457c435e585b2b1aed5a6687e314062d0",
+      "path_endpoint": "/v2/company/corporate-actions/ARKO/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARKO-m4a-daily-2025-07-15.json",
+      "ukuran": 8168,
+      "sha256": "2d460e943993c40b766c13db70b8b2af56f78744c580493d08f37f627e1615fb",
+      "path_endpoint": "/v2/daily/ARKO/?start=2025-07-15&end=2025-10-12",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARKO-m4a-daily-2025-11-12.json",
+      "ukuran": 7833,
+      "sha256": "9363eb2764e3807fdd539c04b78f49f49cac1d9701cd382d1be96321d065b0ce",
+      "path_endpoint": "/v2/daily/ARKO/?start=2025-11-12&end=2026-02-09",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARKO-m4a-filings-p0.json",
+      "ukuran": 3402,
+      "sha256": "d5300b12d62b16a055251a1918b67dc4be8938d69e9db388b3df648dcbaf3029",
+      "path_endpoint": "/v2/filings/?symbol=ARKO&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARKO-m4a-overview-financials.json",
+      "ukuran": 13368,
+      "sha256": "7cfd5e040771f6b76ef7dced9816c6086fc9931120133e239529a1ee1bcbc7ef",
+      "path_endpoint": "/v2/company/report/ARKO/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARKO-m4a-ownership.json",
+      "ukuran": 1052,
+      "sha256": "ac7e0bfd0800643c0bbe3ad9e3b52412a835b845bc76b7a5bf5aa329d39d21a1",
+      "path_endpoint": "/v2/company/report/ARKO/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
     },
     {
       "nama": "ARNA-corpactions.json",
@@ -77,6 +901,1038 @@
       "sumber_tanggal": "waktu-ubah-berkas"
     },
     {
+      "nama": "ARTA-m4a-corpactions.json",
+      "ukuran": 2512,
+      "sha256": "4a47d6da32bc00ab0ad1e6c6faf5b834282ec3e05507dae2935a86dce4d3f22a",
+      "path_endpoint": "/v2/company/corporate-actions/ARTA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARTA-m4a-daily-2025-06-11.json",
+      "ukuran": 7959,
+      "sha256": "fec555fd6db00f859084ca7711a45ebe95b60b748c9cba006032d219738e0647",
+      "path_endpoint": "/v2/daily/ARTA/?start=2025-06-11&end=2025-09-08",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARTA-m4a-daily-2025-07-10.json",
+      "ukuran": 8084,
+      "sha256": "22f35f97926df3e22dcf26f29aff353b2665ff5e47ee0ad9c0f837eeed6c7ffd",
+      "path_endpoint": "/v2/daily/ARTA/?start=2025-07-10&end=2025-10-07",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARTA-m4a-daily-2026-01-29.json",
+      "ukuran": 7301,
+      "sha256": "03753f6cdc8a12710de294a7352b017f4cc25c275e8b44061f7deeb576e40bf0",
+      "path_endpoint": "/v2/daily/ARTA/?start=2026-01-29&end=2026-04-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARTA-m4a-filings-p0.json",
+      "ukuran": 2090,
+      "sha256": "5c71bf0677b3349e693bc2c4d3e7894d2ff4e1ebab42a77bf038348153715e58",
+      "path_endpoint": "/v2/filings/?symbol=ARTA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARTA-m4a-overview-financials.json",
+      "ukuran": 14761,
+      "sha256": "1fa4b73676c40b71a38cffe652b8eb058e20bd5f6a1dc3ac47090b1b3abf482c",
+      "path_endpoint": "/v2/company/report/ARTA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ARTA-m4a-ownership.json",
+      "ukuran": 402,
+      "sha256": "8ecf9613b973f0d0a6ea5fcb0dc34767e9df9eac12ff9dbe5167a108cd4330da",
+      "path_endpoint": "/v2/company/report/ARTA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASHA-m4a-corpactions.json",
+      "ukuran": 1513,
+      "sha256": "d38b67d698302e8ff689d0fe0d9ed97c30b870598448dab53a8a7da8d10e6d04",
+      "path_endpoint": "/v2/company/corporate-actions/ASHA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASHA-m4a-daily-2025-09-25.json",
+      "ukuran": 8013,
+      "sha256": "0ad36661e4348855eecc44f96f545935db1340da72dae325d601af16c0353da6",
+      "path_endpoint": "/v2/daily/ASHA/?start=2025-09-25&end=2025-12-23",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASHA-m4a-daily-2025-12-16.json",
+      "ukuran": 7169,
+      "sha256": "47db11261c2416f663bca40cd9aea42bb3c9e425b2cab8b9c4ccc61c51c2af0a",
+      "path_endpoint": "/v2/daily/ASHA/?start=2025-12-16&end=2026-03-15",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASHA-m4a-filings-p0.json",
+      "ukuran": 963,
+      "sha256": "a7d8970187b4207dc8f17da2fb4e0c548d91505f239929c6d2baa55841ad1d36",
+      "path_endpoint": "/v2/filings/?symbol=ASHA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASHA-m4a-overview-financials.json",
+      "ukuran": 11447,
+      "sha256": "649d76eae4a6fe34e00729a42e54ba310d1d56505a806a430483127787f71a79",
+      "path_endpoint": "/v2/company/report/ASHA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASHA-m4a-ownership.json",
+      "ukuran": 779,
+      "sha256": "a62aeb7b207ce0c08dbf960e84c316177a349a81ec35492df9617ca3a3bac9ae",
+      "path_endpoint": "/v2/company/report/ASHA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLC-m4a-corpactions.json",
+      "ukuran": 3020,
+      "sha256": "2ca54a724840b9ac74873bf5fae004fac34271edffa862e5603013072c93cd0b",
+      "path_endpoint": "/v2/company/corporate-actions/ASLC/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLC-m4a-daily-2025-06-12.json",
+      "ukuran": 7691,
+      "sha256": "c7dc937d0c55d99078f80fbde3dbcf93e86e4b573e1946ab4b40edc998646042",
+      "path_endpoint": "/v2/daily/ASLC/?start=2025-06-12&end=2025-09-09",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLC-m4a-daily-2025-08-08.json",
+      "ukuran": 7909,
+      "sha256": "7ea4343f4baa13837d465588043ddd0ad105a1abea46ab6449d8e910d3bdbbca",
+      "path_endpoint": "/v2/daily/ASLC/?start=2025-08-08&end=2025-11-05",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLC-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=ASLC&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLC-m4a-overview-financials.json",
+      "ukuran": 13189,
+      "sha256": "a6839d25c5f70ec82ef122487a8d048b6935a202ea0989f6614df7f85a60f0d1",
+      "path_endpoint": "/v2/company/report/ASLC/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLC-m4a-ownership.json",
+      "ukuran": 1009,
+      "sha256": "292fbf9af16dbbe521c93a2c47cd724ebedaf0f2e45d86cb12ca09127aaeec9c",
+      "path_endpoint": "/v2/company/report/ASLC/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-corpactions.json",
+      "ukuran": 2508,
+      "sha256": "6718ad2c6efc95d312edb373cfca11d4c2d3105d100a04326d5086f02e615be6",
+      "path_endpoint": "/v2/company/corporate-actions/ASLI/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-daily-2025-07-16.json",
+      "ukuran": 7444,
+      "sha256": "6f92710e51bb91086e798dee4808c612e4e519326ccd0ebe4cabc895d4f702a6",
+      "path_endpoint": "/v2/daily/ASLI/?start=2025-07-16&end=2025-10-13",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-daily-2025-11-18.json",
+      "ukuran": 7616,
+      "sha256": "17710b7a6126a9947464837585206ebf56d204dbec19cbd9b072c8e571475b93",
+      "path_endpoint": "/v2/daily/ASLI/?start=2025-11-18&end=2026-02-15",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-daily-2026-04-20.json",
+      "ukuran": 7493,
+      "sha256": "4b1327d1c33e1f16de841ff8c24e8507f46596e605d3a5fcb5d299e9ee5da8c8",
+      "path_endpoint": "/v2/daily/ASLI/?start=2026-04-20&end=2026-07-18",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-daily-2026-07-01.json",
+      "ukuran": 8022,
+      "sha256": "a22f1e1db61e1e7faf74ad71577dffda8c590da6d9007e1d1993c59d94c9ef94",
+      "path_endpoint": "/v2/daily/ASLI/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-filings-p0.json",
+      "ukuran": 9600,
+      "sha256": "88352577fbe45125b572c000be340d216ec560c6e5989f1fdab269d66d6bfd47",
+      "path_endpoint": "/v2/filings/?symbol=ASLI&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-overview-financials.json",
+      "ukuran": 11645,
+      "sha256": "02ceb2f38a347b82f0d9b51726dccf48ac72f59909b7b724d4f7ae420a583798",
+      "path_endpoint": "/v2/company/report/ASLI/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASLI-m4a-ownership.json",
+      "ukuran": 581,
+      "sha256": "940b9f9ca0e3fa877d1f32ccb8c5f4e2baf08d625ab15709dd882aa8e85d78ab",
+      "path_endpoint": "/v2/company/report/ASLI/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPI-m4a-corpactions.json",
+      "ukuran": 1917,
+      "sha256": "8d108c144842eec4a6dd6d20bb2cd4d240c2005598e1a8b15d6709ed5b783124",
+      "path_endpoint": "/v2/company/corporate-actions/ASPI/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPI-m4a-daily-2025-06-09.json",
+      "ukuran": 7739,
+      "sha256": "50cf49284d3b911720ece2b5de1ea7ffe83699b5c91350d4a7d1370fa4962fb3",
+      "path_endpoint": "/v2/daily/ASPI/?start=2025-06-09&end=2025-09-06",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPI-m4a-daily-2025-10-01.json",
+      "ukuran": 7918,
+      "sha256": "f902d70db249734740c63c3954102e83dc1ca849cbb259d11a2c6245e31cff28",
+      "path_endpoint": "/v2/daily/ASPI/?start=2025-10-01&end=2025-12-29",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPI-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=ASPI&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPI-m4a-overview-financials.json",
+      "ukuran": 14702,
+      "sha256": "a76fe9130546caca26c7f47f57c71f4c3ddfcfc75ef521b8c62c8bdfb69c6cfc",
+      "path_endpoint": "/v2/company/report/ASPI/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPI-m4a-ownership.json",
+      "ukuran": 467,
+      "sha256": "971e341c1dd55c489159d28b63c31c65278dce1de7e142aebecf22a3a0dc8d4f",
+      "path_endpoint": "/v2/company/report/ASPI/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPR-m4a-corpactions.json",
+      "ukuran": 1499,
+      "sha256": "f1df793d5af111d79497a357a3fc4e2196eb71f100d009ed05267aaafff40210",
+      "path_endpoint": "/v2/company/corporate-actions/ASPR/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPR-m4a-daily-2026-03-18.json",
+      "ukuran": 6687,
+      "sha256": "e1194622289360c28116a2e7650f9cdefac94a8e9565b508c5fa8a3298cc7fd1",
+      "path_endpoint": "/v2/daily/ASPR/?start=2026-03-18&end=2026-06-15",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPR-m4a-daily-2026-06-05.json",
+      "ukuran": 7883,
+      "sha256": "6cfe90bea790c0ef234b8176de8a804a0b5b501677b6ac43d011677ccf495e64",
+      "path_endpoint": "/v2/daily/ASPR/?start=2026-06-05&end=2026-09-02",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPR-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=ASPR&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPR-m4a-overview-financials.json",
+      "ukuran": 2890,
+      "sha256": "a5a4c140b1bc5e900bc7a4d07e3e602e8bbbc490c85ab953f84819996f511e39",
+      "path_endpoint": "/v2/company/report/ASPR/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASPR-m4a-ownership.json",
+      "ukuran": 610,
+      "sha256": "f7f52ba87a4acca3088c6e3e415b1a4cf690a8e252aebfaafdc0b678aa96d4ac",
+      "path_endpoint": "/v2/company/report/ASPR/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASSA-m4a-corpactions.json",
+      "ukuran": 2915,
+      "sha256": "d1690e350d0bdc1d8ab41c92f227ec942c4717b8300aff54dc120400dc52c45c",
+      "path_endpoint": "/v2/company/corporate-actions/ASSA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASSA-m4a-daily-2025-06-20.json",
+      "ukuran": 7898,
+      "sha256": "ed2e5df5928bfefd9ae99cf2289052bdc003ee8c6cc1226d6945eb2338ff0923",
+      "path_endpoint": "/v2/daily/ASSA/?start=2025-06-20&end=2025-09-17",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASSA-m4a-daily-2025-10-31.json",
+      "ukuran": 7875,
+      "sha256": "c8b1a1be081afb3a98317fe9c95f04badd2a61b7edcc2eb4e316d21f85153ce3",
+      "path_endpoint": "/v2/daily/ASSA/?start=2025-10-31&end=2026-01-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASSA-m4a-daily-2026-06-12.json",
+      "ukuran": 7886,
+      "sha256": "db6ec83ed05cc5c82d9a9d4722ea9121a611a972f0d1d387aed94f8b8b2f6cd8",
+      "path_endpoint": "/v2/daily/ASSA/?start=2026-06-12&end=2026-09-09",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASSA-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=ASSA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASSA-m4a-overview-financials.json",
+      "ukuran": 13816,
+      "sha256": "1db71a4b89181e301b399db9c99a259d8e265cd0dcbcc72871bce66360db21de",
+      "path_endpoint": "/v2/company/report/ASSA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ASSA-m4a-ownership.json",
+      "ukuran": 2744,
+      "sha256": "4acd15f5c8c8f103e93ac9972522fd5638e614695be3a017531e3e7c5cbb252c",
+      "path_endpoint": "/v2/company/report/ASSA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ATAP-m4a-corpactions.json",
+      "ukuran": 2864,
+      "sha256": "2d6fa41728d1209f7b92f2dc6bb12c66c912e6938be5255f9ec80642e4c14064",
+      "path_endpoint": "/v2/company/corporate-actions/ATAP/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ATAP-m4a-daily-2025-11-05.json",
+      "ukuran": 7417,
+      "sha256": "1291e8d220067e53dee9c0b02a7f7af7911ceb7d7f8dd2d7f7283f40f37dfb1e",
+      "path_endpoint": "/v2/daily/ATAP/?start=2025-11-05&end=2026-02-02",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ATAP-m4a-daily-2026-06-29.json",
+      "ukuran": 8035,
+      "sha256": "38c3b671b46bbee6a6c2dd4027537315a1f31ac7b331a06bf88114a3857b4ec1",
+      "path_endpoint": "/v2/daily/ATAP/?start=2026-06-29&end=2026-09-26",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ATAP-m4a-filings-p0.json",
+      "ukuran": 3877,
+      "sha256": "a7b1c47fe3ddf9e5cc89a9e7ef345745fe9af94ff2a04483cde6953526eaca1d",
+      "path_endpoint": "/v2/filings/?symbol=ATAP&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ATAP-m4a-overview-financials.json",
+      "ukuran": 15006,
+      "sha256": "6344cd69155ad8226c9929ee930d01b59db950f6093104bf614eea99c57f230f",
+      "path_endpoint": "/v2/company/report/ATAP/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "ATAP-m4a-ownership.json",
+      "ukuran": 678,
+      "sha256": "1631f43f940605ce67a55cf9c6457a0a928b60cb7b8f5487cdeb8e35ca4bcebe",
+      "path_endpoint": "/v2/company/report/ATAP/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-corpactions.json",
+      "ukuran": 3895,
+      "sha256": "485a06f8ab949da2713bbcc3df151b55021e6b1b0dc1de06b811fc8dcdf537a2",
+      "path_endpoint": "/v2/company/corporate-actions/AVIA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-daily-2025-04-08.json",
+      "ukuran": 7195,
+      "sha256": "770f63d36a6dc441e82f9659d0b825fb3790b614f3313f026d44b0335767fab7",
+      "path_endpoint": "/v2/daily/AVIA/?start=2025-04-08&end=2025-07-06",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-daily-2025-10-29.json",
+      "ukuran": 7715,
+      "sha256": "48ead16738ee46ffb2dfe1cdab53eef3c57004ab6749e1018729b56596196a11",
+      "path_endpoint": "/v2/daily/AVIA/?start=2025-10-29&end=2026-01-26",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-daily-2026-01-29.json",
+      "ukuran": 7323,
+      "sha256": "13a5ead7a359ccc099d3938b42a1cd31b2ecb25c91f5fa822be77aed723a4cf2",
+      "path_endpoint": "/v2/daily/AVIA/?start=2026-01-29&end=2026-04-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-daily-2026-05-07.json",
+      "ukuran": 7576,
+      "sha256": "0ad71a5589153b2b9d184668d2b3b3008fcf106ac3a03dda5e238aa002eb7b10",
+      "path_endpoint": "/v2/daily/AVIA/?start=2026-05-07&end=2026-08-04",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-filings-p0.json",
+      "ukuran": 8824,
+      "sha256": "28121a7e0ea161cc693a23c62b39a727f4dd30c60a66815ef392d62eab82c3d2",
+      "path_endpoint": "/v2/filings/?symbol=AVIA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-overview-financials.json",
+      "ukuran": 13653,
+      "sha256": "800948c120fa760c22e068684be13557847eed3a38b30529d4958c81839d8112",
+      "path_endpoint": "/v2/company/report/AVIA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AVIA-m4a-ownership.json",
+      "ukuran": 2880,
+      "sha256": "1096b0824b5da0a4bbe2b2404634945181099e74fc2c9fcf9b5da621a87f5420",
+      "path_endpoint": "/v2/company/report/AVIA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYAM-m4a-corpactions.json",
+      "ukuran": 3433,
+      "sha256": "22c6f3dd481c7c20175e31e1945b8c05114c0900afccd09a3b7aa6ac4b32f353",
+      "path_endpoint": "/v2/company/corporate-actions/AYAM/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYAM-m4a-daily-2025-11-12.json",
+      "ukuran": 7614,
+      "sha256": "ecd9f7f54a17bf93956b1c867178e349621cacd90b506ca54b51b7c13ef7e0ab",
+      "path_endpoint": "/v2/daily/AYAM/?start=2025-11-12&end=2026-02-09",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYAM-m4a-filings-p0.json",
+      "ukuran": 1167,
+      "sha256": "689068b62dae7cb46973829eedcca530772d4458a54b4be0122fbacd3c8b6a90",
+      "path_endpoint": "/v2/filings/?symbol=AYAM&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYAM-m4a-overview-financials.json",
+      "ukuran": 11683,
+      "sha256": "09961b5aff59f6b10ad0bcc43ad595278633c99ba0064451e6c857c0705b5b2b",
+      "path_endpoint": "/v2/company/report/AYAM/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYAM-m4a-ownership.json",
+      "ukuran": 553,
+      "sha256": "816f4baa724073b98a299d72a0794f033f8ade411a9d71a7e98440924266900f",
+      "path_endpoint": "/v2/company/report/AYAM/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYLS-m4a-corpactions.json",
+      "ukuran": 1862,
+      "sha256": "12c4691dcd402bb3e49b9dcd95a99868434b668d0a7d9a0a089443564b6f303c",
+      "path_endpoint": "/v2/company/corporate-actions/AYLS/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYLS-m4a-daily-2025-09-30.json",
+      "ukuran": 7677,
+      "sha256": "05f07eb20374014e467ebe9bf16a7f26df35bef648ed31d8acb2b0b8a41407b4",
+      "path_endpoint": "/v2/daily/AYLS/?start=2025-09-30&end=2025-12-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYLS-m4a-daily-2026-01-01.json",
+      "ukuran": 7051,
+      "sha256": "4f4ee7044c083fcde608cca760e3b199d847ce655c0bf8a28c437262b2aac690",
+      "path_endpoint": "/v2/daily/AYLS/?start=2026-01-01&end=2026-03-31",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYLS-m4a-filings-p0.json",
+      "ukuran": 1153,
+      "sha256": "48b0029a8343c5c6ffe31f564864ef2acf8b19aff129b2c2efe4a793cf36b7a6",
+      "path_endpoint": "/v2/filings/?symbol=AYLS&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYLS-m4a-overview-financials.json",
+      "ukuran": 14535,
+      "sha256": "6e19665c3a78bad3df939e5a899b3df1d820feb6aa79a1182a99b0fc406ca045",
+      "path_endpoint": "/v2/company/report/AYLS/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "AYLS-m4a-ownership.json",
+      "ukuran": 429,
+      "sha256": "4f8391eb8f448250adbd0a91e021910d1f5ad8537c91930c78e5bc99c111dcc5",
+      "path_endpoint": "/v2/company/report/AYLS/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAIK-m4a-corpactions.json",
+      "ukuran": 2932,
+      "sha256": "7d94cfd7e6719b4e51e26c052a3097c4a0f9cf3a2cf30f0a6767773fae5d019f",
+      "path_endpoint": "/v2/company/corporate-actions/BAIK/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAIK-m4a-daily-2026-01-07.json",
+      "ukuran": 7015,
+      "sha256": "5d91db6f53706f43841ece4d005298e4b9e0e5397ada943a6d49b09cf2a4b257",
+      "path_endpoint": "/v2/daily/BAIK/?start=2026-01-07&end=2026-04-06",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAIK-m4a-daily-2026-04-10.json",
+      "ukuran": 7275,
+      "sha256": "29f5bc62dbddccb6e2189c81441795005344a00e4d1c6ef92e9fe1bbc060e549",
+      "path_endpoint": "/v2/daily/BAIK/?start=2026-04-10&end=2026-07-08",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAIK-m4a-daily-2026-07-01.json",
+      "ukuran": 7990,
+      "sha256": "f5972164c8fa919abb171ef7ca98f2e015759b4bd5792e450ce37b8fd7c23223",
+      "path_endpoint": "/v2/daily/BAIK/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAIK-m4a-filings-p0.json",
+      "ukuran": 3087,
+      "sha256": "16bc5c64641e1e21c76a5ea5029ba6851c715c0cffa48c15912a80c2b10f1993",
+      "path_endpoint": "/v2/filings/?symbol=BAIK&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAIK-m4a-overview-financials.json",
+      "ukuran": 4720,
+      "sha256": "15fd1e7569a2ae39cc79dbb59c0b715b21604483a07dc32464347bd2caa59688",
+      "path_endpoint": "/v2/company/report/BAIK/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAIK-m4a-ownership.json",
+      "ukuran": 632,
+      "sha256": "2caaccba94396045735df36c7d755891eb8b5e6f37a3175672f3e1aa4d17570e",
+      "path_endpoint": "/v2/company/report/BAIK/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAJA-m4a-corpactions.json",
+      "ukuran": 3638,
+      "sha256": "97f764ad51bd6733c0c0e5d8e320fb9bdaef5bafb7e9171e232f586ca2a167db",
+      "path_endpoint": "/v2/company/corporate-actions/BAJA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAJA-m4a-daily-2026-03-18.json",
+      "ukuran": 6626,
+      "sha256": "83bd1ca883f8c5e62d0ae90b4bf889b526b92a6e7067282a1dbe3c6866475e76",
+      "path_endpoint": "/v2/daily/BAJA/?start=2026-03-18&end=2026-06-15",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAJA-m4a-daily-2026-07-01.json",
+      "ukuran": 7913,
+      "sha256": "4fd0cf803aab34190daedbd838c2e14a0e3ae54b3f481635fe6c9948aebc297f",
+      "path_endpoint": "/v2/daily/BAJA/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAJA-m4a-filings-p0.json",
+      "ukuran": 2490,
+      "sha256": "2a9bf55fcfa42582509144242334549002d48e931b6afe2dbe13850c99aca0a0",
+      "path_endpoint": "/v2/filings/?symbol=BAJA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAJA-m4a-overview-financials.json",
+      "ukuran": 13591,
+      "sha256": "149e7bb20f75f0a728a66b8a68dfbbc5d46c7e323c4d64dceb083c4c821e74e2",
+      "path_endpoint": "/v2/company/report/BAJA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAJA-m4a-ownership.json",
+      "ukuran": 905,
+      "sha256": "f676565f18abd186cf8dc639152802c1277358780611a660eca6e7a300f6fb23",
+      "path_endpoint": "/v2/company/report/BAJA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAPA-m4a-corpactions.json",
+      "ukuran": 2405,
+      "sha256": "7fc4e74c08c10c429f54e40d81a806593a9189e8631fac12d75f99c2de6a8c1b",
+      "path_endpoint": "/v2/company/corporate-actions/BAPA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAPA-m4a-daily-2026-04-07.json",
+      "ukuran": 7089,
+      "sha256": "dcb97f6fe327d9162d72023e0d805c10cdc505b7291ed1f809130728ded31319",
+      "path_endpoint": "/v2/daily/BAPA/?start=2026-04-07&end=2026-07-05",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAPA-m4a-daily-2026-06-22.json",
+      "ukuran": 8060,
+      "sha256": "4bb6bebb2c90bfcf4bd043f4f9dd19c351d762b308c2e8cba2ac2646d4ba7614",
+      "path_endpoint": "/v2/daily/BAPA/?start=2026-06-22&end=2026-09-19",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAPA-m4a-filings-p0.json",
+      "ukuran": 7348,
+      "sha256": "7819b4c8415c726d5d684d13bea9e5f57e502312a15f4ebc9b6d5dd801e02927",
+      "path_endpoint": "/v2/filings/?symbol=BAPA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAPA-m4a-overview-financials.json",
+      "ukuran": 13370,
+      "sha256": "1603c80e2b84ab50e48f7a6381ac1ff4e0b182241b8ca3623783b0ccfc400709",
+      "path_endpoint": "/v2/company/report/BAPA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BAPA-m4a-ownership.json",
+      "ukuran": 762,
+      "sha256": "788ae961c601994130e8178c50ed7e88e82503a26f7d746b48ebc7eab8a4ec48",
+      "path_endpoint": "/v2/company/report/BAPA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BATA-m4a-corpactions.json",
+      "ukuran": 2503,
+      "sha256": "123ba06cad32f7da398cbed16af6f0602a3b4367812675b62e5da64dde25d377",
+      "path_endpoint": "/v2/company/corporate-actions/BATA/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BATA-m4a-daily-2026-03-16.json",
+      "ukuran": 6431,
+      "sha256": "0a46cc88bc927578338bb664c5c8f863d677bb64c74baefeac1dcaacfea75f1f",
+      "path_endpoint": "/v2/daily/BATA/?start=2026-03-16&end=2026-06-13",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BATA-m4a-daily-2026-06-01.json",
+      "ukuran": 7225,
+      "sha256": "b92c0f908c5c764e01c2220100504bf1730d986c7046a06a35aac1e8f12d3ec4",
+      "path_endpoint": "/v2/daily/BATA/?start=2026-06-01&end=2026-08-29",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BATA-m4a-filings-p0.json",
+      "ukuran": 4683,
+      "sha256": "c7a54142a7f089eee1b93780bbbfd08e0c742098b31b6cd87f939b497834baba",
+      "path_endpoint": "/v2/filings/?symbol=BATA&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BATA-m4a-overview-financials.json",
+      "ukuran": 13626,
+      "sha256": "d0521b90ce1af568ea9747b8d2cce154103f51ddc3f1557149f73b0269549e75",
+      "path_endpoint": "/v2/company/report/BATA/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BATA-m4a-ownership.json",
+      "ukuran": 831,
+      "sha256": "0e8b09f5f20ca0b7b74d3f0c99b89090c3ea98e361554774710ca02e19844a9b",
+      "path_endpoint": "/v2/company/report/BATA/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-corpactions.json",
+      "ukuran": 2930,
+      "sha256": "d24ef3ad35aa439bad0f42ddfa0cf8016c9ce54d99c1f6514f8020d97049c789",
+      "path_endpoint": "/v2/company/corporate-actions/BBMD/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-daily-2025-06-17.json",
+      "ukuran": 7897,
+      "sha256": "71082de47a514bf6d9f0900a26d78b0c279a9dd7f473435bc04c9ed1f76069fa",
+      "path_endpoint": "/v2/daily/BBMD/?start=2025-06-17&end=2025-09-14",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-daily-2025-07-24.json",
+      "ukuran": 8020,
+      "sha256": "ccb13d2a78beae0957b64758905e98a9bb5b55ac169f3932ea99a021a23b9d99",
+      "path_endpoint": "/v2/daily/BBMD/?start=2025-07-24&end=2025-10-21",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-daily-2026-06-05.json",
+      "ukuran": 7881,
+      "sha256": "bfc97e8996fa90f84940ee2726a5498070f6fda922f844941842a350c04b5ff5",
+      "path_endpoint": "/v2/daily/BBMD/?start=2026-06-05&end=2026-09-02",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-daily-2026-07-01.json",
+      "ukuran": 8021,
+      "sha256": "12497772226723fbfcd52993f0e039f9f6735f9c1088e8f6bef06866bc3c675f",
+      "path_endpoint": "/v2/daily/BBMD/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-filings-p0.json",
+      "ukuran": 11524,
+      "sha256": "0f16b492a19420d61b84e2dcedeb63e05ea8dc86b9e4746704b94b3562ef4e32",
+      "path_endpoint": "/v2/filings/?symbol=BBMD&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-overview-financials.json",
+      "ukuran": 25443,
+      "sha256": "7f7d66e3cf2ba5065358231e579e7945d42cff9fc534bde554171301ceb18012",
+      "path_endpoint": "/v2/company/report/BBMD/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBMD-m4a-ownership.json",
+      "ukuran": 1125,
+      "sha256": "fdf678ffa88a65068ced0c60fc5bac21826a34375fe01f2c1fa488f613a6cbcd",
+      "path_endpoint": "/v2/company/report/BBMD/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBRM-m4a-corpactions.json",
+      "ukuran": 2222,
+      "sha256": "54220cdd7785d00b13f79679600ef2b764bd4ccbdae890e43132a3ea0991df2c",
+      "path_endpoint": "/v2/company/corporate-actions/BBRM/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBRM-m4a-daily-2025-12-16.json",
+      "ukuran": 7371,
+      "sha256": "09b62ba291b2d2e32f936070e324e5d8be2ef2b51b2ab013c04ce552adb6c13b",
+      "path_endpoint": "/v2/daily/BBRM/?start=2025-12-16&end=2026-03-15",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBRM-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=BBRM&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBRM-m4a-overview-financials.json",
+      "ukuran": 13267,
+      "sha256": "497e30d7ee278dc686e0bb53d356b0ac8ab3bb4f08f663a0c9db3a02ca1c7915",
+      "path_endpoint": "/v2/company/report/BBRM/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBRM-m4a-ownership.json",
+      "ukuran": 770,
+      "sha256": "38bc4815160b91f1f8779d59f3fa8ef0ad207e5bdc2fa18feaf4ef03be35d953",
+      "path_endpoint": "/v2/company/report/BBRM/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBSS-m4a-corpactions.json",
+      "ukuran": 2107,
+      "sha256": "bf9079a7515095cc71e5a551b2dcb25265bf0461647665cbb599789d7c29b43a",
+      "path_endpoint": "/v2/company/corporate-actions/BBSS/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBSS-m4a-daily-2025-05-08.json",
+      "ukuran": 7288,
+      "sha256": "ff80f5ed2349b076169f32d131f96c07c4fffea4b6685b2a2c0c943e1651a50e",
+      "path_endpoint": "/v2/daily/BBSS/?start=2025-05-08&end=2025-08-05",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBSS-m4a-daily-2025-12-25.json",
+      "ukuran": 6685,
+      "sha256": "8b68df1aa3a69d2e96919585ec1d519dda47c1efd1048699bacf22bf05b5f477",
+      "path_endpoint": "/v2/daily/BBSS/?start=2025-12-25&end=2026-03-24",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBSS-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=BBSS&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBSS-m4a-overview-financials.json",
+      "ukuran": 14614,
+      "sha256": "ac9342c9ec757931bc918ca8c9479653a89df914f6ffacafc375a413eb055e64",
+      "path_endpoint": "/v2/company/report/BBSS/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BBSS-m4a-ownership.json",
+      "ukuran": 583,
+      "sha256": "65024f6fa3ba2c68f5ffadff4151bdf815b948ca0d8039bf38c1d0c32b51f485",
+      "path_endpoint": "/v2/company/report/BBSS/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-corpactions.json",
+      "ukuran": 4644,
+      "sha256": "2cb54649bcf71a3f857f5cfd113f0fae0b2fd1076e4eafa00de9324c82cc201a",
+      "path_endpoint": "/v2/company/corporate-actions/BCIC/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-daily-2025-01-17.json",
+      "ukuran": 6681,
+      "sha256": "ba94ab6adcda355ae7b6ca2552322bc802903b4c724079656c9189e4cd6c4b71",
+      "path_endpoint": "/v2/daily/BCIC/?start=2025-01-17&end=2025-04-16",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-daily-2025-09-01.json",
+      "ukuran": 8072,
+      "sha256": "41c90c2f850eb6e89e15068e5b7c351e54b78c234dc36dacae7e4e11dc6653e9",
+      "path_endpoint": "/v2/daily/BCIC/?start=2025-09-01&end=2025-11-29",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-daily-2025-12-15.json",
+      "ukuran": 7472,
+      "sha256": "08899922fe6aa72429a70dd9c1e1e8bef0580e256691e51630db199e22403625",
+      "path_endpoint": "/v2/daily/BCIC/?start=2025-12-15&end=2026-03-14",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-daily-2026-03-12.json",
+      "ukuran": 6658,
+      "sha256": "e070836029b4c8bf5dd826ff271afb509678924b25ab68ef806d385a6fd51eed",
+      "path_endpoint": "/v2/daily/BCIC/?start=2026-03-12&end=2026-06-09",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-filings-p0.json",
+      "ukuran": 33488,
+      "sha256": "e5583105013893424c107ae91ffe7a7bd7e36dfcb6b72e612e2577f696195872",
+      "path_endpoint": "/v2/filings/?symbol=BCIC&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-filings-p1.json",
+      "ukuran": 11076,
+      "sha256": "f83d3a85377b7eecd93f000e71273ee276fdd5f55d9f146a479b80a04fa80ea1",
+      "path_endpoint": "/v2/filings/?symbol=BCIC&start=2025-01-01&end=2026-09-28&limit=30&offset=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-overview-financials.json",
+      "ukuran": 23758,
+      "sha256": "51ebb7137c39ee1bec73238b4d46b16bfb5eef5b3106e6d2c46c7f9cd140ce80",
+      "path_endpoint": "/v2/company/report/BCIC/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BCIC-m4a-ownership.json",
+      "ukuran": 859,
+      "sha256": "3d6be6f08d3e45104a07da763911ca44d9f1ae6ae64103c98bf497b105a09756",
+      "path_endpoint": "/v2/company/report/BCIC/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BEST-m4a-corpactions.json",
+      "ukuran": 2070,
+      "sha256": "8bfbcf07d732e2f00509478cc93d160caeffc4a234b8df5b0c7859b69995c849",
+      "path_endpoint": "/v2/company/corporate-actions/BEST/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BEST-m4a-daily-2026-07-01.json",
+      "ukuran": 7972,
+      "sha256": "c2b8af942f184a1cffc5d8d1584e5d34817566925c3ca5436901e9401b7b7319",
+      "path_endpoint": "/v2/daily/BEST/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BEST-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=BEST&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BEST-m4a-overview-financials.json",
+      "ukuran": 13756,
+      "sha256": "f76714def2d75f388956db342f3397ef9cabbc41eaf06eec55c6a2a831749b43",
+      "path_endpoint": "/v2/company/report/BEST/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BEST-m4a-ownership.json",
+      "ukuran": 1588,
+      "sha256": "ddc3231dc8b13e69eaf042eb056603f72b995df7777fcd6d3f82197f4059ea7f",
+      "path_endpoint": "/v2/company/report/BEST/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
       "nama": "BIRD-corpactions.json",
       "ukuran": 2670,
       "sha256": "408ea6b0b284cacc049649c41956abcd83d5614cb4f977a45c8ee6288c91b6e9",
@@ -123,6 +1979,230 @@
       "path_endpoint": null,
       "tanggal_ambil": "2026-09-21",
       "sumber_tanggal": "waktu-ubah-berkas"
+    },
+    {
+      "nama": "BNII-m4a-corpactions.json",
+      "ukuran": 5665,
+      "sha256": "8db94c581a6638c74151ae505f9bc064371c52d359bf7493421a88c47aaa84fe",
+      "path_endpoint": "/v2/company/corporate-actions/BNII/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BNII-m4a-daily-2025-04-09.json",
+      "ukuran": 7116,
+      "sha256": "b63e93e4786b02187aa3248a9b44db0ed8c055a84727bf2cd02496b6fbc44c8f",
+      "path_endpoint": "/v2/daily/BNII/?start=2025-04-09&end=2025-07-07",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BNII-m4a-daily-2026-04-14.json",
+      "ukuran": 7384,
+      "sha256": "f2e5e56d1c686bacfe90ef6662a780379bd92664be1d87423479b390e3371272",
+      "path_endpoint": "/v2/daily/BNII/?start=2026-04-14&end=2026-07-12",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BNII-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=BNII&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BNII-m4a-overview-financials.json",
+      "ukuran": 26100,
+      "sha256": "70f708b223ff4a18fd84ffa4098dad6236910bbd605ad477bf77f22ebe2d2d93",
+      "path_endpoint": "/v2/company/report/BNII/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BNII-m4a-ownership.json",
+      "ukuran": 2052,
+      "sha256": "ec218d0693303e44f9ec0d6c601fc6b4e9e7055dd82576aec39334d3c0f0b41a",
+      "path_endpoint": "/v2/company/report/BNII/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BOLT-m4a-corpactions.json",
+      "ukuran": 2677,
+      "sha256": "d6de366e552eda6db953838875a82522e8aed421a364c1f1befb3d67606320a3",
+      "path_endpoint": "/v2/company/corporate-actions/BOLT/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BOLT-m4a-daily-2025-06-18.json",
+      "ukuran": 8003,
+      "sha256": "3d2043e811241616b2086f1eff2a0caef6817a3cb79fea54468bc3daacf974a3",
+      "path_endpoint": "/v2/daily/BOLT/?start=2025-06-18&end=2025-09-15",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BOLT-m4a-daily-2025-11-28.json",
+      "ukuran": 7436,
+      "sha256": "8aca40ef206bc030f8610d7062fc70455b8ea99db5485702294c98137e3a5502",
+      "path_endpoint": "/v2/daily/BOLT/?start=2025-11-28&end=2026-02-25",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BOLT-m4a-daily-2026-03-27.json",
+      "ukuran": 7089,
+      "sha256": "60db9a8be9736d7f62c12e19e9bb2aae017a259069004e98626c715b72433bc6",
+      "path_endpoint": "/v2/daily/BOLT/?start=2026-03-27&end=2026-06-24",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BOLT-m4a-filings-p0.json",
+      "ukuran": 4334,
+      "sha256": "1afae8e81535fef8c9ec25a03e9b30fc63b523a3929e7d0a9e0ec606c82a9404",
+      "path_endpoint": "/v2/filings/?symbol=BOLT&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BOLT-m4a-overview-financials.json",
+      "ukuran": 13622,
+      "sha256": "b84b97c94f93170c6caa8821b89348f96e10a89103e26c17e57a272e7fcf149e",
+      "path_endpoint": "/v2/company/report/BOLT/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BOLT-m4a-ownership.json",
+      "ukuran": 635,
+      "sha256": "5d7af2d0da303a17a1c1f26c587a55245c7b150697cd87b82ddc27974e2422af",
+      "path_endpoint": "/v2/company/report/BOLT/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSIM-m4a-corpactions.json",
+      "ukuran": 3603,
+      "sha256": "d38a4ffb678d78aba72a1b28c6cbbd116a5b09d1e1d76594238abca68560be74",
+      "path_endpoint": "/v2/company/corporate-actions/BSIM/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSIM-m4a-daily-2025-03-31.json",
+      "ukuran": 6410,
+      "sha256": "dd5a5fde9777bd9947be49ebc26fa0d8329a23f2c5ea96a639e7e18f63ee6ee3",
+      "path_endpoint": "/v2/daily/BSIM/?start=2025-03-31&end=2025-06-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSIM-m4a-filings-p0.json",
+      "ukuran": 1075,
+      "sha256": "12db881a28bc3313f2af83e97bf70e1b1670cadd67ab3f9fe85a81000c1e24a9",
+      "path_endpoint": "/v2/filings/?symbol=BSIM&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSIM-m4a-overview-financials.json",
+      "ukuran": 26017,
+      "sha256": "db6aa7075530c574d9d5fe18e9d00b188e5fd2a3afaf6a2e52279e5a97fea3fb",
+      "path_endpoint": "/v2/company/report/BSIM/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSIM-m4a-ownership.json",
+      "ukuran": 621,
+      "sha256": "568e4212c05a907003fa9465b0536955aa2f7551709ff074b333da083d3cf35a",
+      "path_endpoint": "/v2/company/report/BSIM/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSWD-m4a-corpactions.json",
+      "ukuran": 2815,
+      "sha256": "051875e8514dbec16462517406a367ef893a494ee05a7586aeca1c4223198285",
+      "path_endpoint": "/v2/company/corporate-actions/BSWD/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSWD-m4a-daily-2026-07-01.json",
+      "ukuran": 7916,
+      "sha256": "e83e270dc148e63fa046072b717bcba385b2862a725db5bd5a81e9c35fa4adf8",
+      "path_endpoint": "/v2/daily/BSWD/?start=2026-07-01&end=2026-09-28",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSWD-m4a-filings-p0.json",
+      "ukuran": 159,
+      "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010",
+      "path_endpoint": "/v2/filings/?symbol=BSWD&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSWD-m4a-overview-financials.json",
+      "ukuran": 25276,
+      "sha256": "649a101682a014832d95fb28175ad494bee95b6a0e867aa5a41eaab8bcde7018",
+      "path_endpoint": "/v2/company/report/BSWD/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "BSWD-m4a-ownership.json",
+      "ukuran": 419,
+      "sha256": "afb500e293cca26c46ca9fcee617c91b23c59bff1fdc4f1b92a4f13eead08d46",
+      "path_endpoint": "/v2/company/report/BSWD/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "CAMP-m4a-corpactions.json",
+      "ukuran": 3009,
+      "sha256": "ef9c15d68b249142c1ee09fdf0da30639e7da0bbc1cd3a1d7ecd42144c24c6c5",
+      "path_endpoint": "/v2/company/corporate-actions/CAMP/",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "CAMP-m4a-daily-2025-01-09.json",
+      "ukuran": 6954,
+      "sha256": "b4e7d0255758d2a3c8b2b9e2c91ddc9bd472cdd8cb5a3487833126468b7ba9c9",
+      "path_endpoint": "/v2/daily/CAMP/?start=2025-01-09&end=2025-04-08",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "CAMP-m4a-filings-p0.json",
+      "ukuran": 2873,
+      "sha256": "f505675dc702bb1c0861ede2c0544428f91b2312167a9aa523e030fadf893241",
+      "path_endpoint": "/v2/filings/?symbol=CAMP&start=2025-01-01&end=2026-09-28&limit=30",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "CAMP-m4a-overview-financials.json",
+      "ukuran": 13285,
+      "sha256": "b813817eed8f66e83412b9cd8f8ed67191f8665fe2bd0c9c747cb8e82f06e364",
+      "path_endpoint": "/v2/company/report/CAMP/?sections=overview,financials",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
+    },
+    {
+      "nama": "CAMP-m4a-ownership.json",
+      "ukuran": 1768,
+      "sha256": "88253fedd9c0d78a87cbda1c1358ce2d4145c63fea9de345f60fe40013fbf7f8",
+      "path_endpoint": "/v2/company/report/CAMP/?sections=ownership",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
     },
     {
       "nama": "COCO-corpactions.json",
@@ -859,6 +2939,14 @@
       "path_endpoint": null,
       "tanggal_ambil": "2026-09-20",
       "sumber_tanggal": "waktu-ubah-berkas"
+    },
+    {
+      "nama": "daftar/companies-limit200-offset0.json",
+      "ukuran": 13330,
+      "sha256": "5f132a5a94711c3b5e96c4b45e8edc1cede4c15526d1f632e594b4451d3effe9",
+      "path_endpoint": "/v2/companies/?limit=200",
+      "tanggal_ambil": "2026-09-29",
+      "sumber_tanggal": "buku-kas"
     },
     {
       "nama": "kalender-bonus.json",

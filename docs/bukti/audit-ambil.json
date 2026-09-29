@@ -1,0 +1,2693 @@
+{
+  "keterangan": "Hasil pengambilan audit gudang M4a, disusun dari berkas di .cache/sectors dan buku kas .cache/sectors/kredit.csv oleh `npm run sectors:ambil -- --audit ringkas`.",
+  "kredit": {
+    "saldo_pembuka": 113,
+    "terpakai_total": 416,
+    "terpakai_sejak_pembuka": 303,
+    "daftar_perusahaan": 1
+  },
+  "kelompok": {
+    "suspensi": {
+      "emiten": 28,
+      "emiten_lengkap": 28,
+      "kredit": 202,
+      "berkas": 174
+    },
+    "pembanding": {
+      "emiten": 14,
+      "emiten_lengkap": 14,
+      "kredit": 100,
+      "berkas": 86
+    }
+  },
+  "emiten": [
+    {
+      "simbol": "AGAR",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AGAR/",
+          "berkas": "AGAR-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AGAR&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AGAR-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AGAR/?sections=ownership",
+          "berkas": "AGAR-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AGAR/?sections=overview,financials",
+          "berkas": "AGAR-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AGAR/?start=2026-07-01&end=2026-09-28",
+          "berkas": "AGAR-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "AHAP",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 1
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AHAP/",
+          "berkas": "AHAP-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AHAP&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AHAP-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AHAP/?sections=ownership",
+          "berkas": "AHAP-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AHAP/?sections=overview,financials",
+          "berkas": "AHAP-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AHAP/?start=2025-12-24&end=2026-03-23",
+          "berkas": "AHAP-m4a-daily-2025-12-24.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AHAP/?start=2026-07-01&end=2026-09-28",
+          "berkas": "AHAP-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ADHI",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 2,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ADHI/",
+          "berkas": "ADHI-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ADHI&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ADHI-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ADHI/?sections=ownership",
+          "berkas": "ADHI-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ADHI/?sections=overview,financials",
+          "berkas": "ADHI-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ADHI/?start=2025-07-17&end=2025-10-14",
+          "berkas": "ADHI-m4a-daily-2025-07-17.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "AIMS",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 2,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AIMS/",
+          "berkas": "AIMS-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AIMS&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AIMS-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AIMS/?sections=ownership",
+          "berkas": "AIMS-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AIMS/?sections=overview,financials",
+          "berkas": "AIMS-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AIMS/?start=2025-07-25&end=2025-10-22",
+          "berkas": "AIMS-m4a-daily-2025-07-25.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AIMS/?start=2026-01-09&end=2026-04-08",
+          "berkas": "AIMS-m4a-daily-2026-01-09.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "AKKU",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AKKU/",
+          "berkas": "AKKU-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AKKU&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AKKU-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AKKU/?sections=ownership",
+          "berkas": "AKKU-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AKKU/?sections=overview,financials",
+          "berkas": "AKKU-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AKKU/?start=2025-06-16&end=2025-09-13",
+          "berkas": "AKKU-m4a-daily-2025-06-16.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "BSWD",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BSWD/",
+          "berkas": "BSWD-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BSWD&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BSWD-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BSWD/?sections=ownership",
+          "berkas": "BSWD-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BSWD/?sections=overview,financials",
+          "berkas": "BSWD-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BSWD/?start=2026-07-01&end=2026-09-28",
+          "berkas": "BSWD-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "ALII",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 19,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ALII/",
+          "berkas": "ALII-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ALII&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ALII-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ALII/?sections=ownership",
+          "berkas": "ALII-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ALII/?sections=overview,financials",
+          "berkas": "ALII-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALII/?start=2025-01-01&end=2025-03-31",
+          "berkas": "ALII-m4a-daily-2025-01-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALII/?start=2025-07-04&end=2025-10-01",
+          "berkas": "ALII-m4a-daily-2025-07-04.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALII/?start=2025-09-23&end=2025-12-21",
+          "berkas": "ALII-m4a-daily-2025-09-23.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALII/?start=2025-12-04&end=2026-03-03",
+          "berkas": "ALII-m4a-daily-2025-12-04.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 9,
+      "berkas_ada": 8,
+      "gagal": null
+    },
+    {
+      "simbol": "ALKA",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 3,
+        "laporan": 1,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ALKA/",
+          "berkas": "ALKA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ALKA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ALKA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ALKA/?sections=ownership",
+          "berkas": "ALKA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ALKA/?sections=overview,financials",
+          "berkas": "ALKA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALKA/?start=2025-01-01&end=2025-03-31",
+          "berkas": "ALKA-m4a-daily-2025-01-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALKA/?start=2026-02-27&end=2026-05-27",
+          "berkas": "ALKA-m4a-daily-2026-02-27.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALKA/?start=2026-07-01&end=2026-09-28",
+          "berkas": "ALKA-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 8,
+      "berkas_ada": 7,
+      "gagal": null
+    },
+    {
+      "simbol": "BBMD",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 5,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BBMD/",
+          "berkas": "BBMD-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BBMD&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BBMD-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BBMD/?sections=ownership",
+          "berkas": "BBMD-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BBMD/?sections=overview,financials",
+          "berkas": "BBMD-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BBMD/?start=2025-06-17&end=2025-09-14",
+          "berkas": "BBMD-m4a-daily-2025-06-17.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BBMD/?start=2025-07-24&end=2025-10-21",
+          "berkas": "BBMD-m4a-daily-2025-07-24.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BBMD/?start=2026-06-05&end=2026-09-02",
+          "berkas": "BBMD-m4a-daily-2026-06-05.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BBMD/?start=2026-07-01&end=2026-09-28",
+          "berkas": "BBMD-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 9,
+      "berkas_ada": 8,
+      "gagal": null
+    },
+    {
+      "simbol": "ALTO",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ALTO/",
+          "berkas": "ALTO-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ALTO&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ALTO-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ALTO/?sections=ownership",
+          "berkas": "ALTO-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ALTO/?sections=overview,financials",
+          "berkas": "ALTO-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ALTO/?start=2025-06-16&end=2025-09-13",
+          "berkas": "ALTO-m4a-daily-2025-06-16.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "AMMS",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 6,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AMMS/",
+          "berkas": "AMMS-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AMMS&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AMMS-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AMMS/?sections=ownership",
+          "berkas": "AMMS-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AMMS/?sections=overview,financials",
+          "berkas": "AMMS-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AMMS/?start=2025-06-17&end=2025-09-14",
+          "berkas": "AMMS-m4a-daily-2025-06-17.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AMMS/?start=2025-09-05&end=2025-12-03",
+          "berkas": "AMMS-m4a-daily-2025-09-05.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AMMS/?start=2025-10-16&end=2026-01-13",
+          "berkas": "AMMS-m4a-daily-2025-10-16.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AMMS/?start=2026-02-27&end=2026-05-27",
+          "berkas": "AMMS-m4a-daily-2026-02-27.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 9,
+      "berkas_ada": 8,
+      "gagal": null
+    },
+    {
+      "simbol": "BNII",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 0,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BNII/",
+          "berkas": "BNII-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BNII&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BNII-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BNII/?sections=ownership",
+          "berkas": "BNII-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BNII/?sections=overview,financials",
+          "berkas": "BNII-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BNII/?start=2025-04-09&end=2025-07-07",
+          "berkas": "BNII-m4a-daily-2025-04-09.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BNII/?start=2026-04-14&end=2026-07-12",
+          "berkas": "BNII-m4a-daily-2026-04-14.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "APEX",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/APEX/",
+          "berkas": "APEX-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=APEX&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "APEX-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/APEX/?sections=ownership",
+          "berkas": "APEX-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/APEX/?sections=overview,financials",
+          "berkas": "APEX-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/APEX/?start=2025-06-10&end=2025-09-07",
+          "berkas": "APEX-m4a-daily-2025-06-10.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "ARCI",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 16,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ARCI/",
+          "berkas": "ARCI-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ARCI&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ARCI-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ARCI/?sections=ownership",
+          "berkas": "ARCI-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ARCI/?sections=overview,financials",
+          "berkas": "ARCI-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARCI/?start=2025-06-09&end=2025-09-06",
+          "berkas": "ARCI-m4a-daily-2025-06-09.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARCI/?start=2025-11-24&end=2026-02-21",
+          "berkas": "ARCI-m4a-daily-2025-11-24.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARCI/?start=2026-03-23&end=2026-06-20",
+          "berkas": "ARCI-m4a-daily-2026-03-23.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARCI/?start=2026-06-09&end=2026-09-06",
+          "berkas": "ARCI-m4a-daily-2026-06-09.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 9,
+      "berkas_ada": 8,
+      "gagal": null
+    },
+    {
+      "simbol": "ADRO",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 4,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ADRO/",
+          "berkas": "ADRO-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ADRO&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ADRO-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ADRO/?sections=ownership",
+          "berkas": "ADRO-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ADRO/?sections=overview,financials",
+          "berkas": "ADRO-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ADRO/?start=2025-05-30&end=2025-08-27",
+          "berkas": "ADRO-m4a-daily-2025-05-30.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ADRO/?start=2025-10-02&end=2025-12-30",
+          "berkas": "ADRO-m4a-daily-2025-10-02.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ADRO/?start=2026-05-07&end=2026-08-04",
+          "berkas": "ADRO-m4a-daily-2026-05-07.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 8,
+      "berkas_ada": 7,
+      "gagal": null
+    },
+    {
+      "simbol": "AREA",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AREA/",
+          "berkas": "AREA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AREA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AREA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AREA/?sections=ownership",
+          "berkas": "AREA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AREA/?sections=overview,financials",
+          "berkas": "AREA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AREA/?start=2025-04-09&end=2025-07-07",
+          "berkas": "AREA-m4a-daily-2025-04-09.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "ARGO",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ARGO/",
+          "berkas": "ARGO-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ARGO&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ARGO-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ARGO/?sections=ownership",
+          "berkas": "ARGO-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ARGO/?sections=overview,financials",
+          "berkas": "ARGO-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARGO/?start=2025-07-04&end=2025-10-01",
+          "berkas": "ARGO-m4a-daily-2025-07-04.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "BSIM",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 2,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BSIM/",
+          "berkas": "BSIM-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BSIM&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BSIM-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BSIM/?sections=ownership",
+          "berkas": "BSIM-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BSIM/?sections=overview,financials",
+          "berkas": "BSIM-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BSIM/?start=2025-03-31&end=2025-06-28",
+          "berkas": "BSIM-m4a-daily-2025-03-31.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "ARKO",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 3,
+        "laporan": 8,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ARKO/",
+          "berkas": "ARKO-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ARKO&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ARKO-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ARKO/?sections=ownership",
+          "berkas": "ARKO-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ARKO/?sections=overview,financials",
+          "berkas": "ARKO-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARKO/?start=2025-07-15&end=2025-10-12",
+          "berkas": "ARKO-m4a-daily-2025-07-15.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARKO/?start=2025-11-12&end=2026-02-09",
+          "berkas": "ARKO-m4a-daily-2025-11-12.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ARTA",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 2,
+        "aksi": 1
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ARTA/",
+          "berkas": "ARTA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ARTA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ARTA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ARTA/?sections=ownership",
+          "berkas": "ARTA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ARTA/?sections=overview,financials",
+          "berkas": "ARTA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARTA/?start=2025-06-11&end=2025-09-08",
+          "berkas": "ARTA-m4a-daily-2025-06-11.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARTA/?start=2025-07-10&end=2025-10-07",
+          "berkas": "ARTA-m4a-daily-2025-07-10.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ARTA/?start=2026-01-29&end=2026-04-28",
+          "berkas": "ARTA-m4a-daily-2026-01-29.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 8,
+      "berkas_ada": 7,
+      "gagal": null
+    },
+    {
+      "simbol": "AMAG",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 0,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AMAG/",
+          "berkas": "AMAG-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AMAG&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AMAG-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AMAG/?sections=ownership",
+          "berkas": "AMAG-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AMAG/?sections=overview,financials",
+          "berkas": "AMAG-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AMAG/?start=2025-04-30&end=2025-07-28",
+          "berkas": "AMAG-m4a-daily-2025-04-30.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AMAG/?start=2026-04-23&end=2026-07-21",
+          "berkas": "AMAG-m4a-daily-2026-04-23.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ASHA",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 1,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ASHA/",
+          "berkas": "ASHA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ASHA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ASHA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ASHA/?sections=ownership",
+          "berkas": "ASHA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ASHA/?sections=overview,financials",
+          "berkas": "ASHA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASHA/?start=2025-09-25&end=2025-12-23",
+          "berkas": "ASHA-m4a-daily-2025-09-25.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASHA/?start=2025-12-16&end=2026-03-15",
+          "berkas": "ASHA-m4a-daily-2025-12-16.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ASLC",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 1
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ASLC/",
+          "berkas": "ASLC-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ASLC&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ASLC-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ASLC/?sections=ownership",
+          "berkas": "ASLC-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ASLC/?sections=overview,financials",
+          "berkas": "ASLC-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASLC/?start=2025-06-12&end=2025-09-09",
+          "berkas": "ASLC-m4a-daily-2025-06-12.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASLC/?start=2025-08-08&end=2025-11-05",
+          "berkas": "ASLC-m4a-daily-2025-08-08.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "AVIA",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 12,
+        "aksi": 3
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AVIA/",
+          "berkas": "AVIA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AVIA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AVIA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AVIA/?sections=ownership",
+          "berkas": "AVIA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AVIA/?sections=overview,financials",
+          "berkas": "AVIA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AVIA/?start=2025-04-08&end=2025-07-06",
+          "berkas": "AVIA-m4a-daily-2025-04-08.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AVIA/?start=2025-10-29&end=2026-01-26",
+          "berkas": "AVIA-m4a-daily-2025-10-29.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AVIA/?start=2026-01-29&end=2026-04-28",
+          "berkas": "AVIA-m4a-daily-2026-01-29.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AVIA/?start=2026-05-07&end=2026-08-04",
+          "berkas": "AVIA-m4a-daily-2026-05-07.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 9,
+      "berkas_ada": 8,
+      "gagal": null
+    },
+    {
+      "simbol": "ASLI",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 4,
+        "laporan": 11,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ASLI/",
+          "berkas": "ASLI-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ASLI&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ASLI-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ASLI/?sections=ownership",
+          "berkas": "ASLI-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ASLI/?sections=overview,financials",
+          "berkas": "ASLI-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASLI/?start=2025-07-16&end=2025-10-13",
+          "berkas": "ASLI-m4a-daily-2025-07-16.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASLI/?start=2025-11-18&end=2026-02-15",
+          "berkas": "ASLI-m4a-daily-2025-11-18.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASLI/?start=2026-04-20&end=2026-07-18",
+          "berkas": "ASLI-m4a-daily-2026-04-20.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASLI/?start=2026-07-01&end=2026-09-28",
+          "berkas": "ASLI-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 9,
+      "berkas_ada": 8,
+      "gagal": null
+    },
+    {
+      "simbol": "ASPI",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 3,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ASPI/",
+          "berkas": "ASPI-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ASPI&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ASPI-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ASPI/?sections=ownership",
+          "berkas": "ASPI-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ASPI/?sections=overview,financials",
+          "berkas": "ASPI-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASPI/?start=2025-06-09&end=2025-09-06",
+          "berkas": "ASPI-m4a-daily-2025-06-09.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASPI/?start=2025-10-01&end=2025-12-29",
+          "berkas": "ASPI-m4a-daily-2025-10-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ABMM",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 0,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ABMM/",
+          "berkas": "ABMM-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ABMM&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ABMM-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ABMM/?sections=ownership",
+          "berkas": "ABMM-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ABMM/?sections=overview,financials",
+          "berkas": "ABMM-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ABMM/?start=2025-04-23&end=2025-07-21",
+          "berkas": "ABMM-m4a-daily-2025-04-23.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ABMM/?start=2026-04-27&end=2026-07-25",
+          "berkas": "ABMM-m4a-daily-2026-04-27.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ASPR",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 1
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ASPR/",
+          "berkas": "ASPR-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ASPR&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ASPR-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ASPR/?sections=ownership",
+          "berkas": "ASPR-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ASPR/?sections=overview,financials",
+          "berkas": "ASPR-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASPR/?start=2026-03-18&end=2026-06-15",
+          "berkas": "ASPR-m4a-daily-2026-03-18.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASPR/?start=2026-06-05&end=2026-09-02",
+          "berkas": "ASPR-m4a-daily-2026-06-05.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ATAP",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 8,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ATAP/",
+          "berkas": "ATAP-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ATAP&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ATAP-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ATAP/?sections=ownership",
+          "berkas": "ATAP-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ATAP/?sections=overview,financials",
+          "berkas": "ATAP-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ATAP/?start=2025-11-05&end=2026-02-02",
+          "berkas": "ATAP-m4a-daily-2025-11-05.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ATAP/?start=2026-06-29&end=2026-09-26",
+          "berkas": "ATAP-m4a-daily-2026-06-29.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "BATA",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 14,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BATA/",
+          "berkas": "BATA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BATA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BATA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BATA/?sections=ownership",
+          "berkas": "BATA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BATA/?sections=overview,financials",
+          "berkas": "BATA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BATA/?start=2026-03-16&end=2026-06-13",
+          "berkas": "BATA-m4a-daily-2026-03-16.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BATA/?start=2026-06-01&end=2026-08-29",
+          "berkas": "BATA-m4a-daily-2026-06-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "AYAM",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 2,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AYAM/",
+          "berkas": "AYAM-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AYAM&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AYAM-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AYAM/?sections=ownership",
+          "berkas": "AYAM-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AYAM/?sections=overview,financials",
+          "berkas": "AYAM-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AYAM/?start=2025-11-12&end=2026-02-09",
+          "berkas": "AYAM-m4a-daily-2025-11-12.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "AYLS",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 2,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/AYLS/",
+          "berkas": "AYLS-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=AYLS&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "AYLS-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/AYLS/?sections=ownership",
+          "berkas": "AYLS-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/AYLS/?sections=overview,financials",
+          "berkas": "AYLS-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AYLS/?start=2025-09-30&end=2025-12-28",
+          "berkas": "AYLS-m4a-daily-2025-09-30.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/AYLS/?start=2026-01-01&end=2026-03-31",
+          "berkas": "AYLS-m4a-daily-2026-01-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "BOLT",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 7,
+        "aksi": 3
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BOLT/",
+          "berkas": "BOLT-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BOLT&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BOLT-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BOLT/?sections=ownership",
+          "berkas": "BOLT-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BOLT/?sections=overview,financials",
+          "berkas": "BOLT-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BOLT/?start=2025-06-18&end=2025-09-15",
+          "berkas": "BOLT-m4a-daily-2025-06-18.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BOLT/?start=2025-11-28&end=2026-02-25",
+          "berkas": "BOLT-m4a-daily-2025-11-28.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BOLT/?start=2026-03-27&end=2026-06-24",
+          "berkas": "BOLT-m4a-daily-2026-03-27.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 8,
+      "berkas_ada": 7,
+      "gagal": null
+    },
+    {
+      "simbol": "BAIK",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 5,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BAIK/",
+          "berkas": "BAIK-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BAIK&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BAIK-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BAIK/?sections=ownership",
+          "berkas": "BAIK-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BAIK/?sections=overview,financials",
+          "berkas": "BAIK-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BAIK/?start=2026-01-07&end=2026-04-06",
+          "berkas": "BAIK-m4a-daily-2026-01-07.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BAIK/?start=2026-04-10&end=2026-07-08",
+          "berkas": "BAIK-m4a-daily-2026-04-10.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BAIK/?start=2026-07-01&end=2026-09-28",
+          "berkas": "BAIK-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 8,
+      "berkas_ada": 7,
+      "gagal": null
+    },
+    {
+      "simbol": "BAJA",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 7,
+        "aksi": 2
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BAJA/",
+          "berkas": "BAJA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BAJA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BAJA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BAJA/?sections=ownership",
+          "berkas": "BAJA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BAJA/?sections=overview,financials",
+          "berkas": "BAJA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BAJA/?start=2026-03-18&end=2026-06-15",
+          "berkas": "BAJA-m4a-daily-2026-03-18.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BAJA/?start=2026-07-01&end=2026-09-28",
+          "berkas": "BAJA-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "ASSA",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 0,
+        "aksi": 3
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/ASSA/",
+          "berkas": "ASSA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=ASSA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "ASSA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/ASSA/?sections=ownership",
+          "berkas": "ASSA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/ASSA/?sections=overview,financials",
+          "berkas": "ASSA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASSA/?start=2025-06-20&end=2025-09-17",
+          "berkas": "ASSA-m4a-daily-2025-06-20.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASSA/?start=2025-10-31&end=2026-01-28",
+          "berkas": "ASSA-m4a-daily-2025-10-31.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/ASSA/?start=2026-06-12&end=2026-09-09",
+          "berkas": "ASSA-m4a-daily-2026-06-12.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 8,
+      "berkas_ada": 7,
+      "gagal": null
+    },
+    {
+      "simbol": "BAPA",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 11,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BAPA/",
+          "berkas": "BAPA-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BAPA&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BAPA-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BAPA/?sections=ownership",
+          "berkas": "BAPA-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BAPA/?sections=overview,financials",
+          "berkas": "BAPA-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BAPA/?start=2026-04-07&end=2026-07-05",
+          "berkas": "BAPA-m4a-daily-2026-04-07.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BAPA/?start=2026-06-22&end=2026-09-19",
+          "berkas": "BAPA-m4a-daily-2026-06-22.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "BBRM",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BBRM/",
+          "berkas": "BBRM-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BBRM&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BBRM-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BBRM/?sections=ownership",
+          "berkas": "BBRM-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BBRM/?sections=overview,financials",
+          "berkas": "BBRM-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BBRM/?start=2025-12-16&end=2026-03-15",
+          "berkas": "BBRM-m4a-daily-2025-12-16.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "BEST",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BEST/",
+          "berkas": "BEST-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BEST&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BEST-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BEST/?sections=ownership",
+          "berkas": "BEST-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BEST/?sections=overview,financials",
+          "berkas": "BEST-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BEST/?start=2026-07-01&end=2026-09-28",
+          "berkas": "BEST-m4a-daily-2026-07-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    },
+    {
+      "simbol": "BBSS",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 2,
+        "laporan": 0,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BBSS/",
+          "berkas": "BBSS-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BBSS&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BBSS-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BBSS/?sections=ownership",
+          "berkas": "BBSS-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BBSS/?sections=overview,financials",
+          "berkas": "BBSS-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BBSS/?start=2025-05-08&end=2025-08-05",
+          "berkas": "BBSS-m4a-daily-2025-05-08.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BBSS/?start=2025-12-25&end=2026-03-24",
+          "berkas": "BBSS-m4a-daily-2025-12-25.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 7,
+      "berkas_ada": 6,
+      "gagal": null
+    },
+    {
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "tanggal_penting": {
+        "suspensi": 1,
+        "laporan": 31,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/BCIC/",
+          "berkas": "BCIC-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=BCIC&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "BCIC-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/BCIC/?sections=ownership",
+          "berkas": "BCIC-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/BCIC/?sections=overview,financials",
+          "berkas": "BCIC-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "filings-p1",
+          "path": "/v2/filings/?symbol=BCIC&start=2025-01-01&end=2026-09-28&limit=30&offset=30",
+          "berkas": "BCIC-m4a-filings-p1.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BCIC/?start=2025-01-17&end=2025-04-16",
+          "berkas": "BCIC-m4a-daily-2025-01-17.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BCIC/?start=2025-09-01&end=2025-11-29",
+          "berkas": "BCIC-m4a-daily-2025-09-01.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BCIC/?start=2025-12-15&end=2026-03-14",
+          "berkas": "BCIC-m4a-daily-2025-12-15.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/BCIC/?start=2026-03-12&end=2026-06-09",
+          "berkas": "BCIC-m4a-daily-2026-03-12.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 10,
+      "berkas_ada": 9,
+      "gagal": null
+    },
+    {
+      "simbol": "CAMP",
+      "kelompok": "pembanding",
+      "tanggal_penting": {
+        "suspensi": 0,
+        "laporan": 1,
+        "aksi": 0
+      },
+      "panggilan": [
+        {
+          "peran": "aksi-korporasi",
+          "path": "/v2/company/corporate-actions/CAMP/",
+          "berkas": "CAMP-m4a-corpactions.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "filings-p0",
+          "path": "/v2/filings/?symbol=CAMP&start=2025-01-01&end=2026-09-28&limit=30",
+          "berkas": "CAMP-m4a-filings-p0.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "kepemilikan",
+          "path": "/v2/company/report/CAMP/?sections=ownership",
+          "berkas": "CAMP-m4a-ownership.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        },
+        {
+          "peran": "ringkasan-keuangan",
+          "path": "/v2/company/report/CAMP/?sections=overview,financials",
+          "berkas": "CAMP-m4a-overview-financials.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 2
+        },
+        {
+          "peran": "harian",
+          "path": "/v2/daily/CAMP/?start=2025-01-09&end=2025-04-08",
+          "berkas": "CAMP-m4a-daily-2025-01-09.json",
+          "ada": true,
+          "status": "200",
+          "biaya": 1
+        }
+      ],
+      "biaya": 6,
+      "berkas_ada": 5,
+      "gagal": null
+    }
+  ]
+}

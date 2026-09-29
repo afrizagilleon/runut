@@ -34,10 +34,15 @@ export const JALUR_BUKU_KAS = join(FOLDER_SECTORS, 'kredit.csv');
 export const SALDO_PEMBUKA = 113;
 /** 113 terpakai + 500 anggaran M4a. */
 export const PAGU_BAWAAN = 613;
-/** Jeda antarpanggilan jaringan; kontrak menuntut ≥ 300 ms. */
-export const JEDA_MS = 350;
+/**
+ * Jeda antarpanggilan jaringan; kontrak menuntut ≥ 300 ms. Jalan pertama
+ * M4a memakai 350 ms dan kena 429 dua kali berturut-turut sesudah ±150
+ * panggilan dalam ±100 detik (tunggu 10 detik tidak cukup), jadi jedanya
+ * dilebarkan dan tunggu sesudah 429 menutup satu menit penuh.
+ */
+export const JEDA_MS = 800;
 /** Tunggu sebelum mencoba lagi sesudah 429 bila server tidak menyebut `Retry-After`. */
-export const TUNGGU_429_MS = 10_000;
+export const TUNGGU_429_MS = 65_000;
 
 // --- path dan biaya ----------------------------------------------------------
 
