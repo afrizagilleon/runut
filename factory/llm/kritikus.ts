@@ -273,6 +273,17 @@ export interface OpsiKritik {
   cekMakna?: boolean;
   /** `max_tokens`; bawaan `MAX_TOKENS_KRITIKUS`. */
   maxTokens?: number;
+  /** Medan badan tambahan (M2d-5: `reasoning.max_tokens`). */
+  tambahanBadan?: Readonly<Record<string, unknown>>;
+}
+
+/**
+ * Jawaban terpotong: `finish_reason: length`, atau isi kosong (penalaran
+ * menghabiskan anggaran; M2d-5 D-3). Biayanya tetap dicatat; isinya tidak
+ * pernah dibaca sebagai jawaban.
+ */
+export function jawabanTerpotong(j: { finish_reason: string | null; teks: string }): boolean {
+  return j.finish_reason === 'length' || j.teks.trim() === '';
 }
 
 export const KEBERATAN_TIDAK_MENJAWAB = 'kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali';
@@ -292,13 +303,19 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
     const mulai = jam().toISOString();
     let j;
     try {
-      j = await opsi.panggil(pesanKritikus(o, paket, k, opsi.cekMakna === true), { suhu: SUHU_KRITIKUS, maxTokens: opsi.maxTokens ?? MAX_TOKENS_KRITIKUS }, info);
+      j = await opsi.panggil(
+        pesanKritikus(o, paket, k, opsi.cekMakna === true),
+        { suhu: SUHU_KRITIKUS, maxTokens: opsi.maxTokens ?? MAX_TOKENS_KRITIKUS, ...(opsi.tambahanBadan === undefined ? {} : { tambahanBadan: opsi.tambahanBadan }) },
+        info,
+      );
     } catch (e) {
       if (e instanceof PaguTercapai) throw e;
       galat.push(e instanceof Error ? `${e.name}: ${e.message}`.slice(0, 300) : 'galat tak dikenal');
       continue;
     }
-    const kena = j.finish_reason === 'length';
+    // Terpotong batas token, ATAU jawaban kosong karena penalaran menghabiskan
+    // anggaran (M2d-5 D-3): keduanya dibayar dan keduanya "tidak menjawab".
+    const kena = jawabanTerpotong(j);
     terpotong ||= kena;
     let hasil = kena ? null : uraiKritik(j.teks);
     let cek: CekMakna | null = null;

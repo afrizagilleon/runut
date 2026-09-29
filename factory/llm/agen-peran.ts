@@ -26,12 +26,13 @@ import { gerbangKartu, type PutusanKartu } from './gerbang-kartu.ts';
 import { PETUNJUK_PENEBAK, gerbangTebak, type InfoPanggil, type PanggilLlm, type PutusanTebak } from './gerbang-tebak.ts';
 import { hashPesan, type LangkahJejak, type PencatatJejak, type PeranLangkah } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
-import { MAX_TOKENS_KRITIKUS, MAX_TOKENS_KRITIKUS_MAKNA, kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
+import { MAX_TOKENS_KRITIKUS, MAX_TOKENS_KRITIKUS_MAKNA, jawabanTerpotong, kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
 import { MODEL_OR_GLM, MODEL_PENEBAK_M2D4, MODEL_PENEBAK_M2D5, MODEL_PERAN, MODEL_PERAN_M2D5, type ModelLingkar, type PeranModel } from './model.ts';
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
-import { pesanPaket, promptSistem, uraiKeluaran, type JawabanModel, type SetelanPanggil } from './susun.ts';
+import { PENALARAN_M2D5, badanPenalaran, setelanPenalaran, setelanTanpaPenalaran } from './penalaran.ts';
+import { SUHU, pesanPaket, promptSistem, uraiKeluaran, type JawabanModel, type SetelanPanggil } from './susun.ts';
 
 /**
  * Batas putaran satu simulasi: 5 putaran per sudut × paling banyak 3 sudut
@@ -124,9 +125,21 @@ export interface Generasi {
   /** Urutan nada per posisi/sudut. */
   urutNada: readonly Nada[];
   /** Penebak tanpa kartu: petunjuk sistem dan model per tebakan ke-1..3. */
-  penebak: { petunjuk: string; model: readonly ModelLingkar[]; maxTokens: readonly number[] };
+  penebak: {
+    petunjuk: string;
+    model: readonly ModelLingkar[];
+    maxTokens: readonly number[];
+    /** Medan badan per tebakan ke-1..3 (M2d-5: batas penalaran penebak GLM). */
+    tambahanBadan?: ReadonlyArray<Readonly<Record<string, unknown>> | undefined>;
+  };
   /** Kritikus: dipanggil sebelum penebak (M2d-4) atau sesudahnya (M2d-3); dua pertanyaan makna wajib. */
-  kritikus: { sebelumPenebak: boolean; cekMakna: boolean; maxTokens: number };
+  kritikus: { sebelumPenebak: boolean; cekMakna: boolean; maxTokens: number; tambahanBadan?: Readonly<Record<string, unknown>> };
+  /**
+   * Setelan penulis: panggilan berpikir lalu cadangan tanpa berpikir. Bawaan
+   * M2d-2…M2d-4 (Featherless, `SETELAN_PENYUSUN`/`SETELAN_CADANGAN`); M2d-5:
+   * batas penalaran OpenRouter (`penalaran.ts`, D-3).
+   */
+  penulis?: { berpikir: SetelanPanggil; cadangan: SetelanPanggil };
 }
 
 export const GENERASI_M2D3: Generasi = {
@@ -161,7 +174,18 @@ export const GENERASI_M2D5: Generasi = {
   penebak: {
     petunjuk: PETUNJUK_PENEBAK_KUAT,
     model: MODEL_PENEBAK_M2D5,
-    maxTokens: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? MAX_TOKENS_PENEBAK_GLM : MAX_TOKENS_PENEBAK_PERAN)),
+    maxTokens: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? PENALARAN_M2D5.penebakGlm.maxTokens : MAX_TOKENS_PENEBAK_PERAN)),
+    tambahanBadan: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? badanPenalaran(PENALARAN_M2D5.penebakGlm) : undefined)),
+  },
+  kritikus: {
+    sebelumPenebak: true,
+    cekMakna: true,
+    maxTokens: PENALARAN_M2D5.kritikus.maxTokens,
+    tambahanBadan: badanPenalaran(PENALARAN_M2D5.kritikus),
+  },
+  penulis: {
+    berpikir: setelanPenalaran(SUHU, PENALARAN_M2D5.penulis),
+    cadangan: setelanTanpaPenalaran(SUHU),
   },
 };
 
@@ -534,8 +558,8 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         { role: 'user', content: `${pesanPaket(opsi.paket)}\n\n${permintaan}` },
       ];
       const upaya = [
-        { setelan: SETELAN_PENYUSUN as SetelanPanggil, berpikir: true },
-        { setelan: SETELAN_CADANGAN as SetelanPanggil, berpikir: false },
+        { setelan: gen.penulis?.berpikir ?? (SETELAN_PENYUSUN as SetelanPanggil), berpikir: true },
+        { setelan: gen.penulis?.cadangan ?? (SETELAN_CADANGAN as SetelanPanggil), berpikir: false },
       ];
       let gagal = '';
       for (const [ulang, u] of upaya.entries()) {
@@ -593,7 +617,8 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           rincian: {
             terurai, diabaikan: ambil.lain, finish_reason: jawaban.finish_reason,
             panjang_penalaran: jawaban.penalaran?.length ?? 0, suhu: u.setelan.suhu, max_tokens: u.setelan.maxTokens,
-            mode_berpikir: u.berpikir, nada, contoh_gaya: contoh.map((c) => c.id),
+            mode_berpikir: u.berpikir, terpotong: jawabanTerpotong(jawaban), nada, contoh_gaya: contoh.map((c) => c.id),
+            ...(u.setelan.tambahanBadan === undefined ? {} : { badan: u.setelan.tambahanBadan }),
             sudut: { ke: sk.ke, fact_id: sk.fact_id, putaran_sudut: putaranSudut.get(no) ?? 0 },
             ...(jawaban.penyedia === undefined ? {} : { penyedia: [jawaban.penyedia], token_penalaran: jawaban.token_penalaran ?? null }),
           },
@@ -604,7 +629,12 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           tidakAda.delete(no);
           break;
         }
-        gagal = jawaban.finish_reason === 'length' ? 'panggilan berpikir terpotong batas token' : 'keluaran tidak terbaca';
+        gagal =
+          jawaban.finish_reason === 'length'
+            ? 'panggilan berpikir terpotong batas token'
+            : jawaban.teks.trim() === ''
+              ? 'jawaban kosong (penalaran menghabiskan anggaran)'
+              : 'keluaran tidak terbaca';
         tidakAda.set(
           no,
           urai.ok
@@ -753,7 +783,10 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         const jalankanTebak = async (): Promise<PutusanTebak> => {
           tahap = 'gerbang-tebak';
           mulaiGerbang = jam().toISOString();
-          const t = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokensKe: gen.penebak.maxTokens });
+          const t = await gerbangTebak(omongan, {
+            ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokensKe: gen.penebak.maxTokens,
+            ...(gen.penebak.tambahanBadan === undefined ? {} : { tambahanBadanKe: gen.penebak.tambahanBadan }),
+          });
           tebak = t;
           suara.tebak = t.lolos;
           const semua = t.tebakan.flatMap((x) => x.panggilan);
@@ -797,7 +830,10 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
               tebakan: (tebak?.tebakan ?? []).map((t) => ({ pilihan: t.pilihan, yakin: t.yakin })),
               penebakSesudah: gen.kritikus.sebelumPenebak,
             },
-            { ...opsiGerbang, cekMakna: gen.kritikus.cekMakna, maxTokens: gen.kritikus.maxTokens },
+            {
+              ...opsiGerbang, cekMakna: gen.kritikus.cekMakna, maxTokens: gen.kritikus.maxTokens,
+              ...(gen.kritikus.tambahanBadan === undefined ? {} : { tambahanBadan: gen.kritikus.tambahanBadan }),
+            },
           );
           kr = r;
           suara.kritikus = r.tanpa_keberatan;

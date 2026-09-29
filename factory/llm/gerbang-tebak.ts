@@ -177,6 +177,8 @@ export interface OpsiGerbang {
   maxTokens?: number;
   /** `max_tokens` per tebakan ke-1..3 (M2d-4: penebak GLM lebih pendek); mengalahkan `maxTokens`. */
   maxTokensKe?: readonly number[];
+  /** Medan badan tambahan per tebakan ke-1..3 (M2d-5: `reasoning.max_tokens` penebak GLM); `undefined` = tanpa. */
+  tambahanBadanKe?: ReadonlyArray<Readonly<Record<string, unknown>> | undefined>;
 }
 
 /** Satu panggilan gerbang yang dicatat, diulang sekali bila jawabannya tak terbaca. */
@@ -227,7 +229,11 @@ export async function gerbangTebak(o: OmonganDraf, opsi: OpsiGerbang): Promise<P
   for (let ke = 1; ke <= JUMLAH_PENEBAK; ke++) {
     const { hasil, panggilan } = await panggilTerbaca(
       () => pesanPenebak(soal, opsi.petunjuk),
-      { suhu: SUHU_TEBAK, maxTokens: opsi.maxTokensKe?.[ke - 1] ?? opsi.maxTokens ?? MAX_TOKENS_GERBANG },
+      {
+        suhu: SUHU_TEBAK,
+        maxTokens: opsi.maxTokensKe?.[ke - 1] ?? opsi.maxTokens ?? MAX_TOKENS_GERBANG,
+        ...(opsi.tambahanBadanKe?.[ke - 1] === undefined ? {} : { tambahanBadan: opsi.tambahanBadanKe[ke - 1] }),
+      },
       { jenis: 'gerbang-tebak', putaran: opsi.putaran, omongan: opsi.omongan, ke },
       opsi,
       uraiTebakan,

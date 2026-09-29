@@ -16,6 +16,7 @@ import { PencatatJejak, validasiJejak } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
 import { MODEL_OR_DEEPSEEK, MODEL_OR_GLM } from './model.ts';
 import type { PaketFakta } from './paket.ts';
+import { PENALARAN_M2D5, RUANG_JAWABAN_MIN } from './penalaran.ts';
 import { rencanaSudut, type Sudut } from './sudut.ts';
 import { pesanPaket, type JawabanModel, type SetelanPanggil } from './susun.ts';
 import { validasiDraf } from './validasi.ts';
@@ -154,5 +155,52 @@ describe('M2d-5 — model OpenRouter per peran (D-1)', () => {
     for (const l of bermodel) {
       expect(l.rincian['penyedia'], `${l.jenis}/${String(l.omongan)}`).toEqual(expect.arrayContaining([l.jenis === 'kritikus' ? 'Z.AI' : 'DeepInfra']));
     }
+  });
+});
+
+describe('M2d-5 — batas penalaran (D-3)', () => {
+  it('penulis: reasoning.max_tokens + max_tokens yang menyisakan ruang jawaban; cadangan tanpa berpikir = reasoning.enabled false', async () => {
+    const { rekaman } = await jalan({ penulis: (no, p) => (no === 1 && p === 1 ? '{rusak' : undefined) }, GENERASI_M2D5, 1);
+    const p1 = dari(rekaman, 'penulis').filter((r) => r.info.omongan === 1);
+    expect(p1.map((r) => r.info.ulang)).toEqual([0, 1]);
+    expect(p1[0]?.setelan).toMatchObject({ maxTokens: PENALARAN_M2D5.penulis.maxTokens, tambahanBadan: { reasoning: { max_tokens: PENALARAN_M2D5.penulis.penalaran } } });
+    expect(p1[1]?.setelan.tambahanBadan).toEqual({ reasoning: { enabled: false } });
+    expect(PENALARAN_M2D5.penulis.maxTokens - PENALARAN_M2D5.penulis.penalaran).toBeGreaterThanOrEqual(RUANG_JAWABAN_MIN.penulis);
+  });
+
+  it('kritikus dan penebak GLM membawa reasoning.max_tokens; penebak DeepSeek dan pembaca kartu tidak diubah', async () => {
+    const { rekaman } = await jalan({});
+    for (const r of dari(rekaman, 'kritikus')) {
+      expect(r.setelan).toMatchObject({ maxTokens: PENALARAN_M2D5.kritikus.maxTokens, tambahanBadan: { reasoning: { max_tokens: PENALARAN_M2D5.kritikus.penalaran } } });
+    }
+    for (const r of dari(rekaman, 'penebak')) {
+      if (r.info.ke === 3) {
+        expect(r.setelan).toMatchObject({ maxTokens: PENALARAN_M2D5.penebakGlm.maxTokens, tambahanBadan: { reasoning: { max_tokens: PENALARAN_M2D5.penebakGlm.penalaran } } });
+      } else {
+        expect(r.setelan.tambahanBadan).toBeUndefined();
+      }
+    }
+    for (const r of dari(rekaman, 'pembaca-kartu')) expect(r.setelan.tambahanBadan).toBeUndefined();
+    expect(PENALARAN_M2D5.kritikus.maxTokens - PENALARAN_M2D5.kritikus.penalaran).toBeGreaterThanOrEqual(RUANG_JAWABAN_MIN.kritikus);
+    expect(PENALARAN_M2D5.penebakGlm.maxTokens - PENALARAN_M2D5.penebakGlm.penalaran).toBeGreaterThanOrEqual(RUANG_JAWABAN_MIN.penebak);
+    // M2d-4 tidak berubah: tanpa medan reasoning.
+    const m2d4 = await jalan({}, GENERASI_M2D4, 1);
+    for (const r of m2d4.rekaman) expect(JSON.stringify(r.setelan.tambahanBadan ?? {})).not.toContain('reasoning');
+  });
+
+  it('kritikus menjawab KOSONG (penalaran habis, finish stop) = terpotong: diulang sekali, lalu "tidak menjawab"; biaya kedua panggilan tetap tercatat', async () => {
+    const { hasil, jejak } = await jalan({ kritikus: (no, p) => (no === 1 && p === 1 ? { teks: '' } : { teks: TANPA_KEBERATAN }) }, GENERASI_M2D5, 1);
+    expect(hasil.riwayat[0]?.omongan[0]).toMatchObject({ status: 'kritikus-tidak-menjawab', kritik: { menjawab: false, terpotong: true } });
+    const l = jejak.jejak().langkah.find((x) => x.jenis === 'kritikus' && x.omongan === 1);
+    expect(l).toMatchObject({ panggilan: 2, biaya_usd: 0.002, rincian: { terpotong: true } });
+  });
+
+  it('penulis menjawab KOSONG = terpotong: cadangan tanpa berpikir menulis; biaya panggilan kosong tetap tercatat', async () => {
+    let n = 0;
+    const { hasil, jejak } = await jalan({ penulis: (no, p) => (no === 2 && p === 1 && n++ === 0 ? '' : undefined) }, GENERASI_M2D5, 1);
+    expect(hasil.riwayat[0]?.panggilan.filter((x) => x.omongan === 2).map((x) => [x.mode_berpikir, x.terurai, x.biaya_usd])).toEqual([[true, false, 0.001], [false, true, 0.001]]);
+    const ls = jejak.jejak().langkah.filter((x) => x.jenis === 'susun' && x.omongan === 2);
+    expect(ls[0]?.rincian).toMatchObject({ terpotong: true });
+    expect(ls[1]?.alasan[0]).toContain('cadangan tanpa berpikir (jawaban kosong (penalaran menghabiskan anggaran))');
   });
 });
