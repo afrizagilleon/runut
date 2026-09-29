@@ -401,12 +401,28 @@ export function pengambilSungguhan(akar: string = AKAR): Pengambil {
   };
 }
 
+/** Pengambil untuk langkah tanpa jaringan: memanggil `fetch` darinya adalah galat. */
+export function pengambilTanpaKunci(akar: string = AKAR): Pengambil {
+  return {
+    kunci: '',
+    pagu: 0,
+    folder: join(akar, '.cache', 'sectors'),
+    bukuKas: join(akar, '.cache', 'sectors', 'kredit.csv'),
+    fetch: () => Promise.reject(new Error('langkah ini tidak boleh memanggil jaringan')),
+    jam: () => new Date(),
+    tidur: (ms) => new Promise((selesai) => setTimeout(selesai, ms)),
+    jedaMs: JEDA_MS,
+  };
+}
+
 // --- perintah ----------------------------------------------------------------
 
 const PETUNJUK = [
   'Pemakaian:',
   '  npm run sectors:ambil -- "<path+query>" <berkas.json>',
   '      satu panggilan; berkas ditulis ke .cache/sectors/<berkas.json>',
+  '  npm run sectors:ambil -- --audit <rencana|daftar|data|ringkas>',
+  '      rencana audit gudang M4a (docs/bukti/audit-rencana.md)',
   '  npm run sectors:ambil -- --saldo',
   '      cetak kredit terpakai menurut .cache/sectors/kredit.csv',
   '',
@@ -421,6 +437,12 @@ async function utama(argumen: string[]): Promise<number> {
     console.log(`kredit terpakai (termasuk saldo pembuka ${SALDO_PEMBUKA}): ${terpakai}`);
     console.log(`terpakai sejak saldo pembuka: ${terpakai - SALDO_PEMBUKA}`);
     return 0;
+  }
+  if (pertama === '--audit') {
+    const { jalankanAudit } = await import('./audit-ambil.ts');
+    // `rencana` dan `ringkas` tidak memanggil jaringan, jadi tidak membaca kunci.
+    const tanpaJaringan = kedua === 'rencana' || kedua === 'ringkas';
+    return jalankanAudit(tanpaJaringan ? pengambilTanpaKunci() : pengambilSungguhan(), argumen.slice(1));
   }
   if (pertama === undefined || kedua === undefined) {
     console.error(PETUNJUK);
