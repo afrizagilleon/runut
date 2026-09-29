@@ -44,7 +44,9 @@ const KUNCI: readonly KunciOpsi[] = ['a', 'b', 'c', 'd'];
 
 /** Keterangan satu panggilan untuk pemanggil (tag ledger, jenis langkah jejak). */
 export interface InfoPanggil {
-  jenis: 'susun' | 'tulis-ulang' | 'gerbang-kartu' | 'gerbang-tebak' | 'kritikus';
+  jenis: 'susun' | 'tulis-ulang' | 'gerbang-kartu' | 'gerbang-tebak' | 'kritikus'
+    // M2d-7: penulis dipecah (pesan, pilihan, penjelasan) + gerbang pilihan-saja (choices-only)
+    | 'tulis-pesan' | 'tulis-pilihan' | 'tulis-penjelasan' | 'gerbang-pilihan-saja';
   putaran: number;
   /** Nomor omongan 1–3, atau `null` untuk panggilan penyusun. */
   omongan: number | null;

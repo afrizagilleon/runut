@@ -85,7 +85,8 @@ export function setelanTanpaPenalaran(suhu: number, maxTokens: number = MAX_TOKE
  * MEMBUKTIKANNYA dari respons: `token_penalaran` < `ambang` = tidak sah
  * (`penjaga-penalaran.ts`).
  */
-export type UpayaPenalaran = 'high' | 'medium';
+/** M2d-7 D-1: `"max"` (keputusan pemilik; OpenRouter: ±95 % `max_tokens`, tidak boleh digabung dengan `reasoning.max_tokens`). */
+export type UpayaPenalaran = 'max' | 'high' | 'medium';
 
 export interface PenalarBerpikir {
   /** `reasoning.effort`. */
@@ -124,3 +125,25 @@ export const PENALAR_M2D6 = {
 export function badanUpaya(p: PenalarBerpikir): Readonly<Record<string, unknown>> {
   return { reasoning: { effort: p.effort } };
 }
+
+/**
+ * Setelan penalar M2d-7 (kontrak D-1, keputusan pemilik: GLM `effort: "max"`),
+ * dari probe T-01 (`eval/keluaran-m2d7/probe/probe-1.json`, 11 panggilan GLM,
+ * US$0,257 nyata; putusan `eval/keluaran-m2d7/probe/putusan.md`). Angkanya
+ * HASIL aturan `putusanProbe()` (`pengecoh-probe.ts`) atas data itu — dites
+ * sama; aturan ditulis sebelum probe dijalankan:
+ *
+ * - `"max"` diterima penyedia (0 ditolak) dan kritikus berpikir 6.550–10.334
+ *   token (3/3 ≥ 1.000) → `"max"`;
+ * - kritikus: keluaran terpanjang 10.563 → `max_tokens` 16.000; ambang 1.000
+ *   (kontrak: tetap ≥ 1.000);
+ * - penebak GLM: penalaran tebakan terbaca 946–7.188, kuartil bawah 1.044 →
+ *   ambang 520; dua tebakan habis di 8.000 token tanpa jawaban →
+ *   `max_tokens` 12.000.
+ */
+export const PENALAR_M2D7 = {
+  // Jalan 1 TIRT: kedua panggilan kritikus habis di 16.000 (penalaran 16.000/16.002, `length`) — aturan yang sama
+  // atas probe + jalan 1 (`kritikusDariJejak`) → 24.000 sebelum jalan 2.
+  kritikus: { effort: 'max', maxTokens: 24_000, ambang: 1_000 },
+  penebakGlm: { effort: 'max', maxTokens: 12_000, ambang: 520 },
+} as const satisfies Record<string, PenalarBerpikir>;

@@ -1,0 +1,685 @@
+{
+  "selesai": false,
+  "pagu_kalibrasi_usd": 0.6,
+  "hasil": [
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "bocor",
+      "tambahan": false,
+      "kunci": "d",
+      "meresmikan": {
+        "angka": [
+          "rp58"
+        ],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 0.702
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Opsi ini paling masuk akal karena membedakan kenaikan periode dengan kenaikan sejak awal tahun, pola jebakan umum dalam soal seperti ini.",
+          "token_penalaran": [
+            562
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Opsi ini paling masuk akal karena membedakan kenaikan sejak awal tahun dari kenaikan periode, pola jebakan yang umum dalam soal data/ekonomi.",
+          "token_penalaran": [
+            1388
+          ],
+          "penyedia": [
+            "GMICloud"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "d",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Pilihan a dan c sama-sama menyangkal adanya data (pengisi khas yang bisa disingkirkan), dan klaim Sari spesifik dengan angka pasti, jadi kemungkinan besar sesuai dokumen: kenaikan Rp58 untuk periode 26 Nov–9 Des memang benar.",
+          "token_penalaran": [
+            824
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "d",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Pilihan a dan c hanya pengisi ('tidak pernah dihitung/tercatat di mana pun') yang tidak masuk akal untuk dokumen saham, pilihan b kontradiktif (menyebut 'Betul' tapi menyangkal periode yang dikatakan Sari), jadi klaim Sari yang spesifik dan wajar (dua tanggal pasti, naik Rp58) kemungkinan besar memang sesuai dokumen.",
+          "token_penalaran": [
+            7174
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "d",
+          "yakin": 62,
+          "terbaca": true,
+          "alasan": "Pilihan a dan c adalah tipe pengisi ('tidak pernah dihitung'/'tidak tercatat di mana pun') yang biasanya salah, dan klaim Sari spesifik dengan tanggal serta angka pasti yang wajar untuk kenaikan harga saham dua minggu, sehingga pilihan yang membenarkannya apa adanya paling mungkin benar.",
+          "token_penalaran": [
+            3396,
+            2615
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.0655285912
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "tambahan": false,
+      "kunci": "a",
+      "meresmikan": {
+        "angka": [],
+        "kata": [
+          "ragu",
+          "langsung",
+          "usaha"
+        ]
+      },
+      "keseimbangan": {
+        "rasio": 1.089
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Penghentian perdagangan saham di Januari lebih lazim karena kenaikan harga kumulatif, bukan keraguan kelangsungan usaha.",
+          "token_penalaran": [
+            876
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Penghentian sementara saham di bursa lebih lazim karena kenaikan harga kumulatif yang signifikan, bukan karena keraguan kelangsungan usaha.",
+          "token_penalaran": [
+            460
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "a",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar—alasan umum bursa menghentikan saham memang keraguan kelangsungan usaha, sementara volume nol adalah akibat suspensi bukan penyebabnya, jadi pilihan yang membenarkan Sinta paling mungkin benar.",
+          "token_penalaran": [
+            741
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "a",
+          "yakin": 68,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar (BEI lazim menghentikan saham karena keraguan kelangsungan usaha), sementara opsi c kontradiktif dan b/d hanya alasan generik pengalihan.",
+          "token_penalaran": [
+            1750
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Suspensi karena opini kelangsungan usaha biasanya menyusul laporan keuangan audit (sekitar Maret-April), sedangkan tanggal 21 Januari lebih khas untuk penghentian UMA atas kenaikan harga kumulatif yang signifikan, jadi Sinta kemungkinan salah menyamakan tanggal.",
+          "token_penalaran": [
+            1816
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.0212287073
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "bocor",
+      "tambahan": false,
+      "kunci": "a",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 1.037
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "a",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Frasa 'kenaikan harga kumulatif' paling lazim digunakan dalam pengumuman suspensi saham BEI.",
+          "token_penalaran": [
+            1237
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "a",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Suspensi saham di BEI sering diberlakukan karena kenaikan harga kumulatif signifikan, sedangkan volume nol umumnya bukan alasan suspensi.",
+          "token_penalaran": [
+            2263
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "a",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Tio spesifik dan wajar—suspensi bursa paling lazim justru karena kenaikan harga kumulatif (unusual market activity), bukan masalah usaha, dan pilihan a membenarkannya persis.",
+          "token_penalaran": [
+            564
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "a",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Klaim Tio spesifik dan wajar: IDX lazim mensuspensi saham karena kenaikan harga kumulatif (ARA beruntun), dan pilihan (a) membenarkannya persis, sementara alasan di c bertentangan dengan pernyataan Tio sendiri dan b/d menuduh teman keliru tanpa dasar kuat.",
+          "token_penalaran": [
+            689
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "a",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Tio spesifik dan lazim di BEI (pembekuan saham gara-gara kenaikan harga kumulatif/URA), dan pilihan yang membenarkan klaim wajar seperti ini sering jadi jawaban, sementara alasan volume nol di opsi c bertentangan dengan klaimnya sendiri.",
+          "token_penalaran": [
+            633
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.0118674335
+    },
+    {
+      "id": "m2d4-ultj-o1",
+      "kelompok": "aman",
+      "tambahan": false,
+      "kunci": "c",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 1
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 40,
+          "terbaca": true,
+          "alasan": "Pilihan c paling spesifik dan moderat, menyebut pembagian beruntun 7 tahun yang biasanya menjadi detail kunci jawaban.",
+          "token_penalaran": [
+            710
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Opsi ini paling spesifik dan moderat, sedangkan opsi lain terlalu ekstrem sehingga lebih mungkin keliru.",
+          "token_penalaran": [
+            311
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Wulan wajar dan spesifik, dan pilihan c membenarkannya dengan detail konkret (7 tahun beruntun) yang khas berasal dari dokumen, sedangkan a menambah klaim terlalu kuat soal dividen makin besar dan d terlalu ekstrem.",
+          "token_penalaran": [
+            698
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim 'tiap tahun keluar, ga pernah bolos' lazim terbukti lewat riwayat dividen beruntun (7 tahun berturut-turut), sementara opsi (a) terlalu kuat karena jumlah dividen biasanya fluktuatif dan opsi (b)/(d) bertentangan dengan pola pembagian yang konsisten.",
+          "token_penalaran": [
+            642
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Wulan wajar dan spesifik (dividen rutin tanpa bolong), dan pilihan c membenarkannya apa adanya dengan detail konkret 7 tahun beruntun; pilihan a menambah klaim berlebihan (makin besar tiap tahun) yang biasanya jebakan, sementara b/d lebih lemah atau ekstrem.",
+          "token_penalaran": [
+            1150
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.013302251
+    },
+    {
+      "id": "m2d4-ultj-o2",
+      "kelompok": "aman",
+      "tambahan": false,
+      "kunci": "a",
+      "meresmikan": {
+        "angka": [],
+        "kata": [
+          "sepanjang",
+          "januari"
+        ]
+      },
+      "keseimbangan": {
+        "rasio": 1.286
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "a",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan ini memuat angka spesifik 16,07 juta lembar yang paling mungkin menjadi jawaban benar dari soal.",
+          "token_penalaran": [
+            1495
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "a",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Angka spesifik 16,07 juta lembar dan periode Januari paling mungkin merupakan fakta yang diuji dari teks.",
+          "token_penalaran": [
+            3123
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "a",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar (orang dalam beli sepanjang Januari lebih banyak dari pemilik terbesar), dan pilihan a membenarkannya dengan angka presisi 16,07 juta lembar yang khas diambil dari laporan riil, sementara b/d kontradiktif dan c kurang mendukung kata 'beli terus' dengan detail 'cuma 2 laporan'.",
+          "token_penalaran": [
+            1667
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan sudah diverifikasi, dan pilihan yang mengonfirmasinya dengan angka pasti 16,07 juta lembar khas hasil hitungan dokumen, sementara 'cuma 2 laporan' bertentangan dengan 'beli terus sepanjang Januari' dan dua pilihan 'keliru' menyangkal klaim yang masuk akal.",
+          "token_penalaran": [
+            1065
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "a",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar (orang dalam lain membeli lebih banyak dari pemilik terbesar pada Januari), dan pilihan yang membenarkannya dengan angka sangat spesifik (16,07 juta lembar) adalah pola kunci yang biasanya diambil langsung dari dokumen, sementara b dan d hanya penyangkalan biasa dan c justru melemahkan kata 'beli terus' dengan 'cuma 2 laporan'.",
+          "token_penalaran": [
+            2238
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.026839795299999997
+    },
+    {
+      "id": "m2d4-ultj-o3",
+      "kelompok": "aman",
+      "tambahan": false,
+      "kunci": "a",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 1.179
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Opsi b secara langsung membantah pernyataan 'semua pembelian' dengan menyebut adanya laporan penjualan, sehingga paling mungkin menjadi koreksi yang tepat.",
+          "token_penalaran": [
+            707
+          ],
+          "penyedia": [
+            "CoreWeave"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pilihan ini memberi koreksi paling masuk akal bahwa tidak semua laporan berisi pembelian, ada juga penjualan.",
+          "token_penalaran": [
+            867
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Klaim mutlak 'semua beli, tidak ada yang jual' khas jebahan soal, dan laporan transaksi orang dalam biasanya berisi campuran beli dan jual, jadi pembuat soal kemungkinan besar menunjukkan ada laporan penjualan.",
+          "token_penalaran": [
+            1330
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Klaim tegas Fitri bahwa 'tidak ada yang jual' adalah jenis pernyataan yang paling mudah dibantai dokumen laporan transaksi orang dalam, dan opsi b memberikan koreksi paling spesifik dan bisa dicek (ada laporan berisi penjualan), sementara c dan d terasa seperti pengecoh yang kurang konsisten.",
+          "token_penalaran": [
+            3098
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim mutlak Fitri bahwa 'tidak ada yang jual' adalah jenis pernyataan yang biasanya terpatahkan oleh dokumen Laporan Orang Dalam Perusahaan yang lazimnya berisi campuran beli dan jual, dan pilihan b adalah koreksi paling wajar atas klaim tersebut.",
+          "token_penalaran": [
+            650
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.024987150000000003
+    },
+    {
+      "id": "m2d4-dada-o2",
+      "kelompok": "aman",
+      "tambahan": false,
+      "kunci": "b",
+      "meresmikan": {
+        "angka": [],
+        "kata": [
+          "agustus"
+        ]
+      },
+      "keseimbangan": {
+        "rasio": 1.327
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "d",
+          "yakin": 40,
+          "terbaca": true,
+          "alasan": "Pilihan ini memuat koreksi tanggal yang spesifik dan paling mungkin menjadi kunci jawaban.",
+          "token_penalaran": [
+            4307
+          ],
+          "penyedia": [
+            "Novita"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 40,
+          "terbaca": true,
+          "alasan": "Pilihan ini paling spesifik menyebut rentang tanggal transaksi yang biasanya menjadi inti soal.",
+          "token_penalaran": [
+            465
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Nadia spesifik dan wajar, dan opsi b mengonfirmasinya dengan detail yang konsisten secara hitungan (tiga transaksi berturut-turut 12, 13, 14 Agustus untuk tiga laporan, semuanya di Agustus), sedangkan opsi a tidak menjelaskan klaim tanggal transaksi dan opsi c/d hanya menebak bahwa Nadia keliru.",
+          "token_penalaran": [
+            2476
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 58,
+          "terbaca": true,
+          "alasan": "Klaim Nadia yang wajar dan spesifik (3 laporan penjualan, semua transaksi Agustus) biasanya benar, dan hanya pilihan b yang membenarkannya dengan detail transaksi 12-14 Agustus yang konsisten dengan 3 laporan berturut-turut dalam satu bulan.",
+          "token_penalaran": [
+            1188
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Nadia spesifik dan wajar (pemilik besar menjual dalam 3 laporan, semuanya Agustus), dan pilihan b membenarkannya dengan tanggal konkret 12–14 Agustus yang konsisten dengan tiga transaksi berturut-turut di bulan yang sama.",
+          "token_penalaran": [
+            1065
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.026128576100000002
+    },
+    {
+      "id": "m2d6-tirt-o1",
+      "kelompok": "bocor",
+      "tambahan": true,
+      "kunci": "c",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 1.044
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan c paling konsisten dengan pola soal: menyatakan keliru dan alasan teknisnya adalah keraguan usaha, bukan kenaikan harga atau tidak dicatat bursa.",
+          "token_penalaran": [
+            1158
+          ],
+          "penyedia": [
+            "DekaLLM"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Opsi ini paling masuk akal karena menyatakan pernyataan keliru dan memberi alasan yang lebih spesifik, yaitu keraguan usaha pada awal tahun.",
+          "token_penalaran": [
+            3355
+          ],
+          "penyedia": [
+            "Phala"
+          ]
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "a",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Sari spesifik dan wajar—bursa memang lazim menghentikan saham karena kenaikan harga tak wajar (UMA), sedangkan opsi b jelas pengisi (setop selalu dicatat bursa) dan opsi d tidak menjawab klaim awal tahunnya.",
+          "token_penalaran": [
+            724
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Alasan 'harga naik terus' (Unusual Market Activity) memang alasan lazim bursa menghentikan saham, klaim spesifik Sari wajar dan biasanya benar, sementara b ('tidak dicatat bursa') jelas pengisi dan d menyalahkan alasan setop hari ini yang tidak pernah diklaim Sari.",
+          "token_penalaran": [
+            8028,
+            6662
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Setop karena harga naik terus (UMA) adalah alasan penghentian yang sangat lazim di BEI dan klaim spesifik Sari wajar benar, opsi b jelas pengisi ('tidak dicatat bursa'), sedangkan c/d menyalahkan Sari tanpa bukti bahwa dugaannya keliru.",
+          "token_penalaran": [
+            3313
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.0879716232
+    }
+  ]
+}

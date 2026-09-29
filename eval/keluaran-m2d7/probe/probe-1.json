@@ -1,0 +1,215 @@
+{
+  "pagu_probe_usd": 0.3,
+  "biaya_probe_usd": 0.25702296,
+  "hasil": [
+    {
+      "tag": "m2d7/probe/kritikus/o1",
+      "peran": "kritikus",
+      "max_tokens": 20000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 6778,
+      "token_penalaran": 6550,
+      "biaya_usd": 0.0302867922,
+      "terurai": true,
+      "catatan": "0 keberatan (-)",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 2 mencatat setop 21 Januari 2025 dengan alasan keraguan atas kelangsungan usaha, sehingga hanya c yang benar; a dan b bertentangan dengan kartu 2 (setop awal tahun justru tercatat resmi), dan d bertentangan dengan kartu 1 yang menyebut alasan setop hari ini kenaikan harga kumulatif.\"}, \"keberatan\": [], \"arahan\": \"Kartu 3 hanya memuat satu harga penutupan (Rp106) sehingga tidak bisa menopang klaim 'harga naik terus' maupun distraktor mana pun; pertimbangkan menambah satu harga pembanding agar kartunya punya fungsi, atau pastikan memang diniatkan sebagai pengecoh.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/kritikus/o2",
+      "peran": "kritikus",
+      "max_tokens": 20000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 10563,
+      "token_penalaran": 10334,
+      "biaya_usd": 0.046864433,
+      "terurai": true,
+      "catatan": "0 keberatan (-)",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu penentu menegaskan 58 = 106 − 48 (selisih penutupan 26 November dan 9 Desember), sedangkan selisih 1 Desember–9 Desember hanya 44 (106 − 62) dan tidak ada penutupan di kartu yang bernilai 58, sehingga a, b, dan c semuanya bertentangan dengan kartu.\"}, \"keberatan\": [], \"arahan\": \"Saat menegaskan 58 bukan harga satu hari, penjelasan hanya menyebut penutupan 9 Desember (106) dan 1 Desember (62); cakup juga penutupan 26 November (48) supaya semua harga di kartu ikut menegaskan angka 58 bukan harga penutupan.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/kritikus/o1-b",
+      "peran": "kritikus",
+      "max_tokens": 20000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 7066,
+      "token_penalaran": 6855,
+      "biaya_usd": 0.0314659026,
+      "terurai": true,
+      "catatan": "0 keberatan (-)",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 2 mencatat setop 21 Januari 2025 dengan alasan resmi keraguan kelangsungan usaha — mendukung c sekaligus membantah a dan b — sedangkan d salah karena Kartu 1 menyebut setop hari ini akibat kenaikan harga kumulatif, bukan keraguan usaha.\"}, \"keberatan\": [], \"arahan\": \"Perjelas bahwa klausa 'katanya karena harga naik terus' hanya menempel pada setop awal tahun; jika terbaca sebagai alasan setop hari ini, omongan Sari justru cocok dengan Kartu 1 dan pilihan 'Keliru' jadi sulit dipertahankan.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d5-tirt-o2/1",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 3262,
+      "token_penalaran": 3140,
+      "biaya_usd": 0.014488159,
+      "terurai": true,
+      "catatan": "d/70 (kunci d, bocor)",
+      "teks": "{\"pilihan\": \"d\", \"yakin\": 70, \"alasan\": \"Opsi a dan c hanyalah pengisi (harga saham pada tanggal tertentu jelas tercatat dan selisihnya bisa dihitung), klaim Sari yang spesifik dan wajar (naik Rp58 dalam dua minggu) sering ternyata benar, dan hanya d yang membenarkannya apa adanya, sementara b kontradiktif karena berkata 'Betul' padahal menjelaskan ketidakcocokan.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d5-tirt-o2/2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 1039,
+      "token_penalaran": 946,
+      "biaya_usd": 0.0046813846,
+      "terurai": true,
+      "catatan": "d/65 (kunci d, bocor)",
+      "teks": "{\"pilihan\": \"d\", \"yakin\": 65, \"alasan\": \"Klaim Sari spesifik dan wajar, pilihan a dan c hanya pengisi absolutis ('tidak pernah dihitung'/'tidak tercatat di mana pun'), dan b secara internal kontradiktif, sehingga paling muali kenaikan periode 26 Nov–9 Des memang Rp58.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d4-tirt-o3/1",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 2641,
+      "token_penalaran": 2542,
+      "biaya_usd": 0.0117356459,
+      "terurai": true,
+      "catatan": "a/60 (kunci a, bocor)",
+      "teks": "{\"pilihan\": \"a\", \"yakin\": 60, \"alasan\": \"Keraguan atas kelangsungan usaha (going concern) adalah salah satu alasan paling lazim BEI menghentikan perdagangan saham, dan klaim spesifik Sinta yang wajar seperti ini sering kali sesuai dokumen, sementara volume nol atau harga turun tajam bukan alasan suspensi yang umum.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d4-tirt-o3/2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 7309,
+      "token_penalaran": 7188,
+      "biaya_usd": 0.0322691627,
+      "terurai": true,
+      "catatan": "b/55 (kunci a, bocor)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 55, \"alasan\": \"Tanggal 21 Januari khas penghentian sementara BEI karena UMA (kenaikan harga kumulatif signifikan) setelah reli saham, sedangkan suspend karena kelangsungan usaha biasanya muncul setelah musim opini audit (kuartal II), jadi Sinta kemungkinan tertukar antar-peristiwa; pilihan volume nol dan harga turun tajam bukan alasan suspend yang lazim.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d4-ultj-o1/1",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 1158,
+      "token_penalaran": 1044,
+      "biaya_usd": 0.0052093364,
+      "terurai": true,
+      "catatan": "c/58 (kunci c, aman)",
+      "teks": "{\"pilihan\": \"c\", \"yakin\": 58, \"alasan\": \"Klaim Wulan wajar dan spesifik (dividen rutin tiap tahun), dan pilihan c membenarkannya dengan detail terukur 'tercatat beruntun 7 tahun' yang khas riwayat dividen di data bursa, sedangkan a menambah klaim terlalu kuat (makin besar tanpa kecuali) yang tidak Wulan katakan dan jarang terjadi nyata.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d4-ultj-o1/2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 2110,
+      "token_penalaran": 2015,
+      "biaya_usd": 0.0093924532,
+      "terurai": true,
+      "catatan": "c/62 (kunci c, aman)",
+      "teks": "{\"pilihan\": \"c\", \"yakin\": 62, \"alasan\": \"Pilihan d jelas pengisi, a membuat klaim berlebihan (dividen makin besar) yang tidak Wulan ucapkan, sementara c membenarkan klaim wajar Wulan dengan angka spesifik 7 tahun beruntun yang khas diambil langsung dari data riwayat dividen di dokumen.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d4-dada-o1/1",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "length",
+      "token_keluar": 8000,
+      "token_penalaran": 8001,
+      "biaya_usd": 0.0353176868,
+      "terurai": false,
+      "catatan": "tak terbaca",
+      "teks": "",
+      "status": 200
+    },
+    {
+      "tag": "m2d7/probe/penebak/m2d4-dada-o1/2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "max"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "length",
+      "token_keluar": 8000,
+      "token_penalaran": 8002,
+      "biaya_usd": 0.0353120036,
+      "terurai": false,
+      "catatan": "tak terbaca",
+      "teks": "",
+      "status": 200
+    }
+  ]
+}

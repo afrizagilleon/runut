@@ -1,0 +1,266 @@
+{
+  "selesai": true,
+  "pagu_kalibrasi_usd": 0.6,
+  "hasil": [
+    {
+      "id": "manusia-s1-kata-bursa",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "kunci": "b",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 0.909
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "d",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pengumuman bursa biasanya terkait pergerakan harga tidak wajar/naik terlalu cepat, bukan penyebab kenaikan 22 kali.",
+          "token_penalaran": [
+            779
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "d",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Pengumuman bursa yang berkaitan dengan lonjakan harga saham biasanya soal Unusual Market Activity (UMA), bukan investor asing atau laporan keuangan telat.",
+          "token_penalaran": [
+            518
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        }
+      ],
+      "penebak": null,
+      "biaya_usd": 0.00071648
+    },
+    {
+      "id": "manusia-s2-dividen-pemilik-kecil",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "kunci": "a",
+      "meresmikan": {
+        "angka": [],
+        "kata": [
+          "viden"
+        ]
+      },
+      "keseimbangan": {
+        "rasio": 0.981
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 68,
+          "terbaca": true,
+          "alasan": "Pilihan c paling masuk akal karena mengoreksi perhitungan dividen: 10 lot sama dengan 1.000 lembar, sehingga jika dividen per lembar Rp14 totalnya Rp14.000.",
+          "token_penalaran": [
+            466
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pilihan c memuat koreksi jumlah dividen yang paling masuk akal untuk 10 lot, yaitu Rp14.000.",
+          "token_penalaran": [
+            1123
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        }
+      ],
+      "penebak": null,
+      "biaya_usd": 0.0011376478
+    },
+    {
+      "id": "manusia-s3-siapa-yang-menjual",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "kunci": "c",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 1.043
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "d",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Harga ratusan rupiah lebih masuk akal untuk transaksi, dan opsi d menggabungkan koreksi keliru dengan penjualan banyak.",
+          "token_penalaran": [
+            3766
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "a",
+          "yakin": 30,
+          "terbaca": true,
+          "alasan": "Tanpa soal, opsi 'Betul' dengan detail membeli lagi di harga belasan rupiah tampak paling spesifik dan sering menjadi kunci.",
+          "token_penalaran": [
+            830
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        }
+      ],
+      "penebak": null,
+      "biaya_usd": 0.002745726
+    },
+    {
+      "id": "manusia-turun-di-tanggal-ex",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "kunci": "b",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 0.804
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Opsi c menegaskan hubungan penurunan harga terhadap dividen, sedangkan opsi lain hanya terpaku pada nominal dividen yang berbeda.",
+          "token_penalaran": [
+            7114
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Angka dividen Rp130 lebih umum dikaitkan dengan koreksi untuk saham seperti BBRI, dan opsi koreksi biasanya menjadi jawaban benar.",
+          "token_penalaran": [
+            5617
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "penebak": null,
+      "biaya_usd": 0.0090142474
+    },
+    {
+      "id": "manusia-riwayat-dividen",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "kunci": "a",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 0.985
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan ini paling masuk akal karena mengandung nuansa data (datar dua tahun) tanpa klaim ekstrem seperti selalu naik atau pernah tidak ada pembagian.",
+          "token_penalaran": [
+            508
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pilihan c paling spesifik dan tidak terlalu absolut, sehingga lebih mungkin sesuai dengan data deret tahunan.",
+          "token_penalaran": [
+            458
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        }
+      ],
+      "penebak": null,
+      "biaya_usd": 0.000533981
+    },
+    {
+      "id": "manusia-siapa-yang-membeli",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "kunci": "d",
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 1.058
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "d",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Opsi d paling spesifik menyebut angka dan jumlah laporan, sehingga lebih mungkin merupakan jawaban benar yang disusun dari data.",
+          "token_penalaran": [
+            291
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "d",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan d paling spesifik dengan angka dan jumlah laporan, sehingga lebih mungkin merupakan jawaban benar yang disusun dari fakta.",
+          "token_penalaran": [
+            377
+          ],
+          "penyedia": [
+            "Fireworks"
+          ]
+        }
+      ],
+      "penebak": null,
+      "biaya_usd": 0.0005421
+    }
+  ]
+}

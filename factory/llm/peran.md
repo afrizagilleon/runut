@@ -70,3 +70,19 @@ Peran, wewenang, dan urutan sama dengan M2d-5; yang berubah (kontrak M2d-6 D-1�
 
 - **Bukti berpikir dibaca dari respons** (`usage.completion_tokens_details.reasoning_tokens`), bukan dari badan permintaan; jawaban yang tidak terbukti berpikir tidak pernah dibaca sebagai "tidak keberatan" atau sebagai tebakan (`penjaga-penalaran.ts`).
 - **Tetap**: tidak ada peran yang bisa meloloskan sendirian; kritikus tidak menulis ulang; kritikus yang tidak menjawab (termasuk tidak terbukti berpikir) = keberatan, versi dibawa ke putaran berikutnya.
+
+## Generasi M2d-7 — pengecoh dari data (`GENERASI_M2D7` di `agen-pengecoh.ts`)
+
+Wewenang sama (tidak ada peran yang bisa meloloskan sendirian; kritikus tidak menulis ulang). Yang berubah (kontrak M2d-7 D-1–D-5), semuanya ditetapkan kode:
+
+| peran | M2d-6 | M2d-7 |
+|---|---|---|
+| Perencana | sudut | + **bank pengecoh dari data** (`bank-pengecoh.ts`): nilai nyata fakta lain di paket per sudut; + label klaim BETUL/KELIRU per omongan (`labelKode`) |
+| Penulis | satu panggilan per omongan | **tiga panggilan**: pesan (fakta sudut + salah kaprah dari bank) → pilihan (kunci + tiga pengecoh dipilih dari bank, bersumber) → penjelasan; kartu dan huruf kunci dari kode |
+| Pemeriksa | validator + gerbang G/gaya/makna/kembar | + G-ikatan-bank + gerbang artefak: meresmikan, keseimbangan (`gerbang-artefak.ts`) |
+| Pilihan-saja (baru) | — | `deepseek/deepseek-v4.1-flash` ×2, HANYA empat pilihan; dipanggil sebelum pembaca kartu |
+| Kritikus | GLM `effort: "high"`, ambang 1.000 | GLM `effort: "max"`, `max_tokens` 24.000, ambang 1.000 (`PENALAR_M2D7`; 16.000 di jalan 1) |
+| Penebak ×3 | GLM `effort: "high"`, ambang 300 | GLM `effort: "max"`, `max_tokens` 12.000, ambang 520; petunjuk "pemburu soal bocor" |
+
+- **Urutan M2d-7**: pemeriksa → pilihan-saja → pembaca kartu → kritikus → penebak.
+- **Umpan balik beralternatif** (`umpan-terarah.ts`): tiap penolakan = lokasi (pesan / pilihan x / penjelasan) + nilai teramati + alternatif yang diizinkan (kandidat bank yang belum dipakai). Hanya bagian yang gagal ditulis ulang; paling banyak 2 perbaikan per bagian, lalu posisi itu mendapat sudut baru.

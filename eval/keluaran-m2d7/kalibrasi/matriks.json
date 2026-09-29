@@ -1,0 +1,355 @@
+{
+  "ambang_awal": {
+    "rasio": 1.3,
+    "maksKata": 2,
+    "pilihanSajaYakin": null,
+    "penebakYakin": true
+  },
+  "matriks_awal": [
+    {
+      "gerbang": "meresmikan",
+      "bocor_ditolak": 2,
+      "bocor_total": 3,
+      "aman_ditolak": 1,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "keseimbangan",
+      "bocor_ditolak": 0,
+      "bocor_total": 3,
+      "aman_ditolak": 1,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "pilihan_saja",
+      "bocor_ditolak": 1,
+      "bocor_total": 3,
+      "aman_ditolak": 2,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "penebak",
+      "bocor_ditolak": 3,
+      "bocor_total": 3,
+      "aman_ditolak": 3,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "gabungan",
+      "bocor_ditolak": 3,
+      "bocor_total": 3,
+      "aman_ditolak": 3,
+      "aman_total": 4
+    }
+  ],
+  "putusan": {
+    "ambang": {
+      "rasio": 1.5,
+      "maksKata": 3,
+      "pilihanSajaYakin": 60,
+      "penebakYakin": false
+    },
+    "langkah": [
+      "awal: aman ditolak 3/4",
+      "keseimbangan 1,3 → 1,5 → aman ditolak 3/4",
+      "meresmikan kata 2 → 3 → aman ditolak 3/4",
+      "pilihan-saja: juga rata-rata yakin ≥ 60 → aman ditolak 3/4",
+      "penebak: hanya ≥ 2/3 benar → aman ditolak 3/4"
+    ]
+  },
+  "matriks_akhir": [
+    {
+      "gerbang": "meresmikan",
+      "bocor_ditolak": 2,
+      "bocor_total": 3,
+      "aman_ditolak": 0,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "keseimbangan",
+      "bocor_ditolak": 0,
+      "bocor_total": 3,
+      "aman_ditolak": 0,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "pilihan_saja",
+      "bocor_ditolak": 0,
+      "bocor_total": 3,
+      "aman_ditolak": 0,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "penebak",
+      "bocor_ditolak": 3,
+      "bocor_total": 3,
+      "aman_ditolak": 3,
+      "aman_total": 4
+    },
+    {
+      "gerbang": "gabungan",
+      "bocor_ditolak": 3,
+      "bocor_total": 3,
+      "aman_ditolak": 3,
+      "aman_total": 4
+    }
+  ],
+  "per_soal": [
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "bocor",
+      "tambahan": false,
+      "awal": {
+        "meresmikan": true,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": true,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      }
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "tambahan": false,
+      "awal": {
+        "meresmikan": true,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": true,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      }
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "bocor",
+      "tambahan": false,
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": true,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      }
+    },
+    {
+      "id": "m2d4-ultj-o1",
+      "kelompok": "aman",
+      "tambahan": false,
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": true,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      }
+    },
+    {
+      "id": "m2d4-ultj-o2",
+      "kelompok": "aman",
+      "tambahan": false,
+      "awal": {
+        "meresmikan": true,
+        "keseimbangan": false,
+        "pilihan_saja": true,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      }
+    },
+    {
+      "id": "m2d4-ultj-o3",
+      "kelompok": "aman",
+      "tambahan": false,
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": false,
+        "ditolak": false
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": false,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "m2d4-dada-o2",
+      "kelompok": "aman",
+      "tambahan": false,
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": true,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": true,
+        "ditolak": true
+      }
+    },
+    {
+      "id": "m2d6-tirt-o1",
+      "kelompok": "bocor",
+      "tambahan": true,
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": true,
+        "penebak": false,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": false,
+        "ditolak": false
+      }
+    }
+  ],
+  "manusia": [
+    {
+      "id": "manusia-s1-kata-bursa",
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "manusia-s2-dividen-pemilik-kecil",
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "manusia-s3-siapa-yang-menjual",
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "manusia-turun-di-tanggal-ex",
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "manusia-riwayat-dividen",
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "manusia-siapa-yang-membeli",
+      "awal": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": true,
+        "penebak": null,
+        "ditolak": true
+      },
+      "akhir": {
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "penebak": null,
+        "ditolak": false
+      }
+    }
+  ]
+}
