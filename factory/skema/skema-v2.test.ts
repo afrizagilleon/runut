@@ -138,6 +138,7 @@ describe('M2a D-1 — skema generasi kedua', () => {
       'R34',
       'R35',
       'R36',
+      'R37',
     ]);
     expect(new Set(SEMUA_KODE_ATURAN).size).toBe(SEMUA_KODE_ATURAN.length);
   });

@@ -9,6 +9,8 @@
  * - R36 — laporan tentang saham emiten lain (U18 ADRO). Cakupan R6 lama
  *   ("laporannya ternyata bercerita tentang saham lain") yang hilang ketika R6
  *   digantikan R17B, yang hanya memeriksa harga.
+ * - R37 — satu tahun buku laporan keuangan yang bagiannya lebih besar dari
+ *   keseluruhannya (U28 ABMM 2023: satuan bercampur).
  */
 import type { Temuan } from '../skema/tipe.ts';
 import { angka, hasil, hitung, lewat, urut } from './dasar.ts';
@@ -214,6 +216,140 @@ export function r36LaporanSahamLain(konteks: KonteksGudang): HasilAturan {
 
   return hasil(
     'R36',
+    judul,
+    temuan,
+    hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),
+  );
+}
+
+// --- R37 bagian lebih besar dari keseluruhannya di satu tahun buku ------------
+
+/**
+ * Hubungan bagian-keseluruhan yang BERLAKU MENURUT DEFINISI di neraca satu
+ * tahun buku. Hanya yang terbukti dilanggar di data gudang dan dibenarkan
+ * standar akuntansi yang dikutip; bukan daftar "semua yang mungkin".
+ *
+ * - `total_debt` ≤ `total_liabilities`: utang (pinjaman berbunga, sewa) adalah
+ *   liabilitas keuangan, jadi bagian dari total liabilitas (PSAK 201 / IAS 1
+ *   par. 54 huruf m dan 69; PSAK 109 / IFRS 9). Dilanggar: ABMM 2023.
+ * - `cash_and_equivalents` ≤ `total_assets`: kas dan setara kas adalah pos aset
+ *   (PSAK 201 / IAS 1 par. 54 huruf i). Dilanggar: ABMM 2023.
+ * - `cash_and_equivalents` ≤ `current_assets`: kas dan setara kas digolongkan
+ *   aset lancar kecuali dibatasi penggunaannya ≥ 12 bulan (PSAK 201 / IAS 1
+ *   par. 66 huruf d; setara kas = investasi jangka pendek yang sangat likuid,
+ *   PSAK 207 / IAS 7 par. 6-7). Dilanggar: ABMM 2023, ARCI 2023, HITS 2025.
+ *
+ * Tidak dimasukkan walau dilanggar di gudang: `inventories` ≤ `current_assets`
+ * (ABMM 2023, ARCI 2023) — pengembang properti boleh menyajikan sebagian
+ * persediaan real estat sebagai aset tidak lancar, jadi hubungannya tidak
+ * berlaku menurut definisi; kedua baris itu sudah tertangkap hubungan lain.
+ * `prepaid_assets` ≤ `total_assets` (ABMM 2023) tidak menambah satu baris pun.
+ */
+export const HUBUNGAN_BAGIAN: ReadonlyArray<{
+  bagian: 'utang' | 'kas';
+  keseluruhan: 'liabilitas' | 'aset' | 'aset_lancar';
+  medan_bagian: string;
+  medan_keseluruhan: string;
+  dasar: string;
+}> = [
+  {
+    bagian: 'utang',
+    keseluruhan: 'liabilitas',
+    medan_bagian: 'total_debt',
+    medan_keseluruhan: 'total_liabilities',
+    dasar: 'utang adalah bagian dari liabilitas',
+  },
+  {
+    bagian: 'kas',
+    keseluruhan: 'aset',
+    medan_bagian: 'cash_and_equivalents',
+    medan_keseluruhan: 'total_assets',
+    dasar: 'kas dan setara kas adalah bagian dari aset',
+  },
+  {
+    bagian: 'kas',
+    keseluruhan: 'aset_lancar',
+    medan_bagian: 'cash_and_equivalents',
+    medan_keseluruhan: 'current_assets',
+    dasar: 'kas dan setara kas digolongkan aset lancar',
+  },
+];
+
+/**
+ * R37: satu tahun buku `historical_financials` yang memuat bagian lebih besar
+ * dari keseluruhannya.
+ *
+ * Penolak, bukan penanda: dua angka di baris yang sama saling bertentangan
+ * menurut definisinya, jadi sedikitnya satu salah — di data audit sebabnya
+ * satuan yang bercampur (sebagian medan dalam dolar AS, sebagian dalam rupiah).
+ * Mana yang benar tidak terbaca, jadi tidak satu pun angka keuangan tahun buku
+ * itu boleh menjadi kartu. Sama besar bukan pelanggaran. Tahun buku tanpa satu
+ * pasangan pun yang kedua angkanya ada → TIDAK_LENGKAP.
+ */
+export function r37BagianMelebihiKeseluruhan(konteks: KonteksGudang): HasilAturan {
+  const judul = 'Bagian lebih besar dari keseluruhannya di laporan keuangan';
+  const satuan = 'tahun buku';
+  const baris = konteks.data.keuangan_tahunan;
+  if (baris.length === 0) {
+    return lewat('R37', judul, 'Emiten ini tidak punya laporan keuangan tahunan di data.', satuan);
+  }
+  const temuan: Temuan[] = [];
+  let diperiksa = 0;
+  let merah = 0;
+  let tidakLengkap = 0;
+  const alasan: string[] = [];
+
+  for (const k of [...baris].sort((a, b) => a.tahun - b.tahun)) {
+    diperiksa += 1;
+    let diadu = 0;
+    const langgar: Array<{ h: (typeof HUBUNGAN_BAGIAN)[number]; bagian: number; keseluruhan: number }> = [];
+    for (const h of HUBUNGAN_BAGIAN) {
+      const bagian = k[h.bagian];
+      const keseluruhan = k[h.keseluruhan];
+      if (typeof bagian !== 'number' || typeof keseluruhan !== 'number') continue;
+      diadu += 1;
+      if (bagian > keseluruhan) langgar.push({ h, bagian, keseluruhan });
+    }
+    if (diadu === 0) {
+      tidakLengkap += 1;
+      alasan.push('Tahun buku ini tidak punya satu pun pasangan bagian dan keseluruhan yang kedua angkanya ada.');
+      continue;
+    }
+    if (langgar.length === 0) continue;
+
+    merah += 1;
+    const angkaTemuan: Temuan['angka'] = [];
+    for (const { h, bagian, keseluruhan } of langgar) {
+      for (const [label, nilai] of [
+        [h.medan_bagian, bagian],
+        [h.medan_keseluruhan, keseluruhan],
+      ] as const) {
+        if (!angkaTemuan.some((a) => a.label === label)) angkaTemuan.push({ label, nilai, satuan: 'tak diketahui' });
+      }
+    }
+    temuan.push({
+      temuan_id: `R37-${konteks.simbol}-${String(k.tahun)}`,
+      aturan: 'R37',
+      ringkasan:
+        `Laporan keuangan ${konteks.simbol} tahun buku ${String(k.tahun)} memuat bagian yang lebih besar ` +
+        `dari keseluruhannya: ` +
+        langgar
+          .map(
+            ({ h, bagian, keseluruhan }) =>
+              `${h.medan_bagian} ${angka(bagian)} lebih besar dari ${h.medan_keseluruhan} ${angka(keseluruhan)} ` +
+              `(${(bagian / keseluruhan).toFixed(1)} kali), padahal ${h.dasar}`,
+          )
+          .join('; ') +
+        '. Sedikitnya satu angka di tahun buku ini salah satuan atau salah isi, dan mana yang benar tidak ' +
+        'terbaca dari data ini; tidak satu pun angka keuangan tahun buku ini boleh menjadi kartu.',
+      angka: angkaTemuan,
+      fakta_terkait: [],
+      rujukan: [`financials.historical_financials ${String(k.tahun)}`],
+    });
+  }
+
+  return hasil(
+    'R37',
     judul,
     temuan,
     hitung(satuan, { diperiksa, merah, tidak_lengkap: tidakLengkap, alasan_dilewati: alasan }),

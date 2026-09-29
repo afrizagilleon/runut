@@ -211,6 +211,11 @@ describe('muatGudang — penormalan dan pembuangan rangkap', () => {
           aset: 12000,
           laba_kotor: 3000,
           lembar: 1000,
+          // M4b R37: medan neraca yang tidak ada di berkas contoh terbaca null.
+          utang: null,
+          liabilitas: null,
+          kas: null,
+          aset_lancar: null,
         },
         {
           tahun: 2025,
@@ -220,6 +225,11 @@ describe('muatGudang — penormalan dan pembuangan rangkap', () => {
           aset: 13000,
           laba_kotor: null,
           lembar: 1000,
+          // M4b R37: medan neraca yang tidak ada di berkas contoh terbaca null.
+          utang: null,
+          liabilitas: null,
+          kas: null,
+          aset_lancar: null,
         },
       ]);
     });

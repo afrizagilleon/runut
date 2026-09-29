@@ -14,16 +14,26 @@
  */
 import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { cocokNamaEmiten, r36LaporanSahamLain, sasaranJudul } from './aturan-audit.ts';
+import {
+  cocokNamaEmiten,
+  r36LaporanSahamLain,
+  r37BagianMelebihiKeseluruhan,
+  sasaranJudul,
+} from './aturan-audit.ts';
 import { harga, konteksGudang, laporan } from './contoh.ts';
 import { keparahanTemuan } from '../skema/tipe.ts';
-import type { BarisHarga, Laporan } from './tipe.ts';
+import type { BarisHarga, KeuanganTahunan, Laporan } from './tipe.ts';
 import { konteksEmiten } from './konteks.ts';
 import { muatGudangManifest } from '../muat/gudang-manifest.ts';
 
 /** Satu hari harga: cukup `nilai_pasar` dan `tutup` untuk titik saham beredar. */
 function hari(tanggal: string, tutup: number, nilai_pasar: number): BarisHarga {
   return harga({ tanggal, buka: tutup, tertinggi: tutup, terendah: tutup, tutup, volume: 1, nilai_pasar });
+}
+
+/** Satu tahun buku; medan yang tidak dipakai R37 dibiarkan kosong. */
+function keuangan(ubah: Partial<KeuanganTahunan> & { tahun: number }): KeuanganTahunan {
+  return { laba: null, pendapatan: null, ekuitas: null, aset: null, laba_kotor: null, lembar: null, ...ubah };
 }
 
 function lap(ubah: Partial<Laporan>): Laporan {
@@ -233,5 +243,115 @@ describe.runIf(MANIFEST_ADA)('R36 atas gudang audit (372 berkas manifest, sha di
     }
     expect(diperiksa).toBe(267);
     expect(merah).toEqual(['ADRO 2025-10-17T22:27:59 · 4d80ecf450_17be92eba5.pdf']);
+  });
+});
+
+/*
+ * R37 — satu tahun buku laporan keuangan yang bagiannya lebih besar dari
+ * keseluruhannya. Salah nyata (uji ulang M4a U28): ABMM tahun buku 2023 menulis
+ * total_debt 16 triliun padahal total_liabilities 1,4 miliar, dan kas lebih
+ * besar dari total aset — sebagian medan baris itu dalam dolar AS, sebagian
+ * dalam rupiah. Fixture: `financials.historical_financials` apa adanya.
+ */
+describe('R37 — bagian lebih besar dari keseluruhannya di satu tahun buku', () => {
+  // ABMM-m4a-overview-financials.json
+  const ABMM_2022 = keuangan({
+    tahun: 2022,
+    aset: 30_912_364_969_888,
+    liabilitas: 21_283_973_250_088,
+    utang: 14_636_865_965_640,
+    kas: 3_454_659_208_104,
+    aset_lancar: 11_018_312_774_856,
+  });
+  const ABMM_2023 = keuangan({
+    tahun: 2023,
+    aset: 2_156_687_895,
+    liabilitas: 1_397_760_928,
+    utang: 16_059_284_798_232,
+    kas: 2_911_439_932_464,
+    aset_lancar: 622_722_099,
+  });
+  // ARCI-m4a-overview-financials.json: aset lancar dalam dolar, sisanya rupiah.
+  const ARCI_2023 = keuangan({
+    tahun: 2023,
+    aset: 12_447_484_756_164,
+    liabilitas: 8_379_337_218_315,
+    utang: 6_276_758_547_050,
+    kas: 144_369_863_612,
+    aset_lancar: 94_562_276,
+  });
+  // BSIM-m4a-overview-financials.json: bank, tanpa kas dan aset lancar.
+  const BSIM_2023 = keuangan({
+    tahun: 2023,
+    aset: 52_634_996_000_000,
+    liabilitas: 37_788_908_000_000,
+    utang: 633_910_000,
+    kas: null,
+    aset_lancar: null,
+  });
+
+  it('menolak ABMM 2023 dan menyebut ketiga hubungan yang dilanggar; ABMM 2022 lolos', () => {
+    const h = r37BagianMelebihiKeseluruhan(konteksGudang({ simbol: 'ABMM', keuangan_tahunan: [ABMM_2022, ABMM_2023] }));
+    expect(h.aturan).toBe('R37');
+    expect(h.hitungan).toMatchObject({ satuan: 'tahun buku', diperiksa: 2, merah: 1, hijau: 1, tidak_lengkap: 0 });
+    expect(h.temuan).toHaveLength(1);
+    const t = h.temuan[0];
+    expect(t && keparahanTemuan(t)).toBe('konflik');
+    expect(t?.temuan_id).toBe('R37-ABMM-2023');
+    expect(t?.ringkasan).toContain('2023');
+    expect(t?.ringkasan).toContain('total_debt');
+    expect(t?.ringkasan).toContain('total_liabilities');
+    expect(t?.ringkasan).toContain('cash_and_equivalents');
+    expect(t?.angka.map((a) => a.label)).toEqual([
+      'total_debt',
+      'total_liabilities',
+      'cash_and_equivalents',
+      'total_assets',
+      'current_assets',
+    ]);
+  });
+
+  it('menolak ARCI 2023: kas lebih besar dari aset lancar, walau utang dan total aset wajar', () => {
+    const h = r37BagianMelebihiKeseluruhan(konteksGudang({ simbol: 'ARCI', keuangan_tahunan: [ARCI_2023] }));
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('current_assets');
+    expect(h.temuan[0]?.ringkasan).not.toContain('total_liabilities');
+  });
+
+  it('bank tanpa kas dan aset lancar: hanya utang lawan liabilitas yang diperiksa, lolos', () => {
+    const h = r37BagianMelebihiKeseluruhan(konteksGudang({ simbol: 'BSIM', keuangan_tahunan: [BSIM_2023] }));
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0, hijau: 1 });
+  });
+
+  it('tahun buku tanpa satu pun pasangan yang bisa diadu → tidak lengkap, bukan merah', () => {
+    const kosong = keuangan({ tahun: 2020, aset: null, liabilitas: null, utang: null, kas: 5, aset_lancar: null });
+    const h = r37BagianMelebihiKeseluruhan(konteksGudang({ simbol: 'AA', keuangan_tahunan: [kosong] }));
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0, tidak_lengkap: 1 });
+  });
+
+  it('dilewati dengan alasan kalau tidak ada laporan keuangan tahunan', () => {
+    const h = r37BagianMelebihiKeseluruhan(konteksGudang({ simbol: 'AA' }));
+    expect(h.dijalankan).toBe(false);
+    expect(h.alasan_lewat).toBeTruthy();
+  });
+
+  it('sama besar bukan pelanggaran (bagian boleh sama dengan keseluruhannya)', () => {
+    const pas = keuangan({ tahun: 2021, aset: 100, liabilitas: 80, utang: 80, kas: 100, aset_lancar: 100 });
+    expect(r37BagianMelebihiKeseluruhan(konteksGudang({ keuangan_tahunan: [pas] })).hitungan.merah).toBe(0);
+  });
+});
+
+describe.runIf(MANIFEST_ADA)('R37 atas gudang audit (372 berkas manifest, sha diperiksa)', () => {
+  it('dari 363 tahun buku, hanya ABMM 2023, ARCI 2023, dan HITS 2025 yang ditolak', () => {
+    const gudang = muatGudangManifest();
+    const merah: string[] = [];
+    let diperiksa = 0;
+    for (const data of gudang.emiten.values()) {
+      const h = r37BagianMelebihiKeseluruhan(konteksEmiten(data));
+      diperiksa += h.hitungan.diperiksa;
+      for (const t of h.temuan) merah.push(t.temuan_id);
+    }
+    expect(diperiksa).toBe(363);
+    expect(merah.sort()).toEqual(['R37-ABMM-2023', 'R37-ARCI-2023', 'R37-HITS-2025']);
   });
 });

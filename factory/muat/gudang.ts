@@ -613,6 +613,10 @@ function serapKeuanganKe(data: DataEmiten, akar: Record<string, unknown>): void 
       aset: angka(b['total_assets']),
       laba_kotor: angka(b['gross_profit']),
       lembar,
+      utang: angka(b['total_debt']),
+      liabilitas: angka(b['total_liabilities']),
+      kas: angka(b['cash_and_equivalents']),
+      aset_lancar: angka(b['current_assets']),
     };
     data.keuangan_tahunan.push(baris);
   }

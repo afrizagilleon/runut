@@ -89,6 +89,10 @@ const KALIMAT_AWAM: Record<string, string> = {
   R36:
     'Kami menolak kartu kalau laporannya ternyata tentang saham perusahaan lain: judulnya menyebut ' +
     'perusahaan lain, dan persennya tidak mungkin dihitung dari saham emiten ini.',
+  R37:
+    'Kami menolak kartu kalau satu tahun buku laporan keuangan memuat bagian yang lebih besar dari ' +
+    'keseluruhannya — utang melebihi total liabilitas, atau kas melebihi aset lancar atau total aset — ' +
+    'karena sedikitnya satu angka di tahun buku itu salah satuan atau salah isi.',
 };
 
 /**

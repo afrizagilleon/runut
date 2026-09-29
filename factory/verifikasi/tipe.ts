@@ -254,6 +254,15 @@ export interface KeuanganTahunan {
   aset: number | null;
   laba_kotor: number | null;
   lembar: number | null;
+  /**
+   * Medan neraca untuk R37 (M4b): `total_debt`, `total_liabilities`,
+   * `cash_and_equivalents`, `current_assets`. Opsional supaya fixture lama tetap
+   * sah; tidak ada = tidak dibaca pemuat, `null` = medannya kosong di data.
+   */
+  utang?: number | null;
+  liabilitas?: number | null;
+  kas?: number | null;
+  aset_lancar?: number | null;
 }
 
 /** `financials.historical_eps[tahun].eps` — laba per lembar satu tahun buku. */

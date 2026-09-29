@@ -39,8 +39,8 @@ export const KEPARAHAN_BAWAAN: Keparahan = 'konflik';
  * Nomor lama tidak pernah dipakai ulang; `R17B` adalah pengganti R17 usulan
  * yang dibuang, jadi ia memakai nama sendiri. Kelompok keuangan dan peristiwa
  * korporasi (R20, R21, R23, R26, R27, R29, R31, R32, R34, dan R11b) lahir di
- * M2b dari putusan uji lawan yang sama. R36 lahir di M4b dari salah nyata
- * audit gudang M4a.
+ * M2b dari putusan uji lawan yang sama. R36 dan R37 lahir di M4b dari salah
+ * nyata audit gudang M4a.
  */
 export type KodeAturan =
   | 'R1'
@@ -78,7 +78,8 @@ export type KodeAturan =
   | 'R33'
   | 'R34'
   | 'R35'
-  | 'R36';
+  | 'R36'
+  | 'R37';
 
 export type JenisSumber = 'api' | 'berkas' | 'turunan';
 
@@ -218,6 +219,7 @@ export const SEMUA_KODE_ATURAN: readonly KodeAturan[] = [
   'R34',
   'R35',
   'R36',
+  'R37',
 ];
 
 export interface PilihanSoal {
