@@ -58,7 +58,7 @@ describe('teks kartu paket diperjelas (M2d-5 D-8)', () => {
 
   it('cases/*.json (kasus tayang) TIDAK diubah di sini — frasa yang masih ada di sana dicatat untuk milestone produk', () => {
     const ada = (f: string, berkas: string): boolean => readFileSync(`${AKAR}cases/${berkas}.json`, 'utf8').includes(f);
-    expect(ada('tidak bisa dibuktikan habis', 'ultj-2026-05-04')).toBe(true);
+    expect(ada('tidak bisa dibuktikan habis', 'ultj-2026-05-04')).toBe(false); // M3.13 D-2: kalimat diperjelas di kasus tayang
     expect(ada('Jarak antara penutupan terakhir sebelum tanggal ex', 'ultj-2026-05-04')).toBe(true);
     expect(ada('tidak ada di data', 'dada-2025-10-08')).toBe(true);
     expect(ada('tidak ada di data', 'ultj-2026-05-04')).toBe(true);
