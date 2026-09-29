@@ -388,7 +388,11 @@ export function r25KelengkapanHalaman(konteks: KonteksGudang): HasilAturan {
   const judul = 'Kelengkapan halaman laporan';
   const satuan = 'emiten';
   const berkas = konteks.data.berkas_laporan;
-  if (berkas.length === 0) {
+  const kosong = kosongMilik(konteks);
+  // M3.13 A-1.2: emiten yang SATU-SATUNYA respons laporannya kosong kini bisa
+  // dialamatkan (manifest), jadi ia diperiksa — justru di situ bukti negatif
+  // ("tidak punya laporan") paling menggoda.
+  if (berkas.length === 0 && kosong.length === 0) {
     return lewat(
       'R25',
       judul,
@@ -427,15 +431,18 @@ export function r25KelengkapanHalaman(konteks: KonteksGudang): HasilAturan {
     return hasil('R25', judul, temuan, hitung(satuan, { diperiksa: 1, merah: 1 }));
   }
 
-  const kosong = kosongMilik(konteks);
   temuan.push({
     temuan_id: `R25-parameter-${konteks.simbol}`,
     aturan: 'R25',
     keparahan: 'catatan',
     ringkasan:
-      `Halaman laporan ${konteks.simbol} tidak menggantung, tetapi parameter permintaannya tidak ` +
-      `tersimpan di gudang, jadi tidak bisa dibuktikan bahwa berkas-berkas ini benar-benar ` +
-      `menanyakan seluruh rentang untuk emiten ini. Kelengkapannya tidak diketahui.`,
+      berkas.length === 0
+        ? `Respons laporan ${konteks.simbol} kosong (${String(kosong.length)} berkas), jadi tidak ada ` +
+          `laporan yang terbaca. Halaman habis belum dibuktikan, jadi "tidak ada laporan" tidak boleh ` +
+          `disimpulkan. Kelengkapannya tidak diketahui.`
+        : `Halaman laporan ${konteks.simbol} tidak menggantung, tetapi parameter permintaannya tidak ` +
+          `tersimpan di gudang, jadi tidak bisa dibuktikan bahwa berkas-berkas ini benar-benar ` +
+          `menanyakan seluruh rentang untuk emiten ini. Kelengkapannya tidak diketahui.`,
     angka: [
       { label: 'berkas laporan', nilai: berkas.length, satuan: 'berkas' },
       {

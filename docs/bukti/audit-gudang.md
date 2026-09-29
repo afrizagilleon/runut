@@ -44,7 +44,7 @@ Sel = merah / diperiksa, dalam satuan aturan itu. "Emiten" = emiten merah / emit
 
 | aturan | jenis | satuan | suspensi | emiten | pembanding | emiten | gudang lama | emiten |
 |---|---|---|---:|---:|---:|---:|---:|---:|
-| R25 | penolak | emiten | 0 / 16 | 0 / 16 | 0 / 8 | 0 / 8 | 0 / 12 | 0 / 12 |
+| R25 | penolak | emiten | 0 / 28 | 0 / 28 | 0 / 14 | 0 / 14 | 0 / 12 | 0 / 12 |
 | R12 | penanda | laporan | 7 / 91 | 3 / 13 | 0 / 23 | 0 / 5 | 0 / 57 | 0 / 10 |
 | R22 | penanda | nama pemegang | 20 / 158 | 8 / 28 | 6 / 87 | 2 / 14 | 12 / 74 | 4 / 13 |
 | R20 | penanda | emiten | 10 / 27 | 10 / 27 | 5 / 14 | 5 / 14 | 5 / 11 | 5 / 11 |
@@ -88,13 +88,13 @@ Sel = merah / diperiksa, dalam satuan aturan itu. "Emiten" = emiten merah / emit
 
 Kami menolak bukti negatif kalau daftar laporannya belum terbukti habis.
 
-- kelompok suspensi: 0 dari 16 emiten bertentangan, 16 tidak cukup data; 16 temuan di 0 dari 16 emiten yang diperiksa.
-- kelompok pembanding: 0 dari 8 emiten bertentangan, 8 tidak cukup data; 8 temuan di 0 dari 8 emiten yang diperiksa.
+- kelompok suspensi: 0 dari 28 emiten bertentangan, 28 tidak cukup data; 28 temuan di 0 dari 28 emiten yang diperiksa.
+- kelompok pembanding: 0 dari 14 emiten bertentangan, 14 tidak cukup data; 14 temuan di 0 dari 14 emiten yang diperiksa.
 - uji ulang penguji independen: 0 dari 2 sampel dijawab "ya" (U01 ARCI: tidak; U02 ADHI: tidak).
 
 Contoh:
-- **AIMS** (suspensi) — Halaman laporan AIMS tidak menggantung, tetapi parameter permintaannya tidak tersimpan di gudang, jadi tidak bisa dibuktikan bahwa berkas-berkas ini benar-benar menanyakan seluruh rentang untuk emiten ini. Kelengkapannya tidak diketahui.
-- **ADHI** (pembanding) — Halaman laporan ADHI tidak menggantung, tetapi parameter permintaannya tidak tersimpan di gudang, jadi tidak bisa dibuktikan bahwa berkas-berkas ini benar-benar menanyakan seluruh rentang untuk emiten ini. Kelengkapannya tidak diketahui.
+- **AGAR** (suspensi) — Respons laporan AGAR kosong (1 berkas), jadi tidak ada laporan yang terbaca. Halaman habis belum dibuktikan, jadi "tidak ada laporan" tidak boleh disimpulkan. Kelengkapannya tidak diketahui.
+- **ABMM** (pembanding) — Respons laporan ABMM kosong (1 berkas), jadi tidak ada laporan yang terbaca. Halaman habis belum dibuktikan, jadi "tidak ada laporan" tidak boleh disimpulkan. Kelengkapannya tidak diketahui.
 
 ### R12 — Tanggal di nama berkas laporan (penanda)
 
@@ -379,11 +379,13 @@ Contoh:
 
 ## Temuan tentang aturannya sendiri
 
-### R25 menghitung respons kosong milik emiten lain (salah cakupan aturan)
+### R25 menghitung respons kosong milik emiten lain (salah cakupan aturan) — diperbaiki di M3.13
 
-Setiap temuan R25 menyebut "respons kosong yang tidak bisa dialamatkan ke emiten mana pun" untuk **seluruh gudang**, bukan untuk emiten yang diperiksa. Sekarang angka itu 21 berkas untuk setiap emiten, termasuk kasus tayang ULTJ; sebelum audit M4a angkanya 3. Akibatnya: menambah data emiten lain mengubah temuan emiten ini, dan kasus ULTJ baru bisa dibangun ulang byte-identik sesudah pembangunnya dikunci ke gudang beku (Amandemen A-1). Dua hal lagi yang tidak lagi benar untuk data M4a: nama berkas M4a memuat simbolnya (`ABMM-m4a-filings-p0.json`), dan parameter permintaannya tersimpan di buku kas dan di `docs/bukti/gudang-manifest.json` (`path_endpoint`), jadi kalimat "parameter permintaannya tidak tersimpan di gudang" tidak lagi berlaku untuk berkas yang diambil lewat `npm run sectors:ambil`.
+Sampai M3.13 setiap temuan R25 menyebut "respons kosong yang tidak bisa dialamatkan ke emiten mana pun" untuk **seluruh gudang**, bukan untuk emiten yang diperiksa (audit M4a: 21 berkas untuk setiap emiten, termasuk kasus tayang ULTJ). Sejak M3.13 (D-3 dan Amandemen A-1.2) R25 hanya menghitung respons kosong yang endpoint asalnya di `docs/bukti/gudang-manifest.json` (`path_endpoint`) menyebut simbol emiten itu; respons kosong yang asalnya tidak tercatat tidak dihitung untuk emiten mana pun. Jalur `build:case` dan `verifikasi:gudang` memakai aturan cakupan yang sama.
 
-**Usulan perbaikan (tidak diterapkan di M4a — akan mengubah kasus ULTJ):** R25 hanya menghitung respons kosong yang *bisa* milik emiten itu — yang path endpoint asalnya (dari manifest) menyebut simbol emiten itu, atau yang asalnya tidak diketahui dan diambil pada rentang yang sama — dan membaca parameter permintaan dari manifest bila ada, sehingga emiten dengan halaman terakhir `has_next: false` dan parameter tercatat bisa dinyatakan habis. Perubahan ini harus lewat kasus baru atau pembangunan ulang ULTJ yang disengaja, bukan diam-diam.
+Di gudang sekarang: 21 respons kosong; 18 di antaranya teralamatkan ke emitennya, di 18 emiten (ABMM 1, AGAR 1, AHAP 1, AKKU 1, ALTO 1, AMAG 1, APEX 1, AREA 1, ARGO 1, ASLC 1, ASPI 1, ASPR 1, ASSA 1, BBRM 1, BBSS 1, BEST 1, BNII 1, BSWD 1). Kasus tayang ULTJ: 0 (ketiga respons kosong gudang beku tidak tercatat asalnya).
+
+**Usulan perbaikan yang belum diterapkan:** membaca parameter permintaan dari manifest untuk menyatakan halaman laporan habis (`has_next: false` + parameter tercatat); R25 masih menjawab "tidak lengkap".
 
 ### Bug aturan yang dibuktikan uji ulang (D-5)
 

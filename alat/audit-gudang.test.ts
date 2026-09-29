@@ -192,6 +192,7 @@ describe('laporan', () => {
     expect(teks).toContain('Bukan sampel acak seluruh bursa');
     expect(teks).toContain('AADI–CASH');
     expect(teks).toContain('R25 menghitung respons kosong milik emiten lain');
-    expect(teks).toContain('Usulan perbaikan');
+    expect(teks).toContain('diperbaiki di M3.13');
+    expect(teks).toContain('Usulan perbaikan yang belum diterapkan');
   });
 });

@@ -15,6 +15,7 @@
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { asalKosongDariManifest } from './bangun-kasus.ts';
 import { angkaId } from './format.ts';
 import { keJson } from './kasus/json.ts';
 import { muatGudang } from './muat/gudang.ts';
@@ -324,18 +325,25 @@ export interface LaporanGudang {
   peristiwa: BarisPeristiwa[];
 }
 
-/** Susun seluruh laporan gudang. Fungsi murni atas isi gudang; tidak menulis apa pun. */
-export function susunLaporanGudang(folder?: string): LaporanGudang {
+/**
+ * Susun seluruh laporan gudang. Fungsi murni atas isi gudang; tidak menulis apa pun.
+ *
+ * `manifest` (M3.13 A-1.2): asal tiap respons kosong (`path_endpoint`), supaya
+ * R25 menghitung respons kosong per emiten — sama dengan jalur `build:case`.
+ * Tanpanya R25 menyebut 0 untuk semua emiten.
+ */
+export function susunLaporanGudang(folder?: string, manifest?: string): LaporanGudang {
   const gudang = folder === undefined ? muatGudang() : muatGudang(folder);
   const berkasKosong = gudang.berkas
     .filter((b) => b.jenis === 'paginasi-kosong')
     .map((b) => b.berkas);
+  const asalKosong = asalKosongDariManifest(berkasKosong, manifest);
 
   const agregat = new Map<KodeAturan, Agregat>();
   const emiten: HasilEmiten[] = [];
 
   for (const [kode, data] of gudang.emiten) {
-    const konteks = konteksEmiten(data, berkasKosong);
+    const konteks = { ...konteksEmiten(data, berkasKosong), asal_kosong: asalKosong };
     const hasil = verifikasiV2(konteks);
     const pemeriksaan: HasilAturanRingkas[] = hasil.pemeriksaan.map((p) => ({
       aturan: p.aturan,

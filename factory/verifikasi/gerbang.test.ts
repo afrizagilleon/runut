@@ -260,6 +260,24 @@ describe('R25 — kelengkapan halaman laporan', () => {
     expect(JSON.stringify(h)).not.toContain('MERK');
   });
 
+  it('M3.13 A-1.2: emiten yang respons laporannya hanya kosong (milik sendiri) diperiksa, bukan dilewati', () => {
+    const k: KonteksGudang = {
+      ...konteksGudang(dataEmiten(), ['AA-m4a-filings-p0.json', 'BB-m4a-filings-p0.json']),
+      asal_kosong: {
+        'AA-m4a-filings-p0.json': '/v2/filings/?symbol=AA&start=2025-01-01&end=2026-09-28&limit=30',
+        'BB-m4a-filings-p0.json': '/v2/filings/?symbol=BB&start=2025-01-01&end=2026-09-28&limit=30',
+      },
+    };
+    const h = r25KelengkapanHalaman(k);
+    expect(h.dijalankan).toBe(true);
+    expect(h.hitungan.tidak_lengkap).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('tidak ada laporan');
+    expect(h.temuan[0]?.angka.find((a) => a.label.startsWith('respons kosong'))?.nilai).toBe(1);
+    expect(h.temuan[0]?.rujukan).toEqual(['AA-m4a-filings-p0.json']);
+    // Tanpa asal yang menyebut emiten ini: tetap dilewati.
+    expect(r25KelengkapanHalaman(konteksGudang(dataEmiten(), ['MERK-filings.json'])).dijalankan).toBe(false);
+  });
+
   it('M3.13 D-3: simbol endpoint dibaca dari ?symbol= maupun dari segmen path, dengan atau tanpa .JK', () => {
     const data = dataEmiten({ berkas_laporan: [berkasLaporan({ berkas: 'aa-filings.json' })] });
     const k: KonteksGudang = {

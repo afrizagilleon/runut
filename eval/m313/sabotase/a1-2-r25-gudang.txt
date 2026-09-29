@@ -1,0 +1,9 @@
+SABOTASE A-1.2: jalur gudang tidak mengoper asal respons kosong (asal_kosong: {})
+ × factory/gudang.test.ts > M3.13 A-1.2 — R25 per emiten di jalur gudang > respons kosong milik AA (menurut manifest): R25 AA menghitung 1, BB 0
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 1 passed (2)
+SABOTASE A-1.2 (b): R25 kembali melewati emiten yang respons laporannya hanya kosong
+ × factory/verifikasi/gerbang.test.ts > R25 — kelengkapan halaman laporan > M3.13 A-1.2: emiten yang respons laporannya hanya kosong (milik sendiri) diperiksa, bukan dilewati
+ × factory/gudang.test.ts > M3.13 A-1.2 — R25 per emiten di jalur gudang > respons kosong milik AA (menurut manifest): R25 AA menghitung 1, BB 0
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  2 failed | 22 passed (24)

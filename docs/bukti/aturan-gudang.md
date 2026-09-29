@@ -38,7 +38,7 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 
 | aturan | satuan | diperiksa | hijau | merah[^merah] | tidak lengkap | dilewati |
 |---|---|---:|---:|---:|---:|---:|
-| R25 | emiten | 36 | 0 | 0 | 36 | 0 |
+| R25 | emiten | 54 | 0 | 0 | 54 | 0 |
 | R12 | laporan | 171 | 164 | 7 | 0 | 96 |
 | R22 | nama pemegang | 319 | 281 | 38 | 0 | 0 |
 | R20 | emiten | 52 | 32 | 20 | 0 | 0 |
@@ -82,7 +82,7 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 
 Kami menolak bukti negatif kalau daftar laporannya belum terbukti habis.
 
-Diperiksa 36 emiten: 0 tidak bermasalah, 0 bertentangan, 36 datanya tidak cukup untuk memutuskan. 0 emiten tidak masuk pemeriksaan ini. Aturannya jalan untuk 36 emiten dan dilewati untuk 281.
+Diperiksa 54 emiten: 0 tidak bermasalah, 0 bertentangan, 54 datanya tidak cukup untuk memutuskan. 0 emiten tidak masuk pemeriksaan ini. Aturannya jalan untuk 54 emiten dan dilewati untuk 263.
 
 Alasan dilewati:
 - Tidak ada berkas respons laporan yang bisa dialamatkan ke emiten ini.

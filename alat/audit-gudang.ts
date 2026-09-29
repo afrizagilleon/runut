@@ -182,6 +182,11 @@ export interface Audit {
   emiten_konflik: Record<Kelompok, Array<{ simbol: string; aturan: KodeAturan[] }>>;
   temuan_audit: Contoh[];
   paginasi_kosong: string[];
+  /**
+   * M3.13 A-1.2: respons kosong MILIK tiap emiten menurut R25 (endpoint asal di
+   * manifest menyebut simbolnya), seluruh gudang; hanya emiten dengan >= 1.
+   */
+  r25_kosong_milik: Array<{ simbol: string; jumlah: number }>;
 }
 
 export function kelompokDari(rencana: RencanaMentah): Map<string, Kelompok> {
@@ -278,6 +283,17 @@ export function susunAudit(
     emiten_konflik,
     temuan_audit,
     paginasi_kosong: [...gudang.berkas_paginasi_kosong],
+    r25_kosong_milik: gudang.emiten
+      .map((e) => ({
+        simbol: e.simbol,
+        jumlah:
+          e.pemeriksaan
+            .find((p) => p.aturan === 'R25')
+            ?.temuan.flatMap((t) => t.angka)
+            .find((a) => a.label.startsWith('respons kosong'))?.nilai ?? 0,
+      }))
+      .filter((x) => x.jumlah > 0)
+      .sort((a, b) => a.simbol.localeCompare(b.simbol)),
   };
 }
 
@@ -580,28 +596,32 @@ export function susunLaporan(
 
   b.push('## Temuan tentang aturannya sendiri');
   b.push('');
-  b.push('### R25 menghitung respons kosong milik emiten lain (salah cakupan aturan)');
+  b.push('### R25 menghitung respons kosong milik emiten lain (salah cakupan aturan) — diperbaiki di M3.13');
   b.push('');
-  b.push(
-    `Setiap temuan R25 menyebut "respons kosong yang tidak bisa dialamatkan ke emiten mana pun" ` +
-      `untuk **seluruh gudang**, bukan untuk emiten yang diperiksa. Sekarang angka itu ` +
-      `${angka(audit.paginasi_kosong.length)} berkas untuk setiap emiten, termasuk kasus tayang ULTJ; ` +
-      'sebelum audit M4a angkanya 3. Akibatnya: menambah data emiten lain mengubah temuan emiten ini, ' +
-      'dan kasus ULTJ baru bisa dibangun ulang byte-identik sesudah pembangunnya dikunci ke gudang ' +
-      'beku (Amandemen A-1). Dua hal lagi yang tidak lagi benar untuk data M4a: nama berkas M4a memuat ' +
-      'simbolnya (`ABMM-m4a-filings-p0.json`), dan parameter permintaannya tersimpan di buku kas dan di ' +
-      '`docs/bukti/gudang-manifest.json` (`path_endpoint`), jadi kalimat "parameter permintaannya tidak ' +
-      'tersimpan di gudang" tidak lagi berlaku untuk berkas yang diambil lewat `npm run sectors:ambil`.',
-  );
-  b.push('');
-  b.push(
-    '**Usulan perbaikan (tidak diterapkan di M4a — akan mengubah kasus ULTJ):** R25 hanya menghitung ' +
-      'respons kosong yang *bisa* milik emiten itu — yang path endpoint asalnya (dari manifest) menyebut ' +
-      'simbol emiten itu, atau yang asalnya tidak diketahui dan diambil pada rentang yang sama — dan ' +
-      'membaca parameter permintaan dari manifest bila ada, sehingga emiten dengan halaman terakhir ' +
-      '`has_next: false` dan parameter tercatat bisa dinyatakan habis. Perubahan ini harus lewat kasus ' +
-      'baru atau pembangunan ulang ULTJ yang disengaja, bukan diam-diam.',
-  );
+  {
+    const milik = audit.r25_kosong_milik;
+    const jumlahMilik = milik.reduce((j, x) => j + x.jumlah, 0);
+    b.push(
+      'Sampai M3.13 setiap temuan R25 menyebut "respons kosong yang tidak bisa dialamatkan ke emiten mana pun" ' +
+        'untuk **seluruh gudang**, bukan untuk emiten yang diperiksa (audit M4a: 21 berkas untuk setiap emiten, ' +
+        'termasuk kasus tayang ULTJ). Sejak M3.13 (D-3 dan Amandemen A-1.2) R25 hanya menghitung respons kosong ' +
+        'yang endpoint asalnya di `docs/bukti/gudang-manifest.json` (`path_endpoint`) menyebut simbol emiten itu; ' +
+        'respons kosong yang asalnya tidak tercatat tidak dihitung untuk emiten mana pun. Jalur `build:case` dan ' +
+        '`verifikasi:gudang` memakai aturan cakupan yang sama.',
+    );
+    b.push('');
+    b.push(
+      `Di gudang sekarang: ${angka(audit.paginasi_kosong.length)} respons kosong; ${angka(jumlahMilik)} di ` +
+        `antaranya teralamatkan ke emitennya, di ${angka(milik.length)} emiten` +
+        (milik.length === 0 ? '.' : ` (${milik.map((x) => `${x.simbol} ${angka(x.jumlah)}`).join(', ')}).`) +
+        ' Kasus tayang ULTJ: 0 (ketiga respons kosong gudang beku tidak tercatat asalnya).',
+    );
+    b.push('');
+    b.push(
+      '**Usulan perbaikan yang belum diterapkan:** membaca parameter permintaan dari manifest untuk menyatakan ' +
+        'halaman laporan habis (`has_next: false` + parameter tercatat); R25 masih menjawab "tidak lengkap".',
+    );
+  }
   b.push('');
 
   b.push('### Bug aturan yang dibuktikan uji ulang (D-5)');
