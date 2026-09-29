@@ -484,6 +484,23 @@ npm run peran:penguji && npm run peran:laporan      # bahan penguji eksternal, l
 Hasil dan keterbatasannya: `docs/bukti/lingkar-agen-peran.md`; keluaran mentah
 di `eval/keluaran-m2d3/`.
 
+**Gaya & makna (M2d-4).** Generasi berikutnya dari lingkar berperan
+(`GENERASI_M2D4`): pemeriksa menambah gerbang gaya (`gerbang-gaya.ts`: pilihan
+≤ 11 kata dan pesan ≤ 26 kata — maksimum soal manusia di `cases/`, satu klausa
+per pilihan, "gw/aku" bukan "gue"); penulis memakai bank gaya v2
+(`bank-gaya-v2.json`, ditulis baru dari statistik korpus berlisensi MIT);
+penebak ke-3 memakai GLM-5.3; kritikus dipanggil sebelum penebak dengan dua
+pertanyaan makna wajib. Ledger biaya lama diarsipkan, tidak dihapus.
+
+```bash
+npm run gaya:arsip                                   # sekali, sebelum panggilan berbayar pertama
+npm run gaya:susun -- tirt                           # berbayar; pagu milestone US$4,00 ditetapkan kode
+npm run gaya:penguji && npm run gaya:laporan         # bahan penguji eksternal, lalu docs/bukti/lingkar-agen-gaya.md
+```
+
+Hasil dan keterbatasannya: `docs/bukti/lingkar-agen-gaya.md`; keluaran mentah
+di `eval/keluaran-m2d4/`.
+
 ## Susunan
 
 | Folder | Isi |

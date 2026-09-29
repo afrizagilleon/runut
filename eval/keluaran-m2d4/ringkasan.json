@@ -1,0 +1,1227 @@
+{
+  "model_peran": {
+    "penulis": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "penebak": [
+      "deepseek-ai/DeepSeek-V4.1-Flash",
+      "deepseek-ai/DeepSeek-V4.1-Flash",
+      "zai-org/GLM-5.3"
+    ],
+    "pembaca-kartu": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "kritikus": "zai-org/GLM-5.3"
+  },
+  "pagu_milestone_usd": 4,
+  "per_simulasi": [
+    {
+      "paket": "tirt",
+      "tanggal_t": "2025-12-10",
+      "terbit": false,
+      "putaran": 15,
+      "berhenti": "omongan 2 gagal di 3 sudut (naik-2025-11-26-2025-12-09, kelipatan-2025-11-26-2025-12-09, hari-naik-beruntun); simulasi tidak terbit",
+      "sudut": [
+        {
+          "no": 1,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "susp-2025-12-10",
+              "hasil": "lolos",
+              "putaran": "1–2"
+            }
+          ]
+        },
+        {
+          "no": 2,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "naik-2025-11-26-2025-12-09",
+              "hasil": "dibuang",
+              "putaran": "1–5"
+            },
+            {
+              "ke": 2,
+              "fact_id": "kelipatan-2025-11-26-2025-12-09",
+              "hasil": "dibuang",
+              "putaran": "6–10"
+            },
+            {
+              "ke": 3,
+              "fact_id": "hari-naik-beruntun",
+              "hasil": "dibuang",
+              "putaran": "11–15"
+            }
+          ]
+        },
+        {
+          "no": 3,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "susp-2025-01-21",
+              "hasil": "lolos",
+              "putaran": "1–1"
+            }
+          ]
+        }
+      ],
+      "versi": 18,
+      "status": {
+        "ditolak-tebak": 5,
+        "tidak-ada": 1,
+        "lolos": 2,
+        "ditolak-pemeriksa": 8,
+        "kritikus-tidak-menjawab": 2
+      },
+      "kode_pemeriksa": {
+        "TAK_TERBACA": 1,
+        "ANGKA_TANPA_RUJUKAN": 7,
+        "G-angka-cukup": 1,
+        "OPSI_PANJANG_TIMPANG": 3,
+        "KUNCI_SERAGAM": 5
+      },
+      "keberatan_kritikus": [
+        {
+          "jenis": "tidak-menjawab",
+          "bagian": "-",
+          "alasan": "kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali",
+          "putaran": 10,
+          "no": 2
+        },
+        {
+          "jenis": "tidak-menjawab",
+          "bagian": "-",
+          "alasan": "kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali",
+          "putaran": 12,
+          "no": 2
+        }
+      ],
+      "jenis_keberatan": {
+        "tidak-menjawab": 2
+      },
+      "cek_makna": {
+        "bagian_tak_tercek": 0,
+        "pilihan_lain_benar": 0
+      },
+      "kritikus_dipanggil": 9,
+      "kritikus_terpotong": 3,
+      "penulis_terpotong": 14,
+      "penulis_cadangan": 14,
+      "tebak_dalam_per_model": {
+        "deepseek-ai/DeepSeek-V4.1-Flash": {
+          "tebak": 14,
+          "benar": 10
+        },
+        "zai-org/GLM-5.3": {
+          "tebak": 7,
+          "benar": 4
+        }
+      },
+      "panggilan_ledger": 77,
+      "biaya_ledger": 1.1810728840000002,
+      "biaya_peran": {
+        "penulis": 0.24173444400000002,
+        "pembaca-kartu": 0.0029247120000000003,
+        "penebak": 0.161087728,
+        "kritikus": 0.7753259999999998,
+        "lain": 0,
+        "panggilan": {
+          "penulis": 31,
+          "pembaca-kartu": 9,
+          "kritikus": 13,
+          "penebak": 24
+        },
+        "penebak_glm": 0.14482599999999998,
+        "penebak_deepseek": 0.016261728
+      },
+      "biaya_jejak": 1.10060488,
+      "durasi_ms": 7771737
+    },
+    {
+      "paket": "ultj",
+      "tanggal_t": "2026-05-04",
+      "terbit": true,
+      "putaran": 9,
+      "berhenti": null,
+      "sudut": [
+        {
+          "no": 1,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "tahun-berdividen",
+              "hasil": "lolos",
+              "putaran": "1–1"
+            }
+          ]
+        },
+        {
+          "no": 2,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "fil-jan-orang-dalam-lain",
+              "hasil": "lolos",
+              "putaran": "1–3"
+            }
+          ]
+        },
+        {
+          "no": 3,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "turun-2026-05-04",
+              "hasil": "dibuang",
+              "putaran": "1–5"
+            },
+            {
+              "ke": 2,
+              "fact_id": "laporan-jan-2026",
+              "hasil": "lolos",
+              "putaran": "6–9"
+            }
+          ]
+        }
+      ],
+      "versi": 13,
+      "status": {
+        "lolos": 3,
+        "ditolak-pemeriksa": 4,
+        "ditolak-tebak": 4,
+        "ditolak-kritikus": 1,
+        "kritikus-tidak-menjawab": 1
+      },
+      "kode_pemeriksa": {
+        "KATA_PENILAIAN": 1,
+        "G-panjang": 1,
+        "OPSI_PANJANG_TIMPANG": 2,
+        "AJAKAN_TRANSAKSI": 1
+      },
+      "keberatan_kritikus": [
+        {
+          "jenis": "makna",
+          "bagian": "kunci",
+          "alasan": "Bagian klaim teman yang tidak bisa dicek dari kartu: \"dia tau sesuatu (motif orang dalam membeli) — kartu hanya memuat transaksi dan jumlah lembar, tidak ada yang menunjukka…\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan.",
+          "putaran": 2,
+          "no": 2
+        },
+        {
+          "jenis": "kunci",
+          "bagian": "pilihan",
+          "alasan": "Pilihan c juga benar menurut kartu (Kartu 3 dan 4 membenarkan persis isi pilihan c — porsi naik dari 1,21 persen ke 1,37 persen — sehingga ada dua pilihan 'Betul,' yang sama-sama didukung kartu.); hanya satu pilihan yang boleh benar.",
+          "putaran": 2,
+          "no": 2
+        },
+        {
+          "jenis": "ambigu",
+          "bagian": "pilihan",
+          "alasan": "Pilihan c juga benar menurut kartu 3 dan 4, jadi pemain yang memilih c akan dianggap salah padahal alasannya cocok dengan dokumen.",
+          "putaran": 2,
+          "no": 2
+        },
+        {
+          "jenis": "kunci",
+          "bagian": "kunci",
+          "alasan": "Pilihan kunci 'Betul,' tidak menyatakan bahwa bagian 'dia tau sesuatu' tidak bisa dipastikan dari kartu, padahal penjelasan sendiri mengakui alasan pembelian tidak terbaca di laporan.",
+          "putaran": 2,
+          "no": 2
+        },
+        {
+          "jenis": "tidak-menjawab",
+          "bagian": "-",
+          "alasan": "kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali",
+          "putaran": 7,
+          "no": 3
+        }
+      ],
+      "jenis_keberatan": {
+        "makna": 1,
+        "kunci": 2,
+        "ambigu": 1,
+        "tidak-menjawab": 1
+      },
+      "cek_makna": {
+        "bagian_tak_tercek": 1,
+        "pilihan_lain_benar": 1
+      },
+      "kritikus_dipanggil": 9,
+      "kritikus_terpotong": 3,
+      "penulis_terpotong": 4,
+      "penulis_cadangan": 4,
+      "tebak_dalam_per_model": {
+        "deepseek-ai/DeepSeek-V4.1-Flash": {
+          "tebak": 14,
+          "benar": 7
+        },
+        "zai-org/GLM-5.3": {
+          "tebak": 7,
+          "benar": 4
+        }
+      },
+      "panggilan_ledger": 59,
+      "biaya_ledger": 1.031631644,
+      "biaya_peran": {
+        "penulis": 0.119664468,
+        "pembaca-kartu": 0.004707136,
+        "penebak": 0.07909204000000002,
+        "kritikus": 0.828168,
+        "lain": 0,
+        "panggilan": {
+          "penulis": 16,
+          "pembaca-kartu": 9,
+          "kritikus": 13,
+          "penebak": 21
+        },
+        "penebak_glm": 0.064198,
+        "penebak_deepseek": 0.014894039999999999
+      },
+      "biaya_jejak": 0.95159364,
+      "durasi_ms": 5611622
+    },
+    {
+      "paket": "dada",
+      "tanggal_t": "2025-10-08",
+      "terbit": false,
+      "putaran": 11,
+      "berhenti": "pagu tercapai: Pagu milestone tercapai: biaya milestone (tag m2d4/*) US$3.962874 + perkiraan maksimum US$0.079726 untuk zai-org/GLM-5.3 > pagu milestone US$4.00. Panggilan tidak dikirim.",
+      "sudut": [
+        {
+          "no": 1,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "kelipatan-2025-08-01-2025-10-08",
+              "hasil": "lolos",
+              "putaran": "1–3"
+            }
+          ]
+        },
+        {
+          "no": 2,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "jumlah-jual-terverifikasi",
+              "hasil": "dibuang",
+              "putaran": "1–5"
+            },
+            {
+              "ke": 2,
+              "fact_id": "laporan-jual-terverifikasi",
+              "hasil": "lolos",
+              "putaran": "6–7"
+            }
+          ]
+        },
+        {
+          "no": 3,
+          "riwayat": [
+            {
+              "ke": 1,
+              "fact_id": "susp-2025-06-30",
+              "hasil": "dibuang",
+              "putaran": "1–5"
+            },
+            {
+              "ke": 2,
+              "fact_id": "andai-10-lot-dividen",
+              "hasil": "dibuang",
+              "putaran": "6–10"
+            },
+            {
+              "ke": 3,
+              "fact_id": "harga-2025-10-08",
+              "hasil": "berjalan",
+              "putaran": "11–"
+            }
+          ]
+        }
+      ],
+      "versi": 20,
+      "status": {
+        "ditolak-kritikus": 3,
+        "ditolak-pemeriksa": 5,
+        "ditolak-tebak": 8,
+        "lolos": 2,
+        "kritikus-tidak-menjawab": 2
+      },
+      "kode_pemeriksa": {
+        "KUNCI_TAK_TERBUKTI_KARTU": 1,
+        "ANGKA_TANPA_RUJUKAN": 1,
+        "G-angka-cukup": 2,
+        "ANDAIAN_DI_OMONGAN_BETUL": 1,
+        "ANGKA_TAK_COCOK": 1
+      },
+      "keberatan_kritikus": [
+        {
+          "jenis": "makna",
+          "bagian": "penjelasan",
+          "alasan": "Penjelasan menyatakan hasil patokan 7 Oktober 'beda' padahal tidak ada kartu tentang penutupan 7 Oktober, sehingga klaim itu tidak bisa dicek dari dokumen.",
+          "putaran": 1,
+          "no": 1
+        },
+        {
+          "jenis": "ambigu",
+          "bagian": "pilihan",
+          "alasan": "Pilihan a dan c terbaca hampir sama karena sama-sama menegaskan penghentian cuma sehari, sehingga pemain bisa menyingkirkan keduanya sekaligus lalu memilih b sebagai opsi paling hati-hati tanpa membaca kartu.",
+          "putaran": 4,
+          "no": 3
+        },
+        {
+          "jenis": "bahasa",
+          "bagian": "kartu",
+          "alasan": "Kartu 4 memuat frasa 'yang lolos seluruh pemeriksaan', istilah sistem yang bukan bagian dokumen resmi dan bisa membuat pemain bertanya apakah ada laporan yang tidak ikut dihitung.",
+          "putaran": 5,
+          "no": 2
+        },
+        {
+          "jenis": "tidak-menjawab",
+          "bagian": "-",
+          "alasan": "kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali",
+          "putaran": 9,
+          "no": 3
+        },
+        {
+          "jenis": "tidak-menjawab",
+          "bagian": "-",
+          "alasan": "kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali",
+          "putaran": 10,
+          "no": 3
+        }
+      ],
+      "jenis_keberatan": {
+        "makna": 1,
+        "ambigu": 1,
+        "bahasa": 1,
+        "tidak-menjawab": 2
+      },
+      "cek_makna": {
+        "bagian_tak_tercek": 3,
+        "pilihan_lain_benar": 0
+      },
+      "kritikus_dipanggil": 16,
+      "kritikus_terpotong": 3,
+      "penulis_terpotong": 7,
+      "penulis_cadangan": 8,
+      "tebak_dalam_per_model": {
+        "deepseek-ai/DeepSeek-V4.1-Flash": {
+          "tebak": 20,
+          "benar": 11
+        },
+        "zai-org/GLM-5.3": {
+          "tebak": 10,
+          "benar": 8
+        }
+      },
+      "panggilan_ledger": 93,
+      "biaya_ledger": 1.2926215400000003,
+      "biaya_peran": {
+        "penulis": 0.22764616000000001,
+        "pembaca-kartu": 0.003919804,
+        "penebak": 0.13299757599999998,
+        "kritikus": 0.928058,
+        "lain": 0,
+        "panggilan": {
+          "penulis": 28,
+          "pembaca-kartu": 16,
+          "kritikus": 18,
+          "penebak": 31
+        },
+        "penebak_glm": 0.10229300000000001,
+        "penebak_deepseek": 0.030704576000000004
+      },
+      "biaya_jejak": 1.27641234,
+      "durasi_ms": 7324030
+    }
+  ],
+  "bentuk": {
+    "batas": {
+      "pilihan": 11,
+      "pesan": 26
+    },
+    "m2d4": {
+      "omongan": 7,
+      "pilihan_rata": 7.5,
+      "pilihan_maks": 9,
+      "pilihan_lewat_batas": 0,
+      "pesan_rata": 16.428571428571427,
+      "pesan_maks": 20,
+      "pilihan_berekor": 0,
+      "pesan_gue": 0
+    },
+    "m2d3": {
+      "omongan": 8,
+      "pilihan_rata": 10.25,
+      "pilihan_maks": 14,
+      "pilihan_lewat_batas": 8,
+      "pesan_rata": 24.875,
+      "pesan_maks": 30,
+      "pilihan_berekor": 10,
+      "pesan_gue": 8
+    },
+    "manusia": {
+      "omongan": 6,
+      "pilihan_rata": 8.541666666666666,
+      "pilihan_maks": 11,
+      "pilihan_lewat_batas": 0,
+      "pesan_rata": 19,
+      "pesan_maks": 26,
+      "pilihan_berekor": 0,
+      "pesan_gue": 3
+    }
+  },
+  "luar": [
+    {
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "a",
+      "tebak_dalam": [
+        {
+          "pilihan": "b",
+          "yakin": 65
+        },
+        {
+          "pilihan": "b",
+          "yakin": 70
+        },
+        {
+          "pilihan": "b",
+          "yakin": 60
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "yakin": 50
+          },
+          {
+            "pilihan": "a",
+            "yakin": 50
+          },
+          {
+            "pilihan": "b",
+            "yakin": 50
+          }
+        ],
+        "benar": 1,
+        "yakinBenar": 50,
+        "lolos": false
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": "Yang disetop hari ini pasti gara-gara naiknya udah kelewat batas"
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": "Yang disetop hari ini — pesannya tidak menyebut tanggal, jadi aku menebak 'hari ini' itu 10 Desember 2025."
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": "Yang disetop hari ini pasti gara-gara naiknya udah kelewat batas"
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          1
+        ]
+      }
+    },
+    {
+      "paket": "tirt",
+      "no": 3,
+      "kunci": "a",
+      "tebak_dalam": [
+        {
+          "pilihan": "b",
+          "yakin": 65
+        },
+        {
+          "pilihan": "b",
+          "yakin": 78
+        },
+        {
+          "pilihan": "b",
+          "yakin": 60
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "yakin": 55
+          },
+          {
+            "pilihan": "a",
+            "yakin": 40
+          },
+          {
+            "pilihan": "b",
+            "yakin": 55
+          }
+        ],
+        "benar": 1,
+        "yakinBenar": 40,
+        "lolos": false
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          1
+        ]
+      }
+    },
+    {
+      "paket": "ultj",
+      "no": 1,
+      "kunci": "c",
+      "tebak_dalam": [
+        {
+          "pilihan": "b",
+          "yakin": 65
+        },
+        {
+          "pilihan": "b",
+          "yakin": 58
+        },
+        {
+          "pilihan": "b",
+          "yakin": 60
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "yakin": 45
+          },
+          {
+            "pilihan": "b",
+            "yakin": 55
+          },
+          {
+            "pilihan": "b",
+            "yakin": 50
+          }
+        ],
+        "benar": 0,
+        "yakinBenar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "c",
+            "kartu": [
+              1,
+              2
+            ],
+            "bingung": "Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi."
+          },
+          {
+            "pilihan": "c",
+            "kartu": [
+              1,
+              2
+            ],
+            "bingung": "Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi."
+          },
+          {
+            "pilihan": "c",
+            "kartu": [
+              1
+            ],
+            "bingung": "Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi."
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "paket": "ultj",
+      "no": 2,
+      "kunci": "a",
+      "tebak_dalam": [
+        {
+          "pilihan": "b",
+          "yakin": 60
+        },
+        {
+          "pilihan": "b",
+          "yakin": 65
+        },
+        {
+          "pilihan": "b",
+          "yakin": 55
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "yakin": 45
+          },
+          {
+            "pilihan": "b",
+            "yakin": 40
+          },
+          {
+            "pilihan": "b",
+            "yakin": 40
+          }
+        ],
+        "benar": 0,
+        "yakinBenar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "kartu": [
+              1,
+              2
+            ],
+            "bingung": "Orang dalam lain menambah 16.069.900 lembar lewat 6 laporan yang terbit 6 Januari 2026–22 Januari 2026."
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1,
+              2
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1,
+              2
+            ],
+            "bingung": "Orang dalam lain itu beli terus sepanjang Januari"
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "paket": "ultj",
+      "no": 3,
+      "kunci": "a",
+      "tebak_dalam": [
+        {
+          "pilihan": "b",
+          "yakin": 70
+        },
+        {
+          "pilihan": "b",
+          "yakin": 68
+        },
+        {
+          "pilihan": "b",
+          "yakin": 65
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "yakin": 55
+          },
+          {
+            "pilihan": "b",
+            "yakin": 45
+          },
+          {
+            "pilihan": "b",
+            "yakin": 55
+          }
+        ],
+        "benar": 0,
+        "yakinBenar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              1
+            ],
+            "bingung": ""
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          1
+        ]
+      }
+    },
+    {
+      "paket": "dada",
+      "no": 1,
+      "kunci": "a",
+      "tebak_dalam": [
+        {
+          "pilihan": "c",
+          "yakin": 65
+        },
+        {
+          "pilihan": "c",
+          "yakin": 65
+        },
+        {
+          "pilihan": "c",
+          "yakin": 70
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "c",
+            "yakin": 60
+          },
+          {
+            "pilihan": "c",
+            "yakin": 35
+          },
+          {
+            "pilihan": "c",
+            "yakin": 55
+          }
+        ],
+        "benar": 0,
+        "yakinBenar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "a",
+            "kartu": [
+              4
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              4
+            ],
+            "bingung": ""
+          },
+          {
+            "pilihan": "a",
+            "kartu": [
+              4
+            ],
+            "bingung": ""
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          4
+        ]
+      }
+    },
+    {
+      "paket": "dada",
+      "no": 2,
+      "kunci": "b",
+      "tebak_dalam": [
+        {
+          "pilihan": "d",
+          "yakin": 60
+        },
+        {
+          "pilihan": "d",
+          "yakin": 65
+        },
+        {
+          "pilihan": "c",
+          "yakin": 45
+        }
+      ],
+      "tebak_luar": {
+        "jawaban": [
+          {
+            "pilihan": "d",
+            "yakin": 45
+          },
+          {
+            "pilihan": "d",
+            "yakin": 40
+          },
+          {
+            "pilihan": "d",
+            "yakin": 40
+          }
+        ],
+        "benar": 0,
+        "yakinBenar": null,
+        "lolos": true
+      },
+      "kartu_luar": {
+        "jawaban": [
+          {
+            "pilihan": "b",
+            "kartu": [
+              2,
+              3,
+              4
+            ],
+            "bingung": "Laporan penjualan pemilik terbesar yang lolos seluruh pemeriksaan: 3 laporan."
+          },
+          {
+            "pilihan": "b",
+            "kartu": [
+              2,
+              3,
+              4
+            ],
+            "bingung": "Laporan penjualan pemilik terbesar yang lolos seluruh pemeriksaan: 3 laporan."
+          },
+          {
+            "pilihan": "b",
+            "kartu": [
+              2,
+              3,
+              4
+            ],
+            "bingung": "Laporan penjualan pemilik terbesar yang lolos seluruh pemeriksaan: 3 laporan."
+          }
+        ],
+        "benar": 3,
+        "menunjuk": 3,
+        "lolos": true,
+        "penentu": [
+          1,
+          4
+        ]
+      }
+    }
+  ],
+  "setuju": {
+    "tebak_lolos_dalam_lolos_luar": 5,
+    "tebak_lolos_dalam_gagal_luar": 2,
+    "kartu_lolos_luar": 7,
+    "kartu_ada_bingung": 4
+  },
+  "alami": [
+    {
+      "penilai": "alami-p1",
+      "paket": "tirt",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesan grupnya wajar, tetapi penjelasannya agak kaku dan mengulang pola (\"cocok dengan dokumennya\", \"jadi tidak bisa dipindah ke hari ini\"), dan pasangan pilihan seperti \"Keliru, Januari dihentikan karena kenaikan harga kumulatif\" terasa seperti templat."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "tirt",
+      "sumber": "agen-m2d3",
+      "skor": 4,
+      "alasan": "Pesan bergaya gue-lo dan penjelasan santainya terdengar hidup (\"angka yang diteriakkan temanmu\"), tetapi ada kalimat yang strukturnya patah, misalnya \"Yang bikin orang salah kalau angka itu disangka datang dari...\" dan \"bursa menulis ragu soal kelanjutan usaha\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "ultj",
+      "sumber": "agen-m2d4",
+      "skor": 3,
+      "alasan": "Frasa \"orang dalam lain\" tidak lazim dalam obrolan, dan ada beberapa frasa janggal atau berulang (\"muncul 2 laporan\", \"laporannya cuma dua laporan\", \"dia nambahnya cuma lewat 2 laporan\", \"Yang tidak terbaca di situ:\")."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya alami (\"Jangan kegeeran dulu\" agak kurang pas maknanya), tetapi penjelasannya bernada esai dan terasa terjemahan: rujukan \"kartu kedua\", tanda pisah, dan kalimat seperti \"bagian yang terdengar paling meyakinkan justru yang paling jarang dicek\"."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "ultj",
+      "sumber": "agen-m2d3",
+      "skor": 3,
+      "alasan": "Pesannya wajar, tetapi penjelasannya bocor istilah mesin (\"sudah dirapikan jadi 8 laporan\", \"sudah dirapikan jadi Rp145\"), dan beberapa frasa tidak lazim (\"lebih dangkal dari dividen\", \"turun persis sama banyak dengan\")."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "dada",
+      "sumber": "agen-m2d3",
+      "skor": 3,
+      "alasan": "Istilah \"lolos pemeriksaan\" dan \"laporan keuangan auditan tahunan\" terasa janggal dalam obrolan grup, dan penjelasan seperti \"penjualan yang lolos seluruh pemeriksaan tercatat 3 laporan\" terdengar seperti keluaran sistem."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "dada",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesannya singkat dan meyakinkan sebagai obrolan, penjelasannya jelas dan runtut (\"Yang bikin ragu biasanya tanggal pengumumannya\"); hanya \"Teman itu benar\" dan \"Angka yang disebut teman itu\" terasa sedikit kaku."
+    },
+    {
+      "penilai": "alami-p1",
+      "paket": "dada",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya sangat alami (\"buat bayar parkir motor aja kurang\"), tetapi penjelasannya bergaya buku teks dengan titik koma dan rujukan \"kartu\", ditambah frasa ganjil \"menganggap harga yang naik sebagai semacam pengumuman\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "tirt",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesan terdengar seperti obrolan sungguhan dan penjelasannya runtut, hanya agak kaku seperti laporan di beberapa frasa, misalnya \"klaim teman soal hari ini cocok dengan dokumennya\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "tirt",
+      "sumber": "agen-m2d3",
+      "skor": 3,
+      "alasan": "Gaya gaul \"gue\" di pesan terasa hidup, tetapi penjelasannya punya kalimat yang tata bahasanya janggal, misalnya \"Yang bikin orang salah kalau angka itu disangka...\" dan \"Yang bikin naiknya disebut beruntun ada di ringkasan\", serta \"dicap hoaks\" yang diulang."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "ultj",
+      "sumber": "agen-m2d4",
+      "skor": 3,
+      "alasan": "Pesannya wajar, tetapi penjelasannya berpola kaku (\"Kalau ... dibuka\", \"Yang tidak terbaca di situ\") dan ada frasa tidak lazim seperti \"pemilik terbesar muncul 2 laporan\" dan \"laporannya cuma dua laporan\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesan alami (\"Jangan kegeeran dulu\") dan penjelasannya lancar seperti teman yang menerangkan, hanya sesekali agak formal atau kaku, misalnya \"Yang tidak dikatakan kartu mana pun\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "ultj",
+      "sumber": "agen-m2d3",
+      "skor": 3,
+      "alasan": "Bisa dipahami, tetapi ada frasa yang terasa bocoran mesin, yaitu \"sudah dirapikan jadi 8 laporan\" dan \"Selisih ... sudah dirapikan jadi Rp145\", juga \"jatuhnya lebih dangkal\", \"laporan itu terbitnya cuma dari\", dan \"turun persis sama banyak dengan\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "dada",
+      "sumber": "agen-m2d3",
+      "skor": 3,
+      "alasan": "Pesan pertama terasa dibuat-buat karena ada jargon \"lolos pemeriksaan\", dan penjelasannya punya susunan janggal seperti \"penjualan yang lolos seluruh pemeriksaan tercatat 3 laporan\"."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "dada",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Ringkas dan wajar, pesan dan penjelasannya terdengar seperti percakapan sungguhan; hanya \"jualan di 3 laporan\" yang sedikit tidak lazim."
+    },
+    {
+      "penilai": "alami-p2",
+      "paket": "dada",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya sangat hidup (\"buat bayar parkir motor aja kurang\") dan penjelasannya enak dibaca, meski ada frasa agak aneh seperti \"menganggap harga yang naik sebagai semacam pengumuman\", serta \"ia\" yang formal bercampur dengan nada santai."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "tirt",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesan grup dan pilihannya wajar, penjelasannya runtut dan mudah diikuti, hanya sedikit kaku di beberapa bagian (misalnya 'bukan sebab penghentiannya', 'klaim teman soal hari ini')."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "tirt",
+      "sumber": "agen-m2d3",
+      "skor": 3,
+      "alasan": "Pesan bergaya gaul terasa hidup, tetapi penjelasannya berisi klausa janggal seperti 'Yang bikin orang salah kalau angka itu disangka datang dari...', 'Yang bikin naiknya disebut beruntun ada di ringkasan...', dan 'bursa menulis ragu soal kelanjutan usaha'."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "ultj",
+      "sumber": "agen-m2d4",
+      "skor": 3,
+      "alasan": "Bisa dipahami, tetapi istilah templat 'orang dalam lain' terasa kaku di dalam obrolan, dan ada frasa tidak lazim seperti 'pemilik terbesar muncul 2 laporan', 'laporannya cuma dua laporan', serta 'Yang tidak terbaca di situ' yang malah diikuti isi yang terbaca."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "ultj",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Penjelasannya lancar dan terdengar seperti teman yang menerangkan dengan cermat ('Setengah omongan Fajar cocok...'), hanya 'Jangan kegeeran dulu' kurang pas maknanya dan rujukan 'kartu pertama/ketiga' sedikit kaku."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "ultj",
+      "sumber": "agen-m2d3",
+      "skor": 2,
+      "alasan": "Ada frasa yang jelas tidak alami dan terasa bocoran mesin, yaitu 'sudah dirapikan jadi 8 laporan', 'Selisih ... sudah dirapikan jadi Rp145', 'jatuhnya lebih dangkal dari dividen', dan 'turun persis sama banyak dengan'."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "dada",
+      "sumber": "agen-m2d3",
+      "skor": 3,
+      "alasan": "Kerangkanya wajar, tetapi 'laporannya nggak lolos pemeriksaan' terasa seperti jargon sistem yang aneh di obrolan grup, dan penjelasan seperti 'menyebut tanggal pencabutannya nggak ada di data' bernada teknis/meta."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "dada",
+      "sumber": "agen-m2d4",
+      "skor": 4,
+      "alasan": "Pesan dan penjelasannya singkat, lugas, dan wajar ('Teman itu benar.', membedakan tanggal diumumkan dengan tanggal transaksi), hanya sedikit datar dan formal untuk suasana teman."
+    },
+    {
+      "penilai": "alami-p3",
+      "paket": "dada",
+      "sumber": "manusia",
+      "skor": 4,
+      "alasan": "Pesannya sangat hidup ('buat bayar parkir motor aja kurang') dan penjelasannya fasih, tetapi ada frasa agak janggal seperti 'menganggap harga yang naik sebagai semacam pengumuman' dan rujukan 'kartu kedua' yang kaku."
+    }
+  ],
+  "alami_rata": {
+    "agen_m2d4": {
+      "rata": 3.6666666666666665,
+      "n": 9
+    },
+    "agen_m2d3": {
+      "rata": 3,
+      "n": 9
+    },
+    "manusia": {
+      "rata": 4,
+      "n": 6
+    }
+  },
+  "pembanding_m2d3": {
+    "terbit": "2/3",
+    "tebak_luar": "3/8",
+    "tebak_benar_rata": 1.875,
+    "kartu_luar": "8/8",
+    "kartu_ada_bingung": 5,
+    "alami_agen": 3.3333333333333335,
+    "alami_manusia": 4,
+    "biaya_usd": 1.4776412639999998,
+    "m2d1": {
+      "tebak_luar_deepseek": "2/9",
+      "tebak_benar_rata": 2.111111111111111,
+      "alami": 3,
+      "manusia": 5
+    },
+    "m2d2": {
+      "lolos_penuh": "0/3",
+      "tebak_luar": "2/3",
+      "tebak_benar_rata": 1,
+      "alami_agen": 3.8333333333333335,
+      "alami_manusia": 4.333333333333333
+    }
+  },
+  "biaya": {
+    "milestone_ledger_usd": 3.9628744640000004,
+    "per_peran": {
+      "penulis": 0.6597224759999999,
+      "pembaca-kartu": 0.012805856,
+      "penebak": 0.45730064,
+      "kritikus": 2.7435029999999982,
+      "lain": 0.089542492,
+      "panggilan": {
+        "penulis": 84,
+        "pembaca-kartu": 37,
+        "kritikus": 49,
+        "penebak": 83,
+        "lain": 9
+      },
+      "penebak_glm": 0.38775200000000004,
+      "penebak_deepseek": 0.06954864000000001
+    },
+    "ledger_kini_usd": 3.9628744640000004,
+    "ledger_arsip_usd": 3.752143841999999,
+    "ledger_arsip_entri": 624,
+    "panggilan": 262,
+    "dipotong": "2026-09-29T00:21:43.129Z",
+    "di_luar_jalan": {
+      "jalan TIRT dibuang (ke-1 dan ke-2)": {
+        "panggilan": 24,
+        "usd": 0.3680059040000001
+      },
+      "probe GLM penebak": {
+        "panggilan": 7,
+        "usd": 0.023416
+      },
+      "KOREKSI jalan1": {
+        "panggilan": 1,
+        "usd": 0.049079
+      },
+      "KOREKSI jalan2": {
+        "panggilan": 1,
+        "usd": 0.017047492
+      }
+    }
+  }
+}
