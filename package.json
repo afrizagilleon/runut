@@ -45,6 +45,8 @@
     "tirt:periksa": "node --experimental-strip-types factory/llm/tirt-periksa.ts",
     "tirt:probe": "node --experimental-strip-types factory/llm/tirt-probe.ts",
     "tirt:susun": "node --experimental-strip-types factory/llm/tirt-susun.ts",
+    "tirt:penguji": "node --experimental-strip-types factory/llm/tirt-penguji.ts",
+    "tirt:laporan": "node --experimental-strip-types factory/llm/tirt-laporan.ts",
     "sectors:ambil": "node --experimental-strip-types alat/sectors.ts",
     "sectors:manifest": "node --experimental-strip-types alat/manifest.ts",
     "audit:gudang": "node --experimental-strip-types alat/audit-gudang.ts",
