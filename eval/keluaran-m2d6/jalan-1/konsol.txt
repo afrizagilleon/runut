@@ -1,0 +1,155 @@
+
+> runut@0.1.0 penalar:susun
+> node --experimental-strip-types factory/llm/penalar-susun.ts --jalan 1
+
+Pagu kumulatif US$8.00 (ledger US$1.371506); pagu milestone US$3.50 (terpakai US$1.147039, sisa US$2.352961).
+Paket TIRT: 20 fakta, 2 tersingkir.
+  07:42:28 m2d6/jalan-1/tirt/p1/susun/o1 [penulis]: masuk 5883 keluar 10162 stop US$0.004979 224.8 s InferenceNet; milestone US$1.152018
+  07:44:23 m2d6/jalan-1/tirt/p1/susun/o2 [penulis]: masuk 6374 keluar 20000 length US$0.019434 114.9 s Krea; milestone US$1.171452
+  07:44:33 m2d6/jalan-1/tirt/p1/susun/o2/u1 [penulis]: masuk 6349 keluar 547 stop US$0.001758 9.3 s Fireworks; milestone US$1.173210
+  07:46:29 m2d6/jalan-1/tirt/p1/susun/o3 [penulis]: masuk 6372 keluar 15469 stop US$0.014332 115.9 s NextBit; milestone US$1.187542
+  07:46:39 m2d6/jalan-1/tirt/p1/gerbang-kartu/o1 [pembaca-kartu]: masuk 742 keluar 466 stop US$0.000782 10.4 s Modal; milestone US$1.188323
+  07:47:06 m2d6/jalan-1/tirt/p1/kritikus/o1 [kritikus]: masuk 2346 keluar 6057 stop US$0.027343 26.5 s Wafer penalaran 5843/1000; milestone US$1.215666
+  07:47:11 m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t1 [penebak]: masuk 578 keluar 1174 stop US$0.005336 5.3 s Wafer penalaran 1073/300; milestone US$1.221002
+  07:47:15 m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t2 [penebak]: masuk 547 keluar 393 stop US$0.001996 4.2 s SiliconFlow penalaran 281/300; milestone US$1.222998
+  07:47:47 m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t2/u1 [penebak]: masuk 578 keluar 8000 length US$0.035336 32.1 s Wafer penalaran 8001/300 (lewati SiliconFlow); milestone US$1.258335
+  07:47:52 m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t3 [penebak]: masuk 578 keluar 1111 stop US$0.005025 4.7 s Wafer penalaran 1011/300; milestone US$1.263359
+  07:48:03 m2d6/jalan-1/tirt/p1/gerbang-kartu/o3 [pembaca-kartu]: masuk 674 keluar 289 stop US$0.000187 11.6 s Relace; milestone US$1.263546
+  07:48:47 m2d6/jalan-1/tirt/p1/kritikus/o3 [kritikus]: masuk 2245 keluar 8907 stop US$0.039777 43.5 s Wafer penalaran 8619/1000; milestone US$1.303324
+  07:48:54 m2d6/jalan-1/tirt/p1/gerbang-tebak/o3/t1 [penebak]: masuk 590 keluar 1658 stop US$0.007447 7 s Wafer penalaran 1563/300; milestone US$1.310770
+  07:49:10 m2d6/jalan-1/tirt/p1/gerbang-tebak/o3/t2 [penebak]: masuk 590 keluar 3929 stop US$0.017428 16.1 s Wafer penalaran 3831/300; milestone US$1.328198
+  07:49:13 m2d6/jalan-1/tirt/p1/gerbang-tebak/o3/t3 [penebak]: masuk 590 keluar 725 stop US$0.003330 3.3 s Wafer penalaran 620/300; milestone US$1.331528
+  07:52:31 m2d6/jalan-1/tirt/p2/tulis-ulang/o1 [penulis]: masuk 7232 keluar 20000 length US$0.010782 197.5 s Morph; milestone US$1.342310
+  07:52:35 m2d6/jalan-1/tirt/p2/tulis-ulang/o1/u1 [penulis]: masuk 7207 keluar 423 stop US$0.002002 4 s Krea; milestone US$1.344312
+  07:55:49 m2d6/jalan-1/tirt/p2/tulis-ulang/o2 [penulis]: masuk 6885 keluar 16979 stop US$0.022440 193.6 s Alibaba; milestone US$1.366753
+  07:59:59 m2d6/jalan-1/tirt/p2/tulis-ulang/o3 [penulis]: masuk 7518 keluar 8367 stop US$0.005171 250.6 s Relace; milestone US$1.371923
+  08:00:07 m2d6/jalan-1/tirt/p2/gerbang-kartu/o1 [pembaca-kartu]: masuk 633 keluar 470 stop US$0.000754 8 s DigitalOcean; milestone US$1.372677
+  08:00:13 m2d6/jalan-1/tirt/p2/kritikus/o1 [kritikus]: masuk 2165 keluar 619 stop US$0.004604 6 s SiliconFlow penalaran 411/1000; milestone US$1.377281
+  08:01:05 m2d6/jalan-1/tirt/p2/kritikus/o1/u1 [kritikus]: masuk 2196 keluar 9105 stop US$0.040468 51.5 s Wafer penalaran 8882/1000 (lewati SiliconFlow); milestone US$1.417749
+  08:01:08 m2d6/jalan-1/tirt/p2/gerbang-tebak/o1/t1 [penebak]: masuk 573 keluar 520 stop US$0.002394 3.3 s Wafer penalaran 423/300; milestone US$1.420143
+  08:01:11 m2d6/jalan-1/tirt/p2/gerbang-tebak/o1/t2 [penebak]: masuk 573 keluar 540 stop US$0.002463 3.4 s Wafer penalaran 452/300; milestone US$1.422606
+  08:01:18 m2d6/jalan-1/tirt/p2/gerbang-tebak/o1/t3 [penebak]: masuk 573 keluar 1164 stop US$0.005209 6.1 s Wafer penalaran 1088/300; milestone US$1.427815
+  08:01:47 m2d6/jalan-1/tirt/p2/gerbang-kartu/o2 [pembaca-kartu]: masuk 564 keluar 798 stop US$0.000490 29.3 s Relace; milestone US$1.428305
+  08:04:45 m2d6/jalan-1/tirt/p2/kritikus/o2 [kritikus]: masuk 2060 keluar 14804 stop US$0.065471 177.8 s Wafer penalaran 14583/1000; milestone US$1.493776
+  08:04:54 m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t1 [penebak]: masuk 585 keluar 949 stop US$0.004270 9.1 s Wafer penalaran 865/300; milestone US$1.498046
+  08:04:56 m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t2 [penebak]: masuk 585 keluar 364 stop US$0.001689 2.3 s Wafer penalaran 274/300; milestone US$1.499734
+  08:05:04 m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t2/u1 [penebak]: masuk 554 keluar 325 stop US$0.000882 8.3 s Phala penalaran 243/300 (lewati Wafer); milestone US$1.500616
+  08:05:06 m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t3 [penebak]: masuk 585 keluar 178 stop US$0.000870 1.4 s Wafer penalaran 108/300; milestone US$1.501486
+  08:05:08 m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t3/u1 [penebak]: masuk 554 keluar 257 stop US$0.001906 2.3 s PrimeIntellect penalaran 162/300 (lewati Wafer); milestone US$1.503393
+  08:05:12 m2d6/jalan-1/tirt/p2/gerbang-kartu/o3 [pembaca-kartu]: masuk 671 keluar 365 stop US$0.000211 3.7 s InferenceNet; milestone US$1.503603
+  08:05:28 m2d6/jalan-1/tirt/p2/kritikus/o3 [kritikus]: masuk 2222 keluar 1978 stop US$0.009067 16.8 s Wafer penalaran 1800/1000; milestone US$1.512670
+  08:05:31 m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t1 [penebak]: masuk 551 keluar 182 stop US$0.001572 2.1 s Modal penalaran 101/300; milestone US$1.514242
+  08:05:36 m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t1/u1 [penebak]: masuk 551 keluar 178 stop US$0.000622 5.7 s Phala penalaran 84/300 (lewati Modal); milestone US$1.514864
+  08:05:53 m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t2 [penebak]: masuk 582 keluar 1200 stop US$0.005388 17.1 s Wafer penalaran 1103/300; milestone US$1.520252
+  08:06:05 m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t3 [penebak]: masuk 582 keluar 768 stop US$0.003466 11.3 s Wafer penalaran 670/300; milestone US$1.523717
+  08:08:53 m2d6/jalan-1/tirt/p3/tulis-ulang/o1 [penulis]: masuk 7621 keluar 9033 stop US$0.005572 168.4 s Relace; milestone US$1.529290
+  08:09:29 m2d6/jalan-1/tirt/p3/tulis-ulang/o2 [penulis]: masuk 7712 keluar 7932 stop US$0.006053 35.7 s Wafer; milestone US$1.535343
+  08:10:01 m2d6/jalan-1/tirt/p3/tulis-ulang/o3 [penulis]: masuk 7549 keluar 6840 stop US$0.005278 32.7 s Wafer; milestone US$1.540620
+  08:10:20 m2d6/jalan-1/tirt/p3/gerbang-kartu/o1 [pembaca-kartu]: masuk 668 keluar 2303 stop US$0.002075 18.6 s Phala; milestone US$1.542695
+  08:10:34 m2d6/jalan-1/tirt/p3/gerbang-kartu/o2 [pembaca-kartu]: masuk 557 keluar 385 stop US$0.000242 14.4 s Relace; milestone US$1.542937
+  08:11:45 m2d6/jalan-1/tirt/p3/kritikus/o2 [kritikus]: masuk 2014 keluar 12938 stop US$0.057300 70.2 s Wafer penalaran 12716/1000; milestone US$1.600237
+  08:12:50 m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t1 [penebak]: masuk 578 keluar 8000 length US$0.035307 65.5 s Wafer penalaran 8001/300; milestone US$1.635544
+  08:12:58 m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t1/u1 [penebak]: masuk 578 keluar 1297 stop US$0.005792 8 s Wafer penalaran 1191/300; milestone US$1.641336
+  08:13:02 m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t2 [penebak]: masuk 578 keluar 539 stop US$0.002457 3.5 s Wafer penalaran 447/300; milestone US$1.643794
+  08:13:12 m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t3 [penebak]: masuk 578 keluar 1222 stop US$0.005462 10.6 s Wafer penalaran 1129/300; milestone US$1.649256
+  08:13:14 m2d6/jalan-1/tirt/p3/gerbang-kartu/o3 [pembaca-kartu]: masuk 676 keluar 323 stop US$0.000192 2.2 s InferenceNet; milestone US$1.649448
+  08:14:33 m2d6/jalan-1/tirt/p3/kritikus/o3 [kritikus]: masuk 2239 keluar 13869 stop US$0.061390 78.3 s Wafer penalaran 13530/1000; milestone US$1.710838
+  08:21:06 m2d6/jalan-1/tirt/p4/tulis-ulang/o1 [penulis]: masuk 7613 keluar 20000 length US$0.012152 393.5 s Relace; milestone US$1.722991
+  08:21:13 m2d6/jalan-1/tirt/p4/tulis-ulang/o1/u1 [penulis]: masuk 7588 keluar 527 stop US$0.000468 7.3 s Relace; milestone US$1.723459
+  08:24:48 m2d6/jalan-1/tirt/p4/tulis-ulang/o3 [penulis]: masuk 7610 keluar 8887 stop US$0.005484 214.8 s Relace; milestone US$1.728943
+  08:25:00 m2d6/jalan-1/tirt/p4/gerbang-kartu/o1 [pembaca-kartu]: masuk 668 keluar 459 stop US$0.000288 12 s Morph; milestone US$1.729231
+  08:26:53 m2d6/jalan-1/tirt/p4/kritikus/o1 [kritikus]: masuk 2187 keluar 11536 stop US$0.051403 112.5 s Wafer penalaran 11205/1000; milestone US$1.780634
+  08:27:15 m2d6/jalan-1/tirt/p4/gerbang-kartu/o3 [pembaca-kartu]: masuk 670 keluar 477 stop US$0.000300 22.3 s Relace; milestone US$1.780934
+  08:27:29 m2d6/jalan-1/tirt/p4/kritikus/o3 [kritikus]: masuk 2184 keluar 1198 stop US$0.003332 13.6 s Phala penalaran 946/1000; milestone US$1.784265
+  08:27:36 m2d6/jalan-1/tirt/p4/kritikus/o3/u1 [kritikus]: masuk 2184 keluar 867 stop US$0.004331 7.6 s SiliconFlow penalaran 606/1000 (lewati Phala); milestone US$1.788596
+  08:35:19 m2d6/jalan-1/tirt/p5/tulis-ulang/o1 [penulis]: masuk 7613 keluar 20000 length US$0.012152 463.2 s Relace; milestone US$1.800748
+  08:35:25 m2d6/jalan-1/tirt/p5/tulis-ulang/o1/u1 [penulis]: masuk 7588 keluar 529 stop US$0.001122 5.3 s DekaLLM; milestone US$1.801870
+  08:35:31 m2d6/jalan-1/tirt/p5/gerbang-kartu/o3 [pembaca-kartu]: masuk 670 keluar 821 stop US$0.000706 6.5 s StreamLake; milestone US$1.802576
+  08:35:37 m2d6/jalan-1/tirt/p5/kritikus/o3 [kritikus]: masuk 2186 keluar 496 stop US$0.002326 5.2 s SiliconFlow penalaran 281/1000; milestone US$1.804902
+  08:36:54 m2d6/jalan-1/tirt/p5/kritikus/o3/u1 [kritikus]: masuk 2217 keluar 6543 stop US$0.029443 77.8 s Wafer penalaran 6351/1000 (lewati SiliconFlow); milestone US$1.834345
+  08:36:58 m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t1 [penebak]: masuk 547 keluar 520 stop US$0.002748 3.4 s Friendli penalaran 449/300; milestone US$1.837094
+  08:37:01 m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t2 [penebak]: masuk 547 keluar 137 stop US$0.000547 3.7 s Phala penalaran 65/300; milestone US$1.837641
+  08:37:05 m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t2/u1 [penebak]: masuk 578 keluar 331 stop US$0.001627 3.2 s Wafer penalaran 245/300 (lewati Phala); milestone US$1.839268
+  08:37:09 m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t3 [penebak]: masuk 578 keluar 450 stop US$0.002116 4 s Wafer penalaran 354/300; milestone US$1.841385
+  08:41:06 m2d6/jalan-1/tirt/p6/tulis-ulang/o1 [penulis]: masuk 6410 keluar 9759 stop US$0.005984 237.7 s Relace; milestone US$1.847368
+  08:47:57 m2d6/jalan-1/tirt/p6/tulis-ulang/o3 [penulis]: masuk 6765 keluar 20000 length US$0.012135 410.3 s Relace; milestone US$1.859504
+  08:48:05 m2d6/jalan-1/tirt/p6/tulis-ulang/o3/u1 [penulis]: masuk 6740 keluar 538 stop US$0.000458 8.5 s Relace; milestone US$1.859961
+  08:48:55 m2d6/jalan-1/tirt/p6/gerbang-kartu/o1 [pembaca-kartu]: masuk 682 keluar 1257 stop US$0.000768 49.7 s Relace; milestone US$1.860729
+  08:49:12 m2d6/jalan-1/tirt/p6/kritikus/o1 [kritikus]: masuk 2157 keluar 1467 stop US$0.003790 16.7 s Phala penalaran 1282/1000; milestone US$1.864519
+  08:49:15 m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t1 [penebak]: masuk 556 keluar 109 stop US$0.000818 3.2 s DigitalOcean penalaran 54/300; milestone US$1.865337
+  08:49:19 m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t1/u1 [penebak]: masuk 587 keluar 615 stop US$0.002879 3.6 s Wafer penalaran 517/300 (lewati DigitalOcean); milestone US$1.868216
+  08:49:21 m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t2 [penebak]: masuk 556 keluar 323 stop US$0.002200 2.4 s Venice penalaran 243/300; milestone US$1.870415
+  08:49:23 m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t2/u1 [penebak]: masuk 556 keluar 284 stop US$0.002028 1.7 s Together penalaran 188/300 (lewati Venice); milestone US$1.872443
+  08:49:27 m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t3 [penebak]: masuk 556 keluar 292 stop US$0.000650 4.9 s Phala penalaran 165/300; milestone US$1.873093
+  08:49:31 m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t3/u1 [penebak]: masuk 556 keluar 249 stop US$0.001499 3.2 s SiliconFlow penalaran 168/300 (lewati Phala); milestone US$1.874593
+  08:51:36 m2d6/jalan-1/tirt/p7/tulis-ulang/o1 [penulis]: masuk 6989 keluar 4481 stop US$0.002828 125.3 s Relace; milestone US$1.877421
+  09:02:18 m2d6/jalan-1/tirt/p7/tulis-ulang/o3 [penulis]: masuk 6893 keluar 20000 length US$0.012138 642.1 s Relace; milestone US$1.889559
+  09:02:36 m2d6/jalan-1/tirt/p7/tulis-ulang/o3/u1 [penulis]: masuk 6868 keluar 539 stop US$0.000461 18.2 s Relace; milestone US$1.890020
+  09:02:49 m2d6/jalan-1/tirt/p7/gerbang-kartu/o1 [pembaca-kartu]: masuk 604 keluar 510 stop US$0.000318 12.6 s Relace; milestone US$1.890338
+  09:05:34 m2d6/jalan-1/tirt/p7/kritikus/o1 [kritikus]: masuk 2084 keluar 24000 length US$0.106215 165.3 s Wafer penalaran 24002/1000; milestone US$1.996552
+  09:06:58 m2d6/jalan-1/tirt/p7/kritikus/o1/u1 [kritikus]: masuk 2084 keluar 16121 stop US$0.071426 83.8 s Wafer penalaran 15789/1000; milestone US$2.067978
+  09:16:08 m2d6/jalan-1/tirt/p8/tulis-ulang/o1 [penulis]: masuk 7020 keluar 20000 length US$0.012140 550.4 s Relace; milestone US$2.080119
+  09:16:24 m2d6/jalan-1/tirt/p8/tulis-ulang/o1/u1 [penulis]: masuk 6995 keluar 339 stop US$0.000343 15.7 s Relace; milestone US$2.080462
+  09:17:51 m2d6/jalan-1/tirt/p8/tulis-ulang/o3 [penulis]: masuk 6882 keluar 20000 length US$0.010754 86.7 s Morph; milestone US$2.091216
+  09:18:22 m2d6/jalan-1/tirt/p8/tulis-ulang/o3/u1 [penulis]: masuk 6857 keluar 662 stop US$0.000534 31.2 s Relace; milestone US$2.091751
+  09:18:44 m2d6/jalan-1/tirt/p8/gerbang-kartu/o1 [pembaca-kartu]: masuk 631 keluar 2634 stop US$0.002010 22.3 s GMICloud; milestone US$2.093761
+  09:18:49 m2d6/jalan-1/tirt/p8/kritikus/o1 [kritikus]: masuk 2071 keluar 716 stop US$0.006050 4.5 s Parasail penalaran 487/1000; milestone US$2.099811
+  09:19:17 m2d6/jalan-1/tirt/p8/kritikus/o1/u1 [kritikus]: masuk 2102 keluar 3922 stop US$0.017877 27.7 s Wafer penalaran 3697/1000 (lewati Parasail); milestone US$2.117687
+  09:19:20 m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t1 [penebak]: masuk 568 keluar 367 stop US$0.001782 3.7 s Wafer penalaran 269/300; milestone US$2.119470
+  09:19:28 m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t1/u1 [penebak]: masuk 537 keluar 499 stop US$0.001179 8 s Phala penalaran 395/300 (lewati Wafer); milestone US$2.120648
+  09:19:31 m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t2 [penebak]: masuk 537 keluar 176 stop US$0.000377 3.1 s Phala penalaran 84/300; milestone US$2.121026
+  09:19:39 m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t2/u1 [penebak]: masuk 568 keluar 1003 stop US$0.004550 7.3 s Wafer penalaran 881/300 (lewati Phala); milestone US$2.125576
+  09:19:54 m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t3 [penebak]: masuk 568 keluar 2028 stop US$0.009060 15.3 s Wafer penalaran 1934/300; milestone US$2.134636
+  09:19:57 m2d6/jalan-1/tirt/p8/gerbang-kartu/o3 [pembaca-kartu]: masuk 565 keluar 325 stop US$0.000211 3.4 s Morph; milestone US$2.134848
+  09:22:19 m2d6/jalan-1/tirt/p8/kritikus/o3 [kritikus]: masuk 2032 keluar 24000 length US$0.106124 141.6 s Wafer penalaran 24002/1000; milestone US$2.240971
+  09:24:46 m2d6/jalan-1/tirt/p8/kritikus/o3/u1 [kritikus]: masuk 2032 keluar 24000 length US$0.106082 146.8 s Wafer penalaran 24000/1000; milestone US$2.347054
+  09:24:59 m2d6/jalan-1/tirt/p9/gerbang-kartu/o3 [pembaca-kartu]: masuk 565 keluar 1656 stop US$0.001186 13.3 s StreamLake; milestone US$2.348240
+  09:27:45 m2d6/jalan-1/tirt/p9/kritikus/o3 [kritikus]: masuk 2032 keluar 24000 length US$0.106082 165.5 s Wafer penalaran 24001/1000; milestone US$2.454322
+  09:28:54 m2d6/jalan-1/tirt/p9/kritikus/o3/u1 [kritikus]: masuk 2032 keluar 11954 stop US$0.053080 69.1 s Wafer penalaran 11558/1000; milestone US$2.507402
+  09:40:13 m2d6/jalan-1/tirt/p10/tulis-ulang/o3 [penulis]: masuk 7796 keluar 20000 length US$0.012156 678.7 s Relace; milestone US$2.519558
+  09:40:28 m2d6/jalan-1/tirt/p10/tulis-ulang/o3/u1 [penulis]: masuk 7771 keluar 679 stop US$0.000563 15.6 s Relace; milestone US$2.520121
+  09:41:44 m2d6/jalan-1/tirt/p11/tulis-ulang/o3 [penulis]: masuk 6721 keluar 19008 stop US$0.024826 75.4 s Modal; milestone US$2.544946
+  09:41:48 m2d6/jalan-1/tirt/p11/gerbang-kartu/o3 [pembaca-kartu]: masuk 577 keluar 292 stop US$0.000195 4.6 s Morph; milestone US$2.545142
+  09:42:36 m2d6/jalan-1/tirt/p11/kritikus/o3 [kritikus]: masuk 2058 keluar 7030 stop US$0.031539 48.2 s Wafer penalaran 6825/1000; milestone US$2.576681
+  09:43:32 m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t1 [penebak]: masuk 582 keluar 7780 stop US$0.034404 55.7 s Wafer penalaran 7681/300; milestone US$2.611084
+  09:43:40 m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t2 [penebak]: masuk 551 keluar 261 stop US$0.000768 7.9 s Phala penalaran 185/300; milestone US$2.611852
+  09:43:54 m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t2/u1 [penebak]: masuk 551 keluar 465 stop US$0.002817 13.7 s Cloudflare penalaran 348/300 (lewati Phala); milestone US$2.614670
+  09:43:59 m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t3 [penebak]: masuk 551 keluar 417 stop US$0.002606 5.1 s Parasail penalaran 313/300; milestone US$2.617276
+  09:46:16 m2d6/jalan-1/tirt/p12/tulis-ulang/o3 [penulis]: masuk 7546 keluar 11526 stop US$0.009267 137.1 s Fireworks; milestone US$2.626543
+  09:46:39 m2d6/jalan-1/tirt/p12/gerbang-kartu/o3 [pembaca-kartu]: masuk 559 keluar 1662 stop US$0.000786 23.5 s InferenceNet; milestone US$2.627330
+  09:47:21 m2d6/jalan-1/tirt/p12/kritikus/o3 [kritikus]: masuk 2028 keluar 8248 stop US$0.036806 41.5 s Wafer penalaran 8047/1000; milestone US$2.664136
+  09:47:31 m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t1 [penebak]: masuk 531 keluar 592 stop US$0.001339 9.7 s Phala penalaran 515/300; milestone US$2.665475
+  09:47:48 m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t2 [penebak]: masuk 562 keluar 4546 stop US$0.020168 17.6 s Wafer penalaran 4453/300; milestone US$2.685643
+  09:50:04 m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t3 [penebak]: masuk 531 keluar 8000 length US$0.035932 136.1 s Venice penalaran 7999/300; milestone US$2.721575
+  09:52:13 m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t3/u1 [penebak]: masuk 531 keluar 8000 length US$0.035339 128.8 s Venice penalaran 8000/300; milestone US$2.756914
+  09:54:24 m2d6/jalan-1/tirt/p13/tulis-ulang/o3 [penulis]: masuk 7435 keluar 17737 stop US$0.022913 131.2 s SiliconFlow; milestone US$2.779827
+  09:54:57 m2d6/jalan-1/tirt/p13/gerbang-kartu/o3 [pembaca-kartu]: masuk 578 keluar 979 stop US$0.000599 32.2 s Relace; milestone US$2.780426
+  09:55:06 m2d6/jalan-1/tirt/p13/kritikus/o3 [kritikus]: masuk 2100 keluar 1001 stop US$0.002938 9.6 s Phala penalaran 824/1000; milestone US$2.783364
+  09:55:38 m2d6/jalan-1/tirt/p13/kritikus/o3/u1 [kritikus]: masuk 2131 keluar 5705 stop US$0.025730 31.7 s Wafer penalaran 5512/1000 (lewati Phala); milestone US$2.809094
+  09:55:45 m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t1 [penebak]: masuk 583 keluar 1269 stop US$0.005756 7.1 s Wafer penalaran 1179/300; milestone US$2.814850
+  09:56:23 m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t2 [penebak]: masuk 583 keluar 6558 stop US$0.028993 38.2 s Wafer penalaran 6437/300; milestone US$2.843843
+  09:57:05 m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t3 [penebak]: masuk 583 keluar 8000 length US$0.035338 41.8 s Wafer penalaran 8002/300; milestone US$2.879181
+  09:57:47 m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t3/u1 [penebak]: masuk 583 keluar 8000 length US$0.035338 41.8 s Wafer penalaran 8000/300; milestone US$2.914519
+  09:59:58 m2d6/jalan-1/tirt/p14/tulis-ulang/o3 [penulis]: masuk 7591 keluar 19027 stop US$0.023190 131.5 s SiliconFlow; milestone US$2.937709
+  10:00:07 m2d6/jalan-1/tirt/p14/gerbang-kartu/o3 [pembaca-kartu]: masuk 571 keluar 1075 stop US$0.000523 8.9 s InferenceNet; milestone US$2.938233
+  10:00:18 m2d6/jalan-1/tirt/p14/kritikus/o3 [kritikus]: masuk 2077 keluar 1026 stop US$0.002356 10.7 s Phala penalaran 823/1000; milestone US$2.940589
+  10:00:24 m2d6/jalan-1/tirt/p14/kritikus/o3/u1 [kritikus]: masuk 2077 keluar 1067 stop US$0.006842 5.6 s Friendli penalaran 795/1000 (lewati Phala); milestone US$2.947431
+  10:00:33 m2d6/jalan-1/tirt/p15/gerbang-kartu/o3 [pembaca-kartu]: masuk 571 keluar 915 stop US$0.000426 9.3 s InferenceNet; milestone US$2.947857
+  10:00:42 m2d6/jalan-1/tirt/p15/kritikus/o3 [kritikus]: masuk 2076 keluar 1073 stop US$0.002146 9.1 s Phala penalaran 916/1000; milestone US$2.950003
+  10:01:40 m2d6/jalan-1/tirt/p15/kritikus/o3/u1 [kritikus]: masuk 2107 keluar 7924 stop US$0.035404 58.5 s Wafer penalaran 7657/1000 (lewati Phala); milestone US$2.985407
+TIDAK TERBIT sesudah 15 dari 15 putaran (omongan 3 gagal di 3 sudut (rups-2025-09-25, kelipatan-2025-11-26-2025-12-09, hari-naik-beruntun); simulasi tidak terbit); 133 panggilan, US$1.838368 menurut jejak, US$1.838368 menurut ledger; milestone US$2.985407 dari US$3.50.
+  putaran 1 (tulis 1,2,3): 1=ditolak-tebak 2=tidak-ada 3=ditolak-tebak
+  putaran 2 (tulis 1,2,3): 1=ditolak-tebak 2=ditolak-tebak 3=ditolak-tebak
+  putaran 3 (tulis 1,2,3): 1=ditolak-kartu 2=lolos 3=ditolak-kritikus
+  putaran 4 (tulis 1,3): 1=ditolak-kritikus 2=terkunci-sebelumnya 3=kritikus-tidak-menjawab
+  putaran 5 (tulis 1; bawa 3): 1=ditolak-pemeriksa 2=terkunci-sebelumnya 3=ditolak-tebak; dibuang 1:susp-2025-12-10→susp-2025-01-21 3:rups-2025-09-25→kelipatan-2025-11-26-2025-12-09
+  putaran 6 (tulis 1,3): 1=ditolak-tebak 2=terkunci-sebelumnya 3=tidak-ada
+  putaran 7 (tulis 1,3): 1=ditolak-kritikus 2=terkunci-sebelumnya 3=tidak-ada
+  putaran 8 (tulis 1,3): 1=lolos 2=terkunci-sebelumnya 3=kritikus-tidak-menjawab
+  putaran 9 (tulis -; bawa 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-kritikus
+  putaran 10 (tulis 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-pemeriksa; dibuang 3:kelipatan-2025-11-26-2025-12-09→hari-naik-beruntun
+  putaran 11 (tulis 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-tebak
+  putaran 12 (tulis 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-tebak
+  putaran 13 (tulis 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-tebak
+  putaran 14 (tulis 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=kritikus-tidak-menjawab
+  putaran 15 (tulis -; bawa 3): 1=terkunci-sebelumnya 2=terkunci-sebelumnya 3=ditolak-kritikus; dibuang 3:hari-naik-beruntun→null
