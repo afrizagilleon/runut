@@ -51,6 +51,7 @@ import {
   r31DividenRupsVersusMedan,
   r32PerubahanSahamVsAksi,
 } from './aturan-keuangan.ts';
+import { r36LaporanSahamLain } from './aturan-audit.ts';
 
 export interface EntriAturan {
   kode: KodeAturan;
@@ -152,7 +153,10 @@ export const ATURAN_V2: readonly EntriAturan[] = [
   { kode: 'R26', urutan: 32, bergantung: ['R20', 'R32', 'R31'], jalankan: r26PembagianLaba },
   { kode: 'R27', urutan: 33, bergantung: [], jalankan: r27RasioSiapPakai },
   { kode: 'R29', urutan: 34, bergantung: ['R31'], jalankan: r29HargaDiTanggalEx },
-  { kode: 'R34', urutan: 35, bergantung: [], jalankan: r34AksiTanpaHarga },
+  // M4b: aturan dari salah nyata audit gudang M4a. Ditaruh sebelum R34, yang
+  // harus tetap paling akhir. Kasus tayang tidak menjalankannya (aturan beku).
+  { kode: 'R36', urutan: 35, bergantung: ['R33'], jalankan: r36LaporanSahamLain },
+  { kode: 'R34', urutan: 36, bergantung: [], jalankan: r34AksiTanpaHarga },
 ];
 
 export interface HasilVerifikasiV2 {

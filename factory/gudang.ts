@@ -86,6 +86,9 @@ const KALIMAT_AWAM: Record<string, string> = {
     'Kami memberi tanda pada aksi korporasi yang tidak punya harga harian di kedua sisinya, ' +
     'karena tidak ada satu pun pemeriksaan harga yang bisa dijalankan atasnya.',
   R35: 'Kami menolak kartu kalau harga tertinggi atau terendah yang disebut ringkasan tidak terjangkau deret harga hariannya sendiri.',
+  R36:
+    'Kami menolak kartu kalau laporannya ternyata tentang saham perusahaan lain: judulnya menyebut ' +
+    'perusahaan lain, dan persennya tidak mungkin dihitung dari saham emiten ini.',
 };
 
 /**

@@ -373,6 +373,8 @@ function serapLaporan(kumpul: Pengumpul, berkas: string, akar: Record<string, un
       jenis_mentah: jenisMentah,
       berkas_cache: berkas,
     };
+    const judul = teks(r['title']);
+    if (judul !== null) laporan.judul = judul;
     ambil(kumpul, simbol, berkas).laporan.push(laporan);
   }
 
@@ -529,6 +531,14 @@ function serapAksiKorporasi(
   return normalkanSimbol(simbol);
 }
 
+/** `company_name` di akar berkas; yang pertama menurut nama berkas menang (M4b, R36). */
+function catatNamaPerusahaan(data: DataEmiten, akar: Record<string, unknown>): void {
+  const nama = teks(akar['company_name']);
+  if (nama !== null && (data.nama_perusahaan === undefined || data.nama_perusahaan === null)) {
+    data.nama_perusahaan = nama;
+  }
+}
+
 function serapRingkasan(
   kumpul: Pengumpul,
   berkas: string,
@@ -537,6 +547,7 @@ function serapRingkasan(
   const simbol = teks(akar['symbol']);
   if (simbol === null) return null;
   const data = ambil(kumpul, simbol, berkas);
+  catatNamaPerusahaan(data, akar);
   catatAsal(kumpul.asal.ringkasan, normalkanSimbol(simbol), berkas);
   const ringkasan = obyek(akar['overview']);
   if (ringkasan !== null) {
@@ -647,7 +658,9 @@ function serapKeuangan(
 ): string | null {
   const simbol = teks(akar['symbol']);
   if (simbol === null) return null;
-  serapKeuanganKe(ambil(kumpul, simbol, berkas), akar);
+  const data = ambil(kumpul, simbol, berkas);
+  catatNamaPerusahaan(data, akar);
+  serapKeuanganKe(data, akar);
   catatAsal(kumpul.asal.ringkasan, normalkanSimbol(simbol), berkas);
   return normalkanSimbol(simbol);
 }
@@ -660,6 +673,7 @@ function serapKepemilikan(
   const simbol = teks(akar['symbol']);
   if (simbol === null) return null;
   const data = ambil(kumpul, simbol, berkas);
+  catatNamaPerusahaan(data, akar);
   catatAsal(kumpul.asal.kepemilikan, normalkanSimbol(simbol), berkas);
   const kepemilikan = obyek(akar['ownership']);
   for (const butir of larik(kepemilikan?.['major_shareholders']) ?? []) {

@@ -51,6 +51,12 @@ export interface Laporan {
   jenis_mentah?: string;
   /** Berkas cache asal laporan ini. */
   berkas_cache?: string;
+  /**
+   * `title` apa adanya (M4b). R36 membaca perusahaan yang sahamnya
+   * diperdagangkan dari sini ("… buys shares of <perusahaan>"). Opsional:
+   * pemuat lama dan fixture tidak mengisinya, dan R36 menjawab `TIDAK_LENGKAP`.
+   */
+  judul?: string;
 }
 
 export interface BarisHarga {
@@ -322,6 +328,12 @@ export interface DataEmiten {
   ringkasan_pasar: { nilai_pasar: number; harga_tutup: number; pada: string } | null;
   /** Nama berkas cache yang menyumbang data emiten ini, terurut. */
   berkas: string[];
+  /**
+   * `company_name` emiten dari ringkasan, keuangan, atau potret kepemilikan
+   * (M4b, untuk R36); yang pertama menurut nama berkas menang. `null` atau
+   * tidak ada = tidak ada berkas yang menyebutnya.
+   */
+  nama_perusahaan?: string | null;
   /**
    * Bukan data Sectors: daftar aturan beku kasus tayang (M4b D-1). Hanya diisi
    * pembangun kasus tayang (`factory/bangun-kasus.ts`) dari
