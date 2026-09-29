@@ -1,0 +1,43 @@
+# M3.13 Amandemen A-1 — gerbang ulang (worktree _runut-m313, 2026-09-29T17:57Z)
+
+## typecheck
+
+(tanpa galat)
+
+## vitest
+      Tests  3 failed | 1964 passed | 12 skipped (1979)
+      at startTests (file:///D:/Projects/serious/sectors-hackathon/node_modules/@vitest/runner/dist/index.js:1271:3),
+ FAIL  factory/llm/openrouter.test.ts > pagu biaya-nyata — jumlah biaya nyata + perkiraan panggilan berikutnya ≤ pagu, dicek sebelum kirim > perkiraan sebelum kirim ≥ biaya penyedia TERMAHAL yan
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > docs/bukti/lingkar-agen-tirt.md dan ringkasan terlacak = hasil skrip atas keluaran mentah
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > per peran dan per penyedia menjumlah ke total milestone; total ≤ pagu US$4,00
+ Test Files  2 failed | 100 passed (102)
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+-> 3 merah lingkungan (diizinkan A-1.4): factory/llm/openrouter.test.ts 'perkiraan sebelum kirim ≥ biaya penyedia TERMAHAL…' (butuh .contracts/lampiran/M-02d5/…), factory/llm/tirt-laporan.test.ts ×2 (butuh ledger .cache/llm/). Selain itu hijau.
+
+## periksa:desain
+periksa:desain — bersih.
+
+## e2e penuh sekali lagi (--workers=1)
+    7 skipped
+    251 passed (9.2m)
+  EXIT 0
+  (sesudahnya satu label agregat dapur diganti 'versi ditulis' -> 'kali penulis menulis'; e2e/dapur.spec.ts diulang terarah: 4 lolos)
+
+## build + cek bundel (MSYS_NO_PATHCONV=1 VITE_KOLEKTOR_URL=/e npx vite build, keluaran .cache/m313/dist-a1)
+  Dapur-zKsM78rQ.js 23313B "/e"=0
+  index-C97UvwNM.js 303107B "/e"=1
+  TOTAL "/e"=1 (harus 1) E:/=0 (harus 0)
+
+## tangkapan layar dapur baru
+  .cache/e2e/m313/sesudah-a1/dapur-agregat-360x640-gelap.png
+  .cache/e2e/m313/sesudah-a1/dapur-agregat-360x640-terang.png
+  .cache/e2e/m313/sesudah-a1/dapur-agregat-390x844-gelap.png
+  .cache/e2e/m313/sesudah-a1/dapur-agregat-390x844-terang.png
+  .cache/e2e/m313/sesudah-a1/dapur-atas-360x640-gelap.png
+  .cache/e2e/m313/sesudah-a1/dapur-atas-360x640-terang.png
+  .cache/e2e/m313/sesudah-a1/dapur-atas-390x844-gelap.png
+  .cache/e2e/m313/sesudah-a1/dapur-atas-390x844-terang.png
+  .cache/e2e/m313/sesudah-a1/dapur-penuh-360x640-gelap.png
+  .cache/e2e/m313/sesudah-a1/dapur-penuh-360x640-terang.png
+  .cache/e2e/m313/sesudah-a1/dapur-penuh-390x844-gelap.png
+  .cache/e2e/m313/sesudah-a1/dapur-penuh-390x844-terang.png

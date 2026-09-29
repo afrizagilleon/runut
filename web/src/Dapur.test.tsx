@@ -139,7 +139,7 @@ describe('M3.13 A-1 — tanpa isi simulasi yang tayang', () => {
     expect(teks).toContain('supaya jawabannya tidak bocor');
     for (const a of DATA.agregat) expect(teks).toContain(kalimatAgregat(a));
     expect(kalimatAgregat(DATA.agregat[0] as AgregatDapur)).toMatch(
-      /^Jalan M2d-4: (tidak terbit|lolos semua penjaga, belum dimainkan) · \d+ putaran · \d+ versi ditulis/,
+      /^Jalan M2d-4: (tidak terbit|lolos semua penjaga, belum dimainkan) · \d+ putaran · \d+ kali penulis menulis/,
     );
   });
 });

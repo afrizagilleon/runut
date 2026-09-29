@@ -100,13 +100,13 @@ export interface DataDapur {
 
 /**
  * Satu baris jalan agregat, tanpa nama, tanggal, atau isi apa pun:
- * "Jalan M2d-4: tidak terbit · 11 putaran · 20 versi ditulis · ditolak: …".
+ * "Jalan M2d-4: tidak terbit · 11 putaran · 27 kali penulis menulis · penolakan: …" (langkah penulis berputusan "ditulis", termasuk panggilan cadangan).
  */
 export function kalimatAgregat(a: AgregatDapur): string {
   const status = a.terbit ? 'lolos semua penjaga, belum dimainkan' : 'tidak terbit';
   const tolak = a.penolakan.map((p) => `${namaPeran(p.peran)} ${String(p.tolak)}`).join(', ');
   return (
-    `Jalan ${a.milestone}: ${status} · ${String(a.putaran)} putaran · ${String(a.versi)} versi ditulis` +
+    `Jalan ${a.milestone}: ${status} · ${String(a.putaran)} putaran · ${String(a.versi)} kali penulis menulis` +
     (tolak === '' ? '' : ` · penolakan: ${tolak}`)
   );
 }
