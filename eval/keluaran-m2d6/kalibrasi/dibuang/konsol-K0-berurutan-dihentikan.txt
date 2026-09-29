@@ -1,0 +1,18 @@
+
+> runut@0.1.0 penalar:kalibrasi
+> node --experimental-strip-types factory/llm/penalar-kalibrasi.ts K0 K1 K2 K4 K3
+
+K0 sampel 1 — M2d-5: DeepSeek ×2 + GLM reasoning.max_tokens 3.000, petunjuk "pemain pintar"; pagu kalibrasi US$0.80 (terpakai US$0.000000).
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t1: Makora penalaran 1986 stop US$0.002546
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t2: Relace penalaran 1181 stop US$0.000733
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t3: Sail Research penalaran 1 stop US$0.000341
+m2d5-tirt-o2 [bocor] kunci d: b/70 b/65 b/60 → lolos
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t1: DeepInfra penalaran 6570 stop US$0.002830
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t2: DeepInfra penalaran 5021 stop US$0.002146
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t3: Modal penalaran 29 stop US$0.000898
+m2d5-tirt-o3 [bocor] kunci d: a/60 a/60 b/60 → lolos
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t1: Relace penalaran 6233 stop US$0.003882
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t2: InferenceNet penalaran 4756 stop US$0.002210
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t3: Sail Research penalaran 42 stop US$0.000442
+m2d4-tirt-o3 [bocor] kunci a: b/65 a/90 b/55 → DITOLAK
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t1: DeepInfra penalaran 4124 stop US$0.001806

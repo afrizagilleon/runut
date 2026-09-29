@@ -1,0 +1,168 @@
+{
+  "susunan": "K0",
+  "sampel": 1,
+  "ringkas": "M2d-5: DeepSeek ×2 + GLM reasoning.max_tokens 3.000, petunjuk \"pemain pintar\"",
+  "soal": [
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "bocor",
+      "kunci": "d",
+      "ditolak": false,
+      "benar": 0,
+      "yakin_benar": null,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Angka Rp58 kemungkinan benar sebagai kenaikan sejak awal tahun, bukan untuk periode 26 November–9 Desember yang Sari klaim.",
+          "penyedia": [
+            "Makora"
+          ],
+          "token_penalaran": [
+            1986
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Angka Rp58 kemungkinan benar tetapi sebagai kenaikan sejak awal tahun, bukan kenaikan periode 26 November–9 Desember seperti klaim Sari.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            1181
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim terlalu spesifik soal angka 'pasti' sering keliru soal periode; lebih wajar angka itu adalah kenaikan sejak awal tahun, bukan rentang dua minggu yang diklaim Sari.",
+          "penyedia": [
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            1
+          ]
+        }
+      ],
+      "biaya_usd": 0.00361964
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "d",
+      "ditolak": false,
+      "benar": 0,
+      "yakin_benar": null,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pilihan a paling netral dan sesuai pertanyaan tentang dokumen, sedangkan b hanya mengulang kata 'catatan resmi' dari pesan Nia.",
+          "penyedia": [
+            "DeepInfra"
+          ],
+          "token_penalaran": [
+            6570
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pilihan a memakai kata 'dokumen' seperti pertanyaan dan tidak sekadar mengulang frasa Nia, sehingga lebih wajar sebagai jawaban yang cocok.",
+          "penyedia": [
+            "DeepInfra"
+          ],
+          "token_penalaran": [
+            5021
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Nia menyebut 'catatan resmi', dan hasil RPS memang lazim tercatat dalam catatan resmi/notaris, sehingga pilihan b paling cocok dengan redaksi pesannya.",
+          "penyedia": [
+            "Modal"
+          ],
+          "token_penalaran": [
+            29
+          ]
+        }
+      ],
+      "biaya_usd": 0.005873955199999999
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 1,
+      "yakin_benar": 90,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Suspensi saham di BEI pada 21 Januari lebih umum disebabkan kenaikan harga kumulatif, bukan isu kelangsungan usaha.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            6233
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 90,
+          "terbaca": true,
+          "alasan": "Tanggal 21 Januari identik dengan suspensi saham Garuda Indonesia karena keraguan kelangsungan usaha.",
+          "penyedia": [
+            "InferenceNet"
+          ],
+          "token_penalaran": [
+            4756
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Alasan penghentian perdagangan yang paling lazim adalah kenaikan harga kumulatif signifikan (UMA), dan keraguan Sinta menandakan dugaannya kurang tepat.",
+          "penyedia": [
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            42
+          ]
+        }
+      ],
+      "biaya_usd": 0.006534183
+    }
+  ],
+  "biaya_usd": 0.0160277782,
+  "selesai": false
+}

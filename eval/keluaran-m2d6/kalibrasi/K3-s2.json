@@ -1,0 +1,119 @@
+{
+  "susunan": "K3",
+  "sampel": 2,
+  "ringkas": "GLM effort high ×3 (dijaga), petunjuk \"pemburu soal bocor\"",
+  "soal": [
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "d",
+      "ditolak": true,
+      "benar": 2,
+      "yakin_benar": 50,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Pilihan a dan b hampir identik sehingga keduanya layak disingkirkan, dan klaim c (rapat tidak dijadwalkan) terlalu kuat karena tanggalnya spesifik, jadi kemungkinan terbesar dokumennya hanya pengumuman/pemberitahuan RUPS yang belum memuat hasil putusan.",
+          "penyedia": [
+            "Novita"
+          ],
+          "token_penalaran": [
+            479
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan a dan b nyaris identik sehingga keduanya kemungkinan besar pengecoh; pilihan c tak masuk akal karena tanggal RUPS yang spesifik biasanya memang terjadwal, jadi jawaban paling masuk akal adalah d — dokumen semacam ini (misalnya pengumuman/undangan RUPS) lazimnya tidak memuat hasil putusan.",
+          "penyedia": [
+            "Novita",
+            "GMICloud"
+          ],
+          "token_penalaran": [
+            181,
+            772
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pertanyaan menanyakan kecocokan dengan 'dokumennya', dan klaim Nia yang spesifik dan wajar tentang hasil RUPS tercatat paling pas dibenarkan oleh opsi a, meski b nyaris serupa sehingga keyakinan tidak terlalu tinggi.",
+          "penyedia": [
+            "GMICloud"
+          ],
+          "token_penalaran": [
+            470
+          ]
+        }
+      ],
+      "biaya_usd": 0.00698425656
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 60,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar karena bursa memang lazim menghentikan perdagangan saham terkait keraguan kelangsungan usaha (going concern), dan pilihan yang membenarkannya apa adanya biasanya kunci jawabannya.",
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            399,
+            670
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Keraguan kelangsungan usaha (going concern) adalah alasan lazim bursa menghentikan perdagangan saham di Indonesia, dan klaim Sinta yang wajar/spesifik biasanya memang sesuai dokumen; opsi volume nol dan harga turun tajam jelas pengisi, sehingga paling mungkin benar adanya.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            715
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Keraguan kelangsungan usaha (going concern) adalah alasan suspensi yang lazim dan spesifik di BEI, sementara volume nol bukan alasan penghentian melainkan akibatnya, dan klaim spesifik Sinta kemungkinan sesuai dokumen.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            531
+          ]
+        }
+      ],
+      "biaya_usd": 0.0123669696
+    }
+  ],
+  "biaya_usd": 0.01935122616,
+  "selesai": false
+}

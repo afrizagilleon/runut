@@ -172,6 +172,12 @@ export interface OpsiPencatat {
   jam?: () => Date;
   paguMilestone?: PaguMilestone;
   /**
+   * M2d-6: pagu BAGIAN di dalam pagu milestone (mis. kalibrasi ≤ US$0,80 bertag
+   * `m2d6/kalibrasi/`). Setiap bagian yang awalannya cocok dengan tag panggilan
+   * diperiksa sebelum kirim: biaya entri bertag awalan itu + perkiraan ≤ pagu bagian.
+   */
+  paguBagian?: readonly PaguMilestone[];
+  /**
    * M2d-5 D-2: biaya WAJIB dari tagihan nyata (`usage.cost`). Respons yang
    * mungkin ditagih tanpa `usage.cost` dicatat perkiraan maksimum dan
    * ditandai `tanpa_cost` — tabel harga tidak pernah dipakai untuk menaksir
@@ -191,10 +197,17 @@ export class PencatatBiaya {
   readonly paguUsd: number;
   readonly paguMilestone: PaguMilestone | null;
   readonly biayaNyata: boolean;
+  readonly paguBagian: readonly PaguMilestone[];
   private readonly jalur: string | null;
   private readonly harga: Readonly<Record<string, HargaModel>>;
   private readonly jam: () => Date;
   private readonly entri: EntriLedger[] = [];
+  /**
+   * Perkiraan maksimum panggilan yang SEDANG berjalan (M2d-6: kalibrasi
+   * menjalankan beberapa soal serentak). Ikut dihitung di setiap pemeriksaan
+   * pagu sampai panggilan itu dicatat — pagu tetap ditegakkan saat serentak.
+   */
+  private readonly pesanan: Array<{ tag: string; usd: number }> = [];
 
   constructor(opsi: OpsiPencatat) {
     if (!Number.isFinite(opsi.paguUsd) || opsi.paguUsd <= 0) {
@@ -208,6 +221,10 @@ export class PencatatBiaya {
       }
     }
     this.paguMilestone = opsi.paguMilestone ?? null;
+    for (const b of opsi.paguBagian ?? []) {
+      if (!Number.isFinite(b.usd) || b.usd <= 0 || b.awalanTag.trim() === '') throw new Error('Pagu bagian harus angka positif dengan awalan tag yang tidak kosong.');
+    }
+    this.paguBagian = opsi.paguBagian ?? [];
     this.biayaNyata = opsi.biayaNyata ?? false;
     this.jalur = opsi.jalurLedger;
     this.harga = opsi.harga ?? HARGA;
@@ -236,6 +253,11 @@ export class PencatatBiaya {
     return this.entri.filter((e) => e.tag.startsWith(m.awalanTag)).reduce((a, e) => a + e.biaya_usd, 0);
   }
 
+  /** Biaya entri ledger yang tagnya berawalan `awalan`. */
+  totalAwalan(awalan: string): number {
+    return this.entri.filter((e) => e.tag.startsWith(awalan)).reduce((a, e) => a + e.biaya_usd, 0);
+  }
+
   /** Perkiraan biaya maksimum satu panggilan. */
   perkiraan(model: string, pesan: readonly PesanChat[], maxTokens: number): number {
     return biayaUsd(hargaModel(model, this.harga), batasAtasTokenMasuk(pesan), maxTokens);
@@ -245,9 +267,10 @@ export class PencatatBiaya {
    * Lempar `PaguTercapai` kalau akumulasi + perkiraan > pagu. Dipanggil SEBELUM
    * kirim. Mengembalikan perkiraannya untuk dicatat.
    */
-  periksa(model: string, pesan: readonly PesanChat[], maxTokens: number, tag?: string): number {
+  periksa(model: string, pesan: readonly PesanChat[], maxTokens: number, tag?: string, pesanTempat = false): number {
     const perkiraan = this.perkiraan(model, pesan, maxTokens);
-    const akumulasi = this.total();
+    const dipesan = (awalan: string): number => this.pesanan.filter((x) => x.tag.startsWith(awalan)).reduce((a, x) => a + x.usd, 0);
+    const akumulasi = this.total() + dipesan('');
     if (akumulasi + perkiraan > this.paguUsd) {
       throw new PaguTercapai(akumulasi, perkiraan, this.paguUsd, model);
     }
@@ -256,14 +279,22 @@ export class PencatatBiaya {
       if (tag === undefined || !tag.startsWith(m.awalanTag)) {
         throw new Error(`Panggilan bertag "${String(tag)}" di luar awalan milestone "${m.awalanTag}"; tidak dikirim.`);
       }
-      const milestone = this.totalMilestone();
+      const milestone = this.totalMilestone() + dipesan(m.awalanTag);
       if (milestone + perkiraan > m.usd) throw new PaguMilestoneTercapai(milestone, perkiraan, m, model);
     }
+    for (const b of this.paguBagian) {
+      if (tag === undefined || !tag.startsWith(b.awalanTag)) continue;
+      const bagian = this.totalAwalan(b.awalanTag) + dipesan(b.awalanTag);
+      if (bagian + perkiraan > b.usd) throw new PaguMilestoneTercapai(bagian, perkiraan, b, model);
+    }
+    if (pesanTempat && tag !== undefined) this.pesanan.push({ tag, usd: perkiraan });
     return perkiraan;
   }
 
   /** Catat satu percobaan sesudah terjadi. */
   catat(model: string, tag: string, c: CatatanPercobaan, perkiraan: number, tambahan: TambahanLedger = {}): EntriLedger {
+    const i = this.pesanan.findIndex((x) => x.tag === tag && x.usd === perkiraan);
+    if (i >= 0) this.pesanan.splice(i, 1);
     const harga = hargaModel(model, this.harga);
     let biaya: number;
     let dasar: DasarBiaya;
@@ -417,7 +448,7 @@ export async function chatBerpagu(
   };
   const hasil = await chat(klien, opsi, {
     sebelumKirim: () => {
-      perkiraan = pencatat.periksa(opsi.model, opsi.pesan, opsi.maxTokens, tag);
+      perkiraan = pencatat.periksa(opsi.model, opsi.pesan, opsi.maxTokens, tag, true);
     },
     sesudahPercobaan: (c) => {
       biaya += pencatat.catat(opsi.model, tag, c, perkiraan, tambahan).biaya_usd;

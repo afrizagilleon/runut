@@ -63,6 +63,11 @@ export interface KonfigSusun {
    * Tanpa medan ini perilaku M2d-3/M2d-4 tidak berubah.
    */
   openRouter?: { baseUrl: string; pagar: (model: string, abaikan?: readonly string[]) => Readonly<Record<string, unknown>> };
+  /**
+   * M2d-6: awalan tag pagu milestone bila berbeda dari awalan tag panggilan
+   * (mis. tag `m2d6/jalan-1/…`, pagu milestone atas semua `m2d6/`).
+   */
+  awalanMilestone?: string;
 }
 
 export const KONFIG_M2D3: KonfigSusun = {
@@ -113,7 +118,7 @@ export async function jalankanSusun(k: KonfigSusun, argumen: string[]): Promise<
   const biaya = new PencatatBiaya({
     paguUsd: konfig.paguUsd,
     jalurLedger: JALUR_LEDGER,
-    paguMilestone: { usd: paguMilestone, awalanTag: k.awalanTag },
+    paguMilestone: { usd: paguMilestone, awalanTag: k.awalanMilestone ?? k.awalanTag },
     biayaNyata: k.openRouter !== undefined,
   });
   const awal = biaya.total();

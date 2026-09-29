@@ -1,0 +1,76 @@
+LLM_BASE_URL = https://openrouter.ai/api/v1: ya; pagu kumulatif LLM_PAGU_USD = 8.00; kunci terpasang: ya.
+GET /key: HTTP 200; limit 10; sisa limit 9.775533083; pemakaian 0.224466917 (hari ini 0.224466917); tier gratis false.
+
+deepseek/deepseek-v4.1-flash: 31 penyedia, 27 lolos pagar (kuantisasi, max_price 0.3/1.2, parameter max_tokens+temperature+reasoning).
+  LOLOS Relace           relace                 q=unknown  0.02/0.6 max_tokens,temperature,reasoning maxout=943718
+        OpenInference    open-inference/fp4     q=fp4      0.03/0.5 max_tokens,temperature,reasoning maxout=943718
+  LOLOS InferenceNet     inference-net          q=unknown  0.069/0.45 max_tokens,temperature,reasoning maxout=384000
+        Sail Research    sail-research/fp4      q=fp4      0.08/0.4 max_tokens,temperature,reasoning maxout=384000
+  LOLOS Morph            morph/fp8              q=fp8      0.080535/0.51 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Wafer            wafer                  q=unknown  0.1/0.7 max_tokens,temperature,reasoning maxout=943718
+  LOLOS AtlasCloud       atlas-cloud/fp8        q=fp8      0.114/0.456 max_tokens,temperature,reasoning maxout=393216
+  LOLOS DekaLLM          dekallm                q=unknown  0.12/0.4 max_tokens,temperature,reasoning maxout=943718
+  LOLOS DeepInfra        deepinfra/fp8          q=fp8      0.14/0.42 max_tokens,temperature,reasoning maxout=131072
+  LOLOS StreamLake       streamlake/fp8         q=fp8      0.1785/0.714 max_tokens,temperature,reasoning maxout=384000
+  LOLOS GMICloud         gmicloud/fp8           q=fp8      0.18/0.72 max_tokens,temperature,reasoning maxout=943717
+  LOLOS Novita           novita/fp8             q=fp8      0.195/0.78 max_tokens,temperature,reasoning maxout=393216
+  LOLOS CoreWeave        coreweave/fp8          q=fp8      0.2/0.65 max_tokens,temperature,reasoning maxout=943718
+  LOLOS NextBit          nextbit/fp8            q=fp8      0.21/0.84 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Fireworks        fireworks              q=unknown  0.22/0.66 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Krea             krea/fp8               q=fp8      0.225/0.9 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Phala            phala                  q=unknown  0.276/1.104 max_tokens,temperature,reasoning maxout=393216
+  LOLOS Ionstream        ionstream              q=unknown  0.28/1.15 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Baidu            baidu/fp8              q=fp8      0.3/1.2 max_tokens,temperature,reasoning maxout=393216
+  LOLOS BaseTen          baseten/fp8            q=fp8      0.3/1.2 max_tokens,temperature,reasoning maxout=32768
+  LOLOS Makora           makora/fp8             q=fp8      0.3/1.2 max_tokens,temperature,reasoning maxout=393216
+  LOLOS DigitalOcean     digitalocean           q=unknown  0.3/1.2 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Alibaba          alibaba                q=unknown  0.3/1.2 max_tokens,temperature,reasoning maxout=393216
+  LOLOS Together         together               q=unknown  0.3/1.2 max_tokens,temperature,reasoning maxout=943718
+  LOLOS SiliconFlow      siliconflow/fp8        q=fp8      0.3/1.2 max_tokens,temperature,reasoning maxout=393216
+  LOLOS Modal            modal                  q=unknown  0.3/1.2 max_tokens,temperature,reasoning maxout=943718
+  LOLOS BaseTen          baseten/fp8            q=fp8      0.3/1.2 max_tokens,temperature,reasoning maxout=32768
+  LOLOS Parasail         parasail/fp8           q=fp8      0.3/1.2 max_tokens,temperature,reasoning maxout=943718
+  LOLOS DeepSeek         deepseek               q=unknown  0.3/1.2 max_tokens,temperature,reasoning maxout=393216
+        Venice           venice/fp8             q=fp8      0.375/1.5 max_tokens,temperature,reasoning maxout=131072
+        Fireworks        fireworks/us           q=unknown  0.45/1.8 max_tokens,temperature,reasoning maxout=943718
+
+z-ai/glm-5.3: 39 penyedia, 26 lolos pagar (kuantisasi, max_price 1.4/4.4, parameter max_tokens+temperature+reasoning).
+  LOLOS Relace           relace                 q=unknown  0.19/4 max_tokens,temperature,reasoning maxout=131072
+  LOLOS Sail Research    sail-research/us       q=fp8      0.2/3.4 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Sail Research    sail-research/fp8      q=fp8      0.2/3.4 max_tokens,temperature,reasoning maxout=943718
+        Inceptron        inceptron/fp4          q=fp4      0.3255/3.14 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Wafer            wafer/us               q=unknown  0.3539/4.4 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Wafer            wafer                  q=unknown  0.3539/4.4 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Reka             reka                   q=unknown  0.37/1.14 max_tokens,temperature,reasoning maxout=235929
+  LOLOS Morph            morph/fp8              q=fp8      0.4165/2.992 max_tokens,temperature,reasoning maxout=943718
+        DeepInfra        deepinfra/fp4          q=fp4      0.5625/2.5 max_tokens,temperature,reasoning maxout=131072
+  LOLOS AtlasCloud       atlas-cloud/fp8        q=fp8      0.602/1.892 max_tokens,temperature,reasoning maxout=131072
+  LOLOS InferenceNet     inference-net          q=unknown  0.684/2.28 max_tokens,temperature,reasoning maxout=131072
+  LOLOS Novita           novita/fp8             q=fp8      0.7826/2.4596 max_tokens,temperature,reasoning maxout=131072
+  LOLOS DigitalOcean     digitalocean           q=unknown  0.91/2.86 max_tokens,temperature,reasoning maxout=128000
+  LOLOS Phala            phala                  q=unknown  0.98/3.08 max_tokens,temperature,reasoning maxout=131072
+  LOLOS GMICloud         gmicloud/fp8           q=fp8      0.98/3.08 max_tokens,temperature,reasoning maxout=943718
+        Makora           makora/fp4             q=fp4      1.05/4.2 max_tokens,temperature,reasoning maxout=128000
+  LOLOS SiliconFlow      siliconflow/fp8        q=fp8      1.12/3.52 max_tokens,temperature,reasoning maxout=262144
+  LOLOS AkashML          akashml/fp8            q=fp8      1.17/3.96 max_tokens,temperature,reasoning maxout=131072
+  LOLOS Alibaba          alibaba                q=unknown  1.19/3.74 max_tokens,temperature,reasoning maxout=131072
+        Decart           decart/fp4             q=fp4      1.19/3.74 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Friendli         friendli               q=unknown  1.26/3.96 max_tokens,temperature,reasoning maxout=943718
+        Mistral          mistral/zdr            q=nvfp4    1.4/4.4 max_tokens,temperature,reasoning maxout=131072
+  LOLOS Baidu            baidu/fp8              q=fp8      1.4/4.4 max_tokens,temperature,reasoning maxout=131072
+        BaseTen          baseten/fp4            q=fp4      1.4/4.4 max_tokens,temperature,reasoning maxout=262144
+        Mistral          mistral/nvfp4          q=nvfp4    1.4/4.4 max_tokens,temperature,reasoning maxout=131072
+        Crusoe           crusoe/fp4             q=fp4      1.4/4.4 max_tokens,temperature,reasoning maxout=943718
+  LOLOS PrimeIntellect   primeintellect         q=unknown  1.4/4.4 max_tokens,temperature,reasoning maxout=131072
+  LOLOS Venice           venice                 q=unknown  1.4/4.4 max_tokens,temperature,reasoning maxout=131072
+  LOLOS Together         together               q=unknown  1.4/4.4 max_tokens,temperature,reasoning maxout=943717
+  LOLOS Parasail         parasail/fp8           q=fp8      1.4/4.4 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Modal            modal                  q=unknown  1.4/4.4 max_tokens,temperature,reasoning maxout=943718
+        BaseTen          baseten/fp4            q=fp4      1.4/4.4 max_tokens,temperature,reasoning maxout=262144
+  LOLOS Fireworks        fireworks              q=unknown  1.4/4.4 max_tokens,temperature,reasoning maxout=943718
+  LOLOS Cloudflare       cloudflare             q=unknown  1.4/4.4 max_tokens,temperature,reasoning maxout=1179648
+  LOLOS Z.AI             z-ai/fp8               q=fp8      1.4/4.4 max_tokens,temperature,reasoning maxout=131072
+        Mistral          mistral/nvfp4          q=nvfp4    1.54/4.84 max_tokens,temperature,reasoning maxout=131072
+        BaseTen          baseten/fast           q=fp8      2.1/6.6 max_tokens,temperature,reasoning maxout=262144
+        BaseTen          baseten/fast           q=fp8      2.1/6.6 max_tokens,temperature,reasoning maxout=262144
+        Alibaba          alibaba/fast           q=unknown  2.8/8.8 max_tokens,temperature,reasoning maxout=131072

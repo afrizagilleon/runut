@@ -65,6 +65,25 @@ export const PETUNJUK_PENEBAK_KUAT = [
   "Berpikirlah seperti pemain pintar yang tahu kebiasaan pasar: hitung dari angka yang ada, cari pilihan yang paling 'wajar secara umum', curigai pilihan yang terlalu spesifik atau yang mengulang omongan dengan rapi.",
   PETUNJUK_PENEBAK.split('\n').at(-1) ?? '',
 ].join('\n');
+/**
+ * Petunjuk "tajam" (M2d-6): penebak sebagai PEMBURU soal bocor. Di M2d-5
+ * petunjuk "pemain pintar" menyuruh mencurigai pilihan yang mengulang omongan
+ * dengan rapi — padahal di tiga dari empat soal yang bocor di uji luar kuncinya
+ * justru pilihan yang membenarkan klaim teman apa adanya, dan satu lagi punya
+ * dua pengecoh kembar. Petunjuk ini menyebut kebiasaan umum pembuat soal
+ * (bukan isi soal kalibrasi) yang dipakai penguji luar.
+ */
+export const PETUNJUK_PENEBAK_TAJAM = [
+  PETUNJUK_PENEBAK.split('\n').slice(0, -1).join('\n'),
+  'Kamu berperan sebagai pemburu soal bocor: soal yang bisa dijawab benar tanpa dokumen. Tebak seperti orang pintar yang paham pasar saham Indonesia dan kebiasaan pembuat soal:',
+  '- Pakai pengetahuan umum pasar (misalnya alasan yang lazim bursa menghentikan perdagangan saham, cara harga dan dividen biasa dicatat).',
+  '- Dua pilihan yang isinya sama atau hampir sama tidak mungkin keduanya benar; singkirkan keduanya.',
+  '- Pilihan yang bilang sesuatu "tidak pernah dihitung", "tidak tercatat di mana pun", atau "tidak ada sama sekali" sering hanya pengisi.',
+  '- Jangan menganggap teman pasti keliru: klaim yang wajar dan spesifik sering ternyata betul, dan pilihan yang membenarkannya apa adanya bisa jadi kuncinya.',
+  '- Hitung dari angka di pesan dan pilihan bila bisa.',
+  'Beri keyakinan yang jujur: rendah bila kamu hanya menebak.',
+  PETUNJUK_PENEBAK.split('\n').at(-1) ?? '',
+].join('\n');
 export const JUMLAH_OMONGAN = 3;
 /**
  * `max_tokens` penebak M2d-3. Dengan petunjuk berhitung, DeepSeek menalar
@@ -241,18 +260,21 @@ export const GENERASI_M2D5: Generasi = {
  *   `penjaga-penalaran.ts` (token penalaran < ambang = tidak sah → diulang
  *   sekali dengan penyedia lain → tidak menjawab);
  * - penyedia yang terbukti melanggar dikecualikan di pagar (D-2, skrip);
+ * - D-3: penebak = susunan terpilih kalibrasi (K3: GLM ×3 ber-effort, petunjuk "pemburu soal bocor");
  * - D-4: G-pilihan-kembar di pemeriksa.
  */
 export const GENERASI_M2D6: Generasi = {
   ...GENERASI_M2D5,
   nama: 'm2d6',
   gerbangKembar: true,
+  // D-3: susunan K3 — pilihan aturan kalibrasi (`eval/keluaran-m2d6/kalibrasi/matriks.json`, dites):
+  // tiga penebak GLM `effort: "high"` dengan penjaga, petunjuk "pemburu soal bocor". Tetap TANPA kartu.
   penebak: {
-    petunjuk: PETUNJUK_PENEBAK_KUAT,
-    model: MODEL_PENEBAK_M2D5,
-    maxTokens: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? PENALAR_M2D6.penebakGlm.maxTokens : MAX_TOKENS_PENEBAK_PERAN)),
-    tambahanBadan: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? badanUpaya(PENALAR_M2D6.penebakGlm) : undefined)),
-    ambangPenalaran: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? PENALAR_M2D6.penebakGlm.ambang : undefined)),
+    petunjuk: PETUNJUK_PENEBAK_TAJAM,
+    model: [MODEL_OR_GLM, MODEL_OR_GLM, MODEL_OR_GLM],
+    maxTokens: [1, 2, 3].map(() => PENALAR_M2D6.penebakGlm.maxTokens),
+    tambahanBadan: [1, 2, 3].map(() => badanUpaya(PENALAR_M2D6.penebakGlm)),
+    ambangPenalaran: [1, 2, 3].map(() => PENALAR_M2D6.penebakGlm.ambang),
   },
   kritikus: {
     sebelumPenebak: true,

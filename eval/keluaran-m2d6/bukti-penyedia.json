@@ -939,11 +939,3757 @@
         "max_tokens": 3000
       },
       "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T06:14:38.692Z",
+      "tag": "m2d6/probe/p1/kritikus/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 3923,
+      "token_penalaran": 3678,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:14:50.243Z",
+      "tag": "m2d6/probe/p1/kritikus/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "PrimeIntellect",
+      "status": 200,
+      "token_keluar": 1994,
+      "token_penalaran": 1731,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:22.408Z",
+      "tag": "m2d6/probe/p1/kritikus/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 7939,
+      "token_penalaran": 7611,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:45.304Z",
+      "tag": "m2d6/probe/p1/kritikus/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 5325,
+      "token_penalaran": 5126,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:49.927Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 738,
+      "token_penalaran": 685,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:54.164Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 347,
+      "token_penalaran": 267,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:55.303Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 161,
+      "token_penalaran": 98,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:56.978Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 329,
+      "token_penalaran": 263,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:59.590Z",
+      "tag": "m2d6/probe/p1/kritikus/medium-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 260,
+      "token_penalaran": 125,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:01.143Z",
+      "tag": "m2d6/probe/p1/kritikus/medium-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 163,
+      "token_penalaran": 20,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:04.279Z",
+      "tag": "m2d6/probe/p1/kritikus/medium-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 382,
+      "token_penalaran": 238,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:05.761Z",
+      "tag": "m2d6/probe/p1/penebak-glm/medium-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 249,
+      "token_penalaran": 175,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:06.497Z",
+      "tag": "m2d6/probe/p1/penebak-glm/medium-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 72,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:07.209Z",
+      "tag": "m2d6/probe/p1/penebak-glm/medium-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 66,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:45.528Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 264,
+      "token_penalaran": 181,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:48.691Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 687,
+      "token_penalaran": 628,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:50.745Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 390,
+      "token_penalaran": 311,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:51.850Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 132,
+      "token_penalaran": 60,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:53.363Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-5",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 177,
+      "token_penalaran": 111,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:55.274Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-6",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 385,
+      "token_penalaran": 329,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:17:56.999Z",
+      "tag": "m2d6/probe/p2/kritikus/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 12197,
+      "token_penalaran": 11880,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:18:48.572Z",
+      "tag": "m2d6/probe/p2/kritikus/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 11440,
+      "token_penalaran": 11040,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:19:23.839Z",
+      "tag": "m2d6/probe/p2/kritikus/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6689,
+      "token_penalaran": 6457,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:36.751Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 243,
+      "token_penalaran": 161,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:43.587Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 448,
+      "token_penalaran": 340,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:48.799Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Parasail",
+      "status": 200,
+      "token_keluar": 458,
+      "token_penalaran": 371,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:57.288Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 703,
+      "token_penalaran": 615,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:21:24.363Z",
+      "tag": "m2d6/probe/p3/kritikus/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6790,
+      "token_penalaran": 6589,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:21:55.186Z",
+      "tag": "m2d6/probe/p3/kritikus/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 7587,
+      "token_penalaran": 7296,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:24:10.425Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Makora",
+      "status": 200,
+      "token_keluar": 2035,
+      "token_penalaran": 1986,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:24:45.365Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1210,
+      "token_penalaran": 1181,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:24:46.719Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 79,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:26:18.806Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 6626,
+      "token_penalaran": 6570,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:27:30.585Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 5080,
+      "token_penalaran": 5021,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:27:31.694Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Modal",
+      "status": 200,
+      "token_keluar": 96,
+      "token_penalaran": 29,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:30:54.089Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 6458,
+      "token_penalaran": 6233,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:32:56.635Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 4858,
+      "token_penalaran": 4756,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:32:59.720Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 109,
+      "token_penalaran": 42,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:33:56.439Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 4182,
+      "token_penalaran": 4124,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:35:33.834Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 4581,
+      "token_penalaran": 4533,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:02.608Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 2224,
+      "token_penalaran": 2214,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:33.878Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 3744,
+      "token_penalaran": 3685,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:36.618Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 164,
+      "token_penalaran": 88,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:37.867Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 2134,
+      "token_penalaran": 2088,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:38.698Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 70,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:50.685Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 7262,
+      "token_penalaran": 7203,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:54.222Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 545,
+      "token_penalaran": 489,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:36:58.946Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 5210,
+      "token_penalaran": 5045,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:00.211Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 730,
+      "token_penalaran": 678,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:02.358Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 1671,
+      "token_penalaran": 1613,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:04.405Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 2851,
+      "token_penalaran": 2758,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:04.514Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 78,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:16.536Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-dada-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 464,
+      "token_penalaran": 393,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:31.426Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 2512,
+      "token_penalaran": 2444,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:32.816Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 89,
+      "token_penalaran": 16,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:43.515Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Modal",
+      "status": 200,
+      "token_keluar": 4587,
+      "token_penalaran": 4542,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:37:44.790Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 81,
+      "token_penalaran": 11,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:38:09.516Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 4683,
+      "token_penalaran": 4619,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:38:26.849Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-dada-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1365,
+      "token_penalaran": 1113,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:38:40.612Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-dada-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 423,
+      "token_penalaran": 313,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:38:43.052Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 6108,
+      "token_penalaran": 6003,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:38:45.023Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 125,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:38:45.921Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 77,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:39:23.939Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Ionstream",
+      "status": 200,
+      "token_keluar": 4947,
+      "token_penalaran": 4891,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:39:26.657Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 202,
+      "token_penalaran": 120,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:01.890Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 4071,
+      "token_penalaran": 3946,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:03.374Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 159,
+      "token_penalaran": 81,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:04.869Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-dada-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 9738,
+      "token_penalaran": 9687,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:06.486Z",
+      "tag": "m2d6/kalibrasi/K0/s1/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 70,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:27.164Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 552,
+      "token_penalaran": 530,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:36.025Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2040,
+      "token_penalaran": 1995,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:37.765Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 129,
+      "token_penalaran": 48,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:39.205Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 110,
+      "token_penalaran": 48,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:41:13.496Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "NextBit",
+      "status": 200,
+      "token_keluar": 3304,
+      "token_penalaran": 3232,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:41:25.430Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 1814,
+      "token_penalaran": 1685,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:41:54.097Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 2866,
+      "token_penalaran": 2873,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:41:57.782Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 3938,
+      "token_penalaran": 3883,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:13.868Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Krea",
+      "status": 200,
+      "token_keluar": 6420,
+      "token_penalaran": 6099,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:17.150Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 155,
+      "token_penalaran": 76,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:19.102Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 207,
+      "token_penalaran": 126,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:26.864Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 866,
+      "token_penalaran": 814,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:33.312Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 321,
+      "token_penalaran": 262,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:34.490Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 115,
+      "token_penalaran": 41,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:36.954Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 135,
+      "token_penalaran": 70,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:39.738Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 8463,
+      "token_penalaran": 8409,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:44.469Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 2576,
+      "token_penalaran": 2494,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:47.884Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 394,
+      "token_penalaran": 301,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:55.688Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 2660,
+      "token_penalaran": 2665,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:59.512Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 144,
+      "token_penalaran": 60,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:43:00.789Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "status": 200,
+      "token_keluar": 127,
+      "token_penalaran": 39,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:43:55.216Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 4503,
+      "token_penalaran": 4455,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:01.606Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 129,
+      "token_penalaran": 50,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:03.219Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 230,
+      "token_penalaran": 136,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:04.147Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 4249,
+      "token_penalaran": 4186,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:05.839Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 3546,
+      "token_penalaran": 3485,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:06.138Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 2538,
+      "token_penalaran": 2108,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:12.322Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 468,
+      "token_penalaran": 403,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:44.233Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 6658,
+      "token_penalaran": 6601,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:45:37.302Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 3514,
+      "token_penalaran": 2965,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:45:39.254Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 151,
+      "token_penalaran": 62,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:45:42.118Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Baidu",
+      "status": 200,
+      "token_keluar": 141,
+      "token_penalaran": 35,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:46:15.778Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 3535,
+      "token_penalaran": 3472,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:46:22.205Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1175,
+      "token_penalaran": 1064,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:46:51.966Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DigitalOcean",
+      "status": 200,
+      "token_keluar": 6494,
+      "token_penalaran": 6444,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:46:54.742Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 145,
+      "token_penalaran": 74,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:00.478Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 435,
+      "token_penalaran": 366,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:02.304Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 371,
+      "token_penalaran": 301,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:16.401Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1122,
+      "token_penalaran": 1040,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:19.174Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 4129,
+      "token_penalaran": 4068,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:33.858Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 3193,
+      "token_penalaran": 3117,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:35.590Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 164,
+      "token_penalaran": 75,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:46.087Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 5561,
+      "token_penalaran": 5499,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:55.240Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 3640,
+      "token_penalaran": 3402,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:58.350Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 102,
+      "token_penalaran": 23,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:12.905Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 1599,
+      "token_penalaran": 1541,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:21.629Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1975,
+      "token_penalaran": 1774,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:23.304Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 246,
+      "token_penalaran": 168,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:28.138Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 3532,
+      "token_penalaran": 3479,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:30.535Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "StreamLake",
+      "status": 200,
+      "token_keluar": 7538,
+      "token_penalaran": 7468,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:31.220Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1295,
+      "token_penalaran": 1222,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:31.289Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 135,
+      "token_penalaran": 58,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:35.170Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 682,
+      "token_penalaran": 590,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:42.976Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 1111,
+      "token_penalaran": 1051,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:52.654Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 109,
+      "token_penalaran": 24,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:55.833Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 175,
+      "token_penalaran": 89,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:57.413Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1827,
+      "token_penalaran": 1741,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:07.728Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "NextBit",
+      "status": 200,
+      "token_keluar": 2588,
+      "token_penalaran": 2527,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:13.941Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1485,
+      "token_penalaran": 1359,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:14.137Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 207,
+      "token_penalaran": 115,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:16.744Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 518,
+      "token_penalaran": 397,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:24.362Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 6818,
+      "token_penalaran": 6744,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:28.523Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 164,
+      "token_penalaran": 58,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:34.485Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 335,
+      "token_penalaran": 227,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:38.926Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 3449,
+      "token_penalaran": 2592,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:50:13.430Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 4082,
+      "token_penalaran": 3636,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:03.425Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 6442,
+      "token_penalaran": 4928,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:08.333Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 228,
+      "token_penalaran": 128,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:10.447Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DekaLLM",
+      "status": 200,
+      "token_keluar": 4528,
+      "token_penalaran": 4463,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:12.087Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 127,
+      "token_penalaran": 52,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:15.975Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 375,
+      "token_penalaran": 270,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:19.941Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 1191,
+      "token_penalaran": 1089,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:50.899Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 10577,
+      "token_penalaran": 10507,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:53.004Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 159,
+      "token_penalaran": 78,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:55.237Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 172,
+      "token_penalaran": 85,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:56.463Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 126,
+      "token_penalaran": 45,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:56.956Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 85,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:57.884Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 205,
+      "token_penalaran": 125,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:58.364Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 580,
+      "token_penalaran": 496,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:58.599Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 175,
+      "token_penalaran": 101,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:00.416Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 261,
+      "token_penalaran": 173,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:01.980Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 686,
+      "token_penalaran": 586,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:02.000Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AkashML",
+      "status": 200,
+      "token_keluar": 141,
+      "token_penalaran": 67,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:03.516Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 142,
+      "token_penalaran": 55,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:04.569Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 286,
+      "token_penalaran": 180,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:07.330Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 581,
+      "token_penalaran": 508,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:07.404Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 880,
+      "token_penalaran": 778,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:10.082Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 403,
+      "token_penalaran": 347,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:12.361Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1077,
+      "token_penalaran": 944,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:12.597Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 275,
+      "token_penalaran": 186,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:15.181Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 616,
+      "token_penalaran": 533,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:16.559Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 324,
+      "token_penalaran": 239,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:17.520Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 446,
+      "token_penalaran": 358,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:18.731Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 717,
+      "token_penalaran": 589,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:18.881Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 356,
+      "token_penalaran": 260,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:21.363Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 136,
+      "token_penalaran": 46,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:21.806Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 510,
+      "token_penalaran": 419,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:23.857Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1225,
+      "token_penalaran": 1134,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:24.408Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 182,
+      "token_penalaran": 114,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:25.032Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 101,
+      "token_penalaran": 29,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:26.158Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 146,
+      "token_penalaran": 49,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:26.238Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Modal",
+      "status": 200,
+      "token_keluar": 130,
+      "token_penalaran": 54,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:26.406Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 135,
+      "token_penalaran": 47,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:28.653Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 122,
+      "token_penalaran": 47,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:29.027Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 131,
+      "token_penalaran": 35,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:29.989Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1281,
+      "token_penalaran": 1182,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:30.986Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 152,
+      "token_penalaran": 38,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:30.993Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 166,
+      "token_penalaran": 41,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:33.064Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 288,
+      "token_penalaran": 195,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:33.548Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 118,
+      "token_penalaran": 22,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:34.150Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 79,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:35.914Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 900,
+      "token_penalaran": 806,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:36.641Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 153,
+      "token_penalaran": 60,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:40.851Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 745,
+      "token_penalaran": 654,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:45.004Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 456,
+      "token_penalaran": 340,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:46.123Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 707,
+      "token_penalaran": 590,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:07.905Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 3331,
+      "token_penalaran": 3249,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:12.226Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6211,
+      "token_penalaran": 6121,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:22.998Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2616,
+      "token_penalaran": 2491,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:24.147Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2303,
+      "token_penalaran": 2214,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:28.689Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 770,
+      "token_penalaran": 697,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:44.088Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 1183,
+      "token_penalaran": 1125,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:56.214Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 693,
+      "token_penalaran": 623,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:54:02.030Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 605,
+      "token_penalaran": 542,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:54:16.046Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 7259,
+      "token_penalaran": 7210,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:54:18.048Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 2094,
+      "token_penalaran": 1997,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:54:25.881Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Krea",
+      "status": 200,
+      "token_keluar": 6138,
+      "token_penalaran": 5984,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:54:37.107Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 5540,
+      "token_penalaran": 5479,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:54:37.996Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 2477,
+      "token_penalaran": 2266,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:54:43.980Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1602,
+      "token_penalaran": 1536,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:55:17.746Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1638,
+      "token_penalaran": 1590,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:55:29.686Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 1990,
+      "token_penalaran": 1925,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:55:33.426Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1459,
+      "token_penalaran": 1360,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:55:34.528Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 2801,
+      "token_penalaran": 2742,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:55:47.025Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 2738,
+      "token_penalaran": 2592,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:56:14.493Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DekaLLM",
+      "status": 200,
+      "token_keluar": 1943,
+      "token_penalaran": 1892,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:56:24.314Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-dada-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1357,
+      "token_penalaran": 1347,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:56:45.354Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 5924,
+      "token_penalaran": 5991,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:56:50.398Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Modal",
+      "status": 200,
+      "token_keluar": 953,
+      "token_penalaran": 924,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:57:19.320Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-dada-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1039,
+      "token_penalaran": 970,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:57:26.768Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-dada-o2/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Together",
+      "status": 200,
+      "token_keluar": 1732,
+      "token_penalaran": 1656,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:58:10.494Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-dada-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 2516,
+      "token_penalaran": 2155,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:58:46.846Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 5662,
+      "token_penalaran": 5766,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:00:06.865Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 4167,
+      "token_penalaran": 4044,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:00:54.339Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 14329,
+      "token_penalaran": 14250,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:01:04.826Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 5063,
+      "token_penalaran": 4998,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:01:29.509Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-dada-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 5443,
+      "token_penalaran": 4564,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:01:33.568Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 5796,
+      "token_penalaran": 5733,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:01:53.016Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 10246,
+      "token_penalaran": 9639,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:05:09.212Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 8556,
+      "token_penalaran": 8494,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:08:40.939Z",
+      "tag": "m2d6/kalibrasi/K4/s1/m2d4-dada-o1/penebak/t3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 14946,
+      "token_penalaran": 14890,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:09:30.390Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Fireworks",
+      "status": 200,
+      "token_keluar": 1184,
+      "token_penalaran": 1130,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:09:40.880Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DekaLLM",
+      "status": 200,
+      "token_keluar": 2941,
+      "token_penalaran": 2885,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:09:57.520Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1525,
+      "token_penalaran": 1517,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:09:58.891Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Krea",
+      "status": 200,
+      "token_keluar": 4133,
+      "token_penalaran": 3719,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:08.924Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1391,
+      "token_penalaran": 1296,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:25.353Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 5467,
+      "token_penalaran": 5395,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:48.676Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 2469,
+      "token_penalaran": 2414,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:52.277Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 3430,
+      "token_penalaran": 3366,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:53.670Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Z.AI",
+      "status": 200,
+      "token_keluar": 126,
+      "token_penalaran": 32,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:55.432Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 146,
+      "token_penalaran": 49,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:57.742Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 5321,
+      "token_penalaran": 5258,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:59.168Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 295,
+      "token_penalaran": 205,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:59.419Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 676,
+      "token_penalaran": 579,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:14.728Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 380,
+      "token_penalaran": 325,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:16.737Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DekaLLM",
+      "status": 200,
+      "token_keluar": 3392,
+      "token_penalaran": 3336,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:23.761Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 376,
+      "token_penalaran": 317,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:25.096Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2026,
+      "token_penalaran": 1930,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:26.602Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 108,
+      "token_penalaran": 34,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:29.117Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 298,
+      "token_penalaran": 215,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:39.149Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 4956,
+      "token_penalaran": 4867,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:55.802Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "BaseTen",
+      "status": 200,
+      "token_keluar": 10259,
+      "token_penalaran": 10196,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:28.374Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 3217,
+      "token_penalaran": 3161,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:33.519Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 260,
+      "token_penalaran": 184,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:37.002Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AkashML",
+      "status": 200,
+      "token_keluar": 125,
+      "token_penalaran": 37,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:38.021Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 6248,
+      "token_penalaran": 6184,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:39.761Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Baidu",
+      "status": 200,
+      "token_keluar": 68,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:43.323Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 136,
+      "token_penalaran": 52,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:13:29.689Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 3307,
+      "token_penalaran": 2854,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:13:36.021Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Krea",
+      "status": 200,
+      "token_keluar": 1088,
+      "token_penalaran": 936,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:13:44.213Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 423,
+      "token_penalaran": 350,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:15:43.704Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 7424,
+      "token_penalaran": 7264,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:15:46.632Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 85,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:15:52.346Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 241,
+      "token_penalaran": 164,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:16:11.708Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 9607,
+      "token_penalaran": 9447,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:16:34.559Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6911,
+      "token_penalaran": 6852,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:16:40.853Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1166,
+      "token_penalaran": 1071,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:16:47.878Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2148,
+      "token_penalaran": 2085,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:16:49.720Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 758,
+      "token_penalaran": 705,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:16:55.814Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2471,
+      "token_penalaran": 2409,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:05.858Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 1537,
+      "token_penalaran": 1481,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:06.974Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2201,
+      "token_penalaran": 2106,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:10.489Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 621,
+      "token_penalaran": 537,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:25.691Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 905,
+      "token_penalaran": 830,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:31.388Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 1545,
+      "token_penalaran": 1482,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:33.844Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 391,
+      "token_penalaran": 311,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:08.939Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 2660,
+      "token_penalaran": 2595,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:13.079Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 709,
+      "token_penalaran": 594,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:21.175Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 10470,
+      "token_penalaran": 10398,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:23.057Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 208,
+      "token_penalaran": 115,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:24.756Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 3204,
+      "token_penalaran": 3104,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:25.983Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 108,
+      "token_penalaran": 14,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:32.734Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 682,
+      "token_penalaran": 647,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:40.469Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 1848,
+      "token_penalaran": 1784,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:09.821Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 1000,
+      "token_penalaran": 900,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:14.736Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 2708,
+      "token_penalaran": 2644,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:15.729Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o3/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 4300,
+      "token_penalaran": 4241,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:16.866Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 114,
+      "token_penalaran": 36,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:18.669Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 277,
+      "token_penalaran": 193,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:26.698Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Z.AI",
+      "status": 200,
+      "token_keluar": 266,
+      "token_penalaran": 187,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:30.376Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 142,
+      "token_penalaran": 55,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:20:03.135Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 3911,
+      "token_penalaran": 3851,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:20:40.600Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 7504,
+      "token_penalaran": 7441,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:20:51.034Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o3/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 4741,
+      "token_penalaran": 4687,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:22.447Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8000,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:26.690Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 848,
+      "token_penalaran": 747,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:29.318Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8001,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:36.331Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o1/penebak/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 6987,
+      "token_penalaran": 6908,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:41.069Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2921,
+      "token_penalaran": 2827,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:26:31.652Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o1/penebak/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 13573,
+      "token_penalaran": 13514,
+      "penalaran_diminta": null,
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:26:40.224Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "status": 200,
+      "token_keluar": 1022,
+      "token_penalaran": 736,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:51.747Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 496,
+      "token_penalaran": 399,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:52.286Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 651,
+      "token_penalaran": 580,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:55.802Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 752,
+      "token_penalaran": 670,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:58.559Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1200,
+      "token_penalaran": 1070,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:00.108Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 815,
+      "token_penalaran": 715,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:03.232Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 579,
+      "token_penalaran": 479,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:03.438Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 619,
+      "token_penalaran": 531,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:12.651Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 262,
+      "token_penalaran": 181,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:29.124Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 880,
+      "token_penalaran": 772,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:40.070Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 558,
+      "token_penalaran": 470,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:30:39.619Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s1/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Cloudflare",
+      "status": 200,
+      "token_keluar": 852,
+      "token_penalaran": 597,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:30:49.644Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s1/kritikus/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 698,
+      "token_penalaran": 537,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:31:01.899Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s2/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Fireworks",
+      "status": 200,
+      "token_keluar": 726,
+      "token_penalaran": 566,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:31:50.850Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s2/kritikus/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 5943,
+      "token_penalaran": 5777,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:32:19.842Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s3/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Fireworks",
+      "status": 200,
+      "token_keluar": 1755,
+      "token_penalaran": 1538,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:34:55.542Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o1/s1/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 15828,
+      "token_penalaran": 15598,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:35:06.373Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o2/s1/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 698,
+      "token_penalaran": 486,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:35:23.238Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o2/s1/kritikus/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 1303,
+      "token_penalaran": 1119,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
     }
   ],
   "pengecualian": {
     "deepseek/deepseek-v4.1-flash": [
       "atlas-cloud"
+    ],
+    "z-ai/glm-5.3": [
+      "akashml",
+      "alibaba",
+      "atlas-cloud",
+      "baidu",
+      "gmicloud",
+      "inference-net",
+      "morph",
+      "novita",
+      "reka",
+      "relace",
+      "sail-research",
+      "z-ai"
     ]
   }
 }

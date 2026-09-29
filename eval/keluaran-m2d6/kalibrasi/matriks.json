@@ -1,0 +1,265 @@
+{
+  "matriks": [
+    {
+      "susunan": "K0",
+      "ringkas": "M2d-5: DeepSeek ×2 + GLM reasoning.max_tokens 3.000, petunjuk \"pemain pintar\"",
+      "sampel": 1,
+      "bocor_ditolak": 1,
+      "bocor_total": 4,
+      "aman_ditolak": 3,
+      "aman_total": 6,
+      "per_soal": {
+        "m2d5-tirt-o2": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d5-tirt-o3": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d4-tirt-o3": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d4-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o1": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d4-ultj-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o3": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d4-dada-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-dada-o1": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d5-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        }
+      },
+      "biaya_usd": 0.04703126899
+    },
+    {
+      "susunan": "K1",
+      "ringkas": "DeepSeek ×2 + GLM effort high (dijaga), petunjuk \"pemain pintar\"",
+      "sampel": 2,
+      "bocor_ditolak": 6,
+      "bocor_total": 8,
+      "aman_ditolak": 9,
+      "aman_total": 12,
+      "per_soal": {
+        "m2d5-tirt-o2": {
+          "ditolak": 2,
+          "sampel": 2
+        },
+        "m2d5-tirt-o3": {
+          "ditolak": 1,
+          "sampel": 2
+        },
+        "m2d4-tirt-o3": {
+          "ditolak": 2,
+          "sampel": 2
+        },
+        "m2d4-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 2
+        },
+        "m2d4-ultj-o1": {
+          "ditolak": 2,
+          "sampel": 2
+        },
+        "m2d4-ultj-o2": {
+          "ditolak": 2,
+          "sampel": 2
+        },
+        "m2d4-ultj-o3": {
+          "ditolak": 2,
+          "sampel": 2
+        },
+        "m2d4-dada-o2": {
+          "ditolak": 1,
+          "sampel": 2
+        },
+        "m2d4-dada-o1": {
+          "ditolak": 1,
+          "sampel": 2
+        },
+        "m2d5-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 2
+        }
+      },
+      "biaya_usd": 0.149639099215
+    },
+    {
+      "susunan": "K2",
+      "ringkas": "DeepSeek ×2 + GLM effort high (dijaga), petunjuk \"pemburu soal bocor\"",
+      "sampel": 1,
+      "bocor_ditolak": 4,
+      "bocor_total": 4,
+      "aman_ditolak": 6,
+      "aman_total": 6,
+      "per_soal": {
+        "m2d5-tirt-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d5-tirt-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-tirt-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-dada-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-dada-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d5-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        }
+      },
+      "biaya_usd": 0.070715791785
+    },
+    {
+      "susunan": "K3",
+      "ringkas": "GLM effort high ×3 (dijaga), petunjuk \"pemburu soal bocor\"",
+      "sampel": 1,
+      "bocor_ditolak": 4,
+      "bocor_total": 4,
+      "aman_ditolak": 4,
+      "aman_total": 6,
+      "per_soal": {
+        "m2d5-tirt-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d5-tirt-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-tirt-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-dada-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-dada-o1": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d5-tirt-o1": {
+          "ditolak": 0,
+          "sampel": 1
+        }
+      },
+      "biaya_usd": 0.13719470749999998
+    },
+    {
+      "susunan": "K4",
+      "ringkas": "DeepSeek ×3, petunjuk \"pemburu soal bocor\"",
+      "sampel": 1,
+      "bocor_ditolak": 3,
+      "bocor_total": 4,
+      "aman_ditolak": 4,
+      "aman_total": 6,
+      "per_soal": {
+        "m2d5-tirt-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d5-tirt-o3": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d4-tirt-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-tirt-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o1": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-ultj-o3": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-dada-o2": {
+          "ditolak": 1,
+          "sampel": 1
+        },
+        "m2d4-dada-o1": {
+          "ditolak": 0,
+          "sampel": 1
+        },
+        "m2d5-tirt-o1": {
+          "ditolak": 0,
+          "sampel": 1
+        }
+      },
+      "biaya_usd": 0.07469478375500001
+    }
+  ],
+  "pilihan": "K3"
+}

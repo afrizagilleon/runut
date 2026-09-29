@@ -64,6 +64,19 @@ describe('pelanggaran', () => {
     // Panggilan tanpa medan reasoning tidak masuk hitungan (tidak bisa melanggar).
     expect(ringkasPenyedia([b({ penyedia: 'X' })])).toEqual([]);
   });
+
+  it('porsi dihitung PER JENIS: panggilan jenis lain tidak mengencerkan bukti "tidak berpikir"', () => {
+    const glm = { model: MODEL_OR_GLM, penyedia: 'Wafer' };
+    const tidakBerpikir = { ...glm, tag: 'm2d6/kalibrasi/K1/s1/x/penebak/t3', penalaran_diminta: { effort: 'high' }, token_penalaran: 40 };
+    const batasPatuh = { ...glm, tag: 'm2d5/tirt/p1/kritikus/o1', penalaran_diminta: { max_tokens: 8000 }, token_penalaran: 100 };
+    const baris = [b(tidakBerpikir), b(tidakBerpikir), ...Array.from({ length: 10 }, () => b(batasPatuh))];
+    const r = ringkasPenyedia(baris)[0];
+    expect(r?.per_jenis).toEqual({ 'tidak-berpikir': { diperiksa: 2, melanggar: 2 }, 'melewati-batas': { diperiksa: 10, melanggar: 0 } });
+    expect(r?.dikecualikan).toBe(true);
+    // effort "medium" (sengaja diprobe) bukan bukti terhadap penyedia.
+    const medium = { ...tidakBerpikir, penalaran_diminta: { effort: 'medium' } };
+    expect(ringkasPenyedia([b(medium), b(medium), b(medium)])).toEqual([]);
+  });
 });
 
 describe('daftar di kode = turunan dari cuplikan ledger terlacak', () => {

@@ -1,0 +1,144 @@
+{
+  "pagu_probe_usd": 0.4,
+  "biaya_probe_usd": 0.31255353090000004,
+  "hasil": [
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-1",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Relace",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 243,
+      "token_penalaran": 161,
+      "panjang_penalaran_karakter": 633,
+      "biaya_usd": 0.0010404,
+      "latensi_ms": 3279,
+      "terurai": true,
+      "catatan": "b/60 (kunci d)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 60, \"alasan\": \"Angka spesifik seperti 58 biasanya memang ada di dokumen tetapi sering disalahartikan konteksnya—kemungkinan itu kenaikan sejak awal tahun, bukan periode 26 Nov–9 Des yang panjangnya hanya sekitar dua minggu.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-2",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Sail Research",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 448,
+      "token_penalaran": 340,
+      "panjang_penalaran_karakter": 1539,
+      "biaya_usd": 0.0015952,
+      "latensi_ms": 6833,
+      "terurai": true,
+      "catatan": "b/45 (kunci d)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 45, \"alasan\": \"Angka 58 terdengar seperti kenaikan yang memang ada di data, dan kesalahan paling wajar adalah salah mengaitkan periode—Sari menyebut 26 Nov–9 Des padahal itu kenaikan sejak awal tahun, jadi jawaban b paling masuk akal dibanding klaim ekstrem bahwa harga tidak tercatat sama sekali.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-3",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Parasail",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 458,
+      "token_penalaran": 371,
+      "panjang_penalaran_karakter": 1453,
+      "biaya_usd": 0.0025192,
+      "latensi_ms": 5209,
+      "terurai": true,
+      "catatan": "b/55 (kunci d)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 55, \"alasan\": \"Pola umum soal seperti ini: angka 58 kemungkinan besar memang ada di dokumen, tapi untuk rentang waktu yang berbeda (sejak awal tahun), sehingga klaim Sari tentang periode 26 Nov–9 Des keliru meski angkanya benar.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p3/penebak-glm/high-4",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Sail Research",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 703,
+      "token_penalaran": 615,
+      "panjang_penalaran_karakter": 2527,
+      "biaya_usd": 0.00244425,
+      "latensi_ms": 8488,
+      "terurai": true,
+      "catatan": "b/65 (kunci d)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 65, \"alasan\": \"Pola khas soal seperti ini: angka yang disebut terlalu percaya diri biasanya memang ada di dokumen, tetapi untuk periode yang berbeda (kenaikan sejak awal tahun), sehingga klaim Sari tentang periode 26 Nov–9 Des salah.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p3/kritikus/high-1",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 24000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2072,
+      "token_keluar": 6790,
+      "token_penalaran": 6589,
+      "panjang_penalaran_karakter": 24668,
+      "biaya_usd": 0.0303676168,
+      "latensi_ms": 27073,
+      "terurai": true,
+      "catatan": "0 keberatan (-); tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 menghitung kenaikan 26 November–9 Desember sebagai Rp58 dan kartu 2–3 mencatat kedua harga, sehingga hanya d yang benar; a dan c terbantahkan oleh keberadaan hitungan dan catatan harga itu, b terbantahkan karena kartu 1 dan 4 mengukur kenaikan dari 26 November, bukan awal tahun.\"}, \"keberatan\": [], \"arahan\": \"Pertimbangkan satu pengecoh berangka (misalnya selisih atau periode pengukuran lain) agar pilihan d tidak menonjol hanya karena mengulang angka dan kalimat teman.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p3/kritikus/high-2",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 24000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2072,
+      "token_keluar": 7587,
+      "token_penalaran": 7296,
+      "panjang_penalaran_karakter": 27814,
+      "biaya_usd": 0.0338744168,
+      "latensi_ms": 30820,
+      "terurai": true,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 menghitung selisih Rp106 − Rp48 = Rp58 untuk periode 26 November–9 Desember dan kartu 2–3 mencatat kedua harga, sehingga a danc bertentangan langsung dengan kartu dan b tidak didukung kartu mana pun; hanya d yang benar.\"}, \"keberatan\": [{\"jenis\": \"tertebak\", \"bagian\": \"pilihan\", \"alasan\": \"Tanpa membaca kartu, pemain bisa memilih d karena satu-satunya pilihan yang mengulang isi pesan (angka 58 dan periode), sementara b terang-terangan menyangkal periode serta a dan c memakai kata mutlak ('tidak pernah', 'di mana pun') yang mudah dicurigai salah.\"}], \"arahan\": \"Pilihan b perlu dibuat tetap tampak mendukung angka teman (cukup menggeser satu detail periode atau jumlah secara halus) agar d tidak tertebak sebagai satu-satunya opsi yang sejalan dengan isi pesan.\"}"
+    }
+  ]
+}

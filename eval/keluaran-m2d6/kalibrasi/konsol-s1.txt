@@ -1,0 +1,245 @@
+
+> runut@0.1.0 penalar:kalibrasi
+> node --experimental-strip-types factory/llm/penalar-kalibrasi.ts K0 K1 K2 K4 K3
+
+K0 sampel 1 — M2d-5: DeepSeek ×2 + GLM reasoning.max_tokens 3.000, petunjuk "pemain pintar"; pagu kalibrasi US$0.80 (terpakai US$0.017833).
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t1: CoreWeave penalaran 4533 stop US$0.003048
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o1/penebak/t1: InferenceNet penalaran 2214 stop US$0.001024
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t2: DeepInfra penalaran 3685 stop US$0.001622
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o1/penebak/t3: Morph penalaran 88 stop US$0.000746
+m2d4-tirt-o1 [bocor] kunci a: b/60 b/65 a/60 → DITOLAK
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o1/penebak/t2: Morph penalaran 2088 stop US$0.001116
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o1/penebak/t3: Sail Research penalaran 1 stop US$0.000309
+m2d4-ultj-o1 [aman] kunci c: b/58 b/60 b/55 → lolos
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t1: DeepInfra penalaran 7203 stop US$0.003062
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o3/penebak/t1: Morph penalaran 489 stop US$0.000306
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t1: InferenceNet penalaran 5045 stop US$0.002368
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o3/penebak/t2: Morph penalaran 678 stop US$0.000380
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o2/penebak/t1: Morph penalaran 1613 stop US$0.000881
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t1: Relace penalaran 2758 stop US$0.001718
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o3/penebak/t3: Sail Research penalaran 1 stop US$0.000335
+m2d4-ultj-o3 [aman] kunci a: b/70 b/65 b/70 → lolos
+  m2d6/kalibrasi/K0/s1/m2d4-dada-o2/penebak/t1: InferenceNet penalaran 393 stop US$0.000233
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t2: DeepInfra penalaran 2444 stop US$0.001067
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o3/penebak/t3: Relace penalaran 16 stop US$0.000421
+m2d5-tirt-o3 [bocor] kunci d: a/65 a/55 b/65 → lolos
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o2/penebak/t2: Modal penalaran 4542 stop US$0.005612
+  m2d6/kalibrasi/K0/s1/m2d4-ultj-o2/penebak/t3: Relace penalaran 11 stop US$0.000394
+m2d4-ultj-o2 [aman] kunci a: b/65 a/65 a/55 → DITOLAK
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o1/penebak/t1: GMICloud penalaran 4619 stop US$0.003438
+  m2d6/kalibrasi/K0/s1/m2d4-dada-o1/penebak/t1: Relace penalaran 1113 stop US$0.000826
+  m2d6/kalibrasi/K0/s1/m2d4-dada-o1/penebak/t2: Relace penalaran 313 stop US$0.000261
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t2: InferenceNet penalaran 6003 stop US$0.002760
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o2/penebak/t3: Sail Research penalaran 1 stop US$0.000479
+m2d5-tirt-o2 [bocor] kunci d: b/60 a/55 a/45 → lolos
+  m2d6/kalibrasi/K0/s1/m2d4-dada-o1/penebak/t3: Reka penalaran 0 stop US$0.000225
+m2d4-dada-o1 [aman] kunci a: c/61 c/78 c/45 → lolos
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o1/penebak/t2: Ionstream penalaran 4891 stop US$0.005792
+  m2d6/kalibrasi/K0/s1/m2d5-tirt-o1/penebak/t3: Morph penalaran 120 stop US$0.000876
+m2d5-tirt-o1 [aman] kunci c: b/60 b/60 c/55 → DITOLAK
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t2: Relace penalaran 3946 stop US$0.002450
+  m2d6/kalibrasi/K0/s1/m2d4-tirt-o3/penebak/t3: Wafer penalaran 81 stop US$0.000835
+m2d4-tirt-o3 [bocor] kunci a: b/60 b/80 b/40 → lolos
+  m2d6/kalibrasi/K0/s1/m2d4-dada-o2/penebak/t2: DeepInfra penalaran 9687 stop US$0.004140
+  m2d6/kalibrasi/K0/s1/m2d4-dada-o2/penebak/t3: Sail Research penalaran 1 stop US$0.000311
+m2d4-dada-o2 [aman] kunci b: b/62 d/55 b/60 → DITOLAK
+K0 s1: bocor ditolak 1/4, aman ditolak 3/6, US$0.047031; kalibrasi terpakai US$0.064865.
+K1 sampel 1 — DeepSeek ×2 + GLM effort high (dijaga), petunjuk "pemain pintar"; pagu kalibrasi US$0.80 (terpakai US$0.064865).
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t1: Relace penalaran 530 stop US$0.000338
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t2: Wafer penalaran 1995 stop US$0.001462
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3: Relace penalaran 48 stop US$0.000583
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3/u1: Sail Research penalaran 48 stop US$0.000445
+m2d4-ultj-o1 [aman] kunci c: c/60 b/55 c/100! → DITOLAK
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t1: NextBit penalaran 3232 stop US$0.002850
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t1: InferenceNet penalaran 1685 stop US$0.000840
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t1: Relace penalaran 2873 stop US$0.001727
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o2/penebak/t1: InferenceNet penalaran 3883 stop US$0.001796
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t2: Krea penalaran 6099 stop US$0.005856
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3: GMICloud penalaran 76 stop US$0.000829
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3/u1: Sail Research penalaran 126 stop US$0.000776
+m2d4-tirt-o3 [bocor] kunci a: b/60 a/80 a/100! → DITOLAK
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t1: Morph penalaran 814 stop US$0.000450
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t2: Morph penalaran 262 stop US$0.000172
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3: Sail Research penalaran 41 stop US$0.000461
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3/u1: Relace penalaran 70 stop US$0.000607
+m2d4-ultj-o3 [aman] kunci a: b/65 b/65 a/100! → DITOLAK
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o3/penebak/t1: DeepInfra penalaran 8409 stop US$0.003567
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o2/penebak/t2: InferenceNet penalaran 2494 stop US$0.001171
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o2/penebak/t3: Sail Research penalaran 301 stop US$0.001394
+m2d5-tirt-o2 [bocor] kunci d: b/60 b/65 d/45 → DITOLAK
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t2: InferenceNet penalaran 2665 stop US$0.001221
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3: Novita penalaran 60 stop US$0.000634
+  m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3/u1: Venice penalaran 39 stop US$0.001059
+m2d4-tirt-o1 [bocor] kunci a: b/65 b/60 a/100! → DITOLAK
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t2: Relace penalaran 4455 stop US$0.002709
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3: Reka penalaran 50 stop US$0.000283
+  m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3/u1: Sail Research penalaran 136 stop US$0.000856
+m2d4-ultj-o2 [aman] kunci a: b/65 a/62 a/100! → DITOLAK
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o3/penebak/t2: DeepInfra penalaran 4186 stop US$0.001797
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o1/penebak/t1: DeepInfra penalaran 3485 stop US$0.001541
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t1: Relace penalaran 2108 stop US$0.001530
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o3/penebak/t3: AtlasCloud penalaran 403 stop US$0.001090
+m2d5-tirt-o3 [bocor] kunci d: a/60 a/60 b/60 → lolos
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t1: DeepInfra penalaran 6601 stop US$0.002846
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t2: InferenceNet penalaran 2965 stop US$0.001606
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3: Relace penalaran 62 stop US$0.000674
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3/u1: Baidu penalaran 35 stop US$0.001138
+m2d4-dada-o1 [aman] kunci a: c/70 c/65 a/100! → DITOLAK
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o1/penebak/t2: DeepInfra penalaran 3472 stop US$0.001536
+  m2d6/kalibrasi/K1/s1/m2d5-tirt-o1/penebak/t3: Wafer penalaran 1064 stop US$0.005315
+m2d5-tirt-o1 [aman] kunci c: b/75 b/65 b/58 → lolos
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t2: DigitalOcean penalaran 6444 stop US$0.007899
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t3: SiliconFlow penalaran 74 stop US$0.000917
+  m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t3/u1: Relace penalaran 366 stop US$0.001809
+m2d4-dada-o2 [aman] kunci b: d/60 c/40 d/40 → lolos
+K1 s1: bocor ditolak 3/4, aman ditolak 4/6, US$0.061781; kalibrasi terpakai US$0.126646.
+K2 sampel 1 — DeepSeek ×2 + GLM effort high (dijaga), petunjuk "pemburu soal bocor"; pagu kalibrasi US$0.80 (terpakai US$0.126646).
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t1: Wafer penalaran 301 stop US$0.000310
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t1: Relace penalaran 1040 stop US$0.000683
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t1: CoreWeave penalaran 4068 stop US$0.002786
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t2: GMICloud penalaran 3117 stop US$0.002390
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3: Sail Research penalaran 75 stop US$0.000664
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o3/penebak/t1: Novita penalaran 5499 stop US$0.004434
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t1: Relace penalaran 3402 stop US$0.002194
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3/u1: Reka penalaran 23 stop US$0.000318
+m2d5-tirt-o2 [bocor] kunci d: d/78 d/86 d/100! → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t1: Morph penalaran 1541 stop US$0.000857
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t2: Relace penalaran 1774 stop US$0.001195
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3: Sail Research penalaran 168 stop US$0.000942
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o3/penebak/t2: Relace penalaran 3479 stop US$0.002129
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t2: StreamLake penalaran 7468 stop US$0.005473
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t2: Relace penalaran 1222 stop US$0.000787
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3/u1: Reka penalaran 58 stop US$0.000356
+m2d4-tirt-o3 [bocor] kunci a: b/85 a/85 a/100! → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o3/penebak/t3: Sail Research penalaran 590 stop US$0.002405
+m2d5-tirt-o3 [bocor] kunci d: b/55 d/60 b/45 → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-dada-o2/penebak/t1: Morph penalaran 1051 stop US$0.000608
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3: Reka penalaran 24 stop US$0.000325
+  m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3/u1: Morph penalaran 89 stop US$0.000911
+m2d4-tirt-o1 [bocor] kunci a: a/70 a/60 a/100! → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t1: Relace penalaran 1741 stop US$0.001106
+  m2d6/kalibrasi/K2/s1/m2d4-dada-o2/penebak/t2: NextBit penalaran 2527 stop US$0.002282
+  m2d6/kalibrasi/K2/s1/m2d4-dada-o2/penebak/t3: Wafer penalaran 1359 stop US$0.006705
+m2d4-dada-o2 [aman] kunci b: b/65 b/70 b/62 → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t3: Reka penalaran 115 stop US$0.000441
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t3/u1: Wafer penalaran 397 stop US$0.002429
+m2d4-ultj-o2 [aman] kunci a: a/78 a/60 a/60 → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t2: DeepInfra penalaran 6744 stop US$0.002934
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3: Alibaba penalaran 58 stop US$0.001256
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3/u1: AtlasCloud penalaran 227 stop US$0.000959
+m2d4-ultj-o1 [aman] kunci c: c/60 c/70 c/100! → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t1: Relace penalaran 2592 stop US$0.002080
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t1: Relace penalaran 3636 stop US$0.002460
+  m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t2: Relace penalaran 4928 stop US$0.003876
+  m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t3: Reka penalaran 128 stop US$0.000466
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t2: DekaLLM penalaran 4463 stop US$0.001874
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3: Relace penalaran 52 stop US$0.000616
+  m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3/u1: Sail Research penalaran 270 stop US$0.001388
+m2d5-tirt-o1 [aman] kunci c: b/65 b/65 c/100! → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t3/u1: Sail Research penalaran 1089 stop US$0.004161
+m2d4-dada-o1 [aman] kunci a: a/60 c/75 a/28 → DITOLAK
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t2: DeepInfra penalaran 10507 stop US$0.004478
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3: Sail Research penalaran 78 stop US$0.000648
+  m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3/u1: Relace penalaran 85 stop US$0.000790
+m2d4-ultj-o3 [aman] kunci a: b/65 b/70 a/100! → DITOLAK
+K2 s1: bocor ditolak 4/4, aman ditolak 6/6, US$0.070716; kalibrasi terpakai US$0.197362.
+K3 sampel 1 — GLM effort high ×3 (dijaga), petunjuk "pemburu soal bocor"; pagu kalibrasi US$0.80 (terpakai US$0.197362).
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1: Sail Research penalaran 45 stop US$0.000510
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1: Sail Research penalaran 1 stop US$0.000398
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1: Sail Research penalaran 125 stop US$0.000779
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t1: Wafer penalaran 496 stop US$0.002698
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1/u1: Relace penalaran 101 stop US$0.000804
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2: Sail Research penalaran 173 stop US$0.000969
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t2: Wafer penalaran 586 stop US$0.003157
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2/u1: AkashML penalaran 67 stop US$0.001196
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t3: Sail Research penalaran 55 stop US$0.000565
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t1: Sail Research penalaran 180 stop US$0.001051
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t3/u1: Wafer penalaran 508 stop US$0.002704
+m2d4-tirt-o3 [bocor] kunci a: a/100! a/100! a/60 → DITOLAK
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t3: Wafer penalaran 778 stop US$0.004010
+m2d4-ultj-o1 [aman] kunci c: c/65 c/60 c/55 → DITOLAK
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t1/u1: Relace penalaran 347 stop US$0.001712
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t1: Wafer penalaran 944 stop US$0.004877
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1/u1: Reka penalaran 186 stop US$0.000516
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t2: Wafer penalaran 533 stop US$0.002849
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2: Sail Research penalaran 239 stop US$0.001184
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t2: Sail Research penalaran 358 stop US$0.001595
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t3: Wafer penalaran 589 stop US$0.003293
+m2d4-ultj-o2 [aman] kunci a: a/60 a/60 a/40 → DITOLAK
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2/u1: Wafer penalaran 260 stop US$0.001714
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1: Reka penalaran 46 stop US$0.000358
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t3: Sail Research penalaran 419 stop US$0.001813
+m2d5-tirt-o3 [bocor] kunci d: d/35 d/40 b/45 → DITOLAK
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t3: Wafer penalaran 1134 stop US$0.005530
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1/u1: Relace penalaran 114 stop US$0.000832
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1/u1: Reka penalaran 29 stop US$0.000316
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2: Sail Research penalaran 49 stop US$0.000587
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2: Modal penalaran 54 stop US$0.001332
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1: Reka penalaran 47 stop US$0.000352
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2/u1: Reka penalaran 47 stop US$0.000340
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2/u1: Reka penalaran 35 stop US$0.000236
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t3/u1: Wafer penalaran 1182 stop US$0.005776
+m2d5-tirt-o2 [bocor] kunci d: d/100! d/100! d/60 → DITOLAK
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3: Sail Research penalaran 38 stop US$0.000598
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1/u1: Sail Research penalaran 41 stop US$0.000645
+  m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3/u1: Wafer penalaran 195 stop US$0.001414
+m2d4-tirt-o1 [bocor] kunci a: a/100! a/100! a/100! → DITOLAK
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3: Reka penalaran 22 stop US$0.000183
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t2: Sail Research penalaran 1 stop US$0.000349
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t1: Wafer penalaran 806 stop US$0.004113
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3/u1: Morph penalaran 60 stop US$0.000717
+m2d4-dada-o2 [aman] kunci b: b/100! b/100! b/100! → DITOLAK
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t2: Wafer penalaran 654 stop US$0.003420
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t1: Reka penalaran 340 stop US$0.000726
+  m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t3: Wafer penalaran 590 stop US$0.003253
+m2d5-tirt-o1 [aman] kunci c: b/55 b/55 b/55 → lolos
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t2: Wafer penalaran 3249 stop US$0.014807
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t2/u1: Wafer penalaran 6121 stop US$0.027473
+  m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t3: Wafer penalaran 2491 stop US$0.011650
+m2d4-dada-o1 [aman] kunci a: c/55 b/85 c/60 → lolos
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t3: Wafer penalaran 2214 stop US$0.010270
+  m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t3/u1: Wafer penalaran 697 stop US$0.003525
+m2d4-ultj-o3 [aman] kunci a: a/100! a/45 b/60 → DITOLAK
+K3 s1: bocor ditolak 4/4, aman ditolak 4/6, US$0.137195; kalibrasi terpakai US$0.334556.
+K4 sampel 1 — DeepSeek ×3, petunjuk "pemburu soal bocor"; pagu kalibrasi US$0.80 (terpakai US$0.334556).
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o1/penebak/t1: SiliconFlow penalaran 1125 stop US$0.001570
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o1/penebak/t2: Morph penalaran 623 stop US$0.000374
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o1/penebak/t3: Morph penalaran 542 stop US$0.000319
+m2d4-ultj-o1 [aman] kunci c: c/75 c/70 c/65 → DITOLAK
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o3/penebak/t1: CoreWeave penalaran 7210 stop US$0.004817
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o2/penebak/t1: Relace penalaran 1997 stop US$0.001267
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o2/penebak/t1: Krea penalaran 5984 stop US$0.005641
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o2/penebak/t2: Wafer penalaran 5479 stop US$0.003915
+  m2d6/kalibrasi/K4/s1/m2d4-tirt-o3/penebak/t1: Relace penalaran 2266 stop US$0.001496
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o2/penebak/t3: Wafer penalaran 1536 stop US$0.001158
+m2d5-tirt-o2 [bocor] kunci d: d/70 d/78 d/88 → DITOLAK
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o2/penebak/t2: Relace penalaran 1590 stop US$0.000993
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o3/penebak/t1: DeepInfra penalaran 1925 stop US$0.000854
+  m2d6/kalibrasi/K4/s1/m2d4-tirt-o3/penebak/t2: Relace penalaran 1360 stop US$0.000886
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o2/penebak/t3: Morph penalaran 2742 stop US$0.001430
+m2d4-ultj-o2 [aman] kunci a: a/85 a/60 a/65 → DITOLAK
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o3/penebak/t2: Relace penalaran 2592 stop US$0.001653
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o3/penebak/t3: DekaLLM penalaran 1892 stop US$0.000837
+m2d5-tirt-o3 [bocor] kunci d: b/65 b/60 b/58 → lolos
+  m2d6/kalibrasi/K4/s1/m2d4-dada-o2/penebak/t1: Relace penalaran 1347 stop US$0.000824
+  m2d6/kalibrasi/K4/s1/m2d4-tirt-o1/penebak/t1: Relace penalaran 5991 stop US$0.003565
+  m2d6/kalibrasi/K4/s1/m2d4-tirt-o1/penebak/t2: Modal penalaran 924 stop US$0.001297
+  m2d6/kalibrasi/K4/s1/m2d4-dada-o2/penebak/t2: Relace penalaran 970 stop US$0.000634
+  m2d6/kalibrasi/K4/s1/m2d4-dada-o2/penebak/t3: Together penalaran 1656 stop US$0.002233
+m2d4-dada-o2 [aman] kunci b: b/62 b/70 b/74 → DITOLAK
+  m2d6/kalibrasi/K4/s1/m2d4-dada-o1/penebak/t1: Relace penalaran 2155 stop US$0.001520
+  m2d6/kalibrasi/K4/s1/m2d4-tirt-o1/penebak/t3: InferenceNet penalaran 5766 stop US$0.002583
+m2d4-tirt-o1 [bocor] kunci a: a/60 a/70 a/60 → DITOLAK
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o1/penebak/t1: Relace penalaran 4044 stop US$0.002511
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o3/penebak/t2: DeepInfra penalaran 14250 stop US$0.006089
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o1/penebak/t2: Morph penalaran 4998 stop US$0.002624
+  m2d6/kalibrasi/K4/s1/m2d4-dada-o1/penebak/t2: Relace penalaran 4564 stop US$0.003276
+  m2d6/kalibrasi/K4/s1/m2d5-tirt-o1/penebak/t3: GMICloud penalaran 5733 stop US$0.004245
+m2d5-tirt-o1 [aman] kunci c: b/70 b/65 b/70 → lolos
+  m2d6/kalibrasi/K4/s1/m2d4-tirt-o3/penebak/t3: Relace penalaran 9639 stop US$0.006158
+m2d4-tirt-o3 [bocor] kunci a: a/75 a/72 b/60 → DITOLAK
+  m2d6/kalibrasi/K4/s1/m2d4-ultj-o3/penebak/t3: DeepInfra penalaran 8494 stop US$0.003612
+m2d4-ultj-o3 [aman] kunci a: b/65 a/70 b/65 → DITOLAK
+  m2d6/kalibrasi/K4/s1/m2d4-dada-o1/penebak/t3: DeepInfra penalaran 14890 stop US$0.006315
+m2d4-dada-o1 [aman] kunci a: c/72 b/65 c/60 → lolos
+K4 s1: bocor ditolak 3/4, aman ditolak 4/6, US$0.074695; kalibrasi terpakai US$0.409251.

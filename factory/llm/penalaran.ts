@@ -100,11 +100,23 @@ export interface PenalarBerpikir {
 export const AMBANG_MIN_KRITIKUS = 500;
 
 /**
- * Setelan penalar M2d-6 (sementara; angka final dari probe T-04 —
- * `eval/keluaran-m2d6/probe/putusan.md`).
+ * Setelan penalar M2d-6, dari probe T-04 (23 panggilan GLM, data mentah
+ * `eval/keluaran-m2d6/probe/probe-*.json`, putusan
+ * `eval/keluaran-m2d6/probe/putusan.md`):
+ *
+ * - `effort: "medium"` hampir tidak berpikir (kritikus 20–238 token, penebak
+ *   0–175) — sama dengan M2d-5. `"high"` berpikir: kritikus 1.731–11.880
+ *   token (7 panggilan, Wafer & PrimeIntellect), penebak 60–685.
+ * - kritikus: `max_tokens` 24.000 (penalaran terpanjang 11.880 dari batas
+ *   16.000 di probe — terlalu dekat); ambang 1.000 — di atas semua kritikus
+ *   yang tidak berpikir (M2d-5 ≤ 260, "medium" ≤ 238) dan di bawah semua
+ *   kritikus "high" (≥ 1.731). Kontrak: ≥ 500.
+ * - penebak GLM: `max_tokens` 8.000 (keluaran terpanjang 738); ambang 300 —
+ *   di atas penebak GLM M2d-5 yang tidak berpikir (0–123) dan di bawah
+ *   keluaran penebak GLM Featherless M2d-4 yang berpikir (439–1.463).
  */
 export const PENALAR_M2D6 = {
-  kritikus: { effort: 'high', maxTokens: 16_000, ambang: 500 },
+  kritikus: { effort: 'high', maxTokens: 24_000, ambang: 1_000 },
   penebakGlm: { effort: 'high', maxTokens: 8_000, ambang: 300 },
 } as const satisfies Record<string, PenalarBerpikir>;
 

@@ -1,0 +1,571 @@
+{
+  "susunan": "K3",
+  "sampel": 1,
+  "ringkas": "GLM effort high ×3 (dijaga), petunjuk \"pemburu soal bocor\"",
+  "soal": [
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "bocor",
+      "kunci": "d",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 86.66666666666667,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Reka"
+          ],
+          "token_penalaran": [
+            125,
+            186
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            239,
+            260
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pilihan a dan c adalah pengisi klasis yang menyatakan data tidak pernah dihitung/tidak tercatat, sehingga bisa disingkirkan, dan petunjuk soal bocor menyarankan klaim spesifik yang wajar seperti kenaikan Rp58 untuk periode 26 Nov–9 Des sering kali benar apa adanya.",
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            1134,
+            1182
+          ]
+        }
+      ],
+      "biaya_usd": 0.015498219899999999
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "d",
+      "ditolak": true,
+      "benar": 2,
+      "yakin_benar": 37.5,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 35,
+          "terbaca": true,
+          "alasan": "Pilihan a dan b isinya nyaris sama sehingga keduanya patut disingkirkan, dan dokumen seperti ini biasanya hanya berupa undangan/pemberitahuan rapat yang belum memuat hasil putusan, jadi klaim Nia kemungkinan keliru.",
+          "penyedia": [
+            "Sail Research",
+            "Relace"
+          ],
+          "token_penalaran": [
+            180,
+            347
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 40,
+          "terbaca": true,
+          "alasan": "Pilihan a dan b isinya hampir sama sehingga keduanya bisa disingkirkan, dan karena tanggal rapatnya spesifik kemungkinan rapatnya memang ada, maka penyangkalan yang paling langsung terhadap klaim Nia adalah bahwa hasilnya tidak tercatat.",
+          "penyedia": [
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            358
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Klaim Nia spesifik dan wajar (hasil RUPS memang lazim tercatat dalam dokumen resmi), dan pilihan b mengulang frasa 'catatan resmi' persis seperti omongan Nia, sementara c dan d bertentangan dengan kebiasaan pencatatan bursa.",
+          "penyedia": [
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            419
+          ]
+        }
+      ],
+      "biaya_usd": 0.006171589999999999
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 86.66666666666667,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Relace"
+          ],
+          "token_penalaran": [
+            45,
+            101
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "AkashML"
+          ],
+          "token_penalaran": [
+            173,
+            67
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Keraguan kelangsungan usaha (going concern) adalah alasan yang lazim dan spesifik di BEI untuk menghentikan perdagangan saham, dan klaim wajar seperti ini sering kali sesuai dokumen.",
+          "penyedia": [
+            "Sail Research",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            55,
+            508
+          ]
+        }
+      ],
+      "biaya_usd": 0.0067471664
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "bocor",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 100,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Reka"
+          ],
+          "token_penalaran": [
+            1,
+            29
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Modal",
+            "Reka"
+          ],
+          "token_penalaran": [
+            54,
+            47
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            38,
+            195
+          ]
+        }
+      ],
+      "biaya_usd": 0.0043979566
+    },
+    {
+      "id": "m2d4-ultj-o1",
+      "kelompok": "aman",
+      "kunci": "c",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 60,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Wulan hanya bilang dividen keluar rutin tiap tahun, dan pilihan c membenarkan itu dengan fakta spesifik (beruntun 7 tahun) tanpa menambahkan klaim ekstra soal besaran yang makin naik seperti opsi a.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            496
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pesan Wulan menyatakan dividen keluar tiap tahun tanpa bolos, dan pilihan c membenarkan klaim itu secara spesifik (tercatat beruntun 7 tahun), sementara a menambah klaim makin besar yang tidak Wulan sebutkan, dan b/d menyangkal tanpa dasar kuat dari pesan.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            586
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Klaim Wulan bahwa dividen keluar terus tiap tahun adalah klaim wajar dan spesifik yang sering benar, dan pilihan c membenarkannya dengan detail konkret (7 tahun beruntun), sedangkan a menambah klaim berlebihan soal dividen makin besar dan b/d adalah penyangkalan tanpa dasar kuat.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            778
+          ]
+        }
+      ],
+      "biaya_usd": 0.009864491699999998
+    },
+    {
+      "id": "m2d4-ultj-o2",
+      "kelompok": "aman",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 53.333333333333336,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar (orang dalam membeli bertahap sepanjang Januari melebihi pemilik terbesar), dan pilihan a mengonfirmasi persis dengan angka rinci 16,07 juta lembar yang khas berasal dari agregasi laporan, sementara c bertentangan dengan 'beli terus sepanjang Januari' karena hanya 2 laporan, dan b/d sekadar menyangkal dengan angka bulat.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            944
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar, dan pilihan a memberi angka pasti (16,07 juta lembar) yang terlihat berasal dari dokumen, sementara pilihan d berupa angka bulat abstrak sebagai pengecoh.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            533
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 40,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar (orang dalam membeli bertahap sepanjang Januari melebihi pemilik terbesar), dan pilihan (a) membenarkannya dengan angka konkret 16,07 juta lembar yang lazim berasal dari data laporan kepemilikan; opsi (c) bertentangan dengan kata 'beli terus', sementara (b) dan (d) menyangkal tanpa dukungan.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            589
+          ]
+        }
+      ],
+      "biaya_usd": 0.011019597499999999
+    },
+    {
+      "id": "m2d4-ultj-o3",
+      "kelompok": "aman",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 2,
+      "yakin_benar": 72.5,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Reka",
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            47,
+            41
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Klaim Fitri cukup spesifik dan wajar (orang dalam akumulasi saham di bulan Januari), dan pilihan yang membenarkannya apa adanya sering menjadi kunci jawaban, jadi tanpa dokumen tebakan terbaikku adalah omongannya memang cocok.",
+          "penyedia": [
+            "Sail Research",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            1,
+            6121
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim mutlak 'tidak ada yang jual' jarang cocok dengan laporan orang dalam yang biasanya memuat pembelian dan penjualan sekaligus, sehingga koreksi yang lazim adalah ada laporan penjualan.",
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            2214,
+            697
+          ]
+        }
+      ],
+      "biaya_usd": 0.0426142729
+    },
+    {
+      "id": "m2d4-dada-o2",
+      "kelompok": "aman",
+      "kunci": "b",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 100,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Reka",
+            "Relace"
+          ],
+          "token_penalaran": [
+            46,
+            114
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Reka"
+          ],
+          "token_penalaran": [
+            49,
+            35
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Reka",
+            "Morph"
+          ],
+          "token_penalaran": [
+            22,
+            60
+          ]
+        }
+      ],
+      "biaya_usd": 0.0029131379999999996
+    },
+    {
+      "id": "m2d4-dada-o1",
+      "kelompok": "aman",
+      "kunci": "a",
+      "ditolak": false,
+      "benar": 0,
+      "yakin_benar": null,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan a dan b hampir identik sehingga keduanya bisa disingkirkan, dan angka 22 kali sangat mungkin salah baca dari '2,25 kali' (koma hilang), sementara pilihan d tidak logis sebagai patokan awal.",
+          "penyedia": [
+            "Reka"
+          ],
+          "token_penalaran": [
+            340
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 85,
+          "terbaca": true,
+          "alasan": "Kenaikan 22 kali lipat lazim merujuk ke saham DSSA, dari penutupan 1 Agustus Rp1.790 ke Rp39.700 pada penutupan 7 Oktober sebelum perdagangan dihentikan 8 Oktober.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            3249
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Opsi a dan b hanya beda satu hari sehingga keduanya nyaris identik dan tidak mungkin keduanya benar, singkirkan; opsi d (patokan 7 Oktober) tidak masuk akal untuk kenaikan 22x, sedangkan opsi c wajar karena klaim '22 kali' bisa jadi salah baca dari '2,25 kali' (koma desimal hilang), pola distraktor tipikal soal bocor.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            2491
+          ]
+        }
+      ],
+      "biaya_usd": 0.0271819326
+    },
+    {
+      "id": "m2d5-tirt-o1",
+      "kelompok": "aman",
+      "kunci": "c",
+      "ditolak": false,
+      "benar": 0,
+      "yakin_benar": null,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "IDX lazim menghentikan saham karena kenaikan harga kumulatif (UMA), dan skenario paling wajar adalah alasan Januari 2025 memang berbeda dari penghentian terkininya, sementara opsi a dan d bertipe pengisi yang menampik/menghapus informasi.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            806
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Klaim spesifik Rian soal penghentian Januari 2025 dengan alasan berbeda lazim benar, dan alasan penghentian yang paling umum di BEI adalah URA/kenaikan harga kumulatif, jadi opsi b paling mungkin cocok.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            654
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Penghentian sementara paling lazim di awal tahun 2025 pada saham kecil adalah URA/UMA karena kenaikan harga kumulatif yang tidak wajar, dan klaim spesifik Rian soal disetop dua kali dengan alasan berbeda biasanya memang sesuai dokumen; opsi a dan d bertentangan dengan kebiasaan bursa yang sel mencatat alasan resmi.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            590
+          ]
+        }
+      ],
+      "biaya_usd": 0.0107863419
+    }
+  ],
+  "biaya_usd": 0.13719470749999998,
+  "selesai": true
+}

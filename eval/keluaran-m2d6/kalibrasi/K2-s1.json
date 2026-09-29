@@ -1,0 +1,555 @@
+{
+  "susunan": "K2",
+  "sampel": 1,
+  "ringkas": "DeepSeek ×2 + GLM effort high (dijaga), petunjuk \"pemburu soal bocor\"",
+  "soal": [
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "bocor",
+      "kunci": "d",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 88,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "d",
+          "yakin": 78,
+          "terbaca": true,
+          "alasan": "Klaim Sari spesifik dan masuk akal; opsi d membenarkan kenaikan periode 26 Nov–9 Des sebesar Rp58 apa adanya.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            1040
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "d",
+          "yakin": 86,
+          "terbaca": true,
+          "alasan": "Klaim Sari spesifik dan sesuai pola pengumuman bursa tentang kenaikan harga saham periode 26 November–9 Desember, sedangkan opsi a dan c hanya pengisi dan b salah mengalihkan ke kenaikan sejak awal tahun.",
+          "penyedia": [
+            "GMICloud"
+          ],
+          "token_penalaran": [
+            3117
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Reka"
+          ],
+          "token_penalaran": [
+            75,
+            23
+          ]
+        }
+      ],
+      "biaya_usd": 0.00405546
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "d",
+      "ditolak": true,
+      "benar": 1,
+      "yakin_benar": 60,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pernyataan Nia secara langsung menyebut hasil putusan ada di catatan resmi, sehingga opsi b paling pas dan biasanya jawaban yang membenarkan klaim spesifik seperti ini.",
+          "penyedia": [
+            "Novita"
+          ],
+          "token_penalaran": [
+            5499
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "d",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Pilihan a dan b hampir sama sehingga kemungkinan bukan kunci; dokumen rapat pemegang saham biasanya berupa undangan/jadwal, bukan catatan hasil putusan.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            3479
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Klaim Nia wajar dan spesifik (hasil RUPS lazim tercatat dalam notulen/catatan resmi), dan opsi b membenarkannya dengan kata-kata yang sama persis ('catatan resmi'), meski kemiripannya dengan opsi a membuat keyakinan tidak terlalu tinggi.",
+          "penyedia": [
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            590
+          ]
+        }
+      ],
+      "biaya_usd": 0.008968005
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 2,
+      "yakin_benar": 92.5,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 85,
+          "terbaca": true,
+          "alasan": "Suspensi pada 21 Januari yang lazim diumumkan BEI adalah karena kenaikan harga kumulatif, bukan keraguan kelangsungan usaha.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            3402
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 85,
+          "terbaca": true,
+          "alasan": "Suspensi saham pada 21 Januari yang lazim diumumkan BEI adalah karena keraguan atas kelangsungan usaha, seperti kasus RIMO.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            1774
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Reka"
+          ],
+          "token_penalaran": [
+            168,
+            58
+          ]
+        }
+      ],
+      "biaya_usd": 0.004687029999999999
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "bocor",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 76.66666666666667,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Alasan suspensi karena kenaikan harga kumulatif lazim di bursa dan klaim Tio wajar serta spesifik, sehingga opsi yang membenarkannya paling mungkin benar.",
+          "penyedia": [
+            "CoreWeave"
+          ],
+          "token_penalaran": [
+            4068
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Tio tentang penghentian karena kenaikan harga kumulatif cocok dengan alasan suspensi saham yang lazim di BEI, sedangkan opsi lain memakai alasan yang tidak didukung pesan.",
+          "penyedia": [
+            "StreamLake"
+          ],
+          "token_penalaran": [
+            7468
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Reka",
+            "Morph"
+          ],
+          "token_penalaran": [
+            24,
+            89
+          ]
+        }
+      ],
+      "biaya_usd": 0.009495867499999998
+    },
+    {
+      "id": "m2d4-ultj-o1",
+      "kelompok": "aman",
+      "kunci": "c",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 76.66666666666667,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Wulan hanya menyebut dividen tidak pernah bolos, dan pilihan c yang menyatakan tercatat beruntun selama 7 tahun paling cocok tanpa menambah klaim yang tidak disebutkan seperti dividen selalu naik.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            301
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "c",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Wulan hanya menegaskan dividen tidak pernah bolos, dan opsi c membenarkannya secara spesifik sebagai tercatat beruntun 7 tahun, sedangkan opsi a menambah klaim naik terus yang belum tentu benar.",
+          "penyedia": [
+            "DeepInfra"
+          ],
+          "token_penalaran": [
+            6744
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Alibaba",
+            "AtlasCloud"
+          ],
+          "token_penalaran": [
+            58,
+            227
+          ]
+        }
+      ],
+      "biaya_usd": 0.005458360000000001
+    },
+    {
+      "id": "m2d4-ultj-o2",
+      "kelompok": "aman",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 66,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 78,
+          "terbaca": true,
+          "alasan": "Angka 16,07 juta lembar adalah rincian spesifik yang paling mungkin sesuai dengan klaim Sinta bahwa orang dalam lain membeli lebih banyak sepanjang Januari.",
+          "penyedia": [
+            "Morph"
+          ],
+          "token_penalaran": [
+            1541
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Angka 16,07 juta lembar spesifik dan paling cocok dengan klaim Sinta bahwa orang dalam itu menambah banyak sepanjang Januari, lebih dari pemilik terbesar.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            1222
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Sinta spesifik dan wajar (orang dalam membeli lebih banyak dari pemilik terbesar sepanjang Januari), dan pilihan (a) membenarkannya dengan angka rinci 16,07 juta lembar yang khas diambil langsung dari laporan kepemilikan, sementara (b) dan (d) menyangkal klaim tanpa detail dan (c) terkesan sebagai jebakan.",
+          "penyedia": [
+            "Reka",
+            "Wafer"
+          ],
+          "token_penalaran": [
+            115,
+            397
+          ]
+        }
+      ],
+      "biaya_usd": 0.004514487095
+    },
+    {
+      "id": "m2d4-ultj-o3",
+      "kelompok": "aman",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 1,
+      "yakin_benar": 100,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim 'tidak ada yang jual sama sekali' terlalu absolut; laporan orang dalam biasanya juga memuat transaksi penjualan.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            1741
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Klaim 'tidak ada yang jual' adalah negatif mutlak yang lazim dibantah oleh adanya laporan penjualan orang dalam, sehingga opsi b paling langsung mengoreksi inti omongan Fitri.",
+          "penyedia": [
+            "DeepInfra"
+          ],
+          "token_penalaran": [
+            10507
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Sail Research",
+            "Relace"
+          ],
+          "token_penalaran": [
+            78,
+            85
+          ]
+        }
+      ],
+      "biaya_usd": 0.0070223752
+    },
+    {
+      "id": "m2d4-dada-o2",
+      "kelompok": "aman",
+      "kunci": "b",
+      "ditolak": true,
+      "benar": 3,
+      "yakin_benar": 65.66666666666667,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Pilihan b paling langsung mengonfirmasi klaim Nadia bahwa ada tiga transaksi penjualan dan semuanya terjadi pada Agustus, dengan rentang tanggal yang spesifik.",
+          "penyedia": [
+            "Morph"
+          ],
+          "token_penalaran": [
+            1051
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Pernyataan Nadia tentang 3 laporan penjualan dengan transaksi semua di Agustus paling cocok dengan rincian tiga transaksi pada 12–14 Agustus.",
+          "penyedia": [
+            "NextBit"
+          ],
+          "token_penalaran": [
+            2527
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 62,
+          "terbaca": true,
+          "alasan": "Klaim Nadia spesifik dan wajar (3 laporan penjualan pemilik terbesar, semua di Agustus), dan opsi b membenarkannya apa adanya dengan rentang tanggal 12–14 Agustus yang konsisten; opsi a bicara tanggal terbit laporan bukan tanggal transaksi, opsi c bergaya pengisi 'cuma dua yang tercatat', dan opsi d kontradiksi yang kurang didukung pola soal.",
+          "penyedia": [
+            "Wafer"
+          ],
+          "token_penalaran": [
+            1359
+          ]
+        }
+      ],
+      "biaya_usd": 0.009594906989999999
+    },
+    {
+      "id": "m2d4-dada-o1",
+      "kelompok": "aman",
+      "kunci": "a",
+      "ditolak": true,
+      "benar": 2,
+      "yakin_benar": 44,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Angka 22 kali lipat paling lazim cocok dengan perhitungan dari penutupan 1 Agustus ke penutupan 8 Oktober; opsi lain salah tanggal atau mengecilkan angka menjadi 2,25 kali.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            2592
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "c",
+          "yakin": 75,
+          "terbaca": true,
+          "alasan": "Angka 22 kali lipat kemungkinan besar salah baca dari 2,25 kali, dan opsi c adalah satu-satunya koreksi angka yang spesifik dan masuk akal.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            4928
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 28,
+          "terbaca": true,
+          "alasan": "Klaim Adit spesifik dan wajar untuk saham yang memang melonjak, jadi pilihan yang membenarkan lebih mungkin benar daripada pilihan 'keliru'; tanpa dokumen aku hanya menebak antara dua tanggal penutupan, dan tebakan pertamaku adalah 8 Oktober sebagai tanggal akhir pengukuran.",
+          "penyedia": [
+            "Reka",
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            128,
+            1089
+          ]
+        }
+      ],
+      "biaya_usd": 0.01058152
+    },
+    {
+      "id": "m2d5-tirt-o1",
+      "kelompok": "aman",
+      "kunci": "c",
+      "ditolak": true,
+      "benar": 1,
+      "yakin_benar": 100,
+      "tebakan": [
+        {
+          "ke": 1,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Penghentian saham pada Januari 2025 paling lazim karena kenaikan harga kumulatif, dan alasan ini masuk akal sebagai pembeda dari suspensi sekarang.",
+          "penyedia": [
+            "Relace"
+          ],
+          "token_penalaran": [
+            3636
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Penghentian saham Januari 2025 yang lazim di BEI adalah karena kenaikan harga kumulatif signifikan, dan opsi c tidak masuk akal jika alasan sekarang berbeda.",
+          "penyedia": [
+            "DekaLLM"
+          ],
+          "token_penalaran": [
+            4463
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 100,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "penyedia": [
+            "Relace",
+            "Sail Research"
+          ],
+          "token_penalaran": [
+            52,
+            270
+          ]
+        }
+      ],
+      "biaya_usd": 0.00633778
+    }
+  ],
+  "biaya_usd": 0.070715791785,
+  "selesai": true
+}

@@ -1,0 +1,20 @@
+
+> runut@0.1.0 penalar:kalibrasi
+> node --experimental-strip-types factory/llm/penalar-kalibrasi.ts K3 --sampel 2
+
+K3 sampel 2 — GLM effort high ×3 (dijaga), petunjuk "pemburu soal bocor"; pagu kalibrasi US$0.80 (terpakai US$0.676409).
+m2d4-tirt-o1 (percobaan 1): PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d6/kalibrasi/*) US$0.789005 + perkiraan maksimum US$0.037570 untuk z-ai/glm-5.3 > pagu milestone US$0.80. Panggilan tidak dikirim.
+m2d4-ultj-o1 (percobaan 1): PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d6/kalibrasi/*) US$0.789005 + perkiraan maksimum US$0.037542 untuk z-ai/glm-5.3 > pagu milestone US$0.80. Panggilan tidak dikirim.
+  m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t1: Wafer penalaran 399 stop US$0.002330
+  m2d6/kalibrasi/K3/s2/m2d5-tirt-o2/penebak/t1: Wafer penalaran 580 stop US$0.003004
+  m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t1/u1: Wafer penalaran 670 stop US$0.003448
+  m2d6/kalibrasi/K3/s2/m2d5-tirt-o2/penebak/t2: Wafer penalaran 1070 stop US$0.005420
+m2d5-tirt-o2 (percobaan 1): PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d6/kalibrasi/*) US$0.765651 + perkiraan maksimum US$0.037556 untuk z-ai/glm-5.3 > pagu milestone US$0.80. Panggilan tidak dikirim.
+  m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t2: Wafer penalaran 715 stop US$0.003726
+  m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t1: Novita penalaran 479 stop US$0.001509
+  m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t3: Wafer penalaran 531 stop US$0.002863
+m2d4-tirt-o3 [bocor] kunci a: a/65 a/55 a/60 → DITOLAK
+  m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t2: Novita penalaran 181 stop US$0.000730
+  m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t2/u1: GMICloud penalaran 772 stop US$0.002919
+  m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t3: GMICloud penalaran 470 stop US$0.001826
+m2d5-tirt-o3 [bocor] kunci d: d/45 d/55 a/55 → DITOLAK

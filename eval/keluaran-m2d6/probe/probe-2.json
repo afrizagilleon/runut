@@ -1,0 +1,213 @@
+{
+  "pagu_probe_usd": 0.4,
+  "biaya_probe_usd": 0.24071244730000002,
+  "hasil": [
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-1",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "InferenceNet",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 264,
+      "token_penalaran": 181,
+      "panjang_penalaran_karakter": 714,
+      "biaya_usd": 0.0006657600000000002,
+      "latensi_ms": 2287,
+      "terurai": true,
+      "catatan": "a/55 (kunci d)",
+      "teks": "{\"pilihan\": \"a\", \"yakin\": 55, \"alasan\": \"Klaim Sari terdengar terlalu pasti untuk periode spesifik, dan pola soal semacam ini biasanya menunjukkan angka 58 berasal dari perhitungan lain (misalnya sejak awal tahun), bukan kenaikan periode 26 November–9 Desember yang memang tidak dihitung.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-2",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "InferenceNet",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 687,
+      "token_penalaran": 628,
+      "panjang_penalaran_karakter": 2470,
+      "biaya_usd": 0.0016302000000000003,
+      "latensi_ms": 3160,
+      "terurai": true,
+      "catatan": "b/40 (kunci d)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 40, \"alasan\": \"Klaim Sari yang terlalu percaya diri ('angka pastinya') biasanya salah atribusi periode, jadi kemungkinan angka 58 memang ada di dokumen tapi sebagai kenaikan sejak awal tahun, bukan periode 26 Nov–9 Des.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-3",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "InferenceNet",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 390,
+      "token_penalaran": 311,
+      "panjang_penalaran_karakter": 1226,
+      "biaya_usd": 0.0009530400000000002,
+      "latensi_ms": 2053,
+      "terurai": true,
+      "catatan": "b/55 (kunci d)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 55, \"alasan\": \"Angka 58 rupiah terlalu spesifik untuk dihafal sebagai kenaikan periode singkat; pola soal seperti ini biasanya menjebak dengan angka yang benar tetapi salah konteks, yaitu kenaikan sejak awal tahun.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-4",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "InferenceNet",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 132,
+      "token_penalaran": 60,
+      "panjang_penalaran_karakter": 237,
+      "biaya_usd": 0.00036480000000000003,
+      "latensi_ms": 1103,
+      "terurai": true,
+      "catatan": "a/55 (kunci d)",
+      "teks": "{\"pilihan\": \"a\", \"yakin\": 55, \"alasan\": \"Klaim Sari terlalu spesifik dan percaya diri ('angka pastinya'), dan pola soal uji biasanya menandai klaim rinci semacam ini sebagai keliru karena kenaikan periode tersebut memang tak dihitung dalam dokumen.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-5",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "InferenceNet",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 177,
+      "token_penalaran": 111,
+      "panjang_penalaran_karakter": 435,
+      "biaya_usd": 0.0004674000000000001,
+      "latensi_ms": 1508,
+      "terurai": true,
+      "catatan": "a/50 (kunci d)",
+      "teks": "{\"pilihan\": \"a\", \"yakin\": 50, \"alasan\": \"Klaim 'angka pasti 58 rupiah' untuk periode spesifik itu terdengar seperti hitungan yang sebenarnya tidak pernah dibuat di dokumen, sehingga kemungkinan besar keliru.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/penebak-glm/high-6",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "InferenceNet",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 360,
+      "token_keluar": 385,
+      "token_penalaran": 329,
+      "panjang_penalaran_karakter": 1299,
+      "biaya_usd": 0.0009416400000000001,
+      "latensi_ms": 1910,
+      "terurai": true,
+      "catatan": "b/55 (kunci d)",
+      "teks": "{\"pilihan\": \"b\", \"yakin\": 55, \"alasan\": \"Angka spesifik seperti 58 biasanya memang ada di dokumen tetapi sering salah atribusi periode, sehingga kemungkinan besar itu kenaikan sejak awal tahun, bukan 26 November–9 Desember.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/kritikus/high-1",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 16000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2072,
+      "token_keluar": 12197,
+      "token_penalaran": 11880,
+      "panjang_penalaran_karakter": 45857,
+      "biaya_usd": 0.0541584168,
+      "latensi_ms": 61723,
+      "terurai": true,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Pilihan a dipatahkan kartu 1 (kenaikan itu memang sudah dihitung), pilihan c dipatahkan kartu 2 dan 3 (kedua harga penutupan tercatat), dan pilihan b bertentangan dengan kartu 1 dan 4 yang mengukur kenaikan Rp58 dari 26 November sampai 9 Desember, bukan sejak awal tahun.\"}, \"keberatan\": [{\"jenis\": \"tertebak\", \"bagian\": \"pilihan\", \"alasan\": \"Pilihan kunci d hanya mengulang isi omongan teman kata demi kata, sedangkan pilihan 'Betul' satu-satunya (b) menyandung klaim 'sejak awal tahun' yang tidak muncul di pesan, sehingga pembaca tanpa kartu bisa menjawab benar hanya dengan memihak pada teman.\"}], \"arahan\": \"Ikatkan pilihan kunci 'Betul' pada detail yang hanya bisa dipastikan dari kartu, bukan sekadar mengulang omongan teman. Buat pilihan b juga terasa masuk akal tanpa kartu agar kunci tidak tertebak lewat rasa percaya saja.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/kritikus/high-2",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 16000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2072,
+      "token_keluar": 11440,
+      "token_penalaran": 11040,
+      "panjang_penalaran_karakter": 41388,
+      "biaya_usd": 0.0508276168,
+      "latensi_ms": 51568,
+      "terurai": true,
+      "catatan": "2 keberatan (tertebak,bahasa); tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 2 dan 3 mencatat harga penutupan kedua tanggal serta kartu 1 menghitung selisihnya Rp58 untuk periode 26 November–9 Desember, sementara a, b, dan c masing-masing dibantah oleh kartu 1, kartu 1 dan 4, serta kartu 2–3, sehingga hanya d yang benar.\"}, \"keberatan\": [{\"jenis\": \"tertebak\", \"bagian\": \"kunci\", \"alasan\": \"Pilihan d hanya mengulang angka dan periode yang Sari sendiri sebut dengan pembuka 'Betul,' sementara pilihan 'Betul' lainnya jelas menyalahi periode yang ada di pesan, jadi pemain tanpa kartu bisa menjawab benar hanya dengan mencocokkan ulang omongan.\"}, {\"jenis\": \"bahasa\", \"bagian\": \"penjelasan\", \"alasan\": \"Penjelasan memakai sebutan internal 'kartu penentu' yang tidak muncul sebagai istilah pada kartu yang dibaca pemain.\"}], \"arahan\": \"Ubah pengecoh 'Betul' selain kunci supaya klaimnya tidak bisa disingkirkan hanya dari isi pesan — misalnya kedua pilihan 'Betul' mengutip angka yang sama tetapi berselisih pada hal yang baru bisa diputuskan lewat kartu. Ganti juga sebutan 'kartu penentu' di penjelasan dengan menyebut isi kartu yang dimaksud.\"}"
+    },
+    {
+      "tag": "m2d6/probe/p2/kritikus/high-3",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 16000,
+      "badan": {
+        "reasoning": {
+          "effort": "high"
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2072,
+      "token_keluar": 6689,
+      "token_penalaran": 6457,
+      "panjang_penalaran_karakter": 24329,
+      "biaya_usd": 0.0299232168,
+      "latensi_ms": 35266,
+      "terurai": true,
+      "catatan": "1 keberatan (tertebak); tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 2–3 mencatat harga kedua tanggal, Kartu 1 menghitung kenaikan periode itu Rp58, dan Kartu 4 mengukur dari 26 November, sehingga a, b, dan c semuanya bertentangan dengan kartu.\"}, \"keberatan\": [{\"jenis\": \"tertebak\", \"bagian\": \"pilihan\", \"alasan\": \"Pesan menyebut 'naik 58 rupiah' dan dari empat pilihan hanya kunci (d) yang memuat angka Rp58, sehingga jawaban bisa ditemukan tanpa kartu hanya dengan mencocokkan angka.\"}], \"arahan\": \"Sertakan angka Rp58 juga di dalam pilihan b supaya angka yang muncul di pesan tidak sendirian menunjuk ke kunci.\"}"
+    }
+  ]
+}
