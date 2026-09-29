@@ -51,6 +51,8 @@ describe('pondasi proyek', () => {
     const M2D4 = ['gaya:arsip', 'gaya:susun', 'gaya:penguji', 'gaya:laporan'];
     // M2d-5 D-0/D-3/D-9/D-10/D-11: arsip + kunci, probe penalaran, lingkar TIRT OpenRouter, penguji eksternal, laporan.
     const M2D5 = ['tirt:arsip', 'tirt:periksa', 'tirt:probe', 'tirt:susun', 'tirt:penguji', 'tirt:laporan'];
+    // M2d-6 D-2…D-8: bukti penyedia, probe penalar, kalibrasi penebak & kritikus, lingkar TIRT, penguji eksternal, laporan.
+    const M2D6 = ['penalar:bukti', 'penalar:probe', 'penalar:kalibrasi', 'penalar:kritikus', 'penalar:susun', 'penalar:penguji', 'penalar:laporan'];
     // M4a D-1/D-2/D-4: pengambil data Sectors di repo, manifest gudang, audit gudang — satu per satu.
     const M4A = ['sectors:ambil', 'sectors:manifest', 'audit:gudang', 'audit:paket'];
     const skrip = Object.keys(paket.scripts).sort();
@@ -71,6 +73,7 @@ describe('pondasi proyek', () => {
         !M2D3.includes(s) &&
         !M2D4.includes(s) &&
         !M2D5.includes(s) &&
+        !M2D6.includes(s) &&
         !M4A.includes(s),
     );
     expect(takDikenal).toEqual([]);

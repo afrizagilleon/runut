@@ -1,0 +1,949 @@
+{
+  "sumber": ".cache/llm/ledger.jsonl (entri m2d5/ dan m2d6/ yang berhasil, bernama penyedia)",
+  "aturan": {
+    "min_pelanggaran": 2,
+    "min_porsi": 0.3333333333333333
+  },
+  "baris": [
+    {
+      "waktu": "2026-09-29T04:45:12.851Z",
+      "tag": "m2d5/probe/kartu/bawaan",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 5351,
+      "token_penalaran": 5293,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:45:39.411Z",
+      "tag": "m2d5/probe/penebak-deepseek/bawaan",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 988,
+      "token_penalaran": 863,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:45:40.834Z",
+      "tag": "m2d5/probe/penebak-glm/r1500",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 70,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "max_tokens": 1500
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:45:46.540Z",
+      "tag": "m2d5/probe/penebak-glm/r3000",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 522,
+      "token_penalaran": 425,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:45:48.538Z",
+      "tag": "m2d5/probe/penulis/tanpa-berpikir",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Together",
+      "status": 200,
+      "token_keluar": 442,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "enabled": false
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:47:33.583Z",
+      "tag": "m2d5/probe/penulis/r8000",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 14000,
+      "token_penalaran": 14000,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:48:12.132Z",
+      "tag": "m2d5/probe/penulis/r16000",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Together",
+      "status": 200,
+      "token_keluar": 11261,
+      "token_penalaran": 10866,
+      "penalaran_diminta": {
+        "max_tokens": 16000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:48:15.230Z",
+      "tag": "m2d5/probe/kritikus/r4000",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 481,
+      "token_penalaran": 199,
+      "penalaran_diminta": {
+        "max_tokens": 4000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:48:19.092Z",
+      "tag": "m2d5/probe/kritikus/r8000",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 471,
+      "token_penalaran": 326,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:48:22.029Z",
+      "tag": "m2d5/probe/kritikus/r12000",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 494,
+      "token_penalaran": 183,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:49:38.026Z",
+      "tag": "m2d5/probe/p2/kartu/r6000",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 2963,
+      "token_penalaran": 2901,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:49:48.505Z",
+      "tag": "m2d5/probe/p2/kartu/r6000-b",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 1102,
+      "token_penalaran": 1037,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:52:51.522Z",
+      "tag": "m2d5/probe/p2/penulis/r16000-b",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 24000,
+      "token_penalaran": 24000,
+      "penalaran_diminta": {
+        "max_tokens": 16000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:54:18.452Z",
+      "tag": "m2d5/probe/p2/penulis/r16000-c",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 11379,
+      "token_penalaran": 10978,
+      "penalaran_diminta": {
+        "max_tokens": 16000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:54:22.825Z",
+      "tag": "m2d5/probe/p2/kritikus/r8000-b",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 537,
+      "token_penalaran": 305,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:54:27.587Z",
+      "tag": "m2d5/probe/p2/kritikus/r8000-c",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 775,
+      "token_penalaran": 608,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T04:58:48.781Z",
+      "tag": "m2d5/tirt/p1/susun/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 17277,
+      "token_penalaran": 16881,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:00:36.691Z",
+      "tag": "m2d5/tirt/p1/susun/o2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 15102,
+      "token_penalaran": 14550,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:01:27.118Z",
+      "tag": "m2d5/tirt/p1/susun/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 7018,
+      "token_penalaran": 6597,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:01:56.011Z",
+      "tag": "m2d5/tirt/p1/gerbang-kartu/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 3865,
+      "token_penalaran": 3796,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:02:00.496Z",
+      "tag": "m2d5/tirt/p1/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 252,
+      "token_penalaran": 84,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:02:16.418Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o1/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 2737,
+      "token_penalaran": 2681,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:02:26.768Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o1/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 698,
+      "token_penalaran": 626,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:02:27.686Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Friendli",
+      "status": 200,
+      "token_keluar": 86,
+      "token_penalaran": 18,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:02:30.074Z",
+      "tag": "m2d5/tirt/p1/gerbang-kartu/o2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Together",
+      "status": 200,
+      "token_keluar": 472,
+      "token_penalaran": 396,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:02:32.462Z",
+      "tag": "m2d5/tirt/p1/kritikus/o2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 263,
+      "token_penalaran": 62,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:03:58.388Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o2/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 5557,
+      "token_penalaran": 5501,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:05:12.136Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o2/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 10297,
+      "token_penalaran": 10249,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:05:16.230Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o2/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 77,
+      "token_penalaran": 19,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:05:20.162Z",
+      "tag": "m2d5/tirt/p1/gerbang-kartu/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 396,
+      "token_penalaran": 333,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:05:22.547Z",
+      "tag": "m2d5/tirt/p1/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 196,
+      "token_penalaran": 50,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:06:05.185Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o3/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 5996,
+      "token_penalaran": 5943,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:07:12.539Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o3/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 9452,
+      "token_penalaran": 9387,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:07:13.639Z",
+      "tag": "m2d5/tirt/p1/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 125,
+      "token_penalaran": 61,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:08:38.075Z",
+      "tag": "m2d5/tirt/p2/tulis-ulang/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 11736,
+      "token_penalaran": 11278,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:11:20.582Z",
+      "tag": "m2d5/tirt/p2/tulis-ulang/o2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 20000,
+      "token_penalaran": 20000,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:11:25.355Z",
+      "tag": "m2d5/tirt/p2/tulis-ulang/o2/u1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 551,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "enabled": false
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:14:04.634Z",
+      "tag": "m2d5/tirt/p2/tulis-ulang/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 20000,
+      "token_penalaran": 20000,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:14:09.241Z",
+      "tag": "m2d5/tirt/p2/tulis-ulang/o3/u1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 483,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "enabled": false
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:14:16.592Z",
+      "tag": "m2d5/tirt/p2/gerbang-kartu/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 643,
+      "token_penalaran": 560,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:14:18.801Z",
+      "tag": "m2d5/tirt/p2/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Friendli",
+      "status": 200,
+      "token_keluar": 182,
+      "token_penalaran": 49,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:15:38.904Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o1/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 11115,
+      "token_penalaran": 11049,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:16:38.079Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o1/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 8139,
+      "token_penalaran": 8079,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:16:39.464Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 145,
+      "token_penalaran": 59,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:16:41.417Z",
+      "tag": "m2d5/tirt/p2/gerbang-kartu/o2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 408,
+      "token_penalaran": 345,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:16:44.171Z",
+      "tag": "m2d5/tirt/p2/kritikus/o2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 294,
+      "token_penalaran": 144,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:17:07.537Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o2/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "Together",
+      "status": 200,
+      "token_keluar": 5337,
+      "token_penalaran": 5280,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:18:54.537Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o2/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 15400,
+      "token_penalaran": 15344,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:18:56.011Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o2/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AkashML",
+      "status": 200,
+      "token_keluar": 77,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:19:05.149Z",
+      "tag": "m2d5/tirt/p2/gerbang-kartu/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 788,
+      "token_penalaran": 721,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:19:19.555Z",
+      "tag": "m2d5/tirt/p2/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 440,
+      "token_penalaran": 260,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:19:22.592Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o3/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 337,
+      "token_penalaran": 275,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:19:31.577Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o3/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 890,
+      "token_penalaran": 834,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:19:33.063Z",
+      "tag": "m2d5/tirt/p2/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 96,
+      "token_penalaran": 25,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:21:56.669Z",
+      "tag": "m2d5/tirt/p3/tulis-ulang/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 20000,
+      "token_penalaran": 19751,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:22:00.910Z",
+      "tag": "m2d5/tirt/p3/tulis-ulang/o1/u1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 452,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "enabled": false
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:23:36.366Z",
+      "tag": "m2d5/tirt/p3/tulis-ulang/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 13428,
+      "token_penalaran": 13035,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:23:47.532Z",
+      "tag": "m2d5/tirt/p3/gerbang-kartu/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 1105,
+      "token_penalaran": 1022,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:23:53.574Z",
+      "tag": "m2d5/tirt/p3/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 427,
+      "token_penalaran": 241,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:24:50.003Z",
+      "tag": "m2d5/tirt/p3/gerbang-tebak/o1/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 3998,
+      "token_penalaran": 3940,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:26:21.843Z",
+      "tag": "m2d5/tirt/p3/gerbang-tebak/o1/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 5726,
+      "token_penalaran": 5655,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:26:24.293Z",
+      "tag": "m2d5/tirt/p3/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 99,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:26:34.064Z",
+      "tag": "m2d5/tirt/p3/gerbang-kartu/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 1507,
+      "token_penalaran": 1407,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:28:27.862Z",
+      "tag": "m2d5/tirt/p4/tulis-ulang/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 15687,
+      "token_penalaran": 15212,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:29:55.078Z",
+      "tag": "m2d5/tirt/p4/tulis-ulang/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 12904,
+      "token_penalaran": 12517,
+      "penalaran_diminta": {
+        "max_tokens": 12000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:30:00.883Z",
+      "tag": "m2d5/tirt/p4/gerbang-kartu/o1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 441,
+      "token_penalaran": 366,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:30:06.315Z",
+      "tag": "m2d5/tirt/p4/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 364,
+      "token_penalaran": 229,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:30:42.557Z",
+      "tag": "m2d5/tirt/p4/gerbang-tebak/o1/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 3568,
+      "token_penalaran": 3510,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:31:02.079Z",
+      "tag": "m2d5/tirt/p4/gerbang-tebak/o1/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 2300,
+      "token_penalaran": 2249,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:31:05.425Z",
+      "tag": "m2d5/tirt/p4/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 207,
+      "token_penalaran": 123,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:31:10.805Z",
+      "tag": "m2d5/tirt/p4/gerbang-kartu/o3",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "CoreWeave",
+      "status": 200,
+      "token_keluar": 614,
+      "token_penalaran": 547,
+      "penalaran_diminta": {
+        "max_tokens": 6000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:31:12.306Z",
+      "tag": "m2d5/tirt/p4/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Friendli",
+      "status": 200,
+      "token_keluar": 181,
+      "token_penalaran": 33,
+      "penalaran_diminta": {
+        "max_tokens": 8000
+      },
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:31:47.832Z",
+      "tag": "m2d5/tirt/p4/gerbang-tebak/o3/t1",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 3708,
+      "token_penalaran": 3645,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:32:50.530Z",
+      "tag": "m2d5/tirt/p4/gerbang-tebak/o3/t2",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "penyedia": "DeepInfra",
+      "status": 200,
+      "token_keluar": 6865,
+      "token_penalaran": 6810,
+      "penalaran_diminta": null,
+      "asal_diminta": "tag-m2d5"
+    },
+    {
+      "waktu": "2026-09-29T05:32:52.313Z",
+      "tag": "m2d5/tirt/p4/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 117,
+      "token_penalaran": 44,
+      "penalaran_diminta": {
+        "max_tokens": 3000
+      },
+      "asal_diminta": "tag-m2d5"
+    }
+  ],
+  "pengecualian": {
+    "deepseek/deepseek-v4.1-flash": [
+      "atlas-cloud"
+    ]
+  }
+}
