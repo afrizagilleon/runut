@@ -1,0 +1,59 @@
+{
+  "keterangan": "Temuan aturan baru M4b (R36, R37) untuk uji ulang penguji independen (M4b D-5): gudang audit terkunci manifest, paling banyak 3 per aturan, urut sha256(aturan|simbol|temuan_id). Sidik prompt dari .cache/audit-gudang/paket-m4b/ (tidak ikut repo). Ditulis oleh eval/audit-gudang/paket-m4b.ts.",
+  "uji": [
+    {
+      "id": "B01",
+      "aturan": "R36",
+      "simbol": "ADRO",
+      "temuan_id": "R36-ADRO|2025-10-17T22:27:59|4d80ecf450_17be92eba5.pdf",
+      "fokus": "laporan kepemilikan bertanggal 2025-10-17T22:27:59 di respons filings bersimbol ADRO",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ADRO-m4a-filings-p0.json results[]",
+        "ADRO-m4a-overview-financials.json",
+        "ADRO-*daily*.json"
+      ],
+      "prompt_sha256": "f4bbe09e2fc3163bf5e3b15ec93c8ed137940048f9a6b73b34c659d200cac215",
+      "prompt_byte": 3706
+    },
+    {
+      "id": "B02",
+      "aturan": "R37",
+      "simbol": "ARCI",
+      "temuan_id": "R37-ARCI-2023",
+      "fokus": "laporan keuangan tahunan ARCI tahun buku 2023",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ARCI-m4a-overview-financials.json financials.historical_financials"
+      ],
+      "prompt_sha256": "8e79dac480c4de72b066f9a43c01c3177e1bfcbca78379c6a6e7b7636b77f94a",
+      "prompt_byte": 2500
+    },
+    {
+      "id": "B03",
+      "aturan": "R37",
+      "simbol": "ABMM",
+      "temuan_id": "R37-ABMM-2023",
+      "fokus": "laporan keuangan tahunan ABMM tahun buku 2023",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ABMM-m4a-overview-financials.json financials.historical_financials"
+      ],
+      "prompt_sha256": "5dd6f457a047ae73da3dc6755abf594821dc628e93550f6a1a2dce94c7c54c5c",
+      "prompt_byte": 2461
+    },
+    {
+      "id": "B04",
+      "aturan": "R37",
+      "simbol": "HITS",
+      "temuan_id": "R37-HITS-2025",
+      "fokus": "laporan keuangan tahunan HITS tahun buku 2025",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "HITS-report-overview-financials.json financials.historical_financials"
+      ],
+      "prompt_sha256": "50f57cf4cb03cc15e35a102a43ac4edec8a084d28df2e2ae8caae645e58caf25",
+      "prompt_byte": 2482
+    }
+  ]
+}

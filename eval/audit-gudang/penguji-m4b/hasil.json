@@ -1,0 +1,37 @@
+{
+  "keterangan": "Hasil uji ulang aturan baru M4b (D-5). Tiap penguji = subagent Claude Opus baru (model opus), tanpa konteks eksekutor. Prompt = satu baris pembuka \"Jangan memakai alat apa pun (jangan membaca berkas, jangan menjalankan perintah, jangan mencari di internet). Jawab langsung di balasanmu, persis menurut format yang diminta di bawah.\" lalu isi paket .cache/audit-gudang/paket-m4b/<id>.txt apa adanya (sidik di pilihan.json), ditempel langsung di prompt — penguji tidak membuka berkas apa pun (tiap penguji tercatat 1 pemakaian alat: penyerahan jawaban). Jawaban mentah: <id>.md; kolom jawaban diambil dari baris pertamanya.",
+  "uji": [
+    {
+      "id": "B01",
+      "aturan": "R36",
+      "simbol": "ADRO",
+      "temuan_id": "R36-ADRO|2025-10-17T22:27:59|4d80ecf450_17be92eba5.pdf",
+      "jawaban": "ya",
+      "penyelidikan": null
+    },
+    {
+      "id": "B02",
+      "aturan": "R37",
+      "simbol": "ARCI",
+      "temuan_id": "R37-ARCI-2023",
+      "jawaban": "ya",
+      "penyelidikan": null
+    },
+    {
+      "id": "B03",
+      "aturan": "R37",
+      "simbol": "ABMM",
+      "temuan_id": "R37-ABMM-2023",
+      "jawaban": "ya",
+      "penyelidikan": null
+    },
+    {
+      "id": "B04",
+      "aturan": "R37",
+      "simbol": "HITS",
+      "temuan_id": "R37-HITS-2025",
+      "jawaban": "ya",
+      "penyelidikan": null
+    }
+  ]
+}

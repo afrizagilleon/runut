@@ -28,7 +28,7 @@ import { keparahanTemuan } from './skema/tipe.ts';
 const AKAR = fileURLToPath(new URL('../', import.meta.url));
 
 /** Kalimat awam satu baris tiap aturan, berbentuk "Kami menolak/menandai kartu kalau ...". */
-const KALIMAT_AWAM: Record<string, string> = {
+export const KALIMAT_AWAM: Record<string, string> = {
   R1: 'Kami menolak kartu kalau penjumlahan di dalam satu laporan tidak cocok dengan dirinya sendiri.',
   R2: 'Kami menolak kartu kalau saldo akhir satu laporan tidak sama dengan saldo awal laporan berikutnya.',
   R3: 'Kami menolak kartu kalau satu rangkaian transaksi yang sama dilaporkan dua kali.',
