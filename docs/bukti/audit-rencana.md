@@ -118,3 +118,11 @@ dan tanggal aksi korporasi (R28, R29, R34) — pada emiten yang sama, dengan atu
 - Kode aturan verifikasi tidak diubah untuk menjalankan audit (`npm run verifikasi:gudang` apa
   adanya). Perbaikan hanya bila penguji independen menunjukkan bug aturan, dengan tes merah dulu.
 - Kasus yang sedang tayang (`cases/*.json`, DADA dan ULTJ) tidak boleh berubah satu byte pun.
+
+## Hasil langkah `--audit daftar` (ditambahkan sebelum data emiten diambil)
+
+Satu panggilan `/v2/companies/?limit=200` (1 kredit, status 200): 200 baris dari
+`total_count` 962, simbol AADI s.d. CASH. Dibuang 52 yang pernah muncul di daftar suspensi dan
+2 simbol gudang lama; 146 kandidat. Kelompok pembanding menurut urutan sha256(simbol):
+
+ADHI, BSWD, BBMD, BNII, ADRO, BSIM, AMAG, AVIA, ABMM, BATA, BOLT, ASSA, BEST, CAMP.

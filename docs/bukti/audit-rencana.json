@@ -62,7 +62,28 @@
     "BBSS",
     "BCIC"
   ],
-  "kelompok_pembanding": null,
-  "pembanding_dari": null,
+  "kelompok_pembanding": [
+    "ADHI",
+    "BSWD",
+    "BBMD",
+    "BNII",
+    "ADRO",
+    "BSIM",
+    "AMAG",
+    "AVIA",
+    "ABMM",
+    "BATA",
+    "BOLT",
+    "ASSA",
+    "BEST",
+    "CAMP"
+  ],
+  "pembanding_dari": {
+    "berkas": "daftar/companies-limit200-offset0.json",
+    "total_count": 962,
+    "baris_dibaca": 200,
+    "dibuang_pernah_suspensi": 52,
+    "dibuang_gudang_lama": 2
+  },
   "kredit_terburuk": 421
 }
