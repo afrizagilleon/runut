@@ -301,7 +301,7 @@ Teks kartu paket lingkar LLM diperjelas di `factory/llm/paket.ts`. `cases/*.json
 
 | frasa lama | masih ada di |
 |---|---|
-| Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi. | `cases/ultj-2026-05-04.json` |
+| Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi. | — |
 | Tanggal pencabutan penghentian ini tidak ada di data, jadi lamanya tidak bisa dipastikan dari sumber mana pun yang dipakai kasus ini. | `cases/dada-2025-10-08.json` |
 | Teks keputusannya tidak ada di data, jadi isinya tidak bisa dikutip. | `cases/ultj-2026-05-04.json` |
 | lolos seluruh pemeriksaan | — |
