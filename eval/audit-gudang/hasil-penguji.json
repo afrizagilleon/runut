@@ -1,5 +1,5 @@
 {
-  "keterangan": "Hasil uji ulang D-5. Jawaban mentah penguji (subagent Claude Opus baru, hanya menerima eval/audit-gudang/pilihan.json -> paket .cache/audit-gudang/paket/Uxx.txt) ada di eval/audit-gudang/penguji/Uxx.md; kolom sebelum diambil dari baris pertama jawaban itu. penyelidikan dan sesudah ditulis eksekutor sesudah menyelidiki tiap jawaban bukan-ya.",
+  "keterangan": "Hasil uji ulang D-5. Jawaban mentah penguji (subagent Claude Opus baru, hanya menerima eval/audit-gudang/pilihan.json -> paket .cache/audit-gudang/paket/Uxx.txt) ada di eval/audit-gudang/penguji/Uxx.md; kolom sebelum diambil dari baris pertama jawaban itu. penyelidikan dan sesudah ditulis eksekutor sesudah menyelidiki tiap jawaban bukan-ya. M4b: U26 menjadi hilang karena R23 diperbaiki (T-04); penyelidikan U18/U28 menyebut aturan baru R36/R37.",
   "uji": [
     {
       "id": "U01",
@@ -178,7 +178,7 @@
       "kelompok": "pembanding",
       "temuan_id": "R13-ADRO|2025-10-17T22:27:59|4d80ecf450_17be92eba5.pdf-kepemilikan-sesudah",
       "sebelum": "tidak",
-      "penyelidikan": "Penolakan kartunya benar — lembar yang ditulis mustahil untuk saham beredar ADRO — tetapi sebabnya salah label: laporan tentang saham Alamtri Minerals Indonesia ditandai simbol ADRO.JK (penguji menunjukkan penyebut tersiratnya 40,88 miliar dan harga 1.435 di luar rentang ADRO). Jenis \"laporan untuk saham lain\" tidak ditangkap aturan mana pun (R6 digantikan). Calon aturan baru D-6; ditahan karena D-7.",
+      "penyelidikan": "Penolakan kartunya benar — lembar yang ditulis mustahil untuk saham beredar ADRO — tetapi sebabnya salah label: laporan tentang saham Alamtri Minerals Indonesia ditandai simbol ADRO.JK (penguji menunjukkan penyebut tersiratnya 40,88 miliar dan harga 1.435 di luar rentang ADRO). Jenis \"laporan untuk saham lain\" tidak ditangkap aturan mana pun (R6 digantikan). Calon aturan baru D-6; ditahan karena D-7. M4b: jenis ini kini ditangkap R36 (laporan tentang saham emiten lain), dan penguji independen membenarkan temuan R36 atas laporan yang sama (eval/audit-gudang/penguji-m4b/B01). Temuan R13 ADRO tetap keluar dengan alasan yang keliru.",
       "sesudah": "tidak"
     },
     {
@@ -258,8 +258,8 @@
       "kelompok": "suspensi",
       "temuan_id": "R23-ASLC-2026-05-19",
       "sebelum": "tidak",
-      "penyelidikan": "Bug aturan terbukti: laba di keputusan RUPS = earnings_before_tax − tax di laporan keuangan yang sama, tepat sampai rupiah; R23 hanya mengadu dengan medan earnings (laba atribusi induk). Tidak diperbaiki di M4a: medan pajak dan laba sebelum pajak tidak dimuat pemuat (factory/muat di luar batas D-5). Usulan di laporan.",
-      "sesudah": "tidak"
+      "penyelidikan": "Bug aturan terbukti: laba di keputusan RUPS = earnings_before_tax − tax di laporan keuangan yang sama, tepat sampai rupiah; R23 hanya mengadu dengan medan earnings (laba atribusi induk). Tidak diperbaiki di M4a (pemuat di luar batas D-5). Diperbaiki di M4b T-04: R23 juga mengadu dengan laba sebelum pajak − pajak (labaSesudahPajak, tes merah dulu di factory/verifikasi/aturan-audit.test.ts); temuan ini tidak keluar lagi. Dua temuan R23 yang masih keluar (AVIA, BSIM) diuji ulang di M4b dan dibantah (eval/audit-gudang/penguji-m4b/B05, B06).",
+      "sesudah": "hilang"
     },
     {
       "id": "U27",
@@ -278,7 +278,7 @@
       "kelompok": "pembanding",
       "temuan_id": "R26-ABMM-2023",
       "sebelum": "tidak",
-      "penyelidikan": "Penanda tepat atas angka yang tertulis, tetapi sebab sebenarnya bukan pembagian dividen yang tak masuk akal: baris keuangan ABMM 2023 bercampur satuan (total_debt 16 triliun > total_liabilities 1,4 miliar; kas > total aset). Jenis \"komponen neraca melebihi totalnya\" tidak ditangkap aturan mana pun. Calon aturan baru D-6; ditahan karena D-7.",
+      "penyelidikan": "Penanda tepat atas angka yang tertulis, tetapi sebab sebenarnya bukan pembagian dividen yang tak masuk akal: baris keuangan ABMM 2023 bercampur satuan (total_debt 16 triliun > total_liabilities 1,4 miliar; kas > total aset). Jenis \"komponen neraca melebihi totalnya\" tidak ditangkap aturan mana pun. Calon aturan baru D-6; ditahan karena D-7. M4b: jenis ini kini ditangkap R37 (bagian lebih besar dari keseluruhannya di satu tahun buku), dan penguji independen membenarkan temuan R37 ABMM 2023 (eval/audit-gudang/penguji-m4b/B03). Penanda R26 ABMM tetap keluar.",
       "sesudah": "tidak"
     },
     {

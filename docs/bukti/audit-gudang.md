@@ -6,6 +6,8 @@ Berkas ini ditulis oleh `npm run audit:gudang` dari keluaran `npm run verifikasi
 
 Emiten dipilih **sebelum** datanya diambil, dengan aturan tetap (`docs/bukti/audit-rencana.md`): 28 emiten yang disuspensi pada 2025–2026 (urut simbol dari atas) dan 14 pembanding yang tidak ada di daftar suspensi (urut sha256 simbol). Gudang lama — 15 emiten yang dulu dipilih tangan — ditampilkan hanya sebagai acuan dan tidak dijumlahkan dengan keduanya.
 
+`ATURAN_V2` memuat 37 aturan; 4 di antaranya digantikan aturan lain dan hanya tercatat sebagai dilewati (R1 oleh R15, R2 oleh R14, R6 oleh R17B, R10 oleh R18a), jadi **33 aturan aktif**. 2 di antaranya lahir di M4b dari salah nyata audit gudang (R36, R37); sebelum M4b ada 31 aturan aktif. Cakupan R6 lama "laporannya ternyata bercerita tentang saham lain" kini dipegang R36; alasan lewat R6 di bawah sengaja tidak diubah karena tercantum di jejak pemeriksaan kasus ULTJ yang sedang tayang. Kasus tayang menjalankan daftar aturan bekunya sendiri (`docs/bukti/aturan-beku-kasus.json`), bukan daftar ini.
+
 Kredit Sectors yang dipakai audit: **303** (buku kas: 416 termasuk saldo pembuka 113; pagu 613).
 
 | penyebut | kelompok suspensi | kelompok pembanding | gudang lama (acuan) |
@@ -29,12 +31,12 @@ Emiten yang punya sedikitnya satu temuan **berkeparahan konflik** dari aturan **
 
 | kelompok | emiten berkonflik | penyebut | emiten |
 |---|---:|---:|---|
-| kelompok suspensi | 18 | 28 | AHAP (R35); AIMS (R7, R17B); ALII (R15, R7, R17B); ALKA (R11a, R7); AMMS (R11a, R7, R17B); ARCI (R7, R17B); ARKO (R7, R17B); ARTA (R17B); ASHA (R15, R7); ASLC (R23); ASLI (R7, R17B); ATAP (R11a, R7, R17B); AYAM (R17B); AYLS (R17B); BAIK (R11a, R7); BAJA (R7, R17B); BAPA (R14, R17B); BCIC (R7, R14, R17B) |
-| kelompok pembanding | 7 | 14 | ADHI (R17B); ADRO (R7, R13, R17B); AVIA (R7, R17B, R23); BATA (R7, R14); BBMD (R7, R17B); BOLT (R17B); BSIM (R17B, R23) |
-| gudang lama (acuan, dipilih tangan) | 9 | 15 | BIRD (R14); COCO (R11a, R7, R14, R17B, R35); DADA (R14, R3, R17B); FOLK (R17B); KRYA (R11a, R7, R14, R9, R17B); MTLA (R14); RAJA (R31); RLCO (R7, R14, R13, R17B, R23); ULTJ (R14) |
+| kelompok suspensi | 17 | 28 | AHAP (R35); AIMS (R7, R17B); ALII (R15, R7, R17B); ALKA (R11a, R7); AMMS (R11a, R7, R17B); ARCI (R7, R17B, R37); ARKO (R7, R17B); ARTA (R17B); ASHA (R15, R7); ASLI (R7, R17B); ATAP (R11a, R7, R17B); AYAM (R17B); AYLS (R17B); BAIK (R11a, R7); BAJA (R7, R17B); BAPA (R14, R17B); BCIC (R7, R14, R17B) |
+| kelompok pembanding | 8 | 14 | ABMM (R37); ADHI (R17B); ADRO (R7, R13, R17B, R36); AVIA (R7, R17B, R23); BATA (R7, R14); BBMD (R7, R17B); BOLT (R17B); BSIM (R17B, R23) |
+| gudang lama (acuan, dipilih tangan) | 10 | 15 | BIRD (R14); COCO (R11a, R7, R14, R17B, R35); DADA (R14, R3, R17B); FOLK (R17B); HITS (R37); KRYA (R11a, R7, R14, R9, R17B); MTLA (R14); RAJA (R31); RLCO (R7, R14, R13, R17B); ULTJ (R14) |
 
 
-Tanpa aturan yang sampelnya masih dibantah penguji independen (R13, R19b, R23, R25, R26, R28): kelompok suspensi 17 dari 28, kelompok pembanding 7 dari 14, gudang lama 9 dari 15.
+Tanpa aturan yang sampelnya masih dibantah penguji independen (R13, R19b, R23, R25, R26, R28): kelompok suspensi 17 dari 28, kelompok pembanding 8 dari 14, gudang lama 10 dari 15.
 
 ## Hasil per aturan
 
@@ -71,11 +73,13 @@ Sel = merah / diperiksa, dalam satuan aturan itu. "Emiten" = emiten merah / emit
 | R19b | penanda | hari bursa | 833 / 3.432 | 24 / 28 | 155 / 1.663 | 3 / 14 | 486 / 2.428 | 7 / 14 |
 | R28 | penanda | aksi korporasi | 0 / 15 | 0 / 7 | 0 / 9 | 0 / 6 | 0 / 12 | 0 / 7 |
 | R35 | penolak | nilai harga ekstrem | 1 / 224 | 1 / 28 | 0 / 112 | 0 / 14 | 3 / 104 | 1 / 13 |
-| R23 | penolak | keputusan RUPS | 1 / 1 | 1 / 1 | 2 / 3 | 2 / 3 | 1 / 2 | 1 / 2 |
+| R23 | penolak | keputusan RUPS | 0 / 1 | 0 / 1 | 2 / 3 | 2 / 3 | 0 / 2 | 0 / 2 |
 | R31 | penolak | angka dividen di keputusan RUPS | 0 / 1 | 0 / 1 | 0 / 4 | 0 / 4 | 2 / 6 | 2 / 5 |
 | R26 | penanda | tahun buku berdividen | 2 / 12 | 2 / 6 | 5 / 50 | 4 / 10 | 3 / 50 | 2 / 9 |
 | R27 | penanda | medan rasio | 6 / 2.137 | 3 / 28 | 2 / 1.219 | 1 / 14 | 6 / 988 | 1 / 12 |
 | R29 | penanda | dividen | 0 / 11 | 0 / 5 | 0 / 64 | 0 / 10 | 0 / 54 | 0 / 8 |
+| R36 | penolak | laporan | 0 / 110 | 0 / 16 | 1 / 36 | 1 / 8 | 0 / 121 | 0 / 12 |
+| R37 | penolak | tahun buku | 1 / 182 | 1 / 28 | 1 / 103 | 1 / 14 | 1 / 78 | 1 / 12 |
 | R34 | penanda | aksi korporasi | 0 / 27 | 0 / 13 | 0 / 73 | 0 / 13 | 0 / 67 | 0 / 10 |
 
 ## Rincian per aturan (hanya yang punya temuan di 42 emiten audit)
@@ -306,13 +310,13 @@ Contoh:
 
 Kami menolak kartu kalau laba yang disebut keputusan RUPS berbeda dari laba di laporan keuangan tahun buku yang sama.
 
-- kelompok suspensi: 1 dari 1 keputusan RUPS bertentangan, 0 tidak cukup data; 1 temuan di 1 dari 1 emiten yang diperiksa (ASLC).
+- kelompok suspensi: 0 dari 1 keputusan RUPS bertentangan, 0 tidak cukup data; 0 temuan di 0 dari 1 emiten yang diperiksa.
 - kelompok pembanding: 2 dari 3 keputusan RUPS bertentangan, 0 tidak cukup data; 2 temuan di 2 dari 3 emiten yang diperiksa (AVIA, BSIM).
-- uji ulang penguji independen: 0 dari 1 sampel dijawab "ya" (U26 ASLC: tidak).
+- uji ulang penguji independen: 0 dari 1 sampel dijawab "ya" (U26 ASLC: tidak → hilang).
+- uji ulang M4b: 0 dari 2 sampel dijawab "ya" (B05 AVIA: tidak; B06 BSIM: tidak).
 
 Contoh:
-- **ASLC** (suspensi) — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS ASLC pada 2026-05-19 menyebut Rp45.000.011.645; laporan keuangan menyebut Rp42.078.526.731. Selisihnya Rp2.921.484.914. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
-- **AVIA** (pembanding) — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS AVIA pada 2026-04-09 menyebut Rp2; laporan keuangan menyebut Rp1.747.462.000.000. Selisihnya Rp1.747.461.999.998. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
+- **AVIA** (pembanding) — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS AVIA pada 2026-04-09 menyebut Rp2; laporan keuangan menyebut Rp1.747.462.000.000. Selisihnya Rp1.747.461.999.998. Laba sebelum pajak dikurangi pajak di laporan yang sama, Rp1.744.020.000.000, juga tidak sama dengan angka RUPS. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
 
 ### R26 — Pembagian laba terhadap laba tahun buku (penanda)
 
@@ -338,6 +342,29 @@ Contoh:
 - **AIMS** (suspensi) — Medan rasio siap pakai `roe` AIMS untuk tahun buku 2023 bernilai -7,5584, di luar selang -5 sampai 5 yang kami anggap mungkin. Penyebabnya tidak diketahui. Angka itu tidak boleh dipakai di kartu apa pun.
 - **BATA** (pembanding) — Medan rasio siap pakai `roe` BATA untuk tahun buku 2024 bernilai 9,2903, di luar selang -5 sampai 5 yang kami anggap mungkin. Penyebabnya tidak diketahui. Angka itu tidak boleh dipakai di kartu apa pun.
 
+### R36 — Laporan tentang saham emiten lain (penolak)
+
+Kami menolak kartu kalau laporannya ternyata tentang saham perusahaan lain: judulnya menyebut perusahaan lain, dan persennya tidak mungkin dihitung dari saham emiten ini.
+
+- kelompok suspensi: 0 dari 110 laporan bertentangan, 0 tidak cukup data; 0 temuan di 0 dari 16 emiten yang diperiksa.
+- kelompok pembanding: 1 dari 36 laporan bertentangan, 0 tidak cukup data; 1 temuan di 1 dari 8 emiten yang diperiksa (ADRO).
+- uji ulang M4b: 1 dari 1 sampel dijawab "ya" (B01 ADRO: ya).
+
+Contoh:
+- **ADRO** (pembanding) — Laporan 2025-10-17T22:27:59 bersimbol ADRO menyebut saham "Alamtri Minerals Indonesia" di judulnya, bukan Alamtri Resources Indonesia Tbk. Persennya juga tidak mungkin dihitung dari saham ADRO: 34.525.541.100 lembar = 84.451% berarti saham beredar 40.882.335.437 lembar, padahal saham beredar ADRO yang berlaku 2025-10-17 29.389.689.400 lembar (meleset 39,1% atau lebih di tiap sisi laporan). Laporan ini tentang saham perusahaan lain; tidak satu pun angkanya boleh menjadi kartu ADRO.
+
+### R37 — Bagian lebih besar dari keseluruhannya di laporan keuangan (penolak)
+
+Kami menolak kartu kalau satu tahun buku laporan keuangan memuat bagian yang lebih besar dari keseluruhannya — utang melebihi total liabilitas, atau kas melebihi aset lancar atau total aset — karena sedikitnya satu angka di tahun buku itu salah satuan atau salah isi.
+
+- kelompok suspensi: 1 dari 182 tahun buku bertentangan, 6 tidak cukup data; 1 temuan di 1 dari 28 emiten yang diperiksa (ARCI).
+- kelompok pembanding: 1 dari 103 tahun buku bertentangan, 11 tidak cukup data; 1 temuan di 1 dari 14 emiten yang diperiksa (ABMM).
+- uji ulang M4b: 3 dari 3 sampel dijawab "ya" (B02 ARCI: ya; B03 ABMM: ya; B04 HITS: ya).
+
+Contoh:
+- **ARCI** (suspensi) — Laporan keuangan ARCI tahun buku 2023 memuat bagian yang lebih besar dari keseluruhannya: cash_and_equivalents 144.369.863.612 lebih besar dari current_assets 94.562.276 (1.526,7 kali), padahal kas dan setara kas digolongkan aset lancar. Sedikitnya satu angka di tahun buku ini salah satuan atau salah isi, dan mana yang benar tidak terbaca dari data ini; tidak satu pun angka keuangan tahun buku ini boleh menjadi kartu.
+- **ABMM** (pembanding) — Laporan keuangan ABMM tahun buku 2023 memuat bagian yang lebih besar dari keseluruhannya: total_debt 16.059.284.798.232 lebih besar dari total_liabilities 1.397.760.928 (11.489,3 kali), padahal utang adalah bagian dari liabilitas; cash_and_equivalents 2.911.439.932.464 lebih besar dari total_assets 2.156.687.895 (1.350 kali), padahal kas dan setara kas adalah bagian dari aset; cash_and_equivalents 2.911.439.932.464 lebih besar dari current_assets 622.722.099 (4.675,3 kali), padahal kas dan setara kas digolongkan aset lancar. Sedikitnya satu angka di tahun buku ini salah satuan atau salah isi, dan mana yang benar tidak terbaca dari data ini; tidak satu pun angka keuangan tahun buku ini boleh menjadi kartu.
+
 ### R34 — Aksi korporasi dengan harga di kedua sisinya (penanda)
 
 Kami memberi tanda pada aksi korporasi yang tidak punya harga harian di kedua sisinya, karena tidak ada satu pun pemeriksaan harga yang bisa dijalankan atasnya.
@@ -361,14 +388,35 @@ Setiap temuan R25 menyebut "respons kosong yang tidak bisa dialamatkan ke emiten
 ### Bug aturan yang dibuktikan uji ulang (D-5)
 
 - **Diperbaiki di M4a** (tes merah dulu di `factory/verifikasi/audit-m4a.test.ts`, kasus tayang tetap byte-identik): R14/R16 mengurutkan dua laporan bercap waktu dan PDF sama menurut urutan baris respons API, bukan sambungan saldonya (BCIC, BAJA); R17B mengadu butir pengalihan berharga Rp0 dengan rentang harga pasar (BBMD); R31 menolak angka RUPS yang ditulis dua desimal (Rp7.61) padahal medan dividennya 7,61106 (BNII).
-- **Terbukti, belum diperbaiki — R23:** laba di keputusan RUPS ASLC sama persis dengan `earnings_before_tax − tax` di laporan keuangan yang sama, tetapi R23 hanya mengadunya dengan `earnings` (laba yang diatribusikan ke induk). Usulan: R23 hijau bila angka RUPS sama dengan salah satu dari keduanya, dan temuannya menyebut ukuran laba mana yang cocok. Butuh pemuat membaca `earnings_before_tax` dan `tax` (di luar batas kerja M4a). Sampai itu, R23 tidak dikutip.
+- **Diperbaiki di M4b — R23 (U26):** laba di keputusan RUPS ASLC sama persis dengan `earnings_before_tax − tax` di laporan keuangan yang sama, tetapi R23 hanya mengadunya dengan `earnings` (laba yang diatribusikan ke induk). Sekarang R23 hijau bila angka RUPS sama dengan salah satu dari keduanya, dan temuan merahnya menyebut keduanya (M4b T-04, tes merah dulu di `factory/verifikasi/aturan-audit.test.ts`; kasus tayang tetap byte-identik).
+- **Terbukti, belum diperbaiki — R23 sisa:** 2 temuan R23 yang masih keluar sesudah perbaikan diuji ulang di M4b dan semuanya dibantah: B05 AVIA (tidak), B06 BSIM (tidak). Sebabnya dua bug lain di R23: kata skala di teks RUPS ("Rp1.74 trillion") tidak dibaca, dan angka RUPS sampai rupiah dibandingkan persis dengan medan keuangan yang ditulis dalam satuan juta. Usulan: baca kata skala, lalu bandingkan pada presisi yang lebih kasar dari kedua angka (cara R31 di M4a). Sampai itu, R23 tidak dikutip.
 - **Kalimat awam R19b kurang tepat:** aturannya sengaja memakai jendela lunak (9 dari 10 hari datar) dan temuannya menyebutnya, tetapi kalimat awamnya berbunyi "tiap harinya".
 
-### Jenis ketidakkonsistenan baru yang ditemukan, tetapi tidak dijadikan aturan (D-6 ditahan D-7)
+## Aturan baru M4b: dua jenis salah nyata yang dulu tidak ditangkap
 
-Uji ulang menemukan dua jenis salah nyata yang tidak ditangkap 31 aturan. Keduanya **tidak** didaftarkan sebagai aturan baru: mendaftarkan satu aturan saja di `ATURAN_V2` — bahkan yang tidak mengeluarkan satu temuan pun — mengubah berkas kasus ULTJ yang sedang tayang (daftar pemeriksaannya bertambah satu baris; sha `d26683db…` menjadi `a1ce2666…`). Kontrak D-7 melarangnya; keputusan ada di pemilik.
-- **Laporan untuk saham emiten lain** (U18): laporan bersimbol ADRO.JK berjudul "Alamtri Resources Indonesia Buy Transaction of Alamtri Minerals Indonesia" — pembeli adalah ADRO sendiri, saham yang dibeli milik emiten lain. R13 menolak kartunya dengan alasan yang keliru ("memegang lebih dari yang diterbitkan"). Seluruh temuan konflik ADRO (dua R7, dua R13, satu R17B) berasal dari laporan yang satu ini: angkanya memang bertentangan dengan data ADRO, tetapi sebabnya salah simbol. Calon aturan: nama perusahaan di judul laporan dibanding nama emiten di ringkasan.
-- **Baris laporan keuangan bercampur satuan** (U28): ABMM tahun buku 2023 menulis `total_debt` 16 triliun padahal `total_liabilities` 1,4 miliar, dan kas lebih besar dari total aset. R26 lalu menandai dividen yang "tak masuk akal" padahal sebabnya satuan. Calon aturan: komponen neraca tidak boleh melebihi totalnya pada baris tahun yang sama.
+Uji ulang M4a menemukan dua jenis salah nyata yang tidak ditangkap aturan mana pun. Di M4a keduanya ditahan, karena mendaftarkan satu aturan saja di `ATURAN_V2` mengubah berkas kasus ULTJ yang sedang tayang. M4b membekukan daftar aturan tiap kasus tayang (`docs/bukti/aturan-beku-kasus.json`): kasus tayang hanya menjalankan aturan yang dipakai saat ia dibekukan, jadi aturan baru bisa ditambah tanpa menggeser DADA maupun ULTJ. Kedua jenis itu sekarang aturan:
+
+### R36 — Laporan tentang saham emiten lain (penolak)
+
+Kami menolak kartu kalau laporannya ternyata tentang saham perusahaan lain: judulnya menyebut perusahaan lain, dan persennya tidak mungkin dihitung dari saham emiten ini.
+
+Asal: dari U18: laporan bersimbol ADRO.JK berjudul "Alamtri Resources Indonesia Buy Transaction of Alamtri Minerals Indonesia". Ini cakupan R6 lama ("laporannya ternyata bercerita tentang saham lain") yang hilang ketika R6 digantikan R17B, yang hanya memeriksa harga. Penolak karena dua syarat: judulnya menyebut perusahaan lain DAN penyebut tersirat persennya meleset lebih dari 10% dari saham beredar emiten di semua sisi laporan. Nama beda dengan angka milik emiten (nama lama, ejaan) tetap hijau; judul yang menyebut pemegangnya sendiri (FOLK) tidak lengkap, bukan merah.
+
+- kelompok suspensi: 0 dari 110 laporan bertentangan, 0 tidak cukup data; 0 dari 16 emiten yang diperiksa.
+- kelompok pembanding: 1 dari 36 laporan bertentangan, 0 tidak cukup data; 1 dari 8 emiten yang diperiksa (ADRO).
+- gudang lama (acuan, dipilih tangan): 0 dari 121 laporan bertentangan, 50 tidak cukup data; 0 dari 12 emiten yang diperiksa.
+- uji ulang penguji independen M4b: 1 dari 1 temuan dijawab "ya" (B01 ADRO: ya).
+
+### R37 — Bagian lebih besar dari keseluruhannya di laporan keuangan (penolak)
+
+Kami menolak kartu kalau satu tahun buku laporan keuangan memuat bagian yang lebih besar dari keseluruhannya — utang melebihi total liabilitas, atau kas melebihi aset lancar atau total aset — karena sedikitnya satu angka di tahun buku itu salah satuan atau salah isi.
+
+Asal: dari U28: ABMM tahun buku 2023 menulis total_debt 16 triliun padahal total_liabilities 1,4 miliar. Penolak, karena dua angka di baris yang sama bertentangan menurut definisinya. Hanya tiga hubungan yang terbukti dilanggar di gudang dan berlaku menurut definisi (PSAK 201/IAS 1 par. 54, 66, 69; PSAK 207/IAS 7 par. 6–7): total_debt ≤ total_liabilities, cash_and_equivalents ≤ total_assets, cash_and_equivalents ≤ current_assets.
+
+- kelompok suspensi: 1 dari 182 tahun buku bertentangan, 6 tidak cukup data; 1 dari 28 emiten yang diperiksa (ARCI).
+- kelompok pembanding: 1 dari 103 tahun buku bertentangan, 11 tidak cukup data; 1 dari 14 emiten yang diperiksa (ABMM).
+- gudang lama (acuan, dipilih tangan): 1 dari 78 tahun buku bertentangan, 0 tidak cukup data; 1 dari 12 emiten yang diperiksa (HITS).
+- uji ulang penguji independen M4b: 3 dari 3 temuan dijawab "ya" (B02 ARCI: ya; B03 ABMM: ya; B04 HITS: ya).
 
 ## Uji ulang oleh penguji independen (D-5)
 
@@ -377,7 +425,7 @@ Tiap temuan terpilih diberikan ke subagent Claude Opus baru yang hanya menerima 
 | tahap | diuji | ya | tidak | ragu | temuan hilang karena aturan diperbaiki |
 |---|---:|---:|---:|---:|---:|
 | sebelum perbaikan | 30 | 17 | 12 | 1 | — |
-| sesudah perbaikan | 25 | 17 | 7 | 1 | 5 |
+| sesudah perbaikan (M4a dan M4b) | 24 | 17 | 6 | 1 | 6 |
 
 | uji | aturan | emiten | kelompok | sebelum | sesudah |
 |---|---|---|---|---|---|
@@ -406,7 +454,7 @@ Tiap temuan terpilih diberikan ke subagent Claude Opus baru yang hanya menerima 
 | U23 | R19b | BATA | pembanding | tidak | tidak |
 | U24 | R28 | BAJA | suspensi | tidak | tidak |
 | U25 | R35 | AHAP | suspensi | ya | ya |
-| U26 | R23 | ASLC | suspensi | tidak | tidak |
+| U26 | R23 | ASLC | suspensi | tidak | hilang |
 | U27 | R31 | BNII | pembanding | tidak | hilang |
 | U28 | R26 | ABMM | pembanding | tidak | tidak |
 | U29 | R27 | ARGO | suspensi | ya | ya |
@@ -420,25 +468,45 @@ Penyelidikan tiap jawaban yang bukan "ya":
 - **U15 R14 BCIC** (tidak → hilang) — Bug aturan terbukti: dua laporan satu pemegang dengan cap waktu dan PDF yang sama diurutkan menurut urutan baris respons API, bukan menurut sambungan saldonya. Diperbaiki (urutCapWaktuKembar, tes merah dulu di factory/verifikasi/audit-m4a.test.ts); temuan ini tidak keluar lagi.
 - **U16 R14 BCIC** (tidak → hilang) — Bug aturan terbukti: dua laporan satu pemegang dengan cap waktu dan PDF yang sama diurutkan menurut urutan baris respons API, bukan menurut sambungan saldonya. Diperbaiki (urutCapWaktuKembar, tes merah dulu di factory/verifikasi/audit-m4a.test.ts); temuan ini tidak keluar lagi.
 - **U17 R16 BAJA** (tidak → hilang) — Bug aturan terbukti: dua laporan satu pemegang dengan cap waktu dan PDF yang sama diurutkan menurut urutan baris respons API, bukan menurut sambungan saldonya. Diperbaiki (urutCapWaktuKembar, tes merah dulu di factory/verifikasi/audit-m4a.test.ts); temuan ini tidak keluar lagi.
-- **U18 R13 ADRO** (tidak → tidak) — Penolakan kartunya benar — lembar yang ditulis mustahil untuk saham beredar ADRO — tetapi sebabnya salah label: laporan tentang saham Alamtri Minerals Indonesia ditandai simbol ADRO.JK (penguji menunjukkan penyebut tersiratnya 40,88 miliar dan harga 1.435 di luar rentang ADRO). Jenis "laporan untuk saham lain" tidak ditangkap aturan mana pun (R6 digantikan). Calon aturan baru D-6; ditahan karena D-7.
+- **U18 R13 ADRO** (tidak → tidak) — Penolakan kartunya benar — lembar yang ditulis mustahil untuk saham beredar ADRO — tetapi sebabnya salah label: laporan tentang saham Alamtri Minerals Indonesia ditandai simbol ADRO.JK (penguji menunjukkan penyebut tersiratnya 40,88 miliar dan harga 1.435 di luar rentang ADRO). Jenis "laporan untuk saham lain" tidak ditangkap aturan mana pun (R6 digantikan). Calon aturan baru D-6; ditahan karena D-7. M4b: jenis ini kini ditangkap R36 (laporan tentang saham emiten lain), dan penguji independen membenarkan temuan R36 atas laporan yang sama (eval/audit-gudang/penguji-m4b/B01). Temuan R13 ADRO tetap keluar dengan alasan yang keliru.
 - **U20 R17B BBMD** (tidak → hilang) — Bug aturan terbukti: butir pengalihan (transfer) berharga Rp0 diadu dengan rentang harga pasar. Diperbaiki (harga nol dicatat tidak lengkap, tes merah dulu); temuan ini tidak keluar lagi.
 - **U23 R19b BATA** (tidak → tidak) — Bukan salah deteksi: R19b sengaja memakai jendela lunak (9 dari 10 hari) dan temuannya sendiri menulis "9 dari 10 hari bursa"; kalimat awamnya ("tiap harinya") tidak menyebut jendela lunak. Tidak diubah; kalimat awam R19b kurang tepat.
 - **U24 R28 BAJA** (tidak → tidak) — Bukan salah deteksi: R28 memberi label deret, tidak mengklaim ketidakkonsistenan; saham tersirat BAJA memang tidak berubah melintasi right issue (label "disesuaikan" sesuai definisinya). Pertanyaan "tidak konsisten" tidak cocok untuk aturan pelabelan.
-- **U26 R23 ASLC** (tidak → tidak) — Bug aturan terbukti: laba di keputusan RUPS = earnings_before_tax − tax di laporan keuangan yang sama, tepat sampai rupiah; R23 hanya mengadu dengan medan earnings (laba atribusi induk). Tidak diperbaiki di M4a: medan pajak dan laba sebelum pajak tidak dimuat pemuat (factory/muat di luar batas D-5). Usulan di laporan.
+- **U26 R23 ASLC** (tidak → hilang) — Bug aturan terbukti: laba di keputusan RUPS = earnings_before_tax − tax di laporan keuangan yang sama, tepat sampai rupiah; R23 hanya mengadu dengan medan earnings (laba atribusi induk). Tidak diperbaiki di M4a (pemuat di luar batas D-5). Diperbaiki di M4b T-04: R23 juga mengadu dengan laba sebelum pajak − pajak (labaSesudahPajak, tes merah dulu di factory/verifikasi/aturan-audit.test.ts); temuan ini tidak keluar lagi. Dua temuan R23 yang masih keluar (AVIA, BSIM) diuji ulang di M4b dan dibantah (eval/audit-gudang/penguji-m4b/B05, B06).
 - **U27 R31 BNII** (tidak → hilang) — Bug aturan terbukti: angka RUPS Rp7.61 adalah 7,61106 yang dibulatkan dua desimal. Diperbaiki (angka RUPS berdesimal dibandingkan pada desimal yang tertulis; angka bulat tetap harus sama persis; tes merah dulu); temuan ini tidak keluar lagi.
-- **U28 R26 ABMM** (tidak → tidak) — Penanda tepat atas angka yang tertulis, tetapi sebab sebenarnya bukan pembagian dividen yang tak masuk akal: baris keuangan ABMM 2023 bercampur satuan (total_debt 16 triliun > total_liabilities 1,4 miliar; kas > total aset). Jenis "komponen neraca melebihi totalnya" tidak ditangkap aturan mana pun. Calon aturan baru D-6; ditahan karena D-7.
+- **U28 R26 ABMM** (tidak → tidak) — Penanda tepat atas angka yang tertulis, tetapi sebab sebenarnya bukan pembagian dividen yang tak masuk akal: baris keuangan ABMM 2023 bercampur satuan (total_debt 16 triliun > total_liabilities 1,4 miliar; kas > total aset). Jenis "komponen neraca melebihi totalnya" tidak ditangkap aturan mana pun. Calon aturan baru D-6; ditahan karena D-7. M4b: jenis ini kini ditangkap R37 (bagian lebih besar dari keseluruhannya di satu tahun buku), dan penguji independen membenarkan temuan R37 ABMM 2023 (eval/audit-gudang/penguji-m4b/B03). Penanda R26 ABMM tetap keluar.
+
+### Uji ulang M4b
+
+Cara yang sama, subagent Claude Opus baru per temuan, bahan ditempel langsung di prompt (penguji tidak membuka berkas). Yang diuji: semua temuan aturan baru R36 dan R37 di gudang audit (paling banyak 3 per aturan), dan temuan R23 yang masih keluar sesudah perbaikannya. Jawaban mentah di `eval/audit-gudang/penguji-m4b/`.
+
+| uji | aturan | emiten | tahap | jawaban |
+|---|---|---|---|---|
+| B01 | R36 | ADRO | aturan baru M4b | ya |
+| B02 | R37 | ARCI | aturan baru M4b | ya |
+| B03 | R37 | ABMM | aturan baru M4b | ya |
+| B04 | R37 | HITS | aturan baru M4b | ya |
+| B05 | R23 | AVIA | R23 sesudah perbaikan M4b T-04 (temuan yang masih keluar) | tidak |
+| B06 | R23 | BSIM | R23 sesudah perbaikan M4b T-04 (temuan yang masih keluar) | tidak |
+
+Kesepakatan atas aturan baru: 4 dari 4 "ya".
+
+- **B05 R23 AVIA** (tidak) — Bug R23 terbukti, di luar D-4 dan tidak diperbaiki di M4b: bacaAngkaRupiah membaca "Rp1.74 trillion" sebagai Rp2 (kata skala trillion/billion diabaikan), dan angka RUPS berpresisi dua desimal triliun dibandingkan sampai rupiah. Laba laporan keuangan 1.747.462.000.000 cocok dengan Rp1,74 triliun pada presisi yang tertulis. Perbaikan yang diusulkan: baca kata skala, lalu bandingkan pada presisi angka RUPS (cara R31 M4a). R23 tetap tidak boleh dikutip.
+- **B06 R23 BSIM** (tidak) — Bug R23 terbukti, di luar D-4 dan tidak diperbaiki di M4b: medan keuangan BSIM ditulis dalam satuan juta rupiah (285.748.000.000), angka RUPS sampai rupiah (285.747.406.391); R23 membandingkan persis sampai rupiah. Selisih Rp593.609 lebih kecil dari satu satuan presisi laporan keuangan. Perbaikan yang diusulkan: bandingkan pada presisi medan keuangan (kelipatan satu juta bila semua medan baris itu berakhiran 000000). R23 tetap tidak boleh dikutip.
 
 ## Kalimat yang boleh dipakai di video/README
 
 Hanya aturan **penolak** yang punya temuan di 42 emiten audit dan tidak satu pun sampelnya masih dibantah penguji. Angkanya langsung dari tabel di atas, dengan penyebutnya. Ini kalimat tentang 42 emiten ini, bukan tentang pasar.
 
-- "Dari 28 emiten yang pernah disuspensi, 17 punya sedikitnya satu angka yang bertentangan dengan angka lain di data resmi yang sama; dari 14 emiten pembanding yang tidak pernah disuspensi, 7."
+- "Dari 28 emiten yang pernah disuspensi, 17 punya sedikitnya satu angka yang bertentangan dengan angka lain di data resmi yang sama; dari 14 emiten pembanding yang tidak pernah disuspensi, 8."
 - R15: "Dari 146 laporan di 24 emiten yang bisa diperiksa, 2 bertentangan (kelompok suspensi 2 / 110, pembanding 0 / 36)." — Kami menolak kartu kalau penjumlahan di dalam satu laporan tidak cocok, termasuk untuk laporan yang jenis transaksinya bukan beli maupun jual.
 - R11a: "Dari 146 laporan di 24 emiten yang bisa diperiksa, 4 bertentangan (kelompok suspensi 4 / 110, pembanding 0 / 36)." — Kami menolak kartu kalau dua persen di dalam satu laporan tidak mungkin berasal dari jumlah saham beredar yang sama.
 - R7: "Dari 292 sisi laporan di 24 emiten yang bisa diperiksa, 52 bertentangan (kelompok suspensi 38 / 220, pembanding 14 / 72)." — Kami menolak kartu kalau persen yang ditulis laporan tidak cocok dengan jumlah lembar dibagi saham beredar yang berlaku pada tanggal laporan itu. (1 dari 2 sampel uji ulang dijawab "ragu")
 - R14: "Dari 73 sambungan di 13 emiten yang bisa diperiksa, 4 bertentangan (kelompok suspensi 2 / 63, pembanding 2 / 10)." — Kami menolak kartu kalau ada lembar yang berpindah tangan tanpa laporan di antara dua laporan berurutan. (belum ada sampel tersisa yang diuji ulang: sampelnya hilang sesudah aturannya diperbaiki, atau tidak terpilih)
-- R17B: "Dari 206 butir transaksi di 24 emiten yang bisa diperiksa, 67 bertentangan (kelompok suspensi 48 / 147, pembanding 19 / 59)." — Kami menolak kartu kalau harga yang ditulis laporan di luar rentang harga saham itu pada tanggal transaksinya sendiri.
+- R17B: "Dari 206 butir transaksi di 24 emiten yang bisa diperiksa, 67 bertentangan (kelompok suspensi 48 / 147, pembanding 19 / 59)." — Kami menolak kartu kalau harga yang ditulis laporan di luar rentang harga saham itu pada tanggal transaksinya sendiri. (catatan reviewer M4a: transaksi pasar negosiasi bisa sah di luar rentang pasar reguler — jangan dikutip sebagai "bertentangan" sebelum dicek pakar)
 - R35: "Dari 336 nilai harga ekstrem di 42 emiten yang bisa diperiksa, 1 bertentangan (kelompok suspensi 1 / 224, pembanding 0 / 112)." — Kami menolak kartu kalau harga tertinggi atau terendah yang disebut ringkasan tidak terjangkau deret harga hariannya sendiri.
+- R36: "Dari 146 laporan di 24 emiten yang bisa diperiksa, 1 bertentangan (kelompok suspensi 0 / 110, pembanding 1 / 36)." — Kami menolak kartu kalau laporannya ternyata tentang saham perusahaan lain: judulnya menyebut perusahaan lain, dan persennya tidak mungkin dihitung dari saham emiten ini.
+- R37: "Dari 285 tahun buku di 42 emiten yang bisa diperiksa, 2 bertentangan (kelompok suspensi 1 / 182, pembanding 1 / 103)." — Kami menolak kartu kalau satu tahun buku laporan keuangan memuat bagian yang lebih besar dari keseluruhannya — utang melebihi total liabilitas, atau kas melebihi aset lancar atau total aset — karena sedikitnya satu angka di tahun buku itu salah satuan atau salah isi.
 
 Tidak boleh dikutip karena sampelnya masih dibantah penguji: R13, R19b, R23, R25, R26, R28.
 

@@ -16,7 +16,7 @@ Kurikulum melabeli kasus menurut **peristiwa**: perusahaan membagi dividen, mene
 
 | peristiwa | kejadian | punya harga di kedua sisi | lolos jadi bahan kartu | emiten |
 |---|---:|---:|---:|---|
-| dividen tunai | 131 | 31 | 26 | ABMM, ADHI, ADRO, ALII, AMAG, ARCI, ARNA, ARTA, ASLC, ASPR, ASSA, ATAP, AVIA, BBMD, BIRD, BNII, BOLT, CAMP, DADA, KRYA, MERK, MLPT, MTLA, RAJA, ULTJ |
+| dividen tunai | 131 | 31 | 27 | ABMM, ADHI, ADRO, ALII, AMAG, ARCI, ARNA, ARTA, ASLC, ASPR, ASSA, ATAP, AVIA, BBMD, BIRD, BNII, BOLT, CAMP, DADA, KRYA, MERK, MLPT, MTLA, RAJA, ULTJ |
 | penerbitan saham baru | 25 | 6 | 2 | ADHI, AHAP, AKKU, ASSA, BAJA, BBRM, BCIC, BNII, BRNA, BSIM, BSWD, COCO, FORU |
 | pemecahan saham | 13 | 2 | 1 | AIMS, ALKA, ARNA, BATA, BBRM, BCIC, MERK, MLPT, RAJA, RMKE, ULTJ |
 | saham bonus | 1 | 0 | 0 | MTLA |
@@ -33,6 +33,8 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 - **keluar dari bursa** — Tidak ada satu medan pun di data ini yang menyatakan sebuah emiten keluar dari bursa, jadi peristiwa itu tidak bisa diperiksa sama sekali.
 
 ## Hasil per aturan
+
+`ATURAN_V2` memuat 37 aturan; 4 di antaranya digantikan aturan lain dan hanya tercatat sebagai dilewati (R1 oleh R15, R2 oleh R14, R6 oleh R17B, R10 oleh R18a), jadi **33 aturan aktif**. 2 di antaranya lahir di M4b dari salah nyata audit gudang (R36, R37); sebelum M4b ada 31 aturan aktif. Cakupan R6 lama "laporannya ternyata bercerita tentang saham lain" kini dipegang R36; alasan lewat R6 di bawah sengaja tidak diubah karena tercantum di jejak pemeriksaan kasus ULTJ yang sedang tayang. Kasus tayang menjalankan daftar aturan bekunya sendiri (`docs/bukti/aturan-beku-kasus.json`), bukan daftar ini.
 
 | aturan | satuan | diperiksa | hijau | merah[^merah] | tidak lengkap | dilewati |
 |---|---|---:|---:|---:|---:|---:|
@@ -65,11 +67,13 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 | R19b | hari bursa | 7.523 | 6.049 | 1.474 | 0 | 0 |
 | R28 | aksi korporasi | 39 | 8 | 0 | 31 | 0 |
 | R35 | nilai harga ekstrem | 440 | 174 | 4 | 262 | 0 |
-| R23 | keputusan RUPS | 6 | 2 | 4 | 0 | 385 |
+| R23 | keputusan RUPS | 6 | 4 | 2 | 0 | 385 |
 | R31 | angka dividen di keputusan RUPS | 11 | 9 | 2 | 0 | 381 |
 | R26 | tahun buku berdividen | 112 | 84 | 10 | 18 | 0 |
 | R27 | medan rasio | 4.344 | 1.369 | 14 | 2.961 | 0 |
 | R29 | dividen | 129 | 29 | 0 | 100 | 2 |
+| R36 | laporan | 267 | 216 | 1 | 50 | 0 |
+| R37 | tahun buku | 363 | 343 | 3 | 17 | 0 |
 | R34 | aksi korporasi | 170 | 39 | 0 | 131 | 0 |
 
 [^merah]: Untuk aturan penolak, "merah" berarti dua angka di dalam data yang sama saling bertentangan. Untuk aturan penanda (R10, R11b, R12, R16, R18a, R19a, R19b, R20, R21, R22, R26, R27, R28, R29, R32, R33, R34), "merah" berarti hal itu perlu dijelaskan sebelum dipakai di kartu — bukan bahwa datanya salah.
@@ -415,14 +419,14 @@ Contoh nyata:
 
 Kami menolak kartu kalau laba yang disebut keputusan RUPS berbeda dari laba di laporan keuangan tahun buku yang sama.
 
-Diperiksa 6 keputusan RUPS: 2 tidak bermasalah, 4 bertentangan, 0 datanya tidak cukup untuk memutuskan. 385 keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 56 emiten dan dilewati untuk 261.
+Diperiksa 6 keputusan RUPS: 4 tidak bermasalah, 2 bertentangan, 0 datanya tidak cukup untuk memutuskan. 385 keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 56 emiten dan dilewati untuk 261.
 
 Alasan dilewati:
 - Emiten ini tidak punya satu pun RUPS tercatat.
 
 Contoh nyata:
-- **ASLC** — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS ASLC pada 2026-05-19 menyebut Rp45.000.011.645; laporan keuangan menyebut Rp42.078.526.731. Selisihnya Rp2.921.484.914. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
-- **AVIA** — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS AVIA pada 2026-04-09 menyebut Rp2; laporan keuangan menyebut Rp1.747.462.000.000. Selisihnya Rp1.747.461.999.998. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
+- **AVIA** — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS AVIA pada 2026-04-09 menyebut Rp2; laporan keuangan menyebut Rp1.747.462.000.000. Selisihnya Rp1.747.461.999.998. Laba sebelum pajak dikurangi pajak di laporan yang sama, Rp1.744.020.000.000, juga tidak sama dengan angka RUPS. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
+- **BSIM** — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS BSIM pada 2026-06-25 menyebut Rp285.747.406.391; laporan keuangan menyebut Rp285.748.000.000. Selisihnya Rp593.609. Laba sebelum pajak dikurangi pajak di laporan yang sama, Rp322.430.000.000, juga tidak sama dengan angka RUPS. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
 
 ### R31 — Dividen di keputusan RUPS versus medan dividend
 
@@ -471,6 +475,31 @@ Diperiksa 129 dividen: 29 tidak bermasalah, 0 ditandai, 100 datanya tidak cukup 
 
 Alasan dilewati:
 - Emiten ini tidak punya satu pun dividen tercatat.
+
+### R36 — Laporan tentang saham emiten lain
+
+Kami menolak kartu kalau laporannya ternyata tentang saham perusahaan lain: judulnya menyebut perusahaan lain, dan persennya tidak mungkin dihitung dari saham emiten ini.
+
+Diperiksa 267 laporan: 216 tidak bermasalah, 1 bertentangan, 50 datanya tidak cukup untuk memutuskan. 0 laporan tidak masuk pemeriksaan ini. Aturannya jalan untuk 36 emiten dan dilewati untuk 281.
+
+Alasan dilewati:
+- Tidak ada laporan untuk diperiksa.
+
+Contoh nyata:
+- **ADRO** — Laporan 2025-10-17T22:27:59 bersimbol ADRO menyebut saham "Alamtri Minerals Indonesia" di judulnya, bukan Alamtri Resources Indonesia Tbk. Persennya juga tidak mungkin dihitung dari saham ADRO: 34.525.541.100 lembar = 84.451% berarti saham beredar 40.882.335.437 lembar, padahal saham beredar ADRO yang berlaku 2025-10-17 29.389.689.400 lembar (meleset 39,1% atau lebih di tiap sisi laporan). Laporan ini tentang saham perusahaan lain; tidak satu pun angkanya boleh menjadi kartu ADRO.
+
+### R37 — Bagian lebih besar dari keseluruhannya di laporan keuangan
+
+Kami menolak kartu kalau satu tahun buku laporan keuangan memuat bagian yang lebih besar dari keseluruhannya — utang melebihi total liabilitas, atau kas melebihi aset lancar atau total aset — karena sedikitnya satu angka di tahun buku itu salah satuan atau salah isi.
+
+Diperiksa 363 tahun buku: 343 tidak bermasalah, 3 bertentangan, 17 datanya tidak cukup untuk memutuskan. 0 tahun buku tidak masuk pemeriksaan ini. Aturannya jalan untuk 54 emiten dan dilewati untuk 263.
+
+Alasan dilewati:
+- Emiten ini tidak punya laporan keuangan tahunan di data.
+
+Contoh nyata:
+- **ABMM** — Laporan keuangan ABMM tahun buku 2023 memuat bagian yang lebih besar dari keseluruhannya: total_debt 16.059.284.798.232 lebih besar dari total_liabilities 1.397.760.928 (11.489,3 kali), padahal utang adalah bagian dari liabilitas; cash_and_equivalents 2.911.439.932.464 lebih besar dari total_assets 2.156.687.895 (1.350 kali), padahal kas dan setara kas adalah bagian dari aset; cash_and_equivalents 2.911.439.932.464 lebih besar dari current_assets 622.722.099 (4.675,3 kali), padahal kas dan setara kas digolongkan aset lancar. Sedikitnya satu angka di tahun buku ini salah satuan atau salah isi, dan mana yang benar tidak terbaca dari data ini; tidak satu pun angka keuangan tahun buku ini boleh menjadi kartu.
+- **ARCI** — Laporan keuangan ARCI tahun buku 2023 memuat bagian yang lebih besar dari keseluruhannya: cash_and_equivalents 144.369.863.612 lebih besar dari current_assets 94.562.276 (1.526,7 kali), padahal kas dan setara kas digolongkan aset lancar. Sedikitnya satu angka di tahun buku ini salah satuan atau salah isi, dan mana yang benar tidak terbaca dari data ini; tidak satu pun angka keuangan tahun buku ini boleh menjadi kartu.
 
 ### R34 — Aksi korporasi dengan harga di kedua sisinya
 

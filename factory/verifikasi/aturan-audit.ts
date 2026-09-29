@@ -198,7 +198,7 @@ export function r36LaporanSahamLain(konteks: KonteksGudang): HasilAturan {
         `bukan ${nama ?? konteks.simbol}. Persennya juga tidak mungkin dihitung dari saham ` +
         `${konteks.simbol}: ${angka(pertama.lembar)} lembar = ${String(pertama.persen)}% berarti saham beredar ` +
         `${angka(pertama.tersirat)} lembar, padahal saham beredar ${konteks.simbol} yang berlaku ${titik.pada} ` +
-        `${angka(titik.lembar)} lembar (meleset ${(terkecil * 100).toFixed(1)}% atau lebih di tiap sisi laporan). ` +
+        `${angka(titik.lembar)} lembar (meleset ${angka(Number((terkecil * 100).toFixed(1)))}% atau lebih di tiap sisi laporan). ` +
         `Laporan ini tentang saham perusahaan lain; tidak satu pun angkanya boleh menjadi kartu ${konteks.simbol}.`,
       angka: [
         ...sisi.map((s) => ({
@@ -337,7 +337,7 @@ export function r37BagianMelebihiKeseluruhan(konteks: KonteksGudang): HasilAtura
           .map(
             ({ h, bagian, keseluruhan }) =>
               `${h.medan_bagian} ${angka(bagian)} lebih besar dari ${h.medan_keseluruhan} ${angka(keseluruhan)} ` +
-              `(${(bagian / keseluruhan).toFixed(1)} kali), padahal ${h.dasar}`,
+              `(${angka(Number((bagian / keseluruhan).toFixed(1)))} kali), padahal ${h.dasar}`,
           )
           .join('; ') +
         '. Sedikitnya satu angka di tahun buku ini salah satuan atau salah isi, dan mana yang benar tidak ' +

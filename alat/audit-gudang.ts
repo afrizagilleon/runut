@@ -20,7 +20,8 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
-import { ATURAN_PENANDA } from '../factory/gudang.ts';
+import { ATURAN_PENANDA, jumlahAturan } from '../factory/gudang.ts';
+import { ATURAN_M4B } from '../factory/verifikasi/v2.ts';
 import type { KodeAturan, Temuan } from '../factory/skema/tipe.ts';
 import { keparahanTemuan } from '../factory/skema/tipe.ts';
 import { AKAR } from './sectors.ts';
@@ -30,6 +31,7 @@ export const JALUR_ATURAN_MD = join(AKAR, 'docs', 'bukti', 'aturan-gudang.md');
 export const JALUR_RENCANA = join(AKAR, 'docs', 'bukti', 'audit-rencana.json');
 export const JALUR_AMBIL = join(AKAR, 'docs', 'bukti', 'audit-ambil.json');
 export const JALUR_PENGUJI = join(AKAR, 'eval', 'audit-gudang', 'hasil-penguji.json');
+export const JALUR_PENGUJI_M4B = join(AKAR, 'eval', 'audit-gudang', 'penguji-m4b', 'hasil.json');
 export const JALUR_LAPORAN = join(AKAR, 'docs', 'bukti', 'audit-gudang.md');
 
 /** Paling banyak temuan yang diuji ulang (kontrak D-5). */
@@ -105,6 +107,26 @@ export interface UjiUlang {
 export interface HasilPenguji {
   keterangan: string;
   uji: UjiUlang[];
+}
+
+/**
+ * Hasil uji ulang M4b (`eval/audit-gudang/penguji-m4b/hasil.json`): temuan
+ * aturan baru R36/R37 dan temuan R23 yang masih keluar sesudah perbaikan M4b.
+ * Satu jawaban per uji, tanpa tahap sebelum/sesudah.
+ */
+export interface UjiM4b {
+  id: string;
+  aturan: KodeAturan;
+  simbol: string;
+  temuan_id: string;
+  tahap: string;
+  jawaban: 'ya' | 'tidak' | 'ragu';
+  penyelidikan: string | null;
+}
+
+export interface HasilPengujiM4b {
+  keterangan: string;
+  uji: UjiM4b[];
 }
 
 // --- kalimat awam --------------------------------------------------------------
@@ -332,12 +354,26 @@ function pecahan(merah: number, diperiksa: number): string {
   return diperiksa === 0 ? '—' : `${angka(merah)} / ${angka(diperiksa)}`;
 }
 
-/** Aturan yang boleh dikutip: tidak satu pun sampel D-5-nya masih dibantah penguji. */
-export function aturanDibantah(penguji: HasilPenguji | null): Set<KodeAturan> {
+/**
+ * Aturan yang tidak boleh dikutip: sedikitnya satu sampel uji ulangnya masih
+ * dibantah penguji — sesudah perbaikan M4a, atau pada uji ulang M4b.
+ */
+export function aturanDibantah(penguji: HasilPenguji | null, m4b: HasilPengujiM4b | null = null): Set<KodeAturan> {
   const keluar = new Set<KodeAturan>();
   for (const u of penguji?.uji ?? []) if (u.sesudah === 'tidak') keluar.add(u.aturan);
+  for (const u of m4b?.uji ?? []) if (u.jawaban === 'tidak') keluar.add(u.aturan);
   return keluar;
 }
+
+/**
+ * Catatan kutip dari review reviewer M4a §10, ditulis di samping kalimat yang
+ * boleh dipakai — bukan larangan, tetapi syarat membaca angkanya.
+ */
+const CATATAN_KUTIP: Partial<Record<KodeAturan, string>> = {
+  R17B:
+    'catatan reviewer M4a: transaksi pasar negosiasi bisa sah di luar rentang pasar reguler — jangan ' +
+    'dikutip sebagai "bertentangan" sebelum dicek pakar',
+};
 
 export function kesepakatan(penguji: HasilPenguji, tahap: 'sebelum' | 'sesudah') {
   const uji = penguji.uji.filter((u) => (tahap === 'sebelum' ? true : u.sesudah !== 'hilang'));
@@ -357,9 +393,12 @@ export function susunLaporan(
     kredit: { terpakai_sejak_pembuka: number; terpakai_total: number } | null;
     penguji: HasilPenguji | null;
     pilihan: Contoh[];
+    /** Hasil uji ulang M4b; tidak ada = belum dijalankan. */
+    penguji_m4b?: HasilPengujiM4b | null;
   },
 ): string {
   const b: string[] = [];
+  const m4b = masukan.penguji_m4b ?? null;
   const { suspensi, pembanding, lama } = audit.penyebut;
   b.push('# Audit gudang: aturan verifikasi atas 42 emiten yang dipilih dengan aturan tetap');
   b.push('');
@@ -378,6 +417,8 @@ export function susunLaporan(
       'tidak ada di daftar suspensi (urut sha256 simbol). Gudang lama — 15 emiten yang dulu dipilih ' +
       'tangan — ditampilkan hanya sebagai acuan dan tidak dijumlahkan dengan keduanya.',
   );
+  b.push('');
+  b.push(jumlahAturan());
   if (masukan.kredit !== null) {
     b.push('');
     b.push(
@@ -438,7 +479,7 @@ export function susunLaporan(
   }
   b.push('');
 
-  const dibantahAwal = aturanDibantah(masukan.penguji);
+  const dibantahAwal = aturanDibantah(masukan.penguji, m4b);
   if (masukan.penguji !== null && dibantahAwal.size > 0) {
     const tanpa = (k: Kelompok) =>
       audit.emiten_konflik[k].filter((x) => x.aturan.some((r) => !dibantahAwal.has(r))).length;
@@ -474,9 +515,11 @@ export function susunLaporan(
   }
   b.push('');
 
-  const dibantah = aturanDibantah(masukan.penguji);
+  const dibantah = aturanDibantah(masukan.penguji, m4b);
   const ujiPer = new Map<string, UjiUlang[]>();
   for (const u of masukan.penguji?.uji ?? []) ujiPer.set(u.aturan, [...(ujiPer.get(u.aturan) ?? []), u]);
+  const ujiM4bPer = new Map<string, UjiM4b[]>();
+  for (const u of m4b?.uji ?? []) ujiM4bPer.set(u.aturan, [...(ujiM4bPer.get(u.aturan) ?? []), u]);
 
   b.push('## Rincian per aturan (hanya yang punya temuan di 42 emiten audit)');
   b.push('');
@@ -505,6 +548,14 @@ export function susunLaporan(
       b.push(
         `- uji ulang penguji independen: ${ya} dari ${uji.length} sampel dijawab "ya" ` +
           `(${uji.map((u) => `${u.id} ${u.simbol}: ${u.sebelum}${u.sesudah !== u.sebelum ? ` → ${u.sesudah}` : ''}`).join('; ')}).`,
+      );
+    }
+    const ujiBaru = ujiM4bPer.get(a.aturan) ?? [];
+    if (ujiBaru.length > 0) {
+      const ya = ujiBaru.filter((u) => u.jawaban === 'ya').length;
+      b.push(
+        `- uji ulang M4b: ${ya} dari ${ujiBaru.length} sampel dijawab "ya" ` +
+          `(${ujiBaru.map((u) => `${u.id} ${u.simbol}: ${u.jawaban}`).join('; ')}).`,
       );
     }
     const contoh = audit.temuan_audit
@@ -563,41 +614,82 @@ export function susunLaporan(
       'padahal medan dividennya 7,61106 (BNII).',
   );
   b.push(
-    '- **Terbukti, belum diperbaiki — R23:** laba di keputusan RUPS ASLC sama persis dengan ' +
+    '- **Diperbaiki di M4b — R23 (U26):** laba di keputusan RUPS ASLC sama persis dengan ' +
       '`earnings_before_tax − tax` di laporan keuangan yang sama, tetapi R23 hanya mengadunya dengan ' +
-      '`earnings` (laba yang diatribusikan ke induk). Usulan: R23 hijau bila angka RUPS sama dengan salah ' +
-      'satu dari keduanya, dan temuannya menyebut ukuran laba mana yang cocok. Butuh pemuat membaca ' +
-      '`earnings_before_tax` dan `tax` (di luar batas kerja M4a). Sampai itu, R23 tidak dikutip.',
+      '`earnings` (laba yang diatribusikan ke induk). Sekarang R23 hijau bila angka RUPS sama dengan salah ' +
+      'satu dari keduanya, dan temuan merahnya menyebut keduanya (M4b T-04, tes merah dulu di ' +
+      '`factory/verifikasi/aturan-audit.test.ts`; kasus tayang tetap byte-identik).',
   );
+  const r23Sisa = (m4b?.uji ?? []).filter((u) => u.aturan === 'R23');
+  if (r23Sisa.length > 0) {
+    b.push(
+      `- **Terbukti, belum diperbaiki — R23 sisa:** ${angka(r23Sisa.length)} temuan R23 yang masih keluar ` +
+        'sesudah perbaikan diuji ulang di M4b dan semuanya dibantah: ' +
+        r23Sisa.map((u) => `${u.id} ${u.simbol} (${u.jawaban})`).join(', ') +
+        '. Sebabnya dua bug lain di R23: kata skala di teks RUPS ("Rp1.74 trillion") tidak dibaca, dan ' +
+        'angka RUPS sampai rupiah dibandingkan persis dengan medan keuangan yang ditulis dalam satuan juta. ' +
+        'Usulan: baca kata skala, lalu bandingkan pada presisi yang lebih kasar dari kedua angka (cara R31 ' +
+        'di M4a). Sampai itu, R23 tidak dikutip.',
+    );
+  }
   b.push(
     '- **Kalimat awam R19b kurang tepat:** aturannya sengaja memakai jendela lunak (9 dari 10 hari datar) ' +
       'dan temuannya menyebutnya, tetapi kalimat awamnya berbunyi "tiap harinya".',
   );
   b.push('');
-  b.push('### Jenis ketidakkonsistenan baru yang ditemukan, tetapi tidak dijadikan aturan (D-6 ditahan D-7)');
+  b.push('## Aturan baru M4b: dua jenis salah nyata yang dulu tidak ditangkap');
   b.push('');
   b.push(
-    'Uji ulang menemukan dua jenis salah nyata yang tidak ditangkap 31 aturan. Keduanya **tidak** ' +
-      'didaftarkan sebagai aturan baru: mendaftarkan satu aturan saja di `ATURAN_V2` — bahkan yang tidak ' +
-      'mengeluarkan satu temuan pun — mengubah berkas kasus ULTJ yang sedang tayang (daftar pemeriksaannya ' +
-      'bertambah satu baris; sha `d26683db…` menjadi `a1ce2666…`). Kontrak D-7 melarangnya; keputusan ada ' +
-      'di pemilik.',
-  );
-  b.push(
-    '- **Laporan untuk saham emiten lain** (U18): laporan bersimbol ADRO.JK berjudul "Alamtri Resources ' +
-      'Indonesia Buy Transaction of Alamtri Minerals Indonesia" — pembeli adalah ADRO sendiri, saham yang ' +
-      'dibeli milik emiten lain. R13 menolak kartunya dengan alasan yang keliru ("memegang lebih dari yang ' +
-      'diterbitkan"). Seluruh temuan konflik ADRO (dua R7, dua R13, satu R17B) berasal dari laporan yang ' +
-      'satu ini: angkanya memang bertentangan dengan data ADRO, tetapi sebabnya salah simbol. Calon ' +
-      'aturan: nama perusahaan di judul laporan dibanding nama emiten di ringkasan.',
-  );
-  b.push(
-    '- **Baris laporan keuangan bercampur satuan** (U28): ABMM tahun buku 2023 menulis `total_debt` ' +
-      '16 triliun padahal `total_liabilities` 1,4 miliar, dan kas lebih besar dari total aset. R26 lalu ' +
-      'menandai dividen yang "tak masuk akal" padahal sebabnya satuan. Calon aturan: komponen neraca ' +
-      'tidak boleh melebihi totalnya pada baris tahun yang sama.',
+    'Uji ulang M4a menemukan dua jenis salah nyata yang tidak ditangkap aturan mana pun. Di M4a keduanya ' +
+      'ditahan, karena mendaftarkan satu aturan saja di `ATURAN_V2` mengubah berkas kasus ULTJ yang sedang ' +
+      'tayang. M4b membekukan daftar aturan tiap kasus tayang (`docs/bukti/aturan-beku-kasus.json`): kasus ' +
+      'tayang hanya menjalankan aturan yang dipakai saat ia dibekukan, jadi aturan baru bisa ditambah tanpa ' +
+      'menggeser DADA maupun ULTJ. Kedua jenis itu sekarang aturan:',
   );
   b.push('');
+  const asal: Partial<Record<KodeAturan, string>> = {
+    R36:
+      'dari U18: laporan bersimbol ADRO.JK berjudul "Alamtri Resources Indonesia Buy Transaction of Alamtri ' +
+      'Minerals Indonesia". Ini cakupan R6 lama ("laporannya ternyata bercerita tentang saham lain") yang ' +
+      'hilang ketika R6 digantikan R17B, yang hanya memeriksa harga. Penolak karena dua syarat: judulnya ' +
+      'menyebut perusahaan lain DAN penyebut tersirat persennya meleset lebih dari 10% dari saham beredar ' +
+      'emiten di semua sisi laporan. Nama beda dengan angka milik emiten (nama lama, ejaan) tetap hijau; ' +
+      'judul yang menyebut pemegangnya sendiri (FOLK) tidak lengkap, bukan merah.',
+    R37:
+      'dari U28: ABMM tahun buku 2023 menulis total_debt 16 triliun padahal total_liabilities 1,4 miliar. ' +
+      'Penolak, karena dua angka di baris yang sama bertentangan menurut definisinya. Hanya tiga hubungan ' +
+      'yang terbukti dilanggar di gudang dan berlaku menurut definisi (PSAK 201/IAS 1 par. 54, 66, 69; ' +
+      'PSAK 207/IAS 7 par. 6–7): total_debt ≤ total_liabilities, cash_and_equivalents ≤ total_assets, ' +
+      'cash_and_equivalents ≤ current_assets.',
+  };
+  for (const a of audit.aturan.filter((x) => ATURAN_M4B.includes(x.aturan))) {
+    b.push(`### ${a.aturan} — ${a.judul} (${a.penanda ? 'penanda' : 'penolak'})`);
+    b.push('');
+    b.push(a.kalimat);
+    b.push('');
+    const catatanAsal = asal[a.aturan];
+    if (catatanAsal !== undefined) {
+      b.push(`Asal: ${catatanAsal}`);
+      b.push('');
+    }
+    for (const k of KELOMPOK) {
+      const x = a.per[k];
+      b.push(
+        `- ${NAMA_KELOMPOK[k]}: ${angka(x.merah)} dari ${angka(x.diperiksa)} ${a.satuan} bertentangan, ` +
+          `${angka(x.tidak_lengkap)} tidak cukup data; ${angka(x.emiten_merah.length)} dari ` +
+          `${angka(x.emiten_diperiksa)} emiten yang diperiksa` +
+          `${x.emiten_merah.length > 0 ? ` (${x.emiten_merah.join(', ')})` : ''}.`,
+      );
+    }
+    const ujiBaru = ujiM4bPer.get(a.aturan) ?? [];
+    if (ujiBaru.length > 0) {
+      b.push(
+        `- uji ulang penguji independen M4b: ${angka(ujiBaru.filter((u) => u.jawaban === 'ya').length)} dari ` +
+          `${angka(ujiBaru.length)} temuan dijawab "ya" (${ujiBaru.map((u) => `${u.id} ${u.simbol}: ${u.jawaban}`).join('; ')}).`,
+      );
+    }
+    b.push('');
+  }
 
   b.push('## Uji ulang oleh penguji independen (D-5)');
   b.push('');
@@ -616,7 +708,7 @@ export function susunLaporan(
     b.push('| tahap | diuji | ya | tidak | ragu | temuan hilang karena aturan diperbaiki |');
     b.push('|---|---:|---:|---:|---:|---:|');
     b.push(`| sebelum perbaikan | ${sb.diuji} | ${sb.ya} | ${sb.tidak} | ${sb.ragu} | — |`);
-    b.push(`| sesudah perbaikan | ${sd.diuji} | ${sd.ya} | ${sd.tidak} | ${sd.ragu} | ${sd.hilang} |`);
+    b.push(`| sesudah perbaikan (M4a dan M4b) | ${sd.diuji} | ${sd.ya} | ${sd.tidak} | ${sd.ragu} | ${sd.hilang} |`);
     b.push('');
     b.push('| uji | aturan | emiten | kelompok | sebelum | sesudah |');
     b.push('|---|---|---|---|---|---|');
@@ -629,6 +721,32 @@ export function susunLaporan(
       b.push('Penyelidikan tiap jawaban yang bukan "ya":');
       b.push('');
       for (const u of diselidiki) b.push(`- **${u.id} ${u.aturan} ${u.simbol}** (${u.sebelum} → ${u.sesudah}) — ${u.penyelidikan}`);
+    }
+  }
+  if (m4b !== null) {
+    b.push('');
+    b.push('### Uji ulang M4b');
+    b.push('');
+    b.push(
+      'Cara yang sama, subagent Claude Opus baru per temuan, bahan ditempel langsung di prompt (penguji tidak ' +
+        'membuka berkas). Yang diuji: semua temuan aturan baru R36 dan R37 di gudang audit (paling banyak 3 per ' +
+        'aturan), dan temuan R23 yang masih keluar sesudah perbaikannya. Jawaban mentah di ' +
+        '`eval/audit-gudang/penguji-m4b/`.',
+    );
+    b.push('');
+    b.push('| uji | aturan | emiten | tahap | jawaban |');
+    b.push('|---|---|---|---|---|');
+    for (const u of m4b.uji) b.push(`| ${u.id} | ${u.aturan} | ${u.simbol} | ${u.tahap} | ${u.jawaban} |`);
+    const baru = m4b.uji.filter((u) => ATURAN_M4B.includes(u.aturan));
+    b.push('');
+    b.push(
+      `Kesepakatan atas aturan baru: ${angka(baru.filter((u) => u.jawaban === 'ya').length)} dari ` +
+        `${angka(baru.length)} "ya".`,
+    );
+    const diselidikiM4b = m4b.uji.filter((u) => u.penyelidikan !== null);
+    if (diselidikiM4b.length > 0) {
+      b.push('');
+      for (const u of diselidikiM4b) b.push(`- **${u.id} ${u.aturan} ${u.simbol}** (${u.jawaban}) — ${u.penyelidikan}`);
     }
   }
   b.push('');
@@ -656,8 +774,11 @@ export function susunLaporan(
       const s = a.per.suspensi;
       const p = a.per.pembanding;
       if (s.merah + p.merah === 0) continue;
-      const uji = (ujiPer.get(a.aturan) ?? []).filter((u) => u.sesudah !== 'hilang');
-      const ragu = uji.filter((u) => u.sesudah === 'ragu').length;
+      const uji = [
+        ...(ujiPer.get(a.aturan) ?? []).filter((u) => u.sesudah !== 'hilang').map((u) => u.sesudah),
+        ...(ujiM4bPer.get(a.aturan) ?? []).map((u) => u.jawaban),
+      ];
+      const ragu = uji.filter((u) => u === 'ragu').length;
       const catatanUji =
         uji.length === 0
           ? ' (belum ada sampel tersisa yang diuji ulang: sampelnya hilang sesudah aturannya diperbaiki, atau tidak terpilih)'
@@ -668,7 +789,7 @@ export function susunLaporan(
         `- ${a.aturan}: "Dari ${angka(s.diperiksa + p.diperiksa)} ${a.satuan} di ` +
           `${angka(s.emiten_diperiksa + p.emiten_diperiksa)} emiten yang bisa diperiksa, ${angka(s.merah + p.merah)} ` +
           `bertentangan (kelompok suspensi ${pecahan(s.merah, s.diperiksa)}, pembanding ${pecahan(p.merah, p.diperiksa)})." ` +
-          `— ${a.kalimat}${catatanUji}`,
+          `— ${a.kalimat}${catatanUji}${CATATAN_KUTIP[a.aturan] === undefined ? '' : ` (${CATATAN_KUTIP[a.aturan] ?? ''})`}`,
       );
     }
     if (dibantah.size > 0) {
@@ -700,7 +821,8 @@ export function jalankan(): { audit: Audit; pilihan: Contoh[]; laporan: string }
     ? bacaJson<{ kredit: { terpakai_sejak_pembuka: number; terpakai_total: number } }>(JALUR_AMBIL).kredit
     : null;
   const penguji = existsSync(JALUR_PENGUJI) ? bacaJson<HasilPenguji>(JALUR_PENGUJI) : null;
-  const laporan = susunLaporan(audit, { kredit: ambil, penguji, pilihan });
+  const penguji_m4b = existsSync(JALUR_PENGUJI_M4B) ? bacaJson<HasilPengujiM4b>(JALUR_PENGUJI_M4B) : null;
+  const laporan = susunLaporan(audit, { kredit: ambil, penguji, pilihan, penguji_m4b });
   return { audit, pilihan, laporan };
 }
 

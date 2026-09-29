@@ -60,6 +60,12 @@ export interface EntriAturan {
   /** Kode aturan yang hasilnya dipakai aturan ini. Hanya keterangan, bukan pemicu. */
   bergantung: KodeAturan[];
   jalankan: (konteks: KonteksGudang) => HasilAturan;
+  /**
+   * Aturan lama yang tidak dijalankan lagi karena digantikan aturan ini (M4b):
+   * dicatat sebagai data supaya jumlah aturan AKTIF bisa dihitung dari daftar,
+   * bukan ditulis tangan di dokumen bukti.
+   */
+  digantikan_oleh?: KodeAturan;
 }
 
 /** Aturan lama yang sengaja tidak dijalankan di V2, beserta alasannya. */
@@ -91,6 +97,7 @@ export const ATURAN_V2: readonly EntriAturan[] = [
     kode: 'R1',
     urutan: 9,
     bergantung: ['R15'],
+    digantikan_oleh: 'R15',
     jalankan: digantikan(
       'R1',
       'Aritmetika per laporan',
@@ -107,6 +114,7 @@ export const ATURAN_V2: readonly EntriAturan[] = [
     kode: 'R2',
     urutan: 15,
     bergantung: ['R14'],
+    digantikan_oleh: 'R14',
     jalankan: digantikan(
       'R2',
       'Kontinuitas rantai',
@@ -125,6 +133,7 @@ export const ATURAN_V2: readonly EntriAturan[] = [
     kode: 'R6',
     urutan: 23,
     bergantung: ['R17B'],
+    digantikan_oleh: 'R17B',
     jalankan: digantikan(
       'R6',
       'Subjek laporan dan rentang harga',
@@ -137,6 +146,7 @@ export const ATURAN_V2: readonly EntriAturan[] = [
     kode: 'R10',
     urutan: 25,
     bergantung: ['R18a'],
+    digantikan_oleh: 'R18a',
     jalankan: digantikan(
       'R10',
       'Hari tanpa volume',
@@ -159,6 +169,14 @@ export const ATURAN_V2: readonly EntriAturan[] = [
   { kode: 'R37', urutan: 36, bergantung: [], jalankan: r37BagianMelebihiKeseluruhan },
   { kode: 'R34', urutan: 37, bergantung: [], jalankan: r34AksiTanpaHarga },
 ];
+
+/** Aturan yang lahir di M4b dari salah nyata audit gudang M4a. */
+export const ATURAN_M4B: readonly KodeAturan[] = ['R36', 'R37'];
+
+/** Aturan yang sungguh dijalankan: `ATURAN_V2` tanpa yang digantikan. */
+export function aturanAktif(): EntriAturan[] {
+  return ATURAN_V2.filter((e) => e.digantikan_oleh === undefined);
+}
 
 export interface HasilVerifikasiV2 {
   simbol: string;

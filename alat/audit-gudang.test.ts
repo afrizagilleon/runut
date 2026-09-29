@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Temuan } from '../factory/skema/tipe.ts';
+import { jumlahAturan } from '../factory/gudang.ts';
 import {
   MAKS_UJI,
   aturanDibantah,
@@ -10,6 +11,7 @@ import {
   susunLaporan,
   type GudangMentah,
   type HasilPenguji,
+  type HasilPengujiM4b,
   type PemeriksaanMentah,
 } from './audit-gudang.ts';
 
@@ -160,6 +162,29 @@ describe('laporan', () => {
   it('tanpa hasil penguji: kalimat belum boleh dipakai', () => {
     const teks = susunLaporan(audit, { kredit: null, penguji: null, pilihan: [] });
     expect(teks.split('## Kalimat yang boleh dipakai')[1]).toContain('menunggu uji ulang');
+  });
+
+  it('M4b: jawaban "tidak" pada uji ulang M4b membuat aturannya tidak boleh dikutip', () => {
+    const m4b: HasilPengujiM4b = {
+      keterangan: '',
+      uji: [
+        { id: 'B01', aturan: 'R7', simbol: 'AAAA', temuan_id: 'a1', tahap: 'x', jawaban: 'tidak', penyelidikan: 'bug' },
+      ],
+    };
+    expect([...aturanDibantah(penguji, m4b)].sort()).toEqual(['R19a', 'R7']);
+    const teks = susunLaporan(audit, { kredit: null, penguji, pilihan: [], penguji_m4b: m4b });
+    expect(teks.split('## Kalimat yang boleh dipakai')[1]).not.toMatch(/- R7:/);
+    expect(teks).toContain('### Uji ulang M4b');
+    expect(teks).toContain('| B01 | R7 | AAAA | x | tidak |');
+  });
+
+  it('M4b: jumlah aturan aktif dihitung dari ATURAN_V2, dan aturan baru tidak lagi "ditahan D-7"', () => {
+    const teks = susunLaporan(audit, { kredit: null, penguji: null, pilihan: [] });
+    expect(teks).toContain(jumlahAturan());
+    expect(jumlahAturan()).toContain('**33 aturan aktif**');
+    expect(teks).toContain('## Aturan baru M4b');
+    expect(teks).not.toContain('D-6 ditahan D-7');
+    expect(teks).not.toContain('tidak ditangkap 31 aturan');
   });
 
   it('menulis keterbatasan sampel dan temuan R25 lintas-emiten', () => {

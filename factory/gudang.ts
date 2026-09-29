@@ -19,7 +19,7 @@ import { angkaId } from './format.ts';
 import { keJson } from './kasus/json.ts';
 import { muatGudang } from './muat/gudang.ts';
 import { konteksEmiten } from './verifikasi/konteks.ts';
-import { ATURAN_V2, verifikasiV2 } from './verifikasi/v2.ts';
+import { ATURAN_M4B, ATURAN_V2, aturanAktif, verifikasiV2 } from './verifikasi/v2.ts';
 import { daftarAksi, hargaDiKeduaSisi } from './verifikasi/aturan-keuangan.ts';
 import type { HitunganAturan } from './verifikasi/tipe.ts';
 import type { KodeAturan, Temuan } from './skema/tipe.ts';
@@ -405,6 +405,26 @@ export function susunLaporanGudang(folder?: string): LaporanGudang {
 
 const angka = (n: number): string => angkaId(n);
 
+/**
+ * Kalimat jumlah aturan, dihitung dari `ATURAN_V2` (M4b D-6): berapa yang ada,
+ * berapa yang digantikan, berapa yang aktif, dan berapa yang lahir di M4b.
+ * Jangan menulis angka ini dengan tangan di dokumen mana pun.
+ */
+export function jumlahAturan(): string {
+  const aktif = aturanAktif();
+  const diganti = ATURAN_V2.filter((e) => e.digantikan_oleh !== undefined);
+  const baru = aktif.filter((e) => ATURAN_M4B.includes(e.kode));
+  return (
+    `\`ATURAN_V2\` memuat ${angka(ATURAN_V2.length)} aturan; ${angka(diganti.length)} di antaranya digantikan ` +
+    `aturan lain dan hanya tercatat sebagai dilewati (${diganti.map((e) => `${e.kode} oleh ${e.digantikan_oleh ?? ''}`).join(', ')}), ` +
+    `jadi **${angka(aktif.length)} aturan aktif**. ${angka(baru.length)} di antaranya lahir di M4b dari salah nyata ` +
+    `audit gudang (${baru.map((e) => e.kode).join(', ')}); sebelum M4b ada ${angka(aktif.length - baru.length)} aturan aktif. ` +
+    'Cakupan R6 lama "laporannya ternyata bercerita tentang saham lain" kini dipegang R36; alasan lewat R6 ' +
+    'di bawah sengaja tidak diubah karena tercantum di jejak pemeriksaan kasus ULTJ yang sedang tayang. ' +
+    'Kasus tayang menjalankan daftar aturan bekunya sendiri (`docs/bukti/aturan-beku-kasus.json`), bukan daftar ini.'
+  );
+}
+
 /** Susun `docs/bukti/aturan-gudang.md`: hanya agregat, paling banyak dua contoh per aturan. */
 export function susunDokumenBukti(laporan: LaporanGudang): string {
   const baris: string[] = [];
@@ -469,6 +489,8 @@ export function susunDokumenBukti(laporan: LaporanGudang): string {
   }
   baris.push('');
   baris.push('## Hasil per aturan');
+  baris.push('');
+  baris.push(jumlahAturan());
   baris.push('');
   baris.push('| aturan | satuan | diperiksa | hijau | merah[^merah] | tidak lengkap | dilewati |');
   baris.push('|---|---|---:|---:|---:|---:|---:|');

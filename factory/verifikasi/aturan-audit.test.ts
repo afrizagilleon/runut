@@ -26,6 +26,7 @@ import { keparahanTemuan } from '../skema/tipe.ts';
 import type { BarisHarga, KeuanganTahunan, Laporan } from './tipe.ts';
 import { konteksEmiten } from './konteks.ts';
 import { muatGudangManifest } from '../muat/gudang-manifest.ts';
+import { ATURAN_M4B, ATURAN_V2, aturanAktif, verifikasiV2 } from './v2.ts';
 
 /** Satu hari harga: cukup `nilai_pasar` dan `tutup` untuk titik saham beredar. */
 function hari(tanggal: string, tutup: number, nilai_pasar: number): BarisHarga {
@@ -417,5 +418,27 @@ describe('R23 — laba sesudah pajak sebagai ukuran laba kedua', () => {
       'laba menurut laporan keuangan',
       'selisih',
     ]);
+  });
+});
+
+describe('jumlah aturan aktif dihitung dari ATURAN_V2, bukan ditulis tangan (M4b D-6)', () => {
+  it('aturan bertanda digantikan memang dilewati dengan alasan yang menyebut penggantinya; yang lain tidak', () => {
+    const hasil = verifikasiV2(konteksGudang({ laporan: [lap({})] }));
+    for (const e of ATURAN_V2) {
+      const p = hasil.pemeriksaan.find((x) => x.aturan === e.kode);
+      if (e.digantikan_oleh !== undefined) {
+        expect(p?.dijalankan, e.kode).toBe(false);
+        expect(p?.alasan_lewat, e.kode).toContain(e.digantikan_oleh);
+      } else {
+        expect(p?.alasan_lewat ?? '', e.kode).not.toMatch(/^Digantikan|digantikan R/);
+      }
+    }
+  });
+
+  it('M4b menambah tepat R36 dan R37: 37 di ATURAN_V2, 4 digantikan, 33 aktif (31 sebelum M4b)', () => {
+    expect(ATURAN_M4B).toEqual(['R36', 'R37']);
+    expect(ATURAN_V2).toHaveLength(37);
+    expect(aturanAktif()).toHaveLength(33);
+    expect(aturanAktif().filter((e) => !ATURAN_M4B.includes(e.kode))).toHaveLength(31);
   });
 });
