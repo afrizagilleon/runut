@@ -22,10 +22,9 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { ambilRujukan, teksPolos } from '../skema/rujukan.ts';
 import type { Kasus, Soal } from '../skema/tipe.ts';
-import { bangunKasusUmum } from './bangun.ts';
+import { bangunKasusTayang } from '../bangun-kasus.ts';
 import { keJson } from './json.ts';
 import { ULTJ_2026_05_04 } from './ultj-2026-05-04.ts';
-import { muatGudangBeku } from '../muat/gudang-beku.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 
@@ -255,15 +254,10 @@ describe.runIf(existsSync(`${AKAR}.cache/sectors/ULTJ-filings.json`))(
   'M3.9 — berkas ULTJ di repo = hasil bangun definisinya',
   () => {
     it('byte-identik dengan keluaran pembangun', () => {
-      // Gudang beku (M4a A-1): kasus tayang dibangun dari 111 berkas yang
-      // sidiknya dibekukan, bukan dari seluruh isi `.cache/sectors/`.
-      const gudang = muatGudangBeku();
-      const data = gudang.emiten.get(ULTJ_2026_05_04.simbol);
-      if (data === undefined) throw new Error('gudang tidak memuat ULTJ');
-      const kosong = gudang.berkas
-        .filter((b) => b.jenis === 'paginasi-kosong')
-        .map((b) => b.berkas);
-      const { kasus } = bangunKasusUmum(ULTJ_2026_05_04, data, gudang.asal, kosong);
+      // Gudang beku (M4a A-1) dan aturan beku (M4b D-1): kasus tayang dibangun
+      // lewat pembangun yang sama dengan `build:case` — 111 berkas yang sidiknya
+      // dibekukan, dan hanya aturan yang dipakai saat ULTJ dibekukan.
+      const { kasus } = bangunKasusTayang(ULTJ_2026_05_04.kasus_id);
       const berkas = readFileSync(`${AKAR}cases/ultj-2026-05-04.json`, 'utf8').replace(
         /\r\n/g,
         '\n',

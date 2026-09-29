@@ -19,7 +19,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { periksaKasus } from '../skema/validator.ts';
 import { ambilRujukan, teksPolos } from '../skema/rujukan.ts';
-import { ATURAN_V2 } from '../verifikasi/v2.ts';
+import { bacaAturanBeku } from '../verifikasi/aturan-beku.ts';
 import { keparahanTemuan, type Fakta, type Kasus } from '../skema/tipe.ts';
 import { bacaDaftarBeku } from '../muat/gudang-beku.ts';
 
@@ -270,10 +270,15 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
     expect([...gabungan].sort()).toEqual([...k.fakta_terlihat].sort());
   });
 
-  it('dijalankan himpunan V2, dan jumlah aturannya bukan angka yang diketik tangan', () => {
+  it('dijalankan daftar aturan bekunya, dan jumlah aturannya bukan angka yang diketik tangan', () => {
+    // M4b D-1: kasus tayang dibandingkan dengan daftar aturan BEKU-nya, bukan
+    // dengan ATURAN_V2 yang sekarang — aturan yang ditambahkan sesudah ULTJ
+    // tayang tidak boleh diam-diam masuk ke berkas kasusnya.
     const k = kasus();
-    expect(k.pemeriksaan).toHaveLength(ATURAN_V2.length);
-    expect(k.pemeriksaan.map((p) => p.aturan)).toEqual(ATURAN_V2.map((a) => a.kode));
+    const beku = bacaAturanBeku().kasus['ultj-2026-05-04'];
+    expect(beku?.jalur).toBe('V2');
+    expect(k.pemeriksaan).toHaveLength(beku?.aturan.length ?? -1);
+    expect(k.pemeriksaan.map((p) => p.aturan)).toEqual(beku?.aturan);
     // Aturan yang digantikan tidak dihapus dari daftar: ia muncul sebagai
     // dilewati beserta alasannya, supaya tidak ada yang hilang diam-diam.
     for (const p of k.pemeriksaan) {

@@ -13,6 +13,7 @@
 import type { KodeAturan } from '../skema/tipe.ts';
 import type { HasilAturan, KonteksGudang } from './tipe.ts';
 import { lewat } from './dasar.ts';
+import { AturanBekuRusak } from './aturan-beku.ts';
 import {
   r3LaporanGanda,
   r4TanggalKetersediaan,
@@ -159,9 +160,43 @@ export interface HasilVerifikasiV2 {
   pemeriksaan: HasilAturan[];
 }
 
-/** Jalankan seluruh himpunan V2 atas satu emiten, dalam urutan yang ditetapkan. */
-export function verifikasiV2(konteks: KonteksGudang): HasilVerifikasiV2 {
-  const urut = [...ATURAN_V2].sort((a, b) => a.urutan - b.urutan);
+/**
+ * Entri `ATURAN_V2` untuk daftar aturan beku, dalam urutan DAFTAR (M4b D-1).
+ *
+ * Urutan daftar yang dipakai, bukan `urutan` di `ATURAN_V2`: kasus beku tidak
+ * boleh bergeser hanya karena nomor urut jalan diubah untuk memberi tempat
+ * aturan baru. Ketergantungan antar-aturan hanya keterangan, jadi urutan ini
+ * tidak mengubah hasil satu aturan pun. Kode yang tidak ada di `ATURAN_V2`,
+ * atau yang muncul dua kali → `AturanBekuRusak`, tidak diabaikan diam-diam.
+ */
+export function pilihAturanBeku(daftar: readonly KodeAturan[]): EntriAturan[] {
+  const tidakDikenal = daftar.filter((k) => !ATURAN_V2.some((e) => e.kode === k));
+  if (tidakDikenal.length > 0) {
+    throw new AturanBekuRusak(
+      `Daftar aturan beku menyebut aturan yang tidak ada di ATURAN_V2: ${tidakDikenal.join(', ')}.`,
+    );
+  }
+  const rangkap = daftar.filter((k, i) => daftar.indexOf(k) !== i);
+  if (rangkap.length > 0) {
+    throw new AturanBekuRusak(`Daftar aturan beku menyebut aturan yang sama dua kali: ${rangkap.join(', ')}.`);
+  }
+  return daftar.map((k) => ATURAN_V2.find((e) => e.kode === k) as EntriAturan);
+}
+
+/**
+ * Jalankan himpunan V2 atas satu emiten.
+ *
+ * Tanpa daftar beku: seluruh `ATURAN_V2`, dalam urutan yang ditetapkan. Dengan
+ * daftar beku (`konteks.data.aturan_beku`, diisi pembangun kasus tayang): HANYA
+ * aturan di daftar itu yang dipanggil — aturan lain tidak dijalankan, bukan
+ * sekadar tidak dicantumkan.
+ */
+export function verifikasiV2(
+  konteks: KonteksGudang,
+  beku: readonly KodeAturan[] | undefined = konteks.data.aturan_beku,
+): HasilVerifikasiV2 {
+  const urut =
+    beku === undefined ? [...ATURAN_V2].sort((a, b) => a.urutan - b.urutan) : pilihAturanBeku(beku);
   return {
     simbol: konteks.simbol,
     pemeriksaan: urut.map((e) => e.jalankan(konteks)),

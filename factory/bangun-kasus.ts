@@ -22,6 +22,7 @@ import { ULTJ_2026_05_04 } from './kasus/ultj-2026-05-04.ts';
 import { muatDada } from './muat/dada.ts';
 import { FOLDER_GUDANG } from './muat/gudang.ts';
 import { bacaDaftarBeku, muatGudangBeku, periksaGudangBeku, type DaftarBeku } from './muat/gudang-beku.ts';
+import { bacaAturanBeku, periksaJejakBeku, type AturanBeku } from './verifikasi/aturan-beku.ts';
 import type { HasilBangun } from './kasus/bangun.ts';
 
 const AKAR = fileURLToPath(new URL('../', import.meta.url));
@@ -49,35 +50,64 @@ const KASUS_UMUM: Record<string, DefinisiKasusUmum> = {
  * boleh menggeser kasus yang sedang dimainkan; satu berkas beku hilang atau
  * berbeda satu byte → `GudangBekuRusak` yang menyebut nama berkasnya.
  */
-function bangunUmum(def: DefinisiKasusUmum, folder: string, daftar: DaftarBeku): HasilBangun {
+function bangunUmum(
+  def: DefinisiKasusUmum,
+  folder: string,
+  daftar: DaftarBeku,
+  beku: AturanBeku['kasus'][string] | undefined,
+): HasilBangun {
   const gudang = muatGudangBeku(folder, daftar);
-  const data = gudang.emiten.get(def.simbol);
-  if (data === undefined) {
+  const dataGudang = gudang.emiten.get(def.simbol);
+  if (dataGudang === undefined) {
     throw new Error(
       `Emiten "${def.simbol}" tidak ada di gudang ${gudang.folder}; ` +
         `yang terbaca: ${[...gudang.emiten.keys()].join(', ')}.`,
     );
   }
+  // Aturan beku (M4b D-1): kasus yang sudah tayang hanya menjalankan aturan yang
+  // dipakai saat ia dibekukan. Kasus baru (belum di daftar) memakai ATURAN_V2 penuh.
+  const data = beku === undefined ? dataGudang : { ...dataGudang, aturan_beku: [...beku.aturan] };
   const kosong = gudang.berkas.filter((b) => b.jenis === 'paginasi-kosong').map((b) => b.berkas);
   return bangunKasusUmum(def, data, gudang.asal, kosong);
 }
 
-/** Bangun satu kasus tayang dari gudang beku di `folder`. Tidak menulis apa pun. */
+/**
+ * Bangun satu kasus tayang dari gudang beku di `folder`, dengan daftar aturan
+ * beku kasus itu. Tidak menulis apa pun.
+ *
+ * Kasus yang ada di daftar aturan beku diperiksa sekali lagi sesudah dibangun:
+ * jejak `pemeriksaan`-nya harus sama persis dengan daftarnya, atau
+ * `AturanBekuRusak`. Untuk DADA ini satu-satunya penjaga — jalurnya V1, yang
+ * tidak membaca `ATURAN_V2` sama sekali.
+ */
 export function bangunKasusTayang(
   kasus_id: string,
   folder: string = FOLDER_GUDANG,
   daftar: DaftarBeku = bacaDaftarBeku(),
+  aturan: AturanBeku = bacaAturanBeku(),
 ): HasilBangun {
+  const beku = aturan.kasus[kasus_id];
+  let hasil: HasilBangun;
   const definisi = KASUS[kasus_id];
+  const definisiUmum = KASUS_UMUM[kasus_id];
   if (definisi !== undefined) {
     // Pemuat DADA membaca berkasnya sendiri menurut nama; sidik seluruh gudang
     // beku diperiksa lebih dulu, lalu berkas dibaca dari folder yang sama.
     periksaGudangBeku(folder, daftar);
-    return bangunKasus(definisi, muatDada(folder));
+    hasil = bangunKasus(definisi, muatDada(folder));
+  } else if (definisiUmum !== undefined) {
+    hasil = bangunUmum(definisiUmum, folder, daftar, beku);
+  } else {
+    throw new Error(`Kasus "${kasus_id}" tidak dikenal.`);
   }
-  const definisiUmum = KASUS_UMUM[kasus_id];
-  if (definisiUmum !== undefined) return bangunUmum(definisiUmum, folder, daftar);
-  throw new Error(`Kasus "${kasus_id}" tidak dikenal.`);
+  if (beku !== undefined) {
+    periksaJejakBeku(
+      kasus_id,
+      hasil.kasus.pemeriksaan.map((p) => p.aturan),
+      beku.aturan,
+    );
+  }
+  return hasil;
 }
 
 function utama(argumen: string[]): number {
@@ -101,13 +131,20 @@ function utama(argumen: string[]): number {
     return 1;
   }
 
-  const { kasus } = bangunKasusTayang(kasus_id);
+  const aturan = bacaAturanBeku();
+  const { kasus } = bangunKasusTayang(kasus_id, FOLDER_GUDANG, bacaDaftarBeku(), aturan);
 
   const tujuan = `${AKAR}cases/${kasus_id}.json`;
   writeFileSync(tujuan, keJson(kasus), 'utf8');
 
   console.log(`Kasus ${kasus_id} dibangun dan lolos validator.`);
   console.log(`Ditulis ke cases/${kasus_id}.json`);
+  const beku = aturan.kasus[kasus_id];
+  console.log(
+    beku === undefined
+      ? 'Aturan: ATURAN_V2 penuh — kasus ini belum dibekukan di docs/bukti/aturan-beku-kasus.json.'
+      : `Aturan: ${angkaId(beku.aturan.length)} aturan beku (docs/bukti/aturan-beku-kasus.json, jalur ${beku.jalur}).`,
+  );
   console.log('');
   console.log(`Tanggal beku          : ${kasus.tanggal_t}`);
   console.log(`Fakta di berkas       : ${angkaId(kasus.fakta.length)}`);

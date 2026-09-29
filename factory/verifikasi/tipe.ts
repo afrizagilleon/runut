@@ -322,4 +322,13 @@ export interface DataEmiten {
   ringkasan_pasar: { nilai_pasar: number; harga_tutup: number; pada: string } | null;
   /** Nama berkas cache yang menyumbang data emiten ini, terurut. */
   berkas: string[];
+  /**
+   * Bukan data Sectors: daftar aturan beku kasus tayang (M4b D-1). Hanya diisi
+   * pembangun kasus tayang (`factory/bangun-kasus.ts`) dari
+   * `docs/bukti/aturan-beku-kasus.json`. Ditaruh di data, bukan di argumen,
+   * karena `bangunKasusUmum` meneruskan data ini ke `verifikasiV2` tanpa
+   * argumen lain; `dataSampai` menyalinnya apa adanya. Tidak ada → seluruh
+   * `ATURAN_V2` dijalankan (kasus baru, `verifikasi:gudang`, audit).
+   */
+  aturan_beku?: readonly KodeAturan[];
 }

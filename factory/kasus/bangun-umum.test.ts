@@ -24,6 +24,7 @@ import { keJson } from './json.ts';
 import { muatGudang } from '../muat/gudang.ts';
 import { faktaPemegangJendela, faktaSelisih } from '../muat/turunan-gudang.ts';
 import { ATURAN_V2 } from '../verifikasi/v2.ts';
+import { bacaAturanBeku } from '../verifikasi/aturan-beku.ts';
 import { periksaKasus } from '../skema/validator.ts';
 import type { DataEmiten } from '../verifikasi/tipe.ts';
 import type { Kasus } from '../skema/tipe.ts';
@@ -245,7 +246,9 @@ describe('bangunKasusUmum — jalur umum lewat pemuat gudang (M4 D-1)', () => {
     }
   });
 
-  it('menjalankan himpunan V2, bukan V1 (D-2)', () => {
+  it('menjalankan himpunan V2, bukan V1 (D-2) — kasus baru memakai ATURAN_V2 penuh (M4b D-1)', () => {
+    // Kasus contoh ini tidak ada di daftar aturan beku, jadi ia kasus baru:
+    // seluruh ATURAN_V2 yang sekarang. Kasus tayang dijaga daftar bekunya.
     const kasus = bangunContoh();
     expect(kasus.pemeriksaan).toHaveLength(ATURAN_V2.length);
     expect(kasus.pemeriksaan.map((p) => p.aturan)).toEqual(ATURAN_V2.map((a) => a.kode));
@@ -296,7 +299,11 @@ describe('INV-A — jalur DADA tidak ikut berubah', () => {
     const kasus = JSON.parse(
       readFileSync(`${AKAR}cases/dada-2025-10-08.json`, 'utf8'),
     ) as unknown as Kasus;
+    // M4b D-1: dibandingkan dengan daftar aturan beku DADA, bukan angka tangan.
+    const beku = bacaAturanBeku().kasus['dada-2025-10-08'];
+    expect(beku?.jalur).toBe('V1');
     expect(kasus.pemeriksaan).toHaveLength(10);
+    expect(kasus.pemeriksaan.map((p) => p.aturan)).toEqual(beku?.aturan);
     expect(kasus.pemeriksaan.map((p) => p.aturan)).not.toContain('R25');
   });
 });

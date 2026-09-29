@@ -1,0 +1,66 @@
+{
+  "keterangan": "Aturan beku per kasus tayang (M4b D-1): daftar kode aturan yang dijalankan dan dicantumkan pembangun tiap kasus tayang, diturunkan dari jejak pemeriksaan cases/<id>.json pada commit 3b09a92. Aturan di luar daftar tidak dijalankan untuk kasus itu; kasus baru memakai ATURAN_V2 penuh lalu dibekukan dengan cara yang sama saat tayang. Jangan disunting tangan kecuali saat membekukan kasus baru.",
+  "sumber": {
+    "commit": "3b09a92",
+    "cara": "kode aturan dari medan pemeriksaan tiap cases/<id>.json, urutan apa adanya"
+  },
+  "kasus": {
+    "dada-2025-10-08": {
+      "jalur": "V1",
+      "berkas_sha256": "608a22842064698a15b997bf2b2828f5462f3683619bad82664a6ff171e744a8",
+      "aturan": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R8",
+        "R9",
+        "R10"
+      ]
+    },
+    "ultj-2026-05-04": {
+      "jalur": "V2",
+      "berkas_sha256": "d26683dbe9803ce1d2884b27bcfd018c21bb4b59a96da260eb422017ca0a40e5",
+      "aturan": [
+        "R25",
+        "R12",
+        "R22",
+        "R20",
+        "R32",
+        "R21",
+        "R33",
+        "R15",
+        "R1",
+        "R11a",
+        "R11b",
+        "R7",
+        "R14",
+        "R16",
+        "R2",
+        "R13",
+        "R3",
+        "R4",
+        "R5",
+        "R8",
+        "R9",
+        "R17B",
+        "R6",
+        "R18a",
+        "R10",
+        "R19a",
+        "R19b",
+        "R28",
+        "R35",
+        "R23",
+        "R31",
+        "R26",
+        "R27",
+        "R29",
+        "R34"
+      ]
+    }
+  }
+}
