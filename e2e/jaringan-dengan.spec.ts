@@ -90,7 +90,25 @@ test('E-08 dengan pengumpul: semua seasal, satu-satunya tujuan tulis adalah /e',
   const hostBundel = [...new Set(bundel.flatMap((b) => b.host))].sort();
   const bolehDitulis = [...new Set([...hostKasus, ...Object.keys(HOST_BOLEH_SEBAGAI_TEKS)])].sort();
 
+  /*
+   * M3.13 D-4: halaman "Dapur agen" dimuat sebagai potongan terpisah
+   * (`Dapur-*.js`, `import()` di `main.tsx`) dan tidak mengirim apa pun, jadi
+   * ia memang tidak memuat alamat pengumpul. Yang dijaga tetap: alamat "/e"
+   * ada TEPAT SEKALI di seluruh bundel, di potongan permainan — dan tidak ada
+   * satu potongan pun yang memuat `E:/`.
+   */
+  const potonganDapur = bundel.filter((b) => /^Dapur-/.test(b.nama));
+  expect(potonganDapur, 'halaman dapur = satu potongan terpisah').toHaveLength(1);
+  const jumlahE = bundel.reduce((j, b) => j + (b.teks.split('"/e"').length - 1), 0);
+  expect(jumlahE, 'alamat pengumpul "/e" tepat sekali di seluruh bundel').toBe(1);
+  for (const b of potonganDapur) {
+    expect(b.teks.includes('"/e"'), `${b.nama} (dapur) tidak memuat alamat pengumpul`).toBe(false);
+  }
   for (const b of bundel) {
+    if (potonganDapur.includes(b)) {
+      expect(b.teks.includes('E:/'), `${b.nama} TIDAK boleh memuat E:/`).toBe(false);
+      continue;
+    }
     expect(b.teks.includes('"/e"'), `${b.nama} memuat alamat pengumpul "/e"`).toBe(true);
     /*
      * Git Bash mengubah `VITE_KOLEKTOR_URL=/e` menjadi `E:/…` kalau variabelnya

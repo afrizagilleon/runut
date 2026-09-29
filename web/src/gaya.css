@@ -2226,9 +2226,18 @@ textarea {
   margin: 0 0 4px;
 }
 
-/* Pintu masuk di layar terima kasih (M3.13 D-4, pintu A). */
+/*
+ * Pintu masuk di layar terima kasih (M3.13 D-4, pintu A). Tautannya setinggi
+ * >= 44 px sebagai kotak (E-12 mengukur kotak kontrol, bukan `::after`).
+ */
 .dapur-pintu {
   margin: 16px 0 0;
+}
+
+.dapur-pintu .dapur-tautan {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 /*

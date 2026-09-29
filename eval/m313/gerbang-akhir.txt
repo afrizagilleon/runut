@@ -1,0 +1,37 @@
+# M3.13 T-06 — gerbang akhir (worktree _runut-m313, 2026-09-29T17:30Z)
+
+## typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+## vitest
+      Tests  4 failed | 1955 passed | 12 skipped (1971)
+      at startTests (file:///D:/Projects/serious/sectors-hackathon/node_modules/@vitest/runner/dist/index.js:1271:3),
+ FAIL  factory/llm/openrouter.test.ts > pagu biaya-nyata — jumlah biaya nyata + perkiraan panggilan berikutnya ≤ pagu, dicek sebelum kirim > perkiraan sebelum kirim ≥ biaya penyedia TERMAHAL yan
+ FAIL  factory/llm/paket-teks.test.ts > teks kartu paket diperjelas (M2d-5 D-8) > cases/*.json (kasus tayang) TIDAK diubah di sini — frasa yang masih ada di sana dicatat untuk milestone produk
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > docs/bukti/lingkar-agen-tirt.md dan ringkasan terlacak = hasil skrip atas keluaran mentah
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > per peran dan per penyedia menjumlah ke total milestone; total ≤ pagu US$4,00
+ Test Files  3 failed | 98 passed (101)
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+
+## periksa:desain
+periksa:desain — bersih.
+
+## e2e penuh sekali (--workers=1)
+    5 failed
+      [ponsel-terang] › e2e\jaringan-dengan.spec.ts:29:1 › E-08 dengan pengumpul: semua seasal, satu-satunya tujuan tulis adalah /e 
+      [ponsel-terang] › e2e\tata-letak.spec.ts:70:1 › E-12 a/b/e/f [dada-2025-10-08] tata letak terukur di tiap layar, dan kontras empat peran teks 
+      [ponsel-terang] › e2e\tata-letak.spec.ts:70:1 › E-12 a/b/e/f [ultj-2026-05-04] tata letak terukur di tiap layar, dan kontras empat peran teks 
+      [ponsel-gelap] › e2e\tata-letak.spec.ts:70:1 › E-12 a/b/e/f [dada-2025-10-08] tata letak terukur di tiap layar, dan kontras empat peran teks 
+      [ponsel-gelap] › e2e\tata-letak.spec.ts:70:1 › E-12 a/b/e/f [ultj-2026-05-04] tata letak terukur di tiap layar, dan kontras empat peran teks 
+    7 skipped
+    246 passed (9.4m)
+  -> 5 gagal, semuanya akibat M3.13 dan diperbaiki: E-12 (pintu A 22 px < 44 px) dan E-08 (potongan Dapur-*.js tanpa "/e"; tes diperbarui: "/e" tepat sekali di seluruh bundel).
+  Ulang terarah spesifikasi yang gagal (tidak menjalankan ulang seluruh rangkaian):
+    tata-letak + jaringan-dengan:   9 passed (28.9s)
+    akhir-terima-kasih + dapur:   6 passed (15.1s)
+
+## build + cek bundel (MSYS_NO_PATHCONV=1 VITE_KOLEKTOR_URL=/e npx vite build, keluaran .cache/m313/dist)
+  Dapur-DyHSmycz.js 33311B "/e"=0
+  index-BW7qx3Sm.js 302797B "/e"=1
+  TOTAL "/e"=1 (harus 1) E:/=0 (harus 0)
