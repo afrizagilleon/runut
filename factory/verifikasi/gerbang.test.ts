@@ -226,12 +226,52 @@ describe('R25 — kelengkapan halaman laporan', () => {
     expect(h.temuan[0]?.ringkasan).toContain('parameter permintaannya tidak tersimpan');
   });
 
-  it('menghitung respons kosong yang tidak bisa dialamatkan ke emiten mana pun', () => {
+  /*
+   * M3.13 D-3: sampai M3.13 angka ini menghitung respons kosong SELURUH gudang
+   * ("tidak bisa dialamatkan ke emiten mana pun") untuk setiap emiten — kasus
+   * ULTJ tayang menyebut 3 berkas milik COCO, MERK, dan berita DADA, dan
+   * menambah data emiten lain mengubah temuan ULTJ (audit M4a:
+   * `docs/bukti/audit-gudang.md`). Sekarang yang dihitung hanya respons kosong
+   * yang endpoint asalnya (manifest) menyebut simbol emiten ini.
+   */
+  it('M3.13 D-3: hanya menghitung respons kosong yang endpoint asalnya menyebut emiten ini', () => {
+    const data = dataEmiten({ berkas_laporan: [berkasLaporan({ berkas: 'aa-filings.json' })] });
+    const k: KonteksGudang = {
+      ...konteksGudang(data, ['AA-m4a-filings-p0.json', 'COCO-filings.json', 'MERK-filings.json', 'BB-p1.json']),
+      asal_kosong: {
+        'AA-m4a-filings-p0.json': '/v2/filings/?symbol=AA&start=2025-01-01&end=2026-09-28&limit=30',
+        'BB-p1.json': '/v2/filings/?symbol=BB&start=2025-01-01&end=2026-09-28&limit=30',
+        'MERK-filings.json': null,
+      },
+    };
+    const h = r25KelengkapanHalaman(k);
+    const angka = h.temuan[0]?.angka.find((a) => a.label.startsWith('respons kosong'));
+    expect(angka?.nilai).toBe(1);
+    expect(angka?.label).toContain('AA');
+    expect(h.temuan[0]?.rujukan).toEqual(['aa-filings.json', 'AA-m4a-filings-p0.json']);
+  });
+
+  it('M3.13 D-3: respons kosong tanpa asal (atau milik emiten lain) tidak dihitung untuk emiten ini', () => {
     const data = dataEmiten({ berkas_laporan: [berkasLaporan({ berkas: 'aa-filings.json' })] });
     const h = r25KelengkapanHalaman(konteksGudang(data, ['MERK-filings.json', 'COCO-filings.json']));
-    const angka = h.temuan[0]?.angka.find((a) =>
-      a.label.includes('tidak bisa dialamatkan'),
-    );
+    const angka = h.temuan[0]?.angka.find((a) => a.label.startsWith('respons kosong'));
+    expect(angka?.nilai).toBe(0);
+    expect(h.temuan[0]?.rujukan).toEqual(['aa-filings.json']);
+    expect(JSON.stringify(h)).not.toContain('MERK');
+  });
+
+  it('M3.13 D-3: simbol endpoint dibaca dari ?symbol= maupun dari segmen path, dengan atau tanpa .JK', () => {
+    const data = dataEmiten({ berkas_laporan: [berkasLaporan({ berkas: 'aa-filings.json' })] });
+    const k: KonteksGudang = {
+      ...konteksGudang(data, ['a.json', 'b.json', 'c.json', 'd.json']),
+      asal_kosong: {
+        'a.json': '/v2/filings/?symbol=aa.jk&limit=30',
+        'b.json': '/v2/company/corporate-actions/AA/',
+        'c.json': '/v2/company/corporate-actions/AAB/',
+        'd.json': '/v2/filings/?symbol=AAB',
+      },
+    };
+    const angka = r25KelengkapanHalaman(k).temuan[0]?.angka.find((a) => a.label.startsWith('respons kosong'));
     expect(angka?.nilai).toBe(2);
   });
 });

@@ -394,6 +394,8 @@ export function bangunKasusUmum(
   data: DataEmiten,
   asal: AsalGudang,
   berkas_kosong: string[] = [],
+  /** Endpoint asal respons kosong (manifest gudang), untuk R25 (M3.13 D-3). */
+  asal_kosong: Readonly<Record<string, string | null>> = {},
 ): HasilBangun {
   const sumber: SumberGudang = { ...def.sumber, asal };
   const dasar = pustakaGudang(data, sumber).fakta;
@@ -407,7 +409,10 @@ export function bangunKasusUmum(
   }
   pustaka.splice(0, pustaka.length, ...diperjelas);
 
-  const hasil = verifikasiV2(konteksEmiten(dataSampai(data, def.tanggal_t), berkas_kosong));
+  const hasil = verifikasiV2({
+    ...konteksEmiten(dataSampai(data, def.tanggal_t), berkas_kosong),
+    asal_kosong,
+  });
   const mentah = hasil.pemeriksaan.flatMap((p) => p.temuan);
   const temuan = kaitkanTemuan(mentah, pustaka);
   const pemeriksaan: PemeriksaanAturan[] = hasil.pemeriksaan.map((p) => ({

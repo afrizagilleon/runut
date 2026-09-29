@@ -6,7 +6,7 @@
  * berkas cache yang hilang membuat perintah keluar dengan kode 1 dan menyebut
  * penyebabnya (INV-6).
  */
-import { writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { angkaId } from './format.ts';
 import {
@@ -44,6 +44,29 @@ const KASUS_UMUM: Record<string, DefinisiKasusUmum> = {
 };
 
 /**
+ * Endpoint asal tiap respons kosong menurut manifest gudang (M3.13 D-3).
+ *
+ * Respons berpaginasi yang kosong tidak memuat simbolnya; satu-satunya jejak
+ * emitennya adalah permintaan yang dicatat `npm run sectors:ambil` di
+ * `docs/bukti/gudang-manifest.json` (`path_endpoint`). R25 memakainya supaya
+ * sebuah kasus hanya menghitung respons kosong miliknya sendiri. Berkas yang
+ * tidak ada di manifest, atau yang `path_endpoint`-nya `null` (diambil sebelum
+ * M4a), bernilai `null`: asalnya tidak diketahui.
+ */
+export function asalKosongDariManifest(
+  kosong: readonly string[],
+  berkasManifest: string = `${AKAR}docs/bukti/gudang-manifest.json`,
+): Record<string, string | null> {
+  const isi: { berkas?: Array<{ nama: string; path_endpoint?: string | null }> } = existsSync(berkasManifest)
+    ? (JSON.parse(readFileSync(berkasManifest, 'utf8')) as {
+        berkas?: Array<{ nama: string; path_endpoint?: string | null }>;
+      })
+    : {};
+  const peta = new Map((isi.berkas ?? []).map((b) => [b.nama, b.path_endpoint ?? null]));
+  return Object.fromEntries(kosong.map((b) => [b, peta.get(b) ?? null]));
+}
+
+/**
  * Kasus tayang dibangun dari **gudang beku** (M4a A-1): 111 berkas yang
  * sidiknya dibekukan di `docs/bukti/gudang-beku-kasus.json`, bukan dari apa pun
  * yang kebetulan ada di `.cache/sectors/`. Menambah data untuk audit tidak
@@ -68,7 +91,7 @@ function bangunUmum(
   // dipakai saat ia dibekukan. Kasus baru (belum di daftar) memakai ATURAN_V2 penuh.
   const data = beku === undefined ? dataGudang : { ...dataGudang, aturan_beku: [...beku.aturan] };
   const kosong = gudang.berkas.filter((b) => b.jenis === 'paginasi-kosong').map((b) => b.berkas);
-  return bangunKasusUmum(def, data, gudang.asal, kosong);
+  return bangunKasusUmum(def, data, gudang.asal, kosong, asalKosongDariManifest(kosong));
 }
 
 /**

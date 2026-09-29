@@ -1,0 +1,47 @@
+diff --git a/cases/dada-2025-10-08.json b/cases/dada-2025-10-08.json
+index ebd0a6c..29b4a3b 100644
+--- a/cases/dada-2025-10-08.json
++++ b/cases/dada-2025-10-08.json
+@@ -1525,7 +1525,7 @@
+         "jam": "19.38",
+         "isi": "Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin."
+       },
+-      "tanya": "Omongan Bayu cocok dengan dokumennya?",
++      "tanya": "Menurut dokumennya, omongan Bayu betul atau keliru?",
+       "pilihan": [
+         {
+           "kunci": "a",
+diff --git a/cases/ultj-2026-05-04.json b/cases/ultj-2026-05-04.json
+index 539cfa2..7b9703a 100644
+--- a/cases/ultj-2026-05-04.json
++++ b/cases/ultj-2026-05-04.json
+@@ -219,7 +219,7 @@
+     },
+     {
+       "fact_id": "dividen-tercatat",
+-      "klaim": "Daftar aksi korporasi mencatat 7 pembagian dividen tunai, dari tanggal ex 3 September 2020 sampai 4 Mei 2026. Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi.",
++      "klaim": "Daftar aksi korporasi mencatat 7 pembagian dividen tunai, dari tanggal ex 3 September 2020 sampai 4 Mei 2026. Daftar ini hanya memuat pembagian yang tercatat; kalau ada yang tidak tercatat, ia tidak terlihat di sini.",
+       "nilai": 7,
+       "satuan": "pembagian",
+       "sumber": {
+@@ -1143,17 +1143,14 @@
+           "satuan": "baris"
+         },
+         {
+-          "label": "respons kosong yang tidak bisa dialamatkan ke emiten mana pun",
+-          "nilai": 3,
++          "label": "respons kosong yang permintaannya menyebut ULTJ",
++          "nilai": 0,
+           "satuan": "berkas"
+         }
+       ],
+       "fakta_terkait": [],
+       "rujukan": [
+-        "ULTJ-filings.json",
+-        "COCO-filings-sebelum.json",
+-        "MERK-filings.json",
+-        "dada-news-2025.json"
++        "ULTJ-filings.json"
+       ]
+     },
+     {

@@ -44,8 +44,8 @@ const SHA_DADA_BEKU = '608a22842064698a15b997bf2b2828f5462f3683619bad82664a6ff17
 /** Sidik berkas tayang sekarang: M3.13 D-1 mengganti judul pertanyaan soal 1 (build:case). */
 const SHA_DADA = 'eb5ef6810ca67c6fe95301b4c80816f504ea08c48979142e5b9aaed9f1c333b6';
 const SHA_ULTJ_BEKU = 'd26683dbe9803ce1d2884b27bcfd018c21bb4b59a96da260eb422017ca0a40e5';
-/** Sidik berkas tayang sekarang: M3.13 D-2 (kalimat kartu riwayat dividen). */
-const SHA_ULTJ = '29a374da3c6a1ba8c5e32bca6d65161fddf7eb24c084949950e34a2cb2ebfb16';
+/** Sidik berkas tayang sekarang: M3.13 D-2 (kalimat kartu riwayat dividen) + D-3 (R25 hanya respons kosong milik ULTJ). */
+const SHA_ULTJ = '1ccbd55ca4b01a054edbf78818baf9c79f1e0d73422969c7010b0173e75a4003';
 
 function kasusRepo(id: string): Kasus {
   return JSON.parse(readFileSync(`${AKAR}cases/${id}.json`, 'utf8')) as unknown as Kasus;

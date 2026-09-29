@@ -1,0 +1,10 @@
+SABOTASE T-03: kosongMilik mengembalikan seluruh respons kosong gudang (perilaku lama), lalu build:case ULTJ
+ × factory/verifikasi/gerbang.test.ts > R25 — kelengkapan halaman laporan > M3.13 D-3: hanya menghitung respons kosong yang endpoint asalnya menyebut emiten ini
+ × factory/verifikasi/gerbang.test.ts > R25 — kelengkapan halaman laporan > M3.13 D-3: respons kosong tanpa asal (atau milik emiten lain) tidak dihitung untuk emiten ini
+ × factory/verifikasi/gerbang.test.ts > R25 — kelengkapan halaman laporan > M3.13 D-3: simbol endpoint dibaca dari ?symbol= maupun dari segmen path, dengan atau tanpa .JK
+ × factory/kasus/ultj.test.ts > M3.13 D-3 — R25 ULTJ tanpa respons kosong emiten lain > angka respons kosong = 0, rujukan hanya berkas laporan ULTJ
+ × factory/kasus/aturan-beku.test.ts > D-1 kasus tayang dibangun dari aturan beku > SABOTASE: aturan dummy ditambahkan ke ATURAN_V2 → DADA/ULTJ byte-identik, dummy tidak dipanggil
+ × factory/muat/gudang-beku.test.ts > A-1 kasus tayang dibangun dari gudang beku > DADA dan ULTJ byte-identik dengan cases/ dari gudang sekarang (bertambah data M4a)
+ × factory/muat/gudang-beku.test.ts > A-1 kasus tayang dibangun dari gudang beku > salinan utuh + berkas asing di sebelahnya → ULTJ tetap sama 383ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  7 failed | 117 passed (124)

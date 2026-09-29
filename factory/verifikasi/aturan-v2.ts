@@ -332,6 +332,39 @@ export function r22NamaPemegang(konteks: KonteksGudang): HasilAturan {
 // --- R25 kelengkapan halaman + parameter permintaan --------------------------
 
 /**
+ * Apakah endpoint permintaan ini menanyakan emiten `simbol` (M3.13 D-3)?
+ * Ya bila `?symbol=` menyebutnya, atau bila tanpa `?symbol=` salah satu segmen
+ * path adalah kodenya (`/v2/company/corporate-actions/ULTJ/`). Kode dibandingkan
+ * tanpa `.JK` dan tanpa beda huruf besar-kecil di query; segmen path harus
+ * ditulis huruf besar, seperti semua endpoint di manifest.
+ */
+export function endpointMenyebut(endpoint: string, simbol: string): boolean {
+  const normal = (x: string): string => x.toUpperCase().replace(/\.JK$/, '');
+  const target = normal(simbol);
+  const [path = '', query = ''] = endpoint.split('?');
+  const dariQuery = new URLSearchParams(query).get('symbol');
+  if (dariQuery !== null && dariQuery !== '') return normal(dariQuery) === target;
+  return path
+    .split('/')
+    .some((seg) => /^[A-Z]+(\.JK)?$/.test(seg) && normal(seg) === target);
+}
+
+/**
+ * Respons kosong yang MILIK emiten ini (M3.13 D-3): endpoint asalnya tercatat
+ * dan menyebut simbolnya. Respons kosong tanpa asal tercatat tidak memuat
+ * simbolnya di isi, jadi ia tidak dihitung untuk emiten mana pun — sampai
+ * M3.13 ia dihitung untuk SETIAP emiten, dan data emiten lain mengubah temuan
+ * emiten ini (`docs/bukti/audit-gudang.md`).
+ */
+function kosongMilik(konteks: KonteksGudang): string[] {
+  const asal = konteks.asal_kosong ?? {};
+  return konteks.berkas_kosong.filter((b) => {
+    const endpoint = asal[b];
+    return endpoint !== undefined && endpoint !== null && endpointMenyebut(endpoint, konteks.simbol);
+  });
+}
+
+/**
  * R25 — apakah halaman laporan satu emiten terbukti habis?
  *
  * Nilainya ada pada nol merahnya: bukti negatif ("emiten ini tidak punya
@@ -394,6 +427,7 @@ export function r25KelengkapanHalaman(konteks: KonteksGudang): HasilAturan {
     return hasil('R25', judul, temuan, hitung(satuan, { diperiksa: 1, merah: 1 }));
   }
 
+  const kosong = kosongMilik(konteks);
   temuan.push({
     temuan_id: `R25-parameter-${konteks.simbol}`,
     aturan: 'R25',
@@ -410,13 +444,13 @@ export function r25KelengkapanHalaman(konteks: KonteksGudang): HasilAturan {
         satuan: 'baris',
       },
       {
-        label: 'respons kosong yang tidak bisa dialamatkan ke emiten mana pun',
-        nilai: konteks.berkas_kosong.length,
+        label: `respons kosong yang permintaannya menyebut ${konteks.simbol}`,
+        nilai: kosong.length,
         satuan: 'berkas',
       },
     ],
     fakta_terkait: [],
-    rujukan: [...berkas.map((b) => b.berkas), ...konteks.berkas_kosong],
+    rujukan: [...berkas.map((b) => b.berkas), ...kosong],
   });
 
   return hasil('R25', judul, temuan, hitung(satuan, { diperiksa: 1, merah: 0, tidak_lengkap: 1 }));

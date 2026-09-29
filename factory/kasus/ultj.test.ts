@@ -23,6 +23,7 @@ import { bacaAturanBeku } from '../verifikasi/aturan-beku.ts';
 import { keparahanTemuan, type Fakta, type Kasus } from '../skema/tipe.ts';
 import { bacaDaftarBeku } from '../muat/gudang-beku.ts';
 import { perjelasKlaim } from './bangun.ts';
+import { asalKosongDariManifest } from '../bangun-kasus.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 const GUDANG = `${AKAR}.cache/sectors`;
@@ -462,5 +463,45 @@ describe('M3.13 D-2 — perjelasKlaim gagal keras', () => {
     expect(() => perjelasKlaim([fakta], [{ fact_id: 'x', lama: 'Empat.', baru: 'Lima.' }])).toThrow(
       /muncul 0 kali/,
     );
+  });
+});
+
+/*
+ * M3.13 D-3: temuan R25 ULTJ hanya menghitung respons kosong milik ULTJ. Tiga
+ * respons kosong di gudang beku (COCO, MERK, berita DADA) tidak tercatat asal
+ * permintaannya di manifest, jadi tidak dihitung untuk ULTJ — sampai M3.13
+ * angkanya 3 dan rujukannya menyebut ketiga berkas itu.
+ */
+describe('M3.13 D-3 — R25 ULTJ tanpa respons kosong emiten lain', () => {
+  it('angka respons kosong = 0, rujukan hanya berkas laporan ULTJ', () => {
+    const r25 = kasus().temuan.filter((t) => t.aturan === 'R25');
+    expect(r25).toHaveLength(1);
+    const t = r25[0];
+    expect(t?.angka.find((a) => a.label.startsWith('respons kosong'))).toEqual({
+      label: 'respons kosong yang permintaannya menyebut ULTJ',
+      nilai: 0,
+      satuan: 'berkas',
+    });
+    expect(t?.rujukan).toEqual(['ULTJ-filings.json']);
+    expect(JSON.stringify(t)).not.toMatch(/COCO|MERK|dada-news/);
+  });
+});
+
+describe('M3.13 D-3 — asal respons kosong dibaca dari manifest gudang', () => {
+  it('tiga respons kosong gudang beku tidak tercatat asalnya; respons kosong M4a tercatat', () => {
+    const asal = asalKosongDariManifest([
+      'COCO-filings-sebelum.json',
+      'MERK-filings.json',
+      'dada-news-2025.json',
+      'ABMM-m4a-filings-p0.json',
+      'TIDAK-ADA-DI-MANIFEST.json',
+    ]);
+    expect(asal).toEqual({
+      'COCO-filings-sebelum.json': null,
+      'MERK-filings.json': null,
+      'dada-news-2025.json': null,
+      'ABMM-m4a-filings-p0.json': '/v2/filings/?symbol=ABMM&start=2025-01-01&end=2026-09-28&limit=30',
+      'TIDAK-ADA-DI-MANIFEST.json': null,
+    });
   });
 });

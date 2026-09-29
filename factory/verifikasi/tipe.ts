@@ -316,6 +316,14 @@ export interface KonteksGudang extends KonteksVerifikasi {
    * tidak sah tanpa parameter permintaan.
    */
   berkas_kosong: string[];
+  /**
+   * Endpoint asal tiap berkas di `berkas_kosong`, dari manifest gudang
+   * (`docs/bukti/gudang-manifest.json`, medan `path_endpoint`), untuk R25
+   * (M3.13 D-3). Berkas yang tidak ada di sini atau bernilai `null` berasal
+   * dari permintaan yang tidak tercatat: ia tidak bisa dialamatkan ke emiten
+   * mana pun, jadi tidak dihitung untuk emiten mana pun.
+   */
+  asal_kosong?: Readonly<Record<string, string | null>>;
 }
 
 /** Semua data satu emiten yang terbaca dari gudang. */
