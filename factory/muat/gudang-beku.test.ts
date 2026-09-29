@@ -37,7 +37,8 @@ const DADA = 'dada-2025-10-08';
 const ULTJ = 'ultj-2026-05-04';
 // M3.13 D-1: judul pertanyaan soal 1 DADA diganti lewat build:case (dulu 608a2284…44a8).
 const SHA_DADA = 'eb5ef6810ca67c6fe95301b4c80816f504ea08c48979142e5b9aaed9f1c333b6';
-const SHA_ULTJ = 'd26683dbe9803ce1d2884b27bcfd018c21bb4b59a96da260eb422017ca0a40e5';
+// M3.13 D-2: kalimat kartu riwayat dividen diperjelas lewat build:case (dulu d26683db…40e5).
+const SHA_ULTJ = '29a374da3c6a1ba8c5e32bca6d65161fddf7eb24c084949950e34a2cb2ebfb16';
 
 describe('A-1 daftar gudang beku', () => {
   const daftar = bacaDaftarBeku();

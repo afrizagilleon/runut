@@ -22,6 +22,7 @@ import { ambilRujukan, teksPolos } from '../skema/rujukan.ts';
 import { bacaAturanBeku } from '../verifikasi/aturan-beku.ts';
 import { keparahanTemuan, type Fakta, type Kasus } from '../skema/tipe.ts';
 import { bacaDaftarBeku } from '../muat/gudang-beku.ts';
+import { perjelasKlaim } from './bangun.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 const GUDANG = `${AKAR}.cache/sectors`;
@@ -420,5 +421,46 @@ describe('kasus ULTJ — berkas yang ikut repo', () => {
       expect(f.awam.kepala.length, `kepala ${f.fact_id}`).toBeLessThanOrEqual(36);
       expect(teksPolos(f.awam.isi).length, `isi ${f.fact_id}`).toBeLessThanOrEqual(220);
     }
+  });
+});
+
+/*
+ * M3.13 D-2: kalimat kedua fakta `dividen-tercatat` ("Daftar itu sendiri tidak
+ * bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah
+ * terjadi.") ditandai membingungkan oleh ketiga penguji kartu M2d-4. Pemain
+ * membacanya sebagai "Kalimat resminya" saat membuka kartu Riwayat dividen di
+ * soal 2. Diganti bahasa awam yang sama maknanya, diuji 3 + 3 pembaca kartu
+ * (`eval/m313/kartu-ultj/`). Kalimat pertamanya — angka dan tanggal — tetap.
+ */
+describe('M3.13 D-2 — kalimat kartu riwayat dividen ULTJ', () => {
+  const LAMA =
+    'Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi.';
+  const BARU =
+    'Daftar ini hanya memuat pembagian yang tercatat; kalau ada yang tidak tercatat, ia tidak terlihat di sini.';
+
+  it('berkas tayang memakai kalimat baru; kalimat lama tidak ada di mana pun di berkas', () => {
+    const f = kasus().fakta.find((x) => x.fact_id === 'dividen-tercatat');
+    expect(f?.klaim).toBe(
+      'Daftar aksi korporasi mencatat 7 pembagian dividen tunai, dari tanggal ex 3 September 2020 ' +
+        `sampai 4 Mei 2026. ${BARU}`,
+    );
+    expect(readFileSync(BERKAS, 'utf8')).not.toContain(LAMA);
+  });
+});
+
+describe('M3.13 D-2 — perjelasKlaim gagal keras', () => {
+  const fakta = { fact_id: 'x', klaim: 'Satu. Dua.' } as unknown as Fakta;
+
+  it('mengganti tepat sekali, fakta lain tidak disentuh', () => {
+    const lain = { fact_id: 'y', klaim: 'Dua.' } as unknown as Fakta;
+    const hasil = perjelasKlaim([fakta, lain], [{ fact_id: 'x', lama: 'Dua.', baru: 'Tiga.' }]);
+    expect(hasil.map((f) => f.klaim)).toEqual(['Satu. Tiga.', 'Dua.']);
+    expect(hasil[1]).toBe(lain);
+  });
+
+  it('kalimat lama yang tidak ada (pemuat berubah diam-diam) → galat, bukan dilewati', () => {
+    expect(() => perjelasKlaim([fakta], [{ fact_id: 'x', lama: 'Empat.', baru: 'Lima.' }])).toThrow(
+      /muncul 0 kali/,
+    );
   });
 });

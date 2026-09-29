@@ -1,0 +1,22 @@
+Kalimat K1 — "Daftar ini belum tentu lengkap: bisa saja ada pembagian yang terjadi tetapi tidak tercatat di sini."
+Jawaban mentah 3 pembaca kartu (subagent Opus baru, sinkron, tanpa alat). Prompt: rencana.md + teks layar soal 2 ULTJ, kartu 1 terbuka.
+
+### kartu-1 (agen a08dad53787877da2)
+JAWAB: a
+KARTU: keduanya
+ARTI: Tabel ini hanya memuat pembagian dividen yang sempat dicatat. Kalau ada pembagian yang tidak masuk catatan, kita tidak akan melihatnya di sini. Jadi "tidak ada di daftar" belum tentu berarti "tidak pernah terjadi".
+BINGUNG: "Daftar ini belum tentu lengkap: bisa saja ada pembagian yang terjadi tetapi tidak tercatat di sini." Layar tidak menjelaskan apakah catatan ini melemahkan bagian "tiap tahun ada pembagian". Saya sempat ragu, tetapi jawabannya tidak berubah karena penurunan dari Rp85 ke Rp25 tercatat jelas. Angka 2021 (Rp85) yang melonjak dari Rp12 lalu jatuh lagi juga terasa janggal. Tapi kartu 2 menyebutnya secara eksplisit, jadi tidak menyesatkan.
+
+### kartu-2 (agen a694120bb5f41326e)
+JAWAB: a
+KARTU: keduanya
+ARTI: Daftar di kartu itu mungkin tidak memuat semua pembagian dividen. Bisa saja perusahaan pernah membagikan dividen yang tidak masuk ke daftar ini, jadi yang tercatat belum tentu semua yang benar-benar terjadi.
+BINGUNG: Kalimat "Daftar ini belum tentu lengkap" membuat saya ragu apakah "turun ke Rp25 di 2022" pasti benar, karena bisa saja ada pembagian lain di 2022 yang tidak tercatat dan membuat jumlah tahun itu sebenarnya lebih besar. Kartu tidak menjelaskan apakah kemungkinan itu memengaruhi kesimpulan.
+
+### kartu-3 (agen afb3cbefa3a472501)
+JAWAB: a
+KARTU: keduanya
+ARTI: Daftar itu hanya memuat pembagian yang sempat dicatat, jadi mungkin ada pembagian dividen lain yang benar-benar terjadi tetapi tidak masuk ke daftar ini.
+BINGUNG: "menurut tanggal ex-nya" (istilah "tanggal ex" tidak dijelaskan; lipatan arti istilah hanya menjelaskan "per lembar")
+
+Penilaian (rencana.md): JAWAB a 3/3; ARTI benar 3/3; K1 disebut di BINGUNG 2/3 (kartu-1, kartu-2) -> TIDAK LOLOS. Keraguan keduanya soal akibat makna (daftar belum tentu lengkap), bukan soal kata-katanya.

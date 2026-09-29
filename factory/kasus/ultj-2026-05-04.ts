@@ -75,6 +75,21 @@ export const ULTJ_2026_05_04: DefinisiKasusUmum = {
   tanggal_t: '2026-05-04',
 
   /*
+   * M3.13 D-2: kalimat kedua "Kalimat resminya" kartu Riwayat dividen (soal 2)
+   * ditandai membingungkan oleh ketiga penguji kartu M2d-4. Penggantinya
+   * dipilih dari dua kalimat yang diuji 3 + 3 pembaca kartu Opus baru
+   * (`eval/m313/kartu-ultj/`): keduanya dipahami 3/3 dan tidak mengubah
+   * jawaban; yang ini lebih sedikit ditandai membingungkan (1/3 lawan 2/3).
+   */
+  perjelas_klaim: [
+    {
+      fact_id: DIV_RIWAYAT,
+      lama: 'Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi.',
+      baru: 'Daftar ini hanya memuat pembagian yang tercatat; kalau ada yang tidak tercatat, ia tidak terlihat di sini.',
+    },
+  ],
+
+  /*
    * Alamat yang benar-benar ditarik, ditulis apa adanya. Menyusunnya sendiri
    * dari simbol emiten akan membuat jejak sumber terlihat pasti padahal ia
    * karangan.

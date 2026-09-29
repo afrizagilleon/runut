@@ -133,7 +133,9 @@ const SIDIK_DASAR: Record<string, { soal23: string; kartu23: string }> = {
   },
   'ultj-2026-05-04': {
     soal23: '84386f0bbc464bce18fc7c631aa85afb13f5c87cf681885be0ef41f1c75491d1',
-    kartu23: '4e82ef87faf6761b2df662f0f61b4b571ea3773d779c0cc0a2f2168b1f6dbf24',
+    // M3.13 D-2: klaim `dividen-tercatat` (kartu soal 2) diperjelas dengan
+    // sengaja; soal 2–3 sendiri tetap. Sidik dabc82a: 4e82ef87…bf24.
+    kartu23: 'ad0c0f8750ad71fe1e887855b15e22ac7af5a6b59a5a34fe2a810a0d776f9e1f',
   },
 };
 

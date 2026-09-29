@@ -43,7 +43,9 @@ const ULTJ = 'ultj-2026-05-04';
 const SHA_DADA_BEKU = '608a22842064698a15b997bf2b2828f5462f3683619bad82664a6ff171e744a8';
 /** Sidik berkas tayang sekarang: M3.13 D-1 mengganti judul pertanyaan soal 1 (build:case). */
 const SHA_DADA = 'eb5ef6810ca67c6fe95301b4c80816f504ea08c48979142e5b9aaed9f1c333b6';
-const SHA_ULTJ = 'd26683dbe9803ce1d2884b27bcfd018c21bb4b59a96da260eb422017ca0a40e5';
+const SHA_ULTJ_BEKU = 'd26683dbe9803ce1d2884b27bcfd018c21bb4b59a96da260eb422017ca0a40e5';
+/** Sidik berkas tayang sekarang: M3.13 D-2 (kalimat kartu riwayat dividen). */
+const SHA_ULTJ = '29a374da3c6a1ba8c5e32bca6d65161fddf7eb24c084949950e34a2cb2ebfb16';
 
 function kasusRepo(id: string): Kasus {
   return JSON.parse(readFileSync(`${AKAR}cases/${id}.json`, 'utf8')) as unknown as Kasus;
@@ -102,7 +104,7 @@ describe('D-1 daftar aturan beku', () => {
 
   it('mencatat sidik berkas kasus pada saat dibekukan', () => {
     expect(beku.kasus[DADA]?.berkas_sha256).toBe(SHA_DADA_BEKU);
-    expect(beku.kasus[ULTJ]?.berkas_sha256).toBe(SHA_ULTJ);
+    expect(beku.kasus[ULTJ]?.berkas_sha256).toBe(SHA_ULTJ_BEKU);
   });
 });
 

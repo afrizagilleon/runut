@@ -1,0 +1,22 @@
+Kalimat K2 — "Daftar ini hanya memuat pembagian yang tercatat; kalau ada yang tidak tercatat, ia tidak terlihat di sini."
+Jawaban mentah 3 pembaca kartu BARU (subagent Opus baru, sinkron, tanpa alat). Prompt sama dengan K1, hanya kalimatnya.
+
+### kartu-1 (agen a45a1f27e0badc16f)
+JAWAB: a
+KARTU: keduanya
+ARTI: Riwayat ini cuma menampilkan dividen yang ada catatannya. Kalau ada pembagian yang tidak tercatat, pembagian itu tidak akan muncul, jadi daftar ini belum tentu lengkap.
+BINGUNG: "kalau ada yang tidak tercatat, ia tidak terlihat di sini" terasa berputar-putar (tentu saja yang tidak tercatat tidak terlihat), dan saya tidak tahu apa pengaruhnya pada jawaban.
+
+### kartu-2 (agen a9f6e47a4edc1385a)
+JAWAB: a
+KARTU: keduanya
+ARTI: Daftar ini hanya berisi pembagian dividen yang tercatat. Kalau ada pembagian yang tidak tercatat, pembagian itu tidak muncul di sini. Jadi daftar ini bukti bahwa ketujuh pembagian itu memang ada, tetapi bukan jaminan bahwa tidak ada pembagian lain.
+BINGUNG: "menurut tanggal ex-nya" di kartu 1, karena istilah "tanggal ex" tidak dijelaskan di layar (yang dijelaskan hanya "per lembar"). Angka 2020 (Rp12) yang melompat ke Rp85 di 2021 juga sempat membuat saya membaca ulang, tetapi tidak mengubah jawaban.
+
+### kartu-3 (agen a1d311e53ee54ef73)
+JAWAB: a
+KARTU: keduanya
+ARTI: Daftar ini hanya berisi dividen yang dicatat secara resmi. Kalau pernah ada pembagian yang tidak dicatat, pembagian itu tidak akan muncul di daftar, jadi daftar ini bukan jaminan bahwa semua pembagian sudah tercantum.
+BINGUNG: tidak ada
+
+Penilaian (rencana.md): JAWAB a 3/3; ARTI benar 3/3; K2 disebut di BINGUNG 1/3 (kartu-1: "berputar-putar") -> TIDAK LOLOS syarat ketat.

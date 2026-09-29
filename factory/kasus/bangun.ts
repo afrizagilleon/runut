@@ -314,6 +314,38 @@ export interface DefinisiKasusUmum
    * `ambilFakta` di dalamnya selalu menemukan yang sudah lahir sebelumnya.
    */
   turunan: (pustaka: Fakta[], data: DataEmiten) => Fakta[];
+  /**
+   * Kalimat fakta yang diperjelas untuk pemain (M3.13 D-2), tanpa menyentuh
+   * pemuat (`factory/muat/`, tempat kalimat asalnya lahir). Tiap entri
+   * mengganti `lama` — yang harus muncul TEPAT sekali di `klaim` fakta itu —
+   * dengan `baru`. Pengganti yang tidak menemukan kalimatnya gagal keras:
+   * kalimat pemuat yang berubah diam-diam tidak boleh membuat penggantian ini
+   * hilang tanpa suara.
+   */
+  perjelas_klaim?: ReadonlyArray<{ fact_id: string; lama: string; baru: string }>;
+}
+
+/** Terapkan `perjelas_klaim` ke pustaka; gagal keras bila kalimat lamanya tidak ada tepat sekali. */
+export function perjelasKlaim(
+  pustaka: Fakta[],
+  ganti: DefinisiKasusUmum['perjelas_klaim'],
+): Fakta[] {
+  if (ganti === undefined || ganti.length === 0) return pustaka;
+  return pustaka.map((fakta) => {
+    let klaim = fakta.klaim;
+    for (const g of ganti) {
+      if (g.fact_id !== fakta.fact_id) continue;
+      const kali = klaim.split(g.lama).length - 1;
+      if (kali !== 1) {
+        throw new Error(
+          `perjelas_klaim: kalimat lama untuk "${g.fact_id}" muncul ${String(kali)} kali di klaimnya, ` +
+            'bukan tepat sekali.',
+        );
+      }
+      klaim = klaim.replace(g.lama, g.baru);
+    }
+    return klaim === fakta.klaim ? fakta : { ...fakta, klaim };
+  });
 }
 
 /**
@@ -367,6 +399,13 @@ export function bangunKasusUmum(
   const dasar = pustakaGudang(data, sumber).fakta;
   const pustaka = [...dasar];
   for (const fakta of def.turunan(pustaka, data)) pustaka.push(fakta);
+  const diperjelas = perjelasKlaim(pustaka, def.perjelas_klaim);
+  for (const g of def.perjelas_klaim ?? []) {
+    if (!pustaka.some((f) => f.fact_id === g.fact_id)) {
+      throw new Error(`perjelas_klaim menyebut fakta "${g.fact_id}" yang tidak ada di pustaka.`);
+    }
+  }
+  pustaka.splice(0, pustaka.length, ...diperjelas);
 
   const hasil = verifikasiV2(konteksEmiten(dataSampai(data, def.tanggal_t), berkas_kosong));
   const mentah = hasil.pemeriksaan.flatMap((p) => p.temuan);
