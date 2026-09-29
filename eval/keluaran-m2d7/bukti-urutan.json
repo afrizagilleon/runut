@@ -1,0 +1,3115 @@
+{
+  "sumber": ".cache/llm/ledger.jsonl (entri m2d6/ GLM yang berhasil, dengan reasoning.effort diminta)",
+  "baris": [
+    {
+      "waktu": "2026-09-29T06:14:38.692Z",
+      "tag": "m2d6/probe/p1/kritikus/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 3923,
+      "token_penalaran": 3678,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:14:50.243Z",
+      "tag": "m2d6/probe/p1/kritikus/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "PrimeIntellect",
+      "status": 200,
+      "token_keluar": 1994,
+      "token_penalaran": 1731,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:22.408Z",
+      "tag": "m2d6/probe/p1/kritikus/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 7939,
+      "token_penalaran": 7611,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:45.304Z",
+      "tag": "m2d6/probe/p1/kritikus/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 5325,
+      "token_penalaran": 5126,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:49.927Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 738,
+      "token_penalaran": 685,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:54.164Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 347,
+      "token_penalaran": 267,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:55.303Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 161,
+      "token_penalaran": 98,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:56.978Z",
+      "tag": "m2d6/probe/p1/penebak-glm/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 329,
+      "token_penalaran": 263,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:15:59.590Z",
+      "tag": "m2d6/probe/p1/kritikus/medium-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 260,
+      "token_penalaran": 125,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:01.143Z",
+      "tag": "m2d6/probe/p1/kritikus/medium-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 163,
+      "token_penalaran": 20,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:04.279Z",
+      "tag": "m2d6/probe/p1/kritikus/medium-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 382,
+      "token_penalaran": 238,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:05.761Z",
+      "tag": "m2d6/probe/p1/penebak-glm/medium-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 249,
+      "token_penalaran": 175,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:06.497Z",
+      "tag": "m2d6/probe/p1/penebak-glm/medium-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 72,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:07.209Z",
+      "tag": "m2d6/probe/p1/penebak-glm/medium-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 66,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "effort": "medium"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:45.528Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 264,
+      "token_penalaran": 181,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:48.691Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 687,
+      "token_penalaran": 628,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:50.745Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 390,
+      "token_penalaran": 311,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:51.850Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 132,
+      "token_penalaran": 60,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:53.363Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-5",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 177,
+      "token_penalaran": 111,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:16:55.274Z",
+      "tag": "m2d6/probe/p2/penebak-glm/high-6",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "InferenceNet",
+      "status": 200,
+      "token_keluar": 385,
+      "token_penalaran": 329,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:17:56.999Z",
+      "tag": "m2d6/probe/p2/kritikus/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 12197,
+      "token_penalaran": 11880,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:18:48.572Z",
+      "tag": "m2d6/probe/p2/kritikus/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 11440,
+      "token_penalaran": 11040,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:19:23.839Z",
+      "tag": "m2d6/probe/p2/kritikus/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6689,
+      "token_penalaran": 6457,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:36.751Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 243,
+      "token_penalaran": 161,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:43.587Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 448,
+      "token_penalaran": 340,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:48.799Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Parasail",
+      "status": 200,
+      "token_keluar": 458,
+      "token_penalaran": 371,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:20:57.288Z",
+      "tag": "m2d6/probe/p3/penebak-glm/high-4",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 703,
+      "token_penalaran": 615,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:21:24.363Z",
+      "tag": "m2d6/probe/p3/kritikus/high-1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6790,
+      "token_penalaran": 6589,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:21:55.186Z",
+      "tag": "m2d6/probe/p3/kritikus/high-2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 7587,
+      "token_penalaran": 7296,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:37.765Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 129,
+      "token_penalaran": 48,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:40:39.205Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 110,
+      "token_penalaran": 48,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:17.150Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 155,
+      "token_penalaran": 76,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:19.102Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 207,
+      "token_penalaran": 126,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:34.490Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 115,
+      "token_penalaran": 41,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:36.954Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 135,
+      "token_penalaran": 70,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:47.884Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 394,
+      "token_penalaran": 301,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:42:59.512Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 144,
+      "token_penalaran": 60,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:43:00.789Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "status": 200,
+      "token_keluar": 127,
+      "token_penalaran": 39,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:01.606Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 129,
+      "token_penalaran": 50,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:03.219Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-ultj-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 230,
+      "token_penalaran": 136,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:44:12.322Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 468,
+      "token_penalaran": 403,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:45:39.254Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 151,
+      "token_penalaran": 62,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:45:42.118Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Baidu",
+      "status": 200,
+      "token_keluar": 141,
+      "token_penalaran": 35,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:46:22.205Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1175,
+      "token_penalaran": 1064,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:46:54.742Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 145,
+      "token_penalaran": 74,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:00.478Z",
+      "tag": "m2d6/kalibrasi/K1/s1/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 435,
+      "token_penalaran": 366,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:35.590Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 164,
+      "token_penalaran": 75,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:47:58.350Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 102,
+      "token_penalaran": 23,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:23.304Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 246,
+      "token_penalaran": 168,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:31.289Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 135,
+      "token_penalaran": 58,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:35.170Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 682,
+      "token_penalaran": 590,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:52.654Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 109,
+      "token_penalaran": 24,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:48:55.833Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 175,
+      "token_penalaran": 89,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:13.941Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1485,
+      "token_penalaran": 1359,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:14.137Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 207,
+      "token_penalaran": 115,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:16.744Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 518,
+      "token_penalaran": 397,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:28.523Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 164,
+      "token_penalaran": 58,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:49:34.485Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 335,
+      "token_penalaran": 227,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:08.333Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 228,
+      "token_penalaran": 128,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:12.087Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 127,
+      "token_penalaran": 52,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:15.975Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d5-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 375,
+      "token_penalaran": 270,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:19.941Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-dada-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 1191,
+      "token_penalaran": 1089,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:53.004Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 159,
+      "token_penalaran": 78,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:55.237Z",
+      "tag": "m2d6/kalibrasi/K2/s1/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 172,
+      "token_penalaran": 85,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:56.463Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 126,
+      "token_penalaran": 45,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:56.956Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 85,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:57.884Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 205,
+      "token_penalaran": 125,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:58.364Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 580,
+      "token_penalaran": 496,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:51:58.599Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 175,
+      "token_penalaran": 101,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:00.416Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 261,
+      "token_penalaran": 173,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:01.980Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 686,
+      "token_penalaran": 586,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:02.000Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AkashML",
+      "status": 200,
+      "token_keluar": 141,
+      "token_penalaran": 67,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:03.516Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 142,
+      "token_penalaran": 55,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:04.569Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 286,
+      "token_penalaran": 180,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:07.330Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 581,
+      "token_penalaran": 508,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:07.404Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 880,
+      "token_penalaran": 778,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:10.082Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 403,
+      "token_penalaran": 347,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:12.361Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1077,
+      "token_penalaran": 944,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:12.597Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 275,
+      "token_penalaran": 186,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:15.181Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 616,
+      "token_penalaran": 533,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:16.559Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 324,
+      "token_penalaran": 239,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:17.520Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 446,
+      "token_penalaran": 358,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:18.731Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 717,
+      "token_penalaran": 589,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:18.881Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 356,
+      "token_penalaran": 260,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:21.363Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 136,
+      "token_penalaran": 46,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:21.806Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 510,
+      "token_penalaran": 419,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:23.857Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1225,
+      "token_penalaran": 1134,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:24.408Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Relace",
+      "status": 200,
+      "token_keluar": 182,
+      "token_penalaran": 114,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:25.032Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 101,
+      "token_penalaran": 29,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:26.158Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 146,
+      "token_penalaran": 49,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:26.238Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Modal",
+      "status": 200,
+      "token_keluar": 130,
+      "token_penalaran": 54,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:26.406Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 135,
+      "token_penalaran": 47,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:28.653Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 122,
+      "token_penalaran": 47,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:29.027Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 131,
+      "token_penalaran": 35,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:29.989Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1281,
+      "token_penalaran": 1182,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:30.986Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 152,
+      "token_penalaran": 38,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:30.993Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 166,
+      "token_penalaran": 41,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:33.064Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 288,
+      "token_penalaran": 195,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:33.548Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 118,
+      "token_penalaran": 22,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:34.150Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Sail Research",
+      "status": 200,
+      "token_keluar": 79,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:35.914Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 900,
+      "token_penalaran": 806,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:36.641Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Morph",
+      "status": 200,
+      "token_keluar": 153,
+      "token_penalaran": 60,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:40.851Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 745,
+      "token_penalaran": 654,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:45.004Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Reka",
+      "status": 200,
+      "token_keluar": 456,
+      "token_penalaran": 340,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:52:46.123Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 707,
+      "token_penalaran": 590,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:07.905Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 3331,
+      "token_penalaran": 3249,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:12.226Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6211,
+      "token_penalaran": 6121,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:22.998Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2616,
+      "token_penalaran": 2491,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:24.147Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2303,
+      "token_penalaran": 2214,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T06:53:28.689Z",
+      "tag": "m2d6/kalibrasi/K3/s1/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 770,
+      "token_penalaran": 697,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:08.924Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1391,
+      "token_penalaran": 1296,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:53.670Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Z.AI",
+      "status": 200,
+      "token_keluar": 126,
+      "token_penalaran": 32,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:55.432Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 146,
+      "token_penalaran": 49,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:59.168Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 295,
+      "token_penalaran": 205,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:10:59.419Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 676,
+      "token_penalaran": 579,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:25.096Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2026,
+      "token_penalaran": 1930,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:26.602Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 108,
+      "token_penalaran": 34,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:11:29.117Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 298,
+      "token_penalaran": 215,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:33.519Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 260,
+      "token_penalaran": 184,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:37.002Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AkashML",
+      "status": 200,
+      "token_keluar": 125,
+      "token_penalaran": 37,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:39.761Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Baidu",
+      "status": 200,
+      "token_keluar": 68,
+      "token_penalaran": 0,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:12:43.323Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 136,
+      "token_penalaran": 52,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:13:44.213Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 423,
+      "token_penalaran": 350,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:15:46.632Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 85,
+      "token_penalaran": 1,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:15:52.346Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 241,
+      "token_penalaran": 164,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:16:40.853Z",
+      "tag": "m2d6/kalibrasi/K1/s2/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1166,
+      "token_penalaran": 1071,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:06.974Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2201,
+      "token_penalaran": 2106,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:10.489Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 621,
+      "token_penalaran": 537,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:17:33.844Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 391,
+      "token_penalaran": 311,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:13.079Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 709,
+      "token_penalaran": 594,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:23.057Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 208,
+      "token_penalaran": 115,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:18:25.983Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 108,
+      "token_penalaran": 14,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:16.866Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 114,
+      "token_penalaran": 36,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:18.669Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 277,
+      "token_penalaran": 193,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:26.698Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Z.AI",
+      "status": 200,
+      "token_keluar": 266,
+      "token_penalaran": 187,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:19:30.376Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o2/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 142,
+      "token_penalaran": 55,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:22.447Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8000,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:26.690Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d5-tirt-o1/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 848,
+      "token_penalaran": 747,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:29.318Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8001,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:21:41.069Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-ultj-o3/penebak/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2921,
+      "token_penalaran": 2827,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:26:40.224Z",
+      "tag": "m2d6/kalibrasi/K2/s2/m2d4-dada-o1/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "status": 200,
+      "token_keluar": 1022,
+      "token_penalaran": 736,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:51.747Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 496,
+      "token_penalaran": 399,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:52.286Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o2/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 651,
+      "token_penalaran": 580,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:55.802Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 752,
+      "token_penalaran": 670,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:27:58.559Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o2/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1200,
+      "token_penalaran": 1070,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:00.108Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 815,
+      "token_penalaran": 715,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:03.232Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 579,
+      "token_penalaran": 479,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:03.438Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d4-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 619,
+      "token_penalaran": 531,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:12.651Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Novita",
+      "status": 200,
+      "token_keluar": 262,
+      "token_penalaran": 181,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:29.124Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 880,
+      "token_penalaran": 772,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:28:40.070Z",
+      "tag": "m2d6/kalibrasi/K3/s2/m2d5-tirt-o3/penebak/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "GMICloud",
+      "status": 200,
+      "token_keluar": 558,
+      "token_penalaran": 470,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:30:39.619Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s1/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Cloudflare",
+      "status": 200,
+      "token_keluar": 852,
+      "token_penalaran": 597,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:30:49.644Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s1/kritikus/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 698,
+      "token_penalaran": 537,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:31:01.899Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s2/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Fireworks",
+      "status": 200,
+      "token_keluar": 726,
+      "token_penalaran": 566,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:31:50.850Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s2/kritikus/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 5943,
+      "token_penalaran": 5777,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:32:19.842Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o3/s3/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Fireworks",
+      "status": 200,
+      "token_keluar": 1755,
+      "token_penalaran": 1538,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:34:55.542Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o1/s1/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 15828,
+      "token_penalaran": 15598,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:35:06.373Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o2/s1/kritikus",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "AtlasCloud",
+      "status": 200,
+      "token_keluar": 698,
+      "token_penalaran": 486,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:35:23.238Z",
+      "tag": "m2d6/kritikus/m2d5-tirt-o2/s1/kritikus/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Alibaba",
+      "status": 200,
+      "token_keluar": 1303,
+      "token_penalaran": 1119,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:47:06.026Z",
+      "tag": "m2d6/jalan-1/tirt/p1/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6057,
+      "token_penalaran": 5843,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:47:11.372Z",
+      "tag": "m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1174,
+      "token_penalaran": 1073,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:47:15.537Z",
+      "tag": "m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 393,
+      "token_penalaran": 281,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:47:47.666Z",
+      "tag": "m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8001,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:47:52.319Z",
+      "tag": "m2d6/jalan-1/tirt/p1/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1111,
+      "token_penalaran": 1011,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:48:47.442Z",
+      "tag": "m2d6/jalan-1/tirt/p1/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8907,
+      "token_penalaran": 8619,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:48:54.435Z",
+      "tag": "m2d6/jalan-1/tirt/p1/gerbang-tebak/o3/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1658,
+      "token_penalaran": 1563,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:49:10.537Z",
+      "tag": "m2d6/jalan-1/tirt/p1/gerbang-tebak/o3/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 3929,
+      "token_penalaran": 3831,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T07:49:13.877Z",
+      "tag": "m2d6/jalan-1/tirt/p1/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 725,
+      "token_penalaran": 620,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:00:13.635Z",
+      "tag": "m2d6/jalan-1/tirt/p2/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 619,
+      "token_penalaran": 411,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:01:05.123Z",
+      "tag": "m2d6/jalan-1/tirt/p2/kritikus/o1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 9105,
+      "token_penalaran": 8882,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:01:08.443Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o1/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 520,
+      "token_penalaran": 423,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:01:11.876Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o1/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 540,
+      "token_penalaran": 452,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:01:18.002Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1164,
+      "token_penalaran": 1088,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:04:45.092Z",
+      "tag": "m2d6/jalan-1/tirt/p2/kritikus/o2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 14804,
+      "token_penalaran": 14583,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:04:54.197Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 949,
+      "token_penalaran": 865,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:04:56.448Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 364,
+      "token_penalaran": 274,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:05:04.798Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 325,
+      "token_penalaran": 243,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:05:06.176Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 178,
+      "token_penalaran": 108,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:05:08.450Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o2/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "PrimeIntellect",
+      "status": 200,
+      "token_keluar": 257,
+      "token_penalaran": 162,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:05:28.919Z",
+      "tag": "m2d6/jalan-1/tirt/p2/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1978,
+      "token_penalaran": 1800,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:05:31.013Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Modal",
+      "status": 200,
+      "token_keluar": 182,
+      "token_penalaran": 101,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:05:36.687Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 178,
+      "token_penalaran": 84,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:05:53.763Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1200,
+      "token_penalaran": 1103,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:06:05.037Z",
+      "tag": "m2d6/jalan-1/tirt/p2/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 768,
+      "token_penalaran": 670,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:11:45.014Z",
+      "tag": "m2d6/jalan-1/tirt/p3/kritikus/o2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 12938,
+      "token_penalaran": 12716,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:12:50.503Z",
+      "tag": "m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8001,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:12:58.541Z",
+      "tag": "m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1297,
+      "token_penalaran": 1191,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:13:02.052Z",
+      "tag": "m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 539,
+      "token_penalaran": 447,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:13:12.611Z",
+      "tag": "m2d6/jalan-1/tirt/p3/gerbang-tebak/o2/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1222,
+      "token_penalaran": 1129,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:14:33.142Z",
+      "tag": "m2d6/jalan-1/tirt/p3/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 13869,
+      "token_penalaran": 13530,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:26:53.272Z",
+      "tag": "m2d6/jalan-1/tirt/p4/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 11536,
+      "token_penalaran": 11205,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:27:29.203Z",
+      "tag": "m2d6/jalan-1/tirt/p4/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 1198,
+      "token_penalaran": 946,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:27:36.769Z",
+      "tag": "m2d6/jalan-1/tirt/p4/kritikus/o3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 867,
+      "token_penalaran": 606,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:35:37.052Z",
+      "tag": "m2d6/jalan-1/tirt/p5/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 496,
+      "token_penalaran": 281,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:36:54.857Z",
+      "tag": "m2d6/jalan-1/tirt/p5/kritikus/o3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6543,
+      "token_penalaran": 6351,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:36:58.219Z",
+      "tag": "m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Friendli",
+      "status": 200,
+      "token_keluar": 520,
+      "token_penalaran": 449,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:37:01.964Z",
+      "tag": "m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 137,
+      "token_penalaran": 65,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:37:05.133Z",
+      "tag": "m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 331,
+      "token_penalaran": 245,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:37:09.103Z",
+      "tag": "m2d6/jalan-1/tirt/p5/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 450,
+      "token_penalaran": 354,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:49:12.190Z",
+      "tag": "m2d6/jalan-1/tirt/p6/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 1467,
+      "token_penalaran": 1282,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:49:15.414Z",
+      "tag": "m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "DigitalOcean",
+      "status": 200,
+      "token_keluar": 109,
+      "token_penalaran": 54,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:49:19.002Z",
+      "tag": "m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 615,
+      "token_penalaran": 517,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:49:21.391Z",
+      "tag": "m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "status": 200,
+      "token_keluar": 323,
+      "token_penalaran": 243,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:49:23.061Z",
+      "tag": "m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Together",
+      "status": 200,
+      "token_keluar": 284,
+      "token_penalaran": 188,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:49:27.981Z",
+      "tag": "m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 292,
+      "token_penalaran": 165,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T08:49:31.145Z",
+      "tag": "m2d6/jalan-1/tirt/p6/gerbang-tebak/o1/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "SiliconFlow",
+      "status": 200,
+      "token_keluar": 249,
+      "token_penalaran": 168,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:05:34.767Z",
+      "tag": "m2d6/jalan-1/tirt/p7/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 24000,
+      "token_penalaran": 24002,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:06:58.552Z",
+      "tag": "m2d6/jalan-1/tirt/p7/kritikus/o1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 16121,
+      "token_penalaran": 15789,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:18:49.303Z",
+      "tag": "m2d6/jalan-1/tirt/p8/kritikus/o1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Parasail",
+      "status": 200,
+      "token_keluar": 716,
+      "token_penalaran": 487,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:19:17.026Z",
+      "tag": "m2d6/jalan-1/tirt/p8/kritikus/o1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 3922,
+      "token_penalaran": 3697,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:19:20.710Z",
+      "tag": "m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 367,
+      "token_penalaran": 269,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:19:28.744Z",
+      "tag": "m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t1/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 499,
+      "token_penalaran": 395,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:19:31.817Z",
+      "tag": "m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 176,
+      "token_penalaran": 84,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:19:39.159Z",
+      "tag": "m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1003,
+      "token_penalaran": 881,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:19:54.465Z",
+      "tag": "m2d6/jalan-1/tirt/p8/gerbang-tebak/o1/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 2028,
+      "token_penalaran": 1934,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:22:19.524Z",
+      "tag": "m2d6/jalan-1/tirt/p8/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 24000,
+      "token_penalaran": 24002,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:24:46.351Z",
+      "tag": "m2d6/jalan-1/tirt/p8/kritikus/o3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 24000,
+      "token_penalaran": 24000,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:27:45.284Z",
+      "tag": "m2d6/jalan-1/tirt/p9/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 24000,
+      "token_penalaran": 24001,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:28:54.404Z",
+      "tag": "m2d6/jalan-1/tirt/p9/kritikus/o3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 11954,
+      "token_penalaran": 11558,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:42:36.931Z",
+      "tag": "m2d6/jalan-1/tirt/p11/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 7030,
+      "token_penalaran": 6825,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:43:32.611Z",
+      "tag": "m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 7780,
+      "token_penalaran": 7681,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:43:40.464Z",
+      "tag": "m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 261,
+      "token_penalaran": 185,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:43:54.172Z",
+      "tag": "m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t2/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Cloudflare",
+      "status": 200,
+      "token_keluar": 465,
+      "token_penalaran": 348,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:43:59.266Z",
+      "tag": "m2d6/jalan-1/tirt/p11/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Parasail",
+      "status": 200,
+      "token_keluar": 417,
+      "token_penalaran": 313,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:47:21.427Z",
+      "tag": "m2d6/jalan-1/tirt/p12/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8248,
+      "token_penalaran": 8047,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:47:31.157Z",
+      "tag": "m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 592,
+      "token_penalaran": 515,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:47:48.750Z",
+      "tag": "m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 4546,
+      "token_penalaran": 4453,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:50:04.857Z",
+      "tag": "m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 7999,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:52:13.657Z",
+      "tag": "m2d6/jalan-1/tirt/p12/gerbang-tebak/o3/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Venice",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8000,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:55:06.716Z",
+      "tag": "m2d6/jalan-1/tirt/p13/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 1001,
+      "token_penalaran": 824,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:55:38.405Z",
+      "tag": "m2d6/jalan-1/tirt/p13/kritikus/o3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 5705,
+      "token_penalaran": 5512,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:55:45.495Z",
+      "tag": "m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 1269,
+      "token_penalaran": 1179,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:56:23.687Z",
+      "tag": "m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t2",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 6558,
+      "token_penalaran": 6437,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:57:05.492Z",
+      "tag": "m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8002,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T09:57:47.278Z",
+      "tag": "m2d6/jalan-1/tirt/p13/gerbang-tebak/o3/t3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 8000,
+      "token_penalaran": 8000,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T10:00:18.414Z",
+      "tag": "m2d6/jalan-1/tirt/p14/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 1026,
+      "token_penalaran": 823,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T10:00:24.007Z",
+      "tag": "m2d6/jalan-1/tirt/p14/kritikus/o3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Friendli",
+      "status": 200,
+      "token_keluar": 1067,
+      "token_penalaran": 795,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T10:00:42.465Z",
+      "tag": "m2d6/jalan-1/tirt/p15/kritikus/o3",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Phala",
+      "status": 200,
+      "token_keluar": 1073,
+      "token_penalaran": 916,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    },
+    {
+      "waktu": "2026-09-29T10:01:40.937Z",
+      "tag": "m2d6/jalan-1/tirt/p15/kritikus/o3/u1",
+      "model": "z-ai/glm-5.3",
+      "penyedia": "Wafer",
+      "status": 200,
+      "token_keluar": 7924,
+      "token_penalaran": 7657,
+      "penalaran_diminta": {
+        "effort": "high"
+      },
+      "asal_diminta": "ledger"
+    }
+  ],
+  "urutan": [
+    "wafer"
+  ]
+}
