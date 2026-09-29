@@ -1,0 +1,85 @@
+{
+  "paket_id": "ultj",
+  "model_peran": {
+    "penulis": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "penebak": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+    "pembaca-kartu": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "kritikus": "zai-org/GLM-5.3"
+  },
+  "terbit": true,
+  "berhenti": null,
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Wulan",
+        "jam": "19.42",
+        "pesan": "Dividen Perusahaan U tuh tiap tahun keluar terus, dari dulu ga pernah bolos. Aman lah.",
+        "angka_pesan": [],
+        "kartu": [
+          "tahun-berdividen",
+          "dividen-tercatat",
+          "div-2021-09-01",
+          "div-2022-08-04"
+        ],
+        "kartu_penentu": [
+          "tahun-berdividen",
+          "dividen-tercatat"
+        ],
+        "pilihan": {
+          "a": "Betul, dividennya makin besar tiap tahun tanpa kecuali.",
+          "b": "Keliru, ada tahun yang bolos tanpa pembagian dividen.",
+          "c": "Betul, pembagiannya tercatat beruntun selama [[tahun-berdividen|7 tahun]].",
+          "d": "Keliru, yang tercatat cuma pembagian tahun ini saja."
+        },
+        "kunci": "c",
+        "penjelasan": "Kalau daftar aksi korporasinya dibuka, pembagian dividen tunai muncul tiap tahun tanpa ada tahun yang kosong, dan jumlahnya [[tahun-berdividen|7 tahun]] beruntun. Daftar yang sama juga memuat [[dividen-tercatat|7 pembagian]] dari yang paling lama sampai hari ini. Yang tidak terbaca di situ: nilainya tidak selalu naik, sebab ada tahun dengan [[div-2021-09-01|Rp85]] per lembar dan tahun sesudahnya [[div-2022-08-04|Rp25]] per lembar. Jadi soal rutinnya cocok, sedangkan yang bilang ada tahun bolos atau cuma sekali bagi tidak cocok. Salah-kaprah yang umum: orang menyamakan dividen yang rutin dengan dividen yang naik terus, padahal yang tercatat cuma soal rutinnya."
+      },
+      {
+        "nama": "Sinta",
+        "jam": "20.31",
+        "pesan": "Orang dalam lain itu beli terus sepanjang Januari, malah lebih banyak dari pemilik terbesarnya. Gw sih udah cek laporannya.",
+        "angka_pesan": [],
+        "kartu": [
+          "fil-jan-orang-dalam-lain",
+          "fil-jan-pemilik-terbesar",
+          "fil-jan-orang-dalam-lain-laporan",
+          "fil-jan-pemilik-terbesar-laporan"
+        ],
+        "kartu_penentu": [
+          "fil-jan-orang-dalam-lain",
+          "fil-jan-pemilik-terbesar"
+        ],
+        "pilihan": {
+          "a": "Betul, dia nambah [[fil-jan-orang-dalam-lain|16,07 juta lembar]] sepanjang Januari.",
+          "b": "Keliru, yang nambah lebih banyak justru pemilik terbesarnya.",
+          "c": "Betul, dia nambahnya cuma lewat [[fil-jan-pemilik-terbesar-laporan|2 laporan]].",
+          "d": "Keliru, dia cuma menambah [[fil-jan-pemilik-terbesar|1 juta lembar]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Kalau laporan kepemilikan sahamnya dibuka, orang dalam lain muncul berkali-kali sepanjang Januari dan semuanya pembelian. Kalau ditotal, tambahannya [[fil-jan-orang-dalam-lain|16,07 juta lembar]] yang tersebar di [[fil-jan-orang-dalam-lain-laporan|6 laporan]]. Bandingkan dengan pemilik terbesar, yang cuma menambah [[fil-jan-pemilik-terbesar|1 juta lembar]] lewat [[fil-jan-pemilik-terbesar-laporan|2 laporan]]. Jadi yang bilang orang dalam lain menambah lebih banyak dari pemilik terbesar itu cocok. Yang tidak terbaca di situ: alasan mereka membeli, sebab laporannya cuma memuat transaksi dan jumlah lembar. Salah-kaprah yang umum: orang mengira pemilik terbesar selalu yang paling banyak menambah, padahal yang tercatat di Januari justru sebaliknya."
+      },
+      {
+        "nama": "Fitri",
+        "jam": "21.15",
+        "pesan": "Katanya orang dalam Perusahaan U pada beli saham terus bulan Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
+        "angka_pesan": [],
+        "kartu": [
+          "laporan-jan-2026",
+          "fil-jan-orang-dalam-lain-laporan",
+          "fil-jan-pemilik-terbesar-laporan"
+        ],
+        "kartu_penentu": [
+          "laporan-jan-2026"
+        ],
+        "pilihan": {
+          "a": "Betul, semuanya pembelian tanpa ada yang jual.",
+          "b": "Keliru, ada juga laporan yang isinya penjualan.",
+          "c": "Betul, yang beli cuma orang dalam lain.",
+          "d": "Keliru, laporannya cuma [[fil-jan-pemilik-terbesar-laporan|dua laporan]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Kalau daftar laporan kepemilikan dibuka, sepanjang Januari ada [[laporan-jan-2026|8 laporan]] dan isinya pembelian semua, tidak ada satu pun yang penjualan. Yang lapor juga bukan cuma satu pihak: pemilik terbesar muncul [[fil-jan-pemilik-terbesar-laporan|2 laporan]] dan orang dalam lain [[fil-jan-orang-dalam-lain-laporan|6 laporan]]. Yang tidak terbaca di situ: alasan mereka membeli, sebab laporannya cuma memuat tanggal transaksi dan jumlah lembar. Jadi yang bilang ada laporan penjualan tidak cocok, begitu juga yang bilang yang beli cuma satu pihak atau laporannya cuma dua. Salah-kaprah yang umum: orang mengira laporan orang dalam selalu campur beli dan jual, padahal yang tercatat di Januari justru semuanya pembelian."
+      }
+    ]
+  }
+}

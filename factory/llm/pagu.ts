@@ -24,7 +24,8 @@
  * Akumulasinya dibaca ulang dari berkas tiap kali pencatat dibuat, jadi pagu
  * berlaku untuk seluruh milestone, bukan per proses.
  */
-import { appendFileSync, existsSync, mkdirSync, readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { appendFileSync, existsSync, mkdirSync, readFileSync, readdirSync, renameSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { HARGA, biayaUsd, type HargaModel } from './harga.ts';
 import {
@@ -38,6 +39,8 @@ import {
 import { AKAR } from './env.ts';
 
 export const JALUR_LEDGER = `${AKAR}.cache/llm/ledger.jsonl`;
+/** Ledger lama yang diarsipkan (M2d-4 D-0): riwayat biaya tidak pernah dihapus. */
+export const FOLDER_ARSIP_LEDGER = `${AKAR}.cache/llm/arsip`;
 
 export type DasarBiaya = 'usage' | 'perkiraan-maksimum' | 'nol-ditolak';
 
@@ -102,6 +105,27 @@ export function hargaModel(model: string, tabel: Readonly<Record<string, HargaMo
 export interface PaguMilestone {
   usd: number;
   awalanTag: string;
+}
+
+/**
+ * Penyedia menolak karena saldo/kredit habis (HTTP 402/403 atau pesan saldo).
+ * Turunan `PaguTercapai` supaya lingkar BERHENTI seketika (bukan dianggap
+ * galat penyedia yang dicoba lagi). Kontrak M2d-4 §0: berhenti dan laporkan;
+ * tidak mencoba penyedia atau kunci lain.
+ */
+export class SaldoPenyediaHabis extends PaguTercapai {
+  readonly status: number | null;
+  constructor(pesan: string, status: number | null, model: string) {
+    super(0, 0, 0, model);
+    this.name = 'SaldoPenyediaHabis';
+    this.status = status;
+    this.message = `Saldo penyedia habis (HTTP ${String(status)}): ${pesan.slice(0, 300)}. Berhenti; tidak mencoba penyedia atau kunci lain.`;
+  }
+}
+
+/** Apakah galat penyedia berarti saldo/kredit habis. */
+export function galatSaldo(status: number | null, pesan: string): boolean {
+  return status === 402 || status === 403 || /insufficient|balance|credit|saldo|quota|payment/i.test(pesan);
 }
 
 export class PaguMilestoneTercapai extends PaguTercapai {
@@ -232,6 +256,57 @@ export class PencatatBiaya {
     }
     return entri;
   }
+}
+
+export interface HasilArsip {
+  jalur: string;
+  entri: number;
+  total_usd: number;
+  sha256: string;
+  pertama: string;
+  terakhir: string;
+}
+
+function bacaEntri(jalur: string): EntriLedger[] {
+  return readFileSync(jalur, 'utf8')
+    .split(/\r?\n/)
+    .filter((b) => b.trim() !== '')
+    .map((b) => JSON.parse(b) as EntriLedger);
+}
+
+/**
+ * Arsipkan ledger (M2d-4 D-0, keputusan pemilik 29 Sep: pagu "reset lagi
+ * menjadi $5"): ledger dipindah UTUH ke `arsip/ledger-sampai-<tanggal entri
+ * terakhir>.jsonl` — tidak dihapus, tidak ditimpa, isinya dicek byte-sama
+ * (sha256) sesudah dipindah. Ledger baru dibuat oleh panggilan berbayar
+ * berikutnya dan mulai dari nol di bawah `LLM_PAGU_USD`.
+ */
+export function arsipkanLedger(jalurLedger: string = JALUR_LEDGER, folderArsip: string = FOLDER_ARSIP_LEDGER): HasilArsip {
+  if (!existsSync(jalurLedger)) throw new Error(`Tidak ada ledger di ${jalurLedger}; tidak ada yang diarsipkan.`);
+  const isi = readFileSync(jalurLedger);
+  const entri = bacaEntri(jalurLedger);
+  if (entri.length === 0) throw new Error('Ledger kosong; tidak ada yang diarsipkan.');
+  const sha = createHash('sha256').update(isi).digest('hex');
+  const pertama = entri[0]?.waktu ?? '';
+  const terakhir = entri.at(-1)?.waktu ?? '';
+  const tujuan = `${folderArsip}/ledger-sampai-${terakhir.slice(0, 10)}.jsonl`;
+  if (existsSync(tujuan)) throw new Error(`${tujuan} sudah ada; arsip tidak pernah ditimpa.`);
+  mkdirSync(folderArsip, { recursive: true });
+  renameSync(jalurLedger, tujuan);
+  const shaTujuan = createHash('sha256').update(readFileSync(tujuan)).digest('hex');
+  if (shaTujuan !== sha) throw new Error(`Arsip ${tujuan} tidak byte-sama dengan ledger asal.`);
+  return { jalur: tujuan, entri: entri.length, total_usd: entri.reduce((a, e) => a + e.biaya_usd, 0), sha256: sha, pertama, terakhir };
+}
+
+/**
+ * Seluruh riwayat biaya untuk LAPORAN: arsip (urut nama berkas = urut waktu)
+ * lalu ledger kini. Pagu (`PencatatBiaya`) hanya membaca ledger kini.
+ */
+export function bacaLedgerSemua(jalurLedger: string = JALUR_LEDGER, folderArsip: string = FOLDER_ARSIP_LEDGER): EntriLedger[] {
+  const arsip = existsSync(folderArsip)
+    ? readdirSync(folderArsip).filter((f) => /^ledger-sampai-.*\.jsonl$/.test(f)).sort().flatMap((f) => bacaEntri(`${folderArsip}/${f}`))
+    : [];
+  return [...arsip, ...(existsSync(jalurLedger) ? bacaEntri(jalurLedger) : [])];
 }
 
 /**

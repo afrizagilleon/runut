@@ -22,7 +22,7 @@ import { SUHU_KARTU } from './gerbang-kartu.ts';
 import type { JejakAgen } from './jejak.ts';
 import { jsonDari, lolosTebak } from './laporan.ts';
 import { MODEL_AGEN } from './model.ts';
-import { JALUR_LEDGER, type EntriLedger } from './pagu.ts';
+import { bacaLedgerSemua, type EntriLedger } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 
 const JALUR_LAPORAN = `${AKAR}docs/bukti/lingkar-agen.md`;
@@ -105,11 +105,9 @@ interface Sim {
   j: JejakAgen;
 }
 
+/** Seluruh riwayat biaya: ledger yang diarsipkan (M2d-4) + ledger kini. */
 export function bacaLedger(): EntriLedger[] {
-  return readFileSync(JALUR_LEDGER, 'utf8')
-    .split(/\r?\n/)
-    .filter((b) => b.trim() !== '')
-    .map((b) => JSON.parse(b) as EntriLedger);
+  return bacaLedgerSemua();
 }
 
 export interface Laporan {

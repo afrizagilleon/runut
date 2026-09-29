@@ -1,0 +1,2834 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/agen-peran.ts",
+  "simulasi": {
+    "paket_id": "ultj",
+    "nama_samaran": "Perusahaan U",
+    "tanggal_t": "2026-05-04",
+    "peristiwa": "Hari ini tanggal ex dividen tunai perusahaan; dividen tunai tercatat dibagikan tiap tahun sejak 2020; dan pada Januari orang dalam perusahaan melaporkan pembelian saham."
+  },
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "model_peran": {
+    "penulis": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "penebak": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+    "pembaca-kartu": "deepseek-ai/DeepSeek-V4.1-Flash",
+    "kritikus": "zai-org/GLM-5.3"
+  },
+  "paket": {
+    "aturan_dijalankan": 28,
+    "aturan_dilewati": 7,
+    "temuan": 7,
+    "fakta_lolos": 29,
+    "fakta_tersingkir": 1,
+    "tersingkir": [
+      {
+        "fact_id": "div-2026-05-04-bayar",
+        "alasan": "kalimatnya menyebut tanggal sesudah T: 22 Mei 2026"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "91c6b54cc06c12e81571c3e198b6a26660c2af986dde5782b12660f49d00d025",
+    "sha256_paket": "a7c3fa14c95def4830df4dc401a38a4caac43a63a5b99719422d0351dd5a8ca0",
+    "ringkasan": "Prompt penulis = aturan M2d-1 (factory/llm/prompt-susun.md) + gaya & makna (factory/llm/prompt-penulis-gaya.md); kritikus: factory/llm/prompt-kritikus-makna.md; gerbang gaya: factory/llm/gerbang-gaya.ts; peran: factory/llm/peran.md. Di sini hanya hash."
+  },
+  "mulai": "2026-09-28T20:45:51.730Z",
+  "selesai": "2026-09-28T22:19:23.352Z",
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "rencana-sudut",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T20:45:51.735Z",
+      "waktu_selesai": "2026-09-28T20:45:51.735Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "28 sudut dari paket; sudut awal: omongan 1 = tahun-berdividen, omongan 2 = fil-jan-orang-dalam-lain, omongan 3 = turun-2026-05-04"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "daftar": [
+          {
+            "fact_id": "tahun-berdividen",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-orang-dalam-lain",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "turun-2026-05-04",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "laporan-jan-2026",
+            "topik": "laporan"
+          },
+          {
+            "fact_id": "div-2026-05-04",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-orang-dalam-lain-laporan",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "beda-turun-dividen",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "dividen-tercatat",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-orang-dalam-lain-persen-akhir",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "harga-2026-05-04-buka",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "div-2025-05-15",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "tambahan-jan-2026",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "harga-2026-05-04",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "div-2024-06-28",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-pemilik-terbesar",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "harga-2026-04-30",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "div-2023-07-03",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-pemilik-terbesar-laporan",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "div-2022-08-04",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-pemilik-terbesar-persen-akhir",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "div-2021-09-01",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-pemilik-terbesar-persen-awal",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "div-2020-09-03",
+            "topik": "dividen"
+          },
+          {
+            "fact_id": "fil-jan-orang-dalam-lain-persen-awal",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "fil-2026-01-22-01",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "fil-2026-01-07-01",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "fil-2026-01-06-01",
+            "topik": "pemilik"
+          },
+          {
+            "fact_id": "fil-2026-01-06-02",
+            "topik": "pemilik"
+          }
+        ],
+        "awal": [
+          "tahun-berdividen",
+          "fil-jan-orang-dalam-lain",
+          "turun-2026-05-04"
+        ]
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-28T20:45:51.742Z",
+      "waktu_selesai": "2026-09-28T20:46:57.883Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 6305,
+      "token_keluar": 9903,
+      "biaya_usd": 0.005117756,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis omongan 1"
+      ],
+      "sha256_prompt": "f1c587c84c229a81b2e23c9f31a02fba30d5f87939f8917ab4055b3bea800dbb",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 29853,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "yakin",
+        "contoh_gaya": [
+          "v2-001",
+          "v2-002",
+          "v2-004"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "tahun-berdividen",
+          "putaran_sudut": 1
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 3,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T20:46:57.887Z",
+      "waktu_selesai": "2026-09-28T20:49:25.553Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 6724,
+      "token_keluar": 32768,
+      "biaya_usd": 0.01416296,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis omongan 2",
+        "keluaran tidak memuat omongan yang terbaca"
+      ],
+      "sha256_prompt": "2ddc0e076f1716519947f2ad69bc6e6c24d397d11877fed7775108624e7a00ae",
+      "rincian": {
+        "terurai": false,
+        "diabaikan": [],
+        "finish_reason": "length",
+        "panjang_penalaran": 105938,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "sok tahu",
+        "contoh_gaya": [
+          "v2-061",
+          "v2-062",
+          "v2-055"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "fil-jan-orang-dalam-lain",
+          "putaran_sudut": 1
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 4,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T20:49:25.554Z",
+      "waktu_selesai": "2026-09-28T20:49:29.134Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 6699,
+      "token_keluar": 540,
+      "biaya_usd": 0.0015246840000000001,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis omongan 2 — cadangan tanpa berpikir (panggilan berpikir terpotong batas token)"
+      ],
+      "sha256_prompt": "2ddc0e076f1716519947f2ad69bc6e6c24d397d11877fed7775108624e7a00ae",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 0,
+        "suhu": 0.3,
+        "max_tokens": 8000,
+        "mode_berpikir": false,
+        "nada": "sok tahu",
+        "contoh_gaya": [
+          "v2-061",
+          "v2-062",
+          "v2-055"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "fil-jan-orang-dalam-lain",
+          "putaran_sudut": 1
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 5,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T20:49:29.139Z",
+      "waktu_selesai": "2026-09-28T20:50:56.784Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7220,
+      "token_keluar": 18605,
+      "biaya_usd": 0.00870828,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis omongan 3"
+      ],
+      "sha256_prompt": "623367bf92a4f156f2796162b1219e881064b0e6e2589f9e7e95cc7b8f7889ca",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 56058,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ragu",
+        "contoh_gaya": [
+          "v2-022",
+          "v2-023",
+          "v2-019"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_sudut": 1
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 6,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T20:50:56.786Z",
+      "waktu_selesai": "2026-09-28T20:50:56.817Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 2: [KATA_PENILAIAN] Penjelasan memakai kata penilaian \"bagus\"; produk ini tidak menilai saham."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "KATA_PENILAIAN"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 7,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-28T20:50:56.818Z",
+      "waktu_selesai": "2026-09-28T20:50:56.835Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Dividen Perusahaan U tuh tiap tahun keluar terus, dari dulu ga pernah bolos. Aman lah.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 86,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 15,
+          "kata_pilihan": {
+            "a": 8,
+            "b": 8,
+            "c": 7,
+            "d": 8
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 8,
+      "putaran": 1,
+      "jenis": "gerbang-kartu",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-28T20:50:56.836Z",
+      "waktu_selesai": "2026-09-28T20:51:03.362Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 580,
+      "token_keluar": 801,
+      "biaya_usd": 0.00042767200000000003,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"c\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Dividen Perusahaan U tuh tiap tahun keluar terus, dari dulu ga pernah bolos. Aman lah.",
+        "kunci": "c",
+        "pilihan": "c",
+        "kartu_ditunjuk": [
+          "tahun-berdividen"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 mencatat pembagian dividen tunai beruntun selama 7 tahun tanpa lompatan, sesuai dengan klaim Wulan bahwa dividen keluar tiap tahun."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 9,
+      "putaran": 1,
+      "jenis": "kritikus",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-28T20:51:03.364Z",
+      "waktu_selesai": "2026-09-28T21:08:07.163Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 2,
+      "token_masuk": 4194,
+      "token_keluar": 45681,
+      "biaya_usd": 0.141237,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Dividen Perusahaan U tuh tiap tahun keluar terus, dari dulu ga pernah bolos. Aman lah.",
+        "menjawab": true,
+        "terpotong": true,
+        "keberatan": [],
+        "arahan": "Pilihan c bisa ditebak tanpa kartu karena satu-satunya opsi 'Betul' yang mengulang klaim Wulan apa adanya, sedangkan a menambah klaim 'makin besar' yang tidak pernah Wulan sebut. Buat pengecoh a atau salah satu opsi 'Keliru' tidak mudah disingkirkan hanya dengan mencocokkan kata.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "length",
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya c yang didukung kartu: a dibantah Kartu 3 dan 4 (Rp85 tahun 2021 lalu Rp25 tahun 2022, jadi tidak makin besar), b dibantah Kartu 1 (beruntun tanpa lompatan), dan d dibantah Kartu 2 (tercatat 7 pembagian sejak 2020, bukan cuma tahun ini)."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 10,
+      "putaran": 1,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-28T21:08:07.166Z",
+      "waktu_selesai": "2026-09-28T21:08:29.243Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+      "panggilan": 3,
+      "token_masuk": 1162,
+      "token_keluar": 1613,
+      "biaya_usd": 0.003486648,
+      "putusan": "lolos",
+      "alasan": [
+        "0/3 penebak tanpa kartu memilih kunci \"c\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Dividen Perusahaan U tuh tiap tahun keluar terus, dari dulu ga pernah bolos. Aman lah.",
+        "kunci": "c",
+        "benar": 0,
+        "yakin_benar": null,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 65,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim Wulan bahwa dividen tidak pernah bolos biasanya diuji dengan adanya satu tahun yang terlewat, sehingga pilihan b paling wajar dibanding klaim yang terlalu spesifik.",
+            "biaya_usd": 0.000227752
+          },
+          {
+            "ke": 2,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 58,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim Wulan yang absolut ('ga pernah bolos') biasanya sengaja diuji, dan opsi yang menyebut ada tahun bolos paling wajar sebagai koreksi.",
+            "biaya_usd": 0.00021089600000000002
+          },
+          {
+            "ke": 3,
+            "model": "zai-org/GLM-5.3",
+            "pilihan": "b",
+            "yakin": 60,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim absolut seperti 'tidak pernah bolos' biasanya dibantah dokumen dengan adanya celah satu tahun tanpa dividen, sementara pilihan lain terlalu ekstrem atau terlalu spesifik (7 tahun, makin besar tiap tahun).",
+            "biaya_usd": 0.003048
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 11,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:08:29.245Z",
+      "waktu_selesai": "2026-09-28T21:08:29.263Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "[pemeriksa: G-panjang] Pilihan a 12 kata; paling banyak 11 kata (pilihan manusia terpanjang di kasus yang hidup). Satu label + satu klausa pendek."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalem lain di Perusahaan U itu beli terus sepanjang Januari, gw yakin dia tau sesuatu nih.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 96,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": true,
+          "kata_pesan": 17,
+          "kata_pilihan": {
+            "a": 12,
+            "b": 11,
+            "c": 10,
+            "d": 8
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 12,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:08:29.264Z",
+      "waktu_selesai": "2026-09-28T21:08:29.265Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini bukanya turun lumayan jauh, kayak kebesaran buat sekadar ex dividen. Gw ragu nih.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 90,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 15,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 7,
+            "c": 8,
+            "d": 9
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 13,
+      "putaran": 1,
+      "jenis": "gerbang-kartu",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:08:29.276Z",
+      "waktu_selesai": "2026-09-28T21:08:34.662Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 545,
+      "token_keluar": 597,
+      "biaya_usd": 0.000340844,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"c\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini bukanya turun lumayan jauh, kayak kebesaran buat sekadar ex dividen. Gw ragu nih.",
+        "kunci": "c",
+        "pilihan": "c",
+        "kartu_ditunjuk": [
+          "turun-2026-05-04",
+          "div-2026-05-04"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan penurunan Rp145, sedangkan Kartu 2 menunjukkan dividen Rp130, jadi turunnya memang lebih besar dari dividen."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 14,
+      "putaran": 1,
+      "jenis": "kritikus",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:08:34.664Z",
+      "waktu_selesai": "2026-09-28T21:15:54.025Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 1,
+      "token_masuk": 2042,
+      "token_keluar": 16723,
+      "biaya_usd": 0.052211,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini bukanya turun lumayan jauh, kayak kebesaran buat sekadar ex dividen. Gw ragu nih.",
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Hapus atau ubah kalimat di penjelasan tentang harga yang 'sempat balik naik dari harga buka', karena peristiwa itu tidak didukung kartu mana pun dan bisa membingungkan pemain soal dari mana fakta itu berasal.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu mencatat turun Rp145 dan dividen Rp130, sehingga a salah (turunnya bukan Rp130), b salah (Rp145 justru di atas Rp130, bukan di bawah), dan d salah (buka Rp1.545 berada di bawah penutupan Rp1.690, bukan di atas); hanya c yang didukung kartu."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 15,
+      "putaran": 1,
+      "jenis": "gerbang-tebak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:15:54.026Z",
+      "waktu_selesai": "2026-09-28T21:16:17.563Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+      "panggilan": 3,
+      "token_masuk": 1196,
+      "token_keluar": 3347,
+      "biaya_usd": 0.004568064,
+      "putusan": "tolak",
+      "alasan": [
+        "3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 80 (tebakan: c/80, c/85, c/75). Alasan mereka: \"Tio merasa penurunan buka terlalu besar untuk sekadar ex dividen, dan opsi c menyatakan turun Rp145 lebih besar dari dividen Rp130.\" \"Tio menilai penurunan buka terlalu besar untuk sekadar ex dividen, dan data turun Rp145 lebih besar dari dividen Rp130 mendukung anggapan itu.\" \"Tio ragu karena penurunan terasa 'kebesaran' untuk sekadar ex dividen, dan opsi c konsisten: buka turun Rp145 melebihi dividen Rp130 (misal tutup 1.690, buka 1.545), jadi kekhawatirannya memang beralasan.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini bukanya turun lumayan jauh, kayak kebesaran buat sekadar ex dividen. Gw ragu nih.",
+        "kunci": "c",
+        "benar": 3,
+        "yakin_benar": 80,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "c",
+            "yakin": 80,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Tio merasa penurunan buka terlalu besar untuk sekadar ex dividen, dan opsi c menyatakan turun Rp145 lebih besar dari dividen Rp130.",
+            "biaya_usd": 0.00024323600000000003
+          },
+          {
+            "ke": 2,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "c",
+            "yakin": 85,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Tio menilai penurunan buka terlalu besar untuk sekadar ex dividen, dan data turun Rp145 lebih besar dari dividen Rp130 mendukung anggapan itu.",
+            "biaya_usd": 0.0008218279999999999
+          },
+          {
+            "ke": 3,
+            "model": "zai-org/GLM-5.3",
+            "pilihan": "c",
+            "yakin": 75,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Tio ragu karena penurunan terasa 'kebesaran' untuk sekadar ex dividen, dan opsi c konsisten: buka turun Rp145 melebihi dividen Rp130 (misal tutup 1.690, buka 1.545), jadi kekhawatirannya memang beralasan.",
+            "biaya_usd": 0.003503
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 16,
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:16:17.569Z",
+      "waktu_selesai": "2026-09-28T21:18:55.599Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7949,
+      "token_keluar": 32768,
+      "biaya_usd": 0.01440306,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 2 dengan 2 butir umpan balik",
+        "keluaran tidak memuat omongan yang terbaca"
+      ],
+      "sha256_prompt": "3773f84aa364915686d769c1c2cb1e91b2d18b80887a18f32db4a0567f076cd3",
+      "rincian": {
+        "terurai": false,
+        "diabaikan": [],
+        "finish_reason": "length",
+        "panjang_penalaran": 108702,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "sok tahu",
+        "contoh_gaya": [
+          "v2-061",
+          "v2-062",
+          "v2-055"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "fil-jan-orang-dalam-lain",
+          "putaran_sudut": 2
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 17,
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:18:55.600Z",
+      "waktu_selesai": "2026-09-28T21:18:59.452Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7924,
+      "token_keluar": 541,
+      "biaya_usd": 0.001765176,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 2 dengan 2 butir umpan balik — cadangan tanpa berpikir (panggilan berpikir terpotong batas token)"
+      ],
+      "sha256_prompt": "3773f84aa364915686d769c1c2cb1e91b2d18b80887a18f32db4a0567f076cd3",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 0,
+        "suhu": 0.3,
+        "max_tokens": 8000,
+        "mode_berpikir": false,
+        "nada": "sok tahu",
+        "contoh_gaya": [
+          "v2-061",
+          "v2-062",
+          "v2-055"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "fil-jan-orang-dalam-lain",
+          "putaran_sudut": 2
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 18,
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:18:59.457Z",
+      "waktu_selesai": "2026-09-28T21:20:46.119Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 8045,
+      "token_keluar": 18263,
+      "biaya_usd": 0.008735916000000002,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik"
+      ],
+      "sha256_prompt": "5c6b6f0d2ef92e034bf65f8daae2cf9d17219ee11f9395850925e2548bc20ee3",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 60846,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ragu",
+        "contoh_gaya": [
+          "v2-022",
+          "v2-023",
+          "v2-019"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_sudut": 2
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 19,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T21:20:46.121Z",
+      "waktu_selesai": "2026-09-28T21:20:46.131Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 20,
+      "putaran": 2,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:20:46.140Z",
+      "waktu_selesai": "2026-09-28T21:20:46.142Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalem lain di Perusahaan U itu beli terus sepanjang Januari, gw yakin dia tau sesuatu nih.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 96,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 17,
+          "kata_pilihan": {
+            "a": 9,
+            "b": 9,
+            "c": 9,
+            "d": 8
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 21,
+      "putaran": 2,
+      "jenis": "gerbang-kartu",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:20:46.151Z",
+      "waktu_selesai": "2026-09-28T21:20:56.460Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 580,
+      "token_keluar": 741,
+      "biaya_usd": 0.00040415200000000007,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"a\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalem lain di Perusahaan U itu beli terus sepanjang Januari, gw yakin dia tau sesuatu nih.",
+        "kunci": "a",
+        "pilihan": "a",
+        "kartu_ditunjuk": [
+          "fil-jan-orang-dalam-lain"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan orang dalam lain menambah 16.069.900 lembar lewat 6 laporan sepanjang 6–22 Januari 2026, cocok dengan omongan Sinta."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 22,
+      "putaran": 2,
+      "jenis": "kritikus",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:20:56.461Z",
+      "waktu_selesai": "2026-09-28T21:22:41.456Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 1,
+      "token_masuk": 2121,
+      "token_keluar": 20595,
+      "biaya_usd": 0.063906,
+      "putusan": "tolak",
+      "alasan": [
+        "[kritikus: makna, kunci] Bagian klaim teman yang tidak bisa dicek dari kartu: \"dia tau sesuatu (motif orang dalam membeli) — kartu hanya memuat transaksi dan jumlah lembar, tidak ada yang menunjukka…\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan.",
+        "[kritikus: kunci, pilihan] Pilihan c juga benar menurut kartu (Kartu 3 dan 4 membenarkan persis isi pilihan c — porsi naik dari 1,21 persen ke 1,37 persen — sehingga ada dua pilihan 'Betul,' yang sama-sama didukung kartu.); hanya satu pilihan yang boleh benar.",
+        "[kritikus: ambigu, pilihan] Pilihan c juga benar menurut kartu 3 dan 4, jadi pemain yang memilih c akan dianggap salah padahal alasannya cocok dengan dokumen.",
+        "[kritikus: kunci, kunci] Pilihan kunci 'Betul,' tidak menyatakan bahwa bagian 'dia tau sesuatu' tidak bisa dipastikan dari kartu, padahal penjelasan sendiri mengakui alasan pembelian tidak terbaca di laporan.",
+        "[kritikus: arahan] Ubah pilihan c atau angka di kartu 3 dan 4 supaya hanya ada satu pilihan 'Betul,' yang didukung kartu. Pilihan kunci juga perlu menyatakan bahwa klaim 'dia tau sesuatu' tidak bisa dipastikan dari laporan transaksi."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalem lain di Perusahaan U itu beli terus sepanjang Januari, gw yakin dia tau sesuatu nih.",
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "makna",
+            "bagian": "kunci",
+            "alasan": "Bagian klaim teman yang tidak bisa dicek dari kartu: \"dia tau sesuatu (motif orang dalam membeli) — kartu hanya memuat transaksi dan jumlah lembar, tidak ada yang menunjukka…\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan."
+          },
+          {
+            "jenis": "kunci",
+            "bagian": "pilihan",
+            "alasan": "Pilihan c juga benar menurut kartu (Kartu 3 dan 4 membenarkan persis isi pilihan c — porsi naik dari 1,21 persen ke 1,37 persen — sehingga ada dua pilihan 'Betul,' yang sama-sama didukung kartu.); hanya satu pilihan yang boleh benar."
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pilihan",
+            "alasan": "Pilihan c juga benar menurut kartu 3 dan 4, jadi pemain yang memilih c akan dianggap salah padahal alasannya cocok dengan dokumen."
+          },
+          {
+            "jenis": "kunci",
+            "bagian": "kunci",
+            "alasan": "Pilihan kunci 'Betul,' tidak menyatakan bahwa bagian 'dia tau sesuatu' tidak bisa dipastikan dari kartu, padahal penjelasan sendiri mengakui alasan pembelian tidak terbaca di laporan."
+          }
+        ],
+        "arahan": "Ubah pilihan c atau angka di kartu 3 dan 4 supaya hanya ada satu pilihan 'Betul,' yang didukung kartu. Pilihan kunci juga perlu menyatakan bahwa klaim 'dia tau sesuatu' tidak bisa dipastikan dari laporan transaksi.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "dia tau sesuatu (motif orang dalam membeli) — kartu hanya memuat transaksi dan jumlah lembar, tidak ada yang menunjukka…"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [
+            "c"
+          ],
+          "alasan_juga_benar": "Kartu 3 dan 4 membenarkan persis isi pilihan c — porsi naik dari 1,21 persen ke 1,37 persen — sehingga ada dua pilihan 'Betul,' yang sama-sama didukung kartu."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 23,
+      "putaran": 2,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:22:41.459Z",
+      "waktu_selesai": "2026-09-28T21:22:41.460Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini harganya turun, tapi gw ragu nih turunnya kayak lebih kecil dari dividennya. Bener ga sih?",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 99,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 17,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 8,
+            "c": 6,
+            "d": 8
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 24,
+      "putaran": 2,
+      "jenis": "gerbang-kartu",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:22:41.477Z",
+      "waktu_selesai": "2026-09-28T21:22:47.333Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 539,
+      "token_keluar": 768,
+      "biaya_usd": 0.0004067,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini harganya turun, tapi gw ragu nih turunnya kayak lebih kecil dari dividennya. Bener ga sih?",
+        "kunci": "b",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "turun-2026-05-04",
+          "div-2026-05-04"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan penurunan Rp145, sedangkan Kartu 2 menunjukkan dividen Rp130, jadi turunnya lebih besar dari dividen."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 25,
+      "putaran": 2,
+      "jenis": "kritikus",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:22:47.335Z",
+      "waktu_selesai": "2026-09-28T21:26:26.019Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 1,
+      "token_masuk": 2038,
+      "token_keluar": 15162,
+      "biaya_usd": 0.047524,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini harganya turun, tapi gw ragu nih turunnya kayak lebih kecil dari dividennya. Bener ga sih?",
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Kunci adalah satu-satunya pilihan yang menyebut angka penurunan (Rp145); sebaiknya pilihan lain juga memuat angka penurunan supaya kunci tidak menonjol sebagai pilihan paling spesifik yang bisa dipilih tanpa membaca kartu.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya b yang didukung kartu: penurunan Rp145 (Kartu 1) memang lebih besar dari dividen Rp130 (Kartu 2), sedangkan a dan c bertentangan dengan angka itu dan d salah karena harga buka Rp1.545 justru di bawah penutupan Rp1.690."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 26,
+      "putaran": 2,
+      "jenis": "gerbang-tebak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:26:26.022Z",
+      "waktu_selesai": "2026-09-28T21:27:26.308Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+      "panggilan": 3,
+      "token_masuk": 1177,
+      "token_keluar": 6385,
+      "biaya_usd": 0.0046985840000000004,
+      "putusan": "tolak",
+      "alasan": [
+        "3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 65 (tebakan: b/65, b/65, b/65). Alasan mereka: \"Angka turun Rp145 lebih besar dari dividen Rp130, jadi omongan Adit yang merasa turunnya lebih kecil justru keliru.\" \"Adit mengira penurunan lebih kecil dari dividen, tetapi opsi b menyebutkan penurunan Rp145 justru lebih besar dari dividen Rp130.\" \"Pola umum ex-dividend: jika angka konkretnya turun Rp145 vs dividen Rp130, maka turunnya justru lebih besar dari dividen sehingga keraguan Adit bahwa turunnya lebih kecil adalah keliru.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini harganya turun, tapi gw ragu nih turunnya kayak lebih kecil dari dividennya. Bener ga sih?",
+        "kunci": "b",
+        "benar": 3,
+        "yakin_benar": 65,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 65,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Angka turun Rp145 lebih besar dari dividen Rp130, jadi omongan Adit yang merasa turunnya lebih kecil justru keliru.",
+            "biaya_usd": 0.0010237080000000001
+          },
+          {
+            "ke": 2,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 65,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Adit mengira penurunan lebih kecil dari dividen, tetapi opsi b menyebutkan penurunan Rp145 justru lebih besar dari dividen Rp130.",
+            "biaya_usd": 0.0013878760000000001
+          },
+          {
+            "ke": 3,
+            "model": "zai-org/GLM-5.3",
+            "pilihan": "b",
+            "yakin": 65,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Pola umum ex-dividend: jika angka konkretnya turun Rp145 vs dividen Rp130, maka turunnya justru lebih besar dari dividen sehingga keraguan Adit bahwa turunnya lebih kecil adalah keliru.",
+            "biaya_usd": 0.002287
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 27,
+      "putaran": 3,
+      "jenis": "tulis-ulang",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:27:26.315Z",
+      "waktu_selesai": "2026-09-28T21:28:01.863Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 8155,
+      "token_keluar": 7077,
+      "biaya_usd": 0.004372564000000001,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 2 dengan 5 butir umpan balik"
+      ],
+      "sha256_prompt": "31241019ddd8f2cc77b78e13e13740009a3b65439b8a9a480932a3c752cfe29a",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 21723,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "sok tahu",
+        "contoh_gaya": [
+          "v2-061",
+          "v2-062",
+          "v2-055"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "fil-jan-orang-dalam-lain",
+          "putaran_sudut": 3
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 28,
+      "putaran": 3,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:28:01.870Z",
+      "waktu_selesai": "2026-09-28T21:30:51.739Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7941,
+      "token_keluar": 32768,
+      "biaya_usd": 0.014401492,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik",
+        "keluaran tidak memuat omongan yang terbaca"
+      ],
+      "sha256_prompt": "b858dfe60c43212894566fd31a6c8d1606e0882b8e3b1b99935969d199c2f4ae",
+      "rincian": {
+        "terurai": false,
+        "diabaikan": [],
+        "finish_reason": "length",
+        "panjang_penalaran": 111605,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ragu",
+        "contoh_gaya": [
+          "v2-022",
+          "v2-023",
+          "v2-019"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_sudut": 3
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 29,
+      "putaran": 3,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:30:51.741Z",
+      "waktu_selesai": "2026-09-28T21:30:58.510Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7916,
+      "token_keluar": 520,
+      "biaya_usd": 0.001755376,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik — cadangan tanpa berpikir (panggilan berpikir terpotong batas token)"
+      ],
+      "sha256_prompt": "b858dfe60c43212894566fd31a6c8d1606e0882b8e3b1b99935969d199c2f4ae",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 0,
+        "suhu": 0.3,
+        "max_tokens": 8000,
+        "mode_berpikir": false,
+        "nada": "ragu",
+        "contoh_gaya": [
+          "v2-022",
+          "v2-023",
+          "v2-019"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_sudut": 3
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 30,
+      "putaran": 3,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T21:30:58.512Z",
+      "waktu_selesai": "2026-09-28T21:30:58.519Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 35 lawan 62 karakter; yang terpendek harus ≥ 60% yang terpanjang."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "OPSI_PANJANG_TIMPANG"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 31,
+      "putaran": 3,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:30:58.528Z",
+      "waktu_selesai": "2026-09-28T21:30:58.529Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalam lain itu beli terus sepanjang Januari, malah lebih banyak dari pemilik terbesarnya. Gw sih udah cek laporannya.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 123,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 19,
+          "kata_pilihan": {
+            "a": 8,
+            "b": 8,
+            "c": 7,
+            "d": 7
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 32,
+      "putaran": 3,
+      "jenis": "gerbang-kartu",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:30:58.537Z",
+      "waktu_selesai": "2026-09-28T21:31:12.784Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 589,
+      "token_keluar": 2242,
+      "biaya_usd": 0.000994308,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"a\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalam lain itu beli terus sepanjang Januari, malah lebih banyak dari pemilik terbesarnya. Gw sih udah cek laporannya.",
+        "kunci": "a",
+        "pilihan": "a",
+        "kartu_ditunjuk": [
+          "fil-jan-orang-dalam-lain"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan orang dalam lain menambah 16.069.900 lembar, sesuai dengan pilihan a."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 33,
+      "putaran": 3,
+      "jenis": "kritikus",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:31:12.786Z",
+      "waktu_selesai": "2026-09-28T21:38:03.632Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 1,
+      "token_masuk": 2111,
+      "token_keluar": 22734,
+      "biaya_usd": 0.070313,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalam lain itu beli terus sepanjang Januari, malah lebih banyak dari pemilik terbesarnya. Gw sih udah cek laporannya.",
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Perjelas di kartu penentu bahwa 6 laporan orang dalam lain dan 2 laporan pemilik terbesar itu seluruh laporan mereka pada Januari, supaya frasa 'sepanjang Januari' di pesan dan pilihan a tertutup penuh oleh kartu.",
+        "diabaikan": [],
+        "galat": [
+          "GalatLlm: Panggilan zai-org/GLM-5.3: HTTP 200 tanpa choices —  {\"error\":{\"message\":\"An unexpected error has occurred.\",\"type\":\"server_error\",\"code\":\"internal_server_error\"}}"
+        ],
+        "finish_reason": [
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya a yang didukung kartu 1 (16.069.900 lembar lewat 6 laporan); b membalik perbandingan karena pemilik terbesar cuma menambah 1 juta lembar, sedangkan c dan d memakai angka pemilik terbesar (2 laporan, 1 juta lembar) untuk orang dalam lain."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 34,
+      "putaran": 3,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-28T21:38:03.634Z",
+      "waktu_selesai": "2026-09-28T21:40:13.095Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+      "panggilan": 3,
+      "token_masuk": 1208,
+      "token_keluar": 12905,
+      "biaya_usd": 0.022290424,
+      "putusan": "lolos",
+      "alasan": [
+        "0/3 penebak tanpa kartu memilih kunci \"a\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Orang dalam lain itu beli terus sepanjang Januari, malah lebih banyak dari pemilik terbesarnya. Gw sih udah cek laporannya.",
+        "kunci": "a",
+        "benar": 0,
+        "yakin_benar": null,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 60,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim Sinta bahwa orang dalam lain menambah lebih banyak dari pemilik terbesar kemungkinan justru terbalik, sehingga yang lebih banyak menambah adalah pemilik terbesarnya.",
+            "biaya_usd": 0.0011940319999999998
+          },
+          {
+            "ke": 2,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 65,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim kunci Sinta adalah orang dalam lain menambah lebih banyak dari pemilik terbesar; opsi b langsung membantah perbandingan itu, sedangkan opsi lain hanya menyorot angka atau jumlah laporan yang belum tentu membatalkan klaim utama.",
+            "biaya_usd": 0.001519392
+          },
+          {
+            "ke": 3,
+            "model": "zai-org/GLM-5.3",
+            "pilihan": "b",
+            "yakin": 55,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim Sinta bahwa orang dalam malah membeli lebih banyak daripada pemilik terbesar adalah pernyataan mencolok yang biasanya keliru, dan pilihan b menyangkal inti klaim itu secara wajar tanpa angka yang terlalu spesifik seperti opsi lain.",
+            "biaya_usd": 0.019577
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 35,
+      "putaran": 3,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:40:13.100Z",
+      "waktu_selesai": "2026-09-28T21:40:13.102Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini ex dividen katanya. Gw ragu nih, turunnya di pembukaan kok beda ya dari angka dividennya?",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 98,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 17,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 5,
+            "c": 7,
+            "d": 9
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 36,
+      "putaran": 4,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:40:13.119Z",
+      "waktu_selesai": "2026-09-28T21:43:33.942Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7807,
+      "token_keluar": 32768,
+      "biaya_usd": 0.014375228,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik",
+        "keluaran tidak memuat omongan yang terbaca"
+      ],
+      "sha256_prompt": "eb47e32f85d354129fbd41c9ed062614209771eadefc7a610820b366d510ae7d",
+      "rincian": {
+        "terurai": false,
+        "diabaikan": [],
+        "finish_reason": "length",
+        "panjang_penalaran": 104135,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ragu",
+        "contoh_gaya": [
+          "v2-022",
+          "v2-023",
+          "v2-019"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_sudut": 4
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 37,
+      "putaran": 4,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:43:33.945Z",
+      "waktu_selesai": "2026-09-28T21:43:38.650Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7782,
+      "token_keluar": 484,
+      "biaya_usd": 0.0017150000000000002,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik — cadangan tanpa berpikir (panggilan berpikir terpotong batas token)"
+      ],
+      "sha256_prompt": "eb47e32f85d354129fbd41c9ed062614209771eadefc7a610820b366d510ae7d",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 0,
+        "suhu": 0.3,
+        "max_tokens": 8000,
+        "mode_berpikir": false,
+        "nada": "ragu",
+        "contoh_gaya": [
+          "v2-022",
+          "v2-023",
+          "v2-019"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_sudut": 4
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 38,
+      "putaran": 4,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T21:43:38.653Z",
+      "waktu_selesai": "2026-09-28T21:43:38.659Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 35 lawan 62 karakter; yang terpendek harus ≥ 60% yang terpanjang."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "OPSI_PANJANG_TIMPANG"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 39,
+      "putaran": 4,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:43:38.670Z",
+      "waktu_selesai": "2026-09-28T21:43:38.671Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini katanya tanggal ex dividen. Gw ragu sih, turunnya di pembukaan kok beda dari angka dividennya ya?",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 106,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 18,
+          "kata_pilihan": {
+            "a": 5,
+            "b": 5,
+            "c": 6,
+            "d": 9
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 40,
+      "putaran": 5,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:43:38.683Z",
+      "waktu_selesai": "2026-09-28T21:47:15.325Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7807,
+      "token_keluar": 30730,
+      "biaya_usd": 0.013576332,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik"
+      ],
+      "sha256_prompt": "2e37a22c4d1152f98eb2fca797d38cf66ade02eb99c1d525233e60b535014da9",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 94427,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ragu",
+        "contoh_gaya": [
+          "v2-022",
+          "v2-023",
+          "v2-019"
+        ],
+        "sudut": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_sudut": 5
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 41,
+      "putaran": 5,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T21:47:15.327Z",
+      "waktu_selesai": "2026-09-28T21:47:15.331Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 42,
+      "putaran": 5,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:47:15.336Z",
+      "waktu_selesai": "2026-09-28T21:47:15.337Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini katanya ex dividen. Gw ragu, turunnya kok pas banget sama angka dividennya ya?",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 87,
+          "kalimat_panjang": 0
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 15,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 7,
+            "c": 6,
+            "d": 8
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 43,
+      "putaran": 5,
+      "jenis": "gerbang-kartu",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:47:15.349Z",
+      "waktu_selesai": "2026-09-28T21:47:36.485Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 531,
+      "token_keluar": 2932,
+      "biaya_usd": 0.00125342,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini katanya ex dividen. Gw ragu, turunnya kok pas banget sama angka dividennya ya?",
+        "kunci": "b",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "turun-2026-05-04",
+          "div-2026-05-04"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan penurunan Rp145, sedangkan Kartu 2 menunjukkan dividen Rp130, jadi turunnya tidak pas melainkan lebih besar."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 44,
+      "putaran": 5,
+      "jenis": "kritikus",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:47:36.487Z",
+      "waktu_selesai": "2026-09-28T21:48:55.532Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 1,
+      "token_masuk": 2059,
+      "token_keluar": 10924,
+      "biaya_usd": 0.034831,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini katanya ex dividen. Gw ragu, turunnya kok pas banget sama angka dividennya ya?",
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Kunci b sekaligus pilihan paling spesifik (satu-satunya yang memuat Rp145) dan nada \"Gw ragu\" di pesan bisa terbaca sebagai sinyal \"Keliru\", sehingga agak tertebak tanpa kartu. Pertimbangkan menyisipkan angka dari kartu ke pilihan pengecoh c atau d agar pola \"pilih yang paling spesifik\" tidak langsung menunjuk kunci.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya b yang didukung kartu — selisih Rp145 (Kartu 1, dari penutupan Rp1.690 ke pembukaan Rp1.545) memang lebih besar dari dividen Rp130 (Kartu 2) — sedangkan a salah angka, c salah karena turunnya justru melebihi dividen bukan sebagian kecil, dan d bertentangan dengan penurunan yang tercatat."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 45,
+      "putaran": 5,
+      "jenis": "gerbang-tebak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:48:55.534Z",
+      "waktu_selesai": "2026-09-28T21:50:46.296Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+      "panggilan": 3,
+      "token_masuk": 1155,
+      "token_keluar": 13818,
+      "biaya_usd": 0.022163647999999998,
+      "putusan": "tolak",
+      "alasan": [
+        "3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 60 (tebakan: b/65, b/60, b/55). Alasan mereka: \"Jika dokumen menyebut turun Rp145 sedangkan dividennya Rp130, maka omongan Nadia yang merasa turunnya 'pas banget' tidak cocok.\" \"Nadia mengira penurunan harga persis sebesar dividen, tetapi opsi b menyebut turun Rp145 yang lebih besar dari dividen Rp130.\" \"Pada tanggal ex-dividen harga memang biasanya turun mendekati nilai dividen, tetapi turun persis sama (Rp130) jarang terjadi karena ada pergerakan pasar juga; opsi (a) hanya mengulang omongan Nadia dengan rapi sehingga mencurigakan, sementara penurunan sedikit lebih besar (Rp145) lebih wajar secara kebiasaan pasar dan konsisten dengan keraguan Nadia.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini katanya ex dividen. Gw ragu, turunnya kok pas banget sama angka dividennya ya?",
+        "kunci": "b",
+        "benar": 3,
+        "yakin_benar": 60,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 65,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Jika dokumen menyebut turun Rp145 sedangkan dividennya Rp130, maka omongan Nadia yang merasa turunnya 'pas banget' tidak cocok.",
+            "biaya_usd": 0.001211084
+          },
+          {
+            "ke": 2,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 60,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Nadia mengira penurunan harga persis sebesar dividen, tetapi opsi b menyebut turun Rp145 yang lebih besar dari dividen Rp130.",
+            "biaya_usd": 0.001922564
+          },
+          {
+            "ke": 3,
+            "model": "zai-org/GLM-5.3",
+            "pilihan": "b",
+            "yakin": 55,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Pada tanggal ex-dividen harga memang biasanya turun mendekati nilai dividen, tetapi turun persis sama (Rp130) jarang terjadi karena ada pergerakan pasar juga; opsi (a) hanya mengulang omongan Nadia dengan rapi sehingga mencurigakan, sementara penurunan sedikit lebih besar (Rp145) lebih wajar secara kebiasaan pasar dan konsisten dengan keraguan Nadia.",
+            "biaya_usd": 0.01903
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 46,
+      "putaran": 5,
+      "jenis": "buang-sudut",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:50:46.299Z",
+      "waktu_selesai": "2026-09-28T21:50:46.299Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3 gagal 5 putaran di sudut ke-1 (turun-2026-05-04); versi terakhirnya dibuang",
+        "sudut ke-2: laporan-jan-2026"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "sudut_dibuang": {
+          "ke": 1,
+          "fact_id": "turun-2026-05-04",
+          "putaran_mulai": 1
+        },
+        "sudut_baru": {
+          "fact_id": "laporan-jan-2026",
+          "topik": "laporan"
+        },
+        "umpan_terakhir": [
+          "[penebak tanpa kartu] 3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 60 (tebakan: b/65, b/60, b/55). Alasan mereka: \"Jika dokumen menyebut turun Rp145 sedangkan dividennya Rp130, maka omongan Nadia yang merasa turunnya 'pas banget' tidak cocok.\" \"Nadia mengira penurunan harga persis sebesar dividen, tetapi opsi b menyebut turun Rp145 yang lebih besar dari dividen Rp130.\" \"Pada tanggal ex-dividen harga memang biasanya turun mendekati nilai dividen, tetapi turun persis sama (Rp130) jarang terjadi karena ada pergerakan pasar juga; opsi (a) hanya mengulang omongan Nadia dengan rapi sehingga mencurigakan, sementara penurunan sedikit lebih besar (Rp145) lebih wajar secara kebiasaan pasar dan konsisten dengan keraguan Nadia.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+        ]
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 47,
+      "putaran": 6,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:50:46.317Z",
+      "waktu_selesai": "2026-09-28T21:52:00.551Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7223,
+      "token_keluar": 9177,
+      "biaya_usd": 0.005013092,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3"
+      ],
+      "sha256_prompt": "a8a0d9bf6716779152474f822f3e739f9f453aa81e57edd77cc256a6be3250b0",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 28392,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ikut-ikutan",
+        "contoh_gaya": [
+          "v2-088",
+          "v2-089",
+          "v2-073"
+        ],
+        "sudut": {
+          "ke": 2,
+          "fact_id": "laporan-jan-2026",
+          "putaran_sudut": 1
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 48,
+      "putaran": 6,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T21:52:00.554Z",
+      "waktu_selesai": "2026-09-28T21:52:00.561Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3: [AJAKAN_TRANSAKSI] Pesan memuat ajakan bertransaksi: \"borong\"."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "AJAKAN_TRANSAKSI"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 49,
+      "putaran": 6,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:52:00.568Z",
+      "waktu_selesai": "2026-09-28T21:52:00.569Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya orang dalam Perusahaan U borong saham terus sepanjang Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 121,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 19,
+          "kata_pilihan": {
+            "a": 7,
+            "b": 7,
+            "c": 5,
+            "d": 5
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 50,
+      "putaran": 7,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:52:00.585Z",
+      "waktu_selesai": "2026-09-28T21:52:42.316Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7808,
+      "token_keluar": 6121,
+      "biaya_usd": 0.0039298,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik"
+      ],
+      "sha256_prompt": "585ed85aa17397fc79c628be8231c11097194e685871d009521c5c43dea02392",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 19388,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ikut-ikutan",
+        "contoh_gaya": [
+          "v2-088",
+          "v2-089",
+          "v2-073"
+        ],
+        "sudut": {
+          "ke": 2,
+          "fact_id": "laporan-jan-2026",
+          "putaran_sudut": 2
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 51,
+      "putaran": 7,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T21:52:42.318Z",
+      "waktu_selesai": "2026-09-28T21:52:42.324Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 52,
+      "putaran": 7,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:52:42.337Z",
+      "waktu_selesai": "2026-09-28T21:52:42.338Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya laporan orang dalam Perusahaan U bulan Januari cuma sedikit doang. Aku ikut-ikutan percaya aja sih.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 107,
+          "kalimat_panjang": 0
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 16,
+          "kata_pilihan": {
+            "a": 5,
+            "b": 5,
+            "c": 7,
+            "d": 7
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 53,
+      "putaran": 7,
+      "jenis": "gerbang-kartu",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:52:42.351Z",
+      "waktu_selesai": "2026-09-28T21:52:46.755Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 496,
+      "token_keluar": 438,
+      "biaya_usd": 0.00026891200000000006,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya laporan orang dalam Perusahaan U bulan Januari cuma sedikit doang. Aku ikut-ikutan percaya aja sih.",
+        "kunci": "b",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "laporan-jan-2026"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menyatakan laporan orang dalam Januari seluruhnya pembelian berjumlah 8, bukan hanya 6."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 54,
+      "putaran": 7,
+      "jenis": "kritikus",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T21:52:46.758Z",
+      "waktu_selesai": "2026-09-28T22:05:07.130Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 2,
+      "token_masuk": 3992,
+      "token_keluar": 49152,
+      "biaya_usd": 0.151448,
+      "putusan": "tolak",
+      "alasan": [
+        "[kritikus] kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya laporan orang dalam Perusahaan U bulan Januari cuma sedikit doang. Aku ikut-ikutan percaya aja sih.",
+        "menjawab": false,
+        "terpotong": true,
+        "keberatan": [
+          {
+            "jenis": "tidak-menjawab",
+            "bagian": "-",
+            "alasan": "kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali"
+          }
+        ],
+        "arahan": "",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "length",
+          "length"
+        ],
+        "cek_makna": null,
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 55,
+      "putaran": 8,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T22:05:07.131Z",
+      "waktu_selesai": "2026-09-28T22:05:07.134Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 56,
+      "putaran": 8,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:05:07.140Z",
+      "waktu_selesai": "2026-09-28T22:05:07.141Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya laporan orang dalam Perusahaan U bulan Januari cuma sedikit doang. Aku ikut-ikutan percaya aja sih.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 107,
+          "kalimat_panjang": 0
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 16,
+          "kata_pilihan": {
+            "a": 5,
+            "b": 5,
+            "c": 7,
+            "d": 7
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 57,
+      "putaran": 8,
+      "jenis": "gerbang-kartu",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:05:07.148Z",
+      "waktu_selesai": "2026-09-28T22:05:11.041Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 496,
+      "token_keluar": 449,
+      "biaya_usd": 0.000273224,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya laporan orang dalam Perusahaan U bulan Januari cuma sedikit doang. Aku ikut-ikutan percaya aja sih.",
+        "kunci": "b",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "laporan-jan-2026"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menyatakan laporan orang dalam Januari seluruhnya pembelian berjumlah 8, bukan 6."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 58,
+      "putaran": 8,
+      "jenis": "kritikus",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:05:11.044Z",
+      "waktu_selesai": "2026-09-28T22:12:09.561Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 2,
+      "token_masuk": 3990,
+      "token_keluar": 40680,
+      "biaya_usd": 0.12603,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya laporan orang dalam Perusahaan U bulan Januari cuma sedikit doang. Aku ikut-ikutan percaya aja sih.",
+        "menjawab": true,
+        "terpotong": true,
+        "keberatan": [],
+        "arahan": "Penjelasan menyebut isi laporan (cuma tanggal transaksi dan jumlah lembar) padahal detail itu tidak ada di kartu mana pun. Kaitkan ke salah satu kartu atau keluarkan dari penjelasan agar semua yang dibaca pemain bisa dilacak ke dokumen.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "length",
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu 1 (penentu) mencatat 8 laporan orang dalam Januari seluruhnya pembelian, sehingga a salah angka (6 hanya bagian 'orang dalam lain' di kartu 2), c batal karena pemilik terbesar juga melapor (kartu 3), dan d dibantah 'seluruhnya pembelian'."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 59,
+      "putaran": 8,
+      "jenis": "gerbang-tebak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:12:09.563Z",
+      "waktu_selesai": "2026-09-28T22:14:23.112Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+      "panggilan": 3,
+      "token_masuk": 1143,
+      "token_keluar": 16436,
+      "biaya_usd": 0.019756816,
+      "putusan": "tolak",
+      "alasan": [
+        "2/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 55 (tebakan: a/60, b/60, b/50). Alasan mereka: \"Pesan Nadia hanya rumor; dokumen mencatat 8 laporan orang dalam Perusahaan U bulan Januari, sehingga tidak cocok.\" \"Pesan Nadia cuma desas-desus ('ikut-ikutan percaya'), dan pilihan (a) yang mengiyakan dengan rapi ('betul, cuma 6') terkesan seperti jebakan gema; koreksi dengan angka spesifik 8 laporan lebih khas jawaban benar untuk soal verifikasi begini.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya laporan orang dalam Perusahaan U bulan Januari cuma sedikit doang. Aku ikut-ikutan percaya aja sih.",
+        "kunci": "b",
+        "benar": 2,
+        "yakin_benar": 55,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "a",
+            "yakin": 60,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Jumlah 6 laporan paling wajar dengan 'cuma sedikit doang' dan pilihan lain terlalu spesifik atau tidak relevan dengan jumlah.",
+            "biaya_usd": 0.003004484
+          },
+          {
+            "ke": 2,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 60,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Pesan Nadia hanya rumor; dokumen mencatat 8 laporan orang dalam Perusahaan U bulan Januari, sehingga tidak cocok.",
+            "biaya_usd": 0.0016693320000000002
+          },
+          {
+            "ke": 3,
+            "model": "zai-org/GLM-5.3",
+            "pilihan": "b",
+            "yakin": 50,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Pesan Nadia cuma desas-desus ('ikut-ikutan percaya'), dan pilihan (a) yang mengiyakan dengan rapi ('betul, cuma 6') terkesan seperti jebakan gema; koreksi dengan angka spesifik 8 laporan lebih khas jawaban benar untuk soal verifikasi begini.",
+            "biaya_usd": 0.015083
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 60,
+      "putaran": 9,
+      "jenis": "tulis-ulang",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:14:23.115Z",
+      "waktu_selesai": "2026-09-28T22:15:14.305Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 7926,
+      "token_keluar": 11618,
+      "biaya_usd": 0.006107752,
+      "putusan": "ditulis",
+      "alasan": [
+        "menulis ulang omongan 3 dengan 1 butir umpan balik"
+      ],
+      "sha256_prompt": "e6cc21c6e1e3f50fc6e705b917faee8278918c8bf1d6cacc9d722b94dc674347",
+      "rincian": {
+        "terurai": true,
+        "diabaikan": [],
+        "finish_reason": "stop",
+        "panjang_penalaran": 38171,
+        "suhu": 0.3,
+        "max_tokens": 32768,
+        "mode_berpikir": true,
+        "nada": "ikut-ikutan",
+        "contoh_gaya": [
+          "v2-088",
+          "v2-089",
+          "v2-073"
+        ],
+        "sudut": {
+          "ke": 2,
+          "fact_id": "laporan-jan-2026",
+          "putaran_sudut": 4
+        }
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 61,
+      "putaran": 9,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-28T22:15:14.310Z",
+      "waktu_selesai": "2026-09-28T22:15:14.319Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 62,
+      "putaran": 9,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:15:14.339Z",
+      "waktu_selesai": "2026-09-28T22:15:14.341Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya orang dalam Perusahaan U pada beli saham terus bulan Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
+        "angka_cukup": {
+          "tolak": false,
+          "bukti": []
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": [],
+          "panjang": 120,
+          "kalimat_panjang": 1
+        },
+        "panjang": {
+          "tolak": false,
+          "kata_pesan": 20,
+          "kata_pilihan": {
+            "a": 7,
+            "b": 7,
+            "c": 7,
+            "d": 5
+          },
+          "batas": {
+            "pilihan": 11,
+            "pesan": 26
+          }
+        },
+        "satu_klausa": {
+          "tolak": false,
+          "masalah": []
+        },
+        "register": {
+          "tolak": false,
+          "kata": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 63,
+      "putaran": 9,
+      "jenis": "gerbang-kartu",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:15:14.354Z",
+      "waktu_selesai": "2026-09-28T22:15:18.001Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+      "panggilan": 1,
+      "token_masuk": 504,
+      "token_keluar": 610,
+      "biaya_usd": 0.000337904,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"a\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya orang dalam Perusahaan U pada beli saham terus bulan Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
+        "kunci": "a",
+        "pilihan": "a",
+        "kartu_ditunjuk": [
+          "laporan-jan-2026"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menyatakan seluruh laporan kepemilikan orang dalam yang terbit Januari adalah pembelian, sehingga cocok dengan omongan Fitri."
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 64,
+      "putaran": 9,
+      "jenis": "kritikus",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:15:18.005Z",
+      "waktu_selesai": "2026-09-28T22:19:07.635Z",
+      "model": "zai-org/GLM-5.3",
+      "panggilan": 1,
+      "token_masuk": 2013,
+      "token_keluar": 19539,
+      "biaya_usd": 0.06063,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya orang dalam Perusahaan U pada beli saham terus bulan Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Pilihan a perlu diubah redaksinya karena mengulang frasa Fitri ('tanpa ada yang jual') hampir kata per kata sehingga bisa tertebak tanpa kartu; pertegas juga jangkauan hitungan kartu 1 yang terbit 22 Januari padahal menghitung laporan 'terbit Januari'.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu 1 menyatakan seluruh 8 laporan orang dalam yang terbit Januari isinya pembelian, dan kartu 3 menunjukkan pemilik terbesar juga ikut melapor, sehingga b (ada penjualan), c (yang beli cuma orang dalam lain), dan d (cuma dua laporan) semuanya bertentangan dengan kartu."
+        },
+        "sebelum_penebak": true
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 65,
+      "putaran": 9,
+      "jenis": "gerbang-tebak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-28T22:19:07.637Z",
+      "waktu_selesai": "2026-09-28T22:19:23.348Z",
+      "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
+      "panggilan": 3,
+      "token_masuk": 1168,
+      "token_keluar": 1199,
+      "biaya_usd": 0.002127856,
+      "putusan": "lolos",
+      "alasan": [
+        "0/3 penebak tanpa kartu memilih kunci \"a\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Katanya orang dalam Perusahaan U pada beli saham terus bulan Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
+        "kunci": "a",
+        "benar": 0,
+        "yakin_benar": null,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 70,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Pilihan b paling wajar karena klaim 'tidak ada yang jual' biasanya dibantah oleh adanya laporan penjualan, sedangkan opsi lain terlalu spesifik atau hanya mengulang omongan Fitri.",
+            "biaya_usd": 0.000253428
+          },
+          {
+            "ke": 2,
+            "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+            "pilihan": "b",
+            "yakin": 68,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim 'tidak ada yang jual' terlalu absolut; dokumen transaksi orang dalam biasanya juga memuat laporan penjualan.",
+            "biaya_usd": 0.000204428
+          },
+          {
+            "ke": 3,
+            "model": "zai-org/GLM-5.3",
+            "pilihan": "b",
+            "yakin": 65,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim mutlak seperti 'ga ada yang jual' biasanya dipatahkan dokumen yang mencatat campuran transaksi, dan pola soal semacam ini hampir selalu mengoreksi keyakinan naif si pengirim pesan.",
+            "biaya_usd": 0.00167
+          }
+        ]
+      },
+      "peran": "penebak"
+    }
+  ],
+  "hasil": {
+    "lolos": true,
+    "putaran": 9,
+    "berhenti": null,
+    "panggilan": 58,
+    "token_masuk": 158860,
+    "token_keluar": 551122,
+    "biaya_usd": 0.95159364,
+    "durasi_ms": 5611622
+  }
+}

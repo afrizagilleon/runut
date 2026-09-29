@@ -51,6 +51,15 @@ export const SUHU_KRITIKUS = 0.2;
  * memberi ruang, dan perkiraan maksimum yang dicek pagu tetap ±US$0,05.
  */
 export const MAX_TOKENS_KRITIKUS = 16_384;
+/**
+ * `max_tokens` kritikus M2d-4 (cek makna). Terukur 29 Sep di jalan TIRT ke-2
+ * (dibuang, `eval/keluaran-m2d4/dibuang/tirt-jalan2/`): dengan dua pertanyaan
+ * wajib, 3 dari 5 panggilan kritikus habis di 16.384 token (keluaran yang
+ * selesai: 6.797 dan 11.109). Dua kali terpotong = "tidak menjawab" seharga
+ * US$0,10 tanpa hasil. 24.576 memberi ruang; perkiraan maksimum per
+ * panggilan ±US$0,08.
+ */
+export const MAX_TOKENS_KRITIKUS_MAKNA = 24_576;
 export const MAKS_KEBERATAN = 6;
 export const MAKS_ALASAN = 300;
 export const MAKS_ARAHAN = 400;
@@ -262,6 +271,8 @@ export interface OpsiKritik {
   jam?: () => Date;
   /** M2d-4 D-6: prompt dua pertanyaan makna; jawaban tanpa keduanya = tak terbaca. */
   cekMakna?: boolean;
+  /** `max_tokens`; bawaan `MAX_TOKENS_KRITIKUS`. */
+  maxTokens?: number;
 }
 
 export const KEBERATAN_TIDAK_MENJAWAB = 'kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali';
@@ -281,7 +292,7 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
     const mulai = jam().toISOString();
     let j;
     try {
-      j = await opsi.panggil(pesanKritikus(o, paket, k, opsi.cekMakna === true), { suhu: SUHU_KRITIKUS, maxTokens: MAX_TOKENS_KRITIKUS }, info);
+      j = await opsi.panggil(pesanKritikus(o, paket, k, opsi.cekMakna === true), { suhu: SUHU_KRITIKUS, maxTokens: opsi.maxTokens ?? MAX_TOKENS_KRITIKUS }, info);
     } catch (e) {
       if (e instanceof PaguTercapai) throw e;
       galat.push(e instanceof Error ? `${e.name}: ${e.message}`.slice(0, 300) : 'galat tak dikenal');

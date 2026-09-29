@@ -1,0 +1,16 @@
+
+> runut@0.1.0 gaya:susun
+> node --experimental-strip-types factory/llm/gaya-susun.ts tirt
+
+Pagu kumulatif US$5.00 (ledger US$0.000000); pagu milestone US$4.00 (terpakai US$0.000000, sisa US$4.000000).
+Paket TIRT: 20 fakta, 2 tersingkir.
+  17:53:42 m2d4/tirt/p1/susun/o1 [penulis]: masuk 5432 keluar 14570 stop US$0.006776 64.2 s; milestone US$0.006776
+  17:56:08 m2d4/tirt/p1/susun/o2 [penulis]: masuk 5759 keluar 32768 length US$0.013974 145.9 s; milestone US$0.020750
+  17:56:11 m2d4/tirt/p1/susun/o2/u1 [penulis]: masuk 5734 keluar 528 stop US$0.001331 3 s; milestone US$0.022081
+  17:56:44 m2d4/tirt/p1/susun/o3 [penulis]: masuk 5798 keluar 8762 stop US$0.004571 32.7 s; milestone US$0.026652
+  17:56:49 m2d4/tirt/p1/gerbang-kartu/o1 [pembaca-kartu]: masuk 588 keluar 918 stop US$0.000475 5 s; milestone US$0.027127
+  17:59:18 m2d4/tirt/p1/kritikus/o1 [kritikus]: masuk 2125 keluar 6797 stop US$0.022516 148.5 s; milestone US$0.049643
+  17:59:41 m2d4/tirt/p1/gerbang-tebak/o1/t1 [penebak]: masuk 408 keluar 5749 stop US$0.002334 23.3 s; milestone US$0.051977
+  18:00:02 m2d4/tirt/p1/gerbang-tebak/o1/t2 [penebak]: masuk 408 keluar 5396 stop US$0.002195 20.7 s; milestone US$0.054172
+  18:04:53 m2d4/tirt/p1/gerbang-tebak/o1/t3 [penebak]: masuk 352 keluar 16000 length US$0.048352 291.9 s; milestone US$0.102524
+EXIT=1

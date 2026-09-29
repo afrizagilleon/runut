@@ -1,0 +1,22 @@
+
+> runut@0.1.0 gaya:susun
+> node --experimental-strip-types factory/llm/gaya-susun.ts tirt
+
+Pagu kumulatif US$5.00 (ledger US$0.175019); pagu milestone US$4.00 (terpakai US$0.175019, sisa US$3.824981).
+Paket TIRT: 20 fakta, 2 tersingkir.
+  18:15:09 m2d4/tirt/p1/susun/o1 [penulis]: masuk 5432 keluar 25924 stop US$0.011227 61.2 s; milestone US$0.186246
+  18:16:21 m2d4/tirt/p1/susun/o2 [penulis]: masuk 5771 keluar 32768 length US$0.013976 72.5 s; milestone US$0.200222
+  18:16:24 m2d4/tirt/p1/susun/o2/u1 [penulis]: masuk 5746 keluar 643 stop US$0.001378 3.1 s; milestone US$0.201600
+  18:17:29 m2d4/tirt/p1/susun/o3 [penulis]: masuk 6417 keluar 22543 stop US$0.010095 64.9 s; milestone US$0.211695
+  18:17:33 m2d4/tirt/p1/gerbang-kartu/o2 [pembaca-kartu]: masuk 638 keluar 1125 stop US$0.000566 4.2 s; milestone US$0.212261
+  18:21:04 m2d4/tirt/p1/kritikus/o2 [kritikus]: masuk 2227 keluar 16384 length US$0.051379 210.7 s; milestone US$0.263640
+  18:24:07 m2d4/tirt/p1/kritikus/o2/u1 [kritikus]: masuk 2227 keluar 16384 length US$0.051379 182.9 s; milestone US$0.315019
+  18:24:09 m2d4/tirt/p1/gerbang-kartu/o3 [pembaca-kartu]: masuk 603 keluar 242 stop US$0.000213 2.4 s; milestone US$0.315232
+  18:27:32 m2d4/tirt/p1/kritikus/o3 [kritikus]: masuk 2099 keluar 16384 length US$0.051251 202.8 s; milestone US$0.366483
+  18:29:28 m2d4/tirt/p1/kritikus/o3/u1 [kritikus]: masuk 2099 keluar 11109 stop US$0.035426 115.8 s; milestone US$0.401909
+  18:30:03 m2d4/tirt/p1/gerbang-tebak/o3/t1 [penebak]: masuk 423 keluar 5929 stop US$0.002407 35.1 s; milestone US$0.404316
+  18:30:15 m2d4/tirt/p1/gerbang-tebak/o3/t2 [penebak]: masuk 423 keluar 1708 stop US$0.000752 12.2 s; milestone US$0.405068
+  18:32:20 m2d4/tirt/p1/gerbang-tebak/o3/t3 [penebak]: masuk 366 keluar 8000 length US$0.024366 124.6 s; milestone US$0.429434
+  18:32:40 m2d4/tirt/p1/gerbang-tebak/o3/t3/u1 [penebak]: masuk 366 keluar 1117 stop US$0.003717 19.9 s; milestone US$0.433151
+  18:33:48 m2d4/tirt/p2/tulis-ulang/o1 [penulis]: masuk 7036 keluar 15231 stop US$0.007350 68.4 s; milestone US$0.440501
+EXIT=1

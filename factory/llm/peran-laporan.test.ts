@@ -4,10 +4,9 @@
  * milestone (laporan tidak berubah oleh panggilan sesudahnya) dan hanya tag
  * `m2d3/` yang masuk biaya milestone.
  */
-import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { bacaLedger } from './agen-laporan.ts';
-import { JALUR_LEDGER, type EntriLedger } from './pagu.ts';
+import { bacaLedgerSemua, type EntriLedger } from './pagu.ts';
 import { biayaPerPeran, bangunLaporanPeran, peranDariTag } from './peran-laporan.ts';
 import { bacaRiwayatPeran } from './peran-penguji.ts';
 
@@ -35,7 +34,8 @@ describe('biaya per peran dari tag ledger', () => {
   });
 });
 
-const ADA = existsSync(JALUR_LEDGER) && bacaRiwayatPeran('tirt') !== null;
+// Riwayat biaya = arsip (M2d-4) + ledger kini.
+const ADA = bacaLedgerSemua().length > 0 && bacaRiwayatPeran('tirt') !== null;
 
 describe.skipIf(!ADA)('laporan dari keluaran sungguhan (butuh ledger .cache/)', () => {
   it('panggilan sesudah milestone dan tag di luar m2d3/ tidak mengubah laporan', () => {

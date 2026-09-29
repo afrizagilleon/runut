@@ -15,7 +15,7 @@ import { tanggalId } from '../format.ts';
 import { AKAR } from './env.ts';
 import { HARGA } from './harga.ts';
 import { MODEL_TANDING } from './model.ts';
-import { JALUR_LEDGER, type EntriLedger } from './pagu.ts';
+import { bacaLedgerSemua, type EntriLedger } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { FOLDER_PENGUJI, type KunciPenguji } from './penguji.ts';
 import { PUTARAN, SUHU, type HasilSusun } from './susun.ts';
@@ -277,12 +277,8 @@ function urutkan(perModel: PerModel[]): PerModel[] {
 }
 
 function utama(): number {
-  const ledger: EntriLedger[] = existsSync(JALUR_LEDGER)
-    ? readFileSync(JALUR_LEDGER, 'utf8')
-        .split(/\r?\n/)
-        .filter((b) => b.trim() !== '')
-        .map((b) => JSON.parse(b) as EntriLedger)
-    : [];
+  // Seluruh riwayat: ledger yang diarsipkan (M2d-4) + ledger kini.
+  const ledger: EntriLedger[] = bacaLedgerSemua();
   const sel = bacaSel(ledger);
   const { tebak, alami } = bacaPenguji();
   const perModel = hitungPerModel(sel, tebak, alami);

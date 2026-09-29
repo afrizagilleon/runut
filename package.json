@@ -36,7 +36,9 @@
     "agen:laporan": "node --experimental-strip-types factory/llm/agen-laporan.ts",
     "peran:susun": "node --experimental-strip-types factory/llm/peran-susun.ts",
     "peran:penguji": "node --experimental-strip-types factory/llm/peran-penguji.ts",
-    "peran:laporan": "node --experimental-strip-types factory/llm/peran-laporan.ts"
+    "peran:laporan": "node --experimental-strip-types factory/llm/peran-laporan.ts",
+    "gaya:arsip": "node --experimental-strip-types factory/llm/gaya-arsip.ts",
+    "gaya:susun": "node --experimental-strip-types factory/llm/gaya-susun.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

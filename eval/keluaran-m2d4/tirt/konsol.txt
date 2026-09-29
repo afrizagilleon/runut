@@ -1,0 +1,99 @@
+
+> runut@0.1.0 gaya:susun
+> node --experimental-strip-types factory/llm/gaya-susun.ts tirt
+
+Pagu kumulatif US$5.00 (ledger US$0.457548); pagu milestone US$4.00 (terpakai US$0.457548, sisa US$3.542452).
+Paket TIRT: 20 fakta, 2 tersingkir.
+  18:37:32 m2d4/tirt/p1/susun/o1 [penulis]: masuk 5432 keluar 16770 stop US$0.007639 83.8 s; milestone US$0.465187
+  18:40:02 m2d4/tirt/p1/susun/o2 [penulis]: masuk 5809 keluar 32768 length US$0.013984 150.3 s; milestone US$0.479171
+  18:40:07 m2d4/tirt/p1/susun/o2/u1 [penulis]: masuk 5784 keluar 572 stop US$0.001358 4.5 s; milestone US$0.480528
+  18:40:53 m2d4/tirt/p1/susun/o3 [penulis]: masuk 5848 keluar 10232 stop US$0.005157 46.3 s; milestone US$0.485686
+  18:40:56 m2d4/tirt/p1/gerbang-kartu/o1 [pembaca-kartu]: masuk 708 keluar 317 stop US$0.000263 2.4 s; milestone US$0.485949
+  18:41:57 m2d4/tirt/p1/kritikus/o1 [kritikus]: masuk 2264 keluar 6583 stop US$0.022013 61.1 s; milestone US$0.507962
+  18:42:12 m2d4/tirt/p1/gerbang-tebak/o1/t1 [penebak]: masuk 415 keluar 2271 stop US$0.000972 15.5 s; milestone US$0.508933
+  18:42:31 m2d4/tirt/p1/gerbang-tebak/o1/t2 [penebak]: masuk 415 keluar 3016 stop US$0.001264 18.7 s; milestone US$0.510197
+  18:42:45 m2d4/tirt/p1/gerbang-tebak/o1/t3 [penebak]: masuk 358 keluar 765 stop US$0.002653 13.7 s; milestone US$0.512850
+  18:42:47 m2d4/tirt/p1/gerbang-kartu/o3 [pembaca-kartu]: masuk 663 keluar 134 stop US$0.000182 2.2 s; milestone US$0.513032
+  18:44:09 m2d4/tirt/p1/kritikus/o3 [kritikus]: masuk 2252 keluar 6984 stop US$0.023204 82 s; milestone US$0.536236
+  18:44:32 m2d4/tirt/p1/gerbang-tebak/o3/t1 [penebak]: masuk 410 keluar 3634 stop US$0.001505 22.7 s; milestone US$0.537741
+  18:44:39 m2d4/tirt/p1/gerbang-tebak/o3/t2 [penebak]: masuk 410 keluar 1222 stop US$0.000559 7.4 s; milestone US$0.538301
+  18:44:52 m2d4/tirt/p1/gerbang-tebak/o3/t3 [penebak]: masuk 359 keluar 874 stop US$0.002981 13.1 s; milestone US$0.541282
+  18:47:37 m2d4/tirt/p2/tulis-ulang/o1 [penulis]: masuk 6641 keluar 32768 length US$0.014147 164.8 s; milestone US$0.555428
+  18:47:41 m2d4/tirt/p2/tulis-ulang/o1/u1 [penulis]: masuk 6616 keluar 508 stop US$0.001496 4.2 s; milestone US$0.556924
+  18:50:24 m2d4/tirt/p2/tulis-ulang/o2 [penulis]: masuk 6481 keluar 32768 length US$0.014115 163.3 s; milestone US$0.571039
+  18:50:55 m2d4/tirt/p2/tulis-ulang/o2/u1 [penulis]: masuk 6456 keluar 596 stop US$0.001499 30.7 s; milestone US$0.572538
+  18:50:58 m2d4/tirt/p2/gerbang-kartu/o1 [pembaca-kartu]: masuk 737 keluar 332 stop US$0.000275 3.1 s; milestone US$0.572813
+  18:52:14 m2d4/tirt/p2/kritikus/o1 [kritikus]: masuk 2349 keluar 6362 stop US$0.021435 75.8 s; milestone US$0.594248
+  18:52:26 m2d4/tirt/p2/gerbang-tebak/o1/t1 [penebak]: masuk 414 keluar 2159 stop US$0.000927 12.3 s; milestone US$0.595176
+  18:52:41 m2d4/tirt/p2/gerbang-tebak/o1/t2 [penebak]: masuk 414 keluar 2298 stop US$0.000982 14.3 s; milestone US$0.596157
+  18:52:48 m2d4/tirt/p2/gerbang-tebak/o1/t3 [penebak]: masuk 357 keluar 673 stop US$0.002376 7.9 s; milestone US$0.598533
+  18:54:46 m2d4/tirt/p3/tulis-ulang/o2 [penulis]: masuk 7291 keluar 32768 length US$0.014274 117.6 s; milestone US$0.612808
+  18:54:51 m2d4/tirt/p3/tulis-ulang/o2/u1 [penulis]: masuk 7266 keluar 608 stop US$0.001662 4.6 s; milestone US$0.614470
+  18:57:33 m2d4/tirt/p4/tulis-ulang/o2 [penulis]: masuk 7137 keluar 32768 length US$0.014244 161.8 s; milestone US$0.628714
+  18:57:37 m2d4/tirt/p4/tulis-ulang/o2/u1 [penulis]: masuk 7112 keluar 608 stop US$0.001632 4.1 s; milestone US$0.630346
+  19:00:21 m2d4/tirt/p5/tulis-ulang/o2 [penulis]: masuk 7137 keluar 32768 length US$0.014244 164.5 s; milestone US$0.644590
+  19:00:25 m2d4/tirt/p5/tulis-ulang/o2/u1 [penulis]: masuk 7112 keluar 608 stop US$0.001632 3.7 s; milestone US$0.646222
+  19:03:44 m2d4/tirt/p6/tulis-ulang/o2 [penulis]: masuk 6382 keluar 32768 length US$0.014096 199.5 s; milestone US$0.660318
+  19:03:50 m2d4/tirt/p6/tulis-ulang/o2/u1 [penulis]: masuk 6357 keluar 510 stop US$0.001446 5.8 s; milestone US$0.661764
+  19:07:16 m2d4/tirt/p7/tulis-ulang/o2 [penulis]: masuk 7198 keluar 32768 length US$0.014256 205.4 s; milestone US$0.676020
+  19:07:21 m2d4/tirt/p7/tulis-ulang/o2/u1 [penulis]: masuk 7173 keluar 660 stop US$0.001665 5.7 s; milestone US$0.677685
+  19:09:13 m2d4/tirt/p8/tulis-ulang/o2 [penulis]: masuk 7185 keluar 17565 stop US$0.008294 111 s; milestone US$0.685978
+  19:11:46 m2d4/tirt/p9/tulis-ulang/o2 [penulis]: masuk 7182 keluar 32768 length US$0.014253 153.1 s; milestone US$0.700231
+  19:11:51 m2d4/tirt/p9/tulis-ulang/o2/u1 [penulis]: masuk 7157 keluar 697 stop US$0.001676 5 s; milestone US$0.701907
+  19:14:28 m2d4/tirt/p10/tulis-ulang/o2 [penulis]: masuk 7194 keluar 32768 length US$0.014255 157.5 s; milestone US$0.716162
+  19:14:33 m2d4/tirt/p10/tulis-ulang/o2/u1 [penulis]: masuk 7169 keluar 690 stop US$0.001676 4.4 s; milestone US$0.717838
+  19:14:35 m2d4/tirt/p10/gerbang-kartu/o2 [pembaca-kartu]: masuk 603 keluar 376 stop US$0.000266 2.9 s; milestone US$0.718103
+  19:19:09 m2d4/tirt/p10/kritikus/o2 [kritikus]: masuk 2148 keluar 24576 length US$0.075876 273.1 s; milestone US$0.793979
+  19:23:23 m2d4/tirt/p10/kritikus/o2/u1 [kritikus]: masuk 2148 keluar 24576 length US$0.075876 254.5 s; milestone US$0.869855
+  19:25:56 m2d4/tirt/p11/tulis-ulang/o2 [penulis]: masuk 6393 keluar 32768 length US$0.014098 152.4 s; milestone US$0.883954
+  19:25:59 m2d4/tirt/p11/tulis-ulang/o2/u1 [penulis]: masuk 6368 keluar 473 stop US$0.001434 3.7 s; milestone US$0.885387
+  19:26:13 m2d4/tirt/p11/gerbang-kartu/o2 [pembaca-kartu]: masuk 633 keluar 1038 stop US$0.000531 13.5 s; milestone US$0.885918
+  19:31:32 m2d4/tirt/p11/kritikus/o2 [kritikus]: masuk 2199 keluar 21899 stop US$0.067896 319.4 s; milestone US$0.953814
+  19:31:54 m2d4/tirt/p11/gerbang-tebak/o2/t1 [penebak]: masuk 408 keluar 4709 stop US$0.001926 22.1 s; milestone US$0.955740
+  19:32:29 m2d4/tirt/p11/gerbang-tebak/o2/t2 [penebak]: masuk 408 keluar 8291 stop US$0.003330 34.6 s; milestone US$0.959070
+  19:34:10 m2d4/tirt/p11/gerbang-tebak/o2/t3 [penebak]: masuk 352 keluar 8000 length US$0.024352 101.1 s; milestone US$0.983422
+  19:35:59 m2d4/tirt/p11/gerbang-tebak/o2/t3/u1 [penebak]: masuk 352 keluar 8000 length US$0.024352 109 s; milestone US$1.007774
+  19:37:53 m2d4/tirt/p12/tulis-ulang/o2 [penulis]: masuk 7116 keluar 32768 length US$0.014240 114.5 s; milestone US$1.022014
+  19:37:58 m2d4/tirt/p12/tulis-ulang/o2/u1 [penulis]: masuk 7091 keluar 508 stop US$0.001589 4.2 s; milestone US$1.023603
+  19:38:00 m2d4/tirt/p12/gerbang-kartu/o2 [pembaca-kartu]: masuk 633 keluar 310 stop US$0.000246 2.6 s; milestone US$1.023848
+  19:45:47 m2d4/tirt/p12/kritikus/o2 [kritikus]: masuk 2207 keluar 24576 length US$0.075935 466.5 s; milestone US$1.099783
+  19:55:17 m2d4/tirt/p12/kritikus/o2/u1 [kritikus]: masuk 2207 keluar 24576 length US$0.075935 569.8 s; milestone US$1.175718
+  19:55:20 m2d4/tirt/p13/gerbang-kartu/o2 [pembaca-kartu]: masuk 633 keluar 396 stop US$0.000279 3.4 s; milestone US$1.175998
+  20:01:20 m2d4/tirt/p13/kritikus/o2 [kritikus]: masuk 2209 keluar 21117 stop US$0.065560 360.2 s; milestone US$1.241558
+  20:01:46 m2d4/tirt/p13/gerbang-tebak/o2/t1 [penebak]: masuk 408 keluar 2136 stop US$0.000917 26 s; milestone US$1.242475
+  20:01:55 m2d4/tirt/p13/gerbang-tebak/o2/t2 [penebak]: masuk 408 keluar 658 stop US$0.000338 8.2 s; milestone US$1.242813
+  20:03:40 m2d4/tirt/p13/gerbang-tebak/o2/t3 [penebak]: masuk 352 keluar 8000 length US$0.024352 105.4 s; milestone US$1.267165
+  20:04:03 m2d4/tirt/p13/gerbang-tebak/o2/t3/u1 [penebak]: masuk 352 keluar 1621 stop US$0.005215 23.2 s; milestone US$1.272380
+  20:07:17 m2d4/tirt/p14/tulis-ulang/o2 [penulis]: masuk 7204 keluar 32768 length US$0.014257 193.5 s; milestone US$1.286637
+  20:07:21 m2d4/tirt/p14/tulis-ulang/o2/u1 [penulis]: masuk 7179 keluar 473 stop US$0.001592 4.2 s; milestone US$1.288229
+  20:07:26 m2d4/tirt/p14/gerbang-kartu/o2 [pembaca-kartu]: masuk 633 keluar 686 stop US$0.000393 5.3 s; milestone US$1.288622
+  20:26:51 m2d4/tirt/p14/kritikus/o2/u1 [kritikus]: masuk 2215 keluar 17678 stop US$0.055249 264.6 s; milestone US$1.424339
+  20:27:08 m2d4/tirt/p14/gerbang-tebak/o2/t1 [penebak]: masuk 408 keluar 2297 stop US$0.000980 17.3 s; milestone US$1.425320
+  20:27:20 m2d4/tirt/p14/gerbang-tebak/o2/t2 [penebak]: masuk 408 keluar 1823 stop US$0.000795 11.6 s; milestone US$1.426114
+  20:30:00 m2d4/tirt/p14/gerbang-tebak/o2/t3 [penebak]: masuk 352 keluar 8000 length US$0.024352 160.2 s; milestone US$1.450466
+  20:31:46 m2d4/tirt/p14/gerbang-tebak/o2/t3/u1 [penebak]: masuk 352 keluar 8000 length US$0.024352 106.6 s; milestone US$1.474818
+  20:34:04 m2d4/tirt/p15/tulis-ulang/o2 [penulis]: masuk 7120 keluar 32768 length US$0.014241 137.7 s; milestone US$1.489059
+  20:34:11 m2d4/tirt/p15/tulis-ulang/o2/u1 [penulis]: masuk 7095 keluar 497 stop US$0.001585 6.6 s; milestone US$1.490644
+  20:34:16 m2d4/tirt/p15/gerbang-kartu/o2 [pembaca-kartu]: masuk 633 keluar 934 stop US$0.000490 5.4 s; milestone US$1.491135
+  20:39:58 m2d4/tirt/p15/kritikus/o2 [kritikus]: masuk 2199 keluar 24576 length US$0.075927 341.6 s; milestone US$1.567062
+  20:44:24 m2d4/tirt/p15/kritikus/o2/u1 [kritikus]: masuk 2199 keluar 19251 stop US$0.059952 266.2 s; milestone US$1.627014
+  20:44:42 m2d4/tirt/p15/gerbang-tebak/o2/t1 [penebak]: masuk 408 keluar 3220 stop US$0.001342 17.5 s; milestone US$1.628356
+  20:44:48 m2d4/tirt/p15/gerbang-tebak/o2/t2 [penebak]: masuk 408 keluar 879 stop US$0.000425 6 s; milestone US$1.628780
+  20:45:40 m2d4/tirt/p15/gerbang-tebak/o2/t3 [penebak]: masuk 352 keluar 3163 stop US$0.009841 52.3 s; milestone US$1.638621
+TIDAK TERBIT sesudah 15 dari 15 putaran (omongan 2 gagal di 3 sudut (naik-2025-11-26-2025-12-09, kelipatan-2025-11-26-2025-12-09, hari-naik-beruntun); simulasi tidak terbit); 76 panggilan, US$1.100605 menurut jejak, US$1.181073 menurut ledger; milestone US$1.638621 dari US$4.00.
+  putaran 1 (tulis 1,2,3): 1=ditolak-tebak 2=tidak-ada 3=lolos
+  putaran 2 (tulis 1,2): 1=lolos 2=ditolak-pemeriksa 3=terkunci-sebelumnya
+  putaran 3 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-pemeriksa 3=terkunci-sebelumnya
+  putaran 4 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-pemeriksa 3=terkunci-sebelumnya
+  putaran 5 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-pemeriksa 3=terkunci-sebelumnya; dibuang 2:naik-2025-11-26-2025-12-09→kelipatan-2025-11-26-2025-12-09
+  putaran 6 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-pemeriksa 3=terkunci-sebelumnya
+  putaran 7 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-pemeriksa 3=terkunci-sebelumnya
+  putaran 8 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-pemeriksa 3=terkunci-sebelumnya
+  putaran 9 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-pemeriksa 3=terkunci-sebelumnya
+  putaran 10 (tulis 2): 1=terkunci-sebelumnya 2=kritikus-tidak-menjawab 3=terkunci-sebelumnya; dibuang 2:kelipatan-2025-11-26-2025-12-09→hari-naik-beruntun
+  putaran 11 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-tebak 3=terkunci-sebelumnya
+  putaran 12 (tulis 2): 1=terkunci-sebelumnya 2=kritikus-tidak-menjawab 3=terkunci-sebelumnya
+  putaran 13 (tulis -; bawa 2): 1=terkunci-sebelumnya 2=ditolak-tebak 3=terkunci-sebelumnya
+  putaran 14 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-tebak 3=terkunci-sebelumnya
+  putaran 15 (tulis 2): 1=terkunci-sebelumnya 2=ditolak-tebak 3=terkunci-sebelumnya; dibuang 2:hari-naik-beruntun→null
+EXIT=0

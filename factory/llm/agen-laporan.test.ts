@@ -7,14 +7,15 @@
  * kriteria K-05 yang sama dengan gerbang. Ledger ada di `.cache/` (tidak
  * terlacak); tanpa ledger, tes yang membutuhkannya dilewati.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { bacaLedger, bangunLaporan, lolosKartuLuar, lolosTebakLuar } from './agen-laporan.ts';
 import { AKAR } from './env.ts';
 import { lolosTebak } from './laporan.ts';
-import { JALUR_LEDGER, type EntriLedger } from './pagu.ts';
+import { bacaLedgerSemua, type EntriLedger } from './pagu.ts';
 
-const adaLedger = existsSync(JALUR_LEDGER);
+// Riwayat biaya = arsip (M2d-4) + ledger kini.
+const adaLedger = bacaLedgerSemua().length > 0;
 
 describe.skipIf(!adaLedger)('laporan lingkar agen (D-7)', () => {
   const ledger = adaLedger ? bacaLedger() : [];

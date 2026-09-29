@@ -7,9 +7,9 @@
  */
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { GENERASI_M2D3, GENERASI_M2D4, MAX_TOKENS_PENEBAK_PERAN, PETUNJUK_PENEBAK_KUAT, PETUNJUK_PENEBAK_PERAN, jalankanPeran, promptPenulis, promptPenulisGaya, type Generasi, type HasilPeran, type InfoPeran, type PanggilPeran } from './agen-peran.ts';
+import { GENERASI_M2D3, GENERASI_M2D4, MAX_TOKENS_PENEBAK_GLM, MAX_TOKENS_PENEBAK_PERAN, PETUNJUK_PENEBAK_KUAT, PETUNJUK_PENEBAK_PERAN, jalankanPeran, promptPenulis, promptPenulisGaya, type Generasi, type HasilPeran, type InfoPeran, type PanggilPeran } from './agen-peran.ts';
 import { PETUNJUK_PENEBAK } from './gerbang-tebak.ts';
-import { KEBERATAN_TIDAK_MENJAWAB, MAX_TOKENS_KRITIKUS, promptKritikus, promptKritikusMakna } from './kritikus.ts';
+import { KEBERATAN_TIDAK_MENJAWAB, MAX_TOKENS_KRITIKUS, MAX_TOKENS_KRITIKUS_MAKNA, promptKritikus, promptKritikusMakna } from './kritikus.ts';
 import type { DrafSimulasi, KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
 import { PencatatJejak, validasiJejak } from './jejak.ts';
@@ -213,7 +213,7 @@ describe('M2d-4 — penebak lebih kuat (D-5)', () => {
     for (const r of tebak) {
       expect(r.pesan).toHaveLength(2);
       expect(r.pesan[0]?.content).toBe(PETUNJUK_PENEBAK_KUAT);
-      expect(r.setelan).toMatchObject({ suhu: 1, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
+      expect(r.setelan).toMatchObject({ suhu: 1, maxTokens: r.info.ke === 3 ? MAX_TOKENS_PENEBAK_GLM : MAX_TOKENS_PENEBAK_PERAN });
       const t = semuaTeks(r);
       for (const f of PAKET.fakta) {
         expect(t, `${String(r.info.ke)}: ${f.fact_id}`).not.toContain(f.fact_id);
@@ -270,12 +270,15 @@ describe('M2d-4 — kritikus lebih awal + cek makna (D-6)', () => {
     ]);
     for (const r of dari(rekaman, 'kritikus')) {
       expect(r.info.model).toBe(MODEL_KRITIKUS);
-      expect(r.setelan.maxTokens).toBe(MAX_TOKENS_KRITIKUS);
+      expect(r.setelan.maxTokens).toBe(MAX_TOKENS_KRITIKUS_MAKNA);
       expect(r.pesan[0]?.content).toBe(promptKritikusMakna());
     }
     const m2d3 = await jalan({ kritikus: () => ({ teks: JSON.stringify({ keberatan: [], arahan: '' }) }) }, GENERASI_M2D3);
     expect(m2d3.rekaman.slice(3, 8).map((r) => r.info.peran)).toEqual(['pembaca-kartu', 'penebak', 'penebak', 'penebak', 'kritikus']);
-    for (const r of dari(m2d3.rekaman, 'kritikus')) expect(r.pesan[0]?.content).toBe(promptKritikus());
+    for (const r of dari(m2d3.rekaman, 'kritikus')) {
+      expect(r.pesan[0]?.content).toBe(promptKritikus());
+      expect(r.setelan.maxTokens).toBe(MAX_TOKENS_KRITIKUS);
+    }
   });
 
   it('kritikus melihat kunci, isi kartu + tanda penentu, penjelasan, jawaban pembaca kartu; penebak disebut "dijalankan SESUDAH kritikus"', async () => {

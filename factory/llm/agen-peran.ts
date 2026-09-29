@@ -26,7 +26,7 @@ import { gerbangKartu, type PutusanKartu } from './gerbang-kartu.ts';
 import { PETUNJUK_PENEBAK, gerbangTebak, type InfoPanggil, type PanggilLlm, type PutusanTebak } from './gerbang-tebak.ts';
 import { hashPesan, type LangkahJejak, type PencatatJejak, type PeranLangkah } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
-import { kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
+import { MAX_TOKENS_KRITIKUS, MAX_TOKENS_KRITIKUS_MAKNA, kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
 import { MODEL_PENEBAK_M2D4, MODEL_PERAN, type ModelTanding, type PeranModel } from './model.ts';
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
@@ -69,6 +69,18 @@ export const JUMLAH_OMONGAN = 3;
  * ruang; perkiraan maksimum per panggilan tetap ±US$0,0065.
  */
 export const MAX_TOKENS_PENEBAK_PERAN = 16_000;
+/**
+ * `max_tokens` penebak GLM-5.3 (M2d-4). Terukur 29 Sep: pada tujuh tebakan GLM
+ * (soal TIRT sungguhan dan soal contoh) keluaran 439–1.463 token; satu
+ * tebakan di jalan TIRT ke-1 (dibuang, `eval/keluaran-m2d4/dibuang/`) berputar
+ * sampai habis 16.000 token (US$0,048, 292 detik) tanpa jawaban. 8.000 = lebih
+ * dari lima kali keluaran terpanjang yang terukur, dan memotong ongkos putaran
+ * macet menjadi separuh. Tebakan yang tetap tak terbaca dihitung BENAR/100
+ * (menolak), seperti sebelumnya. Tombol "tanpa berpikir" tidak tersedia:
+ * `chat_template_kwargs.enable_thinking=false` tetap berpikir, `thinking=false`
+ * menumpahkan penalaran ke jawaban.
+ */
+export const MAX_TOKENS_PENEBAK_GLM = 8_000;
 
 const JALUR_PENULIS = fileURLToPath(new URL('./prompt-penulis.md', import.meta.url));
 const JALUR_PENULIS_GAYA = fileURLToPath(new URL('./prompt-penulis-gaya.md', import.meta.url));
@@ -110,21 +122,29 @@ export interface Generasi {
   /** Urutan nada per posisi/sudut. */
   urutNada: readonly Nada[];
   /** Penebak tanpa kartu: petunjuk sistem dan model per tebakan ke-1..3. */
-  penebak: { petunjuk: string; model: readonly ModelTanding[] };
+  penebak: { petunjuk: string; model: readonly ModelTanding[]; maxTokens: readonly number[] };
   /** Kritikus: dipanggil sebelum penebak (M2d-4) atau sesudahnya (M2d-3); dua pertanyaan makna wajib. */
-  kritikus: { sebelumPenebak: boolean; cekMakna: boolean };
+  kritikus: { sebelumPenebak: boolean; cekMakna: boolean; maxTokens: number };
 }
 
 export const GENERASI_M2D3: Generasi = {
   nama: 'm2d3', promptPenulis, gerbangGaya: false, bank: () => bacaBank(1), urutNada: URUT_NADA_V1,
-  penebak: { petunjuk: PETUNJUK_PENEBAK_PERAN, model: [MODEL_PERAN.penebak, MODEL_PERAN.penebak, MODEL_PERAN.penebak] },
-  kritikus: { sebelumPenebak: false, cekMakna: false },
+  penebak: {
+    petunjuk: PETUNJUK_PENEBAK_PERAN,
+    model: [MODEL_PERAN.penebak, MODEL_PERAN.penebak, MODEL_PERAN.penebak],
+    maxTokens: [MAX_TOKENS_PENEBAK_PERAN, MAX_TOKENS_PENEBAK_PERAN, MAX_TOKENS_PENEBAK_PERAN],
+  },
+  kritikus: { sebelumPenebak: false, cekMakna: false, maxTokens: MAX_TOKENS_KRITIKUS },
 };
 
 export const GENERASI_M2D4: Generasi = {
   nama: 'm2d4', promptPenulis: promptPenulisGaya, gerbangGaya: true, bank: () => bacaBank(2), urutNada: URUT_NADA_V2,
-  penebak: { petunjuk: PETUNJUK_PENEBAK_KUAT, model: MODEL_PENEBAK_M2D4 },
-  kritikus: { sebelumPenebak: true, cekMakna: true },
+  penebak: {
+    petunjuk: PETUNJUK_PENEBAK_KUAT,
+    model: MODEL_PENEBAK_M2D4,
+    maxTokens: MODEL_PENEBAK_M2D4.map((m) => (m === MODEL_PERAN.kritikus ? MAX_TOKENS_PENEBAK_GLM : MAX_TOKENS_PENEBAK_PERAN)),
+  },
+  kritikus: { sebelumPenebak: true, cekMakna: true, maxTokens: MAX_TOKENS_KRITIKUS_MAKNA },
 };
 
 /** Model penebak ke-`ke` (1–3) menurut generasi. */
@@ -699,7 +719,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         const jalankanTebak = async (): Promise<PutusanTebak> => {
           tahap = 'gerbang-tebak';
           mulaiGerbang = jam().toISOString();
-          const t = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokens: MAX_TOKENS_PENEBAK_PERAN });
+          const t = await gerbangTebak(omongan, { ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokensKe: gen.penebak.maxTokens });
           tebak = t;
           suara.tebak = t.lolos;
           const semua = t.tebakan.flatMap((x) => x.panggilan);
@@ -742,7 +762,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
               tebakan: (tebak?.tebakan ?? []).map((t) => ({ pilihan: t.pilihan, yakin: t.yakin })),
               penebakSesudah: gen.kritikus.sebelumPenebak,
             },
-            { ...opsiGerbang, cekMakna: gen.kritikus.cekMakna },
+            { ...opsiGerbang, cekMakna: gen.kritikus.cekMakna, maxTokens: gen.kritikus.maxTokens },
           );
           kr = r;
           suara.kritikus = r.tanpa_keberatan;
