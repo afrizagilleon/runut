@@ -56,6 +56,7 @@
     "penalar:laporan": "node --experimental-strip-types factory/llm/penalar-laporan.ts",
     "pengecoh:probe": "node --experimental-strip-types factory/llm/pengecoh-probe.ts",
     "pengecoh:kalibrasi": "node --experimental-strip-types factory/llm/pengecoh-kalibrasi.ts",
+    "pengecoh:susun": "node --experimental-strip-types factory/llm/pengecoh-susun.ts",
     "sectors:ambil": "node --experimental-strip-types alat/sectors.ts",
     "sectors:manifest": "node --experimental-strip-types alat/manifest.ts",
     "audit:gudang": "node --experimental-strip-types alat/audit-gudang.ts",

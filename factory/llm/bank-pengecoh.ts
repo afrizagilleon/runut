@@ -26,6 +26,7 @@
  */
 import { angkaId, tanggalId } from '../format.ts';
 import { ambilRujukan, teksPolos } from '../skema/rujukan.ts';
+import { tanggalDalam } from './angka.ts';
 import { akar, normalAngka } from './gerbang-kembar.ts';
 import type { FaktaPaket, PaketFakta } from './paket.ts';
 
@@ -58,6 +59,8 @@ export interface KunciSudut {
   rujukan: string | null;
   penanda: string[];
   menjawab: string;
+  /** Rujukan lain ke fakta sudut yang sah (tanggal di kalimat faktanya) — pilihan kunci tidak harus mengulang angka pesan. */
+  rujukan_lain: string[];
 }
 
 /** Kelas fakta dari fact_id: tanggal dan nomor urut dibuang ("harga-2025-12-01" → "harga"). */
@@ -171,7 +174,12 @@ export function kunciSudut(paket: PaketFakta, sudut: string): KunciSudut {
   const n = nilaiBentuk(s, bentuk, paket);
   if (n === null) throw new Error(`Sudut ${sudut} tidak punya nilai yang bisa dipakai.`);
   const rujukan = n.rujukan ?? nilaiBentuk(s, 'tanggal', paket)?.rujukan ?? null;
-  return { fact_id: s.fact_id, bentuk, ...n, rujukan, menjawab: menjawab(s) };
+  const tahunT = tahunDari(paket.tanggal_t);
+  const lain = tanggalDalam(teksPolos(s.klaim))
+    .map((t) => (t.tahun !== null && String(t.tahun) === tahunT ? t.teks.replace(/ \d{4}$/, '') : t.teks))
+    .map((t) => `[[${s.fact_id}|${t}]]`)
+    .filter((r) => r !== rujukan);
+  return { fact_id: s.fact_id, bentuk, ...n, rujukan, menjawab: menjawab(s), rujukan_lain: [...new Set(lain)] };
 }
 
 interface Calon {

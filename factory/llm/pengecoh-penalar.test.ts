@@ -15,7 +15,7 @@ import { PaguTercapai } from './pagu.ts';
 import { PENYEDIA_DIKECUALIKAN, type BarisBukti } from './penyedia-bukti.ts';
 import { URUTAN_GLM_M2D7, pagarM2d7, urutanBerpikirDalam } from './penyedia-urutan.ts';
 import { AWALAN_TAG_M2D7, PAGU_BAGIAN_M2D7, PAGU_MILESTONE_M2D7, pencatatM2d7, siapM2d7 } from './pengecoh-konfig.ts';
-import { JALUR_BUKTI_URUTAN, JALUR_PROBE_M2D7, bacaProbe, butirProbe, putusanProbe, type HasilProbe } from './pengecoh-probe.ts';
+import { JALUR_BUKTI_URUTAN, JALUR_PROBE_M2D7, JEJAK_TAMBAHAN_PENALAR, bacaProbe, butirProbe, kritikusDariJejak, putusanProbe, type HasilProbe } from './pengecoh-probe.ts';
 import { readFileSync } from 'node:fs';
 import { PENALAR_M2D7, badanUpaya } from './penalaran.ts';
 
@@ -111,9 +111,11 @@ describe('probe effort "max" (D-1)', () => {
     expect(putusanProbe([k(3000), t(40)]).penebakGlm.ambang).toBe(50);
   });
 
-  it('PENALAR_M2D7 = putusan probe yang tersimpan', () => {
+  it('PENALAR_M2D7 = putusan probe + kritikus jalan yang sudah selesai (aturan yang sama)', () => {
     expect(existsSync(JALUR_PROBE_M2D7)).toBe(true);
-    const p = putusanProbe(bacaProbe());
+    const tambahan = JEJAK_TAMBAHAN_PENALAR.filter((f) => existsSync(f)).flatMap(kritikusDariJejak);
+    expect(tambahan.some((h) => h.finish_reason === 'length')).toBe(true);
+    const p = putusanProbe([...bacaProbe(), ...tambahan]);
     expect(PENALAR_M2D7.kritikus).toEqual({ effort: p.effort, maxTokens: p.kritikus.maxTokens, ambang: p.kritikus.ambang });
     expect(PENALAR_M2D7.penebakGlm).toEqual({ effort: p.effort, maxTokens: p.penebakGlm.maxTokens, ambang: p.penebakGlm.ambang });
   });

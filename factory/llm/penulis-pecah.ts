@@ -143,7 +143,11 @@ export function pesanTulisPesan(p: PermintaanPesan): PesanChat[] {
       '',
     );
   } else {
-    baris.push('Teman menyebut isi fakta sudut itu dengan kata-katanya sendiri ("klaim_dari": null). Angka di pesan dicatat ke fact_id fakta sudut.', '');
+    baris.push(
+      'Teman menyebut isi fakta sudut itu dengan kata-katanya sendiri ("klaim_dari": null). Tidak perlu menyebut angka persisnya — ' +
+        'angka persis cukup di kartu, dan pilihan kunci yang mengulang angka pesan mudah ditebak. Angka yang tetap disebut dicatat ke fact_id fakta sudut.',
+      '',
+    );
   }
   if (p.namaLain.length > 0) baris.push(`Nama yang sudah dipakai omongan lain (jangan dipakai): ${p.namaLain.map((n) => `"${n}"`).join(', ')}.`, '');
   baris.push(tulisContoh(p.gaya.nada, p.gaya.contoh), '');
@@ -218,6 +222,14 @@ export function pesanTulisPilihan(p: PermintaanPilihan): PesanChat[] {
       `${p.kunci.fact_id}: ${klaimFakta(p.paket, p.kunci.fact_id)}` +
       (p.kunci.rujukan === null ? '' : ` — rujukan: ${p.kunci.rujukan}`),
     '',
+    ...(p.pesan.angka_pesan.length > 0
+      ? [
+          `ANGKA DI PESAN: ${p.pesan.angka_pesan.map((a) => `"${a.teks}"`).join(', ')} — pilihan kunci TIDAK mengulangnya kecuali sedikitnya satu pengecoh juga memuatnya ` +
+            '(kunci yang "meresmikan" angka pesan ditolak mesin). Pakai rujukan lain ke fakta sudut bila perlu' +
+            (p.kunci.rujukan_lain.length > 0 ? `: ${p.kunci.rujukan_lain.join(', ')}` : '') + '.',
+          '',
+        ]
+      : []),
     'BANK PENGECOH (pilih tiga yang BERBEDA untuk pengecoh; salin rujukannya persis bila ada):',
     ...bank,
     '',
@@ -436,9 +448,13 @@ export function gIkatan(
       butir.push({ lokasi: 'pesan', teramati: pesan.pesan, alasan: `pesan tidak menyebut nilai salah kaprah ${c.id} ("${c.rujukan === null ? c.teks : teksPolos(c.rujukan)}") yang dipilih` });
     }
   } else {
+    // Klaim BETUL boleh menyebut isi fakta sudut tanpa angka persisnya (soal manusia: "dividennya receh banget");
+    // yang dicek hanya: tanpa salah kaprah, dan angka yang disebut milik fakta sudut atau fakta kartunya.
     if (pesan.klaim_dari !== null) butir.push({ lokasi: 'pesan', teramati: `klaim_dari ${pesan.klaim_dari}`, alasan: 'klaim BETUL tidak memakai salah kaprah ("klaim_dari": null)' });
-    if (!memakai(pesan.pesan, kunci, pesan.angka_pesan)) {
-      butir.push({ lokasi: 'pesan', teramati: pesan.pesan, alasan: `pesan tidak menyebut isi fakta sudut (${kunci.rujukan === null ? `"${kunci.teks}"` : teksPolos(kunci.rujukan)})` });
+    for (const a of pesan.angka_pesan) {
+      if (a.fact_id !== undefined && a.fact_id !== kunci.fact_id && bank.some((b) => b.fact_id === a.fact_id)) {
+        butir.push({ lokasi: 'pesan', teramati: a.teks, alasan: `klaim BETUL menyebut angka milik fakta lain (${a.fact_id}), bukan fakta sudut` });
+      }
     }
   }
   // --- pilihan

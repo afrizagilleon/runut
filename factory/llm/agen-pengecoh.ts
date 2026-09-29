@@ -65,6 +65,7 @@ import {
   dariKartu,
   dariKembar,
   dariKritik,
+  dariMeresmikan,
   dariPilihanSaja,
   dariTebak,
   dariValidator,
@@ -558,7 +559,7 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
           ...dariIkatan(ikatan),
         ];
         const kodeArtefak: UmpanMentah[] = [
-          ...artefak.meresmikan.alasan.map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'gerbang artefak: meresmikan', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })),
+          ...dariMeresmikan(artefak.meresmikan.alasan, o),
           ...artefak.keseimbangan.alasan.map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'gerbang artefak: keseimbangan', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })),
         ];
         mentah.push(...kode, ...kodeArtefak);

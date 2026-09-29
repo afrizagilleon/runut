@@ -142,6 +142,8 @@ export function badanUpaya(p: PenalarBerpikir): Readonly<Record<string, unknown>
  *   `max_tokens` 12.000.
  */
 export const PENALAR_M2D7 = {
-  kritikus: { effort: 'max', maxTokens: 16_000, ambang: 1_000 },
+  // Jalan 1 TIRT: kedua panggilan kritikus habis di 16.000 (penalaran 16.000/16.002, `length`) — aturan yang sama
+  // atas probe + jalan 1 (`kritikusDariJejak`) → 24.000 sebelum jalan 2.
+  kritikus: { effort: 'max', maxTokens: 24_000, ambang: 1_000 },
   penebakGlm: { effort: 'max', maxTokens: 12_000, ambang: 520 },
 } as const satisfies Record<string, PenalarBerpikir>;

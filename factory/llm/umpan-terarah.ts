@@ -94,7 +94,8 @@ export function dariValidator(masalah: readonly MasalahDraf[], o: OmonganDraf): 
 
 export function dariG(g: PutusanG, o: OmonganDraf): UmpanMentah[] {
   const hasil: UmpanMentah[] = [];
-  if (g.angka_cukup.tolak) hasil.push({ lokasi: pl(o.kunci), sumber: 'pemeriksa: G-angka-cukup', teramati: isiLokasi(o, pl(o.kunci)), alasan: g.angka_cukup.alasan });
+  // Angka kunci terhitung dari angka di pesan DAN pilihan lain: masalahnya di himpunan pilihan, jadi keempatnya ditulis ulang.
+  if (g.angka_cukup.tolak) for (const l of semuaPilihan()) hasil.push({ lokasi: l, sumber: 'pemeriksa: G-angka-cukup', teramati: isiLokasi(o, l), alasan: g.angka_cukup.alasan });
   for (const a of g.kaku.alasan) hasil.push({ lokasi: 'pesan', sumber: 'pemeriksa: G-kaku', teramati: o.pesan, alasan: a });
   return hasil;
 }
@@ -194,6 +195,14 @@ export function dariTebak(t: PutusanTebak, o: OmonganDraf): UmpanMentah[] {
   }));
 }
 
+/**
+ * Meresmikan: angka/kata pesan muncul lagi HANYA di kunci — hubungan kunci ↔ pengecoh, jadi keempat pilihan ditulis
+ * ulang (bila hanya kunci yang boleh diubah, pengecoh yang dikunci tidak bisa ikut memuat kata itu).
+ */
+export function dariMeresmikan(alasan: readonly string[], o: OmonganDraf): UmpanMentah[] {
+  return alasan.flatMap((a) => semuaPilihan().map((l) => ({ lokasi: l, sumber: 'gerbang artefak: meresmikan', teramati: isiLokasi(o, l), alasan: a })));
+}
+
 /** Pilihan-saja memilih kunci: bentuk keempat pilihan membocorkannya → keempatnya ditulis ulang. */
 export function dariPilihanSaja(alasan: readonly string[], o: OmonganDraf): UmpanMentah[] {
   return semuaPilihan().map((l) => ({ lokasi: l, sumber: 'gerbang pilihan-saja', teramati: isiLokasi(o, l), alasan: alasan.join(' ') }));
@@ -236,7 +245,11 @@ export function alternatifUntuk(l: LokasiBagian, k: KonteksAlternatif): string[]
   }
   const h = l.slice(-1) as KunciOpsi;
   if (h === k.hurufKunci) {
-    return [`label "${k.label}," + nilai kunci ${k.kunci.rujukan ?? `"${k.kunci.teks}"`}, satu klausa, sependek pengecoh, tanpa mengulang kata pesan yang tidak ada di pengecoh`];
+    return [
+      `label "${k.label}," + isi fakta sudut dengan kata sendiri${k.kunci.penanda.length > 0 ? ` (kata kunci: ${k.kunci.penanda.slice(0, 4).join(', ')})` : ''}, sependek pengecoh`,
+      ...[k.kunci.rujukan, ...(k.kunci.rujukan_lain ?? [])].filter((x): x is string => x !== null).map((r) => `atau rujukan ${r}`),
+      'angka/kata yang sudah ada di pesan hanya boleh diulang kunci bila pengecoh juga memuatnya; jangan menaruh di pilihan semua angka yang bisa dipakai menghitung angka kunci',
+    ];
   }
   const dipakai = new Set(HURUF.filter((x) => x !== h).map((x) => k.pilihan?.[x].sumber ?? ''));
   const bebas = k.bank.filter((b) => !dipakai.has(b.id)).slice(0, 5).map(pakaiKandidat);

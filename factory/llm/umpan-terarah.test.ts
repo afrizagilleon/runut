@@ -15,8 +15,10 @@ import {
   MAKS_PERBAIKAN,
   alternatifUntuk,
   catatPerbaikan,
+  dariG,
   dariKembar,
   dariKritik,
+  dariMeresmikan,
   dariTebak,
   dariValidator,
   lengkapi,
@@ -50,6 +52,12 @@ describe('lokasi penolakan', () => {
     expect(lokasiKritik('makna', '-', 'c', [])).toEqual(['pesan']);
     expect(lokasiKritik('kunci', '-', 'c', ['a'])).toEqual(['pilihan-a']);
     expect(lokasiKritik('tertebak', '-', 'c', [])).toEqual(['pilihan-a', 'pilihan-b', 'pilihan-d']);
+  });
+
+  it('meresmikan dan G-angka-cukup: keempat pilihan (hubungan kunci ↔ pengecoh), bukan kunci saja', () => {
+    expect(dariMeresmikan(['x'], o).map((x) => x.lokasi)).toEqual(['pilihan-a', 'pilihan-b', 'pilihan-c', 'pilihan-d']);
+    const g = { tolak: true, umpan: [], kaku: { tolak: false, penanda: [], panjang: 0, kalimat_panjang: 0, alasan: [] }, angka_cukup: { tolak: true, bukti: [], alasan: '58 = 106 − 48' } } as unknown as Parameters<typeof dariG>[0];
+    expect(dariG(g, o).map((x) => x.lokasi)).toEqual(['pilihan-a', 'pilihan-b', 'pilihan-c', 'pilihan-d']);
   });
 
   it('kembar: pengecoh yang diganti, bukan kunci', () => {
@@ -87,6 +95,11 @@ describe('umpan balik beralternatif', () => {
     expect(alternatifUntuk('pesan', K).join(' ')).toMatch(/salah kaprah P\d/);
     expect(alternatifUntuk('pesan', { ...K, label: 'Betul' }).join(' ')).toContain('isi fakta sudut');
     expect(alternatifUntuk('penjelasan', K).join(' ')).toContain('[[susp-2025-12-10|…]]');
+    // Pilihan kunci: isi sudut dengan kata sendiri ATAU rujukan lain ke fakta sudut (tanggal), tidak harus mengulang angka pesan.
+    const kn = kunciSudut(PAKET_T, 'naik-2025-11-26-2025-12-09');
+    const alt = alternatifUntuk(`pilihan-${huruf}`, { ...K, kunci: kn, label: 'Betul' }).join(' ');
+    expect(alt).toContain('[[naik-2025-11-26-2025-12-09|26 November]]');
+    expect(alt).toContain('hanya boleh diulang kunci bila pengecoh juga memuatnya');
   });
 
   it('kritikus dan penebak menjadi butir berlokasi', () => {

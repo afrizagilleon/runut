@@ -185,6 +185,34 @@ export function bacaProbe(jalur: string = JALUR_PROBE_M2D7): HasilProbe[] {
   return (JSON.parse(readFileSync(jalur, 'utf8')) as { hasil: HasilProbe[] }).hasil;
 }
 
+/**
+ * Panggilan kritikus jalan TIRT yang sudah selesai (dari jejak), dalam bentuk
+ * data probe. Aturan `putusanProbe` yang SAMA diterapkan pada probe + panggilan
+ * ini sebelum jalan berikutnya: di jalan 1 kedua panggilan kritikus `"max"`
+ * habis di `max_tokens` 16.000 tanpa jawaban (penalaran 16.000 dan 16.002).
+ */
+export function kritikusDariJejak(jalur: string): HasilProbe[] {
+  const j = JSON.parse(readFileSync(jalur, 'utf8')) as { langkah: Array<{ jenis: string; putaran: number; omongan: number | null; rincian: { finish_reason?: Array<string | null>; token_penalaran?: Array<number | null>; penyedia?: Array<string | null> } }> };
+  return j.langkah
+    .filter((l) => l.jenis === 'kritikus')
+    .flatMap((l) =>
+      (l.rincian.finish_reason ?? []).map((f, i) => ({
+        tag: `jalan/p${String(l.putaran)}/kritikus/o${String(l.omongan)}/${String(i)}`,
+        peran: 'kritikus' as const,
+        max_tokens: 0,
+        badan: null,
+        finish_reason: f,
+        token_penalaran: l.rincian.token_penalaran?.[i] ?? null,
+        token_keluar: l.rincian.token_penalaran?.[i] ?? 0,
+        penyedia: l.rincian.penyedia?.[i] ?? null,
+        status: 200,
+      })),
+    );
+}
+
+/** Jejak jalan yang dipakai sebagai data tambahan putusan penalar (jalan yang sudah selesai sebelum jalan berikutnya). */
+export const JEJAK_TAMBAHAN_PENALAR = [`${FOLDER_M2D7}/jalan-1/tirt/jejak-agen.json`];
+
 /** Cuplikan bukti urutan dari ledger (entri m2d6/ GLM ber-effort). */
 export function bangunBuktiUrutan(entri: readonly EntriLedger[]): { sumber: string; baris: BarisBukti[]; urutan: string[] } {
   const baris = entri

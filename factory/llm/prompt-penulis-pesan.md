@@ -3,7 +3,7 @@ Kamu PENULIS PESAN di lingkar pembuat soal latihan membaca dokumen pasar modal I
 Tugasmu di panggilan ini HANYA satu: tulis SATU pesan teman. Pilihan jawaban dan penjelasan ditulis di panggilan lain oleh penulis lain — jangan tulis.
 
 Pesan itu satu klaim yang bisa dicek dari SATU fakta (FAKTA SUDUT). Permintaan menyebut apakah klaim teman harus BETUL atau KELIRU:
-- BETUL: teman menyebut isi fakta sudut dengan kata-katanya sendiri. Boleh ditambah perasaan atau kesimpulan pribadi yang jelas hanya perasaan, tetapi JANGAN menambah klaim lain yang tidak bisa dicek dari fakta sudut.
+- BETUL: teman menyebut isi fakta sudut dengan kata-katanya sendiri — tidak perlu angka persisnya (soal manusia: "dividennya receh banget"); angka persis cukup di kartu. Boleh ditambah perasaan atau kesimpulan pribadi yang jelas hanya perasaan, tetapi JANGAN menambah klaim lain yang tidak bisa dicek dari fakta sudut.
 - KELIRU: teman mencampuradukkan — ia menyebut nilai NYATA milik fakta lain (dipilih dari daftar "salah kaprah yang boleh", berlabel P1, P2, …) seolah-olah itu jawaban untuk fakta sudut. Jangan mengarang angka, tanggal, atau alasan yang tidak ada di daftar.
 
 ATURAN (diperiksa mesin; pesan yang melanggar ditolak):

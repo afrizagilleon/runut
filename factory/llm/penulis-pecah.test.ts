@@ -101,6 +101,11 @@ describe('panggilan 2 — pilihan dari bank', () => {
     expect(isi).toContain('P3 | alasan-lain');
     expect(isi).toContain('← klaim teman');
     expect(isi).not.toContain('Salah-kaprah yang umum');
+    // Angka pesan disebut eksplisit supaya kunci tidak "meresmikan"-nya; rujukan lain ke fakta sudut ditawarkan.
+    const b2 = bahan(2);
+    const isi2 = pesanTulisPilihan({ paket: PAKET_T, no: 2, label: 'Betul', kunci: b2.kunci, bank: b2.bank, pesan: TULISAN[2]?.pesan as never })[1]?.content ?? '';
+    expect(isi2).toContain('ANGKA DI PESAN: "26 November", "58"');
+    expect(isi2).toContain('[[naik-2025-11-26-2025-12-09|9 Desember]]');
   });
 
   it('perbaikan sebagian: huruf lain dikunci, keluaran hanya huruf yang diminta', () => {
@@ -178,6 +183,8 @@ describe('G-ikatan — pilihan benar-benar memakai bank', () => {
     const b2 = bahan(2);
     const p2 = TULISAN[2]?.pesan as NonNullable<(typeof TULISAN)[2]>['pesan'];
     expect(gIkatan({ ...p2, klaim_dari: 'P1' } as never, b2.set, b2.huruf, 'Betul', b2.kunci, b2.bank).map((b) => b.alasan).join()).toMatch(/klaim BETUL/);
-    expect(gIkatan({ ...p2, angka_pesan: [] } as never, b2.set, b2.huruf, 'Betul', b2.kunci, b2.bank).map((b) => b.alasan).join()).toMatch(/tidak menyebut isi fakta sudut/);
+    // BETUL boleh tanpa angka persis (soal manusia: "dividennya receh banget"), tetapi angka yang disebut bukan milik fakta lain di bank.
+    expect(gIkatan({ ...p2, pesan: 'Naiknya dari akhir November lumayan tinggi ya.', angka_pesan: [] } as never, b2.set, b2.huruf, 'Betul', b2.kunci, b2.bank)).toEqual([]);
+    expect(gIkatan({ ...p2, pesan: 'Kemarin tutupnya 106 perak.', angka_pesan: [{ teks: '106', fact_id: 'harga-2025-12-09' }] } as never, b2.set, b2.huruf, 'Betul', b2.kunci, b2.bank).map((b) => b.alasan).join()).toMatch(/angka milik fakta lain/);
   });
 });
