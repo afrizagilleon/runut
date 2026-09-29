@@ -79,8 +79,10 @@ describe('M3.12 — teks soal 1–3 tidak disentuh', () => {
   const sidik = (kasus: Kasus): string =>
     createHash('sha256').update(JSON.stringify(kasus.soal)).digest('hex');
 
-  it('DADA: larik soal identik dengan 7d314e3', () => {
-    expect(sidik(dada)).toBe('92b949124f3320491a70245630a63fb26cbc343483987525445c3662d10cf71c');
+  // M3.13 D-1: satu-satunya perubahan sejak 7d314e3 adalah `tanya` soal 1 DADA
+  // (varian V1, eval/m313/soal1/); sidik lama 92b94912…cf71c.
+  it('DADA: larik soal identik dengan 7d314e3 kecuali judul pertanyaan soal 1 (M3.13 D-1)', () => {
+    expect(sidik(dada)).toBe('4a0075a672529ac0dc11b14f1c5e40a041a7fc3996b7822c2cf1854c1b7ba7c0');
   });
 
   it('ULTJ: larik soal identik dengan 7d314e3', () => {

@@ -1,0 +1,64 @@
+Versi V3 — jawaban mentah (subagent Opus baru, sinkron, tanpa alat). Prompt: layar-V3-penuh.txt / layar-V3-buta.txt + instruksi peran di rencana.md §3.
+
+### awam-1 (agen af255bc28473f1394)
+TUGAS: Aku disuruh ngecek omongan Bayu di grup pakai dua dokumen itu (pengumuman bursa dan hitungan harga), lalu pilih apakah omongannya betul atau keliru.
+JELAS: ya
+JAWAB: b
+ALASAN: Di pengumuman bursa, sahamnya disetop karena laporan keuangannya belum diserahkan, jadi nggak ada soal investor asing. Naik 22 kali memang benar, tapi bagian "bursa udah umumin investor asing" itu keliru.
+
+### awam-2 (agen a6d33b79391e0a22f)
+TUGAS: Aku disuruh cek omongan Bayu di grup pakai dua dokumen itu, terus pilih apakah omongannya betul atau keliru, sekalian alasannya.
+JELAS: ya
+JAWAB: b
+ALASAN: Di pengumuman bursa sama sekali nggak ada soal investor asing. Isinya cuma saham ini sempat distop karena laporan keuangannya belum diserahkan, jadi omongan Bayu keliru.
+
+### awam-3 (agen a14d348b0b742338b)
+TUGAS: Aku disuruh cek omongan Bayu di grup (saham D naik 22 kali, katanya mau dibeli investor asing dan bursa sudah umumin) ke dua dokumen di bawahnya, lalu pilih omongan itu betul atau keliru.
+JELAS: ya
+JAWAB: b
+ALASAN: Pengumuman bursanya bilang sahamnya sempat disetop karena laporan keuangannya belum diserahkan, sama sekali nggak ada soal investor asing. Naik 22 kalinya memang betul dari hitungan harga, tapi alasan yang Bayu bilang soal pengumuman bursa itu keliru.
+
+### awam-4 (agen ac946cb811a451ec5)
+TUGAS: Aku harus cek omongan Bayu di grup (saham D naik 22 kali karena mau dibeli investor asing dan bursa sudah mengumumkannya) ke dua dokumen itu, lalu pilih apakah omongannya betul atau keliru.
+JELAS: ya
+JAWAB: b
+ALASAN: Di pengumuman bursa tertulis sahamnya disetop karena laporan keuangan tahunannya belum diserahkan, bukan soal investor asing. Jadi omongan Bayu keliru.
+
+### awam-5 (agen a0a4e0abed5deff4e)
+TUGAS: Ngecek omongan Bayu di grup (saham D naik 22 kali karena mau dibeli investor asing dan bursa udah umumin) cocok atau nggak sama dua dokumen yang dikasih, lalu pilih betul atau keliru plus alasannya.
+JELAS: ya
+JAWAB: b
+ALASAN: Pengumuman bursanya ternyata soal saham disetop karena laporan keuangan tahunannya belum diserahkan, bukan soal investor asing. Naik 22 kalinya memang benar dari data harga, tapi alasan yang Bayu bilang nggak ada di pengumuman.
+
+### buta-1 (agen a246427e84368ec0a)
+JAWAB: d
+YAKIN: sedang
+ALASAN: Klaim "naik 22 kali" dan "bursa udah umumin" paling cocok dengan pengumuman bursa soal harga yang naik tidak wajar, bukan soal investor asing. Petunjuk "pesan bisa memuat lebih dari satu hal" menandakan kenaikannya betul, tapi alasan "investor asing" keliru. Pilihan b (laporan keuangan telat) kurang nyambung dengan harga yang naik.
+
+### buta-2 (agen a18accaeaabf444c3)
+JAWAB: d
+YAKIN: sedang
+ALASAN: Petunjuk "pesan teman bisa memuat lebih dari satu hal" membuat jawaban "Betul" (a, c) kurang mungkin. Harga yang naik 22 kali paling cocok dengan pengumuman bursa soal kenaikan harga yang tidak wajar (UMA), bukan soal laporan keuangan yang telat.
+
+### buta-3 (agen a919de3900439a0ab)
+JAWAB: d
+YAKIN: sedang
+ALASAN: Kalau harga naik sampai 22 kali, pengumuman bursa yang paling masuk akal adalah peringatan harga naik terlalu cepat (UMA), jadi pilihan "keliru" yang paling cocok adalah d. Pilihan a dan c hanya mengulang klaim Bayu, sedangkan b soal laporan keuangan telat tidak ada hubungannya dengan kenaikan harga.
+
+### kartu-1 (agen a3a4d47f763ea2240)
+JAWAB: b
+KARTU: 1
+ALASAN: Kartu pengumuman bursa menyebut perdagangan disetop karena laporan keuangan tahunan belum diserahkan, bukan soal investor asing. Kenaikan 22 kali di kartu 2 memang benar, tapi itu tidak mengubah isi pengumumannya.
+BINGUNG: tidak ada
+
+### kartu-2 (agen a9ff0405b7f38540c)
+JAWAB: b
+KARTU: 1
+ALASAN: Kartu 1 menunjukkan bahwa pengumuman bursa itu soal penghentian sementara perdagangan saham karena laporan keuangan tahunannya belum diserahkan, dan tidak menyebut investor asing sama sekali. Kenaikan 22 kali memang tercatat di kartu 2, tetapi kartu itu tidak mengubah isi pengumumannya.
+BINGUNG: tidak ada
+
+### kartu-3 (agen ad8dbf797eee778d0)
+JAWAB: b
+KARTU: 1
+ALASAN: Pengumuman bursa tanggal 30 Jun 2025 berisi penghentian sementara perdagangan saham karena laporan keuangan tahunannya belum diserahkan. Pengumuman itu sama sekali tidak menyebut investor asing. Kartu 2 hanya menunjukkan harganya memang naik 22 kali, tetapi tidak menjelaskan penyebabnya.
+BINGUNG: tidak ada

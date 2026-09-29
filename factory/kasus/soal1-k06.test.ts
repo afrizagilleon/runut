@@ -52,6 +52,16 @@ function sidik(teks: string): string {
 
 const DADA = {
   pesan: 'Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.',
+  /*
+   * M3.13 D-1: judul pertanyaan soal 1 DADA diganti DENGAN SENGAJA. Dulu
+   * "Omongan Bayu cocok dengan dokumennya?" (M3.9) — dijawab benar 13/40 di
+   * alpha, 16/40 memilih c; pesan Bayu memuat klaim benar ("naik 22 kali") dan
+   * klaim keliru (pengumuman investor asing), dan "cocok" tidak memakai kata
+   * pilihan ("Betul/Keliru"). Varian V1 dipilih menurut aturan yang ditulis
+   * sebelum uji (`eval/m313/soal1/rencana.md`, hasil di `hasil.md`). Soal
+   * lain tetap berpola "Omongan {nama} cocok dengan dokumennya?".
+   */
+  tanya: 'Menurut dokumennya, omongan Bayu betul atau keliru?',
   kartu: ['susp-2025-06-30', 'kelipatan-2025-08-01-2025-10-08'],
   susp: {
     kepala: 'Pengumuman bursa · 30 Jun 2025',
@@ -138,6 +148,14 @@ describe('M3.9 D-4 — soal 1 DADA sama persis dengan kontrak', () => {
   it('pemanasan: tanpa petunjuk, tanpa istilah', () => {
     expect(soal.petunjuk).toBeNull();
     expect(soal.istilah).toEqual([]);
+  });
+
+  it('M3.13 D-1: judul pertanyaan varian V1, huruf demi huruf; soal 2–3 tetap berpola lama', () => {
+    expect(soal.tanya).toBe(DADA.tanya);
+    expect(kasus.soal.slice(1).map((s) => s.tanya)).toEqual([
+      'Omongan Dimas cocok dengan dokumennya?',
+      'Omongan Rara cocok dengan dokumennya?',
+    ]);
   });
 
   it('kartu penentu (pengumuman bursa) tampil PERTAMA, kartu harga kedua', () => {

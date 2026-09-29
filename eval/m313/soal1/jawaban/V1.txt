@@ -1,0 +1,64 @@
+Versi V1 — jawaban mentah (subagent Opus baru, sinkron, tanpa alat). Prompt: layar-V1-penuh.txt / layar-V1-buta.txt + instruksi peran di rencana.md §3.
+
+### awam-1 (agen a9221a06f4f1c8a2a)
+TUGAS: Aku disuruh ngecek omongan Bayu di grup (saham D naik 22 kali karena mau dibeli investor asing dan bursa udah umumin) pakai dua dokumen yang dikasih, lalu milih apakah omongannya betul atau keliru.
+JELAS: ya
+JAWAB: b
+ALASAN: Pengumuman bursanya ternyata soal saham yang disetop sementara karena laporan keuangannya belum diserahkan, nggak ada soal investor asing sama sekali. Jadi omongan Bayu keliru.
+
+### awam-2 (agen ac3843353ae845d4c)
+TUGAS: Aku disuruh cek omongan Bayu di grup soal saham D, dicocokkan ke pengumuman bursa dan hitungan harganya, terus pilih omongannya betul atau keliru.
+JELAS: ya
+JAWAB: b
+ALASAN: Pengumuman bursanya bilang sahamnya disetop karena laporan keuangan belum diserahkan, nggak ada sama sekali soal investor asing. Jadi Bayu keliru.
+
+### awam-3 (agen a7f2877436dd7058d)
+TUGAS: Aku disuruh ngecek omongan Bayu di grup (katanya saham D naik 22 kali karena mau dibeli investor asing dan bursa sudah mengumumkan), lalu mencocokkannya dengan dua dokumen di bawahnya, terus memilih apakah omongannya betul atau keliru.
+JELAS: ya
+JAWAB: b
+ALASAN: Pengumuman bursanya ternyata soal saham yang disetop karena laporan keuangannya belum diserahkan, bukan soal investor asing. Jadi omongan Bayu keliru.
+
+### awam-4 (agen a072b127e4f15c166)
+TUGAS: Aku disuruh ngecek omongan Bayu di grup (saham D naik 22 kali karena mau dibeli investor asing dan katanya bursa sudah umumin) itu betul atau enggak, dengan melihat dua dokumen yang dikasih.
+JELAS: ya
+JAWAB: b
+ALASAN: Pengumuman bursanya ternyata soal jual-beli saham yang distop gara-gara laporan keuangannya belum diserahkan, tidak ada sama sekali soal investor asing. Jadi Bayu keliru.
+
+### awam-5 (agen afdac75984287dd96)
+TUGAS: Aku disuruh ngecek omongan Bayu di grup (saham D naik 22 kali karena mau dibeli investor asing, katanya bursa udah umumin) pakai dua dokumen itu, terus pilih omongannya betul atau keliru.
+JELAS: ya
+JAWAB: b
+ALASAN: Pengumuman bursanya ternyata soal perdagangan saham yang disetop karena laporan keuangannya belum diserahin, bukan soal investor asing. Jadi omongan Bayu keliru.
+
+### buta-1 (agen a760c8be719b0ca44)
+JAWAB: d
+YAKIN: sedang
+ALASAN: Harga yang naik 22 kali paling cocok dengan pengumuman bursa soal kenaikan harga yang terlalu cepat (UMA). Selain itu, dua pilihan "Betul" (a dan c) cuma mengulang omongan Bayu, jadi jawabannya kemungkinan salah satu pilihan "Keliru", dan d yang nyambung dengan kenaikan harganya.
+
+### buta-2 (agen afefedc4c388e9f79)
+JAWAB: d
+YAKIN: sedang
+ALASAN: Saham yang naik 22 kali paling masuk akal memicu pengumuman bursa soal harga yang naik tidak wajar. Selain itu, pertanyaan "betul atau keliru?" biasanya mengarah ke "keliru". Pilihan b (laporan keuangan telat) tidak nyambung dengan kenaikan harganya.
+
+### buta-3 (agen aa25b5aaab3b135c0)
+JAWAB: d
+YAKIN: sedang
+ALASAN: Saham yang naik tajam (22 kali) dan disebut "bursa udah umumin" paling cocok dengan pengumuman bursa soal harga naik tidak wajar (UMA), jadi klaim investor asing itu kemungkinan keliru. Pilihan d juga paling nyambung dengan kata "naik 22 kali" di omongan Bayu, sedangkan b (laporan keuangan telat) lebih jarang dikaitkan dengan harga yang melonjak.
+
+### kartu-1 (agen a2bdc05ca6abdb443)
+JAWAB: b
+KARTU: 1
+ALASAN: Pengumuman bursa tanggal 30 Jun 2025 menyebut perdagangan saham disetop sementara karena laporan keuangan tahunannya belum diserahkan, dan sama sekali tidak menyebut investor asing. Kartu 2 hanya menghitung kenaikan harga, jadi tidak bisa menjelaskan isi pengumumannya.
+BINGUNG: "Per **1 Agustus** dibuka lagi." (tidak jelas apakah laporan keuangannya akhirnya sudah diserahkan atau belum)
+
+### kartu-2 (agen a7079fc83c49a36bb)
+JAWAB: b
+KARTU: 1
+ALASAN: Kartu 1 menyebut bursa menyetop sementara jual-beli saham ini karena laporan keuangan tahunannya belum diserahkan, dan tidak menyebut investor asing sama sekali. Kartu 2 hanya membuktikan harganya memang naik 22 kali, tetapi tidak menjelaskan isi pengumuman.
+BINGUNG: tidak ada
+
+### kartu-3 (agen a6858cbb7a2b2098a)
+JAWAB: b
+KARTU: 1
+ALASAN: Kartu 1 bilang bursa menyetop sementara jual-beli saham ini karena laporan keuangan tahunannya belum diserahkan. Tidak ada kata soal investor asing, jadi omongan Bayu keliru. Kartu 2 hanya membenarkan angka naik 22 kali, tidak menjelaskan isi pengumumannya.
+BINGUNG: "Per **1 Agustus** dibuka lagi." Kalimat ini kurang jelas: apakah hari itu jual-belinya dibuka lagi, dan apakah artinya pengumuman ini (tertanggal 30 Jun) ikut menjelaskan kenaikan harga sejak 1 Agustus.

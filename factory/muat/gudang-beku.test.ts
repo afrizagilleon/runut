@@ -35,7 +35,8 @@ const sha = (b: Buffer | string) => createHash('sha256').update(b).digest('hex')
 
 const DADA = 'dada-2025-10-08';
 const ULTJ = 'ultj-2026-05-04';
-const SHA_DADA = '608a22842064698a15b997bf2b2828f5462f3683619bad82664a6ff171e744a8';
+// M3.13 D-1: judul pertanyaan soal 1 DADA diganti lewat build:case (dulu 608a2284…44a8).
+const SHA_DADA = 'eb5ef6810ca67c6fe95301b4c80816f504ea08c48979142e5b9aaed9f1c333b6';
 const SHA_ULTJ = 'd26683dbe9803ce1d2884b27bcfd018c21bb4b59a96da260eb422017ca0a40e5';
 
 describe('A-1 daftar gudang beku', () => {

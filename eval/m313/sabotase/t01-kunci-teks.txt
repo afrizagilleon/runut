@@ -1,0 +1,7 @@
+SABOTASE T-01: tanya soal 1 DADA diganti 'betul atau salah' lalu build:case
+ × factory/kasus/soal1-k06.test.ts > M3.9 D-4 — soal 1 DADA sama persis dengan kontrak > M3.13 D-1: judul pertanyaan varian V1, huruf demi huruf; soal 2–3 tetap berpola lama
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+AssertionError: expected 'Menurut dokumennya, omongan Bayu betu…' to be 'Menurut dokumennya, omongan Bayu betu…' // Object.is equality
+Expected: "Menurut dokumennya, omongan Bayu betul atau keliru?"
+Received: "Menurut dokumennya, omongan Bayu betul atau salah?"
+      Tests  1 failed | 19 passed (20)

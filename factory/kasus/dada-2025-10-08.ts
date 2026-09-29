@@ -201,7 +201,15 @@ export const DADA_2025_10_08: DefinisiKasus = {
         jam: '19.38',
         isi: 'Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.',
       },
-      tanya: 'Omongan Bayu cocok dengan dokumennya?',
+      /*
+       * M3.13 D-1 (varian V1): dulu "Omongan Bayu cocok dengan dokumennya?".
+       * Pesan Bayu memuat klaim yang benar (naik 22 kali) dan yang keliru
+       * (pengumuman investor asing); "cocok" tidak memakai kata pilihan, dan
+       * 16 dari 40 pemain alpha memilih c. Judul baru bertanya vonis dengan
+       * kata yang sama dengan pilihan. Dipilih menurut aturan yang ditulis
+       * sebelum uji (`eval/m313/soal1/`); dijaga `soal1-k06.test.ts`.
+       */
+      tanya: 'Menurut dokumennya, omongan Bayu betul atau keliru?',
       pilihan: [
         { kunci: 'a', teks: 'Betul, pengumuman bursanya soal investor asing.' },
         { kunci: 'b', teks: 'Keliru, pengumumannya soal laporan keuangan telat.' },

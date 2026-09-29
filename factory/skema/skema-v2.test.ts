@@ -183,12 +183,15 @@ describe('M2a D-1 — skema generasi kedua', () => {
    *    simulasi", "Rantai laporan" -> "Laporan-laporan") dan `penutup` ("Kasus
    *    berikutnya" -> "Simulasi berikutnya", tanpa "folks"); soal 1-3 dijaga
    *    `factory/kasus/kata-ringan.test.ts`.
+   * 5. **M3.13 D-1** — hanya `soal[0].tanya` ("Omongan Bayu cocok dengan
+   *    dokumennya?" -> "Menurut dokumennya, omongan Bayu betul atau keliru?"),
+   *    dipilih uji di `eval/m313/soal1/`; dijaga `soal1-k06.test.ts` (1 baris).
    *
    * Perubahan lain di berkas ini tetap merah di sini.
    */
   it('INV-A: berkas kasus yang sedang dimainkan tetap byte-identik', () => {
     const sha = createHash('sha256').update(readFileSync(BERKAS_KASUS)).digest('hex');
-    expect(sha).toBe('608a22842064698a15b997bf2b2828f5462f3683619bad82664a6ff171e744a8');
+    expect(sha).toBe('eb5ef6810ca67c6fe95301b4c80816f504ea08c48979142e5b9aaed9f1c333b6');
   });
 
   /*
