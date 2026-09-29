@@ -139,6 +139,10 @@ export interface PanggilanGerbang {
   finish_reason: string | null;
   teks_mentah: string;
   terbaca: boolean;
+  /** M2d-5: penyedia yang melayani, bila disebut respons. */
+  penyedia?: string | null;
+  /** M2d-5: token penalaran, bila disebut respons. */
+  token_penalaran?: number | null;
 }
 
 export interface Tebakan {
@@ -201,6 +205,7 @@ export async function panggilTerbaca<T>(
       finish_reason: j.finish_reason,
       teks_mentah: j.teks,
       terbaca: hasil !== null,
+      ...(j.penyedia === undefined ? {} : { penyedia: j.penyedia, token_penalaran: j.token_penalaran ?? null }),
     });
     if (hasil !== null) return { hasil, panggilan };
   }

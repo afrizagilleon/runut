@@ -49,3 +49,32 @@ export const MODEL_PENEBAK_M2D4: readonly ModelTanding[] = [MODEL_AGEN, MODEL_AG
 
 /** Model yang boleh dipanggil M2d-4 — sama dengan M2d-3. */
 export const MODEL_M2D4: readonly ModelTanding[] = [MODEL_AGEN, MODEL_KRITIKUS];
+
+/**
+ * Model OpenRouter M2d-5 (keputusan pemilik 29–30 Sep: pindah dari Featherless
+ * ke OpenRouter). Hanya dua model, TANPA sufiks varian (`:floor`, `:nitro`,
+ * dll.) — `pagarPenyedia()` di `openrouter.ts` menolak ID lain.
+ * DeepSeek: penulis, pembaca kartu, penebak ke-1 dan ke-2. GLM: kritikus,
+ * penebak ke-3.
+ */
+export const MODEL_OR_DEEPSEEK = 'deepseek/deepseek-v4.1-flash' as const;
+export const MODEL_OR_GLM = 'z-ai/glm-5.3' as const;
+export const MODEL_OPENROUTER = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM] as const;
+export type ModelOpenRouter = (typeof MODEL_OPENROUTER)[number];
+
+/** Model apa pun yang pernah dipanggil lingkar (Featherless M2d-1…M2d-4, OpenRouter M2d-5). */
+export type ModelLingkar = ModelTanding | ModelOpenRouter;
+
+/** Pemetaan peran → model M2d-5 (OpenRouter). Satu-satunya tempatnya. */
+export const MODEL_PERAN_M2D5: Readonly<Record<PeranModel, ModelOpenRouter>> = {
+  penulis: MODEL_OR_DEEPSEEK,
+  penebak: MODEL_OR_DEEPSEEK,
+  'pembaca-kartu': MODEL_OR_DEEPSEEK,
+  kritikus: MODEL_OR_GLM,
+};
+
+/** Penebak M2d-5 menurut urutan tebakan ke-1..3: DeepSeek, DeepSeek, GLM (sama dengan M2d-4). */
+export const MODEL_PENEBAK_M2D5: readonly ModelOpenRouter[] = [MODEL_OR_DEEPSEEK, MODEL_OR_DEEPSEEK, MODEL_OR_GLM];
+
+/** Model yang boleh dipanggil M2d-5. */
+export const MODEL_M2D5: readonly ModelOpenRouter[] = MODEL_OPENROUTER;

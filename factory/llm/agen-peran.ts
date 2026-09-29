@@ -27,7 +27,7 @@ import { PETUNJUK_PENEBAK, gerbangTebak, type InfoPanggil, type PanggilLlm, type
 import { hashPesan, type LangkahJejak, type PencatatJejak, type PeranLangkah } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
 import { MAX_TOKENS_KRITIKUS, MAX_TOKENS_KRITIKUS_MAKNA, kritik, umpanKritik, type PutusanKritik } from './kritikus.ts';
-import { MODEL_PENEBAK_M2D4, MODEL_PERAN, type ModelTanding, type PeranModel } from './model.ts';
+import { MODEL_OR_GLM, MODEL_PENEBAK_M2D4, MODEL_PENEBAK_M2D5, MODEL_PERAN, MODEL_PERAN_M2D5, type ModelLingkar, type PeranModel } from './model.ts';
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
@@ -113,7 +113,9 @@ export function promptPenulisGaya(): string {
  * Satu-satunya tempat perbedaan kedua generasi.
  */
 export interface Generasi {
-  nama: 'm2d3' | 'm2d4';
+  nama: 'm2d3' | 'm2d4' | 'm2d5';
+  /** Model per peran; bawaan `MODEL_PERAN` (Featherless, M2d-3/M2d-4). M2d-5: OpenRouter. */
+  model?: Readonly<Record<PeranModel, ModelLingkar>>;
   promptPenulis: () => string;
   /** Pemeriksa menjalankan gerbang gaya (G-panjang, G-satu-klausa, G-register) selain gerbang G. */
   gerbangGaya: boolean;
@@ -122,7 +124,7 @@ export interface Generasi {
   /** Urutan nada per posisi/sudut. */
   urutNada: readonly Nada[];
   /** Penebak tanpa kartu: petunjuk sistem dan model per tebakan ke-1..3. */
-  penebak: { petunjuk: string; model: readonly ModelTanding[]; maxTokens: readonly number[] };
+  penebak: { petunjuk: string; model: readonly ModelLingkar[]; maxTokens: readonly number[] };
   /** Kritikus: dipanggil sebelum penebak (M2d-4) atau sesudahnya (M2d-3); dua pertanyaan makna wajib. */
   kritikus: { sebelumPenebak: boolean; cekMakna: boolean; maxTokens: number };
 }
@@ -147,8 +149,29 @@ export const GENERASI_M2D4: Generasi = {
   kritikus: { sebelumPenebak: true, cekMakna: true, maxTokens: MAX_TOKENS_KRITIKUS_MAKNA },
 };
 
+/**
+ * Generasi M2d-5 (OpenRouter + TIRT): semua keputusan M2d-4, dengan model
+ * OpenRouter (`MODEL_PERAN_M2D5`: DeepSeek untuk penulis, pembaca kartu,
+ * penebak 1–2; GLM untuk kritikus dan penebak 3).
+ */
+export const GENERASI_M2D5: Generasi = {
+  ...GENERASI_M2D4,
+  nama: 'm2d5',
+  model: MODEL_PERAN_M2D5,
+  penebak: {
+    petunjuk: PETUNJUK_PENEBAK_KUAT,
+    model: MODEL_PENEBAK_M2D5,
+    maxTokens: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? MAX_TOKENS_PENEBAK_GLM : MAX_TOKENS_PENEBAK_PERAN)),
+  },
+};
+
 /** Model penebak ke-`ke` (1–3) menurut generasi. */
-export function modelPenebak(gen: Generasi, ke: number): ModelTanding {
+/** Model per peran menurut generasi. */
+export function modelPeranGen(gen: Generasi): Readonly<Record<PeranModel, ModelLingkar>> {
+  return gen.model ?? MODEL_PERAN;
+}
+
+export function modelPenebak(gen: Generasi, ke: number): ModelLingkar {
   const m = gen.penebak.model[ke - 1];
   if (m === undefined) throw new Error(`Tidak ada model untuk penebak ke-${String(ke)}.`);
   return m;
@@ -185,7 +208,7 @@ const PERAN_JENIS: Readonly<Record<InfoPanggil['jenis'], PeranModel>> = {
 function lewatPeran(panggil: PanggilPeran, gen: Generasi): PanggilLlm {
   return (pesan, setelan, info) => {
     const peran = PERAN_JENIS[info.jenis];
-    const model = peran === 'penebak' ? modelPenebak(gen, info.ke) : MODEL_PERAN[peran];
+    const model = peran === 'penebak' ? modelPenebak(gen, info.ke) : modelPeranGen(gen)[peran];
     return panggil(pesan, setelan, { ...info, peran, model });
   };
 }
@@ -257,6 +280,9 @@ export interface PanggilanPenulis {
   latensi_ms: number;
   terurai: boolean;
   mode_berpikir: boolean;
+  /** M2d-5: penyedia yang melayani dan token penalaran, bila disebut respons. */
+  penyedia?: string | null;
+  token_penalaran?: number | null;
 }
 
 export interface PutaranPeran {
@@ -389,6 +415,11 @@ function teksGalat(galat: unknown): string {
   return galat instanceof Error ? `${galat.name}: ${galat.message}` : 'galat tak dikenal';
 }
 
+/** Penyedia tiap panggilan untuk rincian jejak (M2d-5 D-1); kosong bila respons tidak menyebutnya (Featherless). */
+function penyediaDari(p: ReadonlyArray<{ penyedia?: string | null }>): { penyedia?: Array<string | null> } {
+  return p.some((x) => x.penyedia !== undefined) ? { penyedia: p.map((x) => x.penyedia ?? null) } : {};
+}
+
 function jumlah<T>(larik: readonly T[], f: (x: T) => number): number {
   return larik.reduce((a, x) => a + f(x), 0);
 }
@@ -406,7 +437,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
   const panggilGerbang = lewatPeran(opsi.panggil, gen);
   const hasil: HasilPeran = {
     paket_id: opsi.paket.paket_id,
-    model_peran: MODEL_PERAN,
+    model_peran: modelPeranGen(gen),
     lolos: false,
     jumlah_putaran: 0,
     berhenti: null,
@@ -509,7 +540,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       let gagal = '';
       for (const [ulang, u] of upaya.entries()) {
         const info: InfoPeran = {
-          jenis: jenisTulis, putaran, omongan: no, ke: 1, ulang, peran: 'penulis', model: MODEL_PERAN.penulis,
+          jenis: jenisTulis, putaran, omongan: no, ke: 1, ulang, peran: 'penulis', model: modelPeranGen(gen).penulis,
         };
         const label =
           `${jenisTulis === 'susun' ? 'menulis' : 'menulis ulang'} omongan ${String(no)}` +
@@ -525,7 +556,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           const alasan = pagu ? `pagu tercapai: ${galat.message}` : `galat penyedia: ${teksGalat(galat)}`;
           catat({
             putaran, jenis: jenisTulis, omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(),
-            model: MODEL_PERAN.penulis, panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: 'galat',
+            model: modelPeranGen(gen).penulis, panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: 'galat',
             alasan: [label, alasan], sha256_prompt: hashPesan(pesan), rincian: { mode_berpikir: u.berpikir }, peran: 'penulis',
           });
           if (pagu) {
@@ -547,9 +578,10 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           panjang_penalaran: jawaban.penalaran?.length ?? 0, finish_reason: jawaban.finish_reason,
           token_masuk: jawaban.token_masuk, token_keluar: jawaban.token_keluar, biaya_usd: jawaban.biaya_usd,
           latensi_ms: jawaban.latensi_ms, terurai, mode_berpikir: u.berpikir,
+          ...(jawaban.penyedia === undefined ? {} : { penyedia: jawaban.penyedia, token_penalaran: jawaban.token_penalaran ?? null }),
         });
         catat({
-          putaran, jenis: jenisTulis, omongan: no, waktu_mulai: mulai, waktu_selesai: selesai, model: MODEL_PERAN.penulis,
+          putaran, jenis: jenisTulis, omongan: no, waktu_mulai: mulai, waktu_selesai: selesai, model: modelPeranGen(gen).penulis,
           panggilan: 1, token_masuk: jawaban.token_masuk, token_keluar: jawaban.token_keluar, biaya_usd: jawaban.biaya_usd,
           putusan: 'ditulis',
           alasan: [
@@ -563,6 +595,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
             panjang_penalaran: jawaban.penalaran?.length ?? 0, suhu: u.setelan.suhu, max_tokens: u.setelan.maxTokens,
             mode_berpikir: u.berpikir, nada, contoh_gaya: contoh.map((c) => c.id),
             sudut: { ke: sk.ke, fact_id: sk.fact_id, putaran_sudut: putaranSudut.get(no) ?? 0 },
+            ...(jawaban.penyedia === undefined ? {} : { penyedia: [jawaban.penyedia], token_penalaran: jawaban.token_penalaran ?? null }),
           },
           peran: 'penulis',
         });
@@ -700,7 +733,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         suara.kartu = kartu.lolos;
         catat({
           putaran, jenis: 'gerbang-kartu', omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),
-          model: MODEL_PERAN['pembaca-kartu'], panggilan: kartu.panggilan.length,
+          model: modelPeranGen(gen)['pembaca-kartu'], panggilan: kartu.panggilan.length,
           token_masuk: jumlah(kartu.panggilan, (p) => p.token_masuk), token_keluar: jumlah(kartu.panggilan, (p) => p.token_keluar),
           biaya_usd: jumlah(kartu.panggilan, (p) => p.biaya_usd), putusan: kartu.lolos ? 'lolos' : 'tolak',
           alasan: [kartu.lolos ? `pembaca yang memegang kartu memilih "${String(kartu.pilihan)}" = kunci` : kartu.alasan],
@@ -708,6 +741,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           rincian: {
             pesan: pesanTeman, kunci: kartu.kunci, pilihan: kartu.pilihan, kartu_ditunjuk: kartu.kartu_ditunjuk,
             menunjuk_penentu: kartu.menunjuk_penentu, alasan_penjawab: kartu.alasan_penjawab,
+            ...penyediaDari(kartu.panggilan),
           },
           peran: 'pembaca-kartu',
         });
@@ -741,6 +775,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
                 ke: x.ke, model: modelPenebak(gen, x.ke), pilihan: x.pilihan, yakin: x.yakin, benar: x.benar, terbaca: x.terbaca, alasan: x.alasan,
                 biaya_usd: jumlah(x.panggilan, (p) => p.biaya_usd),
               })),
+              ...penyediaDari(semua),
             },
             peran: 'penebak',
           });
@@ -768,7 +803,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           suara.kritikus = r.tanpa_keberatan;
           catat({
             putaran, jenis: 'kritikus', omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),
-            model: MODEL_PERAN.kritikus, panggilan: r.panggilan.length,
+            model: modelPeranGen(gen).kritikus, panggilan: r.panggilan.length,
             token_masuk: jumlah(r.panggilan, (p) => p.token_masuk), token_keluar: jumlah(r.panggilan, (p) => p.token_keluar),
             biaya_usd: jumlah(r.panggilan, (p) => p.biaya_usd),
             putusan: r.tanpa_keberatan ? 'lolos' : 'tolak',
@@ -778,6 +813,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
               pesan: pesanTeman, menjawab: r.menjawab, terpotong: r.terpotong, keberatan: r.keberatan, arahan: r.arahan,
               diabaikan: r.diabaikan, galat: r.galat,
               finish_reason: r.panggilan.map((p) => p.finish_reason),
+              ...penyediaDari(r.panggilan),
               ...(r.cek_makna === undefined ? {} : { cek_makna: r.cek_makna, sebelum_penebak: gen.kritikus.sebelumPenebak }),
             },
             peran: 'kritikus',
@@ -799,7 +835,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         const alasanGalat = pagu ? `pagu tercapai: ${galat.message}` : `galat penyedia saat ${tahap}: ${teksGalat(galat)}`;
         catat({
           putaran, jenis: tahap, omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),
-          model: MODEL_PERAN[PERAN_JENIS[tahap]], panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0,
+          model: modelPeranGen(gen)[PERAN_JENIS[tahap]], panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0,
           putusan: 'galat', alasan: [alasanGalat], sha256_prompt: null, rincian: { pesan: pesanTeman },
           peran: PERAN_JENIS[tahap],
         });

@@ -17,11 +17,11 @@
  *   tanpa `--ulang`.
  */
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { GENERASI_M2D3, MAKS_PUTARAN_PERAN, jalankanPeran, ringkasModelPenebak, type Generasi, type InfoPeran } from './agen-peran.ts';
+import { GENERASI_M2D3, MAKS_PUTARAN_PERAN, jalankanPeran, modelPeranGen, ringkasModelPenebak, type Generasi, type InfoPeran } from './agen-peran.ts';
 import { AKAR, bacaKonfigLlm } from './env.ts';
 import { PencatatJejak } from './jejak.ts';
 import { GalatLlm } from './klien.ts';
-import { MODEL_M2D3, MODEL_PERAN } from './model.ts';
+import { MODEL_M2D3 } from './model.ts';
 import { JALUR_LEDGER, PencatatBiaya, SaldoPenyediaHabis, chatBerpagu, galatSaldo } from './pagu.ts';
 import { DEFINISI_PAKET, bangunPaket, type IdPaket } from './paket.ts';
 import { pesanPaket } from './susun.ts';
@@ -57,6 +57,12 @@ export interface KonfigSusun {
   /** Sisa pagu milestone minimum sebelum paket selain yang pertama; `null` = tidak ada syarat. */
   sisaMinimum: number | null;
   ringkasanPrompt: string;
+  /**
+   * M2d-5 (OpenRouter): `LLM_BASE_URL` yang wajib, pagar penyedia di setiap
+   * permintaan (`openrouter.ts`), dan biaya dari tagihan nyata (`usage.cost`).
+   * Tanpa medan ini perilaku M2d-3/M2d-4 tidak berubah.
+   */
+  openRouter?: { baseUrl: string; pagar: (model: string) => Readonly<Record<string, unknown>> };
 }
 
 export const KONFIG_M2D3: KonfigSusun = {
@@ -100,10 +106,15 @@ export async function jalankanSusun(k: KonfigSusun, argumen: string[]): Promise<
   }
 
   const konfig = bacaKonfigLlm();
+  if (k.openRouter !== undefined && konfig.baseUrl !== k.openRouter.baseUrl) {
+    console.error(`LLM_BASE_URL bukan ${k.openRouter.baseUrl} (nilainya tidak dicetak); ${k.milestone} hanya memanggil OpenRouter.`);
+    return 1;
+  }
   const biaya = new PencatatBiaya({
     paguUsd: konfig.paguUsd,
     jalurLedger: JALUR_LEDGER,
     paguMilestone: { usd: paguMilestone, awalanTag: k.awalanTag },
+    biayaNyata: k.openRouter !== undefined,
   });
   const awal = biaya.total();
   const awalMilestone = biaya.totalMilestone();
@@ -120,12 +131,17 @@ export async function jalankanSusun(k: KonfigSusun, argumen: string[]): Promise<
   const paket = bangunPaket(DEFINISI_PAKET[id]);
   simpan(`${folder}/paket.json`, paket);
   console.log(`Paket ${id.toUpperCase()}: ${String(paket.fakta.length)} fakta, ${String(paket.disingkirkan.length)} tersingkir.`);
-  const klien = { baseUrl: konfig.baseUrl, apiKey: konfig.apiKey, batasWaktuMs: 900_000 };
+  const klien = {
+    baseUrl: konfig.baseUrl,
+    apiKey: konfig.apiKey,
+    batasWaktuMs: 900_000,
+    ...(k.openRouter === undefined ? {} : { pagar: k.openRouter.pagar }),
+  };
 
-  const modelPeran = { ...MODEL_PERAN, penebak: ringkasModelPenebak(k.generasi) };
+  const modelPeran = { ...modelPeranGen(k.generasi), penebak: ringkasModelPenebak(k.generasi) };
   const jejak = new PencatatJejak({
     paket,
-    model: MODEL_PERAN.penulis,
+    model: modelPeranGen(k.generasi).penulis,
     promptSistem: k.generasi.promptPenulis(),
     pesanPaket: pesanPaket(paket),
     ringkasanPrompt: k.ringkasanPrompt,
@@ -156,7 +172,8 @@ export async function jalankanSusun(k: KonfigSusun, argumen: string[]): Promise<
       }
       console.log(
         `  ${new Date().toISOString().slice(11, 19)} ${tag} [${info.peran}]: masuk ${String(j.token_masuk)} keluar ${String(j.token_keluar)} ` +
-          `${String(j.finish_reason)} US$${j.biaya_usd.toFixed(6)} ${String(Math.round(j.latensi_ms / 100) / 10)} s; ` +
+          `${String(j.finish_reason)} US$${j.biaya_usd.toFixed(6)} ${String(Math.round(j.latensi_ms / 100) / 10)} s` +
+          `${j.penyedia === undefined ? '' : ` ${String(j.penyedia)}`}; ` +
           `milestone US$${biaya.totalMilestone().toFixed(6)}`,
       );
       return j;

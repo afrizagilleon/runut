@@ -119,6 +119,10 @@ export interface JawabanModel {
   latensi_ms: number;
   finish_reason: string | null;
   biaya_usd: number;
+  /** M2d-5: penyedia OpenRouter yang melayani (dari respons), bila ada. */
+  penyedia?: string | null;
+  /** M2d-5: token penalaran (dari `usage`), bila ada. */
+  token_penalaran?: number | null;
 }
 
 export interface Percobaan {

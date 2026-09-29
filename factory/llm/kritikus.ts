@@ -326,6 +326,7 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
       finish_reason: j.finish_reason,
       teks_mentah: j.teks,
       terbaca: hasil !== null,
+      ...(j.penyedia === undefined ? {} : { penyedia: j.penyedia, token_penalaran: j.token_penalaran ?? null }),
     });
     if (hasil !== null) {
       return {

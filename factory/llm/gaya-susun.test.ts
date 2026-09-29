@@ -18,6 +18,8 @@ import { adaEntriMilestone } from './gaya-arsip.ts';
 import { AWALAN_TAG_M2D4, KONFIG_M2D4, PAGU_MILESTONE_M2D4, URUTAN_GAYA, argumenGaya, ledgerSudahDiarsipkan } from './gaya-susun.ts';
 import { MODEL_AGEN, MODEL_KRITIKUS } from './model.ts';
 import { PaguMilestoneTercapai, PaguTercapai, PencatatBiaya, SaldoPenyediaHabis, arsipkanLedger, bacaLedgerSemua, galatSaldo, type EntriLedger } from './pagu.ts';
+// Tes mekanisme pagu era Featherless (token × tabel): tabel usang diberikan eksplisit; pagu M2d-5 memakai HARGA (max_price).
+import { HARGA_FEATHERLESS_USANG as FL } from './harga.ts';
 import type { PaketFakta } from './paket.ts';
 import { KONFIG_M2D3, tagPeran, ubahGalatSaldo } from './peran-susun.ts';
 import { GalatLlm } from './klien.ts';
@@ -49,7 +51,7 @@ describe('arsip ledger (D-0: pagu "reset lagi menjadi $5", riwayat tidak dihapus
     expect(h.jalur).toBe(`${arsip}/ledger-sampai-2026-09-28.jsonl`);
     expect(sha(h.jalur)).toBe(asli);
     expect(existsSync(jalur)).toBe(false);
-    const p = new PencatatBiaya({ paguUsd: 5, jalurLedger: jalur });
+    const p = new PencatatBiaya({ paguUsd: 5, jalurLedger: jalur, harga: FL });
     expect(p.total()).toBe(0);
   });
 
@@ -73,7 +75,7 @@ describe('arsip ledger (D-0: pagu "reset lagi menjadi $5", riwayat tidak dihapus
     writeFileSync(join(arsip, 'catatan.txt'), 'bukan ledger', 'utf8');
     tulisLedger(jalur, [e('m2d4/tirt/p1/susun/o1', 0.5, '2026-09-29T01:00:00.000Z')]);
     expect(bacaLedgerSemua(jalur, arsip).map((x) => x.tag)).toEqual(['lama1', 'lama2', 'm2d4/tirt/p1/susun/o1']);
-    expect(new PencatatBiaya({ paguUsd: 5, jalurLedger: jalur }).total()).toBeCloseTo(0.5, 10);
+    expect(new PencatatBiaya({ paguUsd: 5, jalurLedger: jalur, harga: FL }).total()).toBeCloseTo(0.5, 10);
     expect(ledgerSudahDiarsipkan(arsip)).toBe(true);
     expect(ledgerSudahDiarsipkan(join(arsip, 'tidak-ada'))).toBe(false);
   });
@@ -98,7 +100,7 @@ describe('gaya:susun — konfigurasi M2d-4', () => {
   it('pagu milestone dihitung dari entri m2d4/ saja dan dicek sebelum kirim', () => {
     const { jalur } = ruang();
     tulisLedger(jalur, [e('m2d3/lama', 3.9, '2026-09-28T00:00:00.000Z'), e('m2d4/tirt/p1/susun/o1', 3.99, '2026-09-29T00:00:00.000Z')]);
-    const p = new PencatatBiaya({ paguUsd: 100, jalurLedger: jalur, paguMilestone: { usd: PAGU_MILESTONE_M2D4, awalanTag: AWALAN_TAG_M2D4 } });
+    const p = new PencatatBiaya({ paguUsd: 100, jalurLedger: jalur, harga: FL, paguMilestone: { usd: PAGU_MILESTONE_M2D4, awalanTag: AWALAN_TAG_M2D4 } });
     expect(p.totalMilestone()).toBeCloseTo(3.99, 10);
     expect(() => p.periksa(MODEL_KRITIKUS, [{ role: 'user', content: 'x'.repeat(100) }], 16_384, 'm2d4/tirt/p2/kritikus/o1')).toThrow(PaguMilestoneTercapai);
     expect(() => p.periksa(MODEL_AGEN, [{ role: 'user', content: 'x' }], 10, 'm2d3/tirt/p2/susun/o1')).toThrow(/di luar awalan milestone/);

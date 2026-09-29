@@ -13,7 +13,7 @@
 import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { tanggalId } from '../format.ts';
 import { AKAR } from './env.ts';
-import { HARGA } from './harga.ts';
+import { HARGA_FEATHERLESS_USANG as HARGA } from './harga.ts';
 import { MODEL_TANDING } from './model.ts';
 import { bacaLedgerSemua, type EntriLedger } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
