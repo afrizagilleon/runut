@@ -1,0 +1,59 @@
+{
+  "benih": 20261002,
+  "tebak": [
+    {
+      "id": "Q1",
+      "paket": "tirt",
+      "no": 2,
+      "kunci": "d",
+      "putaran": 3
+    },
+    {
+      "id": "Q2",
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "c",
+      "putaran": 8
+    }
+  ],
+  "kartu": [
+    {
+      "id": "Q1",
+      "paket": "tirt",
+      "no": 1,
+      "kunci": "c",
+      "penentu": [
+        2
+      ]
+    },
+    {
+      "id": "Q2",
+      "paket": "tirt",
+      "no": 2,
+      "kunci": "d",
+      "penentu": [
+        1
+      ]
+    }
+  ],
+  "alami": [
+    {
+      "kelompok": 1,
+      "paket": "tirt",
+      "label": {
+        "A": "agen-m2d6",
+        "B": "agen-m2d5",
+        "C": "agen-m2d4"
+      }
+    },
+    {
+      "kelompok": 2,
+      "paket": "ultj",
+      "label": {
+        "A": "manusia",
+        "B": "agen-m2d4"
+      }
+    }
+  ],
+  "jalan": 1
+}

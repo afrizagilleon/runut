@@ -71,21 +71,33 @@ export interface BahanPengujiM2d5 {
   kunci: KunciPengujiM2d5;
 }
 
+/** Pilihan bahan (M2d-6 memakai prosedur yang sama dengan benih dan pembanding lain). */
+export interface OpsiBahanTirt {
+  benih: number;
+  /** Label sumber draf yang diuji di kelompok kealamian TIRT. */
+  label: string;
+  /** Draf TIRT pembanding di kelompok kealamian: [folder keluaran, label]. */
+  pembanding: ReadonlyArray<readonly [string, string]>;
+}
+
+export const OPSI_BAHAN_M2D5: OpsiBahanTirt = { benih: BENIH_M2D5, label: 'agen-m2d5', pembanding: [[FOLDER_M2D4, 'agen-m2d4'], [FOLDER_M2D3, 'agen-m2d3']] };
+
 /** Bangun ketiga bahan dan kuncinya dari keluaran yang tersimpan. Murni; tidak menulis apa pun. */
-export function bangunBahanTirt(folder: string = FOLDER_M2D5): BahanPengujiM2d5 {
-  const kunci: KunciPengujiM2d5 = { benih: BENIH_M2D5, tebak: [], kartu: [], alami: [] };
+export function bangunBahanTirt(folder: string = FOLDER_M2D5, opsi: OpsiBahanTirt = OPSI_BAHAN_M2D5): BahanPengujiM2d5 {
+  const BENIH = opsi.benih;
+  const kunci: KunciPengujiM2d5 = { benih: BENIH, tebak: [], kartu: [], alami: [] };
   const lolos = lolosM2d5('tirt', folder);
   const p = lolos.length === 0 ? null : bacaPaketDi(folder, 'tirt');
   const semua: Array<{ l: OmonganLolosPeran; kartu: KartuTampil[] }> = p === null ? [] : lolos.map((l) => ({ l, kartu: kartuOmongan(l.omongan, p) }));
 
-  const soalTebak = kocok(semua, acak(BENIH_M2D5)).map((x, i) => {
+  const soalTebak = kocok(semua, acak(BENIH)).map((x, i) => {
     const id = `Q${String(i + 1)}`;
     kunci.tebak.push({ id, paket: x.l.paket, no: x.l.no, kunci: x.l.omongan.kunci, putaran: x.l.putaran });
     return tulisSoalTebak(id, polos(x.l.omongan)) + '\n';
   });
   const tebak = [PETUNJUK_TEBAK, '', ...soalTebak].join('\n');
 
-  const soalKartu = kocok(semua, acak(BENIH_M2D5 + 1)).map((x, i) => {
+  const soalKartu = kocok(semua, acak(BENIH + 1)).map((x, i) => {
     const id = `Q${String(i + 1)}`;
     const penentu = x.kartu.filter((k) => x.l.omongan.kartu_penentu.includes(k.fact_id)).map((k) => k.no);
     kunci.kartu.push({ id, paket: x.l.paket, no: x.l.no, kunci: x.l.omongan.kunci, penentu });
@@ -93,12 +105,12 @@ export function bangunBahanTirt(folder: string = FOLDER_M2D5): BahanPengujiM2d5 
   });
   const kartu = [PETUNJUK_KARTU_M2D5, '', ...soalKartu].join('\n');
 
-  const r = acak(BENIH_M2D5 + 2);
+  const r = acak(BENIH + 2);
   const bagian: string[] = [PETUNJUK_ALAMI, ''];
   const kelompok: Array<{ paket: string; calon: DrafPolos[] }> = [];
   const tirt: DrafPolos[] = [];
-  if (lolos.length > 0) tirt.push({ ...polosDariDraf('tirt', 'agen-m2d5', { omongan: lolos.map((l) => l.omongan) } satisfies DrafSimulasi, 2), sumber: 'agen-m2d5' });
-  for (const [f, sumber] of [[FOLDER_M2D4, 'agen-m2d4'], [FOLDER_M2D3, 'agen-m2d3']] as const) {
+  if (lolos.length > 0) tirt.push({ ...polosDariDraf('tirt', opsi.label, { omongan: lolos.map((l) => l.omongan) } satisfies DrafSimulasi, 2), sumber: opsi.label });
+  for (const [f, sumber] of opsi.pembanding) {
     const h = bacaRiwayatDi(f, 'tirt');
     const l = h === null ? [] : omonganLolosPeran('tirt', h);
     if (l.length > 0) tirt.push({ ...polosDariDraf('tirt', sumber, { omongan: l.map((x) => x.omongan) }, 2), sumber });
