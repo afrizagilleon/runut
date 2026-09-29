@@ -17,6 +17,7 @@ import type { PesanChat } from './klien.ts';
 import { MODEL_OR_DEEPSEEK, MODEL_OR_GLM } from './model.ts';
 import type { PaketFakta } from './paket.ts';
 import { PENALARAN_M2D5, RUANG_JAWABAN_MIN } from './penalaran.ts';
+import { POLA_KUNCI, aturPosisiKunci, hurufKunciKode, polaKunci, rujukanHuruf } from './posisi-kunci.ts';
 import { rencanaSudut, type Sudut } from './sudut.ts';
 import { pesanPaket, type JawabanModel, type SetelanPanggil } from './susun.ts';
 import { validasiDraf } from './validasi.ts';
@@ -202,5 +203,104 @@ describe('M2d-5 — batas penalaran (D-3)', () => {
     const ls = jejak.jejak().langkah.filter((x) => x.jenis === 'susun' && x.omongan === 2);
     expect(ls[0]?.rincian).toMatchObject({ terpotong: true });
     expect(ls[1]?.alasan[0]).toContain('cadangan tanpa berpikir (jawaban kosong (penalaran menghabiskan anggaran))');
+  });
+});
+
+describe('M2d-5 — posisi kunci diatur kode (D-4)', () => {
+  it('huruf kunci deterministik dari id paket + nomor omongan; 60 pola, tak satu pun seragam', () => {
+    expect(POLA_KUNCI).toHaveLength(60);
+    for (const [x, y, z] of POLA_KUNCI) expect(x === y && y === z).toBe(false);
+    for (const id of ['tirt', 'ultj', 'dada', 'paket-lain']) {
+      const h = [1, 2, 3].map((no) => hurufKunciKode(id, no));
+      expect(new Set(h).size).toBeGreaterThan(1);
+      expect([1, 2, 3].map((no) => hurufKunciKode(id, no))).toEqual(h);
+      expect(polaKunci(id)).toEqual(h);
+    }
+    // Bergantung pada id paket (sha256), bukan hanya nomor omongan; TIRT dipatok supaya jalan ulang memberi huruf yang sama.
+    expect(polaKunci('tirt')).toEqual(['c', 'd', 'd']);
+    expect(new Set(['tirt', 'ultj', 'dada', 'aaaa', 'bbbb', 'cccc'].map((id) => polaKunci(id).join(''))).size).toBeGreaterThan(2);
+  });
+
+  it('aturPosisiKunci: teks kunci pindah ke huruf sasaran, pilihan lain bergeser dengan urutan tetap; validator tetap menerima', () => {
+    const o = om(1);
+    for (const ke of ['a', 'b', 'c', 'd'] as const) {
+      const r = aturPosisiKunci(o, ke);
+      expect(r?.omongan.kunci).toBe(ke);
+      expect(r?.omongan.pilihan[ke]).toBe(o.pilihan[o.kunci]);
+      const lamaLain = (['a', 'b', 'c', 'd'] as const).filter((h) => h !== o.kunci).map((h) => o.pilihan[h]);
+      const baruLain = (['a', 'b', 'c', 'd'] as const).filter((h) => h !== ke).map((h) => r?.omongan.pilihan[h]);
+      expect(baruLain).toEqual(lamaLain);
+      expect(r?.omongan.penjelasan).toBe(o.penjelasan);
+    }
+    expect(aturPosisiKunci({ ...o, kunci: 'e' }, 'a')).toBeNull();
+    expect(validasiDraf({ omongan: [1, 2, 3].map((no) => aturPosisiKunci(om(no), hurufKunciKode('tirt', no))?.omongan) }, PAKET)).toEqual([]);
+  });
+
+  it('di lingkar: kunci draf = huruf kode ("posisi kunci diatur kode" di jejak); pembaca kartu, kritikus, penebak melihat urutan sesudah dipindah', async () => {
+    // Penulis menaruh ketiga kunci di "a" — tanpa kode, KUNCI_SERAGAM.
+    const kunciA = (no: number): OmonganDraf => aturPosisiKunci(om(no), 'a')?.omongan as OmonganDraf;
+    expect(validasiDraf({ omongan: [kunciA(1), kunciA(2), kunciA(3)] }, PAKET).map((m) => m.kode)).toContain('KUNCI_SERAGAM');
+    const { hasil, rekaman, jejak } = await jalan({ penulis: (no) => kunciA(no) });
+    expect(hasil.lolos).toBe(true);
+    expect(hasil.draf?.omongan.map((o) => o.kunci)).toEqual(polaKunci('tirt'));
+    for (const r of rekaman.filter((x) => x.info.peran !== 'penulis')) {
+      const no = r.info.omongan ?? 0;
+      expect(kunciDiSoal(r.pesan[1]?.content ?? '', om(no)), `${r.info.peran} ${String(no)}`).toBe(hurufKunciKode('tirt', no));
+    }
+    for (const r of dari(rekaman, 'kritikus')) expect(r.pesan[1]?.content).toContain(`KUNCI: ${hurufKunciKode('tirt', r.info.omongan ?? 0)}`);
+    const tulis = jejak.jejak().langkah.filter((l) => l.jenis === 'susun');
+    expect(tulis.map((l) => l.rincian['posisi_kunci'])).toEqual(
+      [1, 2, 3].map((no) => expect.objectContaining({ catatan: 'posisi kunci diatur kode', dari: 'a', ke: hurufKunciKode('tirt', no) })),
+    );
+    // M2d-4: kunci tetap tulisan penulis.
+    const m2d4 = await jalan({ penulis: (no) => kunciA(no) }, GENERASI_M2D4, 1);
+    expect(m2d4.hasil.riwayat[0]?.masalah.map((m) => m.kode)).toContain('KUNCI_SERAGAM');
+  });
+
+  it('umpan balik yang menyebut huruf merujuk versi SESUDAH dipindah — versi itulah yang ditampilkan ulang ke penulis', async () => {
+    let disebut = '';
+    const s: Skenario = {
+      kritikus: (no, p) => {
+        if (!(no === 2 && p === 1)) return { teks: TANPA_KEBERATAN };
+        const k = hurufKunciKode('tirt', 2);
+        disebut = k === 'a' ? 'b' : 'a';
+        return {
+          teks: JSON.stringify({
+            cek_klaim: { bagian_tak_tercek: [], kunci_menyatakan_tak_pasti: false },
+            cek_pilihan: { juga_benar: [disebut], alasan: 'kartu 1 juga membenarkannya' },
+            keberatan: [],
+            arahan: '',
+          }),
+        };
+      },
+    };
+    const { rekaman, hasil } = await jalan(s, GENERASI_M2D5, 2);
+    const ulang = dari(rekaman, 'penulis').find((r) => r.info.putaran === 2 && r.info.omongan === 2)?.pesan[1]?.content ?? '';
+    expect(ulang).toContain(`Pilihan ${disebut} juga benar menurut kartu`);
+    const tampil = /Versi sebelumnya omongan 2 DITOLAK: (\{.*\})$/m.exec(ulang)?.[1] ?? '{}';
+    const versi = JSON.parse(tampil) as OmonganDraf;
+    expect(versi.kunci).toBe(hurufKunciKode('tirt', 2));
+    // Teks yang ditunjuk kritikus = teks di huruf itu pada versi yang ditampilkan.
+    const kritikSoal = dari(rekaman, 'kritikus').find((r) => r.info.omongan === 2 && r.info.putaran === 1)?.pesan[1]?.content ?? '';
+    expect(teksPolos(versi.pilihan[disebut as KunciOpsi])).toBe(pilihanDiSoal(kritikSoal)[disebut as KunciOpsi]);
+    expect(hasil.riwayat[0]?.omongan[1]?.status).toBe('ditolak-kritikus');
+  });
+
+  it('penjelasan yang merujuk huruf pilihan ditolak PEMERIKSA (HURUF_PILIHAN); M2d-4 tidak; penulis M2d-5 tidak diminta mengatur huruf kunci', async () => {
+    expect(rujukanHuruf('Jadi pilihan b yang cocok, bukan (c) atau d) ini.')).toEqual(['pilihan b', '(c)', 'd)']);
+    expect(rujukanHuruf('Harga adalah Rp48 dan data ada di kartu.')).toEqual([]);
+    const o1 = om(1);
+    const salah: OmonganDraf = { ...o1, penjelasan: `${o1.penjelasan} Jadi pilihan ${o1.kunci} yang cocok.` };
+    const { hasil, rekaman } = await jalan({ penulis: (no, p) => (no === 1 && p === 1 ? salah : undefined) }, GENERASI_M2D5, 1);
+    const r1 = hasil.riwayat[0]?.omongan[0];
+    expect(r1?.status).toBe('ditolak-pemeriksa');
+    expect(r1?.umpan.join('\n')).toContain('[pemeriksa: HURUF_PILIHAN] Penjelasan merujuk huruf pilihan');
+    expect(rekaman.filter((r) => r.info.putaran === 1 && r.info.omongan === 1 && r.info.peran !== 'penulis')).toHaveLength(0);
+    const m2d4 = await jalan({ penulis: (no, p) => (no === 1 && p === 1 ? salah : undefined) }, GENERASI_M2D4, 1);
+    expect(m2d4.hasil.riwayat[0]?.omongan[0]?.status).toBe('lolos');
+    // Tidak ada syarat huruf kunci di permintaan penulis M2d-5; prompt menyebut aturan huruf kunci.
+    const tulis2 = dari(rekaman, 'penulis').map((r) => r.pesan[1]?.content ?? '');
+    for (const t of tulis2) expect(t).not.toContain('huruf kunci omongan ini tidak boleh');
+    expect(dari(rekaman, 'penulis')[0]?.pesan[0]?.content).toContain('HURUF KUNCI DIATUR KODE');
   });
 });
