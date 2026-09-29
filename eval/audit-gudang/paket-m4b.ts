@@ -8,9 +8,12 @@
  * mentah Sectors yang relevan (baris JSON asli, nilainya tidak diubah).
  *
  * Pilihan deterministik: gudang audit terkunci manifest (372 berkas, sha
- * diperiksa), tiap aturan baru paling banyak 3 temuan, urut
+ * diperiksa), tiap aturan paling banyak 3 temuan, urut
  * sha256(`aturan|simbol|temuan_id`). R36 punya 1 temuan dan R37 3 temuan di
- * seluruh gudang, jadi semuanya diuji.
+ * seluruh gudang, jadi semuanya diuji. R23 (bukan aturan baru, tetapi
+ * diperbaiki di M4b T-04) ikut diuji atas temuan yang MASIH keluar sesudah
+ * perbaikan — tanpa itu laporan audit akan menganggap R23 boleh dikutip hanya
+ * karena sampel lamanya hilang.
  *
  * Paket berisi data mentah, jadi ditulis ke `.cache/audit-gudang/paket-m4b/`
  * (tidak ikut repo). Yang ikut repo: `eval/audit-gudang/penguji-m4b/pilihan.json`
@@ -26,6 +29,7 @@ import { FOLDER_GUDANG } from '../../factory/muat/gudang.ts';
 import { muatGudangManifest } from '../../factory/muat/gudang-manifest.ts';
 import { konteksEmiten } from '../../factory/verifikasi/konteks.ts';
 import { r36LaporanSahamLain, r37BagianMelebihiKeseluruhan } from '../../factory/verifikasi/aturan-audit.ts';
+import { r23LabaBedaEndpoint } from '../../factory/verifikasi/aturan-keuangan.ts';
 import type { Temuan } from '../../factory/skema/tipe.ts';
 import type { DataEmiten } from '../../factory/verifikasi/tipe.ts';
 
@@ -45,7 +49,7 @@ function sidik(teks: string): string {
 }
 
 interface Pilihan {
-  aturan: 'R36' | 'R37';
+  aturan: 'R36' | 'R37' | 'R23';
   data: DataEmiten;
   temuan: Temuan;
 }
@@ -56,6 +60,7 @@ export function pilihTemuanM4b(): Pilihan[] {
   for (const [aturan, jalankan] of [
     ['R36', r36LaporanSahamLain],
     ['R37', r37BagianMelebihiKeseluruhan],
+    ['R23', r23LabaBedaEndpoint],
   ] as const) {
     const semua: Pilihan[] = [];
     for (const data of gudang.emiten.values()) {
@@ -116,6 +121,32 @@ export function bangunPaketM4b(id: string, p: Pilihan): Paket {
         'harga harian emiten ini 5 hari sebelum s.d. hari laporan (market_cap = nilai pasar, close = harga tutup)',
       isi: harian,
     });
+  } else if (p.aturan === 'R23') {
+    // Sama dengan paket R23 M4a (alat/audit-paket.ts): baris agm utuh + baris keuangan tahun buku itu utuh.
+    const rups = /RUPS (\d{4}-\d{2}-\d{2})/.exec(temuan.rujukan.join(' '))?.[1] ?? '';
+    const tahun = Number(/tahun buku (\d{4})/.exec(temuan.rujukan.join(' '))?.[1] ?? '0');
+    fokus = `laba bersih tahun buku ${tahun} menurut keputusan RUPS ${rups} dan menurut laporan keuangan`;
+    for (const n of berkasDengan(data, (isi) => ((isi as Obj)['corporate_actions'] as Obj | undefined) !== undefined)) {
+      const agm = ((((baca(n) as Obj)['corporate_actions'] as Obj)['agm'] as Obj[] | undefined) ?? []).filter(
+        (r) => r['agm_date'] === rups,
+      );
+      if (agm.length > 0) potongan.push({ dari: n, keterangan: `corporate_actions.agm baris ${rups}, utuh`, isi: agm });
+    }
+    for (const n of berkasDengan(data, (isi) =>
+      Array.isArray(((isi as Obj)['financials'] as Obj | undefined)?.['historical_financials']),
+    )) {
+      const baris = (((baca(n) as Obj)['financials'] as Obj)['historical_financials'] as Obj[]).filter(
+        (r) => Number(r['year']) === tahun,
+      );
+      if (baris.length > 0) {
+        potongan.push({
+          dari: n,
+          keterangan: `financials.historical_financials tahun ${tahun}, utuh`,
+          isi: baris,
+        });
+        break;
+      }
+    }
   } else {
     const tahun = Number(/-(\d{4})$/.exec(temuan.temuan_id)?.[1] ?? '0');
     fokus = `laporan keuangan tahunan ${data.simbol} tahun buku ${tahun}`;
@@ -160,8 +191,9 @@ function utama(): number {
   });
   mkdirSync(join(AKAR, 'eval', 'audit-gudang', 'penguji-m4b'), { recursive: true });
   const keterangan =
-    'Temuan aturan baru M4b (R36, R37) untuk uji ulang penguji independen (M4b D-5): gudang audit ' +
-    'terkunci manifest, paling banyak 3 per aturan, urut sha256(aturan|simbol|temuan_id). Sidik prompt ' +
+    'Temuan aturan baru M4b (R36, R37) dan temuan R23 yang masih keluar sesudah perbaikan M4b T-04, untuk ' +
+    'uji ulang penguji independen (M4b D-5): gudang audit terkunci manifest, paling banyak 3 per aturan, ' +
+    'urut sha256(aturan|simbol|temuan_id). Sidik prompt ' +
     'dari .cache/audit-gudang/paket-m4b/ (tidak ikut repo). Ditulis oleh eval/audit-gudang/paket-m4b.ts.';
   writeFileSync(JALUR_PILIHAN_M4B, `${JSON.stringify({ keterangan, uji }, null, 2)}\n`, 'utf8');
   for (const u of uji) {

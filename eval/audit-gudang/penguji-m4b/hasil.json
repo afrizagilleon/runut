@@ -1,11 +1,12 @@
 {
-  "keterangan": "Hasil uji ulang aturan baru M4b (D-5). Tiap penguji = subagent Claude Opus baru (model opus), tanpa konteks eksekutor. Prompt = satu baris pembuka \"Jangan memakai alat apa pun (jangan membaca berkas, jangan menjalankan perintah, jangan mencari di internet). Jawab langsung di balasanmu, persis menurut format yang diminta di bawah.\" lalu isi paket .cache/audit-gudang/paket-m4b/<id>.txt apa adanya (sidik di pilihan.json), ditempel langsung di prompt — penguji tidak membuka berkas apa pun (tiap penguji tercatat 1 pemakaian alat: penyerahan jawaban). Jawaban mentah: <id>.md; kolom jawaban diambil dari baris pertamanya.",
+  "keterangan": "Hasil uji ulang M4b (D-5): temuan aturan baru R36/R37, dan temuan R23 yang masih keluar sesudah perbaikan T-04. Tiap penguji = subagent Claude Opus baru (model opus), tanpa konteks eksekutor. Prompt = satu baris pembuka \"Jangan memakai alat apa pun (jangan membaca berkas, jangan menjalankan perintah, jangan mencari di internet). Jawab langsung di balasanmu, persis menurut format yang diminta di bawah.\" lalu isi paket .cache/audit-gudang/paket-m4b/<id>.txt apa adanya (sidik di pilihan.json), ditempel langsung di prompt — penguji tidak membuka berkas apa pun (tiap penguji tercatat 1 pemakaian alat: penyerahan jawaban). Jawaban mentah: <id>.md; kolom jawaban diambil dari baris pertamanya.",
   "uji": [
     {
       "id": "B01",
       "aturan": "R36",
       "simbol": "ADRO",
       "temuan_id": "R36-ADRO|2025-10-17T22:27:59|4d80ecf450_17be92eba5.pdf",
+      "tahap": "aturan baru M4b",
       "jawaban": "ya",
       "penyelidikan": null
     },
@@ -14,6 +15,7 @@
       "aturan": "R37",
       "simbol": "ARCI",
       "temuan_id": "R37-ARCI-2023",
+      "tahap": "aturan baru M4b",
       "jawaban": "ya",
       "penyelidikan": null
     },
@@ -22,6 +24,7 @@
       "aturan": "R37",
       "simbol": "ABMM",
       "temuan_id": "R37-ABMM-2023",
+      "tahap": "aturan baru M4b",
       "jawaban": "ya",
       "penyelidikan": null
     },
@@ -30,8 +33,27 @@
       "aturan": "R37",
       "simbol": "HITS",
       "temuan_id": "R37-HITS-2025",
+      "tahap": "aturan baru M4b",
       "jawaban": "ya",
       "penyelidikan": null
+    },
+    {
+      "id": "B05",
+      "aturan": "R23",
+      "simbol": "AVIA",
+      "temuan_id": "R23-AVIA-2026-04-09",
+      "tahap": "R23 sesudah perbaikan M4b T-04 (temuan yang masih keluar)",
+      "jawaban": "tidak",
+      "penyelidikan": "Bug R23 terbukti, di luar D-4 dan tidak diperbaiki di M4b: bacaAngkaRupiah membaca \"Rp1.74 trillion\" sebagai Rp2 (kata skala trillion/billion diabaikan), dan angka RUPS berpresisi dua desimal triliun dibandingkan sampai rupiah. Laba laporan keuangan 1.747.462.000.000 cocok dengan Rp1,74 triliun pada presisi yang tertulis. Perbaikan yang diusulkan: baca kata skala, lalu bandingkan pada presisi angka RUPS (cara R31 M4a). R23 tetap tidak boleh dikutip."
+    },
+    {
+      "id": "B06",
+      "aturan": "R23",
+      "simbol": "BSIM",
+      "temuan_id": "R23-BSIM-2026-06-25",
+      "tahap": "R23 sesudah perbaikan M4b T-04 (temuan yang masih keluar)",
+      "jawaban": "tidak",
+      "penyelidikan": "Bug R23 terbukti, di luar D-4 dan tidak diperbaiki di M4b: medan keuangan BSIM ditulis dalam satuan juta rupiah (285.748.000.000), angka RUPS sampai rupiah (285.747.406.391); R23 membandingkan persis sampai rupiah. Selisih Rp593.609 lebih kecil dari satu satuan presisi laporan keuangan. Perbaikan yang diusulkan: bandingkan pada presisi medan keuangan (kelipatan satu juta bila semua medan baris itu berakhiran 000000). R23 tetap tidak boleh dikutip."
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "keterangan": "Temuan aturan baru M4b (R36, R37) untuk uji ulang penguji independen (M4b D-5): gudang audit terkunci manifest, paling banyak 3 per aturan, urut sha256(aturan|simbol|temuan_id). Sidik prompt dari .cache/audit-gudang/paket-m4b/ (tidak ikut repo). Ditulis oleh eval/audit-gudang/paket-m4b.ts.",
+  "keterangan": "Temuan aturan baru M4b (R36, R37) dan temuan R23 yang masih keluar sesudah perbaikan M4b T-04, untuk uji ulang penguji independen (M4b D-5): gudang audit terkunci manifest, paling banyak 3 per aturan, urut sha256(aturan|simbol|temuan_id). Sidik prompt dari .cache/audit-gudang/paket-m4b/ (tidak ikut repo). Ditulis oleh eval/audit-gudang/paket-m4b.ts.",
   "uji": [
     {
       "id": "B01",
@@ -54,6 +54,34 @@
       ],
       "prompt_sha256": "50f57cf4cb03cc15e35a102a43ac4edec8a084d28df2e2ae8caae645e58caf25",
       "prompt_byte": 2482
+    },
+    {
+      "id": "B05",
+      "aturan": "R23",
+      "simbol": "AVIA",
+      "temuan_id": "R23-AVIA-2026-04-09",
+      "fokus": "laba bersih tahun buku 2025 menurut keputusan RUPS 2026-04-09 dan menurut laporan keuangan",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "AVIA-m4a-corpactions.json",
+        "AVIA-m4a-overview-financials.json"
+      ],
+      "prompt_sha256": "70523653c920b5755dcaa1561ebd40cf339169692cd13e2b999d2bc6d19167c1",
+      "prompt_byte": 4080
+    },
+    {
+      "id": "B06",
+      "aturan": "R23",
+      "simbol": "BSIM",
+      "temuan_id": "R23-BSIM-2026-06-25",
+      "fokus": "laba bersih tahun buku 2025 menurut keputusan RUPS 2026-06-25 dan menurut laporan keuangan",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BSIM-m4a-corpactions.json",
+        "BSIM-m4a-overview-financials.json"
+      ],
+      "prompt_sha256": "f741cdee4501dece5dabc477f2a940584842da3359c342f204761dfe56780a3f",
+      "prompt_byte": 8296
     }
   ]
 }
