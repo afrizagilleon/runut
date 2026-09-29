@@ -31,6 +31,8 @@ import { MODEL_OR_GLM, MODEL_PENEBAK_M2D4, MODEL_PENEBAK_M2D5, MODEL_PERAN, MODE
 import { PaguTercapai } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
+import { gMirip } from './gerbang-mirip.ts';
+import { gPenilaian } from './gerbang-penilaian.ts';
 import { aturPosisiKunci, hurufKunciKode, periksaRujukanHuruf } from './posisi-kunci.ts';
 import { PENALARAN_M2D5, badanPenalaran, setelanPenalaran, setelanTanpaPenalaran } from './penalaran.ts';
 import { SUHU, pesanPaket, promptSistem, uraiKeluaran, type JawabanModel, type SetelanPanggil } from './susun.ts';
@@ -156,6 +158,8 @@ export interface Generasi {
    * menjawab (`posisi-kunci.ts`); penjelasan/pilihan dilarang merujuk huruf.
    */
   posisiKunci?: boolean;
+  /** M2d-5 D-5/D-6: pemeriksa menjalankan G-penilaian (pesan) dan G-mirip (antar-omongan). */
+  gerbangMakna?: boolean;
 }
 
 export const GENERASI_M2D3: Generasi = {
@@ -188,6 +192,9 @@ export const GENERASI_M2D5: Generasi = {
   nama: 'm2d5',
   promptPenulis: promptPenulisM2d5,
   posisiKunci: true,
+  gerbangMakna: true,
+  // Contoh gaya yang memuat penilaian ("aman lah", v2-056/v2-061) tidak ditunjukkan ke penulis M2d-5 (G-penilaian).
+  bank: () => bacaBank(2).filter((k) => !gPenilaian(k.teks).tolak),
   model: MODEL_PERAN_M2D5,
   penebak: {
     petunjuk: PETUNJUK_PENEBAK_KUAT,
@@ -733,12 +740,19 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
         }
         const huruf = gen.posisiKunci === true ? periksaRujukanHuruf(o as OmonganDraf) : [];
         butir.push(...huruf);
-        const tolakG = g.tolak || gaya?.tolak === true || huruf.length > 0;
+        const nilai = gen.gerbangMakna === true ? gPenilaian((o as OmonganDraf).pesan) : null;
+        const mirip = gen.gerbangMakna === true ? gMirip(no, gabung as Array<OmonganDraf | null>, terkunci) : null;
+        const umpanMakna = [
+          ...(nilai?.alasan ?? []).map((a) => `[pemeriksa: G-penilaian] ${a}`),
+          ...(mirip?.alasan ?? []).map((a) => `[pemeriksa: G-mirip] ${a}`),
+        ];
+        butir.push(...umpanMakna);
+        const tolakG = g.tolak || gaya?.tolak === true || huruf.length > 0 || umpanMakna.length > 0;
         catat({
           putaran, jenis: 'gerbang-g', omongan: no, waktu_mulai: mulaiG, waktu_selesai: jam().toISOString(), model: null,
           panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: tolakG ? 'tolak' : 'lolos',
           alasan: tolakG
-            ? [...g.umpan, ...(gaya?.umpan ?? []), ...huruf]
+            ? [...g.umpan, ...(gaya?.umpan ?? []), ...huruf, ...umpanMakna]
             : [gaya === null ? 'G-angka-cukup dan G-kaku tidak keberatan' : 'G-angka-cukup, G-kaku, G-panjang, G-satu-klausa, dan G-register tidak keberatan'],
           sha256_prompt: null,
           rincian: {
@@ -753,6 +767,8 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
                   register: { tolak: gaya.register.tolak, kata: gaya.register.kata },
                 }),
             ...(gen.posisiKunci === true ? { huruf_pilihan: { tolak: huruf.length > 0, butir: huruf } } : {}),
+            ...(nilai === null ? {} : { penilaian: { tolak: nilai.tolak, temuan: nilai.temuan } }),
+            ...(mirip === null ? {} : { mirip: { tolak: mirip.tolak, ambang: mirip.ambang, pasangan: mirip.pasangan } }),
           },
           peran: 'pemeriksa',
         });

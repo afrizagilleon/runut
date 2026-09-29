@@ -16,6 +16,8 @@ import { PencatatJejak, validasiJejak } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
 import { MODEL_OR_DEEPSEEK, MODEL_OR_GLM } from './model.ts';
 import type { PaketFakta } from './paket.ts';
+import { kemiripan } from './gerbang-mirip.ts';
+import { gPenilaian } from './gerbang-penilaian.ts';
 import { PENALARAN_M2D5, RUANG_JAWABAN_MIN } from './penalaran.ts';
 import { POLA_KUNCI, aturPosisiKunci, hurufKunciKode, polaKunci, rujukanHuruf } from './posisi-kunci.ts';
 import { rencanaSudut, type Sudut } from './sudut.ts';
@@ -302,5 +304,43 @@ describe('M2d-5 — posisi kunci diatur kode (D-4)', () => {
     const tulis2 = dari(rekaman, 'penulis').map((r) => r.pesan[1]?.content ?? '');
     for (const t of tulis2) expect(t).not.toContain('huruf kunci omongan ini tidak boleh');
     expect(dari(rekaman, 'penulis')[0]?.pesan[0]?.content).toContain('HURUF KUNCI DIATUR KODE');
+  });
+});
+
+describe('M2d-5 — G-penilaian dan G-mirip di pemeriksa (D-5, D-6)', () => {
+  it('pesan dengan penilaian ("Aman lah.") ditolak PEMERIKSA sebelum peran model mana pun; M2d-4 meloloskannya', async () => {
+    const o1 = om(1);
+    const aman: OmonganDraf = { ...o1, pesan: `${o1.pesan} Aman lah.` };
+    expect(validasiDraf({ omongan: [aman, om(2), om(3)] }, PAKET)).toEqual([]);
+    const s: Skenario = { penulis: (no, p) => (no === 1 && p === 1 ? aman : undefined) };
+    const { hasil, rekaman, jejak } = await jalan(s, GENERASI_M2D5, 2);
+    const r1 = hasil.riwayat[0]?.omongan[0];
+    expect(r1?.status).toBe('ditolak-pemeriksa');
+    expect(r1?.umpan.join('\n')).toContain('[pemeriksa: G-penilaian] Pesan teman memuat penilaian/ajakan yang tak bisa dicek kartu: "Aman"');
+    expect(rekaman.filter((r) => r.info.putaran === 1 && r.info.omongan === 1 && r.info.peran !== 'penulis')).toHaveLength(0);
+    expect(dari(rekaman, 'penulis').find((r) => r.info.putaran === 2 && r.info.omongan === 1)?.pesan[1]?.content).toContain('[pemeriksa: G-penilaian]');
+    const g = jejak.jejak().langkah.find((l) => l.jenis === 'gerbang-g' && l.omongan === 1 && l.putaran === 1);
+    expect(g).toMatchObject({ putusan: 'tolak', rincian: { penilaian: { tolak: true, temuan: [{ frasa: 'Aman' }] } } });
+    expect(validasiJejak(jejak.jejak())).toEqual([]);
+    const m2d4 = await jalan(s, GENERASI_M2D4, 1);
+    expect(m2d4.hasil.riwayat[0]?.omongan[0]?.status).toBe('lolos');
+  });
+
+  it('omongan yang pola pilihannya meniru omongan TERKUNCI ditolak G-mirip; bila keduanya baru, yang bernomor besar ditulis ulang', async () => {
+    const o1 = om(1);
+    const tiru = (no: number): OmonganDraf => ({ ...om(no), pilihan: { ...o1.pilihan }, kunci: o1.kunci, kartu: o1.kartu, kartu_penentu: [...om(no).kartu_penentu], penjelasan: om(no).penjelasan });
+    expect(kemiripan(tiru(3).pilihan, o1.pilihan)).toBe(1);
+    const { hasil } = await jalan({ penulis: (no, p) => (no === 3 && p === 1 ? tiru(3) : undefined) }, GENERASI_M2D5, 1);
+    const r3 = hasil.riwayat[0]?.omongan[2];
+    expect(r3?.umpan.join('\n')).toContain('[pemeriksa: G-mirip] Pola keempat pilihan omongan ini hampir sama dengan omongan 1');
+    expect(hasil.riwayat[0]?.omongan[0]?.umpan.join('\n') ?? '').not.toContain('G-mirip');
+  });
+
+  it('contoh gaya yang memuat penilaian ("aman lah", v2-056/v2-061) tidak pernah ditunjukkan ke penulis M2d-5', async () => {
+    const bank = GENERASI_M2D5.bank();
+    expect(bank.map((k) => k.id)).not.toContain('v2-056');
+    expect(bank.map((k) => k.id)).not.toContain('v2-061');
+    expect(GENERASI_M2D4.bank().map((k) => k.id)).toContain('v2-056');
+    for (const k of bank) expect(gPenilaian(k.teks).tolak, k.id).toBe(false);
   });
 });
