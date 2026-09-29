@@ -63,6 +63,19 @@ export const PETUNJUK_PENJAWAB = [
   'Balas HANYA dengan JSON berbentuk: {"pilihan": "a", "kartu": [1], "alasan": "..."}',
 ].join('\n');
 
+/**
+ * Petunjuk pembaca kartu M2d-5 (D-7): sama dengan M2d-2, ditambah daftar
+ * kalimat yang membingungkan (kutipan persis). Kalimat tulisan penulis yang
+ * ditandai MENOLAK soal (kutipannya dikirim ke penulis); kalimat dari teks
+ * kartu paket hanya dicatat (bahan D-8).
+ */
+export const PETUNJUK_PENJAWAB_BINGUNG = [
+  ...PETUNJUK_PENJAWAB.split('\n').slice(0, -1),
+  'Kalau ada kalimat yang membuatmu bingung atau bisa kamu baca dua arti (di pesan, kartu, atau pilihan), kutip persis',
+  'kalimat itu di "membingungkan". Kosongkan bila semuanya jelas; jangan menandai kalimat hanya karena harus dibaca dua kali.',
+  'Balas HANYA dengan JSON berbentuk: {"pilihan": "a", "kartu": [1], "alasan": "...", "membingungkan": ["kalimat persis"]}',
+].join('\n');
+
 export function tulisSoalKartu(s: SoalTebak, kartu: readonly KartuTampil[]): string {
   return [
     `Pesan dari ${s.nama} (${s.jam}): "${s.pesan}"`,
@@ -78,9 +91,9 @@ export function tulisSoalKartu(s: SoalTebak, kartu: readonly KartuTampil[]): str
   ].join('\n');
 }
 
-export function pesanPenjawab(s: SoalTebak, kartu: readonly KartuTampil[]): PesanChat[] {
+export function pesanPenjawab(s: SoalTebak, kartu: readonly KartuTampil[], bingung = false): PesanChat[] {
   return [
-    { role: 'system', content: PETUNJUK_PENJAWAB },
+    { role: 'system', content: bingung ? PETUNJUK_PENJAWAB_BINGUNG : PETUNJUK_PENJAWAB },
     { role: 'user', content: tulisSoalKartu(s, kartu) },
   ];
 }
@@ -89,6 +102,8 @@ export interface JawabanKartu {
   pilihan: KunciOpsi;
   kartu: number[];
   alasan: string;
+  /** M2d-5 D-7: kutipan kalimat yang membingungkan; `undefined` bila tidak diminta. */
+  membingungkan?: string[];
 }
 
 export function uraiJawabanKartu(teks: string): JawabanKartu | null {
@@ -99,6 +114,85 @@ export function uraiJawabanKartu(teks: string): JawabanKartu | null {
   if (!KUNCI.includes(pilihan as KunciOpsi)) return null;
   const kartu = Array.isArray(n['kartu']) ? n['kartu'].map(Number).filter((x) => Number.isInteger(x)) : [];
   return { pilihan: pilihan as KunciOpsi, kartu, alasan: typeof n['alasan'] === 'string' ? n['alasan'] : '' };
+}
+
+/** Urai jawaban pembaca kartu M2d-5: medan "membingungkan" WAJIB berupa larik (boleh kosong). */
+export function uraiJawabanKartuBingung(teks: string): JawabanKartu | null {
+  const dasar = uraiJawabanKartu(teks);
+  if (dasar === null) return null;
+  const u = uraiKeluaran(teks);
+  const m = u.ok ? (u.nilai as Record<string, unknown>)['membingungkan'] : undefined;
+  if (!Array.isArray(m)) return null;
+  const kutipan = [...new Set(m.filter((x): x is string => typeof x === 'string').map((x) => x.replace(/\s+/g, ' ').trim()).filter((x) => x !== ''))];
+  return { ...dasar, membingungkan: kutipan.slice(0, 6).map((x) => (x.length > 300 ? `${x.slice(0, 299)}…` : x)) };
+}
+
+/** Asal kalimat yang ditandai membingungkan. */
+export type SumberBingung = 'penulis' | 'kartu' | 'soal' | 'tak-dikenal';
+
+export interface KalimatBingung {
+  kutipan: string;
+  sumber: SumberBingung;
+  /** Bagian yang paling cocok: "pesan", "pilihan b", "kartu 2" (fact_id), "pertanyaan"; `null` bila tak dikenal. */
+  bagian: string | null;
+  fact_id: string | null;
+}
+
+function kataNormal(t: string): string[] {
+  return t
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .trim()
+    .split(/\s+/)
+    .filter((k) => k !== '');
+}
+
+/** Deret kata bersama terpanjang (kata berurutan). */
+function deretBersama(a: readonly string[], b: readonly string[]): number {
+  let maks = 0;
+  const baris = new Array<number>(b.length + 1).fill(0);
+  for (let i = 1; i <= a.length; i++) {
+    let kiriAtas = 0;
+    for (let j = 1; j <= b.length; j++) {
+      const simpan = baris[j] ?? 0;
+      baris[j] = a[i - 1] === b[j - 1] ? kiriAtas + 1 : 0;
+      maks = Math.max(maks, baris[j] ?? 0);
+      kiriAtas = simpan;
+    }
+  }
+  return maks;
+}
+
+/**
+ * Golongkan satu kutipan menurut bagian soal yang paling cocok: tulisan
+ * penulis (pesan, pilihan), teks kartu paket (isi atau kepala kartu), atau
+ * pertanyaan tetap. Cocok = deret kata bersama ≥ 4 dan ≥ separuh bagian yang
+ * lebih pendek, atau ≥ 6 kata. Seri → penulis (konservatif: menolak).
+ */
+export function golongkanBingung(kutipan: string, s: SoalTebak, kartu: readonly KartuTampil[]): KalimatBingung {
+  const q = kataNormal(kutipan);
+  const bagian: Array<{ sumber: SumberBingung; bagian: string; fact_id: string | null; teks: string }> = [
+    { sumber: 'penulis', bagian: 'pesan', fact_id: null, teks: s.pesan },
+    ...KUNCI.map((k) => ({ sumber: 'penulis' as const, bagian: `pilihan ${k}`, fact_id: null, teks: s.pilihan[k] })),
+    ...kartu.map((k) => ({ sumber: 'kartu' as const, bagian: `kartu ${String(k.no)}`, fact_id: k.fact_id, teks: `${k.isi}` })),
+    ...kartu.map((k) => ({ sumber: 'kartu' as const, bagian: `kepala kartu ${String(k.no)}`, fact_id: k.fact_id, teks: k.kepala })),
+    { sumber: 'soal', bagian: 'pertanyaan', fact_id: null, teks: `Omongan ${s.nama} cocok dengan dokumennya?` },
+  ];
+  let terbaik: { skor: number; b: (typeof bagian)[number] } | null = null;
+  for (const b of bagian) {
+    const w = kataNormal(b.teks);
+    const d = deretBersama(q, w);
+    const pendek = Math.max(1, Math.min(q.length, w.length));
+    const cocok = (d >= 4 && d / pendek >= 0.5) || d >= 6 || (d === q.length && q.length >= 2);
+    if (!cocok) continue;
+    const skor = d / pendek + d / 1000;
+    if (terbaik === null || skor > terbaik.skor + 1e-9 || (Math.abs(skor - terbaik.skor) <= 1e-9 && b.sumber === 'penulis' && terbaik.b.sumber !== 'penulis')) {
+      terbaik = { skor, b };
+    }
+  }
+  return terbaik === null
+    ? { kutipan, sumber: 'tak-dikenal', bagian: null, fact_id: null }
+    : { kutipan, sumber: terbaik.b.sumber, bagian: terbaik.b.bagian, fact_id: terbaik.b.fact_id };
 }
 
 export interface PutusanKartu {
@@ -112,17 +206,26 @@ export interface PutusanKartu {
   /** Kalimat umpan balik untuk penyusun; kosong kalau lolos. */
   alasan: string;
   panggilan: PanggilanGerbang[];
+  /** M2d-5 D-7: kalimat yang ditandai membingungkan, dengan asalnya; `undefined` bila tidak diminta. */
+  membingungkan?: KalimatBingung[];
 }
 
-export async function gerbangKartu(o: OmonganDraf, paket: PaketFakta, opsi: OpsiGerbang): Promise<PutusanKartu> {
+/** Opsi pembaca kartu M2d-5. */
+export interface OpsiKartu extends OpsiGerbang {
+  /** D-7: minta daftar kalimat membingungkan; kalimat tulisan penulis menolak. */
+  tandaiBingung?: boolean;
+}
+
+export async function gerbangKartu(o: OmonganDraf, paket: PaketFakta, opsi: OpsiKartu): Promise<PutusanKartu> {
   const soal = soalTebak(o);
   const kartu = kartuOmongan(o, paket);
+  const bingung = opsi.tandaiBingung === true;
   const { hasil, panggilan } = await panggilTerbaca(
-    () => pesanPenjawab(soal, kartu),
+    () => pesanPenjawab(soal, kartu, bingung),
     { suhu: SUHU_KARTU, maxTokens: MAX_TOKENS_GERBANG },
     { jenis: 'gerbang-kartu', putaran: opsi.putaran, omongan: opsi.omongan, ke: 1 },
     opsi,
-    uraiJawabanKartu,
+    bingung ? uraiJawabanKartuBingung : uraiJawabanKartu,
   );
   if (hasil === null) {
     return {
@@ -134,12 +237,21 @@ export async function gerbangKartu(o: OmonganDraf, paket: PaketFakta, opsi: Opsi
       alasan_penjawab: '',
       alasan: 'Pembaca kartu tidak memberi jawaban yang terbaca dua kali; soal ditolak (konservatif).',
       panggilan,
+      ...(bingung ? { membingungkan: [] } : {}),
     };
   }
+  const ditandai = bingung ? (hasil.membingungkan ?? []).map((k) => golongkanBingung(k, soal, kartu)) : [];
+  const dariPenulis = ditandai.filter((k) => k.sumber === 'penulis');
   const ditunjuk = hasil.kartu
     .map((no) => kartu.find((k) => k.no === no)?.fact_id)
     .filter((x): x is string => x !== undefined);
-  const lolos = hasil.pilihan === o.kunci;
+  const benar = hasil.pilihan === o.kunci;
+  const lolos = benar && dariPenulis.length === 0;
+  const alasanBingung =
+    dariPenulis.length === 0
+      ? ''
+      : `Pembaca yang memegang kartu bingung dengan kalimat tulisanmu: ${dariPenulis.map((k) => `"${k.kutipan}" (${String(k.bagian)})`).join('; ')}. ` +
+        'Tulis ulang bagian itu dengan bahasa awam yang hanya bisa dibaca satu arti.';
   return {
     lolos,
     pilihan: hasil.pilihan,
@@ -149,10 +261,13 @@ export async function gerbangKartu(o: OmonganDraf, paket: PaketFakta, opsi: Opsi
     alasan_penjawab: hasil.alasan,
     alasan: lolos
       ? ''
-      : `Pembaca yang MEMEGANG kartu memilih "${hasil.pilihan}", padahal kunci "${o.kunci}" ` +
+      : benar
+        ? alasanBingung
+        : `${alasanBingung === '' ? '' : `${alasanBingung} `}Pembaca yang MEMEGANG kartu memilih "${hasil.pilihan}", padahal kunci "${o.kunci}" ` +
         `(alasannya: "${hasil.alasan}"). Periksa dulu apakah kuncimu memang benar menurut kartu — ` +
         'pembaca ini bisa jadi yang benar. Kalau kuncimu benar, soalnya ambigu atau kartunya tidak cukup: buat ' +
         'kartu penentu membuktikan kunci tanpa tafsir, dan pengecoh yang ia pilih jelas terbantah kartu.',
     panggilan,
+    ...(bingung ? { membingungkan: ditandai } : {}),
   };
 }

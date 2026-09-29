@@ -160,6 +160,11 @@ export interface Generasi {
   posisiKunci?: boolean;
   /** M2d-5 D-5/D-6: pemeriksa menjalankan G-penilaian (pesan) dan G-mirip (antar-omongan). */
   gerbangMakna?: boolean;
+  /**
+   * M2d-5 D-7: pembaca kartu juga mengutip kalimat yang membingungkan; kalimat
+   * tulisan penulis menolak (kutipannya ke penulis), kalimat kartu paket dicatat.
+   */
+  kartuBingung?: boolean;
 }
 
 export const GENERASI_M2D3: Generasi = {
@@ -193,6 +198,7 @@ export const GENERASI_M2D5: Generasi = {
   promptPenulis: promptPenulisM2d5,
   posisiKunci: true,
   gerbangMakna: true,
+  kartuBingung: true,
   // Contoh gaya yang memuat penilaian ("aman lah", v2-056/v2-061) tidak ditunjukkan ke penulis M2d-5 (G-penilaian).
   bank: () => bacaBank(2).filter((k) => !gPenilaian(k.teks).tolak),
   model: MODEL_PERAN_M2D5,
@@ -801,18 +807,22 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       let kr = null as PutusanKritik | null;
       try {
         // --- 3a. PEMBACA KARTU
-        kartu = await gerbangKartu(omongan, opsi.paket, opsiGerbang);
+        kartu = await gerbangKartu(omongan, opsi.paket, { ...opsiGerbang, tandaiBingung: gen.kartuBingung === true });
         suara.kartu = kartu.lolos;
         catat({
           putaran, jenis: 'gerbang-kartu', omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),
           model: modelPeranGen(gen)['pembaca-kartu'], panggilan: kartu.panggilan.length,
           token_masuk: jumlah(kartu.panggilan, (p) => p.token_masuk), token_keluar: jumlah(kartu.panggilan, (p) => p.token_keluar),
           biaya_usd: jumlah(kartu.panggilan, (p) => p.biaya_usd), putusan: kartu.lolos ? 'lolos' : 'tolak',
-          alasan: [kartu.lolos ? `pembaca yang memegang kartu memilih "${String(kartu.pilihan)}" = kunci` : kartu.alasan],
+          alasan: [
+            kartu.lolos ? `pembaca yang memegang kartu memilih "${String(kartu.pilihan)}" = kunci` : kartu.alasan,
+            ...(kartu.membingungkan ?? []).filter((k) => k.sumber !== 'penulis').map((k) => `dicatat (${k.sumber}${k.bagian === null ? '' : `, ${k.bagian}`}): "${k.kutipan}"`),
+          ],
           sha256_prompt: null,
           rincian: {
             pesan: pesanTeman, kunci: kartu.kunci, pilihan: kartu.pilihan, kartu_ditunjuk: kartu.kartu_ditunjuk,
             menunjuk_penentu: kartu.menunjuk_penentu, alasan_penjawab: kartu.alasan_penjawab,
+            ...(kartu.membingungkan === undefined ? {} : { membingungkan: kartu.membingungkan }),
             ...penyediaDari(kartu.panggilan),
           },
           peran: 'pembaca-kartu',

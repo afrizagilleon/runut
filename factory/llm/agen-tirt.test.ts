@@ -16,7 +16,9 @@ import { PencatatJejak, validasiJejak } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
 import { MODEL_OR_DEEPSEEK, MODEL_OR_GLM } from './model.ts';
 import type { PaketFakta } from './paket.ts';
+import { PETUNJUK_PENJAWAB, PETUNJUK_PENJAWAB_BINGUNG, golongkanBingung, kartuOmongan, uraiJawabanKartuBingung } from './gerbang-kartu.ts';
 import { kemiripan } from './gerbang-mirip.ts';
+import { soalTebak } from './gerbang-tebak.ts';
 import { gPenilaian } from './gerbang-penilaian.ts';
 import { PENALARAN_M2D5, RUANG_JAWABAN_MIN } from './penalaran.ts';
 import { POLA_KUNCI, aturPosisiKunci, hurufKunciKode, polaKunci, rujukanHuruf } from './posisi-kunci.ts';
@@ -342,5 +344,61 @@ describe('M2d-5 — G-penilaian dan G-mirip di pemeriksa (D-5, D-6)', () => {
     expect(bank.map((k) => k.id)).not.toContain('v2-061');
     expect(GENERASI_M2D4.bank().map((k) => k.id)).toContain('v2-056');
     for (const k of bank) expect(gPenilaian(k.teks).tolak, k.id).toBe(false);
+  });
+});
+
+describe('M2d-5 — pembaca kartu menandai kalimat membingungkan (D-7)', () => {
+  const soalDari = (no: number): { soal: ReturnType<typeof soalTebak>; kartu: ReturnType<typeof kartuOmongan> } => ({ soal: soalTebak(om(no)), kartu: kartuOmongan(om(no), PAKET) });
+
+  it('petunjuk M2d-5 meminta "membingungkan" (kutipan persis); M2d-4 tetap petunjuk lama', async () => {
+    expect(PETUNJUK_PENJAWAB_BINGUNG).toContain('"membingungkan": ["kalimat persis"]');
+    const { rekaman } = await jalan({});
+    for (const r of dari(rekaman, 'pembaca-kartu')) expect(r.pesan[0]?.content).toBe(PETUNJUK_PENJAWAB_BINGUNG);
+    const m2d4 = await jalan({}, GENERASI_M2D4, 1);
+    for (const r of dari(m2d4.rekaman, 'pembaca-kartu')) expect(r.pesan[0]?.content).toBe(PETUNJUK_PENJAWAB);
+  });
+
+  it('golongkan: kutipan pesan/pilihan = penulis; kutipan isi kartu = kartu (dengan fact_id); komentar lepas = tak dikenal', () => {
+    const { soal, kartu } = soalDari(1);
+    const pesan = soal.pesan.split(/[.!?]/)[0] ?? '';
+    expect(golongkanBingung(pesan, soal, kartu)).toMatchObject({ sumber: 'penulis', bagian: 'pesan' });
+    expect(golongkanBingung(soal.pilihan.b, soal, kartu)).toMatchObject({ sumber: 'penulis', bagian: 'pilihan b' });
+    const k1 = kartu[0];
+    expect(golongkanBingung(k1?.isi.split('.')[0] ?? '', soal, kartu)).toMatchObject({ sumber: 'kartu', fact_id: k1?.fact_id });
+    expect(golongkanBingung('aku tidak paham maksud grafiknya', soal, kartu)).toMatchObject({ sumber: 'tak-dikenal', bagian: null });
+  });
+
+  it('kalimat TULISAN PENULIS yang ditandai → ditolak-kartu dengan kutipannya ke penulis; kritikus dan penebak tidak dipanggil', async () => {
+    const kutip = soalTebak(om(2)).pesan.split(/[.!?]/)[0]?.trim() ?? '';
+    const s: Skenario = {
+      kartu: (no, p, kunci) => (no === 2 && p === 1 ? JSON.stringify({ pilihan: kunci, kartu: [1], alasan: 'x', membingungkan: [kutip] }) : undefined),
+    };
+    const { hasil, rekaman, jejak } = await jalan(s, GENERASI_M2D5, 2);
+    const r2 = hasil.riwayat[0]?.omongan[1];
+    expect(r2).toMatchObject({ status: 'ditolak-kartu', suara: { pemeriksa: true, kartu: false, kritikus: null, tebak: null } });
+    expect(r2?.umpan[0]).toContain(`Pembaca yang memegang kartu bingung dengan kalimat tulisanmu: "${kutip}" (pesan)`);
+    expect(rekaman.filter((r) => r.info.putaran === 1 && r.info.omongan === 2 && ['kritikus', 'penebak'].includes(r.info.peran))).toHaveLength(0);
+    expect(dari(rekaman, 'penulis').find((r) => r.info.putaran === 2 && r.info.omongan === 2)?.pesan[1]?.content).toContain(kutip);
+    const l = jejak.jejak().langkah.find((x) => x.jenis === 'gerbang-kartu' && x.omongan === 2 && x.putaran === 1);
+    expect(l).toMatchObject({ putusan: 'tolak', rincian: { membingungkan: [{ kutipan: kutip, sumber: 'penulis', bagian: 'pesan' }] } });
+  });
+
+  it('kalimat TEKS KARTU paket yang ditandai → hanya dicatat (bahan D-8); omongan tetap lolos', async () => {
+    const isi = kartuOmongan(om(1), PAKET)[0]?.isi.split('.')[0] ?? '';
+    const s: Skenario = { kartu: (no, _p, kunci) => (no === 1 ? JSON.stringify({ pilihan: kunci, kartu: [1], alasan: 'x', membingungkan: [isi] }) : undefined) };
+    const { hasil, jejak } = await jalan(s, GENERASI_M2D5, 1);
+    expect(hasil.riwayat[0]?.omongan[0]?.status).toBe('lolos');
+    const l = jejak.jejak().langkah.find((x) => x.jenis === 'gerbang-kartu' && x.omongan === 1);
+    expect(l).toMatchObject({ putusan: 'lolos', rincian: { membingungkan: [{ kutipan: isi, sumber: 'kartu', fact_id: om(1).kartu[0] }] } });
+    expect(l?.alasan.join(' ')).toContain(`dicatat (kartu, kartu 1): "${isi}"`);
+  });
+
+  it('jawaban tanpa medan "membingungkan" = tak terbaca: diulang sekali, lalu ditolak (konservatif)', async () => {
+    const s: Skenario = { kartu: (no, p, kunci) => (no === 3 && p === 1 ? JSON.stringify({ pilihan: kunci, kartu: [1], alasan: 'x' }) : undefined) };
+    const { hasil, rekaman } = await jalan(s, GENERASI_M2D5, 1);
+    expect(dari(rekaman, 'pembaca-kartu').filter((r) => r.info.omongan === 3).map((r) => r.info.ulang)).toEqual([0, 1]);
+    expect(hasil.riwayat[0]?.omongan[2]).toMatchObject({ status: 'ditolak-kartu' });
+    expect(uraiJawabanKartuBingung('{"pilihan":"a","kartu":[1],"alasan":"x","membingungkan":[]}')).toMatchObject({ membingungkan: [] });
+    expect(uraiJawabanKartuBingung('{"pilihan":"a","kartu":[1],"alasan":"x"}')).toBeNull();
   });
 });
