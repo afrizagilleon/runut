@@ -58,6 +58,7 @@
     "pengecoh:kalibrasi": "node --experimental-strip-types factory/llm/pengecoh-kalibrasi.ts",
     "pengecoh:susun": "node --experimental-strip-types factory/llm/pengecoh-susun.ts",
     "pengecoh:putusan": "node --experimental-strip-types factory/llm/pengecoh-putusan.ts",
+    "pengecoh:laporan": "node --experimental-strip-types factory/llm/pengecoh-laporan.ts",
     "sectors:ambil": "node --experimental-strip-types alat/sectors.ts",
     "sectors:manifest": "node --experimental-strip-types alat/manifest.ts",
     "audit:gudang": "node --experimental-strip-types alat/audit-gudang.ts",

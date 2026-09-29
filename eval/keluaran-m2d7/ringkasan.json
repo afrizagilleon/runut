@@ -1,0 +1,148 @@
+{
+  "biaya": {
+    "total_m2d7": 2.3075272026499998,
+    "panggilan": 273
+  },
+  "jalan": [
+    {
+      "jalan": 1,
+      "terbit": false,
+      "putaran": 9,
+      "berhenti": "omongan 2 gagal di 3 sudut (naik-2025-11-26-2025-12-09, kelipatan-2025-11-26-2025-12-09, harga-2025-12-09); simulasi tidak terbit",
+      "dikunci": [],
+      "sudut": [
+        "omongan 1 (klaim Keliru): 1. `susp-2025-12-10` → dibuang (1–3); 2. `susp-2025-01-21` → dibuang (4–6); 3. `volume-2025-12-10` → berjalan (7–…)",
+        "omongan 2 (klaim Betul): 1. `naik-2025-11-26-2025-12-09` → dibuang (1–3); 2. `kelipatan-2025-11-26-2025-12-09` → dibuang (4–6); 3. `harga-2025-12-09` → dibuang (7–9)",
+        "omongan 3 (klaim Keliru): 1. `rups-2025-09-25` → dibuang (1–3); 2. `hari-naik-beruntun` → dibuang (4–6); 3. `volume-2025-12-09` → berjalan (7–…)"
+      ],
+      "status": {
+        "ditolak-kartu": 6,
+        "ditolak-pemeriksa": 20,
+        "kritikus-tidak-menjawab": 1
+      },
+      "sumber_tolak": {
+        "pembaca kartu": 10,
+        "pemeriksa: G-angka-cukup": 6,
+        "gerbang artefak: meresmikan": 18,
+        "pemeriksa: OPSI_PANJANG_TIMPANG": 36,
+        "pemeriksa: OPSI_TAK_DUA_DUA": 4,
+        "pemeriksa: G-mirip": 8,
+        "kritikus-tidak-menjawab": 1
+      },
+      "ditulis": {
+        "pesan": 10,
+        "pilihan_penuh": 18,
+        "pilihan_sebagian": 8,
+        "penjelasan": 26
+      },
+      "perbaikan_maks": 3,
+      "kritikus": {
+        "putusan": 1,
+        "menjawab": 0,
+        "tanpa_keberatan": 0,
+        "penalaran": [
+          16000,
+          16002
+        ]
+      },
+      "penebak": {
+        "tebakan": 0,
+        "benar": 0,
+        "penalaran": []
+      },
+      "pilihan_saja": {
+        "diperiksa": 7,
+        "ditolak": 0
+      },
+      "biaya": 0.3438248462500001,
+      "panggilan": 88
+    },
+    {
+      "jalan": 2,
+      "terbit": false,
+      "putaran": 9,
+      "berhenti": "omongan 3 gagal di 3 sudut (rups-2025-09-25, kelipatan-2025-11-26-2025-12-09, volume-2025-12-10); simulasi tidak terbit",
+      "dikunci": [],
+      "sudut": [
+        "omongan 1 (klaim Keliru): 1. `susp-2025-12-10` → dibuang (1–3); 2. `susp-2025-01-21` → dibuang (4–8); 3. `harga-2025-12-09` → berjalan (9–…)",
+        "omongan 2 (klaim Betul): 1. `naik-2025-11-26-2025-12-09` → dibuang (1–4); 2. `hari-naik-beruntun` → dibuang (5–9); 3. `volume-2025-12-09` → berjalan (10–…)",
+        "omongan 3 (klaim Keliru): 1. `rups-2025-09-25` → dibuang (1–3); 2. `kelipatan-2025-11-26-2025-12-09` → dibuang (4–6); 3. `volume-2025-12-10` → dibuang (7–9)"
+      ],
+      "status": {
+        "ditolak-pemeriksa": 15,
+        "ditolak-tebak": 1,
+        "ditolak-kritikus": 2,
+        "ditolak-artefak": 1,
+        "kritikus-tidak-menjawab": 5,
+        "ditolak-kartu": 3
+      },
+      "sumber_tolak": {
+        "pemeriksa: OPSI_PANJANG_TIMPANG": 28,
+        "gerbang artefak: meresmikan": 16,
+        "pemeriksa: ANGKA_TANPA_RUJUKAN": 2,
+        "penebak tanpa kartu": 3,
+        "gerbang artefak: keseimbangan": 1,
+        "pemeriksa: ANGKA_TAK_COCOK": 1,
+        "pemeriksa: G-satu-klausa": 1,
+        "pemeriksa: G-ikatan-bank": 4,
+        "pemeriksa: PENJELASAN_PANJANG": 2,
+        "kritikus: kunci": 1,
+        "kritikus: ambigu": 4,
+        "kritikus: arahan": 2,
+        "pemeriksa: FAKTA_DI_LUAR_PAKET": 3,
+        "gerbang pilihan-saja": 4,
+        "kritikus-tidak-menjawab": 5,
+        "pemeriksa: G-mirip": 4,
+        "pembaca kartu": 4,
+        "pemeriksa: RUJUKAN_PANJANG": 1,
+        "kritikus: tertebak": 1
+      },
+      "ditulis": {
+        "pesan": 12,
+        "pilihan_penuh": 18,
+        "pilihan_sebagian": 2,
+        "penjelasan": 23
+      },
+      "perbaikan_maks": 3,
+      "kritikus": {
+        "putusan": 8,
+        "menjawab": 3,
+        "tanpa_keberatan": 1,
+        "penalaran": [
+          21790,
+          20709,
+          24001,
+          24001,
+          24002,
+          24002,
+          24001,
+          24002,
+          24000,
+          24001,
+          24000,
+          24000,
+          12295
+        ]
+      },
+      "penebak": {
+        "tebakan": 3,
+        "benar": 3,
+        "penalaran": [
+          2588,
+          4245,
+          1760
+        ]
+      },
+      "pilihan_saja": {
+        "diperiksa": 12,
+        "ditolak": 1
+      },
+      "biaya": 1.1538530331999999,
+      "panggilan": 109
+    }
+  ],
+  "putusan": {
+    "layak_tayang": false,
+    "jalan": 2
+  }
+}
