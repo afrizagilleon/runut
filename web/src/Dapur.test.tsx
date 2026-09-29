@@ -19,7 +19,10 @@ import {
   ringkasUjiLuar,
   statusJalan,
   tolakPerPeran,
+  kalimatAgregat,
+  type AgregatDapur,
   type DataDapur,
+  type JalanDapur,
 } from './dapur.ts';
 
 const DATA = mentah as unknown as DataDapur;
@@ -44,15 +47,15 @@ describe('M3.13 D-4 — dapur: fungsi murni', () => {
     expect(mintaDapur('?dapurku')).toBe(false);
   });
 
-  it('status dari medan terbit: draf belum dimainkan / ditolak', () => {
-    expect(DATA.jalan.map((j) => statusJalan(j).label)).toEqual([
+  it('status dari medan terbit: A-1 — hanya jalan TIRT, ditolak', () => {
+    expect(DATA.jalan.map((j) => statusJalan(j).label)).toEqual(['Ditolak — tidak terbit']);
+    expect(statusJalan({ ...(DATA.jalan[0] as JalanDapur), terbit: true }).label).toBe(
       'Draf — lolos semua penjaga, belum dimainkan',
-      'Ditolak — tidak terbit',
-    ]);
+    );
   });
 
   it('penolakan per peran dihitung dari putusan jejak, terbanyak lebih dulu', () => {
-    const tirt = DATA.jalan[1];
+    const tirt = DATA.jalan[0];
     if (tirt === undefined) throw new Error('jalan TIRT hilang');
     const per = tolakPerPeran(tirt);
     expect(per.reduce((j, p) => j + p.tolak, 0)).toBe(tirt.penolakan.length);
@@ -62,10 +65,14 @@ describe('M3.13 D-4 — dapur: fungsi murni', () => {
   it('format: menit dibulatkan, dolar dua desimal berkoma, uji luar dijumlah', () => {
     expect(menit(8_576_850)).toBe(143);
     expect(dolar(1.83836842)).toBe('US$1,84');
-    const ultj = DATA.jalan[0];
-    if (ultj === undefined) throw new Error('jalan ULTJ hilang');
-    expect(ringkasUjiLuar(ultj)).toEqual({ tebak_benar: 0, tebak_n: 9, kartu_benar: 9, kartu_n: 9 });
-    expect(ringkasUjiLuar({ ...ultj, uji_luar: null })).toBeNull();
+    const tirt = DATA.jalan[0];
+    if (tirt === undefined) throw new Error('jalan TIRT hilang');
+    const uji = [
+      { omongan: 1, kunci: 'a', tebak_benar: 0, tebak_n: 3, kartu_benar: 3, kartu_n: 3 },
+      { omongan: 2, kunci: 'b', tebak_benar: 1, tebak_n: 3, kartu_benar: 2, kartu_n: 3 },
+    ];
+    expect(ringkasUjiLuar({ ...tirt, uji_luar: uji })).toEqual({ tebak_benar: 1, tebak_n: 6, kartu_benar: 5, kartu_n: 6 });
+    expect(ringkasUjiLuar({ ...tirt, uji_luar: null })).toBeNull();
   });
 });
 
@@ -73,7 +80,6 @@ describe('M3.13 D-4 — dapur: hasil render', () => {
   it('menyatakan simulasi yang dimainkan ditulis manusia, dan draf agen belum dimainkan', () => {
     expect(teks).toContain('Simulasi yang kamu mainkan di sini ditulis manusia.');
     expect(teks).toContain('belum ada satu pun draf agen yang dimainkan orang');
-    expect(teks).toContain('Draf — lolos semua penjaga, belum dimainkan');
     expect(teks).toContain('Ditolak — tidak terbit');
   });
 
@@ -88,8 +94,6 @@ describe('M3.13 D-4 — dapur: hasil render', () => {
   it('nama model dari jejak tampil; biaya hanya untuk jalan berbiaya nyata', () => {
     for (const j of DATA.jalan) for (const p of j.peran) if (p.model !== null) expect(teks).toContain(p.model);
     expect(teks).toContain('US$1,84 biaya nyata');
-    // M2d-4 mencatat biaya dengan tabel tebakan: dikatakan terang, bukan disembunyikan (kritik D-5 butir 10).
-    expect(teks.match(/biaya nyata tidak tercatat/g)).toHaveLength(1);
   });
 
   it('tanpa angka rusak dan tanpa kata terlarang produk', () => {
@@ -106,7 +110,6 @@ describe('M3.13 D-4 — dapur: hasil render', () => {
 
 describe('M3.13 D-5 — sesudah kritik desain', () => {
   it('judul jalan tidak berbentuk judul simulasi; contoh penolakan = dua terpendek', () => {
-    expect(teks).toContain('Jalan agen: data Perusahaan U');
     expect(teks).toContain('Jalan agen: data Perusahaan T');
     for (const j of DATA.jalan) {
       const c = contohPenolakan(j);
@@ -126,5 +129,17 @@ describe('M3.13 D-5 — tanpa bagian ganda', () => {
     expect(teks.match(/Lima peran di tiap draf/g)).toHaveLength(1);
     expect(html.match(/<h1/g)).toHaveLength(1);
     for (const j of DATA.jalan) expect(html.match(new RegExp(`id="judul-${j.id}"`, 'g'))).toHaveLength(1);
+  });
+});
+
+describe('M3.13 A-1 — tanpa isi simulasi yang tayang', () => {
+  it('Perusahaan D/U tidak disebut; jalan atas simulasi tayang hanya satu baris angka', () => {
+    expect(teks).not.toMatch(/Perusahaan [DU]\b/);
+    expect(teks).toContain('Jalan atas data simulasi yang bisa kamu mainkan');
+    expect(teks).toContain('supaya jawabannya tidak bocor');
+    for (const a of DATA.agregat) expect(teks).toContain(kalimatAgregat(a));
+    expect(kalimatAgregat(DATA.agregat[0] as AgregatDapur)).toMatch(
+      /^Jalan M2d-4: (tidak terbit|lolos semua penjaga, belum dimainkan) · \d+ putaran · \d+ versi ditulis/,
+    );
   });
 });

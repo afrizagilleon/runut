@@ -81,10 +81,34 @@ export interface JalanDapur {
   alami: { agen: number; manusia: number; penilai: number } | null;
 }
 
+/** Jalan atas simulasi yang tayang: angka saja (Amandemen A-1). */
+export interface AgregatDapur {
+  id: string;
+  milestone: string;
+  terbit: boolean;
+  putaran: number;
+  versi: number;
+  penolakan: Array<{ peran: string; tolak: number }>;
+}
+
 export interface DataDapur {
   keterangan: string;
   sumber: string[];
   jalan: JalanDapur[];
+  agregat: AgregatDapur[];
+}
+
+/**
+ * Satu baris jalan agregat, tanpa nama, tanggal, atau isi apa pun:
+ * "Jalan M2d-4: tidak terbit · 11 putaran · 20 versi ditulis · ditolak: …".
+ */
+export function kalimatAgregat(a: AgregatDapur): string {
+  const status = a.terbit ? 'lolos semua penjaga, belum dimainkan' : 'tidak terbit';
+  const tolak = a.penolakan.map((p) => `${namaPeran(p.peran)} ${String(p.tolak)}`).join(', ');
+  return (
+    `Jalan ${a.milestone}: ${status} · ${String(a.putaran)} putaran · ${String(a.versi)} versi ditulis` +
+    (tolak === '' ? '' : ` · penolakan: ${tolak}`)
+  );
 }
 
 /** Parameter URL halaman ini: `?dapur`. Nilainya tidak dibaca; keberadaannya cukup. */

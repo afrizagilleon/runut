@@ -8,13 +8,14 @@
  * setiap kalimat trace di `web/src/dapur-data.json` lahir di sini, dari berkas
  * mentah yang sudah ada di repo, dan tidak disunting:
  *
- * - `eval/keluaran-m2d4/ultj/` — jalan M2d-4 yang TERBIT di lingkar dalam
- *   (draf lolos semua penjaga; belum pernah dimainkan);
- * - `eval/keluaran-m2d6/jalan-1/tirt/` — jalan M2d-6 yang DITOLAK (tidak terbit);
- * - `eval/keluaran-m2d4/ringkasan.json` — hasil penguji luar atas draf ULTJ
- *   (dihitung `gaya:laporan` dari jawaban mentah `eval/keluaran-m2d4/penguji/`).
+ * - jalan "utuh" (`alat/dapur-jalan.json` → `utuh`): hanya emiten yang TIDAK
+ *   tayang — TIRT (`eval/keluaran-m2d6/jalan-1/tirt/`, ditolak; jalan TIRT
+ *   berikutnya ditambahkan dengan `alat/dapur.ts tambah <folder> <milestone>`);
+ * - jalan "agregat" (DADA, ULTJ M2d-4): hanya angka — putaran, versi,
+ *   penolakan per peran — tanpa isi apa pun (Amandemen A-1: isi jalan atas
+ *   simulasi yang tayang bisa membocorkan jawabannya).
  *
- * Yang ditulis tangan hanyalah konfigurasi di `JALAN` (folder mana, dan apakah
+ * Yang ditulis tangan hanyalah konfigurasi di `alat/dapur-jalan.json` (folder mana, dan apakah
  * biaya ledger jalan itu biaya nyata) — bukan isi. Kalimat di halaman yang
  * bukan trace (judul, penjelasan peran) ada di komponen `web/src/Dapur.tsx`.
  *
@@ -22,7 +23,7 @@
  * atas jejak mentah (byte demi byte), dan tidak ada angka/kalimat yang tidak
  * bisa ditemukan kembali di jejaknya.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const AKAR = fileURLToPath(new URL('../', import.meta.url));
@@ -105,45 +106,82 @@ export interface JalanDapur {
   alami: { agen: number; manusia: number; penilai: number } | null;
 }
 
+/**
+ * Satu jalan atas simulasi yang SEDANG TAYANG (DADA, ULTJ): hanya angka
+ * (Amandemen A-1). Tanpa nama samaran, tanggal, pesan, pilihan, kunci,
+ * penjelasan, atau kutipan keberatan — isi apa pun dari jalan ini bisa
+ * membocorkan jawaban simulasi yang dimainkan orang.
+ */
+export interface AgregatDapur {
+  id: string;
+  milestone: string;
+  terbit: boolean;
+  putaran: number;
+  /** Versi omongan yang ditulis penulis (langkah penulis berputusan "ditulis"). */
+  versi: number;
+  /** Penolakan per peran, urutan kerja lingkar. */
+  penolakan: Array<{ peran: string; tolak: number }>;
+}
+
 export interface DataDapur {
   keterangan: string;
   sumber: string[];
   jalan: JalanDapur[];
+  agregat: AgregatDapur[];
 }
 
 /* --- konfigurasi: folder mana, bukan isi ------------------------------------ */
 
-interface KonfigJalan {
+export const BERKAS_KONFIG = 'alat/dapur-jalan.json';
+
+export interface KonfigJalan {
   id: string;
   milestone: string;
   folder: string;
   /**
    * Apakah `hasil.biaya_usd` jejak ini biaya nyata dari respons penyedia.
    * M2d-4 (Featherless) mencatat token × tabel harga tebakan — tagihan
-   * nyatanya ±1,88 × ledger (`docs/bukti/lingkar-agen-tirt.md`) — jadi
-   * angkanya tidak ditampilkan. M2d-6 (OpenRouter) mencatat `usage.cost`.
+   * nyatanya ±1,88 × ledger (`docs/bukti/lingkar-agen-tirt.md`). Sejak M2d-5
+   * (OpenRouter) ledger mencatat `usage.cost`.
    */
   biaya_nyata: boolean;
   /** Ringkasan penguji luar (`luar`, `alami`) bila ada; kunci paket di sana. */
-  ringkasan: { berkas: string; paket: string } | null;
+  ringkasan?: { berkas: string; paket: string } | null;
 }
 
-export const JALAN: readonly KonfigJalan[] = [
-  {
-    id: 'ultj-m2d4',
-    milestone: 'M2d-4',
-    folder: 'eval/keluaran-m2d4/ultj',
-    biaya_nyata: false,
-    ringkasan: { berkas: 'eval/keluaran-m2d4/ringkasan.json', paket: 'ultj' },
-  },
-  {
-    id: 'tirt-m2d6',
-    milestone: 'M2d-6',
-    folder: 'eval/keluaran-m2d6/jalan-1/tirt',
-    biaya_nyata: true,
-    ringkasan: null,
-  },
-];
+export interface KonfigAgregat {
+  id: string;
+  milestone: string;
+  folder: string;
+}
+
+export interface Konfig {
+  keterangan: string;
+  utuh: KonfigJalan[];
+  agregat: KonfigAgregat[];
+}
+
+export function bacaKonfig(akar: string = AKAR): Konfig {
+  return JSON.parse(readFileSync(`${akar}${BERKAS_KONFIG}`, 'utf8')) as Konfig;
+}
+
+/**
+ * Nama samaran dan paket simulasi yang sedang tayang, dibaca dari `cases/`.
+ * Jalan atas salah satunya TIDAK boleh ditampilkan utuh (A-1).
+ */
+export function simulasiTayang(akar: string = AKAR): { samaran: Set<string>; paket: Set<string> } {
+  const samaran = new Set<string>();
+  const paket = new Set<string>();
+  for (const f of readdirSync(`${akar}cases`).filter((n) => n.endsWith('.json'))) {
+    const k = JSON.parse(readFileSync(`${akar}cases/${f}`, 'utf8')) as {
+      nama_samaran: string;
+      emiten: { simbol: string };
+    };
+    samaran.add(k.nama_samaran);
+    paket.add(k.emiten.simbol.toLowerCase());
+  }
+  return { samaran, paket };
+}
 
 /** Urutan peran di halaman: urutan kerja lingkar (`factory/llm/peran.md`). */
 export const URUT_PERAN = ['perencana', 'penulis', 'pemeriksa', 'pembaca-kartu', 'kritikus', 'penebak'];
@@ -282,7 +320,7 @@ export function jalanDapur(konfig: KonfigJalan, akar: string = AKAR): JalanDapur
 
   let uji_luar: UjiLuarDapur[] | null = null;
   let alami: JalanDapur['alami'] = null;
-  if (konfig.ringkasan !== null) {
+  if (konfig.ringkasan !== undefined && konfig.ringkasan !== null) {
     const r = baca<RingkasanLuar>(akar, konfig.ringkasan.berkas);
     const paket = konfig.ringkasan.paket;
     uji_luar = r.luar
@@ -336,19 +374,87 @@ export function jalanDapur(konfig: KonfigJalan, akar: string = AKAR): JalanDapur
   };
 }
 
-export function dataDapur(akar: string = AKAR): DataDapur {
-  const sumber = JALAN.flatMap((j) => [
+/** Satu baris agregat jalan atas simulasi tayang: angka saja, dari jejak. */
+export function agregatDapur(konfig: KonfigAgregat, akar: string = AKAR): AgregatDapur {
+  const jejak = baca<JejakAgen>(akar, `${konfig.folder}/jejak-agen.json`);
+  const tolak = (p: string): number => jejak.langkah.filter((l) => l.peran === p && l.putusan === 'tolak').length;
+  return {
+    id: konfig.id,
+    milestone: konfig.milestone,
+    terbit: jejak.hasil.lolos,
+    putaran: jejak.hasil.putaran,
+    versi: jejak.langkah.filter((l) => l.peran === 'penulis' && l.putusan === 'ditulis').length,
+    penolakan: URUT_PERAN.map((p) => ({ peran: p, tolak: tolak(p) })).filter((x) => x.tolak > 0),
+  };
+}
+
+/**
+ * Tolak keras jalan "utuh" atas simulasi yang tayang (A-1): isinya bisa
+ * membocorkan jawaban. Yang dibandingkan: nama samaran di jejak dengan
+ * `cases/*.json`, dan kode paket dengan simbol emiten kasus tayang.
+ */
+export function periksaUtuh(konfig: KonfigJalan, akar: string = AKAR): void {
+  const jejak = baca<JejakAgen & { simulasi: { paket_id?: string } }>(akar, `${konfig.folder}/jejak-agen.json`);
+  const tayang = simulasiTayang(akar);
+  const paket = (jejak.simulasi.paket_id ?? '').toLowerCase();
+  if (tayang.samaran.has(jejak.simulasi.nama_samaran) || tayang.paket.has(paket)) {
+    throw new Error(
+      `${konfig.folder}: jalan atas simulasi yang tayang (${jejak.simulasi.nama_samaran}) tidak boleh ` +
+        'ditampilkan utuh di dapur — pakai "agregat".',
+    );
+  }
+}
+
+export function dataDapur(akar: string = AKAR, konfig: Konfig = bacaKonfig(akar)): DataDapur {
+  for (const j of konfig.utuh) periksaUtuh(j, akar);
+  const sumber = konfig.utuh.flatMap((j) => [
     `${j.folder}/jejak-agen.json`,
     `${j.folder}/riwayat.json`,
     `${j.folder}/draf-akhir.json`,
-    ...(j.ringkasan === null ? [] : [j.ringkasan.berkas]),
+    ...(j.ringkasan === undefined || j.ringkasan === null ? [] : [j.ringkasan.berkas]),
   ]);
   return {
     keterangan:
       'Dibangun `node --experimental-strip-types alat/dapur.ts` dari jejak mentah lingkar agen. Jangan disunting tangan.',
-    sumber,
-    jalan: JALAN.map((j) => jalanDapur(j, akar)),
+    sumber: [...sumber, ...konfig.agregat.map((j) => `${j.folder}/jejak-agen.json (hanya angka)`)],
+    jalan: konfig.utuh.map((j) => jalanDapur(j, akar)),
+    agregat: konfig.agregat.map((j) => agregatDapur(j, akar)),
   };
+}
+
+/**
+ * `tambah <folder> <milestone>` — satu perintah untuk jalan TIRT baru (mis.
+ * M2d-7): periksa bahwa foldernya berisi jejak lengkap dan bukan simulasi
+ * tayang, catat di `alat/dapur-jalan.json`, lalu bangun ulang data. Biaya
+ * dianggap nyata (ledger OpenRouter `usage.cost`, sejak M2d-5); `--biaya-tabel`
+ * untuk jalan lama yang mencatat tabel tebakan.
+ */
+export function tambahJalan(
+  folder: string,
+  milestone: string,
+  biaya_nyata: boolean,
+  akar: string = AKAR,
+): KonfigJalan {
+  const bersih = folder.replaceAll('\\', '/').replace(/\/+$/, '');
+  for (const f of ['jejak-agen.json', 'riwayat.json', 'draf-akhir.json']) {
+    if (!existsSync(`${akar}${bersih}/${f}`)) throw new Error(`${bersih}/${f} tidak ada.`);
+  }
+  if (!/^M\d[\w.-]*$/.test(milestone)) throw new Error(`Milestone "${milestone}" tidak berbentuk M…`);
+  const jejak = baca<{ simulasi: { paket_id: string } }>(akar, `${bersih}/jejak-agen.json`);
+  const konfig = bacaKonfig(akar);
+  const baru: KonfigJalan = {
+    id: `${jejak.simulasi.paket_id}-${milestone.toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+    milestone,
+    folder: bersih,
+    biaya_nyata,
+  };
+  periksaUtuh(baru, akar);
+  if ([...konfig.utuh, ...konfig.agregat].some((j) => j.id === baru.id || j.folder === bersih)) {
+    throw new Error(`Jalan ${baru.id} (${bersih}) sudah tercatat.`);
+  }
+  konfig.utuh.push(baru);
+  writeFileSync(`${akar}${BERKAS_KONFIG}`, `${JSON.stringify(konfig, null, 2)}\n`, 'utf8');
+  return baru;
 }
 
 export function keJsonDapur(data: DataDapur): string {
@@ -358,6 +464,15 @@ export function keJsonDapur(data: DataDapur): string {
 const dijalankanLangsung =
   process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (dijalankanLangsung) {
+  const [perintah, folder, milestone] = process.argv.slice(2);
+  if (perintah === 'tambah') {
+    if (folder === undefined || milestone === undefined) {
+      console.error('Pakai: node --experimental-strip-types alat/dapur.ts tambah <folder> <milestone> [--biaya-tabel]');
+      process.exit(1);
+    }
+    const baru = tambahJalan(folder, milestone, !process.argv.includes('--biaya-tabel'));
+    console.log(`Dicatat ${baru.id} (${baru.folder}) di ${BERKAS_KONFIG}.`);
+  }
   const teks = keJsonDapur(dataDapur());
   writeFileSync(`${AKAR}${BERKAS_DATA}`, teks, 'utf8');
   console.log(`Ditulis ${BERKAS_DATA} (${String(teks.length)} karakter).`);

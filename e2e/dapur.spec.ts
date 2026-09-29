@@ -48,6 +48,9 @@ test('E-50a ?dapur: halaman dapur tanpa permainan dan tanpa peristiwa', async ({
     await expect(page.locator(`[data-uid="dapur:${j.id}"] .dapur-status`)).toHaveText(label);
     await expect(page.getByRole('heading', { name: `Jalan agen: data ${j.simulasi.nama_samaran}` })).toBeVisible();
   }
+  // Amandemen A-1: tidak ada isi simulasi yang tayang; jalan atasnya hanya angka.
+  await expect(page.locator('[data-uid="dapur:agregat"]')).toBeVisible();
+  await expect(page.locator('main')).not.toContainText(/Perusahaan [DU]\b/);
   await expect(page.getByRole('button', { name: 'Mulai simulasi' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: '← Main simulasinya' })).toHaveAttribute('href', './');
   // Tidak ada halaman yang melebar melewati layar ponsel.

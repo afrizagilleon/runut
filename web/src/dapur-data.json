@@ -1,353 +1,13 @@
 {
   "keterangan": "Dibangun `node --experimental-strip-types alat/dapur.ts` dari jejak mentah lingkar agen. Jangan disunting tangan.",
   "sumber": [
-    "eval/keluaran-m2d4/ultj/jejak-agen.json",
-    "eval/keluaran-m2d4/ultj/riwayat.json",
-    "eval/keluaran-m2d4/ultj/draf-akhir.json",
-    "eval/keluaran-m2d4/ringkasan.json",
     "eval/keluaran-m2d6/jalan-1/tirt/jejak-agen.json",
     "eval/keluaran-m2d6/jalan-1/tirt/riwayat.json",
-    "eval/keluaran-m2d6/jalan-1/tirt/draf-akhir.json"
+    "eval/keluaran-m2d6/jalan-1/tirt/draf-akhir.json",
+    "eval/keluaran-m2d4/ultj/jejak-agen.json (hanya angka)",
+    "eval/keluaran-m2d4/dada/jejak-agen.json (hanya angka)"
   ],
   "jalan": [
-    {
-      "id": "ultj-m2d4",
-      "milestone": "M2d-4",
-      "folder": "eval/keluaran-m2d4/ultj",
-      "simulasi": {
-        "paket_id": "ultj",
-        "nama_samaran": "Perusahaan U",
-        "tanggal_t": "2026-05-04",
-        "peristiwa": "Hari ini tanggal ex dividen tunai perusahaan; dividen tunai tercatat dibagikan tiap tahun sejak 2020; dan pada Januari orang dalam perusahaan melaporkan pembelian saham."
-      },
-      "terbit": true,
-      "berhenti": null,
-      "mulai": "2026-09-28T20:45:51.730Z",
-      "selesai": "2026-09-28T22:19:23.352Z",
-      "durasi_ms": 5611622,
-      "putaran": 9,
-      "panggilan": 58,
-      "token_masuk": 158860,
-      "token_keluar": 551122,
-      "biaya_usd": null,
-      "pemeriksaan": {
-        "aturan_dijalankan": 28,
-        "aturan_dilewati": 7,
-        "temuan": 7,
-        "fakta_lolos": 29,
-        "fakta_tersingkir": 1,
-        "tersingkir": [
-          {
-            "fact_id": "div-2026-05-04-bayar",
-            "alasan": "kalimatnya menyebut tanggal sesudah T: 22 Mei 2026"
-          }
-        ]
-      },
-      "peran": [
-        {
-          "peran": "perencana",
-          "model": null,
-          "langkah": 2,
-          "panggilan": 0,
-          "putusan": {
-            "lolos": 1,
-            "tolak": 1
-          }
-        },
-        {
-          "peran": "penulis",
-          "model": "deepseek-ai/DeepSeek-V4.1-Flash",
-          "langkah": 16,
-          "panggilan": 16,
-          "putusan": {
-            "ditulis": 16
-          }
-        },
-        {
-          "peran": "pemeriksa",
-          "model": null,
-          "langkah": 22,
-          "panggilan": 0,
-          "putusan": {
-            "tolak": 5,
-            "lolos": 17
-          }
-        },
-        {
-          "peran": "pembaca-kartu",
-          "model": "deepseek-ai/DeepSeek-V4.1-Flash",
-          "langkah": 9,
-          "panggilan": 9,
-          "putusan": {
-            "lolos": 9
-          }
-        },
-        {
-          "peran": "kritikus",
-          "model": "zai-org/GLM-5.3",
-          "langkah": 9,
-          "panggilan": 12,
-          "putusan": {
-            "lolos": 7,
-            "tolak": 2
-          }
-        },
-        {
-          "peran": "penebak",
-          "model": "deepseek-ai/DeepSeek-V4.1-Flash ×2 + zai-org/GLM-5.3 ×1",
-          "langkah": 7,
-          "panggilan": 21,
-          "putusan": {
-            "lolos": 3,
-            "tolak": 4
-          }
-        }
-      ],
-      "sudut": [
-        {
-          "omongan": 1,
-          "riwayat": [
-            {
-              "ke": 1,
-              "fact_id": "tahun-berdividen",
-              "hasil": "lolos",
-              "putaran_mulai": 1,
-              "putaran_akhir": 1
-            }
-          ]
-        },
-        {
-          "omongan": 2,
-          "riwayat": [
-            {
-              "ke": 1,
-              "fact_id": "fil-jan-orang-dalam-lain",
-              "hasil": "lolos",
-              "putaran_mulai": 1,
-              "putaran_akhir": 3
-            }
-          ]
-        },
-        {
-          "omongan": 3,
-          "riwayat": [
-            {
-              "ke": 1,
-              "fact_id": "turun-2026-05-04",
-              "hasil": "dibuang",
-              "putaran_mulai": 1,
-              "putaran_akhir": 5
-            },
-            {
-              "ke": 2,
-              "fact_id": "laporan-jan-2026",
-              "hasil": "lolos",
-              "putaran_mulai": 6,
-              "putaran_akhir": 9
-            }
-          ]
-        }
-      ],
-      "penolakan": [
-        {
-          "no": 6,
-          "putaran": 1,
-          "omongan": null,
-          "peran": "pemeriksa",
-          "jenis": "validator",
-          "alasan": [
-            "omongan 2: [KATA_PENILAIAN] Penjelasan memakai kata penilaian \"bagus\"; produk ini tidak menilai saham."
-          ]
-        },
-        {
-          "no": 11,
-          "putaran": 1,
-          "omongan": 2,
-          "peran": "pemeriksa",
-          "jenis": "gerbang-g",
-          "alasan": [
-            "[pemeriksa: G-panjang] Pilihan a 12 kata; paling banyak 11 kata (pilihan manusia terpanjang di kasus yang hidup). Satu label + satu klausa pendek."
-          ]
-        },
-        {
-          "no": 15,
-          "putaran": 1,
-          "omongan": 3,
-          "peran": "penebak",
-          "jenis": "gerbang-tebak",
-          "alasan": [
-            "3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 80 (tebakan: c/80, c/85, c/75). Alasan mereka: \"Tio merasa penurunan buka terlalu besar untuk sekadar ex dividen, dan opsi c menyatakan turun Rp145 lebih besar dari dividen Rp130.\" \"Tio menilai penurunan buka terlalu besar untuk sekadar ex dividen, dan data turun Rp145 lebih besar dari dividen Rp130 mendukung anggapan itu.\" \"Tio ragu karena penurunan terasa 'kebesaran' untuk sekadar ex dividen, dan opsi c konsisten: buka turun Rp145 melebihi dividen Rp130 (misal tutup 1.690, buka 1.545), jadi kekhawatirannya memang beralasan.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
-          ]
-        },
-        {
-          "no": 22,
-          "putaran": 2,
-          "omongan": 2,
-          "peran": "kritikus",
-          "jenis": "kritikus",
-          "alasan": [
-            "[kritikus: makna, kunci] Bagian klaim teman yang tidak bisa dicek dari kartu: \"dia tau sesuatu (motif orang dalam membeli) — kartu hanya memuat transaksi dan jumlah lembar, tidak ada yang menunjukka…\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan.",
-            "[kritikus: kunci, pilihan] Pilihan c juga benar menurut kartu (Kartu 3 dan 4 membenarkan persis isi pilihan c — porsi naik dari 1,21 persen ke 1,37 persen — sehingga ada dua pilihan 'Betul,' yang sama-sama didukung kartu.); hanya satu pilihan yang boleh benar.",
-            "[kritikus: ambigu, pilihan] Pilihan c juga benar menurut kartu 3 dan 4, jadi pemain yang memilih c akan dianggap salah padahal alasannya cocok dengan dokumen.",
-            "[kritikus: kunci, kunci] Pilihan kunci 'Betul,' tidak menyatakan bahwa bagian 'dia tau sesuatu' tidak bisa dipastikan dari kartu, padahal penjelasan sendiri mengakui alasan pembelian tidak terbaca di laporan.",
-            "[kritikus: arahan] Ubah pilihan c atau angka di kartu 3 dan 4 supaya hanya ada satu pilihan 'Betul,' yang didukung kartu. Pilihan kunci juga perlu menyatakan bahwa klaim 'dia tau sesuatu' tidak bisa dipastikan dari laporan transaksi."
-          ]
-        },
-        {
-          "no": 26,
-          "putaran": 2,
-          "omongan": 3,
-          "peran": "penebak",
-          "jenis": "gerbang-tebak",
-          "alasan": [
-            "3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 65 (tebakan: b/65, b/65, b/65). Alasan mereka: \"Angka turun Rp145 lebih besar dari dividen Rp130, jadi omongan Adit yang merasa turunnya lebih kecil justru keliru.\" \"Adit mengira penurunan lebih kecil dari dividen, tetapi opsi b menyebutkan penurunan Rp145 justru lebih besar dari dividen Rp130.\" \"Pola umum ex-dividend: jika angka konkretnya turun Rp145 vs dividen Rp130, maka turunnya justru lebih besar dari dividen sehingga keraguan Adit bahwa turunnya lebih kecil adalah keliru.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
-          ]
-        },
-        {
-          "no": 30,
-          "putaran": 3,
-          "omongan": null,
-          "peran": "pemeriksa",
-          "jenis": "validator",
-          "alasan": [
-            "omongan 3: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 35 lawan 62 karakter; yang terpendek harus ≥ 60% yang terpanjang."
-          ]
-        },
-        {
-          "no": 38,
-          "putaran": 4,
-          "omongan": null,
-          "peran": "pemeriksa",
-          "jenis": "validator",
-          "alasan": [
-            "omongan 3: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 35 lawan 62 karakter; yang terpendek harus ≥ 60% yang terpanjang."
-          ]
-        },
-        {
-          "no": 45,
-          "putaran": 5,
-          "omongan": 3,
-          "peran": "penebak",
-          "jenis": "gerbang-tebak",
-          "alasan": [
-            "3/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 60 (tebakan: b/65, b/60, b/55). Alasan mereka: \"Jika dokumen menyebut turun Rp145 sedangkan dividennya Rp130, maka omongan Nadia yang merasa turunnya 'pas banget' tidak cocok.\" \"Nadia mengira penurunan harga persis sebesar dividen, tetapi opsi b menyebut turun Rp145 yang lebih besar dari dividen Rp130.\" \"Pada tanggal ex-dividen harga memang biasanya turun mendekati nilai dividen, tetapi turun persis sama (Rp130) jarang terjadi karena ada pergerakan pasar juga; opsi (a) hanya mengulang omongan Nadia dengan rapi sehingga mencurigakan, sementara penurunan sedikit lebih besar (Rp145) lebih wajar secara kebiasaan pasar dan konsisten dengan keraguan Nadia.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
-          ]
-        },
-        {
-          "no": 46,
-          "putaran": 5,
-          "omongan": 3,
-          "peran": "perencana",
-          "jenis": "buang-sudut",
-          "alasan": [
-            "omongan 3 gagal 5 putaran di sudut ke-1 (turun-2026-05-04); versi terakhirnya dibuang",
-            "sudut ke-2: laporan-jan-2026"
-          ]
-        },
-        {
-          "no": 48,
-          "putaran": 6,
-          "omongan": null,
-          "peran": "pemeriksa",
-          "jenis": "validator",
-          "alasan": [
-            "omongan 3: [AJAKAN_TRANSAKSI] Pesan memuat ajakan bertransaksi: \"borong\"."
-          ]
-        },
-        {
-          "no": 54,
-          "putaran": 7,
-          "omongan": 3,
-          "peran": "kritikus",
-          "jenis": "kritikus",
-          "alasan": [
-            "[kritikus] kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang."
-          ]
-        },
-        {
-          "no": 59,
-          "putaran": 8,
-          "omongan": 3,
-          "peran": "penebak",
-          "jenis": "gerbang-tebak",
-          "alasan": [
-            "2/3 penebak TANPA kartu memilih kunci \"b\", rata-rata keyakinan 55 (tebakan: a/60, b/60, b/50). Alasan mereka: \"Pesan Nadia hanya rumor; dokumen mencatat 8 laporan orang dalam Perusahaan U bulan Januari, sehingga tidak cocok.\" \"Pesan Nadia cuma desas-desus ('ikut-ikutan percaya'), dan pilihan (a) yang mengiyakan dengan rapi ('betul, cuma 6') terkesan seperti jebakan gema; koreksi dengan angka spesifik 8 laporan lebih khas jawaban benar untuk soal verifikasi begini.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
-          ]
-        }
-      ],
-      "draf": [
-        {
-          "nama": "Wulan",
-          "jam": "19.42",
-          "pesan": "Dividen Perusahaan U tuh tiap tahun keluar terus, dari dulu ga pernah bolos. Aman lah.",
-          "pilihan": {
-            "a": "Betul, dividennya makin besar tiap tahun tanpa kecuali.",
-            "b": "Keliru, ada tahun yang bolos tanpa pembagian dividen.",
-            "c": "Betul, pembagiannya tercatat beruntun selama [[tahun-berdividen|7 tahun]].",
-            "d": "Keliru, yang tercatat cuma pembagian tahun ini saja."
-          },
-          "kunci": "c",
-          "penjelasan": "Kalau daftar aksi korporasinya dibuka, pembagian dividen tunai muncul tiap tahun tanpa ada tahun yang kosong, dan jumlahnya [[tahun-berdividen|7 tahun]] beruntun. Daftar yang sama juga memuat [[dividen-tercatat|7 pembagian]] dari yang paling lama sampai hari ini. Yang tidak terbaca di situ: nilainya tidak selalu naik, sebab ada tahun dengan [[div-2021-09-01|Rp85]] per lembar dan tahun sesudahnya [[div-2022-08-04|Rp25]] per lembar. Jadi soal rutinnya cocok, sedangkan yang bilang ada tahun bolos atau cuma sekali bagi tidak cocok. Salah-kaprah yang umum: orang menyamakan dividen yang rutin dengan dividen yang naik terus, padahal yang tercatat cuma soal rutinnya."
-        },
-        {
-          "nama": "Sinta",
-          "jam": "20.31",
-          "pesan": "Orang dalam lain itu beli terus sepanjang Januari, malah lebih banyak dari pemilik terbesarnya. Gw sih udah cek laporannya.",
-          "pilihan": {
-            "a": "Betul, dia nambah [[fil-jan-orang-dalam-lain|16,07 juta lembar]] sepanjang Januari.",
-            "b": "Keliru, yang nambah lebih banyak justru pemilik terbesarnya.",
-            "c": "Betul, dia nambahnya cuma lewat [[fil-jan-pemilik-terbesar-laporan|2 laporan]].",
-            "d": "Keliru, dia cuma menambah [[fil-jan-pemilik-terbesar|1 juta lembar]]."
-          },
-          "kunci": "a",
-          "penjelasan": "Kalau laporan kepemilikan sahamnya dibuka, orang dalam lain muncul berkali-kali sepanjang Januari dan semuanya pembelian. Kalau ditotal, tambahannya [[fil-jan-orang-dalam-lain|16,07 juta lembar]] yang tersebar di [[fil-jan-orang-dalam-lain-laporan|6 laporan]]. Bandingkan dengan pemilik terbesar, yang cuma menambah [[fil-jan-pemilik-terbesar|1 juta lembar]] lewat [[fil-jan-pemilik-terbesar-laporan|2 laporan]]. Jadi yang bilang orang dalam lain menambah lebih banyak dari pemilik terbesar itu cocok. Yang tidak terbaca di situ: alasan mereka membeli, sebab laporannya cuma memuat transaksi dan jumlah lembar. Salah-kaprah yang umum: orang mengira pemilik terbesar selalu yang paling banyak menambah, padahal yang tercatat di Januari justru sebaliknya."
-        },
-        {
-          "nama": "Fitri",
-          "jam": "21.15",
-          "pesan": "Katanya orang dalam Perusahaan U pada beli saham terus bulan Januari, ga ada yang jual. Aku ikut-ikutan percaya aja sih.",
-          "pilihan": {
-            "a": "Betul, semuanya pembelian tanpa ada yang jual.",
-            "b": "Keliru, ada juga laporan yang isinya penjualan.",
-            "c": "Betul, yang beli cuma orang dalam lain.",
-            "d": "Keliru, laporannya cuma [[fil-jan-pemilik-terbesar-laporan|dua laporan]]."
-          },
-          "kunci": "a",
-          "penjelasan": "Kalau daftar laporan kepemilikan dibuka, sepanjang Januari ada [[laporan-jan-2026|8 laporan]] dan isinya pembelian semua, tidak ada satu pun yang penjualan. Yang lapor juga bukan cuma satu pihak: pemilik terbesar muncul [[fil-jan-pemilik-terbesar-laporan|2 laporan]] dan orang dalam lain [[fil-jan-orang-dalam-lain-laporan|6 laporan]]. Yang tidak terbaca di situ: alasan mereka membeli, sebab laporannya cuma memuat tanggal transaksi dan jumlah lembar. Jadi yang bilang ada laporan penjualan tidak cocok, begitu juga yang bilang yang beli cuma satu pihak atau laporannya cuma dua. Salah-kaprah yang umum: orang mengira laporan orang dalam selalu campur beli dan jual, padahal yang tercatat di Januari justru semuanya pembelian."
-        }
-      ],
-      "uji_luar": [
-        {
-          "omongan": 1,
-          "kunci": "c",
-          "tebak_benar": 0,
-          "tebak_n": 3,
-          "kartu_benar": 3,
-          "kartu_n": 3
-        },
-        {
-          "omongan": 2,
-          "kunci": "a",
-          "tebak_benar": 0,
-          "tebak_n": 3,
-          "kartu_benar": 3,
-          "kartu_n": 3
-        },
-        {
-          "omongan": 3,
-          "kunci": "a",
-          "tebak_benar": 0,
-          "tebak_n": 3,
-          "kartu_benar": 3,
-          "kartu_n": 3
-        }
-      ],
-      "alami": {
-        "agen": 3,
-        "manusia": 4,
-        "penilai": 3
-      }
-    },
     {
       "id": "tirt-m2d6",
       "milestone": "M2d-6",
@@ -803,6 +463,58 @@
       "draf": null,
       "uji_luar": null,
       "alami": null
+    }
+  ],
+  "agregat": [
+    {
+      "id": "ultj-m2d4",
+      "milestone": "M2d-4",
+      "terbit": true,
+      "putaran": 9,
+      "versi": 16,
+      "penolakan": [
+        {
+          "peran": "perencana",
+          "tolak": 1
+        },
+        {
+          "peran": "pemeriksa",
+          "tolak": 5
+        },
+        {
+          "peran": "kritikus",
+          "tolak": 2
+        },
+        {
+          "peran": "penebak",
+          "tolak": 4
+        }
+      ]
+    },
+    {
+      "id": "dada-m2d4",
+      "milestone": "M2d-4",
+      "terbit": false,
+      "putaran": 11,
+      "versi": 27,
+      "penolakan": [
+        {
+          "peran": "perencana",
+          "tolak": 3
+        },
+        {
+          "peran": "pemeriksa",
+          "tolak": 6
+        },
+        {
+          "peran": "kritikus",
+          "tolak": 5
+        },
+        {
+          "peran": "penebak",
+          "tolak": 8
+        }
+      ]
     }
   ]
 }

@@ -4,8 +4,9 @@
  * Yang diperlihatkan adalah kerja agen AI yang MENULIS DRAF simulasi baru —
  * bukan simulasi yang dimainkan orang, yang ditulis manusia. Halaman ini
  * membaca `dapur-data.json`, yang dibangun `node --experimental-strip-types alat/dapur.ts` dari jejak
- * mentah (`eval/keluaran-m2d4/ultj/`, `eval/keluaran-m2d6/jalan-1/tirt/`):
- * setiap angka, status, alasan penolakan, dan kalimat draf datang dari sana.
+ * mentah: jalan TIRT (emiten yang tidak tayang) utuh, dan jalan atas DADA/ULTJ
+ * hanya sebagai angka (Amandemen A-1: isinya membocorkan jawaban simulasi yang
+ * tayang). Setiap angka, status, alasan penolakan, dan kalimat draf datang dari sana.
  * Yang ditulis di berkas ini hanyalah kerangka kalimat dan penjelasan peran
  * (disarikan dari `factory/llm/peran.md`).
  *
@@ -22,6 +23,7 @@ import {
   barisAngka,
   contohPenolakan,
   judulJalan,
+  kalimatAgregat,
   kepalaPenolakan,
   namaPeran,
   ringkasUjiLuar,
@@ -112,7 +114,7 @@ function Draf({ jalan }: { jalan: JalanDapur }): JSX.Element | null {
       </p>
       <p>Draf ini tidak tayang sebagai simulasi; belum ada yang memainkannya.</p>
       <details className="jejak-rinci dapur-lipat" data-uid={`dapur:draf-${jalan.id}`}>
-        <summary>Lihat drafnya (berisi jawaban soal {jalan.simulasi.nama_samaran})</summary>
+        <summary>Lihat drafnya</summary>
         <ol className="dapur-draf">
           {jalan.draf.map((o, i) => (
             <li key={i}>
@@ -180,7 +182,7 @@ function Jalan({ jalan }: { jalan: JalanDapur }): JSX.Element {
           </li>
         ))}
       </ul>
-      <p className="meta">Nama model ditulis persis seperti tercatat di jejak; kedua jalan memakai penyedia berbeda.</p>
+      <p className="meta">Nama model ditulis persis seperti tercatat di jejak.</p>
 
       <h3>Alasan penolakan, persis seperti di jejak</h3>
       <p className="meta">
@@ -221,8 +223,8 @@ export default function Dapur(): JSX.Element {
         <h1 className="judul">Dapur agen</h1>
         <p>
           Simulasi yang kamu mainkan di sini ditulis manusia. Di dapur ini kami melatih agen AI menulis
-          simulasi baru dari data yang sama, dan belum ada satu pun draf agen yang dimainkan orang. Di bawah
-          ini jejak kerjanya, apa adanya.
+          simulasi baru, dan belum ada satu pun draf agen yang dimainkan orang. Di bawah ini jejak kerjanya
+          atas data perusahaan yang tidak ada di simulasi mana pun, apa adanya.
         </p>
         {/* Kritik D-5 butir 1: status kedua jalan terlihat di layar pertama, bertaut ke jalannya. */}
         <ul className="dapur-daftar dapur-ringkas">
@@ -234,6 +236,14 @@ export default function Dapur(): JSX.Element {
               : {statusJalan(j).label}
             </li>
           ))}
+          {DATA.agregat.length > 0 && (
+            <li>
+              <a className="dapur-tautan" href="#judul-agregat" data-uid="dapur:ke-agregat">
+                Simulasi yang tayang
+              </a>
+              : hanya angka, tanpa isi
+            </li>
+          )}
         </ul>
         <p className="meta">
           Angka, nama model, dan kalimat dalam tanda kutip dibaca dari jejak mentah lingkar agen, tanpa
@@ -243,6 +253,29 @@ export default function Dapur(): JSX.Element {
         {DATA.jalan.map((j) => (
           <Jalan key={j.id} jalan={j} />
         ))}
+
+        {/*
+          Amandemen A-1: jalan agen atas data simulasi yang SEDANG TAYANG hanya
+          angka. Draf, pilihan, kunci, penjelasan, dan kutipan keberatannya
+          membocorkan jawaban simulasi yang dimainkan orang, jadi tidak satu
+          kata pun darinya masuk ke halaman ini (dijaga `alat/dapur.test.ts`).
+        */}
+        {DATA.agregat.length > 0 && (
+          <section className="dapur-bagian" aria-labelledby="judul-agregat" data-uid="dapur:agregat">
+            <h2 id="judul-agregat" className="dapur-subjudul">
+              Jalan atas data simulasi yang bisa kamu mainkan
+            </h2>
+            <p>
+              Agen juga menulis draf dari data {angkaId(DATA.agregat.length)} simulasi yang tayang. Isinya tidak
+              ditampilkan di sini supaya jawabannya tidak bocor; yang tampil hanya angkanya.
+            </p>
+            <ul className="dapur-daftar">
+              {DATA.agregat.map((a) => (
+                <li key={a.id}>{kalimatAgregat(a)}</li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <section className="dapur-bagian" aria-labelledby="judul-peran">
           <h2 id="judul-peran" className="dapur-subjudul">
