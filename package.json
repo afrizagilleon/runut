@@ -41,7 +41,8 @@
     "gaya:susun": "node --experimental-strip-types factory/llm/gaya-susun.ts",
     "gaya:penguji": "node --experimental-strip-types factory/llm/gaya-penguji.ts",
     "gaya:laporan": "node --experimental-strip-types factory/llm/gaya-laporan.ts",
-    "sectors:ambil": "node --experimental-strip-types alat/sectors.ts"
+    "sectors:ambil": "node --experimental-strip-types alat/sectors.ts",
+    "sectors:manifest": "node --experimental-strip-types alat/manifest.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
