@@ -13,7 +13,9 @@
  *
  * Di OpenRouter, `reasoning.max_tokens` dan jawaban berbagi anggaran
  * `max_tokens` yang sama; `max_tokens − reasoning.max_tokens` adalah ruang
- * jawaban. Angkanya ditetapkan dari probe kecil atas bahan TIRT (T-07a,
+ * jawaban. Tidak semua penyedia mematuhi `reasoning.max_tokens` (terukur:
+ * AtlasCloud untuk DeepSeek), jadi `max_tokens` adalah batas keras yang
+ * sesungguhnya. Angkanya ditetapkan dari probe kecil atas bahan TIRT (T-07a,
  * `eval/keluaran-m2d5/probe/`); putusan dan datanya di laporan
  * `docs/bukti/lingkar-agen-tirt.md`.
  */
@@ -26,17 +28,35 @@ export interface BatasPenalaran {
   maxTokens: number;
 }
 
-/** Ruang jawaban minimum per peran (token): JSON satu omongan ±1.500; kritikus ±600; tebakan ±150. */
-export const RUANG_JAWABAN_MIN = { penulis: 4_000, kritikus: 2_000, penebak: 1_000 } as const;
+/** Ruang jawaban minimum per peran (token): JSON satu omongan ±1.500; kritikus ±600; tebakan/jawaban kartu ±150. */
+export const RUANG_JAWABAN_MIN = { penulis: 4_000, kritikus: 2_000, penebak: 1_000, kartu: 1_000 } as const;
 
 /**
- * Batas M2d-5. Angka sementara T-02; diganti angka dari probe T-07a
- * (lihat riwayat berkas ini dan `eval/keluaran-m2d5/probe/`).
+ * Batas M2d-5, dari probe T-07a (16 panggilan, US$0,0636 — data mentah
+ * `eval/keluaran-m2d5/probe/probe-penalaran*.json`, putusan
+ * `eval/keluaran-m2d5/probe/putusan.md`):
+ *
+ * - penulis (DeepSeek): penalaran yang selesai 10.866–10.978 token; penyedia
+ *   AtlasCloud TIDAK mematuhi `reasoning.max_tokens` (8.000 → berpikir 14.000
+ *   sampai habis; 16.000 → berpikir 24.000 sampai habis), penyedia lain
+ *   mematuhi. 12.000 menampung penalaran yang terukur; `max_tokens` 20.000
+ *   menampung penyedia yang tidak patuh bila ia selesai (±11.400) dan
+ *   membatasi ongkos putaran macet (≤ US$0,024 pada harga batas). Terpotong →
+ *   cadangan tanpa berpikir.
+ * - kritikus (GLM): penalaran terukur 183–608 token (5 panggilan, semua
+ *   selesai); 8.000 / 12.000 memberi ruang lebar tanpa membuat perkiraan
+ *   maksimum per panggilan melampaui ±US$0,06.
+ * - penebak GLM: pada 1.500 GLM hampir tidak berpikir (1 token) — penebak
+ *   lemah; pada 3.000 berpikir 425 token dan menjawab. 3.000 / 5.000.
+ * - pembaca kartu (DeepSeek, di luar tiga peran D-3 tetapi terukur): tanpa
+ *   medan `reasoning` ia berpikir 5.293 token dari batas 8.000 — nyaris
+ *   terpotong. Dengan 6.000: 1.037–2.901 token. 6.000 / 12.000.
  */
 export const PENALARAN_M2D5 = {
-  penulis: { penalaran: 16_000, maxTokens: 24_000 },
-  kritikus: { penalaran: 12_000, maxTokens: 16_000 },
-  penebakGlm: { penalaran: 3_000, maxTokens: 6_000 },
+  penulis: { penalaran: 12_000, maxTokens: 20_000 },
+  kritikus: { penalaran: 8_000, maxTokens: 12_000 },
+  penebakGlm: { penalaran: 3_000, maxTokens: 5_000 },
+  kartu: { penalaran: 6_000, maxTokens: 12_000 },
 } as const satisfies Record<string, BatasPenalaran>;
 
 /** `max_tokens` cadangan penulis tanpa berpikir (sama dengan M2d-2…M2d-4). */

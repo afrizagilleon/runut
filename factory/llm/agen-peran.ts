@@ -165,6 +165,8 @@ export interface Generasi {
    * tulisan penulis menolak (kutipannya ke penulis), kalimat kartu paket dicatat.
    */
   kartuBingung?: boolean;
+  /** Setelan pembaca kartu (M2d-5: batas penalaran); bawaan M2d-2. */
+  kartu?: { maxTokens: number; tambahanBadan?: Readonly<Record<string, unknown>> };
 }
 
 export const GENERASI_M2D3: Generasi = {
@@ -199,6 +201,7 @@ export const GENERASI_M2D5: Generasi = {
   posisiKunci: true,
   gerbangMakna: true,
   kartuBingung: true,
+  kartu: { maxTokens: PENALARAN_M2D5.kartu.maxTokens, tambahanBadan: badanPenalaran(PENALARAN_M2D5.kartu) },
   // Contoh gaya yang memuat penilaian ("aman lah", v2-056/v2-061) tidak ditunjukkan ke penulis M2d-5 (G-penilaian).
   bank: () => bacaBank(2).filter((k) => !gPenilaian(k.teks).tolak),
   model: MODEL_PERAN_M2D5,
@@ -807,7 +810,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
       let kr = null as PutusanKritik | null;
       try {
         // --- 3a. PEMBACA KARTU
-        kartu = await gerbangKartu(omongan, opsi.paket, { ...opsiGerbang, tandaiBingung: gen.kartuBingung === true });
+        kartu = await gerbangKartu(omongan, opsi.paket, { ...opsiGerbang, tandaiBingung: gen.kartuBingung === true, ...(gen.kartu ?? {}) });
         suara.kartu = kartu.lolos;
         catat({
           putaran, jenis: 'gerbang-kartu', omongan: no, waktu_mulai: mulaiGerbang, waktu_selesai: jam().toISOString(),

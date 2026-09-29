@@ -50,7 +50,7 @@ describe('pondasi proyek', () => {
     // M2d-4 D-0/D-7/D-8/D-9: arsip ledger, lingkar gaya & makna, penguji eksternal, laporan — satu per satu.
     const M2D4 = ['gaya:arsip', 'gaya:susun', 'gaya:penguji', 'gaya:laporan'];
     // M2d-5 D-0/D-3/D-9/D-10/D-11: arsip + kunci, probe penalaran, lingkar TIRT OpenRouter, penguji eksternal, laporan.
-    const M2D5 = ['tirt:susun'];
+    const M2D5 = ['tirt:arsip', 'tirt:periksa', 'tirt:probe', 'tirt:susun'];
     // M4a D-1/D-2/D-4: pengambil data Sectors di repo, manifest gudang, audit gudang — satu per satu.
     const M4A = ['sectors:ambil', 'sectors:manifest', 'audit:gudang', 'audit:paket'];
     const skrip = Object.keys(paket.scripts).sort();

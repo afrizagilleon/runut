@@ -173,7 +173,7 @@ describe('M2d-5 — batas penalaran (D-3)', () => {
     expect(PENALARAN_M2D5.penulis.maxTokens - PENALARAN_M2D5.penulis.penalaran).toBeGreaterThanOrEqual(RUANG_JAWABAN_MIN.penulis);
   });
 
-  it('kritikus dan penebak GLM membawa reasoning.max_tokens; penebak DeepSeek dan pembaca kartu tidak diubah', async () => {
+  it('kritikus, penebak GLM, dan pembaca kartu (putusan probe) membawa reasoning.max_tokens; penebak DeepSeek tidak diubah', async () => {
     const { rekaman } = await jalan({});
     for (const r of dari(rekaman, 'kritikus')) {
       expect(r.setelan).toMatchObject({ maxTokens: PENALARAN_M2D5.kritikus.maxTokens, tambahanBadan: { reasoning: { max_tokens: PENALARAN_M2D5.kritikus.penalaran } } });
@@ -185,7 +185,17 @@ describe('M2d-5 — batas penalaran (D-3)', () => {
         expect(r.setelan.tambahanBadan).toBeUndefined();
       }
     }
-    for (const r of dari(rekaman, 'pembaca-kartu')) expect(r.setelan.tambahanBadan).toBeUndefined();
+    for (const r of dari(rekaman, 'pembaca-kartu')) {
+      expect(r.setelan).toMatchObject({ maxTokens: PENALARAN_M2D5.kartu.maxTokens, tambahanBadan: { reasoning: { max_tokens: PENALARAN_M2D5.kartu.penalaran } } });
+    }
+    expect(PENALARAN_M2D5.kartu.maxTokens - PENALARAN_M2D5.kartu.penalaran).toBeGreaterThanOrEqual(RUANG_JAWABAN_MIN.kartu);
+    // Angka putusan probe T-07a (eval/keluaran-m2d5/probe/putusan.md).
+    expect(PENALARAN_M2D5).toEqual({
+      penulis: { penalaran: 12_000, maxTokens: 20_000 },
+      kritikus: { penalaran: 8_000, maxTokens: 12_000 },
+      penebakGlm: { penalaran: 3_000, maxTokens: 5_000 },
+      kartu: { penalaran: 6_000, maxTokens: 12_000 },
+    });
     expect(PENALARAN_M2D5.kritikus.maxTokens - PENALARAN_M2D5.kritikus.penalaran).toBeGreaterThanOrEqual(RUANG_JAWABAN_MIN.kritikus);
     expect(PENALARAN_M2D5.penebakGlm.maxTokens - PENALARAN_M2D5.penebakGlm.penalaran).toBeGreaterThanOrEqual(RUANG_JAWABAN_MIN.penebak);
     // M2d-4 tidak berubah: tanpa medan reasoning.

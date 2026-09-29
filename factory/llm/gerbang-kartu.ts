@@ -214,6 +214,9 @@ export interface PutusanKartu {
 export interface OpsiKartu extends OpsiGerbang {
   /** D-7: minta daftar kalimat membingungkan; kalimat tulisan penulis menolak. */
   tandaiBingung?: boolean;
+  /** M2d-5: `max_tokens` dan medan badan (batas penalaran); bawaan `MAX_TOKENS_GERBANG` tanpa medan. */
+  maxTokens?: number;
+  tambahanBadan?: Readonly<Record<string, unknown>>;
 }
 
 export async function gerbangKartu(o: OmonganDraf, paket: PaketFakta, opsi: OpsiKartu): Promise<PutusanKartu> {
@@ -222,7 +225,7 @@ export async function gerbangKartu(o: OmonganDraf, paket: PaketFakta, opsi: Opsi
   const bingung = opsi.tandaiBingung === true;
   const { hasil, panggilan } = await panggilTerbaca(
     () => pesanPenjawab(soal, kartu, bingung),
-    { suhu: SUHU_KARTU, maxTokens: MAX_TOKENS_GERBANG },
+    { suhu: SUHU_KARTU, maxTokens: opsi.maxTokens ?? MAX_TOKENS_GERBANG, ...(opsi.tambahanBadan === undefined ? {} : { tambahanBadan: opsi.tambahanBadan }) },
     { jenis: 'gerbang-kartu', putaran: opsi.putaran, omongan: opsi.omongan, ke: 1 },
     opsi,
     bingung ? uraiJawabanKartuBingung : uraiJawabanKartu,
