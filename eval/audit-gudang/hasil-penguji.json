@@ -1,0 +1,305 @@
+{
+  "keterangan": "Hasil uji ulang D-5. Jawaban mentah penguji (subagent Claude Opus baru, hanya menerima eval/audit-gudang/pilihan.json -> paket .cache/audit-gudang/paket/Uxx.txt) ada di eval/audit-gudang/penguji/Uxx.md; kolom sebelum diambil dari baris pertama jawaban itu. penyelidikan dan sesudah ditulis eksekutor sesudah menyelidiki tiap jawaban bukan-ya.",
+  "uji": [
+    {
+      "id": "U01",
+      "aturan": "R25",
+      "simbol": "ARCI",
+      "kelompok": "suspensi",
+      "temuan_id": "R25-parameter-ARCI",
+      "sebelum": "tidak",
+      "penyelidikan": "Bukan salah deteksi: R25 mencatat \"tidak lengkap\", bukan \"bertentangan\", jadi pertanyaan \"tidak konsisten\" tidak cocok untuknya. Tetapi dua klaim di temuannya memang keliru untuk data M4a: respons kosong dihitung lintas-emiten (21 berkas milik emiten lain), dan parameter permintaan sebenarnya tersimpan di buku kas dan manifest. Bug cakupan R25; tidak diperbaiki di M4a karena mengubah kasus ULTJ (lihat usulan di laporan).",
+      "sesudah": "tidak"
+    },
+    {
+      "id": "U02",
+      "aturan": "R25",
+      "simbol": "ADHI",
+      "kelompok": "pembanding",
+      "temuan_id": "R25-parameter-ADHI",
+      "sebelum": "tidak",
+      "penyelidikan": "Bukan salah deteksi: R25 mencatat \"tidak lengkap\", bukan \"bertentangan\", jadi pertanyaan \"tidak konsisten\" tidak cocok untuknya. Tetapi dua klaim di temuannya memang keliru untuk data M4a: respons kosong dihitung lintas-emiten (21 berkas milik emiten lain), dan parameter permintaan sebenarnya tersimpan di buku kas dan manifest. Bug cakupan R25; tidak diperbaiki di M4a karena mengubah kasus ULTJ (lihat usulan di laporan).",
+      "sesudah": "tidak"
+    },
+    {
+      "id": "U03",
+      "aturan": "R12",
+      "simbol": "ALII",
+      "kelompok": "suspensi",
+      "temuan_id": "R12-ALII|2026-02-27T06:06:00|LK-20022026-5429-00.pdf-0.pdf",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U04",
+      "aturan": "R22",
+      "simbol": "BAPA",
+      "kelompok": "suspensi",
+      "temuan_id": "R22-intifikasasekuritas",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U05",
+      "aturan": "R20",
+      "simbol": "BBRM",
+      "kelompok": "suspensi",
+      "temuan_id": "R20-BBRM",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U06",
+      "aturan": "R32",
+      "simbol": "BBRM",
+      "kelompok": "suspensi",
+      "temuan_id": "R32-BBRM-2021",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U07",
+      "aturan": "R21",
+      "simbol": "BBSS",
+      "kelompok": "suspensi",
+      "temuan_id": "R21-BBSS-2025-12-31-14-15",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U08",
+      "aturan": "R33",
+      "simbol": "ADRO",
+      "kelompok": "pembanding",
+      "temuan_id": "R33-ADRO-2026-07-13",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U09",
+      "aturan": "R15",
+      "simbol": "ASHA",
+      "kelompok": "suspensi",
+      "temuan_id": "R15-ASHA|2025-12-30T21:24:55|3053aa7dd4_830a4b37fe.pdf",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U10",
+      "aturan": "R11a",
+      "simbol": "AMMS",
+      "kelompok": "suspensi",
+      "temuan_id": "R11a-AMMS|2025-09-23T14:36:59|0354743fd0_ed56bb2e52.pdf",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U11",
+      "aturan": "R11a",
+      "simbol": "BAIK",
+      "kelompok": "suspensi",
+      "temuan_id": "R11a-BAIK|2026-08-21T14:36:16|LK-21082026-9817-00.pdf-0.pdf",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U12",
+      "aturan": "R11b",
+      "simbol": "ALII",
+      "kelompok": "suspensi",
+      "temuan_id": "R11b-ALII",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U13",
+      "aturan": "R7",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R7-BCIC|2025-10-09T14:16:54|1cb3fc41a9_d1095c78e8.pdf-sebelum-transaksi",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U14",
+      "aturan": "R7",
+      "simbol": "BAJA",
+      "kelompok": "suspensi",
+      "temuan_id": "R7-BAJA|2026-09-14T09:28:40|LK-14092026-8980-00.pdf-0.pdf-sebelum-transaksi",
+      "sebelum": "ragu",
+      "penyelidikan": "Selisih penyebut 0,03% (1,7995 lawan 1,8 miliar lembar) yang baru terlihat di desimal ketiga; bisa saham treasuri atau jumlah saham pada tanggal transaksi April. Tidak diubah: R7 membandingkan pada presisi yang tertulis di laporan.",
+      "sesudah": "ragu"
+    },
+    {
+      "id": "U15",
+      "aturan": "R14",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R14-BCIC|2026-06-29T16:52:35|LK-29062026-0121-00.pdf-0.pdf-BCIC|2026-07-29T15:57:37|LK-29072026-3109-00.pdf-0.pdf",
+      "sebelum": "tidak",
+      "penyelidikan": "Bug aturan terbukti: dua laporan satu pemegang dengan cap waktu dan PDF yang sama diurutkan menurut urutan baris respons API, bukan menurut sambungan saldonya. Diperbaiki (urutCapWaktuKembar, tes merah dulu di factory/verifikasi/audit-m4a.test.ts); temuan ini tidak keluar lagi.",
+      "sesudah": "hilang"
+    },
+    {
+      "id": "U16",
+      "aturan": "R14",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R14-BCIC|2026-07-29T15:57:37|LK-29072026-3109-00.pdf-0.pdf-BCIC|2026-08-31T16:50:27|LK-31082026-4638-00.pdf-0.pdf",
+      "sebelum": "tidak",
+      "penyelidikan": "Bug aturan terbukti: dua laporan satu pemegang dengan cap waktu dan PDF yang sama diurutkan menurut urutan baris respons API, bukan menurut sambungan saldonya. Diperbaiki (urutCapWaktuKembar, tes merah dulu di factory/verifikasi/audit-m4a.test.ts); temuan ini tidak keluar lagi.",
+      "sesudah": "hilang"
+    },
+    {
+      "id": "U17",
+      "aturan": "R16",
+      "simbol": "BAJA",
+      "kelompok": "suspensi",
+      "temuan_id": "R16-digabung-BAJA",
+      "sebelum": "tidak",
+      "penyelidikan": "Bug aturan terbukti: dua laporan satu pemegang dengan cap waktu dan PDF yang sama diurutkan menurut urutan baris respons API, bukan menurut sambungan saldonya. Diperbaiki (urutCapWaktuKembar, tes merah dulu di factory/verifikasi/audit-m4a.test.ts); temuan ini tidak keluar lagi.",
+      "sesudah": "hilang"
+    },
+    {
+      "id": "U18",
+      "aturan": "R13",
+      "simbol": "ADRO",
+      "kelompok": "pembanding",
+      "temuan_id": "R13-ADRO|2025-10-17T22:27:59|4d80ecf450_17be92eba5.pdf-kepemilikan-sesudah",
+      "sebelum": "tidak",
+      "penyelidikan": "Penolakan kartunya benar — lembar yang ditulis mustahil untuk saham beredar ADRO — tetapi sebabnya salah label: laporan tentang saham Alamtri Minerals Indonesia ditandai simbol ADRO.JK (penguji menunjukkan penyebut tersiratnya 40,88 miliar dan harga 1.435 di luar rentang ADRO). Jenis \"laporan untuk saham lain\" tidak ditangkap aturan mana pun (R6 digantikan). Calon aturan baru D-6; ditahan karena D-7.",
+      "sesudah": "tidak"
+    },
+    {
+      "id": "U19",
+      "aturan": "R17B",
+      "simbol": "ADHI",
+      "kelompok": "pembanding",
+      "temuan_id": "R17B-ADHI|2025-08-08T23:22:50|d517dd0764_c404bdc575.pdf-2025-07-31-239.08",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U20",
+      "aturan": "R17B",
+      "simbol": "BBMD",
+      "kelompok": "pembanding",
+      "temuan_id": "R17B-BBMD|2025-08-07T16:30:49|885d18b338_eeb5442454.pdf-2025-08-07-0",
+      "sebelum": "tidak",
+      "penyelidikan": "Bug aturan terbukti: butir pengalihan (transfer) berharga Rp0 diadu dengan rentang harga pasar. Diperbaiki (harga nol dicatat tidak lengkap, tes merah dulu); temuan ini tidak keluar lagi.",
+      "sesudah": "hilang"
+    },
+    {
+      "id": "U21",
+      "aturan": "R18a",
+      "simbol": "BBRM",
+      "kelompok": "suspensi",
+      "temuan_id": "R18a-BBRM",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U22",
+      "aturan": "R19a",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R19a-BCIC",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U23",
+      "aturan": "R19b",
+      "simbol": "BATA",
+      "kelompok": "pembanding",
+      "temuan_id": "R19b-BATA-2026-06-26-lunak",
+      "sebelum": "tidak",
+      "penyelidikan": "Bukan salah deteksi: R19b sengaja memakai jendela lunak (9 dari 10 hari) dan temuannya sendiri menulis \"9 dari 10 hari bursa\"; kalimat awamnya (\"tiap harinya\") tidak menyebut jendela lunak. Tidak diubah; kalimat awam R19b kurang tepat.",
+      "sesudah": "tidak"
+    },
+    {
+      "id": "U24",
+      "aturan": "R28",
+      "simbol": "BAJA",
+      "kelompok": "suspensi",
+      "temuan_id": "R28-BAJA-2026-09-28-rights-issue",
+      "sebelum": "tidak",
+      "penyelidikan": "Bukan salah deteksi: R28 memberi label deret, tidak mengklaim ketidakkonsistenan; saham tersirat BAJA memang tidak berubah melintasi right issue (label \"disesuaikan\" sesuai definisinya). Pertanyaan \"tidak konsisten\" tidak cocok untuk aturan pelabelan.",
+      "sesudah": "tidak"
+    },
+    {
+      "id": "U25",
+      "aturan": "R35",
+      "simbol": "AHAP",
+      "kelompok": "suspensi",
+      "temuan_id": "R35-AHAP-90_d_low-2026-09-22",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U26",
+      "aturan": "R23",
+      "simbol": "ASLC",
+      "kelompok": "suspensi",
+      "temuan_id": "R23-ASLC-2026-05-19",
+      "sebelum": "tidak",
+      "penyelidikan": "Bug aturan terbukti: laba di keputusan RUPS = earnings_before_tax − tax di laporan keuangan yang sama, tepat sampai rupiah; R23 hanya mengadu dengan medan earnings (laba atribusi induk). Tidak diperbaiki di M4a: medan pajak dan laba sebelum pajak tidak dimuat pemuat (factory/muat di luar batas D-5). Usulan di laporan.",
+      "sesudah": "tidak"
+    },
+    {
+      "id": "U27",
+      "aturan": "R31",
+      "simbol": "BNII",
+      "kelompok": "pembanding",
+      "temuan_id": "R31-BNII-2026-04-17-345",
+      "sebelum": "tidak",
+      "penyelidikan": "Bug aturan terbukti: angka RUPS Rp7.61 adalah 7,61106 yang dibulatkan dua desimal. Diperbaiki (angka RUPS berdesimal dibandingkan pada desimal yang tertulis; angka bulat tetap harus sama persis; tes merah dulu); temuan ini tidak keluar lagi.",
+      "sesudah": "hilang"
+    },
+    {
+      "id": "U28",
+      "aturan": "R26",
+      "simbol": "ABMM",
+      "kelompok": "pembanding",
+      "temuan_id": "R26-ABMM-2023",
+      "sebelum": "tidak",
+      "penyelidikan": "Penanda tepat atas angka yang tertulis, tetapi sebab sebenarnya bukan pembagian dividen yang tak masuk akal: baris keuangan ABMM 2023 bercampur satuan (total_debt 16 triliun > total_liabilities 1,4 miliar; kas > total aset). Jenis \"komponen neraca melebihi totalnya\" tidak ditangkap aturan mana pun. Calon aturan baru D-6; ditahan karena D-7.",
+      "sesudah": "tidak"
+    },
+    {
+      "id": "U29",
+      "aturan": "R27",
+      "simbol": "ARGO",
+      "kelompok": "suspensi",
+      "temuan_id": "R27-ARGO-2020-roe-tanda",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    },
+    {
+      "id": "U30",
+      "aturan": "R34",
+      "simbol": "BOLT",
+      "kelompok": "pembanding",
+      "temuan_id": "R34-BOLT",
+      "sebelum": "ya",
+      "penyelidikan": null,
+      "sesudah": "ya"
+    }
+  ]
+}

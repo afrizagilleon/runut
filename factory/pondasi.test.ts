@@ -50,7 +50,7 @@ describe('pondasi proyek', () => {
     // M2d-4 D-0/D-7/D-8/D-9: arsip ledger, lingkar gaya & makna, penguji eksternal, laporan — satu per satu.
     const M2D4 = ['gaya:arsip', 'gaya:susun', 'gaya:penguji', 'gaya:laporan'];
     // M4a D-1/D-2/D-4: pengambil data Sectors di repo, manifest gudang, audit gudang — satu per satu.
-    const M4A = ['sectors:ambil', 'sectors:manifest', 'audit:gudang'];
+    const M4A = ['sectors:ambil', 'sectors:manifest', 'audit:gudang', 'audit:paket'];
     const skrip = Object.keys(paket.scripts).sort();
     for (const wajib of [...M1, ...M32, ...M33, ...A3, ...M2A]) {
       expect(skrip).toContain(wajib);

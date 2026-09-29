@@ -780,16 +780,23 @@ export function cariCocokDividen(
   targetMilli: number,
   dividen: Array<{ ex_date: string; nilai_per_lembar: number }>,
   rasioSplit: number[],
+  desimal: number = 3,
 ): CocokDividen | null {
   const urut = [...dividen].sort((a, b) => a.ex_date.localeCompare(b.ex_date));
   const milli = urut.map((d) => Math.round(d.nilai_per_lembar * 1000));
   const pengali = [1, ...[...new Set(rasioSplit)].filter((r) => r > 1).sort((a, b) => a - b)];
+  // M4a D-5 (U27): angka RUPS yang ditulis dengan 1-2 desimal adalah angka yang
+  // sudah dibulatkan ke desimal itu (BNII "Rp7.61" untuk 7,61106), jadi
+  // medan dividen dibandingkan setelah dibulatkan ke desimal yang sama. Angka
+  // bulat tetap harus sama persis: "Rp28" tidak berarti "sekitar 28".
+  const skala = desimal >= 1 && desimal < 3 ? 10 ** (3 - desimal) : 1;
+  const sama = (m: number) => Math.round(m / skala) === Math.round(targetMilli / skala);
 
   for (const lipat of pengali) {
     for (const [i, m] of milli.entries()) {
       const ex = urut[i]?.ex_date;
       if (ex === undefined || m === undefined) continue;
-      if (m * lipat === targetMilli) return { cara: 'satu', lipat, ex: [ex], milli: m };
+      if (sama(m * lipat)) return { cara: 'satu', lipat, ex: [ex], milli: m };
     }
     for (let i = 0; i < milli.length; i += 1) {
       for (let j = i + 1; j < milli.length; j += 1) {
@@ -798,7 +805,7 @@ export function cariCocokDividen(
         const exA = urut[i]?.ex_date;
         const exB = urut[j]?.ex_date;
         if (a === undefined || b === undefined || exA === undefined || exB === undefined) continue;
-        if ((a + b) * lipat === targetMilli) {
+        if (sama((a + b) * lipat)) {
           return { cara: 'jumlah-dua', lipat, ex: [exA, exB], milli: a + b };
         }
       }
@@ -820,6 +827,11 @@ export function rupiahMilli(milli: number): string {
   if (sisa === 0) return angka(bulat);
   const desimal = String(sisa).padStart(3, '0').replace(/0+$/, '');
   return angka(bulat) + ',' + (desimal.length === 1 ? desimal + '0' : desimal);
+}
+
+/** Banyak angka desimal yang tertulis pada angka rupiah di teks (`Rp7.61` → 2, `Rp28` → 0). */
+export function desimalTertulis(a: AngkaRupiah): number {
+  return /\.(\d{1,3})$/.exec(a.teks)?.[1]?.length ?? 0;
 }
 
 /** Angka rupiah di teks RUPS yang menempel pada "per share" dan bukan nilai nominal. */
@@ -866,7 +878,7 @@ export function penyesuaianSplitDividen(konteks: KonteksGudang): PenyesuaianSpli
   for (const r of konteks.data.rups) {
     if (r.ringkasan === null) continue;
     for (const a of angkaPerLembar(r.ringkasan)) {
-      const cocok = cariCocokDividen(a.milli, dividenDekat(konteks, r.tanggal), rasio);
+      const cocok = cariCocokDividen(a.milli, dividenDekat(konteks, r.tanggal), rasio, desimalTertulis(a));
       if (cocok !== null && cocok.lipat > 1) {
         return { disesuaikan: true, lipat: cocok.lipat, bukti: r.tanggal };
       }
@@ -923,7 +935,7 @@ export function r31DividenRupsVersusMedan(konteks: KonteksGudang): HasilAturan {
         alasan.push('Tidak ada satu pun entri dividen bertanggal dekat RUPS ini untuk diadu.');
         continue;
       }
-      const cocok = cariCocokDividen(a.milli, dekat, rasio);
+      const cocok = cariCocokDividen(a.milli, dekat, rasio, desimalTertulis(a));
       if (cocok !== null && cocok.lipat === 1) continue;
 
       merah += 1;

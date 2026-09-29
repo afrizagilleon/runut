@@ -16,7 +16,7 @@ Kurikulum melabeli kasus menurut **peristiwa**: perusahaan membagi dividen, mene
 
 | peristiwa | kejadian | punya harga di kedua sisi | lolos jadi bahan kartu | emiten |
 |---|---:|---:|---:|---|
-| dividen tunai | 131 | 31 | 24 | ABMM, ADHI, ADRO, ALII, AMAG, ARCI, ARNA, ARTA, ASLC, ASPR, ASSA, ATAP, AVIA, BBMD, BIRD, BNII, BOLT, CAMP, DADA, KRYA, MERK, MLPT, MTLA, RAJA, ULTJ |
+| dividen tunai | 131 | 31 | 26 | ABMM, ADHI, ADRO, ALII, AMAG, ARCI, ARNA, ARTA, ASLC, ASPR, ASSA, ATAP, AVIA, BBMD, BIRD, BNII, BOLT, CAMP, DADA, KRYA, MERK, MLPT, MTLA, RAJA, ULTJ |
 | penerbitan saham baru | 25 | 6 | 2 | ADHI, AHAP, AKKU, ASSA, BAJA, BBRM, BCIC, BNII, BRNA, BSIM, BSWD, COCO, FORU |
 | pemecahan saham | 13 | 2 | 1 | AIMS, ALKA, ARNA, BATA, BBRM, BCIC, MERK, MLPT, RAJA, RMKE, ULTJ |
 | saham bonus | 1 | 0 | 0 | MTLA |
@@ -48,8 +48,8 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 | R11a | laporan | 267 | 197 | 16 | 54 | 0 |
 | R11b | sisi laporan | 508 | 399 | 42 | 67 | 26 |
 | R7 | sisi laporan | 534 | 344 | 81 | 109 | 0 |
-| R14 | sambungan | 166 | 140 | 26 | 0 | 0 |
-| R16 | sambungan | 166 | 158 | 8 | 0 | 0 |
+| R14 | sambungan | 166 | 145 | 21 | 0 | 0 |
+| R16 | sambungan | 166 | 161 | 5 | 0 | 0 |
 | R2 | sambungan | 0 | 0 | 0 | 0 | 267 |
 | R13 | medan kepemilikan | 801 | 695 | 4 | 102 | 0 |
 | R3 | laporan | 259 | 253 | 6 | 0 | 0 |
@@ -57,7 +57,7 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 | R5 | rantai | 0 | 0 | 0 | 0 | 0 |
 | R8 | laporan | 0 | 0 | 0 | 0 | 267 |
 | R9 | laporan | 267 | 266 | 1 | 0 | 0 |
-| R17B | butir transaksi | 370 | 172 | 128 | 70 | 4 |
+| R17B | butir transaksi | 370 | 172 | 123 | 75 | 4 |
 | R6 | pemeriksaan | 0 | 0 | 0 | 0 | 267 |
 | R18a | baris harga bervolume nol | 850 | 61 | 0 | 789 | 6.673 |
 | R10 | baris harga | 0 | 0 | 0 | 0 | 267 |
@@ -66,7 +66,7 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 | R28 | aksi korporasi | 39 | 8 | 0 | 31 | 0 |
 | R35 | nilai harga ekstrem | 440 | 174 | 4 | 262 | 0 |
 | R23 | keputusan RUPS | 6 | 2 | 4 | 0 | 385 |
-| R31 | angka dividen di keputusan RUPS | 11 | 8 | 3 | 0 | 381 |
+| R31 | angka dividen di keputusan RUPS | 11 | 9 | 2 | 0 | 381 |
 | R26 | tahun buku berdividen | 112 | 84 | 10 | 18 | 0 |
 | R27 | medan rasio | 4.344 | 1.369 | 14 | 2.961 | 0 |
 | R29 | dividen | 129 | 29 | 0 | 100 | 2 |
@@ -227,27 +227,27 @@ Contoh nyata:
 
 Kami menolak kartu kalau ada lembar yang berpindah tangan tanpa laporan di antara dua laporan berurutan.
 
-Diperiksa 166 sambungan: 140 tidak bermasalah, 26 bertentangan, 0 datanya tidak cukup untuk memutuskan. 0 sambungan tidak masuk pemeriksaan ini. Aturannya jalan untuk 28 emiten dan dilewati untuk 289.
+Diperiksa 166 sambungan: 145 tidak bermasalah, 21 bertentangan, 0 datanya tidak cukup untuk memutuskan. 0 sambungan tidak masuk pemeriksaan ini. Aturannya jalan untuk 28 emiten dan dilewati untuk 289.
 
 Alasan dilewati:
 - Rantai kurang dari dua laporan, tidak ada sambungan untuk diperiksa.
 
 Contoh nyata:
-- **ALII** — Rantai Aulia putus: laporan 2026-02-27T05:57:00 berakhir di 12.200.200 lembar, tetapi laporan berikutnya 2026-02-27T05:57:00 mulai dari 7.250.250 lembar. Ada 4.949.950 lembar yang berkurang tanpa laporan. Selain itu laporan pukul 05:57 sudah memuat keadaan yang baru dihasilkan laporan pukul 05:57, jadi urutan terbitnya terbalik terhadap urutan kejadiannya.
-- **BAJA** — Rantai Ibnu Susanto putus: laporan 2026-09-14T09:28:40 berakhir di 307.195.500 lembar, tetapi laporan berikutnya 2026-09-14T09:28:40 mulai dari 296.016.000 lembar. Ada 11.179.500 lembar yang berkurang tanpa laporan. Selain itu laporan pukul 09:28 sudah memuat keadaan yang baru dihasilkan laporan pukul 09:28, jadi urutan terbitnya terbalik terhadap urutan kejadiannya.
+- **BAPA** — Rantai Belvin Tannadi putus: laporan 2026-06-18T04:19:00 berakhir di 76.384.700 lembar, tetapi laporan berikutnya 2026-06-26T07:21:58 mulai dari 0 lembar. Ada 76.384.700 lembar yang berkurang tanpa laporan.
+- **BATA** — Rantai Liem Tjen Hung putus: laporan 2026-04-01T15:40:35 berakhir di 68.554.100 lembar, tetapi laporan berikutnya 2026-06-04T17:08:47 mulai dari 71.239.700 lembar. Ada 2.685.600 lembar yang bertambah tanpa laporan.
 
 ### R16 — Jam terbit laporan terhadap urutan rantai
 
 Kami menandai laporan yang terbit lebih dulu tetapi sudah memuat keadaan yang baru dihasilkan laporan berikutnya.
 
-Diperiksa 166 sambungan: 158 tidak bermasalah, 8 ditandai, 0 datanya tidak cukup untuk memutuskan. 0 sambungan tidak masuk pemeriksaan ini. Aturannya jalan untuk 28 emiten dan dilewati untuk 289.
+Diperiksa 166 sambungan: 161 tidak bermasalah, 5 ditandai, 0 datanya tidak cukup untuk memutuskan. 0 sambungan tidak masuk pemeriksaan ini. Aturannya jalan untuk 28 emiten dan dilewati untuk 289.
 
 Alasan dilewati:
 - Rantai kurang dari dua laporan, tidak ada sambungan untuk diperiksa.
 
 Contoh nyata:
-- **ALII** — 1 sambungan yang jam terbitnya tidak searah dengan rantai juga putus rantainya, dan sudah dilaporkan sebagai satu temuan R14. Satu cacat data tidak dihitung dua kali.
-- **BAJA** — 1 sambungan yang jam terbitnya tidak searah dengan rantai juga putus rantainya, dan sudah dilaporkan sebagai satu temuan R14. Satu cacat data tidak dihitung dua kali.
+- **BIRD** — 1 sambungan yang jam terbitnya tidak searah dengan rantai juga putus rantainya, dan sudah dilaporkan sebagai satu temuan R14. Satu cacat data tidak dihitung dua kali.
+- **COCO** — 1 sambungan yang jam terbitnya tidak searah dengan rantai juga putus rantainya, dan sudah dilaporkan sebagai satu temuan R14. Satu cacat data tidak dihitung dua kali.
 
 ### R2 — Kontinuitas rantai
 
@@ -326,7 +326,7 @@ Contoh nyata:
 
 Kami menolak kartu kalau harga yang ditulis laporan di luar rentang harga saham itu pada tanggal transaksinya sendiri.
 
-Diperiksa 370 butir transaksi: 172 tidak bermasalah, 128 bertentangan, 70 datanya tidak cukup untuk memutuskan. 4 butir transaksi tidak masuk pemeriksaan ini. Aturannya jalan untuk 35 emiten dan dilewati untuk 282.
+Diperiksa 370 butir transaksi: 172 tidak bermasalah, 123 bertentangan, 75 datanya tidak cukup untuk memutuskan. 4 butir transaksi tidak masuk pemeriksaan ini. Aturannya jalan untuk 35 emiten dan dilewati untuk 282.
 
 Alasan dilewati:
 - Tidak ada butir transaksi bertanggal untuk diperiksa.
@@ -428,14 +428,14 @@ Contoh nyata:
 
 Kami menolak kartu kalau dividen per lembar yang disebut keputusan RUPS tidak ada di medan dividen, atau baru cocok sesudah dikali rasio pemecahan saham.
 
-Diperiksa 11 angka dividen di keputusan RUPS: 8 tidak bermasalah, 3 bertentangan, 0 datanya tidak cukup untuk memutuskan. 381 angka dividen di keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 56 emiten dan dilewati untuk 261.
+Diperiksa 11 angka dividen di keputusan RUPS: 9 tidak bermasalah, 2 bertentangan, 0 datanya tidak cukup untuk memutuskan. 381 angka dividen di keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 56 emiten dan dilewati untuk 261.
 
 Alasan dilewati:
 - Emiten ini tidak punya satu pun RUPS tercatat.
 
 Contoh nyata:
-- **BNII** — Keputusan RUPS BNII pada 2026-04-17 menyebut dividen Rp7,61 per lembar, dan angka itu tidak ada di medan dividen. Yang ada di sana untuk rentang waktu yang sama: Rp5,857 (ex 2025-04-23), Rp7,611 (ex 2026-04-28). Tidak ada satu pun yang sama dengannya, tidak ada dua yang jumlahnya sama dengannya, dan tidak ada pula yang cocok sesudah dikali rasio pemecahan saham yang tercatat. Mana yang benar tidak terbaca dari data ini.
 - **MLPT** — Keputusan RUPS MLPT pada 2026-04-29 menyebut dividen Rp133,50 per lembar, tetapi medan dividen memberi Rp2,14 dengan tanggal ex 2025-11-07 ditambah Rp3,20 dengan tanggal ex 2026-05-11 — 25 kali lebih kecil. Angkanya baru cocok sesudah dikali 25, yaitu rasio pemecahan saham yang tercatat untuk emiten ini. Artinya medan dividen sudah dibagi rasio pemecahan saham sementara deret harganya belum, jadi dividen dan harga di data ini tidak memakai satuan yang sama. Kartu dividen yang melintasi tanggal pemecahan saham tidak boleh memakai medan itu apa adanya.
+- **RAJA** — Keputusan RUPS RAJA pada 2026-06-23 menyebut dividen Rp28 per lembar, dan angka itu tidak ada di medan dividen. Yang ada di sana untuk rentang waktu yang sama: Rp12 (ex 2025-05-14), Rp5 (ex 2026-01-09), Rp40 (ex 2026-07-02). Tidak ada satu pun yang sama dengannya, tidak ada dua yang jumlahnya sama dengannya, dan tidak ada pula yang cocok sesudah dikali rasio pemecahan saham yang tercatat. Mana yang benar tidak terbaca dari data ini.
 
 ### R26 — Pembagian laba terhadap laba tahun buku
 

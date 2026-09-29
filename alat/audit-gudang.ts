@@ -438,6 +438,19 @@ export function susunLaporan(
   }
   b.push('');
 
+  const dibantahAwal = aturanDibantah(masukan.penguji);
+  if (masukan.penguji !== null && dibantahAwal.size > 0) {
+    const tanpa = (k: Kelompok) =>
+      audit.emiten_konflik[k].filter((x) => x.aturan.some((r) => !dibantahAwal.has(r))).length;
+    b.push('');
+    b.push(
+      `Tanpa aturan yang sampelnya masih dibantah penguji independen (${[...dibantahAwal].sort().join(', ')}): ` +
+        `kelompok suspensi ${angka(tanpa('suspensi'))} dari ${angka(audit.kelompok.suspensi.length)}, ` +
+        `kelompok pembanding ${angka(tanpa('pembanding'))} dari ${angka(audit.kelompok.pembanding.length)}, ` +
+        `gudang lama ${angka(tanpa('lama'))} dari ${angka(audit.kelompok.lama.length)}.`,
+    );
+  }
+  b.push('');
   b.push('## Hasil per aturan');
   b.push('');
   b.push(
@@ -540,6 +553,52 @@ export function susunLaporan(
   );
   b.push('');
 
+  b.push('### Bug aturan yang dibuktikan uji ulang (D-5)');
+  b.push('');
+  b.push(
+    '- **Diperbaiki di M4a** (tes merah dulu di `factory/verifikasi/audit-m4a.test.ts`, kasus tayang ' +
+      'tetap byte-identik): R14/R16 mengurutkan dua laporan bercap waktu dan PDF sama menurut urutan ' +
+      'baris respons API, bukan sambungan saldonya (BCIC, BAJA); R17B mengadu butir pengalihan berharga ' +
+      'Rp0 dengan rentang harga pasar (BBMD); R31 menolak angka RUPS yang ditulis dua desimal (Rp7.61) ' +
+      'padahal medan dividennya 7,61106 (BNII).',
+  );
+  b.push(
+    '- **Terbukti, belum diperbaiki — R23:** laba di keputusan RUPS ASLC sama persis dengan ' +
+      '`earnings_before_tax − tax` di laporan keuangan yang sama, tetapi R23 hanya mengadunya dengan ' +
+      '`earnings` (laba yang diatribusikan ke induk). Usulan: R23 hijau bila angka RUPS sama dengan salah ' +
+      'satu dari keduanya, dan temuannya menyebut ukuran laba mana yang cocok. Butuh pemuat membaca ' +
+      '`earnings_before_tax` dan `tax` (di luar batas kerja M4a). Sampai itu, R23 tidak dikutip.',
+  );
+  b.push(
+    '- **Kalimat awam R19b kurang tepat:** aturannya sengaja memakai jendela lunak (9 dari 10 hari datar) ' +
+      'dan temuannya menyebutnya, tetapi kalimat awamnya berbunyi "tiap harinya".',
+  );
+  b.push('');
+  b.push('### Jenis ketidakkonsistenan baru yang ditemukan, tetapi tidak dijadikan aturan (D-6 ditahan D-7)');
+  b.push('');
+  b.push(
+    'Uji ulang menemukan dua jenis salah nyata yang tidak ditangkap 31 aturan. Keduanya **tidak** ' +
+      'didaftarkan sebagai aturan baru: mendaftarkan satu aturan saja di `ATURAN_V2` — bahkan yang tidak ' +
+      'mengeluarkan satu temuan pun — mengubah berkas kasus ULTJ yang sedang tayang (daftar pemeriksaannya ' +
+      'bertambah satu baris; sha `d26683db…` menjadi `a1ce2666…`). Kontrak D-7 melarangnya; keputusan ada ' +
+      'di pemilik.',
+  );
+  b.push(
+    '- **Laporan untuk saham emiten lain** (U18): laporan bersimbol ADRO.JK berjudul "Alamtri Resources ' +
+      'Indonesia Buy Transaction of Alamtri Minerals Indonesia" — pembeli adalah ADRO sendiri, saham yang ' +
+      'dibeli milik emiten lain. R13 menolak kartunya dengan alasan yang keliru ("memegang lebih dari yang ' +
+      'diterbitkan"). Seluruh temuan konflik ADRO (dua R7, dua R13, satu R17B) berasal dari laporan yang ' +
+      'satu ini: angkanya memang bertentangan dengan data ADRO, tetapi sebabnya salah simbol. Calon ' +
+      'aturan: nama perusahaan di judul laporan dibanding nama emiten di ringkasan.',
+  );
+  b.push(
+    '- **Baris laporan keuangan bercampur satuan** (U28): ABMM tahun buku 2023 menulis `total_debt` ' +
+      '16 triliun padahal `total_liabilities` 1,4 miliar, dan kas lebih besar dari total aset. R26 lalu ' +
+      'menandai dividen yang "tak masuk akal" padahal sebabnya satuan. Calon aturan: komponen neraca ' +
+      'tidak boleh melebihi totalnya pada baris tahun yang sama.',
+  );
+  b.push('');
+
   b.push('## Uji ulang oleh penguji independen (D-5)');
   b.push('');
   if (masukan.penguji === null) {
@@ -559,10 +618,17 @@ export function susunLaporan(
     b.push(`| sebelum perbaikan | ${sb.diuji} | ${sb.ya} | ${sb.tidak} | ${sb.ragu} | — |`);
     b.push(`| sesudah perbaikan | ${sd.diuji} | ${sd.ya} | ${sd.tidak} | ${sd.ragu} | ${sd.hilang} |`);
     b.push('');
-    b.push('| uji | aturan | emiten | kelompok | sebelum | sesudah | penyelidikan |');
-    b.push('|---|---|---|---|---|---|---|');
+    b.push('| uji | aturan | emiten | kelompok | sebelum | sesudah |');
+    b.push('|---|---|---|---|---|---|');
     for (const u of masukan.penguji.uji) {
-      b.push(`| ${u.id} | ${u.aturan} | ${u.simbol} | ${u.kelompok} | ${u.sebelum} | ${u.sesudah} | ${u.penyelidikan ?? '—'} |`);
+      b.push(`| ${u.id} | ${u.aturan} | ${u.simbol} | ${u.kelompok} | ${u.sebelum} | ${u.sesudah} |`);
+    }
+    const diselidiki = masukan.penguji.uji.filter((u) => u.penyelidikan !== null);
+    if (diselidiki.length > 0) {
+      b.push('');
+      b.push('Penyelidikan tiap jawaban yang bukan "ya":');
+      b.push('');
+      for (const u of diselidiki) b.push(`- **${u.id} ${u.aturan} ${u.simbol}** (${u.sebelum} → ${u.sesudah}) — ${u.penyelidikan}`);
     }
   }
   b.push('');
@@ -590,11 +656,19 @@ export function susunLaporan(
       const s = a.per.suspensi;
       const p = a.per.pembanding;
       if (s.merah + p.merah === 0) continue;
+      const uji = (ujiPer.get(a.aturan) ?? []).filter((u) => u.sesudah !== 'hilang');
+      const ragu = uji.filter((u) => u.sesudah === 'ragu').length;
+      const catatanUji =
+        uji.length === 0
+          ? ' (belum ada sampel tersisa yang diuji ulang: sampelnya hilang sesudah aturannya diperbaiki, atau tidak terpilih)'
+          : ragu > 0
+            ? ` (${ragu} dari ${uji.length} sampel uji ulang dijawab "ragu")`
+            : '';
       b.push(
         `- ${a.aturan}: "Dari ${angka(s.diperiksa + p.diperiksa)} ${a.satuan} di ` +
           `${angka(s.emiten_diperiksa + p.emiten_diperiksa)} emiten yang bisa diperiksa, ${angka(s.merah + p.merah)} ` +
           `bertentangan (kelompok suspensi ${pecahan(s.merah, s.diperiksa)}, pembanding ${pecahan(p.merah, p.diperiksa)})." ` +
-          `— ${a.kalimat}`,
+          `— ${a.kalimat}${catatanUji}`,
       );
     }
     if (dibantah.size > 0) {

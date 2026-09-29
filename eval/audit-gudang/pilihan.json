@@ -1,0 +1,445 @@
+{
+  "keterangan": "Temuan terpilih untuk uji ulang D-5 (alat/audit-gudang.ts pilihUjiUlang) dan sidik prompt penguji (.cache/audit-gudang/paket/, tidak ikut repo). Ditulis oleh npm run audit:paket.",
+  "uji": [
+    {
+      "id": "U01",
+      "aturan": "R25",
+      "simbol": "ARCI",
+      "kelompok": "suspensi",
+      "temuan_id": "R25-parameter-ARCI",
+      "fokus": "kelengkapan daftar laporan kepemilikan ARCI, dan respons kosong di gudang yang sama",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ARCI-m4a-filings-p0.json",
+        ".cache/sectors/"
+      ],
+      "prompt_sha256": "21c282a1c78e14cc6056074c95ff203031eee88de6841bd0d8d3a181f6c2a07a",
+      "prompt_byte": 27895
+    },
+    {
+      "id": "U02",
+      "aturan": "R25",
+      "simbol": "ADHI",
+      "kelompok": "pembanding",
+      "temuan_id": "R25-parameter-ADHI",
+      "fokus": "kelengkapan daftar laporan kepemilikan ADHI, dan respons kosong di gudang yang sama",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ADHI-m4a-filings-p0.json",
+        ".cache/sectors/"
+      ],
+      "prompt_sha256": "b24be7eaa25f6c8a7af89b707ae7c5d2c10f78679ece69df338a7913341f1ee9",
+      "prompt_byte": 14337
+    },
+    {
+      "id": "U03",
+      "aturan": "R12",
+      "simbol": "ALII",
+      "kelompok": "suspensi",
+      "temuan_id": "R12-ALII|2026-02-27T06:06:00|LK-20022026-5429-00.pdf-0.pdf",
+      "fokus": "laporan kepemilikan bertanggal 2026-02-27T06:06:00",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ALII-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "f57d7e278021be3ab35cc875eb4853cc0a1ca6a829cdfca3f723dbe5c5100afe",
+      "prompt_byte": 3969
+    },
+    {
+      "id": "U04",
+      "aturan": "R22",
+      "simbol": "BAPA",
+      "kelompok": "suspensi",
+      "temuan_id": "R22-intifikasasekuritas",
+      "fokus": "nama pemegang \"Inti Fikasa Sekuritas\" dan \"PT Inti Fikasa Sekuritas\"",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BAPA-m4a-filings-p*.json results[]",
+        "BAPA-m4a-ownership.json"
+      ],
+      "prompt_sha256": "4ec2800b042bf931908a9286d4ab7fc397998c77b3cd0006122f320a9904fe40",
+      "prompt_byte": 2615
+    },
+    {
+      "id": "U05",
+      "aturan": "R20",
+      "simbol": "BBRM",
+      "kelompok": "suspensi",
+      "temuan_id": "R20-BBRM",
+      "fokus": "laba per lembar dan jumlah saham penyebutnya tiap tahun buku BBRM",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BBRM-m4a-overview-financials.json"
+      ],
+      "prompt_sha256": "e8251a37b9c4014fe35e68a0ee9bb62424f61e8b1ab8fd132ff57aa78d01db09",
+      "prompt_byte": 2182
+    },
+    {
+      "id": "U06",
+      "aturan": "R32",
+      "simbol": "BBRM",
+      "kelompok": "suspensi",
+      "temuan_id": "R32-BBRM-2021",
+      "fokus": "jumlah saham BBRM antara tahun buku 2020 dan 2021, dan aksi korporasi yang tercatat",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BBRM-m4a-overview-financials.json",
+        "BBRM-m4a-corpactions.json"
+      ],
+      "prompt_sha256": "b3130aead11fb4fcd736218d25257c2e370013f735152c7971be4496316ba9f3",
+      "prompt_byte": 2204
+    },
+    {
+      "id": "U07",
+      "aturan": "R21",
+      "simbol": "BBSS",
+      "kelompok": "suspensi",
+      "temuan_id": "R21-BBSS-2025-12-31-14-15",
+      "fokus": "jumlah saham BBSS per 2025-12-30, 2025-12-31 menurut dua sumber",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BBSS-m4a-overview-financials.json",
+        "BBSS-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "cbbd348d8633bc4940461b35d1738b3e12ffea74773779095dc148cb3f80d7fd",
+      "prompt_byte": 1801
+    },
+    {
+      "id": "U08",
+      "aturan": "R33",
+      "simbol": "ADRO",
+      "kelompok": "pembanding",
+      "temuan_id": "R33-ADRO-2026-07-13",
+      "fokus": "jumlah saham tersirat (nilai pasar dibagi harga tutup) ADRO pada 2026-07-10 dan 2026-07-13",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ADRO-m4a-daily-*.json",
+        "ADRO-m4a-corpactions.json"
+      ],
+      "prompt_sha256": "0d231b2700ac0c39a62a7a097037253311a71a895be1b44f7c6f89c566960932",
+      "prompt_byte": 5033
+    },
+    {
+      "id": "U09",
+      "aturan": "R15",
+      "simbol": "ASHA",
+      "kelompok": "suspensi",
+      "temuan_id": "R15-ASHA|2025-12-30T21:24:55|3053aa7dd4_830a4b37fe.pdf",
+      "fokus": "laporan kepemilikan bertanggal 2025-12-30T21:24:55",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ASHA-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "50423cc0570f82adf3834afad6e558907c926296dd0343384d410a8b20365ead",
+      "prompt_byte": 1975
+    },
+    {
+      "id": "U10",
+      "aturan": "R11a",
+      "simbol": "AMMS",
+      "kelompok": "suspensi",
+      "temuan_id": "R11a-AMMS|2025-09-23T14:36:59|0354743fd0_ed56bb2e52.pdf",
+      "fokus": "laporan kepemilikan bertanggal 2025-09-23T14:36:59",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "AMMS-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "8621cc0ca3eebc2c9861c9ece5606ad1de7183428a3428e05ea7d1c8017e3bb9",
+      "prompt_byte": 2129
+    },
+    {
+      "id": "U11",
+      "aturan": "R11a",
+      "simbol": "BAIK",
+      "kelompok": "suspensi",
+      "temuan_id": "R11a-BAIK|2026-08-21T14:36:16|LK-21082026-9817-00.pdf-0.pdf",
+      "fokus": "laporan kepemilikan bertanggal 2026-08-21T14:36:16",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BAIK-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "9e95ddd091be9e31d62ee57bb0a4d46d80561848080a7a339b9e888b26d996d9",
+      "prompt_byte": 2127
+    },
+    {
+      "id": "U12",
+      "aturan": "R11b",
+      "simbol": "ALII",
+      "kelompok": "suspensi",
+      "temuan_id": "R11b-ALII",
+      "fokus": "persen kepemilikan di seluruh rantai laporan ALII dan jumlah saham beredar yang tersirat",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ALII-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "651964c3e3748f98c2e05a296ae0f7505ea8f86a5b63d9292e25f9dc5b787684",
+      "prompt_byte": 9701
+    },
+    {
+      "id": "U13",
+      "aturan": "R7",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R7-BCIC|2025-10-09T14:16:54|1cb3fc41a9_d1095c78e8.pdf-sebelum-transaksi",
+      "fokus": "laporan kepemilikan bertanggal 2025-10-09T14:16:54, dibandingkan dengan saham beredar pada tanggal itu",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BCIC-m4a-filings-p*.json results[]",
+        "BCIC-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "161629913b89a124a6e3a954f76ee1e8f4a260d7e16b9cb9d763ae7a52087215",
+      "prompt_byte": 3166
+    },
+    {
+      "id": "U14",
+      "aturan": "R7",
+      "simbol": "BAJA",
+      "kelompok": "suspensi",
+      "temuan_id": "R7-BAJA|2026-09-14T09:28:40|LK-14092026-8980-00.pdf-0.pdf-sebelum-transaksi",
+      "fokus": "laporan kepemilikan bertanggal 2026-09-14T09:28:40, dibandingkan dengan saham beredar pada tanggal itu",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BAJA-m4a-filings-p*.json results[]",
+        "BAJA-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "9d87b41728ca6381cb577c08652e065a286453fc6e661bec914bfd4af30557eb",
+      "prompt_byte": 4885
+    },
+    {
+      "id": "U15",
+      "aturan": "R14",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R14-BCIC|2026-06-29T16:52:35|LK-29062026-0121-00.pdf-0.pdf-BCIC|2026-07-29T15:57:37|LK-29072026-3109-00.pdf-0.pdf",
+      "fokus": "rantai laporan pemegang \"Helmi Arif Hidayat\" antara 2026-06-29T16:52:35 dan 2026-07-29T15:57:37",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BCIC-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "c3740426e9e8c7102960f46f35fc8f4833f2bf42fcd2f8bd78bf6a3120ce7216",
+      "prompt_byte": 13575
+    },
+    {
+      "id": "U16",
+      "aturan": "R14",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R14-BCIC|2026-07-29T15:57:37|LK-29072026-3109-00.pdf-0.pdf-BCIC|2026-08-31T16:50:27|LK-31082026-4638-00.pdf-0.pdf",
+      "fokus": "rantai laporan pemegang \"Helmi Arif Hidayat\" antara 2026-07-29T15:57:37 dan 2026-08-31T16:50:27",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BCIC-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "dda6b518265ba967f5eae8b867aa73cd1d22eb91b1e25950ceeb60f4210e8ad5",
+      "prompt_byte": 13575
+    },
+    {
+      "id": "U17",
+      "aturan": "R16",
+      "simbol": "BAJA",
+      "kelompok": "suspensi",
+      "temuan_id": "R16-digabung-BAJA",
+      "fokus": "urutan jam terbit laporan-laporan kepemilikan BAJA terhadap saldo sebelum/sesudahnya",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BAJA-m4a-filings-p*.json results[]"
+      ],
+      "prompt_sha256": "24e8ffe93881a4225eb8f43f0c2316208e3bee26dec7c32d4925a2782db475b4",
+      "prompt_byte": 2769
+    },
+    {
+      "id": "U18",
+      "aturan": "R13",
+      "simbol": "ADRO",
+      "kelompok": "pembanding",
+      "temuan_id": "R13-ADRO|2025-10-17T22:27:59|4d80ecf450_17be92eba5.pdf-kepemilikan-sesudah",
+      "fokus": "laporan kepemilikan bertanggal 2025-10-17T22:27:59, dibandingkan dengan saham beredar pada tanggal itu",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ADRO-m4a-filings-p*.json results[]",
+        "ADRO-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "8a75ce838d621e1848b5790796cf2f3fcb5f8129f8fb222b26d7cad9f92d896f",
+      "prompt_byte": 3456
+    },
+    {
+      "id": "U19",
+      "aturan": "R17B",
+      "simbol": "ADHI",
+      "kelompok": "pembanding",
+      "temuan_id": "R17B-ADHI|2025-08-08T23:22:50|d517dd0764_c404bdc575.pdf-2025-07-31-239.08",
+      "fokus": "laporan kepemilikan bertanggal 2025-08-08T23:22:50, butir transaksi bertanggal 2025-07-31",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ADHI-m4a-filings-p*.json results[]",
+        "ADHI-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "d18647d0c8b72beae7fe8d557dcd27292e4b7950fdeb504eee2ea7507c5871be",
+      "prompt_byte": 2609
+    },
+    {
+      "id": "U20",
+      "aturan": "R17B",
+      "simbol": "BBMD",
+      "kelompok": "pembanding",
+      "temuan_id": "R17B-BBMD|2025-08-07T16:30:49|885d18b338_eeb5442454.pdf-2025-08-07-0",
+      "fokus": "laporan kepemilikan bertanggal 2025-08-07T16:30:49, butir transaksi bertanggal 2025-08-07",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BBMD-m4a-filings-p*.json results[]",
+        "BBMD-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "4d7ea37277021c00629a606aad25eaa02ff41ef0f419abe55565a5618d66ed5d",
+      "prompt_byte": 2547
+    },
+    {
+      "id": "U21",
+      "aturan": "R18a",
+      "simbol": "BBRM",
+      "kelompok": "suspensi",
+      "temuan_id": "R18a-BBRM",
+      "fokus": "hari bursa BBRM 2026-01-05 s.d. 2026-01-09",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BBRM-m4a-daily-*.json",
+        "suspensions-all.json"
+      ],
+      "prompt_sha256": "87d81a636ff54c3fcd351c31669e297eb089f90d7d55ccddb88fbfe7662a477a",
+      "prompt_byte": 2725
+    },
+    {
+      "id": "U22",
+      "aturan": "R19a",
+      "simbol": "BCIC",
+      "kelompok": "suspensi",
+      "temuan_id": "R19a-BCIC",
+      "fokus": "hari bursa BCIC 2025-01-31 s.d. 2025-10-08",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BCIC-m4a-daily-*.json",
+        "suspensions-all.json"
+      ],
+      "prompt_sha256": "83b9f45e560975b28abcac5cb51260e29f661c9321133a052561edeeb4e1dc52",
+      "prompt_byte": 15185
+    },
+    {
+      "id": "U23",
+      "aturan": "R19b",
+      "simbol": "BATA",
+      "kelompok": "pembanding",
+      "temuan_id": "R19b-BATA-2026-06-26-lunak",
+      "fokus": "hari bursa BATA 2026-06-26 s.d. 2026-07-09",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BATA-m4a-daily-*.json",
+        "suspensions-all.json"
+      ],
+      "prompt_sha256": "1846e9e6caf6b5a8a937de5b354d408a791022c5ee01f59a28bf695de9936e9a",
+      "prompt_byte": 3577
+    },
+    {
+      "id": "U24",
+      "aturan": "R28",
+      "simbol": "BAJA",
+      "kelompok": "suspensi",
+      "temuan_id": "R28-BAJA-2026-09-28-rights-issue",
+      "fokus": "harga dan jumlah saham tersirat BAJA di sekitar aksi korporasi 2026-09-28",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BAJA-m4a-corpactions.json",
+        "BAJA-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "e87e52d41c4c022d806277011d30f6f1a7bd84ff022df0e971eb24beec585a9f",
+      "prompt_byte": 2730
+    },
+    {
+      "id": "U25",
+      "aturan": "R35",
+      "simbol": "AHAP",
+      "kelompok": "suspensi",
+      "temuan_id": "R35-AHAP-90_d_low-2026-09-22",
+      "fokus": "nilai harga ekstrem di ringkasan AHAP dan deret harga hariannya",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "AHAP-m4a-overview-financials.json",
+        "AHAP-m4a-daily-*.json",
+        "AHAP-m4a-corpactions.json"
+      ],
+      "prompt_sha256": "095816109d51d32ba2a10aacbe436917468a607ee920f96f5213ea78ffba190d",
+      "prompt_byte": 13901
+    },
+    {
+      "id": "U26",
+      "aturan": "R23",
+      "simbol": "ASLC",
+      "kelompok": "suspensi",
+      "temuan_id": "R23-ASLC-2026-05-19",
+      "fokus": "laba bersih tahun buku 2025 menurut keputusan RUPS 2026-05-19 dan menurut laporan keuangan",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ASLC-m4a-corpactions.json",
+        "ASLC-m4a-overview-financials.json"
+      ],
+      "prompt_sha256": "afafa9475c0edf496adbc103f591f1f777670682b0f10cdbb13d14e09fbe3d59",
+      "prompt_byte": 4241
+    },
+    {
+      "id": "U27",
+      "aturan": "R31",
+      "simbol": "BNII",
+      "kelompok": "pembanding",
+      "temuan_id": "R31-BNII-2026-04-17-345",
+      "fokus": "dividen per lembar menurut keputusan RUPS 2026-04-17 dan menurut medan dividend",
+      "pertanyaan": "Apakah data ini benar-benar tidak konsisten seperti kata kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BNII-m4a-corpactions.json"
+      ],
+      "prompt_sha256": "b973f70b6d53d2f7b768e5385a2719ff02132584d7e3404c2d882020551f3036",
+      "prompt_byte": 4101
+    },
+    {
+      "id": "U28",
+      "aturan": "R26",
+      "simbol": "ABMM",
+      "kelompok": "pembanding",
+      "temuan_id": "R26-ABMM-2023",
+      "fokus": "dividen ex 2024-05-28 dan laba tahun buku 2023",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ABMM-m4a-corpactions.json",
+        "ABMM-m4a-overview-financials.json"
+      ],
+      "prompt_sha256": "65d68fb495aece5050473abbb74938092fd4ee6a0a0f97bafbc4df3ea670b1a6",
+      "prompt_byte": 4233
+    },
+    {
+      "id": "U29",
+      "aturan": "R27",
+      "simbol": "ARGO",
+      "kelompok": "suspensi",
+      "temuan_id": "R27-ARGO-2020-roe-tanda",
+      "fokus": "medan rasio roe tahun buku 2020",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "ARGO-m4a-overview-financials.json"
+      ],
+      "prompt_sha256": "3649dfe25a4c3baf0ae383c9e03f3c8c4c09178e9239d092affbf53bdaa0eac6",
+      "prompt_byte": 3224
+    },
+    {
+      "id": "U30",
+      "aturan": "R34",
+      "simbol": "BOLT",
+      "kelompok": "pembanding",
+      "temuan_id": "R34-BOLT",
+      "fokus": "aksi korporasi BOLT dan tanggal yang tercakup harga harian",
+      "pertanyaan": "Apakah data ini benar-benar menunjukkan keadaan yang dikatakan kalimat itu? Jawab ya/tidak/ragu + tunjukkan hitunganmu.",
+      "sumber": [
+        "BOLT-m4a-corpactions.json",
+        "BOLT-m4a-daily-*.json"
+      ],
+      "prompt_sha256": "490fab08ca4a4c8f0406ec1d8e967c9981c36eea6d528f1160ba9328cd6d03f7",
+      "prompt_byte": 2528
+    }
+  ]
+}

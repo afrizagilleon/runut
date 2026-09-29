@@ -852,7 +852,7 @@ export function pasanganRantai(laporan: Laporan[]): PasanganRantai[] {
 
   const pasangan: PasanganRantai[] = [];
   for (const kunci of [...perPemegang.keys()].sort()) {
-    const daftar = perPemegang.get(kunci) ?? [];
+    const daftar = urutCapWaktuKembar(perPemegang.get(kunci) ?? []);
     for (let i = 1; i < daftar.length; i += 1) {
       const sebelumnya = daftar[i - 1];
       const sekarang = daftar[i];
@@ -869,6 +869,45 @@ export function pasanganRantai(laporan: Laporan[]): PasanganRantai[] {
     }
   }
   return pasangan;
+}
+
+/**
+ * Urutkan ulang laporan satu pemegang yang **cap waktunya kembar** (M4a D-5).
+ *
+ * Kunci R12 dan cap waktu tidak bisa membedakan dua laporan yang terbit pada
+ * detik yang sama — sering dari satu PDF yang sama. Urutan di antara keduanya
+ * sebelumnya adalah urutan baris respons API, dan respons BCIC dan BAJA menaruh
+ * laporan jual di atas laporan beli yang saldo akhirnya menjadi saldo awal
+ * laporan jual itu: dua "putus rantai" semu, yang penguji independen bantah
+ * (U15, U16, U17).
+ *
+ * Di dalam satu kelompok cap waktu kembar, laporan disusun menurut sambungan
+ * saldonya: mulai dari yang saldo awalnya sama dengan saldo akhir laporan
+ * sebelum kelompok itu; kalau tidak ada, dari yang saldo awalnya bukan saldo
+ * akhir laporan lain di kelompok itu; kalau tetap tidak ada, urutan semula.
+ * Laporan bercap waktu berbeda tidak pernah dipindah — jam terbit yang
+ * terbalik tetap tugas R16.
+ */
+export function urutCapWaktuKembar(daftar: Laporan[]): Laporan[] {
+  const kunci = (l: Laporan) => `${tanggalTerbit(l.sumber_dokumen, l.dilaporkan_pada).tanggal}|${l.dilaporkan_pada}`;
+  const keluar: Laporan[] = [];
+  let i = 0;
+  while (i < daftar.length) {
+    let j = i + 1;
+    while (j < daftar.length && kunci(daftar[j]!) === kunci(daftar[i]!)) j += 1;
+    const sisa = daftar.slice(i, j);
+    let saldo: number | null = keluar.length > 0 ? keluar[keluar.length - 1]!.sesudah : null;
+    while (sisa.length > 0) {
+      let pilih = sisa.findIndex((l) => saldo !== null && l.sebelum === saldo);
+      if (pilih < 0) pilih = sisa.findIndex((l) => !sisa.some((m) => m !== l && m.sesudah === l.sebelum));
+      if (pilih < 0) pilih = 0;
+      const [l] = sisa.splice(pilih, 1);
+      keluar.push(l!);
+      saldo = l!.sesudah;
+    }
+    i = j;
+  }
+  return keluar;
 }
 
 /**
@@ -1076,6 +1115,14 @@ export function r17bHargaHariTransaksi(konteks: KonteksVerifikasi): HasilAturan 
         hargaKosong += 1;
         tidakLengkap += 1;
         alasan.push('Medan harga butir transaksi kosong; nol bukan harganya.');
+        continue;
+      }
+      // M4a D-5 (U20): butir pengalihan/hibah — BBMD mengalihkan saham remunerasi
+      // dengan `price: 0` dan tipe `transfer`. Harga nol tidak pernah harga yang
+      // disepakati di pasar, jadi ia tidak diadu dengan rentang harga hari itu.
+      if (t.harga === 0) {
+        tidakLengkap += 1;
+        alasan.push('Harga butir transaksi nol (pengalihan tanpa harga pasar); harga nol tidak diadu dengan rentang harga.');
         continue;
       }
       const bar = sehat.get(t.tanggal);
