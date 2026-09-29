@@ -1,0 +1,144 @@
+{
+  "pagu_probe_usd": 0.4,
+  "biaya_probe_usd": 0.0635934166,
+  "hasil": [
+    {
+      "tag": "m2d5/probe/p2/kartu/r6000",
+      "peran": "pembaca-kartu",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 12000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 6000
+        }
+      },
+      "penyedia": "AtlasCloud",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 652,
+      "token_keluar": 2963,
+      "token_penalaran": 2901,
+      "panjang_penalaran_karakter": 10822,
+      "biaya_usd": 0.001425456,
+      "latensi_ms": 22616,
+      "terurai": true,
+      "catatan": "b (kunci b); membingungkan 0",
+      "teks": "{\"pilihan\":\"b\",\"kartu\":[1],\"alasan\":\"Kartu 1 menyatakan harga penutupan naik 9 hari bursa berturut-turut, sehingga omongan Wulan tentang kenaikan beruntun cocok.\",\"membingungkan\":[]}"
+    },
+    {
+      "tag": "m2d5/probe/p2/kartu/r6000-b",
+      "peran": "pembaca-kartu",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 12000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 6000
+        }
+      },
+      "penyedia": "DeepInfra",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 652,
+      "token_keluar": 1102,
+      "token_penalaran": 1037,
+      "panjang_penalaran_karakter": 3976,
+      "biaya_usd": 0.00055412,
+      "latensi_ms": 10475,
+      "terurai": true,
+      "catatan": "b (kunci b); membingungkan 0",
+      "teks": "{\"pilihan\": \"b\", \"kartu\": [1], \"alasan\": \"Kartu 1 mencatat harga naik 9 hari bursa berturut-turut, sesuai dengan omongan Wulan tentang kenaikan beruntun.\", \"membingungkan\": []}"
+    },
+    {
+      "tag": "m2d5/probe/p2/penulis/r16000-b",
+      "peran": "penulis",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 24000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 16000
+        }
+      },
+      "penyedia": "AtlasCloud",
+      "finish_reason": "length",
+      "kosong": true,
+      "token_masuk": 5883,
+      "token_keluar": 24000,
+      "token_penalaran": 24000,
+      "panjang_penalaran_karakter": 76851,
+      "biaya_usd": 0.011023686,
+      "latensi_ms": 183015,
+      "terurai": false,
+      "catatan": "bukan JSON: tidak ada objek JSON di keluaran",
+      "teks": ""
+    },
+    {
+      "tag": "m2d5/probe/p2/penulis/r16000-c",
+      "peran": "penulis",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 24000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 16000
+        }
+      },
+      "penyedia": "AtlasCloud",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 5883,
+      "token_keluar": 11379,
+      "token_penalaran": 10978,
+      "panjang_penalaran_karakter": 34748,
+      "biaya_usd": 0.00526851,
+      "latensi_ms": 86928,
+      "terurai": true,
+      "catatan": "lolos validator",
+      "teks": "{\n  \"omongan\": [\n    {\n      \"no\": 1,\n      \"nama\": \"Sinta\",\n      \"jam\": \"19.42\",\n      \"pesan\": \"Fix hari ini disetop gara-gara naiknya kebablasan, cooling down ya.\",\n      \"angka_pesan\": [],\n      \"kartu\": [\"susp-2025-12-10\", \"hari-naik-beruntun\", \"susp-2025-01-21\"],\n      \"kartu_penentu\": [\"susp-2025-12-10\"],\n      \"pilihan\": {\n        \"a\": \"Betul, alasannya peningkatan harga kumulatif.\",\n        \"b\": \"Keliru, alasannya keraguan atas kelangsungan usaha.\",\n        \"c\": \"Betul, alasannya volume perdagangan hari itu nol.\",\n        \"d\": \"Keliru, alasannya ada jadwal rapat pemegang saham.\"\n      },\n      \"kunci\": \"a\",\n      \"penjelasan\": \"Pengumuman bursa [[susp-2025-12-10|10 Desember 2025]] menulis alasan resmi penghentian hari itu: peningkatan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Memang harga sahamnya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sebelum dihentikan. Alasan keraguan atas kelangsungan usaha tercatat di penghentian lain, [[susp-2025-01-21|21 Januari 2025]], jadi jangan dipakai untuk hari ini. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan itu tanda ada masalah besar, padahal alasan tiap penghentian bisa beda-beda.\"\n    }\n  ]\n}"
+    },
+    {
+      "tag": "m2d5/probe/p2/kritikus/r8000-b",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 12000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 8000
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2198,
+      "token_keluar": 537,
+      "token_penalaran": 305,
+      "panjang_penalaran_karakter": 1010,
+      "biaya_usd": 0.0028854618,
+      "latensi_ms": 4360,
+      "terurai": true,
+      "catatan": "1 keberatan; tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 secara eksplisit menyebut 9 hari bursa berturut-turut, jadi hanya b yang benar; a dan c salah angka, dan d salah jenis hari.\"}, \"keberatan\": [{\"jenis\": \"tertebak\", \"bagian\": \"pilihan\", \"alasan\": \"Kunci bisa ditebak tanpa kartu karena hanya b dan d yang menyebut sembilan hari, dan pembeda b vs d (hari bursa vs kalender) terdengar seperti jebakan standar yang mendorong memilih b.\"}], \"arahan\": \"Pertimbangkan mengganti salah satu angka pengecoh agar tidak dua pilihan menyebut 'sembilan', supaya pembeda b dan d tidak mudah ditebak dari pola pilihan saja.\"}"
+    },
+    {
+      "tag": "m2d5/probe/p2/kritikus/r8000-c",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 12000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 8000
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2198,
+      "token_keluar": 775,
+      "token_penalaran": 608,
+      "panjang_penalaran_karakter": 2106,
+      "biaya_usd": 0.0043434906,
+      "latensi_ms": 4759,
+      "terurai": true,
+      "catatan": "0 keberatan; tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 hanya mendukung 'naik beruntun sembilan hari bursa'; pilihan lain (dua hari, lima hari, atau sembilan hari kalender) tidak ada yang bisa dibenarkan dari kartu mana pun.\"}, \"keberatan\": [], \"arahan\": \"Tidak ada perubahan yang perlu dilakukan; klaim 'minggu lalu juga gitu' tetap tercek karena rentang naik beruntun 26 November–9 Desember mencakup minggu sebelumnya.\"}"
+    }
+  ]
+}

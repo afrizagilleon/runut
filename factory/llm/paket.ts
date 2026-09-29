@@ -392,7 +392,7 @@ export function bangunPaket(def: DefinisiPaket, gudang: Gudang = bacaGudang()): 
       jenis: f.sumber.jenis === 'turunan' ? 'hitungan' : 'dokumen',
       asal: asalFakta(f),
       terbit: f.tersedia_sejak,
-      klaim: samarkanEmiten(f.klaim, def),
+      klaim: perjelasKlaim(samarkanEmiten(f.klaim, def)),
       nilai: f.nilai,
       satuan: f.satuan,
       turunan_dari: [...f.turunan_dari],
@@ -432,6 +432,49 @@ export function bangunPaket(def: DefinisiPaket, gudang: Gudang = bacaGudang()): 
       })),
     },
   };
+}
+
+/* ---------------------------------------------------------------------- */
+/* teks kartu yang diperjelas (M2d-5 D-8)                                   */
+/* ---------------------------------------------------------------------- */
+
+/**
+ * Frasa kalimat fakta (teks KARTU yang dibaca pemain) yang ditandai
+ * membingungkan oleh penguji luar M2d-3/M2d-4 (`eval/keluaran-m2d3/penguji/`,
+ * `eval/keluaran-m2d4/penguji/`) atau yang berbau istilah sistem ("di data",
+ * "kasus ini"), diganti bahasa awam yang SAMA maknanya. Kalimat asalnya ditulis
+ * `factory/muat/pustaka-gudang.ts` (di luar batas M2d-5), jadi penggantiannya
+ * dilakukan di sini, saat paket dibangun — hanya untuk teks yang dikirim ke
+ * lingkar LLM. `cases/*.json` (kasus tayang) TIDAK diubah; frasa yang juga ada
+ * di sana dicatat di laporan M2d-5 untuk milestone produk terpisah.
+ *
+ * Frasa turunan paket (`sebutan` di definisi paket di bawah) diganti langsung
+ * di definisinya: "lolos seluruh pemeriksaan" (DADA 2, 3/3 penguji M2d-4) dan
+ * "Jarak antara …" (ULTJ, penguji M2d-3).
+ */
+export const PERJELAS_KLAIM: ReadonlyArray<{ lama: string; baru: string; alasan: string }> = [
+  {
+    lama: 'Daftar itu sendiri tidak bisa dibuktikan habis, jadi yang tercatat bukan tentu saja yang pernah terjadi.',
+    baru: 'Daftar ini belum tentu lengkap: bisa saja ada pembagian yang terjadi tetapi tidak tercatat di sini.',
+    alasan: 'ditandai membingungkan oleh ketiga penguji kartu M2d-4 (ULTJ omongan 1)',
+  },
+  {
+    lama: 'Tanggal pencabutan penghentian ini tidak ada di data, jadi lamanya tidak bisa dipastikan dari sumber mana pun yang dipakai kasus ini.',
+    baru: 'Kapan perdagangannya dibuka lagi tidak tercatat, jadi lama penghentiannya tidak bisa dipastikan.',
+    alasan: 'penguji kartu M2d-3 (DADA omongan 2) bingung "tanggal pencabutannya tidak ada di data"; "di data" dan "kasus ini" istilah sistem',
+  },
+  {
+    lama: 'Teks keputusannya tidak ada di data, jadi isinya tidak bisa dikutip.',
+    baru: 'Isi keputusan rapatnya tidak tercatat di sini.',
+    alasan: '"di data" dan "dikutip" istilah sistem, sejenis dengan frasa yang ditandai penguji M2d-3',
+  },
+];
+
+/** Ganti frasa kartu yang membingungkan dengan bahasa awam yang sama maknanya. */
+export function perjelasKlaim(klaim: string): string {
+  let hasil = klaim;
+  for (const p of PERJELAS_KLAIM) hasil = hasil.split(p.lama).join(p.baru);
+  return hasil;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -492,13 +535,13 @@ export const PAKET_DADA: DefinisiPaket = {
       fact_id: 'jumlah-jual-terverifikasi',
       dari: lolos,
       satuan: 'lembar',
-      sebutan: 'Penjualan pemilik terbesar di laporan yang lolos seluruh pemeriksaan',
+      sebutan: 'Penjualan pemilik terbesar, tidak termasuk laporan yang angkanya bertentangan dengan data lain',
     });
     const hitung = faktaHitung(sejauh, {
       fact_id: 'laporan-jual-terverifikasi',
       dari: lolos,
       satuan: 'laporan',
-      sebutan: 'Laporan penjualan pemilik terbesar yang lolos seluruh pemeriksaan',
+      sebutan: 'Laporan penjualan pemilik terbesar, tidak termasuk laporan yang angkanya bertentangan dengan data lain',
     });
     return [kelipatan, andai, jumlah, hitung];
   },
@@ -554,14 +597,14 @@ export const PAKET_ULTJ: DefinisiPaket = {
       dari: 'harga-2026-04-30',
       kurangi: 'harga-2026-05-04-buka',
       satuan: 'rupiah per lembar',
-      sebutan: 'Jarak antara penutupan terakhir sebelum tanggal ex dan pembukaan hari ini',
+      sebutan: 'Turunnya harga dari penutupan terakhir sebelum tanggal ex ke pembukaan hari ini',
     });
     const beda = faktaSelisih([...pustaka, turun], {
       fact_id: 'beda-turun-dividen',
       dari: 'turun-2026-05-04',
       kurangi: 'div-2026-05-04',
       satuan: 'rupiah per lembar',
-      sebutan: 'Jarak antara turunnya harga dan dividen per lembar',
+      sebutan: 'Selisih turunnya harga dengan dividen per lembar',
     });
     const tahun = faktaHitung(pustaka, {
       fact_id: 'tahun-berdividen',

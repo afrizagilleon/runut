@@ -43,3 +43,16 @@ Peran dan wewenang sama; yang berubah (kontrak M2d-4 D-1–D-6), semuanya diteta
 - **Urutan M2d-4**: pemeriksa → pembaca kartu → kritikus → penebak. Penebak hanya dipanggil bila kritikus tidak keberatan; kritikus tidak melihat tebakan (belum ada) dan penebak tidak pernah melihat keberatan kritikus.
 - **Dua pertanyaan wajib kritikus**, diubah menjadi keberatan oleh KODE (`keberatanMakna()` di `kritikus.ts`): (1) ada bagian klaim teman yang tak bisa dicek dari kartu, kunci "Betul", dan pilihan kunci tidak menyatakan bagian itu tak bisa dipastikan → keberatan `makna`; (2) ada pilihan selain kunci yang juga benar menurut kartu → keberatan `kunci`. Jawaban tanpa kedua medan itu = tidak menjawab (diulang sekali).
 - **Tetap**: tidak ada peran yang bisa meloloskan sendirian (`putusanAkhir`); kritikus tidak menulis ulang; kritikus yang tidak menjawab = keberatan.
+
+## Generasi M2d-5 — OpenRouter + TIRT (`GENERASI_M2D5` di `agen-peran.ts`)
+
+Peran, wewenang, dan urutan sama dengan M2d-4; yang berubah (kontrak M2d-5 D-1–D-7), semuanya ditetapkan kode:
+
+| peran | M2d-4 (Featherless) | M2d-5 (OpenRouter) |
+|---|---|---|
+| Semua | `deepseek-ai/DeepSeek-V4.1-Flash`, `zai-org/GLM-5.3`; biaya = token × tabel tebakan | `deepseek/deepseek-v4.1-flash`, `z-ai/glm-5.3` dengan pagar penyedia (`openrouter.ts`); biaya = `usage.cost` |
+| Penulis | `prompt-penulis-gaya.md`, 32.768 token tanpa batas penalaran | + `prompt-penulis-m2d5.md` (aturan 17–20); `reasoning.max_tokens` (`penalaran.ts`); cadangan `reasoning.enabled: false`; contoh bank yang memuat penilaian disaring |
+| Pemeriksa | validator + gerbang G + gerbang gaya | + posisi kunci diatur kode dan larangan rujukan huruf (`posisi-kunci.ts`), G-penilaian (`gerbang-penilaian.ts`), G-mirip (`gerbang-mirip.ts`) |
+| Pembaca kartu | memilih + menunjuk kartu | + mengutip kalimat yang membingungkan: tulisan penulis → menolak (kutipan ke penulis); teks kartu paket → dicatat |
+| Penebak ×3 | DeepSeek, DeepSeek, GLM | sama; penebak GLM dengan `reasoning.max_tokens` |
+| Kritikus | 24.576 token tanpa batas penalaran | `reasoning.max_tokens`; jawaban kosong = terpotong ("tidak menjawab") |

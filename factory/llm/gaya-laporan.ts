@@ -31,7 +31,7 @@ import type { JejakAgen } from './jejak.ts';
 import type { Keberatan } from './kritikus.ts';
 import { jsonDari, lolosTebak } from './laporan.ts';
 import { MODEL_KRITIKUS, MODEL_PENEBAK_M2D4, MODEL_PERAN } from './model.ts';
-import { FOLDER_ARSIP_LEDGER, JALUR_LEDGER, type EntriLedger } from './pagu.ts';
+import { FOLDER_ARSIP_LEDGER, JALUR_ARSIP_FEATHERLESS, JALUR_LEDGER, type EntriLedger } from './pagu.ts';
 import type { PaketFakta } from './paket.ts';
 import { omonganLolosPeran, type OmonganLolosPeran } from './peran-penguji.ts';
 import { biayaPerPeran, type BiayaPeran } from './peran-laporan.ts';
@@ -656,11 +656,21 @@ function tulis(
   return b.join('\n');
 }
 
-function utama(): number {
+/**
+ * Ledger M2d-4 dan arsip SEBELUM M2d-4. Sesudah M2d-5 D-0 ledger yang memuat
+ * M2d-4 pindah ke `JALUR_ARSIP_FEATHERLESS`; laporan M2d-4 membacanya dari sana
+ * (hasilnya byte-sama), dan ledger kini (OpenRouter) tidak ikut.
+ */
+export function ledgerM2d4(): { kini: EntriLedger[]; arsip: EntriLedger[] } {
   const arsip = existsSync(FOLDER_ARSIP_LEDGER)
     ? readdirSync(FOLDER_ARSIP_LEDGER).filter((x) => /^ledger-sampai-.*\.jsonl$/.test(x)).sort().flatMap((x) => bacaLedgerBerkas(`${FOLDER_ARSIP_LEDGER}/${x}`))
     : [];
-  const l = bangunLaporanGaya(bacaLedgerBerkas(JALUR_LEDGER), arsip);
+  return { kini: bacaLedgerBerkas(existsSync(JALUR_ARSIP_FEATHERLESS) ? JALUR_ARSIP_FEATHERLESS : JALUR_LEDGER), arsip };
+}
+
+function utama(): number {
+  const { kini, arsip } = ledgerM2d4();
+  const l = bangunLaporanGaya(kini, arsip);
   writeFileSync(`${FOLDER_M2D4}/ringkasan.json`, JSON.stringify(l.ringkasan, null, 2) + '\n', 'utf8');
   writeFileSync(`${FOLDER_M2D4}/ledger-ringkas.json`, JSON.stringify(l.ledgerRingkas, null, 2) + '\n', 'utf8');
   writeFileSync(JALUR_LAPORAN, l.md, 'utf8');

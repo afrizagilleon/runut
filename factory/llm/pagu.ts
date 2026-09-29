@@ -42,7 +42,13 @@ export const JALUR_LEDGER = `${AKAR}.cache/llm/ledger.jsonl`;
 /** Ledger lama yang diarsipkan (M2d-4 D-0): riwayat biaya tidak pernah dihapus. */
 export const FOLDER_ARSIP_LEDGER = `${AKAR}.cache/llm/arsip`;
 
-export type DasarBiaya = 'usage' | 'perkiraan-maksimum' | 'nol-ditolak';
+/**
+ * `usage-cost` = tagihan nyata dari respons (`usage.cost`, OpenRouter, M2d-5
+ * D-2); `usage` = token × tabel harga (Featherless, M2d-1…M2d-4 — terbukti
+ * ±separuh tagihan); `perkiraan-maksimum` = batas atas sebelum kirim;
+ * `nol-ditolak` = ditolak sebelum diproses.
+ */
+export type DasarBiaya = 'usage-cost' | 'usage' | 'perkiraan-maksimum' | 'nol-ditolak';
 
 export interface EntriLedger {
   waktu: string;
@@ -58,6 +64,15 @@ export interface EntriLedger {
   perkiraan_maks_usd: number;
   latensi_ms: number;
   galat: string | null;
+  /** M2d-5: penyedia yang benar-benar melayani (dari respons), bila disebut. */
+  penyedia?: string | null;
+  /** M2d-5: token penalaran, bila disebut respons. */
+  token_penalaran?: number | null;
+  /**
+   * M2d-5: respons yang mungkin ditagih TANPA `usage.cost` — biayanya dicatat
+   * perkiraan maksimum (bukan nol) dan ditandai di sini.
+   */
+  tanpa_cost?: boolean;
 }
 
 export class PaguTercapai extends Error {
@@ -145,11 +160,19 @@ export interface OpsiPencatat {
   harga?: Readonly<Record<string, HargaModel>>;
   jam?: () => Date;
   paguMilestone?: PaguMilestone;
+  /**
+   * M2d-5 D-2: biaya WAJIB dari tagihan nyata (`usage.cost`). Respons yang
+   * mungkin ditagih tanpa `usage.cost` dicatat perkiraan maksimum dan
+   * ditandai `tanpa_cost` — tabel harga tidak pernah dipakai untuk menaksir
+   * biaya yang sudah terjadi.
+   */
+  biayaNyata?: boolean;
 }
 
 export class PencatatBiaya {
   readonly paguUsd: number;
   readonly paguMilestone: PaguMilestone | null;
+  readonly biayaNyata: boolean;
   private readonly jalur: string | null;
   private readonly harga: Readonly<Record<string, HargaModel>>;
   private readonly jam: () => Date;
@@ -167,6 +190,7 @@ export class PencatatBiaya {
       }
     }
     this.paguMilestone = opsi.paguMilestone ?? null;
+    this.biayaNyata = opsi.biayaNyata ?? false;
     this.jalur = opsi.jalurLedger;
     this.harga = opsi.harga ?? HARGA;
     this.jam = opsi.jam ?? (() => new Date());
@@ -225,7 +249,13 @@ export class PencatatBiaya {
     const harga = hargaModel(model, this.harga);
     let biaya: number;
     let dasar: DasarBiaya;
-    if (c.token_masuk !== null && c.token_keluar !== null) {
+    let tanpaCost = false;
+    const cost = c.biaya_penyedia_usd;
+    if (typeof cost === 'number' && Number.isFinite(cost) && cost >= 0) {
+      // Tagihan nyata dari penyedia selalu menang (M2d-5 D-2).
+      biaya = cost;
+      dasar = 'usage-cost';
+    } else if (!this.biayaNyata && c.token_masuk !== null && c.token_keluar !== null) {
       biaya = biayaUsd(harga, c.token_masuk, c.token_keluar);
       dasar = 'usage';
     } else if (c.status === 429 || !c.mungkin_ditagih) {
@@ -234,6 +264,7 @@ export class PencatatBiaya {
     } else {
       biaya = perkiraan;
       dasar = 'perkiraan-maksimum';
+      tanpaCost = this.biayaNyata;
     }
     const entri: EntriLedger = {
       waktu: this.jam().toISOString(),
@@ -248,6 +279,9 @@ export class PencatatBiaya {
       perkiraan_maks_usd: perkiraan,
       latensi_ms: c.latensi_ms,
       galat: c.galat,
+      ...(this.biayaNyata || (c.penyedia ?? null) !== null
+        ? { penyedia: c.penyedia ?? null, token_penalaran: c.token_penalaran ?? null, tanpa_cost: tanpaCost }
+        : {}),
     };
     this.entri.push(entri);
     if (this.jalur !== null) {
@@ -281,7 +315,13 @@ function bacaEntri(jalur: string): EntriLedger[] {
  * (sha256) sesudah dipindah. Ledger baru dibuat oleh panggilan berbayar
  * berikutnya dan mulai dari nol di bawah `LLM_PAGU_USD`.
  */
-export function arsipkanLedger(jalurLedger: string = JALUR_LEDGER, folderArsip: string = FOLDER_ARSIP_LEDGER): HasilArsip {
+export function arsipkanLedger(
+  jalurLedger: string = JALUR_LEDGER,
+  folderArsip: string = FOLDER_ARSIP_LEDGER,
+  /** Awalan nama berkas arsip; M2d-5 D-0: `ledger-featherless-sampai-`. */
+  awalanNama: string = 'ledger-sampai-',
+): HasilArsip {
+  if (!/^ledger-([a-z]+-)?sampai-$/.test(awalanNama)) throw new Error(`Awalan nama arsip "${awalanNama}" tidak dikenal.`);
   if (!existsSync(jalurLedger)) throw new Error(`Tidak ada ledger di ${jalurLedger}; tidak ada yang diarsipkan.`);
   const isi = readFileSync(jalurLedger);
   const entri = bacaEntri(jalurLedger);
@@ -289,7 +329,7 @@ export function arsipkanLedger(jalurLedger: string = JALUR_LEDGER, folderArsip: 
   const sha = createHash('sha256').update(isi).digest('hex');
   const pertama = entri[0]?.waktu ?? '';
   const terakhir = entri.at(-1)?.waktu ?? '';
-  const tujuan = `${folderArsip}/ledger-sampai-${terakhir.slice(0, 10)}.jsonl`;
+  const tujuan = `${folderArsip}/${awalanNama}${terakhir.slice(0, 10)}.jsonl`;
   if (existsSync(tujuan)) throw new Error(`${tujuan} sudah ada; arsip tidak pernah ditimpa.`);
   mkdirSync(folderArsip, { recursive: true });
   renameSync(jalurLedger, tujuan);
@@ -298,14 +338,30 @@ export function arsipkanLedger(jalurLedger: string = JALUR_LEDGER, folderArsip: 
   return { jalur: tujuan, entri: entri.length, total_usd: entri.reduce((a, e) => a + e.biaya_usd, 0), sha256: sha, pertama, terakhir };
 }
 
+/** Pola nama berkas arsip: `ledger-sampai-<tanggal>.jsonl` (M2d-4) dan `ledger-<penyedia>-sampai-<tanggal>.jsonl` (M2d-5). */
+export const POLA_BERKAS_ARSIP = /^ledger-(?:[a-z]+-)?sampai-(\d{4}-\d{2}-\d{2})\.jsonl$/;
+
+/** Berkas arsip, urut tanggal akhirnya (= urut waktu), lalu nama. */
+export function berkasArsip(folderArsip: string = FOLDER_ARSIP_LEDGER): string[] {
+  if (!existsSync(folderArsip)) return [];
+  const tanggal = (f: string): string => POLA_BERKAS_ARSIP.exec(f)?.[1] ?? '';
+  return readdirSync(folderArsip)
+    .filter((f) => POLA_BERKAS_ARSIP.test(f))
+    .sort((a, b) => tanggal(a).localeCompare(tanggal(b)) || a.localeCompare(b));
+}
+
 /**
- * Seluruh riwayat biaya untuk LAPORAN: arsip (urut nama berkas = urut waktu)
+ * Arsip ledger Featherless (M2d-5 D-0): ledger yang memuat M2d-4 dipindah ke
+ * sini sebelum panggilan OpenRouter pertama.
+ */
+export const JALUR_ARSIP_FEATHERLESS = `${FOLDER_ARSIP_LEDGER}/ledger-featherless-sampai-2026-09-29.jsonl`;
+
+/**
+ * Seluruh riwayat biaya untuk LAPORAN: arsip (urut tanggal akhir = urut waktu)
  * lalu ledger kini. Pagu (`PencatatBiaya`) hanya membaca ledger kini.
  */
 export function bacaLedgerSemua(jalurLedger: string = JALUR_LEDGER, folderArsip: string = FOLDER_ARSIP_LEDGER): EntriLedger[] {
-  const arsip = existsSync(folderArsip)
-    ? readdirSync(folderArsip).filter((f) => /^ledger-sampai-.*\.jsonl$/.test(f)).sort().flatMap((f) => bacaEntri(`${folderArsip}/${f}`))
-    : [];
+  const arsip = berkasArsip(folderArsip).flatMap((f) => bacaEntri(`${folderArsip}/${f}`));
   return [...arsip, ...(existsSync(jalurLedger) ? bacaEntri(jalurLedger) : [])];
 }
 

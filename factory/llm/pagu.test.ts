@@ -10,8 +10,8 @@ import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { HARGA, biayaUsd } from './harga.ts';
-import { MODEL_TANDING } from './model.ts';
+import { HARGA, HARGA_FEATHERLESS_USANG, HARGA_FEATHERLESS_USANG as FL, biayaUsd } from './harga.ts';
+import { MODEL_OPENROUTER, MODEL_TANDING } from './model.ts';
 import {
   PaguMilestoneTercapai,
   PaguTercapai,
@@ -51,7 +51,7 @@ const OPSI = {
 describe('pagu 0,01 — panggilan kedua ditolak sebelum fetch', () => {
   it('panggilan pertama lolos; kedua melempar PaguTercapai dan fetch tetap satu kali', async () => {
     const { fetch: f, hitung } = fetchPalsu(sukses);
-    const pencatat = new PencatatBiaya({ paguUsd: 0.01, jalurLedger: null });
+    const pencatat = new PencatatBiaya({ paguUsd: 0.01, jalurLedger: null, harga: FL });
     const klien = { baseUrl: 'https://llm.contoh.test/v1', apiKey: KUNCI, fetch: f };
 
     // Perkiraan maksimum: (4+4+16) token masuk × 1,00 + 2000 × 3,00 per juta ≈ US$0,006024.
@@ -68,7 +68,7 @@ describe('pagu 0,01 — panggilan kedua ditolak sebelum fetch', () => {
 
   it('perkiraan tunggal yang sudah melampaui pagu ditolak bahkan untuk panggilan pertama', async () => {
     const { fetch: f, hitung } = fetchPalsu(sukses);
-    const pencatat = new PencatatBiaya({ paguUsd: 0.001, jalurLedger: null });
+    const pencatat = new PencatatBiaya({ paguUsd: 0.001, jalurLedger: null, harga: FL });
     await expect(
       chatBerpagu({ baseUrl: 'https://x.test/v1', apiKey: KUNCI, fetch: f }, pencatat, OPSI, 'uji'),
     ).rejects.toThrow(/Pagu tercapai/);
@@ -79,7 +79,7 @@ describe('pagu 0,01 — panggilan kedua ditolak sebelum fetch', () => {
     const { fetch: f, hitung } = fetchPalsu(() => new Response('rusak', { status: 503 }));
     // Perkiraan ≈ 0,006024; pagu 0,01: percobaan 1 lolos, dicatat 0,006024,
     // percobaan 2 akan membuat 0,012048 > 0,01 → ditolak sebelum fetch kedua.
-    const pencatat = new PencatatBiaya({ paguUsd: 0.01, jalurLedger: null });
+    const pencatat = new PencatatBiaya({ paguUsd: 0.01, jalurLedger: null, harga: FL });
     await expect(
       chatBerpagu(
         { baseUrl: 'https://x.test/v1', apiKey: KUNCI, fetch: f, tidur: async () => {} },
@@ -100,7 +100,7 @@ describe('pagu 0,01 — panggilan kedua ditolak sebelum fetch', () => {
       n += 1;
       return n === 1 ? new Response('sibuk', { status: 429 }) : sukses();
     }) as typeof fetch;
-    const pencatat = new PencatatBiaya({ paguUsd: 1, jalurLedger: null });
+    const pencatat = new PencatatBiaya({ paguUsd: 1, jalurLedger: null, harga: FL });
     await chatBerpagu(
       { baseUrl: 'https://x.test/v1', apiKey: KUNCI, fetch: f, tidur: async () => {} },
       pencatat,
@@ -112,7 +112,7 @@ describe('pagu 0,01 — panggilan kedua ditolak sebelum fetch', () => {
 
   it('model di luar tabel harga ditolak sebelum fetch', async () => {
     const { fetch: f, hitung } = fetchPalsu(sukses);
-    const pencatat = new PencatatBiaya({ paguUsd: 5, jalurLedger: null });
+    const pencatat = new PencatatBiaya({ paguUsd: 5, jalurLedger: null, harga: FL });
     await expect(
       chatBerpagu(
         { baseUrl: 'https://x.test/v1', apiKey: KUNCI, fetch: f },
@@ -130,8 +130,8 @@ describe('ledger — akumulasi bertahan antar proses, tanpa rahasia', () => {
     const jalur = join(mkdtempSync(join(tmpdir(), 'm2d-pagu-')), 'llm', 'ledger.jsonl');
     const { fetch: f, hitung } = fetchPalsu(sukses);
     const klien = { baseUrl: 'https://x.test/v1', apiKey: KUNCI, fetch: f };
-    await chatBerpagu(klien, new PencatatBiaya({ paguUsd: 0.01, jalurLedger: jalur }), OPSI, 'a');
-    const baru = new PencatatBiaya({ paguUsd: 0.01, jalurLedger: jalur });
+    await chatBerpagu(klien, new PencatatBiaya({ paguUsd: 0.01, jalurLedger: jalur, harga: FL }), OPSI, 'a');
+    const baru = new PencatatBiaya({ paguUsd: 0.01, jalurLedger: jalur, harga: FL });
     expect(baru.total()).toBeCloseTo(0.0057, 10);
     await expect(chatBerpagu(klien, baru, OPSI, 'b')).rejects.toBeInstanceOf(PaguTercapai);
     expect(hitung()).toBe(1);
@@ -164,16 +164,17 @@ describe('ledger — akumulasi bertahan antar proses, tanpa rahasia', () => {
   });
 });
 
-describe('harga — konservatif dan hanya tiga model', () => {
-  it('tabel memuat tepat tiga model kontrak', () => {
-    expect(Object.keys(HARGA).sort()).toEqual([...MODEL_TANDING].sort());
+describe('harga — batas max_price OpenRouter (M2d-5 D-2); tebakan Featherless usang', () => {
+  it('tabel pagu memuat tepat dua model OpenRouter M2d-5; tabel Featherless disimpan terpisah (usang)', () => {
+    expect(Object.keys(HARGA).sort()).toEqual([...MODEL_OPENROUTER].sort());
+    expect(Object.keys(HARGA_FEATHERLESS_USANG).sort()).toEqual([...MODEL_TANDING].sort());
   });
 
-  it('angka = 2× OpenRouter untuk dua model Flash; GLM-5.3 = 1,00/3,00 (kontrak D-2)', () => {
-    expect(HARGA['deepseek-ai/DeepSeek-V4.1-Flash']).toMatchObject({ masuk: 0.196, keluar: 0.392 });
-    expect(HARGA['zai-org/GLM-5.3-Flash']).toMatchObject({ masuk: 0.15, keluar: 0.5 });
-    expect(HARGA['zai-org/GLM-5.3']).toMatchObject({ masuk: 1, keluar: 3 });
-    for (const h of Object.values(HARGA)) expect(h.sumber).toMatch(/2026/);
+  it('angka = harga daftar standar (lampiran M-02d5): DeepSeek 0,30/1,20; GLM 1,40/4,40', () => {
+    expect(HARGA['deepseek/deepseek-v4.1-flash']).toMatchObject({ masuk: 0.3, keluar: 1.2 });
+    expect(HARGA['z-ai/glm-5.3']).toMatchObject({ masuk: 1.4, keluar: 4.4 });
+    for (const h of Object.values(HARGA)) expect(h.sumber).toMatch(/openrouter-endpoints-29sep/);
+    expect(HARGA_FEATHERLESS_USANG['zai-org/GLM-5.3']).toMatchObject({ masuk: 1, keluar: 3 });
   });
 
   it('biayaUsd per juta token', () => {
@@ -201,7 +202,7 @@ describe('pagu milestone (M2d-3 D-0) — dihitung dari ledger bertag awalan mile
     writeFileSync(jalur, [lama('agen/tirt/p1/susun/o1', 0.9), lama('m2d3/tirt/p1/susun/o1', 0.0055)].join('\n') + '\n');
     const { fetch: f, hitung } = fetchPalsu(sukses);
     // Perkiraan maksimum satu panggilan ≈ US$0,006024; milestone US$0,0055 + 0,006024 > 0,01.
-    const pencatat = new PencatatBiaya({ paguUsd: 5, jalurLedger: jalur, paguMilestone: { usd: 0.01, awalanTag: 'm2d3/' } });
+    const pencatat = new PencatatBiaya({ paguUsd: 5, jalurLedger: jalur, harga: FL, paguMilestone: { usd: 0.01, awalanTag: 'm2d3/' } });
     expect(pencatat.total()).toBeCloseTo(0.9055, 10);
     expect(pencatat.totalMilestone()).toBeCloseTo(0.0055, 10);
     const galat = await chatBerpagu(klienDengan(f), pencatat, OPSI, 'm2d3/tirt/p2/kritikus/o1').catch((e: unknown) => e);
@@ -210,7 +211,7 @@ describe('pagu milestone (M2d-3 D-0) — dihitung dari ledger bertag awalan mile
     expect((galat as Error).message).toContain('Pagu milestone tercapai');
     expect(hitung()).toBe(0);
     // Tanpa entri milestone lama, panggilan yang sama lolos: entri 'agen/…' (US$0,9) tidak ikut dihitung.
-    const bersih = new PencatatBiaya({ paguUsd: 5, jalurLedger: null, paguMilestone: { usd: 0.01, awalanTag: 'm2d3/' } });
+    const bersih = new PencatatBiaya({ paguUsd: 5, jalurLedger: null, harga: FL, paguMilestone: { usd: 0.01, awalanTag: 'm2d3/' } });
     await chatBerpagu(klienDengan(f), bersih, OPSI, 'm2d3/tirt/p1/kritikus/o1');
     expect(hitung()).toBe(1);
     expect(bersih.totalMilestone()).toBeCloseTo(0.0057, 10);
@@ -218,14 +219,14 @@ describe('pagu milestone (M2d-3 D-0) — dihitung dari ledger bertag awalan mile
 
   it('panggilan bertag di luar awalan milestone ditolak sebelum fetch (tidak ada panggilan yang lolos dari hitungan)', async () => {
     const { fetch: f, hitung } = fetchPalsu(sukses);
-    const pencatat = new PencatatBiaya({ paguUsd: 5, jalurLedger: null, paguMilestone: { usd: 2, awalanTag: 'm2d3/' } });
+    const pencatat = new PencatatBiaya({ paguUsd: 5, jalurLedger: null, harga: FL, paguMilestone: { usd: 2, awalanTag: 'm2d3/' } });
     await expect(chatBerpagu(klienDengan(f), pencatat, OPSI, 'agen/tirt/p1/susun/o1')).rejects.toThrow('di luar awalan milestone');
     expect(hitung()).toBe(0);
   });
 
   it('pagu kumulatif tetap berlaku di dalam pagu milestone', async () => {
     const { fetch: f, hitung } = fetchPalsu(sukses);
-    const pencatat = new PencatatBiaya({ paguUsd: 0.001, jalurLedger: null, paguMilestone: { usd: 2, awalanTag: 'm2d3/' } });
+    const pencatat = new PencatatBiaya({ paguUsd: 0.001, jalurLedger: null, harga: FL, paguMilestone: { usd: 2, awalanTag: 'm2d3/' } });
     const galat = await chatBerpagu(klienDengan(f), pencatat, OPSI, 'm2d3/x').catch((e: unknown) => e);
     expect(galat).toBeInstanceOf(PaguTercapai);
     expect(galat).not.toBeInstanceOf(PaguMilestoneTercapai);

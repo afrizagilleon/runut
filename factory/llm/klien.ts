@@ -51,6 +51,15 @@ export interface CatatanPercobaan {
   galat: string | null;
   /** Benar kalau permintaan mungkin sudah diproses penyedia (untuk biaya). */
   mungkin_ditagih: boolean;
+  /**
+   * Tagihan nyata dari penyedia (`usage.cost`, OpenRouter: kredit = USD);
+   * `null`/tidak ada bila respons tidak memuatnya (M2d-5 D-2).
+   */
+  biaya_penyedia_usd?: number | null;
+  /** Nama penyedia yang benar-benar melayani (medan `provider` respons OpenRouter), bila ada. */
+  penyedia?: string | null;
+  /** Token penalaran (`usage.completion_tokens_details.reasoning_tokens`), bila ada. */
+  token_penalaran?: number | null;
 }
 
 export interface KaitPanggilan {
@@ -69,6 +78,12 @@ export interface KonfigKlien {
   cobaUlang?: number;
   /** Jeda sebelum coba ulang ke-n (1, 2, …). Bawaan 2 s lalu 6 s. */
   jedaMs?: (ke: number) => number;
+  /**
+   * Pagar penyedia (M2d-5 D-1, `openrouter.ts`): objek `provider` untuk
+   * model yang dipanggil. Dipasang SESUDAH `tambahanBadan`, jadi setelan peran
+   * tidak bisa menimpa atau menghapusnya. Melempar = panggilan tidak dikirim.
+   */
+  pagar?: (model: string) => Readonly<Record<string, unknown>>;
   /** Disuntik tes. */
   fetch?: typeof fetch;
   tidur?: (ms: number) => Promise<void>;
@@ -85,6 +100,12 @@ export interface HasilChat {
   token_keluar: number;
   latensi_ms: number;
   percobaan_http: number;
+  /** `usage.cost` (tagihan nyata, USD) bila ada; `null` bila tidak. */
+  biaya_penyedia_usd?: number | null;
+  /** Penyedia yang melayani (medan `provider` respons), bila ada. */
+  penyedia?: string | null;
+  /** Token penalaran dari `usage.completion_tokens_details`, bila ada. */
+  token_penalaran?: number | null;
 }
 
 /**
@@ -127,11 +148,23 @@ function dapatDiulang(status: number): boolean {
 
 interface ResponsChat {
   model?: string;
+  /** OpenRouter: nama penyedia yang melayani. */
+  provider?: string;
   choices?: Array<{
     message?: { content?: string | null; reasoning_content?: string | null; reasoning?: string | null };
     finish_reason?: string | null;
   }>;
-  usage?: { prompt_tokens?: number; completion_tokens?: number };
+  usage?: {
+    prompt_tokens?: number;
+    completion_tokens?: number;
+    /** OpenRouter: tagihan nyata dalam kredit (= USD). */
+    cost?: number;
+    completion_tokens_details?: { reasoning_tokens?: number };
+  };
+}
+
+function angka(x: unknown): number | null {
+  return typeof x === 'number' && Number.isFinite(x) ? x : null;
 }
 
 /** Kirim satu permintaan chat. Melempar `GalatLlm` (tersamar) bila gagal. */
@@ -148,6 +181,7 @@ export async function chat(
   const batasWaktu = konfig.batasWaktuMs ?? 240_000;
   const rahasia = [konfig.apiKey];
   const url = `${konfig.baseUrl.replace(/\/+$/, '')}/chat/completions`;
+  const pagar = konfig.pagar === undefined ? undefined : konfig.pagar(opsi.model);
   const badan = JSON.stringify({
     ...(opsi.tambahanBadan ?? {}),
     model: opsi.model,
@@ -155,6 +189,7 @@ export async function chat(
     temperature: opsi.suhu,
     max_tokens: opsi.maxTokens,
     stream: false,
+    ...(pagar === undefined ? {} : { provider: pagar }),
   });
 
   for (let percobaan = 1; ; percobaan++) {
@@ -265,6 +300,9 @@ export async function chat(
 
     const masuk = data.usage?.prompt_tokens;
     const keluar = data.usage?.completion_tokens;
+    const biayaPenyedia = angka(data.usage?.cost);
+    const penyedia = typeof data.provider === 'string' && data.provider !== '' ? data.provider : null;
+    const tokenPenalaran = angka(data.usage?.completion_tokens_details?.reasoning_tokens);
     const pilihan = data.choices?.[0];
     /*
      * HTTP 200 tanpa `choices` (terukur sekali di putaran 1, GLM-5.3: 200, tanpa
@@ -284,6 +322,9 @@ export async function chat(
         latensi_ms: latensi,
         galat: pesan,
         mungkin_ditagih: true,
+        biaya_penyedia_usd: biayaPenyedia,
+        penyedia,
+        token_penalaran: tokenPenalaran,
       });
       throw new GalatLlm(pesan, respons.status);
     }
@@ -295,6 +336,9 @@ export async function chat(
       latensi_ms: latensi,
       galat: null,
       mungkin_ditagih: true,
+      biaya_penyedia_usd: biayaPenyedia,
+      penyedia,
+      token_penalaran: tokenPenalaran,
     });
     return {
       model: data.model ?? opsi.model,
@@ -305,6 +349,9 @@ export async function chat(
       token_keluar: typeof keluar === 'number' ? keluar : 0,
       latensi_ms: latensi,
       percobaan_http: percobaan,
+      biaya_penyedia_usd: biayaPenyedia,
+      penyedia,
+      token_penalaran: tokenPenalaran,
     };
   }
 }

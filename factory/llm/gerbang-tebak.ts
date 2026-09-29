@@ -139,6 +139,10 @@ export interface PanggilanGerbang {
   finish_reason: string | null;
   teks_mentah: string;
   terbaca: boolean;
+  /** M2d-5: penyedia yang melayani, bila disebut respons. */
+  penyedia?: string | null;
+  /** M2d-5: token penalaran, bila disebut respons. */
+  token_penalaran?: number | null;
 }
 
 export interface Tebakan {
@@ -173,6 +177,8 @@ export interface OpsiGerbang {
   maxTokens?: number;
   /** `max_tokens` per tebakan ke-1..3 (M2d-4: penebak GLM lebih pendek); mengalahkan `maxTokens`. */
   maxTokensKe?: readonly number[];
+  /** Medan badan tambahan per tebakan ke-1..3 (M2d-5: `reasoning.max_tokens` penebak GLM); `undefined` = tanpa. */
+  tambahanBadanKe?: ReadonlyArray<Readonly<Record<string, unknown>> | undefined>;
 }
 
 /** Satu panggilan gerbang yang dicatat, diulang sekali bila jawabannya tak terbaca. */
@@ -201,6 +207,7 @@ export async function panggilTerbaca<T>(
       finish_reason: j.finish_reason,
       teks_mentah: j.teks,
       terbaca: hasil !== null,
+      ...(j.penyedia === undefined ? {} : { penyedia: j.penyedia, token_penalaran: j.token_penalaran ?? null }),
     });
     if (hasil !== null) return { hasil, panggilan };
   }
@@ -222,7 +229,11 @@ export async function gerbangTebak(o: OmonganDraf, opsi: OpsiGerbang): Promise<P
   for (let ke = 1; ke <= JUMLAH_PENEBAK; ke++) {
     const { hasil, panggilan } = await panggilTerbaca(
       () => pesanPenebak(soal, opsi.petunjuk),
-      { suhu: SUHU_TEBAK, maxTokens: opsi.maxTokensKe?.[ke - 1] ?? opsi.maxTokens ?? MAX_TOKENS_GERBANG },
+      {
+        suhu: SUHU_TEBAK,
+        maxTokens: opsi.maxTokensKe?.[ke - 1] ?? opsi.maxTokens ?? MAX_TOKENS_GERBANG,
+        ...(opsi.tambahanBadanKe?.[ke - 1] === undefined ? {} : { tambahanBadan: opsi.tambahanBadanKe[ke - 1] }),
+      },
       { jenis: 'gerbang-tebak', putaran: opsi.putaran, omongan: opsi.omongan, ke },
       opsi,
       uraiTebakan,

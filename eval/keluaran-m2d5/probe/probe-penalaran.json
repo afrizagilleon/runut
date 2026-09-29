@@ -1,0 +1,228 @@
+{
+  "pagu_probe_usd": 0.4,
+  "biaya_probe_usd": 0.0380926922,
+  "hasil": [
+    {
+      "tag": "m2d5/probe/kartu/bawaan",
+      "peran": "pembaca-kartu",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 8000,
+      "badan": null,
+      "penyedia": "AtlasCloud",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 652,
+      "token_keluar": 5351,
+      "token_penalaran": 5293,
+      "panjang_penalaran_karakter": 19363,
+      "biaya_usd": 0.002514384,
+      "latensi_ms": 37747,
+      "terurai": true,
+      "catatan": "b (kunci b); membingungkan 0",
+      "teks": "{\"pilihan\":\"b\",\"kartu\":[1],\"alasan\":\"Kartu 1 menyatakan harga naik 9 hari bursa berturut-turut, jadi omongan Wulan tentang naik beruntun cocok.\",\"membingungkan\":[]}"
+    },
+    {
+      "tag": "m2d5/probe/penebak-deepseek/bawaan",
+      "peran": "penebak",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 16000,
+      "badan": null,
+      "penyedia": "Relace",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 345,
+      "token_keluar": 988,
+      "token_penalaran": 863,
+      "panjang_penalaran_karakter": 3436,
+      "biaya_usd": 0.0005997,
+      "latensi_ms": 26556,
+      "terurai": true,
+      "catatan": "b/60 (kunci b)",
+      "teks": "{\"pilihan\":\"b\",\"yakin\":60,\"alasan\":\"Dalam konteks pasar, rentetan kenaikan biasanya dihitung hari bursa, dan pilihan b paling wajar cocok dengan klaim pola naik beruntun.\"}"
+    },
+    {
+      "tag": "m2d5/probe/penebak-glm/r1500",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 3500,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 1500
+        }
+      },
+      "penyedia": "Sail Research",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 352,
+      "token_keluar": 70,
+      "token_penalaran": 1,
+      "panjang_penalaran_karakter": 0,
+      "biaya_usd": 0.0003084,
+      "latensi_ms": 1419,
+      "terurai": true,
+      "catatan": "a/45 (kunci b)",
+      "teks": "{\"pilihan\": \"a\", \"yakin\": 45, \"alasan\": \"Klaim 'naik beruntun terus' biasanya dilebih-lebihkan, dan pilihan paling wajar adalah koreksi bahwa kenaikannya hanya beberapa hari bursa, bukan sembilan.\"}"
+    },
+    {
+      "tag": "m2d5/probe/penebak-glm/r3000",
+      "peran": "penebak",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 5000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 3000
+        }
+      },
+      "penyedia": "Morph",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 352,
+      "token_keluar": 522,
+      "token_penalaran": 425,
+      "panjang_penalaran_karakter": 1646,
+      "biaya_usd": 0.001708432,
+      "latensi_ms": 5705,
+      "terurai": true,
+      "catatan": "c/35 (kunci b)",
+      "teks": "{\"pilihan\": \"c\", \"yakin\": 35, \"alasan\": \"Klaim 'naik beruntun terus' yang terdengar berlebihan biasanya dikoreksi oleh dokumen dengan angka moderat; lima hari bursa (sepekan) lebih wajar daripada sembilan hari, dan menjawab 'keliru' lebih mungkin sesuai pola soal uji ini.\"}"
+    },
+    {
+      "tag": "m2d5/probe/penulis/tanpa-berpikir",
+      "peran": "penulis",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 8000,
+      "badan": {
+        "reasoning": {
+          "enabled": false
+        }
+      },
+      "penyedia": "Together",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 5858,
+      "token_keluar": 442,
+      "token_penalaran": 0,
+      "panjang_penalaran_karakter": 0,
+      "biaya_usd": 0.0022878,
+      "latensi_ms": 1997,
+      "terurai": false,
+      "catatan": "bukan JSON: JSON tidak bisa diurai: Unexpected non-whitespace character after JSON at positi",
+      "teks": "{\"omongan\": [{\"no\": 1, \"nama\": \"Tio\", \"jam\": \"19.42\", \"pesan\": \"Fix disetop hari ini gara-gara harganya naik kebablasan, cooling down lah pasti. Besok udah buka lagi kan?\", \"angka_pesan\": [], \"kartu\": [\"susp-2025-12-10\", \"susp-2025-01-21\", \"hari-naik-beruntun\"], \"kartu_penentu\": [\"susp-2025-12-10\"], \"pilihan\": {\"a\": \"Betul, disetop karena kenaikan harga kumulatif yang signifikan.\", \"b\": \"Keliru, disetop karena ada keraguan kelangsungan usaha.\", \"c\": \"Betul, disetop karena volume perdagangannya tercatat nol lembar.\", \"d\": \"Keliru, besok pagi perdagangannya sudah dibuka kembali.\"}, \"kunci\": \"a\", \"penjelasan\": \"Pengumuman penghentian sementara perdagangan yang terbit [[susp-2025-12-10|10 Desember 2025]] menyebut alasan resminya: kenaikan harga kumulatif yang signifikan, dan ini disebut cooling down sebagai perlindungan bagi investor. Jadi klaim soal sebabnya cocok dengan dokumen hari itu. Yang tidak bisa dipastikan adalah kapan saham ini bisa diperdagangkan lagi — di pengumuman yang sama, waktu pembukaan kembali tidak tercatat sama sekali, jadi tidak ada yang bisa bilang besok sudah buka. Alasan keraguan kelangsungan usaha itu muncul di penghentian yang lebih awal, [[susp-2025-01-21|21 Januari 2025]], bukan yang hari ini. Salah-kaprah yang umum: orang mengira penghentian sementara selalu punya jadwal buka yang pasti, padahal di dokumennya sendiri tidak dicantumkan.\"}]}]}"
+    },
+    {
+      "tag": "m2d5/probe/penulis/r8000",
+      "peran": "penulis",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 14000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 8000
+        }
+      },
+      "penyedia": "AtlasCloud",
+      "finish_reason": "length",
+      "kosong": true,
+      "token_masuk": 5883,
+      "token_keluar": 14000,
+      "token_penalaran": 14000,
+      "panjang_penalaran_karakter": 44549,
+      "biaya_usd": 0.007054662,
+      "latensi_ms": 105041,
+      "terurai": false,
+      "catatan": "bukan JSON: tidak ada objek JSON di keluaran",
+      "teks": ""
+    },
+    {
+      "tag": "m2d5/probe/penulis/r16000",
+      "peran": "penulis",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "max_tokens": 22000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 16000
+        }
+      },
+      "penyedia": "Together",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 5883,
+      "token_keluar": 11261,
+      "token_penalaran": 10866,
+      "panjang_penalaran_karakter": 37054,
+      "biaya_usd": 0.0152781,
+      "latensi_ms": 38547,
+      "terurai": true,
+      "catatan": "lolos validator",
+      "teks": "{\"omongan\": [{\"no\": 1, \"nama\": \"Sinta\", \"jam\": \"19.42\", \"pesan\": \"Perusahaan T disetop hari ini gara-gara keraguan kelangsungan usaha, sama kayak penghentian awal tahun. Gw yakin cuma itu alasannya.\", \"angka_pesan\": [], \"kartu\": [\"susp-2025-12-10\", \"susp-2025-01-21\"], \"kartu_penentu\": [\"susp-2025-12-10\", \"susp-2025-01-21\"], \"pilihan\": {\"a\": \"Betul, dua penghentian itu alasannya sama.\", \"b\": \"Betul, alasan hari ini keraguan kelangsungan usaha.\", \"c\": \"Keliru, alasan hari ini kenaikan harga kumulatif.\", \"d\": \"Keliru, penghentian awal tahun karena kenaikan harga kumulatif.\"}, \"kunci\": \"c\", \"penjelasan\": \"Penghentian hari ini resminya karena kenaikan harga kumulatif yang signifikan, dalam rangka cooling down untuk melindungi investor [[susp-2025-12-10|pengumuman 10 Desember 2025]]. Alasan itu beda dari penghentian awal tahun, yang resminya karena keraguan atas kelangsungan usaha [[susp-2025-01-21|pengumuman 21 Januari 2025]]. Jadi klaim bahwa dua penghentian itu alasannya sama tidak cocok dengan catatan resminya. Salah-kaprah yang umum: orang mengira semua penghentian perdagangan berarti ada masalah usaha, padahal penghentian bisa dipakai untuk mendinginkan harga yang naik cepat.\"}]}"
+    },
+    {
+      "tag": "m2d5/probe/kritikus/r4000",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 7000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 4000
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2198,
+      "token_keluar": 481,
+      "token_penalaran": 199,
+      "panjang_penalaran_karakter": 662,
+      "biaya_usd": 0.0030498906,
+      "latensi_ms": 3084,
+      "terurai": true,
+      "catatan": "1 keberatan; tak tercek 1; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [\"minggu lalu juga gitu — tidak ada kartu tentang kejadian serupa minggu lalu, hanya data 26 November–9 Desember dan penghentian awal tahun dengan alasan lain\"], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Hanya pilihan b yang sesuai kartu 1 (9 hari bursa berturut-turut); angka 2 dan 5 tidak ada di kartu, dan hari kalender memang berbeda jenis hitungan.\"}, \"keberatan\": [{\"jenis\": \"kunci\", \"bagian\": \"pesan\", \"alasan\": \"Klaim 'minggu lalu juga gitu' (naik beruntun serupa minggu lalu) tidak bisa dicek dari kartu mana pun, tapi kunci 'Betul' menyatakan seluruh omongan cocok.\"}], \"arahan\": \"Ubah pesan Wulan (atau tambahkan kartu) supaya klaim 'minggu lalu juga gitu' bisa dicek dari kartu, atau tambahkan pernyataan tak pasti tentang bagian itu di pilihan kunci.\"}"
+    },
+    {
+      "tag": "m2d5/probe/kritikus/r8000",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 11000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 8000
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2198,
+      "token_keluar": 471,
+      "token_penalaran": 326,
+      "panjang_penalaran_karakter": 1089,
+      "biaya_usd": 0.0025950618,
+      "latensi_ms": 3860,
+      "terurai": true,
+      "catatan": "0 keberatan; tak tercek 0; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 pasti menyebut 9 hari bursa berturut-turut dan rentangnya mencakup 'minggu lalu', sementara a dan c salah angka dan d salah jenis hari (26 Nov–9 Des bukan 9 hari kalender).\"}, \"keberatan\": [], \"arahan\": \"Tidak ada arahan; semua klaim tercek dari kartu dan hanya satu pilihan benar.\"}"
+    },
+    {
+      "tag": "m2d5/probe/kritikus/r12000",
+      "peran": "kritikus",
+      "model": "z-ai/glm-5.3",
+      "max_tokens": 15000,
+      "badan": {
+        "reasoning": {
+          "max_tokens": 12000
+        }
+      },
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "kosong": false,
+      "token_masuk": 2198,
+      "token_keluar": 494,
+      "token_penalaran": 183,
+      "panjang_penalaran_karakter": 682,
+      "biaya_usd": 0.0026962618,
+      "latensi_ms": 2936,
+      "terurai": true,
+      "catatan": "2 keberatan; tak tercek 1; juga benar -",
+      "teks": "{\"cek_klaim\": {\"bagian_tak_tercek\": [\"minggu lalu juga (naik beruntun) — tidak ada kartu tentang perilaku harga minggu-minggu sebelum 26 November 2025\"], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Hanya b yang cocok dengan kartu penentu; a dan c salah angka, d salah jenis hari.\"}, \"keberatan\": [{\"jenis\": \"makna\", \"bagian\": \"pesan\", \"alasan\": \"Klaim 'minggu lalu juga gitu' tidak bisa dicek dari kartu mana pun, tapi kunci 'Betul' tidak menyatakan bagian itu tak pasti sehingga pemain bisa menganggap seluruh omongan terbukti.\"}, {\"jenis\": \"ambigu\", \"bagian\": \"pesan\", \"alasan\": \"Frasa 'minggu lalu' berpotensi dibaca sebagai rentang 26 Nov–9 Des itu sendiri, sehingga pemain bingung apakah itu klaim terpisah atau pengulangan.\"}], \"arahan\": \"Buat pilihan kunci (atau penjelasan) menyebut bahwa bagian 'minggu lalu juga gitu' tidak bisa dipastikan dari dokumen, atau hapus bagian itu dari pesan.\"}"
+    }
+  ]
+}

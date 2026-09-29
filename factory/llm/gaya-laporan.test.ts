@@ -11,7 +11,7 @@ import { AKAR } from './env.ts';
 import { bangunLaporanGaya, bentukOmongan, biayaGaya, ringkasBentuk } from './gaya-laporan.ts';
 import { FOLDER_M2D4 } from './gaya-susun.ts';
 import { MODEL_AGEN, MODEL_KRITIKUS } from './model.ts';
-import { FOLDER_ARSIP_LEDGER, JALUR_LEDGER, type EntriLedger } from './pagu.ts';
+import { FOLDER_ARSIP_LEDGER, JALUR_ARSIP_FEATHERLESS, JALUR_LEDGER, type EntriLedger } from './pagu.ts';
 
 const e = (tag: string, biaya: number, model: string = MODEL_AGEN, waktu = '2026-09-28T20:00:00.000Z'): EntriLedger => ({
   waktu, model, tag, percobaan_http: 1, status: 200, token_masuk: 1, token_keluar: 1, biaya_usd: biaya,
@@ -42,12 +42,13 @@ describe('biaya dan bentuk (murni)', () => {
   });
 });
 
-const ADA = existsSync(`${FOLDER_M2D4}/ultj/riwayat.json`) && existsSync(JALUR_LEDGER);
+const ADA = existsSync(`${FOLDER_M2D4}/ultj/riwayat.json`) && (existsSync(JALUR_LEDGER) || existsSync(JALUR_ARSIP_FEATHERLESS));
 
 describe.skipIf(!ADA)('laporan dari keluaran sungguhan (butuh ledger .cache/)', () => {
-  const kini = baca(JALUR_LEDGER);
+  // M2d-5 D-0: ledger yang memuat M2d-4 dipindah ke arsip Featherless; laporan M2d-4 membacanya dari sana.
+  const kini = baca(existsSync(JALUR_ARSIP_FEATHERLESS) ? JALUR_ARSIP_FEATHERLESS : JALUR_LEDGER);
   const arsip = existsSync(FOLDER_ARSIP_LEDGER)
-    ? readdirSync(FOLDER_ARSIP_LEDGER).filter((x) => x.endsWith('.jsonl')).sort().flatMap((x) => baca(`${FOLDER_ARSIP_LEDGER}/${x}`))
+    ? readdirSync(FOLDER_ARSIP_LEDGER).filter((x) => /^ledger-sampai-.*\.jsonl$/.test(x)).sort().flatMap((x) => baca(`${FOLDER_ARSIP_LEDGER}/${x}`))
     : [];
   const l = bangunLaporanGaya(kini, arsip);
   type R = { biaya: { milestone_ledger_usd: number; ledger_arsip_usd: number; per_peran: Record<string, number>; di_luar_jalan: Record<string, { usd: number }> }; per_simulasi: Array<{ biaya_ledger: number }> };

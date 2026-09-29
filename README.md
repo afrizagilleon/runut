@@ -534,6 +534,21 @@ npm run gaya:susun -- tirt                           # berbayar; pagu milestone 
 npm run gaya:penguji && npm run gaya:laporan         # bahan penguji eksternal, lalu docs/bukti/lingkar-agen-gaya.md
 ```
 
+**OpenRouter + TIRT (M2d-5).** `GENERASI_M2D5` memanggil
+`deepseek/deepseek-v4.1-flash` dan `z-ai/glm-5.3` lewat OpenRouter dengan pagar
+penyedia di setiap permintaan (`openrouter.ts`: tanpa fp4, `max_price`,
+`require_parameters`, `data_collection: "deny"`); ledger mencatat biaya NYATA
+(`usage.cost`), dan pagu menegakkan biaya nyata + perkiraan batas atas. Batas
+penalaran dari probe (`penalaran.ts`), huruf kunci diatur kode
+(`posisi-kunci.ts`), G-penilaian dan G-mirip di pemeriksa, pembaca kartu
+mengutip kalimat yang membingungkan. Hasil dan biaya: `docs/bukti/lingkar-agen-tirt.md`.
+
+```bash
+npm run tirt:arsip && npm run tirt:periksa           # arsip ledger Featherless; cek kunci & penyedia (tanpa biaya)
+npm run tirt:probe && npm run tirt:susun             # berbayar; pagu probe US$0,40, pagu milestone US$4,00
+npm run tirt:penguji && npm run tirt:laporan         # bahan penguji eksternal, lalu laporan
+```
+
 Hasil dan keterbatasannya: `docs/bukti/lingkar-agen-gaya.md`; keluaran mentah
 di `eval/keluaran-m2d4/`.
 

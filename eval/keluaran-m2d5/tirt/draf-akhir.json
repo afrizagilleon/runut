@@ -1,0 +1,104 @@
+{
+  "paket_id": "tirt",
+  "model_peran": {
+    "penulis": "deepseek/deepseek-v4.1-flash",
+    "penebak": "deepseek/deepseek-v4.1-flash ×2 + z-ai/glm-5.3 ×1",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3"
+  },
+  "terbit": true,
+  "berhenti": null,
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Rian",
+        "jam": "20.11",
+        "pesan": "Gw yakin Januari 2025 saham ini udah pernah disetop juga, dan alasannya beda dari yang sekarang.",
+        "angka_pesan": [
+          {
+            "teks": "Januari 2025",
+            "fact_id": "susp-2025-01-21"
+          }
+        ],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Keliru, tidak ada penghentian saham di awal tahun itu.",
+          "b": "Betul, penghentian [[susp-2025-01-21|Januari 2025]] beralasan kenaikan harga kumulatif.",
+          "c": "Betul, penghentian [[susp-2025-01-21|Januari 2025]] beralasan keraguan kelangsungan usaha.",
+          "d": "Keliru, penghentian [[susp-2025-01-21|Januari 2025]] tidak mencatat alasan resmi apa pun."
+        },
+        "kunci": "c",
+        "penjelasan": "Pengumuman penghentian [[susp-2025-12-10|10 Desember 2025]] menuliskan alasan resminya: naiknya harga kumulatif yang signifikan, sebagai langkah cooling down demi melindungi investor. Sementara itu [[susp-2025-01-21|21 Januari 2025]] juga memuat penghentian perdagangan, dengan alasan resmi keraguan atas kelangsungan usaha. Dua penghentian itu memang beralasan tidak sama, jadi klaim teman soal alasan yang berbeda cocok dengan catatan. Yang tidak ada di kedua pengumuman cuma tanggal kapan perdagangannya dibuka lagi. Salah-kaprah yang umum: orang menyangka satu saham cuma bisa kena penghentian sekali dalam setahun, padahal di sini tercatat dua kali dengan alasan yang tidak sama."
+      },
+      {
+        "nama": "Sari",
+        "jam": "19.32",
+        "pesan": "Gw udah hafal polanya, dari 26 November sampe 9 Desember harganya naik 58 rupiah. Itu angka pastinya.",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "naik-2025-11-26-2025-12-09"
+          },
+          {
+            "teks": "9 Desember",
+            "fact_id": "naik-2025-11-26-2025-12-09"
+          },
+          {
+            "teks": "58 rupiah",
+            "fact_id": "naik-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "naik-2025-11-26-2025-12-09",
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "hari-naik-beruntun"
+        ],
+        "kartu_penentu": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Keliru, kenaikan periode itu tidak pernah dihitung.",
+          "b": "Betul, angka itu kenaikan sejak awal tahun, bukan periode itu.",
+          "c": "Keliru, harga dua tanggal itu tidak tercatat di mana pun.",
+          "d": "Betul, kenaikan periode itu memang [[naik-2025-11-26-2025-12-09|Rp58]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Data bursa memuat [[harga-2025-11-26|penutupan 26 November]] dan [[harga-2025-12-09|penutupan 9 Desember]], dan kartu penentu menghitung selisih keduanya: [[naik-2025-11-26-2025-12-09|Rp58]]. Kartu lain mencatat harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dan kenaikan itu memang diukur dari dua tanggal tersebut, bukan dari awal tahun. Jadi angka yang diucapkan teman sama dengan yang tercatat, dan pilihan yang bilang angka ini tidak dihitung atau tidak tercatat tidak cocok dengan dokumen. Salah-kaprah yang umum: orang merasa angka kenaikan harus dihitung sendiri dari daftar harga, padahal sudah tersedia satu angka jadi."
+      },
+      {
+        "nama": "Nia",
+        "jam": "22.14",
+        "pesan": "Kayaknya hasil putusan rapat pemegang saham 25 September 2025 ada di catatan resmi ya?",
+        "angka_pesan": [
+          {
+            "teks": "25 September 2025",
+            "fact_id": "rups-2025-09-25"
+          }
+        ],
+        "kartu": [
+          "rups-2025-09-25",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "rups-2025-09-25"
+        ],
+        "pilihan": {
+          "a": "Betul, hasil putusannya tercatat di dokumen.",
+          "b": "Betul, hasil putusannya ada di catatan resmi.",
+          "c": "Keliru, rapat itu tidak dijadwalkan.",
+          "d": "Keliru, hasil putusannya tidak tercatat di dokumen."
+        },
+        "kunci": "d",
+        "penjelasan": "Catatan resmi hanya menulis bahwa rapat pemegang saham dijadwalkan [[rups-2025-09-25|25 September 2025]]. Di bagian yang sama disebut isi keputusan rapatnya tidak tercatat, jadi tidak ada bahan untuk memastikan hasil putusannya. Tidak ada pula keterangan yang mengaitkan rapat itu dengan penghentian perdagangan hari ini. Karena yang tercatat cuma jadwal, anggapan bahwa hasil putusannya sudah ada di catatan resmi tidak cocok dengan dokumen. Salah-kaprah yang umum: orang mengira rapat pemegang saham yang sudah dijadwalkan pasti meninggalkan catatan hasil, padahal di sini justru tidak dicatat."
+      }
+    ]
+  }
+}
