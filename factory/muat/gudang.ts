@@ -617,6 +617,8 @@ function serapKeuanganKe(data: DataEmiten, akar: Record<string, unknown>): void 
       liabilitas: angka(b['total_liabilities']),
       kas: angka(b['cash_and_equivalents']),
       aset_lancar: angka(b['current_assets']),
+      laba_sebelum_pajak: angka(b['earnings_before_tax']),
+      pajak: angka(b['tax']),
     };
     data.keuangan_tahunan.push(baris);
   }

@@ -216,6 +216,8 @@ describe('muatGudang — penormalan dan pembuangan rangkap', () => {
           liabilitas: null,
           kas: null,
           aset_lancar: null,
+          laba_sebelum_pajak: null,
+          pajak: null,
         },
         {
           tahun: 2025,
@@ -230,6 +232,8 @@ describe('muatGudang — penormalan dan pembuangan rangkap', () => {
           liabilitas: null,
           kas: null,
           aset_lancar: null,
+          laba_sebelum_pajak: null,
+          pajak: null,
         },
       ]);
     });

@@ -636,6 +636,23 @@ export function bacaAngkaRupiah(teks: string): AngkaRupiah[] {
 const JANGKAR_LABA = /net profit of\s+$/i;
 
 /**
+ * Laba sesudah pajak = laba sebelum pajak − pajak, dari baris yang sama (M4b D-4).
+ *
+ * Ukuran laba kedua untuk R23. `earnings` adalah laba yang diatribusikan ke
+ * pemilik entitas induk; keputusan RUPS kadang menyebut laba tahun berjalan
+ * seluruh kelompok usaha, yang sama dengan laba sebelum pajak dikurangi beban
+ * pajak (ASLC 2025: 55.457.688.905 − 10.457.677.260 = 45.000.011.645, tepat
+ * angka RUPS-nya). Pajak negatif adalah manfaat pajak dan menambah laba.
+ * `null` bila salah satu medannya kosong.
+ */
+export function labaSesudahPajak(k: KeuanganTahunan): number | null {
+  const sebelum = k.laba_sebelum_pajak;
+  const pajak = k.pajak;
+  if (typeof sebelum !== 'number' || typeof pajak !== 'number') return null;
+  return sebelum - pajak;
+}
+
+/**
  * R23 — laba di keputusan RUPS berbeda dari laba di laporan keuangan.
  *
  * Tahun bukunya adalah tahun RUPS dikurangi satu: RUPS tahunan mengesahkan
@@ -656,6 +673,13 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
     konteks.data.keuangan_tahunan
       .filter((k) => k.laba !== null)
       .map((k) => [k.tahun, k.laba as number]),
+  );
+  // M4b D-4: ukuran laba kedua, laba sebelum pajak − pajak dari baris yang sama.
+  const sesudahPajak = new Map(
+    konteks.data.keuangan_tahunan.flatMap((k) => {
+      const nilai = labaSesudahPajak(k);
+      return nilai === null ? [] : [[k.tahun, nilai] as const];
+    }),
   );
   const temuan: Temuan[] = [];
   let diperiksa = 0;
@@ -693,9 +717,16 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
       }
       const dariRups = Math.round(a.milli / 1000);
       if (dariRups === Math.round(menurutKeuangan)) continue;
+      const kedua = sesudahPajak.get(tahunBuku);
+      if (kedua !== undefined && dariRups === Math.round(kedua)) continue;
 
       merah += 1;
       const selisih = Math.abs(dariRups - Math.round(menurutKeuangan));
+      const kalimatKedua =
+        kedua === undefined
+          ? ''
+          : `Laba sebelum pajak dikurangi pajak di laporan yang sama, Rp${angka(Math.round(kedua))}, ` +
+            'juga tidak sama dengan angka RUPS. ';
       temuan.push({
         temuan_id: `R23-${konteks.simbol}-${r.tanggal}`,
         aturan: 'R23',
@@ -703,7 +734,7 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
           `Laba bersih tahun buku ${String(tahunBuku)} ditulis dua kali dengan angka yang berbeda. ` +
           `Keputusan RUPS ${konteks.simbol} pada ${r.tanggal} menyebut Rp${angka(dariRups)}; ` +
           `laporan keuangan menyebut Rp${angka(Math.round(menurutKeuangan))}. Selisihnya ` +
-          `Rp${angka(selisih)}. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa ` +
+          `Rp${angka(selisih)}. ${kalimatKedua}Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa ` +
           `menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok ` +
           `usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia ` +
           `diambil.`,
@@ -711,6 +742,9 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
           { label: 'laba menurut keputusan RUPS', nilai: dariRups, satuan: 'rupiah' },
           { label: 'laba menurut laporan keuangan', nilai: Math.round(menurutKeuangan), satuan: 'rupiah' },
           { label: 'selisih', nilai: selisih, satuan: 'rupiah' },
+          ...(kedua === undefined
+            ? []
+            : [{ label: 'laba sebelum pajak dikurangi pajak', nilai: Math.round(kedua), satuan: 'rupiah' }]),
         ],
         fakta_terkait: [],
         rujukan: [`RUPS ${r.tanggal}`, `tahun buku ${String(tahunBuku)}`],

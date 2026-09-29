@@ -21,6 +21,7 @@ import {
   sasaranJudul,
 } from './aturan-audit.ts';
 import { harga, konteksGudang, laporan } from './contoh.ts';
+import { labaSesudahPajak, r23LabaBedaEndpoint } from './aturan-keuangan.ts';
 import { keparahanTemuan } from '../skema/tipe.ts';
 import type { BarisHarga, KeuanganTahunan, Laporan } from './tipe.ts';
 import { konteksEmiten } from './konteks.ts';
@@ -353,5 +354,68 @@ describe.runIf(MANIFEST_ADA)('R37 atas gudang audit (372 berkas manifest, sha di
     }
     expect(diperiksa).toBe(363);
     expect(merah.sort()).toEqual(['R37-ABMM-2023', 'R37-ARCI-2023', 'R37-HITS-2025']);
+  });
+});
+
+/*
+ * R23 (M4b D-4) — laba di keputusan RUPS juga diadu dengan laba sebelum pajak
+ * dikurangi pajak. Bug terbukti uji ulang M4a U26: keputusan RUPS ASLC menyebut
+ * Rp45.000.011.645 = earnings_before_tax − tax di laporan keuangan yang sama,
+ * tepat sampai rupiah, tetapi R23 hanya mengadunya dengan `earnings`
+ * (Rp42.078.526.731, laba yang diatribusikan ke induk) dan menolak kartunya.
+ */
+describe('R23 — laba sesudah pajak sebagai ukuran laba kedua', () => {
+  // ASLC-m4a-overview-financials.json, tahun buku 2025.
+  const ASLC_2025 = keuangan({
+    tahun: 2025,
+    laba: 42_078_526_731,
+    laba_sebelum_pajak: 55_457_688_905,
+    pajak: 10_457_677_260,
+  });
+  // ASLC-m4a-corpactions.json, agm 2026-05-19, kalimat pertama agm_result.
+  const RUPS_ASLC = {
+    tanggal: '2026-05-19',
+    ringkasan:
+      'Agenda #1: The meeting approved the 2025 Annual Report and Financial Statements, reporting a net ' +
+      'profit of Rp45,000,011,645. It allocated Rp12.69 billion for cash dividends at Rp1 per share and ' +
+      'Rp500 million for general reserves.',
+  };
+
+  it('labaSesudahPajak = laba sebelum pajak − pajak; kosong bila salah satunya kosong', () => {
+    expect(labaSesudahPajak(ASLC_2025)).toBe(45_000_011_645);
+    expect(labaSesudahPajak(keuangan({ tahun: 2025, laba_sebelum_pajak: 100, pajak: null }))).toBeNull();
+    expect(labaSesudahPajak(keuangan({ tahun: 2025 }))).toBeNull();
+    // Pajak negatif (manfaat pajak) menambah laba: BSIM 2023 73.578 − (−2.218) = 75.796 miliar.
+    expect(
+      labaSesudahPajak(keuangan({ tahun: 2023, laba_sebelum_pajak: 73_578_000_000, pajak: -2_218_000_000 })),
+    ).toBe(75_796_000_000);
+  });
+
+  it('ASLC: angka RUPS sama dengan laba sebelum pajak − pajak → tidak ditolak', () => {
+    const h = r23LabaBedaEndpoint(
+      konteksGudang({ simbol: 'ASLC', rups: [RUPS_ASLC], keuangan_tahunan: [ASLC_2025] }),
+    );
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0, hijau: 1 });
+    expect(h.temuan).toEqual([]);
+  });
+
+  it('angka RUPS yang tidak sama dengan kedua ukuran tetap ditolak, dan temuannya menyebut keduanya', () => {
+    const lain = { ...RUPS_ASLC, ringkasan: RUPS_ASLC.ringkasan.replace('45,000,011,645', '44,000,000,000') };
+    const h = r23LabaBedaEndpoint(konteksGudang({ simbol: 'ASLC', rups: [lain], keuangan_tahunan: [ASLC_2025] }));
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.ringkasan).toContain('Rp42.078.526.731');
+    expect(h.temuan[0]?.ringkasan).toContain('Rp45.000.011.645');
+    expect(h.temuan[0]?.angka.map((a) => a.label)).toContain('laba sebelum pajak dikurangi pajak');
+  });
+
+  it('tanpa medan pajak, R23 tetap seperti sebelumnya (hanya earnings)', () => {
+    const tanpaPajak = keuangan({ tahun: 2025, laba: 42_078_526_731 });
+    const h = r23LabaBedaEndpoint(konteksGudang({ simbol: 'ASLC', rups: [RUPS_ASLC], keuangan_tahunan: [tanpaPajak] }));
+    expect(h.hitungan.merah).toBe(1);
+    expect(h.temuan[0]?.angka.map((a) => a.label)).toEqual([
+      'laba menurut keputusan RUPS',
+      'laba menurut laporan keuangan',
+      'selisih',
+    ]);
   });
 });

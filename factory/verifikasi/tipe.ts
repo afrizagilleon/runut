@@ -263,6 +263,13 @@ export interface KeuanganTahunan {
   liabilitas?: number | null;
   kas?: number | null;
   aset_lancar?: number | null;
+  /**
+   * `earnings_before_tax` dan `tax` (M4b, R23): keputusan RUPS bisa menyebut
+   * laba sesudah pajak seluruh kelompok usaha, bukan `earnings` (laba induk).
+   * Opsional dengan arti yang sama seperti medan neraca di atas.
+   */
+  laba_sebelum_pajak?: number | null;
+  pajak?: number | null;
 }
 
 /** `financials.historical_eps[tahun].eps` — laba per lembar satu tahun buku. */
