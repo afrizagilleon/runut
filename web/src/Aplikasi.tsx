@@ -2121,19 +2121,27 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
         (tiga pertanyaan singkat menunggu), dan pindah halaman di tab yang sama
         akan membuang keadaannya.
       */}
-      <p className="dapur-pintu">
-        Soal di simulasi ini ditulis manusia. Agen AI kami sedang belajar menulis soal baru, dan belum ada
-        yang tayang.{' '}
+      {/*
+        Rupa sesudah kritik D-5 (butir 8): kalimatnya suara kami bergaris kiri,
+        tautannya di baris sendiri seperti pintu lipatan di atasnya, dengan
+        "↗" karena ia membuka tab baru.
+      */}
+      <div className="dapur-pintu-jejak">
+        <p className="meta">
+          Soal di simulasi ini ditulis manusia. Agen AI kami sedang belajar menulis soal baru, dan belum ada
+          yang tayang.
+        </p>
         <a
-          className="dapur-tautan"
+          className="dapur-pintu-tautan"
           href={`?${PARAM_DAPUR}`}
           target="_blank"
           rel="noopener"
+          aria-label={`${TAUTAN_DAPUR} (buka di tab baru)`}
           data-uid="dapur:jejak"
         >
-          {TAUTAN_DAPUR} ›
+          {TAUTAN_DAPUR} ↗
         </a>
-      </p>
+      </div>
     </section>
   );
 }

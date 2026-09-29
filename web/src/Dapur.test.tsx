@@ -12,6 +12,7 @@ import { describe, expect, it } from 'vitest';
 import Dapur from './Dapur.tsx';
 import mentah from './dapur-data.json';
 import {
+  contohPenolakan,
   dolar,
   menit,
   mintaDapur,
@@ -76,7 +77,7 @@ describe('M3.13 D-4 — dapur: hasil render', () => {
     expect(teks).toContain('Ditolak — tidak terbit');
   });
 
-  it('setiap alasan penolakan jejak tampil, huruf demi huruf', () => {
+  it('dua contoh terpendek tampil, dan setiap alasan penolakan jejak tampil di lipatan, huruf demi huruf', () => {
     for (const j of DATA.jalan) {
       for (const p of j.penolakan) for (const a of p.alasan) expect(teks).toContain(a.replace(/\s+/g, ' '));
     }
@@ -87,7 +88,8 @@ describe('M3.13 D-4 — dapur: hasil render', () => {
   it('nama model dari jejak tampil; biaya hanya untuk jalan berbiaya nyata', () => {
     for (const j of DATA.jalan) for (const p of j.peran) if (p.model !== null) expect(teks).toContain(p.model);
     expect(teks).toContain('US$1,84 biaya nyata');
-    expect(teks.match(/biaya nyata/g)).toHaveLength(1);
+    // M2d-4 mencatat biaya dengan tabel tebakan: dikatakan terang, bukan disembunyikan (kritik D-5 butir 10).
+    expect(teks.match(/biaya nyata tidak tercatat/g)).toHaveLength(1);
   });
 
   it('tanpa angka rusak dan tanpa kata terlarang produk', () => {
@@ -99,5 +101,30 @@ describe('M3.13 D-4 — dapur: hasil render', () => {
   it('di luar kutipan jejak, satuan permainan disebut "simulasi", bukan "kasus"', () => {
     const tanpaKutipan = teks.replace(/“[^”]*”/g, ' ');
     expect(tanpaKutipan).not.toMatch(/\bkasus\b/i);
+  });
+});
+
+describe('M3.13 D-5 — sesudah kritik desain', () => {
+  it('judul jalan tidak berbentuk judul simulasi; contoh penolakan = dua terpendek', () => {
+    expect(teks).toContain('Jalan agen: data Perusahaan U');
+    expect(teks).toContain('Jalan agen: data Perusahaan T');
+    for (const j of DATA.jalan) {
+      const c = contohPenolakan(j);
+      expect(c).toHaveLength(2);
+      const panjang = j.penolakan.map((p) => p.alasan.join(' ').length).sort((a, b) => a - b);
+      expect(c.map((p) => p.alasan.join(' ').length).sort((a, b) => a - b)).toEqual(panjang.slice(0, 2));
+    }
+  });
+
+  it('bagian peran menyebut lima peran sebagai satu penulis + empat penjaga', () => {
+    expect(teks).toContain('Lima peran di tiap draf: satu menulis, empat menjaga');
+  });
+});
+
+describe('M3.13 D-5 — tanpa bagian ganda', () => {
+  it('judul halaman, bagian peran, dan tiap jalan masing-masing tampil tepat sekali', () => {
+    expect(teks.match(/Lima peran di tiap draf/g)).toHaveLength(1);
+    expect(html.match(/<h1/g)).toHaveLength(1);
+    for (const j of DATA.jalan) expect(html.match(new RegExp(`id="judul-${j.id}"`, 'g'))).toHaveLength(1);
   });
 });

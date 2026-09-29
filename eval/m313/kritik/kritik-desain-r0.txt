@@ -1,0 +1,76 @@
+Kritik desain M3.13 D-5 — jawaban mentah kritikus (subagent Claude Opus baru, agen a44afd812e64bfee6, sinkron).
+Bahan: .cache/e2e/m313/sesudah-r0/*.png (360x640 dan 390x844, terang dan gelap) + docs/desain.md; alat hanya Read.
+
+KEPUTUSAN PINTU: keduanya, dengan B diturunkan bobotnya.
+- **A (terima kasih):** jadi pintu utama. Permainan sudah selesai, tautannya ada di tab yang sama, dan letaknya di bawah "Coba simulasi lain" tanpa menyaingi tombol itu. Juri yang main sampai habis pasti melihatnya.
+- **B (pembukaan):** tetap perlu, karena dua hal:
+  - Juri yang paling tertarik pada kedalaman teknis berhenti membaca di bagian "Jejak verifikasi". Bisa jadi ia tidak mengisi tiga pertanyaan, jadi tidak pernah sampai ke A.
+  - Kalimat "Soal di simulasi ini ditulis manusia" justru dibutuhkan tepat di sana. Paragraf di atasnya ("Beginilah soal ini dilahirkan … pemeriksaan otomatis") bisa dibaca seolah mesin yang menulis soalnya.
+- **Aman untuk alur main:** tombol "Lanjut: tiga pertanyaan singkat" menempel di bilah bawah, jadi tidak tergeser. Tetapi B sekarang tampil sebagai paragraf isi 17 px dengan tautan tebal, bobotnya sama dengan temuan jejak. Karena membuka tab baru di Android (pindah tab dengan satu tangan itu repot), rupanya harus lebih pelan dan isyaratnya harus jujur (lihat temuan 8).
+
+TEMUAN:
+1. [tinggi] 05 dapur-atas: layar pertama di 360 belum memperlihatkan status apa pun. Isinya hanya pengantar, lalu judul "Tiap draf melewati lima penjaga" dan daftar peran. Status ("Draf — …" / "Ditolak — …") dan kutipan baru muncul sekitar dua layar ke bawah, padahal itulah bukti yang dicari juri. **Perbaikan:**
+   - Tambahkan satu kalimat bingkai di bawah pengantar, misalnya "Dua jalan agen: satu draf lolos semua penjaga (belum dimainkan), satu ditolak (tidak terbit)". Kedua frasa menjadi tautan gulir ke jalan masing-masing.
+   - Daftar lima peran dipindah ke bawah kedua jalan atau dilipat ("Siapa saja perannya ›"). Tiap jalan sudah punya "Siapa mengerjakan apa".
+
+2. [tinggi] 05/06 dapur: hitungan perannya bertabrakan.
+   - Judulnya "lima penjaga", tetapi daftarnya memuat Penulis, yang menulis, bukan menjaga.
+   - Catatan meta di bawahnya menyebut peran keenam (perencana), dan perencana itu muncul pertama di "Siapa mengerjakan apa".
+   - Juri yang teliti akan menghitung. **Perbaikan kalimat bingkai:** "Lima peran di tiap draf: satu menulis, empat menjaga", lalu catatan perencana tetap sebagai meta.
+
+3. [tinggi] 07 dapur-penuh-terbuka: dengan semua lipatan terbuka, halamannya kira-kira 28.000 px di 360 (sekitar 44 layar). Di sepertiga bawah kedua tangkapan (terang dan gelap), bentuk yang mirip "Tiap draf melewati lima penjaga", daftar peran, lalu "Perusahaan U" dan kotak status tampak muncul lagi. Resolusi tangkapan terlalu kecil untuk membacanya, jadi **periksa dulu apakah bagian itu benar tampil dua kali**, bukan artefak tangkapan. Bila benar, buang duplikatnya.
+   - **Perbaikan:** "Lihat semua n penolakan" dibuka berkelompok per putaran. Tiap kutipan dipotong tampilannya dengan `line-clamp: 4` dan diberi "baca utuh ›" per kutipan. Isinya tidak disunting, hanya dilipat.
+
+4. [sedang] 06 dapur, kotak kutipan jejak: kutipannya berlatar isi (panel abu, di gelap panel terangkat) dan panjang 10–15 baris. Ia terbaca sebagai kartu di dalam aliran dan keluar dari bahasa kertas. **Perbaikan CSS:**
+   - Latar dibuang. Pakai garis kiri 2 px `--garis-tegas` dengan bantalan kiri 12 px.
+   - Label "putaran 1 · Pemeriksa" sebagai meta di atas kutipan.
+   - Kutipan 14 px berwarna `--tinta` (bukan redup), jarak baris 1,45.
+   - Per jalan, tampilkan paling banyak dua kutipan terpendek; sisanya masuk "Lihat semua".
+
+5. [sedang] 06 dapur, kotak status "Draf — lolos semua penjaga, belum dimainkan" dan "Ditolak — tidak terbit" (serta kotak "Draf yang lolos"): bingkainya penuh dengan tepi kiri lebih tebal, jadi mirip kotak callout. Itu sama dengan "strip warna di tepi kiri kartu" yang dilarang. **Perbaikan:**
+   - Status ditaruh langsung di bawah judul jalan sebagai *isi* 600, tanpa kotak, atau dalam kotak tepi 1 px `--garis-tegas` bersudut 2 px tanpa aksen kiri.
+   - Jangan meminjam `--cocok`/`--belum-cocok` untuk membedakan keduanya. Kedua warna itu bahasa umpan balik permainan, dan kata pertama ("Draf" / "Ditolak") sudah cukup.
+
+6. [sedang] 06 dapur, judul jalan "Perusahaan U · 4 Mei 2026":
+   - Tanggalnya ambigu: tanggal jalan agen atau tanggal peristiwa?
+   - Bentuknya seperti judul simulasi. Ditambah "Lihat drafnya (berisi jawaban soal Perusahaan U)", pemain yang pernah memainkan Perusahaan U bisa mengira simulasi itu tulisan agen.
+   - **Perbaikan kalimat bingkai:** judulnya "Jalan agen 4 Mei 2026 · data Perusahaan U". Di bawah tautan draf, tambahkan meta "Draf ini tidak tayang sebagai simulasi."
+
+7. [sedang] 06 dapur, "Siapa mengerjakan apa": id model panjang terpatah di tanda hubung ("deepseek-ai/DeepSeek-V4-" / "Flash"), jadi baris peran sulit dipindai. Penulisan model juga berbeda antar jalan ("deepseek-ai/DeepSeek-V4-Flash" dan "deepseek/deepseek-v4-flash"; "zai-org/GLM-5.3" dan "z-ai/glm-5.3"). Itu isi jejak, jadi jangan diseragamkan. **Perbaikan:**
+   - Baris 1: peran tebal diikuti hitungan (*isi*).
+   - Baris 2: id model dalam mesin tik 14 px meta dengan `overflow-wrap: anywhere` (termasuk "rincian teknis").
+   - Satu kalimat bingkai: "Nama model ditulis persis seperti tercatat; penyedianya berbeda antar jalan."
+
+8. [sedang] 03 pembukaan, pintu B:
+   - "Lihat dapur agen AI kami ›" berupa tautan tebal ungu tanpa garis bawah di dalam paragraf. Padahal tautan di atasnya ("29 September", "Rp165") bergaris bawah, dan "Lihat 9 pemeriksaan dan hasilnya ›" berbentuk baris. Jadi ada tiga gaya tautan dalam satu bagian.
+   - Tanda "›" menjanjikan buka di tempat, padahal tautannya membuka tab baru.
+   - **Perbaikan:**
+     - Kalimatnya dijadikan meta 14 px dengan garis kiri tipis (suara kami).
+     - Tautannya dipindah ke baris sendiri bergaya sama dengan "Lihat 9 pemeriksaan dan hasilnya", dengan tanda "↗" dan `aria-label` "… (buka di tab baru)".
+
+9. [sedang] 05/06 dapur, hierarki dan bagian atas:
+   - "← Main simulasinya" menempel sekitar 8 px di atas "Dapur agen".
+   - "Dapur agen", "Tiap draf …", "Perusahaan U …", dan "Perusahaan T …" semuanya *judul* 20 px, sehingga ada dua judul di layar pertama.
+   - **Perbaikan:**
+     - Tautan kembali dijadikan baris sendiri setinggi ≥ 44 px dengan jarak 16 px ke judul.
+     - "Tiap draf …" turun ke *isi* 600.
+     - Hanya judul halaman dan judul tiap jalan yang memakai *judul*. Antar jalan diberi garis dan ruang 40 px.
+
+10. [rendah] 06 dapur, rincian kecil yang melanggar desain.md:
+    - Butir daftar berbentuk bulatan, padahal lingkaran hanya untuk huruf opsi dan titik kemajuan. **Perbaikan:** `list-style: none`, jarak 12 px antar butir.
+    - Angka tebal di baris statistik ("9 putaran", "58 panggilan model"), padahal angka tebal hanya di lembar. **Perbaikan:** jadikan satu baris meta "9 putaran · 58 panggilan model · 94 menit".
+    - Kode "M2d-4" tampil di badan. **Perbaikan:** pindah ke Rincian teknis.
+    - Jalan T menyebut "US$1,84 biaya nyata", jalan U tidak. **Perbaikan:** tulis "biaya tidak tercatat" supaya tidak tampak disembunyikan.
+
+11. [rendah] 04 terima kasih: "Jawabanmu tercatat tanpa nama dan tanpa" menyisakan "akun." sendirian di baris kedua (360 terang dan gelap). **Perbaikan:** `text-wrap: balance` untuk semua teks rata tengah di layar ini.
+
+12. [rendah] 01/02 soal 1: tidak ada masalah rupa yang berarti.
+    - Judul dua baris rapi di 360 dan 390, dan jaraknya ke opsi a sama di terang dan gelap.
+    - Patahannya berbeda antara 360 ("…omongan / Bayu betul atau keliru?") dan 390 ("…omongan Bayu / betul atau keliru?"). Keduanya terbaca wajar.
+    - Jangan memaksa patahan sesudah koma: "omongan Bayu betul atau keliru?" hampir pasti tidak muat satu baris di 360, jadi judulnya akan menjadi tiga baris.
+
+YANG SUDAH BAIK:
+- Kalimat pertama dapur ("Simulasi yang kamu mainkan di sini ditulis manusia … belum ada satu pun draf agen yang dimainkan orang") menutup salah baca "simulasi ini tulisan AI" sejak awal. Catatan meta "… tanpa disunting" menjelaskan asal kutipan dengan jujur.
+- Kedua status jujur dan spesifik ("belum dimainkan", "tidak terbit"). Kutipan penolakan diberi label putaran dan peran, jadi juri bisa melihat penjaga benar-benar menolak.
+- Pintu A diam di tempat yang tepat: di bawah tombol sekunder, tidak menyaingi "Coba simulasi lain", dan jauh dari kaki. Di gelap, kalender tetap kertas terang sesuai D-1.
+- Mode gelap dapur konsisten dengan palet "kertas di meja pada malam hari": tidak ada biru-dongker, `--stempel` lavender terbaca, dan tidak ada panel yang silau.

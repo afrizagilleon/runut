@@ -144,9 +144,27 @@ export function satuDesimal(nilai: number): string {
   return nilai.toFixed(1).replace('.', ',');
 }
 
-/** Judul satu jalan: nama samaran + tanggal simulasinya. */
+/**
+ * Judul satu jalan (kritik D-5 butir 6): "Jalan agen: data Perusahaan U" —
+ * bukan "Perusahaan U · 4 Mei 2026", yang terbaca seperti judul simulasi
+ * yang dimainkan. Tanggalnya tanggal DATA, dieja terpisah (`tanggalData`).
+ */
 export function judulJalan(jalan: JalanDapur): string {
-  return `${jalan.simulasi.nama_samaran} · ${tanggalSingkat(jalan.simulasi.tanggal_t)}`;
+  return `Jalan agen: data ${jalan.simulasi.nama_samaran}`;
+}
+
+export function tanggalData(jalan: JalanDapur): string {
+  return tanggalSingkat(jalan.simulasi.tanggal_t);
+}
+
+/** Satu baris angka jalan (meta): putaran · panggilan · menit · biaya. */
+export function barisAngka(jalan: JalanDapur): string {
+  return [
+    `${String(jalan.putaran)} putaran`,
+    `${String(jalan.panggilan)} panggilan model`,
+    `${String(menit(jalan.durasi_ms))} menit`,
+    jalan.biaya_usd === null ? 'biaya nyata tidak tercatat' : `${dolar(jalan.biaya_usd)} biaya nyata`,
+  ].join(' · ');
 }
 
 /** Keterangan satu penolakan: "putaran 3 · omongan 2 · Pemeriksa". */
@@ -157,8 +175,21 @@ export function kepalaPenolakan(p: PenolakanDapur): string {
   return bagian.join(' · ');
 }
 
-/** Berapa penolakan yang tampil sebelum lipatan "Lihat semua". */
-export const PENOLAKAN_TERLIHAT = 3;
+/** Berapa contoh penolakan yang tampil sebelum lipatan "Lihat semua" (kritik D-5 butir 4). */
+export const PENOLAKAN_TERLIHAT = 2;
+
+/**
+ * Contoh penolakan yang tampil tanpa dibuka: yang TERPENDEK (kritik D-5 butir
+ * 4), urut menurut nomor langkahnya. Isinya tidak dipotong; yang panjang tetap
+ * utuh di lipatan "Lihat semua".
+ */
+export function contohPenolakan(jalan: JalanDapur): PenolakanDapur[] {
+  const panjang = (p: PenolakanDapur): number => p.alasan.join(' ').length;
+  return [...jalan.penolakan]
+    .sort((a, b) => panjang(a) - panjang(b) || a.no - b.no)
+    .slice(0, PENOLAKAN_TERLIHAT)
+    .sort((a, b) => a.no - b.no);
+}
 
 /** Kalimat pintu masuk di layar lain (M3.13 D-4): pendek, tidak mengganggu alur main. */
 export const TAUTAN_DAPUR = 'Lihat dapur agen AI kami';

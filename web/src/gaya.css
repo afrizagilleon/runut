@@ -629,6 +629,8 @@ summary:focus-visible,
 /* Kalimat penutup di bawah judul terima kasih, rata tengah seperti layar pertama (M3.10 D-6). */
 .terima-kalimat {
   text-align: center;
+  /* Kritik M3.13 D-5 butir 11: tanpa satu kata yatim di baris kedua. */
+  text-wrap: balance;
 }
 
 /* --- layar pertama --------------------------------------------------------- */
@@ -2064,7 +2066,10 @@ textarea {
 }
 
 .dapur-balik {
-  margin: 0 0 8px;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  margin: 0 0 16px;
 }
 
 /*
@@ -2092,9 +2097,20 @@ textarea {
 
 .dapur-bagian,
 .dapur-jalan {
-  margin: 32px 0 0;
+  margin: 40px 0 0;
   padding: 24px 0 0;
   border-top: 1px solid var(--garis);
+}
+
+/* Judul bagian peran: peran *isi* 600 (kritik D-5 butir 9) — hanya judul halaman dan jalan yang *judul*. */
+.dapur-subjudul {
+  font-family: var(--baca);
+  font-stretch: normal;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: 0;
+  margin: 0 0 8px;
 }
 
 .dapur h2.judul {
@@ -2112,38 +2128,39 @@ textarea {
   margin: 20px 0 8px;
 }
 
-/* Status jujur satu jalan: suara kami, garis kiri — bukan cap, bukan lencana. */
+/*
+ * Status jujur satu jalan: *isi* 600 langsung di bawah judul, tanpa kotak,
+ * tanpa aksen warna (kritik D-5 butir 5) — kata pertamanya ("Draf" /
+ * "Ditolak") yang membedakan, bukan warna umpan balik permainan.
+ */
 .dapur-status {
   margin: 0 0 8px;
-  padding: 0 0 0 12px;
-  border-left: 2px solid var(--stempel);
   font-weight: 600;
-}
-
-.dapur-status-ditolak {
-  border-left-color: var(--tinta-redup);
 }
 
 .dapur-angka {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px 16px;
+  margin: 8px 0 12px;
 }
 
-.dapur-angka strong {
-  font-weight: 600;
-}
-
+/* Daftar tanpa bulatan (kritik D-5 butir 10): lingkaran hanya untuk huruf opsi dan titik kemajuan. */
 .dapur-daftar {
+  list-style: none;
   margin: 0 0 12px;
-  padding: 0 0 0 20px;
+  padding: 0;
 }
 
 .dapur-daftar > li {
-  margin: 0 0 8px;
+  margin: 0 0 12px;
+}
+
+.dapur-ringkas {
+  margin: 12px 0;
+}
+
+/* Nama model di baris sendiri; id panjang boleh patah di mana saja (kritik D-5 butir 7). */
+.dapur-model {
+  display: block;
+  overflow-wrap: anywhere;
 }
 
 .dapur-daftar strong {
@@ -2172,7 +2189,8 @@ textarea {
 .dapur-kutipan {
   margin: 0 0 4px;
   font-size: 14px;
-  line-height: 1.35;
+  line-height: 1.45;
+  color: var(--tinta);
   overflow-wrap: anywhere;
 }
 
@@ -2208,7 +2226,36 @@ textarea {
   margin: 0 0 4px;
 }
 
-/* Pintu masuk di layar permainan (M3.13 D-4). */
+/* Pintu masuk di layar terima kasih (M3.13 D-4, pintu A). */
 .dapur-pintu {
   margin: 16px 0 0;
+}
+
+/*
+ * Pintu B di bagian jejak verifikasi (kritik D-5 butir 8): suara kami (meta,
+ * garis kiri tipis), tautannya di baris sendiri dengan rupa pintu lipatan
+ * `.jejak-rinci > summary` (500 14 px --stempel, >= 44 px), dan "↗" karena ia
+ * membuka tab baru — bukan "›", yang di produk ini berarti terbuka di tempat.
+ */
+.dapur-pintu-jejak {
+  margin: 16px 0 0;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--garis-tegas);
+}
+
+.dapur-pintu-tautan {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--stempel);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dapur-pintu-tautan:active {
+  background: var(--garis);
 }

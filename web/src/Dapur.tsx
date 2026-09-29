@@ -19,15 +19,15 @@ import { teksPolos } from '../../factory/skema/rujukan.ts';
 import mentah from './dapur-data.json';
 import { angkaId } from './angka.ts';
 import {
-  PENOLAKAN_TERLIHAT,
-  dolar,
+  barisAngka,
+  contohPenolakan,
   judulJalan,
   kepalaPenolakan,
-  menit,
   namaPeran,
   ringkasUjiLuar,
   satuDesimal,
   statusJalan,
+  tanggalData,
   type DataDapur,
   type JalanDapur,
   type PenolakanDapur,
@@ -110,7 +110,7 @@ function Draf({ jalan }: { jalan: JalanDapur }): JSX.Element | null {
           </>
         )}
       </p>
-      <p>Belum ada yang memainkannya: draf ini tidak dipasang ke simulasi.</p>
+      <p>Draf ini tidak tayang sebagai simulasi; belum ada yang memainkannya.</p>
       <details className="jejak-rinci dapur-lipat" data-uid={`dapur:draf-${jalan.id}`}>
         <summary>Lihat drafnya (berisi jawaban soal {jalan.simulasi.nama_samaran})</summary>
         <ol className="dapur-draf">
@@ -144,7 +144,7 @@ function Draf({ jalan }: { jalan: JalanDapur }): JSX.Element | null {
 
 function Jalan({ jalan }: { jalan: JalanDapur }): JSX.Element {
   const status = statusJalan(jalan);
-  const awal = jalan.penolakan.slice(0, PENOLAKAN_TERLIHAT);
+  const contoh = contohPenolakan(jalan);
   return (
     <section className="dapur-jalan" aria-labelledby={`judul-${jalan.id}`} data-uid={`dapur:${jalan.id}`}>
       <h2 id={`judul-${jalan.id}`} className="judul">
@@ -152,25 +152,9 @@ function Jalan({ jalan }: { jalan: JalanDapur }): JSX.Element {
       </h2>
       <p className={`dapur-status dapur-status-${status.jenis}`}>{status.label}</p>
       <p className="meta">
-        {jalan.milestone} · peristiwa di paket fakta: “{jalan.simulasi.peristiwa}”
+        Tanggal data {tanggalData(jalan)}. Peristiwa di paket fakta: “{jalan.simulasi.peristiwa}”
       </p>
-
-      <ul className="dapur-angka">
-        <li>
-          <strong>{angkaId(jalan.putaran)}</strong> putaran
-        </li>
-        <li>
-          <strong>{angkaId(jalan.panggilan)}</strong> panggilan model
-        </li>
-        <li>
-          <strong>{angkaId(menit(jalan.durasi_ms))}</strong> menit
-        </li>
-        {jalan.biaya_usd !== null && (
-          <li>
-            <strong>{dolar(jalan.biaya_usd)}</strong> biaya nyata
-          </li>
-        )}
-      </ul>
+      <p className="meta dapur-angka">{barisAngka(jalan)}</p>
       {jalan.berhenti !== null && <p>Berhenti karena: “{jalan.berhenti}”</p>}
 
       <h3>Sebelum menulis: datanya diperiksa</h3>
@@ -191,27 +175,30 @@ function Jalan({ jalan }: { jalan: JalanDapur }): JSX.Element {
       <ul className="dapur-daftar">
         {jalan.peran.map((p) => (
           <li key={p.peran}>
-            <strong>{namaPeran(p.peran)}</strong> · {p.model ?? 'kode'} · {kerjaPeran(p)}
+            <strong>{namaPeran(p.peran)}</strong> {kerjaPeran(p)}
+            <span className="meta dapur-model">{p.model ?? 'kode, bukan model'}</span>
           </li>
         ))}
       </ul>
+      <p className="meta">Nama model ditulis persis seperti tercatat di jejak; kedua jalan memakai penyedia berbeda.</p>
 
       <h3>Alasan penolakan, persis seperti di jejak</h3>
+      <p className="meta">
+        {angkaId(contoh.length)} contoh terpendek dari {angkaId(jalan.penolakan.length)} penolakan:
+      </p>
       <ol className="dapur-tolak">
-        {awal.map((p) => (
+        {contoh.map((p) => (
           <Penolakan key={p.no} p={p} />
         ))}
       </ol>
-      {jalan.penolakan.length > awal.length && (
-        <details className="jejak-rinci dapur-lipat" data-uid={`dapur:tolak-${jalan.id}`}>
-          <summary>Lihat semua {angkaId(jalan.penolakan.length)} penolakan</summary>
-          <ol className="dapur-tolak">
-            {jalan.penolakan.slice(awal.length).map((p) => (
-              <Penolakan key={p.no} p={p} />
-            ))}
-          </ol>
-        </details>
-      )}
+      <details className="jejak-rinci dapur-lipat" data-uid={`dapur:tolak-${jalan.id}`}>
+        <summary>Lihat semua {angkaId(jalan.penolakan.length)} penolakan, urut waktu</summary>
+        <ol className="dapur-tolak">
+          {jalan.penolakan.map((p) => (
+            <Penolakan key={p.no} p={p} />
+          ))}
+        </ol>
+      </details>
 
       <Draf jalan={jalan} />
     </section>
@@ -237,18 +224,33 @@ export default function Dapur(): JSX.Element {
           simulasi baru dari data yang sama, dan belum ada satu pun draf agen yang dimainkan orang. Di bawah
           ini jejak kerjanya, apa adanya.
         </p>
+        {/* Kritik D-5 butir 1: status kedua jalan terlihat di layar pertama, bertaut ke jalannya. */}
+        <ul className="dapur-daftar dapur-ringkas">
+          {DATA.jalan.map((j) => (
+            <li key={j.id}>
+              <a className="dapur-tautan" href={`#judul-${j.id}`} data-uid={`dapur:ke-${j.id}`}>
+                Data {j.simulasi.nama_samaran}
+              </a>
+              : {statusJalan(j).label}
+            </li>
+          ))}
+        </ul>
         <p className="meta">
           Angka, nama model, dan kalimat dalam tanda kutip dibaca dari jejak mentah lingkar agen, tanpa
           disunting.
         </p>
 
+        {DATA.jalan.map((j) => (
+          <Jalan key={j.id} jalan={j} />
+        ))}
+
         <section className="dapur-bagian" aria-labelledby="judul-peran">
-          <h2 id="judul-peran" className="judul">
-            Tiap draf melewati lima penjaga
+          <h2 id="judul-peran" className="dapur-subjudul">
+            Lima peran di tiap draf: satu menulis, empat menjaga
           </h2>
           <p>
-            Tidak satu pun bisa meloloskan draf sendirian: satu omongan dikunci hanya kalau tak satu pun
-            berkeberatan.
+            Tidak satu pun bisa meloloskan draf sendirian: satu omongan dikunci hanya kalau keempat penjaga
+            tidak berkeberatan.
           </p>
           <ul className="dapur-daftar">
             {TUGAS_PERAN.map((t) => (
@@ -263,13 +265,17 @@ export default function Dapur(): JSX.Element {
           </p>
         </section>
 
-        {DATA.jalan.map((j) => (
-          <Jalan key={j.id} jalan={j} />
-        ))}
-
         <details className="rincian-teknis">
           <summary>Rincian teknis</summary>
           <dl className="rincian">
+            {DATA.jalan.map((j) => (
+              <div key={j.id}>
+                <dt>
+                  Jalan {j.milestone} · data {j.simulasi.nama_samaran}
+                </dt>
+                <dd>{j.folder}</dd>
+              </div>
+            ))}
             <dt>Jejak mentah</dt>
             {DATA.sumber.map((s) => (
               <dd key={s}>{s}</dd>
