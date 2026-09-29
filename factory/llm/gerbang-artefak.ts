@@ -39,6 +39,23 @@ export const RASIO_KESEIMBANGAN = 1.3;
 export const SAMPEL_PILIHAN_SAJA = 2;
 export const SUHU_PILIHAN_SAJA = 1.0;
 
+/**
+ * Ambang gerbang artefak + aturan penebak yang bisa dilonggarkan kalibrasi D-6
+ * (`pengecoh-kalibrasi.ts`, `putusanAmbang`).
+ */
+export interface AmbangArtefak {
+  /** (c) rasio panjang kunci / median pengecoh paling besar. */
+  rasio: number;
+  /** (b) kata diresmikan yang menolak. */
+  maksKata: number;
+  /** (a) `null` = keduanya memilih kunci sudah menolak; angka = juga rata-rata yakin ≥ nilai itu. */
+  pilihanSajaYakin: number | null;
+  /** Penebak: K-05 penuh (true) atau hanya ≥ 2/3 benar (false). */
+  penebakYakin: boolean;
+}
+
+export const AMBANG_ARTEFAK_AWAL: AmbangArtefak = { rasio: RASIO_KESEIMBANGAN, maksKata: MAKS_KATA_RESMI, pilihanSajaYakin: null, penebakYakin: true };
+
 export interface PutusanMeresmikan {
   tolak: boolean;
   angka: string[];
@@ -47,14 +64,14 @@ export interface PutusanMeresmikan {
 }
 
 /** (b) Token isi pesan yang muncul lagi hanya di pilihan kunci. Murni. */
-export function gMeresmikan(pesan: string, pilihan: Readonly<Record<KunciOpsi, string>>, kunci: KunciOpsi): PutusanMeresmikan {
+export function gMeresmikan(pesan: string, pilihan: Readonly<Record<KunciOpsi, string>>, kunci: KunciOpsi, maksKata: number = MAKS_KATA_RESMI): PutusanMeresmikan {
   const tp = isiPilihan(pesan);
   const tk = isiPilihan(pilihan[kunci] ?? '');
   const lain = HURUF.filter((h) => h !== kunci).map((h) => isiPilihan(pilihan[h] ?? ''));
   const resmi = [...tp].filter((t) => tk.has(t) && !lain.some((l) => l.has(t)));
   const angka = resmi.filter((t) => /\d/.test(t));
   const kata = resmi.filter((t) => !/\d/.test(t));
-  const tolak = angka.length >= MAKS_ANGKA_RESMI || kata.length >= MAKS_KATA_RESMI;
+  const tolak = angka.length >= MAKS_ANGKA_RESMI || kata.length >= maksKata;
   return {
     tolak,
     angka,
@@ -77,20 +94,20 @@ export interface PutusanKeseimbangan {
 }
 
 /** (c) Panjang kunci ≤ 1,3 × median panjang pengecoh (teks tampil, termasuk label). Murni. */
-export function gKeseimbangan(pilihan: Readonly<Record<KunciOpsi, string>>, kunci: KunciOpsi): PutusanKeseimbangan {
+export function gKeseimbangan(pilihan: Readonly<Record<KunciOpsi, string>>, kunci: KunciOpsi, batas: number = RASIO_KESEIMBANGAN): PutusanKeseimbangan {
   const pj = (h: KunciOpsi): number => teksPolos(pilihan[h] ?? '').trim().length;
   const lain = HURUF.filter((h) => h !== kunci).map(pj).sort((a, b) => a - b);
   const median = lain[1] ?? 0;
   const k = pj(kunci);
   const rasio = median === 0 ? Infinity : k / median;
-  const tolak = rasio > RASIO_KESEIMBANGAN;
+  const tolak = rasio > batas;
   return {
     tolak,
     panjang_kunci: k,
     median_pengecoh: median,
     rasio: Math.round(rasio * 1000) / 1000,
     alasan: tolak
-      ? [`pilihan kunci ${String(k)} karakter, ${rasio.toFixed(2).replace('.', ',')} × median pengecoh (${String(median)}) > ${String(RASIO_KESEIMBANGAN).replace('.', ',')} — kunci yang paling panjang/rinci mudah ditebak.`]
+      ? [`pilihan kunci ${String(k)} karakter, ${rasio.toFixed(2).replace('.', ',')} × median pengecoh (${String(median)}) > ${String(batas).replace('.', ',')} — kunci yang paling panjang/rinci mudah ditebak.`]
       : [],
   };
 }
@@ -135,6 +152,8 @@ export interface PutusanPilihanSaja {
 export interface OpsiPilihanSaja extends Omit<OpsiGerbang, 'petunjuk'> {
   maxTokens: number;
   tambahanBadan?: Readonly<Record<string, unknown>>;
+  /** Kalibrasi D-6: bila diisi, tolak hanya bila keduanya memilih kunci DAN rata-rata yakin ≥ nilai ini. */
+  yakinMin?: number | null;
 }
 
 /**
@@ -160,7 +179,9 @@ export async function gPilihanSaja(o: Pick<OmonganDraf, 'pilihan' | 'kunci'>, op
     );
   }
   const kena = tebakan.filter((t) => t.kena).length;
-  const tolak = kena >= SAMPEL_PILIHAN_SAJA;
+  const yakinKena = tebakan.filter((t) => t.kena).map((t) => (t.terbaca ? (t.yakin ?? 0) : 100));
+  const rataKena = yakinKena.length === 0 ? 0 : yakinKena.reduce((a, b) => a + b, 0) / yakinKena.length;
+  const tolak = kena >= SAMPEL_PILIHAN_SAJA && (opsi.yakinMin === undefined || opsi.yakinMin === null || rataKena >= opsi.yakinMin);
   return {
     tolak,
     kena,
@@ -181,9 +202,9 @@ export interface PutusanArtefak {
 }
 
 /** (b) + (c): gerbang artefak tanpa jaringan. */
-export function gArtefak(o: Pick<OmonganDraf, 'pesan' | 'pilihan' | 'kunci'>): PutusanArtefak {
-  const meresmikan = gMeresmikan(o.pesan, o.pilihan, o.kunci);
-  const keseimbangan = gKeseimbangan(o.pilihan, o.kunci);
+export function gArtefak(o: Pick<OmonganDraf, 'pesan' | 'pilihan' | 'kunci'>, ambang: AmbangArtefak = AMBANG_ARTEFAK_AWAL): PutusanArtefak {
+  const meresmikan = gMeresmikan(o.pesan, o.pilihan, o.kunci, ambang.maksKata);
+  const keseimbangan = gKeseimbangan(o.pilihan, o.kunci, ambang.rasio);
   return { tolak: meresmikan.tolak || keseimbangan.tolak, meresmikan, keseimbangan };
 }
 

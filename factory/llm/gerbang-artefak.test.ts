@@ -106,6 +106,17 @@ describe('pilihan-saja (choices-only): hanya empat pilihan, DeepSeek n = 2', () 
     expect(r.tebakan[0]?.terbaca).toBe(false);
   });
 
+  it('ambang kalibrasi: yakinMin 60 → keduanya memilih kunci tetapi rata-rata yakin 50 lolos', async () => {
+    const opsi = { putaran: 1, omongan: 1, maxTokens: 8000 };
+    const ya = async (yakin: number[]): Promise<boolean> => {
+      let i = 0;
+      const panggil = async (): Promise<JawabanModel> => ({ teks: JSON.stringify({ pilihan: 'a', yakin: yakin[i++] ?? 0, alasan: 'x' }), token_masuk: 1, token_keluar: 1, latensi_ms: 1, finish_reason: 'stop', biaya_usd: 0 });
+      return (await gPilihanSaja(o, { ...opsi, panggil, yakinMin: 60 })).tolak;
+    };
+    expect(await ya([45, 55])).toBe(false);
+    expect(await ya([60, 60])).toBe(true);
+  });
+
   it('setiap penebak percakapan baru: dua pesan, dibangun ulang tiap panggilan', async () => {
     const x = palsu(['b', 'c']);
     await gPilihanSaja(o, { putaran: 1, omongan: 1, maxTokens: 8000, panggil: x.panggil });

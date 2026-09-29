@@ -97,6 +97,14 @@ describe('perbaikan TERARAH', () => {
     expect(jenis(rekaman, 1, 2)[0]).toBe('tulis-pilihan');
   });
 
+  it('penebak (kalibrasi D-6): tolak hanya bila ≥ 2/3 benar — satu benar dengan yakin 45 lolos, dua benar ditolak', async () => {
+    expect(GENERASI_M2D7.ambang.penebakYakin).toBe(false);
+    const satu = await jalanP({ tertebak: (no, putaran, ke) => no === 1 && putaran === 1 && ke === 1 });
+    expect(satu.hasil.riwayat[0]?.omongan.find((o) => o.no === 1)?.status).toBe('lolos');
+    const dua = await jalanP({ tertebak: (no, putaran, ke) => no === 1 && putaran === 1 && ke <= 2 });
+    expect(dua.hasil.riwayat[0]?.omongan.find((o) => o.no === 1)?.status).toBe('ditolak-tebak');
+  });
+
   it('pilihan-saja memilih kunci dua kali → ditolak-artefak, keempat pilihan ditulis ulang, kritikus TIDAK dipanggil', async () => {
     const { hasil, rekaman } = await jalanP({ pilihanSajaKena: (no, putaran) => no === 3 && putaran === 1 });
     const p = hasil.riwayat[0]?.omongan.find((o) => o.no === 3) as PemeriksaanPengecoh;
@@ -104,6 +112,11 @@ describe('perbaikan TERARAH', () => {
     expect(p.rencana?.tulisPilihan).toEqual(['a', 'b', 'c', 'd']);
     expect(jenis(rekaman, 3, 1)).not.toContain('kritikus');
     expect(jenis(rekaman, 3, 1)).not.toContain('gerbang-kartu');
+  });
+
+  it('pilihan-saja (kalibrasi D-6): keduanya memilih kunci dengan rata-rata yakin < 60 → tidak ditolak', async () => {
+    const { hasil } = await jalanP({ pilihanSajaKena: (no, putaran) => no === 3 && putaran === 1, yakinPilihanSaja: 50 });
+    expect(hasil.riwayat[0]?.omongan.find((o) => o.no === 3)?.status).toBe('lolos');
   });
 
   it('kritikus tidak menjawab: versi dibawa tanpa ditulis ulang dan tanpa dihitung perbaikan', async () => {

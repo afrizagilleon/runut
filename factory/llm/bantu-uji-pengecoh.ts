@@ -25,6 +25,8 @@ export interface SkenarioP {
   /** Ganti tulisan untuk (omongan, putaran, bagian); `undefined` = TULISAN. Teks mentah = dikirim apa adanya. */
   tulis?: (no: number, putaran: number, bagian: 'pesan' | 'pilihan' | 'penjelasan', permintaan: string) => unknown;
   pilihanSajaKena?: (no: number, putaran: number, ke: number) => boolean;
+  /** Keyakinan penebak pilihan-saja yang memilih kunci (bawaan 70). */
+  yakinPilihanSaja?: number;
   kartu?: (no: number, putaran: number, kunci: KunciOpsi) => string | undefined;
   kritikus?: (no: number, putaran: number) => string | undefined;
   tertebak?: (no: number, putaran: number, ke: number) => boolean;
@@ -82,7 +84,7 @@ export function palsuP(s: SkenarioP, kunciTeks: () => string[]): { panggil: Pang
     const lain: KunciOpsi = kunci === 'a' ? 'b' : 'a';
     if (info.jenis === 'gerbang-pilihan-saja') {
       const kena = s.pilihanSajaKena?.(no, info.putaran, info.ke) ?? false;
-      return j(JSON.stringify({ pilihan: kena ? kunci : lain, yakin: 40, alasan: 'bentuknya' }));
+      return j(JSON.stringify({ pilihan: kena ? kunci : lain, yakin: kena ? (s.yakinPilihanSaja ?? 70) : 40, alasan: 'bentuknya' }));
     }
     if (info.jenis === 'gerbang-kartu') {
       return j(s.kartu?.(no, info.putaran, kunci) ?? JSON.stringify({ pilihan: kunci, kartu: [1], alasan: 'dari kartu 1', membingungkan: [] }));

@@ -54,7 +54,7 @@ describe('pondasi proyek', () => {
     // M2d-6 D-2…D-8: bukti penyedia, probe penalar, kalibrasi penebak & kritikus, lingkar TIRT, penguji eksternal, laporan.
     const M2D6 = ['penalar:bukti', 'penalar:probe', 'penalar:kalibrasi', 'penalar:kritikus', 'penalar:susun', 'penalar:penguji', 'penalar:laporan'];
     // M2d-7 D-1…D-9: probe effort "max", kalibrasi, lingkar pengecoh TIRT, penguji eksternal + putusan, laporan — satu per satu.
-    const M2D7 = ['pengecoh:probe'];
+    const M2D7 = ['pengecoh:probe', 'pengecoh:kalibrasi'];
     // M4a D-1/D-2/D-4: pengambil data Sectors di repo, manifest gudang, audit gudang — satu per satu.
     const M4A = ['sectors:ambil', 'sectors:manifest', 'audit:gudang', 'audit:paket'];
     const skrip = Object.keys(paket.scripts).sort();

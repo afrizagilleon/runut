@@ -20,7 +20,7 @@ import { bacaBank, nadaUntuk, pilihContoh, topikDariTeks, URUT_NADA_V2, type Kal
 import { bankPengecoh, kunciSudut, type KandidatPengecoh, type KunciSudut } from './bank-pengecoh.ts';
 import { PETUNJUK_PENEBAK_TAJAM, putusanAkhir, type HasilPeran, type InfoPeran, type PanggilanPenulis, type PanggilPeran, type PemeriksaanPeran, type PutaranPeran, type StatusPeran, type SuaraPenilai } from './agen-peran.ts';
 import type { DrafSimulasi, KunciOpsi, MasalahDraf, OmonganDraf } from './draf.ts';
-import { gArtefak, gPilihanSaja, type PutusanArtefak, type PutusanPilihanSaja } from './gerbang-artefak.ts';
+import { gArtefak, gPilihanSaja, type AmbangArtefak, type PutusanArtefak, type PutusanPilihanSaja } from './gerbang-artefak.ts';
 import { gerbangG, type PutusanG } from './gerbang-g.ts';
 import { gerbangGaya, type PutusanGaya } from './gerbang-gaya.ts';
 import { gerbangKartu, type PutusanKartu } from './gerbang-kartu.ts';
@@ -118,7 +118,17 @@ export interface GenerasiPengecoh {
   urutNada: readonly Nada[];
   /** Panjang daftar bank pengecoh yang ditunjukkan ke penulis. */
   maksBank: number;
+  /** Ambang gerbang artefak + aturan penebak (kalibrasi D-6). */
+  ambang: AmbangArtefak;
 }
+
+/**
+ * Ambang hasil kalibrasi D-6 (`eval/keluaran-m2d7/kalibrasi/matriks.json`,
+ * `putusanAmbang` — dites sama): gerbang baru menolak 3 dari 4 soal aman
+ * yang terukur (> 4/6), maka keempat langkah pelonggaran diambil berurutan;
+ * soal aman yang tetap ditolak ditolak oleh penebak 3/3 benar.
+ */
+export const AMBANG_KALIBRASI_M2D7: AmbangArtefak = { rasio: 1.5, maksKata: 3, pilihanSajaYakin: 60, penebakYakin: false };
 
 /**
  * Generasi M2d-7: penulis dipecah (DeepSeek), pilihan-saja DeepSeek, pembaca
@@ -144,6 +154,7 @@ export const GENERASI_M2D7: GenerasiPengecoh = {
   bank: () => bacaBank(2).filter((k) => !gPenilaian(k.teks).tolak),
   urutNada: URUT_NADA_V2,
   maksBank: 12,
+  ambang: AMBANG_KALIBRASI_M2D7,
 };
 
 /* ---------------------------------------------------------------------- */
@@ -535,7 +546,7 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
         const mirip = gMirip(no, gabung, terkunci);
         const kembar = gKembar(o.pilihan);
         ikatan = gIkatan(p.pesan as BagianPesan, p.pilihan as SetPilihan, hurufKunci, p.label, p.kunci, p.bank);
-        artefak = gArtefak(o);
+        artefak = gArtefak(o, gen.ambang);
         const kode: UmpanMentah[] = [
           ...dariG(g, o),
           ...dariGaya(gaya, o),
@@ -586,7 +597,7 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
       const isi = (): Partial<PemeriksaanPengecoh> => ({ g, gaya, artefak, ikatan, pilihan_saja: pilihanSaja, kartu, kritik: kr, tebak });
       try {
         // 3b. pilihan-saja (D-4a)
-        pilihanSaja = await gPilihanSaja(o, { ...opsiGerbang, maxTokens: gen.pilihanSaja.maxTokens, tambahanBadan: gen.pilihanSaja.tambahanBadan });
+        pilihanSaja = await gPilihanSaja(o, { ...opsiGerbang, maxTokens: gen.pilihanSaja.maxTokens, tambahanBadan: gen.pilihanSaja.tambahanBadan, yakinMin: gen.ambang.pilihanSajaYakin });
         const semuaPS = pilihanSaja.tebakan.flatMap((t) => t.panggilan);
         catat({
           putaran, jenis: 'gerbang-pilihan-saja', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.modelPilihanSaja,
@@ -662,6 +673,8 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
           ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokensKe: gen.penebak.model.map(() => gen.penebak.maxTokens),
           tambahanBadanKe: gen.penebak.model.map(() => gen.penebak.tambahanBadan), ambangPenalaranKe: gen.penebak.model.map(() => gen.penebak.ambang),
         });
+        // Kalibrasi D-6 bisa melepas klausa "yakin ≥ 40" K-05: tolak hanya bila ≥ 2/3 benar (tak terbaca = benar).
+        if (!gen.ambang.penebakYakin) tebak = { ...tebak, lolos: tebak.benar <= 1, alasan: tebak.benar <= 1 ? '' : tebak.alasan };
         suara.tebak = tebak.lolos;
         const semuaT: PanggilanGerbang[] = tebak.tebakan.flatMap((x) => x.panggilan);
         catat({
