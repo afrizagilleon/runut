@@ -159,14 +159,19 @@ function nilaiBentuk(f: FaktaPaket, bentuk: BentukKandidat, paket: PaketFakta): 
   return { teks: p, rujukan: null, penanda: penandaTeks(p, paket) };
 }
 
-/** Kunci sudut S: nilai utamanya (angka, alasan, atau peristiwa). */
+/**
+ * Kunci sudut S: nilai utamanya (angka, alasan, atau peristiwa). Untuk fakta
+ * dokumen tanpa angka (alasan/peristiwa), rujukannya = tanggal fakta itu
+ * sendiri, jadi pilihan kunci boleh memakai tanggalnya ATAU isinya.
+ */
 export function kunciSudut(paket: PaketFakta, sudut: string): KunciSudut {
   const s = paket.fakta.find((f) => f.fact_id === sudut);
   if (s === undefined) throw new Error(`Sudut ${sudut} tidak ada di paket.`);
   const bentuk = bentukUtama(s);
   const n = nilaiBentuk(s, bentuk, paket);
   if (n === null) throw new Error(`Sudut ${sudut} tidak punya nilai yang bisa dipakai.`);
-  return { fact_id: s.fact_id, bentuk, ...n, menjawab: menjawab(s) };
+  const rujukan = n.rujukan ?? nilaiBentuk(s, 'tanggal', paket)?.rujukan ?? null;
+  return { fact_id: s.fact_id, bentuk, ...n, rujukan, menjawab: menjawab(s) };
 }
 
 interface Calon {

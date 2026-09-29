@@ -35,10 +35,16 @@ export type JenisLangkah =
   | 'rencana-sudut'
   | 'gerbang-g'
   | 'kritikus'
-  | 'buang-sudut';
+  | 'buang-sudut'
+  // M2d-7 (lingkar pengecoh, `agen-pengecoh.ts`): penulis dipecah + gerbang artefak murah
+  | 'tulis-pesan'
+  | 'tulis-pilihan'
+  | 'tulis-penjelasan'
+  | 'gerbang-artefak'
+  | 'gerbang-pilihan-saja';
 /** Peran pelaku langkah (M2d-3, `factory/llm/peran.md`); jejak M2d-2 tidak memuatnya. */
 export type PeranLangkah = 'perencana' | 'penulis' | 'pemeriksa' | 'penebak' | 'pembaca-kartu' | 'kritikus';
-export type PembuatJejak = 'factory/llm/agen.ts' | 'factory/llm/agen-peran.ts';
+export type PembuatJejak = 'factory/llm/agen.ts' | 'factory/llm/agen-peran.ts' | 'factory/llm/agen-pengecoh.ts';
 export type Putusan = 'ditulis' | 'lolos' | 'tolak' | 'galat';
 
 export interface LangkahJejak {

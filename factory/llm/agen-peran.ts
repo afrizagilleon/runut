@@ -318,6 +318,11 @@ const PERAN_JENIS: Readonly<Record<InfoPanggil['jenis'], PeranModel>> = {
   'gerbang-kartu': 'pembaca-kartu',
   'gerbang-tebak': 'penebak',
   kritikus: 'kritikus',
+  // M2d-7 (`agen-pengecoh.ts`); tidak dipakai lingkar M2d-3…M2d-6.
+  'tulis-pesan': 'penulis',
+  'tulis-pilihan': 'penulis',
+  'tulis-penjelasan': 'penulis',
+  'gerbang-pilihan-saja': 'penebak',
 };
 
 /**
@@ -357,6 +362,8 @@ export type StatusPeran =
   | 'ditolak-kartu'
   | 'ditolak-tebak'
   | 'ditolak-kritikus'
+  // M2d-7 (`agen-pengecoh.ts`): gerbang artefak pilihan-saja (choices-only)
+  | 'ditolak-artefak'
   | 'kritikus-tidak-menjawab'
   | 'galat-gerbang'
   | 'lolos';
