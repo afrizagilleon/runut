@@ -28,6 +28,7 @@ import { teksPolos } from '../skema/rujukan.ts';
 import type { PesanChat } from './klien.ts';
 import type { KunciOpsi, OmonganDraf } from './draf.ts';
 import { lolosTebak } from './laporan.ts';
+import { alasanTidakSah, penalaranSah, setelanUlang } from './penjaga-penalaran.ts';
 import { uraiKeluaran, type JawabanModel, type SetelanPanggil } from './susun.ts';
 
 export const SUHU_TEBAK = 1.0;
@@ -143,6 +144,9 @@ export interface PanggilanGerbang {
   penyedia?: string | null;
   /** M2d-5: token penalaran, bila disebut respons. */
   token_penalaran?: number | null;
+  /** M2d-6 D-1: ambang penalaran peran ini dan apakah panggilan ini lolos penjaga. */
+  ambang_penalaran?: number;
+  penalaran_sah?: boolean;
 }
 
 export interface Tebakan {
@@ -154,6 +158,8 @@ export interface Tebakan {
   /** `false` = dua panggilan tidak memberi JSON sah; dihitung benar/100 (konservatif). */
   terbaca: boolean;
   panggilan: PanggilanGerbang[];
+  /** M2d-6 D-1: alasan panggilan yang ditolak penjaga penalaran (kosong/tidak ada = tidak ada). */
+  penalaran_tidak_sah?: string[];
 }
 
 export interface PutusanTebak {
@@ -179,6 +185,8 @@ export interface OpsiGerbang {
   maxTokensKe?: readonly number[];
   /** Medan badan tambahan per tebakan ke-1..3 (M2d-5: `reasoning.max_tokens` penebak GLM); `undefined` = tanpa. */
   tambahanBadanKe?: ReadonlyArray<Readonly<Record<string, unknown>> | undefined>;
+  /** M2d-6 D-1: ambang token penalaran per tebakan ke-1..3 (penebak GLM); `undefined` = tidak dijaga. */
+  ambangPenalaranKe?: ReadonlyArray<number | undefined>;
 }
 
 /** Satu panggilan gerbang yang dicatat, diulang sekali bila jawabannya tak terbaca. */
@@ -188,15 +196,24 @@ export async function panggilTerbaca<T>(
   info: InfoPanggil,
   opsi: OpsiGerbang,
   urai: (teks: string) => T | null,
-): Promise<{ hasil: T | null; panggilan: PanggilanGerbang[] }> {
+): Promise<{ hasil: T | null; panggilan: PanggilanGerbang[]; penalaran_tidak_sah: string[] }> {
   const jam = opsi.jam ?? (() => new Date());
   const panggilan: PanggilanGerbang[] = [];
+  const ambang = setelan.ambangPenalaran;
+  const tidakSah: string[] = [];
+  let kini = setelan;
   for (let ulang = 0; ulang < 2; ulang++) {
     const mulai = jam().toISOString();
     // Pesan dibangun baru untuk SETIAP panggilan: tidak ada larik yang dipakai
     // bersama antar-tebakan, jadi tidak ada riwayat yang bisa menumpuk.
-    const j = await opsi.panggil(pesan(), setelan, { ...info, ulang });
-    const hasil = urai(j.teks);
+    const j = await opsi.panggil(pesan(), { ...kini }, { ...info, ulang });
+    // M2d-6 D-1: jawaban penalar tanpa bukti berpikir tidak dibaca; ulangan melewati penyedia itu.
+    const sah = ambang === undefined || penalaranSah(j, ambang);
+    if (!sah && ambang !== undefined) {
+      tidakSah.push(alasanTidakSah(j, ambang));
+      kini = setelanUlang(kini, j);
+    }
+    const hasil = sah ? urai(j.teks) : null;
     panggilan.push({
       waktu_mulai: mulai,
       waktu_selesai: jam().toISOString(),
@@ -208,10 +225,11 @@ export async function panggilTerbaca<T>(
       teks_mentah: j.teks,
       terbaca: hasil !== null,
       ...(j.penyedia === undefined ? {} : { penyedia: j.penyedia, token_penalaran: j.token_penalaran ?? null }),
+      ...(ambang === undefined ? {} : { ambang_penalaran: ambang, penalaran_sah: sah }),
     });
-    if (hasil !== null) return { hasil, panggilan };
+    if (hasil !== null) return { hasil, panggilan, penalaran_tidak_sah: tidakSah };
   }
-  return { hasil: null, panggilan };
+  return { hasil: null, panggilan, penalaran_tidak_sah: tidakSah };
 }
 
 function ringkasTebakan(t: Tebakan[]): string {
@@ -227,21 +245,27 @@ export async function gerbangTebak(o: OmonganDraf, opsi: OpsiGerbang): Promise<P
   const soal = soalTebak(o);
   const tebakan: Tebakan[] = [];
   for (let ke = 1; ke <= JUMLAH_PENEBAK; ke++) {
-    const { hasil, panggilan } = await panggilTerbaca(
+    const ambang = opsi.ambangPenalaranKe?.[ke - 1];
+    const { hasil, panggilan, penalaran_tidak_sah } = await panggilTerbaca(
       () => pesanPenebak(soal, opsi.petunjuk),
       {
         suhu: SUHU_TEBAK,
         maxTokens: opsi.maxTokensKe?.[ke - 1] ?? opsi.maxTokens ?? MAX_TOKENS_GERBANG,
         ...(opsi.tambahanBadanKe?.[ke - 1] === undefined ? {} : { tambahanBadan: opsi.tambahanBadanKe[ke - 1] }),
+        ...(ambang === undefined ? {} : { ambangPenalaran: ambang }),
       },
       { jenis: 'gerbang-tebak', putaran: opsi.putaran, omongan: opsi.omongan, ke },
       opsi,
       uraiTebakan,
     );
+    const sahKe = ambang === undefined ? {} : { penalaran_tidak_sah };
     if (hasil === null) {
-      tebakan.push({ ke, pilihan: o.kunci, yakin: 100, alasan: '(tak terbaca)', benar: true, terbaca: false, panggilan });
+      const tidakBerpikir = ambang !== undefined && penalaran_tidak_sah.length === panggilan.length;
+      tebakan.push({
+        ke, pilihan: o.kunci, yakin: 100, alasan: tidakBerpikir ? '(tidak terbukti berpikir)' : '(tak terbaca)', benar: true, terbaca: false, panggilan, ...sahKe,
+      });
     } else {
-      tebakan.push({ ...hasil, ke, benar: hasil.pilihan === o.kunci, terbaca: true, panggilan });
+      tebakan.push({ ...hasil, ke, benar: hasil.pilihan === o.kunci, terbaca: true, panggilan, ...sahKe });
     }
   }
   const nilai = lolosTebak(

@@ -37,6 +37,12 @@ export interface OpsiChat {
    * pagu (yang memperkirakan biaya dari `maxTokens`) tidak bisa dikelabui.
    */
   tambahanBadan?: Readonly<Record<string, unknown>>;
+  /**
+   * M2d-6 D-1: nama penyedia yang dilewati untuk panggilan ini (ulangan
+   * sesudah jawaban penalar tidak sah). Diteruskan ke `pagar`, yang
+   * mengubahnya menjadi `provider.ignore`; tanpa `pagar` tidak berpengaruh.
+   */
+  abaikanPenyedia?: readonly string[];
 }
 
 /** Catatan satu percobaan HTTP, untuk ledger. Tidak memuat header maupun kunci. */
@@ -82,8 +88,9 @@ export interface KonfigKlien {
    * Pagar penyedia (M2d-5 D-1, `openrouter.ts`): objek `provider` untuk
    * model yang dipanggil. Dipasang SESUDAH `tambahanBadan`, jadi setelan peran
    * tidak bisa menimpa atau menghapusnya. Melempar = panggilan tidak dikirim.
+   * `abaikan` (M2d-6): nama penyedia dari `OpsiChat.abaikanPenyedia`.
    */
-  pagar?: (model: string) => Readonly<Record<string, unknown>>;
+  pagar?: (model: string, abaikan?: readonly string[]) => Readonly<Record<string, unknown>>;
   /** Disuntik tes. */
   fetch?: typeof fetch;
   tidur?: (ms: number) => Promise<void>;
@@ -181,7 +188,12 @@ export async function chat(
   const batasWaktu = konfig.batasWaktuMs ?? 240_000;
   const rahasia = [konfig.apiKey];
   const url = `${konfig.baseUrl.replace(/\/+$/, '')}/chat/completions`;
-  const pagar = konfig.pagar === undefined ? undefined : konfig.pagar(opsi.model);
+  const pagar =
+    konfig.pagar === undefined
+      ? undefined
+      : opsi.abaikanPenyedia === undefined || opsi.abaikanPenyedia.length === 0
+        ? konfig.pagar(opsi.model)
+        : konfig.pagar(opsi.model, opsi.abaikanPenyedia);
   const badan = JSON.stringify({
     ...(opsi.tambahanBadan ?? {}),
     model: opsi.model,

@@ -40,8 +40,9 @@ import type { OmonganDraf } from './draf.ts';
 import { kartuOmongan } from './gerbang-kartu.ts';
 import type { InfoPanggil, PanggilanGerbang, PanggilLlm } from './gerbang-tebak.ts';
 import { PaguTercapai } from './pagu.ts';
+import { alasanTidakSah, penalaranSah, setelanUlang } from './penjaga-penalaran.ts';
 import type { PaketFakta } from './paket.ts';
-import { uraiKeluaran } from './susun.ts';
+import { uraiKeluaran, type SetelanPanggil } from './susun.ts';
 import { tanggalId } from '../format.ts';
 
 export const SUHU_KRITIKUS = 0.2;
@@ -262,6 +263,11 @@ export interface PutusanKritik {
   galat: string[];
   /** M2d-4: jawaban dua pertanyaan makna wajib; `null` bila tidak diminta atau tidak menjawab. */
   cek_makna?: CekMakna | null;
+  /**
+   * M2d-6 D-1: alasan tiap percobaan yang ditolak penjaga penalaran (token
+   * penalaran < ambang). Hanya ada bila ambang dipasang.
+   */
+  penalaran_tidak_sah?: string[];
 }
 
 export interface OpsiKritik {
@@ -273,8 +279,10 @@ export interface OpsiKritik {
   cekMakna?: boolean;
   /** `max_tokens`; bawaan `MAX_TOKENS_KRITIKUS`. */
   maxTokens?: number;
-  /** Medan badan tambahan (M2d-5: `reasoning.max_tokens`). */
+  /** Medan badan tambahan (M2d-5: `reasoning.max_tokens`; M2d-6: `reasoning.effort`). */
   tambahanBadan?: Readonly<Record<string, unknown>>;
+  /** M2d-6 D-1: ambang token penalaran; jawaban di bawahnya tidak sah (`penjaga-penalaran.ts`). */
+  ambangPenalaran?: number;
 }
 
 /**
@@ -287,6 +295,8 @@ export function jawabanTerpotong(j: { finish_reason: string | null; teks: string
 }
 
 export const KEBERATAN_TIDAK_MENJAWAB = 'kritikus tidak menjawab (terpotong, tak terbaca, atau galat) dua kali';
+/** M2d-6 D-1: kedua percobaan ditolak penjaga penalaran — diperlakukan seperti tidak menjawab. */
+export const KEBERATAN_TIDAK_BERPIKIR = 'kritikus tidak terbukti berpikir (token penalaran di bawah ambang) — diperlakukan seperti tidak menjawab';
 
 /**
  * Jalankan kritikus untuk satu omongan: paling banyak dua panggilan (satu
@@ -298,16 +308,20 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
   const panggilan: PanggilanGerbang[] = [];
   const galat: string[] = [];
   let terpotong = false;
+  const ambang = opsi.ambangPenalaran;
+  const tidakSah: string[] = [];
+  let setelan: SetelanPanggil = {
+    suhu: SUHU_KRITIKUS,
+    maxTokens: opsi.maxTokens ?? MAX_TOKENS_KRITIKUS,
+    ...(opsi.tambahanBadan === undefined ? {} : { tambahanBadan: opsi.tambahanBadan }),
+    ...(ambang === undefined ? {} : { ambangPenalaran: ambang }),
+  };
   for (let ulang = 0; ulang < 2; ulang++) {
     const info: InfoPanggil = { jenis: 'kritikus', putaran: opsi.putaran, omongan: opsi.omongan, ke: 1, ulang };
     const mulai = jam().toISOString();
     let j;
     try {
-      j = await opsi.panggil(
-        pesanKritikus(o, paket, k, opsi.cekMakna === true),
-        { suhu: SUHU_KRITIKUS, maxTokens: opsi.maxTokens ?? MAX_TOKENS_KRITIKUS, ...(opsi.tambahanBadan === undefined ? {} : { tambahanBadan: opsi.tambahanBadan }) },
-        info,
-      );
+      j = await opsi.panggil(pesanKritikus(o, paket, k, opsi.cekMakna === true), { ...setelan }, info);
     } catch (e) {
       if (e instanceof PaguTercapai) throw e;
       galat.push(e instanceof Error ? `${e.name}: ${e.message}`.slice(0, 300) : 'galat tak dikenal');
@@ -317,7 +331,13 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
     // anggaran (M2d-5 D-3): keduanya dibayar dan keduanya "tidak menjawab".
     const kena = jawabanTerpotong(j);
     terpotong ||= kena;
-    let hasil = kena ? null : uraiKritik(j.teks);
+    // M2d-6 D-1: jawaban tanpa bukti berpikir tidak dibaca; ulangan melewati penyedia itu.
+    const sah = ambang === undefined || penalaranSah(j, ambang);
+    if (!sah && ambang !== undefined) {
+      tidakSah.push(alasanTidakSah(j, ambang));
+      setelan = setelanUlang(setelan, j);
+    }
+    let hasil = kena || !sah ? null : uraiKritik(j.teks);
     let cek: CekMakna | null = null;
     if (hasil !== null && opsi.cekMakna === true) {
       const u = uraiKeluaran(j.teks);
@@ -344,6 +364,7 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
       teks_mentah: j.teks,
       terbaca: hasil !== null,
       ...(j.penyedia === undefined ? {} : { penyedia: j.penyedia, token_penalaran: j.token_penalaran ?? null }),
+      ...(ambang === undefined ? {} : { ambang_penalaran: ambang, penalaran_sah: sah }),
     });
     if (hasil !== null) {
       return {
@@ -356,19 +377,22 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
         panggilan,
         galat,
         ...(opsi.cekMakna === true ? { cek_makna: cek } : {}),
+        ...(ambang === undefined ? {} : { penalaran_tidak_sah: tidakSah }),
       };
     }
   }
+  const tidakBerpikir = ambang !== undefined && tidakSah.length === 2;
   return {
     tanpa_keberatan: false,
     menjawab: false,
     terpotong,
-    keberatan: [{ jenis: 'tidak-menjawab', bagian: '-', alasan: KEBERATAN_TIDAK_MENJAWAB }],
+    keberatan: [{ jenis: 'tidak-menjawab', bagian: '-', alasan: tidakBerpikir ? KEBERATAN_TIDAK_BERPIKIR : KEBERATAN_TIDAK_MENJAWAB }],
     arahan: '',
     diabaikan: [],
     panggilan,
     galat,
     ...(opsi.cekMakna === true ? { cek_makna: null } : {}),
+    ...(ambang === undefined ? {} : { penalaran_tidak_sah: tidakSah }),
   };
 }
 
@@ -376,7 +400,7 @@ export async function kritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik
 export function umpanKritik(p: PutusanKritik): string[] {
   if (p.tanpa_keberatan) return [];
   if (!p.menjawab) {
-    return [`[kritikus] ${KEBERATAN_TIDAK_MENJAWAB}; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang.`];
+    return [`[kritikus] ${p.keberatan[0]?.alasan ?? KEBERATAN_TIDAK_MENJAWAB}; versi ini diperiksa lagi di putaran berikutnya tanpa ditulis ulang.`];
   }
   return [
     ...p.keberatan.map((x) => `[kritikus: ${x.jenis}, ${x.bagian}] ${x.alasan}`),

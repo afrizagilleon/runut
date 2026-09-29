@@ -73,6 +73,17 @@ export interface EntriLedger {
    * perkiraan maksimum (bukan nol) dan ditandai di sini.
    */
   tanpa_cost?: boolean;
+  /**
+   * M2d-6 D-1/D-2: medan `reasoning` yang DIMINTA (mis. `{effort: "high"}`
+   * atau `{max_tokens: 3000}`) — supaya pelanggaran penyedia bisa dibuktikan
+   * dari ledger sendiri, bukan dari ingatan setelan.
+   */
+  penalaran_diminta?: Readonly<Record<string, unknown>> | null;
+  /** M2d-6 D-1: ambang token penalaran peran penalar dan apakah percobaan ini sah. */
+  ambang_penalaran?: number;
+  penalaran_sah?: boolean;
+  /** M2d-6 D-1: penyedia yang dilewati untuk ulangan ini (nama). */
+  penyedia_diabaikan?: string[];
 }
 
 export class PaguTercapai extends Error {
@@ -169,6 +180,13 @@ export interface OpsiPencatat {
   biayaNyata?: boolean;
 }
 
+/** Medan ledger M2d-6 yang diketahui pemanggil (bukan klien). */
+export interface TambahanLedger {
+  penalaran_diminta?: Readonly<Record<string, unknown>> | null;
+  ambang_penalaran?: number;
+  penyedia_diabaikan?: readonly string[];
+}
+
 export class PencatatBiaya {
   readonly paguUsd: number;
   readonly paguMilestone: PaguMilestone | null;
@@ -245,7 +263,7 @@ export class PencatatBiaya {
   }
 
   /** Catat satu percobaan sesudah terjadi. */
-  catat(model: string, tag: string, c: CatatanPercobaan, perkiraan: number): EntriLedger {
+  catat(model: string, tag: string, c: CatatanPercobaan, perkiraan: number, tambahan: TambahanLedger = {}): EntriLedger {
     const harga = hargaModel(model, this.harga);
     let biaya: number;
     let dasar: DasarBiaya;
@@ -282,6 +300,16 @@ export class PencatatBiaya {
       ...(this.biayaNyata || (c.penyedia ?? null) !== null
         ? { penyedia: c.penyedia ?? null, token_penalaran: c.token_penalaran ?? null, tanpa_cost: tanpaCost }
         : {}),
+      ...(tambahan.penalaran_diminta === undefined ? {} : { penalaran_diminta: tambahan.penalaran_diminta }),
+      ...(tambahan.ambang_penalaran === undefined
+        ? {}
+        : {
+            ambang_penalaran: tambahan.ambang_penalaran,
+            penalaran_sah: c.status !== null && c.status >= 200 && c.status < 300 && c.galat === null
+              ? typeof c.token_penalaran === 'number' && c.token_penalaran >= tambahan.ambang_penalaran
+              : false,
+          }),
+      ...(tambahan.penyedia_diabaikan === undefined || tambahan.penyedia_diabaikan.length === 0 ? {} : { penyedia_diabaikan: [...tambahan.penyedia_diabaikan] }),
     };
     this.entri.push(entri);
     if (this.jalur !== null) {
@@ -375,15 +403,24 @@ export async function chatBerpagu(
   pencatat: PencatatBiaya,
   opsi: OpsiChat,
   tag: string,
+  /** M2d-6: ambang penalaran peran ini (dicatat bersama bukti penalaran di ledger). */
+  jaga: { ambangPenalaran?: number } = {},
 ): Promise<HasilChat & { biaya_usd: number }> {
   let perkiraan = 0;
   let biaya = 0;
+  const r = opsi.tambahanBadan?.['reasoning'];
+  const tambahan: TambahanLedger = {
+    // Hanya bila medan `reasoning` dikirim (tidak ada = tidak diminta); entri M2d-5 tetap berbentuk sama.
+    ...(typeof r === 'object' && r !== null ? { penalaran_diminta: r as Record<string, unknown> } : {}),
+    ...(jaga.ambangPenalaran === undefined ? {} : { ambang_penalaran: jaga.ambangPenalaran }),
+    ...(opsi.abaikanPenyedia === undefined ? {} : { penyedia_diabaikan: opsi.abaikanPenyedia }),
+  };
   const hasil = await chat(klien, opsi, {
     sebelumKirim: () => {
       perkiraan = pencatat.periksa(opsi.model, opsi.pesan, opsi.maxTokens, tag);
     },
     sesudahPercobaan: (c) => {
-      biaya += pencatat.catat(opsi.model, tag, c, perkiraan).biaya_usd;
+      biaya += pencatat.catat(opsi.model, tag, c, perkiraan, tambahan).biaya_usd;
     },
   });
   return { ...hasil, biaya_usd: biaya };

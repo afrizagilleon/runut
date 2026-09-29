@@ -162,6 +162,17 @@ export interface SetelanPanggil {
   maxTokens: number;
   /** Medan tambahan badan permintaan (M2d-2: mematikan mode berpikir penyusun). M2d-1 tidak memakainya. */
   tambahanBadan?: Readonly<Record<string, unknown>>;
+  /**
+   * M2d-6 D-1: ambang token penalaran peran penalar (kritikus, penebak GLM).
+   * Jawaban dengan `token_penalaran` < ambang (atau tidak dilaporkan) tidak
+   * sah (`penjaga-penalaran.ts`). `undefined` = tidak dijaga.
+   */
+  ambangPenalaran?: number;
+  /**
+   * M2d-6 D-1: nama penyedia OpenRouter yang dilewati untuk panggilan ini
+   * (ulangan sesudah jawaban tidak sah) — menjadi `provider.ignore`.
+   */
+  abaikanPenyedia?: readonly string[];
 }
 
 export interface OpsiSusun {

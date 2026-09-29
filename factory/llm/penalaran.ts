@@ -77,3 +77,38 @@ export function setelanPenalaran(suhu: number, b: BatasPenalaran): SetelanPanggi
 export function setelanTanpaPenalaran(suhu: number, maxTokens: number = MAX_TOKENS_CADANGAN_M2D5): SetelanPanggil {
   return { suhu, maxTokens, tambahanBadan: { reasoning: { enabled: false } } };
 }
+
+/**
+ * M2d-6 D-1: GLM WAJIB berpikir. Di M2d-5 `reasoning.max_tokens` hanya BATAS
+ * atas, dan penyedia GLM di OpenRouter berpikir 0–260 token. M2d-6 meminta
+ * `reasoning.effort` untuk peran penalar GLM (kritikus, penebak GLM) dan
+ * MEMBUKTIKANNYA dari respons: `token_penalaran` < `ambang` = tidak sah
+ * (`penjaga-penalaran.ts`).
+ */
+export type UpayaPenalaran = 'high' | 'medium';
+
+export interface PenalarBerpikir {
+  /** `reasoning.effort`. */
+  effort: UpayaPenalaran;
+  /** `max_tokens` total (penalaran + jawaban). */
+  maxTokens: number;
+  /** Token penalaran minimum yang membuktikan model berpikir (dari respons). */
+  ambang: number;
+}
+
+/** Ambang minimum kritikus menurut kontrak M2d-6 D-1 (≥ 500). */
+export const AMBANG_MIN_KRITIKUS = 500;
+
+/**
+ * Setelan penalar M2d-6 (sementara; angka final dari probe T-04 —
+ * `eval/keluaran-m2d6/probe/putusan.md`).
+ */
+export const PENALAR_M2D6 = {
+  kritikus: { effort: 'high', maxTokens: 16_000, ambang: 500 },
+  penebakGlm: { effort: 'high', maxTokens: 8_000, ambang: 300 },
+} as const satisfies Record<string, PenalarBerpikir>;
+
+/** Medan badan permintaan untuk satu penalar berpikir (OpenRouter): hanya `effort`. */
+export function badanUpaya(p: PenalarBerpikir): Readonly<Record<string, unknown>> {
+  return { reasoning: { effort: p.effort } };
+}

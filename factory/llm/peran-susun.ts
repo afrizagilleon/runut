@@ -62,7 +62,7 @@ export interface KonfigSusun {
    * permintaan (`openrouter.ts`), dan biaya dari tagihan nyata (`usage.cost`).
    * Tanpa medan ini perilaku M2d-3/M2d-4 tidak berubah.
    */
-  openRouter?: { baseUrl: string; pagar: (model: string) => Readonly<Record<string, unknown>> };
+  openRouter?: { baseUrl: string; pagar: (model: string, abaikan?: readonly string[]) => Readonly<Record<string, unknown>> };
 }
 
 export const KONFIG_M2D3: KonfigSusun = {
@@ -164,8 +164,12 @@ export async function jalankanSusun(k: KonfigSusun, argumen: string[]): Promise<
         j = await chatBerpagu(
           klien,
           biaya,
-          { model: info.model, pesan, suhu: setelan.suhu, maxTokens: setelan.maxTokens, tambahanBadan: setelan.tambahanBadan },
+          {
+            model: info.model, pesan, suhu: setelan.suhu, maxTokens: setelan.maxTokens, tambahanBadan: setelan.tambahanBadan,
+            ...(setelan.abaikanPenyedia === undefined ? {} : { abaikanPenyedia: setelan.abaikanPenyedia }),
+          },
           tag,
+          setelan.ambangPenalaran === undefined ? {} : { ambangPenalaran: setelan.ambangPenalaran },
         );
       } catch (galat) {
         throw ubahGalatSaldo(galat, info.model);
@@ -173,7 +177,9 @@ export async function jalankanSusun(k: KonfigSusun, argumen: string[]): Promise<
       console.log(
         `  ${new Date().toISOString().slice(11, 19)} ${tag} [${info.peran}]: masuk ${String(j.token_masuk)} keluar ${String(j.token_keluar)} ` +
           `${String(j.finish_reason)} US$${j.biaya_usd.toFixed(6)} ${String(Math.round(j.latensi_ms / 100) / 10)} s` +
-          `${j.penyedia === undefined ? '' : ` ${String(j.penyedia)}`}; ` +
+          `${j.penyedia === undefined ? '' : ` ${String(j.penyedia)}`}` +
+          `${setelan.ambangPenalaran === undefined ? '' : ` penalaran ${String(j.token_penalaran)}/${String(setelan.ambangPenalaran)}`}` +
+          `${setelan.abaikanPenyedia === undefined ? '' : ` (lewati ${setelan.abaikanPenyedia.join(', ')})`}; ` +
           `milestone US$${biaya.totalMilestone().toFixed(6)}`,
       );
       return j;

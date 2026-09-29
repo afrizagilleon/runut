@@ -34,7 +34,7 @@ import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type Cat
 import { gMirip } from './gerbang-mirip.ts';
 import { gPenilaian } from './gerbang-penilaian.ts';
 import { aturPosisiKunci, hurufKunciKode, periksaRujukanHuruf } from './posisi-kunci.ts';
-import { PENALARAN_M2D5, badanPenalaran, setelanPenalaran, setelanTanpaPenalaran } from './penalaran.ts';
+import { PENALARAN_M2D5, PENALAR_M2D6, badanPenalaran, badanUpaya, setelanPenalaran, setelanTanpaPenalaran } from './penalaran.ts';
 import { SUHU, pesanPaket, promptSistem, uraiKeluaran, type JawabanModel, type SetelanPanggil } from './susun.ts';
 
 /**
@@ -127,7 +127,7 @@ export function promptPenulisM2d5(): string {
  * Satu-satunya tempat perbedaan kedua generasi.
  */
 export interface Generasi {
-  nama: 'm2d3' | 'm2d4' | 'm2d5';
+  nama: 'm2d3' | 'm2d4' | 'm2d5' | 'm2d6';
   /** Model per peran; bawaan `MODEL_PERAN` (Featherless, M2d-3/M2d-4). M2d-5: OpenRouter. */
   model?: Readonly<Record<PeranModel, ModelLingkar>>;
   promptPenulis: () => string;
@@ -144,9 +144,18 @@ export interface Generasi {
     maxTokens: readonly number[];
     /** Medan badan per tebakan ke-1..3 (M2d-5: batas penalaran penebak GLM). */
     tambahanBadan?: ReadonlyArray<Readonly<Record<string, unknown>> | undefined>;
+    /** M2d-6 D-1: ambang token penalaran per tebakan ke-1..3 (penebak GLM); `undefined` = tidak dijaga. */
+    ambangPenalaran?: ReadonlyArray<number | undefined>;
   };
   /** Kritikus: dipanggil sebelum penebak (M2d-4) atau sesudahnya (M2d-3); dua pertanyaan makna wajib. */
-  kritikus: { sebelumPenebak: boolean; cekMakna: boolean; maxTokens: number; tambahanBadan?: Readonly<Record<string, unknown>> };
+  kritikus: {
+    sebelumPenebak: boolean;
+    cekMakna: boolean;
+    maxTokens: number;
+    tambahanBadan?: Readonly<Record<string, unknown>>;
+    /** M2d-6 D-1: ambang token penalaran kritikus; jawaban di bawahnya tidak sah. */
+    ambangPenalaran?: number;
+  };
   /**
    * Setelan penulis: panggilan berpikir lalu cadangan tanpa berpikir. Bawaan
    * M2d-2…M2d-4 (Featherless, `SETELAN_PENYUSUN`/`SETELAN_CADANGAN`); M2d-5:
@@ -223,12 +232,38 @@ export const GENERASI_M2D5: Generasi = {
   },
 };
 
-/** Model penebak ke-`ke` (1–3) menurut generasi. */
+/**
+ * Generasi M2d-6 (penalar sungguhan): semua keputusan M2d-5, ditambah
+ * - D-1: kritikus dan penebak GLM memakai `reasoning.effort` dan dijaga
+ *   `penjaga-penalaran.ts` (token penalaran < ambang = tidak sah → diulang
+ *   sekali dengan penyedia lain → tidak menjawab);
+ * - penyedia yang terbukti melanggar dikecualikan di pagar (D-2, skrip).
+ */
+export const GENERASI_M2D6: Generasi = {
+  ...GENERASI_M2D5,
+  nama: 'm2d6',
+  penebak: {
+    petunjuk: PETUNJUK_PENEBAK_KUAT,
+    model: MODEL_PENEBAK_M2D5,
+    maxTokens: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? PENALAR_M2D6.penebakGlm.maxTokens : MAX_TOKENS_PENEBAK_PERAN)),
+    tambahanBadan: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? badanUpaya(PENALAR_M2D6.penebakGlm) : undefined)),
+    ambangPenalaran: MODEL_PENEBAK_M2D5.map((m) => (m === MODEL_OR_GLM ? PENALAR_M2D6.penebakGlm.ambang : undefined)),
+  },
+  kritikus: {
+    sebelumPenebak: true,
+    cekMakna: true,
+    maxTokens: PENALAR_M2D6.kritikus.maxTokens,
+    tambahanBadan: badanUpaya(PENALAR_M2D6.kritikus),
+    ambangPenalaran: PENALAR_M2D6.kritikus.ambang,
+  },
+};
+
 /** Model per peran menurut generasi. */
 export function modelPeranGen(gen: Generasi): Readonly<Record<PeranModel, ModelLingkar>> {
   return gen.model ?? MODEL_PERAN;
 }
 
+/** Model penebak ke-`ke` (1–3) menurut generasi. */
 export function modelPenebak(gen: Generasi, ke: number): ModelLingkar {
   const m = gen.penebak.model[ke - 1];
   if (m === undefined) throw new Error(`Tidak ada model untuk penebak ke-${String(ke)}.`);
@@ -841,6 +876,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
           const t = await gerbangTebak(omongan, {
             ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokensKe: gen.penebak.maxTokens,
             ...(gen.penebak.tambahanBadan === undefined ? {} : { tambahanBadanKe: gen.penebak.tambahanBadan }),
+            ...(gen.penebak.ambangPenalaran === undefined ? {} : { ambangPenalaranKe: gen.penebak.ambangPenalaran }),
           });
           tebak = t;
           suara.tebak = t.lolos;
@@ -862,6 +898,9 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
               tebakan: t.tebakan.map((x) => ({
                 ke: x.ke, model: modelPenebak(gen, x.ke), pilihan: x.pilihan, yakin: x.yakin, benar: x.benar, terbaca: x.terbaca, alasan: x.alasan,
                 biaya_usd: jumlah(x.panggilan, (p) => p.biaya_usd),
+                ...(x.penalaran_tidak_sah === undefined
+                  ? {}
+                  : { token_penalaran: x.panggilan.map((p) => p.token_penalaran ?? null), penalaran_tidak_sah: x.penalaran_tidak_sah }),
               })),
               ...penyediaDari(semua),
             },
@@ -888,6 +927,7 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
             {
               ...opsiGerbang, cekMakna: gen.kritikus.cekMakna, maxTokens: gen.kritikus.maxTokens,
               ...(gen.kritikus.tambahanBadan === undefined ? {} : { tambahanBadan: gen.kritikus.tambahanBadan }),
+              ...(gen.kritikus.ambangPenalaran === undefined ? {} : { ambangPenalaran: gen.kritikus.ambangPenalaran }),
             },
           );
           kr = r;
@@ -905,6 +945,9 @@ export async function jalankanPeran(opsi: OpsiPeran): Promise<HasilPeran> {
               diabaikan: r.diabaikan, galat: r.galat,
               finish_reason: r.panggilan.map((p) => p.finish_reason),
               ...penyediaDari(r.panggilan),
+              ...(r.penalaran_tidak_sah === undefined
+                ? {}
+                : { token_penalaran: r.panggilan.map((p) => p.token_penalaran ?? null), penalaran_tidak_sah: r.penalaran_tidak_sah }),
               ...(r.cek_makna === undefined ? {} : { cek_makna: r.cek_makna, sebelum_penebak: gen.kritikus.sebelumPenebak }),
             },
             peran: 'kritikus',

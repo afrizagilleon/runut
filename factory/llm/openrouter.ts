@@ -170,3 +170,72 @@ export async function daftarEndpoint(konfig: KonfigKlien, model: string): Promis
     };
   });
 }
+
+/**
+ * Nama penyedia (medan `provider` respons) → slug OpenRouter untuk
+ * `provider.ignore` (M2d-6 D-1/D-2). Diturunkan dari `GET /models/<id>/
+ * endpoints` 29 Sep (`eval/keluaran-m2d5/periksa-kunci.txt`, medan `tag`
+ * sebelum "/"). Nama yang tidak ada di sini tidak bisa dilewati (ulangan tetap
+ * dikirim, tanpa `ignore` untuknya) — dicatat, tidak ditebak.
+ */
+export const SLUG_PENYEDIA: Readonly<Record<string, string>> = {
+  AkashML: 'akashml',
+  Alibaba: 'alibaba',
+  AtlasCloud: 'atlas-cloud',
+  Baidu: 'baidu',
+  BaseTen: 'baseten',
+  Cloudflare: 'cloudflare',
+  CoreWeave: 'coreweave',
+  DeepInfra: 'deepinfra',
+  DeepSeek: 'deepseek',
+  DekaLLM: 'dekallm',
+  DigitalOcean: 'digitalocean',
+  Fireworks: 'fireworks',
+  Friendli: 'friendli',
+  GMICloud: 'gmicloud',
+  InferenceNet: 'inference-net',
+  Ionstream: 'ionstream',
+  Krea: 'krea',
+  Makora: 'makora',
+  Modal: 'modal',
+  Morph: 'morph',
+  NextBit: 'nextbit',
+  Novita: 'novita',
+  Parasail: 'parasail',
+  Phala: 'phala',
+  PrimeIntellect: 'primeintellect',
+  Reka: 'reka',
+  Relace: 'relace',
+  'Sail Research': 'sail-research',
+  SiliconFlow: 'siliconflow',
+  StreamLake: 'streamlake',
+  Together: 'together',
+  Venice: 'venice',
+  Wafer: 'wafer',
+  'Z.AI': 'z-ai',
+};
+
+/** Slug untuk satu nama penyedia; `null` bila tidak dikenal. */
+export function slugPenyedia(nama: string): string | null {
+  return SLUG_PENYEDIA[nama] ?? null;
+}
+
+export type PagarPenyediaM2d6 = PagarPenyedia & { ignore?: string[] };
+
+/**
+ * Pagar M2d-6: pagar M2d-5 persis (kuantisasi, `max_price`,
+ * `require_parameters`, `data_collection`, `allow_fallbacks`) + `ignore` =
+ * penyedia yang dikecualikan berdasar bukti (`penyedia-bukti.ts`, D-2) +
+ * penyedia yang dilewati untuk ulangan panggilan ini (`abaikan`, D-1).
+ * `ignore` tidak dipasang bila kosong.
+ */
+export function pagarPenyediaM2d6(
+  model: string,
+  abaikan: readonly string[] = [],
+  dikecualikan: Readonly<Record<string, readonly string[]>> = {},
+): PagarPenyediaM2d6 {
+  const dasar = pagarPenyedia(model);
+  const slug = [...(dikecualikan[model] ?? []), ...abaikan.map((n) => slugPenyedia(n)).filter((x): x is string => x !== null)];
+  const ignore = [...new Set(slug)];
+  return ignore.length === 0 ? dasar : { ...dasar, ignore };
+}
