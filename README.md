@@ -125,6 +125,42 @@ peristiwa, berapa kejadiannya, berapa yang punya harga di kedua sisi tanggalnya,
 berapa yang lolos jadi bahan kartu, dan satu kalimat tentang apa yang **wajib
 dijelaskan** di kartu tentang jenis itu.
 
+## Mengambil ulang data
+
+Data mentah Sectors tidak ikut repo, tetapi pengambilnya ikut. Isi `.env` di
+akar repo dengan kunci API Sectors milik sendiri (`SECTORS_API_KEY=…`); kunci
+hanya dibaca kode dan hanya dikirim sebagai header `Authorization`.
+
+```bash
+npm run sectors:ambil -- "/v2/daily/ULTJ/?start=2026-01-01&end=2026-03-31" ULTJ-contoh.json
+npm run sectors:ambil -- --saldo        # kredit terpakai menurut buku kas
+npm run sectors:manifest                # sidik tiap berkas -> docs/bukti/gudang-manifest.json
+```
+
+- Biaya tiap panggilan dihitung **sebelum** memanggil, dan panggilan yang akan
+  melewati pagu (`SECTORS_KREDIT_PAGU`, bawaan 613) tidak dikirim. Buku kasnya
+  `.cache/sectors/kredit.csv`.
+- Berkas yang sudah ada di `.cache/sectors/` tidak pernah ditimpa; panggilannya
+  dilewati dengan biaya 0.
+- `docs/bukti/gudang-manifest.json` memuat nama, ukuran, sha256, dan path
+  endpoint tiap berkas. Berkas yang diambil ulang bisa dicocokkan dengannya
+  byte per byte (data Sectors bisa berubah sejak kami mengambilnya).
+
+Audit gudang M4a — 28 emiten yang pernah disuspensi dan 14 pembanding, dipilih
+dengan aturan tetap sebelum datanya diambil — diulang dengan:
+
+```bash
+npm run sectors:ambil -- --audit data   # paket panggilan menurut docs/bukti/audit-rencana.json
+npm run verifikasi:gudang
+npm run audit:gudang                    # -> docs/bukti/audit-gudang.md
+```
+
+Hasilnya, termasuk uji ulang tiap temuan oleh penguji independen dan
+keterbatasan sampelnya, ada di `docs/bukti/audit-gudang.md`. Kasus yang sedang
+tayang tidak ikut bergeser ketika gudang bertambah: `npm run build:case` hanya
+membaca 111 berkas yang sidiknya dibekukan di `docs/bukti/gudang-beku-kasus.json`,
+dan menolak membangun bila satu saja hilang atau berbeda.
+
 ## Uji di browser sungguhan
 
 ```bash
