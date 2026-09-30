@@ -92,7 +92,7 @@ describe('konfigurasi M2d-8', () => {
     expect(b.periksa('z-ai/glm-5.3', [{ role: 'user', content: 'x' }], 1_000, 'm2d8/jalan/x')).toBeGreaterThan(0);
   });
 
-  it('ledger hanya boleh bertag m2d5/…m2d8/', () => {
+  it('ledger hanya boleh bertag m2d5/…m2d8/ (dan penyusun/ sejak M2d-9)', () => {
     expect(siapM2d8()).toBeNull();
   });
 });

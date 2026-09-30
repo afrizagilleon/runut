@@ -1,0 +1,5877 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/agen-pengecoh.ts",
+  "simulasi": {
+    "paket_id": "penyusun-agar-2026-08-19",
+    "nama_samaran": "Perusahaan A",
+    "tanggal_t": "2026-08-19",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan. Dalam setahun terakhir bursa juga pernah menghentikan sementara perdagangannya."
+  },
+  "model": "deepseek/deepseek-v4.1-flash",
+  "model_peran": {
+    "penulis": "deepseek/deepseek-v4.1-flash",
+    "penebak": "z-ai/glm-5.3 + z-ai/glm-5.3 + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3",
+    "pilihan-saja": "deepseek/deepseek-v4.1-flash"
+  },
+  "paket": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": 5,
+    "fakta_lolos": 12,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2026-08-19",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "rups-2026-06-26",
+        "alasan": "kalimatnya menyebut tanggal sesudah T: 2029"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "ba4362bba3bb9fa5cc6dfaca664dc8b72cd97d0fec9657d110ff0b8b1c6ac941",
+    "sha256_paket": "93c9b788bd2ccb50d2130286ac11d40aec9d293cbdd6cec0bc2680ad3cf8e7f3",
+    "ringkasan": "Pintu penyusun M2d-9, mesin \"lingkar-m2d8\": lingkar pengecoh (factory/llm/agen-pengecoh.ts) dengan setelan M2d-8 (factory/llm/kalibrasi-susun.ts GENERASI_M2D8, validator validasiM2d8). Di sini hanya hash."
+  },
+  "mulai": "2026-09-30T14:45:39.260Z",
+  "selesai": "2026-09-30T16:15:15.241Z",
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "rencana-sudut",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T14:45:39.265Z",
+      "waktu_selesai": "2026-09-30T14:45:39.267Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "12 sudut; omongan 1 = susp-2026-08-19 (klaim Keliru, bank 5), omongan 2 = kelipatan-2026-08-03-2026-08-18 (klaim Keliru, bank 5), omongan 3 = susp-2026-07-22 (klaim Betul, bank 5)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "daftar": [
+          {
+            "fact_id": "susp-2026-08-19",
+            "topik": "suspensi"
+          },
+          {
+            "fact_id": "kelipatan-2026-08-03-2026-08-18",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "susp-2026-07-22",
+            "topik": "suspensi"
+          },
+          {
+            "fact_id": "naik-2026-08-03-2026-08-18",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "hari-naik-beruntun",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "volume-2026-08-19",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "harga-2026-08-18",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "volume-2026-08-18",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "harga-2026-08-14",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "harga-2026-08-13",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "harga-2026-08-12",
+            "topik": "harga"
+          },
+          {
+            "fact_id": "harga-2026-08-03",
+            "topik": "harga"
+          }
+        ],
+        "label": [
+          "Keliru",
+          "Keliru",
+          "Betul"
+        ],
+        "bank": {
+          "susp-2026-08-19": [
+            "P1 periode-keliru susp-2026-07-22",
+            "P2 konsep-lain volume-2026-08-19",
+            "P3 konsep-lain harga-2026-08-18",
+            "P4 konsep-lain volume-2026-08-18",
+            "P5 konsep-lain kelipatan-2026-08-03-2026-08-18"
+          ],
+          "kelipatan-2026-08-03-2026-08-18": [
+            "P1 konsep-lain harga-2026-08-18",
+            "P2 pengumuman-lain susp-2026-08-19",
+            "P3 konsep-lain volume-2026-08-18",
+            "P4 konsep-lain naik-2026-08-03-2026-08-18",
+            "P5 konsep-lain hari-naik-beruntun"
+          ],
+          "susp-2026-07-22": [
+            "P1 periode-keliru susp-2026-08-19",
+            "P2 konsep-lain harga-2026-08-03",
+            "P3 konsep-lain harga-2026-08-12",
+            "P4 konsep-lain harga-2026-08-13",
+            "P5 konsep-lain harga-2026-08-14"
+          ]
+        }
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "tulis-pesan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:45:39.284Z",
+      "waktu_selesai": "2026-09-30T14:45:58.043Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1755,
+      "token_keluar": 1609,
+      "biaya_usd": 0.00092148,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 1"
+      ],
+      "sha256_prompt": "7bdcceeaaa4f49a3189e02ff14a926d3bb4402eccdfe2f0d2e2ca2d1462e885a",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "DeepInfra"
+        ],
+        "token_penalaran": 1537
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 3,
+      "putaran": 1,
+      "jenis": "tulis-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:45:58.044Z",
+      "waktu_selesai": "2026-09-30T14:46:59.147Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1613,
+      "token_keluar": 3886,
+      "biaya_usd": 0.00239612,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 1"
+      ],
+      "sha256_prompt": "39a032aa5ecefda91219cbcd379c0d79376179da4df041e1ad263cab2962c95a",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "InferenceNet"
+        ],
+        "token_penalaran": 2833
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 4,
+      "putaran": 1,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:46:59.150Z",
+      "waktu_selesai": "2026-09-30T14:47:12.135Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 958,
+      "token_keluar": 2365,
+      "biaya_usd": 0.00172885,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "8585353906e5aa3f43779288b8e8ab287c07869fe13d4338183d2eef6719275d",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "CoreWeave"
+        ],
+        "token_penalaran": 2086
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 5,
+      "putaran": 1,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T14:47:12.139Z",
+      "waktu_selesai": "2026-09-30T14:47:31.908Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1796,
+      "token_keluar": 1867,
+      "biaya_usd": 0.00092711,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "f2bce7c5707b413f9bdb1a34c8e979469a9d11e9e55aa9696ea58c4ce7010b0e",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Io Net"
+        ],
+        "token_penalaran": 1304
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 6,
+      "putaran": 1,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T14:47:31.909Z",
+      "waktu_selesai": "2026-09-30T14:47:55.586Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1710,
+      "token_keluar": 3359,
+      "biaya_usd": 0.0022719,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2"
+      ],
+      "sha256_prompt": "b3784ed72356eb6c441bd971784f625154439987b9a6f355e031606510456cf3",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Alibaba"
+        ],
+        "token_penalaran": 3163
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 7,
+      "putaran": 1,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T14:47:55.586Z",
+      "waktu_selesai": "2026-09-30T14:48:30.023Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1012,
+      "token_keluar": 4088,
+      "biaya_usd": 0.0052092,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "9dfbc6fa19e93ab897e5c598373669c8fbaec30b4e02c2c51e90362252b2d4b6",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "SiliconFlow"
+        ],
+        "token_penalaran": 3756
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 8,
+      "putaran": 1,
+      "jenis": "tulis-pesan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T14:48:30.025Z",
+      "waktu_selesai": "2026-09-30T14:48:52.048Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1461,
+      "token_keluar": 1466,
+      "biaya_usd": 0.00093804,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 3"
+      ],
+      "sha256_prompt": "d218fda8e7e379983fe9bd03bd6d0e2d5e28b49a5ed81a62e538eca24416ba7a",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "InferenceNet"
+        ],
+        "token_penalaran": 1009
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 9,
+      "putaran": 1,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T14:48:52.050Z",
+      "waktu_selesai": "2026-09-30T14:49:17.278Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1525,
+      "token_keluar": 3923,
+      "biaya_usd": 0.00309906,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3"
+      ],
+      "sha256_prompt": "8eede3ac749401eae5d2d68b5634dcf1bce8a4ccd08ae1549d5339f5471c16f9",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "GMICloud"
+        ],
+        "token_penalaran": 3745
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 10,
+      "putaran": 1,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T14:49:17.280Z",
+      "waktu_selesai": "2026-09-30T14:49:25.141Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1012,
+      "token_keluar": 2007,
+      "biaya_usd": 0.002709288,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "39bda102ab70d2fe6e1f744290d31c53fbc901c64f2338acded5359e979defc1",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Baidu"
+        ],
+        "token_penalaran": 1760
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 11,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T14:49:25.152Z",
+      "waktu_selesai": "2026-09-30T14:49:25.152Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3: [OPSI_TAK_DUA_DUA] 1 pilihan \"Betul,\" dan 3 \"Keliru,\"; harus dua-dua."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "OPSI_TAK_DUA_DUA"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 12,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:49:25.153Z",
+      "waktu_selesai": "2026-09-30T14:49:25.163Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "gw yakin banget suspensi Perusahaan A jatuh 22 Juli, fix itu tanggalnya.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 12,
+          "kata_pilihan": {
+            "a": 5,
+            "b": 5,
+            "c": 5,
+            "d": 5
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 2,
+              "kemiripan": 0.208,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.208,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.143
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "kunci",
+          "b": "P1",
+          "c": "P2",
+          "d": "P3"
+        },
+        "klaim_dari": "P1"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 13,
+      "putaran": 1,
+      "jenis": "gerbang-artefak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:49:25.153Z",
+      "waktu_selesai": "2026-09-30T14:49:25.164Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 42,
+          "median_pengecoh": 36,
+          "rasio": 1.167,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 14,
+      "putaran": 1,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:49:25.164Z",
+      "waktu_selesai": "2026-09-30T14:52:57.233Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 420,
+      "token_keluar": 13298,
+      "biaya_usd": 0.0079872,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "b",
+            "yakin": 60,
+            "alasan": "Opsi b menyebutkan tanggal penghentian secara spesifik dan berbentuk konfirmasi 'Betul', sehingga paling mungkin menjadi jawaban benar dibandingkan opsi lain.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "b",
+            "yakin": 65,
+            "alasan": "Opsi b secara spesifik menyebut tanggal penghentian dengan format 'Betul', yang paling mungkin menjadi jawaban benar untuk pertanyaan tentang waktu penghentian.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "Relace",
+          "Relace"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 15,
+      "putaran": 1,
+      "jenis": "gerbang-kartu",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:52:57.235Z",
+      "waktu_selesai": "2026-09-30T14:53:02.011Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 646,
+      "token_keluar": 285,
+      "biaya_usd": 0.00018392,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "susp-2026-07-22"
+        ],
+        "menunjuk_penentu": false,
+        "alasan_penjawab": "Kartu 2 menyatakan perdagangan saham Perusahaan A dihentikan sementara pada 22 Juli 2026, sesuai dengan omongan Tio.",
+        "membingungkan": [],
+        "penyedia": [
+          "Relace"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 16,
+      "putaran": 1,
+      "jenis": "kritikus",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T14:53:02.012Z",
+      "waktu_selesai": "2026-09-30T14:59:19.013Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 2233,
+      "token_keluar": 29549,
+      "biaya_usd": 0.0886974017,
+      "putusan": "tolak",
+      "alasan": [
+        "[kritikus: kunci, pilihan] Pilihan b dan c juga benar menurut kartu (Kartu 2 memang mencatat penghentian pada 22 Juli sehingga b bisa dibenarkan karena pesan Tio tidak menautkan klaimnya ke peristiwa hari ini (pembaca kartu memilih b), dan alasan c (volume 0 lembar) benar menurut Kartu 3 walau tidak menjawab klaim tanggal.);…",
+        "[kritikus: ambigu, pesan] Pesan Tio tidak memuat penanda waktu seperti 'hari ini', jadi 'suspensi jatuh 22 Juli' bisa dibaca sebagai klaim tentang penghentian terdahulu yang memang tercatat 22 Juli di Kartu 2 — pembaca kartu tanpa kunci memilih b, bukan kunci.",
+        "[kritikus: ambigu, pilihan] Pilihan c memakai putusan 'Keliru' yang benar dengan alasan yang juga benar menurut Kartu 3 (volume 19 Agustus 0 lembar, yang justru cocok dengan perdagangan terhenti hari ini), sehingga pemain bisa mempertahankannya.",
+        "[kritikus: arahan] Pesan Tio perlu jangkar waktu yang menautkan klaimnya ke penghentian hari ini, bukan ke penghentian terdahulu. Alasan pada pilihan c perlu diubah supaya tidak benar sendiri menurut kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "kunci",
+            "bagian": "pilihan",
+            "alasan": "Pilihan b dan c juga benar menurut kartu (Kartu 2 memang mencatat penghentian pada 22 Juli sehingga b bisa dibenarkan karena pesan Tio tidak menautkan klaimnya ke peristiwa hari ini (pembaca kartu memilih b), dan alasan c (volume 0 lembar) benar menurut Kartu 3 walau tidak menjawab klaim tanggal.);…"
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pesan",
+            "alasan": "Pesan Tio tidak memuat penanda waktu seperti 'hari ini', jadi 'suspensi jatuh 22 Juli' bisa dibaca sebagai klaim tentang penghentian terdahulu yang memang tercatat 22 Juli di Kartu 2 — pembaca kartu tanpa kunci memilih b, bukan kunci."
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pilihan",
+            "alasan": "Pilihan c memakai putusan 'Keliru' yang benar dengan alasan yang juga benar menurut Kartu 3 (volume 19 Agustus 0 lembar, yang justru cocok dengan perdagangan terhenti hari ini), sehingga pemain bisa mempertahankannya."
+          }
+        ],
+        "arahan": "Pesan Tio perlu jangkar waktu yang menautkan klaimnya ke penghentian hari ini, bukan ke penghentian terdahulu. Alasan pada pilihan c perlu diubah supaya tidak benar sendiri menurut kartu.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          29082
+        ],
+        "penalaran_tidak_sah": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "rujukan 'suspensi' yang Tio maksud — penghentian hari ini atau penghentian terdahulu — tidak bisa dipastikan dari kartu…"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [
+            "b",
+            "c"
+          ],
+          "alasan_juga_benar": "Kartu 2 memang mencatat penghentian pada 22 Juli sehingga b bisa dibenarkan karena pesan Tio tidak menautkan klaimnya ke peristiwa hari ini (pembaca kartu memilih b), dan alasan c (volume 0 lembar) benar menurut Kartu 3 walau tidak menjawab klaim tanggal."
+        },
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 17,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T14:59:19.015Z",
+      "waktu_selesai": "2026-09-30T14:59:19.032Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Gw hafal polanya, lonjakan harga saham Perusahaan A dari awal bulan udah Rp1.120. Segitu doang, dari dulu juga gitu.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 19,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 6,
+            "c": 6,
+            "d": 7
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.208,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.214,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.286
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P4",
+          "b": "kunci",
+          "c": "P1",
+          "d": "P2"
+        },
+        "klaim_dari": "P4"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 18,
+      "putaran": 1,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T14:59:19.015Z",
+      "waktu_selesai": "2026-09-30T14:59:19.033Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 45,
+          "median_pengecoh": 44,
+          "rasio": 1.023,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 19,
+      "putaran": 1,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T14:59:19.034Z",
+      "waktu_selesai": "2026-09-30T15:00:49.044Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 452,
+      "token_keluar": 11585,
+      "biaya_usd": 0.00824834,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "a",
+            "yakin": 45,
+            "alasan": "Angka kenaikan Rp1.120 konsisten dengan harga penutupan Rp1.810 dan rasio 2,62 kali, sehingga opsi yang menegaskan kenaikan tersebut paling mungkin benar.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "c",
+            "yakin": 60,
+            "alasan": "Opsi c memberikan fakta spesifik harga penutupan Rp1.810 per lembar yang konsisten dengan angka kenaikan Rp1.120 dan rasio 2,62 kali, serta tanpa kata subjektif seperti 'saja'.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "Relace",
+          "NextBit"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 20,
+      "putaran": 1,
+      "jenis": "gerbang-kartu",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:00:49.045Z",
+      "waktu_selesai": "2026-09-30T15:02:24.545Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 671,
+      "token_keluar": 4891,
+      "biaya_usd": 0.00294802,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"a\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "pilihan": "a",
+        "kartu_ditunjuk": [
+          "naik-2026-08-03-2026-08-18"
+        ],
+        "menunjuk_penentu": false,
+        "alasan_penjawab": "Kartu 2 menunjukkan kenaikan harga dari 3 Agustus 2026 ke 18 Agustus 2026 adalah Rp1.810 - Rp690 = Rp1.120, sesuai dengan omongan Bagas.",
+        "membingungkan": [],
+        "penyedia": [
+          "Relace"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 21,
+      "putaran": 1,
+      "jenis": "kritikus",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:02:24.546Z",
+      "waktu_selesai": "2026-09-30T15:03:37.993Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 2252,
+      "token_keluar": 12010,
+      "biaya_usd": 0.0362587348,
+      "putusan": "tolak",
+      "alasan": [
+        "[kritikus: kunci, pilihan] Pilihan a dan c dan d juga benar menurut kartu (Kartu 2 eksplisit memastikan kenaikannya memang Rp1.120 (mendukung a, dan pembaca pemegang kartu memilih a), Kartu 3 memastikan harga penutupan Rp1.810 (c), dan Kartu 4 memastikan penyebab penghentian (d), sedangkan justru kunci b yang berkata 'bukan …",
+        "[kritikus: kunci, kunci] Kunci b menyatakan kenaikannya 'bukan Rp1.120', padahal Kartu 2 (dan implikasi Kartu 1) memastikan kenaikan dari 3 ke 18 Agustus 2026 tepat Rp1.120; harga 2,62 kali lipat dan kenaikan Rp1.120 sama-sama benar, jadi alasan kunci sendiri salah menurut kartu tanpa perlu tafsir.",
+        "[kritikus: ambigu, pilihan] Pilihan a dan b sama-sama bisa dibela tergantung yang dinilai angka Bagas (benar menurut Kartu 2) atau nada 'segitu doang'-nya (dicounter Kartu 1 dan 4), terbukti pembaca pemegang kartu memilih a dengan alasan yang sah.",
+        "[kritikus: makna, kunci] Frasa 'kenaikannya 2,62 kali' menyimpang dari Kartu 1 yang menyatakan harga penutupan (bukan kenaikannya) 2,62 kali; kenaikannya 1,62 kali atau Rp1.120.",
+        "[kritikus: arahan] Perbaiki kunci dan alasannya agar tidak menyangkal kenaikan Rp1.120 yang dipastikan Kartu 2 — sisi keliru Bagas (jika dipertahankan) ada pada nada 'segitu doang', bukan pada angkanya. Rapikan pilihan a, c, dan d yang faktanya juga didukung kartu agar hanya satu jawaban yang benar menurut kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "kunci",
+            "bagian": "pilihan",
+            "alasan": "Pilihan a dan c dan d juga benar menurut kartu (Kartu 2 eksplisit memastikan kenaikannya memang Rp1.120 (mendukung a, dan pembaca pemegang kartu memilih a), Kartu 3 memastikan harga penutupan Rp1.810 (c), dan Kartu 4 memastikan penyebab penghentian (d), sedangkan justru kunci b yang berkata 'bukan …"
+          },
+          {
+            "jenis": "kunci",
+            "bagian": "kunci",
+            "alasan": "Kunci b menyatakan kenaikannya 'bukan Rp1.120', padahal Kartu 2 (dan implikasi Kartu 1) memastikan kenaikan dari 3 ke 18 Agustus 2026 tepat Rp1.120; harga 2,62 kali lipat dan kenaikan Rp1.120 sama-sama benar, jadi alasan kunci sendiri salah menurut kartu tanpa perlu tafsir."
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pilihan",
+            "alasan": "Pilihan a dan b sama-sama bisa dibela tergantung yang dinilai angka Bagas (benar menurut Kartu 2) atau nada 'segitu doang'-nya (dicounter Kartu 1 dan 4), terbukti pembaca pemegang kartu memilih a dengan alasan yang sah."
+          },
+          {
+            "jenis": "makna",
+            "bagian": "kunci",
+            "alasan": "Frasa 'kenaikannya 2,62 kali' menyimpang dari Kartu 1 yang menyatakan harga penutupan (bukan kenaikannya) 2,62 kali; kenaikannya 1,62 kali atau Rp1.120."
+          }
+        ],
+        "arahan": "Perbaiki kunci dan alasannya agar tidak menyangkal kenaikan Rp1.120 yang dipastikan Kartu 2 — sisi keliru Bagas (jika dipertahankan) ada pada nada 'segitu doang', bukan pada angkanya. Rapikan pilihan a, c, dan d yang faktanya juga didukung kartu agar hanya satu jawaban yang benar menurut kartu.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          11395
+        ],
+        "penalaran_tidak_sah": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "'dari dulu juga gitu' — klaim lonjakan begini memang pola lama tidak ada kartu tentang perilaku harga atau penghentian …"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [
+            "a",
+            "c",
+            "d"
+          ],
+          "alasan_juga_benar": "Kartu 2 eksplisit memastikan kenaikannya memang Rp1.120 (mendukung a, dan pembaca pemegang kartu memilih a), Kartu 3 memastikan harga penutupan Rp1.810 (c), dan Kartu 4 memastikan penyebab penghentian (d), sedangkan justru kunci b yang berkata 'bukan Rp1.120' bertentangan dengan Kartu 2."
+        },
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 22,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:03:37.995Z",
+      "waktu_selesai": "2026-09-30T15:03:38.016Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Aku ragu deh, katanya saham Perusahaan A dihentikan sementara sama bursa karena harganya naik kumulatif, ya? Terus kapan dibuka lagi masih belum jelas kan?",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 24,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 8,
+            "c": 8,
+            "d": 7
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.208,
+              "terkunci": false
+            },
+            {
+              "dengan": 2,
+              "kemiripan": 0.214,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.222
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P1",
+          "b": "P2",
+          "c": "kunci",
+          "d": "P5"
+        },
+        "klaim_dari": null
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 23,
+      "putaran": 1,
+      "jenis": "gerbang-artefak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:03:37.995Z",
+      "waktu_selesai": "2026-09-30T15:03:38.017Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pilihan kunci \"Betul, penghentian sementaranya 22 Juli belum ada kejelasan.\" mengulang \"belum\", \"jelas\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, penghentian sementaranya 22 Juli belum ada kejelasan.\" mengulang \"belum\", \"jelas\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, penghentian sementaranya 22 Juli belum ada kejelasan.\" mengulang \"belum\", \"jelas\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, penghentian sementaranya 22 Juli belum ada kejelasan.\" mengulang \"belum\", \"jelas\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": true,
+          "angka": [],
+          "kata": [
+            "belum",
+            "jelas"
+          ],
+          "alasan": [
+            "pilihan kunci \"Betul, penghentian sementaranya 22 Juli belum ada kejelasan.\" mengulang \"belum\", \"jelas\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+          ]
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 60,
+          "median_pengecoh": 49,
+          "rasio": 1.224,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 24,
+      "putaran": 2,
+      "jenis": "tulis-pesan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:03:38.025Z",
+      "waktu_selesai": "2026-09-30T15:03:49.069Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2135,
+      "token_keluar": 716,
+      "biaya_usd": 0.0004723,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 1"
+      ],
+      "sha256_prompt": "7563b609a7810e293eeb165a1806a37ee7df341cc36fe589be006b35a13f3ce5",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 507
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 25,
+      "putaran": 2,
+      "jenis": "tulis-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:03:49.072Z",
+      "waktu_selesai": "2026-09-30T15:05:51.044Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 3193,
+      "token_keluar": 14000,
+      "biaya_usd": 0.00846386,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 1 (tak terbaca)"
+      ],
+      "sha256_prompt": "967ad3937a797137f0452240b0f94d4a69993abdf74b77589a212999ca9ae80e",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": false,
+        "finish_reason": "length",
+        "terpotong": true,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 10716
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 26,
+      "putaran": 2,
+      "jenis": "tulis-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:05:51.046Z",
+      "waktu_selesai": "2026-09-30T15:05:53.053Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 3168,
+      "token_keluar": 168,
+      "biaya_usd": 0.0003112032,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 1 — cadangan tanpa berpikir"
+      ],
+      "sha256_prompt": "967ad3937a797137f0452240b0f94d4a69993abdf74b77589a212999ca9ae80e",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": false,
+        "max_tokens": 4000,
+        "badan": {
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "penyedia": [
+          "Wafer"
+        ],
+        "token_penalaran": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 27,
+      "putaran": 2,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:05:53.054Z",
+      "waktu_selesai": "2026-09-30T15:06:24.969Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1299,
+      "token_keluar": 2901,
+      "biaya_usd": 0.00179256,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "02044f6dde07ffe632e8be24c475b5e42e0f8778d5e98d2afef57878972a2f02",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "InferenceNet"
+        ],
+        "token_penalaran": 1899
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 28,
+      "putaran": 2,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:06:24.983Z",
+      "waktu_selesai": "2026-09-30T15:06:39.900Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2189,
+      "token_keluar": 1213,
+      "biaya_usd": 0.000782094,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "49aa2107b809532faf7368aa8313d31602b872cd2f2b4bfc7695c70d4ba3be2c",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Morph"
+        ],
+        "token_penalaran": 1128
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 29,
+      "putaran": 2,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:06:39.902Z",
+      "waktu_selesai": "2026-09-30T15:08:40.883Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 4347,
+      "token_keluar": 14000,
+      "biaya_usd": 0.00613123,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2 (tak terbaca)"
+      ],
+      "sha256_prompt": "ada4f018a1369c058674c2fa5818063f5cc013d4dbc8a3d0e86d8b3bb674b632",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": false,
+        "finish_reason": "length",
+        "terpotong": true,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Io Net"
+        ],
+        "token_penalaran": 10917
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 30,
+      "putaran": 2,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:08:40.884Z",
+      "waktu_selesai": "2026-09-30T15:08:45.856Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 4322,
+      "token_keluar": 209,
+      "biaya_usd": 0.00021184,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2 — cadangan tanpa berpikir"
+      ],
+      "sha256_prompt": "ada4f018a1369c058674c2fa5818063f5cc013d4dbc8a3d0e86d8b3bb674b632",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": false,
+        "max_tokens": 4000,
+        "badan": {
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 31,
+      "putaran": 2,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:08:45.857Z",
+      "waktu_selesai": "2026-09-30T15:09:13.167Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1318,
+      "token_keluar": 3921,
+      "biaya_usd": 0.00464095,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "1b39a5cbb2abe9fded8284deb4dfc5c29c8ef34e3d1b200bb39402ff6022af51",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Ionstream"
+        ],
+        "token_penalaran": 3585
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 32,
+      "putaran": 2,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:09:13.169Z",
+      "waktu_selesai": "2026-09-30T15:09:39.344Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 3217,
+      "token_keluar": 6754,
+      "biaya_usd": 0.0090608301,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3"
+      ],
+      "sha256_prompt": "2137d40e1dd8aafa7526f43ca8a901b3d4911b5a4bbace2b1ccd2bf568d1ec4d",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Baidu"
+        ],
+        "token_penalaran": 6584
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 33,
+      "putaran": 2,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:09:39.347Z",
+      "waktu_selesai": "2026-09-30T15:10:04.923Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1253,
+      "token_keluar": 2421,
+      "biaya_usd": 0.00111876,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "55a73a2e2ea396cd5a390c586f4c2f7fd5b54749a420e25be1e4b0259094b381",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "DekaLLM"
+        ],
+        "token_penalaran": 2062
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 34,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T15:10:04.939Z",
+      "waktu_selesai": "2026-09-30T15:10:04.939Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 1: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 31 lawan 52 karakter; yang terpendek harus ≥ 60% yang terpanjang.",
+        "omongan 2: [ANGKA_TANPA_RUJUKAN] Pilihan c memuat angka di luar rujukan: 18. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "omongan 2: [ANGKA_TANPA_RUJUKAN] Pilihan d memuat angka di luar rujukan: 18. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "omongan 2: [OPSI_TAK_DUA_DUA] 3 pilihan \"Betul,\" dan 1 \"Keliru,\"; harus dua-dua.",
+        "omongan 3: [PENJELASAN_PANJANG] Penjelasan 860 karakter polos, lebih dari 800."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "ANGKA_TANPA_RUJUKAN",
+          "OPSI_PANJANG_TIMPANG",
+          "OPSI_TAK_DUA_DUA",
+          "PENJELASAN_PANJANG"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 35,
+      "putaran": 2,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:10:04.940Z",
+      "waktu_selesai": "2026-09-30T15:10:04.952Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini saham Perusahaan A kena setop sementara, gw yakin banget tanggalnya 22 Juli, fix.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 15,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 5,
+            "c": 4,
+            "d": 5
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 2,
+              "kemiripan": 0.292,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.136,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.125
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "kunci",
+          "b": "P1",
+          "c": "P4",
+          "d": "P5"
+        },
+        "klaim_dari": "P1"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 36,
+      "putaran": 2,
+      "jenis": "gerbang-artefak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:10:04.940Z",
+      "waktu_selesai": "2026-09-30T15:10:04.953Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pilihan kunci 52 karakter, 1,49 × median pengecoh (35) > 1,3 — kunci yang paling panjang/rinci mudah ditebak."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [
+            "sementara"
+          ],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": true,
+          "panjang_kunci": 52,
+          "median_pengecoh": 35,
+          "rasio": 1.486,
+          "alasan": [
+            "pilihan kunci 52 karakter, 1,49 × median pengecoh (35) > 1,3 — kunci yang paling panjang/rinci mudah ditebak."
+          ]
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 37,
+      "putaran": 2,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:10:04.960Z",
+      "waktu_selesai": "2026-09-30T15:10:04.967Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Kenaikan harga dari awal bulan cuma Rp1.120, gw hafal polanya. Dari dulu juga gitu.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 14,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 7,
+            "c": 8,
+            "d": 9
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.292,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.103,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.182
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P4",
+          "b": "kunci",
+          "c": "P3",
+          "d": "P5"
+        },
+        "klaim_dari": "P4"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 38,
+      "putaran": 2,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:10:04.960Z",
+      "waktu_selesai": "2026-09-30T15:10:04.969Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [
+            "harga"
+          ],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 42,
+          "median_pengecoh": 58,
+          "rasio": 0.724,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 39,
+      "putaran": 2,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:10:04.976Z",
+      "waktu_selesai": "2026-09-30T15:10:04.977Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Aku ragu deh, katanya saham Perusahaan A dihentikan sementara sama bursa karena harganya naik kumulatif, ya? Terus kapan dibuka lagi masih belum jelas kan?",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 24,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 6,
+            "c": 5,
+            "d": 7
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.136,
+              "terkunci": false
+            },
+            {
+              "dengan": 2,
+              "kemiripan": 0.103,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.286
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P5",
+          "b": "P1",
+          "c": "kunci",
+          "d": "P3"
+        },
+        "klaim_dari": null
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 40,
+      "putaran": 2,
+      "jenis": "gerbang-artefak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:10:04.976Z",
+      "waktu_selesai": "2026-09-30T15:10:04.986Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 40,
+          "median_pengecoh": 49,
+          "rasio": 0.816,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 41,
+      "putaran": 3,
+      "jenis": "tulis-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:10:04.993Z",
+      "waktu_selesai": "2026-09-30T15:10:24.981Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2684,
+      "token_keluar": 2268,
+      "biaya_usd": 0.00122928,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 1"
+      ],
+      "sha256_prompt": "e19a934421f5b78b79ede4342d29772a1329261bdd8e4997df3d94847d8de6cf",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "DekaLLM"
+        ],
+        "token_penalaran": 2120
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 42,
+      "putaran": 3,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:10:24.984Z",
+      "waktu_selesai": "2026-09-30T15:10:34.903Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1275,
+      "token_keluar": 1376,
+      "biaya_usd": 0.000766842,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "e5dac403c87c371c9d146f96ad2c1176b3591c317245dd3dd684d6ef2cfb2f44",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Morph"
+        ],
+        "token_penalaran": 1128
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 43,
+      "putaran": 3,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:10:34.905Z",
+      "waktu_selesai": "2026-09-30T15:11:49.651Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 3003,
+      "token_keluar": 3493,
+      "biaya_usd": 0.00215586,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2"
+      ],
+      "sha256_prompt": "1d0f1457250b5fd0d59c76f3022a99fbd9d6d7f7cb629dc680fd3a28b6155c12",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 2352
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 44,
+      "putaran": 3,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:11:49.655Z",
+      "waktu_selesai": "2026-09-30T15:12:09.584Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1341,
+      "token_keluar": 3425,
+      "biaya_usd": 0.002211027,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "ac99ba2c4c92008763e1bd931ed5154a1eb27e1821883bda35ca78e1eab01c6a",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "StreamLake"
+        ],
+        "token_penalaran": 3135
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 45,
+      "putaran": 3,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:12:09.588Z",
+      "waktu_selesai": "2026-09-30T15:12:19.069Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1691,
+      "token_keluar": 3586,
+      "biaya_usd": 0.0048105,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "a7aa63be699db2aaca527f52fd5c425560980287402fd3a5c6c812df4c843514",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Makora"
+        ],
+        "token_penalaran": 3260
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 46,
+      "putaran": 3,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T15:12:19.076Z",
+      "waktu_selesai": "2026-09-30T15:12:19.076Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 47,
+      "putaran": 3,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:12:19.082Z",
+      "waktu_selesai": "2026-09-30T15:12:19.083Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Hari ini saham Perusahaan A kena setop sementara, gw yakin banget tanggalnya 22 Juli, fix.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 15,
+          "kata_pilihan": {
+            "a": 4,
+            "b": 4,
+            "c": 4,
+            "d": 3
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 2,
+              "kemiripan": 0.25,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.176,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.2
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "kunci",
+          "b": "P1",
+          "c": "P2",
+          "d": "P3"
+        },
+        "klaim_dari": "P1"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 48,
+      "putaran": 3,
+      "jenis": "gerbang-artefak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:12:19.082Z",
+      "waktu_selesai": "2026-09-30T15:12:19.090Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 34,
+          "median_pengecoh": 27,
+          "rasio": 1.259,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 49,
+      "putaran": 3,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:12:19.091Z",
+      "waktu_selesai": "2026-09-30T15:13:25.919Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 404,
+      "token_keluar": 9038,
+      "biaya_usd": 0.00600022,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "b",
+            "yakin": 60,
+            "alasan": "Dua opsi membahas penghentian, dan opsi b menyatakan 'Betul' dengan tanggal spesifik yang lebih mungkin menjadi kunci jika soal menanyakan penghentian.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "b",
+            "yakin": 60,
+            "alasan": "Dua opsi menyebut penghentian, dan tanggal 22 Juli lebih spesifik serta konsisten sebagai jawaban yang mungkin.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "Ionstream",
+          "Io Net"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 50,
+      "putaran": 3,
+      "jenis": "gerbang-kartu",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:13:25.922Z",
+      "waktu_selesai": "2026-09-30T15:13:29.638Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 647,
+      "token_keluar": 141,
+      "biaya_usd": 0.0001498,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "susp-2026-07-22"
+        ],
+        "menunjuk_penentu": false,
+        "alasan_penjawab": "Kartu 2 menyatakan perdagangan saham Perusahaan A dihentikan sementara pada 22 Juli 2026, cocok dengan tanggal yang disebut Rizky.",
+        "membingungkan": [],
+        "penyedia": [
+          "DeepInfra"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 51,
+      "putaran": 3,
+      "jenis": "kritikus",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:13:29.641Z",
+      "waktu_selesai": "2026-09-30T15:16:47.385Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 2214,
+      "token_keluar": 13344,
+      "biaya_usd": 0.0402415086,
+      "putusan": "tolak",
+      "alasan": [
+        "[kritikus: kunci, pilihan] Pilihan c juga benar menurut kartu (Vonis 'Keliru' pada c benar menurut Kartu 1 dan 'volumenya 0 lembar' benar menurut Kartu 3, jadi c juga terdukung kartu meski alasannya tidak menjawab sengketa tanggal.); hanya satu pilihan yang boleh benar.",
+        "[kritikus: ambigu, pilihan] Pilihan a dan c sama-sama diawali 'Keliru' dan fakta yang dikutip c (volume 0 lembar pada 19 Agustus) benar menurut Kartu 3, sehingga pemain yang memegang Kartu 3 bisa membela c sebagai jawaban yang benar.",
+        "[kritikus: tertebak, pesan] Pemain yang tahu hari ini 19 Agustus 2026 dari kerangka simulasi bisa mematahkan 'hari ini, tanggalnya 22 Juli' dan memilih a tanpa membaca kartu mana pun.",
+        "[kritikus: arahan] Ubah pilihan c agar fakta yang dikutipnya tidak terbukti benar oleh kartu (volume 0 lembar ada di Kartu 3), sehingga hanya a yang bisa dibenarkan. Periksa juga agar jawaban tidak bisa ditemukan hanya dari tahu bahwa hari ini 19 Agustus tanpa membaca kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "kunci",
+            "bagian": "pilihan",
+            "alasan": "Pilihan c juga benar menurut kartu (Vonis 'Keliru' pada c benar menurut Kartu 1 dan 'volumenya 0 lembar' benar menurut Kartu 3, jadi c juga terdukung kartu meski alasannya tidak menjawab sengketa tanggal.); hanya satu pilihan yang boleh benar."
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pilihan",
+            "alasan": "Pilihan a dan c sama-sama diawali 'Keliru' dan fakta yang dikutip c (volume 0 lembar pada 19 Agustus) benar menurut Kartu 3, sehingga pemain yang memegang Kartu 3 bisa membela c sebagai jawaban yang benar."
+          },
+          {
+            "jenis": "tertebak",
+            "bagian": "pesan",
+            "alasan": "Pemain yang tahu hari ini 19 Agustus 2026 dari kerangka simulasi bisa mematahkan 'hari ini, tanggalnya 22 Juli' dan memilih a tanpa membaca kartu mana pun."
+          }
+        ],
+        "arahan": "Ubah pilihan c agar fakta yang dikutipnya tidak terbukti benar oleh kartu (volume 0 lembar ada di Kartu 3), sehingga hanya a yang bisa dibenarkan. Periksa juga agar jawaban tidak bisa ditemukan hanya dari tahu bahwa hari ini 19 Agustus tanpa membaca kartu.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          12983
+        ],
+        "penalaran_tidak_sah": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [
+            "c"
+          ],
+          "alasan_juga_benar": "Vonis 'Keliru' pada c benar menurut Kartu 1 dan 'volumenya 0 lembar' benar menurut Kartu 3, jadi c juga terdukung kartu meski alasannya tidak menjawab sengketa tanggal."
+        },
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 52,
+      "putaran": 3,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:16:47.388Z",
+      "waktu_selesai": "2026-09-30T15:16:47.411Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Kenaikan harga dari awal bulan cuma Rp1.120, gw hafal polanya. Dari dulu juga gitu.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 14,
+          "kata_pilihan": {
+            "a": 7,
+            "b": 7,
+            "c": 6,
+            "d": 7
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.25,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.148,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.25
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P2",
+          "b": "kunci",
+          "c": "P1",
+          "d": "P3"
+        },
+        "klaim_dari": "P4"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 53,
+      "putaran": 3,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:16:47.388Z",
+      "waktu_selesai": "2026-09-30T15:16:47.412Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 42,
+          "median_pengecoh": 58,
+          "rasio": 0.724,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 54,
+      "putaran": 3,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:16:47.420Z",
+      "waktu_selesai": "2026-09-30T15:20:23.003Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 458,
+      "token_keluar": 10261,
+      "biaya_usd": 0.006165759999999999,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "c",
+            "yakin": 60,
+            "alasan": "Frasa 'harga penutupan Rp1.810 per lembar' lebih lazim dan spesifik sebagai fakta yang benar dibanding opsi volume 'pada penutupan'.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "c",
+            "yakin": 55,
+            "alasan": "Pernyataan harga penutupan Rp1.810 per lembar tampak paling spesifik dan konsisten dengan konteks pengumuman peningkatan harga saham.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "Relace",
+          "Relace"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 55,
+      "putaran": 3,
+      "jenis": "gerbang-kartu",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:20:23.006Z",
+      "waktu_selesai": "2026-09-30T15:21:09.463Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 664,
+      "token_keluar": 2537,
+      "biaya_usd": 0.00154876,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"a\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "pilihan": "a",
+        "kartu_ditunjuk": [
+          "susp-2026-08-19"
+        ],
+        "menunjuk_penentu": false,
+        "alasan_penjawab": "Kartu 3 menentukan karena alasan resmi penghentian perdagangan adalah peningkatan harga kumulatif yang signifikan, sehingga anggapan 'cuma Rp1.120' tidak cocok.",
+        "membingungkan": [],
+        "penyedia": [
+          "InferenceNet"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 56,
+      "putaran": 3,
+      "jenis": "kritikus",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:21:09.467Z",
+      "waktu_selesai": "2026-09-30T15:22:29.083Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 2214,
+      "token_keluar": 12313,
+      "biaya_usd": 0.0371588186,
+      "putusan": "tolak",
+      "alasan": [
+        "[kritikus: kunci, pilihan] Pilihan a juga benar menurut kartu (Alasan opsi a (pengumuman resmi menyebut peningkatan harga kumulatif yang signifikan) benar menurut Kartu 3 dan sama-sama membantah kata 'cuma' pada omongan Fajar, sehingga a bisa dibenarkan seperti b — pembaca kartu pun memilih a.); hanya satu pilihan yang boleh…",
+        "[kritikus: ambigu, pilihan] Opsi a dan b sama-sama benar menurut kartu: 'signifikan' di Kartu 3 dan '2,62 kali' di Kartu 1 keduanya menunjukkan kenaikan itu besar, dan penjelasan bahwa a 'tidak menjelaskan secara angka' hanya selera penulis, bukan pembedaan fakta.",
+        "[kritikus: aturan, pilihan] Opsi d memuat angka volume 4.382.400 lembar yang tidak ada di kartu mana pun, sehingga tidak bisa dicek pemain.",
+        "[kritikus: arahan] Ubah alasan opsi a agar tidak didukung Kartu 3, sebab saat ini a dan b sama-sama bisa dibenarkan; ganti juga angka volume pada opsi d yang tidak muncul di kartu mana pun."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "kunci",
+            "bagian": "pilihan",
+            "alasan": "Pilihan a juga benar menurut kartu (Alasan opsi a (pengumuman resmi menyebut peningkatan harga kumulatif yang signifikan) benar menurut Kartu 3 dan sama-sama membantah kata 'cuma' pada omongan Fajar, sehingga a bisa dibenarkan seperti b — pembaca kartu pun memilih a.); hanya satu pilihan yang boleh…"
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pilihan",
+            "alasan": "Opsi a dan b sama-sama benar menurut kartu: 'signifikan' di Kartu 3 dan '2,62 kali' di Kartu 1 keduanya menunjukkan kenaikan itu besar, dan penjelasan bahwa a 'tidak menjelaskan secara angka' hanya selera penulis, bukan pembedaan fakta."
+          },
+          {
+            "jenis": "aturan",
+            "bagian": "pilihan",
+            "alasan": "Opsi d memuat angka volume 4.382.400 lembar yang tidak ada di kartu mana pun, sehingga tidak bisa dicek pemain."
+          }
+        ],
+        "arahan": "Ubah alasan opsi a agar tidak didukung Kartu 3, sebab saat ini a dan b sama-sama bisa dibenarkan; ganti juga angka volume pada opsi d yang tidak muncul di kartu mana pun.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          11883
+        ],
+        "penalaran_tidak_sah": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "'Dari dulu juga gitu' — klaim bahwa pola kenaikan seperti ini sudah berlangsung sejak dulu tidak bisa dicek karena tida…",
+            "'gw hafal polanya' — pernyataan pribadi soal hafalan, bukan klaim yang bisa dites dari dokumen"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [
+            "a"
+          ],
+          "alasan_juga_benar": "Alasan opsi a (pengumuman resmi menyebut peningkatan harga kumulatif yang signifikan) benar menurut Kartu 3 dan sama-sama membantah kata 'cuma' pada omongan Fajar, sehingga a bisa dibenarkan seperti b — pembaca kartu pun memilih a."
+        },
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 57,
+      "putaran": 3,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:22:29.087Z",
+      "waktu_selesai": "2026-09-30T15:22:29.104Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Aku ragu deh, katanya saham Perusahaan A dihentikan sementara sama bursa karena harganya naik kumulatif, ya? Terus kapan dibuka lagi masih belum jelas kan?",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 24,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 6,
+            "c": 5,
+            "d": 7
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.176,
+              "terkunci": false
+            },
+            {
+              "dengan": 2,
+              "kemiripan": 0.148,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.286
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P5",
+          "b": "P1",
+          "c": "kunci",
+          "d": "P3"
+        },
+        "klaim_dari": null
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 58,
+      "putaran": 3,
+      "jenis": "gerbang-artefak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:22:29.087Z",
+      "waktu_selesai": "2026-09-30T15:22:29.105Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 40,
+          "median_pengecoh": 49,
+          "rasio": 0.816,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 59,
+      "putaran": 3,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:22:29.113Z",
+      "waktu_selesai": "2026-09-30T15:28:48.315Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 3,
+      "token_masuk": 669,
+      "token_keluar": 22338,
+      "biaya_usd": 0.013348500999999999,
+      "putusan": "tolak",
+      "alasan": [
+        "2/2 penebak yang HANYA melihat empat pilihan (tanpa pesan, tanpa kartu) memilih kunci \"c\" (?/-, c/60). Alasan: \"(tak terbaca)\" \"Opsi ini menyatakan tanggal penghentian sementara saham yang sesuai dengan peristiwa yang umumnya benar, yaitu 22 Juli.\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": null,
+            "yakin": null,
+            "alasan": "(tak terbaca)",
+            "terbaca": false
+          },
+          {
+            "ke": 2,
+            "pilihan": "c",
+            "yakin": 60,
+            "alasan": "Opsi ini menyatakan tanggal penghentian sementara saham yang sesuai dengan peristiwa yang umumnya benar, yaitu 22 Juli.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "Relace",
+          "StreamLake",
+          "Relace"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 60,
+      "putaran": 3,
+      "jenis": "buang-sudut",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:28:48.317Z",
+      "waktu_selesai": "2026-09-30T15:28:48.317Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 1 habis di sudut ke-1 (susp-2026-08-19): perbaikan {\"pesan\":2,\"pilihan\":3,\"penjelasan\":0}, putaran 5",
+        "sudut ke-2: naik-2026-08-03-2026-08-18"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "sudut_dibuang": "susp-2026-08-19",
+        "sudut_baru": {
+          "fact_id": "naik-2026-08-03-2026-08-18",
+          "topik": "harga"
+        },
+        "perbaikan": {
+          "pesan": 2,
+          "pilihan": 3,
+          "penjelasan": 0
+        }
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 61,
+      "putaran": 3,
+      "jenis": "buang-sudut",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:28:48.324Z",
+      "waktu_selesai": "2026-09-30T15:28:48.324Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 2 habis di sudut ke-1 (kelipatan-2026-08-03-2026-08-18): perbaikan {\"pesan\":1,\"pilihan\":3,\"penjelasan\":0}, putaran 5",
+        "sudut ke-2: hari-naik-beruntun"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "sudut_dibuang": "kelipatan-2026-08-03-2026-08-18",
+        "sudut_baru": {
+          "fact_id": "hari-naik-beruntun",
+          "topik": "harga"
+        },
+        "perbaikan": {
+          "pesan": 1,
+          "pilihan": 3,
+          "penjelasan": 0
+        }
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 62,
+      "putaran": 4,
+      "jenis": "tulis-pesan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:28:48.340Z",
+      "waktu_selesai": "2026-09-30T15:29:21.460Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2019,
+      "token_keluar": 2679,
+      "biaya_usd": 0.00168816,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 1"
+      ],
+      "sha256_prompt": "f2e71521f99689ac826876d719af2d39f9552839db5683ee6cf8fb26712a897e",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "InferenceNet"
+        ],
+        "token_penalaran": 1888
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 63,
+      "putaran": 4,
+      "jenis": "tulis-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:29:21.463Z",
+      "waktu_selesai": "2026-09-30T15:31:00.144Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1926,
+      "token_keluar": 5684,
+      "biaya_usd": 0.00348744,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 1"
+      ],
+      "sha256_prompt": "d0721778c12cd954b3074139bed242e7770c9865d2f788b5ad465b5dcfdbc62d",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "InferenceNet"
+        ],
+        "token_penalaran": 4090
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 64,
+      "putaran": 4,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:31:00.150Z",
+      "waktu_selesai": "2026-09-30T15:31:15.274Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 945,
+      "token_keluar": 2653,
+      "biaya_usd": 0.00242697,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "e4deb185e1d5c88ec3d5c896ff6e43cdc5dc574e60187d0132fe98086a26133b",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "NextBit"
+        ],
+        "token_penalaran": 2396
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 65,
+      "putaran": 4,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:31:15.294Z",
+      "waktu_selesai": "2026-09-30T15:31:56.921Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1800,
+      "token_keluar": 1152,
+      "biaya_usd": 0.0007272,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "4284e44e4c0e3fdcfc50211650f23da2b211bdc87b9a0c5d23979b134b6edf63",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 765
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 66,
+      "putaran": 4,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:31:56.924Z",
+      "waktu_selesai": "2026-09-30T15:32:20.779Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1680,
+      "token_keluar": 3297,
+      "biaya_usd": 0.001740504,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2"
+      ],
+      "sha256_prompt": "83c3aeabdea426e2e5f55c1ddd9bb0a1e6b9025cbb29918449ed69eaacf4b73c",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Morph"
+        ],
+        "token_penalaran": 3129
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 67,
+      "putaran": 4,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:32:20.781Z",
+      "waktu_selesai": "2026-09-30T15:33:57.525Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1046,
+      "token_keluar": 4698,
+      "biaya_usd": 0.00283972,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "2195b589c8824fbc3c495982edcc8777dbb576b54fcb0f8a208c98ce9de76ccd",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 3273
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 68,
+      "putaran": 4,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:33:57.527Z",
+      "waktu_selesai": "2026-09-30T15:35:45.647Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2545,
+      "token_keluar": 7014,
+      "biaya_usd": 0,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3 (tak terbaca)"
+      ],
+      "sha256_prompt": "247c71be6658cb2292df21b7d3b7e40f189eedc57089e698a71e41b2e591ade4",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": false,
+        "finish_reason": "error",
+        "terpotong": true,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Io Net"
+        ],
+        "token_penalaran": 5987
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 69,
+      "putaran": 4,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:35:45.649Z",
+      "waktu_selesai": "2026-09-30T15:35:52.061Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2520,
+      "token_keluar": 173,
+      "biaya_usd": 0.0001542,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3 — cadangan tanpa berpikir"
+      ],
+      "sha256_prompt": "247c71be6658cb2292df21b7d3b7e40f189eedc57089e698a71e41b2e591ade4",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": false,
+        "max_tokens": 4000,
+        "badan": {
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 70,
+      "putaran": 4,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:35:52.063Z",
+      "waktu_selesai": "2026-09-30T15:36:49.818Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1335,
+      "token_keluar": 2834,
+      "biaya_usd": 0.0017271,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "e2dd1f41a2922ba43c764f7a5a00564f39560c2ce14eba140eae743c2a138a4f",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 2212
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 71,
+      "putaran": 4,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T15:36:49.832Z",
+      "waktu_selesai": "2026-09-30T15:36:49.832Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3: [OPSI_TAK_DUA_DUA] 1 pilihan \"Betul,\" dan 3 \"Keliru,\"; harus dua-dua."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "OPSI_TAK_DUA_DUA"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 72,
+      "putaran": 4,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:36:49.833Z",
+      "waktu_selesai": "2026-09-30T15:36:49.850Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "gw panik nih, kenaikan harga saham Perusahaan A dari awal Agustus sampai sekarang Rp1.810? kok bisa segitu drastis.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 18,
+          "kata_pilihan": {
+            "a": 5,
+            "b": 3,
+            "c": 5,
+            "d": 4
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 2,
+              "kemiripan": 0.192,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.143,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.5
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "kunci",
+          "b": "P1",
+          "c": "P5",
+          "d": "P2"
+        },
+        "klaim_dari": "P1"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 73,
+      "putaran": 4,
+      "jenis": "gerbang-artefak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:36:49.833Z",
+      "waktu_selesai": "2026-09-30T15:36:49.851Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pilihan kunci 43 karakter, 1,39 × median pengecoh (31) > 1,3 — kunci yang paling panjang/rinci mudah ditebak."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": true,
+          "panjang_kunci": 43,
+          "median_pengecoh": 31,
+          "rasio": 1.387,
+          "alasan": [
+            "pilihan kunci 43 karakter, 1,39 × median pengecoh (31) > 1,3 — kunci yang paling panjang/rinci mudah ditebak."
+          ]
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 74,
+      "putaran": 4,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:36:49.859Z",
+      "waktu_selesai": "2026-09-30T15:36:49.871Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Gw udah itung dari kemarin, naik berturut-turutnya udah 2,62 kali dari awal bulan. Kalian baru sadar sekarang, telat.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 18,
+          "kata_pilihan": {
+            "a": 8,
+            "b": 7,
+            "c": 6,
+            "d": 6
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.192,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.194,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.1
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P2",
+          "b": "kunci",
+          "c": "P5",
+          "d": "P1"
+        },
+        "klaim_dari": "P4"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 75,
+      "putaran": 4,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:36:49.859Z",
+      "waktu_selesai": "2026-09-30T15:36:49.872Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pilihan kunci \"Keliru, naik berturut-turutnya cuma 3 hari bursa.\" mengulang \"naik\", \"turut\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Keliru, naik berturut-turutnya cuma 3 hari bursa.\" mengulang \"naik\", \"turut\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Keliru, naik berturut-turutnya cuma 3 hari bursa.\" mengulang \"naik\", \"turut\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Keliru, naik berturut-turutnya cuma 3 hari bursa.\" mengulang \"naik\", \"turut\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": true,
+          "angka": [],
+          "kata": [
+            "naik",
+            "turut"
+          ],
+          "alasan": [
+            "pilihan kunci \"Keliru, naik berturut-turutnya cuma 3 hari bursa.\" mengulang \"naik\", \"turut\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+          ]
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 49,
+          "median_pengecoh": 46,
+          "rasio": 1.065,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 76,
+      "putaran": 4,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:36:49.879Z",
+      "waktu_selesai": "2026-09-30T15:36:49.880Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: G-satu-klausa (pilihan-c): koma kedua memulai klausa baru (\",  …\")"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Aku ragu deh, katanya saham Perusahaan A dihentikan sementara sama bursa karena harganya naik kumulatif, ya? Terus kapan dibuka lagi masih belum jelas kan?",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 24,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 7,
+            "c": 8,
+            "d": 7
+          }
+        },
+        "satu_klausa": [
+          {
+            "pilihan": "c",
+            "alasan": "koma kedua memulai klausa baru (\",  …\")"
+          }
+        ],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.143,
+              "terkunci": false
+            },
+            {
+              "dengan": 2,
+              "kemiripan": 0.194,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.667
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P1",
+          "b": "P2",
+          "c": "kunci",
+          "d": "P4"
+        },
+        "klaim_dari": null
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 77,
+      "putaran": 4,
+      "jenis": "gerbang-artefak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:36:49.879Z",
+      "waktu_selesai": "2026-09-30T15:36:49.886Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pilihan kunci \"Betul, penghentiannya karena harga naik kumulatif, 22 Juli.\" mengulang \"karena\", \"naik\", \"kumulatif\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, penghentiannya karena harga naik kumulatif, 22 Juli.\" mengulang \"karena\", \"naik\", \"kumulatif\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, penghentiannya karena harga naik kumulatif, 22 Juli.\" mengulang \"karena\", \"naik\", \"kumulatif\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, penghentiannya karena harga naik kumulatif, 22 Juli.\" mengulang \"karena\", \"naik\", \"kumulatif\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": true,
+          "angka": [],
+          "kata": [
+            "karena",
+            "naik",
+            "kumulatif"
+          ],
+          "alasan": [
+            "pilihan kunci \"Betul, penghentiannya karena harga naik kumulatif, 22 Juli.\" mengulang \"karena\", \"naik\", \"kumulatif\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+          ]
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 59,
+          "median_pengecoh": 46,
+          "rasio": 1.283,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 78,
+      "putaran": 4,
+      "jenis": "buang-sudut",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:36:49.897Z",
+      "waktu_selesai": "2026-09-30T15:36:49.897Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3 habis di sudut ke-1 (susp-2026-07-22): perbaikan {\"pesan\":0,\"pilihan\":3,\"penjelasan\":1}, putaran 5",
+        "sudut ke-2: volume-2026-08-19"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "sudut_dibuang": "susp-2026-07-22",
+        "sudut_baru": {
+          "fact_id": "volume-2026-08-19",
+          "topik": "harga"
+        },
+        "perbaikan": {
+          "pesan": 0,
+          "pilihan": 3,
+          "penjelasan": 1
+        }
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 79,
+      "putaran": 5,
+      "jenis": "tulis-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:36:49.905Z",
+      "waktu_selesai": "2026-09-30T15:37:07.086Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2391,
+      "token_keluar": 1205,
+      "biaya_usd": 0.00077082,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 1"
+      ],
+      "sha256_prompt": "32597d68981a55e7323233cfbbe58cbcfadc8beb14738a1c1f089376bf55cddc",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 992
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 80,
+      "putaran": 5,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:37:07.089Z",
+      "waktu_selesai": "2026-09-30T15:37:28.805Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1192,
+      "token_keluar": 3748,
+      "biaya_usd": 0.0048552,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "9ec2150c63bff4694bbc53bef6c3f3a3af4704351f046cc0c66eee9a5266e832",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "SiliconFlow"
+        ],
+        "token_penalaran": 3418
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 81,
+      "putaran": 5,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:37:28.808Z",
+      "waktu_selesai": "2026-09-30T15:37:58.345Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2762,
+      "token_keluar": 6185,
+      "biaya_usd": 0.003332676,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2"
+      ],
+      "sha256_prompt": "d2d509396d33328fdc1698af7769c00f76c8e320877b9be7f393dcf96b3987ae",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Morph"
+        ],
+        "token_penalaran": 6010
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 82,
+      "putaran": 5,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:37:58.347Z",
+      "waktu_selesai": "2026-09-30T15:40:06.591Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1359,
+      "token_keluar": 8000,
+      "biaya_usd": 0.00482718,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2 (tak terbaca)"
+      ],
+      "sha256_prompt": "d0d96b32b453cfc02036cf5a2aeb2fcd4017a2ae9140517835ac72ae7df92819",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": false,
+        "finish_reason": "length",
+        "terpotong": true,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 6623
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 83,
+      "putaran": 5,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:40:06.594Z",
+      "waktu_selesai": "2026-09-30T15:40:13.727Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1334,
+      "token_keluar": 338,
+      "biaya_usd": 0.00022948,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2 — cadangan tanpa berpikir"
+      ],
+      "sha256_prompt": "d0d96b32b453cfc02036cf5a2aeb2fcd4017a2ae9140517835ac72ae7df92819",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": false,
+        "max_tokens": 4000,
+        "badan": {
+          "reasoning": {
+            "enabled": false
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 84,
+      "putaran": 5,
+      "jenis": "tulis-pesan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:40:13.730Z",
+      "waktu_selesai": "2026-09-30T15:40:36.734Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1420,
+      "token_keluar": 796,
+      "biaya_usd": 0.000506,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 3"
+      ],
+      "sha256_prompt": "1e839cf9e69b91d0051b03c2ae3983fe959cdd83e0fe0a88164dfab832bdab44",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 543
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 85,
+      "putaran": 5,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:40:36.737Z",
+      "waktu_selesai": "2026-09-30T15:40:50.886Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1685,
+      "token_keluar": 3400,
+      "biaya_usd": 0.003439125,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3"
+      ],
+      "sha256_prompt": "9e115ab1c0871cc1be3db353f9252b8d50913663166fc0c69e00a3b7ea1a16db",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Krea"
+        ],
+        "token_penalaran": 2462
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 86,
+      "putaran": 5,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:40:50.890Z",
+      "waktu_selesai": "2026-09-30T15:41:32.256Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 922,
+      "token_keluar": 2577,
+      "biaya_usd": 0.00157386,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "5af2d783c6ccbb6e3ef427554fbd0493aaf38bf7f5684d35401cd2ec243a64e9",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "InferenceNet"
+        ],
+        "token_penalaran": 1854
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 87,
+      "putaran": 5,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T15:41:32.261Z",
+      "waktu_selesai": "2026-09-30T15:41:32.261Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 2: [ANGKA_TANPA_RUJUKAN] Penjelasan memuat angka di luar rujukan: 3, 2,62. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "omongan 3: [OPSI_PANJANG_TIMPANG] Panjang pilihan timpang: 32 lawan 59 karakter; yang terpendek harus ≥ 60% yang terpanjang."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": [
+          "ANGKA_TANPA_RUJUKAN",
+          "OPSI_PANJANG_TIMPANG"
+        ]
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 88,
+      "putaran": 5,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:41:32.265Z",
+      "waktu_selesai": "2026-09-30T15:41:32.266Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "gw panik nih, kenaikan harga saham Perusahaan A dari awal Agustus sampai sekarang Rp1.810? kok bisa segitu drastis.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 18,
+          "kata_pilihan": {
+            "a": 3,
+            "b": 3,
+            "c": 5,
+            "d": 4
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 2,
+              "kemiripan": 0.16,
+              "terkunci": false
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.4,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.333
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "kunci",
+          "b": "P1",
+          "c": "P5",
+          "d": "P2"
+        },
+        "klaim_dari": "P1"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 89,
+      "putaran": 5,
+      "jenis": "gerbang-artefak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:41:32.265Z",
+      "waktu_selesai": "2026-09-30T15:41:32.272Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 28,
+          "median_pengecoh": 31,
+          "rasio": 0.903,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 90,
+      "putaran": 5,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:41:32.279Z",
+      "waktu_selesai": "2026-09-30T15:42:13.382Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 420,
+      "token_keluar": 5580,
+      "biaya_usd": 0.003915828,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "d",
+            "yakin": 55,
+            "alasan": "Angka volume yang sangat spesifik lebih umum menjadi pernyataan benar pada soal berbasis data.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "c",
+            "yakin": 60,
+            "alasan": "Opsi a/b/c membahas kenaikan harga, dan c satu-satunya yang menyatakan benar dengan rasio yang masuk akal; d topiknya volume.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "Morph",
+          "GMICloud"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 91,
+      "putaran": 5,
+      "jenis": "gerbang-kartu",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:42:13.383Z",
+      "waktu_selesai": "2026-09-30T15:42:21.281Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 592,
+      "token_keluar": 642,
+      "biaya_usd": 0.00040296,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"a\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "pilihan": "a",
+        "kartu_ditunjuk": [
+          "naik-2026-08-03-2026-08-18"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan kenaikan dari Rp690 ke Rp1.810 adalah Rp1.120, jadi omongan Fajar bahwa kenaikannya Rp1.810 keliru.",
+        "membingungkan": [],
+        "penyedia": [
+          "InferenceNet"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 92,
+      "putaran": 5,
+      "jenis": "kritikus",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:42:21.283Z",
+      "waktu_selesai": "2026-09-30T15:43:48.881Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 2122,
+      "token_keluar": 14455,
+      "biaya_usd": 0.0436128078,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Pilihan b gugur tanpa kartu karena 'Keliru' sambil menegaskan kenaikan Rp1.810 (angka Fajar sendiri); ubah alasan b menjadi kesalahan lain yang tidak bisa dieliminasi lewat logika saja.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          14258
+        ],
+        "penalaran_tidak_sah": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu penentu menyatakan kenaikannya Rp1.120 sehingga hanya (a) yang benar; (b) bertentangan dengan kartu 1, sedangkan (c) dan (d) memuat fakta kartu yang cocok tetapi keliru menyatakan 'Betul' atas klaim Fajar yang salah."
+        },
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 93,
+      "putaran": 5,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T15:43:48.882Z",
+      "waktu_selesai": "2026-09-30T15:44:34.019Z",
+      "model": "z-ai/glm-5.3 + z-ai/glm-5.3 + z-ai/glm-5.3",
+      "panggilan": 4,
+      "token_masuk": 2276,
+      "token_keluar": 8219,
+      "biaya_usd": 0.024995335199999996,
+      "putusan": "lolos",
+      "alasan": [
+        "0/3 penebak tanpa kartu memilih kunci \"a\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "benar": 0,
+        "yakin_benar": null,
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "c",
+            "yakin": 62,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Angkanya konsisten satu sama lain: kenaikan Rp1.810 dari harga awal sekitar Rp1.120 ke ~Rp2.930 memang berarti harga naik sekitar 2,62 kali, sehingga klaim spesifik Fajar yang wajar itu benar.",
+            "token_penalaran": [
+              3152
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 2,
+            "pilihan": "c",
+            "yakin": 75,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Pilihan b kontradiktif (bilang keliru tapi angkanya sama dengan klaim Fajar), a kemungkinan tertukar dengan harga awal Rp1.120; jika harga naik dari ~Rp1.120 menjadi ~Rp2.930 (2,62 kali), kenaikannya memang ~Rp1.810, jadi klaim Fajar konsisten dengan pilihan c.",
+            "token_penalaran": [
+              580
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 3,
+            "pilihan": "c",
+            "yakin": 70,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim spesifik Rp1.810 konsisten secara hitungan dengan kenaikan 2,62 kali (harga awal ~Rp1.120 menjadi ~Rp2.930), pilihan b kontradiktif dengan dirinya sendiri, pilihan a membingungkan harga awal sebagai kenaikan, dan d mengutip volume yang tidak relevan dengan klaim harga.",
+            "token_penalaran": [
+              2687,
+              1367
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "penyedia": [
+          "Wafer",
+          "Wafer",
+          "Wafer",
+          "Wafer"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 94,
+      "putaran": 5,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:44:34.023Z",
+      "waktu_selesai": "2026-09-30T15:44:34.039Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Gw udah itung dari kemarin, naik berturut-turutnya udah 2,62 kali dari awal bulan. Kalian baru sadar sekarang, telat.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 18,
+          "kata_pilihan": {
+            "a": 8,
+            "b": 8,
+            "c": 6,
+            "d": 6
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.16,
+              "terkunci": true
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.172,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.1
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P2",
+          "b": "kunci",
+          "c": "P5",
+          "d": "P1"
+        },
+        "klaim_dari": "P4"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 95,
+      "putaran": 5,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:44:34.023Z",
+      "waktu_selesai": "2026-09-30T15:44:34.040Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 43,
+          "median_pengecoh": 46,
+          "rasio": 0.935,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 96,
+      "putaran": 5,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:44:34.046Z",
+      "waktu_selesai": "2026-09-30T15:44:34.057Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: G-mirip (pilihan-c): Pola keempat pilihan omongan ini hampir sama dengan omongan 1 (kemiripan kerangka 0,40 ≥ ambang 0,40): pemain yang sudah menjawab omongan itu bisa menjawab ini tanpa membaca kartu. Tanyakan hal lain dari kartu, dengan bentuk pilihan yang berbeda.",
+        "pemeriksa: G-mirip (pilihan-a): pola pilihan hampir sama dengan omongan lain",
+        "pemeriksa: G-mirip (pilihan-b): pola pilihan hampir sama dengan omongan lain",
+        "pemeriksa: G-mirip (pilihan-d): pola pilihan hampir sama dengan omongan lain"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Eh, saham Perusahaan A hari ini kayak nggak ada yang main, transaksinya kosong. Gw ikut-ikutan nimbrung di grup sebelah nih.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 20,
+          "kata_pilihan": {
+            "a": 8,
+            "b": 5,
+            "c": 7,
+            "d": 5
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": true,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.4,
+              "terkunci": true
+            },
+            {
+              "dengan": 2,
+              "kemiripan": 0.172,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.333
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P1",
+          "b": "P2",
+          "c": "kunci",
+          "d": "P5"
+        },
+        "klaim_dari": null
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 97,
+      "putaran": 5,
+      "jenis": "gerbang-artefak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:44:34.046Z",
+      "waktu_selesai": "2026-09-30T15:44:34.058Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pilihan kunci \"Betul, transaksi saham Perusahaan A 0 lembar.\" mengulang \"rusaha\", \"a\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, transaksi saham Perusahaan A 0 lembar.\" mengulang \"rusaha\", \"a\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, transaksi saham Perusahaan A 0 lembar.\" mengulang \"rusaha\", \"a\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "pilihan kunci \"Betul, transaksi saham Perusahaan A 0 lembar.\" mengulang \"rusaha\", \"a\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": true,
+          "angka": [],
+          "kata": [
+            "rusaha",
+            "a"
+          ],
+          "alasan": [
+            "pilihan kunci \"Betul, transaksi saham Perusahaan A 0 lembar.\" mengulang \"rusaha\", \"a\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman."
+          ]
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 45,
+          "median_pengecoh": 36,
+          "rasio": 1.25,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 98,
+      "putaran": 6,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:44:34.073Z",
+      "waktu_selesai": "2026-09-30T15:45:41.170Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1786,
+      "token_keluar": 4254,
+      "biaya_usd": 0.0033691,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "18c4aaf3a491e334a4aa2088e70caf4d19b360f2a83d9af9b277adeeef9bea70",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Ionstream"
+        ],
+        "token_penalaran": 3890
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 99,
+      "putaran": 6,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:45:41.172Z",
+      "waktu_selesai": "2026-09-30T15:46:52.868Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 4586,
+      "token_keluar": 4378,
+      "biaya_usd": 0.00271852,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3"
+      ],
+      "sha256_prompt": "0926c8818bd29aa89b2aa43923b07e80a7835551b633d9aefad1821666b25820",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 3139
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 100,
+      "putaran": 6,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:46:52.870Z",
+      "waktu_selesai": "2026-09-30T15:48:36.604Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1142,
+      "token_keluar": 1606,
+      "biaya_usd": 0.00076124,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "e454db5da42734e3eeac07f13bebb7de8ac0f19b208e6a07bf4da2236f8c3ee2",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Io Net"
+        ],
+        "token_penalaran": 1165
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 101,
+      "putaran": 6,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T15:48:36.616Z",
+      "waktu_selesai": "2026-09-30T15:48:36.616Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 102,
+      "putaran": 6,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:48:36.618Z",
+      "waktu_selesai": "2026-09-30T15:48:36.619Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Gw udah itung dari kemarin, naik berturut-turutnya udah 2,62 kali dari awal bulan. Kalian baru sadar sekarang, telat.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 18,
+          "kata_pilihan": {
+            "a": 8,
+            "b": 8,
+            "c": 6,
+            "d": 6
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.16,
+              "terkunci": true
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.31,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.1
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P2",
+          "b": "kunci",
+          "c": "P5",
+          "d": "P1"
+        },
+        "klaim_dari": "P4"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 103,
+      "putaran": 6,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:48:36.618Z",
+      "waktu_selesai": "2026-09-30T15:48:36.625Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 43,
+          "median_pengecoh": 46,
+          "rasio": 0.935,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 104,
+      "putaran": 6,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:48:36.630Z",
+      "waktu_selesai": "2026-09-30T15:49:32.110Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 450,
+      "token_keluar": 6658,
+      "biaya_usd": 0.0029201525000000002,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "a",
+            "yakin": 60,
+            "alasan": "Frasa 'peningkatan harga kumulatif yang signifikan' adalah istilah resmi pengumuman UMA BEI, sehingga paling mungkin benar.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "c",
+            "yakin": 60,
+            "alasan": "Opsi ini memuat angka kenaikan spesifik yang biasanya menjadi kunci jawaban benar dalam soal seperti ini.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "DeepInfra",
+          "Wafer"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 105,
+      "putaran": 6,
+      "jenis": "gerbang-kartu",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:49:32.112Z",
+      "waktu_selesai": "2026-09-30T15:51:33.713Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 706,
+      "token_keluar": 9531,
+      "biaya_usd": 0.00573978,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "hari-naik-beruntun",
+          "kelipatan-2026-08-03-2026-08-18"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan kenaikan berturut-turut hanya 3 hari bursa sejak 12 Agustus, bukan dari awal bulan; angka 2,62 kali di kartu 2 adalah rasio harga, bukan lama kenaikan berturut-turut.",
+        "membingungkan": [
+          {
+            "kutipan": "Gw udah itung dari kemarin, naik berturut-turutnya udah 2,62 kali dari awal bulan.",
+            "sumber": "penulis",
+            "bagian": "pesan",
+            "fact_id": null
+          }
+        ],
+        "penyedia": [
+          "InferenceNet"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 106,
+      "putaran": 6,
+      "jenis": "kritikus",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T15:51:33.716Z",
+      "waktu_selesai": "2026-09-30T15:57:21.121Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 2340,
+      "token_keluar": 34475,
+      "biaya_usd": 0.103442716,
+      "putusan": "tolak",
+      "alasan": [
+        "[kritikus: kunci, pilihan] Pilihan c dan d juga benar menurut kartu (Frasa 'naik 2,62 kali dari awal bulan' terbaca wajar sebagai harga naik 2,62 kali lipat yang justru benar di Kartu 2 (dengan kenaikan Rp1.120 di Kartu 4), sehingga 'Betul' di c terbela; alasan d (harga penutupan Rp1.810) juga benar di Kartu 1–2 meski tak me…",
+        "[kritikus: ambigu, pesan] Frasa 'naik berturut-turutnya udah 2,62 kali dari awal bulan' bisa dibaca sebagai kelipatan harga sejak awal bulan yang justru benar menurut Kartu 2, bukan hanya sebagai salah kaprah soal lama kenaikan, sehingga kunci b bisa diperdebatkan dan c terbela.",
+        "[kritikus: ambigu, pilihan] Alasan opsi d (harga penutupan Rp1.810 per lembar) tertera benar di Kartu 1–2 dan verdik 'Keliru'-nya juga didukung kartu, jadi pemegang kartu bisa membela d meski alasannya tak menanggapi klaim Rizky.",
+        "[kritikus: arahan] Ubah pesan Rizky supaya '2,62 kali' jelas melekat pada lama kenaikan berturut-turut dan tidak bisa dibaca sebagai kelipatan harga yang benar di Kartu 2. Ganti alasan opsi d dengan angka yang bertentangan dengan kartu, karena Rp1.810 justru tertera di Kartu 1–2."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "kunci",
+            "bagian": "pilihan",
+            "alasan": "Pilihan c dan d juga benar menurut kartu (Frasa 'naik 2,62 kali dari awal bulan' terbaca wajar sebagai harga naik 2,62 kali lipat yang justru benar di Kartu 2 (dengan kenaikan Rp1.120 di Kartu 4), sehingga 'Betul' di c terbela; alasan d (harga penutupan Rp1.810) juga benar di Kartu 1–2 meski tak me…"
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pesan",
+            "alasan": "Frasa 'naik berturut-turutnya udah 2,62 kali dari awal bulan' bisa dibaca sebagai kelipatan harga sejak awal bulan yang justru benar menurut Kartu 2, bukan hanya sebagai salah kaprah soal lama kenaikan, sehingga kunci b bisa diperdebatkan dan c terbela."
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "pilihan",
+            "alasan": "Alasan opsi d (harga penutupan Rp1.810 per lembar) tertera benar di Kartu 1–2 dan verdik 'Keliru'-nya juga didukung kartu, jadi pemegang kartu bisa membela d meski alasannya tak menanggapi klaim Rizky."
+          }
+        ],
+        "arahan": "Ubah pesan Rizky supaya '2,62 kali' jelas melekat pada lama kenaikan berturut-turut dan tidak bisa dibaca sebagai kelipatan harga yang benar di Kartu 2. Ganti alasan opsi d dengan angka yang bertentangan dengan kartu, karena Rp1.810 justru tertera di Kartu 1–2.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          33919
+        ],
+        "penalaran_tidak_sah": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "Rizky sudah menghitung sendiri sejak kemarin (aktivitasnya tidak ada di kartu)",
+            "kenaikan berlangsung berturut-turut sejak awal bulan — kartu hanya mencatat 3 hari bursa berturut-turut sejak 12 Agustu…"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [
+            "c",
+            "d"
+          ],
+          "alasan_juga_benar": "Frasa 'naik 2,62 kali dari awal bulan' terbaca wajar sebagai harga naik 2,62 kali lipat yang justru benar di Kartu 2 (dengan kenaikan Rp1.120 di Kartu 4), sehingga 'Betul' di c terbela; alasan d (harga penutupan Rp1.810) juga benar di Kartu 1–2 meski tak menanggapi klaim Rizky."
+        },
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 107,
+      "putaran": 6,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:57:21.123Z",
+      "waktu_selesai": "2026-09-30T15:57:21.142Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Eh, saham Perusahaan A hari ini kayak nggak ada yang main, transaksinya kosong. Gw ikut-ikutan nimbrung di grup sebelah nih.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 20,
+          "kata_pilihan": {
+            "a": 5,
+            "b": 7,
+            "c": 5,
+            "d": 7
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.25,
+              "terkunci": true
+            },
+            {
+              "dengan": 2,
+              "kemiripan": 0.31,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.143
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P1",
+          "b": "P6",
+          "c": "kunci",
+          "d": "P7"
+        },
+        "klaim_dari": null
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 108,
+      "putaran": 6,
+      "jenis": "gerbang-artefak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:57:21.123Z",
+      "waktu_selesai": "2026-09-30T15:57:21.144Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 35,
+          "median_pengecoh": 46,
+          "rasio": 0.761,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 109,
+      "putaran": 6,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T15:57:21.151Z",
+      "waktu_selesai": "2026-09-30T16:00:39.935Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 440,
+      "token_keluar": 8461,
+      "biaya_usd": 0.00433795,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "a",
+            "yakin": 35,
+            "alasan": "Angka volume spesifik dan masuk akal, sedangkan opsi lain tampak kurang meyakinkan tanpa konteks.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "a",
+            "yakin": 40,
+            "alasan": "Angka volume 4.382.400 lembar lebih spesifik dan wajar untuk transaksi saham, sedangkan volume 0 lembar sangat tidak lazim.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "Io Net",
+          "Relace"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 110,
+      "putaran": 6,
+      "jenis": "gerbang-kartu",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:00:39.937Z",
+      "waktu_selesai": "2026-09-30T16:00:50.636Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 609,
+      "token_keluar": 416,
+      "biaya_usd": 0.00026787,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"c\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "pilihan": "c",
+        "kartu_ditunjuk": [
+          "volume-2026-08-19"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 mencatat volume perdagangan 19 Agustus 2026 adalah 0 lembar, cocok dengan omongan Sinta bahwa transaksinya kosong.",
+        "membingungkan": [],
+        "penyedia": [
+          "InferenceNet"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 111,
+      "putaran": 6,
+      "jenis": "kritikus",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:00:50.638Z",
+      "waktu_selesai": "2026-09-30T16:03:11.550Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 2096,
+      "token_keluar": 23170,
+      "biaya_usd": 0.0696027144,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "tertebak",
+            "bagian": "pilihan",
+            "alasan": "'Volume 0 lembar' pada kunci c adalah parafrase langsung 'transaksinya kosong' di pesan — apalagi skenario penghentian perdagangan hari itu sudah menyiratkan volume nol — sehingga jawaban bisa dipilih tanpa membaca kartu."
+          }
+        ],
+        "arahan": "Ubah kata 'kosong' pada pesan Sinta supaya '0 lembar' di pilihan kunci tidak bisa dipastikan tanpa membaca kartu; kurangi juga pengungkapan peristiwa penghentian perdagangan hari itu bila terlihat oleh pemain.",
+        "diabaikan": [],
+        "galat": [],
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          22885
+        ],
+        "penalaran_tidak_sah": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Vonis 'Keliru' pada b dan d justru dibantah kartu 1 yang mengonfirmasi klaim Sinta soal transaksi kosong hari itu, sedangkan a membenarkan klaim 'hari ini kosong' dengan volume kemarin yang tidak relevan, jadi hanya c yang benar menurut kartu."
+        },
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 112,
+      "putaran": 6,
+      "jenis": "gerbang-tebak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:03:11.552Z",
+      "waktu_selesai": "2026-09-30T16:03:20.392Z",
+      "model": "z-ai/glm-5.3 + z-ai/glm-5.3 + z-ai/glm-5.3",
+      "panggilan": 4,
+      "token_masuk": 2305,
+      "token_keluar": 1300,
+      "biaya_usd": 0.0043197684,
+      "putusan": "tolak",
+      "alasan": [
+        "3/3 penebak TANPA kartu memilih kunci \"c\", rata-rata keyakinan 90 (tebakan: c/100, c/85, c/85). Alasan mereka: \"(tidak terbukti berpikir)\" \"Pernyataan Sinta soal transaksi kosong hari ini paling langsung dicocokkan oleh volume perdagangan 0 lembar, bukan data volume kemarin yang tidak relevan.\" \"Klaim Sinta bahwa transaksi saham kosong langsung terkonfirmasi oleh volume perdagangan 0 lembar, hal yang memang lazim terjadi pada saham tidak likuid di bursa Indonesia.\" — jawaban benar harus melawan dugaan pertama orang yang belum membaca kartu."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "benar": 3,
+        "yakin_benar": 90,
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "c",
+            "yakin": 100,
+            "benar": true,
+            "terbaca": false,
+            "alasan": "(tidak terbukti berpikir)",
+            "token_penalaran": [
+              176,
+              40
+            ],
+            "penalaran_tidak_sah": [
+              "penalaran tidak terbukti: 176 token < ambang 250 (penyedia Wafer)",
+              "penalaran tidak terbukti: 40 token < ambang 250 (penyedia Phala)"
+            ]
+          },
+          {
+            "ke": 2,
+            "pilihan": "c",
+            "yakin": 85,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Pernyataan Sinta soal transaksi kosong hari ini paling langsung dicocokkan oleh volume perdagangan 0 lembar, bukan data volume kemarin yang tidak relevan.",
+            "token_penalaran": [
+              283
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 3,
+            "pilihan": "c",
+            "yakin": 85,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Klaim Sinta bahwa transaksi saham kosong langsung terkonfirmasi oleh volume perdagangan 0 lembar, hal yang memang lazim terjadi pada saham tidak likuid di bursa Indonesia.",
+            "token_penalaran": [
+              509
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "penyedia": [
+          "Wafer",
+          "Phala",
+          "Wafer",
+          "Wafer"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 113,
+      "putaran": 7,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:03:20.409Z",
+      "waktu_selesai": "2026-09-30T16:03:57.077Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2208,
+      "token_keluar": 2604,
+      "biaya_usd": 0.0021738,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "6a5774f6d00dfa2b6d704fceb8211ce35376a00fcdb967912cfe47c7294f2e75",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Ionstream"
+        ],
+        "token_penalaran": 2507
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 114,
+      "putaran": 7,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:03:57.080Z",
+      "waktu_selesai": "2026-09-30T16:04:28.572Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 3433,
+      "token_keluar": 5910,
+      "biaya_usd": 0.0028575317,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2"
+      ],
+      "sha256_prompt": "54bbe25fba76e5ff89a9631ab9938b1d5ff37180b55f49e6138ccbe404f44dbd",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Wafer"
+        ],
+        "token_penalaran": 5740
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 115,
+      "putaran": 7,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:04:28.574Z",
+      "waktu_selesai": "2026-09-30T16:04:41.870Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1347,
+      "token_keluar": 2340,
+      "biaya_usd": 0.0011304903,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "8c220bcae72f7cca19aa7065a9d27ef9ed6fd0f42c12a35bd8199cebea3d706a",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Wafer"
+        ],
+        "token_penalaran": 2009
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 116,
+      "putaran": 7,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:04:41.875Z",
+      "waktu_selesai": "2026-09-30T16:05:22.429Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2875,
+      "token_keluar": 8575,
+      "biaya_usd": 0.008364375,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3"
+      ],
+      "sha256_prompt": "68d228aaa1718df12b686ca756a61be7546694abe8ca70a99fe144edb130dbcd",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "Krea"
+        ],
+        "token_penalaran": 6767
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 117,
+      "putaran": 7,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:05:22.432Z",
+      "waktu_selesai": "2026-09-30T16:06:49.498Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1107,
+      "token_keluar": 2997,
+      "biaya_usd": 0.00182034,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "3326b9f6b410d5e675cf9e715ad79540eadbdd06576812ee875db97df11a3e58",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 2023
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 118,
+      "putaran": 7,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T16:06:49.509Z",
+      "waktu_selesai": "2026-09-30T16:06:49.509Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 119,
+      "putaran": 7,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:06:49.511Z",
+      "waktu_selesai": "2026-09-30T16:06:49.526Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: G-mirip (pilihan-b): Pola keempat pilihan omongan ini hampir sama dengan omongan 1 (kemiripan kerangka 0,41 ≥ ambang 0,40): pemain yang sudah menjawab omongan itu bisa menjawab ini tanpa membaca kartu. Tanyakan hal lain dari kartu, dengan bentuk pilihan yang berbeda.",
+        "pemeriksa: G-mirip (pilihan-a): pola pilihan hampir sama dengan omongan lain",
+        "pemeriksa: G-mirip (pilihan-c): pola pilihan hampir sama dengan omongan lain",
+        "pemeriksa: G-mirip (pilihan-d): pola pilihan hampir sama dengan omongan lain"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Gw udah itung dari kemarin, naik beruntunnya 4.382.400 lembar. Kalian baru sadar sekarang, telat.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 14,
+          "kata_pilihan": {
+            "a": 6,
+            "b": 7,
+            "c": 5,
+            "d": 5
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": true,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.412,
+              "terkunci": true
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.333,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.222
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P3",
+          "b": "kunci",
+          "c": "P4",
+          "d": "P5"
+        },
+        "klaim_dari": "P3"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 120,
+      "putaran": 7,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:06:49.511Z",
+      "waktu_selesai": "2026-09-30T16:06:49.528Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 43,
+          "median_pengecoh": 41,
+          "rasio": 1.049,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 121,
+      "putaran": 7,
+      "jenis": "gerbang-g",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:06:49.534Z",
+      "waktu_selesai": "2026-09-30T16:06:49.545Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: G-mirip (pilihan-c): Pola keempat pilihan omongan ini hampir sama dengan omongan 1 (kemiripan kerangka 0,43 ≥ ambang 0,40): pemain yang sudah menjawab omongan itu bisa menjawab ini tanpa membaca kartu. Tanyakan hal lain dari kartu, dengan bentuk pilihan yang berbeda.",
+        "pemeriksa: G-mirip (pilihan-a): pola pilihan hampir sama dengan omongan lain",
+        "pemeriksa: G-mirip (pilihan-b): pola pilihan hampir sama dengan omongan lain",
+        "pemeriksa: G-mirip (pilihan-d): pola pilihan hampir sama dengan omongan lain"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Eh, saham Perusahaan A hari ini kayak nggak ada yang main, transaksinya kosong. Gw ikut-ikutan nimbrung di grup sebelah nih.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 20,
+          "kata_pilihan": {
+            "a": 5,
+            "b": 5,
+            "c": 5,
+            "d": 5
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": true,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.429,
+              "terkunci": true
+            },
+            {
+              "dengan": 2,
+              "kemiripan": 0.333,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.143
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P4",
+          "b": "P5",
+          "c": "kunci",
+          "d": "P2"
+        },
+        "klaim_dari": null
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 122,
+      "putaran": 7,
+      "jenis": "gerbang-artefak",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:06:49.534Z",
+      "waktu_selesai": "2026-09-30T16:06:49.546Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 35,
+          "median_pengecoh": 36,
+          "rasio": 0.972,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 123,
+      "putaran": 7,
+      "jenis": "buang-sudut",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:06:49.557Z",
+      "waktu_selesai": "2026-09-30T16:06:49.557Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 2 habis di sudut ke-2 (hari-naik-beruntun): perbaikan {\"pesan\":1,\"pilihan\":3,\"penjelasan\":1}, putaran 5",
+        "sudut ke-3: harga-2026-08-18"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "sudut_dibuang": "hari-naik-beruntun",
+        "sudut_baru": {
+          "fact_id": "harga-2026-08-18",
+          "topik": "harga"
+        },
+        "perbaikan": {
+          "pesan": 1,
+          "pilihan": 3,
+          "penjelasan": 1
+        }
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 124,
+      "putaran": 7,
+      "jenis": "buang-sudut",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:06:49.570Z",
+      "waktu_selesai": "2026-09-30T16:06:49.570Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "omongan 3 habis di sudut ke-2 (volume-2026-08-19): perbaikan {\"pesan\":0,\"pilihan\":3,\"penjelasan\":0}, putaran 5",
+        "sudut ke-3: volume-2026-08-18"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "sudut_dibuang": "volume-2026-08-19",
+        "sudut_baru": {
+          "fact_id": "volume-2026-08-18",
+          "topik": "harga"
+        },
+        "perbaikan": {
+          "pesan": 0,
+          "pilihan": 3,
+          "penjelasan": 0
+        }
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 125,
+      "putaran": 8,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:06:49.578Z",
+      "waktu_selesai": "2026-09-30T16:07:17.817Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 2072,
+      "token_keluar": 1063,
+      "biaya_usd": 0.00067924,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "1c0cb3fa90ba2a38ff61332af02bc11ba7e4a53d585bc8a616f5711ea2cef895",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Relace"
+        ],
+        "token_penalaran": 744
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 126,
+      "putaran": 8,
+      "jenis": "tulis-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:07:17.821Z",
+      "waktu_selesai": "2026-09-30T16:07:58.540Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1948,
+      "token_keluar": 3199,
+      "biaya_usd": 0.00151336,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 2"
+      ],
+      "sha256_prompt": "da597b2a47fca6eaa6a36bfafd0850e6cfc6669e77bbe8a76f84aaf1bf2471e0",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "DekaLLM"
+        ],
+        "token_penalaran": 3049
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 127,
+      "putaran": 8,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:07:58.545Z",
+      "waktu_selesai": "2026-09-30T16:10:02.039Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 863,
+      "token_keluar": 5916,
+      "biaya_usd": 0.00250323,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "f70308436b7d61d4620355f7b97c351dc7040378d96d9fd70b08cc9ebe91af3a",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Io Net"
+        ],
+        "token_penalaran": 4455
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 128,
+      "putaran": 8,
+      "jenis": "tulis-pesan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:10:02.042Z",
+      "waktu_selesai": "2026-09-30T16:10:24.918Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1412,
+      "token_keluar": 2257,
+      "biaya_usd": 0.00105245,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 3"
+      ],
+      "sha256_prompt": "b5f577524dea35aeed944952865af2350c3b4578d79846ac9795f5bcffc1dfbc",
+      "rincian": {
+        "bagian": "pesan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Io Net"
+        ],
+        "token_penalaran": 1981
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 129,
+      "putaran": 8,
+      "jenis": "tulis-pilihan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:10:24.922Z",
+      "waktu_selesai": "2026-09-30T16:12:30.388Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1660,
+      "token_keluar": 7314,
+      "biaya_usd": 0.0092748,
+      "putusan": "ditulis",
+      "alasan": [
+        "pilihan omongan 3"
+      ],
+      "sha256_prompt": "3f2570bf2785c34f0d3d71f401d6ba61610599af23a8b21b2543893e5165ff98",
+      "rincian": {
+        "bagian": "pilihan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 14000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 8000
+          }
+        },
+        "penyedia": [
+          "DigitalOcean"
+        ],
+        "token_penalaran": 7160
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 130,
+      "putaran": 8,
+      "jenis": "tulis-penjelasan",
+      "omongan": 3,
+      "waktu_mulai": "2026-09-30T16:12:30.391Z",
+      "waktu_selesai": "2026-09-30T16:12:39.849Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 892,
+      "token_keluar": 1480,
+      "biaya_usd": 0.0007180108,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 3"
+      ],
+      "sha256_prompt": "2aa3f5baba290240343643816bc4dd035bf0bddb49ee7af5925ce1e81ceba3fe",
+      "rincian": {
+        "bagian": "penjelasan",
+        "terurai": true,
+        "finish_reason": "stop",
+        "terpotong": false,
+        "mode_berpikir": true,
+        "max_tokens": 8000,
+        "badan": {
+          "reasoning": {
+            "max_tokens": 4000
+          }
+        },
+        "penyedia": [
+          "Wafer"
+        ],
+        "token_penalaran": 1265
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 131,
+      "putaran": 8,
+      "jenis": "validator",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T16:12:39.863Z",
+      "waktu_selesai": "2026-09-30T16:12:39.863Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "diperiksa": [
+          1,
+          2,
+          3
+        ],
+        "kode": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 132,
+      "putaran": 8,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:12:39.864Z",
+      "waktu_selesai": "2026-09-30T16:12:39.874Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "pesan": "Kemarin ditutup di 4.382.400, gw udah cek sendiri dari semalem. Hafal gw mah, ga perlu liat lagi.",
+        "angka_cukup": {
+          "tolak": false
+        },
+        "kaku": {
+          "tolak": false,
+          "penanda": []
+        },
+        "panjang": {
+          "kata_pesan": 17,
+          "kata_pilihan": {
+            "a": 4,
+            "b": 4,
+            "c": 4,
+            "d": 4
+          }
+        },
+        "satu_klausa": [],
+        "register": [],
+        "huruf_pilihan": [],
+        "penilaian": [],
+        "mirip": {
+          "tolak": false,
+          "pasangan": [
+            {
+              "dengan": 1,
+              "kemiripan": 0.273,
+              "terkunci": true
+            },
+            {
+              "dengan": 3,
+              "kemiripan": 0.385,
+              "terkunci": false
+            }
+          ]
+        },
+        "pilihan_kembar": {
+          "tolak": false,
+          "maks": 0.5
+        },
+        "ikatan": [],
+        "sumber_pilihan": {
+          "a": "P3",
+          "b": "kunci",
+          "c": "P10",
+          "d": "P1"
+        },
+        "klaim_dari": "P3"
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 133,
+      "putaran": 8,
+      "jenis": "gerbang-artefak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:12:39.864Z",
+      "waktu_selesai": "2026-09-30T16:12:39.876Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "meresmikan dan keseimbangan tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "meresmikan": {
+          "tolak": false,
+          "angka": [],
+          "kata": [],
+          "alasan": []
+        },
+        "keseimbangan": {
+          "tolak": false,
+          "panjang_kunci": 32,
+          "median_pengecoh": 31,
+          "rasio": 1.032,
+          "alasan": []
+        }
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 134,
+      "putaran": 8,
+      "jenis": "gerbang-pilihan-saja",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:12:39.882Z",
+      "waktu_selesai": "2026-09-30T16:14:50.362Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 408,
+      "token_keluar": 7241,
+      "biaya_usd": 0.004356840000000001,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak pilihan-saja memilih kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "tebakan": [
+          {
+            "ke": 1,
+            "pilihan": "a",
+            "yakin": 40,
+            "alasan": "Opsi a menyajikan pernyataan benar dengan volume spesifik yang wajar, lebih mungkin sebagai jawaban benar dibandingkan opsi b/d yang berupa koreksi atau opsi c yang bernilai nol.",
+            "terbaca": true
+          },
+          {
+            "ke": 2,
+            "pilihan": "a",
+            "yakin": 40,
+            "alasan": "Volume 4.382.400 lembar lebih spesifik dan realistis dibandingkan volume 0, serta opsi a menyatakan 'Betul' yang konsisten dengan pernyataan benar.",
+            "terbaca": true
+          }
+        ],
+        "penyedia": [
+          "InferenceNet",
+          "Relace"
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 135,
+      "putaran": 8,
+      "jenis": "gerbang-kartu",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:14:50.364Z",
+      "waktu_selesai": "2026-09-30T16:15:15.231Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 538,
+      "token_keluar": 2131,
+      "biaya_usd": 0.00130012,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"b\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "pilihan": "b",
+        "kartu_ditunjuk": [
+          "harga-2026-08-18",
+          "volume-2026-08-18"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan harga penutupan Rp1.810, sedangkan angka 4.382.400 di Kartu 2 adalah volume perdagangan, bukan harga penutupan.",
+        "membingungkan": [
+          {
+            "kutipan": "Kemarin ditutup di 4.382.400",
+            "sumber": "penulis",
+            "bagian": "pesan",
+            "fact_id": null
+          }
+        ],
+        "penyedia": [
+          "InferenceNet"
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 136,
+      "putaran": 8,
+      "jenis": "kritikus",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T16:15:15.234Z",
+      "waktu_selesai": "2026-09-30T16:15:15.236Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "galat",
+      "alasan": [
+        "pagu tercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.095954 + perkiraan maksimum US$0.184250 untuk z-ai/glm-5.3 > pagu milestone US$1.20. Panggilan tidak dikirim."
+      ],
+      "sha256_prompt": null,
+      "rincian": {},
+      "peran": "kritikus"
+    }
+  ],
+  "hasil": {
+    "lolos": false,
+    "putaran": 8,
+    "berhenti": "pagu tercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.095954 + perkiraan maksimum US$0.184250 untuk z-ai/glm-5.3 > pagu milestone US$1.20. Panggilan tidak dikirim.",
+    "panggilan": 97,
+    "token_masuk": 134735,
+    "token_keluar": 459216,
+    "biaya_usd": 0.65577413,
+    "durasi_ms": 5375981
+  }
+}

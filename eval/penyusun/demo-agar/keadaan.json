@@ -1,0 +1,335 @@
+{
+  "id": "demo-agar",
+  "kode": "AGAR",
+  "tanggal": "2026-08-19",
+  "jendela": 10,
+  "dibuat": "2026-09-30T14:45:39.084Z",
+  "tahap": "selesai",
+  "sumber_paket": {
+    "sumber": "otomatis",
+    "keterangan": "definisi paket otomatis (alat/penyusun/paket-otomatis.ts, ATURAN_CALON), dari data ≤ T"
+  },
+  "sesudahnya": 27,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis (pesan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penulis (pilihan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0252
+      },
+      {
+        "peran": "penulis (penjelasan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penebak pilihan-saja (×2)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0114
+      },
+      {
+        "peran": "pembaca kartu",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0162
+      },
+      {
+        "peran": "kritikus",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.1844
+      },
+      {
+        "peran": "penebak tanpa kartu (×3)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.0436
+      }
+    ],
+    "per_omongan_usd": 0.7306,
+    "per_putaran_usd": 2.1918,
+    "maks_putaran": 15,
+    "catatan": [
+      "Perkiraan per panggilan = 6.000 token masukan + max_tokens peran × harga daftar OpenRouter (factory/llm/harga.ts).",
+      "Per omongan: tiga bagian penulis (dengan cadangan), pilihan-saja ×2, pembaca kartu, kritikus, dan penebak ×3 — kritikus dan penebak termasuk satu ulangan penjaga penalaran.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD. Bila tidak, panggilan tidak dikirim dan jalan berhenti dengan alasan tertulis."
+    ]
+  },
+  "pagu_jalan_usd": 0.75,
+  "mesin": {
+    "nama": "lingkar-m2d8",
+    "keterangan": "lingkar agen pengecoh, setelan terkini M2d-8 (penulis dipecah DeepSeek; pilihan-saja & pembaca kartu DeepSeek; kritikus & penebak ×3 GLM effort \"high\")",
+    "palsu": false
+  },
+  "hasil": {
+    "terbit": false,
+    "berhenti": "pagu tercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.095954 + perkiraan maksimum US$0.184250 untuk z-ai/glm-5.3 > pagu milestone US$1.20. Panggilan tidak dikirim.",
+    "putaran": 8,
+    "biaya_usd": 0.655774,
+    "biaya_ledger_usd": 0.655774,
+    "penolakan": []
+  },
+  "draf": null,
+  "draf_terakhir": [
+    {
+      "nama": "Fajar",
+      "jam": "20.15",
+      "pesan": "gw panik nih, kenaikan harga saham Perusahaan A dari awal Agustus sampai sekarang Rp1.810? kok bisa segitu drastis.",
+      "angka_pesan": [
+        {
+          "teks": "Rp1.810",
+          "fact_id": "harga-2026-08-18"
+        }
+      ],
+      "kartu": [
+        "naik-2026-08-03-2026-08-18",
+        "harga-2026-08-18",
+        "kelipatan-2026-08-03-2026-08-18",
+        "volume-2026-08-18"
+      ],
+      "kartu_penentu": [
+        "naik-2026-08-03-2026-08-18"
+      ],
+      "pilihan": {
+        "a": "Keliru, kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]].",
+        "b": "Keliru, kenaikannya [[harga-2026-08-18|Rp1.810]].",
+        "c": "Betul, harganya naik [[kelipatan-2026-08-03-2026-08-18|2,62 kali]].",
+        "d": "Betul, volumenya [[volume-2026-08-18|4.382.400 lembar]]."
+      },
+      "kunci": "a",
+      "penjelasan": "Fajar menyebut kenaikan Perusahaan A [[harga-2026-08-18|Rp1.810]]. Itu keliru: angka itu harga penutupan [[harga-2026-08-18|18 Agustus 2026]]. Catatan [[naik-2026-08-03-2026-08-18|3 Agustus 2026]] sampai [[naik-2026-08-03-2026-08-18|18 Agustus 2026]] menunjukkan kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]], dari [[naik-2026-08-03-2026-08-18|Rp690]] ke [[naik-2026-08-03-2026-08-18|Rp1.810]]. Jadi kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]], bukan [[harga-2026-08-18|Rp1.810]]. Yang menggoda: [[kelipatan-2026-08-03-2026-08-18|2,62 kali]] memang benar, tapi itu perbandingan harga, bukan besar kenaikan rupiah. Volume [[volume-2026-08-18|4.382.400 lembar]] juga bukan kenaikan harga. Salah-kaprah yang umum: harga terakhir disangka sama dengan kenaikan harganya."
+    },
+    {
+      "nama": "Rizky",
+      "jam": "20.15",
+      "pesan": "Kemarin ditutup di 4.382.400, gw udah cek sendiri dari semalem. Hafal gw mah, ga perlu liat lagi.",
+      "angka_pesan": [
+        {
+          "teks": "4.382.400",
+          "fact_id": "volume-2026-08-18"
+        }
+      ],
+      "kartu": [
+        "harga-2026-08-18",
+        "volume-2026-08-18",
+        "volume-2026-08-19",
+        "harga-2026-08-14"
+      ],
+      "kartu_penentu": [
+        "harga-2026-08-18"
+      ],
+      "pilihan": {
+        "a": "Betul, volume [[volume-2026-08-18|4.382.400 lembar]].",
+        "b": "Keliru, harga penutupan [[harga-2026-08-18|Rp1.810]].",
+        "c": "Betul, volume [[volume-2026-08-19|0 lembar]].",
+        "d": "Keliru, harga penutupan [[harga-2026-08-14|Rp1.605]]."
+      },
+      "kunci": "b",
+      "penjelasan": "Rizky menyebut kemarin ditutup di [[volume-2026-08-18|4.382.400]]. Di dokumen, angka itu bukan harga penutupan, melainkan volume perdagangan [[volume-2026-08-18|4.382.400 lembar]]. Harga penutupan [[harga-2026-08-18|18 Agustus 2026, Rp1.810]] per lembar. Jadi ucapannya keliru. Pengecoh yang menggoda adalah angka volume yang sama; itu memang ada, tapi bukan harga. Pada [[volume-2026-08-19|19 Agustus 2026, 0 lembar]] volume nol karena perdagangan dihentikan sementara. Salah-kaprah yang umum: menyamakan volume dengan harga penutupan."
+    },
+    {
+      "nama": "Andi",
+      "jam": "19.30",
+      "pesan": "Volume kemarin kayaknya gede banget ya, apa iya seramai itu?",
+      "angka_pesan": [],
+      "kartu": [
+        "volume-2026-08-18",
+        "volume-2026-08-19",
+        "harga-2026-08-18",
+        "kelipatan-2026-08-03-2026-08-18"
+      ],
+      "kartu_penentu": [
+        "volume-2026-08-18"
+      ],
+      "pilihan": {
+        "a": "Keliru, volume hari ini [[volume-2026-08-19|0 lembar]].",
+        "b": "Betul, harga kemarin [[harga-2026-08-18|Rp1.810]] per lembar.",
+        "c": "Betul, volume kemarin [[volume-2026-08-18|4.382.400 lembar]].",
+        "d": "Keliru, naik [[kelipatan-2026-08-03-2026-08-18|2,62 kali]] itu harga."
+      },
+      "kunci": "c",
+      "penjelasan": "Saat Andi tanya volume kemarin, acuan yang tepat adalah volume perdagangan sehari sebelumnya, bukan volume saat bursa menghentikan sementara. Yang terbaca di [[volume-2026-08-18|18 Agustus 2026: 4.382.400 lembar]], jadi ucapannya cocok. Sementara [[volume-2026-08-19|0 lembar]] adalah volume hari ketika perdagangan dihentikan sementara, sehingga tidak menjawab pertanyaan tentang kemarin. Harga [[harga-2026-08-18|Rp1.810 per lembar]] juga bukan ukuran ramai volume, dan [[kelipatan-2026-08-03-2026-08-18|2,62 kali]] adalah perbandingan harga, bukan jumlah lembar. Salah-kaprah yang umum: menganggap volume nol hari ini berarti volume kemarin juga nol, padahal pertanyaannya soal hari sebelumnya."
+    }
+  ],
+  "keadaan": [
+    {
+      "no": 1,
+      "label": "Keliru",
+      "kunci": {
+        "fact_id": "naik-2026-08-03-2026-08-18",
+        "bentuk": "angka",
+        "teks": "Rp1.120",
+        "rujukan": "[[naik-2026-08-03-2026-08-18|Rp1.120]]",
+        "penanda": [],
+        "menjawab": "Kenaikan harga penutupan dari 3 Agustus 2026 sampai 18 Agustus 2026: Rp1.810 dikurangi Rp690 sama dengan Rp1.120",
+        "rujukan_lain": [
+          "[[naik-2026-08-03-2026-08-18|3 Agustus]]",
+          "[[naik-2026-08-03-2026-08-18|18 Agustus]]"
+        ]
+      },
+      "bank": [
+        {
+          "id": "P1",
+          "fact_id": "harga-2026-08-18",
+          "jenis": "operand-keliru",
+          "bentuk": "angka",
+          "teks": "Rp1.810",
+          "rujukan": "[[harga-2026-08-18|Rp1.810]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 18 Agustus 2026 adalah Rp1.810 per lembar"
+        },
+        {
+          "id": "P2",
+          "fact_id": "volume-2026-08-18",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "4.382.400 lembar",
+          "rujukan": "[[volume-2026-08-18|4.382.400 lembar]]",
+          "penanda": [],
+          "menjawab": "Volume perdagangan 18 Agustus 2026 adalah 4.382.400 lembar"
+        },
+        {
+          "id": "P3",
+          "fact_id": "susp-2026-08-19",
+          "jenis": "pengumuman-lain",
+          "bentuk": "alasan",
+          "teks": "Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan A",
+          "rujukan": null,
+          "penanda": [
+            "‹naik›",
+            "harga",
+            "kumulatif",
+            "signifi"
+          ],
+          "menjawab": "Perdagangan saham dihentikan sementara oleh bursa pada 19 Agustus 2026"
+        },
+        {
+          "id": "P4",
+          "fact_id": "harga-2026-08-14",
+          "jenis": "operand-keliru",
+          "bentuk": "angka",
+          "teks": "Rp1.605",
+          "rujukan": "[[harga-2026-08-14|Rp1.605]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 14 Agustus 2026 adalah Rp1.605 per lembar"
+        },
+        {
+          "id": "P5",
+          "fact_id": "kelipatan-2026-08-03-2026-08-18",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "2,62 kali",
+          "rujukan": "[[kelipatan-2026-08-03-2026-08-18|2,62 kali]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 18 Agustus 2026 (Rp1.810) adalah 2,62 kali harga penutupan 3 Agustus 2026 (Rp690), dibulatkan dua angka di belakang koma"
+        },
+        {
+          "id": "P6",
+          "fact_id": "harga-2026-08-13",
+          "jenis": "operand-keliru",
+          "bentuk": "angka",
+          "teks": "Rp1.285",
+          "rujukan": "[[harga-2026-08-13|Rp1.285]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 13 Agustus 2026 adalah Rp1.285 per lembar"
+        },
+        {
+          "id": "P7",
+          "fact_id": "hari-naik-beruntun",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "3 hari bursa",
+          "rujukan": "[[hari-naik-beruntun|3 hari bursa]]",
+          "penanda": [],
+          "menjawab": "Dari 12 Agustus 2026 (Rp1.030) sampai 18 Agustus 2026 (Rp1.810), harga penutupan naik 3 hari bursa berturut-turut, tiap hari lebih tinggi dari hari bursa sebelu"
+        },
+        {
+          "id": "P8",
+          "fact_id": "harga-2026-08-12",
+          "jenis": "operand-keliru",
+          "bentuk": "angka",
+          "teks": "Rp1.030",
+          "rujukan": "[[harga-2026-08-12|Rp1.030]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 12 Agustus 2026 adalah Rp1.030 per lembar"
+        },
+        {
+          "id": "P9",
+          "fact_id": "volume-2026-08-19",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "0 lembar",
+          "rujukan": "[[volume-2026-08-19|0 lembar]]",
+          "penanda": [],
+          "menjawab": "Volume perdagangan 19 Agustus 2026 adalah 0 lembar"
+        }
+      ],
+      "pesan": {
+        "nama": "Fajar",
+        "jam": "20.15",
+        "pesan": "gw panik nih, kenaikan harga saham Perusahaan A dari awal Agustus sampai sekarang Rp1.810? kok bisa segitu drastis.",
+        "angka_pesan": [
+          {
+            "teks": "Rp1.810",
+            "fact_id": "harga-2026-08-18"
+          }
+        ],
+        "klaim_dari": "P1"
+      },
+      "pilihan": {
+        "a": {
+          "teks": "Keliru, kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]].",
+          "sumber": "kunci"
+        },
+        "b": {
+          "teks": "Keliru, kenaikannya [[harga-2026-08-18|Rp1.810]].",
+          "sumber": "P1"
+        },
+        "c": {
+          "teks": "Betul, harganya naik [[kelipatan-2026-08-03-2026-08-18|2,62 kali]].",
+          "sumber": "P5"
+        },
+        "d": {
+          "teks": "Betul, volumenya [[volume-2026-08-18|4.382.400 lembar]].",
+          "sumber": "P2"
+        }
+      },
+      "penjelasan": "Fajar menyebut kenaikan Perusahaan A [[harga-2026-08-18|Rp1.810]]. Itu keliru: angka itu harga penutupan [[harga-2026-08-18|18 Agustus 2026]]. Catatan [[naik-2026-08-03-2026-08-18|3 Agustus 2026]] sampai [[naik-2026-08-03-2026-08-18|18 Agustus 2026]] menunjukkan kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]], dari [[naik-2026-08-03-2026-08-18|Rp690]] ke [[naik-2026-08-03-2026-08-18|Rp1.810]]. Jadi kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]], bukan [[harga-2026-08-18|Rp1.810]]. Yang menggoda: [[kelipatan-2026-08-03-2026-08-18|2,62 kali]] memang benar, tapi itu perbandingan harga, bukan besar kenaikan rupiah. Volume [[volume-2026-08-18|4.382.400 lembar]] juga bukan kenaikan harga. Salah-kaprah yang umum: harga terakhir disangka sama dengan kenaikan harganya.",
+      "omongan": {
+        "nama": "Fajar",
+        "jam": "20.15",
+        "pesan": "gw panik nih, kenaikan harga saham Perusahaan A dari awal Agustus sampai sekarang Rp1.810? kok bisa segitu drastis.",
+        "angka_pesan": [
+          {
+            "teks": "Rp1.810",
+            "fact_id": "harga-2026-08-18"
+          }
+        ],
+        "kartu": [
+          "naik-2026-08-03-2026-08-18",
+          "harga-2026-08-18",
+          "kelipatan-2026-08-03-2026-08-18",
+          "volume-2026-08-18"
+        ],
+        "kartu_penentu": [
+          "naik-2026-08-03-2026-08-18"
+        ],
+        "pilihan": {
+          "a": "Keliru, kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]].",
+          "b": "Keliru, kenaikannya [[harga-2026-08-18|Rp1.810]].",
+          "c": "Betul, harganya naik [[kelipatan-2026-08-03-2026-08-18|2,62 kali]].",
+          "d": "Betul, volumenya [[volume-2026-08-18|4.382.400 lembar]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Fajar menyebut kenaikan Perusahaan A [[harga-2026-08-18|Rp1.810]]. Itu keliru: angka itu harga penutupan [[harga-2026-08-18|18 Agustus 2026]]. Catatan [[naik-2026-08-03-2026-08-18|3 Agustus 2026]] sampai [[naik-2026-08-03-2026-08-18|18 Agustus 2026]] menunjukkan kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]], dari [[naik-2026-08-03-2026-08-18|Rp690]] ke [[naik-2026-08-03-2026-08-18|Rp1.810]]. Jadi kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]], bukan [[harga-2026-08-18|Rp1.810]]. Yang menggoda: [[kelipatan-2026-08-03-2026-08-18|2,62 kali]] memang benar, tapi itu perbandingan harga, bukan besar kenaikan rupiah. Volume [[volume-2026-08-18|4.382.400 lembar]] juga bukan kenaikan harga. Salah-kaprah yang umum: harga terakhir disangka sama dengan kenaikan harganya."
+      },
+      "hurufKunci": "a"
+    }
+  ],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}

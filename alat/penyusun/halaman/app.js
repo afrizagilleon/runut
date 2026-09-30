@@ -273,7 +273,8 @@ async function siapkanJalan(tanggal) {
   $('langkah-penyetuju').hidden = true;
   $('tahap-ringkas').textContent = `Menyiapkan ${keadaan.kode} · ${tanggalId(tanggal)}…`;
   try {
-    const r = await api('/api/siapkan', { kode: keadaan.kode, tanggal, jendela: keadaan.jendela });
+    const nama = $('nama-jalan').value.trim();
+    const r = await api('/api/siapkan', { kode: keadaan.kode, tanggal, jendela: keadaan.jendela, ...(nama ? { id: nama } : {}) });
     bukaJalan(r.id);
   } catch (e) {
     $('tahap-ringkas').textContent = e.message;
@@ -387,6 +388,10 @@ function tampilkanPeristiwa(p) {
   if (p.tahap === 'hasil' && Array.isArray(p.isi.penolakan) && p.isi.penolakan.length > 0) li.append(el('ul', {}, p.isi.penolakan.map((a) => el('li', {}, a))));
   $('tahap').append(li);
   if (p.tahap === 'perkiraan') kotakPersetujuan(p.isi);
+  // Diputar ulang (?jalan=…): persetujuan yang sudah diberikan tidak ditawarkan lagi.
+  if (p.tahap === 'agen' && typeof p.isi.pagu_usd === 'number') {
+    kosongkan($('persetujuan-biaya')).append(el('p', { kelas: 'meta' }, `Disetujui: pagu jalan ${usd(p.isi.pagu_usd)}.`));
+  }
   if (p.tahap === 'hasil' || p.tahap === 'penyetuju' || (p.tahap === 'uji-ulang' && typeof p.isi.lolos === 'boolean')) muatJalan(keadaan.jalan);
 }
 
@@ -465,8 +470,12 @@ function tampilkanHasil(j) {
     el('p', { kelas: 'meta' }, `Jejak lengkap: eval/penyusun/${j.id}/jejak-agen.json dan hasil.json`)));
   const terakhir = j.draf_terakhir.map((o, i) => [o, i + 1]).filter(([o]) => o);
   if (terakhir.length > 0) {
-    isi.append(el('p', { kelas: 'meta' }, 'Versi terakhir tiap posisi (tidak lolos semua gerbang, hanya untuk dibaca):'));
-    for (const [o, no] of terakhir) isi.append(tampilkanOmongan(o, no, j.kartu, { tandaiKunci: true }));
+    const dikunci = new Set((j.keadaan || []).map((k) => k.no));
+    isi.append(el('p', { kelas: 'meta' }, 'Versi terakhir tiap posisi (hanya untuk dibaca; simulasi tidak terbit):'));
+    for (const [o, no] of terakhir) {
+      isi.append(el('p', { kelas: dikunci.has(no) ? 'ok' : 'tidak' }, `Omongan ${no}: ${dikunci.has(no) ? 'lolos semua gerbang (dikunci)' : 'belum lolos semua gerbang'}`));
+      isi.append(tampilkanOmongan(o, no, j.kartu, { tandaiKunci: true }));
+    }
   }
 }
 

@@ -1,0 +1,442 @@
+{
+  "id": "demo-tirt",
+  "kode": "TIRT",
+  "tanggal": "2025-12-10",
+  "jendela": 10,
+  "dibuat": "2026-09-30T13:52:27.115Z",
+  "tahap": "selesai",
+  "sumber_paket": {
+    "sumber": "kurasi",
+    "keterangan": "definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"
+  },
+  "sesudahnya": 108,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis (pesan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penulis (pilihan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0252
+      },
+      {
+        "peran": "penulis (penjelasan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penebak pilihan-saja (×2)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0114
+      },
+      {
+        "peran": "pembaca kartu",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0162
+      },
+      {
+        "peran": "kritikus",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.1844
+      },
+      {
+        "peran": "penebak tanpa kartu (×3)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.0436
+      }
+    ],
+    "per_omongan_usd": 0.7306,
+    "per_putaran_usd": 2.1918,
+    "maks_putaran": 15,
+    "catatan": [
+      "Perkiraan per panggilan = 6.000 token masukan + max_tokens peran × harga daftar OpenRouter (factory/llm/harga.ts).",
+      "Per omongan: tiga bagian penulis (dengan cadangan), pilihan-saja ×2, pembaca kartu, kritikus, dan penebak ×3 — kritikus dan penebak termasuk satu ulangan penjaga penalaran.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD. Bila tidak, panggilan tidak dikirim dan jalan berhenti dengan alasan tertulis."
+    ]
+  },
+  "pagu_jalan_usd": 0.6,
+  "mesin": {
+    "nama": "lingkar-m2d8",
+    "keterangan": "lingkar agen pengecoh, setelan terkini M2d-8 (penulis dipecah DeepSeek; pilihan-saja & pembaca kartu DeepSeek; kritikus & penebak ×3 GLM effort \"high\")",
+    "palsu": false
+  },
+  "hasil": {
+    "terbit": false,
+    "berhenti": "omongan 2 gagal di 3 sudut (naik-2025-11-26-2025-12-09, susp-2025-01-21, kelipatan-2025-11-26-2025-12-09); simulasi tidak terbit",
+    "putaran": 10,
+    "biaya_usd": 0.440179,
+    "biaya_ledger_usd": 0.440179,
+    "penolakan": [
+      "omongan 2 (ditolak-artefak, putaran 10): [gerbang pilihan-saja] lokasi: pilihan a · teramati: \"Betul, harga penutupan Rp106 sudah naik.\" · masalah: 2/2 penebak yang HANYA melihat empat pilihan (tanpa pesan, tanpa kartu) memilih kunci \"d\" (?/-, d/60). Alasan: \"(tak terbaca)\" \"Opsi ini paling spesifik dan memuat angka rasio penutupan yang b… | [gerbang pilihan-saja] lokasi: pilihan b · teramati: \"Keliru, penghentiannya terkait rapat umum pemegang saham.\" · masalah: 2/2 penebak yang HANYA melihat empat pilihan (tanpa pesan, tanpa kartu) memilih kunci \"d\" (?/-, d/60). Alasan: \"(tak terbaca)\" \"Opsi ini paling spesifik dan memuat angka rasio…"
+    ]
+  },
+  "draf": null,
+  "draf_terakhir": [
+    {
+      "nama": "Nadia",
+      "jam": "20.15",
+      "pesan": "Gw yakin banget disetopnya karena bursa ragu sama kelangsungan usaha emitennya, alasannya udah jelas.",
+      "angka_pesan": [],
+      "kartu": [
+        "susp-2025-12-10",
+        "susp-2025-01-21",
+        "rups-2025-09-25"
+      ],
+      "kartu_penentu": [
+        "susp-2025-12-10"
+      ],
+      "pilihan": {
+        "a": "Betul, perdagangan saham dihentikan sementara oleh bursa pada [[susp-2025-01-21|21 Januari]].",
+        "b": "Betul, bursa menilai bahwa terdapat keraguan atas kelangsungan usaha perseroan.",
+        "c": "Keliru, penghentiannya [[susp-2025-12-10|10 Desember]] karena kenaikan harga.",
+        "d": "Keliru, penghentiannya karena rapat umum pemegang saham."
+      },
+      "kunci": "c",
+      "penjelasan": "Yang dibicarakan Nadia adalah penghentian hari itu, [[susp-2025-12-10|10 Desember 2025]]. Di catatan itu alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi dugaan soal keraguan kelangsungan usaha tidak cocok untuk peristiwa itu. Alasan keraguan kelangsungan usaha memang ada di catatan lain, [[susp-2025-01-21|21 Januari 2025]], tetapi itu penghentian berbeda. Alasan itu menggoda karena pernah tercatat, tapi bukan untuk penghentian yang Nadia maksud. Rapat umum pemegang saham juga tidak menjelaskan penghentian ini. Salah-kaprah yang umum: mengira alasan penghentian bisa dipindah ke tanggal lain tanpa mencocokkan peristiwanya."
+    },
+    {
+      "nama": "Rian",
+      "jam": "20.15",
+      "pesan": "Gw udah tahu polanya, dari akhir November harganya udah berlipat ganda. Santai aja.",
+      "angka_pesan": [],
+      "kartu": [
+        "kelipatan-2025-11-26-2025-12-09",
+        "harga-2025-12-09",
+        "rups-2025-09-25",
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "kelipatan-2025-11-26-2025-12-09"
+      ],
+      "pilihan": {
+        "a": "Betul, harga penutupan [[harga-2025-12-09|Rp106]] sudah naik.",
+        "b": "Keliru, penghentiannya terkait rapat umum pemegang saham.",
+        "c": "Keliru, kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]] per lembar saja.",
+        "d": "Betul, harga penutupan naik [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]."
+      },
+      "kunci": "d",
+      "penjelasan": "Klaim Rian bahwa harga sudah berlipat ganda cocok dengan catatan. Penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember 2025]] di [[kelipatan-2025-11-26-2025-12-09|Rp106]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November 2025]] yang [[kelipatan-2025-11-26-2025-12-09|Rp48]]. Jadi arah dan besarnya sejalan. Penghentian sementara hari itu terjadi sesudah harga naik berturut-turut, bukan karena rapat pemegang saham. Catatan rapat hanya menjadwalkan rapat dan tidak memuat keputusannya. Pengecoh yang menggoda: menyebut penghentian terkait rapat pemegang saham; jadwal rapat tidak menjelaskan kenaikan harga. Salah-kaprah yang umum: mengira penghentian sementara selalu karena rapat pemegang saham, padahal catatan menunjukkan harga naik berlipat."
+    },
+    {
+      "nama": "Sinta",
+      "jam": "20.15",
+      "pesan": "RUPS-nya udah kelar ya? aku ragu sih, keputusannya harga Rp48 ya?",
+      "angka_pesan": [
+        {
+          "teks": "Rp48",
+          "fact_id": "harga-2025-11-26"
+        }
+      ],
+      "kartu": [
+        "rups-2025-09-25",
+        "harga-2025-11-26",
+        "susp-2025-12-10",
+        "harga-2025-11-27"
+      ],
+      "kartu_penentu": [
+        "rups-2025-09-25"
+      ],
+      "pilihan": {
+        "a": "Betul, harga penutupan saham perusahaan [[harga-2025-11-26|Rp48]].",
+        "b": "Betul, perdagangan sahamnya dihentikan sementara oleh bursa hari ini.",
+        "c": "Keliru, keputusan rapatnya menetapkan harga saham [[harga-2025-11-27|Rp52]].",
+        "d": "Keliru, rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September]]."
+      },
+      "kunci": "d",
+      "penjelasan": "Di dokumen, rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September 2025]], dan isi keputusannya tidak tercatat. Jadi anggapan bahwa rapat sudah selesai dan menetapkan harga [[harga-2025-11-26|Rp48]] tidak didukung. Harga [[harga-2025-11-26|Rp48]] memang muncul, tapi itu harga penutupan [[harga-2025-11-26|26 November 2025]], bukan hasil rapat. Harga [[harga-2025-11-27|Rp52]] juga hanya penutupan [[harga-2025-11-27|27 November 2025]]. Penghentian perdagangan [[susp-2025-12-10|10 Desember 2025]] benar terjadi, tapi bukan bukti keputusan rapat. Salah-kaprah yang umum: melihat angka harga di dokumen lalu menganggapnya sebagai keputusan rapat."
+    }
+  ],
+  "keadaan": [
+    {
+      "no": 1,
+      "label": "Keliru",
+      "kunci": {
+        "fact_id": "susp-2025-12-10",
+        "bentuk": "alasan",
+        "teks": "Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor",
+        "rujukan": "[[susp-2025-12-10|10 Desember]]",
+        "penanda": [
+          "‹naik›",
+          "harga",
+          "kumulatif",
+          "signifi",
+          "cooling",
+          "down",
+          "rlindung",
+          "investor"
+        ],
+        "menjawab": "Perdagangan saham dihentikan sementara oleh bursa pada 10 Desember 2025",
+        "rujukan_lain": []
+      },
+      "bank": [
+        {
+          "id": "P1",
+          "fact_id": "susp-2025-01-21",
+          "jenis": "periode-keliru",
+          "bentuk": "tanggal",
+          "teks": "21 Januari",
+          "rujukan": "[[susp-2025-01-21|21 Januari]]",
+          "penanda": [],
+          "menjawab": "Perdagangan saham dihentikan sementara oleh bursa pada 21 Januari 2025"
+        },
+        {
+          "id": "P2",
+          "fact_id": "volume-2025-12-10",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "0 lembar",
+          "rujukan": "[[volume-2025-12-10|0 lembar]]",
+          "penanda": [],
+          "menjawab": "Volume perdagangan 10 Desember 2025 adalah 0 lembar"
+        },
+        {
+          "id": "P3",
+          "fact_id": "susp-2025-01-21",
+          "jenis": "alasan-lain",
+          "bentuk": "alasan",
+          "teks": "Bursa menilai bahwa terdapat keraguan atas kelangsungan usaha perseroan",
+          "rujukan": null,
+          "penanda": [
+            "‹ragu›",
+            "langsung",
+            "usaha"
+          ],
+          "menjawab": "Perdagangan saham dihentikan sementara oleh bursa pada 21 Januari 2025"
+        },
+        {
+          "id": "P4",
+          "fact_id": "rups-2025-09-25",
+          "jenis": "pengumuman-lain",
+          "bentuk": "peristiwa",
+          "teks": "rapat umum pemegang saham",
+          "rujukan": null,
+          "penanda": [
+            "‹rapat›",
+            "umum",
+            "egang"
+          ],
+          "menjawab": "Rapat umum pemegang saham dijadwalkan 25 September 2025"
+        },
+        {
+          "id": "P5",
+          "fact_id": "harga-2025-12-09",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "Rp106",
+          "rujukan": "[[harga-2025-12-09|Rp106]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 9 Desember 2025 adalah Rp106 per lembar"
+        },
+        {
+          "id": "P6",
+          "fact_id": "volume-2025-12-09",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "1.461.200 lembar",
+          "rujukan": "[[volume-2025-12-09|1.461.200 lembar]]",
+          "penanda": [],
+          "menjawab": "Volume perdagangan 9 Desember 2025 adalah 1.461.200 lembar"
+        },
+        {
+          "id": "P7",
+          "fact_id": "naik-2025-11-26-2025-12-09",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "Rp58",
+          "rujukan": "[[naik-2025-11-26-2025-12-09|Rp58]]",
+          "penanda": [],
+          "menjawab": "Kenaikan harga penutupan dari 26 November sampai 9 Desember 2025: Rp106 dikurangi Rp48 sama dengan Rp58"
+        }
+      ],
+      "pesan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget disetopnya karena bursa ragu sama kelangsungan usaha emitennya, alasannya udah jelas.",
+        "angka_pesan": [],
+        "klaim_dari": "P3"
+      },
+      "pilihan": {
+        "c": {
+          "teks": "Keliru, penghentiannya [[susp-2025-12-10|10 Desember]] karena kenaikan harga.",
+          "sumber": "kunci"
+        },
+        "a": {
+          "teks": "Betul, perdagangan saham dihentikan sementara oleh bursa pada [[susp-2025-01-21|21 Januari]].",
+          "sumber": "P1"
+        },
+        "b": {
+          "teks": "Betul, bursa menilai bahwa terdapat keraguan atas kelangsungan usaha perseroan.",
+          "sumber": "P3"
+        },
+        "d": {
+          "teks": "Keliru, penghentiannya karena rapat umum pemegang saham.",
+          "sumber": "P4"
+        }
+      },
+      "penjelasan": "Yang dibicarakan Nadia adalah penghentian hari itu, [[susp-2025-12-10|10 Desember 2025]]. Di catatan itu alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi dugaan soal keraguan kelangsungan usaha tidak cocok untuk peristiwa itu. Alasan keraguan kelangsungan usaha memang ada di catatan lain, [[susp-2025-01-21|21 Januari 2025]], tetapi itu penghentian berbeda. Alasan itu menggoda karena pernah tercatat, tapi bukan untuk penghentian yang Nadia maksud. Rapat umum pemegang saham juga tidak menjelaskan penghentian ini. Salah-kaprah yang umum: mengira alasan penghentian bisa dipindah ke tanggal lain tanpa mencocokkan peristiwanya.",
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget disetopnya karena bursa ragu sama kelangsungan usaha emitennya, alasannya udah jelas.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21",
+          "rups-2025-09-25"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, perdagangan saham dihentikan sementara oleh bursa pada [[susp-2025-01-21|21 Januari]].",
+          "b": "Betul, bursa menilai bahwa terdapat keraguan atas kelangsungan usaha perseroan.",
+          "c": "Keliru, penghentiannya [[susp-2025-12-10|10 Desember]] karena kenaikan harga.",
+          "d": "Keliru, penghentiannya karena rapat umum pemegang saham."
+        },
+        "kunci": "c",
+        "penjelasan": "Yang dibicarakan Nadia adalah penghentian hari itu, [[susp-2025-12-10|10 Desember 2025]]. Di catatan itu alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi dugaan soal keraguan kelangsungan usaha tidak cocok untuk peristiwa itu. Alasan keraguan kelangsungan usaha memang ada di catatan lain, [[susp-2025-01-21|21 Januari 2025]], tetapi itu penghentian berbeda. Alasan itu menggoda karena pernah tercatat, tapi bukan untuk penghentian yang Nadia maksud. Rapat umum pemegang saham juga tidak menjelaskan penghentian ini. Salah-kaprah yang umum: mengira alasan penghentian bisa dipindah ke tanggal lain tanpa mencocokkan peristiwanya."
+      },
+      "hurufKunci": "c"
+    },
+    {
+      "no": 3,
+      "label": "Keliru",
+      "kunci": {
+        "fact_id": "rups-2025-09-25",
+        "bentuk": "peristiwa",
+        "teks": "rapat umum pemegang saham",
+        "rujukan": "[[rups-2025-09-25|25 September]]",
+        "penanda": [
+          "‹rapat›",
+          "umum",
+          "egang"
+        ],
+        "menjawab": "Rapat umum pemegang saham dijadwalkan 25 September 2025",
+        "rujukan_lain": []
+      },
+      "bank": [
+        {
+          "id": "P1",
+          "fact_id": "volume-2025-11-25",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "0 lembar",
+          "rujukan": "[[volume-2025-11-25|0 lembar]]",
+          "penanda": [],
+          "menjawab": "Volume perdagangan 25 November 2025 adalah 0 lembar"
+        },
+        {
+          "id": "P2",
+          "fact_id": "susp-2025-12-10",
+          "jenis": "pengumuman-lain",
+          "bentuk": "peristiwa",
+          "teks": "penghentian sementara perdagangan oleh bursa",
+          "rujukan": null,
+          "penanda": [
+            "‹setop›",
+            "sementara",
+            "rdagang"
+          ],
+          "menjawab": "Perdagangan saham dihentikan sementara oleh bursa pada 10 Desember 2025"
+        },
+        {
+          "id": "P3",
+          "fact_id": "harga-2025-11-26",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "Rp48",
+          "rujukan": "[[harga-2025-11-26|Rp48]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 26 November 2025 adalah Rp48 per lembar"
+        },
+        {
+          "id": "P4",
+          "fact_id": "volume-2025-11-26",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "178.100 lembar",
+          "rujukan": "[[volume-2025-11-26|178.100 lembar]]",
+          "penanda": [],
+          "menjawab": "Volume perdagangan 26 November 2025 adalah 178.100 lembar"
+        },
+        {
+          "id": "P5",
+          "fact_id": "harga-2025-11-27",
+          "jenis": "konsep-lain",
+          "bentuk": "angka",
+          "teks": "Rp52",
+          "rujukan": "[[harga-2025-11-27|Rp52]]",
+          "penanda": [],
+          "menjawab": "Harga penutupan 27 November 2025 adalah Rp52 per lembar"
+        }
+      ],
+      "pesan": {
+        "nama": "Sinta",
+        "jam": "20.15",
+        "pesan": "RUPS-nya udah kelar ya? aku ragu sih, keputusannya harga Rp48 ya?",
+        "angka_pesan": [
+          {
+            "teks": "Rp48",
+            "fact_id": "harga-2025-11-26"
+          }
+        ],
+        "klaim_dari": "P3"
+      },
+      "pilihan": {
+        "d": {
+          "teks": "Keliru, rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September]].",
+          "sumber": "kunci"
+        },
+        "a": {
+          "teks": "Betul, harga penutupan saham perusahaan [[harga-2025-11-26|Rp48]].",
+          "sumber": "P3"
+        },
+        "b": {
+          "teks": "Betul, perdagangan sahamnya dihentikan sementara oleh bursa hari ini.",
+          "sumber": "P2"
+        },
+        "c": {
+          "teks": "Keliru, keputusan rapatnya menetapkan harga saham [[harga-2025-11-27|Rp52]].",
+          "sumber": "P5"
+        }
+      },
+      "penjelasan": "Di dokumen, rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September 2025]], dan isi keputusannya tidak tercatat. Jadi anggapan bahwa rapat sudah selesai dan menetapkan harga [[harga-2025-11-26|Rp48]] tidak didukung. Harga [[harga-2025-11-26|Rp48]] memang muncul, tapi itu harga penutupan [[harga-2025-11-26|26 November 2025]], bukan hasil rapat. Harga [[harga-2025-11-27|Rp52]] juga hanya penutupan [[harga-2025-11-27|27 November 2025]]. Penghentian perdagangan [[susp-2025-12-10|10 Desember 2025]] benar terjadi, tapi bukan bukti keputusan rapat. Salah-kaprah yang umum: melihat angka harga di dokumen lalu menganggapnya sebagai keputusan rapat.",
+      "omongan": {
+        "nama": "Sinta",
+        "jam": "20.15",
+        "pesan": "RUPS-nya udah kelar ya? aku ragu sih, keputusannya harga Rp48 ya?",
+        "angka_pesan": [
+          {
+            "teks": "Rp48",
+            "fact_id": "harga-2025-11-26"
+          }
+        ],
+        "kartu": [
+          "rups-2025-09-25",
+          "harga-2025-11-26",
+          "susp-2025-12-10",
+          "harga-2025-11-27"
+        ],
+        "kartu_penentu": [
+          "rups-2025-09-25"
+        ],
+        "pilihan": {
+          "a": "Betul, harga penutupan saham perusahaan [[harga-2025-11-26|Rp48]].",
+          "b": "Betul, perdagangan sahamnya dihentikan sementara oleh bursa hari ini.",
+          "c": "Keliru, keputusan rapatnya menetapkan harga saham [[harga-2025-11-27|Rp52]].",
+          "d": "Keliru, rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Di dokumen, rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September 2025]], dan isi keputusannya tidak tercatat. Jadi anggapan bahwa rapat sudah selesai dan menetapkan harga [[harga-2025-11-26|Rp48]] tidak didukung. Harga [[harga-2025-11-26|Rp48]] memang muncul, tapi itu harga penutupan [[harga-2025-11-26|26 November 2025]], bukan hasil rapat. Harga [[harga-2025-11-27|Rp52]] juga hanya penutupan [[harga-2025-11-27|27 November 2025]]. Penghentian perdagangan [[susp-2025-12-10|10 Desember 2025]] benar terjadi, tapi bukan bukti keputusan rapat. Salah-kaprah yang umum: melihat angka harga di dokumen lalu menganggapnya sebagai keputusan rapat."
+      },
+      "hurufKunci": "d"
+    }
+  ],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}
