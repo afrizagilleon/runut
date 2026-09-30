@@ -24,7 +24,8 @@ import { PAGU_PENYUSUN_BAWAAN, jalurBukuKas, ringkasBiaya } from './biaya.ts';
 import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
 import { periksaFolderKeluaran } from './jalan.ts';
-import { mesinSungguhan, type MesinPenulis } from './mesin.ts';
+import { mesinSungguhan, panggilSungguhan, type MesinPenulis } from './mesin.ts';
+import { mesinTemplatPalsu, mesinTemplatSungguhan } from './mesin-templat.ts';
 import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
@@ -67,7 +68,11 @@ export interface OpsiServer {
   buatPengambil?: () => Pengambil;
   /** Mesin penulis soal; bawaan lingkar M2d-8 sungguhan (mode palsu: model palsu). */
   mesin?: MesinPenulis;
+  /** M2d-10: mesin yang dipilih di baris perintah (`--mesin`); bawaan `lingkar`. */
+  namaMesin?: NamaMesin;
 }
+
+export type NamaMesin = 'lingkar' | 'templat';
 
 export interface KeadaanServer {
   opsi: OpsiServer;
@@ -347,19 +352,20 @@ export function buatAplikasi(opsi: OpsiServer): { server: Server; keadaan: Keada
   const aliran = new Map<string, Aliran>();
   const gudang = new PemuatGudang(opsi.folderGudang ?? join(opsi.akar, '.cache', 'sectors'));
   const proses = opsi.proses ?? process.env;
+  const siapLlm = (): { siap: boolean; alasan: string | null } => {
+    const k = statusKonfig(opsi.akar, proses);
+    return k.llm.siap ? { siap: true, alasan: null } : { siap: false, alasan: `Kunci OpenRouter belum siap: ${[...k.llm.hilang.map((n) => `isi ${n} di .env`), ...k.llm.catatan].join('; ')}.` };
+  };
+  const templat = opsi.namaMesin === 'templat';
   const mesin =
     opsi.mesin ??
     (opsi.palsu
-      ? mesinPalsu()
-      : mesinSungguhan(
-          opsi.akar,
-          opsi.paguPenyusunUsd,
-          () => {
-            const k = statusKonfig(opsi.akar, proses);
-            return k.llm.siap ? { siap: true, alasan: null } : { siap: false, alasan: `Kunci OpenRouter belum siap: ${[...k.llm.hilang.map((n) => `isi ${n} di .env`), ...k.llm.catatan].join('; ')}.` };
-          },
-          opsi.log,
-        ));
+      ? templat
+        ? mesinTemplatPalsu()
+        : mesinPalsu()
+      : templat
+        ? mesinTemplatSungguhan(panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log), siapLlm)
+        : mesinSungguhan(opsi.akar, opsi.paguPenyusunUsd, siapLlm, opsi.log));
   const alur: KonteksAlur = {
     akar: opsi.akar,
     folderKeluaran: periksaFolderKeluaran(opsi.folderKeluaran),
@@ -443,14 +449,15 @@ export interface ArgumenServer {
   palsu: boolean;
   paguPenyusunUsd: number;
   keluaran: string;
+  mesin: NamaMesin;
 }
 
 /**
- * `--port <n>`, `--pagu-penyusun <usd>`, `--palsu`, `--keluaran <folder>`.
+ * `--port <n>`, `--pagu-penyusun <usd>`, `--palsu`, `--keluaran <folder>`, `--mesin lingkar|templat` (M2d-10).
  * `--host` sengaja DITOLAK: server ini hanya untuk 127.0.0.1.
  */
 export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): ArgumenServer {
-  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun') };
+  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar' };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const nilai = argv[i + 1];
@@ -465,6 +472,10 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
       const n = Number(nilai);
       if (!Number.isFinite(n) || n <= 0) throw new Error('--pagu-penyusun harus angka dolar positif.');
       hasil.paguPenyusunUsd = n;
+      i++;
+    } else if (a === '--mesin' && nilai !== undefined) {
+      if (nilai !== 'lingkar' && nilai !== 'templat') throw new Error('--mesin harus "lingkar" (M2d-8) atau "templat" (M2d-10).');
+      hasil.mesin = nilai;
       i++;
     } else if (a === '--keluaran' && nilai !== undefined) {
       hasil.keluaran = nilai;
@@ -483,9 +494,10 @@ async function utama(): Promise<number> {
     log: (b) => console.log(b),
     paguPenyusunUsd: arg.paguPenyusunUsd,
     palsu: arg.palsu,
+    namaMesin: arg.mesin,
   });
   const port = await dengarkan(server, arg.port);
-  console.log(`Pintu penyusun${arg.palsu ? ' (MODE PALSU: agen & Sectors palsu, tanpa jaringan)' : ''}: http://${HOST}:${String(port)}/`);
+  console.log(`Pintu penyusun${arg.palsu ? ' (MODE PALSU: agen & Sectors palsu, tanpa jaringan)' : ''}, mesin ${arg.mesin}: http://${HOST}:${String(port)}/`);
   console.log(`Hanya mendengar di ${HOST}. Hentikan dengan Ctrl+C.`);
   return 0;
 }

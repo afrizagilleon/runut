@@ -88,10 +88,10 @@ describe('pemanggil sungguhan: pagu berlapis dan dua model, sebelum fetch', () =
     expect(tagPanggilan('penyusun/j/', { jenis: 'kritikus', putaran: 1, omongan: 2, ke: 1 })).toBe('penyusun/j/p1/kritikus/o2');
   });
 
-  it('model di luar dua model → ditolak tanpa fetch', async () => {
+  it('model di luar model yang diizinkan (DeepSeek, GLM, Haiku) → ditolak tanpa fetch', async () => {
     const f = vi.spyOn(globalThis, 'fetch');
     const panggil = panggilSungguhan(akarSementara(), 1.2)('penyusun/j/', 0.5);
-    await expect(panggil([{ role: 'user', content: 'x' }], { suhu: 0, maxTokens: 10 }, { jenis: 'kritikus', putaran: 1, omongan: 1, ke: 1, peran: 'kritikus', model: 'openai/gpt-5' })).rejects.toThrow(/tidak diizinkan/);
+    await expect(panggil([{ role: 'user', content: 'x' }], { suhu: 0, maxTokens: 10 }, { jenis: 'kritikus', putaran: 1, omongan: 1, ke: 1, model: 'openai/gpt-5' })).rejects.toThrow(/tidak diizinkan/);
     expect(f).not.toHaveBeenCalled();
   });
 

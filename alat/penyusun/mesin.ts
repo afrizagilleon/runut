@@ -18,7 +18,8 @@
 import { GENERASI_M2D8 } from '../../factory/llm/kalibrasi-susun.ts';
 import { validasiM2d8 } from '../../factory/llm/kalibrasi-soal.ts';
 import { jalankanPengecoh, promptPenulisPengecoh, ujiUlangDraf, type GenerasiPengecoh, type KeadaanOmongan } from '../../factory/llm/agen-pengecoh.ts';
-import type { InfoPeran, PanggilPeran } from '../../factory/llm/agen-peran.ts';
+import type { PanggilPeran } from '../../factory/llm/agen-peran.ts';
+import type { PesanChat } from '../../factory/llm/klien.ts';
 import type { DrafSimulasi, OmonganDraf } from '../../factory/llm/draf.ts';
 import { bacaKonfigLlm } from '../../factory/llm/env.ts';
 import { HARGA, biayaUsd } from '../../factory/llm/harga.ts';
@@ -29,7 +30,7 @@ import { chatBerpagu, PencatatBiaya } from '../../factory/llm/pagu.ts';
 import type { PaketFakta } from '../../factory/llm/paket.ts';
 import { pagarM2d7 } from '../../factory/llm/penyedia-urutan.ts';
 import { ubahGalatSaldo } from '../../factory/llm/peran-susun.ts';
-import { pesanPaket } from '../../factory/llm/susun.ts';
+import { pesanPaket, type JawabanModel, type SetelanPanggil } from '../../factory/llm/susun.ts';
 import type { TahapAliran } from './aliran.ts';
 import { AWALAN_TAG_PENYUSUN, jalurLedger } from './biaya.ts';
 
@@ -106,6 +107,11 @@ export interface MesinPenulis {
   readonly palsu: boolean;
   /** Bisakah mesin dijalankan sekarang (kunci ada, dsb.). Tanpa memanggil jaringan. */
   siap(): { siap: boolean; alasan: string | null };
+  /**
+   * M2d-10: apakah paket cukup untuk mesin ini (tanpa jaringan, sebelum biaya).
+   * Tanpa metode ini pintu memakai aturan lingkar (≥ 3 sudut).
+   */
+  cukupPaket?(paket: PaketFakta): { cukup: boolean; jumlah: number; satuan: string };
   perkiraan(): PerkiraanBiaya;
   jalankan(k: KonteksJalan): Promise<HasilMesin>;
   /** Perkiraan maksimum uji ulang `jumlah` omongan lewat gerbang yang sama (tanpa penulis). */
@@ -180,6 +186,7 @@ const NAMA_PERAN: Readonly<Record<string, string>> = {
   penebak: 'penebak',
   'pembaca-kartu': 'pembaca kartu',
   kritikus: 'kritikus',
+  penyempurna: 'penyempurna struktur (Haiku)',
 };
 
 const NAMA_LANGKAH: Readonly<Record<string, string>> = {
@@ -195,6 +202,8 @@ const NAMA_LANGKAH: Readonly<Record<string, string>> = {
   kritikus: 'kritikus makna',
   'gerbang-tebak': 'tebak tanpa kartu',
   'buang-sudut': 'buang sudut',
+  'rencana-templat': 'rencana templat',
+  'sempurnakan-pilihan': 'sempurnakan pilihan',
 };
 
 function potong(t: string, n: number): string {
@@ -245,8 +254,19 @@ export class PencatatJejakAliran extends PencatatJejak {
 /** Pembuat pemanggil model untuk satu awalan tag dan pagu bagiannya. */
 export type BuatPanggil = (awalanTag: string, paguBagianUsd: number) => PanggilPeran;
 
+/** Keterangan minimal satu panggilan lewat pintu (lingkar M2d-8 dan mesin templat M2d-10). */
+export interface InfoPanggilPintu {
+  jenis: string;
+  putaran: number;
+  omongan: number | null;
+  ke: number;
+  ulang?: number;
+  model: string;
+}
+export type PanggilPintu = (pesan: PesanChat[], setelan: SetelanPanggil, info: InfoPanggilPintu) => Promise<JawabanModel>;
+
 /** Tag ledger satu panggilan: `penyusun/<id>/p<putaran>/<jenis>[/o<n>][/t<k>][/u<k>]`. */
-export function tagPanggilan(awalan: string, info: Pick<InfoPeran, 'jenis' | 'putaran' | 'omongan' | 'ke' | 'ulang'>): string {
+export function tagPanggilan(awalan: string, info: Pick<InfoPanggilPintu, 'jenis' | 'putaran' | 'omongan' | 'ke' | 'ulang'>): string {
   const o = info.omongan === null ? '' : `/o${String(info.omongan)}`;
   const ke = info.jenis === 'gerbang-tebak' || info.jenis === 'gerbang-pilihan-saja' ? `/t${String(info.ke)}` : '';
   const ulang = info.ulang !== undefined && info.ulang > 0 ? `/u${String(info.ulang)}` : '';
@@ -258,7 +278,7 @@ export function tagPanggilan(awalan: string, info: Pick<InfoPeran, 'jenis' | 'pu
  * (`bacaKonfigLlm`) SAAT jalan disetujui, dan hanya berpindah ke header klien.
  * Pagu berlapis ditegakkan `PencatatBiaya` sebelum setiap percobaan HTTP.
  */
-export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b: string) => void = () => undefined): BuatPanggil {
+export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b: string) => void = () => undefined): (awalanTag: string, paguBagianUsd: number) => PanggilPintu {
   return (awalanTag, paguBagianUsd) => {
     const konfig = bacaKonfigLlm(akar);
     if (konfig.baseUrl !== BASE_URL_OPENROUTER) throw new Error('LLM_BASE_URL bukan OpenRouter (nilainya tidak dicetak); pintu penyusun hanya memanggil OpenRouter.');
@@ -270,7 +290,7 @@ export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b:
       paguMilestone: { usd: paguPenyusunUsd, awalanTag: AWALAN_TAG_PENYUSUN },
       paguBagian: [{ usd: paguBagianUsd, awalanTag }],
     });
-    return async (pesan, setelan, info) => {
+    return async (pesan: PesanChat[], setelan: SetelanPanggil, info: InfoPanggilPintu): Promise<JawabanModel> => {
       if (!(MODEL_OPENROUTER as readonly string[]).includes(info.model)) throw new Error(`Model ${info.model} tidak diizinkan pintu penyusun.`);
       const tag = tagPanggilan(awalanTag, info);
       try {
