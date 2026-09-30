@@ -1,0 +1,83 @@
+{
+  "pagu_probe_usd": 0.25,
+  "biaya_probe_usd": 0.1361024041,
+  "hasil": [
+    {
+      "tag": "m2d8/probe/penebak/p2-o2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 2227,
+      "token_penalaran": 2123,
+      "biaya_usd": 0.0068695406,
+      "terurai": true,
+      "catatan": "d/60 (kunci d)",
+      "teks": "{\"pilihan\": \"d\", \"yakin\": 60, \"alasan\": \"Klaim Rian bahwa harga naik paling logis dibenarkan oleh opsi dengan kenaikan harga spesifik (Rp58); opsi a soal volume tidak memverifikasi kenaikan harga, sementara b dan c bahkan kontradiktif karena menyebut 'keliru' sambil mendeskripsikan data yang tidak membantah kenaikan.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d8/probe/penebak/p4-o2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 6574,
+      "token_penalaran": 6463,
+      "biaya_usd": 0.0198217162,
+      "terurai": true,
+      "catatan": "a/60 (kunci d)",
+      "teks": "{\"pilihan\": \"a\", \"yakin\": 60, \"alasan\": \"Opsi b dan c saling bertentangan (harga dikatakan datar di angka berbeda) sehingga keduanya tersingkir, dan frasa 'peningkatan harga kumulatif yang signifikan' adalah rumusan standar pengumuman cooling down BEI yang membenarkan klaim Rian, sedangkan angka Rp58 pada opsi d tidak bisa diverifikasi dari data yang ada.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d8/probe/penebak/p5-o2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 327,
+      "token_penalaran": 240,
+      "biaya_usd": 0.0011549382,
+      "terurai": false,
+      "catatan": "tak terbaca",
+      "teks": "{\"pilihan\": \"c\", \"yakin\": 45, \"alasan\": \"Pilihan a dan d sama-sama membenarkan Nadia sehingga kemungkinan besar keduanya jebakan, dan di antara pilihan \"keliru\", keraguan atas kelangsungan usaha (going concern) adalah alasan umum BEI menghentikan perdagangan saham.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d8/probe/penebak/p6-o2",
+      "peran": "penebak",
+      "max_tokens": 8000,
+      "penyedia": "Wafer",
+      "finish_reason": "stop",
+      "token_keluar": 3876,
+      "token_penalaran": 3775,
+      "biaya_usd": 0.0117482274,
+      "terurai": true,
+      "catatan": "a/60 (kunci d)",
+      "teks": "{\"pilihan\": \"a\", \"yakin\": 60, \"alasan\": \"Kenaikan berturut-turut yang lama lazim memicu penghentian sementara oleh BEI dengan alasan peningkatan harga kumulatif signifikan, dan rentang 26 November–9 Desember mencakup 10 hari bursa (bukan sembilan), sehingga opsi d tampak sebagai jebakan tanggal.\"}",
+      "status": 200
+    },
+    {
+      "tag": "m2d8/probe/kritikus/p5-o2",
+      "peran": "kritikus",
+      "max_tokens": 32000,
+      "penyedia": "Wafer",
+      "finish_reason": "length",
+      "token_keluar": 32000,
+      "token_penalaran": 32001,
+      "biaya_usd": 0.0965079817,
+      "terurai": false,
+      "catatan": "tak terbaca",
+      "teks": "",
+      "status": 200
+    },
+    {
+      "tag": "m2d8/probe/kritikus/p6-o2",
+      "peran": "kritikus",
+      "max_tokens": 32000,
+      "galat": "PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d8/probe/*) US$0.136102 + perkiraan maksimum US$0.150571 untuk z-ai/glm-5.3 > pagu milestone US$0.25. Panggilan tidak dikirim.",
+      "status": null
+    }
+  ]
+}

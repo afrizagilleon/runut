@@ -55,6 +55,8 @@ describe('pondasi proyek', () => {
     const M2D6 = ['penalar:bukti', 'penalar:probe', 'penalar:kalibrasi', 'penalar:kritikus', 'penalar:susun', 'penalar:penguji', 'penalar:laporan'];
     // M2d-7 D-1…D-9: probe effort "max", kalibrasi, lingkar pengecoh TIRT, penguji eksternal + putusan, laporan — satu per satu.
     const M2D7 = ['pengecoh:probe', 'pengecoh:kalibrasi', 'pengecoh:susun', 'pengecoh:putusan', 'pengecoh:laporan'];
+    // M2d-8 D-1…D-5: probe effort "high", kalibrasi terhadap soal manusia, soal pemanasan, satu jalan TIRT, laporan.
+    const M2D8 = ['kalibrasi:probe', 'kalibrasi:gerbang', 'kalibrasi:pemanasan', 'kalibrasi:susun', 'kalibrasi:penguji', 'kalibrasi:laporan'];
     // M4a D-1/D-2/D-4: pengambil data Sectors di repo, manifest gudang, audit gudang — satu per satu.
     const M4A = ['sectors:ambil', 'sectors:manifest', 'audit:gudang', 'audit:paket'];
     const skrip = Object.keys(paket.scripts).sort();
@@ -77,6 +79,7 @@ describe('pondasi proyek', () => {
         !M2D5.includes(s) &&
         !M2D6.includes(s) &&
         !M2D7.includes(s) &&
+        !M2D8.includes(s) &&
         !M4A.includes(s),
     );
     expect(takDikenal).toEqual([]);

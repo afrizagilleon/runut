@@ -1,0 +1,91 @@
+{
+  "a_terbit": false,
+  "b_tebak": {
+    "lolos": 0,
+    "total": 1,
+    "syarat": "≥ 2/6 (proporsi soal manusia)",
+    "terpenuhi": false
+  },
+  "c_kartu": {
+    "lolos": 1,
+    "total": 1,
+    "terpenuhi": true
+  },
+  "d_makna": {
+    "masalah": 1,
+    "terpenuhi": false
+  },
+  "layak_tayang": false,
+  "omongan": [
+    {
+      "no": 1,
+      "kunci": "c",
+      "tebak": [
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 50
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 55
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 55
+        }
+      ],
+      "lolos_tebak": false,
+      "kartu": [
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1,
+            2
+          ],
+          "bingung": "Pesan Rizky tidak menyebut penghentian yang mana (tanggal berapa), padahal ada dua penghentian: Kartu 2 (21 Januari 2025) memang karena keraguan atas kelangsungan usaha, jadi pilihan a juga terasa benar. Saya pilih c karena Kartu 1 (10 Desember 2025, penghentian terbaru) punya alasan lain, yaitu cooling down setelah kenaikan harga, dan itu membantah 'Ga ada alasan lain deh'.",
+          "penilaian": "",
+          "kunci_lain": "a",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1,
+            3
+          ],
+          "bingung": "Ada dua penghentian (Kartu 1 tanggal 10 Desember 2025 dan Kartu 2 tanggal 21 Januari 2025), dan soal tidak bilang Rizky membicarakan yang mana. Saya pilih yang Desember karena lebih baru dan Kartu 3 (volume 9 Desember) mengarah ke situ.",
+          "penilaian": "",
+          "kunci_lain": "a",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1,
+            2
+          ],
+          "bingung": "Gw yakin banget sahamnya disetop karena bursa ragu soal kelangsungan usahanya.",
+          "penilaian": "Gw yakin banget",
+          "kunci_lain": "a",
+          "tak_tercek": "sahamnya disetop (penghentian yang mana: Januari atau Desember, tidak disebut)",
+          "kembar": ""
+        }
+      ],
+      "lolos_kartu": true,
+      "masalah": [
+        {
+          "butir": "M1 kunci tunggal",
+          "sumber": "3/3 penguji kartu (\"kunci_lain\")"
+        }
+      ]
+    }
+  ]
+}

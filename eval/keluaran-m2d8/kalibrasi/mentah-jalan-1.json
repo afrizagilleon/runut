@@ -1,0 +1,594 @@
+{
+  "selesai": false,
+  "pagu_kalibrasi_usd": 0.7,
+  "biaya_kalibrasi_usd": 0.47010485980000005,
+  "hasil": [
+    {
+      "id": "dada-s1-kata-bursa",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "luar": "soal manusia tayang",
+      "kunci": "b",
+      "soal": "Bayu: \"Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.\" | a) Betul, pengumuman bursanya soal investor asing. | b) Keliru, pengumumannya soal laporan keuangan telat. | c) Betul, pengumuman itu yang bikin harganya naik 22 kali. | d) Keliru, pengumumannya soal harga yang naik terlalu cepat.",
+      "kode": [
+        {
+          "kode": "PENJELASAN_TANPA_PENENTU",
+          "alasan": "Penjelasan tidak merujuk satu pun kartu penentu."
+        }
+      ],
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 0.909
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "d",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pengumuman bursa lebih lazim soal pergerakan harga yang naik terlalu cepat, bukan soal investor asing atau menyebabkan kenaikan 22 kali.",
+          "token_penalaran": [
+            996
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "d",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Pengumuman bursa yang relevan dengan saham naik 22 kali biasanya terkait harga naik terlalu cepat (UMA), bukan investor asing atau laporan keuangan telat.",
+          "token_penalaran": [
+            780
+          ],
+          "penyedia": [
+            "Morph"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "b",
+        "bingung_penulis": [],
+        "menunjuk_penentu": true,
+        "alasan": "Kartu 1 menunjukkan pengumuman bursa adalah penghentian sementara karena laporan keuangan auditan tahunan belum disampaikan, bukan soal investor asing.",
+        "token_penalaran": [
+          548
+        ],
+        "penyedia": [
+          "Novita"
+        ]
+      },
+      "kritikus": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Pilihan (b) dan (d) sama-sama dibuka 'Keliru, pengumumannya soal…', jadi bedakan sedikit struktur kalimatnya agar pembeda terletak jelas pada isi alasan, bukan pada pola kalimat yang serupa.",
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "'Pasti mau dibeli investor asing' — tidak ada kartu tentang siapa pembelinya atau niat membeli, sehingga bagian ini tak…"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya alasan (b) yang didukung Kartu 1 (penghentian karena laporan keuangan auditan tahunan belum disampaikan); (a) dan (c) tidak didukung kartu mana pun, dan (d) menyebut isi pengumuman soal harga yang tidak ada di kartu."
+        },
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          12444
+        ],
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": null,
+          "yakin": null,
+          "terbaca": false,
+          "alasan": "(tidak terbukti berpikir)",
+          "token_penalaran": [
+            233,
+            55
+          ],
+          "penyedia": [
+            "Wafer",
+            "Cloudflare"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "d",
+          "yakin": 80,
+          "terbaca": true,
+          "alasan": "Kenaikan harga 22 kali berturut-turut biasanya memicu pengumuman Pergeseran Harga Wajar/UMA dari bursa soal kenaikan harga terlalu cepat, bukan soal investor asing, dan klaim Bayu tentang isi pengumuman keliru.",
+          "token_penalaran": [
+            307
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "d",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "Lonjakan harga 22 kali adalah pemicu klasik pengumuman bursa (URA) tentang kenaikan harga yang tidak wajar/terlalu cepat, bukan soal investor asing, sehingga klaim Bayu keliru.",
+          "token_penalaran": [
+            851
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.0471539663
+    },
+    {
+      "id": "dada-s2-dividen-pemilik-kecil",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "luar": "soal manusia tayang",
+      "kunci": "a",
+      "soal": "Dimas: \"Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.\" | a) Betul, ia kebagian dividen dan jumlahnya cuma Rp140. | b) Betul, malah ia tidak kebagian karena tanggal ex-nya. | c) Keliru, ia kebagian Rp14.000 untuk 10 lot miliknya. | d) Keliru, Rp140 itu sudah besar dibanding nilai sahamnya.",
+      "kode": [
+        {
+          "kode": "ANDAIAN_DI_PENJELASAN",
+          "alasan": "Penjelasan memakai [[misal|…]]; penjelasan hanya menyebut isi dokumen."
+        },
+        {
+          "kode": "G-register",
+          "alasan": "Pesan memakai \"gue\"; pakai \"gw\" atau \"aku\" (dan \"lu\" atau \"kamu\") seperti contoh gaya."
+        }
+      ],
+      "meresmikan": {
+        "angka": [],
+        "kata": [
+          "viden"
+        ]
+      },
+      "keseimbangan": {
+        "rasio": 0.981
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "10 lot sama dengan 1.000 lembar, jadi jika dividennya Rp14 per lembar totalnya Rp14.000, sehingga opsi c paling masuk akal.",
+          "token_penalaran": [
+            562
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Perhitungan dividen 10 lot umumnya 1.000 saham, sehingga Rp14 per saham menghasilkan Rp14.000, bukan Rp140.",
+          "token_penalaran": [
+            322
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "a",
+        "bingung_penulis": [],
+        "menunjuk_penentu": true,
+        "alasan": "Kartu 2 menghitung 10 lot = 1.000 lembar × Rp0,14 = Rp140, sehingga cocok dengan omongan Dimas bahwa dividennya receh.",
+        "token_penalaran": [
+          758
+        ],
+        "penyedia": [
+          "InferenceNet"
+        ]
+      },
+      "kritikus": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [
+          {
+            "jenis": "tertebak",
+            "bagian": "pilihan",
+            "alasan": "Ketiga pilihan selain a bisa dieliminasi tanpa kartu karena bertentangan dengan nada 'receh' dan 'kebagian' di pesan, sehingga penebak yang tak membaca kartu punya peluang besar menebak a hanya dari nada."
+          }
+        ],
+        "arahan": "Satu pilihan 'Keliru' perlu dibuat tidak bisa dieliminasi hanya karena berlawanan dengan nada 'receh' pesan; biarkan kesalahannya baru ketahuan dari kartu, misalnya tersembunyi di tanggal ex atau hitungan per lembar, supaya kunci tidak tertebak tanpa kartu.",
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu 1 (tanggal ex 16 September 2025) memastikan pemegang sejak Juli tetap berhak atas dividen dan kartu 2 menyebut jumlahnya Rp140, sehingga hanya a yang didukung; b salah soal hak ex-date, c salah jumlah (kartu menyebut Rp140, bukan Rp14.000), dan d terbantahkan karena Rp140 untuk 10 lot justru …"
+        },
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          26987
+        ],
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": null,
+          "yakin": null,
+          "terbaca": false,
+          "alasan": "(tak terbaca)",
+          "token_penalaran": [
+            8000,
+            8002
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "10 lot = 1.000 lembar saham, jadi dividen per lembar yang wajar (sekitar Rp14) menghasilkan total Rp14.000, bukan Rp140 — klaim 'receh' Dimas kemungkinan salah hitung lot.",
+          "token_penalaran": [
+            8001,
+            1167
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "c",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "1 lot = 100 lembar saham, jadi 10 lot = 1.000 lembar; jika dividen dokumen Rp14 per saham, totalnya Rp14.000 (bukan Rp140 yang lupa konversi lot), cukup bayar parkir, jadi keluhan Dimas keliru.",
+          "token_penalaran": [
+            4410
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.17316913599999997
+    },
+    {
+      "id": "dada-s3-siapa-yang-menjual",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "luar": "soal manusia tayang",
+      "kunci": "c",
+      "soal": "Rara: \"Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik.\" | a) Betul, laporannya menunjukkan ia membeli lagi di harga belasan rupiah. | b) Betul, laporannya menunjukkan ia membeli lagi di harga ratusan rupiah. | c) Keliru, laporannya menunjukkan ia menjual banyak di harga belasan rupiah. | d) Keliru, laporannya menunjukkan ia menjual banyak di harga ratusan rupiah.",
+      "kode": [],
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 1.043
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "b",
+          "yakin": 40,
+          "terbaca": true,
+          "alasan": "Harga ratusan rupiah lebih lazim daripada belasan, dan opsi ini menyatakan laporan benar tentang pembelian lagi.",
+          "token_penalaran": [
+            663
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "d",
+          "yakin": 40,
+          "terbaca": true,
+          "alasan": "Opsi ini paling kontras dan sering menjadi kunci koreksi dalam soal benar-salah: klaim membeli lagi dibantah dengan bukti menjual banyak di harga ratusan.",
+          "token_penalaran": [
+            3135
+          ],
+          "penyedia": [
+            "Relace"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "c",
+        "bingung_penulis": [],
+        "menunjuk_penentu": false,
+        "alasan": "Kartu 1-3 menunjukkan Karya Permata Inovasi Indonesia justru menjual banyak saham di harga Rp13, Rp14, dan Rp15, bukan tidak menjual.",
+        "token_penalaran": [
+          859
+        ],
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "kritikus": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Ikat identitas subjek: pastikan satu kartu menyebut Karya Permata Inovasi Indonesia sebagai pengendali sekaligus pemilik terbesar Perusahaan D, karena kartu kini hanya menulis 'pengendali' sementara pesan menyebut 'pemilik terbesarnya'.",
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "angka 'harganya udah Rp178' — kartu hanya memuat harga transaksi Rp13–Rp15 pada Agustus, tidak ada kartu harga pasar 8 …",
+            "sebutan 'pemilik terbesarnya' — kartu hanya menyebut Karya Permata Inovasi Indonesia sebagai 'pengendali', tanpa data b…",
+            "kesimpulan 'dia yakin harganya masih bakal naik' — tidak ada kartu tentang keyakinan, niat, atau harga masa depan"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "a dan b menyebut pembelian padahal ketiga laporan adalah penjualan dengan kepemilikan yang terus turun, dan d menyebut harga ratusan rupiah padahal kartu mencatat Rp13–Rp15, jadi hanya c yang didukung kartu."
+        },
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          16770
+        ],
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "d",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Harga saham Rp178 berarti transaksi besar pemegang saham terbesar kemungkinan terjadi di kisaran ratusan rupiah, dan pola soal seperti ini biasanya menunjukkan klaim 'pemilik besar tidak menjual' justru terbantahkan oleh laporan bahwa ia menjual banyak di harga ratusan rupiah.",
+          "token_penalaran": [
+            402
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "b",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Klaim Rara yang wajar (pemilik besar tidak menjual, bahkan menambah) kemungkinan benar, dan harga Rp178 berarti transaksi terbarunya paling logis di rentang ratusan rupiah, bukan belasan.",
+          "token_penalaran": [
+            3928
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": null,
+          "yakin": null,
+          "terbaca": false,
+          "alasan": "(tak terbaca)",
+          "token_penalaran": [
+            8000,
+            8000
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.1165288801
+    },
+    {
+      "id": "ultj-turun-di-tanggal-ex",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "luar": "soal manusia tayang",
+      "kunci": "b",
+      "soal": "Nadia: \"Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!\" | a) Betul, dividennya memang cuma Rp45 per lembar. | b) Keliru, dividennya Rp130, bukan Rp45. | c) Betul, turunnya lebih dari tiga kali dividennya. | d) Keliru, dividennya Rp160, bukan Rp45.",
+      "kode": [],
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 0.804
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Dua opsi koreksi menunjukkan dividen bukan Rp45, dan Rp130 lebih lazim sebagai angka dividen pada soal sejenis.",
+          "token_penalaran": [
+            5415
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "d",
+          "yakin": 30,
+          "terbaca": true,
+          "alasan": "Pilihan ini paling spesifik mengoreksi nilai dividen dengan angka yang tampak lebih meyakinkan daripada opsi serupa lainnya.",
+          "token_penalaran": [
+            8000,
+            4987
+          ],
+          "penyedia": [
+            "Alibaba",
+            "Relace"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "b",
+        "bingung_penulis": [],
+        "menunjuk_penentu": true,
+        "alasan": "Kartu 1 menyatakan dividen tunai Rp130 per lembar, bukan Rp45 seperti kata Nadia.",
+        "token_penalaran": [
+          210
+        ],
+        "penyedia": [
+          "InferenceNet"
+        ]
+      },
+      "kritikus": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Di penjelasan, kalimat 'uang sebesar dividen berpindah dari perusahaan ke pemilik saham' pada tanggal ex sebaiknya dipertegas sebagai penyesuaian harga, bukan uang yang benar-benar berpindah di hari itu.",
+        "cek_makna": {
+          "bagian_tak_tercek": [
+            "Kesimpulan 'Pasti ada kabar buruk!' — sebab penurunan di luar penyesuaian dividen Rp130 tidak disebut kartu mana pun"
+          ],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu 1 menyatakan dividen Rp130 sehingga hanya b yang benar; a dan d memakai angka dividen yang bertentangan dengan kartu, dan c gugur karena penurunan Rp145 tidak lebih dari tiga kali dividen Rp130."
+        },
+        "finish_reason": [
+          "stop"
+        ],
+        "token_penalaran": [
+          9046
+        ],
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "penebak": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Turun Rp145 memang lebih dari tiga kali dividen Rp45 (3×45=135), dan pilihan b serta d saling bertentangan soal nominal dividen sehingga keduanya mungkin pengisi; opsi c membenarkan klaim Nadia dengan hitungan yang konsisten.",
+          "token_penalaran": [
+            1598
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": null,
+          "yakin": null,
+          "terbaca": false,
+          "alasan": "(tak terbaca)",
+          "token_penalaran": [
+            8002,
+            8002
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "pilihan": "b",
+          "yakin": 80,
+          "terbaca": true,
+          "alasan": "Penurunan Rp145 nyaris setara dividen Rp130, pola khas penyesuaian harga saat ex-dividen, sehingga klaim 'kabar buruk' dan angka Rp45 milik Nadia keliru.",
+          "token_penalaran": [
+            8000,
+            557
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "biaya_usd": 0.12405918859999998
+    },
+    {
+      "id": "ultj-riwayat-dividen",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "luar": "soal manusia tayang",
+      "kunci": "a",
+      "soal": "Fajar: \"Gue baru buka riwayat dividennya. Perusahaan U ini bagi dividen tiap tahun tanpa putus sejak 2020, dan jumlah per lembarnya naik terus tiap tahun. Rapi banget.\" | a) Keliru, tiap tahun memang ada, tetapi jumlahnya pernah turun jauh. | b) Betul, tiap tahun ada pembagian dan jumlahnya naik di tahun berikutnya. | c) Betul, jumlahnya sempat datar dua tahun, tetapi tidak pernah turun. | d) Keliru, ada satu tahun tanpa pembagian sama sekali di tengah deret.",
+      "kode": [
+        {
+          "kode": "G-register",
+          "alasan": "Pesan memakai \"gue\"; pakai \"gw\" atau \"aku\" (dan \"lu\" atau \"kamu\") seperti contoh gaya."
+        }
+      ],
+      "meresmikan": {
+        "angka": [],
+        "kata": []
+      },
+      "keseimbangan": {
+        "rasio": 0.985
+      },
+      "pilihan_saja": [
+        {
+          "ke": 1,
+          "pilihan": "c",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan c paling masuk akal karena menyebut pola datar tanpa penurunan, yang sering menjadi jawaban benar pada soal analisis data.",
+          "token_penalaran": [
+            3589
+          ],
+          "penyedia": [
+            "StreamLake"
+          ]
+        },
+        {
+          "ke": 2,
+          "pilihan": "c",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Pilihan c paling spesifik dan tidak terlalu ekstrem, menyiratkan pola datar tanpa penurunan yang sering menjadi jawaban benar pada soal grafik.",
+          "token_penalaran": [
+            8194,
+            996
+          ],
+          "penyedia": [
+            "Relace",
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "b",
+        "bingung_penulis": [],
+        "menunjuk_penentu": true,
+        "alasan": "Kartu 2 menyatakan pembagian dividen tunai tercatat beruntun tanpa lompatan selama 7 tahun, sesuai klaim tiap tahun tanpa putus.",
+        "token_penalaran": [
+          3793
+        ],
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "kritikus": null,
+      "penebak": null,
+      "biaya_usd": 0.009193688799999999,
+      "galat": "PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d8/kalibrasi/*) US$0.546314 + perkiraan maksimum US$0.184590 untuk z-ai/glm-5.3 > pagu milestone US$0.70. Panggilan tidak dikirim."
+    }
+  ]
+}

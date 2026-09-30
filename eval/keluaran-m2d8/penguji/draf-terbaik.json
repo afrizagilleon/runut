@@ -1,0 +1,132 @@
+[
+  {
+    "no": 1,
+    "putaran": 2,
+    "status": "lolos",
+    "tahap": 6,
+    "tahap_nama": "dikunci",
+    "butir_penolakan": 0,
+    "umpan": [],
+    "dicatat": [],
+    "omongan": {
+      "nama": "Rizky",
+      "jam": "20.15",
+      "pesan": "Gw yakin banget sahamnya disetop karena bursa ragu soal kelangsungan usahanya. Ga ada alasan lain deh.",
+      "angka_pesan": [],
+      "kartu": [
+        "susp-2025-12-10",
+        "susp-2025-01-21",
+        "volume-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "susp-2025-12-10"
+      ],
+      "pilihan": {
+        "a": "Betul, penghentiannya karena keraguan atas kelangsungan usaha perseroan.",
+        "b": "Keliru, penghentiannya tercatat pada [[susp-2025-01-21|21 Januari]] awal tahun.",
+        "c": "Keliru, penghentiannya karena kenaikan harga kumulatif pada [[susp-2025-12-10|10 Desember]].",
+        "d": "Betul, volume perdagangannya [[volume-2025-12-09|1.461.200 lembar]] pada hari sebelumnya."
+      },
+      "kunci": "c",
+      "penjelasan": "Rizky menyimpulkan penghentian saham Perusahaan T karena bursa ragu soal kelangsungan usaha. Catatan [[susp-2025-12-10|10 Desember 2025]] menyebut alasan resminya: kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi untuk kejadian itu, pernyataannya tidak cocok. Memang ada catatan [[susp-2025-01-21|21 Januari 2025]] yang memuat keraguan atas kelangsungan usaha, tetapi itu penghentian di tanggal berbeda. Catatan volume [[volume-2025-12-09|9 Desember 2025]] hanya menunjukkan angka perdagangan, bukan sebab penghentian, jadi tidak menjawab alasan. Salah-kaprah yang umum: mengira semua penghentian saham punya alasan yang sama, padahal alasan resminya bisa berbeda."
+    }
+  },
+  {
+    "no": 2,
+    "putaran": 2,
+    "status": "ditolak-kritikus",
+    "tahap": 4,
+    "tahap_nama": "kritikus",
+    "butir_penolakan": 13,
+    "umpan": [
+      "[kritikus: makna] lokasi: pesan · teramati: \"Dari akhir November ke awal Desember harganya naik lumayan, gw dari dulu hafal pola beginian. Selisihnya kerasa banget sih.\" · masalah: Bagian klaim teman yang tidak bisa dicek dari kartu: \"'gw dari dulu hafal pola beginian' — klaim pengalaman pribadi Fajar, tidak ada kartu yang bisa memastikan benar atau sa…\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan. · alternatif yang diizinkan: sebut isi fakta sudut dengan kata sendiri: Rp58 (Kenaikan harga penutupan dari 26 November sampai 9 Desember 2025: Rp106 dikurangi Rp48 sama dengan Rp58)",
+      "[kritikus: kunci] lokasi: pilihan a · teramati: \"Keliru, 2,21 kali itu rasio harga, bukan selisihnya.\" · masalah: Pilihan a dan b juga benar menurut kartu (Alasan pilihan a dan b sama-sama benar menurut kartu — Kartu 2 memang menyebut 2,21 kali sebagai rasio (selisihnya Rp58 menurut Kartu 1) dan Kartu 3 memang menyebut Rp97 sebagai harga penutupan — padahal Fajar tidak pernah menyebut kedua angka itu.); hanya … · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P5 (konsep-lain: [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: kunci] lokasi: pilihan b · teramati: \"Keliru, Rp97 itu harga penutupan, bukan kenaikannya.\" · masalah: Pilihan a dan b juga benar menurut kartu (Alasan pilihan a dan b sama-sama benar menurut kartu — Kartu 2 memang menyebut 2,21 kali sebagai rasio (selisihnya Rp58 menurut Kartu 1) dan Kartu 3 memang menyebut Rp97 sebagai harga penutupan — padahal Fajar tidak pernah menyebut kedua angka itu.); hanya … · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P4 (operand-keliru: [[harga-2025-12-08|Rp97]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: ambigu] lokasi: pilihan a · teramati: \"Keliru, 2,21 kali itu rasio harga, bukan selisihnya.\" · masalah: Pilihan a dan b memuat fakta yang justru dibenarkan Kartu 2 dan Kartu 3, sehingga pemain yang memegang kartu itu bisa membela pilihan non-kunci walau vonis 'Keliru'-nya salah. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P5 (konsep-lain: [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: ambigu] lokasi: pilihan b · teramati: \"Keliru, Rp97 itu harga penutupan, bukan kenaikannya.\" · masalah: Pilihan a dan b memuat fakta yang justru dibenarkan Kartu 2 dan Kartu 3, sehingga pemain yang memegang kartu itu bisa membela pilihan non-kunci walau vonis 'Keliru'-nya salah. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P4 (operand-keliru: [[harga-2025-12-08|Rp97]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: ambigu] lokasi: pilihan c · teramati: \"Betul, rapat umum pemegang saham menjelaskan kenaikan harga itu.\" · masalah: Pilihan a dan b memuat fakta yang justru dibenarkan Kartu 2 dan Kartu 3, sehingga pemain yang memegang kartu itu bisa membela pilihan non-kunci walau vonis 'Keliru'-nya salah. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P6 (pengumuman-lain: \"rapat umum pemegang saham\"); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: ambigu] lokasi: pilihan d · teramati: \"Betul, dokumen mencatat Rp58 sebagai kenaikan rentang itu.\" · masalah: Pilihan a dan b memuat fakta yang justru dibenarkan Kartu 2 dan Kartu 3, sehingga pemain yang memegang kartu itu bisa membela pilihan non-kunci walau vonis 'Keliru'-nya salah. · alternatif yang diizinkan: label \"Betul,\" + isi fakta sudut dengan kata sendiri, sependek pengecoh; atau rujukan [[naik-2025-11-26-2025-12-09|Rp58]]; atau rujukan [[naik-2025-11-26-2025-12-09|26 November]]; atau rujukan [[naik-2025-11-26-2025-12-09|9 Desember]]; angka/kata yang sudah ada di pesan hanya boleh diulang kunci bila pengecoh juga memuatnya; jangan menaruh di pilihan semua angka yang bisa dipakai menghitung angka kunci",
+      "[kritikus: kunci] lokasi: pilihan a · teramati: \"Keliru, 2,21 kali itu rasio harga, bukan selisihnya.\" · masalah: Kunci memberi 'Betul' tanpa kualifikasi, padahal bagian 'gw dari dulu hafal pola beginian' tidak bisa dipastikan benar atau salah dari kartu mana pun. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P5 (konsep-lain: [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: kunci] lokasi: pilihan b · teramati: \"Keliru, Rp97 itu harga penutupan, bukan kenaikannya.\" · masalah: Kunci memberi 'Betul' tanpa kualifikasi, padahal bagian 'gw dari dulu hafal pola beginian' tidak bisa dipastikan benar atau salah dari kartu mana pun. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P4 (operand-keliru: [[harga-2025-12-08|Rp97]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: tertebak] lokasi: pilihan a · teramati: \"Keliru, 2,21 kali itu rasio harga, bukan selisihnya.\" · masalah: Tanpa kartu pun nada yakin pesan dan konteks harga yang naik membuat 'Betul' terlihat, lalu pilihan paling spesifik (d, satu-satunya dengan angka rupiah) mudah ditebak. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P5 (konsep-lain: [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: tertebak] lokasi: pilihan b · teramati: \"Keliru, Rp97 itu harga penutupan, bukan kenaikannya.\" · masalah: Tanpa kartu pun nada yakin pesan dan konteks harga yang naik membuat 'Betul' terlihat, lalu pilihan paling spesifik (d, satu-satunya dengan angka rupiah) mudah ditebak. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P4 (operand-keliru: [[harga-2025-12-08|Rp97]]); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: tertebak] lokasi: pilihan c · teramati: \"Betul, rapat umum pemegang saham menjelaskan kenaikan harga itu.\" · masalah: Tanpa kartu pun nada yakin pesan dan konteks harga yang naik membuat 'Betul' terlihat, lalu pilihan paling spesifik (d, satu-satunya dengan angka rupiah) mudah ditebak. · alternatif yang diizinkan: P1 (operand-keliru: [[harga-2025-12-09|Rp106]]); P2 (konsep-lain: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P6 (pengumuman-lain: \"rapat umum pemegang saham\"); P7 (operand-keliru: [[harga-2025-12-05|Rp89]])",
+      "[kritikus: arahan] lokasi: pesan · teramati: \"Dari akhir November ke awal Desember harganya naik lumayan, gw dari dulu hafal pola beginian. Selisihnya kerasa banget sih.\" · masalah: Hapus atau ubah bagian 'gw dari dulu hafal pola beginian' agar semua klaim Fajar tercek dari kartu. Perbaiki alasan pilihan a dan b supaya tidak memuat fakta yang justru dibenarkan kartu. · alternatif yang diizinkan: sebut isi fakta sudut dengan kata sendiri: Rp58 (Kenaikan harga penutupan dari 26 November sampai 9 Desember 2025: Rp106 dikurangi Rp48 sama dengan Rp58)"
+    ],
+    "dicatat": [],
+    "omongan": {
+      "nama": "Fajar",
+      "jam": "20.15",
+      "pesan": "Dari akhir November ke awal Desember harganya naik lumayan, gw dari dulu hafal pola beginian. Selisihnya kerasa banget sih.",
+      "angka_pesan": [],
+      "kartu": [
+        "naik-2025-11-26-2025-12-09",
+        "kelipatan-2025-11-26-2025-12-09",
+        "harga-2025-12-08",
+        "rups-2025-09-25"
+      ],
+      "kartu_penentu": [
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "pilihan": {
+        "a": "Keliru, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] itu rasio harga, bukan selisihnya.",
+        "b": "Keliru, [[harga-2025-12-08|Rp97]] itu harga penutupan, bukan kenaikannya.",
+        "c": "Betul, rapat umum pemegang saham menjelaskan kenaikan harga itu.",
+        "d": "Betul, dokumen mencatat [[naik-2025-11-26-2025-12-09|Rp58]] sebagai kenaikan rentang itu."
+      },
+      "kunci": "d",
+      "penjelasan": "Fajar bilang harga naik dari akhir November ke awal Desember. Yang menentukan: [[naik-2025-11-26-2025-12-09|26 November–9 Desember 2025]] harga penutupan bergerak dari [[naik-2025-11-26-2025-12-09|Rp48]] ke [[naik-2025-11-26-2025-12-09|Rp106]], selisihnya [[naik-2025-11-26-2025-12-09|Rp58]]. Jadi ucapannya cocok dengan rentang itu. Angka [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] adalah rasio, bukan selisih. Harga [[harga-2025-12-08|Rp97]] di [[harga-2025-12-08|8 Desember 2025]] adalah level penutupan, bukan kenaikan. Jadwal [[rups-2025-09-25|25 September 2025]] tidak menerangkan pergerakan harga. Salah-kaprah yang umum: menganggap rasio kenaikan sama dengan selisih rupiahnya."
+    }
+  },
+  {
+    "no": 3,
+    "putaran": 9,
+    "status": "ditolak-tebak",
+    "tahap": 5,
+    "tahap_nama": "penebak",
+    "butir_penolakan": 3,
+    "umpan": [
+      "[penebak tanpa kartu] lokasi: pilihan a · teramati: \"Betul, volumenya 1.461.200 lembar.\" · masalah: 3/3 penebak TANPA kartu memilih kunci (d/100, d/100, d/100); pengecoh ini mudah disingkirkan. Alasan mereka: \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" · alternatif yang diizinkan: P1 (periode-keliru: [[volume-2025-12-09|1.461.200 lembar]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P4 (periode-keliru: [[volume-2025-12-09|9 Desember]]); P6 (pengumuman-lain: \"rapat umum pemegang saham\"); P7 (periode-keliru: [[volume-2025-11-26|178.100 lembar]])",
+      "[penebak tanpa kartu] lokasi: pilihan b · teramati: \"Betul, harga penutupan Rp106.\" · masalah: 3/3 penebak TANPA kartu memilih kunci (d/100, d/100, d/100); pengecoh ini mudah disingkirkan. Alasan mereka: \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" · alternatif yang diizinkan: P2 (konsep-lain: [[harga-2025-12-09|Rp106]]); P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P4 (periode-keliru: [[volume-2025-12-09|9 Desember]]); P6 (pengumuman-lain: \"rapat umum pemegang saham\"); P7 (periode-keliru: [[volume-2025-11-26|178.100 lembar]])",
+      "[penebak tanpa kartu] lokasi: pilihan c · teramati: \"Keliru, kenaikannya Rp58 hari ini.\" · masalah: 3/3 penebak TANPA kartu memilih kunci (d/100, d/100, d/100); pengecoh ini mudah disingkirkan. Alasan mereka: \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" \"(tidak terbukti berpikir)\" · alternatif yang diizinkan: P3 (pengumuman-lain: \"Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor\"); P4 (periode-keliru: [[volume-2025-12-09|9 Desember]]); P5 (konsep-lain: [[naik-2025-11-26-2025-12-09|Rp58]]); P6 (pengumuman-lain: \"rapat umum pemegang saham\"); P7 (periode-keliru: [[volume-2025-11-26|178.100 lembar]])"
+    ],
+    "dicatat": [
+      {
+        "sumber": "kritikus",
+        "alasan": "[kritikus: tertebak, pesan] Keraguan Nadia yang sendiri menyebut 'kayak angka kemarin', ditambah konteks penghentian perdagangan hari itu yang sudah diketahui pemain, cukup menuntun ke 'Keliru, volumenya 0' tanpa membaca kartu sama sekali."
+      },
+      {
+        "sumber": "kritikus",
+        "alasan": "[kritikus: arahan] Hilangkan dari pesan petunjuk bahwa angka 1.461.200 berasal dari hari sebelumnya, karena nada pesan saja sudah mengantar pemain ke jawaban yang benar tanpa kartu."
+      }
+    ],
+    "omongan": {
+      "nama": "Nadia",
+      "jam": "20.15",
+      "pesan": "Volume saham itu hari ini 1.461.200 lembar ya? Aku ragu sih, kayak angka kemarin deh.",
+      "angka_pesan": [
+        {
+          "teks": "1.461.200",
+          "fact_id": "volume-2025-12-09"
+        }
+      ],
+      "kartu": [
+        "volume-2025-12-10",
+        "volume-2025-12-09",
+        "harga-2025-12-09",
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "volume-2025-12-10"
+      ],
+      "pilihan": {
+        "a": "Betul, volumenya [[volume-2025-12-09|1.461.200 lembar]].",
+        "b": "Betul, harga penutupan [[harga-2025-12-09|Rp106]].",
+        "c": "Keliru, kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]] hari ini.",
+        "d": "Keliru, volumenya [[volume-2025-12-10|0 lembar]]."
+      },
+      "kunci": "d",
+      "penjelasan": "Nadia menyebut volume [[volume-2025-12-09|1.461.200 lembar]]. Angka itu memang ada, tetapi untuk [[volume-2025-12-09|9 Desember 2025]], sehari sebelumnya. Untuk hari pertanyaan, [[volume-2025-12-10|10 Desember 2025]], perdagangan dihentikan sementara, dan volume tercatat [[volume-2025-12-10|0 lembar]]. Jadi ucapannya tidak cocok; kunci benar karena volume hari itu nol. Harga penutupan [[harga-2025-12-09|Rp106 per lembar]] dan kenaikan [[naik-2025-11-26-2025-12-09|Rp58]] bukan volume, jadi bukan jawaban. Salah-kaprah yang umum: angka volume dari hari sebelumnya disangka volume hari ini."
+    }
+  }
+]

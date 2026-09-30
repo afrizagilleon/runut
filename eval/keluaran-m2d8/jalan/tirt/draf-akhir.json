@@ -1,0 +1,32 @@
+{
+  "paket_id": "tirt",
+  "jalan": 1,
+  "model_peran": {
+    "penulis": "deepseek/deepseek-v4.1-flash",
+    "penebak": "z-ai/glm-5.3 + z-ai/glm-5.3 + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3",
+    "pilihan-saja": "deepseek/deepseek-v4.1-flash"
+  },
+  "setelan": {
+    "tingkat": {
+      "penebak": 2,
+      "pilihan_saja": 0,
+      "meresmikan": 0,
+      "keseimbangan": 0,
+      "kritikus": 1,
+      "kartu": 1
+    },
+    "dicatat": [
+      "kartu"
+    ],
+    "kode_dicatat": [
+      "G-register",
+      "ANDAIAN_DI_PENJELASAN",
+      "PENJELASAN_TANPA_PENENTU"
+    ]
+  },
+  "terbit": false,
+  "berhenti": "omongan 2 gagal di 3 sudut (naik-2025-11-26-2025-12-09, susp-2025-01-21, hari-naik-beruntun); simulasi tidak terbit",
+  "draf": null
+}

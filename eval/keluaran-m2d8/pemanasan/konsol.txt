@@ -1,0 +1,16 @@
+
+> runut@0.1.0 kalibrasi:pemanasan
+> node --experimental-strip-types factory/llm/kalibrasi-pemanasan.ts
+
+  10:58:47 m2d8/pemanasan/c1/susun/t1: Morph stop penalaran 5263 US$0.002889; pemanasan US$0.0029
+  10:59:03 m2d8/pemanasan/c2/susun/t1: Morph stop penalaran 3670 US$0.002028; pemanasan US$0.0049
+  11:00:06 m2d8/pemanasan/c2/gerbang-kartu/t1: Fireworks stop penalaran 4651 US$0.003479; pemanasan US$0.0084
+  11:01:18 m2d8/pemanasan/c3/susun/t1: Morph stop penalaran 7993 US$0.004207; pemanasan US$0.0126
+  11:01:49 m2d8/pemanasan/c4/susun/t1: Morph stop penalaran 5056 US$0.002712; pemanasan US$0.0153
+  11:03:35 m2d8/pemanasan/c4/gerbang-kartu/t1: DekaLLM stop penalaran 6074 US$0.002537; pemanasan US$0.0179
+percobaan 1: ditolak ([RUJUKAN_PANJANG] Penjelasan: teks rujukan "peningkatan harga kumulatif yang signifikan" 43 karakter, lebih dari 36.)
+percobaan 2: ditolak ([pembaca kartu 1] memilih "c" (kunci "b"), tidak menunjuk kartu 1; alasannya: "Kartu 2 menyatakan alasan resmi penghentian sementara adalah keraguan atas kelangsungan usaha, cocok dengan omongan Maya.")
+percobaan 3: ditolak ([RUJUKAN_PANJANG] Penjelasan: teks rujukan "peningkatan harga kumulatif yang signifikan" 43 karakter, lebih dari 36.)
+percobaan 4: ditolak ([pembaca kartu 1] memilih "c" (kunci "b"), tidak menunjuk kartu 1; alasannya: "Kartu 2 menyebut alasan resmi penghentian sementara adalah karena bursa menilai ada keraguan atas kelangsungan usaha perseroan.")
+TIDAK ADA SOAL (4 percobaan tanpa soal yang lolos semua gerbang); US$0.017852; milestone US$0.744637.
+exit 2

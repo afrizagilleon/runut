@@ -349,7 +349,7 @@ export function bangunLaporan(ledger: readonly EntriLedger[]): { md: string; rin
   }
 
   // --- biaya
-  b.push('## Biaya NYATA M2d-7 (OpenRouter, `usage.cost`)', '', `Entri ledger bertag \`m2d7/\`: **${usd(total)} dalam ${String(m7.length)} panggilan**, dari pagu milestone ${usd(PAGU_MILESTONE_M2D7)} (ditegakkan kode). Kumulatif ledger OpenRouter (M2d-5…M2d-7): ${usd(ledger.reduce((a, e) => a + e.biaya_usd, 0))}.`, '', '| peran | panggilan | token keluar | biaya nyata |', '|---|---:|---:|---:|');
+  b.push('## Biaya NYATA M2d-7 (OpenRouter, `usage.cost`)', '', `Entri ledger bertag \`m2d7/\`: **${usd(total)} dalam ${String(m7.length)} panggilan**, dari pagu milestone ${usd(PAGU_MILESTONE_M2D7)} (ditegakkan kode). Kumulatif ledger OpenRouter (M2d-5…M2d-7): ${usd(ledger.filter((e) => /^m2d[567]\//.test(e.tag)).reduce((a, e) => a + e.biaya_usd, 0))}.`, '', '| peran | panggilan | token keluar | biaya nyata |', '|---|---:|---:|---:|');
   for (const [k, v] of [...kelompok(m7, (e) => peranM2d7(e.tag))].sort((a, c) => a[0].localeCompare(c[0]))) {
     b.push(`| ${k} | ${String(v.length)} | ${angka(v.reduce((a, e) => a + (e.token_keluar ?? 0), 0))} | ${usd(v.reduce((a, e) => a + e.biaya_usd, 0))} |`);
   }

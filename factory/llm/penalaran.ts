@@ -147,3 +147,21 @@ export const PENALAR_M2D7 = {
   kritikus: { effort: 'max', maxTokens: 24_000, ambang: 1_000 },
   penebakGlm: { effort: 'max', maxTokens: 12_000, ambang: 520 },
 } as const satisfies Record<string, PenalarBerpikir>;
+
+/**
+ * Setelan penalar M2d-8 (kontrak D-1, keputusan pemilik 30 Sep: GLM
+ * `effort: "high"`, bukan "max"), HASIL aturan pra-registrasi §5
+ * (`putusanPenalar`, `kalibrasi-probe.ts` — dites sama) atas ledger M2d-6 GLM
+ * "high" + probe T-01 (`eval/keluaran-m2d8/probe/probe-1.json`, US$0,136 nyata):
+ *
+ * - "high" diterima (0 ditolak);
+ * - kritikus: probe atas versi tersulit jalan 2 M2d-7 HABIS di 32.000 token
+ *   (penalaran 32.001, tanpa jawaban) → `max_tokens` 40.000 (batas aturan);
+ *   ambang 1.000;
+ * - penebak: kumpulan 70 (M2d-6 Wafer 66 + probe 4), kuartil bawah 508 →
+ *   ambang 250; habis token 6/76 ≤ 1/10 → `max_tokens` 8.000.
+ */
+export const PENALAR_M2D8 = {
+  kritikus: { effort: 'high', maxTokens: 40_000, ambang: 1_000 },
+  penebakGlm: { effort: 'high', maxTokens: 8_000, ambang: 250 },
+} as const satisfies Record<string, PenalarBerpikir>;
