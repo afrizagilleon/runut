@@ -110,6 +110,15 @@ export interface RencanaSoal {
 /* ---------------------------------------------------------------------- */
 
 export const FRASA_ALASAN: Readonly<Record<Exclude<KategoriAlasan, 'lain'>, string>> = {
+  'kenaikan-harga': 'kenaikan harganya terlalu tajam',
+  'penurunan-harga': 'penurunan harganya terlalu tajam',
+  'kelangsungan-usaha': 'usahanya diragukan bisa terus berjalan',
+  'laporan-keuangan': 'laporan keuangannya terlambat diserahkan',
+  'aksi-korporasi': 'rencana pengambilalihan belum diumumkan',
+};
+
+/** Frasa klaim teman (lebih panjang, untuk penulis pesan). */
+export const FRASA_KLAIM: Readonly<Record<Exclude<KategoriAlasan, 'lain'>, string>> = {
   'kenaikan-harga': 'harganya naik terlalu tinggi dalam waktu singkat',
   'penurunan-harga': 'harganya turun terlalu dalam dalam waktu singkat',
   'kelangsungan-usaha': 'bursa ragu usahanya bisa terus berjalan',
@@ -119,8 +128,8 @@ export const FRASA_ALASAN: Readonly<Record<Exclude<KategoriAlasan, 'lain'>, stri
 
 /** Kata inti tiap frasa alasan (harus tetap ada bila dirangkai ulang). */
 const INTI_ALASAN: Readonly<Record<Exclude<KategoriAlasan, 'lain'>, string[]>> = {
-  'kenaikan-harga': ['naik'],
-  'penurunan-harga': ['turun'],
+  'kenaikan-harga': ['kenaikan'],
+  'penurunan-harga': ['penurunan'],
   'kelangsungan-usaha': ['usaha'],
   'laporan-keuangan': ['laporan keuangan'],
   'aksi-korporasi': ['pengambilalihan'],
@@ -195,7 +204,7 @@ export function polaSebabResmi(paket: PaketFakta): RencanaSoal[] {
   const kz2 = bebas[1];
   if (kz === undefined || kz2 === undefined) return [];
   const hari = penandaHari(sT.tanggal, T);
-  const pH = sT.tanggal === T ? 'hari ini' : `pada ${tok(sT.fact_id, hari)}`;
+  const pH = sT.tanggal === T ? 'hari ini' : tok(sT.fact_id, hari);
   const ktT = kT as Exclude<KategoriAlasan, 'lain'>;
   const kartu = [sT.fact_id];
   if (sO !== null) kartu.push(sO.fact_id);
@@ -217,7 +226,7 @@ export function polaSebabResmi(paket: PaketFakta): RencanaSoal[] {
       label: 'Keliru',
       inti:
         `Teman yakin bursa menghentikan perdagangan saham ${paket.nama_samaran} ${sT.tanggal === T ? 'hari ini' : `pada ${hari}`} ` +
-        `karena ${FRASA_ALASAN[kx]}.`,
+        `karena ${FRASA_KLAIM[kx]}.`,
       angka: sT.tanggal === T ? [] : [{ teks: hari, fact_id: sT.fact_id }],
       wajib: [[penanda]],
     },
@@ -225,14 +234,14 @@ export function polaSebabResmi(paket: PaketFakta): RencanaSoal[] {
       slot(
         'kunci',
         'Keliru + alasan resmi di dokumen',
-        varian('K1', 'Keliru', { k: 'alasan', susp: sT.fact_id, kategori: kT }, `Keliru, alasan resmi penghentian ${pH}: ${FRASA_ALASAN[ktT]}.`, [...INTI_ALASAN[ktT]], penanda),
+        varian('K1', 'Keliru', { k: 'alasan', susp: sT.fact_id, kategori: kT }, `Keliru, alasan resmi ${pH}: ${FRASA_ALASAN[ktT]}.`, [...INTI_ALASAN[ktT]], penanda),
         varian('K2', 'Keliru', { k: 'alasan', susp: sT.fact_id, kategori: kT }, `Keliru, bursa menghentikannya ${pH} karena ${FRASA_ALASAN[ktT]}.`, [...INTI_ALASAN[ktT]], penanda),
       ),
       slot(
         'p1',
         'Betul + alasan yang disebut teman',
         varian('P1a', 'Betul', { k: 'alasan', susp: sT.fact_id, kategori: kx }, `Betul, bursa menghentikannya ${pH} karena ${FRASA_ALASAN[kx]}.`, [...INTI_ALASAN[kx]], penanda),
-        varian('P1b', 'Betul', { k: 'alasan', susp: sT.fact_id, kategori: kx }, `Betul, alasan resmi penghentian ${pH} memang ${FRASA_ALASAN[kx]}.`, [...INTI_ALASAN[kx]], penanda),
+        varian('P1b', 'Betul', { k: 'alasan', susp: sT.fact_id, kategori: kx }, `Betul, alasan resmi ${pH} memang ${FRASA_ALASAN[kx]}.`, [...INTI_ALASAN[kx]], penanda),
       ),
       slot(
         'p2',
@@ -249,7 +258,7 @@ export function polaSebabResmi(paket: PaketFakta): RencanaSoal[] {
           'P2b',
           'Betul',
           { k: 'dan', p: [{ k: 'alasan', susp: sT.fact_id, kategori: kx }, { k: 'alasan', susp: sT.fact_id, kategori: kz2 }] },
-          `Betul, dan bursa ${pH} menambahkan alasan: ${FRASA_ALASAN[kz2]}.`,
+          `Betul, bursa ${pH} juga beralasan ${FRASA_ALASAN[kz2]}.`,
           [...INTI_ALASAN[kz2]],
           penanda,
         ),
@@ -257,7 +266,7 @@ export function polaSebabResmi(paket: PaketFakta): RencanaSoal[] {
       slot(
         'p3',
         'Keliru + alasan lain yang tidak ada di dokumen',
-        varian('P3a', 'Keliru', { k: 'alasan', susp: sT.fact_id, kategori: kz }, `Keliru, alasan resmi penghentian ${pH}: ${FRASA_ALASAN[kz]}.`, [...INTI_ALASAN[kz]], penanda),
+        varian('P3a', 'Keliru', { k: 'alasan', susp: sT.fact_id, kategori: kz }, `Keliru, alasan resmi ${pH}: ${FRASA_ALASAN[kz]}.`, [...INTI_ALASAN[kz]], penanda),
         varian('P3b', 'Keliru', { k: 'alasan', susp: sT.fact_id, kategori: kz }, `Keliru, bursa menghentikannya ${pH} karena ${FRASA_ALASAN[kz]}.`, [...INTI_ALASAN[kz]], penanda),
       ),
     ],
@@ -406,26 +415,26 @@ export function polaSetengahBenar(paket: PaketFakta): RencanaSoal[] {
       slot(
         'kunci',
         'Keliru: bagian pertama benar, bagian kedua salah',
-        varian('K1', 'Keliru', { k: 'dan', p: [naik, adaSusp] }, `Keliru, naiknya memang beruntun, tapi bursa sudah menghentikannya ${tglO}.`, ['beruntun', 'menghentikan'], tglOPolos),
-        varian('K2', 'Keliru', { k: 'dan', p: [naik, adaSusp] }, `Keliru, naik beruntunnya benar, tapi ${tglO} sahamnya sudah pernah dihentikan.`, ['beruntun', 'dihentikan'], tglOPolos),
+        varian('K1', 'Keliru', { k: 'dan', p: [naik, adaSusp] }, `Keliru, naiknya memang beruntun, tapi ${tglO} sudah pernah dihentikan.`, ['beruntun', 'dihentikan'], tglOPolos),
+        varian('K2', 'Keliru', { k: 'dan', p: [naik, adaSusp] }, `Keliru, naik beruntunnya benar, tapi ${tglO} sahamnya sudah dihentikan.`, ['beruntun', 'dihentikan'], tglOPolos),
       ),
       slot(
         'p1',
         'Betul: kedua bagian dibenarkan',
-        varian('P1a', 'Betul', { k: 'dan', p: [naik, { k: 'bukan', p: adaSusp }] }, 'Betul, naik beruntun dan baru kali ini sahamnya dihentikan bursa tahun ini.', ['beruntun', 'baru kali ini'], null),
-        varian('P1b', 'Betul', { k: 'dan', p: [naik, { k: 'bukan', p: adaSusp }] }, 'Betul, kedua hal itu tercatat: naik beruntun dan belum pernah dihentikan tahun ini.', ['beruntun', 'belum pernah'], null),
+        varian('P1a', 'Betul', { k: 'dan', p: [naik, { k: 'bukan', p: adaSusp }] }, 'Betul, naik beruntun dan baru kali ini dihentikan tahun ini.', ['beruntun', 'baru kali ini'], null),
+        varian('P1b', 'Betul', { k: 'dan', p: [naik, { k: 'bukan', p: adaSusp }] }, 'Betul, naik beruntun dan belum pernah dihentikan tahun ini.', ['beruntun', 'belum pernah'], null),
       ),
       slot(
         'p2',
         'Betul + salah membaca alasan penghentian lama',
-        varian('P2a', 'Betul', { k: 'dan', p: [naik, { k: 'alasan', susp: sO.fact_id, kategori: kX }] }, `Betul, naik beruntun; ${tglO} pun dihentikan karena ${FRASA_ALASAN[kX]}.`, ['beruntun', ...INTI_ALASAN[kX]], tglOPolos),
-        varian('P2b', 'Betul', { k: 'dan', p: [naik, { k: 'alasan', susp: sO.fact_id, kategori: kX }] }, `Betul, naik beruntun, dan alasan ${tglO}: ${FRASA_ALASAN[kX]}.`, ['beruntun', ...INTI_ALASAN[kX]], tglOPolos),
+        varian('P2a', 'Betul', { k: 'dan', p: [naik, { k: 'alasan', susp: sO.fact_id, kategori: kX }] }, `Betul, penghentian ${tglO} pun karena ${FRASA_ALASAN[kX]}.`, ['penghentian', ...INTI_ALASAN[kX]], tglOPolos),
+        varian('P2b', 'Betul', { k: 'dan', p: [naik, { k: 'alasan', susp: sO.fact_id, kategori: kX }] }, `Betul, ${tglO} juga dihentikan karena ${FRASA_ALASAN[kX]}.`, ['dihentikan', ...INTI_ALASAN[kX]], tglOPolos),
       ),
       slot(
         'p3',
         'Keliru: bagian yang benar dibantah, bagian yang salah dibenarkan',
-        varian('P3a', 'Keliru', { k: 'dan', p: [{ k: 'bukan', p: naik }, { k: 'bukan', p: adaSusp }] }, 'Keliru, harganya sempat turun, tapi memang belum pernah dihentikan tahun ini.', ['turun', 'belum pernah'], null),
-        varian('P3b', 'Keliru', { k: 'dan', p: [{ k: 'bukan', p: naik }, { k: 'bukan', p: adaSusp }] }, 'Keliru, naiknya tidak beruntun, walau memang belum pernah dihentikan tahun ini.', ['beruntun', 'belum pernah'], null),
+        varian('P3a', 'Keliru', { k: 'dan', p: [{ k: 'bukan', p: naik }, { k: 'bukan', p: adaSusp }] }, 'Keliru, harganya sempat turun, tapi memang belum pernah dihentikan.', ['turun', 'belum pernah'], null),
+        varian('P3b', 'Keliru', { k: 'dan', p: [{ k: 'bukan', p: naik }, { k: 'bukan', p: adaSusp }] }, 'Keliru, naiknya tidak beruntun, tapi belum pernah dihentikan tahun ini.', ['beruntun', 'belum pernah'], null),
       ),
     ],
     salah_kaprah: 'bagian omongan yang benar membuat bagian lainnya ikut terdengar benar',
@@ -475,7 +484,7 @@ export function polaBenarBerincian(paket: PaketFakta): RencanaSoal[] {
         'kunci',
         'Betul + rincian yang tepat',
         varian('K1', 'Betul', naik, `Betul, naik ${nHari} berturut-turut sampai ${sampai}.`, ['berturut-turut'], null),
-        varian('K2', 'Betul', naik, `Betul, ${nHari} berturut-turut tiap penutupan lebih tinggi, sampai ${sampai}.`, ['berturut-turut'], null),
+        varian('K2', 'Betul', naik, `Betul, penutupannya naik ${nHari} berturut-turut sampai ${sampai}.`, ['berturut-turut'], null),
       ),
       slot(
         'p1',
@@ -486,8 +495,8 @@ export function polaBenarBerincian(paket: PaketFakta): RencanaSoal[] {
       slot(
         'p2',
         'Betul + rincian yang salah',
-        varian('P2a', 'Betul', { k: 'naik-beruntun', fact_id: hn.fact_id, hari: m }, `Betul, tapi naik beruntunnya hanya ${misal(`${angkaId(m)} hari bursa`)} sampai ${sampai}.`, ['hanya'], null),
-        varian('P2b', 'Betul', { k: 'naik-beruntun', fact_id: hn.fact_id, hari: m }, `Betul, walau rangkaian naiknya cuma ${misal(`${angkaId(m)} hari bursa`)} sampai ${sampai}.`, ['cuma'], null),
+        varian('P2a', 'Betul', { k: 'naik-beruntun', fact_id: hn.fact_id, hari: m }, `Betul, tapi naik beruntunnya hanya ${misal(`${angkaId(m)} hari bursa`)}.`, ['hanya'], null),
+        varian('P2b', 'Betul', { k: 'naik-beruntun', fact_id: hn.fact_id, hari: m }, `Betul, walau rangkaian naiknya cuma ${misal(`${angkaId(m)} hari bursa`)}.`, ['cuma'], null),
       ),
       slot(
         'p3',
@@ -558,25 +567,25 @@ export function polaArahKaliTingkat(paket: PaketFakta): RencanaSoal[] {
       slot(
         'kunci',
         'arah benar × tingkat benar',
-        varian('K1', 'Keliru', { k: 'dan', p: [naik, diB] }, `Keliru, harganya naik, dan ${pen} sudah ${tB.kata} per lembar.`, ['naik', tB.kata], tgl),
+        varian('K1', 'Keliru', { k: 'dan', p: [naik, diB] }, `Keliru, harganya naik sampai ${tB.kata} pada ${pen}.`, ['naik', tB.kata], tgl),
         varian('K2', 'Keliru', { k: 'dan', p: [naik, diB] }, `Keliru, penutupan ${pen} sudah ${tB.kata} sesudah naik beruntun.`, ['naik', tB.kata], tgl),
       ),
       slot(
         'p1',
         'arah benar × tingkat salah',
-        varian('P1a', 'Betul', { k: 'dan', p: [naik, diA] }, `Betul, harganya naik, tapi ${pen} masih ${tA.kata} per lembar.`, ['naik', tA.kata], tgl),
+        varian('P1a', 'Betul', { k: 'dan', p: [naik, diA] }, `Betul, harganya naik tapi ${pen} masih ${tA.kata}.`, ['naik', tA.kata], tgl),
         varian('P1b', 'Betul', { k: 'dan', p: [naik, diA] }, `Betul, penutupan ${pen} masih ${tA.kata} walau naik beruntun.`, ['naik', tA.kata], tgl),
       ),
       slot(
         'p2',
         'arah salah × tingkat salah',
-        varian('P2a', 'Betul', { k: 'dan', p: [turun, diA] }, `Betul, harganya turun, dan ${pen} tinggal ${tA.kata} per lembar.`, ['turun', tA.kata], tgl),
+        varian('P2a', 'Betul', { k: 'dan', p: [turun, diA] }, `Betul, harganya turun sampai ${tA.kata} pada ${pen}.`, ['turun', tA.kata], tgl),
         varian('P2b', 'Betul', { k: 'dan', p: [turun, diA] }, `Betul, penutupan ${pen} tinggal ${tA.kata} sesudah turun beruntun.`, ['turun', tA.kata], tgl),
       ),
       slot(
         'p3',
         'arah salah × tingkat benar',
-        varian('P3a', 'Keliru', { k: 'dan', p: [turun, diB] }, `Keliru, harganya turun, walau ${pen} masih ${tB.kata} per lembar.`, ['turun', tB.kata], tgl),
+        varian('P3a', 'Keliru', { k: 'dan', p: [turun, diB] }, `Keliru, harganya turun tapi ${pen} masih ${tB.kata}.`, ['turun', tB.kata], tgl),
         varian('P3b', 'Keliru', { k: 'dan', p: [turun, diB] }, `Keliru, penutupan ${pen} masih ${tB.kata} walau turun beruntun.`, ['turun', tB.kata], tgl),
       ),
     ],
@@ -611,11 +620,12 @@ export function polaBesaranHitungan(paket: PaketFakta): RencanaSoal[] {
     const hn = hariNaik(paket);
     if (kartu.length < 2 && hn !== null) kartu.push(hn.fact_id);
     if (kartu.length < 2) continue;
-    const tolakSelisih: Proposisi =
+    const kurang: Proposisi = { k: 'banding', fact_id: kel.fact_id, op: '<', ambang: n };
+    const tolakSelisih: Proposisi = selisih === null ? kurang : { k: 'dan', p: [{ k: 'nilai', fact_id: selisih.fact_id, nilai: selisih.nilai }, kurang] };
+    const teksP2a =
       selisih === null
-        ? { k: 'banding', fact_id: kel.fact_id, op: '<', ambang: n }
-        : { k: 'dan', p: [{ k: 'nilai', fact_id: selisih.fact_id, nilai: selisih.nilai }, { k: 'banding', fact_id: kel.fact_id, op: '<', ambang: n }] };
-    const teksSelisih = selisih === null ? '' : `, naiknya cuma ${tok(selisih.fact_id, rupiah(selisih.nilai))}`;
+        ? `Keliru, kenaikannya belum sampai ${kataAngka(n)} kali lipat.`
+        : `Keliru, naiknya cuma ${tok(selisih.fact_id, rupiah(selisih.nilai))}, bukan ${kataAngka(n)} kali lipat.`;
     const r: Omit<RencanaSoal, 'rujukan_penjelasan' | 'asal'> = {
       pola: 'besaran-hitungan',
       sudut: kel.fact_id,
@@ -644,8 +654,8 @@ export function polaBesaranHitungan(paket: PaketFakta): RencanaSoal[] {
         slot(
           'p2',
           'Keliru: selisih rupiah dikira kelipatan',
-          varian('P2a', 'Keliru', tolakSelisih, `Keliru${teksSelisih}, belum sampai ${kataAngka(n)} kali lipat sejak ${dari}.`, ['belum sampai'], null),
-          varian('P2b', 'Keliru', tolakSelisih, `Keliru, sejak ${dari} harganya belum sampai ${kataAngka(n)} kali lipat${teksSelisih}.`, ['belum sampai'], null),
+          varian('P2a', 'Keliru', tolakSelisih, teksP2a, ['kali lipat'], null),
+          varian('P2b', 'Keliru', kurang, `Keliru, sejak ${dari} harganya belum sampai ${kataAngka(n)} kali lipat.`, ['belum sampai'], null),
         ),
         slot(
           'p3',

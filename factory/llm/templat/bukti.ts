@@ -16,6 +16,7 @@
  */
 import { ambilRujukan, angkaTelanjang, teksPolos, RUJUKAN_ANDAIAN } from '../../skema/rujukan.ts';
 import type { PaketFakta } from '../paket.ts';
+import { batasPanjang, hitungKata, masalahKlausa } from '../gerbang-gaya.ts';
 import { angkaTakBerjejak, BATAS } from '../validasi.ts';
 import type { Label, NamaSlot, RencanaSoal, VarianPilihan } from './pola.ts';
 import { benarDiBacaanLain, evaluasi, faktaDisebut, type Proposisi } from './proposisi.ts';
@@ -60,6 +61,10 @@ export function periksaTeksVarian(v: VarianPilihan, paket: PaketFakta): string[]
     const hilang = angkaTakBerjejak(r.teks, f);
     if (hilang.length > 0) m.push(`${v.id}: [[${r.fact_id}|${r.teks}]] memuat ${hilang.join(', ')} yang bukan milik fakta itu`);
   }
+  const kata = hitungKata(v.teks);
+  if (kata > batasPanjang().pilihan) m.push(`${v.id}: ${String(kata)} kata; paling banyak ${String(batasPanjang().pilihan)} (G-panjang)`);
+  const klausa = masalahKlausa(v.teks);
+  if (klausa !== null) m.push(`${v.id}: ${klausa} (G-satu-klausa)`);
   for (const i of v.inti) if (!polos.toLowerCase().includes(i.toLowerCase())) m.push(`${v.id}: kata inti "${i}" tidak tertulis`);
   if (v.penanda !== null && !polos.includes(v.penanda)) m.push(`${v.id}: penanda waktu "${v.penanda}" tidak tertulis`);
   return m;
