@@ -181,7 +181,7 @@ describe('layar soal yang disorot pemandu (kedua simulasi, setiap soal)', () => 
           const kelas = /class="([^"]*)"/.exec(m[0])?.[1] ?? '';
           return `${m[1] ?? ''}.${kelas.split(' ')[0] ?? ''}`;
         });
-      expect(lubang('omongan')).toEqual(['figure.pesan']);
+      expect(lubang('omongan')).toEqual(['blockquote.pesan-balon']);
       expect(lubang('kartu')).toEqual(['div.tumpukan']);
       expect(lubang('pilihan')).toEqual(['h1.judul', 'fieldset.pilihan']);
       expect(lubang('petunjuk')).toEqual(['button.tombol-petunjuk']);

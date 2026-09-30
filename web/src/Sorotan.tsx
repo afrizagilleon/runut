@@ -12,8 +12,10 @@
  *    (`inert` + `aria-hidden`) — sasaran, panel, dan lapisan sendiri tidak;
  * 3. merender lapisannya (`aria-hidden`: ia hanya cat).
  *
- * Ketukan di luar lubang jatuh ke lapisan dan tidak melakukan apa pun (D-2);
- * ketukan di dalam lubang jatuh ke sasaran. Panel panduan berada di atas
+ * Ketukan di luar lubang jatuh ke lapisan dan tidak menjalankan apa pun di
+ * bawahnya (D-2) — hanya "mencolek" panel: garis atasnya berubah ungu
+ * sebentar, supaya pemain tahu jalannya ada di "Lanjut"/"Lewati" (kritik r0
+ * butir 7). Ketukan di dalam lubang jatuh ke sasaran. Panel panduan berada di atas
  * lapisan (`z-index`), jadi "Lewati" selalu bisa diketuk; menutup pemandu
  * melepas komponen ini seketika — tanpa animasi keluar.
  *
@@ -50,9 +52,34 @@ function sama(a: Ukuran | null, b: Ukuran): boolean {
   );
 }
 
+/** Lama garis atas panel berwarna sesudah lapisan diketuk. */
+const LAMA_COLEK_MS = 600;
+
 export function Sorotan({ sasaran }: { sasaran: SasaranSorot }): JSX.Element {
   const acuan = useRef<HTMLDivElement>(null);
   const [ukuran, setUkuran] = useState<Ukuran | null>(null);
+  const pewaktuColek = useRef(0);
+  useEffect(
+    () => () => {
+      window.clearTimeout(pewaktuColek.current);
+      document.querySelector('.pemandu')?.classList.remove('pemandu-colek');
+    },
+    [],
+  );
+  /*
+   * Kelasnya dipasang langsung ke simpul panel, bukan lewat keadaan React:
+   * ia sekadar kilasan rupa tanpa arti bagi alur. `className` panel tetap di
+   * setiap render, jadi React tidak pernah menimpanya.
+   */
+  const colek = (): void => {
+    const panel = document.querySelector('.pemandu');
+    if (panel === null) return;
+    panel.classList.add('pemandu-colek');
+    window.clearTimeout(pewaktuColek.current);
+    pewaktuColek.current = window.setTimeout(() => {
+      panel.classList.remove('pemandu-colek');
+    }, LAMA_COLEK_MS);
+  };
 
   efekTataLetak(() => {
     const ukur = (): void => {
@@ -134,6 +161,7 @@ export function Sorotan({ sasaran }: { sasaran: SasaranSorot }): JSX.Element {
       aria-hidden="true"
       data-uid="sorotan"
       data-sasaran={sasaran}
+      onClick={colek}
       style={{
         height: ukuran === null ? '100%' : `${String(ukuran.tinggi)}px`,
         clipPath: klip,

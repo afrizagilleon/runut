@@ -69,12 +69,14 @@
   --tepi-lembar: var(--garis-tegas);
 
   /*
-   * Lapisan redup sorotan pemandu (M3.16 D-1): --tinta 55 % — halaman
-   * "digelapkan" dengan tinta palet ini sendiri, bukan hitam asing. Cadangan
-   * rgba() lebih dulu, seperti --garis.
+   * Lapisan redup sorotan pemandu (M3.16 D-1): --tinta 65 % — halaman
+   * "digelapkan" dengan tinta palet ini sendiri, bukan hitam asing. 65 %, bukan
+   * 55 % (kritik r0 butir 3): pada 55 % teks isi yang teredup masih 4,03:1 dan
+   * tetap bersaing dengan yang disorot; pada 65 % ±3:1 — masih terbaca sebagai
+   * konteks, setara dengan tema gelap. Cadangan rgba() lebih dulu, seperti --garis.
    */
-  --selubung: rgba(20, 33, 61, 0.55);
-  --selubung: color-mix(in srgb, var(--tinta) 55%, transparent);
+  --selubung: rgba(20, 33, 61, 0.65);
+  --selubung: color-mix(in srgb, var(--tinta) 65%, transparent);
 
   /* Nama pengirim pesan (v3, patokan). Kontras dihitung di ledger T-02. */
   --nama: #1f6b45;
@@ -2450,17 +2452,36 @@ body:has(.pemandu) .halaman {
    * M3.16 D-3: lubang berpindah antar-langkah dengan satu peralihan --gerak
    * (140 ms, di dalam 120–160 ms docs/desain.md dan ≤ 250 ms kontrak) —
    * poligonnya selalu sepuluh titik, jadi bisa diinterpolasi. Kemunculan
-   * pertama tidak dianimasikan (dari tanpa klip tidak ada yang bisa
-   * diinterpolasi) dan "Lewati" melepas lapisan tanpa animasi keluar.
+   * pertama memudar masuk dalam --gerak yang sama (`@starting-style`, kritik
+   * r0 butir 8; peramban yang belum mengenalnya langsung menampilkannya), dan
+   * "Lewati" melepas lapisan SEKETIKA, tanpa animasi keluar (kontrak D-2).
    */
-  transition: clip-path var(--gerak) ease;
+  transition: clip-path var(--gerak) ease, opacity var(--gerak) ease;
 }
 
-/* Penanda lubang: tanpa cat, tidak menangkap ketukan — ukuran untuk tes dan pembaca kode. */
+@starting-style {
+  .sorotan {
+    opacity: 0;
+  }
+}
+
+/*
+ * Penanda lubang, sekaligus BINGKAINYA (kritik r0 butir 1): satu garis tinta
+ * 2 px di tepi luar lubang — jatuh di bagian lapisan yang tidak dipotong
+ * klip, jadi terlihat — menggantikan cincin `.disorot` di elemennya selama
+ * sorotan tampil. Satu batas, bersudut siku seperti keluarga kertas, sama di
+ * kedua tema (di gelap satu-satunya tepi lubang, karena selubungnya sewarna
+ * meja), memeluk judul + pilihan di langkah 3, dan meluncur bersama lubang.
+ */
 .sorotan-lubang {
   position: absolute;
   pointer-events: none;
+  outline: 2px solid var(--tinta);
   transition: top var(--gerak) ease, left var(--gerak) ease, width var(--gerak) ease, height var(--gerak) ease;
+}
+
+body:has(.sorotan) .disorot {
+  outline-color: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2483,19 +2504,52 @@ body:has(.sorotan) .penanda {
   z-index: 6;
 }
 
+/* `bottom: -1px`: garis bawah keping ikut redup (kritik r0 butir 2). */
 body:has(.sorotan) .penanda::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: 0 0 -1px;
   background: var(--selubung);
+  transition: opacity var(--gerak) ease;
+}
+
+@starting-style {
+  body:has(.sorotan) .penanda::after {
+    opacity: 0;
+  }
 }
 
 body:has(.sorotan) .melayang {
   visibility: hidden;
 }
 
+/*
+ * Panel di atas lapisan: garis atas 2 px --garis-tegas (kritik r0 butir 6 —
+ * di gelap latar panel sewarna meja yang diredupkan, dan garis --garis 1 px
+ * saja tidak memisahkannya). Bantalan atas dikurangi 1 px supaya tinggi panel
+ * tetap.
+ *
+ * Ketukan di lapisan (di luar lubang) tidak menjalankan apa pun (D-2), tetapi
+ * juga tidak diam total (kritik r0 butir 7): garis atas panel berubah
+ * --stempel sebentar (`.pemandu-colek`, dipasang `Sorotan.tsx`) — mata
+ * diarahkan ke "Lanjut"/"Lewati", bukan dibiarkan mengira aplikasinya macet.
+ */
 .tindakan.pemandu {
   z-index: 7;
+  border-top: 2px solid var(--garis-tegas);
+  padding-top: 1px;
+  transition: border-top-color var(--gerak) ease;
+}
+
+.tindakan.pemandu.pemandu-colek {
+  border-top-color: var(--stempel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tindakan.pemandu,
+  body:has(.sorotan) .penanda::after {
+    transition: none;
+  }
 }
 
 /* --- bantuan di layar soal: "Minta petunjuk", "Cara main" ------------------ */

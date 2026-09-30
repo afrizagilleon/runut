@@ -1,0 +1,81 @@
+KRITIK DESAIN M3.16 — SOROTAN PEMANDU "CARA MAIN" (r0)
+Bahan: .cache/e2e/m316/sesudah-r0/ (32 gambar, semuanya dilihat) dan .cache/e2e/m316/sebelum/ (langkah 1–4 terang-360 dan gelap-360).
+Kode yang dibaca untuk memastikan sebab: web/src/Sorotan.tsx, web/src/sorotan.ts, web/src/gaya.css (bagian M3.14/M3.16, .penanda, .tindakan), web/src/tampilan.ts, docs/desain.md.
+Angka kontras dihitung dengan rumus WCAG dari nilai token dan dari piksel tangkapan layar.
+
+RINGKASAN PUTUSAN
+Masukan pemilik pada dasarnya sudah terpenuhi. Di keempat kombinasi tema dan lebar, sisa layar jelas mundur, yang dijelaskan paling menonjol, dan panel selalu terlihat dan terbaca di atas lapisan. Mekanismenya benar: satu lapisan, lubang ikut digulir, ketukan di luar lubang tertahan, balon melayang disingkirkan, keping ikut redup. Yang belum rapi ada empat. (a) Tepinya ganda dan tidak konsisten: lubang bersudut siku, cincin membulat 2 px di dalamnya; di langkah 3 cincin hanya melingkari pilihan, bukan judulnya; di tema gelap lubang sama sekali tidak punya tepi terang, jadi cincin satu-satunya batas. (b) Ada garis terang 1 px di bawah keping yang tidak ikut redup. (c) Redup tema terang terlalu lemah dibanding tema gelap. (d) Saat ponsel diputar mendatar, kartu penentu tidak terlihat. Semuanya bisa dibereskan dengan perubahan kecil. Tidak ada yang perlu dirombak.
+
+BUTIR
+
+1. [TINGGI] Ganti cincin di elemen dengan SATU bingkai di tepi lubang
+   Gambar: semua 01–04 dan 06–08; paling jelas di terang-360/01, terang-390/01, terang-360/03, gelap-360/03, gelap-390/03.
+   Masalah yang terlihat:
+   - Terang: ada dua batas berjarak sekitar 2 px. Batas pertama tepi lubang, kotak kertas bersudut siku. Batas kedua cincin tinta 2 px bersudut membulat di dalamnya. Di langkah 1 cincin mengikuti radius balon (16 px), jadi keempat sudut menyisakan segitiga kertas terang di luar cincin. Kesannya "bingkai bulat di atas tambalan kertas persegi", rewel untuk sesuatu yang seharusnya satu jendela.
+   - Langkah 3: lubang memuat judul dan pilihan, tetapi cincin hanya melingkari pilihan. Di terang, judul berdiri di tambalan kertas tanpa bingkai, sedangkan pilihan berbingkai. Di gelap tepi lubang tidak terlihat, jadi judul hanya terang tanpa batas. Pemain membaca "yang dimaksud pilihannya saja", padahal judul sengaja dimasukkan.
+   - Gelap: selubung dibuat dari --kertas, jadi latar di dalam dan di luar lubang sama persis (piksel 25,24,22 di keduanya). Lubang tidak punya tepi. Yang membedakannya hanya teks yang lebih terang dan cincin.
+   - Gerak: lubang meluncur 140 ms antar-langkah (clip-path dan .sorotan-lubang), tetapi cincin .disorot melompat seketika ke elemen berikutnya. Selama 140 ms cincin sudah tiba sementara lubangnya masih di jalan.
+   Usulan: selama sorotan tampil, pindahkan bingkai ke tepi lubang dan matikan cincin di elemen.
+     .sorotan-lubang { outline: 2px solid var(--tinta); outline-offset: 0; }
+     body:has(.sorotan) .disorot { outline-color: transparent; }
+   .sorotan-lubang sudah punya ukuran lubang dan transisi top/left/width/height 140 ms, dan transisi itu sudah mati untuk prefers-reduced-motion. Outline yang digambar KE LUAR kotaknya jatuh di bagian lapisan yang tidak dipotong clip-path, jadi terlihat. Offset negatif akan ikut terpotong. Sudut siku (atau 2 px): keluarga kertas, cocok dengan lubang persegi. Jarak lubang 8 px tetap dipakai sebagai napas antara bingkai dan isi.
+   Alasan: satu batas saja, sama di kedua tema. Di gelap batas itu menjadi satu-satunya tepi, dengan kontras tinta terang di atas meja sekitar 14:1. Langkah 3 otomatis berbingkai judul + pilihan, dan bingkai bergerak bersama lubang. Butir kritik D-6 no. 4 (cincin mengikuti sudut balon) memang benar ketika cincin satu-satunya penanda. Sekarang penandanya jendela di lapisan redup, dan jendela kertas bersudut siku. Sesudah pemandu selesai, .lembar-ditandai untuk "Minta petunjuk" (05-sesudah) tidak tersentuh dan tetap cincin seperti sekarang.
+
+2. [SEDANG] Garis terang 1 px di bawah keping tidak ikut redup
+   Gambar: semua 01–04, 06, 07, 08 terang (jelas sekali di terang-390/07 dan terang-360/07); di gelap samar.
+   Masalah: pada y = 47 px CSS ada garis selebar layar, piksel 215,219,224 di tema terang, di atas lapisan yang 121,128,145. Sebabnya: body:has(.sorotan) .penanda::after memakai inset: 0, yang hanya menutup kotak padding. border-bottom: 1px solid var(--garis) milik .penanda berada di luarnya, dan karena .penanda (z 6) di atas lapisan (z 5), garis itu tampil dengan terang aslinya. Hasilnya garis perak di pinggir atas yang menarik mata di setiap langkah, dan kelihatan seperti salah render.
+   Usulan: body:has(.sorotan) .penanda::after { inset: 0 0 -1px; }  (atau bottom: -1px). Garisnya tetap ada, hanya ikut redup seperti sisa rak.
+   Alasan: perbaikan satu baris, dan menghapus satu-satunya bagian terang di luar lubang dan panel. Uji sipit jadi bersih: hanya lubang dan panel yang terang.
+
+3. [SEDANG] Redup tema terang terlalu lemah; naikkan dari 55 % ke 65 %
+   Gambar: terang-360/01–04, terang-390/01–04 dibanding gelap-360/01–04.
+   Masalah: selubung terang dibuat dari tinta, jadi teks bertinta di bawahnya tetap berwarna tinta. Yang turun hanya latarnya. Pada 55 %, teks isi yang diredupkan masih 4,03:1 terhadap latar redup, bahkan 4,31:1 di atas lembar. Itu masih LULUS AA untuk teks badan. Artinya sisa layar tidak sungguh "digelapkan"; ia hanya terlihat abu-kebiruan dan masih bersaing: angka tebal "Rp8 … 22 kali" di kartu redup (terang-360/01) dan judul pertanyaan redup (terang-360/02) tetap mudah dibaca. Di gelap, teks redup turun ke 2,23:1. Kedua tema tidak setara.
+   Usulan: --selubung terang: rgba(20, 33, 61, 0.65); color-mix(in srgb, var(--tinta) 65%, transparent). Hasil hitungan: teks isi redup 2,98:1 (di atas lembar 3,16:1), teks meta redup 2,32:1, kertas lubang lawan latar redup 4,90:1 (sekarang 3,63:1). Warna tinta dipertahankan, bukan hitam: rona biru-tinta memang milik palet ini.
+   Alasan: sisa layar masih bisa dikenali sebagai konteks (sekitar 3:1), tetapi berhenti bersaing, dan setara dengan tema gelap (sekitar 2,2–3:1). Tautan ungu redup ("Cara main", "Buka dokumennya", "↑ Kembali ke dokumen") juga ikut turun. Sekarang tautan itu masih terbaca sebagai sesuatu yang bisa diketuk padahal ketukannya ditahan (lihat butir 7). Jangan lebih dari 70 %: di atas itu teks redup di bawah 2,6:1 dan tema terang mulai terasa seperti layar mati.
+   Tema gelap 72 % sudah pas. Teks redup 2,23:1, tautan ungu redup hampir hilang, dan meja tetap meja. Jangan diubah.
+
+4. [SEDANG] Langkah 1: lubang selebar kolom padahal balon hanya 86 %
+   Gambar: terang-360/01, terang-390/01, gelap-360/01, gelap-390/01.
+   Masalah: lubang dan cincin memakai kotak baris pesan selebar kolom, jadi di kanan balon ada ruang kosong sekitar 40 px (360) sampai 55 px (390) di dalam bingkai. Bingkai lebih besar dari subjeknya, dan di terang ruang kosong itu berupa tambalan kertas terang yang ikut "disorot".
+   Usulan: pasang data-lubang="omongan" (dan .disorot, kalau butir 1 tidak diambil) pada gelembungnya sendiri, bukan pada pembungkus baris. Nama pengirim dan jam sudah ada di dalam gelembung, jadi tidak ada yang hilang. Lubang menjadi kotak gelembung + 8 px.
+   Alasan: sorotan berfungsi karena bentuknya sama dengan benda yang dimaksud. Langkah 2 dan 4 sudah begitu; langkah 1 satu-satunya yang longgar.
+
+5. [SEDANG] Mendatar: kartu penentu tersembunyi di bawah keping
+   Gambar: terang-360/07, terang-390/07, gelap-360/07, gelap-390/07.
+   Masalah: lubangnya sendiri BENAR (mengikuti tata letak baru, tanpa gulir mendatar). Tetapi posisi gulir dari potret terbawa, jadi yang terlihat hanya ekor kartu pertama ("Buka dokumennya" terpotong keping) dan kartu hitungan. Kartu penentu, pengumuman bursa, justru tidak terlihat, dan tepi atas bingkai hilang di bawah keping. Ruang terlihat di 640×360 hanya sekitar 210 px (keping ±48, panel ±101).
+   Usulan: saat orientationchange/resize ketika pemandu tampil, jalankan ulang gulir langkah itu (scrollIntoView yang sama, block: 'start', dengan scroll-margin-top [data-gulir-sorot] yang sudah ada). Bila lubang lebih tinggi dari ruang terlihat (innerHeight − keping − tinggi panel), tetap ratakan ke ATAS, bukan ke bawah. Pilihan tambahan kalau murah: di (orientation: landscape) and (max-height: 480px), padatkan panel menjadi satu baris (nomor · teks · Lewati · Lanjut) supaya ruang terlihat naik sekitar 45 px.
+   Alasan: yang harus dilihat di langkah 2 adalah kepala kartu penentu. Mendatar memang jarang untuk pembaca ini, tetapi layar yang menampilkan separuh bingkai tanpa kepala kartu terlihat rusak.
+
+6. [SEDANG] Tema gelap: batas panel dengan lapisan terlalu tipis
+   Gambar: gelap-360/01–04, gelap-390/01–04, gelap-*/07.
+   Masalah: panel berlatar --kertas (25,24,22), sama persis dengan latar yang diredupkan. Satu-satunya batasnya garis --garis 1 px (piksel 58,56,53). Panel terbaca aktif hanya karena tulisannya terang. Sebagai bidang, ia menyatu dengan lapisan, jadi tidak terasa "di atas". Di terang tidak ada masalah: kertas lawan lapisan 3,63:1, dan 4,90:1 bila butir 3 diambil.
+   Usulan: .tindakan.pemandu { border-top-color: var(--garis-tegas); } (gelap: tinta 28 %, kira-kira 80,78,74). Cukup garisnya, jangan ganti latar ke --lembar: 1,12:1 hampir tidak terlihat, dan panel memang keluarga bilah bawah, bukan lembar. Di terang aturan yang sama tidak merugikan.
+   Alasan: batas tegas memisahkan "yang bisa kamu sentuh sekarang" dari "yang ditahan", tanpa bayangan (yang dilarang).
+
+7. [SEDANG] Ketukan di luar lubang diam total, sehingga pemain awam merasa terkunci
+   Gambar: terang-360/01 dan terang-360/04 (tautan ungu redup yang masih mengundang), gelap-360/04.
+   Masalah: pembaca kita tidak membaca petunjuk. Di langkah 1 ia melihat "Buka dokumennya" dan pilihan jawaban di bawah lapisan, mengetuknya, dan tidak terjadi apa-apa. Tidak ada tanda bahwa jalannya ada di panel. Ketukan diam sama dengan "aplikasinya macet". Butir 3 mengurangi godaannya, tetapi tidak menghilangkannya.
+   Usulan: ketukan pada .sorotan (di luar lubang) memberi satu isyarat ke panel, bukan tindakan. Pasang kelas .pemandu-colek selama ±300 ms, dan di kelas itu ubah garis atas panel menjadi 2px solid var(--stempel) (transisi var(--gerak), 140 ms; untuk prefers-reduced-motion tanpa transisi, perubahan warnanya tetap terjadi). Jangan jadikan ketukan lapisan sebagai "Lanjut": di langkah 4 itu akan menjalankan petunjuk tanpa sengaja, dan orang yang mengetuk sembarang bisa melompati teks.
+   Alasan: aturan D-2 (ketukan di luar tidak melakukan apa pun) tetap berlaku, tetapi pemain mendapat jawaban atas "kenapa tidak bisa?": mata diarahkan ke Lanjut/Lewati. Perubahan warna garis sesuai aturan gerak (hanya transisi 120–160 ms, tanpa gerak berulang).
+
+8. [RENDAH] Lapisan muncul dan hilang seketika; beri pudar 140 ms
+   Gambar: terang-360/04 ke terang-360/05, terang-390/04 ke terang-390/05.
+   Masalah: di terang, seluruh layar melompat dari abu-tinta ke putih dalam satu frame saat "Tunjukkan"/"Lewati" ditekan (dan sebaliknya saat pemandu mulai). Lompatan itu datang bersamaan dengan gulir ke kartu, label "Coba cek kartu ini", dan balon melayang yang kembali. Terlalu banyak yang berubah sekaligus, dan kilatan terangnya paling terasa di ruangan gelap.
+   Usulan: opacity 0→1 dan 1→0 selama var(--gerak) pada .sorotan dan pada ::after keping. Untuk keluar, lepas komponennya sesudah transitionend (atau setTimeout 140 ms). Selama memudar, pointer-events: none, supaya ketukan tidak tertahan. Mati untuk prefers-reduced-motion. Kalau keluar tanpa animasi sengaja dipertahankan demi kesederhanaan, setidaknya pudar-masuk.
+   Alasan: masih di dalam 120–160 ms yang diizinkan, dan hanya menghaluskan perubahan terbesar di layar.
+
+9. [RENDAH] Periksa ukuran lubang per langkah: sudah pas, jangan diperbesar
+   Gambar: */02, */03.
+   Catatan: langkah 2 (dua kartu) di 360×640 tertampung utuh (lubang ±104–475 px CSS, panel mulai ±534). Langkah 3 (judul + empat pilihan) juga utuh, dengan sisa ±45 px di atas panel. Di 390×844 keduanya lega. Jangan tambahkan kalimat pengantar "Betul atau keliru? Cek ke dua dokumen ini:" ke lubang langkah 2: lubangnya akan melewati batas panel di 360×640 untuk sesuatu yang sudah dikatakan panel ("Buktinya ada di kartu-kartu ini."). Jarak 8 px cukup. Lebih kecil membuat bingkai menempel ke tepi kartu, lebih besar membuat lubang langkah 1–2 menyentuh tepi layar di 360.
+
+YANG SUDAH BENAR — JANGAN DIUBAH
+- Satu lapisan dengan clip-path evenodd dalam koordinat DOKUMEN: di 06-digulir (keempat varian) lubang tetap tepat di kartu dan bagian yang tergulir ke bawah keping tertutup rapi. Tidak ada celah, garis sambungan, atau keterlambatan.
+- Panel di atas lapisan (z 7), berlatar kertas, tulisannya kontras penuh. "Lewati" dan "Lanjut"/"Tunjukkan" selalu terlihat di semua 32 gambar, termasuk mendatar.
+- Isi di dalam lubang tidak diubah: kontrasnya sama dengan layar biasa (lembar, pilihan, tombol ungu), jadi yang disorot terbaca sama seperti saat bermain.
+- Selubung gelap dari --kertas 72 %: benar secara konsep ("tenggelam ke meja", bukan diterangi tinta terang) dan kekuatannya pas.
+- Tidak ada buram, bayangan, atau gradasi. Warna redup diambil dari palet sendiri (tinta atau meja), bukan hitam asing.
+- Balon melayang disingkirkan selama pemandu. Dibanding sebelum/*/02–04, "intip" balon hijau yang dulu menumpuk di bawah keping sudah hilang, dan komposisi jauh lebih tenang.
+- Keping ikut redup dengan selubungnya sendiri, jadi tidak ada lagi keping terang yang seolah ikut disorot.
+- Ketukan di dalam lubang tetap berfungsi, dan memilih jawaban di langkah 3 menutup pemandu (tampilan.ts): pemain yang langsung bermain tidak terhalang.
+- Transisi 140 ms antar-langkah dan mati untuk prefers-reduced-motion (08 identik dengan 04 dalam keadaan diam, seperti seharusnya).
+- Sesudah "Tunjukkan" (05): lapisan hilang, kartu penentu ditandai cincin dan label "Coba cek kartu ini". Layar kembali normal dan tidak ada sisa pemandu.

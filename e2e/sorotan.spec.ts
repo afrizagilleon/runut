@@ -141,6 +141,17 @@ test('E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertu
     });
     expect(alfa, 'lapisan redup, bukan transparan').toBeGreaterThan(0.3);
 
+    /* Satu bingkai: di tepi lubang (2 px), cincin di elemen dimatikan selama sorotan (kritik r0 butir 1). */
+    const bingkai = await page.evaluate(() => {
+      const l = document.querySelector('.sorotan-lubang');
+      const d = document.querySelector('.disorot');
+      return {
+        lubang: l === null ? '' : getComputedStyle(l).outlineWidth,
+        cincin: d === null ? 'tidak ada' : getComputedStyle(d).outlineColor,
+      };
+    });
+    expect(bingkai).toEqual({ lubang: '2px', cincin: 'rgba(0, 0, 0, 0)' });
+
     /* Pusat sasaran menerima ketukan (di dalam lubang); tepat di atas lubang = lapisan. */
     const hit = await page.evaluate((s) => {
       const t = document.querySelector(`[data-lubang="${s}"]`);
@@ -198,6 +209,15 @@ test('E-63b lubang mengikuti gulir dan putaran layar', async ({ page }) => {
   const semula = page.viewportSize() ?? { width: 360, height: 640 };
   await page.setViewportSize({ width: semula.height, height: semula.width });
   await lubangTepat(page, 'sesudah diputar mendatar');
+  /* Kepala kartu penentu terlihat di bawah keping, bukan tertinggal di posisi gulir lama (kritik r0 butir 5). */
+  const kepalaTerlihat = async (): Promise<number> =>
+    await page.evaluate(() => {
+      const t = document.querySelector('[data-lubang="kartu"]');
+      const k = document.querySelector('[data-uid="keping"]');
+      if (t === null || k === null) return -999;
+      return t.getBoundingClientRect().top - k.getBoundingClientRect().bottom;
+    });
+  await expect.poll(kepalaTerlihat, { message: 'mendatar: kepala kartu di bawah keping' }).toBeGreaterThanOrEqual(0);
   /*
    * Mendatar: kartu yang tinggi tergulir ke bawah keping. Keping (sticky) dan
    * balon melayang (fixed) tidak boleh ikut tampak "disorot" di dalam lubang:
@@ -217,6 +237,7 @@ test('E-63b lubang mengikuti gulir dan putaran layar', async ({ page }) => {
   expect(await panelMenerimaKetukan(page), 'mendatar: panel tidak tertutup').toEqual([]);
   await page.setViewportSize(semula);
   await lubangTepat(page, 'sesudah diputar tegak lagi');
+  await expect.poll(kepalaTerlihat, { message: 'tegak lagi: kepala kartu di bawah keping' }).toBeGreaterThanOrEqual(0);
 });
 
 test('E-63c ketukan di luar lubang tidak menjalankan apa pun; di dalam lubang jalan', async ({ page }) => {
@@ -231,6 +252,8 @@ test('E-63c ketukan di luar lubang tidak menjalankan apa pun; di dalam lubang ja
   expect(penerima, 'di luar lubang: yang menerima ketukan adalah lapisan').toContain('sorotan');
   await page.touchscreen.tap(x, y);
   await expect(kaki).toHaveAttribute('aria-expanded', 'false');
+  /* ...tetapi tidak diam total: panel dicolek (garis atas ungu sebentar), kritik r0 butir 7. */
+  await expect(panel(page)).toHaveClass(/pemandu-colek/);
   await expect(panel(page), 'pemandu tetap di langkah 1').toContainText('1 dari 4');
 
   /* Langkah 2 menyorot kartu: kakinya di dalam lubang dan bisa dibuka; lubang ikut membesar. */

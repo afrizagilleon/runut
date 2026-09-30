@@ -663,17 +663,33 @@ export function Aplikasi(): JSX.Element {
   }, [kirim]);
   useEffect(() => {
     if (sorot === null) return;
-    const pinta = requestAnimationFrame(() => {
-      /*
-       * Tombol petunjuk ke TENGAH layar (pilihan di atasnya tetap terlihat);
-       * yang lain rata atas, di bawah keping dan balon (kritik D-6 butir 1).
-       */
-      document
-        .querySelector(`[data-gulir-sorot="${sorot}"]`)
-        ?.scrollIntoView({ block: sorot === 'petunjuk' ? 'center' : 'start', behavior: gerakHalus() });
-    });
+    let pinta = 0;
+    const gulir = (): void => {
+      cancelAnimationFrame(pinta);
+      pinta = requestAnimationFrame(() => {
+        /*
+         * Tombol petunjuk ke TENGAH layar (pilihan di atasnya tetap terlihat);
+         * yang lain rata atas, di bawah keping dan balon (kritik D-6 butir 1).
+         */
+        document
+          .querySelector(`[data-gulir-sorot="${sorot}"]`)
+          ?.scrollIntoView({ block: sorot === 'petunjuk' ? 'center' : 'start', behavior: gerakHalus() });
+      });
+    };
+    gulir();
+    /*
+     * M3.16 (kritik r0 butir 5): ponsel diputar di tengah langkah → tata letak
+     * berubah dan posisi gulir lama tidak lagi menunjukkan kepala sasaran
+     * (mendatar: kartu penentu tersembunyi di bawah keping). Gulir langkah itu
+     * dijalankan ulang — HANYA saat orientasi berganti, bukan tiap `resize`:
+     * bilah alamat ponsel yang muncul-hilang saat digulir juga menyalakan
+     * `resize`, dan menggulir paksa di sana berarti merebut jari pemain.
+     */
+    const tegak = typeof window.matchMedia === 'function' ? window.matchMedia('(orientation: portrait)') : null;
+    tegak?.addEventListener('change', gulir);
     return () => {
       cancelAnimationFrame(pinta);
+      tegak?.removeEventListener('change', gulir);
     };
   }, [sorot, namaLayarKini]);
 
@@ -1851,7 +1867,6 @@ export function LayarSoal({
         className={sorotKini === 'omongan' ? 'pesan disorot' : 'pesan'}
         data-uid="pesan"
         data-gulir-sorot="omongan"
-        data-lubang="omongan"
         ref={acuanPesan}
         /*
          * Nama untuk pembaca layar: tidak berubah sejak M3.5 D-2, kata demi
@@ -1861,7 +1876,8 @@ export function LayarSoal({
          */
         aria-label={`Pesan dari ${soal.pesan.nama}, ${tanggal} · ${soal.pesan.jam}`}
       >
-        <blockquote className="pesan-balon">
+        {/* Lubang sorotan langkah 1 = gelembungnya, bukan baris selebar kolom (kritik M3.16 r0 butir 4). */}
+        <blockquote className="pesan-balon" data-lubang="omongan">
           {/*
             Baris kepala balon (M3.5 D-2, dipindahkan ke dalam balon di M3.6
             D-2): nama pengirim dan tanggal, satu baris, seperti aplikasi pesan.
@@ -2800,10 +2816,9 @@ export function LayarPemanasan({
         className={sorotKini === 'omongan' ? 'pesan disorot' : 'pesan'}
         data-uid="pemanasan:pesan"
         data-gulir-sorot="omongan"
-        data-lubang="omongan"
         aria-label={`Pesan dari ${soal.pesan.nama} · ${soal.pesan.jam}`}
       >
-        <blockquote className="pesan-balon">
+        <blockquote className="pesan-balon" data-lubang="omongan">
           <p className="pesan-meta">
             <span className="pesan-nama">{soal.pesan.nama}</span>
           </p>
