@@ -59,7 +59,15 @@ export const MODEL_M2D4: readonly ModelTanding[] = [MODEL_AGEN, MODEL_KRITIKUS];
  */
 export const MODEL_OR_DEEPSEEK = 'deepseek/deepseek-v4.1-flash' as const;
 export const MODEL_OR_GLM = 'z-ai/glm-5.3' as const;
-export const MODEL_OPENROUTER = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM] as const;
+/**
+ * M2d-10 (keputusan pemilik 30 Sep malam): model ketiga Claude Haiku 4.5 —
+ * penyempurna struktur pilihan dan salah satu penebak keluarga campur (mesin
+ * templat). Harga daftar $1/$5 per juta (`harga.ts`).
+ */
+export const MODEL_OR_HAIKU = 'anthropic/claude-haiku-4.5' as const;
+export const MODEL_OPENROUTER = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM, MODEL_OR_HAIKU] as const;
+/** Dua model M2d-5…M2d-9 (lingkar pengecoh); skrip lama tetap hanya boleh memanggil keduanya. */
+export const MODEL_DUA: readonly string[] = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM];
 export type ModelOpenRouter = (typeof MODEL_OPENROUTER)[number];
 
 /** Model apa pun yang pernah dipanggil lingkar (Featherless M2d-1…M2d-4, OpenRouter M2d-5). */

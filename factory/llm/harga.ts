@@ -42,6 +42,11 @@ const SUMBER_LAMPIRAN =
 export const HARGA: Readonly<Record<ModelOpenRouter, HargaModel>> = {
   'deepseek/deepseek-v4.1-flash': { masuk: 0.3, keluar: 1.2, sumber: `DeepSeek resmi 0,30/1,20; ${SUMBER_LAMPIRAN}` },
   'z-ai/glm-5.3': { masuk: 1.4, keluar: 4.4, sumber: `Z.AI resmi 1,40/4,40; ${SUMBER_LAMPIRAN}` },
+  'anthropic/claude-haiku-4.5': {
+    masuk: 1,
+    keluar: 5,
+    sumber: 'M2d-10: harga daftar Anthropic 1/5 (keputusan pemilik); GET /models/anthropic/claude-haiku-4.5/endpoints 30 Sep 2026 (eval/keluaran-m2d10/haiku-endpoints.json): Azure, Amazon Bedrock, Google, Anthropic global 1/5, kuantisasi unknown',
+  },
 };
 
 /**

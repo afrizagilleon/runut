@@ -173,7 +173,10 @@ describe('harga — batas max_price OpenRouter (M2d-5 D-2); tebakan Featherless 
   it('angka = harga daftar standar (lampiran M-02d5): DeepSeek 0,30/1,20; GLM 1,40/4,40', () => {
     expect(HARGA['deepseek/deepseek-v4.1-flash']).toMatchObject({ masuk: 0.3, keluar: 1.2 });
     expect(HARGA['z-ai/glm-5.3']).toMatchObject({ masuk: 1.4, keluar: 4.4 });
-    for (const h of Object.values(HARGA)) expect(h.sumber).toMatch(/openrouter-endpoints-29sep/);
+    for (const m of ['deepseek/deepseek-v4.1-flash', 'z-ai/glm-5.3'] as const) expect(HARGA[m].sumber).toMatch(/openrouter-endpoints-29sep/);
+    // M2d-10: Haiku 4.5 = harga daftar 1/5, dari daftar endpoint 30 Sep (eval/keluaran-m2d10/haiku-endpoints.json).
+    expect(HARGA['anthropic/claude-haiku-4.5']).toMatchObject({ masuk: 1, keluar: 5 });
+    expect(HARGA['anthropic/claude-haiku-4.5'].sumber).toMatch(/haiku-endpoints\.json/);
     expect(HARGA_FEATHERLESS_USANG['zai-org/GLM-5.3']).toMatchObject({ masuk: 1, keluar: 3 });
   });
 

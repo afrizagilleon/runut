@@ -17,7 +17,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { GENERASI_M2D7, MAKS_PUTARAN_PENGECOH, jalankanPengecoh, promptPenulisPengecoh } from './agen-pengecoh.ts';
 import type { InfoPeran } from './agen-peran.ts';
 import { PencatatJejak } from './jejak.ts';
-import { MODEL_OPENROUTER } from './model.ts';
+import { MODEL_DUA } from './model.ts';
 import { chatBerpagu } from './pagu.ts';
 import { DEFINISI_PAKET, bangunPaket } from './paket.ts';
 import { AWALAN_TAG_M2D7, FOLDER_M2D7, MAKS_JALAN_M2D7, PAGU_MILESTONE_M2D7, siapkanM2d7 } from './pengecoh-konfig.ts';
@@ -84,7 +84,7 @@ async function utama(argumen: string[]): Promise<number> {
     jejak,
     generasi: gen,
     panggil: async (pesan, setelan, info) => {
-      if (!(MODEL_OPENROUTER as readonly string[]).includes(info.model)) throw new Error(`Model ${info.model} tidak diizinkan M2d-7.`);
+      if (!MODEL_DUA.includes(info.model)) throw new Error(`Model ${info.model} tidak diizinkan M2d-7.`);
       const tag = tagPengecoh(jalan, info);
       let j;
       try {
