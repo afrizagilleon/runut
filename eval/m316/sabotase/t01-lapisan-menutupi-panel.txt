@@ -1,0 +1,13 @@
+  x  1 [ponsel-terang] › e2e\sorotan.spec.ts:125:1 › E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertutup (1.3s)
+  1) [ponsel-terang] › e2e\sorotan.spec.ts:125:1 › E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertutup 
+    Error: langkah 1: panel tidak tertutup
+    +   ".pemandu-lewati tertutup sorotan",
+    +   ".pemandu-lanjut tertutup sorotan",
+    > 133 |     expect(await panelMenerimaKetukan(page), `langkah ${String(n + 1)}: panel tidak tertutup`).toEqual([]);
+    Error Context: .cache\e2e\hasil\sorotan-E-63a-tiap-langkah-ceae7--sasaran-panel-tak-tertutup-ponsel-terang\error-context.md
+    .cache\e2e\hasil\sorotan-E-63a-tiap-langkah-ceae7--sasaran-panel-tak-tertutup-ponsel-terang\trace.zip
+        npx playwright show-trace .cache\e2e\hasil\sorotan-E-63a-tiap-langkah-ceae7--sasaran-panel-tak-tertutup-ponsel-terang\trace.zip
+    Error: locator.tap: Test timeout of 90000ms exceeded.
+    Error: locator.tap: Test timeout of 90000ms exceeded.
+  3 failed
+    [ponsel-terang] › e2e\sorotan.spec.ts:125:1 › E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertutup 

@@ -121,6 +121,13 @@ test('E-60c memilih jawaban di tengah pemandu menutupnya; ?pemandu=1 memaksa', a
   await ketuk(page.getByRole('button', { name: LABEL_MULAI }));
   await tungguSoal(page, 1);
   await expect(panel(page)).toBeVisible();
+  /*
+   * M3.16: sejak ada sorotan, ketukan di luar lubang tidak sampai ke pilihan
+   * (E-63c). Pilihan bisa dipilih ketika ia yang disorot — langkah 3.
+   */
+  await ketuk(page.locator('[data-uid="pemandu:lanjut:1"]'));
+  await ketuk(page.locator('[data-uid="pemandu:lanjut:2"]'));
+  await expect(panel(page)).toContainText('3 dari 4');
   const kunci = SOAL1?.pilihan[0]?.kunci ?? 'a';
   await page.locator(`[data-uid="opsi:${kunci}"]`).scrollIntoViewIfNeeded();
   await ketuk(page.locator(`[data-uid="opsi:${kunci}"]`));

@@ -174,6 +174,20 @@ describe('layar soal yang disorot pemandu (kedua simulasi, setiap soal)', () => 
       expect(ditandai.sort()).toEqual([...soal.kartu_penentu].sort());
     });
 
+    it(`${kasus.kasus_id}: sasaran lubang sorotan (M3.16) menempel di benda yang diterangkan, tidak pernah di satu opsi`, () => {
+      const html = render(tampilanAwal(false));
+      const lubang = (nama: string): string[] =>
+        [...html.matchAll(new RegExp(`<([a-z0-9]+)([^>]*)data-lubang="${nama}"`, 'g'))].map((m) => {
+          const kelas = /class="([^"]*)"/.exec(m[0])?.[1] ?? '';
+          return `${m[1] ?? ''}.${kelas.split(' ')[0] ?? ''}`;
+        });
+      expect(lubang('omongan')).toEqual(['blockquote.pesan-balon']);
+      expect(lubang('kartu')).toEqual(['div.tumpukan']);
+      expect(lubang('pilihan')).toEqual(['h1.judul', 'fieldset.pilihan']);
+      expect(lubang('petunjuk')).toEqual(['button.tombol-petunjuk']);
+      expect(html).not.toMatch(/<(label|input)[^>]*data-lubang/);
+    });
+
     it(`${kasus.kasus_id}: tanpa pemandu, tidak ada sorotan; "Cara main" ada sebelum dikunci`, () => {
       const html = render(tampilanAwal(false));
       expect(html).not.toMatch(/disorot|lembar-ditandai/);

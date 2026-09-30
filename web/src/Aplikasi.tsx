@@ -25,6 +25,7 @@ import {
 import { HalamanKalender, KalenderSimulasi, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { bacaSelesai, catatSelesai, susunKalender, type BulanKalender } from './kalender-simulasi.ts';
 import { KartuFakta } from './KartuFakta.tsx';
+import { Sorotan } from './Sorotan.tsx';
 import { Teks, idPenjelasan, type SakelarSumber } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { DAFTAR_KASUS, indeksFakta, kartuSoal } from './kasus.ts';
@@ -662,17 +663,33 @@ export function Aplikasi(): JSX.Element {
   }, [kirim]);
   useEffect(() => {
     if (sorot === null) return;
-    const pinta = requestAnimationFrame(() => {
-      /*
-       * Tombol petunjuk ke TENGAH layar (pilihan di atasnya tetap terlihat);
-       * yang lain rata atas, di bawah keping dan balon (kritik D-6 butir 1).
-       */
-      document
-        .querySelector(`[data-gulir-sorot="${sorot}"]`)
-        ?.scrollIntoView({ block: sorot === 'petunjuk' ? 'center' : 'start', behavior: gerakHalus() });
-    });
+    let pinta = 0;
+    const gulir = (): void => {
+      cancelAnimationFrame(pinta);
+      pinta = requestAnimationFrame(() => {
+        /*
+         * Tombol petunjuk ke TENGAH layar (pilihan di atasnya tetap terlihat);
+         * yang lain rata atas, di bawah keping dan balon (kritik D-6 butir 1).
+         */
+        document
+          .querySelector(`[data-gulir-sorot="${sorot}"]`)
+          ?.scrollIntoView({ block: sorot === 'petunjuk' ? 'center' : 'start', behavior: gerakHalus() });
+      });
+    };
+    gulir();
+    /*
+     * M3.16 (kritik r0 butir 5): ponsel diputar di tengah langkah → tata letak
+     * berubah dan posisi gulir lama tidak lagi menunjukkan kepala sasaran
+     * (mendatar: kartu penentu tersembunyi di bawah keping). Gulir langkah itu
+     * dijalankan ulang — HANYA saat orientasi berganti, bukan tiap `resize`:
+     * bilah alamat ponsel yang muncul-hilang saat digulir juga menyalakan
+     * `resize`, dan menggulir paksa di sana berarti merebut jari pemain.
+     */
+    const tegak = typeof window.matchMedia === 'function' ? window.matchMedia('(orientation: portrait)') : null;
+    tegak?.addEventListener('change', gulir);
     return () => {
       cancelAnimationFrame(pinta);
+      tegak?.removeEventListener('change', gulir);
     };
   }, [sorot, namaLayarKini]);
 
@@ -872,6 +889,13 @@ export function Aplikasi(): JSX.Element {
           />
         )}
       </main>
+
+      {/*
+        Sorotan (M3.16): lapisan redup berlubang di atas sasaran langkah ini,
+        DI BAWAH panel panduan. Dilepas bersama panelnya — "Lewati" menutup
+        keduanya seketika.
+      */}
+      {(layar.jenis === 'soal' || diPemanasan) && sorot !== null && <Sorotan sasaran={sorot} />}
 
       {(layar.jenis === 'soal' || diPemanasan) && langkahPemanduKini(tampilan) !== null && (
         <PanelPemandu
@@ -1852,7 +1876,8 @@ export function LayarSoal({
          */
         aria-label={`Pesan dari ${soal.pesan.nama}, ${tanggal} · ${soal.pesan.jam}`}
       >
-        <blockquote className="pesan-balon">
+        {/* Lubang sorotan langkah 1 = gelembungnya, bukan baris selebar kolom (kritik M3.16 r0 butir 4). */}
+        <blockquote className="pesan-balon" data-lubang="omongan">
           {/*
             Baris kepala balon (M3.5 D-2, dipindahkan ke dalam balon di M3.6
             D-2): nama pengirim dan tanggal, satu baris, seperti aplikasi pesan.
@@ -1915,6 +1940,7 @@ export function LayarSoal({
         className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'}
         ref={acuanTumpukan}
         data-gulir-sorot="kartu"
+        data-lubang="kartu"
       >
         {kartu.map((fakta) => (
           <KartuFakta
@@ -1949,11 +1975,16 @@ export function LayarSoal({
         id={`tanya-${soal.soal_id}`}
         data-uid="tanya"
         data-gulir-sorot="pilihan"
+        data-lubang="pilihan"
       >
         {soal.tanya}
       </h1>
 
-      <fieldset className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'} disabled={s.dikunci}>
+      <fieldset
+        className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'}
+        disabled={s.dikunci}
+        data-lubang="pilihan"
+      >
         <legend className="tersembunyi">Pilih satu jawaban</legend>
         {soal.pilihan.map((p) => {
           // "Opsi mana mendapat tanda apa" adalah aturan, dan aturannya ada di
@@ -2024,6 +2055,7 @@ export function LayarSoal({
             className={sorotKini === 'petunjuk' ? 'tombol-petunjuk disorot' : 'tombol-petunjuk'}
             data-uid="petunjuk-kartu"
             data-gulir-sorot="petunjuk"
+            data-lubang="petunjuk"
             onClick={() => {
               kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
             }}
@@ -2655,10 +2687,20 @@ export function LayarAkhir({
  * aslinya menyingkir), jadi tata letak layar soal tidak bergeser satu piksel
  * pun dan tidak ada yang tertutup selain yang memang biasa ditutup bilah.
  *
- * Tidak modal: pemain tetap bisa menggulir, membuka kartu, dan memilih — dan
- * memilih jawaban menutup pemandunya (`pemain_memilih`). Setiap tombol membawa
+ * Sejak M3.16 panel ini berdiri DI ATAS lapisan sorotan (`Sorotan.tsx`): sisa
+ * layar redup dan tidak menerima ketukan, kecuali benda di dalam lubang —
+ * pemain tetap bisa menggulir, membuka kartu yang disorot, dan memilih ketika
+ * pilihan yang disorot; memilih jawaban menutup pemandunya (`pemain_memilih`),
+ * begitu pula "Minta petunjuk" di dalam lubang langkah 4. Setiap tombol membawa
  * `data-uid` bernomor langkah, jadi "di langkah mana orang melewati" terbaca
  * dari peristiwa `ketuk` yang sudah ada, tanpa peristiwa baru.
+ *
+ * Fokus papan ketik (M3.16 D-2): saat panel muncul fokus pindah ke tombol
+ * utamanya (tombol yang sama di setiap langkah, jadi fokusnya tidak lompat);
+ * teks langkah menjadi deskripsinya dan tetap `aria-live`. Saat panel
+ * ditutup dan fokus ikut hilang bersama tombolnya, fokus kembali ke tempatnya
+ * semula (mis. "Cara main") — tetapi tidak pernah merebut fokus dari pilihan
+ * yang baru saja diketuk pemain.
  */
 function PanelPemandu({
   tampilan,
@@ -2672,6 +2714,18 @@ function PanelPemandu({
 }): JSX.Element | null {
   const langkahIni = langkahPemanduKini(tampilan);
   const nomor = nomorLangkah(tampilan);
+  const acuanUtama = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const semula = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    acuanUtama.current?.focus({ preventScroll: true });
+    return () => {
+      const kini = document.activeElement;
+      const hilang = kini === null || kini === document.body || !kini.isConnected;
+      if (hilang && semula !== null && semula !== document.body && semula.isConnected) {
+        semula.focus({ preventScroll: true });
+      }
+    };
+  }, []);
   if (langkahIni === null || nomor === null || tampilan.pemandu.langkah === null) return null;
   const ke = String(tampilan.pemandu.langkah + 1);
   const terakhir = langkahTerakhir(tampilan);
@@ -2698,11 +2752,13 @@ function PanelPemandu({
           </button>
         </div>
         <div className="pemandu-badan">
-          <p className="pemandu-teks" aria-live="polite">
+          <p className="pemandu-teks" id="pemandu-teks" aria-live="polite">
             {langkahIni.teks}
           </p>
           <button
             type="button"
+            ref={acuanUtama}
+            aria-describedby="pemandu-teks"
             className="tombol-utama pemandu-lanjut"
             data-uid={terakhir ? `pemandu:selesai:${ke}` : `pemandu:lanjut:${ke}`}
             onClick={() => {
@@ -2762,7 +2818,7 @@ export function LayarPemanasan({
         data-gulir-sorot="omongan"
         aria-label={`Pesan dari ${soal.pesan.nama} · ${soal.pesan.jam}`}
       >
-        <blockquote className="pesan-balon">
+        <blockquote className="pesan-balon" data-lubang="omongan">
           <p className="pesan-meta">
             <span className="pesan-nama">{soal.pesan.nama}</span>
           </p>
@@ -2771,7 +2827,7 @@ export function LayarPemanasan({
         </blockquote>
       </figure>
       <p className="meta antar">{kalimatAntar(kartu.length)}</p>
-      <div className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'} data-gulir-sorot="kartu">
+      <div className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'} data-gulir-sorot="kartu" data-lubang="kartu">
         {kartu.map((fakta) => (
           <KartuFakta
             key={fakta.fact_id}
@@ -2783,10 +2839,14 @@ export function LayarPemanasan({
           />
         ))}
       </div>
-      <h1 className="judul tanya" id="tanya-pemanasan" data-gulir-sorot="pilihan">
+      <h1 className="judul tanya" id="tanya-pemanasan" data-gulir-sorot="pilihan" data-lubang="pilihan">
         {soal.tanya}
       </h1>
-      <fieldset className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'} disabled={k.dikunci}>
+      <fieldset
+        className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'}
+        disabled={k.dikunci}
+        data-lubang="pilihan"
+      >
         <legend className="tersembunyi">Pilih satu jawaban</legend>
         {soal.pilihan.map((p) => {
           const tanda = tandaOpsi(keadaanOpsi, p.kunci, soal.jawaban);
@@ -2826,6 +2886,7 @@ export function LayarPemanasan({
             className={sorotKini === 'petunjuk' ? 'tombol-petunjuk disorot' : 'tombol-petunjuk'}
             data-uid="pemanasan:petunjuk-kartu"
             data-gulir-sorot="petunjuk"
+            data-lubang="petunjuk"
             onClick={() => {
               kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
             }}

@@ -68,6 +68,16 @@
    */
   --tepi-lembar: var(--garis-tegas);
 
+  /*
+   * Lapisan redup sorotan pemandu (M3.16 D-1): --tinta 65 % — halaman
+   * "digelapkan" dengan tinta palet ini sendiri, bukan hitam asing. 65 %, bukan
+   * 55 % (kritik r0 butir 3): pada 55 % teks isi yang teredup masih 4,03:1 dan
+   * tetap bersaing dengan yang disorot; pada 65 % ±3:1 — masih terbaca sebagai
+   * konteks, setara dengan tema gelap. Cadangan rgba() lebih dulu, seperti --garis.
+   */
+  --selubung: rgba(20, 33, 61, 0.65);
+  --selubung: color-mix(in srgb, var(--tinta) 65%, transparent);
+
   /* Nama pengirim pesan (v3, patokan). Kontras dihitung di ledger T-02. */
   --nama: #1f6b45;
 
@@ -130,6 +140,13 @@
     --garis-kontrol: rgba(230, 227, 220, 0.5);
     --garis-kontrol: color-mix(in srgb, var(--tinta) 50%, transparent);
     --tepi-lembar: var(--garis);
+    /*
+     * Di gelap tinta itu terang; meredupkan dengan tinta berarti menerangi.
+     * Yang dipakai meja malam (--kertas) 72 %: isi di bawahnya tenggelam ke
+     * meja, lubangnya tetap selampu lembar.
+     */
+    --selubung: rgba(25, 24, 22, 0.72);
+    --selubung: color-mix(in srgb, var(--kertas) 72%, transparent);
   }
 }
 
@@ -2406,6 +2423,133 @@ textarea {
 
 body:has(.pemandu) .halaman {
   padding-bottom: 160px;
+}
+
+/*
+ * Sorotan pemandu (M3.16 D-1): satu bidang --selubung setinggi DOKUMEN
+ * (`absolute`, bukan `fixed` — ikut tergulir bersama isi halaman, jadi lubang
+ * tidak pernah tertinggal saat digulir), dilubangi `clip-path` yang dihitung
+ * `web/src/sorotan.ts`. Klip itu juga memotong uji-kena: ketukan di luar
+ * lubang ditangkap lapisan dan tidak melakukan apa pun, ketukan di dalam
+ * lubang sampai ke sasaran.
+ *
+ * Urutan tumpuk: balon melayang (1) < bilah (4) < lapisan (5) < keping
+ * berselubung (6, lihat di bawah) < panel pemandu (7).
+ * Panel selalu di atas lapisan — "Lewati" tidak pernah tertutup.
+ *
+ * Tanpa buram (`backdrop-filter`): periksa:desain menolaknya (KABUR),
+ * docs/desain.md melarang efek kaca, dan ponsel lama membayarnya tiap frame.
+ */
+.sorotan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background: var(--selubung);
+  -webkit-tap-highlight-color: transparent;
+  /*
+   * M3.16 D-3: lubang berpindah antar-langkah dengan satu peralihan --gerak
+   * (140 ms, di dalam 120–160 ms docs/desain.md dan ≤ 250 ms kontrak) —
+   * poligonnya selalu sepuluh titik, jadi bisa diinterpolasi. Kemunculan
+   * pertama memudar masuk dalam --gerak yang sama (`@starting-style`, kritik
+   * r0 butir 8; peramban yang belum mengenalnya langsung menampilkannya), dan
+   * "Lewati" melepas lapisan SEKETIKA, tanpa animasi keluar (kontrak D-2).
+   */
+  transition: clip-path var(--gerak) ease, opacity var(--gerak) ease;
+}
+
+@starting-style {
+  .sorotan {
+    opacity: 0;
+  }
+}
+
+/*
+ * Penanda lubang, sekaligus BINGKAINYA (kritik r0 butir 1): satu garis tinta
+ * 2 px di tepi luar lubang — jatuh di bagian lapisan yang tidak dipotong
+ * klip, jadi terlihat — menggantikan cincin `.disorot` di elemennya selama
+ * sorotan tampil. Satu batas, bersudut siku seperti keluarga kertas, sama di
+ * kedua tema (di gelap satu-satunya tepi lubang, karena selubungnya sewarna
+ * meja), memeluk judul + pilihan di langkah 3, dan meluncur bersama lubang.
+ */
+.sorotan-lubang {
+  position: absolute;
+  pointer-events: none;
+  outline: 2px solid var(--tinta);
+  transition: top var(--gerak) ease, left var(--gerak) ease, width var(--gerak) ease, height var(--gerak) ease;
+}
+
+body:has(.sorotan) .disorot {
+  outline-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sorotan,
+  .sorotan-lubang {
+    transition: none;
+  }
+}
+
+/*
+ * Keping (sticky) dan balon melayang (fixed) menempel pada JENDELA, sedangkan
+ * lubangnya pada DOKUMEN. Di layar pendek (ponsel mendatar) sasaran yang
+ * tinggi bisa tergulir ke bawah keping — tanpa aturan ini keping dan balon
+ * yang kebetulan berada di dalam lubang ikut tampak "disorot". Maka selama
+ * sorotan tampil keping naik ke atas lapisan dengan selubungnya sendiri
+ * (redup tepat sekali, di mana pun lubangnya), dan balon melayang
+ * disingkirkan — ia kembali begitu pemandu ditutup.
+ */
+body:has(.sorotan) .penanda {
+  z-index: 6;
+}
+
+/* `bottom: -1px`: garis bawah keping ikut redup (kritik r0 butir 2). */
+body:has(.sorotan) .penanda::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 -1px;
+  background: var(--selubung);
+  transition: opacity var(--gerak) ease;
+}
+
+@starting-style {
+  body:has(.sorotan) .penanda::after {
+    opacity: 0;
+  }
+}
+
+body:has(.sorotan) .melayang {
+  visibility: hidden;
+}
+
+/*
+ * Panel di atas lapisan: garis atas 2 px --garis-tegas (kritik r0 butir 6 —
+ * di gelap latar panel sewarna meja yang diredupkan, dan garis --garis 1 px
+ * saja tidak memisahkannya). Bantalan atas dikurangi 1 px supaya tinggi panel
+ * tetap.
+ *
+ * Ketukan di lapisan (di luar lubang) tidak menjalankan apa pun (D-2), tetapi
+ * juga tidak diam total (kritik r0 butir 7): garis atas panel berubah
+ * --stempel sebentar (`.pemandu-colek`, dipasang `Sorotan.tsx`) — mata
+ * diarahkan ke "Lanjut"/"Lewati", bukan dibiarkan mengira aplikasinya macet.
+ */
+.tindakan.pemandu {
+  z-index: 7;
+  border-top: 2px solid var(--garis-tegas);
+  padding-top: 1px;
+  transition: border-top-color var(--gerak) ease;
+}
+
+.tindakan.pemandu.pemandu-colek {
+  border-top-color: var(--stempel);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tindakan.pemandu,
+  body:has(.sorotan) .penanda::after {
+    transition: none;
+  }
 }
 
 /* --- bantuan di layar soal: "Minta petunjuk", "Cara main" ------------------ */
