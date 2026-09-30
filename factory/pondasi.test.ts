@@ -61,6 +61,8 @@ describe('pondasi proyek', () => {
     const M4A = ['sectors:ambil', 'sectors:manifest', 'audit:gudang', 'audit:paket'];
     // M2d-9 D-1/D-8: pintu penyusun lokal (BYOK) — satu skrip, disebut namanya.
     const M2D9 = ['penyusun'];
+    // M2d-10 D-5…D-8: mesin templat — kalibrasi singkat, soal pemanasan, jalan TIRT lewat pintu, uji luar, laporan.
+    const M2D10 = ['templat:kalibrasi', 'templat:pemanasan', 'templat:jalan', 'templat:penguji', 'templat:laporan'];
     const skrip = Object.keys(paket.scripts).sort();
     for (const wajib of [...M1, ...M32, ...M33, ...A3, ...M2A]) {
       expect(skrip).toContain(wajib);
@@ -83,6 +85,7 @@ describe('pondasi proyek', () => {
         !M2D7.includes(s) &&
         !M2D8.includes(s) &&
         !M2D9.includes(s) &&
+        !M2D10.includes(s) &&
         !M4A.includes(s),
     );
     expect(takDikenal).toEqual([]);
