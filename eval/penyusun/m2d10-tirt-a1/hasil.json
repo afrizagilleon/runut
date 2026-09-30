@@ -1,0 +1,1851 @@
+{
+  "lolos": false,
+  "draf": null,
+  "berhenti": "omongan 3: rencana besaran-hitungan:kelipatan-2025-11-26-2025-12-09 habis dan tidak ada rencana pengganti; simulasi tidak terbit",
+  "jumlah_versi": 10,
+  "rencana_awal": [
+    "sebab-resmi:susp-2025-12-10",
+    "angka-lain-waktu:harga-2025-12-09",
+    "benar-berincian:hari-naik-beruntun"
+  ],
+  "versi": [
+    {
+      "no": 1,
+      "rencana": "sebab-resmi:susp-2025-12-10",
+      "versi": 1,
+      "putaran": 1,
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [],
+      "penyempurna_sebelumnya": false,
+      "titik_buta": false,
+      "penebak": {
+        "tolak": false,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 65,
+            "alasan": "Dita menyatakan bursa ragu usaha bisa terus jalan (going concern issue), dan pilihan (a) membenarkan ini apa adanya; pilihan (c) dan (d) menawarkan alasan teknis berbeda yang lebih spesifik tapi tanpa dokumen sulit diverifikasi, sementara (b) mencampurkan topik lain (pengambilalihan), sehingga (a) paling konsisten dengan klaim Dita.",
+            "benar": false,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:05:02.195Z",
+                "waktu_selesai": "2026-09-30T18:05:06.884Z",
+                "token_masuk": 654,
+                "token_keluar": 154,
+                "biaya_usd": 0.001424,
+                "latensi_ms": 4686,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"a\",\n  \"yakin\": 65,\n  \"alasan\": \"Dita menyatakan bursa ragu usaha bisa terus jalan (going concern issue), dan pilihan (a) membenarkan ini apa adanya; pilihan (c) dan (d) menawarkan alasan teknis berbeda yang lebih spesifik tapi tanpa dokumen sulit diverifikasi, sementara (b) mencampurkan topik lain (pengambilalihan), sehingga (a) paling konsisten dengan klaim Dita.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "a",
+            "yakin": 75,
+            "alasan": "Klaim Dita tentang keraguan kelangsungan usaha adalah alasan suspensi yang lazim, dan opsi a langsung membenarkannya.",
+            "benar": false,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:05:06.885Z",
+                "waktu_selesai": "2026-09-30T18:05:56.024Z",
+                "token_masuk": 536,
+                "token_keluar": 3797,
+                "biaya_usd": 0.00286919,
+                "latensi_ms": 49138,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 75, \"alasan\": \"Klaim Dita tentang keraguan kelangsungan usaha adalah alasan suspensi yang lazim, dan opsi a langsung membenarkannya.\"}",
+                "terbaca": true,
+                "penyedia": "InferenceNet",
+                "token_penalaran": 3922
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [
+          3
+        ],
+        "alasan": "0/2 penebak memilih kunci (claude-haiku-4.5 a/65, deepseek-v4.1-flash a/75); penebak 3 tidak dipanggil (putusan sudah pasti)"
+      },
+      "kartu": {
+        "lolos": true,
+        "pilihan": "c",
+        "kunci": "c",
+        "kartu_ditunjuk": [
+          "susp-2025-12-10"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan penghentian perdagangan pada 10 Desember 2025 beralasan kenaikan harga kumulatif yang signifikan, bukan keraguan kelangsungan usaha seperti kata Dita.",
+        "alasan": "",
+        "panggilan": [
+          {
+            "waktu_mulai": "2026-09-30T18:05:56.026Z",
+            "waktu_selesai": "2026-09-30T18:06:42.124Z",
+            "token_masuk": 622,
+            "token_keluar": 4002,
+            "biaya_usd": 0.00176792,
+            "latensi_ms": 46095,
+            "finish_reason": "stop",
+            "teks_mentah": "{\"pilihan\": \"c\", \"kartu\": [1], \"alasan\": \"Kartu 1 menunjukkan penghentian perdagangan pada 10 Desember 2025 beralasan kenaikan harga kumulatif yang signifikan, bukan keraguan kelangsungan usaha seperti kata Dita.\", \"membingungkan\": []}",
+            "terbaca": true,
+            "penyedia": "DeepInfra",
+            "token_penalaran": 3923
+          }
+        ],
+        "membingungkan": []
+      },
+      "kritik": {
+        "tanpa_keberatan": true,
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Pastikan ringkasan 'Peristiwa hari itu' yang menyebut cooling down dan kenaikan harga berturut-turut tidak ditampilkan ke pemain, karena isinya sudah menyingkap alasan penghentian hari ini sehingga jawaban bisa ditemukan tanpa membaca kartu.",
+        "diabaikan": [],
+        "panggilan": [
+          {
+            "waktu_mulai": "2026-09-30T18:06:42.129Z",
+            "waktu_selesai": "2026-09-30T18:07:35.908Z",
+            "token_masuk": 2191,
+            "token_keluar": 5500,
+            "biaya_usd": 0.0246051159,
+            "latensi_ms": 50913,
+            "finish_reason": "stop",
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Hanya c yang didukung kartu: a bertentangan dengan alasan resmi 10 Desember di kartu 1 (keraguan usaha hanya tercatat untuk 21 Januari di kartu 2), sedangkan b dan d menyebut hal yang tidak ada di kartu mana pun.\"}, \"keberatan\": [], \"arahan\": \"Pastikan ringkasan 'Peristiwa hari itu' yang menyebut cooling down dan kenaikan harga berturut-turut tidak ditampilkan ke pemain, karena isinya sudah menyingkap alasan penghentian hari ini sehingga jawaban bisa ditemukan tanpa membaca kartu.\"}",
+            "terbaca": true,
+            "penyedia": "Wafer",
+            "token_penalaran": 5305,
+            "ambang_penalaran": 1000,
+            "penalaran_sah": true
+          }
+        ],
+        "galat": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya c yang didukung kartu: a bertentangan dengan alasan resmi 10 Desember di kartu 1 (keraguan usaha hanya tercatat untuk 21 Januari di kartu 2), sedangkan b dan d menyebut hal yang tidak ada di kartu mana pun."
+        },
+        "penalaran_tidak_sah": []
+      },
+      "omongan": {
+        "nama": "Dita",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget bursa stop perdagangan saham Perusahaan T hari ini, sebab bursa ragu usahanya bisa terus jalan.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "c": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+          "a": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+          "b": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+          "d": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+        },
+        "kunci": "c",
+        "penjelasan": "Dita yakin bursa menghentikan saham Perusahaan T karena usaha diragukan bisa terus jalan. Yang tertulis untuk [[susp-2025-12-10|10 Desember]]: perdagangan dihentikan sementara oleh bursa, alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi penghentian hari itu bukan soal keraguan kelangsungan usaha. Alasan keraguan kelangsungan usaha tercatat pada [[susp-2025-01-21|21 Januari]], jadi itu bukan alasan untuk hari ini. Pilihan yang menyebut rencana pengambilalihan atau laporan keuangan terlambat tidak didukung catatan. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini."
+      }
+    },
+    {
+      "no": 2,
+      "rencana": "angka-lain-waktu:harga-2025-12-09",
+      "versi": 1,
+      "putaran": 2,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN (penjelasan): Penjelasan memuat angka di luar rujukan: 97., 9, 106,, 97., 9, 97, 8. Tulis tiap angka sebagai [[fact_id|teks]]."
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": false,
+      "titik_buta": false,
+      "penebak": null,
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "Bima",
+        "jam": "21.07",
+        "pesan": "Santai, gw catet harga penutupan Perusahaan T kemarin Rp97. Gw hafal angka beginian.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "kartu": [
+          "harga-2025-12-09",
+          "harga-2025-12-08"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Bima menyebut penutupan kemarin Rp97. Padahal penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]]. Angka [[harga-2025-12-08|Rp97]] memang ada, tapi itu penutupan [[harga-2025-12-08|8 Desember]], sehari sebelumnya. Jadi yang benar: keliru, penutupan 9 Desember Rp106, bukan Rp97. Pilihan yang bilang penutupan 9 Desember memang Rp97 ikut salah karena memakai angka 8 Desember. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin."
+      }
+    },
+    {
+      "no": 2,
+      "rencana": "angka-lain-waktu:harga-2025-12-09",
+      "versi": 2,
+      "putaran": 3,
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "pembaca kartu bingung: \"Santai, gw catet harga penutupan Perusahaan T kemarin Rp97.\""
+      ],
+      "penyempurna_sebelumnya": false,
+      "titik_buta": false,
+      "penebak": {
+        "tolak": false,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "c",
+            "yakin": 65,
+            "alasan": "Bima klaim menghafal Rp97, tapi pilihan c dan d sama-sama mengatakan keliru dengan angka berbeda (Rp115 vs Rp106); karena soal menguji keakuratan pencatatan harga dan Bima 'santai' (yakin), pembuat soal kemungkinan sengaja memberikan angka yang jauh berbeda dari klaim untuk menguji kecermatan—Rp115 (pilihan c) adalah angka yang cukup signifikan beda dari Rp97 untuk menunjukkan kesalahan.",
+            "benar": false,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:08:38.585Z",
+                "waktu_selesai": "2026-09-30T18:08:41.671Z",
+                "token_masuk": 637,
+                "token_keluar": 180,
+                "biaya_usd": 0.001537,
+                "latensi_ms": 3084,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"c\",\n  \"yakin\": 65,\n  \"alasan\": \"Bima klaim menghafal Rp97, tapi pilihan c dan d sama-sama mengatakan keliru dengan angka berbeda (Rp115 vs Rp106); karena soal menguji keakuratan pencatatan harga dan Bima 'santai' (yakin), pembuat soal kemungkinan sengaja memberikan angka yang jauh berbeda dari klaim untuk menguji kecermatan—Rp115 (pilihan c) adalah angka yang cukup signifikan beda dari Rp97 untuk menunjukkan kesalahan.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "a",
+            "yakin": 68,
+            "alasan": "Pesan Bima menyebut penutupan kemarin Rp97, dan pilihan a secara langsung mengonfirmasi penutupan 9 Desember Rp97; pilihan b menambah klaim 'tertinggi' yang tidak didukung, sedangkan c/d mengganti dengan angka lain.",
+            "benar": false,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:08:41.672Z",
+                "waktu_selesai": "2026-09-30T18:11:20.182Z",
+                "token_masuk": 505,
+                "token_keluar": 8000,
+                "biaya_usd": 0.0048101,
+                "latensi_ms": 158509,
+                "finish_reason": "length",
+                "teks_mentah": "",
+                "terbaca": false,
+                "penyedia": "Relace",
+                "token_penalaran": 6794
+              },
+              {
+                "waktu_mulai": "2026-09-30T18:11:20.182Z",
+                "waktu_selesai": "2026-09-30T18:11:31.517Z",
+                "token_masuk": 505,
+                "token_keluar": 2049,
+                "biaya_usd": 0.0014721245,
+                "latensi_ms": 11333,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"a\", \"yakin\": 68, \"alasan\": \"Pesan Bima menyebut penutupan kemarin Rp97, dan pilihan a secara langsung mengonfirmasi penutupan 9 Desember Rp97; pilihan b menambah klaim 'tertinggi' yang tidak didukung, sedangkan c/d mengganti dengan angka lain.\"}",
+                "terbaca": true,
+                "penyedia": "Wafer",
+                "token_penalaran": 1966
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [
+          3
+        ],
+        "alasan": "0/2 penebak memilih kunci (claude-haiku-4.5 c/65, deepseek-v4.1-flash a/68); penebak 3 tidak dipanggil (putusan sudah pasti)"
+      },
+      "kartu": {
+        "lolos": false,
+        "pilihan": "d",
+        "kunci": "d",
+        "kartu_ditunjuk": [
+          "harga-2025-12-09"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menunjukkan harga penutupan 9 Desember 2025 adalah Rp106, bukan Rp97.",
+        "alasan": "Pembaca yang memegang kartu bingung dengan kalimat tulisanmu: \"Santai, gw catet harga penutupan Perusahaan T kemarin Rp97.\" (pesan). Tulis ulang bagian itu dengan bahasa awam yang hanya bisa dibaca satu arti.",
+        "panggilan": [
+          {
+            "waktu_mulai": "2026-09-30T18:11:31.520Z",
+            "waktu_selesai": "2026-09-30T18:11:44.827Z",
+            "token_masuk": 456,
+            "token_keluar": 1484,
+            "biaya_usd": 0.0010729544,
+            "latensi_ms": 13303,
+            "finish_reason": "stop",
+            "teks_mentah": "{\"pilihan\": \"d\", \"kartu\": [1], \"alasan\": \"Kartu 1 menunjukkan harga penutupan 9 Desember 2025 adalah Rp106, bukan Rp97.\", \"membingungkan\": [\"Santai, gw catet harga penutupan Perusahaan T kemarin Rp97.\"]}",
+            "terbaca": true,
+            "penyedia": "Wafer",
+            "token_penalaran": 1412
+          }
+        ],
+        "membingungkan": [
+          {
+            "kutipan": "Santai, gw catet harga penutupan Perusahaan T kemarin Rp97.",
+            "sumber": "penulis",
+            "bagian": "pesan",
+            "fact_id": null
+          }
+        ]
+      },
+      "kritik": {
+        "tanpa_keberatan": true,
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Opsional saja: buat angka Rp115 di pilihan c berakar pada salah kira yang wajar (misalnya salah baca atau tukar digit dari angka di kartu) supaya umpannya tidak terasa acak.",
+        "diabaikan": [],
+        "panggilan": [
+          {
+            "waktu_mulai": "2026-09-30T18:11:44.831Z",
+            "waktu_selesai": "2026-09-30T18:12:31.787Z",
+            "token_masuk": 1966,
+            "token_keluar": 4914,
+            "biaya_usd": 0.0219851134,
+            "latensi_ms": 46953,
+            "finish_reason": "stop",
+            "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Kartu 1 (penentu) menyatakan penutupan 9 Desember Rp106, jadi hanya d yang benar: a dan b bertentangan dengan kartu (Rp97 bukan penutupan 9 Desember, dan bukan penutupan tertinggi sebelum hari ini karena Rp106 lebih tinggi), sedangkan c memakai Rp115 yang tidak ada di kartu mana pun.\"}, \"keberatan\": [], \"arahan\": \"Opsional saja: buat angka Rp115 di pilihan c berakar pada salah kira yang wajar (misalnya salah baca atau tukar digit dari angka di kartu) supaya umpannya tidak terasa acak.\"}",
+            "terbaca": true,
+            "penyedia": "Wafer",
+            "token_penalaran": 4707,
+            "ambang_penalaran": 1000,
+            "penalaran_sah": true
+          }
+        ],
+        "galat": [],
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Kartu 1 (penentu) menyatakan penutupan 9 Desember Rp106, jadi hanya d yang benar: a dan b bertentangan dengan kartu (Rp97 bukan penutupan 9 Desember, dan bukan penutupan tertinggi sebelum hari ini karena Rp106 lebih tinggi), sedangkan c memakai Rp115 yang tidak ada di kartu mana pun."
+        },
+        "penalaran_tidak_sah": []
+      },
+      "omongan": {
+        "nama": "Bima",
+        "jam": "21.07",
+        "pesan": "Santai, gw catet harga penutupan Perusahaan T kemarin Rp97. Gw hafal angka beginian.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "kartu": [
+          "harga-2025-12-09",
+          "harga-2025-12-08"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Bima menyebut [[harga-2025-12-08|Rp97]] sebagai penutupan kemarin. Pesan dikirim sesudah bursa tutup, jadi kemarin adalah [[harga-2025-12-09|9 Desember]]. Keterangan harga menunjukkan penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru penutupan [[harga-2025-12-08|8 Desember]]. Jadi jawaban yang benar: keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Jawaban yang menganggap [[harga-2025-12-08|Rp97]] benar untuk [[harga-2025-12-09|9 Desember]] salah karena tertukar hari. Jawaban tentang penutupan tertinggi sebelum hari ini juga tidak didukung keterangan. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin."
+      }
+    },
+    {
+      "no": 3,
+      "rencana": "benar-berincian:hari-naik-beruntun",
+      "versi": 1,
+      "putaran": 4,
+      "berhenti": "penebak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/45, deepseek-v4.1-flash d/68, glm-5.3 d/55); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Rentang 26 November–9 Desember bisa tepat 9 hari bursa, dan opsi d membenarkan klaim Sari secara spesifik sebagai naik beruntun 9 hari bursa.\" \"Rentang 26 November–9 Desember mencakup sekitar 9–10 hari bursa, sehingga klaim sari yang spesifik soal kenaikan beruntun konsisten dengan opsi yang membenarkannya dengan hitungan 9 hari; opsi b (4 hari) dan c (turun terus) terlalu jauh dari pola naik yang diklaim, dan a kemungkinan pengalih.\""
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": false,
+      "titik_buta": false,
+      "penebak": {
+        "tolak": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 45,
+            "alasan": "Klaim Sari tentang 'naik terus tiap hari bursa, ga pernah turun' adalah ekstrem; pilihan (a) yang menyatakan keliru dengan detail spesifik (turun satu hari sebelum 9 Desember) terdengar paling masuk akal sebagai koreksi, meskipun tanpa dokumen keyakinan rendah karena bisa juga (b) atau (c) yang benar.",
+            "benar": false,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:14:17.642Z",
+                "waktu_selesai": "2026-09-30T18:14:21.850Z",
+                "token_masuk": 639,
+                "token_keluar": 149,
+                "biaya_usd": 0.001384,
+                "latensi_ms": 4207,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"a\",\n  \"yakin\": 45,\n  \"alasan\": \"Klaim Sari tentang 'naik terus tiap hari bursa, ga pernah turun' adalah ekstrem; pilihan (a) yang menyatakan keliru dengan detail spesifik (turun satu hari sebelum 9 Desember) terdengar paling masuk akal sebagai koreksi, meskipun tanpa dokumen keyakinan rendah karena bisa juga (b) atau (c) yang benar.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "d",
+            "yakin": 68,
+            "alasan": "Rentang 26 November–9 Desember bisa tepat 9 hari bursa, dan opsi d membenarkan klaim Sari secara spesifik sebagai naik beruntun 9 hari bursa.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:14:21.850Z",
+                "waktu_selesai": "2026-09-30T18:14:37.660Z",
+                "token_masuk": 520,
+                "token_keluar": 2214,
+                "biaya_usd": 0.00095454,
+                "latensi_ms": 15805,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 68, \"alasan\": \"Rentang 26 November–9 Desember bisa tepat 9 hari bursa, dan opsi d membenarkan klaim Sari secara spesifik sebagai naik beruntun 9 hari bursa.\"}",
+                "terbaca": true,
+                "penyedia": "Io Net",
+                "token_penalaran": 1798
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 3,
+            "model": "z-ai/glm-5.3",
+            "pilihan": "d",
+            "yakin": 55,
+            "alasan": "Rentang 26 November–9 Desember mencakup sekitar 9–10 hari bursa, sehingga klaim sari yang spesifik soal kenaikan beruntun konsisten dengan opsi yang membenarkannya dengan hitungan 9 hari; opsi b (4 hari) dan c (turun terus) terlalu jauh dari pola naik yang diklaim, dan a kemungkinan pengalih.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:14:37.660Z",
+                "waktu_selesai": "2026-09-30T18:15:40.781Z",
+                "token_masuk": 586,
+                "token_keluar": 8000,
+                "biaya_usd": 0.0353083514,
+                "latensi_ms": 63118,
+                "finish_reason": "length",
+                "teks_mentah": "",
+                "terbaca": false,
+                "penyedia": "Wafer",
+                "token_penalaran": 8002,
+                "ambang_penalaran": 250,
+                "penalaran_sah": true
+              },
+              {
+                "waktu_mulai": "2026-09-30T18:15:40.781Z",
+                "waktu_selesai": "2026-09-30T18:15:52.742Z",
+                "token_masuk": 586,
+                "token_keluar": 1525,
+                "biaya_usd": 0.0068182362,
+                "latensi_ms": 11958,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 55, \"alasan\": \"Rentang 26 November–9 Desember mencakup sekitar 9–10 hari bursa, sehingga klaim sari yang spesifik soal kenaikan beruntun konsisten dengan opsi yang membenarkannya dengan hitungan 9 hari; opsi b (4 hari) dan c (turun terus) terlalu jauh dari pola naik yang diklaim, dan a kemungkinan pengalih.\"}",
+                "terbaca": true,
+                "penyedia": "Wafer",
+                "token_penalaran": 1406,
+                "ambang_penalaran": 250,
+                "penalaran_sah": true
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [],
+        "alasan": "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/45, deepseek-v4.1-flash d/68, glm-5.3 d/55); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Rentang 26 November–9 Desember bisa tepat 9 hari bursa, dan opsi d membenarkan klaim Sari secara spesifik sebagai naik beruntun 9 hari bursa.\" \"Rentang 26 November–9 Desember mencakup sekitar 9–10 hari bursa, sehingga klaim sari yang spesifik soal kenaikan beruntun konsisten dengan opsi yang membenarkannya dengan hitungan 9 hari; opsi b (4 hari) dan c (turun terus) terlalu jauh dari pola naik yang diklaim, dan a kemungkinan pengalih.\""
+      },
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "sari",
+        "jam": "19.42",
+        "pesan": "Aku ragu nih. Perusahaan T dari 26 November naik terus tiap hari bursa, ga pernah turun?",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "d": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]].",
+          "a": "Keliru, harganya sempat turun satu hari sebelum [[hari-naik-beruntun|9 Desember]].",
+          "b": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]].",
+          "c": "Keliru, harga penutupannya malah turun beruntun sampai [[hari-naik-beruntun|9 Desember]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Di kartu tertulis harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]], dan selisihnya [[naik-2025-11-26-2025-12-09|Rp58]]. Jadi yang benar adalah naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]]. Versi yang menyebut rentetan lebih pendek tidak cocok dengan catatan; versi yang bilang sempat turun atau malah turun beruntun juga tidak sesuai. Salah-kaprah yang umum: menganggap ucapan yang terdengar yakin pasti dilebih-lebihkan, padahal rangkaiannya tercatat di dokumen."
+      }
+    },
+    {
+      "no": 3,
+      "rencana": "benar-berincian:hari-naik-beruntun",
+      "versi": 2,
+      "putaran": 5,
+      "berhenti": "penebak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/55, deepseek-v4.1-flash d/65, glm-5.3 d/62); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Rentang 26 November–9 Desember 2020 hanya memiliki 9 hari bursa karena 9 Desember libur Pilkada, sehingga klaim naik terus tiap hari bursa paling cocok dengan opsi d.\" \"Dari 26 November sampai 9 Desember tepat 9 hari bursa kenaikan berturut-turut (27 Nov–9 Des, tanpa hari libur bursa), dan klaim wajar-spesifik Sari biasanya benar, sehingga opsi yang menghitung persis 9 hari paling konsisten dengan dokumen.\""
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": true,
+      "titik_buta": true,
+      "penebak": {
+        "tolak": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 55,
+            "alasan": "Sari mengklaim harga 'naik terus tiap hari bursa, ga pernah turun' sejak 26 Nov, tapi pilihan (a) menyatakan ada satu penutupan lebih rendah sebelum 9 Des—ini menunjukkan klaim Sari keliru dengan spesifitas yang masuk akal, sementara (c) yang ekstrem ('justru makin rendah') dan (d) dengan '9 hari berturut-turut' terasa kurang realistis untuk pola harga saham.",
+            "benar": false,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:16:46.273Z",
+                "waktu_selesai": "2026-09-30T18:16:48.927Z",
+                "token_masuk": 642,
+                "token_keluar": 173,
+                "biaya_usd": 0.001507,
+                "latensi_ms": 2653,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"a\",\n  \"yakin\": 55,\n  \"alasan\": \"Sari mengklaim harga 'naik terus tiap hari bursa, ga pernah turun' sejak 26 Nov, tapi pilihan (a) menyatakan ada satu penutupan lebih rendah sebelum 9 Des—ini menunjukkan klaim Sari keliru dengan spesifitas yang masuk akal, sementara (c) yang ekstrem ('justru makin rendah') dan (d) dengan '9 hari berturut-turut' terasa kurang realistis untuk pola harga saham.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "d",
+            "yakin": 65,
+            "alasan": "Rentang 26 November–9 Desember 2020 hanya memiliki 9 hari bursa karena 9 Desember libur Pilkada, sehingga klaim naik terus tiap hari bursa paling cocok dengan opsi d.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:16:48.927Z",
+                "waktu_selesai": "2026-09-30T18:18:36.198Z",
+                "token_masuk": 522,
+                "token_keluar": 6908,
+                "biaya_usd": 0.003522348,
+                "latensi_ms": 107268,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 65, \"alasan\": \"Rentang 26 November–9 Desember 2020 hanya memiliki 9 hari bursa karena 9 Desember libur Pilkada, sehingga klaim naik terus tiap hari bursa paling cocok dengan opsi d.\"}",
+                "terbaca": true,
+                "penyedia": "Morph",
+                "token_penalaran": 6837
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 3,
+            "model": "z-ai/glm-5.3",
+            "pilihan": "d",
+            "yakin": 62,
+            "alasan": "Dari 26 November sampai 9 Desember tepat 9 hari bursa kenaikan berturut-turut (27 Nov–9 Des, tanpa hari libur bursa), dan klaim wajar-spesifik Sari biasanya benar, sehingga opsi yang menghitung persis 9 hari paling konsisten dengan dokumen.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:18:36.198Z",
+                "waktu_selesai": "2026-09-30T18:18:50.943Z",
+                "token_masuk": 592,
+                "token_keluar": 2723,
+                "biaya_usd": 0.0121401456,
+                "latensi_ms": 14744,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 62, \"alasan\": \"Dari 26 November sampai 9 Desember tepat 9 hari bursa kenaikan berturut-turut (27 Nov–9 Des, tanpa hari libur bursa), dan klaim wajar-spesifik Sari biasanya benar, sehingga opsi yang menghitung persis 9 hari paling konsisten dengan dokumen.\"}",
+                "terbaca": true,
+                "penyedia": "Wafer",
+                "token_penalaran": 2624,
+                "ambang_penalaran": 250,
+                "penalaran_sah": true
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [],
+        "alasan": "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/55, deepseek-v4.1-flash d/65, glm-5.3 d/62); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Rentang 26 November–9 Desember 2020 hanya memiliki 9 hari bursa karena 9 Desember libur Pilkada, sehingga klaim naik terus tiap hari bursa paling cocok dengan opsi d.\" \"Dari 26 November sampai 9 Desember tepat 9 hari bursa kenaikan berturut-turut (27 Nov–9 Des, tanpa hari libur bursa), dan klaim wajar-spesifik Sari biasanya benar, sehingga opsi yang menghitung persis 9 hari paling konsisten dengan dokumen.\""
+      },
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "sari",
+        "jam": "19.42",
+        "pesan": "Aku ragu nih. Perusahaan T dari 26 November naik terus tiap hari bursa, ga pernah turun?",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]].",
+          "a": "Keliru, ada satu penutupan yang lebih rendah sebelum [[hari-naik-beruntun|9 Desember]].",
+          "b": "Betul, walau rangkaian naiknya cuma [[misal|4 hari bursa]].",
+          "c": "Keliru, penutupannya justru makin rendah sampai [[hari-naik-beruntun|9 Desember]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Catatan di kartu menunjukkan harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]], tiap hari lebih tinggi dari hari bursa sebelumnya. Itu sebabnya jawabannya betul: penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]]. Pilihan yang menyebut ada penutupan lebih rendah sebelum [[hari-naik-beruntun|9 Desember]] bertentangan dengan catatan; yang menyebut rangkaiannya lebih pendek tidak cocok; yang menyebut penutupan makin rendah juga tidak cocok. Selisihnya tercatat [[naik-2025-11-26-2025-12-09|Rp58]]. Salah-kaprah yang umum: menganggap ucapan yang terdengar yakin pasti dilebih-lebihkan, padahal rangkaiannya tercatat di dokumen."
+      }
+    },
+    {
+      "no": 3,
+      "rencana": "benar-berincian:hari-naik-beruntun",
+      "versi": 3,
+      "putaran": 6,
+      "berhenti": "penebak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/62, deepseek-v4.1-flash d/78, glm-5.3 d/65); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Rentang 26 November sampai 9 Desember mencakup sekitar 9 hari bursa tanpa akhir pekan, sehingga opsi d paling cocok dengan klaim Sari dan lebih masuk akal daripada hanya 4 hari.\" \"Rentang 26 November–9 Desember memuat sekitar 10 hari bursa, sehingga 'naik terus' berarti tepat 9 kenaikan beruntun—angka yang cocok dengan hitungan tanggal di opsi d, dan klaim spesifik sari biasanya benar.\""
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": true,
+      "titik_buta": true,
+      "penebak": {
+        "tolak": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 62,
+            "alasan": "Sari bilang 'ga pernah turun' sejak 26 November, tapi pilihan (a) menyebutkan ada satu penutupan lebih rendah sebelum 9 Desember—ini adalah koreksi spesifik yang paling wajar terhadap klaim absolutnya, sementara (d) yang 'betul' dengan 9 hari naik berturut-turut tampak terlalu sempurna dan kontradiktif dengan peraguan Sari.",
+            "benar": false,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:19:51.558Z",
+                "waktu_selesai": "2026-09-30T18:19:54.093Z",
+                "token_masuk": 642,
+                "token_keluar": 159,
+                "biaya_usd": 0.001437,
+                "latensi_ms": 2532,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"a\",\n  \"yakin\": 62,\n  \"alasan\": \"Sari bilang 'ga pernah turun' sejak 26 November, tapi pilihan (a) menyebutkan ada satu penutupan lebih rendah sebelum 9 Desember—ini adalah koreksi spesifik yang paling wajar terhadap klaim absolutnya, sementara (d) yang 'betul' dengan 9 hari naik berturut-turut tampak terlalu sempurna dan kontradiktif dengan peraguan Sari.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "d",
+            "yakin": 78,
+            "alasan": "Rentang 26 November sampai 9 Desember mencakup sekitar 9 hari bursa tanpa akhir pekan, sehingga opsi d paling cocok dengan klaim Sari dan lebih masuk akal daripada hanya 4 hari.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:19:54.093Z",
+                "waktu_selesai": "2026-09-30T18:20:23.982Z",
+                "token_masuk": 520,
+                "token_keluar": 2596,
+                "biaya_usd": 0.001568,
+                "latensi_ms": 29886,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 78, \"alasan\": \"Rentang 26 November sampai 9 Desember mencakup sekitar 9 hari bursa tanpa akhir pekan, sehingga opsi d paling cocok dengan klaim Sari dan lebih masuk akal daripada hanya 4 hari.\"}",
+                "terbaca": true,
+                "penyedia": "Relace",
+                "token_penalaran": 2141
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 3,
+            "model": "z-ai/glm-5.3",
+            "pilihan": "d",
+            "yakin": 65,
+            "alasan": "Rentang 26 November–9 Desember memuat sekitar 10 hari bursa, sehingga 'naik terus' berarti tepat 9 kenaikan beruntun—angka yang cocok dengan hitungan tanggal di opsi d, dan klaim spesifik sari biasanya benar.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:20:23.982Z",
+                "waktu_selesai": "2026-09-30T18:20:46.628Z",
+                "token_masuk": 590,
+                "token_keluar": 6004,
+                "biaya_usd": 0.0265737222,
+                "latensi_ms": 22645,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 65, \"alasan\": \"Rentang 26 November–9 Desember memuat sekitar 10 hari bursa, sehingga 'naik terus' berarti tepat 9 kenaikan beruntun—angka yang cocok dengan hitungan tanggal di opsi d, dan klaim spesifik sari biasanya benar.\"}",
+                "terbaca": true,
+                "penyedia": "Wafer",
+                "token_penalaran": 5915,
+                "ambang_penalaran": 250,
+                "penalaran_sah": true
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [],
+        "alasan": "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/62, deepseek-v4.1-flash d/78, glm-5.3 d/65); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Rentang 26 November sampai 9 Desember mencakup sekitar 9 hari bursa tanpa akhir pekan, sehingga opsi d paling cocok dengan klaim Sari dan lebih masuk akal daripada hanya 4 hari.\" \"Rentang 26 November–9 Desember memuat sekitar 10 hari bursa, sehingga 'naik terus' berarti tepat 9 kenaikan beruntun—angka yang cocok dengan hitungan tanggal di opsi d, dan klaim spesifik sari biasanya benar.\""
+      },
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "sari",
+        "jam": "19.42",
+        "pesan": "Aku ragu nih. Perusahaan T dari 26 November naik terus tiap hari bursa, ga pernah turun?",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]].",
+          "a": "Keliru, ada satu penutupan yang lebih rendah sebelum [[hari-naik-beruntun|9 Desember]].",
+          "b": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]].",
+          "c": "Keliru, penutupannya justru makin rendah sampai [[hari-naik-beruntun|9 Desember]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Di kartu tertulis penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]], tiap hari lebih tinggi dari hari bursa sebelumnya. Selisihnya [[naik-2025-11-26-2025-12-09|Rp58]]. Jadi jawabannya yang menyebut naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]]. Versi jumlah hari lebih pendek keliru karena catatan menyebut [[hari-naik-beruntun|9 hari bursa]]. Versi ada penutupan lebih rendah juga bertentangan. Salah-kaprah yang umum: menyangka cerita yang terdengar sangat yakin pasti dibesar-besarkan, padahal urutannya tercatat di dokumen."
+      }
+    },
+    {
+      "no": 3,
+      "rencana": "besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+      "versi": 1,
+      "putaran": 7,
+      "berhenti": "penebak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/65); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Pilihan d menyatakan kenaikan 2,21 kali lipat yang masuk akal sebagai 'lebih dari dua kali lipat', sementara pilihan a dengan 3,51 kali terasa terlalu ekstrem untuk pergerakan saham dalam 13 hari, dan pilihan c bertentangan langsung dengan klaim kenaikan di pesan Sinta.\""
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": false,
+      "titik_buta": false,
+      "penebak": {
+        "tolak": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "d",
+            "yakin": 65,
+            "alasan": "Pilihan d menyatakan kenaikan 2,21 kali lipat yang masuk akal sebagai 'lebih dari dua kali lipat', sementara pilihan a dengan 3,51 kali terasa terlalu ekstrem untuk pergerakan saham dalam 13 hari, dan pilihan c bertentangan langsung dengan klaim kenaikan di pesan Sinta.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:21:41.759Z",
+                "waktu_selesai": "2026-09-30T18:21:43.907Z",
+                "token_masuk": 665,
+                "token_keluar": 131,
+                "biaya_usd": 0.00132,
+                "latensi_ms": 2147,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"d\",\n  \"yakin\": 65,\n  \"alasan\": \"Pilihan d menyatakan kenaikan 2,21 kali lipat yang masuk akal sebagai 'lebih dari dua kali lipat', sementara pilihan a dengan 3,51 kali terasa terlalu ekstrem untuk pergerakan saham dalam 13 hari, dan pilihan c bertentangan langsung dengan klaim kenaikan di pesan Sinta.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [
+          2,
+          3
+        ],
+        "alasan": "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/65); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Pilihan d menyatakan kenaikan 2,21 kali lipat yang masuk akal sebagai 'lebih dari dua kali lipat', sementara pilihan a dengan 3,51 kali terasa terlalu ekstrem untuk pergerakan saham dalam 13 hari, dan pilihan c bertentangan langsung dengan klaim kenaikan di pesan Sinta.\""
+      },
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Temen gw ngomongin saham Perusahaan T, katanya sejak 26 November harga penutupannya udah lebih dari dua kali lipat. Gw jadi ikut penasaran.",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "kelipatan-2025-11-26-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "a": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|3,51 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "b": "Keliru, naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]], bukan dua kali lipat.",
+          "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Di kartu, harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] tercatat [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Itu yang menentukan jawaban. Catatan lain menunjukkan kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]], yaitu selisih rupiah, bukan ukuran kelipatan. Jadi yang benar adalah yang menyebut [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]. Yang memakai [[naik-2025-11-26-2025-12-09|Rp58]] sebagai alasan keliru mencampur selisih dengan rasio; angka lain tidak didukung; yang bilang penutupan malah turun bertentangan dengan catatan. Salah-kaprah yang umum: menganggap selisih rupiah sama dengan kelipatan harga."
+      }
+    },
+    {
+      "no": 3,
+      "rencana": "besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+      "versi": 2,
+      "putaran": 8,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN (penjelasan): Penjelasan memuat angka di luar rujukan: 3,51. Tulis tiap angka sebagai [[fact_id|teks]]."
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": true,
+      "titik_buta": false,
+      "penebak": null,
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Temen gw ngomongin saham Perusahaan T, katanya sejak 26 November harga penutupannya udah lebih dari dua kali lipat. Gw jadi ikut penasaran.",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "kelipatan-2025-11-26-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "a": "Betul, dari [[kelipatan-2025-11-26-2025-12-09|26 November]] sampai [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harganya jadi [[misal|3,51 kali]].",
+          "b": "Keliru, naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]], bukan dua kali lipat.",
+          "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Pada [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harga penutupan dibanding [[kelipatan-2025-11-26-2025-12-09|26 November]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]. Itu cocok dengan kabar teman: benar sudah lebih dari dua kali. Angka [[naik-2025-11-26-2025-12-09|Rp58]] cuma selisih rupiah, bukan kelipatan, jadi tidak membatalkan. Yang menyebut 3,51 kali salah hitung; yang bilang harga malah turun jelas bertentangan dengan [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+      }
+    },
+    {
+      "no": 3,
+      "rencana": "besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+      "versi": 3,
+      "putaran": 9,
+      "berhenti": "penebak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Tanpa dokumen, pilihan (d) paling konsisten dengan logika: klaim 'lebih dari dua kali lipat' cocok dengan faktor 2,21x; pilihan (a) terlalu ekstrem (3,51x jarang terjadi dalam 2 minggu), dan pilihan (b)-(c) yang mengatakan 'keliru' bertentangan dengan premis Sinta yang masuk akal untuk soal 'cocok dengan dokumen'.\""
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": true,
+      "titik_buta": true,
+      "penebak": {
+        "tolak": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "d",
+            "yakin": 72,
+            "alasan": "Tanpa dokumen, pilihan (d) paling konsisten dengan logika: klaim 'lebih dari dua kali lipat' cocok dengan faktor 2,21x; pilihan (a) terlalu ekstrem (3,51x jarang terjadi dalam 2 minggu), dan pilihan (b)-(c) yang mengatakan 'keliru' bertentangan dengan premis Sinta yang masuk akal untuk soal 'cocok dengan dokumen'.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:23:00.672Z",
+                "waktu_selesai": "2026-09-30T18:23:03.596Z",
+                "token_masuk": 665,
+                "token_keluar": 151,
+                "biaya_usd": 0.00142,
+                "latensi_ms": 2922,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"d\",\n  \"yakin\": 72,\n  \"alasan\": \"Tanpa dokumen, pilihan (d) paling konsisten dengan logika: klaim 'lebih dari dua kali lipat' cocok dengan faktor 2,21x; pilihan (a) terlalu ekstrem (3,51x jarang terjadi dalam 2 minggu), dan pilihan (b)-(c) yang mengatakan 'keliru' bertentangan dengan premis Sinta yang masuk akal untuk soal 'cocok dengan dokumen'.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [
+          2,
+          3
+        ],
+        "alasan": "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Tanpa dokumen, pilihan (d) paling konsisten dengan logika: klaim 'lebih dari dua kali lipat' cocok dengan faktor 2,21x; pilihan (a) terlalu ekstrem (3,51x jarang terjadi dalam 2 minggu), dan pilihan (b)-(c) yang mengatakan 'keliru' bertentangan dengan premis Sinta yang masuk akal untuk soal 'cocok dengan dokumen'.\""
+      },
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Temen gw ngomongin saham Perusahaan T, katanya sejak 26 November harga penutupannya udah lebih dari dua kali lipat. Gw jadi ikut penasaran.",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "kelipatan-2025-11-26-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "a": "Betul, dari [[kelipatan-2025-11-26-2025-12-09|26 November]] sampai [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harganya jadi [[misal|3,51 kali]].",
+          "b": "Keliru, naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]], bukan dua kali lipat.",
+          "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Yang terbaca di kartu: harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Jadi pernyataan bahwa penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] sebesar [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]] benar. Jawaban yang menyebut kelipatan lain tidak cocok dengan angka itu. Jawaban yang bilang naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]] keliru karena [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih harga, bukan kelipatan. Jawaban yang bilang penutupan [[naik-2025-11-26-2025-12-09|9 Desember]] lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]] bertentangan dengan yang terbaca. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+      }
+    },
+    {
+      "no": 3,
+      "rencana": "besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+      "versi": 4,
+      "putaran": 10,
+      "berhenti": "penebak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/45, deepseek-v4.1-flash d/85); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Pilihan (d) menyatakan rasio 2,21x yang masuk akal sebagai 'lebih dari dua kali lipat' dan merupakan klaim spesifik dengan angka konkret; pilihan (a) dengan 3,51x terasa terlalu berlebihan; (b) dan (c) menolak klaim teman tanpa angka pasti, sementara (d) memvalidasi klaim dengan rasio yang realistis dan terukur.\" \"Rasio 2,21 kali paling masuk akal dengan lonjakan saham T pada 26 Nov–9 Des, sedangkan opsi b menyesatkan karena kenaikan Rp58 dari harga rendah bisa berarti lebih dari dua kali lipat.\""
+      ],
+      "dicatat": [],
+      "penyempurna_sebelumnya": true,
+      "titik_buta": true,
+      "penebak": {
+        "tolak": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "d",
+            "yakin": 45,
+            "alasan": "Pilihan (d) menyatakan rasio 2,21x yang masuk akal sebagai 'lebih dari dua kali lipat' dan merupakan klaim spesifik dengan angka konkret; pilihan (a) dengan 3,51x terasa terlalu berlebihan; (b) dan (c) menolak klaim teman tanpa angka pasti, sementara (d) memvalidasi klaim dengan rasio yang realistis dan terukur.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:23:49.226Z",
+                "waktu_selesai": "2026-09-30T18:23:52.099Z",
+                "token_masuk": 665,
+                "token_keluar": 152,
+                "biaya_usd": 0.001425,
+                "latensi_ms": 2872,
+                "finish_reason": "stop",
+                "teks_mentah": "```json\n{\n  \"pilihan\": \"d\",\n  \"yakin\": 45,\n  \"alasan\": \"Pilihan (d) menyatakan rasio 2,21x yang masuk akal sebagai 'lebih dari dua kali lipat' dan merupakan klaim spesifik dengan angka konkret; pilihan (a) dengan 3,51x terasa terlalu berlebihan; (b) dan (c) menolak klaim teman tanpa angka pasti, sementara (d) memvalidasi klaim dengan rasio yang realistis dan terukur.\"\n}\n```",
+                "terbaca": true,
+                "penyedia": "Amazon Bedrock",
+                "token_penalaran": 0
+              }
+            ],
+            "penalaran_tidak_sah": []
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "d",
+            "yakin": 85,
+            "alasan": "Rasio 2,21 kali paling masuk akal dengan lonjakan saham T pada 26 Nov–9 Des, sedangkan opsi b menyesatkan karena kenaikan Rp58 dari harga rendah bisa berarti lebih dari dua kali lipat.",
+            "benar": true,
+            "terbaca": true,
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T18:23:52.099Z",
+                "waktu_selesai": "2026-09-30T18:24:31.045Z",
+                "token_masuk": 537,
+                "token_keluar": 5297,
+                "biaya_usd": 0.003193575,
+                "latensi_ms": 38944,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"d\", \"yakin\": 85, \"alasan\": \"Rasio 2,21 kali paling masuk akal dengan lonjakan saham T pada 26 Nov–9 Des, sedangkan opsi b menyesatkan karena kenaikan Rp58 dari harga rendah bisa berarti lebih dari dua kali lipat.\"}",
+                "terbaca": true,
+                "penyedia": "StreamLake",
+                "token_penalaran": 5223
+              }
+            ],
+            "penalaran_tidak_sah": []
+          }
+        ],
+        "tidak_dipanggil": [
+          3
+        ],
+        "alasan": "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/45, deepseek-v4.1-flash d/85); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Pilihan (d) menyatakan rasio 2,21x yang masuk akal sebagai 'lebih dari dua kali lipat' dan merupakan klaim spesifik dengan angka konkret; pilihan (a) dengan 3,51x terasa terlalu berlebihan; (b) dan (c) menolak klaim teman tanpa angka pasti, sementara (d) memvalidasi klaim dengan rasio yang realistis dan terukur.\" \"Rasio 2,21 kali paling masuk akal dengan lonjakan saham T pada 26 Nov–9 Des, sedangkan opsi b menyesatkan karena kenaikan Rp58 dari harga rendah bisa berarti lebih dari dua kali lipat.\""
+      },
+      "kartu": null,
+      "kritik": null,
+      "omongan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Temen gw ngomongin saham Perusahaan T, katanya sejak 26 November harga penutupannya udah lebih dari dua kali lipat. Gw jadi ikut penasaran.",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "kelipatan-2025-11-26-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "a": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|3,51 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "b": "Keliru, naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]], bukan dua kali lipat.",
+          "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Kartu kelipatan menunjukkan harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Jadi klaim kelipatan itu benar. Kartu selisih hanya memberi [[naik-2025-11-26-2025-12-09|Rp58]], bukan kelipatan. Pilihan yang menyebut kelipatan lain keliru karena tidak cocok dengan kartu kelipatan. Pilihan yang bilang lebih rendah juga bertentangan dengan kartu kelipatan. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+      }
+    }
+  ],
+  "penyempurnaan": [
+    {
+      "no": 3,
+      "rencana": "benar-berincian:hari-naik-beruntun",
+      "putaran": 4,
+      "jenis": "tertebak",
+      "terbaca": true,
+      "diterima": [
+        {
+          "slot": "kunci",
+          "varian": "K2",
+          "dari": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]].",
+          "ke": "Betul, penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]]."
+        },
+        {
+          "slot": "p1",
+          "varian": "P1b",
+          "dari": "Keliru, harganya sempat turun satu hari sebelum [[hari-naik-beruntun|9 Desember]].",
+          "ke": "Keliru, ada satu penutupan yang lebih rendah sebelum [[hari-naik-beruntun|9 Desember]]."
+        },
+        {
+          "slot": "p2",
+          "varian": "P2b",
+          "dari": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]].",
+          "ke": "Betul, walau rangkaian naiknya cuma [[misal|4 hari bursa]]."
+        },
+        {
+          "slot": "p3",
+          "varian": "P3b",
+          "dari": "Keliru, harga penutupannya malah turun beruntun sampai [[hari-naik-beruntun|9 Desember]].",
+          "ke": "Keliru, penutupannya justru makin rendah sampai [[hari-naik-beruntun|9 Desember]]."
+        }
+      ],
+      "dibuang": []
+    },
+    {
+      "no": 3,
+      "rencana": "benar-berincian:hari-naik-beruntun",
+      "putaran": 5,
+      "jenis": "tertebak",
+      "terbaca": true,
+      "diterima": [
+        {
+          "slot": "p2",
+          "varian": "P2a",
+          "dari": "Betul, walau rangkaian naiknya cuma [[misal|4 hari bursa]].",
+          "ke": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]]."
+        }
+      ],
+      "dibuang": []
+    },
+    {
+      "no": 3,
+      "rencana": "besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+      "putaran": 7,
+      "jenis": "tertebak",
+      "terbaca": true,
+      "diterima": [
+        {
+          "slot": "p1",
+          "varian": "P1b",
+          "dari": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|3,51 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "ke": "Betul, dari [[kelipatan-2025-11-26-2025-12-09|26 November]] sampai [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harganya jadi [[misal|3,51 kali]]."
+        }
+      ],
+      "dibuang": []
+    },
+    {
+      "no": 3,
+      "rencana": "besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+      "putaran": 9,
+      "jenis": "tertebak",
+      "terbaca": true,
+      "diterima": [
+        {
+          "slot": "p1",
+          "varian": "P1a",
+          "dari": "Betul, dari [[kelipatan-2025-11-26-2025-12-09|26 November]] sampai [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harganya jadi [[misal|3,51 kali]].",
+          "ke": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|3,51 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+        }
+      ],
+      "dibuang": []
+    }
+  ],
+  "distribusi": {
+    "kode": 2,
+    "penebak": 6,
+    "kartu": 0,
+    "kritikus": 0,
+    "lolos": 2,
+    "tulis-gagal": 0,
+    "pagu": 0,
+    "galat": 0
+  },
+  "kunci": [
+    {
+      "no": 1,
+      "rencana": {
+        "pola": "sebab-resmi",
+        "sudut": "susp-2025-12-10",
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "klaim": {
+          "proposisi": {
+            "k": "alasan",
+            "susp": "susp-2025-12-10",
+            "kategori": "kelangsungan-usaha"
+          },
+          "label": "Keliru",
+          "inti": "Teman yakin bursa menghentikan perdagangan saham Perusahaan T hari ini karena bursa ragu usahanya bisa terus berjalan.",
+          "angka": [],
+          "wajib": [
+            [
+              "hari ini"
+            ]
+          ]
+        },
+        "slot": [
+          {
+            "slot": "kunci",
+            "bentuk": "Keliru + alasan resmi di dokumen",
+            "varian": [
+              {
+                "id": "K1",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "alasan",
+                  "susp": "susp-2025-12-10",
+                  "kategori": "kenaikan-harga"
+                },
+                "teks": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+                "inti": [
+                  "kenaikan"
+                ],
+                "penanda": "hari ini"
+              },
+              {
+                "id": "K2",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "alasan",
+                  "susp": "susp-2025-12-10",
+                  "kategori": "kenaikan-harga"
+                },
+                "teks": "Keliru, bursa menghentikannya hari ini karena kenaikan harganya terlalu tajam.",
+                "inti": [
+                  "kenaikan"
+                ],
+                "penanda": "hari ini"
+              }
+            ]
+          },
+          {
+            "slot": "p1",
+            "bentuk": "Betul + alasan yang disebut teman",
+            "varian": [
+              {
+                "id": "P1a",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "alasan",
+                  "susp": "susp-2025-12-10",
+                  "kategori": "kelangsungan-usaha"
+                },
+                "teks": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+                "inti": [
+                  "usaha"
+                ],
+                "penanda": "hari ini"
+              },
+              {
+                "id": "P1b",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "alasan",
+                  "susp": "susp-2025-12-10",
+                  "kategori": "kelangsungan-usaha"
+                },
+                "teks": "Betul, alasan resmi hari ini memang usahanya diragukan bisa terus berjalan.",
+                "inti": [
+                  "usaha"
+                ],
+                "penanda": "hari ini"
+              }
+            ]
+          },
+          {
+            "slot": "p2",
+            "bentuk": "Betul + alasan tambahan yang tidak ada di dokumen",
+            "varian": [
+              {
+                "id": "P2a",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "dan",
+                  "p": [
+                    {
+                      "k": "alasan",
+                      "susp": "susp-2025-12-10",
+                      "kategori": "kelangsungan-usaha"
+                    },
+                    {
+                      "k": "alasan",
+                      "susp": "susp-2025-12-10",
+                      "kategori": "aksi-korporasi"
+                    }
+                  ]
+                },
+                "teks": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+                "inti": [
+                  "pengambilalihan"
+                ],
+                "penanda": "hari ini"
+              },
+              {
+                "id": "P2b",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "dan",
+                  "p": [
+                    {
+                      "k": "alasan",
+                      "susp": "susp-2025-12-10",
+                      "kategori": "kelangsungan-usaha"
+                    },
+                    {
+                      "k": "alasan",
+                      "susp": "susp-2025-12-10",
+                      "kategori": "aksi-korporasi"
+                    }
+                  ]
+                },
+                "teks": "Betul, bursa hari ini juga beralasan rencana pengambilalihan belum diumumkan.",
+                "inti": [
+                  "pengambilalihan"
+                ],
+                "penanda": "hari ini"
+              }
+            ]
+          },
+          {
+            "slot": "p3",
+            "bentuk": "Keliru + alasan lain yang tidak ada di dokumen",
+            "varian": [
+              {
+                "id": "P3a",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "alasan",
+                  "susp": "susp-2025-12-10",
+                  "kategori": "laporan-keuangan"
+                },
+                "teks": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan.",
+                "inti": [
+                  "laporan keuangan"
+                ],
+                "penanda": "hari ini"
+              },
+              {
+                "id": "P3b",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "alasan",
+                  "susp": "susp-2025-12-10",
+                  "kategori": "laporan-keuangan"
+                },
+                "teks": "Keliru, bursa menghentikannya hari ini karena laporan keuangannya terlambat diserahkan.",
+                "inti": [
+                  "laporan keuangan"
+                ],
+                "penanda": "hari ini"
+              }
+            ]
+          }
+        ],
+        "salah_kaprah": "mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini",
+        "topik": "suspensi",
+        "asal": "DADA s1 (soal tayang): alasan yang disebut teman lain dari alasan di dokumen",
+        "rujukan_penjelasan": [
+          "[[susp-2025-12-10|10 Desember]]",
+          "[[susp-2025-01-21|21 Januari]]"
+        ]
+      },
+      "pilihan": {
+        "kunci": {
+          "id": "K1",
+          "label": "Keliru",
+          "proposisi": {
+            "k": "alasan",
+            "susp": "susp-2025-12-10",
+            "kategori": "kenaikan-harga"
+          },
+          "teks": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+          "inti": [
+            "kenaikan"
+          ],
+          "penanda": "hari ini"
+        },
+        "p1": {
+          "id": "P1a",
+          "label": "Betul",
+          "proposisi": {
+            "k": "alasan",
+            "susp": "susp-2025-12-10",
+            "kategori": "kelangsungan-usaha"
+          },
+          "teks": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+          "inti": [
+            "usaha"
+          ],
+          "penanda": "hari ini"
+        },
+        "p2": {
+          "id": "P2a",
+          "label": "Betul",
+          "proposisi": {
+            "k": "dan",
+            "p": [
+              {
+                "k": "alasan",
+                "susp": "susp-2025-12-10",
+                "kategori": "kelangsungan-usaha"
+              },
+              {
+                "k": "alasan",
+                "susp": "susp-2025-12-10",
+                "kategori": "aksi-korporasi"
+              }
+            ]
+          },
+          "teks": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+          "inti": [
+            "pengambilalihan"
+          ],
+          "penanda": "hari ini"
+        },
+        "p3": {
+          "id": "P3a",
+          "label": "Keliru",
+          "proposisi": {
+            "k": "alasan",
+            "susp": "susp-2025-12-10",
+            "kategori": "laporan-keuangan"
+          },
+          "teks": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan.",
+          "inti": [
+            "laporan keuangan"
+          ],
+          "penanda": "hari ini"
+        }
+      },
+      "tulisan": {
+        "nama": "Dita",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget bursa stop perdagangan saham Perusahaan T hari ini, sebab bursa ragu usahanya bisa terus jalan."
+      },
+      "penjelasan": "Dita yakin bursa menghentikan saham Perusahaan T karena usaha diragukan bisa terus jalan. Yang tertulis untuk [[susp-2025-12-10|10 Desember]]: perdagangan dihentikan sementara oleh bursa, alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi penghentian hari itu bukan soal keraguan kelangsungan usaha. Alasan keraguan kelangsungan usaha tercatat pada [[susp-2025-01-21|21 Januari]], jadi itu bukan alasan untuk hari ini. Pilihan yang menyebut rencana pengambilalihan atau laporan keuangan terlambat tidak didukung catatan. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini.",
+      "omongan": {
+        "nama": "Dita",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget bursa stop perdagangan saham Perusahaan T hari ini, sebab bursa ragu usahanya bisa terus jalan.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "c": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+          "a": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+          "b": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+          "d": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+        },
+        "kunci": "c",
+        "penjelasan": "Dita yakin bursa menghentikan saham Perusahaan T karena usaha diragukan bisa terus jalan. Yang tertulis untuk [[susp-2025-12-10|10 Desember]]: perdagangan dihentikan sementara oleh bursa, alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi penghentian hari itu bukan soal keraguan kelangsungan usaha. Alasan keraguan kelangsungan usaha tercatat pada [[susp-2025-01-21|21 Januari]], jadi itu bukan alasan untuk hari ini. Pilihan yang menyebut rencana pengambilalihan atau laporan keuangan terlambat tidak didukung catatan. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini."
+      },
+      "penyempurna_dipakai": false
+    },
+    {
+      "no": 2,
+      "rencana": {
+        "pola": "angka-lain-waktu",
+        "sudut": "harga-2025-12-09",
+        "kartu": [
+          "harga-2025-12-09",
+          "harga-2025-12-08"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "klaim": {
+          "proposisi": {
+            "k": "nilai",
+            "fact_id": "harga-2025-12-09",
+            "nilai": 97
+          },
+          "label": "Keliru",
+          "inti": "Teman menyebut harga penutupan kemarin (9 Desember) Rp97.",
+          "angka": [
+            {
+              "teks": "Rp97",
+              "fact_id": "harga-2025-12-08"
+            },
+            {
+              "teks": "9 Desember",
+              "fact_id": "harga-2025-12-09"
+            }
+          ],
+          "wajib": [
+            [
+              "kemarin",
+              "9 Desember"
+            ]
+          ]
+        },
+        "slot": [
+          {
+            "slot": "kunci",
+            "bentuk": "Keliru + angka yang benar, bukan angka teman",
+            "varian": [
+              {
+                "id": "K1",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "nilai",
+                  "fact_id": "harga-2025-12-09",
+                  "nilai": 106
+                },
+                "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+                "inti": [
+                  "penutupan",
+                  "bukan"
+                ],
+                "penanda": "9 Desember"
+              },
+              {
+                "id": "K2",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "nilai",
+                  "fact_id": "harga-2025-12-09",
+                  "nilai": 106
+                },
+                "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+                "inti": [
+                  "tercatat",
+                  "bukan"
+                ],
+                "penanda": "9 Desember"
+              }
+            ]
+          },
+          {
+            "slot": "p1",
+            "bentuk": "Betul + angka teman",
+            "varian": [
+              {
+                "id": "P1a",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "nilai",
+                  "fact_id": "harga-2025-12-09",
+                  "nilai": 97
+                },
+                "teks": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+                "inti": [
+                  "penutupan",
+                  "memang"
+                ],
+                "penanda": "9 Desember"
+              },
+              {
+                "id": "P1b",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "nilai",
+                  "fact_id": "harga-2025-12-09",
+                  "nilai": 97
+                },
+                "teks": "Betul, angka [[harga-2025-12-09|9 Desember]] yang tercatat memang [[harga-2025-12-08|Rp97]].",
+                "inti": [
+                  "tercatat",
+                  "memang"
+                ],
+                "penanda": "9 Desember"
+              }
+            ]
+          },
+          {
+            "slot": "p2",
+            "bentuk": "Betul + kesimpulan dari angka teman",
+            "varian": [
+              {
+                "id": "P2a",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "tertinggi",
+                  "fact_id": "harga-2025-12-08"
+                },
+                "teks": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+                "inti": [
+                  "tertinggi"
+                ],
+                "penanda": null
+              },
+              {
+                "id": "P2b",
+                "label": "Betul",
+                "proposisi": {
+                  "k": "tertinggi",
+                  "fact_id": "harga-2025-12-08"
+                },
+                "teks": "Betul, belum pernah ada penutupan di atas [[harga-2025-12-08|Rp97]] sebelum hari ini.",
+                "inti": [
+                  "belum pernah"
+                ],
+                "penanda": null
+              }
+            ]
+          },
+          {
+            "slot": "p3",
+            "bentuk": "Keliru + angka lain yang juga bukan angka hari itu",
+            "varian": [
+              {
+                "id": "P3a",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "nilai",
+                  "fact_id": "harga-2025-12-09",
+                  "nilai": 115
+                },
+                "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]].",
+                "inti": [
+                  "penutupan",
+                  "bukan"
+                ],
+                "penanda": "9 Desember"
+              },
+              {
+                "id": "P3b",
+                "label": "Keliru",
+                "proposisi": {
+                  "k": "nilai",
+                  "fact_id": "harga-2025-12-09",
+                  "nilai": 115
+                },
+                "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]].",
+                "inti": [
+                  "tercatat",
+                  "bukan"
+                ],
+                "penanda": "9 Desember"
+              }
+            ]
+          }
+        ],
+        "salah_kaprah": "memakai angka dari hari lain seolah-olah angka kemarin",
+        "topik": "harga",
+        "asal": "ULTJ s1 (soal tayang): angka hari lain dipakai untuk hari yang dibicarakan",
+        "rujukan_penjelasan": [
+          "[[harga-2025-12-09|9 Desember]]",
+          "[[harga-2025-12-09|Rp106]]",
+          "[[harga-2025-12-08|8 Desember]]",
+          "[[harga-2025-12-08|Rp97]]"
+        ]
+      },
+      "pilihan": {
+        "kunci": {
+          "id": "K1",
+          "label": "Keliru",
+          "proposisi": {
+            "k": "nilai",
+            "fact_id": "harga-2025-12-09",
+            "nilai": 106
+          },
+          "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "inti": [
+            "penutupan",
+            "bukan"
+          ],
+          "penanda": "9 Desember"
+        },
+        "p1": {
+          "id": "P1a",
+          "label": "Betul",
+          "proposisi": {
+            "k": "nilai",
+            "fact_id": "harga-2025-12-09",
+            "nilai": 97
+          },
+          "teks": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "inti": [
+            "penutupan",
+            "memang"
+          ],
+          "penanda": "9 Desember"
+        },
+        "p2": {
+          "id": "P2a",
+          "label": "Betul",
+          "proposisi": {
+            "k": "tertinggi",
+            "fact_id": "harga-2025-12-08"
+          },
+          "teks": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "inti": [
+            "tertinggi"
+          ],
+          "penanda": null
+        },
+        "p3": {
+          "id": "P3a",
+          "label": "Keliru",
+          "proposisi": {
+            "k": "nilai",
+            "fact_id": "harga-2025-12-09",
+            "nilai": 115
+          },
+          "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]].",
+          "inti": [
+            "penutupan",
+            "bukan"
+          ],
+          "penanda": "9 Desember"
+        }
+      },
+      "tulisan": {
+        "nama": "Bima",
+        "jam": "21.07",
+        "pesan": "Santai, gw catet harga penutupan Perusahaan T kemarin Rp97. Gw hafal angka beginian."
+      },
+      "penjelasan": "Bima menyebut [[harga-2025-12-08|Rp97]] sebagai penutupan kemarin. Pesan dikirim sesudah bursa tutup, jadi kemarin adalah [[harga-2025-12-09|9 Desember]]. Keterangan harga menunjukkan penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru penutupan [[harga-2025-12-08|8 Desember]]. Jadi jawaban yang benar: keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Jawaban yang menganggap [[harga-2025-12-08|Rp97]] benar untuk [[harga-2025-12-09|9 Desember]] salah karena tertukar hari. Jawaban tentang penutupan tertinggi sebelum hari ini juga tidak didukung keterangan. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin.",
+      "omongan": {
+        "nama": "Bima",
+        "jam": "21.07",
+        "pesan": "Santai, gw catet harga penutupan Perusahaan T kemarin Rp97. Gw hafal angka beginian.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "kartu": [
+          "harga-2025-12-09",
+          "harga-2025-12-08"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Bima menyebut [[harga-2025-12-08|Rp97]] sebagai penutupan kemarin. Pesan dikirim sesudah bursa tutup, jadi kemarin adalah [[harga-2025-12-09|9 Desember]]. Keterangan harga menunjukkan penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru penutupan [[harga-2025-12-08|8 Desember]]. Jadi jawaban yang benar: keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Jawaban yang menganggap [[harga-2025-12-08|Rp97]] benar untuk [[harga-2025-12-09|9 Desember]] salah karena tertukar hari. Jawaban tentang penutupan tertinggi sebelum hari ini juga tidak didukung keterangan. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin."
+      },
+      "penyempurna_dipakai": false
+    }
+  ],
+  "draf_terakhir": [
+    {
+      "nama": "Dita",
+      "jam": "20.15",
+      "pesan": "Gw yakin banget bursa stop perdagangan saham Perusahaan T hari ini, sebab bursa ragu usahanya bisa terus jalan.",
+      "angka_pesan": [],
+      "kartu": [
+        "susp-2025-12-10",
+        "susp-2025-01-21"
+      ],
+      "kartu_penentu": [
+        "susp-2025-12-10"
+      ],
+      "pilihan": {
+        "c": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+        "a": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+        "b": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+        "d": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+      },
+      "kunci": "c",
+      "penjelasan": "Dita yakin bursa menghentikan saham Perusahaan T karena usaha diragukan bisa terus jalan. Yang tertulis untuk [[susp-2025-12-10|10 Desember]]: perdagangan dihentikan sementara oleh bursa, alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi penghentian hari itu bukan soal keraguan kelangsungan usaha. Alasan keraguan kelangsungan usaha tercatat pada [[susp-2025-01-21|21 Januari]], jadi itu bukan alasan untuk hari ini. Pilihan yang menyebut rencana pengambilalihan atau laporan keuangan terlambat tidak didukung catatan. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini."
+    },
+    {
+      "nama": "Bima",
+      "jam": "21.07",
+      "pesan": "Santai, gw catet harga penutupan Perusahaan T kemarin Rp97. Gw hafal angka beginian.",
+      "angka_pesan": [
+        {
+          "teks": "Rp97",
+          "fact_id": "harga-2025-12-08"
+        }
+      ],
+      "kartu": [
+        "harga-2025-12-09",
+        "harga-2025-12-08"
+      ],
+      "kartu_penentu": [
+        "harga-2025-12-09"
+      ],
+      "pilihan": {
+        "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+        "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+        "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+        "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."
+      },
+      "kunci": "d",
+      "penjelasan": "Bima menyebut [[harga-2025-12-08|Rp97]] sebagai penutupan kemarin. Pesan dikirim sesudah bursa tutup, jadi kemarin adalah [[harga-2025-12-09|9 Desember]]. Keterangan harga menunjukkan penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru penutupan [[harga-2025-12-08|8 Desember]]. Jadi jawaban yang benar: keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Jawaban yang menganggap [[harga-2025-12-08|Rp97]] benar untuk [[harga-2025-12-09|9 Desember]] salah karena tertukar hari. Jawaban tentang penutupan tertinggi sebelum hari ini juga tidak didukung keterangan. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin."
+    },
+    {
+      "nama": "sinta",
+      "jam": "20.15",
+      "pesan": "Temen gw ngomongin saham Perusahaan T, katanya sejak 26 November harga penutupannya udah lebih dari dua kali lipat. Gw jadi ikut penasaran.",
+      "angka_pesan": [
+        {
+          "teks": "26 November",
+          "fact_id": "kelipatan-2025-11-26-2025-12-09"
+        }
+      ],
+      "kartu": [
+        "kelipatan-2025-11-26-2025-12-09",
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "kelipatan-2025-11-26-2025-12-09"
+      ],
+      "pilihan": {
+        "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+        "a": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|3,51 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+        "b": "Keliru, naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]], bukan dua kali lipat.",
+        "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+      },
+      "kunci": "d",
+      "penjelasan": "Kartu kelipatan menunjukkan harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Jadi klaim kelipatan itu benar. Kartu selisih hanya memberi [[naik-2025-11-26-2025-12-09|Rp58]], bukan kelipatan. Pilihan yang menyebut kelipatan lain keliru karena tidak cocok dengan kartu kelipatan. Pilihan yang bilang lebih rendah juga bertentangan dengan kartu kelipatan. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+    }
+  ],
+  "setelan": {
+    "penebak": {
+      "aturan": "dua-dari-tiga",
+      "ambangHaiku": 60
+    },
+    "kartu": "dicatat",
+    "kritikus": {
+      "jenis": [
+        "kunci",
+        "makna",
+        "aturan"
+      ],
+      "dicatat": false
+    }
+  },
+  "riwayat": [
+    {
+      "putaran": 10,
+      "omongan": [
+        {
+          "no": 1,
+          "status": "lolos",
+          "umpan": []
+        },
+        {
+          "no": 2,
+          "status": "lolos",
+          "umpan": []
+        },
+        {
+          "no": 3,
+          "status": "ditolak-penebak",
+          "umpan": [
+            "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/45, deepseek-v4.1-flash d/85); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Pilihan (d) menyatakan rasio 2,21x yang masuk akal sebagai 'lebih dari dua kali lipat' dan merupakan klaim spesifik dengan angka konkret; pilihan (a) dengan 3,51x terasa terlalu berlebihan; (b) dan (c) menolak klaim teman tanpa angka pasti, sementara (d) memvalidasi klaim dengan rasio yang realistis dan terukur.\" \"Rasio 2,21 kali paling masuk akal dengan lonjakan saham T pada 26 Nov–9 Des, sedangkan opsi b menyesatkan karena kenaikan Rp58 dari harga rendah bisa berarti lebih dari dua kali lipat.\""
+          ]
+        }
+      ]
+    }
+  ]
+}

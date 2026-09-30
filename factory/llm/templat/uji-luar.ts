@@ -90,42 +90,50 @@ export function omonganUjiM2d10(kunci: KunciPengujiM2d10, diuji: ReadonlyArray<{
     .sort((a, b) => a.no - b.no);
 }
 
+let FOLDER_JALAN_AKTIF = FOLDER_JALAN_TIRT_M2D10;
+let FOLDER_PENGUJI_AKTIF = FOLDER_PENGUJI_M2D10;
+
 function bacaJalan(): { hasil: { lolos: boolean; draf: { omongan: OmonganDraf[] } | null; kunci: Array<{ no: number; omongan: OmonganDraf }> }; paket: PaketFakta } {
   return {
-    hasil: JSON.parse(readFileSync(`${FOLDER_JALAN_TIRT_M2D10}/hasil.json`, 'utf8')) as never,
-    paket: JSON.parse(readFileSync(`${FOLDER_JALAN_TIRT_M2D10}/paket.json`, 'utf8')) as PaketFakta,
+    hasil: JSON.parse(readFileSync(`${FOLDER_JALAN_AKTIF}/hasil.json`, 'utf8')) as never,
+    paket: JSON.parse(readFileSync(`${FOLDER_JALAN_AKTIF}/paket.json`, 'utf8')) as PaketFakta,
   };
 }
 
 function utama(argumen: string[]): number {
-  if (!existsSync(`${FOLDER_JALAN_TIRT_M2D10}/hasil.json`)) {
+  // A-1: `--jalan <id>` (eval/penyusun/<id>) dan `--keluar <folder>` (eval/keluaran-m2d10/<folder>).
+  const iJ = argumen.indexOf('--jalan');
+  const iK = argumen.indexOf('--keluar');
+  if (iJ >= 0 && /^m2d10-[a-z0-9-]+$/.test(argumen[iJ + 1] ?? '')) FOLDER_JALAN_AKTIF = `${AKAR}eval/penyusun/${String(argumen[iJ + 1])}`;
+  if (iK >= 0 && /^penguji-[a-z0-9-]+$/.test(argumen[iK + 1] ?? '')) FOLDER_PENGUJI_AKTIF = `${FOLDER_M2D10}/${String(argumen[iK + 1])}`;
+  if (!existsSync(`${FOLDER_JALAN_AKTIF}/hasil.json`)) {
     console.error('Jalan TIRT M2d-10 belum ada.');
     return 1;
   }
   const { hasil, paket } = bacaJalan();
   const diuji = omonganDiujiTemplat(hasil);
-  mkdirSync(`${FOLDER_PENGUJI_M2D10}/jawaban`, { recursive: true });
+  mkdirSync(`${FOLDER_PENGUJI_AKTIF}/jawaban`, { recursive: true });
   if (argumen.includes('--bahan')) {
     if (diuji.length === 0) {
       const p = putusanTayang(hasil.lolos, [], [], []);
-      writeFileSync(`${FOLDER_PENGUJI_M2D10}/putusan.json`, JSON.stringify({ catatan: 'tidak ada omongan yang dikunci: tidak ada bahan uji luar', ...p }, null, 2) + '\n', 'utf8');
+      writeFileSync(`${FOLDER_PENGUJI_AKTIF}/putusan.json`, JSON.stringify({ catatan: 'tidak ada omongan yang dikunci: tidak ada bahan uji luar', ...p }, null, 2) + '\n', 'utf8');
       console.log(`Tidak ada omongan yang dikunci. PUTUSAN: ${p.layak_tayang ? 'LAYAK TAYANG' : 'TIDAK layak tayang'}.`);
       return 0;
     }
     const b = bangunBahanM2d10(diuji, paket, hasil.lolos);
-    writeFileSync(`${FOLDER_PENGUJI_M2D10}/tebak.md`, b.tebak, 'utf8');
-    writeFileSync(`${FOLDER_PENGUJI_M2D10}/kartu.md`, b.kartu, 'utf8');
-    writeFileSync(`${FOLDER_PENGUJI_M2D10}/alami.md`, b.alami, 'utf8');
-    writeFileSync(`${FOLDER_PENGUJI_M2D10}/kunci.json`, JSON.stringify(b.kunci, null, 2) + '\n', 'utf8');
+    writeFileSync(`${FOLDER_PENGUJI_AKTIF}/tebak.md`, b.tebak, 'utf8');
+    writeFileSync(`${FOLDER_PENGUJI_AKTIF}/kartu.md`, b.kartu, 'utf8');
+    writeFileSync(`${FOLDER_PENGUJI_AKTIF}/alami.md`, b.alami, 'utf8');
+    writeFileSync(`${FOLDER_PENGUJI_AKTIF}/kunci.json`, JSON.stringify(b.kunci, null, 2) + '\n', 'utf8');
     console.log(`${hasil.lolos ? 'terbit' : 'tidak terbit'} — ${String(diuji.length)} omongan diuji.`);
     return 0;
   }
-  const kunci = JSON.parse(readFileSync(`${FOLDER_PENGUJI_M2D10}/kunci.json`, 'utf8')) as KunciPengujiM2d10;
-  const folder = `${FOLDER_PENGUJI_M2D10}/jawaban`;
+  const kunci = JSON.parse(readFileSync(`${FOLDER_PENGUJI_AKTIF}/kunci.json`, 'utf8')) as KunciPengujiM2d10;
+  const folder = `${FOLDER_PENGUJI_AKTIF}/jawaban`;
   const tebak = [1, 2, 3].map((n) => bacaJawaban<JawabTebak>('tebak', n, folder));
   const kartu = [1, 2, 3].map((n) => bacaJawaban<JawabKartu>('kartu', n, folder));
   const p = putusanTayang(kunci.terbit, omonganUjiM2d10(kunci, diuji), tebak, kartu);
-  writeFileSync(`${FOLDER_PENGUJI_M2D10}/putusan.json`, JSON.stringify(p, null, 2) + '\n', 'utf8');
+  writeFileSync(`${FOLDER_PENGUJI_AKTIF}/putusan.json`, JSON.stringify(p, null, 2) + '\n', 'utf8');
   console.log(`(a) terbit: ${String(p.a_terbit)}; (b) ${String(p.b_tebak.lolos)}/${String(p.b_tebak.total)}: ${String(p.b_tebak.terpenuhi)}; (c) ${String(p.c_kartu.lolos)}/${String(p.c_kartu.total)}: ${String(p.c_kartu.terpenuhi)}; (d) ${String(p.d_makna.masalah)}: ${String(p.d_makna.terpenuhi)}`);
   console.log(`PUTUSAN: ${p.layak_tayang ? 'LAYAK TAYANG' : 'TIDAK layak tayang'}`);
   return 0;

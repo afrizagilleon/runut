@@ -73,3 +73,27 @@
 - (a) Tulis pra-registrasi tambahan dengan aturan kalibrasi yang melewati gerbang yang tidak menolak soal tayang. Setelan pembandingnya "S1 + pembaca kartu dicatat".
 - (b) Izinkan satu jalan TIRT lagi dengan mesin yang sudah diperbaiki, dengan sisa pagu ±US$0,83.
 - (c) Pertimbangkan pagar GLM yang tidak jatuh ke penyedia yang tidak berpikir: `allow_fallbacks: false` untuk kritikus, atau ulangan yang menunggu Wafer.
+
+### Amandemen A-1 (satu jalan TIRT lagi)
+
+- **Pra-registrasi A-1** (`docs/bukti/m2d10-praregistrasi-a1.md`) di-commit sebelum panggilan berbayar A-1 pertama. Isinya: setelan S1 + pembaca kartu "dicatat" (penebak tetap menolak), kritikus dikunci ke Wafer (`order: ["wafer"]`, `allow_fallbacks: false`, tanpa `ignore`), mesin yang diperbaiki, dan pagu jalan US$0,45. Pada data kalibrasi yang sama, setelan ini menerima 5/6 soal tayang dan menangkap 3/3 soal bocor sebelum kritikus.
+- **Hasil: TIDAK TERBIT** sesudah 10 versi (US$0,1939 dari pagu 0,45).
+  - Omongan 1 (sebab-resmi) dikunci di versi 1. Omongan 2 (angka-lain-waktu) dikunci di versi 2; versi 1-nya ditolak kode karena penjelasan memuat angka telanjang.
+  - Omongan 3 habis di kedua rencana Betul yang ada: benar-berincian 3 versi, besaran-hitungan 4 versi. Keenam versi yang sampai ke penebak ditolak penebak campur. Rencana ketiga tidak ada, karena posisi 3 satu-satunya klaim Betul dan kedua pola Betul sudah terpakai.
+  - Distribusi: kode 2, penebak 6, pembaca kartu 0, kritikus 0, lolos 2.
+- **Kritikus:** 2 panggilan sampai ke Wafer, berpikir 5.305 dan 4.707 token. Satu percobaan HTTP pertama kena 429 (rate limit Wafer), lalu diulang klien ke Wafer juga; tidak ada pengalihan. Kedua versi yang diperiksa kritikus lolos tanpa keberatan yang menolak.
+- **Penyempurna Haiku dipanggil sungguhan 4 kali** (omongan 3, jenis "tertebak"). Keempat usulannya diterima kode (varian K2/P1b/P2b/P3b, P2a, P1b, P1a; tanpa angka atau rujukan yang berubah). Tetapi penebak tetap memilih kunci. Titik buta tercatat di 4 versi, dengan pola ini: Haiku justru TIDAK memilih kunci di benar-berincian (a/45…a/62), sedangkan DeepSeek dan GLM memilihnya.
+- **Penebak di omongan 3.**
+  - Benar-berincian: DeepSeek dan GLM menebak "9 hari bursa berturut-turut sampai 9 Desember" dari rentang tanggal di pesan (26 November–9 Desember ≈ 9–10 hari bursa). Templat ini membocorkan kunci lewat hitungan kalender. Ini temuan tentang polanya.
+  - Besaran-hitungan: dua pilihan Betul sama-sama cocok dengan "lebih dari dua kali lipat". Penebak memilih yang lebih wajar (2,21), bukan 3,51. Pengecoh angka yang terlalu jauh gampang disingkirkan.
+- **Uji luar (resmi menurut prosedur M2d-7, hanya laporan karena tidak terbit)** atas 2 omongan yang dikunci, dengan 6 subagent opus baru, sinkron:
+  - Omongan 1: tebak buta c/40 · c/40 · a/35 → 2/3 memilih kunci, tidak lolos.
+  - Omongan 2: c/35 · c/30 · a/30 → 0/3, **lolos tebak buta**.
+  - Kartu: 3/3 benar di kedua omongan, "kunci lain" 0/6.
+  - Masalah makna: 1 (omongan 2 M2, "Gw hafal angka beginian" tak tercek oleh 2/3 penguji).
+  - Putusan: **TIDAK layak tayang**: (a) tidak; (b) 1/2 ya; (c) 2/2 ya; (d) 1 masalah → tidak.
+- **Biaya A-1** US$0,1939: GLM 0,1274, DeepSeek 0,0420, Haiku 0,0245. Milestone M2d-10 kini US$0,5668 dari 1,20; kumulatif ledger US$8,8320.
+- **Yang perlu diputuskan reviewer:**
+  1. Pola benar-berincian bisa ditebak dari rentang tanggal di pesan (panjang rentang ≈ jumlah hari naik). Perbaikannya di templat: pesan tanpa tanggal awal, atau pengecoh rincian yang sama masuk akalnya.
+  2. Pengecoh angka "salah" di besaran-hitungan harus lebih dekat ke nilai benar.
+  3. Kalimat pesan "Gw hafal angka beginian" lolos gerbang, tetapi ditandai tak tercek oleh penguji kartu Opus. Klaim tambahan yang tidak bisa dicek perlu ditolak kode di pesan.

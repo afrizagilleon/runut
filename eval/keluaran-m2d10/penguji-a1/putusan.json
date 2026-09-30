@@ -1,0 +1,151 @@
+{
+  "a_terbit": false,
+  "b_tebak": {
+    "lolos": 1,
+    "total": 2,
+    "syarat": "≥ 2/6 (proporsi soal manusia)",
+    "terpenuhi": true
+  },
+  "c_kartu": {
+    "lolos": 2,
+    "total": 2,
+    "terpenuhi": true
+  },
+  "d_makna": {
+    "masalah": 1,
+    "terpenuhi": false
+  },
+  "layak_tayang": false,
+  "omongan": [
+    {
+      "no": 1,
+      "kunci": "c",
+      "tebak": [
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 40
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 40
+        },
+        {
+          "id": "Q1",
+          "pilihan": "a",
+          "yakin": 35
+        }
+      ],
+      "lolos_tebak": false,
+      "kartu": [
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "Soal tidak menyebut tanggal 'hari ini'; saya anggap hari ini 10 Desember 2025 karena itu kartu terbaru. Kartu 2 (21 Januari 2025) memang menyebut keraguan atas kelangsungan usaha, jadi alasan Dita cocok dengan penghentian yang lama, bukan yang hari ini.",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "Pesan Dita cuma ada jam (20.15), tanpa tanggal, jadi aku harus menebak bahwa 'hari ini' itu 10 Desember 2025 (kartu yang paling baru).",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "Soal tidak menyebut tanggal 'hari ini'; saya anggap hari ini 10 Desember 2025 (kartu terbaru), karena alasan 'usaha diragukan' ada di kartu 2 yang terbit 21 Januari 2025.",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "Gw yakin banget",
+          "kembar": ""
+        }
+      ],
+      "lolos_kartu": true,
+      "masalah": []
+    },
+    {
+      "no": 2,
+      "kunci": "d",
+      "tebak": [
+        {
+          "id": "Q2",
+          "pilihan": "c",
+          "yakin": 35
+        },
+        {
+          "id": "Q2",
+          "pilihan": "c",
+          "yakin": 30
+        },
+        {
+          "id": "Q2",
+          "pilihan": "a",
+          "yakin": 30
+        }
+      ],
+      "lolos_tebak": true,
+      "kartu": [
+        {
+          "id": "Q2",
+          "pilihan": "d",
+          "kartu": [
+            1,
+            2
+          ],
+          "bingung": "Soal tidak menyebut tanggal 'hari ini', jadi 'kemarin' saya anggap 9 Desember 2025 (kartu terbaru). Rp97 itu harga penutupan 8 Desember (kartu 2), jadi Bima salah hari.",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "Gw hafal angka beginian",
+          "kembar": ""
+        },
+        {
+          "id": "Q2",
+          "pilihan": "d",
+          "kartu": [
+            1
+          ],
+          "bingung": "Tanggal hari ini tidak disebut, jadi aku harus menebak bahwa 'kemarin' itu 9 Desember 2025. Kalau hari ini 9 Desember, Rp97 (8 Desember) justru benar.",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q2",
+          "pilihan": "d",
+          "kartu": [
+            1
+          ],
+          "bingung": "Tanggal 'hari ini' tidak disebut; saya anggap 'kemarin' = 9 Desember 2025 (kartu terbaru). Rp97 adalah penutupan 8 Desember (kartu 2).",
+          "penilaian": "Santai",
+          "kunci_lain": "",
+          "tak_tercek": "Gw hafal angka beginian.",
+          "kembar": ""
+        }
+      ],
+      "lolos_kartu": true,
+      "masalah": [
+        {
+          "butir": "M2 setiap bagian klaim tercek kartu",
+          "sumber": "2/3 penguji kartu (\"tak_tercek\")"
+        }
+      ]
+    }
+  ]
+}

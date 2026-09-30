@@ -24,7 +24,7 @@ import { ASAL_POLA, URUTAN_POLA, semuaRencana } from './pola.ts';
 import { evaluasi } from './proposisi.ts';
 
 export const JALUR_LAPORAN_M2D10 = `${AKAR}docs/bukti/lingkar-agen-templat.md`;
-const JALAN = `${AKAR}eval/penyusun/m2d10-tirt`;
+const FOLDER_JALAN = (id: string): string => `${AKAR}eval/penyusun/${id}`;
 
 const usd = (x: number): string => `US$${x.toFixed(4)}`;
 const baca = <T>(j: string): T => JSON.parse(readFileSync(j, 'utf8')) as T;
@@ -41,6 +41,7 @@ function entriLedger(): EntriLedger[] {
 export function bagianTag(tag: string): string {
   if (tag.startsWith('m2d10/kalibrasi/')) return 'kalibrasi';
   if (tag.startsWith('m2d10/pemanasan/')) return 'pemanasan';
+  if (tag.startsWith('penyusun/m2d10-tirt-a1/')) return 'jalan TIRT A-1';
   if (tag.startsWith('penyusun/m2d10-')) return 'jalan TIRT';
   return 'lain';
 }
@@ -153,10 +154,11 @@ function bagianPemanasan(): string[] {
   return b;
 }
 
-function bagianJalan(): string[] {
-  if (!existsSync(`${JALAN}/hasil.json`)) return ['## Jalan TIRT lewat pintu penyusun (D-7b)', '', 'Belum dijalankan.', ''];
+function bagianJalan(id = 'm2d10-tirt', judul = '## Jalan TIRT lewat pintu penyusun (D-7b)', perintah = 'npm run templat:jalan'): string[] {
+  const JALAN = FOLDER_JALAN(id);
+  if (!existsSync(`${JALAN}/hasil.json`)) return [judul, '', 'Belum dijalankan.', ''];
   const h = baca<HasilTemplat>(`${JALAN}/hasil.json`);
-  const b: string[] = ['## Jalan TIRT lewat pintu penyusun (D-7b)', '', `\`npm run templat:jalan\` → pintu penyusun, mesin \`templat\`, TIRT 10 Des 2025, satu jalan (\`eval/penyusun/m2d10-tirt/\`: aliran.jsonl, jejak-agen.json, hasil.json, keadaan.json, paket.json).`, ''];
+  const b: string[] = [judul, '', `\`${perintah}\` → pintu penyusun, mesin \`templat\`, TIRT 10 Des 2025, satu jalan (\`eval/penyusun/${id}/\`: aliran.jsonl, jejak-agen.json, hasil.json, keadaan.json, paket.json). Setelan: penebak ${h.setelan.penebak.aturan}${h.setelan.penebak.ambangHaiku === null ? '' : ' (A = ' + String(h.setelan.penebak.ambangHaiku) + ')'}, pembaca kartu ${h.setelan.kartu}, kritikus ${h.setelan.kritikus.dicatat ? 'dicatat' : h.setelan.kritikus.jenis.join('/')}.`, ''];
   b.push(`**${h.lolos ? 'TERBIT' : 'TIDAK TERBIT'}** sesudah ${String(h.jumlah_versi)} versi${h.berhenti === null ? '' : ` (${h.berhenti})`}. Rencana awal: ${h.rencana_awal.join(', ')}.`, '');
   b.push('### Distribusi: di gerbang mana tiap versi berhenti', '', '| berhenti | versi |', '|---|---:|', ...Object.entries(h.distribusi).filter(([, n]) => n > 0).map(([k, n]) => `| ${k} | ${String(n)} |`), '');
   const keKritikus = h.versi.filter((v) => v.kritik !== null).length;
@@ -190,8 +192,8 @@ function bagianTambahan(): string[] {
   return b;
 }
 
-function bagianPutusan(): string[] {
-  const j = `${FOLDER_M2D10}/penguji/putusan.json`;
+function bagianPutusan(folder = 'penguji'): string[] {
+  const j = `${FOLDER_M2D10}/${folder}/putusan.json`;
   if (!existsSync(j)) return ['### Uji luar dan putusan mekanis', '', 'Belum ada.', ''];
   const p = baca<PutusanTayang & { catatan?: string }>(j);
   const b: string[] = ['### Uji luar dan putusan mekanis (pra-registrasi M2d-7, tidak diubah)', '', '| syarat | hasil | terpenuhi |', '|---|---|---|'];
@@ -205,6 +207,23 @@ function bagianPutusan(): string[] {
   }
   b.push('');
   return b;
+}
+
+function bagianA1(): string[] {
+  if (!existsSync(`${FOLDER_JALAN('m2d10-tirt-a1')}/hasil.json`)) return [];
+  const t = execFileSync('git', ['log', '--format=%h %cI', '--diff-filter=A', '--', 'docs/bukti/m2d10-praregistrasi-a1.md'], { cwd: AKAR, encoding: 'utf8' }).trim().split(/\r?\n/).at(-1) ?? '';
+  const pertama = entriLedger().find((x) => x.tag.startsWith('penyusun/m2d10-tirt-a1/'))?.waktu ?? '—';
+  const krit = entriLedger().filter((x) => x.tag.startsWith('penyusun/m2d10-tirt-a1/') && x.tag.includes('/kritikus/'));
+  return [
+    '## Amandemen A-1: satu jalan TIRT lagi',
+    '',
+    `Pra-registrasi \`docs/bukti/m2d10-praregistrasi-a1.md\` di-commit **${t}**; panggilan berbayar A-1 pertama: **${pertama}**. Setelan S1 + pembaca kartu "dicatat" (penebak menolak); kritikus dikunci ke Wafer (\`order\` + \`allow_fallbacks: false\`); mesin yang diperbaiki; pagu jalan US$0,45.`,
+    '',
+    `Panggilan kritikus A-1: ${String(krit.length)}; penyedia: ${[...new Set(krit.map((x) => String(x.penyedia)))].join(', ') || '—'}; token penalaran: ${krit.map((x) => String(x.token_penalaran)).join(', ') || '—'}.`,
+    '',
+    ...bagianJalan('m2d10-tirt-a1', '### Jalan TIRT A-1', 'npm run templat:jalan -- --id m2d10-tirt-a1 --pagu 0.45').map((x) => (x.startsWith('### ') && x !== '### Jalan TIRT A-1' ? `#${x}` : x)),
+    ...bagianPutusan('penguji-a1').map((x) => (x.startsWith('### ') ? `#${x}` : x)),
+  ];
 }
 
 export function tulisLaporan(): string {
@@ -229,6 +248,7 @@ export function tulisLaporan(): string {
     ...bagianJalan(),
     ...bagianPutusan(),
     ...bagianTambahan(),
+    ...bagianA1(),
     '## Biaya NYATA M2d-10 (OpenRouter, `usage.cost`)',
     '',
     `Entri ledger bertag \`m2d10/\` + \`penyusun/m2d10-\`: **${usd(total)} dalam ${String(e.length)} panggilan**, dari pagu milestone US$${PAGU_MILESTONE_M2D10.toFixed(2)} (ditegakkan kode).`,
