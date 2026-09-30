@@ -2580,3 +2580,183 @@ body:has(.pemandu) .halaman {
 .layar-kalender .kalender-simulasi {
   margin-top: 8px;
 }
+
+/* --- dapur agen lebih visual (M3.14 D-4) ------------------------------------ */
+
+/*
+ * Status berwarna: kata pertamanya tetap yang membedakan ("Draf"/"Ditolak"),
+ * warnanya menegaskan — --cocok untuk draf yang lolos penjaga, --belum-cocok
+ * untuk yang ditolak (keduanya >= 4,5:1 di kedua mode, token yang sudah ada).
+ */
+.dapur-status-ditolak {
+  color: var(--belum-cocok);
+}
+
+.dapur-status-draf {
+  color: var(--cocok);
+}
+
+.dapur-status-teks {
+  font-weight: 600;
+}
+
+/* Empat angka jalan sebagai kisi 2 × 2: angka *judul* 20 px, labelnya *meta*. */
+.dapur-angka-kisi {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 16px;
+}
+
+.dapur-angka-kisi > div {
+  padding: 8px 12px;
+  border: 1px solid var(--tepi-lembar);
+  border-radius: 2px;
+  background: var(--lembar);
+}
+
+.dapur-angka-kisi dd {
+  margin: 0;
+  font-family: var(--baca);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--tinta);
+}
+
+.dapur-angka-kisi dt {
+  margin: 0;
+}
+
+.dapur-berhenti {
+  margin: 0 0 8px;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--belum-cocok);
+}
+
+.ikon-peran {
+  flex: none;
+  width: 20px;
+  height: 20px;
+}
+
+.dapur-peran > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.dapur-peran .ikon-peran {
+  margin-top: 2px;
+  color: var(--tinta-redup);
+}
+
+.dapur-legenda {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  margin: 0 0 12px;
+  padding: 0;
+  font-family: var(--baca);
+  font-size: 14px;
+  line-height: 1.35;
+  color: var(--tinta-redup);
+}
+
+.dapur-legenda > li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 24px;
+}
+
+/* Garis waktu: satu baris per putaran, satu kolom per omongan. */
+.dapur-waktu {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin: 0 0 16px;
+  font-family: var(--baca);
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.dapur-waktu th {
+  padding: 6px 4px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--tinta-redup);
+  border-bottom: 1px solid var(--garis-tegas);
+}
+
+.dapur-waktu th:first-child {
+  width: 60px;
+}
+
+.dapur-waktu tbody th {
+  font-weight: 400;
+  border-bottom: 1px solid var(--garis);
+}
+
+.dapur-waktu td {
+  padding: 6px 4px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--garis);
+}
+
+.sel-isi {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.sel-isi .ikon-peran {
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
+.sel-tolak {
+  color: var(--belum-cocok);
+}
+
+.sel-kunci {
+  color: var(--cocok);
+  font-weight: 600;
+}
+
+.sel-ganti {
+  color: var(--tinta-redup);
+}
+
+/* Omongan yang sudah dikunci: sel diarsir tipis, supaya lajurnya terbaca "selesai". */
+.sel-selesai {
+  background: var(--garis);
+}
+
+.sel-centang {
+  display: inline-flex;
+  width: 16px;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.dapur-tolak-kepala {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dapur-tolak-kepala .ikon-peran {
+  width: 16px;
+  height: 16px;
+}
+
+.dapur-awam {
+  margin: 0 0 4px;
+}
+
+.dapur-mentah {
+  overflow-wrap: anywhere;
+}

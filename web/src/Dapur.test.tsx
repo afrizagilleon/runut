@@ -20,6 +20,12 @@ import {
   statusJalan,
   tolakPerPeran,
   kalimatAgregat,
+  awamPenolakan,
+  berhentiAwam,
+  garisWaktu,
+  kalimatAgregatAwam,
+  omonganPenolakan,
+  tersingkirAwam,
   type AgregatDapur,
   type DataDapur,
   type JalanDapur,
@@ -83,7 +89,7 @@ describe('M3.13 D-4 — dapur: hasil render', () => {
     expect(teks).toContain('Ditolak — tidak terbit');
   });
 
-  it('dua contoh terpendek tampil, dan setiap alasan penolakan jejak tampil di lipatan, huruf demi huruf', () => {
+  it('dua contoh terpendek tampil, dan setiap alasan penolakan jejak tampil (M3.14: mentahnya di Rincian teknis), huruf demi huruf', () => {
     for (const j of DATA.jalan) {
       for (const p of j.penolakan) for (const a of p.alasan) expect(teks).toContain(a.replace(/\s+/g, ' '));
     }
@@ -141,5 +147,90 @@ describe('M3.13 A-1 — tanpa isi simulasi yang tayang', () => {
     expect(kalimatAgregat(DATA.agregat[0] as AgregatDapur)).toMatch(
       /^Jalan M2d-4: (tidak terbit|lolos semua penjaga, belum dimainkan) · \d+ putaran · \d+ kali penulis menulis/,
     );
+  });
+});
+
+describe('M3.14 D-4 — dapur lebih visual, kode internal tidak di tampilan utama', () => {
+  /** Tampilan utama = seluruh halaman tanpa lipatan "Rincian teknis". */
+  const utama = html
+    .replace(/<details class="rincian-teknis"[\s\S]*?<\/details>/g, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/&amp;/g, '&')
+    .replace(/\s+/g, ' ');
+  const tirt = DATA.jalan[0] as JalanDapur;
+  const slug = [
+    ...tirt.sudut.flatMap((s) => s.riwayat.map((r) => r.fact_id)),
+    ...tirt.pemeriksaan.tersingkir.map((t) => t.fact_id),
+  ];
+
+  it('tanpa kode pemeriksa, nomor aturan, kategori kritikus mentah, slug fakta, atau kode milestone', () => {
+    expect(utama).not.toMatch(/\b[A-Z]{2,}(?:_[A-Z]+)+\b/);
+    expect(utama).not.toMatch(/\bR\d{1,2}[a-z]?\b/);
+    expect(utama).not.toMatch(/\[kritikus/);
+    expect(utama).not.toMatch(/\bM2d-\d/i);
+    expect(utama).not.toMatch(/\bsudut ke-\d/);
+    for (const s of slug) expect(utama.includes(s), `slug ${s}`).toBe(false);
+  });
+
+  it('kode itu tetap ada, huruf demi huruf, di "Rincian teknis"', () => {
+    expect(teks).toContain('TIDAK_LENGKAP: temuan R19a');
+    expect(teks).toContain('[AJAKAN_TRANSAKSI]');
+    expect(teks).toContain('M2d-6');
+    for (const p of tirt.penolakan) for (const a of p.alasan) expect(teks).toContain(a.replace(/\s+/g, ' '));
+  });
+
+  it('terjemahan tidak mengarang: setiap kutipan awam = potongan alasan mentahnya', () => {
+    for (const p of tirt.penolakan) {
+      for (const a of awamPenolakan(p)) {
+        if (a.kutipan !== null) expect(p.alasan.some((x) => x.includes(a.kutipan as string))).toBe(true);
+        expect(a.label, `alasan jatuh ke bentuk tak dikenal: ${p.alasan.join(' | ').slice(0, 80)}`).not.toBe('ditolak');
+      }
+    }
+    for (const t of tersingkirAwam(tirt)) {
+      expect(tirt.pemeriksaan.tersingkir.some((x) => x.alasan.includes(t.alasan))).toBe(true);
+    }
+    const angkaBerhenti = (tirt.berhenti ?? '').match(/\d+/g)?.slice(0, 2) ?? [];
+    for (const n of angkaBerhenti) expect(berhentiAwam(tirt.berhenti ?? '')).toContain(n);
+  });
+
+  it('angka penebak di kalimat awam = angka di jejak', () => {
+    for (const p of tirt.penolakan.filter((x) => x.jenis === 'gerbang-tebak')) {
+      const m = /^(\d+)\/(\d+) penebak/.exec(p.alasan[0] ?? '');
+      expect(awamPenolakan(p)[0]?.kalimat.startsWith(`${m?.[1] ?? '?'} dari ${m?.[2] ?? '?'} penebak`)).toBe(true);
+    }
+  });
+
+  it('garis waktu dari jejak: satu baris per putaran, ✓ tepat di putaran omongan dikunci', () => {
+    const baris = garisWaktu(tirt);
+    expect(baris).toHaveLength(tirt.putaran);
+    const kunci = baris.flatMap((b) => b.sel.filter((s) => s.keadaan === 'kunci').map((s) => `${String(b.putaran)}:${String(s.omongan)}`));
+    const harapan = tirt.sudut.flatMap((s) =>
+      s.riwayat.filter((r) => r.hasil === 'lolos').map((r) => `${String(r.putaran_akhir)}:${String(s.omongan)}`),
+    );
+    expect(kunci.sort()).toEqual(harapan.sort());
+    for (const b of baris) {
+      for (const s of b.sel.filter((x) => x.keadaan === 'tolak' || x.keadaan === 'ganti')) {
+        expect(
+          tirt.penolakan.some((p) => p.putaran === b.putaran && p.peran === s.peran && omonganPenolakan(p).includes(s.omongan)),
+          `putaran ${String(b.putaran)} omongan ${String(s.omongan)}`,
+        ).toBe(true);
+      }
+    }
+    expect((html.match(/<tr>/g) ?? []).length).toBeGreaterThanOrEqual(tirt.putaran + 1);
+  });
+
+  it('status berwarna dan ikon per peran (SVG, bukan emoji)', () => {
+    expect(html).toContain('dapur-status dapur-status-ditolak');
+    expect((html.match(/class="ikon-peran"/g) ?? []).length).toBeGreaterThanOrEqual(tirt.peran.length);
+    expect(teks).not.toMatch(/\p{Extended_Pictographic}/u);
+  });
+
+  it('baris agregat tampil tanpa kode milestone', () => {
+    for (const a of DATA.agregat) {
+      expect(utama).toContain(kalimatAgregatAwam(a));
+      expect(kalimatAgregatAwam(a)).toMatch(/^Satu jalan agen: /);
+    }
   });
 });

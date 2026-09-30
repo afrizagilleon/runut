@@ -1,0 +1,20 @@
+== Sabotase 1: berhenti ditampilkan mentah (slug sudut kembali ke tampilan utama) ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/Dapur.test.tsx > M3.14 D-4 — dapur lebih visual, kode internal tidak di tampilan utama > tanpa kode pemeriksa, nomor aturan, kategori kritikus mentah, slug fakta, atau kode milestone
+      Tests  1 failed | 19 passed (20)
+== Sabotase 2: kutipan kode pemeriksa tidak dilepas ([AJAKAN_TRANSAKSI] ikut dikutip) ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/Dapur.test.tsx > M3.14 D-4 — dapur lebih visual, kode internal tidak di tampilan utama > tanpa kode pemeriksa, nomor aturan, kategori kritikus mentah, slug fakta, atau kode milestone
+      Tests  1 failed | 19 passed (20)
+== Sabotase 3: terjemahan mengarang kutipan (kutipan kritikus diganti kalimat buatan) ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/Dapur.test.tsx > M3.14 D-4 — dapur lebih visual, kode internal tidak di tampilan utama > terjemahan tidak mengarang: setiap kutipan awam = potongan alasan mentahnya
+      Tests  1 failed | 19 passed (20)
+== Sabotase 4 (warisan M3.13): satu pilihan DADA disisipkan ke data dapur ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  alat/dapur.test.ts > M3.13 D-4 — data dapur agen dari jejak mentah > berkas di repo = keluaran node --experimental-strip-types alat/dapur.ts (byte demi byte)
+ FAIL  alat/dapur.test.ts > M3.13 D-4 — data dapur agen dari jejak mentah > setiap kalimat trace di berkas data ditemukan kembali huruf demi huruf di berkas mentahnya
+ FAIL  alat/dapur.test.ts > M3.13 A-1 — dapur tidak membocorkan simulasi yang tayang > tidak satu pun kalimat pesan/pilihan/penjelasan/kutipan DADA/ULTJ ada di data dapur
+      Tests  3 failed | 8 passed (11)
+== Pulih ==
+      Tests  31 passed (31)

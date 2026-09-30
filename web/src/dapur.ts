@@ -232,3 +232,229 @@ export function ringkasUjiLuar(
     kartu_n: jumlah((x) => x.kartu_n),
   };
 }
+
+/* ------------------------------------------------------------------ */
+/* M3.14 D-4 — dapur yang lebih visual, kode internal diterjemahkan    */
+/* ------------------------------------------------------------------ */
+
+/*
+ * Aturannya satu: tampilan utama TIDAK memuat kode internal jejak
+ * ("TIDAK_LENGKAP", "R19a", "[AJAKAN_TRANSAKSI]", "[kritikus: …]", slug fakta
+ * seperti "hari-naik-beruntun", "M2d-6"). Kode itu diterjemahkan ke kalimat
+ * awam lewat templat di bawah — dan setiap angka serta setiap potongan yang
+ * dikutip tetap diambil dari jejak apa adanya (dites: kutipan awam = potongan
+ * huruf demi huruf dari alasan mentahnya). Alasan mentah utuhnya pindah ke
+ * lipatan "Rincian teknis".
+ */
+
+/** Label kode pemeriksa (validator kode) dalam bahasa awam. */
+export const AWAM_KODE: Readonly<Record<string, string>> = {
+  AJAKAN_TRANSAKSI: 'ada ajakan membeli atau menjual',
+  ANGKA_TANPA_RUJUKAN: 'ada angka tanpa sumber',
+  KATA_PENILAIAN: 'ada kata penilaian saham',
+  PILIHAN_TIMPANG: 'panjang pilihan tidak seimbang',
+};
+
+/** Kategori keberatan kritikus dalam bahasa awam. */
+export const AWAM_KRITIK: Readonly<Record<string, string>> = {
+  tertebak: 'kuncinya bisa ditebak tanpa kartu',
+  kunci: 'lebih dari satu pilihan benar',
+  aturan: 'melanggar aturan tulis',
+  ambigu: 'kalimatnya bisa dibaca dua arti',
+  arahan: 'saran untuk penulis',
+};
+
+export interface AlasanAwam {
+  /** Label pendek untuk garis waktu: "tertebak", "ganti fakta", … */
+  label: string;
+  /** Kalimat awam: templat + angka dari jejak. */
+  kalimat: string;
+  /** Potongan alasan mentah yang dikutip (huruf demi huruf, tanpa kode), atau `null`. */
+  kutipan: string | null;
+}
+
+/** Nomor omongan sebuah penolakan: medan `omongan`, atau "omongan N:" di alasannya. */
+export function omonganPenolakan(p: PenolakanDapur): number[] {
+  if (p.omongan !== null) return [p.omongan];
+  const nomor = new Set<number>();
+  for (const a of p.alasan) {
+    const m = /^omongan (\d+)[: ]/.exec(a);
+    if (m !== null) nomor.add(Number(m[1]));
+  }
+  return [...nomor].sort((a, b) => a - b);
+}
+
+/** Satu alasan mentah → kalimat awam. */
+export function awamAlasan(peran: string, alasan: string): AlasanAwam {
+  const tebak = /^(\d+)\/(\d+) penebak TANPA kartu memilih kunci "([a-z])"/.exec(alasan);
+  if (tebak !== null) {
+    return {
+      label: 'tertebak',
+      kalimat:
+        `${tebak[1] ?? ''} dari ${tebak[2] ?? ''} penebak yang tidak melihat kartu sudah memilih kunci ` +
+        `${tebak[3] ?? ''}: kuncinya tertebak tanpa membaca kartu.`,
+      kutipan: null,
+    };
+  }
+  const kode = /^(?:omongan \d+: )?\[([A-Z_]+)\] (.*)$/.exec(alasan);
+  if (kode !== null) {
+    const label = AWAM_KODE[kode[1] ?? ''] ?? 'melanggar aturan tetap';
+    return { label, kalimat: `Pemeriksa kode: ${label}.`, kutipan: kode[2] ?? null };
+  }
+  const kritik = /^\[kritikus(?:: ([a-z, ]+))?\] (.*)$/.exec(alasan);
+  if (kritik !== null) {
+    const isi = kritik[2] ?? '';
+    if (kritik[1] === undefined) {
+      const diam = /tidak (terbukti berpikir|menjawab)/.test(isi);
+      return {
+        label: diam ? 'tak menjawab' : 'keberatan',
+        kalimat: diam
+          ? 'Kritikus tidak memberi jawaban yang bisa dipakai; versi ini diperiksa lagi di putaran berikutnya.'
+          : 'Kritikus berkeberatan.',
+        kutipan: diam ? null : isi,
+      };
+    }
+    const kategori = kritik[1]
+      .split(',')
+      .map((k) => k.trim())
+      .filter((k) => k !== 'pilihan');
+    const label = AWAM_KRITIK[kategori[0] ?? ''] ?? 'keberatan';
+    return { label, kalimat: `Kritikus: ${label}.`, kutipan: isi };
+  }
+  const buang = /^omongan (\d+) gagal (\d+) putaran di sudut ke-(\d+) \(/.exec(alasan);
+  if (buang !== null) {
+    return {
+      label: 'ganti fakta',
+      kalimat: `Omongan ${buang[1] ?? ''} gagal ${buang[2] ?? ''} putaran dengan fakta ke-${buang[3] ?? ''}; versinya dibuang.`,
+      kutipan: null,
+    };
+  }
+  const sudut = /^sudut ke-(\d+): /.exec(alasan);
+  if (sudut !== null) {
+    return { label: 'ganti fakta', kalimat: `Dicoba lagi dengan fakta ke-${sudut[1] ?? ''}.`, kutipan: null };
+  }
+  const batas = /^batas (\d+) sudut per posisi tercapai/.exec(alasan);
+  if (batas !== null) {
+    return { label: 'menyerah', kalimat: `Batas ${batas[1] ?? ''} fakta per omongan tercapai.`, kutipan: null };
+  }
+  const kosong = /^omongan (\d+): tidak ada omongan terbaca dari penulis/.exec(alasan);
+  if (kosong !== null) {
+    return {
+      label: 'tak terbaca',
+      kalimat: `Tulisan penulis untuk omongan ${kosong[1] ?? ''} tidak terbaca.`,
+      kutipan: null,
+    };
+  }
+  if (peran === 'pembaca-kartu') {
+    return { label: 'bingung', kalimat: 'Pembaca kartu bingung dengan tulisannya:', kutipan: alasan };
+  }
+  /* Bentuk yang belum dikenal: kutipan utuh (bisa memuat kode — dites agar data sekarang tidak jatuh ke sini). */
+  return { label: 'ditolak', kalimat: `${namaPeran(peran)} menolak:`, kutipan: alasan };
+}
+
+/** Semua alasan satu penolakan dalam bahasa awam; kalimat kembar tanpa kutipan digabung. */
+export function awamPenolakan(p: PenolakanDapur): AlasanAwam[] {
+  const keluar: AlasanAwam[] = [];
+  for (const a of p.alasan) {
+    const x = awamAlasan(p.peran, a);
+    if (x.kutipan === null && keluar.some((y) => y.kalimat === x.kalimat)) continue;
+    keluar.push(x);
+  }
+  return keluar;
+}
+
+/** Keterangan penolakan tanpa kode: "Putaran 3 · omongan 2". */
+export function kepalaPenolakanAwam(p: PenolakanDapur): string {
+  const om = omonganPenolakan(p);
+  return [`Putaran ${String(p.putaran)}`, ...(om.length > 0 ? [`omongan ${om.join(' & ')}`] : [])].join(' · ');
+}
+
+export type KeadaanSel = 'tolak' | 'kunci' | 'ganti' | 'selesai' | 'kosong';
+
+export interface SelGaris {
+  omongan: number;
+  keadaan: KeadaanSel;
+  /** Peran yang menolak / memutuskan di sel ini, kalau ada (untuk ikon). */
+  peran: string | null;
+  label: string;
+}
+
+/**
+ * Garis waktu putaran × omongan, dari jejak saja.
+ *
+ * - `kunci`: putaran akhir sudut yang berhasil (`sudut[].riwayat[].hasil === 'lolos'`);
+ * - `ganti`: perencana membuang sudut di putaran ini;
+ * - `tolak`: penolakan pertama omongan itu di putaran ini (peran + label awam);
+ * - `selesai`: omongan sudah dikunci di putaran sebelumnya;
+ * - `kosong`: tidak ada yang tercatat untuk omongan itu di putaran ini.
+ */
+export function garisWaktu(jalan: JalanDapur): Array<{ putaran: number; sel: SelGaris[] }> {
+  const omongan = jalan.sudut.map((s) => s.omongan).sort((a, b) => a - b);
+  const kunciPada = new Map<number, number>();
+  for (const s of jalan.sudut) {
+    for (const r of s.riwayat) if (r.hasil === 'lolos') kunciPada.set(s.omongan, r.putaran_akhir);
+  }
+  const baris: Array<{ putaran: number; sel: SelGaris[] }> = [];
+  for (let putaran = 1; putaran <= jalan.putaran; putaran += 1) {
+    const sel = omongan.map((om): SelGaris => {
+      const dikunci = kunciPada.get(om);
+      if (dikunci !== undefined && putaran > dikunci) {
+        return { omongan: om, keadaan: 'selesai', peran: null, label: '' };
+      }
+      if (dikunci === putaran) return { omongan: om, keadaan: 'kunci', peran: null, label: 'dikunci' };
+      const di = jalan.penolakan
+        .filter((p) => p.putaran === putaran && omonganPenolakan(p).includes(om))
+        .sort((a, b) => a.no - b.no);
+      const ganti = di.find((p) => p.jenis === 'buang-sudut');
+      if (ganti !== undefined) {
+        const menyerah = ganti.alasan.some((a) => a.startsWith('batas '));
+        return { omongan: om, keadaan: 'ganti', peran: ganti.peran, label: menyerah ? 'menyerah' : 'ganti fakta' };
+      }
+      const tolak = di[0];
+      if (tolak !== undefined) {
+        const alasan = tolak.alasan.find((a) => a.startsWith(`omongan ${String(om)}`)) ?? tolak.alasan[0] ?? '';
+        return { omongan: om, keadaan: 'tolak', peran: tolak.peran, label: awamAlasan(tolak.peran, alasan).label };
+      }
+      return { omongan: om, keadaan: 'kosong', peran: null, label: '' };
+    });
+    baris.push({ putaran, sel });
+  }
+  return baris;
+}
+
+/** "harga-2025-11-25" → "harga 25 Nov 2025"; slug tanpa tanggal → kata-katanya. */
+export function faktaAwam(fact_id: string): string {
+  const m = /^(.*?)-(\d{4}-\d{2}-\d{2})(?:-(\d{4}-\d{2}-\d{2}))?$/.exec(fact_id);
+  if (m === null) return fact_id.replace(/-/g, ' ');
+  const kata = (m[1] ?? '').replace(/-/g, ' ');
+  const sampai = m[3] === undefined ? '' : `–${tanggalSingkat(m[3])}`;
+  return `${kata} ${tanggalSingkat(m[2] ?? '')}${sampai}`;
+}
+
+/** Alasan fakta disingkirkan tanpa kode: "TIDAK_LENGKAP: temuan R19a: x" → "x". */
+export function alasanTersingkirAwam(alasan: string): string {
+  return alasan.replace(/^[A-Z_]+: /, '').replace(/^temuan R\d+[a-z]?: /, '');
+}
+
+/** Fakta tersingkir, dikelompokkan menurut alasan awamnya. */
+export function tersingkirAwam(jalan: JalanDapur): Array<{ fakta: string[]; alasan: string }> {
+  const peta = new Map<string, string[]>();
+  for (const t of jalan.pemeriksaan.tersingkir) {
+    const a = alasanTersingkirAwam(t.alasan);
+    peta.set(a, [...(peta.get(a) ?? []), faktaAwam(t.fact_id)]);
+  }
+  return [...peta.entries()].map(([alasan, fakta]) => ({ fakta, alasan }));
+}
+
+/** "omongan 3 gagal di 3 sudut (…); simulasi tidak terbit" → kalimat tanpa slug. */
+export function berhentiAwam(berhenti: string): string {
+  const m = /^omongan (\d+) gagal di (\d+) sudut \([^)]*\)(?:; (.*))?$/.exec(berhenti);
+  if (m === null) return berhenti;
+  const sisa = m[3] === undefined ? '' : `; ${m[3]}`;
+  return `Omongan ${m[1] ?? ''} tetap gagal sesudah dicoba dengan ${m[2] ?? ''} fakta berbeda${sisa}.`;
+}
+
+/** Baris agregat tanpa kode milestone: "Satu jalan agen: tidak terbit · …". */
+export function kalimatAgregatAwam(a: AgregatDapur): string {
+  return kalimatAgregat(a).replace(/^Jalan [^:]+: /, 'Satu jalan agen: ');
+}
