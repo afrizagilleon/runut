@@ -1,0 +1,370 @@
+{
+  "putusan": {
+    "setelan": {
+      "penebak": {
+        "aturan": "dicatat",
+        "ambangHaiku": null
+      },
+      "kartu": "dicatat",
+      "kritikus": {
+        "jenis": [
+          "kunci",
+          "makna",
+          "aturan"
+        ],
+        "dicatat": false
+      }
+    },
+    "keadaan": "S7 + pembaca kartu dicatat",
+    "langkah": [
+      "S1: tumpukan menerima 4/6 soal tayang",
+      "S2: tumpukan menerima 4/6 soal tayang",
+      "S3: tumpukan menerima 4/6 soal tayang",
+      "S4: tumpukan menerima 4/6 soal tayang",
+      "S5: tumpukan menerima 4/6 soal tayang",
+      "S6: tumpukan menerima 4/6 soal tayang",
+      "S7: tumpukan menerima 4/6 soal tayang",
+      "S7 + pembaca kartu dicatat: tumpukan menerima 5/6 soal tayang"
+    ],
+    "syarat": {
+      "tayang_diterima": 5,
+      "tayang_terukur": 6,
+      "terpenuhi": true,
+      "bocor_tertangkap_sebelum_kritikus": 1,
+      "bocor_terukur": 3
+    }
+  },
+  "awal": [
+    {
+      "gerbang": "kode",
+      "tayang": [
+        0,
+        6
+      ],
+      "bocor": [
+        1,
+        3
+      ]
+    },
+    {
+      "gerbang": "penebak",
+      "tayang": [
+        0,
+        6
+      ],
+      "bocor": [
+        2,
+        3
+      ]
+    },
+    {
+      "gerbang": "kartu",
+      "tayang": [
+        2,
+        6
+      ],
+      "bocor": [
+        0,
+        3
+      ]
+    },
+    {
+      "gerbang": "kritikus",
+      "tayang": [
+        1,
+        6
+      ],
+      "bocor": [
+        0,
+        3
+      ]
+    },
+    {
+      "gerbang": "sebelum_kritikus",
+      "tayang": [
+        2,
+        6
+      ],
+      "bocor": [
+        3,
+        3
+      ]
+    },
+    {
+      "gerbang": "ditolak",
+      "tayang": [
+        2,
+        6
+      ],
+      "bocor": [
+        3,
+        3
+      ]
+    }
+  ],
+  "akhir": [
+    {
+      "gerbang": "kode",
+      "tayang": [
+        0,
+        6
+      ],
+      "bocor": [
+        1,
+        3
+      ]
+    },
+    {
+      "gerbang": "penebak",
+      "tayang": [
+        0,
+        6
+      ],
+      "bocor": [
+        0,
+        3
+      ]
+    },
+    {
+      "gerbang": "kartu",
+      "tayang": [
+        0,
+        6
+      ],
+      "bocor": [
+        0,
+        3
+      ]
+    },
+    {
+      "gerbang": "kritikus",
+      "tayang": [
+        1,
+        6
+      ],
+      "bocor": [
+        0,
+        3
+      ]
+    },
+    {
+      "gerbang": "sebelum_kritikus",
+      "tayang": [
+        0,
+        6
+      ],
+      "bocor": [
+        1,
+        3
+      ]
+    },
+    {
+      "gerbang": "ditolak",
+      "tayang": [
+        1,
+        6
+      ],
+      "bocor": [
+        1,
+        3
+      ]
+    }
+  ],
+  "per_soal": [
+    {
+      "id": "dada-s1-kata-bursa",
+      "kelompok": "tayang",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "dada-s2-dividen-pemilik-kecil",
+      "kelompok": "tayang",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "dada-s3-siapa-yang-menjual",
+      "kelompok": "tayang",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "ultj-turun-di-tanggal-ex",
+      "kelompok": "tayang",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "ultj-riwayat-dividen",
+      "kelompok": "tayang",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": false,
+        "kartu": true,
+        "kritikus": false,
+        "ditolak": true,
+        "sebelum_kritikus": true
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "ultj-siapa-yang-membeli",
+      "kelompok": "tayang",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": false,
+        "kartu": true,
+        "kritikus": true,
+        "ditolak": true,
+        "sebelum_kritikus": true
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": true,
+        "ditolak": true,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "bocor",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": true,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": true,
+        "sebelum_kritikus": true
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "bocor",
+      "lengkap": true,
+      "awal": {
+        "kode": true,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": true,
+        "sebelum_kritikus": true
+      },
+      "akhir": {
+        "kode": true,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": true,
+        "sebelum_kritikus": true
+      }
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "penebak": true,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": true,
+        "sebelum_kritikus": true
+      },
+      "akhir": {
+        "kode": false,
+        "penebak": false,
+        "kartu": false,
+        "kritikus": false,
+        "ditolak": false,
+        "sebelum_kritikus": false
+      }
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "bocor",
+      "lengkap": false,
+      "galat": "PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d10/kalibrasi/*) US$0.315006 + perkiraan maksimum US$0.037570 untuk z-ai/glm-5.3 > pagu milestone US$0.35. Panggilan tidak dikirim."
+    }
+  ]
+}

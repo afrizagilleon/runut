@@ -1,0 +1,32 @@
+
+> runut@0.1.0 templat:jalan
+> node --experimental-strip-types alat/penyusun/jalan-templat.ts
+
+Pintu penyusun (mesin templat) di http://127.0.0.1:62773; pagu jalan US$0.86; pagu penyusun US$1.961 (terpakai US$1.0960).
+siapkan → 202 {"id":"m2d10-tirt"}
+tahap: menunggu-persetujuan; sumber paket: {"sumber":"kurasi","keterangan":"definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"}
+mulai → 202 {"id":"m2d10-tirt","pagu_usd":0.86}
+[server]   penyusun/m2d10-tirt/p1/tulis-pesan/o1: keluar 987 stop US$0.000616 Relace
+[server]   penyusun/m2d10-tirt/p1/tulis-penjelasan/o1: keluar 1756 stop US$0.000806 Io Net
+[server]   penyusun/m2d10-tirt/p1/gerbang-tebak/o1/t1: keluar 97 stop US$0.001141 Amazon Bedrock
+[server]   penyusun/m2d10-tirt/p1/gerbang-tebak/o1/t2: keluar 3292 stop US$0.002490 InferenceNet
+[server]   penyusun/m2d10-tirt/p1/gerbang-tebak/o1/t3: keluar 181 stop US$0.000799 SiliconFlow
+[server]   penyusun/m2d10-tirt/p1/gerbang-tebak/o1/t3/u1: keluar 233 stop US$0.000834 Phala
+[server]   penyusun/m2d10-tirt/p1/gerbang-kartu/o1: keluar 4142 stop US$0.001869 Wafer
+[server]   penyusun/m2d10-tirt/p1/kritikus/o1: keluar 947 stop US$0.003584 SiliconFlow
+[server]   penyusun/m2d10-tirt/p1/kritikus/o1/u1: keluar 792 stop US$0.003016 Phala
+[server]   penyusun/m2d10-tirt/p1/kritikus/o1: keluar 539 stop US$0.001519 SiliconFlow
+[server]   penyusun/m2d10-tirt/p1/kritikus/o1/u1: keluar 1033 stop US$0.003083 Phala
+[server]   penyusun/m2d10-tirt/p2/tulis-pesan/o1: keluar 1728 stop US$0.001060 Relace
+[server]   penyusun/m2d10-tirt/p2/tulis-penjelasan/o1: keluar 2170 stop US$0.001666 InferenceNet
+[server]   penyusun/m2d10-tirt/p2/gerbang-tebak/o1/t1: keluar 158 stop US$0.001444 Amazon Bedrock
+[server]   penyusun/m2d10-tirt/p2/gerbang-tebak/o1/t2: keluar 2175 stop US$0.002769 DigitalOcean
+[server]   penyusun/m2d10-tirt/p2/gerbang-tebak/o1/t3: keluar 517 stop US$0.001388 SiliconFlow
+[server]   penyusun/m2d10-tirt/p2/gerbang-kartu/o1: keluar 312 stop US$0.000198 Relace
+[server]   penyusun/m2d10-tirt/p2/kritikus/o1: keluar 496 stop US$0.001738 SiliconFlow
+[server]   penyusun/m2d10-tirt/p2/kritikus/o1/u1: keluar 769 stop US$0.002762 Phala
+[server]   penyusun/m2d10-tirt/p2/kritikus/o1: keluar 694 stop US$0.001882 SiliconFlow
+[server]   penyusun/m2d10-tirt/p2/kritikus/o1/u1: keluar 548 stop US$0.001785 Phala
+[server] jalan m2d10-tirt: TIDAK TERBIT (2 putaran, biaya nyata US$0.0365)
+SELESAI: TIDAK TERBIT; versi 2; biaya nyata US$0.03645; omongan 1: rencana besaran-hitungan:kelipatan-2025-11-26-2025-12-09 habis dan tidak ada rencana pengganti; simulasi tidak terbit
+exit 3

@@ -1,0 +1,174 @@
+{
+  "paket_id": "tirt",
+  "rencana": "sebab-resmi:susp-2025-12-10",
+  "huruf_kunci": "b",
+  "lolos": true,
+  "berhenti": null,
+  "biaya_usd": 0.0213698448,
+  "percobaan": [
+    {
+      "ke": 1,
+      "tulisan": {
+        "nama": "Dita",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget bursa stop dagang saham Perusahaan T hari ini, soalnya bursa ragu usaha Perusahaan T bisa terus jalan."
+      },
+      "penjelasan": "Yang terbaca: perdagangan saham Perusahaan T dihentikan sementara oleh bursa pada [[susp-2025-12-10|10 Desember]]. Alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down perlindungan investor. Karena itu, tuduhan bahwa bursa ragu usaha Perusahaan T bisa terus jalan tidak cocok untuk penghentian hari ini. Alasan keraguan kelangsungan usaha justru tercatat untuk penghentian pada [[susp-2025-01-21|21 Januari]], bukan untuk kejadian hari ini. Jadi isi yang benar: keliru, alasan resmi hari ini kenaikan harganya terlalu tajam. Yang menggoda, yaitu membenarkan karena usaha diragukan, keliru karena mencampur alasan penghentian berbeda. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini.",
+      "varian": {
+        "kunci": "K1",
+        "p1": "P1a",
+        "p2": "P2a",
+        "p3": "P3a"
+      },
+      "omongan": {
+        "nama": "Dita",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget bursa stop dagang saham Perusahaan T hari ini, soalnya bursa ragu usaha Perusahaan T bisa terus jalan.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "b": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+          "a": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+          "c": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+          "d": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+        },
+        "kunci": "b",
+        "penjelasan": "Yang terbaca: perdagangan saham Perusahaan T dihentikan sementara oleh bursa pada [[susp-2025-12-10|10 Desember]]. Alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down perlindungan investor. Karena itu, tuduhan bahwa bursa ragu usaha Perusahaan T bisa terus jalan tidak cocok untuk penghentian hari ini. Alasan keraguan kelangsungan usaha justru tercatat untuk penghentian pada [[susp-2025-01-21|21 Januari]], bukan untuk kejadian hari ini. Jadi isi yang benar: keliru, alasan resmi hari ini kenaikan harganya terlalu tajam. Yang menggoda, yaitu membenarkan karena usaha diragukan, keliru karena mencampur alasan penghentian berbeda. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini."
+      },
+      "menolak": [],
+      "dicatat": [
+        "[kritikus: arahan] Perketat redaksi pilihan b agar lebih menempel pada 'peningkatan harga kumulatif yang signifikan' di kartu, sebab 'terlalu tajam' bisa diperdebatkan pembaca teliti."
+      ],
+      "putusan": {
+        "lolos": true,
+        "menolak": [],
+        "dicatat": [
+          "[kritikus: arahan] Perketat redaksi pilihan b agar lebih menempel pada 'peningkatan harga kumulatif yang signifikan' di kartu, sebab 'terlalu tajam' bisa diperdebatkan pembaca teliti."
+        ],
+        "kartu": [
+          {
+            "lolos": true,
+            "pilihan": "b",
+            "kunci": "b",
+            "kartu_ditunjuk": [
+              "susp-2025-12-10"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 1 menyatakan penghentian perdagangan pada 10 Desember 2025 karena kenaikan harga kumulatif yang signifikan, bukan karena keraguan atas kelangsungan usaha.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T17:34:52.495Z",
+                "waktu_selesai": "2026-09-30T17:35:07.599Z",
+                "token_masuk": 623,
+                "token_keluar": 2515,
+                "biaya_usd": 0.00152146,
+                "latensi_ms": 15101,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"b\", \"kartu\": [1], \"alasan\": \"Kartu 1 menyatakan penghentian perdagangan pada 10 Desember 2025 karena kenaikan harga kumulatif yang signifikan, bukan karena keraguan atas kelangsungan usaha.\", \"membingungkan\": []}",
+                "terbaca": true,
+                "penyedia": "Relace",
+                "token_penalaran": 2174
+              }
+            ],
+            "membingungkan": []
+          },
+          {
+            "lolos": true,
+            "pilihan": "b",
+            "kunci": "b",
+            "kartu_ditunjuk": [
+              "susp-2025-12-10"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 1 menunjukkan alasan resmi penghentian hari ini adalah kenaikan harga kumulatif yang signifikan, bukan keraguan atas kelangsungan usaha.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T17:35:07.599Z",
+                "waktu_selesai": "2026-09-30T17:35:29.802Z",
+                "token_masuk": 623,
+                "token_keluar": 1963,
+                "biaya_usd": 0.0009103827,
+                "latensi_ms": 22199,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\":\"b\",\"kartu\":[1],\"alasan\":\"Kartu 1 menunjukkan alasan resmi penghentian hari ini adalah kenaikan harga kumulatif yang signifikan, bukan keraguan atas kelangsungan usaha.\",\"membingungkan\":[]}",
+                "terbaca": true,
+                "penyedia": "Wafer",
+                "token_penalaran": 1900
+              }
+            ],
+            "membingungkan": []
+          },
+          {
+            "lolos": true,
+            "pilihan": "b",
+            "kunci": "b",
+            "kartu_ditunjuk": [
+              "susp-2025-12-10"
+            ],
+            "menunjuk_penentu": true,
+            "alasan_penjawab": "Kartu 1 menunjukkan penghentian hari ini karena kenaikan harga kumulatif signifikan, bukan karena keraguan kelangsungan usaha.",
+            "alasan": "",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T17:35:29.802Z",
+                "waktu_selesai": "2026-09-30T17:35:38.606Z",
+                "token_masuk": 623,
+                "token_keluar": 750,
+                "biaya_usd": 0.0003613539,
+                "latensi_ms": 8801,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"b\", \"kartu\": [1], \"alasan\": \"Kartu 1 menunjukkan penghentian hari ini karena kenaikan harga kumulatif signifikan, bukan karena keraguan kelangsungan usaha.\", \"membingungkan\": []}",
+                "terbaca": true,
+                "penyedia": "Wafer",
+                "token_penalaran": 687
+              }
+            ],
+            "membingungkan": []
+          }
+        ],
+        "kritik": {
+          "tanpa_keberatan": true,
+          "menjawab": true,
+          "terpotong": false,
+          "keberatan": [],
+          "arahan": "Perketat redaksi pilihan b agar lebih menempel pada 'peningkatan harga kumulatif yang signifikan' di kartu, sebab 'terlalu tajam' bisa diperdebatkan pembaca teliti.",
+          "diabaikan": [],
+          "panggilan": [
+            {
+              "waktu_mulai": "2026-09-30T17:35:38.607Z",
+              "waktu_selesai": "2026-09-30T17:36:15.875Z",
+              "token_masuk": 2218,
+              "token_keluar": 5392,
+              "biaya_usd": 0.0165321882,
+              "latensi_ms": 37264,
+              "finish_reason": "stop",
+              "teks_mentah": "{\"cek_klaim\": {\"bagian_tak_tercek\": [], \"kunci_menyatakan_tak_pasti\": false}, \"cek_pilihan\": {\"juga_benar\": [], \"alasan\": \"Hanya b yang didukung kartu 1; a memakai alasan penghentian 21 Januari (kartu 2) untuk kejadian hari ini, sedangkan c dan d menyebut hal yang tidak ada di kartu mana pun.\"}, \"keberatan\": [], \"arahan\": \"Perketat redaksi pilihan b agar lebih menempel pada 'peningkatan harga kumulatif yang signifikan' di kartu, sebab 'terlalu tajam' bisa diperdebatkan pembaca teliti.\"}",
+              "terbaca": true,
+              "penyedia": "Wafer",
+              "token_penalaran": 5222,
+              "ambang_penalaran": 1000,
+              "penalaran_sah": true
+            }
+          ],
+          "galat": [],
+          "cek_makna": {
+            "bagian_tak_tercek": [],
+            "kunci_menyatakan_tak_pasti": false,
+            "juga_benar": [],
+            "alasan_juga_benar": "Hanya b yang didukung kartu 1; a memakai alasan penghentian 21 Januari (kartu 2) untuk kejadian hari ini, sedangkan c dan d menyebut hal yang tidak ada di kartu mana pun."
+          },
+          "penalaran_tidak_sah": []
+        }
+      },
+      "penyempurnaan": null
+    }
+  ]
+}

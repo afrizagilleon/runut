@@ -1,0 +1,167 @@
+[
+ {
+  "provider_name": "Azure",
+  "tag": "azure/global",
+  "quantization": "unknown",
+  "prompt_per_juta": 1,
+  "completion_per_juta": 5,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "structured_outputs",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "max_completion_tokens",
+   "tools",
+   "tool_choice",
+   "top_k",
+   "response_format"
+  ],
+  "max_completion_tokens": 64000
+ },
+ {
+  "provider_name": "Amazon Bedrock",
+  "tag": "amazon-bedrock/global",
+  "quantization": "unknown",
+  "prompt_per_juta": 1,
+  "completion_per_juta": 5,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "tools",
+   "tool_choice",
+   "structured_outputs",
+   "response_format"
+  ],
+  "max_completion_tokens": 64000
+ },
+ {
+  "provider_name": "Google",
+  "tag": "google-vertex/global",
+  "quantization": "unknown",
+  "prompt_per_juta": 1,
+  "completion_per_juta": 5,
+  "supported_parameters": [
+   "max_tokens",
+   "top_p",
+   "temperature",
+   "stop",
+   "reasoning",
+   "include_reasoning",
+   "tools",
+   "tool_choice",
+   "top_k",
+   "structured_outputs"
+  ],
+  "max_completion_tokens": 64000
+ },
+ {
+  "provider_name": "Anthropic",
+  "tag": "anthropic",
+  "quantization": "unknown",
+  "prompt_per_juta": 1,
+  "completion_per_juta": 5,
+  "supported_parameters": [
+   "max_tokens",
+   "top_p",
+   "temperature",
+   "stop",
+   "reasoning",
+   "include_reasoning",
+   "tools",
+   "tool_choice",
+   "top_k",
+   "structured_outputs",
+   "response_format"
+  ],
+  "max_completion_tokens": 64000
+ },
+ {
+  "provider_name": "Amazon Bedrock",
+  "tag": "amazon-bedrock/us",
+  "quantization": "unknown",
+  "prompt_per_juta": 1.1,
+  "completion_per_juta": 5.5,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "tools",
+   "tool_choice",
+   "structured_outputs",
+   "response_format"
+  ],
+  "max_completion_tokens": 64000
+ },
+ {
+  "provider_name": "Google",
+  "tag": "google-vertex/us-east5",
+  "quantization": "unknown",
+  "prompt_per_juta": 1.1,
+  "completion_per_juta": 5.5,
+  "supported_parameters": [
+   "max_tokens",
+   "top_p",
+   "temperature",
+   "stop",
+   "reasoning",
+   "include_reasoning",
+   "tools",
+   "tool_choice",
+   "top_k",
+   "structured_outputs"
+  ],
+  "max_completion_tokens": 64000
+ },
+ {
+  "provider_name": "Amazon Bedrock",
+  "tag": "amazon-bedrock/eu-west-1",
+  "quantization": "unknown",
+  "prompt_per_juta": 1.1,
+  "completion_per_juta": 5.5,
+  "supported_parameters": [
+   "reasoning",
+   "include_reasoning",
+   "max_tokens",
+   "temperature",
+   "top_p",
+   "top_k",
+   "stop",
+   "tools",
+   "tool_choice",
+   "structured_outputs",
+   "response_format"
+  ],
+  "max_completion_tokens": 64000
+ },
+ {
+  "provider_name": "Google",
+  "tag": "google-vertex/europe",
+  "quantization": "unknown",
+  "prompt_per_juta": 1.1,
+  "completion_per_juta": 5.5,
+  "supported_parameters": [
+   "max_tokens",
+   "top_p",
+   "temperature",
+   "stop",
+   "reasoning",
+   "include_reasoning",
+   "tools",
+   "tool_choice",
+   "top_k",
+   "structured_outputs"
+  ],
+  "max_completion_tokens": 64000
+ }
+]

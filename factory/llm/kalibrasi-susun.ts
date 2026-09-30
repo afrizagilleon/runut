@@ -22,7 +22,7 @@ import { AWALAN_TAG_JALAN_M2D8, FOLDER_M2D8, PAGU_MILESTONE_M2D8, siapkanM2d8 } 
 import { aturanPenebak, maksKataResmi, rasioKeseimbangan, yakinPilihanSaja, type SetelanGerbangM2d8 } from './kalibrasi-setelan.ts';
 import { validasiM2d8 } from './kalibrasi-soal.ts';
 import { PencatatJejak } from './jejak.ts';
-import { MODEL_OPENROUTER } from './model.ts';
+import { MODEL_DUA } from './model.ts';
 import { chatBerpagu } from './pagu.ts';
 import { DEFINISI_PAKET, bangunPaket } from './paket.ts';
 import { PENALAR_M2D8, badanUpaya } from './penalaran.ts';
@@ -100,7 +100,7 @@ async function utama(): Promise<number> {
     jejak,
     generasi: gen,
     panggil: async (pesan, setelan, info) => {
-      if (!(MODEL_OPENROUTER as readonly string[]).includes(info.model)) throw new Error(`Model ${info.model} tidak diizinkan M2d-8.`);
+      if (!MODEL_DUA.includes(info.model)) throw new Error(`Model ${info.model} tidak diizinkan M2d-8.`);
       const tag = tagJalanM2d8(info);
       let j;
       try {

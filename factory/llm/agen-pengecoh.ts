@@ -55,6 +55,7 @@ import {
 } from './penulis-pecah.ts';
 import { hurufKunciKode, periksaRujukanHuruf } from './posisi-kunci.ts';
 import { KODE_PELINDUNG, aturanPenebak, bingungMenolak, jenisKritikus, penebakMenolak, type SetelanGerbangM2d8 } from './kalibrasi-setelan.ts';
+import type { KeadaanTemplat } from './templat/uji-ulang.ts';
 import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
 import { SUHU, type JawabanModel, type SetelanPanggil } from './susun.ts';
 import {
@@ -641,6 +642,8 @@ export interface KeadaanOmongan {
   penjelasan: string;
   omongan: OmonganDraf;
   hurufKunci: KunciOpsi;
+  /** M2d-10: omongan dari mesin templat — rencana & varian pilihan (bahan uji ulang templat). */
+  templat?: KeadaanTemplat;
 }
 
 export interface ArgPeriksaOmongan {

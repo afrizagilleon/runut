@@ -1,0 +1,66 @@
+
+> runut@0.1.0 templat:kalibrasi
+> node --experimental-strip-types factory/llm/templat/kalibrasi.ts --jalan
+
+  17:17:25 m2d10/kalibrasi/dada-s1-kata-bursa/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001237; kalibrasi US$0.0012
+  17:17:29 m2d10/kalibrasi/dada-s1-kata-bursa/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: InferenceNet stop penalaran 239 US$0.000238; kalibrasi US$0.0015
+  17:17:32 m2d10/kalibrasi/dada-s1-kata-bursa/gerbang-tebak/t3 z-ai/glm-5.3: Wafer stop penalaran 279 US$0.001158; kalibrasi US$0.0026
+  17:17:45 m2d10/kalibrasi/dada-s1-kata-bursa/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: Wafer stop penalaran 612 US$0.000337; kalibrasi US$0.0030
+dada-s1-kata-bursa [tayang] penebak claude-haiku-4.5:d/65 deepseek-v4.1-flash:d/78 glm-5.3:d/75 kartu b (kunci b); US$0.0030
+  17:17:48 m2d10/kalibrasi/dada-s2-dividen-pemilik-kecil/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001190; kalibrasi US$0.0042
+  17:18:14 m2d10/kalibrasi/dada-s2-dividen-pemilik-kecil/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: DekaLLM stop penalaran 1984 US$0.000881; kalibrasi US$0.0050
+  17:18:46 m2d10/kalibrasi/dada-s2-dividen-pemilik-kecil/gerbang-tebak/t3 z-ai/glm-5.3: Wafer length penalaran 7925 US$0.024029; kalibrasi US$0.0291
+  17:18:53 m2d10/kalibrasi/dada-s2-dividen-pemilik-kecil/gerbang-tebak/t3/u1 z-ai/glm-5.3: Wafer stop penalaran 1704 US$0.005452; kalibrasi US$0.0345
+  17:18:59 m2d10/kalibrasi/dada-s2-dividen-pemilik-kecil/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: DekaLLM stop penalaran 497 US$0.000289; kalibrasi US$0.0348
+dada-s2-dividen-pemilik-kecil [tayang] penebak claude-haiku-4.5:b/45 deepseek-v4.1-flash:c/70 glm-5.3:c/65 kartu a (kunci a); US$0.0318
+  17:19:01 m2d10/kalibrasi/dada-s3-siapa-yang-menjual/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001275; kalibrasi US$0.0361
+  17:19:35 m2d10/kalibrasi/dada-s3-siapa-yang-menjual/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: InferenceNet stop penalaran 2198 US$0.001729; kalibrasi US$0.0378
+  17:19:41 m2d10/kalibrasi/dada-s3-siapa-yang-menjual/gerbang-tebak/t3 z-ai/glm-5.3: Wafer stop penalaran 1177 US$0.003889; kalibrasi US$0.0417
+  17:19:48 m2d10/kalibrasi/dada-s3-siapa-yang-menjual/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: DeepInfra stop penalaran 643 US$0.000410; kalibrasi US$0.0421
+dada-s3-siapa-yang-menjual [tayang] penebak claude-haiku-4.5:b/72 deepseek-v4.1-flash:d/65 glm-5.3:b/60 kartu c (kunci c); US$0.0073
+  17:19:52 m2d10/kalibrasi/ultj-turun-di-tanggal-ex/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001397; kalibrasi US$0.0435
+  17:20:33 m2d10/kalibrasi/ultj-turun-di-tanggal-ex/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: CoreWeave length penalaran 8000 US$0.005300; kalibrasi US$0.0488
+  17:20:54 m2d10/kalibrasi/ultj-turun-di-tanggal-ex/gerbang-tebak/t2/u1 deepseek/deepseek-v4.1-flash: Wafer stop penalaran 1945 US$0.000920; kalibrasi US$0.0497
+  17:21:01 m2d10/kalibrasi/ultj-turun-di-tanggal-ex/gerbang-tebak/t3 z-ai/glm-5.3: Wafer stop penalaran 1206 US$0.003937; kalibrasi US$0.0537
+  17:21:08 m2d10/kalibrasi/ultj-turun-di-tanggal-ex/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: Wafer stop penalaran 390 US$0.000229; kalibrasi US$0.0539
+ultj-turun-di-tanggal-ex [tayang] penebak claude-haiku-4.5:c/72 deepseek-v4.1-flash:c/60 glm-5.3:c/60 kartu b (kunci b); US$0.0118
+  17:21:10 m2d10/kalibrasi/ultj-riwayat-dividen/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001377; kalibrasi US$0.0553
+  17:21:57 m2d10/kalibrasi/ultj-riwayat-dividen/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: StreamLake stop penalaran 6939 US$0.004200; kalibrasi US$0.0595
+  17:22:34 m2d10/kalibrasi/ultj-riwayat-dividen/gerbang-tebak/t3 z-ai/glm-5.3: Wafer length penalaran 8002 US$0.024033; kalibrasi US$0.0835
+  17:22:39 m2d10/kalibrasi/ultj-riwayat-dividen/gerbang-tebak/t3/u1 z-ai/glm-5.3: Wafer stop penalaran 914 US$0.003130; kalibrasi US$0.0866
+  17:24:06 m2d10/kalibrasi/ultj-riwayat-dividen/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: Relace stop penalaran 8635 US$0.005603; kalibrasi US$0.0922
+ultj-riwayat-dividen [tayang] penebak claude-haiku-4.5:b/55 deepseek-v4.1-flash:a/72 glm-5.3:b/60 kartu b (kunci a); US$0.0383
+  17:24:09 m2d10/kalibrasi/ultj-siapa-yang-membeli/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001601; kalibrasi US$0.0938
+  17:24:51 m2d10/kalibrasi/ultj-siapa-yang-membeli/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: NextBit stop penalaran 5708 US$0.004961; kalibrasi US$0.0988
+  17:25:23 m2d10/kalibrasi/ultj-siapa-yang-membeli/gerbang-tebak/t3 z-ai/glm-5.3: Wafer length penalaran 7909 US$0.024034; kalibrasi US$0.1228
+  17:25:57 m2d10/kalibrasi/ultj-siapa-yang-membeli/gerbang-tebak/t3/u1 z-ai/glm-5.3: Wafer length penalaran 8001 US$0.024034; kalibrasi US$0.1469
+  17:26:08 m2d10/kalibrasi/ultj-siapa-yang-membeli/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: Relace stop penalaran 1259 US$0.000927; kalibrasi US$0.1478
+ultj-siapa-yang-membeli [tayang] penebak claude-haiku-4.5:b/55 deepseek-v4.1-flash:a/82 glm-5.3:null/null kartu b (kunci d); US$0.0556
+dada-s1-kata-bursa: kritikus dipakai ulang dari M2d-8 (tanpa keberatan)
+dada-s2-dividen-pemilik-kecil: kritikus dipakai ulang dari M2d-8 (tertebak)
+dada-s3-siapa-yang-menjual: kritikus dipakai ulang dari M2d-8 (tanpa keberatan)
+ultj-turun-di-tanggal-ex: kritikus dipakai ulang dari M2d-8 (tanpa keberatan)
+ultj-riwayat-dividen: kritikus dipakai ulang dari M2d-8 (tanpa keberatan)
+  17:28:20 m2d10/kalibrasi/ultj-siapa-yang-membeli/kritikus/t1 z-ai/glm-5.3: Wafer stop penalaran 33532 US$0.102083; kalibrasi US$0.2499
+ultj-siapa-yang-membeli: kritikus baru (kunci, ambigu)
+  17:28:24 m2d10/kalibrasi/m2d5-tirt-o2/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001472; kalibrasi US$0.2514
+  17:28:59 m2d10/kalibrasi/m2d5-tirt-o2/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: Wafer stop penalaran 1067 US$0.000528; kalibrasi US$0.2519
+  17:29:33 m2d10/kalibrasi/m2d5-tirt-o2/gerbang-tebak/t3 z-ai/glm-5.3: Wafer length penalaran 8000 US$0.024027; kalibrasi US$0.2759
+  17:29:36 m2d10/kalibrasi/m2d5-tirt-o2/gerbang-tebak/t3/u1 z-ai/glm-5.3: Wafer stop penalaran 523 US$0.001927; kalibrasi US$0.2778
+  17:29:41 m2d10/kalibrasi/m2d5-tirt-o2/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: Alibaba stop penalaran 464 US$0.000406; kalibrasi US$0.2782
+m2d5-tirt-o2 [bocor] penebak claude-haiku-4.5:d/62 deepseek-v4.1-flash:d/72 glm-5.3:null/null kartu d (kunci d); US$0.0284
+  17:29:43 m2d10/kalibrasi/m2d5-tirt-o3/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001311; kalibrasi US$0.2795
+  17:29:51 m2d10/kalibrasi/m2d5-tirt-o3/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: NextBit stop penalaran 822 US$0.000841; kalibrasi US$0.2804
+  17:30:29 m2d10/kalibrasi/m2d5-tirt-o3/gerbang-tebak/t3 z-ai/glm-5.3: Wafer length penalaran 8001 US$0.024023; kalibrasi US$0.3044
+  17:30:32 m2d10/kalibrasi/m2d5-tirt-o3/gerbang-tebak/t3/u1 z-ai/glm-5.3: Wafer stop penalaran 626 US$0.002181; kalibrasi US$0.3066
+  17:30:38 m2d10/kalibrasi/m2d5-tirt-o3/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: Wafer stop penalaran 264 US$0.000186; kalibrasi US$0.3068
+m2d5-tirt-o3 [bocor] penebak claude-haiku-4.5:b/45 deepseek-v4.1-flash:b/55 glm-5.3:b/65 kartu d (kunci d); US$0.0285
+  17:30:41 m2d10/kalibrasi/m2d4-tirt-o3/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001334; kalibrasi US$0.3081
+  17:30:57 m2d10/kalibrasi/m2d4-tirt-o3/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: Phala stop penalaran 2116 US$0.001929; kalibrasi US$0.3100
+  17:31:04 m2d10/kalibrasi/m2d4-tirt-o3/gerbang-tebak/t3 z-ai/glm-5.3: Wafer stop penalaran 891 US$0.003040; kalibrasi US$0.3131
+  17:31:06 m2d10/kalibrasi/m2d4-tirt-o3/gerbang-kartu/t1 deepseek/deepseek-v4.1-flash: Morph stop penalaran 142 US$0.000160; kalibrasi US$0.3132
+m2d4-tirt-o3 [bocor] penebak claude-haiku-4.5:a/55 deepseek-v4.1-flash:b/75 glm-5.3:a/60 kartu a (kunci a); US$0.0065
+  17:31:09 m2d10/kalibrasi/m2d4-tirt-o1/gerbang-tebak/t1 anthropic/claude-haiku-4.5: Amazon Bedrock stop penalaran 0 US$0.001283; kalibrasi US$0.3145
+  17:31:14 m2d10/kalibrasi/m2d4-tirt-o1/gerbang-tebak/t2 deepseek/deepseek-v4.1-flash: Ionstream stop penalaran 512 US$0.000479; kalibrasi US$0.3150
+m2d4-tirt-o1: PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d10/kalibrasi/*) US$0.315006 + perkiraan maksimum US$0.037570 untuk z-ai/glm-5.3 > pagu milestone US$0.35. Panggilan tidak dikirim.
+exit 2

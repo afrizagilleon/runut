@@ -1,0 +1,692 @@
+{
+  "selesai": false,
+  "pagu_kalibrasi_usd": 0.35,
+  "biaya_kalibrasi_usd": 0.3150056686999999,
+  "hasil": [
+    {
+      "id": "dada-s1-kata-bursa",
+      "kelompok": "tayang",
+      "luar": "soal tayang (Claude + pemilik)",
+      "kunci": "b",
+      "soal": "Bayu: \"Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin.\" | a) Betul, pengumuman bursanya soal investor asing. | b) Keliru, pengumumannya soal laporan keuangan telat. | c) Betul, pengumuman itu yang bikin harganya naik 22 kali. | d) Keliru, pengumumannya soal harga yang naik terlalu cepat. | kunci b",
+      "kode": [
+        {
+          "kode": "PENJELASAN_TANPA_PENENTU",
+          "alasan": "Penjelasan tidak merujuk satu pun kartu penentu."
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "d",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Kenaikan 22 kali yang drastis biasanya memicu mekanisme safeguard bursa (trading halt), dan pengumuman bursa yang relevan adalah untuk menjelaskan volatilitas ekstrem, bukan untuk mengumumkan investor asing atau laporan keuangan—sehingga Bayu salah menginterpretasi alasan pengumuman tersebut.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "d",
+          "yakin": 78,
+          "terbaca": true,
+          "alasan": "Pengumuman bursa untuk saham yang naik tidak wajar biasanya berupa UMA soal harga naik terlalu cepat, bukan soal investor asing.",
+          "token_penalaran": [
+            239
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "d",
+          "yakin": 75,
+          "terbaca": true,
+          "alasan": "Kenaikan harga 22 kali di bursa Indonesia lazim memicu pengumuman Unusual Market Activity/penghentian perdagangan karena harga naik terlalu cepat, bukan pengumuman soal investor asing.",
+          "token_penalaran": [
+            279
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "b",
+        "ditunjuk": [
+          "susp-2025-06-30"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [],
+        "alasan": "Kartu 1 menunjukkan pengumuman resmi bursa adalah penghentian sementara karena laporan keuangan auditan tahunan belum disampaikan, bukan soal investor asing."
+      },
+      "kritikus": {
+        "sumber": "m2d8",
+        "menjawab": true,
+        "keberatan": [],
+        "token_penalaran": [
+          12444
+        ]
+      },
+      "biaya_usd": 0.0029697424
+    },
+    {
+      "id": "dada-s2-dividen-pemilik-kecil",
+      "kelompok": "tayang",
+      "luar": "soal tayang (Claude + pemilik)",
+      "kunci": "a",
+      "soal": "Dimas: \"Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. Harga setinggi ini jelas bukan karena dividennya.\" | a) Betul, ia kebagian dividen dan jumlahnya cuma Rp140. | b) Betul, malah ia tidak kebagian karena tanggal ex-nya. | c) Keliru, ia kebagian Rp14.000 untuk 10 lot miliknya. | d) Keliru, Rp140 itu sudah besar dibanding nilai sahamnya. | kunci a",
+      "kode": [
+        {
+          "kode": "ANDAIAN_DI_PENJELASAN",
+          "alasan": "Penjelasan memakai [[misal|…]]; penjelasan hanya menyebut isi dokumen."
+        },
+        {
+          "kode": "G-register",
+          "alasan": "Pesan memakai \"gue\"; pakai \"gw\" atau \"aku\" (dan \"lu\" atau \"kamu\") seperti contoh gaya."
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "b",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Dimas bilang dividen 'receh banget' dan menyindir harga saham tinggi bukan karena dividen—pola ini cocok dengan dia tidak kebagian dividen sama sekali (terlewat tanggal ex), bukan kebagian jumlah kecil yang masih terima.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "c",
+          "yakin": 70,
+          "terbaca": true,
+          "alasan": "10 lot = 1.000 saham; dividen Rp14 per saham berarti ia kebagian Rp14.000, bukan Rp140, sehingga omongan Dimas tidak cocok dengan dokumen.",
+          "token_penalaran": [
+            1984
+          ],
+          "penyedia": [
+            "DekaLLM"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "10 lot = 1.000 lembar saham, jadi dividen Rp14/lembar menghasilkan Rp14.000 — klaim Dimas bahwa dividen 'receh' dan kurang dari biaya parkir motor kemungkinan besar keliru karena salah hitung lot.",
+          "token_penalaran": [
+            7925,
+            1704
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "a",
+        "ditunjuk": [
+          "div-2025-09-16",
+          "andai-10-lot-dividen"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [],
+        "alasan": "Kartu 1 dan 2 menentukan: dividen Rp0,14 per lembar dan 10 lot sama dengan 1.000 lembar, sehingga Dimas menerima Rp140, cocok dengan omongannya."
+      },
+      "kritikus": {
+        "sumber": "m2d8",
+        "menjawab": true,
+        "keberatan": [
+          {
+            "jenis": "tertebak",
+            "bagian": "pilihan",
+            "alasan": "Ketiga pilihan selain a bisa dieliminasi tanpa kartu karena bertentangan dengan nada 'receh' dan 'kebagian' di pesan, sehingga penebak yang tak membaca kartu punya peluang besar menebak a hanya dari nada."
+          }
+        ],
+        "token_penalaran": [
+          26987
+        ]
+      },
+      "biaya_usd": 0.0318406604
+    },
+    {
+      "id": "dada-s3-siapa-yang-menjual",
+      "kelompok": "tayang",
+      "luar": "soal tayang (Claude + pemilik)",
+      "kunci": "c",
+      "soal": "Rara: \"Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik.\" | a) Betul, laporannya menunjukkan ia membeli lagi di harga belasan rupiah. | b) Betul, laporannya menunjukkan ia membeli lagi di harga ratusan rupiah. | c) Keliru, laporannya menunjukkan ia menjual banyak di harga belasan rupiah. | d) Keliru, laporannya menunjukkan ia menjual banyak di harga ratusan rupiah. | kunci c",
+      "kode": [],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "b",
+          "yakin": 72,
+          "terbaca": true,
+          "alasan": "Rara menyebutkan harga Rp178 (ratusan rupiah) dan klaim pemilik besar 'tenang-tenang' berarti percaya harga naik, cocok dengan pilihan yang bilang pemilik membeli lagi di harga ratusan rupiah, bukan menjual atau membeli di harga belasan.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "d",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Rara bahwa pemilik terbesar tidak menjual kemungkinan bertentangan dengan dokumen yang menunjukkan penjualan besar di harga ratusan rupiah, sesuai harga pasar Rp178.",
+          "token_penalaran": [
+            2198
+          ],
+          "penyedia": [
+            "InferenceNet"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Harga saham Rp178 sudah masuk kategori ratusan, dan klaim Rara yang wajar (pemilik besar tidak menjual, malah yakin) paling cocok dengan laporan yang menunjukkan ia justru membeli lagi di kisaran ratusan rupiah.",
+          "token_penalaran": [
+            1177
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "c",
+        "ditunjuk": [
+          "fil-2025-08-25-03",
+          "fil-2025-08-25-04",
+          "fil-2025-09-01-01"
+        ],
+        "menunjuk_penentu": false,
+        "bingung": [],
+        "alasan": "Kartu 1–3 menunjukkan Karya Permata Inovasi Indonesia justru menjual saham di harga Rp13–Rp15, bukan menahan atau membeli."
+      },
+      "kritikus": {
+        "sumber": "m2d8",
+        "menjawab": true,
+        "keberatan": [],
+        "token_penalaran": [
+          16770
+        ]
+      },
+      "biaya_usd": 0.0073030975
+    },
+    {
+      "id": "ultj-turun-di-tanggal-ex",
+      "kelompok": "tayang",
+      "luar": "soal tayang (Claude + pemilik)",
+      "kunci": "b",
+      "soal": "Nadia: \"Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!\" | a) Betul, dividennya memang cuma Rp45 per lembar. | b) Keliru, dividennya Rp130, bukan Rp45. | c) Betul, turunnya lebih dari tiga kali dividennya. | d) Keliru, dividennya Rp160, bukan Rp45. | kunci b",
+      "kode": [],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "c",
+          "yakin": 72,
+          "terbaca": true,
+          "alasan": "Nadia menyatakan saham anjlok Rp145 dengan dividen Rp45, dan kesimpulannya adalah turunnya lebih dari 3x lipat dividen (145 > 3×45=135), yang logis sebagai indikator anomali; pilihan c membenarkan pernyataan ini tanpa mengoreksi angka yang disebutnya, sementara b dan d mengoreksi dividen ke nilai lain yang tidak ada dasar kuat untuk memilihnya.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Jika dividen Rp45, penurunan Rp145 memang lebih dari tiga kali dividen (3×45=135), sehingga pernyataan Nadia cocok dan pilihan c paling menjelaskan.",
+          "token_penalaran": [
+            8000,
+            1945
+          ],
+          "penyedia": [
+            "CoreWeave",
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "c",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Jika dividen memang Rp45, penurunan Rp145 lebih dari tiga kali dividen (3×45=135), sehingga klaim Nadia bahwa ada kabar buruk di luar penyesuaian dividen konsisten secara hitungan.",
+          "token_penalaran": [
+            1206
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "b",
+        "ditunjuk": [
+          "div-2026-05-04"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [],
+        "alasan": "Kartu 1 menunjukkan dividen tunai Rp130 per lembar, bukan Rp45 seperti kata Nadia."
+      },
+      "kritikus": {
+        "sumber": "m2d8",
+        "menjawab": true,
+        "keberatan": [],
+        "token_penalaran": [
+          9046
+        ]
+      },
+      "biaya_usd": 0.011783181600000001
+    },
+    {
+      "id": "ultj-riwayat-dividen",
+      "kelompok": "tayang",
+      "luar": "soal tayang (Claude + pemilik)",
+      "kunci": "a",
+      "soal": "Fajar: \"Gue baru buka riwayat dividennya. Perusahaan U ini bagi dividen tiap tahun tanpa putus sejak 2020, dan jumlah per lembarnya naik terus tiap tahun. Rapi banget.\" | a) Keliru, tiap tahun memang ada, tetapi jumlahnya pernah turun jauh. | b) Betul, tiap tahun ada pembagian dan jumlahnya naik di tahun berikutnya. | c) Betul, jumlahnya sempat datar dua tahun, tetapi tidak pernah turun. | d) Keliru, ada satu tahun tanpa pembagian sama sekali di tengah deret. | kunci a",
+      "kode": [
+        {
+          "kode": "G-register",
+          "alasan": "Pesan memakai \"gue\"; pakai \"gw\" atau \"aku\" (dan \"lu\" atau \"kamu\") seperti contoh gaya."
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Fajar membuat klaim spesifik dan positif (dividen tiap tahun tanpa putus, jumlah naik terus) yang terdengar wajar untuk perusahaan berkualitas; pilihan (b) membenarkan klaim apa adanya, sementara pilihan lain (a, c, d) menunjukkan pengecualian/penyimpangan yang akan terlihat jelas di dokumen jika ada.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 72,
+          "terbaca": true,
+          "alasan": "Klaim Fajar bahwa dividen naik terus tiap tahun kemungkinan tidak cocok karena perusahaan U rutin membagi dividen sejak 2020 tetapi pernah turun tajam, seperti kasus UNVR pada 2024.",
+          "token_penalaran": [
+            6939
+          ],
+          "penyedia": [
+            "StreamLake"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Klaim Fajar spesifik dan wajar (dividen tahunan sejak 2020 yang naik terus, pola lazim perusahaan pemerintah/blue chip konsisten), dan pilihan b membenarkannya persis, sementara a dan d sama-sama mengklaim keliru dengan versi berbeda.",
+          "token_penalaran": [
+            8002,
+            914
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "b",
+        "ditunjuk": [
+          "tahun-berdividen"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [],
+        "alasan": "Kartu 2 menyatakan tahun yang tercatat punya dividen tunai beruntun 7 tahun, sehingga klaim tiap tahun ada pembagian cocok dan tidak ada kartu yang membantah kenaikan jumlah per lembar."
+      },
+      "kritikus": {
+        "sumber": "m2d8",
+        "menjawab": true,
+        "keberatan": [],
+        "token_penalaran": [
+          29812
+        ]
+      },
+      "biaya_usd": 0.038341893
+    },
+    {
+      "id": "ultj-siapa-yang-membeli",
+      "kelompok": "tayang",
+      "luar": "soal tayang (Claude + pemilik)",
+      "kunci": "d",
+      "soal": "Rio: \"Jangan kegeeran dulu. Gue baca laporan Januari: pemilik terbesarnya yang 53 persen itu ikut beli juga, bukan cuma orang dalam yang porsinya kecil.\" | a) Keliru, pemilik terbesarnya tidak tercatat membeli satu lembar pun. | b) Betul, pemilik terbesarnya tercatat membeli lewat satu laporan besar. | c) Keliru, yang tercatat membeli bulan itu justru pemilik terbesar sendirian. | d) Betul, pemilik terbesarnya tercatat membeli sejuta lembar di dua laporan. | kunci d",
+      "kode": [
+        {
+          "kode": "G-register",
+          "alasan": "Pesan memakai \"gue\"; pakai \"gw\" atau \"aku\" (dan \"lu\" atau \"kamu\") seperti contoh gaya."
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Rio menyebut pemilik terbesar 53% ikut beli dan mereferensikan 'laporan Januari', yang menunjukkan dia membaca dokumen spesifik; pilihan (b) yang menyatakan 'tercatat membeli lewat satu laporan besar' paling sesuai dengan cara Rio berbicara yang yakin dan spesifik, sementara pilihan (a) dan (c) menolak klaim dengan pernyataan absolut yang biasanya hanya pengisi, dan (d) terlalu spesifik (sejuta lembar dua laporan) tanpa bukti di pesan.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "a",
+          "yakin": 82,
+          "terbaca": true,
+          "alasan": "Pembelian 1 juta lembar di dua laporan biasanya dilakukan orang dalam, bukan pemilik 53%, jadi klaim Rio bahwa pemilik terbesar ikut membeli tidak cocok dengan dokumen.",
+          "token_penalaran": [
+            5708
+          ],
+          "penyedia": [
+            "NextBit"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": null,
+          "yakin": null,
+          "terbaca": false,
+          "alasan": "(tak terbaca)",
+          "token_penalaran": [
+            7909,
+            8001
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "b",
+        "ditunjuk": [
+          "fil-2026-01-06-01"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [
+          "Lembar yang ditambahkan kedua orang dalam sepanjang bulan itu: 1.000.000 + 16.069.900 = 17.069.900 lembar."
+        ],
+        "alasan": "Kartu 1 menunjukkan pemilik terbesar 53,16% melaporkan pembelian 700.000 lembar, sehingga klaim Rio bahwa pemilik terbesar ikut membeli didukung."
+      },
+      "kritikus": {
+        "sumber": "m2d10",
+        "menjawab": true,
+        "keberatan": [
+          {
+            "jenis": "kunci",
+            "bagian": "pilihan",
+            "alasan": "Rincian 'di dua laporan' pada opsi kunci tidak ada di kartu mana pun: pemain hanya melihat satu laporan 700.000 lembar dan total bulanan 1.000.000, sehingga paling jauh bisa disimpulkan 'lebih dari satu laporan'; laporan 300.000 lembar itu baru disebut di penjelasan."
+          },
+          {
+            "jenis": "ambigu",
+            "bagian": "kartu",
+            "alasan": "Kartu 3 menuliskan '1.000.000 + 16.069.900' tanpa menempelkan tiap angka pada orangnya, jadi klaim 'sejuta lembar milik pemilik terbesar' hanya bisa disimpulkan dari urutan kartu, bukan dari tulisan kartunya."
+          }
+        ],
+        "token_penalaran": [
+          33532
+        ]
+      },
+      "biaya_usd": 0.1576405641
+    },
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "bocor",
+      "luar": "d/40 · d/40 · d/40 (3/3 benar)",
+      "kunci": "d",
+      "soal": "Sari: \"Gw udah hafal polanya, dari 26 November sampe 9 Desember harganya naik 58 rupiah. Itu angka pastinya.\" | a) Keliru, kenaikan periode itu tidak pernah dihitung. | b) Betul, angka itu kenaikan sejak awal tahun, bukan periode itu. | c) Keliru, harga dua tanggal itu tidak tercatat di mana pun. | d) Betul, kenaikan periode itu memang Rp58. | kunci d",
+      "kode": [],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "d",
+          "yakin": 62,
+          "terbaca": true,
+          "alasan": "Sari menyebut angka spesifik (58 rupiah) untuk periode tertentu (26 Nov-9 Des) dengan nada yakin ('udah hafal polanya'), dan pilihan d membenarkan klaim itu apa adanya; pilihan a dan c menggunakan frasa pengisian ('tidak pernah', 'tidak tercatat di mana pun') yang ciri-ciri pilihan umpama, sementara b kontradiktif (angka sejak awal tahun ≠ angka periode itu).",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "d",
+          "yakin": 72,
+          "terbaca": true,
+          "alasan": "Klaim Sari spesifik dan wajar, sementara pilihan yang membenarkannya apa adanya (d) lebih mungkin benar daripada opsi yang mengalihkan angkanya ke periode lain.",
+          "token_penalaran": [
+            1067
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": null,
+          "yakin": null,
+          "terbaca": false,
+          "alasan": "(tak terbaca)",
+          "token_penalaran": [
+            8000,
+            523
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "d",
+        "ditunjuk": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [],
+        "alasan": "Kartu 1 menyatakan kenaikan harga penutupan dari 26 November sampai 9 Desember 2025 adalah Rp106 dikurangi Rp48 sama dengan Rp58."
+      },
+      "kritikus": null,
+      "biaya_usd": 0.0283596753
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "bocor",
+      "luar": "d/55 · d/60 · d/55 (3/3 benar)",
+      "kunci": "d",
+      "soal": "Nia: \"Kayaknya hasil putusan rapat pemegang saham 25 September 2025 ada di catatan resmi ya?\" | a) Betul, hasil putusannya tercatat di dokumen. | b) Betul, hasil putusannya ada di catatan resmi. | c) Keliru, rapat itu tidak dijadwalkan. | d) Keliru, hasil putusannya tidak tercatat di dokumen. | kunci d",
+      "kode": [
+        {
+          "kode": "G-pilihan-kembar",
+          "alasan": "pilihan a dan b kemiripan 1.00"
+        }
+      ],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "b",
+          "yakin": 45,
+          "terbaca": true,
+          "alasan": "Pilihan (b) membenarkan klaim Nia dengan frasa 'catatan resmi' yang sesuai persis dengan bahasa yang digunakan Nia, sementara (a) hanya menyebut 'dokumen' (lebih umum); tanpa dokumen, tidak bisa memastikan, tapi pola soal bocor sering membuat pilihan yang membenarkan klaim spesifik sebagai kunci.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Pilihan b paling persis mengulang klaim Nia tentang catatan resmi, dan hasil RUPS umumnya memang dicatat dalam risalah resmi.",
+          "token_penalaran": [
+            822
+          ],
+          "penyedia": [
+            "NextBit"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "b",
+          "yakin": 65,
+          "terbaca": true,
+          "alasan": "Klaim Nia spesifik dan wajar (hasil RUPS lazim tercatat dalam catatan resmi/notulen), dan pilihan b membenarkannya dengan frasa yang persis sama seperti ujarannya.",
+          "token_penalaran": [
+            8001,
+            626
+          ],
+          "penyedia": [
+            "Wafer",
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "d",
+        "ditunjuk": [
+          "rups-2025-09-25"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [],
+        "alasan": "Kartu 1 menyatakan rapat dijadwalkan 25 September 2025, tetapi isi keputusan rapatnya tidak tercatat di dokumen itu."
+      },
+      "kritikus": null,
+      "biaya_usd": 0.0285415748
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "bocor",
+      "luar": "b/55 · a/40 · b/55 (1/3 benar, yakin 40)",
+      "kunci": "a",
+      "soal": "Sinta: \"Aku masih ragu sih, yang disetop 21 Januari itu alasannya kelangsungan usaha ya?\" | a) Betul, Januari dihentikan karena keraguan kelangsungan usaha. | b) Keliru, Januari dihentikan karena kenaikan harga kumulatif. | c) Betul, Januari dihentikan karena volume perdagangan nol. | d) Keliru, Januari dihentikan karena harga turun tajam. | kunci a",
+      "kode": [],
+      "penebak": [
+        {
+          "ke": 1,
+          "model": "anthropic/claude-haiku-4.5",
+          "pilihan": "a",
+          "yakin": 55,
+          "terbaca": true,
+          "alasan": "Sinta menyebut penghentian 21 Januari terkait 'kelangsungan usaha' (going concern), yang merupakan alasan standar bursa menghentikan saham—pilihan a membenarkan klaim spesifik ini, sementara pilihan b, c, d memberikan alasan berbeda (harga, volume, penurunan) yang terdengar kurang konsisten dengan framing pertanyaan.",
+          "token_penalaran": [
+            0
+          ],
+          "penyedia": [
+            "Amazon Bedrock"
+          ]
+        },
+        {
+          "ke": 2,
+          "model": "deepseek/deepseek-v4.1-flash",
+          "pilihan": "b",
+          "yakin": 75,
+          "terbaca": true,
+          "alasan": "Suspensi saham oleh BEI pada 21 Januari lazimnya karena peningkatan harga kumulatif yang signifikan, bukan karena keraguan kelangsungan usaha.",
+          "token_penalaran": [
+            2116
+          ],
+          "penyedia": [
+            "Phala"
+          ]
+        },
+        {
+          "ke": 3,
+          "model": "z-ai/glm-5.3",
+          "pilihan": "a",
+          "yakin": 60,
+          "terbaca": true,
+          "alasan": "Keraguan kelangsungan usaha (going concern) adalah alasan lazim Bursa Efek Indonesia menghentikan perdagangan saham, dan klaim spesifik Sinta yang wajar seperti ini biasanya memang sesuai dokumen; pilihan lain kurang kredibel sebagai alasan suspensi.",
+          "token_penalaran": [
+            891
+          ],
+          "penyedia": [
+            "Wafer"
+          ]
+        }
+      ],
+      "kartu": {
+        "pilihan": "a",
+        "ditunjuk": [
+          "susp-2025-01-21"
+        ],
+        "menunjuk_penentu": true,
+        "bingung": [],
+        "alasan": "Kartu 1 menyatakan perdagangan dihentikan sementara pada 21 Januari 2025 dengan alasan resmi keraguan atas kelangsungan usaha perseroan."
+      },
+      "kritikus": null,
+      "biaya_usd": 0.0064629296
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "bocor",
+      "luar": "b/50 · a/50 · b/50 (1/3 benar, yakin 50)",
+      "kunci": "a",
+      "soal": "Tio: \"Yang disetop hari ini pasti gara-gara naiknya udah kelewat batas, bukan karena usaha mereka bermasalah.\" | a) Betul, hari ini disetop karena kenaikan harga kumulatif. | b) Keliru, hari ini disetop karena keraguan kelangsungan usaha. | c) Betul, hari ini disetop karena volume perdagangan nol. | d) Keliru, hari ini disetop karena harga turun tajam. | kunci a",
+      "kode": [],
+      "penebak": null,
+      "kartu": null,
+      "kritikus": null,
+      "biaya_usd": 0,
+      "galat": "PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d10/kalibrasi/*) US$0.315006 + perkiraan maksimum US$0.037570 untuk z-ai/glm-5.3 > pagu milestone US$0.35. Panggilan tidak dikirim."
+    }
+  ]
+}

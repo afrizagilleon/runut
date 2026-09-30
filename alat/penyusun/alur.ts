@@ -112,12 +112,16 @@ function tahapGratis(k: KonteksAlur, j: Jalan): void {
     j.tulis('paket.json', t.paket);
     j.data.sumber_paket = { sumber: t.pilihan.sumber, keterangan: t.pilihan.keterangan };
     a.kirim('paket', t.ringkasPaket.judul, t.ringkasPaket.isi);
-    const sudut = rencanaSudut(t.paket).length;
-    if (sudut < 3) {
-      // Lingkar akan berhenti di langkah perencana tanpa satu panggilan pun: tolak sekarang, sebelum biaya.
-      j.data.hasil = { terbit: false, berhenti: `paket hanya memberi ${String(sudut)} sudut; simulasi tidak terbit`, putaran: 0, biaya_usd: 0, biaya_ledger_usd: 0, penolakan: [] };
+    const cek = k.mesin.cukupPaket?.(t.paket) ?? (() => {
+      const n = rencanaSudut(t.paket).length;
+      return { cukup: n >= 3, jumlah: n, satuan: 'sudut' };
+    })();
+    const sudut = cek.jumlah;
+    if (!cek.cukup) {
+      // Mesin akan berhenti di langkah perencana tanpa satu panggilan pun: tolak sekarang, sebelum biaya.
+      j.data.hasil = { terbit: false, berhenti: `paket hanya memberi ${String(sudut)} ${cek.satuan}; simulasi tidak terbit`, putaran: 0, biaya_usd: 0, biaya_ledger_usd: 0, penolakan: [] };
       j.data.tahap = 'selesai';
-      a.kirim('hasil', `Tidak terbit, tanpa biaya: paket fakta hanya memberi ${String(sudut)} calon sudut soal, perlu 3. Pilih hari lain yang datanya lebih kaya.`, { terbit: false, berhenti: j.data.hasil.berhenti, biaya_usd: 0 });
+      a.kirim('hasil', `Tidak terbit, tanpa biaya: paket fakta hanya memberi ${String(sudut)} calon ${cek.satuan} soal, perlu 3. Pilih hari lain yang datanya lebih kaya.`, { terbit: false, berhenti: j.data.hasil.berhenti, biaya_usd: 0 });
       j.simpan();
       a.tutup();
       return;
