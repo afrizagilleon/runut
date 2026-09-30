@@ -2446,8 +2446,8 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
       */}
       <div className="dapur-pintu-jejak">
         <p className="meta">
-          Soal di simulasi ini ditulis manusia. Agen AI kami sedang belajar menulis soal baru, dan belum ada
-          yang tayang.
+          Soal di simulasi ini disusun Claude (model AI) bersama pemilik, lalu diuji dan disetujui manusia.
+          Agen otomatis kami sedang belajar membuat soal baru, dan belum ada yang tayang.
         </p>
         <a
           className="dapur-pintu-tautan"

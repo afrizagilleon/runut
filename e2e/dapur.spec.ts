@@ -42,7 +42,7 @@ test('E-50a ?dapur: halaman dapur tanpa permainan dan tanpa peristiwa', async ({
   });
   await page.goto('/?dapur');
   await expect(page.getByRole('heading', { level: 1, name: 'Dapur agen' })).toBeVisible();
-  await expect(page.getByText('Simulasi yang kamu mainkan di sini ditulis manusia.')).toBeVisible();
+  await expect(page.getByText('Simulasi yang kamu mainkan di sini disusun Claude (model AI) bersama pemilik proyek, lalu diuji dan disetujui manusia.')).toBeVisible();
   for (const j of DATA.jalan) {
     const label = j.terbit ? 'Draf — lolos semua penjaga, belum dimainkan' : 'Ditolak — tidak terbit';
     await expect(page.locator(`[data-uid="dapur:${j.id}"] .dapur-status`)).toHaveText(label);

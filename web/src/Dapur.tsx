@@ -3,7 +3,7 @@
  * login, tanpa permainan.
  *
  * Yang diperlihatkan adalah kerja agen AI yang MENULIS DRAF simulasi baru —
- * bukan simulasi yang dimainkan orang, yang ditulis manusia. Halaman ini
+ * bukan simulasi yang dimainkan orang, yang disusun Claude bersama pemilik lalu disetujui manusia (koreksi 30 Sep: dulu keliru disebut "ditulis manusia"). Halaman ini
  * membaca `dapur-data.json`, yang dibangun `node --experimental-strip-types alat/dapur.ts` dari jejak
  * mentah: jalan TIRT (emiten yang tidak tayang) utuh, dan jalan atas DADA/ULTJ
  * hanya sebagai angka (Amandemen A-1: isinya membocorkan jawaban simulasi yang
@@ -429,8 +429,9 @@ export default function Dapur(): JSX.Element {
         </p>
         <h1 className="judul">Dapur agen</h1>
         <p>
-          Simulasi yang kamu mainkan di sini ditulis manusia. Di dapur ini kami melatih agen AI menulis
-          simulasi baru, dan belum ada satu pun draf agen yang dimainkan orang.
+          Simulasi yang kamu mainkan di sini disusun Claude (model AI) bersama pemilik proyek, lalu diuji dan disetujui manusia. Di dapur ini kami melatih agen
+          otomatis berbiaya murah untuk membuat simulasi baru, dan belum ada satu pun draf agen otomatis
+          yang dimainkan orang.
         </p>
         {/* Kritik D-5 butir 1: status kedua jalan terlihat di layar pertama, bertaut ke jalannya. */}
         <ul className="dapur-daftar dapur-ringkas">

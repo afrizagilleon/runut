@@ -84,9 +84,10 @@ describe('M3.13 D-4 — dapur: fungsi murni', () => {
 });
 
 describe('M3.13 D-4 — dapur: hasil render', () => {
-  it('menyatakan simulasi yang dimainkan ditulis manusia, dan draf agen belum dimainkan', () => {
-    expect(teks).toContain('Simulasi yang kamu mainkan di sini ditulis manusia.');
-    expect(teks).toContain('belum ada satu pun draf agen yang dimainkan orang');
+  it('menyatakan simulasi yang dimainkan disusun Claude bersama pemilik & disetujui manusia, dan draf agen belum dimainkan', () => {
+    expect(teks).toContain('Simulasi yang kamu mainkan di sini disusun Claude (model AI) bersama pemilik proyek, lalu diuji dan disetujui manusia.');
+    expect(teks).not.toContain('ditulis manusia');
+    expect(teks).toContain('belum ada satu pun draf agen otomatis yang dimainkan orang');
     expect(teks).toContain('Ditolak — tidak terbit');
   });
 

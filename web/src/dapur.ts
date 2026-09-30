@@ -9,7 +9,7 @@
  *
  * Satu batas kata yang dijaga di sini dan di `dapur.test.ts`: halaman ini
  * TIDAK boleh terbaca seolah simulasi yang dimainkan ditulis AI. Simulasi yang
- * tayang ditulis manusia; draf agen belum pernah dimainkan siapa pun.
+ * tayang disusun Claude bersama pemilik lalu disetujui manusia; draf agen belum pernah dimainkan siapa pun.
  */
 import { tanggalSingkat } from './tanggal.ts';
 
