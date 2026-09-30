@@ -8,6 +8,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { palsuP, teksKunci } from '../../factory/llm/bantu-uji-pengecoh.ts';
+import { teksPolos } from '../../factory/skema/rujukan.ts';
 import type { Pengambil } from '../sectors.ts';
 import { MesinLingkar } from './mesin.ts';
 
@@ -36,17 +37,15 @@ export function pengambilPalsu(): Pengambil {
  * (`factory/llm/bantu-uji-pengecoh.ts`). Untuk TIRT 10 Des 2025 (paket kurasi =
  * paket uji) draf terbit di putaran 1; paket lain ditolak validator sampai
  * batas putaran — penolakan beralasan yang sungguh dihasilkan lingkar.
- * `kunciTambahan` = teks pilihan kunci hasil suntingan (uji ulang).
+ * Uji ulang: penebak palsu diberi teks pilihan kunci hasil suntingan.
  */
 export function mesinPalsu(): MesinLingkar {
   return new MesinLingkar({
     nama: 'lingkar-m2d8-palsu',
     keterangan: 'lingkar & gerbang kode sungguhan (setelan M2d-8); model PALSU, tanpa jaringan, tanpa biaya',
     palsu: true,
-    buatPanggil: () => palsuP({}, () => teksKunci(kunciTambahanPalsu)).panggil,
+    buatPanggil: () => palsuP({}, () => teksKunci()).panggil,
+    buatPanggilUjiUlang: (_a, _p, keadaan) => palsuP({}, () => teksKunci(keadaan.map((k) => teksPolos(k.omongan.pilihan[k.omongan.kunci])))).panggil,
     siap: () => ({ siap: true, alasan: null }),
   });
 }
-
-/** Teks pilihan kunci yang disunting penyetuju (mode palsu): penebak palsu harus bisa menemukannya. */
-export const kunciTambahanPalsu: string[] = [];

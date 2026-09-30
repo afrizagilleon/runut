@@ -8,7 +8,7 @@ import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { deretHarga } from './bantu-data.ts';
 import { akarSementara, bacaSse, minta, mulaiServer, peristiwaSse, tulisGudangUji, type ServerUji } from './bantu-uji.ts';
-import type { HasilMesin, KonteksJalan, MesinPenulis, PerkiraanBiaya } from './mesin.ts';
+import type { HasilMesin, HasilUjiUlang, KonteksJalan, KonteksUjiUlang, MesinPenulis, PerkiraanBiaya } from './mesin.ts';
 
 let s: ServerUji | null = null;
 afterEach(async () => {
@@ -33,6 +33,12 @@ class MesinRekam implements MesinPenulis {
   }
   perkiraan(): PerkiraanBiaya {
     return PERKIRAAN;
+  }
+  perkiraanUjiUlang(jumlah: number): number {
+    return 0.3 * jumlah;
+  }
+  async ujiUlang(_k: KonteksUjiUlang): Promise<HasilUjiUlang> {
+    throw new Error('tidak dipakai di tes ini');
   }
   async jalankan(k: KonteksJalan): Promise<HasilMesin> {
     this.dipanggil.push(k);

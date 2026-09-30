@@ -105,9 +105,14 @@ async function muatStatus() {
 
 function sambungAliran(id, saatPeristiwa, saatSelesai) {
   if (keadaan.sumber) keadaan.sumber.close();
-  const s = new EventSource(`/api/jalan/${encodeURIComponent(id)}/aliran`);
+  const s = new EventSource(`/api/jalan/${encodeURIComponent(id)}/aliran?sesudah=${keadaan.nomorTerakhir || 0}`);
   keadaan.sumber = s;
-  s.addEventListener('tahap', (e) => saatPeristiwa(JSON.parse(e.data)));
+  s.addEventListener('tahap', (e) => {
+    const p = JSON.parse(e.data);
+    if (p.no <= (keadaan.nomorTerakhir || 0)) return;
+    keadaan.nomorTerakhir = p.no;
+    saatPeristiwa(p);
+  });
   s.addEventListener('selesai', () => {
     s.close();
     if (keadaan.sumber === s) keadaan.sumber = null;
@@ -277,6 +282,7 @@ async function siapkanJalan(tanggal) {
 
 function bukaJalan(id) {
   keadaan.jalan = id;
+  keadaan.nomorTerakhir = 0;
   history.replaceState(null, '', `?jalan=${encodeURIComponent(id)}`);
   $('langkah-tahap').hidden = false;
   kosongkan($('tahap'));
@@ -461,6 +467,114 @@ function tampilkanHasil(j) {
   if (terakhir.length > 0) {
     isi.append(el('p', { kelas: 'meta' }, 'Versi terakhir tiap posisi (tidak lolos semua gerbang, hanya untuk dibaca):'));
     for (const [o, no] of terakhir) isi.append(tampilkanOmongan(o, no, j.kartu, { tandaiKunci: true }));
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* 5 · penyetuju: setujui / tolak / perbaiki kata → uji ulang          */
+/* ------------------------------------------------------------------ */
+
+const LOKASI = [['pesan', 'pesan teman'], ['pilihan-a', 'pilihan a'], ['pilihan-b', 'pilihan b'], ['pilihan-c', 'pilihan c'], ['pilihan-d', 'pilihan d'], ['penjelasan', 'penjelasan']];
+
+function teksLokasi(o, lokasi) {
+  if (lokasi === 'pesan') return o.pesan;
+  if (lokasi === 'penjelasan') return o.penjelasan;
+  return o.pilihan[lokasi.slice(-1)];
+}
+
+function formSunting(j, no, o) {
+  const pilih = el('select', { 'aria-label': `bagian omongan ${no} yang disunting` }, LOKASI.map(([v, t]) => el('option', { value: v }, t)));
+  const area = el('textarea', { 'aria-label': `teks baru omongan ${no}` });
+  const pesan = el('p', { kelas: 'meta' });
+  const isiUlang = () => { area.value = teksLokasi(o, pilih.value); pesan.textContent = ''; };
+  pilih.addEventListener('change', isiUlang);
+  isiUlang();
+  const simpan = el('button', { kelas: 'tombol', type: 'button' }, 'Simpan suntingan');
+  simpan.addEventListener('click', async () => {
+    try {
+      const baru = await api(`/api/jalan/${encodeURIComponent(j.id)}/sunting`, { omongan: no, lokasi: pilih.value, teks: area.value });
+      keadaan.dataJalan = baru;
+      tampilkanHasil(baru);
+    } catch (e) {
+      pesan.textContent = e.message;
+      pesan.className = 'tidak';
+    }
+  });
+  return el('details', { kelas: 'sunting', 'data-sunting': no },
+    el('summary', {}, `Perbaiki kata di omongan ${no}`),
+    el('p', { kelas: 'meta' }, 'Hanya kata yang boleh diubah. Angka, rujukan fakta [[…|…]], dan label "Betul,"/"Keliru," dikunci; suntingan dicatat dan draf diuji ulang oleh gerbang yang sama.'),
+    pilih, area, simpan, pesan);
+}
+
+function tampilkanPenyetuju(j) {
+  $('langkah-penyetuju').hidden = false;
+  const isi = kosongkan($('penyetuju-isi'));
+  const p = j.penyetuju;
+  if (j.putusan) {
+    isi.append(el('div', { kelas: 'kotak-catatan ' + (j.putusan.putusan === 'setujui' ? 'lolos' : 'tolak'), id: 'putusan' },
+      el('p', {}, j.putusan.putusan === 'setujui'
+        ? `Disetujui ${tanggalId(j.putusan.waktu)}. Ditulis ke: ${j.putusan.berkas.join(', ')} — bukan cases/. Memasang ke produk adalah langkah terpisah dengan izin deploy.`
+        : `Ditolak: ${j.putusan.alasan}. Ditulis ke: ${j.putusan.berkas.join(', ')}.`)));
+  } else {
+    // Form suntingan di bawah tiap omongan pada bagian hasil.
+    document.querySelectorAll('#hasil-isi article.omongan').forEach((art) => {
+      const no = Number(art.getAttribute('data-omongan'));
+      art.append(formSunting(j, no, j.draf.omongan[no - 1]));
+    });
+    if (p.uji_ulang.diuji.length > 0) {
+      const tombol = el('button', { kelas: 'tombol tombol-utama', type: 'button', id: 'uji-ulang' },
+        `Setujui biaya dan uji ulang omongan ${p.uji_ulang.diuji.join(', ')} (maks ${usd(p.uji_ulang.maks_usd)})`);
+      tombol.addEventListener('click', async () => {
+        tombol.disabled = true;
+        try {
+          await api(`/api/jalan/${encodeURIComponent(j.id)}/uji-ulang`, { setuju: true });
+          sambungAliran(j.id, tampilkanPeristiwa, () => muatJalan(j.id));
+        } catch (e) {
+          tombol.disabled = false;
+          isi.append(el('p', { kelas: 'tidak' }, e.message));
+        }
+      });
+      isi.append(el('div', { kelas: 'kotak-catatan penting' },
+        el('p', {}, 'Ada suntingan yang belum diuji ulang. Draf belum boleh disetujui sampai gerbang yang sama (validator, gerbang kode, pilihan-saja, pembaca kartu, kritikus, penebak) tidak keberatan.'),
+        p.sibuk ? el('p', { kelas: 'meta' }, 'Uji ulang sedang berjalan…') : tombol));
+    }
+    if (p.boleh) {
+      const setujui = el('button', { kelas: 'tombol tombol-utama', type: 'button', id: 'setujui' }, 'Setujui draf ini');
+      setujui.addEventListener('click', async () => {
+        try {
+          await api(`/api/jalan/${encodeURIComponent(j.id)}/setujui`, {});
+          await muatJalan(j.id);
+        } catch (e) {
+          isi.append(el('p', { kelas: 'tidak' }, e.message));
+        }
+      });
+      isi.append(el('p', {}, setujui));
+    }
+    const alasan = el('textarea', { id: 'alasan-tolak', 'aria-label': 'alasan penolakan', placeholder: 'Alasan menolak draf ini' });
+    const tolak = el('button', { kelas: 'tombol tombol-bahaya', type: 'button', id: 'tolak' }, 'Tolak dengan alasan');
+    tolak.addEventListener('click', async () => {
+      try {
+        await api(`/api/jalan/${encodeURIComponent(j.id)}/tolak`, { alasan: alasan.value });
+        await muatJalan(j.id);
+      } catch (e) {
+        isi.append(el('p', { kelas: 'tidak' }, e.message));
+      }
+    });
+    isi.append(el('details', {}, el('summary', {}, 'Tolak draf ini'), alasan, tolak));
+  }
+  if (j.suntingan.length > 0) {
+    isi.append(el('h3', {}, 'Catatan suntingan'), el('table', { kelas: 'tabel', id: 'catatan-suntingan' },
+      el('thead', {}, el('tr', {}, el('th', {}, '#'), el('th', {}, 'Siapa · kapan'), el('th', {}, 'Letak'), el('th', {}, 'Dari → ke'))),
+      el('tbody', {}, j.suntingan.map((s) => el('tr', {},
+        el('td', {}, String(s.ke)),
+        el('td', {}, `${s.penyunting} · ${s.waktu.replace('T', ' ').slice(0, 19)}`),
+        el('td', {}, `omongan ${s.omongan}, ${s.lokasi}`),
+        el('td', {}, el('del', {}, polos(s.dari)), ' → ', el('ins', {}, polos(s.ke_teks))))))));
+  }
+  if (j.uji_ulang.length > 0) {
+    isi.append(el('h3', {}, 'Uji ulang'), el('ul', {}, j.uji_ulang.map((u) => el('li', { kelas: u.lolos ? 'ok' : '' },
+      `Uji ulang ${u.ke} (suntingan ≤ ${u.sampai_suntingan}, omongan ${u.diuji.join(', ')}): ${u.lolos === null ? 'berjalan' : u.lolos ? 'LOLOS' : 'TIDAK LOLOS'} · ${usd(u.biaya_usd)}`,
+      u.lolos === false ? el('ul', {}, [...u.masalah, ...u.per_omongan.flatMap((x) => x.alasan)].slice(0, 6).map((a) => el('li', { kelas: 'meta' }, a))) : null))));
   }
 }
 

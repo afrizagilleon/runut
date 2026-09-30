@@ -19,7 +19,7 @@ import { extname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { pengambilSungguhan, type Pengambil } from '../sectors.ts';
 import { Aliran, sambungSse } from './aliran.ts';
-import { ambilJalan, GalatAlur, mulai, potret, siapkan, type KonteksAlur } from './alur.ts';
+import { ambilJalan, GalatAlur, mulai, potret, setujui, siapkan, sunting, tolak, ujiUlang, type KonteksAlur } from './alur.ts';
 import { PAGU_PENYUSUN_BAWAAN, jalurBukuKas, ringkasBiaya } from './biaya.ts';
 import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
@@ -294,6 +294,34 @@ daftarRute('POST', '/api/jalan/:id/mulai', (_req, res, { keadaan, bagian, badan 
   const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
   const pagu = mulai(keadaan.alur, j, b['setuju'], b['pagu_usd']);
   kirimJson(res, 202, { id: j.data.id, pagu_usd: pagu });
+});
+
+/** D-5: perbaiki kata (dikunci: angka, rujukan fakta, label pilihan). */
+daftarRute('POST', '/api/jalan/:id/sunting', (_req, res, { keadaan, bagian, badan }) => {
+  const b = bacaBadanObyek(badan);
+  const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
+  sunting(keadaan.alur, j, b['omongan'], b['lokasi'], b['teks']);
+  kirimJson(res, 200, potret(keadaan.alur, j));
+});
+
+/** D-5: uji ulang oleh gerbang yang sama (berbayar; wajib setuju: true). */
+daftarRute('POST', '/api/jalan/:id/uji-ulang', (_req, res, { keadaan, bagian, badan }) => {
+  const b = bacaBadanObyek(badan);
+  const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
+  kirimJson(res, 202, ujiUlang(keadaan.alur, j, b['setuju']));
+});
+
+/** D-5: setujui — hanya sesudah semua suntingan lolos uji ulang; keluaran ke eval/penyusun/<id>/. */
+daftarRute('POST', '/api/jalan/:id/setujui', (_req, res, { keadaan, bagian }) => {
+  const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
+  kirimJson(res, 200, { berkas: setujui(keadaan.alur, j) });
+});
+
+/** D-5: tolak dengan alasan. */
+daftarRute('POST', '/api/jalan/:id/tolak', (_req, res, { keadaan, bagian, badan }) => {
+  const b = bacaBadanObyek(badan);
+  const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
+  kirimJson(res, 200, { berkas: tolak(keadaan.alur, j, b['alasan']) });
 });
 
 daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {

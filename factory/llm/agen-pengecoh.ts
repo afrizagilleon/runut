@@ -915,6 +915,73 @@ export async function periksaOmongan(a: ArgPeriksaOmongan): Promise<HasilPeriksa
   return { jenis: 'lolos', isi: { kartu, tebak, kritik: kr, g, gaya, artefak, ikatan, pilihan_saja: pilihanSaja, ...(kal === undefined ? {} : { dicatat }) } };
 }
 
+export interface OpsiUjiUlang {
+  paket: PaketFakta;
+  /** Keadaan KETIGA omongan (sesudah suntingan), urut 1–3. */
+  keadaan: readonly KeadaanOmongan[];
+  /** Nomor omongan yang disunting dan diuji ulang lewat gerbang berbayar. */
+  diuji: readonly number[];
+  panggil: PanggilPeran;
+  validasi: (draf: unknown, paket: PaketFakta) => MasalahDraf[];
+  generasi?: GenerasiPengecoh;
+  jejak?: PencatatJejak;
+  jam?: () => Date;
+  /** Nomor "putaran" untuk jejak/tag uji ulang. */
+  putaran?: number;
+}
+
+export interface HasilUjiUlangDraf {
+  lolos: boolean;
+  /** Masalah validator atas draf gabungan (semua omongan). */
+  masalah: MasalahDraf[];
+  per: Array<{ no: number; hasil: HasilPeriksaOmongan }>;
+  berhenti: string | null;
+}
+
+/**
+ * Uji ulang draf yang disunting penyetuju (M2d-9 D-5): validator atas draf
+ * gabungan, lalu `periksaOmongan` — tumpukan gerbang yang SAMA dengan lingkar,
+ * setelan generasi yang sama — untuk tiap omongan yang disunting. Omongan lain
+ * dianggap terkunci (G-mirip membandingkannya). Lolos hanya bila validator
+ * bersih dan setiap omongan yang diuji lolos.
+ */
+export async function ujiUlangDraf(o: OpsiUjiUlang): Promise<HasilUjiUlangDraf> {
+  const gen = o.generasi ?? GENERASI_M2D7;
+  const jam = o.jam ?? (() => new Date());
+  const putaran = o.putaran ?? 1;
+  const catat = (l: CatatLangkah): void => {
+    o.jejak?.catat(l);
+  };
+  if (o.keadaan.length !== JUMLAH_OMONGAN) throw new Error(`Uji ulang butuh ${String(JUMLAH_OMONGAN)} omongan.`);
+  const gabung = o.keadaan.map((k) => k.omongan);
+  const masalah = o.validasi({ omongan: gabung }, o.paket);
+  catat({
+    putaran, jenis: 'validator', omongan: null, waktu_mulai: jam().toISOString(), waktu_selesai: jam().toISOString(), model: null,
+    panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: masalah.length > 0 ? 'tolak' : 'lolos',
+    alasan: masalah.map((m) => `${m.omongan === null ? 'seluruh draf' : `omongan ${String(m.omongan)}`}: [${m.kode}] ${m.pesan}`),
+    sha256_prompt: null, rincian: { uji_ulang: true, diuji: [...o.diuji] }, peran: 'pemeriksa',
+  });
+  const hasil: HasilUjiUlangDraf = { lolos: false, masalah, per: [], berhenti: null };
+  const panggilGerbang = lewatPeran(o.panggil, gen);
+  for (const no of [...o.diuji].sort((a, b) => a - b)) {
+    const k = o.keadaan[no - 1];
+    if (k === undefined) throw new Error(`Omongan ${String(no)} tidak ada.`);
+    const suara: SuaraPenilai = { pemeriksa: false, kartu: null, tebak: null, kritikus: null };
+    const h = await periksaOmongan({
+      no, o: k.omongan, pesan: k.pesan, pilihan: k.pilihan, label: k.label, kunci: k.kunci, bank: k.bank, hurufKunci: k.hurufKunci,
+      masalah, gabung, terkunci: new Set([1, 2, 3].filter((x) => x !== no)), gen, paket: o.paket, panggilGerbang, putaran, jam, catat, suara,
+      galat: () => undefined,
+    });
+    hasil.per.push({ no, hasil: h });
+    if (h.jenis === 'pagu') {
+      hasil.berhenti = h.alasan;
+      return hasil;
+    }
+  }
+  hasil.lolos = masalah.length === 0 && hasil.per.every((x) => x.hasil.jenis === 'lolos');
+  return hasil;
+}
+
 /** Prompt sistem ringkas untuk jejak (hash): ketiga prompt penulis dipecah. */
 export function promptPenulisPengecoh(): string {
   return promptPesan();

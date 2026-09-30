@@ -185,3 +185,6 @@ input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px
 .tabel { border-collapse: collapse; width: 100%; font-size: 14px; }
 .tabel th, .tabel td { text-align: left; border-bottom: 1px solid var(--garis); padding: 4px 6px; vertical-align: top; }
 .kotak-catatan .tombol { margin: 4px 8px 4px 0; }
+select { font: 400 16px/1.4 var(--baca); min-height: 44px; margin: 4px 0; color: var(--tinta); background: var(--lembar); border: 1px solid var(--garis-kontrol); border-radius: 3px; }
+del { color: var(--merah); }
+ins { color: var(--cocok); text-decoration: none; }

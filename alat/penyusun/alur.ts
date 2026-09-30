@@ -3,10 +3,12 @@
  * → paket → perkiraan biaya) → MENUNGGU PERSETUJUAN klik → agen (berbayar) →
  * hasil (draf + jejak, atau penolakan beralasan).
  */
+import { isAbsolute, relative, sep } from 'node:path';
 import { tanggalId } from '../../factory/format.ts';
 import { rencanaSudut } from '../../factory/llm/sudut.ts';
 import { AWALAN_TAG_PENYUSUN, biayaAwalan, ringkasBiaya } from './biaya.ts';
-import { alasanAwam, buatJalan, idJalan, Jalan, muatJalan, PAGU_JALAN_BAWAAN, PAGU_JALAN_MIN, POLA_ID, terapkanHasil } from './jalan.ts';
+import { alasanAwam, buatJalan, idJalan, Jalan, muatJalan, PAGU_JALAN_BAWAAN, PAGU_JALAN_MIN, POLA_ID, terapkanHasil, type UjiUlang } from './jalan.ts';
+import { bolehSetujui, catatSuntingan, LOKASI_SUNTING, omonganDiuji, periksaSuntingan, teksDi, terapkanSuntingan, type LokasiSunting } from './penyetuju.ts';
 import { statusKonfig } from './konfig.ts';
 import type { MesinPenulis } from './mesin.ts';
 import { bangunTahapGratis } from './tahapan.ts';
@@ -185,6 +187,166 @@ export function mulai(k: KonteksAlur, j: Jalan, setuju: unknown, paguMentah: unk
   return pagu;
 }
 
+/* ---------------------------------------------------------------------- */
+/* penyetuju (D-5)                                                         */
+/* ---------------------------------------------------------------------- */
+
+function wajibTerbitBelumDiputus(j: Jalan): void {
+  if (j.data.tahap !== 'selesai' || j.data.hasil?.terbit !== true || j.data.draf === null) throw new GalatAlur(409, 'Hanya draf yang terbit yang bisa diperiksa penyetuju.');
+  if (j.data.putusan !== null) throw new GalatAlur(409, 'Draf ini sudah diputuskan penyetuju.');
+  if (j.sibuk) throw new GalatAlur(409, 'Uji ulang sedang berjalan; tunggu hasilnya.');
+}
+
+/** Perbaiki KATA: satu lokasi satu omongan; angka, rujukan, dan label dikunci; dicatat; draf menjadi "perlu uji ulang". */
+export function sunting(k: KonteksAlur, j: Jalan, omongan: unknown, lokasi: unknown, teks: unknown): void {
+  wajibTerbitBelumDiputus(j);
+  const no = typeof omongan === 'number' ? omongan : Number(omongan);
+  if (!Number.isInteger(no) || no < 1 || no > 3) throw new GalatAlur(400, 'Nomor omongan harus 1–3.');
+  if (typeof lokasi !== 'string' || !(LOKASI_SUNTING as readonly string[]).includes(lokasi)) throw new GalatAlur(400, `Lokasi harus salah satu dari: ${LOKASI_SUNTING.join(', ')}.`);
+  if (typeof teks !== 'string') throw new GalatAlur(400, 'Teks suntingan wajib diisi.');
+  const o = j.data.draf?.omongan[no - 1];
+  if (o === undefined) throw new GalatAlur(404, 'Omongan tidak ada.');
+  const lok = lokasi as LokasiSunting;
+  const alasanTolak = periksaSuntingan(o, lok, teks);
+  if (alasanTolak !== null) throw new GalatAlur(400, alasanTolak);
+  const dari = teksDi(o, lok);
+  terapkanSuntingan(o, j.data.keadaan.find((x) => x.no === no), lok, teks);
+  const s = catatSuntingan(j.data, no, lok, dari, teks, k.jam().toISOString());
+  j.simpan();
+  j.aliran.buka();
+  j.aliran.kirim('suntingan', `Suntingan ${String(s.ke)} oleh manusia: omongan ${String(no)}, ${lok}. Draf perlu diuji ulang oleh gerbang yang sama sebelum boleh disetujui.`, { suntingan: s });
+  j.aliran.tutup();
+}
+
+/** Perkiraan maksimum uji ulang untuk suntingan yang belum lolos. */
+export function perkiraanUjiUlang(k: KonteksAlur, j: Jalan): { diuji: number[]; maks_usd: number } {
+  const diuji = omonganDiuji(j.data);
+  return { diuji, maks_usd: k.mesin.perkiraanUjiUlang(diuji.length) };
+}
+
+/** Uji ulang (berbayar) — wajib `setuju: true`; pagu = perkiraan maksimumnya (dibulatkan ke atas ke sen). */
+export function ujiUlang(k: KonteksAlur, j: Jalan, setuju: unknown): { ke: number; pagu_usd: number } {
+  wajibTerbitBelumDiputus(j);
+  const { diuji, maks_usd } = perkiraanUjiUlang(k, j);
+  if (diuji.length === 0) throw new GalatAlur(409, 'Tidak ada suntingan yang perlu diuji ulang.');
+  if (setuju !== true) throw new GalatAlur(400, `Uji ulang memakai biaya OpenRouter (≤ US$${maks_usd.toFixed(2)}); setujui perkiraannya di layar dulu.`);
+  const siap = k.mesin.siap();
+  if (!siap.siap) throw new GalatAlur(400, siap.alasan ?? 'Mesin belum siap.');
+  // Pagu uji ulang = perkiraan maksimumnya, dipotong sisa pagu. Bila sisa lebih kecil, kode tetap menghentikan
+  // panggilan yang akan melewatinya, dan uji ulang berakhir TIDAK LOLOS dengan alasan pagu.
+  const batas = batasPagu(k);
+  if (batas.maks_usd < batas.min_usd) throw new GalatAlur(400, `Sisa pagu (US$${batas.maks_usd.toFixed(2)}) di bawah US$${batas.min_usd.toFixed(2)}; uji ulang tidak bisa dijalankan.`);
+  const pagu = Math.min(Math.ceil(maks_usd * 100 - 1e-9) / 100, batas.maks_usd);
+  if (j.paket === null) throw new GalatAlur(409, 'Paket fakta tidak ada.');
+  const catatan: UjiUlang = {
+    ke: j.data.uji_ulang.length + 1,
+    waktu_mulai: k.jam().toISOString(),
+    waktu_selesai: null,
+    sampai_suntingan: j.data.suntingan.length,
+    diuji,
+    lolos: null,
+    berhenti: null,
+    masalah: [],
+    per_omongan: [],
+    pagu_usd: pagu,
+    biaya_usd: 0,
+  };
+  j.data.uji_ulang.push(catatan);
+  j.sibuk = true;
+  j.simpan();
+  j.aliran.buka();
+  j.aliran.kirim('uji-ulang', `Uji ulang ${String(catatan.ke)} disetujui (pagu US$${pagu.toFixed(2)}): omongan ${diuji.join(', ')} lewat gerbang yang sama.`, { ke: catatan.ke, diuji, pagu_usd: pagu });
+  const paket = j.paket;
+  void (async () => {
+    try {
+      const h = await k.mesin.ujiUlang({ id: j.data.id, ke: catatan.ke, paket, folder: j.folder, keadaan: j.data.keadaan, diuji, paguUsd: pagu, lapor: (t, judul, isi) => j.aliran.kirim(t, judul, isi), jam: k.jam });
+      catatan.lolos = h.lolos;
+      catatan.berhenti = h.berhenti;
+      catatan.masalah = h.masalah;
+      catatan.per_omongan = h.per_omongan;
+      catatan.biaya_usd = k.mesin.palsu ? h.biaya_usd : biayaAwalan(k.akar, `${AWALAN_TAG_PENYUSUN}${j.data.id}/uji-ulang-${String(catatan.ke)}/`);
+    } catch (galat) {
+      catatan.lolos = false;
+      catatan.berhenti = galat instanceof Error ? `${galat.name}: ${galat.message}` : 'galat tak dikenal';
+    } finally {
+      catatan.waktu_selesai = k.jam().toISOString();
+      j.sibuk = false;
+      j.simpan();
+      const alasan = [...catatan.masalah, ...catatan.per_omongan.filter((x) => !x.lolos).flatMap((x) => x.alasan.map((a) => `omongan ${String(x.no)}: ${a}`))];
+      j.aliran.kirim(
+        'uji-ulang',
+        catatan.lolos === true
+          ? `Uji ulang ${String(catatan.ke)} LOLOS: suntingan tidak membuat gerbang mana pun keberatan (biaya US$${catatan.biaya_usd.toFixed(4)}). Draf boleh disetujui.`
+          : `Uji ulang ${String(catatan.ke)} TIDAK LOLOS${catatan.berhenti === null ? '' : ` (${catatan.berhenti})`}: ${alasan[0] ?? 'lihat rincian'}. Perbaiki lagi atau tolak.`,
+        { ke: catatan.ke, lolos: catatan.lolos, alasan: alasan.slice(0, 6), biaya_usd: catatan.biaya_usd },
+      );
+      j.aliran.tutup();
+    }
+  })();
+  return { ke: catatan.ke, pagu_usd: pagu };
+}
+
+function kartuDraf(j: Jalan): Record<string, { klaim: string; asal: string; jenis: string; terbit: string }> {
+  const dirujuk = new Set((j.data.draf?.omongan ?? []).flatMap((o) => o.kartu));
+  return Object.fromEntries((j.paket?.fakta ?? []).filter((f) => dirujuk.has(f.fact_id)).map((f) => [f.fact_id, { klaim: f.klaim, asal: f.asal, jenis: f.jenis, terbit: f.terbit }]));
+}
+
+function relatif(akar: string, jalur: string): string {
+  const r = relative(akar, jalur);
+  return r.startsWith('..') || isAbsolute(r) ? jalur.split(/[\\/]/).slice(-3).join('/') : r.split(sep).join('/');
+}
+
+/** Setujui: hanya bila semua suntingan lolos uji ulang. Keluaran ke folder jalan — BUKAN cases/. */
+export function setujui(k: KonteksAlur, j: Jalan): string[] {
+  wajibTerbitBelumDiputus(j);
+  const b = bolehSetujui(j.data);
+  if (!b.boleh) throw new GalatAlur(409, b.alasan ?? 'Belum boleh disetujui.');
+  const waktu = k.jam().toISOString();
+  const berkas = [
+    j.tulis('draf-disetujui.json', {
+      keterangan: 'Draf simulasi yang disetujui penyetuju manusia lewat pintu penyusun (M2d-9). BELUM dipasang ke produk: memasang ke cases/ adalah langkah terpisah dengan izin deploy.',
+      id: j.data.id,
+      emiten: j.data.kode,
+      tanggal_t: j.data.tanggal,
+      nama_samaran: j.paket?.nama_samaran ?? null,
+      paket_id: j.paket?.paket_id ?? null,
+      sumber_paket: j.data.sumber_paket,
+      mesin: j.data.mesin,
+      disetujui: { oleh: 'manusia', waktu },
+      draf: j.data.draf,
+      kartu: kartuDraf(j),
+      jejak: ['jejak-agen.json', ...j.data.uji_ulang.map((u) => `uji-ulang-${String(u.ke)}.json`)],
+      suntingan: j.data.suntingan.length,
+      uji_ulang: j.data.uji_ulang.map((u) => ({ ke: u.ke, lolos: u.lolos, diuji: u.diuji, sampai_suntingan: u.sampai_suntingan })),
+    }),
+    j.tulis('catatan-suntingan.json', { suntingan: j.data.suntingan, uji_ulang: j.data.uji_ulang }),
+  ].map((x) => relatif(k.akar, x));
+  j.data.putusan = { putusan: 'setujui', waktu, alasan: null, berkas };
+  j.simpan();
+  j.aliran.buka();
+  j.aliran.kirim('penyetuju', `Disetujui oleh manusia. Ditulis: ${berkas.join(', ')} (bukan cases/; memasang ke produk = langkah terpisah).`, { putusan: 'setujui', berkas });
+  j.aliran.tutup();
+  return berkas;
+}
+
+/** Tolak dengan alasan (wajib). */
+export function tolak(k: KonteksAlur, j: Jalan, alasan: unknown): string[] {
+  wajibTerbitBelumDiputus(j);
+  const a = typeof alasan === 'string' ? alasan.trim() : '';
+  if (a.length < 5) throw new GalatAlur(400, 'Tulis alasan penolakan (paling sedikit 5 huruf).');
+  const waktu = k.jam().toISOString();
+  const berkas = [
+    j.tulis('penolakan-penyetuju.json', { id: j.data.id, emiten: j.data.kode, tanggal_t: j.data.tanggal, ditolak: { oleh: 'manusia', waktu, alasan: a }, draf: j.data.draf }),
+    j.tulis('catatan-suntingan.json', { suntingan: j.data.suntingan, uji_ulang: j.data.uji_ulang }),
+  ].map((x) => relatif(k.akar, x));
+  j.data.putusan = { putusan: 'tolak', waktu, alasan: a, berkas };
+  j.simpan();
+  j.aliran.buka();
+  j.aliran.kirim('penyetuju', `Ditolak oleh manusia: ${a}`, { putusan: 'tolak', alasan: a, berkas });
+  j.aliran.tutup();
+  return berkas;
+}
+
 /** Potret jalan untuk halaman: keadaan + kartu yang dirujuk draf + batas pagu. */
 export function potret(k: KonteksAlur, j: Jalan): Record<string, unknown> {
   const dirujuk = new Set<string>();
@@ -200,5 +362,6 @@ export function potret(k: KonteksAlur, j: Jalan): Record<string, unknown> {
     batas: batasPagu(k),
     mesin_siap: k.mesin.siap(),
     alasan_awam: j.data.hasil === null ? null : alasanAwam(j.data.hasil.berhenti, j.data.pagu_jalan_usd),
+    penyetuju: { ...bolehSetujui(j.data), uji_ulang: perkiraanUjiUlang(k, j), sibuk: j.sibuk },
   };
 }

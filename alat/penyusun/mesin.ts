@@ -17,7 +17,7 @@
  */
 import { GENERASI_M2D8 } from '../../factory/llm/kalibrasi-susun.ts';
 import { validasiM2d8 } from '../../factory/llm/kalibrasi-soal.ts';
-import { jalankanPengecoh, promptPenulisPengecoh, type GenerasiPengecoh, type KeadaanOmongan } from '../../factory/llm/agen-pengecoh.ts';
+import { jalankanPengecoh, promptPenulisPengecoh, ujiUlangDraf, type GenerasiPengecoh, type KeadaanOmongan } from '../../factory/llm/agen-pengecoh.ts';
 import type { InfoPeran, PanggilPeran } from '../../factory/llm/agen-peran.ts';
 import type { DrafSimulasi, OmonganDraf } from '../../factory/llm/draf.ts';
 import { bacaKonfigLlm } from '../../factory/llm/env.ts';
@@ -76,6 +76,29 @@ export interface HasilMesin {
   riwayat: unknown;
 }
 
+export interface KonteksUjiUlang {
+  id: string;
+  /** Nomor uji ulang (1, 2, …) — untuk tag dan nama berkas jejak. */
+  ke: number;
+  paket: PaketFakta;
+  folder: string;
+  /** Keadaan KETIGA omongan sesudah suntingan. */
+  keadaan: KeadaanOmongan[];
+  diuji: number[];
+  paguUsd: number;
+  lapor: Lapor;
+  jam: () => Date;
+}
+
+export interface HasilUjiUlang {
+  lolos: boolean;
+  berhenti: string | null;
+  /** Masalah validator atas draf gabungan. */
+  masalah: string[];
+  per_omongan: Array<{ no: number; lolos: boolean; status: string; alasan: string[]; dicatat: string[] }>;
+  biaya_usd: number;
+}
+
 export interface MesinPenulis {
   readonly nama: string;
   readonly keterangan: string;
@@ -85,6 +108,10 @@ export interface MesinPenulis {
   siap(): { siap: boolean; alasan: string | null };
   perkiraan(): PerkiraanBiaya;
   jalankan(k: KonteksJalan): Promise<HasilMesin>;
+  /** Perkiraan maksimum uji ulang `jumlah` omongan lewat gerbang yang sama (tanpa penulis). */
+  perkiraanUjiUlang(jumlah: number): number;
+  /** Uji ulang draf yang disunting penyetuju dengan gerbang yang sama. */
+  ujiUlang(k: KonteksUjiUlang): Promise<HasilUjiUlang>;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -129,6 +156,17 @@ export function perkiraanGenerasi(gen: GenerasiPengecoh, maksPutaran: number): P
       'Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD. Bila tidak, panggilan tidak dikirim dan jalan berhenti dengan alasan tertulis.',
     ],
   };
+}
+
+/** Gerbang saja (tanpa penulis) untuk satu omongan: pilihan-saja ×2, kartu, kritikus, penebak — dengan ulangan penjaga. */
+export function perkiraanGerbangOmongan(gen: GenerasiPengecoh): number {
+  const penebakModel = gen.penebak.model[0] ?? gen.model.kritikus;
+  const x =
+    2 * maks(gen.modelPilihanSaja, gen.pilihanSaja.maxTokens) +
+    maks(gen.model['pembaca-kartu'], gen.kartu.maxTokens) +
+    2 * maks(gen.model.kritikus, gen.kritikus.maxTokens) +
+    gen.penebak.model.length * 2 * maks(penebakModel, gen.penebak.maxTokens);
+  return Math.round(x * 10_000) / 10_000;
 }
 
 /* ---------------------------------------------------------------------- */
@@ -261,6 +299,8 @@ export interface OpsiMesinLingkar {
   keterangan: string;
   palsu: boolean;
   buatPanggil: BuatPanggil;
+  /** Pemanggil untuk uji ulang (bawaan = `buatPanggil`); mode palsu memberi teks kunci suntingan ke penebak palsu. */
+  buatPanggilUjiUlang?: (awalanTag: string, paguBagianUsd: number, keadaan: readonly KeadaanOmongan[]) => PanggilPeran;
   siap: () => { siap: boolean; alasan: string | null };
   generasi?: GenerasiPengecoh;
   maksPutaran?: number;
@@ -288,6 +328,50 @@ export class MesinLingkar implements MesinPenulis {
 
   perkiraan(): PerkiraanBiaya {
     return perkiraanGenerasi(this.generasi, this.o.maksPutaran ?? 15);
+  }
+
+  perkiraanUjiUlang(jumlah: number): number {
+    return Math.round(jumlah * perkiraanGerbangOmongan(this.generasi) * 10_000) / 10_000;
+  }
+
+  async ujiUlang(k: KonteksUjiUlang): Promise<HasilUjiUlang> {
+    const gen = this.generasi;
+    let total = 0;
+    const jejak = new PencatatJejakAliran(
+      {
+        paket: k.paket,
+        model: gen.model.penulis,
+        promptSistem: promptPenulisPengecoh(),
+        pesanPaket: pesanPaket(k.paket),
+        ringkasanPrompt: `Uji ulang ke-${String(k.ke)} sesudah suntingan penyetuju (pintu penyusun M2d-9): validator + periksaOmongan (gerbang lingkar yang sama, GENERASI_M2D8).`,
+        jalur: `${k.folder}/uji-ulang-${String(k.ke)}.json`,
+        jam: k.jam,
+        versi: 2,
+        dibuatOleh: 'factory/llm/agen-pengecoh.ts',
+      },
+      (l) => {
+        total += l.biaya_usd;
+        const r = ringkasLangkah(l, total);
+        k.lapor('uji-ulang', r.judul.replace(/^putaran \d+/, `uji ulang ${String(k.ke)}`), r.isi);
+      },
+    );
+    const awalan = `${AWALAN_TAG_PENYUSUN}${k.id}/uji-ulang-${String(k.ke)}/`;
+    const panggil = this.o.buatPanggilUjiUlang?.(awalan, k.paguUsd, k.keadaan) ?? this.o.buatPanggil(awalan, k.paguUsd);
+    const h = await ujiUlangDraf({ paket: k.paket, keadaan: k.keadaan, diuji: k.diuji, panggil, validasi: validasiM2d8, generasi: gen, jejak, jam: k.jam, putaran: 1 });
+    jejak.selesai(h.lolos, 1, h.berhenti);
+    return {
+      lolos: h.lolos,
+      berhenti: h.berhenti,
+      masalah: h.masalah.map((m) => `${m.omongan === null ? 'seluruh draf' : `omongan ${String(m.omongan)}`}: [${m.kode}] ${m.pesan}`),
+      per_omongan: h.per.map(({ no, hasil }) => ({
+        no,
+        lolos: hasil.jenis === 'lolos',
+        status: hasil.jenis === 'lolos' ? 'lolos' : hasil.jenis === 'pagu' ? 'pagu' : hasil.status,
+        alasan: hasil.jenis === 'tolak' ? hasil.mentah.map((u) => `${u.sumber} (${u.lokasi}): ${u.alasan}`) : hasil.jenis === 'pagu' ? [hasil.alasan] : [],
+        dicatat: (hasil.jenis === 'lolos' ? (hasil.isi.dicatat ?? []) : (hasil.jenis === 'tolak' ? (hasil.isi.dicatat ?? []) : [])).map((d) => `${d.sumber}: ${d.alasan}`),
+      })),
+      biaya_usd: Math.round(total * 1e6) / 1e6,
+    };
   }
 
   async jalankan(k: KonteksJalan): Promise<HasilMesin> {
