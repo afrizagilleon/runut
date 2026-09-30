@@ -1,0 +1,31 @@
+### Singkatnya
+
+- **Kalibrasi (D-2):** dengan setelan awal, tumpukan menolak **5 dari 5** soal manusia yang terukur. Aturan pra-registrasi menurunkan tiga kode gaya (G-register "gue", `ANDAIAN_DI_PENJELASAN`, `PENJELASAN_TANPA_PENENTU`), menaikkan penebak ke "3/3 memilih kunci", menaikkan kritikus ke tingkat 1 ("tertebak" tidak menolak), dan **menurunkan pembaca kartu menjadi "dicatat"** (ULTJ riwayat-dividen: pembaca DeepSeek memilih b, kunci a). Sesudahnya 5/5 diterima. **Syarat bocor tidak terukur (0/0)**: pagu kalibrasi habis sebelum satu pun soal bocor/aman diukur. Satu syarat terpenuhi, satu tidak.
+- **Soal pemanasan (D-3):** **tidak ada soal** sesudah 4 percobaan (US$0,018). Dua kali label rujukan terlalu panjang; dua kali pembaca kartu memilih pengecoh "Betul, bursa menilai ada keraguan atas kelangsungan usaha." — kalimat yang memang benar untuk penghentian Januari. Gerbangnya benar menolak soal yang ambigu.
+- **Jalan TIRT (D-4):** **tidak terbit** sesudah 9 putaran (US$0,907). Satu omongan dikunci. Uji luar hanya untuk laporan: 3/3 penguji buta memilih kunci, dan 3/3 penguji kartu menyebut pilihan a juga benar. Putusan mekanis terhadap pra-registrasi M2d-7: **TIDAK layak tayang**.
+- **Biaya nyata M2d-8:** US$1,6519 dari pagu US$2,30 (probe 0,136 · kalibrasi 0,591 · pemanasan 0,018 · jalan 0,907). Kumulatif ledger M2d-5…M2d-8 US$7,169 dari `LLM_PAGU_USD` 8.
+
+### Temuan yang paling penting
+
+1. **Omongan yang lolos semua gerbang tetap bocor dan ambigu, dan penyebabnya bukan pelonggaran.** Versi yang dikunci (putaran 2, omongan 1) lolos di SETIAP gerbang pada setelan awal juga: pembaca kartu memilih kunci, kritikus "high" tanpa keberatan, penebak GLM memilih a/65 · a/75 · a/60 (0/3 kunci). Tidak ada satu pun catatan "dicatat" pada versi itu. Penguji Opus luar sebaliknya memilih kunci 3/3 tanpa kartu, dan 3/3 penguji kartu menyebut a juga benar: teman tidak menyebut penghentian yang mana, dan kartu Januari memang memuat alasan "keraguan atas kelangsungan usaha". Masalahnya ambiguitas rujukan waktu ("disetop" yang mana). Ambiguitas yang sama sudah ditangkap pembaca kartu di soal pemanasan, tetapi di sini lolos.
+2. **Arah ketidaksesuaian GLM terhadap Opus bisa berbalik.** Di M2d-7 penebak GLM "max" lebih keras dari penguji luar (menebak soal aman). Di M2d-8 penebak GLM "high" memilih pengecoh yang sama, sementara Opus menebak kunci. Satu penebak GLM tanpa kartu bukan wakil penguji luar, dalam arah mana pun.
+3. **Penebak "high" menolak semua soal manusia karena tebakan yang tak terbaca.** 5 dari 15 tebakan kalibrasi tak terbaca: habis `max_tokens` 8.000 dua kali, atau penalaran di bawah ambang 250 lalu ulangan jatuh ke penyedia dangkal. Tebakan tak terbaca dihitung "memilih kunci, yakin 100" (aturan M2d-2). Di kelima soal manusia yang terukur, penolakan penebak di tingkat awal datang dari aturan itu (empat soal hanya karena tebakan tak terbaca; ULTJ s1 karena satu benar + satu tak terbaca), bukan dari tebakan yang benar.
+4. **Kritikus "high" berpikir sangat panjang pada soal manusia**: 9.046–29.812 token penalaran, US$0,03–0,09 per panggilan. Aturan probe memberi `max_tokens` 40.000 karena versi tersulit jalan 2 M2d-7 habis di 32.000 dengan "high" juga. Dengan 40.000, 1 dari 14 panggilan kritikus (kalibrasi + jalan) habis token. Itu 7%, dalam target ≤ 1/10. Di jalan saja 1 dari 9 (11%). Harganya: perkiraan maksimum per panggilan US$0,185 ikut dicadangkan pagu, sehingga kalibrasi berhenti di soal manusia keenam dengan biaya nyata US$0,59 dari 0,70.
+5. **Pembaca kartu DeepSeek salah di dua soal manusia**: ULTJ riwayat-dividen terukur dan menyebabkan penurunan, dan ULTJ siapa-yang-membeli juga salah (memilih b, kunci d) walau soal itu tidak lengkap sehingga tidak dihitung. Gerbang K-05 dengan satu pembaca DeepSeek terlalu berisik untuk soal manusia yang dua sisinya benar ("setengah omongan cocok").
+
+### Keputusan yang diambil eksekutor (bisa ditolak reviewer)
+
+1. **Lanjutan kalibrasi (`--lanjut`).** Jalan pertama (konkurensi 2) berhenti karena cadangan perkiraan maksimum kritikus yang sedang berjalan, pada biaya nyata US$0,470. Lanjutan memakai prosedur dan urutan yang sama, satu soal sekaligus, di pagu yang sama. Gerbang yang sudah terukur tidak diukur ulang. Untuk ULTJ riwayat-dividen, konteks kritikus memakai jawaban pembaca kartu yang tersimpan (medan kartu yang ditunjuk belum ada di entri lama, jadi diambil dari "menunjuk penentu"). Bila reviewer menganggap ini melanggar "berhenti di pagu", syaratnya menjadi 4 soal manusia terukur (dengan setelan yang mungkin lain).
+2. **`ANDAIAN_DI_PENJELASAN` digolongkan bukan-pelindung**, dengan alasan tertulis di pra-registrasi. Saya sudah tahu DADA s2 memicunya saat menulis (pra-registrasi §6 mencatat semua hasil gerbang kode yang sudah diketahui).
+3. **`KATA_PENILAIAN` memakai pengecualian "kabar buruk" M2d-5** yang sudah ada di G-penilaian. Tanpa itu, kode pelindung menolak ULTJ s1.
+4. **Syarat 5/6 sebagai porsi dengan 5 soal terukur = 5/5.** Karena itu pembaca kartu diturunkan pada 4/5 (80% < 83%). Dengan 6 soal terukur, 5/6 mungkin cukup tanpa menurunkan pembaca kartu.
+5. **Pemeriksa anti-bocor melepas frasa wajib validator** "Salah-kaprah yang umum:" sebelum memotong 5 kata, karena frasa itu templat, bukan isi kasus tayang.
+6. **Pembanding M2d-6 K3 dan gerbang gratis atas soal bocor** ditampilkan hanya sebagai gambaran, tidak dipakai untuk syarat.
+
+### Keterbatasan
+
+- n sangat kecil: 5 soal manusia, 0 soal bocor/aman terukur, satu jalan TIRT, satu omongan diuji di luar.
+- Satu penguji kartu menambahkan kalimat di luar JSON yang menyebut "T-03". Kemungkinan dari pesan commit di konteks git subagent, jadi subagent "baru" belum tentu tanpa konteks repo. Jawabannya dipakai, karena JSON-nya terbaca, dan sama dengan dua penguji lain (c, kunci_lain a).
+- Kalimat kartu soal manusia = `klaim` fakta kasus. Di produk, 8 dari 62 kartu DADA tampil dengan versi awam (`awam.isi`).
+- GLM: 55 panggilan, sebagian besar di Wafer (`order`). Ulangan penjaga penalaran jatuh ke Cloudflare, Together, SiliconFlow, dan Phala, yang berpikir dangkal.
+- Tidak ada panggilan Sectors. `web/`, `server/`, `cases/`, `factory/verifikasi/`, `factory/kasus/`, `alat/`, `deploy/` tidak disentuh. Tidak ada yang dipasang ke produk.
