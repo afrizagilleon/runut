@@ -1,0 +1,48 @@
+# M3.16 gerbang akhir — 2026-10-01T00:04:42+07:00 — HEAD f0a172c
+
+$ npm run typecheck
+> runut@0.1.0 typecheck
+> tsc -p tsconfig.json --noEmit
+
+
+$ npm run periksa:desain
+periksa:desain — bersih.
+
+$ npx vitest run (maxForks=2)
+      Tests  6 failed | 2192 passed | 15 skipped (2213)
+ FAIL  factory/llm/kalibrasi-penguji.test.ts > bahan uji luar = prosedur pra-registrasi M2d-7 > pra-registrasi M2d-8 tidak berubah sejak commit-nya (T-00)
+ FAIL  factory/llm/kalibrasi-probe.test.ts > PENALAR_M2D8 = putusan atas data nyata > sama dengan putusanPenalar(ledger, probe-1.json)
+ FAIL  factory/llm/kalibrasi-probe.test.ts > konfigurasi M2d-8 > ledger hanya boleh bertag m2d5/…m2d8/
+ FAIL  factory/llm/openrouter.test.ts > pagu biaya-nyata — jumlah biaya nyata + perkiraan panggilan berikutnya ≤ pagu, dicek sebelum kirim > perkiraan sebelum kirim ≥ biaya penyedia TERMAHAL yang lolos pagar (lampiran endpoints 29 Sep)
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > docs/bukti/lingkar-agen-tirt.md dan ringkasan terlacak = hasil skrip atas keluaran mentah
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > per peran dan per penyedia menjumlah ke total milestone; total ≤ pagu US$4,00
+ Test Files  4 failed | 119 passed (123)
+
+$ npx playwright test --workers=1   (e2e penuh, SEKALI)
+  ok  77 [ponsel-terang] › e2e\pemandu.spec.ts:39:1 › E-60a pengunjung baru: layar pertama sama, lalu empat langkah di soal 1 (1.4s)
+  ok  78 [ponsel-terang] › e2e\pemandu.spec.ts:97:1 › E-60b Lewati menutup; kunjungan kedua tanpa pemandu; "Cara main" membuka lagi (799ms)
+  ok  79 [ponsel-terang] › e2e\pemandu.spec.ts:118:1 › E-60c memilih jawaban di tengah pemandu menutupnya; ?pemandu=1 memaksa (1.1s)
+  ok  80 [ponsel-terang] › e2e\pemandu.spec.ts:138:1 › E-60d gerak menghormati prefers-reduced-motion (695ms)
+  ok 115 [ponsel-terang] › e2e\sorotan.spec.ts:125:1 › E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertutup, fokus di panel (2.5s)
+  ok 116 [ponsel-terang] › e2e\sorotan.spec.ts:199:1 › E-63b lubang mengikuti gulir dan putaran layar (2.2s)
+  ok 117 [ponsel-terang] › e2e\sorotan.spec.ts:243:1 › E-63c ketukan di luar lubang tidak menjalankan apa pun; di dalam lubang jalan (2.4s)
+  ok 118 [ponsel-terang] › e2e\sorotan.spec.ts:286:1 › E-63d "Lewati" menutup lapisan seketika di tiap langkah, tanpa sisa inert (3.7s)
+  ok 119 [ponsel-terang] › e2e\sorotan.spec.ts:304:1 › E-63e "Minta petunjuk" di dalam lubang langkah 4: pemandu selesai, kartu penentu ditandai (1.4s)
+  ok 120 [ponsel-terang] › e2e\sorotan.spec.ts:315:1 › E-63f peralihan lubang ≤ 250 ms; prefers-reduced-motion tanpa transisi (1.4s)
+  ok 214 [ponsel-gelap] › e2e\pemandu.spec.ts:39:1 › E-60a pengunjung baru: layar pertama sama, lalu empat langkah di soal 1 (1.5s)
+  ok 215 [ponsel-gelap] › e2e\pemandu.spec.ts:97:1 › E-60b Lewati menutup; kunjungan kedua tanpa pemandu; "Cara main" membuka lagi (793ms)
+  ok 216 [ponsel-gelap] › e2e\pemandu.spec.ts:118:1 › E-60c memilih jawaban di tengah pemandu menutupnya; ?pemandu=1 memaksa (1.2s)
+  ok 217 [ponsel-gelap] › e2e\pemandu.spec.ts:138:1 › E-60d gerak menghormati prefers-reduced-motion (773ms)
+  ok 252 [ponsel-gelap] › e2e\sorotan.spec.ts:125:1 › E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertutup, fokus di panel (2.5s)
+  ok 253 [ponsel-gelap] › e2e\sorotan.spec.ts:199:1 › E-63b lubang mengikuti gulir dan putaran layar (2.2s)
+  ok 254 [ponsel-gelap] › e2e\sorotan.spec.ts:243:1 › E-63c ketukan di luar lubang tidak menjalankan apa pun; di dalam lubang jalan (2.4s)
+  ok 255 [ponsel-gelap] › e2e\sorotan.spec.ts:286:1 › E-63d "Lewati" menutup lapisan seketika di tiap langkah, tanpa sisa inert (3.6s)
+  ok 256 [ponsel-gelap] › e2e\sorotan.spec.ts:304:1 › E-63e "Minta petunjuk" di dalam lubang langkah 4: pemandu selesai, kartu penentu ditandai (1.4s)
+  ok 257 [ponsel-gelap] › e2e\sorotan.spec.ts:315:1 › E-63f peralihan lubang ≤ 250 ms; prefers-reduced-motion tanpa transisi (1.5s)
+  7 skipped
+  284 passed (10.4m)
+
+$ MSYS_NO_PATHCONV=1 VITE_KOLEKTOR_URL=/e npx vite build --outDir ../.cache/e2e/m316/build
+"/e" di seluruh bundel = 1; "E:/" = 0; fixture pemanasan-uji = 0
+
+Vitest: 6 merah = tepat 6 merah di dasar f441cfe (factory/llm, lingkungan: ledger .cache/llm/.contracts di worktree + M2d-9 berjalan); selain itu hijau (2192 lolos, dasar 2176).
