@@ -179,6 +179,168 @@ TAMBAHAN — bukan putusan pra-registrasi (tidak ada omongan dikunci). Diuji: 1 
 - 2 (kunci c): tebak c/40 · c/35 · c/50 → tidak lolos; kartu c/1 · c/1 · c/1 → lolos; masalah makna: M2 setiap bagian klaim tercek kartu (3/3 penguji kartu ("tak_tercek")); M3 tanpa penilaian investasi (3/3 penguji kartu ("penilaian"))
 - 3 (kunci b): tebak b/50 · a/45 · a/35 → tidak lolos; kartu b/1 · b/1+2 · b/1+2 → lolos; masalah makna: tidak ada
 
+## Amandemen A-1: satu jalan TIRT lagi
+
+Pra-registrasi `docs/bukti/m2d10-praregistrasi-a1.md` di-commit **daaa76d 2026-10-01T01:03:18+07:00**; panggilan berbayar A-1 pertama: **2026-09-30T18:04:49.636Z**. Setelan S1 + pembaca kartu "dicatat" (penebak menolak); kritikus dikunci ke Wafer (`order` + `allow_fallbacks: false`); mesin yang diperbaiki; pagu jalan US$0,45.
+
+Panggilan kritikus A-1: 3; penyedia: null, Wafer; token penalaran: null, 5305, 4707.
+
+### Jalan TIRT A-1
+
+`npm run templat:jalan -- --id m2d10-tirt-a1 --pagu 0.45` → pintu penyusun, mesin `templat`, TIRT 10 Des 2025, satu jalan (`eval/penyusun/m2d10-tirt-a1/`: aliran.jsonl, jejak-agen.json, hasil.json, keadaan.json, paket.json). Setelan: penebak dua-dari-tiga (A = 60), pembaca kartu dicatat, kritikus kunci/makna/aturan.
+
+**TIDAK TERBIT** sesudah 10 versi (omongan 3: rencana besaran-hitungan:kelipatan-2025-11-26-2025-12-09 habis dan tidak ada rencana pengganti; simulasi tidak terbit). Rencana awal: sebab-resmi:susp-2025-12-10, angka-lain-waktu:harga-2025-12-09, benar-berincian:hari-naik-beruntun.
+
+#### Distribusi: di gerbang mana tiap versi berhenti
+
+| berhenti | versi |
+|---|---:|
+| kode | 2 |
+| penebak | 6 |
+| lolos | 2 |
+
+Versi yang sampai ke kritikus: 2 dari 10.
+
+| omongan | rencana | versi | berhenti | alasan (ringkas) | penebak (dicatat/menolak) | pembaca kartu | titik buta |
+|---|---|---:|---|---|---|---|---|
+| 1 | sebab-resmi:susp-2025-12-10 | 1 | lolos |  | claude-haiku-4.5 a/65 · deepseek-v4.1-flash a/75 | c (kunci c) |  |
+| 2 | angka-lain-waktu:harga-2025-12-09 | 1 | kode | pemeriksa: ANGKA_TANPA_RUJUKAN (penjelasan): Penjelasan memuat angka di luar rujukan: 97., 9, 106,, 97., 9, 97, 8. Tulis tiap angka sebagai [[fact_id/teks]]. | — | — |  |
+| 2 | angka-lain-waktu:harga-2025-12-09 | 2 | lolos |  | claude-haiku-4.5 c/65 · deepseek-v4.1-flash a/68 | d (kunci d) |  |
+| 3 | benar-berincian:hari-naik-beruntun | 1 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 a/45, deepseek-v4.1-flash d/68, glm-5.3 d/55); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Rentang 26  | claude-haiku-4.5 a/45 · deepseek-v4.1-flash d/68✓ · glm-5.3 d/55✓ | — |  |
+| 3 | benar-berincian:hari-naik-beruntun | 2 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 a/55, deepseek-v4.1-flash d/65, glm-5.3 d/62); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Rentang 26  | claude-haiku-4.5 a/55 · deepseek-v4.1-flash d/65✓ · glm-5.3 d/62✓ | — | YA |
+| 3 | benar-berincian:hari-naik-beruntun | 3 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 a/62, deepseek-v4.1-flash d/78, glm-5.3 d/65); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Rentang 26  | claude-haiku-4.5 a/62 · deepseek-v4.1-flash d/78✓ · glm-5.3 d/65✓ | — | YA |
+| 3 | besaran-hitungan:kelipatan-2025-11-26-2025-12-09 | 1 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 d/65); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Pilihan d menyatakan kenaikan 2,21 kali lipat yang  | claude-haiku-4.5 d/65✓ | — |  |
+| 3 | besaran-hitungan:kelipatan-2025-11-26-2025-12-09 | 2 | kode | pemeriksa: ANGKA_TANPA_RUJUKAN (penjelasan): Penjelasan memuat angka di luar rujukan: 3,51. Tulis tiap angka sebagai [[fact_id/teks]]. | — | — |  |
+| 3 | besaran-hitungan:kelipatan-2025-11-26-2025-12-09 | 3 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Tanpa dokumen, pilihan (d) paling konsisten dengan  | claude-haiku-4.5 d/72✓ | — | YA |
+| 3 | besaran-hitungan:kelipatan-2025-11-26-2025-12-09 | 4 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 d/45, deepseek-v4.1-flash d/85); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Pilihan (d) menyatakan ra | claude-haiku-4.5 d/45✓ · deepseek-v4.1-flash d/85✓ | — | YA |
+
+#### Penyempurna Haiku
+
+- omongan 3 versi 4 (tertebak): diterima kunci→K2, p1→P1b, p2→P2b, p3→P3b; dibuang —
+- omongan 3 versi 5 (tertebak): diterima p2→P2a; dibuang —
+- omongan 3 versi 7 (tertebak): diterima p1→P1b; dibuang —
+- omongan 3 versi 9 (tertebak): diterima p1→P1a; dibuang —
+
+#### Omongan yang dikunci
+
+**Omongan 1** — sebab-resmi (`susp-2025-12-10`)
+
+> **Dita (20.15):** Gw yakin banget bursa stop perdagangan saham Perusahaan T hari ini, sebab bursa ragu usahanya bisa terus jalan.
+
+- a) Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.
+- b) Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.
+- **c) Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.** (kunci)
+- d) Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan.
+
+Kartu: `susp-2025-12-10` (penentu), `susp-2025-01-21`
+
+Penjelasan: Dita yakin bursa menghentikan saham Perusahaan T karena usaha diragukan bisa terus jalan. Yang tertulis untuk 10 Desember: perdagangan dihentikan sementara oleh bursa, alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk perlindungan investor. Jadi penghentian hari itu bukan soal keraguan kelangsungan usaha. Alasan keraguan kelangsungan usaha tercatat pada 21 Januari, jadi itu bukan alasan untuk hari ini. Pilihan yang menyebut rencana pengambilalihan atau laporan keuangan terlambat tidak didukung catatan. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini.
+
+**Omongan 2** — angka-lain-waktu (`harga-2025-12-09`)
+
+> **Bima (21.07):** Santai, gw catet harga penutupan Perusahaan T kemarin Rp97. Gw hafal angka beginian.
+
+- a) Betul, penutupan 9 Desember memang Rp97.
+- b) Betul, Rp97 itu penutupan tertinggi sebelum hari ini.
+- c) Keliru, penutupan 9 Desember Rp115, bukan Rp97.
+- **d) Keliru, penutupan 9 Desember Rp106, bukan Rp97.** (kunci)
+
+Kartu: `harga-2025-12-09` (penentu), `harga-2025-12-08`
+
+Penjelasan: Bima menyebut Rp97 sebagai penutupan kemarin. Pesan dikirim sesudah bursa tutup, jadi kemarin adalah 9 Desember. Keterangan harga menunjukkan penutupan 9 Desember adalah Rp106, bukan Rp97. Angka Rp97 justru penutupan 8 Desember. Jadi jawaban yang benar: keliru, penutupan 9 Desember Rp106, bukan Rp97. Jawaban yang menganggap Rp97 benar untuk 9 Desember salah karena tertukar hari. Jawaban tentang penutupan tertinggi sebelum hari ini juga tidak didukung keterangan. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin.
+
+Dicatat pada versi yang dikunci (gerbang "dicatat", tidak menolak):
+
+- omongan 2: pembaca kartu bingung: "Santai, gw catet harga penutupan Perusahaan T kemarin Rp97."
+
+#### Uji luar dan putusan mekanis (pra-registrasi M2d-7, tidak diubah)
+
+| syarat | hasil | terpenuhi |
+|---|---|---|
+| (a) terbit | tidak terbit | **tidak** |
+| (b) tebak buta luar ≥ 2/6 | 1/2 | ya |
+| (c) jawab-dengan-kartu penuh | 2/2 | ya |
+| (d) nol masalah makna | 1 masalah | **tidak** |
+
+**Putusan: TIDAK layak tayang.**
+
+- omongan 1 (kunci c): tebak c/40 · c/40 · a/35 → tidak; kartu c/1 · c/1 · c/1 → lolos; masalah makna: tidak ada
+- omongan 2 (kunci d): tebak c/35 · c/30 · a/30 → lolos; kartu d/1+2 · d/1 · d/1 → lolos; masalah makna: M2 setiap bagian klaim tercek kartu (2/3 penguji kartu ("tak_tercek"))
+
+## Amandemen A-2: satu jalan TIRT lagi
+
+Pra-registrasi `docs/bukti/m2d10-praregistrasi-a2.md` di-commit **44b92e7 2026-10-01T01:38:21+07:00**; panggilan berbayar A-2 pertama: **2026-09-30T18:41:52.782Z**. Setelan dan kunci kritikus A-1 tetap; empat perbaikan kode: G-klaim-tambahan, kebocoran kalender, pengecoh besaran dekat (≤ 15 %, dari harga nyata), anti-ulang pemanasan; pagu jalan US$0,25.
+
+Panggilan kritikus A-2: 1; penyedia: Wafer; token penalaran: 9159.
+
+### Jalan TIRT A-2
+
+`npm run templat:jalan -- --id m2d10-tirt-a2 --pagu 0.25` → pintu penyusun, mesin `templat`, TIRT 10 Des 2025, satu jalan (`eval/penyusun/m2d10-tirt-a2/`: aliran.jsonl, jejak-agen.json, hasil.json, keadaan.json, paket.json). Setelan: penebak dua-dari-tiga (A = 60), pembaca kartu dicatat, kritikus kunci/makna/aturan.
+
+**TIDAK TERBIT** sesudah 9 versi (pagu tercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.445791 + perkiraan maksimum US$0.184540 untuk z-ai/glm-5.3 > pagu milestone US$1.58. Panggilan tidak dikirim.). Rencana awal: angka-lain-waktu:harga-2025-12-09, setengah-benar:susp-2025-01-21, besaran-hitungan:kelipatan-2025-11-26-2025-12-09.
+
+#### Distribusi: di gerbang mana tiap versi berhenti
+
+| berhenti | versi |
+|---|---:|
+| kode | 1 |
+| penebak | 6 |
+| lolos | 1 |
+| pagu | 1 |
+
+Versi yang sampai ke kritikus: 1 dari 9.
+
+| omongan | rencana | versi | berhenti | alasan (ringkas) | penebak (dicatat/menolak) | pembaca kartu | titik buta |
+|---|---|---:|---|---|---|---|---|
+| 1 | angka-lain-waktu:harga-2025-12-09 | 1 | lolos |  | claude-haiku-4.5 a/72 · deepseek-v4.1-flash a/70 | c (kunci c) |  |
+| 2 | setengah-benar:susp-2025-01-21 | 1 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Dika klaim 'belum pernah disetop tahun ini', tapi p | claude-haiku-4.5 d/72✓ | — |  |
+| 2 | setengah-benar:susp-2025-01-21 | 2 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Dika klaim 'belum pernah disetop bursa tahun ini',  | claude-haiku-4.5 d/72✓ | — | YA |
+| 2 | setengah-benar:susp-2025-01-21 | 3 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Dika klaim naik 9 hari berturut-turut dan 'belum pe | claude-haiku-4.5 d/72✓ | — | YA |
+| 2 | benar-berincian:hari-naik-beruntun | 1 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 a/45, deepseek-v4.1-flash d/65, glm-5.3 d/55); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Klaim Andi  | claude-haiku-4.5 a/45 · deepseek-v4.1-flash d/65✓ · glm-5.3 d/55✓ | — |  |
+| 2 | benar-berincian:hari-naik-beruntun | 2 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 a/42, deepseek-v4.1-flash d/72, glm-5.3 d/45); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Klaim Andi  | claude-haiku-4.5 a/42 · deepseek-v4.1-flash d/72✓ · glm-5.3 d/45✓ | — | YA |
+| 2 | benar-berincian:hari-naik-beruntun | 3 | penebak | penebak tanpa kartu memilih kunci "d" (claude-haiku-4.5 a/45, deepseek-v4.1-flash d/70, glm-5.3 d/70); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: "Pernyataan  | claude-haiku-4.5 a/45 · deepseek-v4.1-flash d/70✓ · glm-5.3 d/70✓ | — | YA |
+| 2 | arah-kali-tingkat:hari-naik-beruntun | 1 | kode | pemeriksa: ANGKA_TANPA_RUJUKAN (penjelasan): Penjelasan memuat angka di luar rujukan: 1, 2. Tulis tiap angka sebagai [[fact_id/teks]]. | — | — |  |
+| 2 | arah-kali-tingkat:hari-naik-beruntun | 2 | pagu | PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.445791 + perkiraan maksimum US$0.184540 untuk z-ai/glm-5.3 > pagu mileston | claude-haiku-4.5 c/62 · deepseek-v4.1-flash a/55 | d (kunci d) |  |
+
+#### Penyempurna Haiku
+
+- omongan 2 versi 2 (tertebak): diterima p1→P1b; dibuang —
+- omongan 2 versi 3 (tertebak): diterima p1→P1a, p3→P3b; dibuang —
+- omongan 2 versi 5 (tertebak): diterima kunci→K2, p2→P2b, p3→P3b; dibuang —
+- omongan 2 versi 6 (tertebak): diterima kunci→K1, p2→P2a; dibuang —
+
+#### Omongan yang dikunci
+
+**Omongan 1** — angka-lain-waktu (`harga-2025-12-09`)
+
+> **Tio (20.14):** Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget.
+
+- a) Betul, penutupan 9 Desember memang Rp97.
+- b) Betul, Rp97 itu penutupan tertinggi sebelum hari ini.
+- **c) Keliru, penutupan 9 Desember Rp106, bukan Rp97.** (kunci)
+- d) Keliru, penutupan 9 Desember Rp115, bukan Rp97.
+
+Kartu: `harga-2025-12-09` (penentu), `harga-2025-12-08`
+
+Penjelasan: Di kartu tertulis harga penutupan 9 Desember adalah Rp106. Tio menyebut Rp97 untuk kemarin, padahal angka itu tertulis sebagai penutupan 8 Desember. Jadi yang benar: penutupan 9 Desember Rp106, bukan Rp97. Pilihan yang membenarkan Rp97 untuk 9 Desember keliru karena tertukar harinya. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah itu angka kemarin.
+
+Dicatat pada versi yang dikunci (gerbang "dicatat", tidak menolak):
+
+- omongan 1: pembaca kartu bingung: "Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget."
+
+#### Uji luar dan putusan mekanis (pra-registrasi M2d-7, tidak diubah)
+
+| syarat | hasil | terpenuhi |
+|---|---|---|
+| (a) terbit | tidak terbit | **tidak** |
+| (b) tebak buta luar ≥ 2/6 | 0/1 | **tidak** |
+| (c) jawab-dengan-kartu penuh | 1/1 | ya |
+| (d) nol masalah makna | 1 masalah | **tidak** |
+
+**Putusan: TIDAK layak tayang.**
+
+- omongan 1 (kunci c): tebak c/45 · c/45 · c/50 → tidak; kartu c/1 · c/1 · c/1 → lolos; masalah makna: M2 setiap bagian klaim tercek kartu (3/3 penguji kartu ("tak_tercek"))
+
 ## Biaya NYATA M2d-10 (OpenRouter, `usage.cost`)
 
 Entri ledger bertag `m2d10/` + `penyusun/m2d10-`: **US$0.6862 dalam 155 panggilan**, dari pagu milestone US$1.20 (ditegakkan kode).

@@ -211,9 +211,10 @@ function bagianPutusan(folder = 'penguji'): string[] {
 }
 
 function bagianAmandemen(kode: 'A-1' | 'A-2', ringkas: string, pagu: string): string[] {
-  const id = `m2d10-tirt-${kode.toLowerCase()}`;
+  const k = kode.replace('-', '').toLowerCase();
+  const id = `m2d10-tirt-${k}`;
   if (!existsSync(`${FOLDER_JALAN(id)}/hasil.json`)) return [];
-  const prareg = `docs/bukti/m2d10-praregistrasi-${kode.toLowerCase()}.md`;
+  const prareg = `docs/bukti/m2d10-praregistrasi-${k}.md`;
   const t = execFileSync('git', ['log', '--format=%h %cI', '--diff-filter=A', '--', prareg], { cwd: AKAR, encoding: 'utf8' }).trim().split(/\r?\n/).at(-1) ?? '';
   const pertama = entriLedger().find((x) => x.tag.startsWith(`penyusun/${id}/`))?.waktu ?? '—';
   const krit = entriLedger().filter((x) => x.tag.startsWith(`penyusun/${id}/`) && x.tag.includes('/kritikus/'));
@@ -226,7 +227,7 @@ function bagianAmandemen(kode: 'A-1' | 'A-2', ringkas: string, pagu: string): st
     `Panggilan kritikus ${kode}: ${String(krit.length)}; penyedia: ${[...new Set(krit.map((x) => String(x.penyedia)))].join(', ') || '—'}; token penalaran: ${krit.map((x) => String(x.token_penalaran)).join(', ') || '—'}.`,
     '',
     ...bagianJalan(id, judul, `npm run templat:jalan -- --id ${id} --pagu ${pagu}`).map((x) => (x.startsWith('### ') && x !== judul ? `#${x}` : x)),
-    ...bagianPutusan(`penguji-${kode.toLowerCase()}`).map((x) => (x.startsWith('### ') ? `#${x}` : x)),
+    ...bagianPutusan(`penguji-${k}`).map((x) => (x.startsWith('### ') ? `#${x}` : x)),
   ];
 }
 
