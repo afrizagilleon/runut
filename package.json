@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22.6"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit",
@@ -68,7 +68,8 @@
     "sectors:ambil": "node --experimental-strip-types alat/sectors.ts",
     "sectors:manifest": "node --experimental-strip-types alat/manifest.ts",
     "audit:gudang": "node --experimental-strip-types alat/audit-gudang.ts",
-    "audit:paket": "node --experimental-strip-types alat/audit-paket.ts"
+    "audit:paket": "node --experimental-strip-types alat/audit-paket.ts",
+    "penyusun": "node --experimental-strip-types alat/penyusun/server.ts"
   },
   "dependencies": {
     "react": "^18.3.1",
