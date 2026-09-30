@@ -84,7 +84,8 @@ export interface PutusanPenilaian {
   alasan: string[];
 }
 
-function lepasPengecualian(teks: string): string {
+/** Teks dengan frasa pengecualian dihapus (dipakai juga oleh gerbang kode M2d-8 untuk `KATA_PENILAIAN`). */
+export function lepasPengecualian(teks: string): string {
   let t = teks;
   for (const p of PENGECUALIAN_PENILAIAN) {
     t = t.replace(new RegExp(`${B}${p.frasa.replace(/\s+/g, '\\s+')}${E}`, 'giu'), ' ');
