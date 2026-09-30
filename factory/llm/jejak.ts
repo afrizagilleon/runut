@@ -41,10 +41,13 @@ export type JenisLangkah =
   | 'tulis-pilihan'
   | 'tulis-penjelasan'
   | 'gerbang-artefak'
-  | 'gerbang-pilihan-saja';
+  | 'gerbang-pilihan-saja'
+  // M2d-10 (mesin templat, `templat/mesin.ts`): rencana templat + penyempurna struktur (Haiku)
+  | 'rencana-templat'
+  | 'sempurnakan-pilihan';
 /** Peran pelaku langkah (M2d-3, `factory/llm/peran.md`); jejak M2d-2 tidak memuatnya. */
-export type PeranLangkah = 'perencana' | 'penulis' | 'pemeriksa' | 'penebak' | 'pembaca-kartu' | 'kritikus';
-export type PembuatJejak = 'factory/llm/agen.ts' | 'factory/llm/agen-peran.ts' | 'factory/llm/agen-pengecoh.ts';
+export type PeranLangkah = 'perencana' | 'penulis' | 'pemeriksa' | 'penebak' | 'pembaca-kartu' | 'kritikus' | 'penyempurna';
+export type PembuatJejak = 'factory/llm/agen.ts' | 'factory/llm/agen-peran.ts' | 'factory/llm/agen-pengecoh.ts' | 'factory/llm/templat/mesin.ts';
 export type Putusan = 'ditulis' | 'lolos' | 'tolak' | 'galat';
 
 export interface LangkahJejak {
