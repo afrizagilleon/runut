@@ -25,6 +25,7 @@ import {
 import { HalamanKalender, KalenderSimulasi, KalenderSobek, KepingKalender } from './Kalender.tsx';
 import { bacaSelesai, catatSelesai, susunKalender, type BulanKalender } from './kalender-simulasi.ts';
 import { KartuFakta } from './KartuFakta.tsx';
+import { Sorotan } from './Sorotan.tsx';
 import { Teks, idPenjelasan, type SakelarSumber } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
 import { DAFTAR_KASUS, indeksFakta, kartuSoal } from './kasus.ts';
@@ -872,6 +873,13 @@ export function Aplikasi(): JSX.Element {
           />
         )}
       </main>
+
+      {/*
+        Sorotan (M3.16): lapisan redup berlubang di atas sasaran langkah ini,
+        DI BAWAH panel panduan. Dilepas bersama panelnya — "Lewati" menutup
+        keduanya seketika.
+      */}
+      {(layar.jenis === 'soal' || diPemanasan) && sorot !== null && <Sorotan sasaran={sorot} />}
 
       {(layar.jenis === 'soal' || diPemanasan) && langkahPemanduKini(tampilan) !== null && (
         <PanelPemandu
@@ -1843,6 +1851,7 @@ export function LayarSoal({
         className={sorotKini === 'omongan' ? 'pesan disorot' : 'pesan'}
         data-uid="pesan"
         data-gulir-sorot="omongan"
+        data-lubang="omongan"
         ref={acuanPesan}
         /*
          * Nama untuk pembaca layar: tidak berubah sejak M3.5 D-2, kata demi
@@ -1915,6 +1924,7 @@ export function LayarSoal({
         className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'}
         ref={acuanTumpukan}
         data-gulir-sorot="kartu"
+        data-lubang="kartu"
       >
         {kartu.map((fakta) => (
           <KartuFakta
@@ -1949,11 +1959,16 @@ export function LayarSoal({
         id={`tanya-${soal.soal_id}`}
         data-uid="tanya"
         data-gulir-sorot="pilihan"
+        data-lubang="pilihan"
       >
         {soal.tanya}
       </h1>
 
-      <fieldset className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'} disabled={s.dikunci}>
+      <fieldset
+        className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'}
+        disabled={s.dikunci}
+        data-lubang="pilihan"
+      >
         <legend className="tersembunyi">Pilih satu jawaban</legend>
         {soal.pilihan.map((p) => {
           // "Opsi mana mendapat tanda apa" adalah aturan, dan aturannya ada di
@@ -2024,6 +2039,7 @@ export function LayarSoal({
             className={sorotKini === 'petunjuk' ? 'tombol-petunjuk disorot' : 'tombol-petunjuk'}
             data-uid="petunjuk-kartu"
             data-gulir-sorot="petunjuk"
+            data-lubang="petunjuk"
             onClick={() => {
               kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
             }}
@@ -2760,6 +2776,7 @@ export function LayarPemanasan({
         className={sorotKini === 'omongan' ? 'pesan disorot' : 'pesan'}
         data-uid="pemanasan:pesan"
         data-gulir-sorot="omongan"
+        data-lubang="omongan"
         aria-label={`Pesan dari ${soal.pesan.nama} · ${soal.pesan.jam}`}
       >
         <blockquote className="pesan-balon">
@@ -2771,7 +2788,7 @@ export function LayarPemanasan({
         </blockquote>
       </figure>
       <p className="meta antar">{kalimatAntar(kartu.length)}</p>
-      <div className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'} data-gulir-sorot="kartu">
+      <div className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'} data-gulir-sorot="kartu" data-lubang="kartu">
         {kartu.map((fakta) => (
           <KartuFakta
             key={fakta.fact_id}
@@ -2783,10 +2800,14 @@ export function LayarPemanasan({
           />
         ))}
       </div>
-      <h1 className="judul tanya" id="tanya-pemanasan" data-gulir-sorot="pilihan">
+      <h1 className="judul tanya" id="tanya-pemanasan" data-gulir-sorot="pilihan" data-lubang="pilihan">
         {soal.tanya}
       </h1>
-      <fieldset className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'} disabled={k.dikunci}>
+      <fieldset
+        className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'}
+        disabled={k.dikunci}
+        data-lubang="pilihan"
+      >
         <legend className="tersembunyi">Pilih satu jawaban</legend>
         {soal.pilihan.map((p) => {
           const tanda = tandaOpsi(keadaanOpsi, p.kunci, soal.jawaban);
@@ -2826,6 +2847,7 @@ export function LayarPemanasan({
             className={sorotKini === 'petunjuk' ? 'tombol-petunjuk disorot' : 'tombol-petunjuk'}
             data-uid="pemanasan:petunjuk-kartu"
             data-gulir-sorot="petunjuk"
+            data-lubang="petunjuk"
             onClick={() => {
               kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
             }}

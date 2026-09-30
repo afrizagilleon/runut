@@ -68,6 +68,14 @@
    */
   --tepi-lembar: var(--garis-tegas);
 
+  /*
+   * Lapisan redup sorotan pemandu (M3.16 D-1): --tinta 55 % — halaman
+   * "digelapkan" dengan tinta palet ini sendiri, bukan hitam asing. Cadangan
+   * rgba() lebih dulu, seperti --garis.
+   */
+  --selubung: rgba(20, 33, 61, 0.55);
+  --selubung: color-mix(in srgb, var(--tinta) 55%, transparent);
+
   /* Nama pengirim pesan (v3, patokan). Kontras dihitung di ledger T-02. */
   --nama: #1f6b45;
 
@@ -130,6 +138,13 @@
     --garis-kontrol: rgba(230, 227, 220, 0.5);
     --garis-kontrol: color-mix(in srgb, var(--tinta) 50%, transparent);
     --tepi-lembar: var(--garis);
+    /*
+     * Di gelap tinta itu terang; meredupkan dengan tinta berarti menerangi.
+     * Yang dipakai meja malam (--kertas) 72 %: isi di bawahnya tenggelam ke
+     * meja, lubangnya tetap selampu lembar.
+     */
+    --selubung: rgba(25, 24, 22, 0.72);
+    --selubung: color-mix(in srgb, var(--kertas) 72%, transparent);
   }
 }
 
@@ -2406,6 +2421,65 @@ textarea {
 
 body:has(.pemandu) .halaman {
   padding-bottom: 160px;
+}
+
+/*
+ * Sorotan pemandu (M3.16 D-1): satu bidang --selubung setinggi DOKUMEN
+ * (`absolute`, bukan `fixed` — ikut tergulir bersama isi halaman, jadi lubang
+ * tidak pernah tertinggal saat digulir), dilubangi `clip-path` yang dihitung
+ * `web/src/sorotan.ts`. Klip itu juga memotong uji-kena: ketukan di luar
+ * lubang ditangkap lapisan dan tidak melakukan apa pun, ketukan di dalam
+ * lubang sampai ke sasaran.
+ *
+ * Urutan tumpuk: balon melayang (1) < bilah (4) < lapisan (5) < keping
+ * berselubung (6, lihat di bawah) < panel pemandu (7).
+ * Panel selalu di atas lapisan — "Lewati" tidak pernah tertutup.
+ *
+ * Tanpa buram (`backdrop-filter`): periksa:desain menolaknya (KABUR),
+ * docs/desain.md melarang efek kaca, dan ponsel lama membayarnya tiap frame.
+ */
+.sorotan {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background: var(--selubung);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Penanda lubang: tanpa cat, tidak menangkap ketukan — ukuran untuk tes dan pembaca kode. */
+.sorotan-lubang {
+  position: absolute;
+  pointer-events: none;
+}
+
+/*
+ * Keping (sticky) dan balon melayang (fixed) menempel pada JENDELA, sedangkan
+ * lubangnya pada DOKUMEN. Di layar pendek (ponsel mendatar) sasaran yang
+ * tinggi bisa tergulir ke bawah keping — tanpa aturan ini keping dan balon
+ * yang kebetulan berada di dalam lubang ikut tampak "disorot". Maka selama
+ * sorotan tampil keping naik ke atas lapisan dengan selubungnya sendiri
+ * (redup tepat sekali, di mana pun lubangnya), dan balon melayang
+ * disingkirkan — ia kembali begitu pemandu ditutup.
+ */
+body:has(.sorotan) .penanda {
+  z-index: 6;
+}
+
+body:has(.sorotan) .penanda::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--selubung);
+}
+
+body:has(.sorotan) .melayang {
+  visibility: hidden;
+}
+
+.tindakan.pemandu {
+  z-index: 7;
 }
 
 /* --- bantuan di layar soal: "Minta petunjuk", "Cara main" ------------------ */
