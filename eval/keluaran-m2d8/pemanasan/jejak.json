@@ -1,0 +1,269 @@
+{
+  "paket_id": "tirt",
+  "kartu": [
+    "susp-2025-12-10",
+    "susp-2025-01-21"
+  ],
+  "label": "Keliru",
+  "huruf_kunci": "b",
+  "lolos": false,
+  "berhenti": "4 percobaan tanpa soal yang lolos semua gerbang",
+  "biaya_usd": 0.017851712,
+  "percobaan": [
+    {
+      "ke": 1,
+      "teks_mentah": "{\"nama\":\"sinta\",\"jam\":\"20.15\",\"pesan\":\"Gw dengar saham itu dihentikan hari ini karena ada keraguan atas kelangsungan usahanya, ya?\",\"angka_pesan\":[],\"kunci\":\"Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.\",\"pengecoh\":[\"Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.\",\"Betul, bursa menilai ada keraguan atas kelangsungan usaha.\",\"Keliru, alasan resmi karena keraguan atas kelangsungan usaha.\"],\"penjelasan\":\"Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif yang signifikan]] untuk cooling down. Klaim teman soal keraguan atas kelangsungan usaha tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini.\"}",
+      "tulisan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kunci": "Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.",
+        "pengecoh": [
+          "Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.",
+          "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "Keliru, alasan resmi karena keraguan atas kelangsungan usaha."
+        ],
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif yang signifikan]] untuk cooling down. Klaim teman soal keraguan atas kelangsungan usaha tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "omongan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.",
+          "b": "Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.",
+          "c": "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "d": "Keliru, alasan resmi karena keraguan atas kelangsungan usaha."
+        },
+        "kunci": "b",
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif yang signifikan]] untuk cooling down. Klaim teman soal keraguan atas kelangsungan usaha tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "putusan": {
+        "lolos": false,
+        "menolak": [
+          "[RUJUKAN_PANJANG] Penjelasan: teks rujukan \"peningkatan harga kumulatif yang signifikan\" 43 karakter, lebih dari 36."
+        ],
+        "dicatat": [],
+        "kartu": [],
+        "kritik": null
+      },
+      "biaya_usd": 0.002888874
+    },
+    {
+      "ke": 2,
+      "teks_mentah": "{\"nama\":\"maya\",\"jam\":\"20.15\",\"pesan\":\"Gw dengar saham itu dihentikan hari ini karena ada keraguan atas kelangsungan usahanya, ya?\",\"angka_pesan\":[],\"kunci\":\"Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.\",\"pengecoh\":[\"Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.\",\"Betul, bursa menilai ada keraguan atas kelangsungan usaha.\",\"Keliru, alasan resmi karena keraguan atas kelangsungan usaha.\"],\"penjelasan\":\"Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif]] untuk cooling down. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini.\"}",
+      "tulisan": {
+        "nama": "maya",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kunci": "Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.",
+        "pengecoh": [
+          "Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.",
+          "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "Keliru, alasan resmi karena keraguan atas kelangsungan usaha."
+        ],
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif]] untuk cooling down. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "omongan": {
+        "nama": "maya",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.",
+          "b": "Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.",
+          "c": "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "d": "Keliru, alasan resmi karena keraguan atas kelangsungan usaha."
+        },
+        "kunci": "b",
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif]] untuk cooling down. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "putusan": {
+        "lolos": false,
+        "menolak": [
+          "[pembaca kartu 1] memilih \"c\" (kunci \"b\"), tidak menunjuk kartu 1; alasannya: \"Kartu 2 menyatakan alasan resmi penghentian sementara adalah keraguan atas kelangsungan usaha, cocok dengan omongan Maya.\""
+        ],
+        "dicatat": [],
+        "kartu": [
+          {
+            "lolos": false,
+            "pilihan": "c",
+            "kunci": "b",
+            "kartu_ditunjuk": [
+              "susp-2025-01-21"
+            ],
+            "menunjuk_penentu": false,
+            "alasan_penjawab": "Kartu 2 menyatakan alasan resmi penghentian sementara adalah keraguan atas kelangsungan usaha, cocok dengan omongan Maya.",
+            "alasan": "Pembaca yang MEMEGANG kartu memilih \"c\", padahal kunci \"b\" (alasannya: \"Kartu 2 menyatakan alasan resmi penghentian sementara adalah keraguan atas kelangsungan usaha, cocok dengan omongan Maya.\"). Periksa dulu apakah kuncimu memang benar menurut kartu — pembaca ini bisa jadi yang benar. Kalau kuncimu benar, soalnya ambigu atau kartunya tidak cukup: buat kartu penentu membuktikan kunci tanpa tafsir, dan pengecoh yang ia pilih jelas terbantah kartu.",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T10:59:03.893Z",
+                "waktu_selesai": "2026-09-30T11:00:06.221Z",
+                "token_masuk": 599,
+                "token_keluar": 5071,
+                "biaya_usd": 0.00347864,
+                "latensi_ms": 62326,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"c\", \"kartu\": [2], \"alasan\": \"Kartu 2 menyatakan alasan resmi penghentian sementara adalah keraguan atas kelangsungan usaha, cocok dengan omongan Maya.\", \"membingungkan\": []}",
+                "terbaca": true,
+                "penyedia": "Fireworks",
+                "token_penalaran": 4651
+              }
+            ],
+            "membingungkan": []
+          }
+        ],
+        "kritik": null
+      },
+      "biaya_usd": 0.00550663
+    },
+    {
+      "ke": 3,
+      "teks_mentah": "{\"nama\":\"sinta\",\"jam\":\"20.15\",\"pesan\":\"Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?\",\"angka_pesan\":[],\"kunci\":\"Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.\",\"pengecoh\":[\"Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.\",\"Betul, bursa menilai ada keraguan atas kelangsungan usaha.\",\"Keliru, penghentian dibuka lagi tidak lama.\"],\"penjelasan\":\"Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif yang signifikan]]. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini.\"}",
+      "tulisan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kunci": "Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.",
+        "pengecoh": [
+          "Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.",
+          "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "Keliru, penghentian dibuka lagi tidak lama."
+        ],
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif yang signifikan]]. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "omongan": {
+        "nama": "sinta",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, penghentian hari ini karena keraguan atas kelangsungan usaha.",
+          "b": "Keliru, alasan resmi peningkatan harga kumulatif yang signifikan.",
+          "c": "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "d": "Keliru, penghentian dibuka lagi tidak lama."
+        },
+        "kunci": "b",
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif yang signifikan]]. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "putusan": {
+        "lolos": false,
+        "menolak": [
+          "[RUJUKAN_PANJANG] Penjelasan: teks rujukan \"peningkatan harga kumulatif yang signifikan\" 43 karakter, lebih dari 36."
+        ],
+        "dicatat": [],
+        "kartu": [],
+        "kritik": null
+      },
+      "biaya_usd": 0.00420734
+    },
+    {
+      "ke": 4,
+      "teks_mentah": "{\"nama\":\"tania\",\"jam\":\"20.15\",\"pesan\":\"Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?\",\"angka_pesan\":[],\"kunci\":\"Keliru, alasan resmi peningkatan harga kumulatif.\",\"pengecoh\":[\"Betul, alasan resmi keraguan atas kelangsungan usaha.\",\"Betul, bursa menilai ada keraguan atas kelangsungan usaha.\",\"Keliru, lama penghentian bisa dipastikan.\"],\"penjelasan\":\"Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif]]. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini.\"}",
+      "tulisan": {
+        "nama": "tania",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kunci": "Keliru, alasan resmi peningkatan harga kumulatif.",
+        "pengecoh": [
+          "Betul, alasan resmi keraguan atas kelangsungan usaha.",
+          "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "Keliru, lama penghentian bisa dipastikan."
+        ],
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif]]. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "omongan": {
+        "nama": "tania",
+        "jam": "20.15",
+        "pesan": "Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, alasan resmi keraguan atas kelangsungan usaha.",
+          "b": "Keliru, alasan resmi peningkatan harga kumulatif.",
+          "c": "Betul, bursa menilai ada keraguan atas kelangsungan usaha.",
+          "d": "Keliru, lama penghentian bisa dipastikan."
+        },
+        "kunci": "b",
+        "penjelasan": "Di [[susp-2025-12-10|10 Desember 2025]], alasan resmi penghentian adalah [[susp-2025-12-10|peningkatan harga kumulatif]]. Klaim teman soal [[susp-2025-01-21|keraguan atas kelangsungan usaha]] tidak cocok dengan kartu ini. Salah-kaprah yang umum: alasan resmi penghentian [[susp-2025-01-21|21 Januari 2025]] dikira alasan penghentian hari ini."
+      },
+      "putusan": {
+        "lolos": false,
+        "menolak": [
+          "[pembaca kartu 1] memilih \"c\" (kunci \"b\"), tidak menunjuk kartu 1; alasannya: \"Kartu 2 menyebut alasan resmi penghentian sementara adalah karena bursa menilai ada keraguan atas kelangsungan usaha perseroan.\""
+        ],
+        "dicatat": [],
+        "kartu": [
+          {
+            "lolos": false,
+            "pilihan": "c",
+            "kunci": "b",
+            "kartu_ditunjuk": [
+              "susp-2025-01-21"
+            ],
+            "menunjuk_penentu": false,
+            "alasan_penjawab": "Kartu 2 menyebut alasan resmi penghentian sementara adalah karena bursa menilai ada keraguan atas kelangsungan usaha perseroan.",
+            "alasan": "Pembaca yang memegang kartu bingung dengan kalimat tulisanmu: \"Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?\" (pesan). Tulis ulang bagian itu dengan bahasa awam yang hanya bisa dibaca satu arti. Pembaca yang MEMEGANG kartu memilih \"c\", padahal kunci \"b\" (alasannya: \"Kartu 2 menyebut alasan resmi penghentian sementara adalah karena bursa menilai ada keraguan atas kelangsungan usaha perseroan.\"). Periksa dulu apakah kuncimu memang benar menurut kartu — pembaca ini bisa jadi yang benar. Kalau kuncimu benar, soalnya ambigu atau kartunya tidak cukup: buat kartu penentu membuktikan kunci tanpa tafsir, dan pengecoh yang ia pilih jelas terbantah kartu.",
+            "panggilan": [
+              {
+                "waktu_mulai": "2026-09-30T11:01:49.852Z",
+                "waktu_selesai": "2026-09-30T11:03:35.281Z",
+                "token_masuk": 590,
+                "token_keluar": 6166,
+                "biaya_usd": 0.0025372,
+                "latensi_ms": 105427,
+                "finish_reason": "stop",
+                "teks_mentah": "{\"pilihan\": \"c\", \"kartu\": [2], \"alasan\": \"Kartu 2 menyebut alasan resmi penghentian sementara adalah karena bursa menilai ada keraguan atas kelangsungan usaha perseroan.\", \"membingungkan\": [\"Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?\"]}",
+                "terbaca": true,
+                "penyedia": "DekaLLM",
+                "token_penalaran": 6074
+              }
+            ],
+            "membingungkan": [
+              {
+                "kutipan": "Gw dengar saham itu dihentikan sementara hari ini karena ada keraguan atas kelangsungan usahanya, ya?",
+                "sumber": "penulis",
+                "bagian": "pesan",
+                "fact_id": null
+              }
+            ]
+          }
+        ],
+        "kritik": null
+      },
+      "biaya_usd": 0.0052488679999999985
+    }
+  ]
+}
