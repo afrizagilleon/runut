@@ -177,3 +177,61 @@ describe('layar soal yang disorot pemandu (kedua simulasi, setiap soal)', () => 
     });
   }
 });
+
+describe('petunjuk di layar soal (D-2), setiap soal kedua simulasi', () => {
+  for (const kasus of DAFTAR_KASUS) {
+    const indeks = indeksFakta(kasus);
+    let k: Keadaan = awalBungkus(kasus, 'uji-petunjuk').keadaan;
+    k = langkah(k, { jenis: 'mulai', lebar_layar: 360 }, 1).keadaan;
+    k = langkah(k, { jenis: 'lanjut' }, 2).keadaan;
+    for (const [nomor, soal] of kasus.soal.entries()) {
+      const render = (t: KeadaanTampilan, keadaan: Keadaan = k): string =>
+        renderToStaticMarkup(
+          h(LayarSoal, {
+            kasus,
+            keadaan,
+            nomor,
+            kirim: () => undefined,
+            sakelarSumber: () => undefined,
+            indeks,
+            tampilan: t,
+            kirimTampilan: () => undefined,
+          }),
+        );
+      const polos = tampilanAwal(false);
+      const minta = langkahTampilan(polos, { jenis: 'minta_petunjuk', soal_id: soal.soal_id });
+      const bagianPilihan = (html: string): string => html.slice(html.indexOf('<fieldset'), html.indexOf('</fieldset>'));
+
+      it(`${soal.soal_id}: menandai tepat kartu_penentu; pilihan byte-identik dengan tanpa petunjuk`, () => {
+        const tanpa = render(polos);
+        const dengan = render(minta);
+        const ditandai = [...dengan.matchAll(/lembar-ditandai" aria-labelledby="kartu-([^"]+)"/g)].map((m) => m[1]);
+        expect(ditandai.sort()).toEqual([...soal.kartu_penentu].sort());
+        expect(bagianPilihan(dengan), 'petunjuk tidak menyentuh pilihan').toBe(bagianPilihan(tanpa));
+        expect(tanpa).toContain('data-uid="petunjuk-kartu"');
+      });
+
+      it(`${soal.soal_id}: teks yang ditambahkan petunjuk hanya label netral, tanpa kunci`, () => {
+        const teks = (html: string): string[] =>
+          html
+            .replace(/<[^>]*>/g, '\n')
+            .split('\n')
+            .map((x) => x.trim())
+            .filter((x) => x !== '');
+        const sebelum = teks(render(polos));
+        const tambahan = teks(render(minta)).filter((x) => !sebelum.includes(x));
+        expect(tambahan).toEqual(soal.kartu_penentu.map(() => LABEL_PETUNJUK_KARTU));
+        const kunci = soal.pilihan.find((p) => p.kunci === soal.jawaban)?.teks ?? '';
+        for (const x of tambahan) expect(kunci.includes(x)).toBe(false);
+      });
+
+      it(`${soal.soal_id}: sesudah dikunci tidak ada tombol petunjuk dan tidak ada tanda`, () => {
+        let kunci = langkah(k, { jenis: 'pilih', soal_id: soal.soal_id, kunci: soal.jawaban }, 3).keadaan;
+        kunci = langkah(kunci, { jenis: 'kunci_jawaban', soal_id: soal.soal_id }, 4).keadaan;
+        const html = render(minta, kunci);
+        expect(html).not.toContain('petunjuk-kartu');
+        expect(html).not.toContain('lembar-ditandai');
+      });
+    }
+  }
+});

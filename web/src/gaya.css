@@ -2392,6 +2392,32 @@ body:has(.pemandu) .halaman {
   margin: 0 0 4px;
 }
 
+/*
+ * "Minta petunjuk" (D-2): tombol garis tepi kecil — keluarga "↓ Pilih jawaban"
+ * (1,5 px --stempel, sudut 3 px, >= 44 px), bukan bidang penuh: ia tindakan
+ * kedua, dan tombol utama di layar ini tetap "Cek jawabanku".
+ */
+.tombol-petunjuk {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1.5px solid var(--stempel);
+  border-radius: 3px;
+  background: var(--lembar);
+  color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tombol-petunjuk:active {
+  background: var(--garis);
+}
+
 .cara-main {
   display: inline-flex;
   align-items: center;

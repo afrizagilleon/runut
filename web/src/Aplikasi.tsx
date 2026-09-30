@@ -63,6 +63,8 @@ import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } fro
 import { PARAM_DAPUR, TAUTAN_DAPUR } from './dapur.ts';
 import {
   LABEL_CARA_MAIN,
+  LABEL_TOMBOL_PETUNJUK,
+  kartuDitandai,
   LABEL_PEMANDU_LANJUT,
   LABEL_PEMANDU_LEWATI,
   LABEL_PEMANDU_SELESAI,
@@ -578,6 +580,26 @@ export function Aplikasi(): JSX.Element {
    * tampilan; tidak ada peristiwa.
    */
   const sorot = sorotPemandu(tampilan);
+
+  /*
+   * Petunjuk (M3.14 D-2): tanda kartunya milik satu layar. Berpindah layar
+   * menutupnya; setiap tekanan menggulir ke kartu yang ditandai pertama.
+   */
+  useEffect(() => {
+    kirimTampilan({ jenis: 'tutup_petunjuk' });
+  }, [namaLayarKini]);
+  const tekanPetunjuk = tampilan.petunjuk?.ke ?? 0;
+  useEffect(() => {
+    if (tekanPetunjuk === 0) return;
+    const pinta = requestAnimationFrame(() => {
+      document
+        .querySelector('[data-gulir-sorot="penentu"]')
+        ?.scrollIntoView({ block: 'start', behavior: gerakHalus() });
+    });
+    return () => {
+      cancelAnimationFrame(pinta);
+    };
+  }, [tekanPetunjuk]);
 
   /*
    * "Mulai simulasi": pengunjung yang dipandu dan punya soal pemanasan yang
@@ -1666,7 +1688,7 @@ export function LayarSoal({
    */
   const sorotKini = tampilan === undefined ? null : sorotPemandu(tampilan);
   const pemanduTampil = tampilan !== undefined && tampilan.pemandu.langkah !== null;
-  const tandaiKartu = !s.dikunci && sorotKini === 'penentu';
+  const ditandai = kartuDitandai(tampilan, soal, s.dikunci);
 
   return (
     <section className="layar layar-soal" aria-labelledby={`judul-${soal.soal_id}`}>
@@ -1771,7 +1793,7 @@ export function LayarSoal({
             key={fakta.fact_id}
             fakta={fakta}
             menentukan={s.dikunci && menentukan.has(fakta.fact_id)}
-            ditandai={tandaiKartu && menentukan.has(fakta.fact_id)}
+            ditandai={ditandai.has(fakta.fact_id)}
             sakelarSumber={sakelarSumber}
             terbuka={keadaan.sumberTerbuka.includes(fakta.fact_id)}
           >
@@ -1864,6 +1886,21 @@ export function LayarSoal({
       */}
       {!s.dikunci && kirimTampilan !== undefined && (
         <div className="bantuan-soal">
+          {/*
+            Petunjuk (M3.14 D-2): menggulir ke dan menandai `kartu_penentu` —
+            kartunya, bukan jawabannya. Tidak menyentuh pilihan sama sekali.
+            Ketukannya tercatat `ketuk` dengan uid `petunjuk-kartu`.
+          */}
+          <button
+            type="button"
+            className="tombol-petunjuk"
+            data-uid="petunjuk-kartu"
+            onClick={() => {
+              kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
+            }}
+          >
+            {LABEL_TOMBOL_PETUNJUK}
+          </button>
           <button
             type="button"
             className="cara-main"
@@ -2583,7 +2620,7 @@ export function LayarPemanasan({
   const sorotKini = sorotPemandu(tampilan);
   const pemanduTampil = tampilan.pemandu.langkah !== null;
   const menentukan = new Set(soal.kartu_penentu);
-  const tandaiKartu = !k.dikunci && sorotKini === 'penentu';
+  const ditandai = kartuDitandai(tampilan, soal, k.dikunci);
   const benar = k.dikunci ? k.kunci === soal.jawaban : null;
   const tanpaAksi = (): void => undefined;
   const keadaanOpsi = { kunci: k.kunci, dikunci: k.dikunci } as KeadaanSoal;
@@ -2613,7 +2650,7 @@ export function LayarPemanasan({
             key={fakta.fact_id}
             fakta={fakta}
             menentukan={k.dikunci && menentukan.has(fakta.fact_id)}
-            ditandai={tandaiKartu && menentukan.has(fakta.fact_id)}
+            ditandai={ditandai.has(fakta.fact_id)}
             sakelarSumber={tanpaAksi}
             tanpaKaki
           />
@@ -2655,6 +2692,20 @@ export function LayarPemanasan({
           );
         })}
       </fieldset>
+      {!k.dikunci && (
+        <div className="bantuan-soal">
+          <button
+            type="button"
+            className="tombol-petunjuk"
+            data-uid="pemanasan:petunjuk-kartu"
+            onClick={() => {
+              kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
+            }}
+          >
+            {LABEL_TOMBOL_PETUNJUK}
+          </button>
+        </div>
+      )}
       <div className="kunci-jawaban" role="status" aria-live="polite" data-uid="pemanasan:sesudah">
         {k.dikunci && (
           <>

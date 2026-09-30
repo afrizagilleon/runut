@@ -118,11 +118,21 @@ export interface KeadaanPemanasan {
   dikunci: boolean;
 }
 
+/**
+ * Petunjuk yang sedang menandai kartu (D-2): soal mana, dan tekanan ke berapa
+ * (angka yang naik tiap tekanan, supaya tekanan kedua menggulir lagi).
+ */
+export interface KeadaanPetunjuk {
+  soal_id: string;
+  ke: number;
+}
+
 export interface KeadaanTampilan {
   /** Diputuskan sekali per pemuatan (`pemanduOtomatis`). */
   otomatis: boolean;
   pemandu: KeadaanPemandu;
   pemanasan: KeadaanPemanasan;
+  petunjuk: KeadaanPetunjuk | null;
 }
 
 export type AksiTampilan =
@@ -138,13 +148,18 @@ export type AksiTampilan =
   | { jenis: 'mulai_pemanasan' }
   | { jenis: 'pilih_pemanasan'; kunci: string }
   | { jenis: 'kunci_pemanasan' }
-  | { jenis: 'selesai_pemanasan' };
+  | { jenis: 'selesai_pemanasan' }
+  /** "Minta petunjuk" di soal ini (D-2). */
+  | { jenis: 'minta_petunjuk'; soal_id: string }
+  /** Layar berganti: tanda petunjuk tidak ikut ke layar lain. */
+  | { jenis: 'tutup_petunjuk' };
 
 export function tampilanAwal(otomatis: boolean): KeadaanTampilan {
   return {
     otomatis,
     pemandu: { langkah: null, sudah: false },
     pemanasan: { aktif: false, kunci: null, dikunci: false },
+    petunjuk: null,
   };
 }
 
@@ -178,7 +193,15 @@ export function langkahTampilan(k: KeadaanTampilan, aksi: AksiTampilan): Keadaan
       if (!k.pemanasan.aktif || k.pemanasan.kunci === null) return k;
       return { ...k, pemanasan: { ...k.pemanasan, dikunci: true } };
     case 'selesai_pemanasan':
-      return tutupPemandu({ ...k, pemanasan: { aktif: false, kunci: null, dikunci: false } });
+      return tutupPemandu({
+        ...k,
+        pemanasan: { aktif: false, kunci: null, dikunci: false },
+        petunjuk: null,
+      });
+    case 'minta_petunjuk':
+      return { ...k, petunjuk: { soal_id: aksi.soal_id, ke: (k.petunjuk?.ke ?? 0) + 1 } };
+    case 'tutup_petunjuk':
+      return k.petunjuk === null ? k : { ...k, petunjuk: null };
   }
 }
 
@@ -201,4 +224,37 @@ export function nomorLangkah(k: KeadaanTampilan): string | null {
 /** Langkah terakhir? Tombolnya berbunyi "Mulai menjawab", bukan "Lanjut". */
 export function langkahTerakhir(k: KeadaanTampilan): boolean {
   return k.pemandu.langkah === LANGKAH_PEMANDU.length - 1;
+}
+
+/* ------------------------------------------------------------------ */
+/* Petunjuk (D-2)                                                     */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Kartu yang ditunjuk petunjuk sebuah soal: `kartu_penentu`, dan HANYA itu —
+ * tidak pernah pilihan jawaban, dan tidak pernah teks kartunya sendiri (yang
+ * tampil hanya cincin dan label netral di atas kartu yang sudah ada di layar,
+ * jadi pemain tetap harus membacanya).
+ *
+ * Disaring terhadap `kartu` soal itu: penanda tidak boleh jatuh pada lembar
+ * yang tidak ada di layar.
+ */
+export function kartuPetunjuk(soal: { kartu: readonly string[]; kartu_penentu: readonly string[] }): string[] {
+  return soal.kartu_penentu.filter((id) => soal.kartu.includes(id));
+}
+
+/** Apakah petunjuk sedang menandai kartu di soal ini. */
+export function petunjukAktif(k: KeadaanTampilan, soal_id: string): boolean {
+  return k.petunjuk?.soal_id === soal_id;
+}
+
+/** Kartu mana yang ditandai di soal ini sekarang: oleh petunjuk ATAU langkah ketiga pemandu. */
+export function kartuDitandai(
+  k: KeadaanTampilan | undefined,
+  soal: { soal_id: string; kartu: readonly string[]; kartu_penentu: readonly string[] },
+  dikunci: boolean,
+): Set<string> {
+  if (k === undefined || dikunci) return new Set();
+  if (!petunjukAktif(k, soal.soal_id) && sorotPemandu(k) !== 'penentu') return new Set();
+  return new Set(kartuPetunjuk(soal));
 }

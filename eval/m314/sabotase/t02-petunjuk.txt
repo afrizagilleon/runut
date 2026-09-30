@@ -1,0 +1,15 @@
+== Sabotase 1: petunjuk ikut menyorot pilihan yang benar (kelas 'disorot' pada opsi kunci) ==
+ web/src/Aplikasi.tsx | 61 +++++++++++++++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 56 insertions(+), 5 deletions(-)
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  8 failed | 28 passed (36)
+    Error: pilihan tidak berubah satu atribut pun
+  1 failed
+== Sabotase 2: petunjuk menunjuk SEMUA kartu soal, bukan kartu_penentu ==
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  17 failed | 39 passed (56)
+== Sabotase 3: label petunjuk memuat pilihan kunci ('Coba cek kartu ini: pengumumannya soal laporan keuangan telat') ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  2 failed | 54 passed (56)
+== Pulih ==
+      Tests  56 passed (56)

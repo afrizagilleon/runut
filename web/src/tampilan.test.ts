@@ -13,7 +13,11 @@ import type { Kasus } from '../../factory/skema/tipe.ts';
 import { teksPolos } from '../../factory/skema/rujukan.ts';
 import {
   LABEL_PETUNJUK_KARTU,
+  LABEL_TOMBOL_PETUNJUK,
   LANGKAH_PEMANDU,
+  kartuDitandai,
+  kartuPetunjuk,
+  petunjukAktif,
   kodePemandu,
   langkahTampilan,
   langkahTerakhir,
@@ -154,6 +158,59 @@ describe('kata pemandu', () => {
           for (let i = 0; i + 4 <= kata.length; i += 1) {
             const tiga = kata.slice(i, i + 4).join(' ');
             expect(teksPemandu.includes(tiga), `"${tiga}" dari ${soal.soal_id}`).toBe(false);
+          }
+        }
+      }
+    }
+  });
+});
+
+describe('petunjuk (D-2)', () => {
+  it('menunjuk kartu_penentu yang ada di layar soal itu — tidak pernah pilihan', () => {
+    for (const kasus of KASUS) {
+      for (const soal of kasus.soal) {
+        const ditunjuk = kartuPetunjuk(soal);
+        expect(ditunjuk.length, soal.soal_id).toBeGreaterThan(0);
+        expect(ditunjuk.every((id) => soal.kartu.includes(id))).toBe(true);
+        expect(ditunjuk.sort()).toEqual([...soal.kartu_penentu].sort());
+        for (const p of soal.pilihan) expect(ditunjuk).not.toContain(p.kunci);
+      }
+    }
+  });
+
+  it('tekanan menaikkan hitungan (tekanan kedua menggulir lagi); pindah layar menutup', () => {
+    let k = jalankan(tampilanAwal(false), { jenis: 'minta_petunjuk', soal_id: 's1' });
+    expect(k.petunjuk).toEqual({ soal_id: 's1', ke: 1 });
+    expect(petunjukAktif(k, 's1')).toBe(true);
+    expect(petunjukAktif(k, 's2')).toBe(false);
+    k = jalankan(k, { jenis: 'minta_petunjuk', soal_id: 's1' });
+    expect(k.petunjuk?.ke).toBe(2);
+    k = jalankan(k, { jenis: 'tutup_petunjuk' });
+    expect(k.petunjuk).toBeNull();
+  });
+
+  it('sesudah dikunci tidak ada kartu yang ditandai', () => {
+    const soal = KASUS[0]?.soal[0];
+    if (soal === undefined) throw new Error('butuh soal');
+    const k = jalankan(tampilanAwal(false), { jenis: 'minta_petunjuk', soal_id: soal.soal_id });
+    expect([...kartuDitandai(k, soal, false)]).toEqual(soal.kartu_penentu);
+    expect(kartuDitandai(k, soal, true).size).toBe(0);
+    expect(kartuDitandai(undefined, soal, false).size).toBe(0);
+  });
+
+  it('kata petunjuk netral: tanpa huruf kunci, tanpa potongan pilihan, penjelasan, atau isi kartu', () => {
+    const kata = `${LABEL_TOMBOL_PETUNJUK} ${LABEL_PETUNJUK_KARTU}`.toLowerCase();
+    expect(kata).not.toMatch(/\b(betul|keliru|benar|salah|jawaban(nya)? [a-d])\b/);
+    for (const kasus of KASUS) {
+      for (const soal of kasus.soal) {
+        const kartuTeks = soal.kartu_penentu.map((id) => kasus.fakta.find((f) => f.fact_id === id)?.awam?.isi ?? '');
+        const bahan = [...soal.pilihan.map((p) => p.teks), soal.penjelasan, ...kartuTeks].map((x) =>
+          teksPolos(x).toLowerCase(),
+        );
+        for (const kalimat of bahan) {
+          const k = kalimat.replace(/[.,!?:;"“”()]/g, ' ').split(/\s+/).filter((x) => x !== '');
+          for (let i = 0; i + 3 <= k.length; i += 1) {
+            expect(kata.includes(k.slice(i, i + 3).join(' ')), `${soal.soal_id}: ${k.slice(i, i + 3).join(' ')}`).toBe(false);
           }
         }
       }
