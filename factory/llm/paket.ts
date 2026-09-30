@@ -44,6 +44,8 @@ import { verifikasiV2 } from '../verifikasi/v2.ts';
 import { sesudahT, tanggalDalam } from './angka.ts';
 
 export type IdPaket = 'dada' | 'ultj' | 'tirt';
+/** M2d-9: paket yang dibangun pintu penyusun untuk emiten/tanggal pilihan penyusun (`alat/penyusun/paket-otomatis.ts`). */
+export type IdPaketPenyusun = `penyusun-${string}`;
 
 export interface FaktaPaket {
   fact_id: string;
@@ -63,7 +65,7 @@ export interface FaktaPaket {
 }
 
 export interface PaketFakta {
-  paket_id: IdPaket;
+  paket_id: IdPaket | IdPaketPenyusun;
   simbol: string;
   nama_emiten: string;
   nama_samaran: string;
@@ -84,7 +86,7 @@ export interface PaketFakta {
 type Status = { status: StatusFakta; alasan: string };
 
 export interface DefinisiPaket {
-  paket_id: IdPaket;
+  paket_id: IdPaket | IdPaketPenyusun;
   simbol: string;
   nama_emiten: string;
   nama_samaran: string;

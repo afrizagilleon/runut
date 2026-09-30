@@ -469,6 +469,50 @@ dikecualikan lewat nomor pengunjung dicetak **terpisah** dari yang lewat penanda
 beserta berapa pengunjung, supaya ketiga angkanya menjumlah kembali ke seluruh
 sesi. Berkas mentahnya tidak pernah diubah.
 
+## Agen penyusun (lokal)
+
+Pintu untuk menyuruh agen bekerja sendiri: ketik kode saham → agen mengusulkan
+tiga hari yang layak dibekukan (dengan alasan dan status data) → tahapannya
+terlihat langsung (data, 33 aturan pemeriksa, paket fakta, lalu tiap langkah
+peran: siapa, putusan, alasan, biaya nyata) → **draf simulasi + jejak**, atau
+**penolakan beralasan** → kamu sebagai **penyetuju** memeriksa draf seperti
+tampilan pemain, lalu setujui, tolak dengan alasan, atau perbaiki kata (angka
+dan rujukan fakta dikunci; setiap suntingan dicatat dan diuji ulang oleh
+gerbang yang sama sebelum boleh disetujui).
+
+Berjalan di komputermu saja — server `node:http` yang hanya mendengar di
+`127.0.0.1` — dengan kuncimu sendiri (BYOK):
+
+```bash
+cp .env.example .env          # isi nilainya sendiri; .env tidak pernah di-commit
+npm run penyusun              # lalu buka http://127.0.0.1:8790/
+npm run penyusun -- --palsu   # tanpa kunci dan tanpa biaya: agen & Sectors palsu, untuk melihat alurnya
+```
+
+- Kunci dibaca dari `.env` oleh server saja; halaman hanya menerima nama
+  variabel yang belum diisi, tidak pernah nilainya.
+- Setiap tindakan berbayar menampilkan perkiraan lebih dulu dan menunggu klik:
+  kredit Sectors (hanya bila data emiten belum ada di cache; ≤ 10 kredit per
+  emiten, di bawah `SECTORS_KREDIT_PAGU`), agen (pagu jalan yang kamu pilih; di
+  atasnya pagu semua jalan penyusun US$1,20 — ubah dengan
+  `npm run penyusun -- --pagu-penyusun <usd>` — dan `LLM_PAGU_USD`), serta uji
+  ulang sesudah suntingan. Pagu ditegakkan kode sebelum setiap panggilan.
+- Usulan hari hanya memakai peristiwa bertanggal ≤ T. Data sesudah T dipakai
+  untuk satu hal: menghitung ada berapa hari bursa "sesudahnya" (jendela 5–20,
+  bawaan 10). Isi kartu tetap data ≤ T. Tanggal ketikanmu divalidasi (masa
+  depan, hari ini/terlalu dekat, akhir pekan/libur, data kurang ditolak dengan
+  alasannya).
+- Agen = lingkar pengecoh dengan setelan terkini M2d-8 (DeepSeek menulis;
+  pilihan-saja, pembaca kartu, kritikus, dan penebak GLM menguji), dipasang di
+  belakang antarmuka `MesinPenulis` (`alat/penyusun/mesin.ts`) sehingga
+  pendekatan lain bisa dicolokkan tanpa mengubah pintu.
+- Keluaran per jalan di `eval/penyusun/<id>/`: `aliran.jsonl` (log tahapan),
+  `paket.json`, `jejak-agen.json`, `hasil.json`, dan sesudah diputuskan
+  `draf-disetujui.json` atau `penolakan-penyetuju.json` +
+  `catatan-suntingan.json`. **Tidak pernah ke `cases/`**: memasang draf ke
+  produk adalah langkah terpisah. Contoh jalan sungguhan:
+  `eval/penyusun/demo-tirt/`.
+
 ## Penyusun LLM (M2d, eksperimen — belum dipasang ke produk)
 
 `factory/llm/` menyusun draf simulasi dengan LLM **di bawah validator**: paket
@@ -575,4 +619,4 @@ di `eval/keluaran-m2d4/`.
 
 ## Lisensi
 
-MIT (menyusul).
+MIT — lihat [LICENSE](LICENSE).

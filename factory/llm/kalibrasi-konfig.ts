@@ -30,7 +30,12 @@ export const PAGU_BAGIAN_M2D8 = {
 /** Awalan tag jalan TIRT M2d-8 (satu jalan, kontrak D-4; dibatasi sisa pagu milestone). */
 export const AWALAN_TAG_JALAN_M2D8 = 'm2d8/jalan/';
 
-const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', AWALAN_TAG_M2D8] as const;
+/**
+ * M2d-9: pintu penyusun lokal menulis ke ledger yang sama dengan tag
+ * `penyusun/<jalan>/…` (dibatasi pagu penyusun + `LLM_PAGU_USD`); entri itu
+ * sah dan tidak dihitung laporan M2d-8 (laporan memfilter `m2d5/`–`m2d8/`).
+ */
+const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', AWALAN_TAG_M2D8, 'penyusun/'] as const;
 
 /** Ledger hanya boleh memuat panggilan OpenRouter M2d-5…M2d-8. `null` = siap. */
 export function siapM2d8(jalurLedger: string = JALUR_LEDGER): string | null {
