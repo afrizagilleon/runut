@@ -141,3 +141,24 @@ export function peristiwaSse(teks: string): Array<{ no: number; tahap: string; j
     .filter((b) => b.includes('event: tahap'))
     .map((b) => JSON.parse(b.split('\n').find((l) => l.startsWith('data: '))?.slice(6) ?? '{}'));
 }
+
+/** Tulis gudang buatan (bentuk respons Sectors) untuk satu emiten ke `<akar>/.cache/sectors`. */
+export function tulisGudangUji(
+  akar: string,
+  simbol: string,
+  harga: ReadonlyArray<{ tanggal: string; tutup: number; volume: number }>,
+  suspensi: ReadonlyArray<{ tanggal: string; alasan: string }> = [],
+): void {
+  const folder = join(akar, '.cache', 'sectors');
+  mkdirSync(folder, { recursive: true });
+  writeFileSync(
+    join(folder, `${simbol}-daily-uji.json`),
+    JSON.stringify(harga.map((h) => ({ symbol: `${simbol}.JK`, date: h.tanggal, close: h.tutup, open: h.tutup, high: h.tutup, low: h.tutup, volume: h.volume, market_cap: h.tutup * 1e6 }))),
+    'utf8',
+  );
+  writeFileSync(
+    join(folder, 'suspensions-all.json'),
+    JSON.stringify(suspensi.map((s) => ({ symbol: `${simbol}.JK`, suspension_date: s.tanggal, reason: s.alasan, pdf_url: null }))),
+    'utf8',
+  );
+}

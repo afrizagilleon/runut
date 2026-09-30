@@ -17,9 +17,13 @@ import { createServer, type IncomingMessage, type Server, type ServerResponse } 
 import { existsSync, readFileSync } from 'node:fs';
 import { extname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { pengambilSungguhan, type Pengambil } from '../sectors.ts';
 import { Aliran, sambungSse } from './aliran.ts';
-import { PAGU_PENYUSUN_BAWAAN, ringkasBiaya } from './biaya.ts';
+import { PAGU_PENYUSUN_BAWAAN, jalurBukuKas, ringkasBiaya } from './biaya.ts';
+import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
+import { pengambilPalsu } from './palsu.ts';
+import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
 
 /** Satu-satunya alamat yang boleh didengar. Tidak bisa diubah lewat argumen. */
 export const HOST = '127.0.0.1';
@@ -53,11 +57,16 @@ export interface OpsiServer {
   palsu: boolean;
   /** Lingkungan proses untuk status konfigurasi (tes mengganti). */
   proses?: Record<string, string | undefined>;
+  /** Folder gudang (cache Sectors); bawaan `<akar>/.cache/sectors`. */
+  folderGudang?: string;
+  /** Pengambil Sectors; bawaan `pengambilSungguhan(akar)` (mode palsu: 404 tanpa jaringan). */
+  buatPengambil?: () => Pengambil;
 }
 
 export interface KeadaanServer {
   opsi: OpsiServer;
   aliran: Map<string, Aliran>;
+  gudang: PemuatGudang;
 }
 
 export class GalatPermintaan extends Error {
@@ -176,6 +185,72 @@ daftarRute('GET', '/api/status', (_req, res, { keadaan }) => {
   });
 });
 
+function bacaBadanObyek(badan: unknown): Record<string, unknown> {
+  return typeof badan === 'object' && badan !== null && !Array.isArray(badan) ? (badan as Record<string, unknown>) : {};
+}
+
+function wajibKode(nilai: unknown): string {
+  const k = kodeSah(nilai);
+  if (k === null) throw new GalatPermintaan(400, 'Kode saham harus empat huruf, mis. TIRT.');
+  return k;
+}
+
+function wajibJendela(nilai: unknown): number {
+  const j = jendelaSah(nilai);
+  if (j === null) throw new GalatPermintaan(400, 'Jendela "sesudahnya" harus bilangan bulat 5–20 hari bursa.');
+  return j;
+}
+
+/** D-2: usulan hari dari cache, atau perkiraan kredit bila data emiten belum ada. */
+daftarRute('GET', '/api/emiten', (_req, res, { keadaan, url }) => {
+  const kode = wajibKode(url.searchParams.get('kode'));
+  const jendela = wajibJendela(url.searchParams.get('jendela') ?? undefined);
+  const o = keadaan.opsi;
+  const data = keadaan.gudang.emiten(kode);
+  if (data === null) {
+    const k = statusKonfig(o.akar, o.proses ?? process.env);
+    kirimJson(res, 200, {
+      kode,
+      ada_data: false,
+      sectors_siap: o.palsu || k.sectors.siap,
+      perkiraan_kredit: perkiraanKredit(kode, jalurBukuKas(o.akar), k.pagu_kredit),
+    });
+    return;
+  }
+  const hasil = usulkanHari(kode, data, { jendela, hariIni: o.jam().toISOString().slice(0, 10) });
+  const hari = data.harga.map((h) => h.tanggal).sort();
+  kirimJson(res, 200, {
+    ada_data: true,
+    nama: data.nama_perusahaan ?? null,
+    data: {
+      harga: { hari: hari.length, dari: hari[0] ?? null, sampai: hari.at(-1) ?? null },
+      suspensi: data.suspensi.length,
+      laporan: data.laporan.length,
+      dividen: data.dividen.length,
+      rups: data.rups.length,
+    },
+    ...hasil,
+  });
+});
+
+/** D-2: ambil data emiten dari Sectors — HANYA dengan persetujuan kredit di layar (`setuju: true`). */
+daftarRute('POST', '/api/ambil-data', async (_req, res, { keadaan, badan }) => {
+  const b = bacaBadanObyek(badan);
+  const kode = wajibKode(b['kode']);
+  if (b['setuju'] !== true) throw new GalatPermintaan(400, 'Pengambilan data memakai kredit Sectors; setujui perkiraan kreditnya di layar dulu.');
+  const o = keadaan.opsi;
+  if (keadaan.gudang.emiten(kode) !== null) throw new GalatPermintaan(409, `Data ${kode} sudah ada di cache; tidak diambil ulang.`);
+  if (!o.palsu && o.buatPengambil === undefined) {
+    const k = statusKonfig(o.akar, o.proses ?? process.env);
+    if (!k.sectors.siap) throw new GalatPermintaan(400, `Isi dulu di .env: ${k.sectors.hilang.join(', ')}.`);
+  }
+  const p = o.buatPengambil?.() ?? (o.palsu ? pengambilPalsu() : pengambilSungguhan(o.akar));
+  const hasil = await ambilDataEmiten(p, kode);
+  keadaan.gudang.lupakan();
+  o.log(`ambil data ${kode}: ${String(hasil.kredit_dipakai)} kredit; ${hasil.berhenti ?? 'selesai'}`);
+  kirimJson(res, 200, { kode, ...hasil, ada_data: keadaan.gudang.emiten(kode) !== null });
+});
+
 daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
   const a = keadaan.aliran.get(bagian[0] ?? '');
   if (a === undefined) throw new GalatPermintaan(404, 'Jalan tidak dikenal.');
@@ -188,7 +263,7 @@ daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
 /* ---------------------------------------------------------------------- */
 
 export function buatAplikasi(opsi: OpsiServer): { server: Server; keadaan: KeadaanServer } {
-  const keadaan: KeadaanServer = { opsi, aliran: new Map() };
+  const keadaan: KeadaanServer = { opsi, aliran: new Map(), gudang: new PemuatGudang(opsi.folderGudang ?? join(opsi.akar, '.cache', 'sectors')) };
   const server = createServer((req, res) => {
     void layani(req, res, keadaan);
   });

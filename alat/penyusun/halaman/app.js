@@ -116,11 +116,125 @@ function sambungAliran(id, saatPeristiwa, saatSelesai) {
   return s;
 }
 
+
+/* ------------------------------------------------------------------ */
+/* 1 · kode saham → usulan hari (atau perkiraan kredit)                */
+/* ------------------------------------------------------------------ */
+
+const NAMA_JENIS = {
+  suspensi: 'Penghentian sementara',
+  lonjakan: 'Harga naik beruntun',
+  'ex-dividen': 'Tanggal ex dividen',
+  'laporan-orang-dalam': 'Laporan orang dalam',
+};
+
+function barisStatusData(st, jendela) {
+  return el('ul', { kelas: 'status-data' },
+    el('li', {}, tanda(st.harga_t), ' harga hari itu'),
+    el('li', {}, tanda(st.sesudah_cukup), ` ${st.sesudah} hari bursa sesudahnya (perlu ≥ ${jendela})`),
+    el('li', {}, tanda(st.sebelum >= 10), ` ${st.sebelum} hari harga dalam 60 hari sebelumnya`),
+    el('li', {}, tanda(st.laporan > 0), ` ${st.laporan} laporan kepemilikan ≤ T (setahun)`),
+    el('li', {}, tanda(st.aksi > 0), ` ${st.aksi} dividen/RUPS ≤ T (setahun)`),
+    el('li', {}, tanda(st.suspensi_lalu > 0), ` ${st.suspensi_lalu} penghentian lain ≤ T (setahun)`),
+  );
+}
+
+function tampilkanUsulan(j) {
+  const wadah = kosongkan($('usulan'));
+  $('langkah-hari').hidden = false;
+  wadah.append(el('p', { kelas: 'meta' },
+    `${j.kode}${j.nama ? ' · ' + j.nama : ''} · harga ${j.data.harga.hari} hari (${tanggalId(j.data.harga.dari)}–${tanggalId(j.data.harga.sampai)}), ` +
+    `${j.data.suspensi} penghentian, ${j.data.laporan} laporan kepemilikan, ${j.data.dividen} dividen, ${j.data.rups} RUPS di cache.`));
+  if (j.usulan.length === 0) {
+    wadah.append(el('div', { kelas: 'kotak-catatan tolak' },
+      el('p', {}, 'Agen tidak menemukan hari yang layak dibekukan untuk emiten ini dengan jendela ' + j.jendela + ' hari bursa.'),
+      el('p', { kelas: 'meta' }, 'Alasan tiap kandidat ada di daftar "dilewati" di bawah. Kamu tetap boleh mengetik tanggal sendiri.')));
+  }
+  j.usulan.forEach((u, i) => {
+    wadah.append(el('article', { kelas: 'kartu-usulan', 'data-tanggal': u.tanggal },
+      el('h3', {}, `Usulan ${i + 1}: ${tanggalId(u.tanggal)} — ${u.jenis.map((x) => NAMA_JENIS[x] || x).join(' + ')}`),
+      u.alasan.map((a) => el('p', {}, a)),
+      u.salah_kaprah.map((a) => el('p', { kelas: 'meta' }, 'Kenapa biasa disalahpahami: ' + a)),
+      barisStatusData(u.status, j.jendela),
+      el('button', { kelas: 'tombol tombol-utama', type: 'button', onclick: () => pilihHari(u.tanggal) }, `Bekukan ${tanggalId(u.tanggal)}`),
+    ));
+  });
+  wadah.append(
+    el('p', { kelas: 'kotak-catatan' }, j.catatan_kebocoran),
+    el('details', {},
+      el('summary', {}, `Aturan urut (${j.aturan_urut.length}) dan ${j.dilewati.length} kandidat yang dilewati`),
+      el('ol', {}, j.aturan_urut.map((a) => el('li', {}, a))),
+      el('ul', {}, j.dilewati.map((d) => el('li', {}, `${tanggalId(d.tanggal)} (${d.jenis.map((x) => NAMA_JENIS[x] || x).join(' + ')}): ${d.alasan}`))),
+    ),
+  );
+}
+
+function tampilkanPerkiraanKredit(j) {
+  const pk = j.perkiraan_kredit;
+  const isi = kosongkan($('kode-isi'));
+  isi.append(el('div', { kelas: 'kotak-catatan penting' },
+    el('p', {}, `Data ${j.kode} belum ada di cache. Mengambilnya dari Sectors memakai kredit milik kunci di .env:`),
+    el('ul', {},
+      pk.tetap.map((x) => el('li', {}, `${x.peran}: ${x.biaya} kredit`)),
+      el('li', {}, `halaman kedua laporan kepemilikan (bila ada) dan ≤ 4 jendela harga harian 90 hari: ≤ ${pk.kredit_tambahan_maks} kredit`),
+    ),
+    el('p', {}, `Perkiraan: ${pk.kredit_tetap} kredit pasti, paling banyak ${pk.kredit_maks} kredit (pagu per emiten, ditegakkan kode). ` +
+      `Rentang data ${tanggalId(pk.rentang.awal)}–${tanggalId(pk.rentang.akhir)}. Kredit terpakai ${pk.kredit_terpakai} dari pagu ${pk.pagu_kredit}.`),
+    j.sectors_siap
+      ? el('button', { kelas: 'tombol tombol-utama', type: 'button', onclick: () => ambilData(j.kode) }, `Setujui dan ambil data (≤ ${pk.kredit_maks} kredit)`)
+      : el('p', { kelas: 'tidak' }, 'Kunci Sectors belum diisi di .env (SECTORS_API_KEY).'),
+  ));
+}
+
+async function ambilData(kode) {
+  const isi = kosongkan($('kode-isi'));
+  isi.append(el('p', { kelas: 'meta' }, `Mengambil data ${kode} dari Sectors…`));
+  try {
+    const r = await api('/api/ambil-data', { kode, setuju: true });
+    kosongkan(isi).append(el('div', { kelas: 'kotak-catatan ' + (r.ada_data ? 'lolos' : 'tolak') },
+      el('p', {}, r.tidak_dikenal
+        ? `Sectors tidak mengenal kode ${kode} (404); sisa paket tidak dikirim.`
+        : r.berhenti ? `Pengambilan berhenti: ${r.berhenti}` : `Data ${kode} diambil.`),
+      el('p', { kelas: 'meta' }, `Kredit dipakai ${r.kredit_dipakai}; terpakai ${r.kredit_terpakai} dari pagu ${r.pagu_kredit}.`),
+      el('ul', { kelas: 'meta' }, r.catatan.map((c) => el('li', {}, `${c.peran}: ${c.akhir}${c.status ? ' (' + c.status + ')' : ''}, ${c.biaya} kredit`))),
+    ));
+    await muatStatus();
+    if (r.ada_data) await cariHari(kode, keadaan.jendela);
+  } catch (e) {
+    kosongkan(isi).append(el('p', { kelas: 'tidak' }, e.message));
+  }
+}
+
+async function cariHari(kode, jendela) {
+  keadaan.kode = kode;
+  keadaan.jendela = jendela;
+  $('langkah-hari').hidden = true;
+  const isi = kosongkan($('kode-isi'));
+  isi.append(el('p', { kelas: 'meta' }, 'Mencari hari…'));
+  try {
+    const j = await api(`/api/emiten?kode=${encodeURIComponent(kode)}&jendela=${encodeURIComponent(jendela)}`);
+    kosongkan(isi);
+    if (!j.ada_data) tampilkanPerkiraanKredit(j);
+    else tampilkanUsulan(j);
+  } catch (e) {
+    kosongkan(isi).append(el('p', { kelas: 'tidak' }, e.message));
+  }
+}
+
+function pilihHari(tanggal) {
+  $('tanggal').value = tanggal;
+  $('form-tanggal').requestSubmit();
+}
+
 /* ------------------------------------------------------------------ */
 /* mulai                                                               */
 /* ------------------------------------------------------------------ */
 
 window.addEventListener('DOMContentLoaded', () => {
+  $('form-kode').addEventListener('submit', (e) => {
+    e.preventDefault();
+    cariHari($('kode').value.trim().toUpperCase(), Number($('jendela').value || 10));
+  });
   muatStatus().catch((e) => {
     kosongkan($('status-isi')).append(el('p', { kelas: 'tidak' }, `Status tidak terbaca: ${e.message}`));
   });
