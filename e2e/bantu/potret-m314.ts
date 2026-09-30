@@ -176,6 +176,16 @@ async function satuUkuran(
     await page.locator('[aria-label="Soal 1 dari 3"]').waitFor();
     await potret(page, '03-soal1-atas');
     await potret(page, '03-soal1-penuh', true);
+    if (RAGAM === 'uji') {
+      /* Bahan penguji D-5: soal 1 seperti dilihat di ponsel, digulir per 70 % layar. */
+      const tinggi = await page.evaluate(() => document.documentElement.scrollHeight - window.innerHeight);
+      for (let ke = 1, y = 0; ; ke += 1, y += Math.round(ukuran.tinggi * 0.7)) {
+        await page.evaluate((t) => window.scrollTo(0, t), Math.min(y, tinggi));
+        await potret(page, `03-soal1-gulir-${String(ke)}`);
+        if (y >= tinggi) break;
+      }
+      await page.evaluate(() => window.scrollTo(0, 0));
+    }
     const petunjuk = page.locator('[data-uid="petunjuk-kartu"]');
     if ((await petunjuk.count()) > 0) {
       await petunjuk.click();
