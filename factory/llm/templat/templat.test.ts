@@ -118,19 +118,21 @@ describe('bukti kunci tunggal (dari fakta)', () => {
 describe('pemilih pola', () => {
   it('TIRT: tiga posisi, pola berbeda, penentu tidak beririsan, minimal satu Betul', () => {
     const p = pilihRencanaSimulasi(TIRT);
-    expect(p.posisi.map(kunciRencana)).toEqual(['sebab-resmi:susp-2025-12-10', 'angka-lain-waktu:harga-2025-12-09', 'benar-berincian:hari-naik-beruntun']);
+    // A-2: sebab-resmi:susp-2025-12-10 = soal pemanasan → tidak dipakai simulasi (anti-ulang).
+    expect(p.posisi.map(kunciRencana)).toEqual(['angka-lain-waktu:harga-2025-12-09', 'setengah-benar:susp-2025-01-21', 'besaran-hitungan:kelipatan-2025-11-26-2025-12-09']);
     expect(new Set(p.posisi.map((r) => r.pola)).size).toBe(3);
     expect(p.posisi.some((r) => r.klaim.label === 'Betul')).toBe(true);
   });
 
   it('pengganti: pola & penentu tidak bentrok; Betul bila posisi itu satu-satunya Betul', () => {
-    const calon = calonRencana(TIRT);
-    const p = pilihRencanaSimulasi(TIRT, calon);
+    const p = pilihRencanaSimulasi(TIRT, calonRencana(TIRT));
+    const calon = p.calon;
     const dipakai = new Set(p.posisi.map(kunciRencana));
-    const g = penggantiRencana(calon, dipakai, p.posisi.slice(0, 2), true);
-    expect(g === null ? null : kunciRencana(g)).toBe('besaran-hitungan:kelipatan-2025-11-26-2025-12-09');
-    const g2 = penggantiRencana(calon, dipakai, [p.posisi[1] as RencanaSoal, p.posisi[2] as RencanaSoal], false);
-    expect(g2 === null ? null : kunciRencana(g2)).toBe('besaran-hitungan:kelipatan-2025-11-26-2025-12-09'); // setengah-benar bentrok penentu hari-naik dengan posisi 3
+    // benar-berincian & arah bentrok penentu hari-naik dengan setengah-benar (posisi 2); sebab-resmi disingkirkan anti-ulang
+    expect(penggantiRencana(calon, dipakai, p.posisi.slice(0, 2), true)).toBeNull();
+    const g = penggantiRencana(calon, dipakai, [p.posisi[0] as RencanaSoal], true);
+    expect(g === null ? null : kunciRencana(g)).toBe('benar-berincian:hari-naik-beruntun');
+    expect(calon.map(kunciRencana)).not.toContain('sebab-resmi:susp-2025-12-10');
   });
 
   it('pemanasan TIRT = sebab-resmi, dua kartu, kartu 1 penentu', () => {

@@ -33,8 +33,21 @@ export interface PilihanSimulasi {
   alasan: string[];
 }
 
-export function pilihRencanaSimulasi(paket: PaketFakta, calon: RencanaSoal[] = calonRencana(paket)): PilihanSimulasi {
-  const alasan: string[] = [`${String(calon.length)} calon rencana lolos bukti kunci tunggal: ${calon.map(kunciRencana).join(', ') || '(tidak ada)'}`];
+/**
+ * 5. (A-2) Anti-ulang pemanasan: calon yang berpola sama DAN berkartu penentu
+ *    sama dengan soal pemanasan paket ini (`pilihRencanaPemanasan`) tidak dipakai
+ *    simulasi — juga tidak sebagai pengganti.
+ */
+export function bukanUlangPemanasan(calon: readonly RencanaSoal[], pemanasan: RencanaSoal | null): RencanaSoal[] {
+  if (pemanasan === null) return [...calon];
+  return calon.filter((r) => !(r.pola === pemanasan.pola && r.kartu_penentu.some((id) => pemanasan.kartu_penentu.includes(id))));
+}
+
+export function pilihRencanaSimulasi(paket: PaketFakta, semua: RencanaSoal[] = calonRencana(paket)): PilihanSimulasi {
+  const pemanasan = pilihRencanaPemanasan(paket, semua);
+  const calon = bukanUlangPemanasan(semua, pemanasan);
+  const alasan: string[] = [`${String(semua.length)} calon rencana lolos bukti kunci tunggal: ${semua.map(kunciRencana).join(', ') || '(tidak ada)'}`];
+  if (pemanasan !== null && calon.length < semua.length) alasan.push(`anti-ulang pemanasan: ${semua.filter((r) => !calon.includes(r)).map(kunciRencana).join(', ')} tidak dipakai (sama dengan soal pemanasan)`);
   const posisi: RencanaSoal[] = [];
   for (const r of calon) {
     if (posisi.length === 3) break;

@@ -44,10 +44,10 @@ Enam pola diturunkan dari POLA enam soal tayang (Claude + pemilik), bukan dari k
 
 **benar-berincian** (sudut `hari-naik-beruntun`, klaim Betul, bukti sah) — klaim: Teman bilang sejak 26 November harga penutupannya naik terus setiap hari bursa, tidak pernah turun sekali pun.
 
-- kunci (Betul + rincian yang tepat): Betul, naik 9 hari bursa berturut-turut sampai 9 Desember. — proposisi BENAR
-- p1 (Keliru: menyangkal rangkaian yang tercatat): Keliru, harganya sempat turun satu hari sebelum 9 Desember. — proposisi salah
+- kunci (Betul + rincian yang tepat): Betul, naik 9 hari bursa berturut-turut tanpa sekali pun turun. — proposisi BENAR
+- p1 (Keliru: menyangkal rangkaian yang tercatat): Keliru, harganya sempat turun satu hari di tengah rangkaian itu. — proposisi salah
 - p2 (Betul + rincian yang salah): Betul, tapi naik beruntunnya hanya 4 hari bursa. — proposisi salah
-- p3 (Keliru: arah dibalik): Keliru, harga penutupannya malah turun beruntun sampai 9 Desember. — proposisi salah
+- p3 (Keliru: arah dibalik): Keliru, harga penutupannya malah turun beruntun sejak itu. — proposisi salah
 
 **arah-kali-tingkat** (sudut `hari-naik-beruntun`, klaim Keliru, bukti sah) — klaim: Teman bilang harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi harganya belum ke mana-mana.
 
@@ -59,7 +59,7 @@ Enam pola diturunkan dari POLA enam soal tayang (Claude + pemilik), bukan dari k
 **besaran-hitungan** (sudut `kelipatan-2025-11-26-2025-12-09`, klaim Betul, bukti sah) — klaim: Teman bilang sejak 26 November harga penutupannya sudah lebih dari dua kali lipat.
 
 - kunci (Betul + angka hitungan): Betul, penutupan 9 Desember 2,21 kali penutupan 26 November. — proposisi BENAR
-- p1 (Betul + angka hitungan yang salah): Betul, penutupan 9 Desember 3,51 kali penutupan 26 November. — proposisi salah
+- p1 (Betul + angka hitungan yang salah): Betul, penutupan 9 Desember 2,02 kali penutupan 26 November. — proposisi salah
 - p2 (Keliru: selisih rupiah dikira kelipatan): Keliru, naiknya cuma Rp58, bukan dua kali lipat. — proposisi salah
 - p3 (Keliru: arah dibalik): Keliru, penutupan 9 Desember malah lebih rendah dari 26 November. — proposisi salah
 

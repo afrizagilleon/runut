@@ -32,6 +32,7 @@ import {
   type KategoriAlasan,
   type NilaiHarian,
 } from './fakta.ts';
+import { calonPengecohKelipatan } from './a2.ts';
 import { evaluasi, type Proposisi } from './proposisi.ts';
 
 export type IdPola = 'sebab-resmi' | 'besaran-hitungan' | 'arah-kali-tingkat' | 'angka-lain-waktu' | 'setengah-benar' | 'benar-berincian';
@@ -466,7 +467,7 @@ export function polaBenarBerincian(paket: PaketFakta): RencanaSoal[] {
   if (m === hn.nilai) return [];
   const naik: Proposisi = { k: 'naik-beruntun', fact_id: hn.fact_id, hari: hn.nilai };
   const nHari = tok(hn.fact_id, `${angkaId(hn.nilai)} hari bursa`);
-  const sampai = tok(hn.fact_id, tglSampai);
+  void tglSampai;
   const r: Omit<RencanaSoal, 'rujukan_penjelasan' | 'asal'> = {
     pola: 'benar-berincian',
     sudut: hn.fact_id,
@@ -483,14 +484,15 @@ export function polaBenarBerincian(paket: PaketFakta): RencanaSoal[] {
       slot(
         'kunci',
         'Betul + rincian yang tepat',
-        varian('K1', 'Betul', naik, `Betul, naik ${nHari} berturut-turut sampai ${sampai}.`, ['berturut-turut'], null),
-        varian('K2', 'Betul', naik, `Betul, penutupannya naik ${nHari} berturut-turut sampai ${sampai}.`, ['berturut-turut'], null),
+        // A-2: tanpa tanggal akhir rangkaian (kebocoran kalender: hitungan hari bisa diturunkan dari dua ujung rentang).
+        varian('K1', 'Betul', naik, `Betul, naik ${nHari} berturut-turut tanpa sekali pun turun.`, ['berturut-turut'], null),
+        varian('K2', 'Betul', naik, `Betul, penutupannya naik ${nHari} berturut-turut.`, ['berturut-turut'], null),
       ),
       slot(
         'p1',
         'Keliru: menyangkal rangkaian yang tercatat',
-        varian('P1a', 'Keliru', { k: 'bukan', p: naik }, `Keliru, harganya sempat turun satu hari sebelum ${sampai}.`, ['turun'], null),
-        varian('P1b', 'Keliru', { k: 'bukan', p: naik }, `Keliru, ada satu penutupan yang lebih rendah sebelum ${sampai}.`, ['lebih rendah'], null),
+        varian('P1a', 'Keliru', { k: 'bukan', p: naik }, 'Keliru, harganya sempat turun satu hari di tengah rangkaian itu.', ['turun'], null),
+        varian('P1b', 'Keliru', { k: 'bukan', p: naik }, 'Keliru, ada satu penutupan yang lebih rendah di tengahnya.', ['lebih rendah'], null),
       ),
       slot(
         'p2',
@@ -501,8 +503,8 @@ export function polaBenarBerincian(paket: PaketFakta): RencanaSoal[] {
       slot(
         'p3',
         'Keliru: arah dibalik',
-        varian('P3a', 'Keliru', { k: 'arah', dari: hn.dari, ke: hn.sampai, arah: 'turun' }, `Keliru, harga penutupannya malah turun beruntun sampai ${sampai}.`, ['turun'], null),
-        varian('P3b', 'Keliru', { k: 'arah', dari: hn.dari, ke: hn.sampai, arah: 'turun' }, `Keliru, penutupannya justru makin rendah sampai ${sampai}.`, ['rendah'], null),
+        varian('P3a', 'Keliru', { k: 'arah', dari: hn.dari, ke: hn.sampai, arah: 'turun' }, 'Keliru, harga penutupannya malah turun beruntun sejak itu.', ['turun'], null),
+        varian('P3b', 'Keliru', { k: 'arah', dari: hn.dari, ke: hn.sampai, arah: 'turun' }, 'Keliru, penutupannya justru makin rendah dari hari ke hari.', ['rendah'], null),
       ),
     ],
     salah_kaprah: 'menganggap omongan yang terdengar yakin pasti dilebih-lebihkan, padahal rangkaiannya tercatat di dokumen',
@@ -611,8 +613,10 @@ export function polaBesaranHitungan(paket: PaketFakta): RencanaSoal[] {
     if (!f.klaim.includes(tglDari) || !f.klaim.includes(tglSampai)) continue;
     const selisih = selisihHarga(paket).find((s) => s.dari === kel.dari && s.sampai === kel.sampai) ?? null;
     const semuaNilai = new Set(paket.fakta.map((x) => x.nilai).filter((x): x is number => typeof x === 'number'));
-    let salah = Math.round((kel.nilai + 1.3) * 100) / 100;
-    while (semuaNilai.has(salah)) salah = Math.round((salah + 0.1) * 100) / 100;
+    // A-2: pengecoh angka dekat tetapi salah, dari rasio dua harga penutupan NYATA (periode lain).
+    const pengecoh = calonPengecohKelipatan(hargaHarian(paket).filter((h) => h.tanggal <= T), kel.nilai, n, semuaNilai)[0];
+    if (pengecoh === undefined) continue;
+    const salah = pengecoh.nilai;
     const lipat: Proposisi = { k: 'banding', fact_id: kel.fact_id, op: '>=', ambang: n };
     const sampai = tok(kel.fact_id, tglSampai);
     const dari = tok(kel.fact_id, tglDari);

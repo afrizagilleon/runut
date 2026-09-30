@@ -69,16 +69,16 @@ describe('MesinTemplat (templat & gerbang kode sungguhan, model palsu)', () => {
     const folder = mkdtempSync(join(tmpdir(), 'penyusun-templat-'));
     const h = await m.jalankan({ id: 'j2', paket: TIRT, folder, paguJalanUsd: 0.5, lapor: () => undefined, jam: JAM });
     const keadaan = h.keadaan;
-    const k1 = keadaan[0];
+    const k1 = keadaan[1]; // A-2: omongan 2 = setengah-benar (kata wajib "tahun ini")
     if (k1 === undefined) throw new Error('tidak ada keadaan');
     const baru = `${k1.omongan.pesan} ya`;
     expect(periksaSuntingan(k1.omongan, 'pesan', baru)).toBeNull();
     terapkanSuntingan(k1.omongan, k1, 'pesan', baru);
-    const ok = await m.ujiUlang({ id: 'j2', ke: 1, paket: TIRT, folder, keadaan, diuji: [1], paguUsd: 0.5, lapor: () => undefined, jam: JAM });
+    const ok = await m.ujiUlang({ id: 'j2', ke: 1, paket: TIRT, folder, keadaan, diuji: [2], paguUsd: 0.5, lapor: () => undefined, jam: JAM });
     expect(ok.lolos).toBe(true);
-    const tanpa = k1.omongan.pesan.replace(/hari ini/gi, 'tadi');
+    const tanpa = k1.omongan.pesan.replace(/tahun ini/gi, 'kemaren');
     terapkanSuntingan(k1.omongan, k1, 'pesan', tanpa);
-    const tolak = await m.ujiUlang({ id: 'j2', ke: 2, paket: TIRT, folder, keadaan, diuji: [1], paguUsd: 0.5, lapor: () => undefined, jam: JAM });
+    const tolak = await m.ujiUlang({ id: 'j2', ke: 2, paket: TIRT, folder, keadaan, diuji: [2], paguUsd: 0.5, lapor: () => undefined, jam: JAM });
     expect(tolak.lolos).toBe(false);
     expect(tolak.per_omongan[0]?.status).toBe('ditolak-pemeriksa');
   });
@@ -86,7 +86,7 @@ describe('MesinTemplat (templat & gerbang kode sungguhan, model palsu)', () => {
   it('keadaanDariKunci menyimpan rencana & varian (bahan uji ulang)', async () => {
     const m = mesinTemplatPalsu();
     const h = await m.jalankan({ id: 'j3', paket: TIRT, folder: mkdtempSync(join(tmpdir(), 'penyusun-templat-')), paguJalanUsd: 0.5, lapor: () => undefined, jam: JAM });
-    const k = h.keadaan[1];
+    const k = h.keadaan[0];
     expect(k?.templat?.rencana.pola).toBe('angka-lain-waktu');
     expect(Object.keys(k?.templat?.varian ?? {})).toEqual(['kunci', 'p1', 'p2', 'p3']);
     expect(typeof keadaanDariKunci).toBe('function');

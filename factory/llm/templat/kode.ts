@@ -28,6 +28,7 @@ import { validasiM2d8 } from '../kalibrasi-soal.ts';
 import type { PaketFakta } from '../paket.ts';
 import { periksaRujukanHuruf } from '../posisi-kunci.ts';
 import { dariG, dariGaya, dariHuruf, dariKembar, dariMeresmikan, dariValidator, isiLokasi, type UmpanMentah } from '../umpan-terarah.ts';
+import { bocorKalender } from './a2.ts';
 import { buktiKunciTunggal } from './bukti.ts';
 import { periksaTulisanPenjelasan, periksaTulisanPesan } from './penulis.ts';
 import type { RencanaSoal } from './pola.ts';
@@ -69,6 +70,10 @@ export function periksaKodeTemplat(a: ArgKode): HasilKode {
   for (const m of buktiKunciTunggal(r, paket, a.pilihan).masalah) semua.push({ lokasi: 'struktur', sumber: 'templat: kunci tunggal', alasan: m });
   for (const m of periksaTulisanPesan(a.tulisan, r, a.namaLain)) semua.push({ lokasi: 'pesan', sumber: 'templat: pesan', alasan: m });
   for (const m of periksaTulisanPenjelasan(o.penjelasan, r)) semua.push({ lokasi: 'penjelasan', sumber: 'templat: penjelasan', alasan: m });
+  // A-2: kebocoran kalender — dari pilihan saja = struktur templat; bila baru muncul bersama pesan = pesan.
+  const bocorPilihan = bocorKalender({ ...o, pesan: '' }, paket);
+  for (const m of bocorPilihan) semua.push({ lokasi: 'struktur', sumber: 'templat: kalender', alasan: m });
+  if (bocorPilihan.length === 0) for (const m of bocorKalender(o, paket)) semua.push({ lokasi: 'pesan', sumber: 'templat: kalender', alasan: m });
   const validator = validasiM2d8({ omongan: [o] }, paket).filter((m) => m.omongan !== null);
   const umpan: UmpanMentah[] = [
     ...dariValidator(validator, o),

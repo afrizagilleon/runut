@@ -23,6 +23,7 @@ import type { PaketFakta } from '../paket.ts';
 import { uraiPenjelasan } from '../penulis-pecah.ts';
 import { uraiKeluaran, type JawabanModel, type SetelanPanggil } from '../susun.ts';
 import { NAMA_TERLARANG } from '../validasi.ts';
+import { gKlaimTambahan } from './a2.ts';
 import type { RencanaSoal } from './pola.ts';
 import { angkaPesanDari, periksaPenjelasan, periksaWajib, salinanTayang, type TulisanPesan } from './rakit.ts';
 
@@ -124,7 +125,7 @@ export function uraiTulisanPesan(teks: string): TulisanPesan | null {
 
 /** Pemeriksaan kode atas pesan (sebelum gerbang lain): angka terkunci, kata wajib, panjang, nama, anti-salin, penilaian. */
 export function periksaTulisanPesan(t: TulisanPesan, r: RencanaSoal, namaLain: readonly string[]): string[] {
-  const m = [...angkaPesanDari(t.pesan, r.klaim).masalah, ...periksaWajib(t.pesan, r.klaim)];
+  const m = [...angkaPesanDari(t.pesan, r.klaim).masalah, ...periksaWajib(t.pesan, r.klaim), ...gKlaimTambahan(t.pesan)];
   if (t.pesan.length > 220) m.push(`pesan ${String(t.pesan.length)} karakter, lebih dari 220`);
   const nama = t.nama.toLowerCase();
   if (namaTerlarang().includes(nama) || namaLain.some((x) => x.toLowerCase() === nama)) m.push(`nama "${t.nama}" terlarang atau sudah dipakai omongan lain`);

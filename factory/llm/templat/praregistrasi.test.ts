@@ -66,16 +66,13 @@ describe('pra-registrasi M2d-10 Amandemen A-2', () => {
   it('tidak berubah sejak commit yang menambahkannya', () => {
     const t = commitPertama(B);
     expect(t).not.toBe('');
-    expect(readFileSync(`${AKAR}${B}`, 'utf8').replace(/
-/g, '
-')).toBe(isiDi(t, B));
+    expect(readFileSync(`${AKAR}${B}`, 'utf8').replace(/\r\n/g, '\n')).toBe(isiDi(t, B));
   });
   it('entri ledger penyusun/m2d10-tirt-a2/ pertama lebih baru dari commit A-2', () => {
     const jalur = `${AKAR}.cache/llm/ledger.jsonl`;
     if (!existsSync(jalur)) return;
     const waktu = Date.parse(execFileSync('git', ['show', '-s', '--format=%cI', commitPertama(B)], { cwd: AKAR, encoding: 'utf8' }).trim());
-    const pertama = readFileSync(jalur, 'utf8').split(/?
-/).filter((b) => b.trim() !== '').map((b) => JSON.parse(b) as { waktu: string; tag: string }).find((e) => e.tag.startsWith('penyusun/m2d10-tirt-a2/'));
+    const pertama = readFileSync(jalur, 'utf8').split(/\r?\n/).filter((b) => b.trim() !== '').map((b) => JSON.parse(b) as { waktu: string; tag: string }).find((e) => e.tag.startsWith('penyusun/m2d10-tirt-a2/'));
     if (pertama === undefined) return;
     expect(Date.parse(pertama.waktu)).toBeGreaterThan(waktu);
   });

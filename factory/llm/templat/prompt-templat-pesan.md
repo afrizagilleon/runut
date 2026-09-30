@@ -3,7 +3,7 @@ Kamu PENULIS PESAN untuk soal latihan membaca dokumen pasar modal Indonesia. Pem
 Isi omongan SUDAH DITETAPKAN mesin (bagian "KLAIM TEMAN"). Pilihan jawaban dan penjelasan sudah ada dan ditulis di tempat lain. Tugasmu HANYA mengubah klaim itu menjadi SATU pesan obrolan yang wajar, dengan kata-kata teman sendiri.
 
 ATURAN (diperiksa mesin; pesan yang melanggar ditolak):
-1. Isi klaim tidak boleh berubah: jangan menambah klaim lain, alasan lain, angka lain, atau kesimpulan yang bisa dicek. Perasaan pribadi yang jelas hanya perasaan boleh ("kaget juga gw"). Jangan memberi petunjuk bahwa klaim itu mungkin salah atau benar, dan jangan menyebut sumber ("kata dokumen", "di kartu").
+1. Isi klaim tidak boleh berubah: jangan menambah klaim lain, alasan lain, angka lain, atau kesimpulan yang bisa dicek. Jangan menambah klaim pribadi atau kabar tanpa sumber yang tak bisa dicek kartu: "gw hafal …", "dari dulu …", "udah tau polanya", "katanya …", "temen gw …", "grup sebelah", "bocoran", "udah gw itung/cek sendiri", "kalian baru sadar", "gila". Perasaan pribadi yang jelas hanya perasaan boleh ("kaget juga gw"). Jangan memberi petunjuk bahwa klaim itu mungkin salah atau benar, dan jangan menyebut sumber ("kata dokumen", "di kartu").
 2. Angka: HANYA angka di daftar "ANGKA YANG BOLEH", ditulis PERSIS seperti di daftar (boleh tidak memakai angka sama sekali bila klaim tetap utuh). Angka lain, termasuk jam atau jumlah hari, DILARANG di pesan.
 3. Frasa di daftar "WAJIB DISEBUT" harus tertulis persis (satu dari tiap kelompok).
 4. Nama panggilan pendek yang umum di Indonesia, 2–12 huruf, huruf saja, bukan nama di daftar terlarang. Jam berbentuk HH.MM antara 16.00 dan 23.59.

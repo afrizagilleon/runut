@@ -152,8 +152,8 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
   };
 
   // --- 0. perencana
-  const calon = calonRencana(paket);
-  const pilih = pilihRencanaSimulasi(paket, calon);
+  const pilih = pilihRencanaSimulasi(paket, calonRencana(paket));
+  const calon = pilih.calon; // A-2: tanpa rencana yang mengulang soal pemanasan
   hasil.rencana_awal = pilih.posisi.map(kunciRencana);
   catat({
     putaran: 1, jenis: 'rencana-templat', omongan: null, waktu_mulai: jam().toISOString(), waktu_selesai: jam().toISOString(), model: null,

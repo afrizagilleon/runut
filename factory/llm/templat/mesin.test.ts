@@ -97,7 +97,7 @@ describe('lingkar templat dengan model palsu', () => {
     expect(h.berhenti).toBeNull();
     expect(h.lolos).toBe(true);
     expect(h.distribusi.lolos).toBe(3);
-    expect(h.rencana_awal).toEqual(['sebab-resmi:susp-2025-12-10', 'angka-lain-waktu:harga-2025-12-09', 'benar-berincian:hari-naik-beruntun']);
+    expect(h.rencana_awal).toEqual(['angka-lain-waktu:harga-2025-12-09', 'setengah-benar:susp-2025-01-21', 'besaran-hitungan:kelipatan-2025-11-26-2025-12-09']);
     for (const no of [1, 2, 3]) {
       const urut = log.filter((x) => x.omongan === no && ['gerbang-tebak', 'gerbang-kartu', 'kritikus'].includes(x.jenis)).map((x) => `${x.jenis}${x.jenis === 'gerbang-tebak' ? String(x.ke) : ''}`);
       // Haiku & DeepSeek sama-sama bukan kunci → GLM tidak dipanggil (putusan sudah pasti)
@@ -110,7 +110,7 @@ describe('lingkar templat dengan model palsu', () => {
   it('penebak menolak → kritikus TIDAK dipanggil untuk versi itu; penyempurna Haiku dipanggil dan dicatat sebagai peran tersendiri', async () => {
     const { panggil, log } = palsu({
       tebak: (info, n) => (info.omongan === 1 && n <= 1 ? { pilihan: KUNCI[1] as KunciOpsi, yakin: 90 } : { pilihan: LAIN(KUNCI[info.omongan ?? 1] as KunciOpsi), yakin: 30 }),
-      penyempurna: () => '{"pilihan":{"p3":{"varian":"P3b","teks":"Keliru, bursa menghentikannya hari ini karena laporan keuangannya terlambat diserahkan."}},"alasan":"x"}',
+      penyempurna: () => '{"pilihan":{"p3":{"varian":"P3b","teks":"Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."}},"alasan":"x"}',
     });
     const jejak = new PencatatJejak({ paket: TIRT, model: 'x', promptSistem: 'x', pesanPaket: 'x', ringkasanPrompt: 'x', jalur: null, versi: 2, dibuatOleh: 'factory/llm/templat/mesin.ts' });
     const h = await jalankanTemplat({ paket: TIRT, panggil, setelan: S1, jejak });
@@ -133,14 +133,14 @@ describe('lingkar templat dengan model palsu', () => {
 
   it('penyempurna mengubah angka → dibuang kode; pilihan lama tetap', async () => {
     const { panggil } = palsu({
-      tebak: (info, n) => (info.omongan === 2 && n <= 1 ? { pilihan: KUNCI[2] as KunciOpsi, yakin: 95 } : { pilihan: LAIN(KUNCI[info.omongan ?? 1] as KunciOpsi), yakin: 30 }),
+      tebak: (info, n) => (info.omongan === 1 && n <= 1 ? { pilihan: KUNCI[1] as KunciOpsi, yakin: 95 } : { pilihan: LAIN(KUNCI[info.omongan ?? 1] as KunciOpsi), yakin: 30 }),
       penyempurna: () => '{"pilihan":{"kunci":{"varian":"K1","teks":"Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp107]], bukan [[harga-2025-12-08|Rp97]]."}},"alasan":"x"}',
     });
     const h = await jalankanTemplat({ paket: TIRT, panggil, setelan: S1 });
-    const p = h.penyempurnaan.find((x) => x.no === 2);
+    const p = h.penyempurnaan.find((x) => x.no === 1);
     expect(p?.diterima).toEqual([]);
     expect(p?.dibuang.length).toBe(1);
-    expect(h.kunci.find((k) => k.no === 2)?.omongan.pilihan[KUNCI[2] as KunciOpsi]).toContain('Rp106');
+    expect(h.kunci.find((k) => k.no === 1)?.omongan.pilihan[KUNCI[1] as KunciOpsi]).toContain('Rp106');
   });
 
   it('pembaca kartu memilih pengecoh → ditolak sebelum kritikus', async () => {
@@ -166,7 +166,7 @@ describe('lingkar templat dengan model palsu', () => {
   it('kritikus tidak menjawab terus → rencana tidak dibuang sesudah satu versi (≤ 4 versi per rencana)', async () => {
     const { panggil } = palsu({ kritikus: (info) => (info.omongan === 1 ? 'ngaco' : JSON.stringify({ keberatan: [], arahan: '', cek_klaim: { bagian_tak_tercek: [], kunci_menyatakan_tak_pasti: false }, cek_pilihan: { juga_benar: [], alasan: '' } })) });
     const h = await jalankanTemplat({ paket: TIRT, panggil, setelan: S1 });
-    const pertama = h.versi.filter((v) => v.no === 1 && v.rencana === 'sebab-resmi:susp-2025-12-10');
+    const pertama = h.versi.filter((v) => v.no === 1 && v.rencana === 'angka-lain-waktu:harga-2025-12-09');
     expect(pertama.map((v) => v.berhenti)).toEqual(['kritikus', 'kritikus', 'kritikus', 'kritikus']);
     expect(h.lolos).toBe(false);
   });
