@@ -68,8 +68,11 @@ test('E-08 tanpa pengumpul: nol permintaan ke asal lain, nol POST', async ({ pag
   await page.locator('textarea').fill('uji tanpa pengumpul');
   await lanjut(page, LABEL_SELESAI);
   await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
-  await ketuk(page.getByRole('button', { name: 'Coba simulasi lain' }));
+  // M3.14 D-3: kalender simulasi menggantikan 'Coba simulasi lain'; pesan penutup tampil langsung.
   await expect(page.getByText(kasus.penutup.kepala)).toBeVisible();
+  await expect(page.locator('[data-uid="kalender-simulasi"]')).toBeVisible();
+  await ketuk(page.locator(`[data-uid="kalender:pilih:${kasus.kasus_id}"]`));
+  await expect(page.getByRole('button', { name: 'Mulai simulasi' })).toBeVisible();
 
   // Halaman ditinggalkan sungguhan: di sinilah `pagehide` menyala, dan di sinilah
   // build dengan pengumpul akan mengirim beacon terakhirnya.

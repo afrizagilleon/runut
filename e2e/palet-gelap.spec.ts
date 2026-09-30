@@ -382,7 +382,16 @@ test('E-41c halaman kalender tetap kertas terang di layar pertama, sobekan pembu
   await lanjut(page, LABEL_LANJUT_AKHIR);
   await lanjut(page, LABEL_SELESAI);
   await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
-  const terima = await rupaKalender(page, '.layar-akhir');
+  // M3.14 D-3: halaman bulan kalender simulasi ikut memakai .kalender-halaman tetapi tanpa angka/hari besar;
+  // yang diperiksa di sini halaman 'kembali ke hari ini', halaman bulan diperiksa terpisah di bawah.
+  const terima = await rupaKalender(page, '.layar-akhir [data-uid="kalender"]');
+  const bulan = await page.evaluate(() =>
+    [...document.querySelectorAll('.layar-akhir .kalender-bulan')].map((h) => ({
+      halaman: getComputedStyle(h).backgroundColor,
+      pita: getComputedStyle(h.querySelector('.kalender-pita') as Element).backgroundColor,
+      tanggal: getComputedStyle(h.querySelector('.kalender-kisi td:not(.kisi-libur) span') as Element).color,
+    })),
+  );
 
   // eslint-disable-next-line no-console
   console.log(
@@ -392,5 +401,11 @@ test('E-41c halaman kalender tetap kertas terang di layar pertama, sobekan pembu
   );
   periksaKertas(pembukaan, 'sobekan pembukaan', mode, lembar);
   periksaKertas(terima, 'terima kasih', mode, lembar);
+  expect(bulan.length, 'halaman bulan kalender simulasi ada').toBeGreaterThan(0);
+  for (const b of bulan) {
+    expect(b.halaman, 'halaman bulan: kertas seperti halaman kalender lain').toBe(mode === 'gelap' ? KERTAS_KALENDER.halaman : lembar);
+    expect(b.pita).toBe(KERTAS_KALENDER.pita);
+    expect(b.tanggal, 'tanggal bulan bertinta kalender').toBe(KERTAS_KALENDER.angka);
+  }
   expect(keping, 'keping di layar soal tetap --lembar').toEqual(kasus.soal.map(() => lembar));
 });

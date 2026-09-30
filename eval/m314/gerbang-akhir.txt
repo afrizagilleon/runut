@@ -1,0 +1,31 @@
+# M3.14 T-07 — gerbang akhir (worktree _runut-m313, branch m314-pemandu)
+
+## typecheck / Vitest / periksa:desain
+> tsc -p tsconfig.json --noEmit
+
+ FAIL  factory/llm/openrouter.test.ts > pagu biaya-nyata — jumlah biaya nyata + perkiraan panggilan berikutnya ≤ pagu, dicek sebelum kirim > perkiraan sebelum kirim ≥ biaya penyedia TERMAHAL yang lolos pagar (lampiran endpoints 29 Sep)
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > docs/bukti/lingkar-agen-tirt.md dan ringkasan terlacak = hasil skrip atas keluaran mentah
+ FAIL  factory/llm/tirt-laporan.test.ts > laporan dari keluaran sungguhan (butuh ledger .cache/) > per peran dan per penyedia menjumlah ke total milestone; total ≤ pagu US$4,00
+ Test Files  2 failed | 113 passed (115)
+      Tests  3 failed | 2117 passed | 13 skipped (2133)
+periksa:desain — bersih.
+(3 merah = lingkungan worktree: openrouter butuh .contracts/lampiran/M-02d5, tirt-laporan x2 butuh ledger .cache/llm; sama dengan dasar ad0bf21)
+
+## e2e penuh SEKALI --workers=1 (localhost)
+  3 failed
+  7 skipped
+  269 passed (10.8m)
+  1) [ponsel-terang] › e2e\palet-gelap.spec.ts:345:1 › E-41c halaman kalender tetap kertas terang di layar pertama, sobekan pembukaan, dan terima 
+  2) [ponsel-gelap] › e2e\palet-gelap.spec.ts:345:1 › E-41c halaman kalender tetap kertas terang di layar pertama, sobekan pembukaan, dan terima k
+  3) [tanpa-pengumpul] › e2e\jaringan-tanpa.spec.ts:34:1 › E-08 tanpa pengumpul: nol permintaan ke asal lain, nol POST 
+Ketiganya akibat M3.14 (tes lama belum tahu kalender simulasi):
+ - E-41c x2: .kalender-halaman di layar terima kasih kini juga halaman bulan kalender simulasi (tanpa angka/hari besar) -> lingkup tes ke [data-uid=kalender] + pemeriksaan kertas halaman bulan terpisah
+ - E-08 tanpa-pengumpul: menunggu tombol 'Coba simulasi lain' yang diganti kalender -> ketuk baris kalender
+Ulang terarah sesudah perbaikan: palet-gelap + jaringan-tanpa -> 9 passed. Rangkaian penuh TIDAK diulang (batas 'sekali').
+
+## build MSYS_NO_PATHCONV=1 VITE_KOLEKTOR_URL=/e npx vite build (outDir .cache/m314/dist)
+index-*.js "/e" = 1; Dapur-*.js "/e" = 0; total "/e" = 1; E:/ = 0; FIXTUREUJI (fixture pemanasan) = 0
+ukuran: index-*.js 324,94 kB (gzip 91,23), Dapur-*.js 27,76 kB, css 27,65 kB
+
+## proses
+Tidak ada node/vite/chrome milik M3.14 yang tersisa. Dua node yang hidup (npm run kalibrasi:susun, factory/llm/kalibrasi-susun.ts, lahir 18.04) milik eksekutor M2d-8 di checkout utama — tidak disentuh.
