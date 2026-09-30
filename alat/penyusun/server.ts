@@ -19,10 +19,13 @@ import { extname, join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { pengambilSungguhan, type Pengambil } from '../sectors.ts';
 import { Aliran, sambungSse } from './aliran.ts';
+import { ambilJalan, GalatAlur, mulai, potret, siapkan, type KonteksAlur } from './alur.ts';
 import { PAGU_PENYUSUN_BAWAAN, jalurBukuKas, ringkasBiaya } from './biaya.ts';
 import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
-import { pengambilPalsu } from './palsu.ts';
+import { periksaFolderKeluaran } from './jalan.ts';
+import { mesinSungguhan, type MesinPenulis } from './mesin.ts';
+import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
 
@@ -62,12 +65,15 @@ export interface OpsiServer {
   folderGudang?: string;
   /** Pengambil Sectors; bawaan `pengambilSungguhan(akar)` (mode palsu: 404 tanpa jaringan). */
   buatPengambil?: () => Pengambil;
+  /** Mesin penulis soal; bawaan lingkar M2d-8 sungguhan (mode palsu: model palsu). */
+  mesin?: MesinPenulis;
 }
 
 export interface KeadaanServer {
   opsi: OpsiServer;
   aliran: Map<string, Aliran>;
   gudang: PemuatGudang;
+  alur: KonteksAlur;
 }
 
 export class GalatPermintaan extends Error {
@@ -266,8 +272,40 @@ daftarRute('POST', '/api/periksa-tanggal', (_req, res, { keadaan, badan }) => {
   kirimJson(res, 200, { emiten: kode, jendela, ...hasil });
 });
 
+/** D-4: buat jalan dan jalankan tahap gratis; tahapannya dialirkan lewat SSE. */
+daftarRute('POST', '/api/siapkan', (_req, res, { keadaan, badan }) => {
+  const b = bacaBadanObyek(badan);
+  const kode = wajibKode(b['kode']);
+  const jendela = wajibJendela(b['jendela']);
+  if (typeof b['tanggal'] !== 'string') throw new GalatPermintaan(400, 'Tanggal wajib diisi (TTTT-BB-HH).');
+  const id = b['id'] === undefined || b['id'] === null || b['id'] === '' ? undefined : String(b['id']);
+  const j = siapkan(keadaan.alur, { kode, tanggal: b['tanggal'], jendela, ...(id === undefined ? {} : { id }) });
+  kirimJson(res, 202, { id: j.data.id });
+});
+
+daftarRute('GET', '/api/jalan/:id', (_req, res, { keadaan, bagian }) => {
+  const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
+  kirimJson(res, 200, potret(keadaan.alur, j));
+});
+
+/** D-4: persetujuan klik atas perkiraan biaya → agen berjalan (berbayar). */
+daftarRute('POST', '/api/jalan/:id/mulai', (_req, res, { keadaan, bagian, badan }) => {
+  const b = bacaBadanObyek(badan);
+  const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
+  const pagu = mulai(keadaan.alur, j, b['setuju'], b['pagu_usd']);
+  kirimJson(res, 202, { id: j.data.id, pagu_usd: pagu });
+});
+
 daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
-  const a = keadaan.aliran.get(bagian[0] ?? '');
+  const id = bagian[0] ?? '';
+  let a = keadaan.aliran.get(id);
+  if (a === undefined) {
+    try {
+      a = ambilJalan(keadaan.alur, id).aliran;
+    } catch {
+      a = undefined;
+    }
+  }
   if (a === undefined) throw new GalatPermintaan(404, 'Jalan tidak dikenal.');
   const dari = Number(req.headers['last-event-id'] ?? new URL(req.url ?? '/', 'http://x').searchParams.get('sesudah') ?? 0);
   sambungSse(res, a, Number.isFinite(dari) && dari > 0 ? dari : 0);
@@ -278,7 +316,35 @@ daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
 /* ---------------------------------------------------------------------- */
 
 export function buatAplikasi(opsi: OpsiServer): { server: Server; keadaan: KeadaanServer } {
-  const keadaan: KeadaanServer = { opsi, aliran: new Map(), gudang: new PemuatGudang(opsi.folderGudang ?? join(opsi.akar, '.cache', 'sectors')) };
+  const aliran = new Map<string, Aliran>();
+  const gudang = new PemuatGudang(opsi.folderGudang ?? join(opsi.akar, '.cache', 'sectors'));
+  const proses = opsi.proses ?? process.env;
+  const mesin =
+    opsi.mesin ??
+    (opsi.palsu
+      ? mesinPalsu()
+      : mesinSungguhan(
+          opsi.akar,
+          opsi.paguPenyusunUsd,
+          () => {
+            const k = statusKonfig(opsi.akar, proses);
+            return k.llm.siap ? { siap: true, alasan: null } : { siap: false, alasan: `Kunci OpenRouter belum siap: ${[...k.llm.hilang.map((n) => `isi ${n} di .env`), ...k.llm.catatan].join('; ')}.` };
+          },
+          opsi.log,
+        ));
+  const alur: KonteksAlur = {
+    akar: opsi.akar,
+    folderKeluaran: periksaFolderKeluaran(opsi.folderKeluaran),
+    jam: opsi.jam,
+    log: opsi.log,
+    paguPenyusunUsd: opsi.paguPenyusunUsd,
+    proses,
+    gudang,
+    mesin,
+    jalan: new Map(),
+    daftarAliran: (j) => aliran.set(j.data.id, j.aliran),
+  };
+  const keadaan: KeadaanServer = { opsi, aliran, gudang, alur };
   const server = createServer((req, res) => {
     void layani(req, res, keadaan);
   });
@@ -318,7 +384,7 @@ async function layani(req: IncomingMessage, res: ServerResponse, keadaan: Keadaa
       res.end();
       return;
     }
-    if (galat instanceof GalatPermintaan) {
+    if (galat instanceof GalatPermintaan || galat instanceof GalatAlur) {
       kirimJson(res, galat.status, { galat: galat.message });
       return;
     }

@@ -7,7 +7,9 @@
 import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { palsuP, teksKunci } from '../../factory/llm/bantu-uji-pengecoh.ts';
 import type { Pengambil } from '../sectors.ts';
+import { MesinLingkar } from './mesin.ts';
 
 /**
  * Sectors palsu: setiap panggilan dijawab 404 (simbol tidak dikenal), buku kas
@@ -27,3 +29,24 @@ export function pengambilPalsu(): Pengambil {
     jedaMs: 0,
   };
 }
+
+/**
+ * Agen palsu: lingkar pengecoh dan SEMUA gerbang kode sungguhan (setelan
+ * M2d-8), model dipalsukan dengan tulisan uji TIRT
+ * (`factory/llm/bantu-uji-pengecoh.ts`). Untuk TIRT 10 Des 2025 (paket kurasi =
+ * paket uji) draf terbit di putaran 1; paket lain ditolak validator sampai
+ * batas putaran — penolakan beralasan yang sungguh dihasilkan lingkar.
+ * `kunciTambahan` = teks pilihan kunci hasil suntingan (uji ulang).
+ */
+export function mesinPalsu(): MesinLingkar {
+  return new MesinLingkar({
+    nama: 'lingkar-m2d8-palsu',
+    keterangan: 'lingkar & gerbang kode sungguhan (setelan M2d-8); model PALSU, tanpa jaringan, tanpa biaya',
+    palsu: true,
+    buatPanggil: () => palsuP({}, () => teksKunci(kunciTambahanPalsu)).panggil,
+    siap: () => ({ siap: true, alasan: null }),
+  });
+}
+
+/** Teks pilihan kunci yang disunting penyetuju (mode palsu): penebak palsu harus bisa menemukannya. */
+export const kunciTambahanPalsu: string[] = [];

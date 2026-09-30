@@ -227,6 +227,8 @@ export interface OpsiPengecoh {
   jejak?: PencatatJejak;
   rencanaSudut?: Sudut[];
   generasi?: GenerasiPengecoh;
+  /** M2d-9: dipanggil tiap kali satu omongan lolos semua gerbang dan dikunci (bahan uji ulang penyetuju). */
+  saatKunci?: (k: KeadaanOmongan) => void;
 }
 
 type CatatLangkah = Omit<LangkahJejak, 'no' | 'peran'> & { peran: PeranLangkah };
@@ -540,238 +542,32 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
         tolak('tidak-ada', p.gagalTulis, {});
         continue;
       }
-      // 3a. pemeriksa (kode)
-      const mentah: UmpanMentah[] = [];
-      const milik = masalah.filter((m) => m.omongan === no || m.omongan === null);
-      mentah.push(...dariValidator(milik, o));
-      const bentukRusak = masalah.some((m) => m.omongan === no && m.kode === 'SKEMA');
-      let g: PutusanG | null = null;
-      let gaya: PutusanGaya | null = null;
-      let artefak: PutusanArtefak | null = null;
-      let ikatan: ReturnType<typeof gIkatan> = [];
-      if (!bentukRusak) {
-        const mulaiG = jam().toISOString();
-        g = gerbangG(o);
-        gaya = gerbangGaya(o);
-        const huruf = periksaRujukanHuruf(o);
-        const nilai = gPenilaian(o.pesan);
-        const mirip = gMirip(no, gabung, terkunci);
-        const kembar = gKembar(o.pilihan);
-        ikatan = gIkatan(p.pesan as BagianPesan, p.pilihan as SetPilihan, hurufKunci, p.label, p.kunci, p.bank);
-        artefak = gArtefak(o, gen.ambang);
-        const kode: UmpanMentah[] = [
-          ...dariG(g, o),
-          ...dariGaya(gaya, o),
-          ...dariHuruf(huruf, o),
-          ...nilai.alasan.map((a) => ({ lokasi: 'pesan' as const, sumber: 'pemeriksa: G-penilaian', teramati: o.pesan, alasan: a })),
-          ...mirip.alasan.map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'pemeriksa: G-mirip', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })),
-          ...(mirip.tolak ? HURUF.filter((h) => h !== hurufKunci).map((h) => ({ lokasi: `pilihan-${h}` as LokasiBagian, sumber: 'pemeriksa: G-mirip', teramati: isiLokasi(o, `pilihan-${h}`), alasan: 'pola pilihan hampir sama dengan omongan lain' })) : []),
-          ...dariKembar(kembar, o),
-          ...dariIkatan(ikatan),
-        ];
-        const kodeArtefak: UmpanMentah[] = [
-          ...dariMeresmikan(artefak.meresmikan.alasan, o),
-          ...artefak.keseimbangan.alasan.map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'gerbang artefak: keseimbangan', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })),
-        ];
-        mentah.push(...kode, ...kodeArtefak);
-        catat({
-          putaran, jenis: 'gerbang-g', omongan: no, waktu_mulai: mulaiG, waktu_selesai: jam().toISOString(), model: null, panggilan: 0,
-          token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: kode.length > 0 ? 'tolak' : 'lolos',
-          alasan: kode.length > 0 ? kode.map((u) => `${u.sumber} (${u.lokasi}): ${u.alasan}`) : ['gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan'],
-          sha256_prompt: null,
-          rincian: {
-            pesan: o.pesan, angka_cukup: { tolak: g.angka_cukup.tolak }, kaku: { tolak: g.kaku.tolak, penanda: g.kaku.penanda },
-            panjang: { kata_pesan: gaya.panjang.kata_pesan, kata_pilihan: gaya.panjang.kata_pilihan }, satu_klausa: gaya.klausa.masalah, register: gaya.register.kata,
-            huruf_pilihan: huruf, penilaian: nilai.temuan, mirip: { tolak: mirip.tolak, pasangan: mirip.pasangan }, pilihan_kembar: { tolak: kembar.tolak, maks: kembar.maks },
-            ikatan, sumber_pilihan: Object.fromEntries(HURUF.map((h) => [h, p.pilihan?.[h].sumber ?? null])), klaim_dari: p.pesan?.klaim_dari ?? null,
-          },
-          peran: 'pemeriksa',
-        });
-        catat({
-          putaran, jenis: 'gerbang-artefak', omongan: no, waktu_mulai: mulaiG, waktu_selesai: jam().toISOString(), model: null, panggilan: 0,
-          token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: artefak.tolak ? 'tolak' : 'lolos',
-          alasan: artefak.tolak ? kodeArtefak.map((u) => u.alasan) : ['meresmikan dan keseimbangan tidak keberatan'],
-          sha256_prompt: null, rincian: { meresmikan: artefak.meresmikan, keseimbangan: artefak.keseimbangan }, peran: 'pemeriksa',
-        });
+      const h = await periksaOmongan({
+        no, o, pesan: p.pesan as BagianPesan, pilihan: p.pilihan as SetPilihan, label: p.label, kunci: p.kunci, bank: p.bank, hurufKunci,
+        masalah, gabung, terkunci, gen, paket, panggilGerbang, putaran, jam, catat, suara,
+        galat: (t) => {
+          catatan.galat = [catatan.galat, t].filter((x) => x !== null).join(' | ');
+        },
+      });
+      if (h.jenis === 'pagu') {
+        hasil.berhenti = h.alasan;
+        catatan.draf = drafKini();
+        return akhiri();
       }
-      // M2d-8: kode bukan-pelindung yang diturunkan dan gerbang artefak "dicatat" tidak menolak (tetap dicatat).
-      const kal = gen.kalibrasi;
-      const dicatat: Array<{ sumber: string; alasan: string }> = [];
-      if (kal !== undefined) {
-        const turun = (u: UmpanMentah): boolean => {
-          const kode = u.sumber.startsWith('pemeriksa: ') ? u.sumber.slice('pemeriksa: '.length) : null;
-          if (kode !== null && kal.kode_dicatat.includes(kode) && !KODE_PELINDUNG.includes(kode)) return true;
-          if (u.sumber === 'gerbang artefak: meresmikan' && kal.dicatat.includes('meresmikan')) return true;
-          return u.sumber === 'gerbang artefak: keseimbangan' && kal.dicatat.includes('keseimbangan');
-        };
-        for (const u of mentah) if (turun(u) && !dicatat.some((d) => d.sumber === u.sumber && d.alasan === u.alasan)) dicatat.push({ sumber: u.sumber, alasan: u.alasan });
-        mentah.splice(0, mentah.length, ...mentah.filter((u) => !turun(u)));
-      }
-      const catatGerbang = (sumber: string, alasan: readonly string[]): void => {
-        for (const a of alasan) dicatat.push({ sumber, alasan: a });
-      };
-      if (mentah.length > 0) {
-        tolak('ditolak-pemeriksa', mentah, { g, gaya, artefak, ikatan, ...(kal === undefined ? {} : { dicatat }) });
+      if (h.jenis === 'tolak') {
+        tolak(h.status, h.mentah, h.isi, h.bawa);
         continue;
       }
-      suara.pemeriksa = true;
-      const opsiGerbang = { panggil: panggilGerbang, putaran, omongan: no, jam };
-      let tahap: 'gerbang-pilihan-saja' | 'gerbang-kartu' | 'kritikus' | 'gerbang-tebak' = 'gerbang-pilihan-saja';
-      let mulai = jam().toISOString();
-      let pilihanSaja: PutusanPilihanSaja | null = null;
-      let kartu: PutusanKartu | null = null;
-      let kr: PutusanKritik | null = null;
-      let tebak: PutusanTebak | null = null;
-      const isi = (): Partial<PemeriksaanPengecoh> => ({ g, gaya, artefak, ikatan, pilihan_saja: pilihanSaja, kartu, kritik: kr, tebak, ...(kal === undefined ? {} : { dicatat }) });
-      try {
-        // 3b. pilihan-saja (D-4a)
-        pilihanSaja = await gPilihanSaja(o, { ...opsiGerbang, maxTokens: gen.pilihanSaja.maxTokens, tambahanBadan: gen.pilihanSaja.tambahanBadan, yakinMin: gen.ambang.pilihanSajaYakin });
-        const semuaPS = pilihanSaja.tebakan.flatMap((t) => t.panggilan);
-        catat({
-          putaran, jenis: 'gerbang-pilihan-saja', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.modelPilihanSaja,
-          panggilan: semuaPS.length, token_masuk: jumlah(semuaPS, (x) => x.token_masuk), token_keluar: jumlah(semuaPS, (x) => x.token_keluar),
-          biaya_usd: jumlah(semuaPS, (x) => x.biaya_usd), putusan: pilihanSaja.tolak ? 'tolak' : 'lolos',
-          alasan: pilihanSaja.tolak ? pilihanSaja.alasan : [`${String(pilihanSaja.kena)}/2 penebak pilihan-saja memilih kunci`],
-          sha256_prompt: null,
-          rincian: { kunci: o.kunci, tebakan: pilihanSaja.tebakan.map((t) => ({ ke: t.ke, pilihan: t.pilihan, yakin: t.yakin, alasan: t.alasan, terbaca: t.terbaca })), ...penyediaDari(semuaPS) },
-          peran: 'penebak',
-        });
-        if (pilihanSaja.tolak && kal?.dicatat.includes('pilihan_saja') === true) catatGerbang('gerbang pilihan-saja', pilihanSaja.alasan);
-        else if (pilihanSaja.tolak) {
-          tolak('ditolak-artefak', dariPilihanSaja(pilihanSaja.alasan, o), isi());
-          continue;
-        }
-        // 3c. pembaca kartu
-        tahap = 'gerbang-kartu';
-        mulai = jam().toISOString();
-        kartu = await gerbangKartu(o, paket, { ...opsiGerbang, tandaiBingung: true, ...gen.kartu });
-        // M2d-8: di tingkat 1 kalimat membingungkan tidak menolak (jawaban salah tetap menolak); "dicatat" = tidak menolak.
-        if (kal !== undefined && !kartu.lolos) {
-          const benar = kartu.pilihan === o.kunci;
-          if (kal.dicatat.includes('kartu') || (benar && !bingungMenolak(kal))) {
-            catatGerbang('pembaca kartu', [kartu.alasan]);
-            kartu = { ...kartu, lolos: true };
-          }
-        }
-        suara.kartu = kartu.lolos;
-        catat({
-          putaran, jenis: 'gerbang-kartu', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.model['pembaca-kartu'],
-          panggilan: kartu.panggilan.length, token_masuk: jumlah(kartu.panggilan, (x) => x.token_masuk), token_keluar: jumlah(kartu.panggilan, (x) => x.token_keluar),
-          biaya_usd: jumlah(kartu.panggilan, (x) => x.biaya_usd), putusan: kartu.lolos ? 'lolos' : 'tolak',
-          alasan: [kartu.lolos ? `pembaca yang memegang kartu memilih "${String(kartu.pilihan)}" = kunci` : kartu.alasan],
-          sha256_prompt: null,
-          rincian: { kunci: kartu.kunci, pilihan: kartu.pilihan, kartu_ditunjuk: kartu.kartu_ditunjuk, menunjuk_penentu: kartu.menunjuk_penentu, alasan_penjawab: kartu.alasan_penjawab, membingungkan: kartu.membingungkan ?? [], ...penyediaDari(kartu.panggilan) },
-          peran: 'pembaca-kartu',
-        });
-        if (!kartu.lolos) {
-          tolak('ditolak-kartu', dariKartu(kartu, o), isi());
-          continue;
-        }
-        // 3d. kritikus (GLM "max", dijaga)
-        tahap = 'kritikus';
-        mulai = jam().toISOString();
-        kr = await kritik(
-          o, paket,
-          {
-            no,
-            kartu: { pilihan: kartu.pilihan, kartu_ditunjuk_no: kartu.kartu_ditunjuk.map((id) => o.kartu.indexOf(id) + 1).filter((x) => x > 0), alasan: kartu.alasan_penjawab },
-            tebakan: [], penebakSesudah: true,
-          },
-          { ...opsiGerbang, cekMakna: true, maxTokens: gen.kritikus.maxTokens, tambahanBadan: gen.kritikus.tambahanBadan, ambangPenalaran: gen.kritikus.ambang },
-        );
-        // M2d-8: hanya keberatan berjenis tingkat setelan yang menolak; "dicatat" = tidak menolak (juga bila tidak menjawab).
-        if (kal !== undefined && !kr.tanpa_keberatan) {
-          const menolak = kr.menjawab ? kr.keberatan.some((x) => jenisKritikus(kal).includes(x.jenis)) : true;
-          if (kal.dicatat.includes('kritikus') || !menolak) {
-            catatGerbang('kritikus', umpanKritik(kr));
-            kr = { ...kr, menjawab: true, tanpa_keberatan: true };
-          }
-        }
-        suara.kritikus = kr.tanpa_keberatan;
-        catat({
-          putaran, jenis: 'kritikus', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.model.kritikus,
-          panggilan: kr.panggilan.length, token_masuk: jumlah(kr.panggilan, (x) => x.token_masuk), token_keluar: jumlah(kr.panggilan, (x) => x.token_keluar),
-          biaya_usd: jumlah(kr.panggilan, (x) => x.biaya_usd), putusan: kr.tanpa_keberatan ? 'lolos' : 'tolak',
-          alasan: kr.tanpa_keberatan ? ['kritikus tidak keberatan'] : umpanKritik(kr),
-          sha256_prompt: null,
-          rincian: {
-            menjawab: kr.menjawab, terpotong: kr.terpotong, keberatan: kr.keberatan, arahan: kr.arahan, diabaikan: kr.diabaikan, galat: kr.galat,
-            finish_reason: kr.panggilan.map((x) => x.finish_reason), token_penalaran: kr.panggilan.map((x) => x.token_penalaran ?? null),
-            ...(kr.penalaran_tidak_sah === undefined ? {} : { penalaran_tidak_sah: kr.penalaran_tidak_sah }),
-            ...(kr.cek_makna === undefined ? {} : { cek_makna: kr.cek_makna }), ...penyediaDari(kr.panggilan),
-          },
-          peran: 'kritikus',
-        });
-        if (!kr.menjawab) {
-          tolak('kritikus-tidak-menjawab', [], isi(), true);
-          continue;
-        }
-        if (!kr.tanpa_keberatan) {
-          const u = dariKritik(kr, o);
-          tolak('ditolak-kritikus', u.length > 0 ? u : umpanKritik(kr).map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'kritikus', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })), isi());
-          continue;
-        }
-        // 3e. penebak ×3 (GLM "max", dijaga) — TANPA kartu
-        tahap = 'gerbang-tebak';
-        mulai = jam().toISOString();
-        tebak = await gerbangTebak(o, {
-          ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokensKe: gen.penebak.model.map(() => gen.penebak.maxTokens),
-          tambahanBadanKe: gen.penebak.model.map(() => gen.penebak.tambahanBadan), ambangPenalaranKe: gen.penebak.model.map(() => gen.penebak.ambang),
-        });
-        // Kalibrasi D-6 bisa melepas klausa "yakin ≥ 40" K-05: tolak hanya bila ≥ 2/3 benar (tak terbaca = benar).
-        if (kal === undefined && !gen.ambang.penebakYakin) tebak = { ...tebak, lolos: tebak.benar <= 1, alasan: tebak.benar <= 1 ? '' : tebak.alasan };
-        // M2d-8: aturan penebak menurut tingkat setelan; "dicatat" = tidak menolak.
-        if (kal !== undefined) {
-          const t0 = tebak;
-          const menolak = penebakMenolak(t0.tebakan.map((x) => ({ pilihan: x.terbaca ? x.pilihan : null, yakin: x.terbaca ? x.yakin : null, terbaca: x.terbaca })), o.kunci, aturanPenebak(kal));
-          if (menolak && kal.dicatat.includes('penebak')) catatGerbang('penebak tanpa kartu', [t0.alasan === '' ? `${String(t0.benar)}/3 memilih kunci` : t0.alasan]);
-          tebak = { ...t0, lolos: !menolak || kal.dicatat.includes('penebak'), alasan: menolak ? (t0.alasan === '' ? `${String(t0.benar)}/3 penebak tanpa kartu memilih kunci "${o.kunci}"` : t0.alasan) : '' };
-        }
-        suara.tebak = tebak.lolos;
-        const semuaT: PanggilanGerbang[] = tebak.tebakan.flatMap((x) => x.panggilan);
-        catat({
-          putaran, jenis: 'gerbang-tebak', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.penebak.model.join(' + '),
-          panggilan: semuaT.length, token_masuk: jumlah(semuaT, (x) => x.token_masuk), token_keluar: jumlah(semuaT, (x) => x.token_keluar),
-          biaya_usd: jumlah(semuaT, (x) => x.biaya_usd), putusan: tebak.lolos ? 'lolos' : 'tolak',
-          alasan: [tebak.lolos ? `${String(tebak.benar)}/3 penebak tanpa kartu memilih kunci "${o.kunci}"` : tebak.alasan],
-          sha256_prompt: null,
-          rincian: {
-            kunci: o.kunci, benar: tebak.benar, yakin_benar: tebak.yakin_benar,
-            tebakan: tebak.tebakan.map((x) => ({
-              ke: x.ke, pilihan: x.pilihan, yakin: x.yakin, benar: x.benar, terbaca: x.terbaca, alasan: x.alasan,
-              token_penalaran: x.panggilan.map((y) => y.token_penalaran ?? null), ...(x.penalaran_tidak_sah === undefined ? {} : { penalaran_tidak_sah: x.penalaran_tidak_sah }),
-            })),
-            ...penyediaDari(semuaT),
-          },
-          peran: 'penebak',
-        });
-        if (!tebak.lolos) {
-          tolak('ditolak-tebak', dariTebak(tebak, o), isi());
-          continue;
-        }
-      } catch (galat) {
-        catatan.galat = [catatan.galat, teksGalat(galat)].filter((x) => x !== null).join(' | ');
-        const pagu = galat instanceof PaguTercapai;
-        const alasan = pagu ? `pagu tercapai: ${galat.message}` : `galat penyedia saat ${tahap}: ${teksGalat(galat)}`;
-        catat({
-          putaran, jenis: tahap, omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: null, panggilan: 0,
-          token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: 'galat', alasan: [alasan], sha256_prompt: null, rincian: {},
-          peran: tahap === 'gerbang-kartu' ? 'pembaca-kartu' : tahap === 'kritikus' ? 'kritikus' : 'penebak',
-        });
-        if (pagu) {
-          hasil.berhenti = alasan;
-          catatan.draf = drafKini();
-          return akhiri();
-        }
-        tolak('galat-gerbang', [], isi(), true);
-        continue;
-      }
-      if (!putusanAkhir(suara)) throw new Error('putusan tidak konsisten');
+      const x = h.isi;
       catatan.omongan.push({
-        no, status: 'lolos', suara, umpan: [], kartu, tebak, kritik: kr, g, gaya, dibawa: false, artefak, ikatan, pilihan_saja: pilihanSaja, perbaikan: { ...p.perbaikan },
-        ...(kal === undefined ? {} : { dicatat }),
+        no, status: 'lolos', suara, umpan: [], kartu: x.kartu, tebak: x.tebak, kritik: x.kritik, g: x.g, gaya: x.gaya, dibawa: false, artefak: x.artefak, ikatan: x.ikatan,
+        pilihan_saja: x.pilihan_saja, perbaikan: { ...p.perbaikan }, ...(x.dicatat === undefined ? {} : { dicatat: x.dicatat }),
       });
       terkunci.add(no);
+      opsi.saatKunci?.({
+        no, label: p.label, kunci: p.kunci, bank: p.bank, pesan: p.pesan as BagianPesan, pilihan: p.pilihan as SetPilihan,
+        penjelasan: p.penjelasan as string, omongan: o, hurufKunci,
+      });
       p.bawa = false;
     }
     catatan.draf = drafKini();
@@ -832,6 +628,291 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
     if (c !== undefined) c.draf = [1, 2, 3].map((no) => posisi.get(no)?.omongan ?? null);
     return akhiri();
   }
+}
+
+/** Keadaan satu omongan yang lolos (dikunci): bahan uji ulang sesudah suntingan penyetuju (M2d-9 D-5). */
+export interface KeadaanOmongan {
+  no: number;
+  label: Label;
+  kunci: KunciSudut;
+  bank: KandidatPengecoh[];
+  pesan: BagianPesan;
+  pilihan: SetPilihan;
+  penjelasan: string;
+  omongan: OmonganDraf;
+  hurufKunci: KunciOpsi;
+}
+
+export interface ArgPeriksaOmongan {
+  no: number;
+  o: OmonganDraf;
+  pesan: BagianPesan;
+  pilihan: SetPilihan;
+  label: Label;
+  kunci: KunciSudut;
+  bank: readonly KandidatPengecoh[];
+  hurufKunci: KunciOpsi;
+  /** Masalah validator atas draf gabungan (nomor omongan sudah = posisi). */
+  masalah: readonly MasalahDraf[];
+  gabung: ReadonlyArray<OmonganDraf | null>;
+  terkunci: ReadonlySet<number>;
+  gen: GenerasiPengecoh;
+  paket: PaketFakta;
+  panggilGerbang: PanggilLlm;
+  putaran: number;
+  jam: () => Date;
+  catat: (l: CatatLangkah) => void;
+  /** Diisi fungsi ini (pemeriksa, kartu, kritikus, tebak). */
+  suara: SuaraPenilai;
+  galat: (teks: string) => void;
+}
+
+export interface IsiLolos {
+  kartu: PutusanKartu | null;
+  tebak: PutusanTebak | null;
+  kritik: PutusanKritik | null;
+  g: PutusanG | null;
+  gaya: PutusanGaya | null;
+  artefak: PutusanArtefak | null;
+  ikatan: ReturnType<typeof gIkatan>;
+  pilihan_saja: PutusanPilihanSaja | null;
+  dicatat?: Array<{ sumber: string; alasan: string }>;
+}
+
+export type HasilPeriksaOmongan =
+  | { jenis: 'tolak'; status: StatusPeran; mentah: UmpanMentah[]; isi: Partial<PemeriksaanPengecoh>; bawa: boolean }
+  | { jenis: 'pagu'; alasan: string }
+  | { jenis: 'lolos'; isi: IsiLolos };
+
+/**
+ * Tumpukan gerbang untuk SATU omongan (langkah 3 lingkar): pemeriksa kode →
+ * pilihan-saja → pembaca kartu → kritikus → penebak ×3, dengan setelan
+ * kalibrasi generasi. Dipakai lingkar dan uji ulang suntingan penyetuju
+ * (M2d-9 D-5) — satu sumber, jadi "gerbang yang sama" dijamin konstruksi.
+ * Fungsi ini tidak mengubah keadaan lingkar; hasilnya diputuskan pemanggil.
+ */
+export async function periksaOmongan(a: ArgPeriksaOmongan): Promise<HasilPeriksaOmongan> {
+  const { no, o, masalah, gabung, terkunci, hurufKunci, gen, paket, jam, putaran, catat, panggilGerbang, suara } = a;
+  const tolakH = (status: StatusPeran, mentah: readonly UmpanMentah[], isi: Partial<PemeriksaanPengecoh>, bawa = false): HasilPeriksaOmongan => ({
+    jenis: 'tolak', status, mentah: [...mentah], isi, bawa,
+  });
+  // 3a. pemeriksa (kode)
+  const mentah: UmpanMentah[] = [];
+  const milik = masalah.filter((m) => m.omongan === no || m.omongan === null);
+  mentah.push(...dariValidator(milik, o));
+  const bentukRusak = masalah.some((m) => m.omongan === no && m.kode === 'SKEMA');
+  let g: PutusanG | null = null;
+  let gaya: PutusanGaya | null = null;
+  let artefak: PutusanArtefak | null = null;
+  let ikatan: ReturnType<typeof gIkatan> = [];
+  if (!bentukRusak) {
+    const mulaiG = jam().toISOString();
+    g = gerbangG(o);
+    gaya = gerbangGaya(o);
+    const huruf = periksaRujukanHuruf(o);
+    const nilai = gPenilaian(o.pesan);
+    const mirip = gMirip(no, gabung, terkunci);
+    const kembar = gKembar(o.pilihan);
+    ikatan = gIkatan(a.pesan, a.pilihan, hurufKunci, a.label, a.kunci, a.bank);
+    artefak = gArtefak(o, gen.ambang);
+    const kode: UmpanMentah[] = [
+      ...dariG(g, o),
+      ...dariGaya(gaya, o),
+      ...dariHuruf(huruf, o),
+      ...nilai.alasan.map((a) => ({ lokasi: 'pesan' as const, sumber: 'pemeriksa: G-penilaian', teramati: o.pesan, alasan: a })),
+      ...mirip.alasan.map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'pemeriksa: G-mirip', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })),
+      ...(mirip.tolak ? HURUF.filter((h) => h !== hurufKunci).map((h) => ({ lokasi: `pilihan-${h}` as LokasiBagian, sumber: 'pemeriksa: G-mirip', teramati: isiLokasi(o, `pilihan-${h}`), alasan: 'pola pilihan hampir sama dengan omongan lain' })) : []),
+      ...dariKembar(kembar, o),
+      ...dariIkatan(ikatan),
+    ];
+    const kodeArtefak: UmpanMentah[] = [
+      ...dariMeresmikan(artefak.meresmikan.alasan, o),
+      ...artefak.keseimbangan.alasan.map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'gerbang artefak: keseimbangan', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })),
+    ];
+    mentah.push(...kode, ...kodeArtefak);
+    catat({
+      putaran, jenis: 'gerbang-g', omongan: no, waktu_mulai: mulaiG, waktu_selesai: jam().toISOString(), model: null, panggilan: 0,
+      token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: kode.length > 0 ? 'tolak' : 'lolos',
+      alasan: kode.length > 0 ? kode.map((u) => `${u.sumber} (${u.lokasi}): ${u.alasan}`) : ['gerbang G, gaya, makna, kembar, dan ikatan bank tidak keberatan'],
+      sha256_prompt: null,
+      rincian: {
+        pesan: o.pesan, angka_cukup: { tolak: g.angka_cukup.tolak }, kaku: { tolak: g.kaku.tolak, penanda: g.kaku.penanda },
+        panjang: { kata_pesan: gaya.panjang.kata_pesan, kata_pilihan: gaya.panjang.kata_pilihan }, satu_klausa: gaya.klausa.masalah, register: gaya.register.kata,
+        huruf_pilihan: huruf, penilaian: nilai.temuan, mirip: { tolak: mirip.tolak, pasangan: mirip.pasangan }, pilihan_kembar: { tolak: kembar.tolak, maks: kembar.maks },
+        ikatan, sumber_pilihan: Object.fromEntries(HURUF.map((h) => [h, a.pilihan?.[h].sumber ?? null])), klaim_dari: a.pesan?.klaim_dari ?? null,
+      },
+      peran: 'pemeriksa',
+    });
+    catat({
+      putaran, jenis: 'gerbang-artefak', omongan: no, waktu_mulai: mulaiG, waktu_selesai: jam().toISOString(), model: null, panggilan: 0,
+      token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: artefak.tolak ? 'tolak' : 'lolos',
+      alasan: artefak.tolak ? kodeArtefak.map((u) => u.alasan) : ['meresmikan dan keseimbangan tidak keberatan'],
+      sha256_prompt: null, rincian: { meresmikan: artefak.meresmikan, keseimbangan: artefak.keseimbangan }, peran: 'pemeriksa',
+    });
+  }
+  // M2d-8: kode bukan-pelindung yang diturunkan dan gerbang artefak "dicatat" tidak menolak (tetap dicatat).
+  const kal = gen.kalibrasi;
+  const dicatat: Array<{ sumber: string; alasan: string }> = [];
+  if (kal !== undefined) {
+    const turun = (u: UmpanMentah): boolean => {
+      const kode = u.sumber.startsWith('pemeriksa: ') ? u.sumber.slice('pemeriksa: '.length) : null;
+      if (kode !== null && kal.kode_dicatat.includes(kode) && !KODE_PELINDUNG.includes(kode)) return true;
+      if (u.sumber === 'gerbang artefak: meresmikan' && kal.dicatat.includes('meresmikan')) return true;
+      return u.sumber === 'gerbang artefak: keseimbangan' && kal.dicatat.includes('keseimbangan');
+    };
+    for (const u of mentah) if (turun(u) && !dicatat.some((d) => d.sumber === u.sumber && d.alasan === u.alasan)) dicatat.push({ sumber: u.sumber, alasan: u.alasan });
+    mentah.splice(0, mentah.length, ...mentah.filter((u) => !turun(u)));
+  }
+  const catatGerbang = (sumber: string, alasan: readonly string[]): void => {
+    for (const a of alasan) dicatat.push({ sumber, alasan: a });
+  };
+  if (mentah.length > 0) {
+    return tolakH('ditolak-pemeriksa', mentah, { g, gaya, artefak, ikatan, ...(kal === undefined ? {} : { dicatat }) });
+  }
+  suara.pemeriksa = true;
+  const opsiGerbang = { panggil: panggilGerbang, putaran, omongan: no, jam };
+  let tahap: 'gerbang-pilihan-saja' | 'gerbang-kartu' | 'kritikus' | 'gerbang-tebak' = 'gerbang-pilihan-saja';
+  let mulai = jam().toISOString();
+  let pilihanSaja: PutusanPilihanSaja | null = null;
+  let kartu: PutusanKartu | null = null;
+  let kr: PutusanKritik | null = null;
+  let tebak: PutusanTebak | null = null;
+  const isi = (): Partial<PemeriksaanPengecoh> => ({ g, gaya, artefak, ikatan, pilihan_saja: pilihanSaja, kartu, kritik: kr, tebak, ...(kal === undefined ? {} : { dicatat }) });
+  try {
+    // 3b. pilihan-saja (D-4a)
+    pilihanSaja = await gPilihanSaja(o, { ...opsiGerbang, maxTokens: gen.pilihanSaja.maxTokens, tambahanBadan: gen.pilihanSaja.tambahanBadan, yakinMin: gen.ambang.pilihanSajaYakin });
+    const semuaPS = pilihanSaja.tebakan.flatMap((t) => t.panggilan);
+    catat({
+      putaran, jenis: 'gerbang-pilihan-saja', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.modelPilihanSaja,
+      panggilan: semuaPS.length, token_masuk: jumlah(semuaPS, (x) => x.token_masuk), token_keluar: jumlah(semuaPS, (x) => x.token_keluar),
+      biaya_usd: jumlah(semuaPS, (x) => x.biaya_usd), putusan: pilihanSaja.tolak ? 'tolak' : 'lolos',
+      alasan: pilihanSaja.tolak ? pilihanSaja.alasan : [`${String(pilihanSaja.kena)}/2 penebak pilihan-saja memilih kunci`],
+      sha256_prompt: null,
+      rincian: { kunci: o.kunci, tebakan: pilihanSaja.tebakan.map((t) => ({ ke: t.ke, pilihan: t.pilihan, yakin: t.yakin, alasan: t.alasan, terbaca: t.terbaca })), ...penyediaDari(semuaPS) },
+      peran: 'penebak',
+    });
+    if (pilihanSaja.tolak && kal?.dicatat.includes('pilihan_saja') === true) catatGerbang('gerbang pilihan-saja', pilihanSaja.alasan);
+    else if (pilihanSaja.tolak) {
+      return tolakH('ditolak-artefak', dariPilihanSaja(pilihanSaja.alasan, o), isi());
+    }
+    // 3c. pembaca kartu
+    tahap = 'gerbang-kartu';
+    mulai = jam().toISOString();
+    kartu = await gerbangKartu(o, paket, { ...opsiGerbang, tandaiBingung: true, ...gen.kartu });
+    // M2d-8: di tingkat 1 kalimat membingungkan tidak menolak (jawaban salah tetap menolak); "dicatat" = tidak menolak.
+    if (kal !== undefined && !kartu.lolos) {
+      const benar = kartu.pilihan === o.kunci;
+      if (kal.dicatat.includes('kartu') || (benar && !bingungMenolak(kal))) {
+        catatGerbang('pembaca kartu', [kartu.alasan]);
+        kartu = { ...kartu, lolos: true };
+      }
+    }
+    suara.kartu = kartu.lolos;
+    catat({
+      putaran, jenis: 'gerbang-kartu', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.model['pembaca-kartu'],
+      panggilan: kartu.panggilan.length, token_masuk: jumlah(kartu.panggilan, (x) => x.token_masuk), token_keluar: jumlah(kartu.panggilan, (x) => x.token_keluar),
+      biaya_usd: jumlah(kartu.panggilan, (x) => x.biaya_usd), putusan: kartu.lolos ? 'lolos' : 'tolak',
+      alasan: [kartu.lolos ? `pembaca yang memegang kartu memilih "${String(kartu.pilihan)}" = kunci` : kartu.alasan],
+      sha256_prompt: null,
+      rincian: { kunci: kartu.kunci, pilihan: kartu.pilihan, kartu_ditunjuk: kartu.kartu_ditunjuk, menunjuk_penentu: kartu.menunjuk_penentu, alasan_penjawab: kartu.alasan_penjawab, membingungkan: kartu.membingungkan ?? [], ...penyediaDari(kartu.panggilan) },
+      peran: 'pembaca-kartu',
+    });
+    if (!kartu.lolos) {
+      return tolakH('ditolak-kartu', dariKartu(kartu, o), isi());
+    }
+    // 3d. kritikus (GLM "max", dijaga)
+    tahap = 'kritikus';
+    mulai = jam().toISOString();
+    kr = await kritik(
+      o, paket,
+      {
+        no,
+        kartu: { pilihan: kartu.pilihan, kartu_ditunjuk_no: kartu.kartu_ditunjuk.map((id) => o.kartu.indexOf(id) + 1).filter((x) => x > 0), alasan: kartu.alasan_penjawab },
+        tebakan: [], penebakSesudah: true,
+      },
+      { ...opsiGerbang, cekMakna: true, maxTokens: gen.kritikus.maxTokens, tambahanBadan: gen.kritikus.tambahanBadan, ambangPenalaran: gen.kritikus.ambang },
+    );
+    // M2d-8: hanya keberatan berjenis tingkat setelan yang menolak; "dicatat" = tidak menolak (juga bila tidak menjawab).
+    if (kal !== undefined && !kr.tanpa_keberatan) {
+      const menolak = kr.menjawab ? kr.keberatan.some((x) => jenisKritikus(kal).includes(x.jenis)) : true;
+      if (kal.dicatat.includes('kritikus') || !menolak) {
+        catatGerbang('kritikus', umpanKritik(kr));
+        kr = { ...kr, menjawab: true, tanpa_keberatan: true };
+      }
+    }
+    suara.kritikus = kr.tanpa_keberatan;
+    catat({
+      putaran, jenis: 'kritikus', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.model.kritikus,
+      panggilan: kr.panggilan.length, token_masuk: jumlah(kr.panggilan, (x) => x.token_masuk), token_keluar: jumlah(kr.panggilan, (x) => x.token_keluar),
+      biaya_usd: jumlah(kr.panggilan, (x) => x.biaya_usd), putusan: kr.tanpa_keberatan ? 'lolos' : 'tolak',
+      alasan: kr.tanpa_keberatan ? ['kritikus tidak keberatan'] : umpanKritik(kr),
+      sha256_prompt: null,
+      rincian: {
+        menjawab: kr.menjawab, terpotong: kr.terpotong, keberatan: kr.keberatan, arahan: kr.arahan, diabaikan: kr.diabaikan, galat: kr.galat,
+        finish_reason: kr.panggilan.map((x) => x.finish_reason), token_penalaran: kr.panggilan.map((x) => x.token_penalaran ?? null),
+        ...(kr.penalaran_tidak_sah === undefined ? {} : { penalaran_tidak_sah: kr.penalaran_tidak_sah }),
+        ...(kr.cek_makna === undefined ? {} : { cek_makna: kr.cek_makna }), ...penyediaDari(kr.panggilan),
+      },
+      peran: 'kritikus',
+    });
+    if (!kr.menjawab) {
+      return tolakH('kritikus-tidak-menjawab', [], isi(), true);
+    }
+    if (!kr.tanpa_keberatan) {
+      const u = dariKritik(kr, o);
+      return tolakH('ditolak-kritikus', u.length > 0 ? u : umpanKritik(kr).map((a) => ({ lokasi: `pilihan-${hurufKunci}` as LokasiBagian, sumber: 'kritikus', teramati: isiLokasi(o, `pilihan-${hurufKunci}`), alasan: a })), isi());
+    }
+    // 3e. penebak ×3 (GLM "max", dijaga) — TANPA kartu
+    tahap = 'gerbang-tebak';
+    mulai = jam().toISOString();
+    tebak = await gerbangTebak(o, {
+      ...opsiGerbang, petunjuk: gen.penebak.petunjuk, maxTokensKe: gen.penebak.model.map(() => gen.penebak.maxTokens),
+      tambahanBadanKe: gen.penebak.model.map(() => gen.penebak.tambahanBadan), ambangPenalaranKe: gen.penebak.model.map(() => gen.penebak.ambang),
+    });
+    // Kalibrasi D-6 bisa melepas klausa "yakin ≥ 40" K-05: tolak hanya bila ≥ 2/3 benar (tak terbaca = benar).
+    if (kal === undefined && !gen.ambang.penebakYakin) tebak = { ...tebak, lolos: tebak.benar <= 1, alasan: tebak.benar <= 1 ? '' : tebak.alasan };
+    // M2d-8: aturan penebak menurut tingkat setelan; "dicatat" = tidak menolak.
+    if (kal !== undefined) {
+      const t0 = tebak;
+      const menolak = penebakMenolak(t0.tebakan.map((x) => ({ pilihan: x.terbaca ? x.pilihan : null, yakin: x.terbaca ? x.yakin : null, terbaca: x.terbaca })), o.kunci, aturanPenebak(kal));
+      if (menolak && kal.dicatat.includes('penebak')) catatGerbang('penebak tanpa kartu', [t0.alasan === '' ? `${String(t0.benar)}/3 memilih kunci` : t0.alasan]);
+      tebak = { ...t0, lolos: !menolak || kal.dicatat.includes('penebak'), alasan: menolak ? (t0.alasan === '' ? `${String(t0.benar)}/3 penebak tanpa kartu memilih kunci "${o.kunci}"` : t0.alasan) : '' };
+    }
+    suara.tebak = tebak.lolos;
+    const semuaT: PanggilanGerbang[] = tebak.tebakan.flatMap((x) => x.panggilan);
+    catat({
+      putaran, jenis: 'gerbang-tebak', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.penebak.model.join(' + '),
+      panggilan: semuaT.length, token_masuk: jumlah(semuaT, (x) => x.token_masuk), token_keluar: jumlah(semuaT, (x) => x.token_keluar),
+      biaya_usd: jumlah(semuaT, (x) => x.biaya_usd), putusan: tebak.lolos ? 'lolos' : 'tolak',
+      alasan: [tebak.lolos ? `${String(tebak.benar)}/3 penebak tanpa kartu memilih kunci "${o.kunci}"` : tebak.alasan],
+      sha256_prompt: null,
+      rincian: {
+        kunci: o.kunci, benar: tebak.benar, yakin_benar: tebak.yakin_benar,
+        tebakan: tebak.tebakan.map((x) => ({
+          ke: x.ke, pilihan: x.pilihan, yakin: x.yakin, benar: x.benar, terbaca: x.terbaca, alasan: x.alasan,
+          token_penalaran: x.panggilan.map((y) => y.token_penalaran ?? null), ...(x.penalaran_tidak_sah === undefined ? {} : { penalaran_tidak_sah: x.penalaran_tidak_sah }),
+        })),
+        ...penyediaDari(semuaT),
+      },
+      peran: 'penebak',
+    });
+    if (!tebak.lolos) {
+      return tolakH('ditolak-tebak', dariTebak(tebak, o), isi());
+    }
+  } catch (galat) {
+    a.galat(teksGalat(galat));
+    const pagu = galat instanceof PaguTercapai;
+    const alasan = pagu ? `pagu tercapai: ${galat.message}` : `galat penyedia saat ${tahap}: ${teksGalat(galat)}`;
+    catat({
+      putaran, jenis: tahap, omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: null, panggilan: 0,
+      token_masuk: 0, token_keluar: 0, biaya_usd: 0, putusan: 'galat', alasan: [alasan], sha256_prompt: null, rincian: {},
+      peran: tahap === 'gerbang-kartu' ? 'pembaca-kartu' : tahap === 'kritikus' ? 'kritikus' : 'penebak',
+    });
+    if (pagu) return { jenis: 'pagu', alasan };
+    return tolakH('galat-gerbang', [], isi(), true);
+  }
+  if (!putusanAkhir(suara)) throw new Error('putusan tidak konsisten');
+  return { jenis: 'lolos', isi: { kartu, tebak, kritik: kr, g, gaya, artefak, ikatan, pilihan_saja: pilihanSaja, ...(kal === undefined ? {} : { dicatat }) } };
 }
 
 /** Prompt sistem ringkas untuk jejak (hash): ketiga prompt penulis dipecah. */

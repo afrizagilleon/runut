@@ -256,10 +256,212 @@ async function periksaTanggal(tanggal, lanjutBilaSah) {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* 3 · tahapan (SSE) dan persetujuan biaya                             */
+/* ------------------------------------------------------------------ */
+
 async function siapkanJalan(tanggal) {
-  // T-04: tahapan data → aturan → paket, lalu perkiraan biaya.
-  kosongkan($('tahap-ringkas')).append(`Hari dipilih: ${tanggalId(tanggal)}.`);
   $('langkah-tahap').hidden = false;
+  kosongkan($('tahap'));
+  kosongkan($('persetujuan-biaya'));
+  $('langkah-hasil').hidden = true;
+  $('langkah-penyetuju').hidden = true;
+  $('tahap-ringkas').textContent = `Menyiapkan ${keadaan.kode} · ${tanggalId(tanggal)}…`;
+  try {
+    const r = await api('/api/siapkan', { kode: keadaan.kode, tanggal, jendela: keadaan.jendela });
+    bukaJalan(r.id);
+  } catch (e) {
+    $('tahap-ringkas').textContent = e.message;
+  }
+}
+
+function bukaJalan(id) {
+  keadaan.jalan = id;
+  history.replaceState(null, '', `?jalan=${encodeURIComponent(id)}`);
+  $('langkah-tahap').hidden = false;
+  kosongkan($('tahap'));
+  kosongkan($('persetujuan-biaya'));
+  $('tahap-ringkas').textContent = `Jalan ${id}`;
+  sambungAliran(id, tampilkanPeristiwa, () => muatJalan(id));
+}
+
+function daftarAturan(isi) {
+  return el('details', {},
+    el('summary', {}, `Lihat ${isi.aktif} aturan dan kalimat awamnya`),
+    el('table', { kelas: 'tabel' },
+      el('thead', {}, el('tr', {}, el('th', {}, 'Aturan'), el('th', {}, 'Kalimat awam'), el('th', {}, 'Hasil atas data ≤ T'))),
+      el('tbody', {}, isi.aturan.map((a) => el('tr', {},
+        el('td', { kelas: 'mesin' }, a.kode),
+        el('td', {}, a.awam),
+        el('td', {}, a.dijalankan
+          ? `${a.diperiksa} ${a.satuan} diperiksa; ${a.merah} merah; ${a.tidak_lengkap} tidak lengkap`
+          : `tidak berjalan: ${a.alasan_lewat || ''}`),
+      ))),
+    ),
+  );
+}
+
+function daftarPaket(isi) {
+  return el('details', {},
+    el('summary', {}, `Lihat ${isi.fakta.length} fakta, ${isi.disingkirkan.length} yang dibuang, dan calon sudut`),
+    el('p', { kelas: 'meta' }, isi.keterangan),
+    el('p', {}, `Peristiwa (dikirim ke penulis): ${isi.peristiwa}`),
+    isi.aturan_calon ? el('ul', { kelas: 'meta' }, isi.aturan_calon.map((a) => el('li', {}, a))) : null,
+    el('ul', {}, isi.fakta.map((f) => el('li', {}, el('span', { kelas: 'mesin' }, f.fact_id), ` (${f.asal}, terbit ${tanggalId(f.terbit)}): ${f.klaim}`))),
+    isi.disingkirkan.length > 0 ? el('p', {}, 'Dibuang:') : null,
+    el('ul', {}, isi.disingkirkan.map((d) => el('li', {}, el('span', { kelas: 'mesin' }, d.fact_id), `: ${d.alasan}`))),
+    el('p', { kelas: 'meta' }, `Urutan sudut soal: ${isi.sudut.slice(0, 9).join(', ')}${isi.sudut.length > 9 ? ', …' : ''}`),
+  );
+}
+
+function kotakPersetujuan(isi) {
+  const kotak = kosongkan($('persetujuan-biaya'));
+  const p = isi.perkiraan;
+  const b = isi.batas;
+  kotak.append(el('div', { kelas: 'kotak-catatan penting' },
+    el('h3', {}, isi.mesin.palsu ? 'Jalankan agen PALSU (tanpa biaya)' : 'Perkiraan biaya maksimum — perlu persetujuanmu'),
+    el('p', { kelas: 'meta' }, `Mesin: ${isi.mesin.nama} — ${isi.mesin.keterangan}`),
+    el('table', { kelas: 'tabel' },
+      el('thead', {}, el('tr', {}, el('th', {}, 'Peran'), el('th', {}, 'Model'), el('th', {}, 'Maks per panggilan'))),
+      el('tbody', {}, p.per_panggilan.map((x) => el('tr', {}, el('td', {}, x.peran), el('td', { kelas: 'mesin' }, x.model), el('td', {}, usd(x.maks_usd))))),
+    ),
+    el('p', {}, `Satu omongan melewati semua gerbang: ≤ ${usd(p.per_omongan_usd)}. Satu putaran (3 omongan): ≤ ${usd(p.per_putaran_usd)}. Paling banyak ${p.maks_putaran} putaran.`),
+    el('ul', { kelas: 'meta' }, p.catatan.map((c) => el('li', {}, c))),
+    isi.mesin.palsu ? null : el('p', {}, `Sisa pagu penyusun ${usd(b.sisa_penyusun_usd)}; sisa LLM_PAGU_USD ${usd(b.sisa_llm_usd)}.`),
+  ));
+  if (!isi.siap.siap) {
+    kotak.append(el('p', { kelas: 'tidak' }, isi.siap.alasan));
+    return;
+  }
+  if (b.maks_usd < b.min_usd) {
+    kotak.append(el('p', { kelas: 'tidak' }, `Sisa pagu (${usd(b.maks_usd)}) di bawah pagu jalan minimum ${usd(b.min_usd)}; agen tidak bisa dijalankan.`));
+    return;
+  }
+  const masukan = el('input', { id: 'pagu-jalan', type: 'number', min: b.min_usd, max: b.maks_usd, step: '0.05', value: b.bawaan_usd.toFixed(2) });
+  const tombol = el('button', { kelas: 'tombol tombol-utama', type: 'button', id: 'setujui-biaya' }, '');
+  const segarkan = () => { tombol.textContent = `Setujui dan jalankan agen (maks ${usd(Number(masukan.value))})`; };
+  masukan.addEventListener('input', segarkan);
+  segarkan();
+  tombol.addEventListener('click', async () => {
+    tombol.disabled = true;
+    try {
+      await api(`/api/jalan/${encodeURIComponent(keadaan.jalan)}/mulai`, { setuju: true, pagu_usd: Number(masukan.value) });
+      kosongkan(kotak).append(el('p', { kelas: 'meta' }, `Disetujui: pagu jalan ${usd(Number(masukan.value))}. Agen berjalan; tahapannya muncul di atas.`));
+    } catch (e) {
+      tombol.disabled = false;
+      kotak.append(el('p', { kelas: 'tidak' }, e.message));
+    }
+  });
+  kotak.append(el('div', { kelas: 'baris-form' },
+    el('label', { for: 'pagu-jalan' }, `Pagu jalan ini (US$, ${b.min_usd.toFixed(2)}–${b.maks_usd.toFixed(2)}); kode menghentikan agen sebelum panggilan yang akan melewatinya`),
+    masukan, tombol));
+}
+
+function labelTahap(p) {
+  return {
+    data: '1 · Data', aturan: '2 · 33 aturan', paket: '3 · Paket fakta', perkiraan: '4 · Perkiraan biaya', agen: '5 · Agen',
+    hasil: '6 · Hasil', suntingan: 'Suntingan', 'uji-ulang': 'Uji ulang', penyetuju: 'Penyetuju', galat: 'Galat',
+  }[p.tahap] || p.tahap;
+}
+
+function tampilkanPeristiwa(p) {
+  let kelas = '';
+  if (p.tahap === 'galat') kelas = 'tolak';
+  else if (p.tahap === 'agen' || p.tahap === 'uji-ulang') kelas = p.isi.putusan === 'tolak' || p.isi.putusan === 'galat' || p.isi.lolos === false ? 'tolak' : p.isi.putusan === 'lolos' || p.isi.lolos === true ? 'lolos' : '';
+  else if (p.tahap === 'hasil') kelas = p.isi.terbit ? 'lolos' : 'tolak';
+  else if (p.tahap === 'perkiraan') kelas = 'bayar';
+  const li = el('li', { kelas, 'data-tahap': p.tahap }, el('span', { kelas: 'judul-tahap' }, `${labelTahap(p)} `), p.judul);
+  if ((p.tahap === 'agen' || p.tahap === 'uji-ulang') && typeof p.isi.biaya_usd === 'number') {
+    li.append(el('span', { kelas: 'rincian' }, ` · ${p.isi.model || 'kode'} · ${usd(p.isi.biaya_usd)}`));
+    if (Array.isArray(p.isi.alasan) && p.isi.alasan.length > 1) li.append(el('details', {}, el('summary', {}, 'alasan lengkap'), el('ul', {}, p.isi.alasan.map((a) => el('li', {}, a)))));
+    if (typeof p.isi.total_usd === 'number') $('tahap-ringkas').textContent = `Jalan ${keadaan.jalan} · biaya langkah sejauh ini ${usd(p.isi.total_usd)}`;
+  }
+  if (p.tahap === 'aturan') li.append(daftarAturan(p.isi));
+  if (p.tahap === 'paket') li.append(daftarPaket(p.isi));
+  if (p.tahap === 'hasil' && Array.isArray(p.isi.penolakan) && p.isi.penolakan.length > 0) li.append(el('ul', {}, p.isi.penolakan.map((a) => el('li', {}, a))));
+  $('tahap').append(li);
+  if (p.tahap === 'perkiraan') kotakPersetujuan(p.isi);
+  if (p.tahap === 'hasil' || p.tahap === 'penyetuju' || (p.tahap === 'uji-ulang' && typeof p.isi.lolos === 'boolean')) muatJalan(keadaan.jalan);
+}
+
+/* ------------------------------------------------------------------ */
+/* 4 · hasil: draf seperti di layar pemain, atau penolakan beralasan   */
+/* ------------------------------------------------------------------ */
+
+function teksRujukan(teks) {
+  const keluar = [];
+  const pola = /\[\[([^|\]]+)\|([^\]]+)\]\]/g;
+  let akhir = 0;
+  let m;
+  while ((m = pola.exec(teks)) !== null) {
+    if (m.index > akhir) keluar.push(teks.slice(akhir, m.index));
+    keluar.push(el('b', { title: m[1] }, m[2]));
+    akhir = m.index + m[0].length;
+  }
+  if (akhir < teks.length) keluar.push(teks.slice(akhir));
+  return keluar;
+}
+
+function polos(teks) {
+  return String(teks).replace(/\[\[[^|\]]+\|([^\]]+)\]\]/g, '$1');
+}
+
+function tampilkanOmongan(o, no, kartu, opsi) {
+  const HURUF = ['a', 'b', 'c', 'd'];
+  return el('article', { kelas: 'omongan', 'data-omongan': no },
+    el('h3', {}, `Omongan ${no}`),
+    el('p', { kelas: 'gelembung-nama' }, o.nama),
+    el('div', { kelas: 'gelembung' }, o.pesan, el('span', { kelas: 'jam' }, o.jam)),
+    el('p', { kelas: 'meta' }, 'Kartu yang dipegang pemain:'),
+    o.kartu.map((id) => {
+      const k = kartu[id];
+      return el('div', { kelas: 'kartu-fakta' + (k && k.jenis === 'hitungan' ? ' hitungan' : '') },
+        el('p', { kelas: 'meta' }, `${k ? k.asal : 'fakta'}${k ? ' · ' + tanggalId(k.terbit) : ''}${o.kartu_penentu.includes(id) ? ' · penentu' : ''}`),
+        el('p', {}, k ? k.klaim : id));
+    }),
+    el('ol', { kelas: 'pilihan' }, HURUF.map((h) => el('li', { kelas: opsi.tandaiKunci && h === o.kunci ? 'kunci' : '' },
+      el('span', { kelas: 'huruf' }, `${h})`), polos(o.pilihan[h]), opsi.tandaiKunci && h === o.kunci ? el('span', { kelas: 'meta' }, ' (kunci)') : null))),
+    el('div', { kelas: 'penjelasan' }, el('p', { kelas: 'meta' }, 'Penjelasan sesudah menjawab:'), el('p', {}, teksRujukan(o.penjelasan))),
+    opsi.tambahan || null,
+  );
+}
+
+async function muatJalan(id) {
+  try {
+    const j = await api(`/api/jalan/${encodeURIComponent(id)}`);
+    keadaan.dataJalan = j;
+    tampilkanHasil(j);
+  } catch (e) {
+    $('tahap-ringkas').textContent = e.message;
+  }
+}
+
+function tampilkanHasil(j) {
+  if (!j.hasil) return;
+  $('langkah-hasil').hidden = false;
+  const isi = kosongkan($('hasil-isi'));
+  const biaya = j.hasil.biaya_ledger_usd === null || j.hasil.biaya_ledger_usd === undefined
+    ? `biaya ${j.mesin && j.mesin.palsu ? 'palsu' : 'jejak'} ${usd(j.hasil.biaya_usd)}`
+    : `biaya nyata (ledger) ${usd(j.hasil.biaya_ledger_usd)}`;
+  if (j.hasil.terbit && j.draf) {
+    isi.append(el('div', { kelas: 'kotak-catatan lolos', id: 'terbit' },
+      el('p', {}, `Terbit sesudah ${j.hasil.putaran} putaran — ${biaya}. Draf di bawah ditampilkan seperti di layar pemain; belum dipasang ke produk.`),
+      el('p', { kelas: 'meta' }, `Jejak lengkap: eval/penyusun/${j.id}/jejak-agen.json`)));
+    j.draf.omongan.forEach((o, i) => isi.append(tampilkanOmongan(o, i + 1, j.kartu, { tandaiKunci: true })));
+    if (typeof tampilkanPenyetuju === 'function') tampilkanPenyetuju(j);
+    return;
+  }
+  isi.append(el('div', { kelas: 'kotak-catatan tolak', id: 'penolakan' },
+    el('p', {}, `Tidak terbit — ${biaya}.`),
+    el('p', {}, j.alasan_awam),
+    j.hasil.penolakan.length > 0 ? el('p', {}, 'Alasan penolakan terakhir per omongan:') : null,
+    el('ul', {}, j.hasil.penolakan.map((a) => el('li', {}, a))),
+    el('p', { kelas: 'meta' }, `Jejak lengkap: eval/penyusun/${j.id}/jejak-agen.json dan hasil.json`)));
+  const terakhir = j.draf_terakhir.map((o, i) => [o, i + 1]).filter(([o]) => o);
+  if (terakhir.length > 0) {
+    isi.append(el('p', { kelas: 'meta' }, 'Versi terakhir tiap posisi (tidak lolos semua gerbang, hanya untuk dibaca):'));
+    for (const [o, no] of terakhir) isi.append(tampilkanOmongan(o, no, j.kartu, { tandaiKunci: true }));
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -275,6 +477,8 @@ window.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     cariHari($('kode').value.trim().toUpperCase(), Number($('jendela').value || 10));
   });
+  const dariUrl = new URLSearchParams(location.search).get('jalan');
+  if (dariUrl) bukaJalan(dariUrl);
   muatStatus().catch((e) => {
     kosongkan($('status-isi')).append(el('p', { kelas: 'tidak' }, `Status tidak terbaca: ${e.message}`));
   });
