@@ -1,0 +1,88 @@
+{
+  "a_terbit": false,
+  "b_tebak": {
+    "lolos": 0,
+    "total": 1,
+    "syarat": "≥ 2/6 (proporsi soal manusia)",
+    "terpenuhi": false
+  },
+  "c_kartu": {
+    "lolos": 1,
+    "total": 1,
+    "terpenuhi": true
+  },
+  "d_makna": {
+    "masalah": 1,
+    "terpenuhi": false
+  },
+  "layak_tayang": false,
+  "omongan": [
+    {
+      "no": 1,
+      "kunci": "c",
+      "tebak": [
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 45
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 45
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "yakin": 50
+        }
+      ],
+      "lolos_tebak": false,
+      "kartu": [
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "Gw yakin deh harga penutupan Perusahaan T kemarin Rp97",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "kemarin",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "harga penutupan Perusahaan T kemarin",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "kemarin",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "harga penutupan Perusahaan T kemarin Rp97",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "kemarin",
+          "kembar": ""
+        }
+      ],
+      "lolos_kartu": true,
+      "masalah": [
+        {
+          "butir": "M2 setiap bagian klaim tercek kartu",
+          "sumber": "3/3 penguji kartu (\"tak_tercek\")"
+        }
+      ]
+    }
+  ]
+}

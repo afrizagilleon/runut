@@ -1,0 +1,411 @@
+{
+  "id": "m2d10-tirt-a2",
+  "kode": "TIRT",
+  "tanggal": "2025-12-10",
+  "jendela": 10,
+  "dibuat": "2026-09-30T18:40:45.258Z",
+  "tahap": "selesai",
+  "sumber_paket": {
+    "sumber": "kurasi",
+    "keterangan": "definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"
+  },
+  "sesudahnya": 108,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis (pesan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penulis (penjelasan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penyempurna struktur",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.0135
+      },
+      {
+        "peran": "penebak 1 tanpa kartu",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penebak 2 tanpa kartu",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0228
+      },
+      {
+        "peran": "penebak 3 tanpa kartu",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.0872
+      },
+      {
+        "peran": "pembaca kartu",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0324
+      },
+      {
+        "peran": "kritikus (dengan satu pemeriksaan ulang)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.7376
+      }
+    ],
+    "per_omongan_usd": 0.9475,
+    "per_putaran_usd": 2.8425,
+    "maks_putaran": 12,
+    "catatan": [
+      "Perkiraan per panggilan = 6.000 token masukan + max_tokens peran × harga daftar OpenRouter (factory/llm/harga.ts).",
+      "Per omongan = satu versi melewati semua peran sekali (dengan ulangan tebakan tak terbaca dan satu pemeriksaan ulang kritikus). Dalam praktik kritikus hanya dipanggil untuk versi yang lolos semua gerbang lain.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD."
+    ]
+  },
+  "pagu_jalan_usd": 0.25,
+  "mesin": {
+    "nama": "templat-m2d10",
+    "keterangan": "mesin templat M2d-10: struktur soal dari pola soal tayang (kunci tunggal dibuktikan kode), penulis kata DeepSeek, penyempurna Haiku 4.5, penebak campur Haiku/DeepSeek/GLM, kritikus GLM \"high\" paling akhir",
+    "palsu": false
+  },
+  "hasil": {
+    "terbit": false,
+    "berhenti": "pagu tercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.445791 + perkiraan maksimum US$0.184540 untuk z-ai/glm-5.3 > pagu milestone US$1.58. Panggilan tidak dikirim.",
+    "putaran": 9,
+    "biaya_usd": 0.119452,
+    "biaya_ledger_usd": 0.119452,
+    "penolakan": [
+      "omongan 2 (ditolak-pagu, putaran 9): PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.445791 + perkiraan maksimum US$0.184540 untuk z-ai/glm-5.3 > pagu milestone US$1.58. Panggilan tidak dikirim."
+    ]
+  },
+  "draf": null,
+  "draf_terakhir": [
+    {
+      "nama": "Tio",
+      "jam": "20.14",
+      "pesan": "Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget.",
+      "angka_pesan": [
+        {
+          "teks": "Rp97",
+          "fact_id": "harga-2025-12-08"
+        }
+      ],
+      "kartu": [
+        "harga-2025-12-09",
+        "harga-2025-12-08"
+      ],
+      "kartu_penentu": [
+        "harga-2025-12-09"
+      ],
+      "pilihan": {
+        "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+        "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+        "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+        "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."
+      },
+      "kunci": "c",
+      "penjelasan": "Di kartu tertulis harga penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]]. Tio menyebut [[harga-2025-12-08|Rp97]] untuk kemarin, padahal angka itu tertulis sebagai penutupan [[harga-2025-12-08|8 Desember]]. Jadi yang benar: penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Pilihan yang membenarkan [[harga-2025-12-08|Rp97]] untuk [[harga-2025-12-09|9 Desember]] keliru karena tertukar harinya. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah itu angka kemarin."
+    },
+    {
+      "nama": "Andi",
+      "jam": "20.15",
+      "pesan": "Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi belum ke mana-mana. Ya jelas lah, masih di situ-situ aja.",
+      "angka_pesan": [
+        {
+          "teks": "9 Desember",
+          "fact_id": "hari-naik-beruntun"
+        }
+      ],
+      "kartu": [
+        "hari-naik-beruntun",
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "hari-naik-beruntun"
+      ],
+      "pilihan": {
+        "d": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+        "a": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+        "b": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+        "c": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah."
+      },
+      "kunci": "d",
+      "penjelasan": "Di [[hari-naik-beruntun|9 Desember]], harga penutupan sudah ratusan rupiah, bukan puluhan. Harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya. Kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]]. Jadi jawabannya: keliru kalau bilang harga turun, dan keliru kalau bilang masih puluhan rupiah. Yang paling menggoda, 'naik tapi masih puluhan', tetap salah karena di [[naik-2025-11-26-2025-12-09|9 Desember]] sudah ratusan. Yang bilang 'turun sampai puluhan' dan 'turun tapi ratusan' juga tidak cocok karena arahnya naik. Salah-kaprah yang umum: melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh."
+    },
+    null
+  ],
+  "keadaan": [
+    {
+      "no": 1,
+      "label": "Keliru",
+      "kunci": {
+        "fact_id": "harga-2025-12-09",
+        "bentuk": "peristiwa",
+        "teks": "Teman menyebut harga penutupan kemarin (9 Desember) Rp97.",
+        "rujukan": null,
+        "penanda": [],
+        "menjawab": "ULTJ s1 (soal tayang): angka hari lain dipakai untuk hari yang dibicarakan",
+        "rujukan_lain": []
+      },
+      "bank": [],
+      "pesan": {
+        "nama": "Tio",
+        "jam": "20.14",
+        "pesan": "Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "klaim_dari": null
+      },
+      "pilihan": {
+        "a": {
+          "teks": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "sumber": "templat"
+        },
+        "b": {
+          "teks": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "sumber": "templat"
+        },
+        "c": {
+          "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "sumber": "templat"
+        },
+        "d": {
+          "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]].",
+          "sumber": "templat"
+        }
+      },
+      "penjelasan": "Di kartu tertulis harga penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]]. Tio menyebut [[harga-2025-12-08|Rp97]] untuk kemarin, padahal angka itu tertulis sebagai penutupan [[harga-2025-12-08|8 Desember]]. Jadi yang benar: penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Pilihan yang membenarkan [[harga-2025-12-08|Rp97]] untuk [[harga-2025-12-09|9 Desember]] keliru karena tertukar harinya. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah itu angka kemarin.",
+      "omongan": {
+        "nama": "Tio",
+        "jam": "20.14",
+        "pesan": "Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "kartu": [
+          "harga-2025-12-09",
+          "harga-2025-12-08"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "pilihan": {
+          "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "c",
+        "penjelasan": "Di kartu tertulis harga penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]]. Tio menyebut [[harga-2025-12-08|Rp97]] untuk kemarin, padahal angka itu tertulis sebagai penutupan [[harga-2025-12-08|8 Desember]]. Jadi yang benar: penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Pilihan yang membenarkan [[harga-2025-12-08|Rp97]] untuk [[harga-2025-12-09|9 Desember]] keliru karena tertukar harinya. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah itu angka kemarin."
+      },
+      "hurufKunci": "c",
+      "templat": {
+        "rencana": {
+          "pola": "angka-lain-waktu",
+          "sudut": "harga-2025-12-09",
+          "kartu": [
+            "harga-2025-12-09",
+            "harga-2025-12-08"
+          ],
+          "kartu_penentu": [
+            "harga-2025-12-09"
+          ],
+          "klaim": {
+            "proposisi": {
+              "k": "nilai",
+              "fact_id": "harga-2025-12-09",
+              "nilai": 97
+            },
+            "label": "Keliru",
+            "inti": "Teman menyebut harga penutupan kemarin (9 Desember) Rp97.",
+            "angka": [
+              {
+                "teks": "Rp97",
+                "fact_id": "harga-2025-12-08"
+              },
+              {
+                "teks": "9 Desember",
+                "fact_id": "harga-2025-12-09"
+              }
+            ],
+            "wajib": [
+              [
+                "kemarin",
+                "9 Desember"
+              ]
+            ]
+          },
+          "slot": [
+            {
+              "slot": "kunci",
+              "bentuk": "Keliru + angka yang benar, bukan angka teman",
+              "varian": [
+                {
+                  "id": "K1",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 106
+                  },
+                  "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "penutupan",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "K2",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 106
+                  },
+                  "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "tercatat",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ]
+            },
+            {
+              "slot": "p1",
+              "bentuk": "Betul + angka teman",
+              "varian": [
+                {
+                  "id": "P1a",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 97
+                  },
+                  "teks": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "penutupan",
+                    "memang"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "P1b",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 97
+                  },
+                  "teks": "Betul, angka [[harga-2025-12-09|9 Desember]] yang tercatat memang [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "tercatat",
+                    "memang"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ]
+            },
+            {
+              "slot": "p2",
+              "bentuk": "Betul + kesimpulan dari angka teman",
+              "varian": [
+                {
+                  "id": "P2a",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "tertinggi",
+                    "fact_id": "harga-2025-12-08"
+                  },
+                  "teks": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+                  "inti": [
+                    "tertinggi"
+                  ],
+                  "penanda": null
+                },
+                {
+                  "id": "P2b",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "tertinggi",
+                    "fact_id": "harga-2025-12-08"
+                  },
+                  "teks": "Betul, belum pernah ada penutupan di atas [[harga-2025-12-08|Rp97]] sebelum hari ini.",
+                  "inti": [
+                    "belum pernah"
+                  ],
+                  "penanda": null
+                }
+              ]
+            },
+            {
+              "slot": "p3",
+              "bentuk": "Keliru + angka lain yang juga bukan angka hari itu",
+              "varian": [
+                {
+                  "id": "P3a",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 115
+                  },
+                  "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "penutupan",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "P3b",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 115
+                  },
+                  "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "tercatat",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ]
+            }
+          ],
+          "salah_kaprah": "memakai angka dari hari lain seolah-olah angka kemarin",
+          "topik": "harga",
+          "asal": "ULTJ s1 (soal tayang): angka hari lain dipakai untuk hari yang dibicarakan",
+          "rujukan_penjelasan": [
+            "[[harga-2025-12-09|9 Desember]]",
+            "[[harga-2025-12-09|Rp106]]",
+            "[[harga-2025-12-08|8 Desember]]",
+            "[[harga-2025-12-08|Rp97]]"
+          ]
+        },
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "hurufKunci": "c"
+      }
+    }
+  ],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}

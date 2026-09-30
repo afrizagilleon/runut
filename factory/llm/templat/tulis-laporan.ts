@@ -42,6 +42,7 @@ export function bagianTag(tag: string): string {
   if (tag.startsWith('m2d10/kalibrasi/')) return 'kalibrasi';
   if (tag.startsWith('m2d10/pemanasan/')) return 'pemanasan';
   if (tag.startsWith('penyusun/m2d10-tirt-a1/')) return 'jalan TIRT A-1';
+  if (tag.startsWith('penyusun/m2d10-tirt-a2/')) return 'jalan TIRT A-2';
   if (tag.startsWith('penyusun/m2d10-')) return 'jalan TIRT';
   return 'lain';
 }
@@ -209,21 +210,32 @@ function bagianPutusan(folder = 'penguji'): string[] {
   return b;
 }
 
-function bagianA1(): string[] {
-  if (!existsSync(`${FOLDER_JALAN('m2d10-tirt-a1')}/hasil.json`)) return [];
-  const t = execFileSync('git', ['log', '--format=%h %cI', '--diff-filter=A', '--', 'docs/bukti/m2d10-praregistrasi-a1.md'], { cwd: AKAR, encoding: 'utf8' }).trim().split(/\r?\n/).at(-1) ?? '';
-  const pertama = entriLedger().find((x) => x.tag.startsWith('penyusun/m2d10-tirt-a1/'))?.waktu ?? '—';
-  const krit = entriLedger().filter((x) => x.tag.startsWith('penyusun/m2d10-tirt-a1/') && x.tag.includes('/kritikus/'));
+function bagianAmandemen(kode: 'A-1' | 'A-2', ringkas: string, pagu: string): string[] {
+  const id = `m2d10-tirt-${kode.toLowerCase()}`;
+  if (!existsSync(`${FOLDER_JALAN(id)}/hasil.json`)) return [];
+  const prareg = `docs/bukti/m2d10-praregistrasi-${kode.toLowerCase()}.md`;
+  const t = execFileSync('git', ['log', '--format=%h %cI', '--diff-filter=A', '--', prareg], { cwd: AKAR, encoding: 'utf8' }).trim().split(/\r?\n/).at(-1) ?? '';
+  const pertama = entriLedger().find((x) => x.tag.startsWith(`penyusun/${id}/`))?.waktu ?? '—';
+  const krit = entriLedger().filter((x) => x.tag.startsWith(`penyusun/${id}/`) && x.tag.includes('/kritikus/'));
+  const judul = `### Jalan TIRT ${kode}`;
   return [
-    '## Amandemen A-1: satu jalan TIRT lagi',
+    `## Amandemen ${kode}: satu jalan TIRT lagi`,
     '',
-    `Pra-registrasi \`docs/bukti/m2d10-praregistrasi-a1.md\` di-commit **${t}**; panggilan berbayar A-1 pertama: **${pertama}**. Setelan S1 + pembaca kartu "dicatat" (penebak menolak); kritikus dikunci ke Wafer (\`order\` + \`allow_fallbacks: false\`); mesin yang diperbaiki; pagu jalan US$0,45.`,
+    `Pra-registrasi \`${prareg}\` di-commit **${t}**; panggilan berbayar ${kode} pertama: **${pertama}**. ${ringkas}`,
     '',
-    `Panggilan kritikus A-1: ${String(krit.length)}; penyedia: ${[...new Set(krit.map((x) => String(x.penyedia)))].join(', ') || '—'}; token penalaran: ${krit.map((x) => String(x.token_penalaran)).join(', ') || '—'}.`,
+    `Panggilan kritikus ${kode}: ${String(krit.length)}; penyedia: ${[...new Set(krit.map((x) => String(x.penyedia)))].join(', ') || '—'}; token penalaran: ${krit.map((x) => String(x.token_penalaran)).join(', ') || '—'}.`,
     '',
-    ...bagianJalan('m2d10-tirt-a1', '### Jalan TIRT A-1', 'npm run templat:jalan -- --id m2d10-tirt-a1 --pagu 0.45').map((x) => (x.startsWith('### ') && x !== '### Jalan TIRT A-1' ? `#${x}` : x)),
-    ...bagianPutusan('penguji-a1').map((x) => (x.startsWith('### ') ? `#${x}` : x)),
+    ...bagianJalan(id, judul, `npm run templat:jalan -- --id ${id} --pagu ${pagu}`).map((x) => (x.startsWith('### ') && x !== judul ? `#${x}` : x)),
+    ...bagianPutusan(`penguji-${kode.toLowerCase()}`).map((x) => (x.startsWith('### ') ? `#${x}` : x)),
   ];
+}
+
+function bagianA1(): string[] {
+  return bagianAmandemen('A-1', 'Setelan S1 + pembaca kartu "dicatat" (penebak menolak); kritikus dikunci ke Wafer (`order` + `allow_fallbacks: false`); mesin yang diperbaiki; pagu jalan US$0,45.', '0.45');
+}
+
+function bagianA2(): string[] {
+  return bagianAmandemen('A-2', 'Setelan dan kunci kritikus A-1 tetap; empat perbaikan kode: G-klaim-tambahan, kebocoran kalender, pengecoh besaran dekat (≤ 15 %, dari harga nyata), anti-ulang pemanasan; pagu jalan US$0,25.', '0.25');
 }
 
 export function tulisLaporan(): string {
@@ -249,6 +261,7 @@ export function tulisLaporan(): string {
     ...bagianPutusan(),
     ...bagianTambahan(),
     ...bagianA1(),
+    ...bagianA2(),
     '## Biaya NYATA M2d-10 (OpenRouter, `usage.cost`)',
     '',
     `Entri ledger bertag \`m2d10/\` + \`penyusun/m2d10-\`: **${usd(total)} dalam ${String(e.length)} panggilan**, dari pagu milestone US$${PAGU_MILESTONE_M2D10.toFixed(2)} (ditegakkan kode).`,

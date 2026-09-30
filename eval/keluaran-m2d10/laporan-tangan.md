@@ -97,3 +97,34 @@
   1. Pola benar-berincian bisa ditebak dari rentang tanggal di pesan (panjang rentang ≈ jumlah hari naik). Perbaikannya di templat: pesan tanpa tanggal awal, atau pengecoh rincian yang sama masuk akalnya.
   2. Pengecoh angka "salah" di besaran-hitungan harus lebih dekat ke nilai benar.
   3. Kalimat pesan "Gw hafal angka beginian" lolos gerbang, tetapi ditandai tak tercek oleh penguji kartu Opus. Klaim tambahan yang tidak bisa dicek perlu ditolak kode di pesan.
+
+### Amandemen A-2 (perbaikan kode, lalu satu jalan TIRT)
+
+- **Kode (gratis).** `factory/llm/templat/a2.ts` dan `a2.test.ts`. Tes ditulis dulu terhadap fungsi kosong: 6 dari 9 merah. Tiga yang hijau adalah pemeriksaan "tidak boleh salah tolak", dan pengikatannya dibuktikan lewat sabotase. Sabotase A2-S1…S9 semuanya merah.
+  1. G-klaim-tambahan: 13 pola dari jejak M2d-8…A-1. Keenam pesan soal tayang lolos tanpa pengecualian.
+  2. Kebocoran kalender: hitungan hari di kunci dibandingkan dengan hari kerja antara tanggal yang tampil tanpa kartu. Pilihan templat benar-berincian kini tanpa tanggal akhir rangkaian.
+  3. Pengecoh besaran: dekat tetapi salah (≤ 15 %), diambil dari rasio harga penutupan nyata. Di TIRT 2,02 (8 Des ÷ 26 Nov) menggantikan 3,51.
+  4. Anti-ulang pemanasan: sebab-resmi 10 Des tidak lagi dipakai simulasi. Posisi TIRT menjadi angka-lain-waktu, setengah-benar, besaran-hitungan.
+- **Jalan `m2d10-tirt-a2` (pagu 0,25): TIDAK TERBIT** sesudah 9 versi, biaya nyata US$0,1195.
+  - Jalan berhenti karena pagu. Biaya tercatat US$0,1195, ditambah cadangan satu panggilan kritikus (US$0,1845), melewati pagu 0,25. Dengan pagu 0,25, sesudah satu kritikus praktis tidak ada ruang untuk kritikus kedua.
+  - Omongan 1 (angka-lain-waktu) dikunci di versi 1: kritikus Wafer, 9.159 token penalaran.
+  - Omongan 2: setengah-benar ditolak di 3 versi karena Haiku sendiri memilih kunci dengan yakin 72 (≥ A = 60). Alasannya: pesan bilang "belum pernah disetop tahun ini", sedangkan kunci menyebut tanggal penghentian 21 Januari. Kunci berbentuk "Keliru + tanggal spesifik" terbaca tanpa kartu.
+  - Pengganti posisi 2, benar-berincian: ditolak di 3 versi oleh DeepSeek dan GLM (Haiku tidak). Tanggal akhir sudah tidak tampil, tetapi penebak tetap memilih "Betul, naik N hari bursa berturut-turut" karena klaimnya spesifik dan wajar. Perbaikan kalender menutup satu jalur tebakan, tetapi bentuk polanya sendiri masih tertebak.
+  - Pengganti berikutnya, arah-kali-tingkat: versi 1 ditolak kode (penjelasan memuat angka telanjang). Versi 2 lolos penebak dan pembaca kartu, lalu berhenti karena pagu sebelum kritikus.
+  - Omongan 3 (besaran-hitungan dengan pengecoh 2,02) tidak pernah dicapai.
+  - Penyempurna Haiku dipanggil 4 kali; semua usulannya diterima kode, tetapi tidak mengubah hasil.
+- **Distribusi:** kode 1, penebak 6, kartu 0, kritikus 0, lolos 1, pagu 1.
+- **Uji luar tambahan** atas 1 omongan yang dikunci (hanya laporan, subagent saja, 6 opus baru, sinkron):
+  - Tebak buta: c/45 · c/45 · c/50, tertebak 3/3.
+  - Kartu: 3/3 benar, "kunci lain" 0/3.
+  - Masalah makna: "kemarin" ditandai tak tercek oleh 3/3 penguji. Bahan uji luar tidak menyebut tanggal hari ini, jadi "kemarin" tidak bisa dipetakan.
+  - Putusan: TIDAK — (a) tidak, (b) 0/1, (c) 1/1, (d) 1 masalah.
+  - Pembanding A-1: pola yang sama lolos tebak buta 0/3 ketika kuncinya di huruf d dan pengecoh Rp115 di c. Kali ini kuncinya di c dan pengecoh di d, dan ketiga penguji memilih c. Penguji tampaknya memilih "Keliru, penutupan … RpX" yang pertama, jadi hasil tebak buta pola ini bergantung pada letak huruf.
+- **G-klaim-tambahan belum lengkap.** "itu angka yang gw inget banget" lolos karena "inget" tidak ada di daftar pola.
+- **Biaya A-2** US$0,1195: DeepSeek 0,0505, GLM 0,0461, Haiku 0,0228. Milestone M2d-10 kini US$0,6862 dari 1,20; kumulatif ledger US$8,9514.
+- **Yang perlu diputuskan reviewer:**
+  1. Setengah-benar: kunci yang menyebut tanggal spesifik terbaca tanpa kartu. Pengecoh perlu tanggal yang sama spesifiknya.
+  2. Benar-berincian: tertebak dari bentuknya. Polanya perlu pengecoh Betul yang sama spesifik dan wajar.
+  3. Pagu jalan di bawah ±0,4 tidak cukup untuk tiga kritikus, karena cadangan kritikus 0,18 per panggilan.
+  4. Bahan uji luar perlu menyebut tanggal "hari ini", atau pesan perlu menyebut tanggal alih-alih "kemarin".
+  5. Pola G-klaim-tambahan perlu diperluas ("inget", "yakin deh…", dan sejenisnya).

@@ -1,0 +1,1585 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/templat/mesin.ts",
+  "simulasi": {
+    "paket_id": "tirt",
+    "nama_samaran": "Perusahaan T",
+    "tanggal_t": "2025-12-10",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+  },
+  "model": "deepseek/deepseek-v4.1-flash",
+  "model_peran": {
+    "penulis": "deepseek/deepseek-v4.1-flash",
+    "penyempurna": "anthropic/claude-haiku-4.5",
+    "penebak": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3"
+  },
+  "paket": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": 11,
+    "fakta_lolos": 20,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2025-11-25",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "harga-2025-12-10",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "cbab05892ffdb6f253f8100c54227de6af2f06d671fe1a711f1dc55fa0060e2e",
+    "sha256_paket": "00ee7ff29751650fd42d323984c8398fdd0536ce383a788f1fe1ad2b2dea7292",
+    "ringkasan": "Pintu penyusun, mesin \"templat-m2d10\": templat dari pola soal tayang (factory/llm/templat/pola.ts), penulis kata DeepSeek, penyempurna Haiku 4.5, penebak keluarga campur Haiku/DeepSeek/GLM, pembaca kartu DeepSeek, kritikus GLM paling akhir; setelan SETELAN_TEMPLAT_M2D10. Di sini hanya hash."
+  },
+  "mulai": "2026-09-30T18:40:45.331Z",
+  "selesai": "2026-09-30T19:00:37.587Z",
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "rencana-templat",
+      "omongan": null,
+      "waktu_mulai": "2026-09-30T18:40:45.344Z",
+      "waktu_selesai": "2026-09-30T18:40:45.344Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "6 calon rencana lolos bukti kunci tunggal: sebab-resmi:susp-2025-12-10, angka-lain-waktu:harga-2025-12-09, setengah-benar:susp-2025-01-21, benar-berincian:hari-naik-beruntun, arah-kali-tingkat:hari-naik-beruntun, besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+        "anti-ulang pemanasan: sebab-resmi:susp-2025-12-10 tidak dipakai (sama dengan soal pemanasan)",
+        "posisi: angka-lain-waktu:harga-2025-12-09, setengah-benar:susp-2025-01-21, besaran-hitungan:kelipatan-2025-11-26-2025-12-09"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": [
+          {
+            "pola": "angka-lain-waktu",
+            "asal": "ULTJ s1 (soal tayang): angka hari lain dipakai untuk hari yang dibicarakan",
+            "sudut": "harga-2025-12-09",
+            "kartu": [
+              "harga-2025-12-09",
+              "harga-2025-12-08"
+            ],
+            "label_klaim": "Keliru"
+          },
+          {
+            "pola": "setengah-benar",
+            "asal": "ULTJ s2 (soal tayang): klaim dua bagian, satu benar satu salah",
+            "sudut": "susp-2025-01-21",
+            "kartu": [
+              "hari-naik-beruntun",
+              "susp-2025-01-21"
+            ],
+            "label_klaim": "Keliru"
+          },
+          {
+            "pola": "besaran-hitungan",
+            "asal": "DADA s2 (soal tayang): besaran hitungan yang disebut teman dengan kata-kata",
+            "sudut": "kelipatan-2025-11-26-2025-12-09",
+            "kartu": [
+              "kelipatan-2025-11-26-2025-12-09",
+              "naik-2025-11-26-2025-12-09"
+            ],
+            "label_klaim": "Betul"
+          }
+        ],
+        "calon": [
+          "angka-lain-waktu:harga-2025-12-09",
+          "setengah-benar:susp-2025-01-21",
+          "benar-berincian:hari-naik-beruntun",
+          "arah-kali-tingkat:hari-naik-beruntun",
+          "besaran-hitungan:kelipatan-2025-11-26-2025-12-09"
+        ]
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "tulis-pesan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T18:41:52.784Z",
+      "waktu_selesai": "2026-09-30T18:41:52.784Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 937,
+      "token_keluar": 294,
+      "biaya_usd": 0,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 1 (tak terbaca)"
+      ],
+      "sha256_prompt": "c44dbfcad9b6a051d858de4ef41840de2f896332aec8fae936a89b1cfd915d56",
+      "rincian": {
+        "terurai": false,
+        "finish_reason": "error",
+        "teks_mentah": "",
+        "penyedia": "InferenceNet"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 3,
+      "putaran": 1,
+      "jenis": "tulis-pesan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T18:41:55.394Z",
+      "waktu_selesai": "2026-09-30T18:41:55.394Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1211,
+      "token_keluar": 47,
+      "biaya_usd": 0.00005242,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 1 — cadangan tanpa berpikir"
+      ],
+      "sha256_prompt": "c44dbfcad9b6a051d858de4ef41840de2f896332aec8fae936a89b1cfd915d56",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"nama\": \"Tio\", \"jam\": \"20.14\", \"pesan\": \"Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget.\"}",
+        "penyedia": "Relace"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 4,
+      "putaran": 1,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T18:42:40.008Z",
+      "waktu_selesai": "2026-09-30T18:42:40.008Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 837,
+      "token_keluar": 1298,
+      "biaya_usd": 0.00100698,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "526252f3f3547a02a6100fc0d4c97b4a1fa61db944a1d61ac40e9b8c5a3a504f",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Di kartu tertulis harga penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]]. Tio menyebut [[harga-2025-12-08|Rp97]] untuk kemarin, padahal angka itu tertulis sebagai penutupan [[harga-2025-12-08|8 Desember]]. Jadi yang benar: penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Pilihan yang membenarkan [[harga-2025-12-08|Rp97]] untuk [[harga-2025-12-09|9 Desember]] keliru karena tertukar harinya. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah itu angka kemarin.\"}",
+        "penyedia": "InferenceNet"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 5,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T18:42:40.065Z",
+      "waktu_selesai": "2026-09-30T18:42:40.065Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "angka-lain-waktu:harga-2025-12-09",
+        "versi": 1,
+        "pesan": "Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget.",
+        "pilihan": {
+          "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[misal|Rp115]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "c",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 6,
+      "putaran": 1,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T18:42:40.066Z",
+      "waktu_selesai": "2026-09-30T18:46:12.160Z",
+      "model": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash",
+      "panggilan": 3,
+      "token_masuk": 1648,
+      "token_keluar": 12398,
+      "biaya_usd": 0.0087658,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak memilih kunci (claude-haiku-4.5 a/72, deepseek-v4.1-flash a/70); penebak 3 tidak dipanggil (putusan sudah pasti)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "tidak_dipanggil": [
+          3
+        ],
+        "titik_buta": false,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 72,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Tio mengklaim harga penutupan spesifik (Rp97) dengan keyakinan tinggi ('yakin banget'), dan pilihan (a) membenarkan klaim itu apa adanya dengan tanggal spesifik; pilihan (c) dan (d) hanya mengganti angka tanpa logika jelas mengapa Tio salah ingat, sementara (b) ambigu tentang 'tertinggi sebelumnya'.",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "a",
+            "yakin": 70,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim Tio yang spesifik Rp97 paling mungkin benar dan langsung dicocokkan oleh pilihan a, sedangkan b menambah klaim yang tidak dikatakan Tio dan c/d hanya menuduh keliru.",
+            "penyedia": [
+              "Relace",
+              "Relace"
+            ],
+            "token_penalaran": [
+              6833,
+              3543
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 7,
+      "putaran": 1,
+      "jenis": "gerbang-kartu",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T18:46:12.161Z",
+      "waktu_selesai": "2026-09-30T18:46:40.319Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 2,
+      "token_masuk": 792,
+      "token_keluar": 5926,
+      "biaya_usd": 0.0067384548,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"c\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "pilihan": "c",
+        "kartu_ditunjuk": [
+          "harga-2025-12-09"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menyatakan penutupan 9 Desember 2025 adalah Rp106, bukan Rp97, jadi omongan Tio tidak cocok.",
+        "membingungkan": [
+          {
+            "kutipan": "Gw yakin deh harga penutupan Perusahaan T kemarin Rp97, itu angka yang gw inget banget.",
+            "sumber": "penulis",
+            "bagian": "pesan",
+            "fact_id": null
+          }
+        ]
+      },
+      "peran": "pembaca-kartu"
+    },
+    {
+      "no": 8,
+      "putaran": 1,
+      "jenis": "kritikus",
+      "omongan": 1,
+      "waktu_mulai": "2026-09-30T18:46:40.322Z",
+      "waktu_selesai": "2026-09-30T18:48:36.815Z",
+      "model": "z-ai/glm-5.3",
+      "panggilan": 1,
+      "token_masuk": 1920,
+      "token_keluar": 9328,
+      "biaya_usd": 0.041398208,
+      "putusan": "lolos",
+      "alasan": [
+        "kritikus tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "menjawab": true,
+        "terpotong": false,
+        "keberatan": [],
+        "arahan": "Di penjelasan, tegaskan sekali bahwa 'kemarin' berarti 9 Desember karena pesan dikirim pada 10 Desember pukul 20.14, agar tautan harinya tidak sekadar tersirat.",
+        "cek_makna": {
+          "bagian_tak_tercek": [],
+          "kunci_menyatakan_tak_pasti": false,
+          "juga_benar": [],
+          "alasan_juga_benar": "Hanya c yang didukung kartu: a dan b disangkal Kartu 1 karena penutupan 9 Desember Rp106 lebih tinggi dari Rp97, dan d menyebut Rp115 yang tidak muncul di kartu mana pun."
+        },
+        "token_penalaran": [
+          9159
+        ],
+        "penyedia": [
+          "Wafer"
+        ]
+      },
+      "peran": "kritikus"
+    },
+    {
+      "no": 9,
+      "putaran": 2,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:50:12.567Z",
+      "waktu_selesai": "2026-09-30T18:50:12.567Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1260,
+      "token_keluar": 6223,
+      "biaya_usd": 0.003759,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "924452686f5989422c3593a44391e91671853c626b20ef4832c9d34308b4dc64",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"nama\": \"Dika\", \"jam\": \"20.15\", \"pesan\": \"Perusahaan T harga penutupannya naik 9 hari bursa berturut-turut, dan sebelum hari ini belum pernah disetop bursa tahun ini. Gw sih udah gak kaget, biasa aja.\"}",
+        "penyedia": "Relace"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 10,
+      "putaran": 2,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:07.643Z",
+      "waktu_selesai": "2026-09-30T18:51:07.643Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 948,
+      "token_keluar": 2152,
+      "biaya_usd": 0.00165192,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "e232b4bbb570f595aa4921fc94b64b61b1436fcde91ca136070a8deeacbfcb22",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Yang terbaca: harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]]. Tapi catatan bursa menunjukkan perdagangan dihentikan sementara pada [[susp-2025-01-21|21 Januari]], dengan alasan keraguan atas kelangsungan usaha. Jadi bagian kenaikan beruntun benar, bagian 'belum pernah disetop tahun ini' keliru. Itu sebabnya jawabannya: naiknya beruntun, tapi [[susp-2025-01-21|21 Januari]] sudah pernah dihentikan. Pilihan yang menyebut penghentian karena kenaikan terlalu tajam juga keliru; alasan resminya keraguan kelangsungan usaha. Salah-kaprah yang umum: karena bagian kenaikan beruntun benar, orang lalu percaya bagian 'belum pernah disetop' juga benar.\"}",
+        "penyedia": "InferenceNet"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 11,
+      "putaran": 2,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:07.694Z",
+      "waktu_selesai": "2026-09-30T18:51:07.694Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "setengah-benar:susp-2025-01-21",
+        "versi": 1,
+        "pesan": "Perusahaan T harga penutupannya naik 9 hari bursa berturut-turut, dan sebelum hari ini belum pernah disetop bursa tahun ini. Gw sih udah gak kaget, biasa aja.",
+        "pilihan": {
+          "d": "Keliru, naiknya memang beruntun, tapi [[susp-2025-01-21|21 Januari]] sudah pernah dihentikan.",
+          "a": "Betul, naik beruntun dan baru kali ini dihentikan tahun ini.",
+          "b": "Betul, penghentian [[susp-2025-01-21|21 Januari]] pun karena kenaikan harganya terlalu tajam.",
+          "c": "Keliru, harganya sempat turun, tapi memang belum pernah dihentikan."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 12,
+      "putaran": 2,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:07.695Z",
+      "waktu_selesai": "2026-09-30T18:51:10.279Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 677,
+      "token_keluar": 130,
+      "biaya_usd": 0.001327,
+      "putusan": "tolak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Dika klaim 'belum pernah disetop tahun ini', tapi pilihan d menyatakan sudah dihentikan 21 Januari (tahun ini), yang membuat klaimnya keliru—sedangkan bagian 'naiknya beruntun' tetap benar, sesuai logika pertanyaan yang mempertanyakan keseluruhan omongannya.\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "tidak_dipanggil": [
+          2,
+          3
+        ],
+        "titik_buta": false,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "d",
+            "yakin": 72,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Dika klaim 'belum pernah disetop tahun ini', tapi pilihan d menyatakan sudah dihentikan 21 Januari (tahun ini), yang membuat klaimnya keliru—sedangkan bagian 'naiknya beruntun' tetap benar, sesuai logika pertanyaan yang mempertanyakan keseluruhan omongannya.",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 13,
+      "putaran": 2,
+      "jenis": "sempurnakan-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:10.285Z",
+      "waktu_selesai": "2026-09-30T18:51:13.168Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 1979,
+      "token_keluar": 148,
+      "biaya_usd": 0.002719,
+      "putusan": "ditulis",
+      "alasan": [
+        "tertebak: 1 slot diterima kode, 0 dibuang"
+      ],
+      "sha256_prompt": "5efecceedb85116865e995f0479616826cda7d5a6673ea89c010f67649759c93",
+      "rincian": {
+        "diterima": [
+          {
+            "slot": "p1",
+            "varian": "P1b",
+            "dari": "Betul, naik beruntun dan baru kali ini dihentikan tahun ini.",
+            "ke": "Betul, naik beruntun dan belum pernah dihentikan tahun ini."
+          }
+        ],
+        "dibuang": [],
+        "alasan_penyempurna": "Mengganti P1a dengan P1b agar pengecoh tidak lagi tertebak tanpa kartu; kedua pilihan salah sekarang sama-sama menyangkal penghentian, membuat pembeda utama terletak pada kartu, bukan pada bentuk teks.",
+        "teks_mentah": "```json\n{\n  \"pilihan\": {\n    \"p1\": {\n      \"varian\": \"P1b\",\n      \"teks\": \"Betul, naik beruntun dan belum pernah dihentikan tahun ini.\"\n    }\n  },\n  \"alasan\": \"Mengganti P1a dengan P1b agar pengecoh tidak lagi tertebak tanpa kartu; kedua pilihan salah sekarang sama-sama menyangkal penghentian, membuat pembeda utama terletak pada kartu, bukan pada bentuk teks.\"\n}\n```",
+        "penyedia": "Amazon Bedrock"
+      },
+      "peran": "penyempurna"
+    },
+    {
+      "no": 14,
+      "putaran": 3,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:19.821Z",
+      "waktu_selesai": "2026-09-30T18:51:19.821Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 947,
+      "token_keluar": 866,
+      "biaya_usd": 0.00092631,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "2d5c273c174555c8a248e4bd676030804dd6054c438caebb3a7e76545b3e07d5",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Dika menyebut dua hal: harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dan sepanjang tahun ini belum pernah disetop. Yang pertama cocok dengan catatan harga yang naik terus sampai [[hari-naik-beruntun|9 Desember]]. Yang kedua tidak cocok: perdagangan saham pernah dihentikan sementara pada [[susp-2025-01-21|21 Januari]], dengan alasan resmi keraguan atas kelangsungan usaha perseroan. Jadi naiknya memang beruntun, tapi tahun ini sudah pernah disetop. Pilihan yang menyebut penghentian itu terjadi karena harga naik terlalu tajam juga keliru, sebab alasan yang tertulis berbeda. Salah-kaprah yang umum: bagian omongan yang benar membuat bagian lainnya ikut terdengar benar.\"}",
+        "penyedia": "Phala"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 15,
+      "putaran": 3,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:19.834Z",
+      "waktu_selesai": "2026-09-30T18:51:19.834Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "setengah-benar:susp-2025-01-21",
+        "versi": 2,
+        "pesan": "Perusahaan T harga penutupannya naik 9 hari bursa berturut-turut, dan sebelum hari ini belum pernah disetop bursa tahun ini. Gw sih udah gak kaget, biasa aja.",
+        "pilihan": {
+          "d": "Keliru, naiknya memang beruntun, tapi [[susp-2025-01-21|21 Januari]] sudah pernah dihentikan.",
+          "a": "Betul, naik beruntun dan belum pernah dihentikan tahun ini.",
+          "b": "Betul, penghentian [[susp-2025-01-21|21 Januari]] pun karena kenaikan harganya terlalu tajam.",
+          "c": "Keliru, harganya sempat turun, tapi memang belum pernah dihentikan."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1b",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 16,
+      "putaran": 3,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:19.835Z",
+      "waktu_selesai": "2026-09-30T18:51:24.925Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 677,
+      "token_keluar": 137,
+      "biaya_usd": 0.001362,
+      "putusan": "tolak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Dika klaim 'belum pernah disetop bursa tahun ini', tapi opsi (d) menyatakan ada penghentian 21 Januari—tanggal spesifik ini sangat kemungkinan ada di dokumen; klaim 'naik beruntun'-nya mungkin tetap benar, hanya klaim 'belum pernah disetop' yang salah.\"",
+        "KEMUNGKINAN TITIK BUTA: pilihan omongan ini pernah disempurnakan Haiku, dan Haiku juga menebak"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "tidak_dipanggil": [
+          2,
+          3
+        ],
+        "titik_buta": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "d",
+            "yakin": 72,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Dika klaim 'belum pernah disetop bursa tahun ini', tapi opsi (d) menyatakan ada penghentian 21 Januari—tanggal spesifik ini sangat kemungkinan ada di dokumen; klaim 'naik beruntun'-nya mungkin tetap benar, hanya klaim 'belum pernah disetop' yang salah.",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 17,
+      "putaran": 3,
+      "jenis": "sempurnakan-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:51:24.928Z",
+      "waktu_selesai": "2026-09-30T18:51:27.634Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 1983,
+      "token_keluar": 237,
+      "biaya_usd": 0.003168,
+      "putusan": "ditulis",
+      "alasan": [
+        "tertebak: 2 slot diterima kode, 0 dibuang"
+      ],
+      "sha256_prompt": "475428ddf1667ddf15233183a291b352f6765fc1b822310e469bbe2f83f128a1",
+      "rincian": {
+        "diterima": [
+          {
+            "slot": "p1",
+            "varian": "P1a",
+            "dari": "Betul, naik beruntun dan belum pernah dihentikan tahun ini.",
+            "ke": "Betul, naik beruntun dan baru kali ini dihentikan tahun ini."
+          },
+          {
+            "slot": "p3",
+            "varian": "P3b",
+            "dari": "Keliru, harganya sempat turun, tapi memang belum pernah dihentikan.",
+            "ke": "Keliru, naiknya tidak beruntun, tapi belum pernah dihentikan tahun ini."
+          }
+        ],
+        "dibuang": [],
+        "alasan_penyempurna": "Pengecoh p1 dan p3 diubah agar lebih sulit dibedakan dari kunci tanpa membaca kartu: p1 sekarang menyebut penghentian (seperti kunci) tapi dengan frasa berbeda, p3 sekarang menyangkal kenaikan beruntun (seperti kunci) tapi tetap salah karena kartu membuktikan ada penghentian.",
+        "teks_mentah": "```json\n{\n  \"pilihan\": {\n    \"p1\": {\n      \"varian\": \"P1a\",\n      \"teks\": \"Betul, naik beruntun dan baru kali ini dihentikan tahun ini.\"\n    },\n    \"p3\": {\n      \"varian\": \"P3b\",\n      \"teks\": \"Keliru, naiknya tidak beruntun, tapi belum pernah dihentikan tahun ini.\"\n    }\n  },\n  \"alasan\": \"Pengecoh p1 dan p3 diubah agar lebih sulit dibedakan dari kunci tanpa membaca kartu: p1 sekarang menyebut penghentian (seperti kunci) tapi dengan frasa berbeda, p3 sekarang menyangkal kenaikan beruntun (seperti kunci) tapi tetap salah karena kartu membuktikan ada penghentian.\"\n}\n```",
+        "penyedia": "Amazon Bedrock"
+      },
+      "peran": "penyempurna"
+    },
+    {
+      "no": 18,
+      "putaran": 4,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:52:04.710Z",
+      "waktu_selesai": "2026-09-30T18:52:04.710Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 949,
+      "token_keluar": 5516,
+      "biaya_usd": 0.002854086,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "7b555aef35c0fc242f3699019df93d10f0ff7d9217c20f286d97ad5e3595bd44",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Catatan di kartu: harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]]. Jadi 'naik beruntun' benar. Tapi catatan lain: perdagangan dihentikan sementara pada [[susp-2025-01-21|21 Januari]] karena bursa menilai ada keraguan atas kelangsungan usaha, dan kapan dibuka lagi tidak tercatat. Maka 'belum pernah disetop tahun ini' tidak benar; jawabannya: naiknya beruntun, tapi [[susp-2025-01-21|21 Januari]] sudah pernah dihentikan. Yang menggoda: penghentian [[susp-2025-01-21|21 Januari]] dianggap karena kenaikan harga terlalu tajam, padahal alasan resminya keraguan kelangsungan usaha. Yang bilang naiknya tidak beruntun juga keliru. Salah-kaprah yang umum: kalau sebagian ucapan benar, bagian lain yang menempel ikut dipercaya.\"}",
+        "penyedia": "Morph"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 19,
+      "putaran": 4,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:52:04.719Z",
+      "waktu_selesai": "2026-09-30T18:52:04.719Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "setengah-benar:susp-2025-01-21",
+        "versi": 3,
+        "pesan": "Perusahaan T harga penutupannya naik 9 hari bursa berturut-turut, dan sebelum hari ini belum pernah disetop bursa tahun ini. Gw sih udah gak kaget, biasa aja.",
+        "pilihan": {
+          "d": "Keliru, naiknya memang beruntun, tapi [[susp-2025-01-21|21 Januari]] sudah pernah dihentikan.",
+          "a": "Betul, naik beruntun dan baru kali ini dihentikan tahun ini.",
+          "b": "Betul, penghentian [[susp-2025-01-21|21 Januari]] pun karena kenaikan harganya terlalu tajam.",
+          "c": "Keliru, naiknya tidak beruntun, tapi belum pernah dihentikan tahun ini."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3b"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 20,
+      "putaran": 4,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:52:04.720Z",
+      "waktu_selesai": "2026-09-30T18:52:07.186Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 678,
+      "token_keluar": 163,
+      "biaya_usd": 0.001493,
+      "putusan": "tolak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 d/72); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Dika klaim naik 9 hari berturut-turut dan 'belum pernah disetop bursa tahun ini', tapi pilihan d mengatakan ada penghentian 21 Januari (yang lebih awal tahun), sehingga klaim 'belum pernah' adalah keliru meski naiknya memang beruntun—struktur ini paling konsisten dengan pola soal bocor yang membedakan dua aspek (trend naik vs riwayat penghentian).\"",
+        "KEMUNGKINAN TITIK BUTA: pilihan omongan ini pernah disempurnakan Haiku, dan Haiku juga menebak"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "tidak_dipanggil": [
+          2,
+          3
+        ],
+        "titik_buta": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "d",
+            "yakin": 72,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Dika klaim naik 9 hari berturut-turut dan 'belum pernah disetop bursa tahun ini', tapi pilihan d mengatakan ada penghentian 21 Januari (yang lebih awal tahun), sehingga klaim 'belum pernah' adalah keliru meski naiknya memang beruntun—struktur ini paling konsisten dengan pola soal bocor yang membedakan dua aspek (trend naik vs riwayat penghentian).",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 21,
+      "putaran": 4,
+      "jenis": "buang-sudut",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:52:07.188Z",
+      "waktu_selesai": "2026-09-30T18:52:07.188Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "rencana setengah-benar:susp-2025-01-21 habis (4 versi atau struktur/penyempurna habis)",
+        "pengganti: benar-berincian:hari-naik-beruntun"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dibuang": "setengah-benar:susp-2025-01-21",
+        "pengganti": "benar-berincian:hari-naik-beruntun"
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 22,
+      "putaran": 5,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:53:09.761Z",
+      "waktu_selesai": "2026-09-30T18:53:09.761Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1241,
+      "token_keluar": 2505,
+      "biaya_usd": 0.00152782,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "bd26c8de7d7663a74c840c6ff7076c27b3caacdfe6b344155f84ea52c8eb88b9",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"nama\":\"Andi\",\"jam\":\"20.15\",\"pesan\":\"Sejak 26 November, harga penutupan Perusahaan T naik terus setiap hari bursa, ga pernah turun sekali pun. Pantes aja gw pamer, lu ketinggalan.\"}",
+        "penyedia": "Relace"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 23,
+      "putaran": 5,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:53:28.015Z",
+      "waktu_selesai": "2026-09-30T18:53:28.015Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 935,
+      "token_keluar": 1824,
+      "biaya_usd": 0.000992226,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "05373415eb56c8e4e955192c87076fcd7d9cbee80e54f70c39c0a4e188f8c61e",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Di kartu tertulis harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]], tiap hari lebih tinggi dari hari bursa sebelumnya. Itu yang menentukan: jawabannya memang naik [[hari-naik-beruntun|9 hari bursa]] tanpa sekali pun turun. Yang menggoda adalah anggapan rangkaiannya lebih pendek atau ada penurunan di tengah; catatan justru menunjukkan sebaliknya. Selisihnya juga tercatat [[naik-2025-11-26-2025-12-09|Rp58]]. Salah-kaprah yang umum: menganggap ucapan yang terdengar yakin pasti dilebih-lebihkan, padahal rangkaiannya tercatat di dokumen.\"}",
+        "penyedia": "Morph"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 24,
+      "putaran": 5,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:53:28.059Z",
+      "waktu_selesai": "2026-09-30T18:53:28.059Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "benar-berincian:hari-naik-beruntun",
+        "versi": 1,
+        "pesan": "Sejak 26 November, harga penutupan Perusahaan T naik terus setiap hari bursa, ga pernah turun sekali pun. Pantes aja gw pamer, lu ketinggalan.",
+        "pilihan": {
+          "d": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut tanpa sekali pun turun.",
+          "a": "Keliru, harganya sempat turun satu hari di tengah rangkaian itu.",
+          "b": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]].",
+          "c": "Keliru, harga penutupannya malah turun beruntun sejak itu."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 25,
+      "putaran": 5,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:53:28.060Z",
+      "waktu_selesai": "2026-09-30T18:54:01.986Z",
+      "model": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+      "panggilan": 4,
+      "token_masuk": 2332,
+      "token_keluar": 3072,
+      "biaya_usd": 0.0047783,
+      "putusan": "tolak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/45, deepseek-v4.1-flash d/65, glm-5.3 d/55); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Klaim Andi tentang kenaikan beruntun tanpa turun paling cocok dengan opsi d yang menyebut 9 hari bursa, dan nadanya pamer mendukung streak panjang.\" \"Klaim Andi spesifik dan wajar, dan opsi d membenarkannya persis dengan angka rinci (9 hari bursa beruntun) yang khas menjadi detail dari dokumen aslinya; opsi b yang mengatakan 'betul, tapi' sebenarnya kontradiktif karena jika hanya 4 hari naik, klaim 'tidak pernah turun sejak 26 November' jadi terlalu dibesar-besarkan.\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "tidak_dipanggil": [],
+        "titik_buta": false,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 45,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim 'ga pernah turun sekali pun' terdengar terlalu mutlak dan sempurna untuk pasar nyata; pilihan (a) yang menyatakan ada satu hari turun di tengahnya terasa paling realistis dan merupakan jenis 'bocoran' soal yang umum (klaim dramatis teman ternyata sedikit meleset).",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "d",
+            "yakin": 65,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Klaim Andi tentang kenaikan beruntun tanpa turun paling cocok dengan opsi d yang menyebut 9 hari bursa, dan nadanya pamer mendukung streak panjang.",
+            "penyedia": [
+              "Morph"
+            ],
+            "token_penalaran": [
+              2202
+            ]
+          },
+          {
+            "ke": 3,
+            "model": "z-ai/glm-5.3",
+            "pilihan": "d",
+            "yakin": 55,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Klaim Andi spesifik dan wajar, dan opsi d membenarkannya persis dengan angka rinci (9 hari bursa beruntun) yang khas menjadi detail dari dokumen aslinya; opsi b yang mengatakan 'betul, tapi' sebenarnya kontradiktif karena jika hanya 4 hari naik, klaim 'tidak pernah turun sejak 26 November' jadi terlalu dibesar-besarkan.",
+            "penyedia": [
+              "SiliconFlow",
+              "Phala"
+            ],
+            "token_penalaran": [
+              168,
+              302
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 26,
+      "putaran": 5,
+      "jenis": "sempurnakan-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:54:01.988Z",
+      "waktu_selesai": "2026-09-30T18:54:05.482Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 1798,
+      "token_keluar": 287,
+      "biaya_usd": 0.003233,
+      "putusan": "ditulis",
+      "alasan": [
+        "tertebak: 3 slot diterima kode, 0 dibuang"
+      ],
+      "sha256_prompt": "d632128d8f8bbaf70851039bdf986a258707a9b3e5568266608e63fee62813f8",
+      "rincian": {
+        "diterima": [
+          {
+            "slot": "kunci",
+            "varian": "K2",
+            "dari": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut tanpa sekali pun turun.",
+            "ke": "Betul, penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut."
+          },
+          {
+            "slot": "p2",
+            "varian": "P2b",
+            "dari": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]].",
+            "ke": "Betul, walau rangkaian naiknya cuma [[misal|4 hari bursa]]."
+          },
+          {
+            "slot": "p3",
+            "varian": "P3b",
+            "dari": "Keliru, harga penutupannya malah turun beruntun sejak itu.",
+            "ke": "Keliru, penutupannya justru makin rendah dari hari ke hari."
+          }
+        ],
+        "dibuang": [],
+        "alasan_penyempurna": "Menghilangkan spesifisitas berlebih pada kunci (menghapus 'tanpa sekali pun turun' yang redundan dengan 'berturut-turut'); menyederhanakan p2 dan p3 agar keempat pilihan setara dalam bentuk dan tingkat rincian, sehingga tidak tertebak tanpa membaca kartu.",
+        "teks_mentah": "```json\n{\n  \"pilihan\": {\n    \"kunci\": {\n      \"varian\": \"K2\",\n      \"teks\": \"Betul, penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut.\"\n    },\n    \"p2\": {\n      \"varian\": \"P2b\",\n      \"teks\": \"Betul, walau rangkaian naiknya cuma [[misal|4 hari bursa]].\"\n    },\n    \"p3\": {\n      \"varian\": \"P3b\",\n      \"teks\": \"Keliru, penutupannya justru makin rendah dari hari ke hari.\"\n    }\n  },\n  \"alasan\": \"Menghilangkan spesifisitas berlebih pada kunci (menghapus 'tanpa sekali pun turun' yang redundan dengan 'berturut-turut'); menyederhanakan p2 dan p3 agar keempat pilihan setara dalam bentuk dan tingkat rincian, sehingga tidak tertebak tanpa membaca kartu.\"\n}\n```",
+        "penyedia": "Amazon Bedrock"
+      },
+      "peran": "penyempurna"
+    },
+    {
+      "no": 27,
+      "putaran": 6,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:54:15.595Z",
+      "waktu_selesai": "2026-09-30T18:54:15.595Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 935,
+      "token_keluar": 1968,
+      "biaya_usd": 0.001029986,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "1964cb231485c07ab41aaaa151ebe3726c93e0c1389787c355e25b366c93d3ef",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Di kartu tertulis penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]], tiap hari lebih tinggi dari hari bursa sebelumnya. Itu yang menentukan jawaban: penutupannya memang naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Selisihnya [[naik-2025-11-26-2025-12-09|Rp58]]. Yang menggoda: anggapan sempat turun di tengah rangkaian, atau naiknya cuma beberapa hari bursa, tidak cocok dengan catatan; yang bilang makin rendah juga berlawanan. Salah-kaprah yang umum: menganggap ucapan yang terdengar yakin pasti dilebih-lebihkan, padahal rangkaiannya tercatat di dokumen.\"}",
+        "penyedia": "Morph"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 28,
+      "putaran": 6,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:54:15.610Z",
+      "waktu_selesai": "2026-09-30T18:54:15.610Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "benar-berincian:hari-naik-beruntun",
+        "versi": 2,
+        "pesan": "Sejak 26 November, harga penutupan Perusahaan T naik terus setiap hari bursa, ga pernah turun sekali pun. Pantes aja gw pamer, lu ketinggalan.",
+        "pilihan": {
+          "d": "Betul, penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut.",
+          "a": "Keliru, harganya sempat turun satu hari di tengah rangkaian itu.",
+          "b": "Betul, walau rangkaian naiknya cuma [[misal|4 hari bursa]].",
+          "c": "Keliru, penutupannya justru makin rendah dari hari ke hari."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K2",
+          "p1": "P1a",
+          "p2": "P2b",
+          "p3": "P3b"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 29,
+      "putaran": 6,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:54:15.611Z",
+      "waktu_selesai": "2026-09-30T18:54:58.056Z",
+      "model": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+      "panggilan": 3,
+      "token_masuk": 1756,
+      "token_keluar": 5941,
+      "biaya_usd": 0.007216279999999999,
+      "putusan": "tolak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/42, deepseek-v4.1-flash d/72, glm-5.3 d/45); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Klaim Andi tentang kenaikan penutupan beruntun sejak 26 November paling cocok dengan opsi yang menyebut 9 hari bursa berturut-turut, bukan versi yang hanya 4 hari.\" \"Dua pilihan yang membenarkan klaim Andi berbeda hanya pada panjang rangkaian; klaim kenaikan beruntun yang spesifik (9 hari bursa sejak 26 November) lebih khas sebagai jawaban kunci soal, sementara pilihan c jelas hanya pengisi.\"",
+        "KEMUNGKINAN TITIK BUTA: pilihan omongan ini pernah disempurnakan Haiku, dan Haiku juga menebak"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "tidak_dipanggil": [],
+        "titik_buta": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 42,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim 'ga pernah turun sekali pun' adalah pernyataan ekstrem yang jarang benar dalam data pasar nyata; pilihan (a) yang menyangkal dengan detail spesifik ('sempat turun satu hari') terasa lebih realistis daripada menerima klaim absolut, meski tanpa dokumen keyakinan rendah.",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "d",
+            "yakin": 72,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Klaim Andi tentang kenaikan penutupan beruntun sejak 26 November paling cocok dengan opsi yang menyebut 9 hari bursa berturut-turut, bukan versi yang hanya 4 hari.",
+            "penyedia": [
+              "Phala"
+            ],
+            "token_penalaran": [
+              5250
+            ]
+          },
+          {
+            "ke": 3,
+            "model": "z-ai/glm-5.3",
+            "pilihan": "d",
+            "yakin": 45,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Dua pilihan yang membenarkan klaim Andi berbeda hanya pada panjang rangkaian; klaim kenaikan beruntun yang spesifik (9 hari bursa sejak 26 November) lebih khas sebagai jawaban kunci soal, sementara pilihan c jelas hanya pengisi.",
+            "penyedia": [
+              "SiliconFlow"
+            ],
+            "token_penalaran": [
+              406
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 30,
+      "putaran": 6,
+      "jenis": "sempurnakan-pilihan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:54:58.059Z",
+      "waktu_selesai": "2026-09-30T18:55:00.659Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 1796,
+      "token_keluar": 228,
+      "biaya_usd": 0.002936,
+      "putusan": "ditulis",
+      "alasan": [
+        "tertebak: 2 slot diterima kode, 0 dibuang"
+      ],
+      "sha256_prompt": "357eec41e61beb5b9044f64840cf1403e7552fecaddfdd9b4cb5e963fffe46cb",
+      "rincian": {
+        "diterima": [
+          {
+            "slot": "kunci",
+            "varian": "K1",
+            "dari": "Betul, penutupannya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut.",
+            "ke": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut tanpa sekali pun turun."
+          },
+          {
+            "slot": "p2",
+            "varian": "P2a",
+            "dari": "Betul, walau rangkaian naiknya cuma [[misal|4 hari bursa]].",
+            "ke": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]]."
+          }
+        ],
+        "dibuang": [],
+        "alasan_penyempurna": "Kunci diperkuat dengan frasa 'tanpa sekali pun turun' untuk memperjelas perbedaan dari pengecoh p2; p2 diganti ke P2a agar semua pilihan setara panjang dan tingkat rinciannya, menghilangkan kesan kunci lebih spesifik.",
+        "teks_mentah": "```json\n{\n  \"pilihan\": {\n    \"kunci\": {\n      \"varian\": \"K1\",\n      \"teks\": \"Betul, naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut tanpa sekali pun turun.\"\n    },\n    \"p2\": {\n      \"varian\": \"P2a\",\n      \"teks\": \"Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]].\"\n    }\n  },\n  \"alasan\": \"Kunci diperkuat dengan frasa 'tanpa sekali pun turun' untuk memperjelas perbedaan dari pengecoh p2; p2 diganti ke P2a agar semua pilihan setara panjang dan tingkat rinciannya, menghilangkan kesan kunci lebih spesifik.\"\n}\n```",
+        "penyedia": "Amazon Bedrock"
+      },
+      "peran": "penyempurna"
+    },
+    {
+      "no": 31,
+      "putaran": 7,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:56:53.830Z",
+      "waktu_selesai": "2026-09-30T18:56:53.830Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 934,
+      "token_keluar": 4271,
+      "biaya_usd": 0.00258128,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "c844a4960519b8408abd6466dc8564c8863a21f980567b3a245cf1413fd1f99c",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\":\"Di catatan yang menentukan tertulis dari awal rangkaian sampai [[hari-naik-beruntun|9 Desember]], harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya. Catatan lain menunjukkan selisihnya [[naik-2025-11-26-2025-12-09|Rp58]]. Jadi yang benar adalah naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut tanpa sekali pun turun. Versi yang bilang sempat turun, rangkaiannya lebih pendek, atau penutupannya makin rendah tidak cocok dengan catatan itu. Salah-kaprah yang umum: menganggap ucapan yang terdengar yakin pasti dilebih-lebihkan, padahal rangkaiannya tercatat di dokumen.\"}",
+        "penyedia": "Relace"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 32,
+      "putaran": 7,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:56:53.867Z",
+      "waktu_selesai": "2026-09-30T18:56:53.867Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "benar-berincian:hari-naik-beruntun",
+        "versi": 3,
+        "pesan": "Sejak 26 November, harga penutupan Perusahaan T naik terus setiap hari bursa, ga pernah turun sekali pun. Pantes aja gw pamer, lu ketinggalan.",
+        "pilihan": {
+          "d": "Betul, naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut tanpa sekali pun turun.",
+          "a": "Keliru, harganya sempat turun satu hari di tengah rangkaian itu.",
+          "b": "Betul, tapi naik beruntunnya hanya [[misal|4 hari bursa]].",
+          "c": "Keliru, penutupannya justru makin rendah dari hari ke hari."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3b"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 33,
+      "putaran": 7,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:56:53.868Z",
+      "waktu_selesai": "2026-09-30T18:57:17.669Z",
+      "model": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+      "panggilan": 3,
+      "token_masuk": 1759,
+      "token_keluar": 3038,
+      "biaya_usd": 0.004502290000000001,
+      "putusan": "tolak",
+      "alasan": [
+        "penebak tanpa kartu memilih kunci \"d\" (claude-haiku-4.5 a/45, deepseek-v4.1-flash d/70, glm-5.3 d/70); aturan: ≥ 2/3 atau Haiku yakin ≥ 60. Alasan: \"Pernyataan Andi persis menggambarkan kenaikan beruntun tanpa turun, dan opsi d yang paling spesifik serta konsisten dengan klaimnya; opsi b hanya variasi jumlah hari yang kemungkinan pengecoh.\" \"Klaim Andi spesifik dan wajar (rally beruntun), dan pilihan d membenarkannya persis tanpa menambah batasan yang bertentangan, sementara pilihan b sebenarnya kontradiktif karena kalau hanya 4 hari beruntun berarti harga sempat turun dan klaim Andi jadi keliru.\"",
+        "KEMUNGKINAN TITIK BUTA: pilihan omongan ini pernah disempurnakan Haiku, dan Haiku juga menebak"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "tidak_dipanggil": [],
+        "titik_buta": true,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "a",
+            "yakin": 45,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Klaim Andi ('ga pernah turun sekali pun') adalah ekstrem dan jarang terjadi di pasar nyata; pilihan (a) yang menyatakan ada satu hari turun terasa paling realistis sebagai koreksi, meski tanpa dokumen keyakinan saya rendah.",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "d",
+            "yakin": 70,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Pernyataan Andi persis menggambarkan kenaikan beruntun tanpa turun, dan opsi d yang paling spesifik serta konsisten dengan klaimnya; opsi b hanya variasi jumlah hari yang kemungkinan pengecoh.",
+            "penyedia": [
+              "NextBit"
+            ],
+            "token_penalaran": [
+              2414
+            ]
+          },
+          {
+            "ke": 3,
+            "model": "z-ai/glm-5.3",
+            "pilihan": "d",
+            "yakin": 70,
+            "benar": true,
+            "terbaca": true,
+            "alasan": "Klaim Andi spesifik dan wajar (rally beruntun), dan pilihan d membenarkannya persis tanpa menambah batasan yang bertentangan, sementara pilihan b sebenarnya kontradiktif karena kalau hanya 4 hari beruntun berarti harga sempat turun dan klaim Andi jadi keliru.",
+            "penyedia": [
+              "SiliconFlow"
+            ],
+            "token_penalaran": [
+              339
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 34,
+      "putaran": 7,
+      "jenis": "buang-sudut",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:57:17.672Z",
+      "waktu_selesai": "2026-09-30T18:57:17.672Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "rencana benar-berincian:hari-naik-beruntun habis (4 versi atau struktur/penyempurna habis)",
+        "pengganti: arah-kali-tingkat:hari-naik-beruntun"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dibuang": "benar-berincian:hari-naik-beruntun",
+        "pengganti": "arah-kali-tingkat:hari-naik-beruntun"
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 35,
+      "putaran": 8,
+      "jenis": "tulis-pesan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:57:31.416Z",
+      "waktu_selesai": "2026-09-30T18:57:31.416Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1246,
+      "token_keluar": 1764,
+      "biaya_usd": 0.00085512,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 2"
+      ],
+      "sha256_prompt": "46f6827ae2b095086881c4f8f5ad01269ba3034ef5cf32c2aa9527aace0f51f3",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"nama\": \"Andi\", \"jam\": \"20.15\", \"pesan\": \"Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi belum ke mana-mana. Ya jelas lah, masih di situ-situ aja.\"}",
+        "penyedia": "DekaLLM"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 36,
+      "putaran": 8,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:58:03.070Z",
+      "waktu_selesai": "2026-09-30T18:58:03.070Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 925,
+      "token_keluar": 2168,
+      "biaya_usd": 0.00104006,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "7b650c59fc44a97896a97ad84efbaf7e6a325829a5decf89e0ca6657704e63df",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Di Kartu 1 tertulis harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|9 Desember]], tiap hari lebih tinggi dari hari bursa sebelumnya. Kartu 2 mencatat kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]]. Jadi pada [[naik-2025-11-26-2025-12-09|9 Desember]] harganya sudah ratusan rupiah, bukan masih puluhan. Yang menganggap harga turun ke puluhan atau tetap puluhan keliru karena arahnya naik; yang bilang naik tapi masih puluhan juga keliru karena di [[naik-2025-11-26-2025-12-09|9 Desember]] sudah ratusan. Salah-kaprah yang umum: melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh.\"}",
+        "penyedia": "DeepInfra"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 37,
+      "putaran": 8,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:58:03.087Z",
+      "waktu_selesai": "2026-09-30T18:58:03.087Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN (penjelasan): Penjelasan memuat angka di luar rujukan: 1, 2. Tulis tiap angka sebagai [[fact_id|teks]]."
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "arah-kali-tingkat:hari-naik-beruntun",
+        "versi": 1,
+        "pesan": "Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi belum ke mana-mana. Ya jelas lah, masih di situ-situ aja.",
+        "pilihan": {
+          "d": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "a": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+          "b": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "c": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 38,
+      "putaran": 9,
+      "jenis": "tulis-penjelasan",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:58:08.831Z",
+      "waktu_selesai": "2026-09-30T18:58:08.831Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 990,
+      "token_keluar": 2236,
+      "biaya_usd": 0.0029802,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 2"
+      ],
+      "sha256_prompt": "f99105719a999bc2a3bf5ee015d8e435a189ce77b95905842dc583197dc9040c",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Di [[hari-naik-beruntun|9 Desember]], harga penutupan sudah ratusan rupiah, bukan puluhan. Harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya. Kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]]. Jadi jawabannya: keliru kalau bilang harga turun, dan keliru kalau bilang masih puluhan rupiah. Yang paling menggoda, 'naik tapi masih puluhan', tetap salah karena di [[naik-2025-11-26-2025-12-09|9 Desember]] sudah ratusan. Yang bilang 'turun sampai puluhan' dan 'turun tapi ratusan' juga tidak cocok karena arahnya naik. Salah-kaprah yang umum: melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh.\"}",
+        "penyedia": "Makora"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 39,
+      "putaran": 9,
+      "jenis": "gerbang-g",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:58:08.838Z",
+      "waktu_selesai": "2026-09-30T18:58:08.838Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "arah-kali-tingkat:hari-naik-beruntun",
+        "versi": 2,
+        "pesan": "Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi belum ke mana-mana. Ya jelas lah, masih di situ-situ aja.",
+        "pilihan": {
+          "d": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "a": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+          "b": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "c": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah."
+        },
+        "kunci": "d",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 40,
+      "putaran": 9,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T18:58:08.840Z",
+      "waktu_selesai": "2026-09-30T19:00:31.071Z",
+      "model": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash",
+      "panggilan": 3,
+      "token_masuk": 1715,
+      "token_keluar": 9873,
+      "biaya_usd": 0.00825835,
+      "putusan": "lolos",
+      "alasan": [
+        "0/2 penebak memilih kunci (claude-haiku-4.5 c/62, deepseek-v4.1-flash a/55); penebak 3 tidak dipanggil (putusan sudah pasti)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "tidak_dipanggil": [
+          3
+        ],
+        "titik_buta": false,
+        "tebakan": [
+          {
+            "ke": 1,
+            "model": "anthropic/claude-haiku-4.5",
+            "pilihan": "c",
+            "yakin": 62,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Andi bilang harga 'masih puluhan rupiah' (sangat rendah), tapi pilihan c menunjukkan dia keliru karena 9 Desember masih 'ratusan rupiah' (lebih tinggi), cocok dengan pola pembuat soal yang menunjukkan kesalahan dalam pernyataan Andi—harga sebenarnya tidak serendah yang diklaim.",
+            "penyedia": [
+              "Amazon Bedrock"
+            ],
+            "token_penalaran": [
+              0
+            ]
+          },
+          {
+            "ke": 2,
+            "model": "deepseek/deepseek-v4.1-flash",
+            "pilihan": "a",
+            "yakin": 55,
+            "benar": false,
+            "terbaca": true,
+            "alasan": "Kata 'masih puluhan rupiah' paling cocok dengan opsi yang menyebut harga naik tetapi tetap bertahan di level puluhan, bukan berubah ke ratusan.",
+            "penyedia": [
+              "InferenceNet",
+              "Morph"
+            ],
+            "token_penalaran": [
+              6959,
+              1681
+            ]
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 41,
+      "putaran": 9,
+      "jenis": "gerbang-kartu",
+      "omongan": 2,
+      "waktu_mulai": "2026-09-30T19:00:31.071Z",
+      "waktu_selesai": "2026-09-30T19:00:37.582Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 527,
+      "token_keluar": 613,
+      "biaya_usd": 0.00029876,
+      "putusan": "lolos",
+      "alasan": [
+        "pembaca yang memegang kartu memilih \"d\" = kunci"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "d",
+        "pilihan": "d",
+        "kartu_ditunjuk": [
+          "hari-naik-beruntun"
+        ],
+        "menunjuk_penentu": true,
+        "alasan_penjawab": "Kartu 1 menyebut harga penutupan 9 Desember Rp106, jadi sudah ratusan rupiah dan naik, bukan masih puluhan.",
+        "membingungkan": []
+      },
+      "peran": "pembaca-kartu"
+    }
+  ],
+  "hasil": {
+    "lolos": false,
+    "putaran": 9,
+    "berhenti": "pagu tercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.445791 + perkiraan maksimum US$0.184540 untuk z-ai/glm-5.3 > pagu milestone US$1.58. Panggilan tidak dikirim.",
+    "panggilan": 41,
+    "token_masuk": 36332,
+    "token_keluar": 84651,
+    "biaya_usd": 0.11945185,
+    "durasi_ms": 1192256
+  }
+}

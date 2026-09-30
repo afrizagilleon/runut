@@ -1,0 +1,52 @@
+
+> runut@0.1.0 templat:jalan
+> node --experimental-strip-types alat/penyusun/jalan-templat.ts --id m2d10-tirt-a2 --pagu 0.25
+
+Pintu penyusun (mesin templat) di http://127.0.0.1:56039; pagu jalan US$0.25; pagu penyusun US$1.581 (terpakai US$1.3263).
+siapkan → 202 {"id":"m2d10-tirt-a2"}
+tahap: menunggu-persetujuan; sumber paket: {"sumber":"kurasi","keterangan":"definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"}
+mulai → 202 {"id":"m2d10-tirt-a2","pagu_usd":0.25}
+[server]   penyusun/m2d10-tirt-a2/p1/tulis-pesan/o1: keluar 294 error US$0.000000 InferenceNet
+[server]   penyusun/m2d10-tirt-a2/p1/tulis-pesan/o1/u1: keluar 47 stop US$0.000052 Relace
+[server]   penyusun/m2d10-tirt-a2/p1/tulis-penjelasan/o1: keluar 1298 stop US$0.001007 InferenceNet
+[server]   penyusun/m2d10-tirt-a2/p1/gerbang-tebak/o1/t1: keluar 152 stop US$0.001398 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p1/gerbang-tebak/o1/t2: keluar 8000 length US$0.004810 Relace
+[server]   penyusun/m2d10-tirt-a2/p1/gerbang-tebak/o1/t2/u1: keluar 4246 stop US$0.002558 Relace
+[server]   penyusun/m2d10-tirt-a2/p1/gerbang-kartu/o1: keluar 419 error US$0.000000 DekaLLM
+[server]   penyusun/m2d10-tirt-a2/p1/gerbang-kartu/o1/u1: keluar 5507 stop US$0.006738 Baidu
+[server]   penyusun/m2d10-tirt-a2/p1/kritikus/o1: keluar 9328 stop US$0.041398 Wafer
+[server]   penyusun/m2d10-tirt-a2/p2/tulis-pesan/o2: keluar 6223 stop US$0.003759 Relace
+[server]   penyusun/m2d10-tirt-a2/p2/tulis-penjelasan/o2: keluar 2152 stop US$0.001652 InferenceNet
+[server]   penyusun/m2d10-tirt-a2/p2/gerbang-tebak/o2/t1: keluar 130 stop US$0.001327 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p2/sempurnakan-pilihan/o2: keluar 148 stop US$0.002719 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p3/tulis-penjelasan/o2: keluar 866 stop US$0.000926 Phala
+[server]   penyusun/m2d10-tirt-a2/p3/gerbang-tebak/o2/t1: keluar 137 stop US$0.001362 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p3/sempurnakan-pilihan/o2: keluar 237 stop US$0.003168 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p4/tulis-penjelasan/o2: keluar 5516 stop US$0.002854 Morph
+[server]   penyusun/m2d10-tirt-a2/p4/gerbang-tebak/o2/t1: keluar 163 stop US$0.001493 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p5/tulis-pesan/o2: keluar 2505 stop US$0.001528 Relace
+[server]   penyusun/m2d10-tirt-a2/p5/tulis-penjelasan/o2: keluar 1824 stop US$0.000992 Morph
+[server]   penyusun/m2d10-tirt-a2/p5/gerbang-tebak/o2/t1: keluar 132 stop US$0.001318 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p5/gerbang-tebak/o2/t2: keluar 2262 stop US$0.001164 Morph
+[server]   penyusun/m2d10-tirt-a2/p5/gerbang-tebak/o2/t3: keluar 251 stop US$0.000952 SiliconFlow
+[server]   penyusun/m2d10-tirt-a2/p5/gerbang-tebak/o2/t3/u1: keluar 427 stop US$0.001344 Phala
+[server]   penyusun/m2d10-tirt-a2/p5/sempurnakan-pilihan/o2: keluar 287 stop US$0.003233 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p6/tulis-penjelasan/o2: keluar 1968 stop US$0.001030 Morph
+[server]   penyusun/m2d10-tirt-a2/p6/gerbang-tebak/o2/t1: keluar 128 stop US$0.001294 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p6/gerbang-tebak/o2/t2: keluar 5317 stop US$0.004578 Phala
+[server]   penyusun/m2d10-tirt-a2/p6/gerbang-tebak/o2/t3: keluar 496 stop US$0.001344 SiliconFlow
+[server]   penyusun/m2d10-tirt-a2/p6/sempurnakan-pilihan/o2: keluar 228 stop US$0.002936 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p7/tulis-penjelasan/o2: keluar 4271 stop US$0.002581 Relace
+[server]   penyusun/m2d10-tirt-a2/p7/gerbang-tebak/o2/t1: keluar 114 stop US$0.001227 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p7/gerbang-tebak/o2/t2: keluar 2483 stop US$0.002197 NextBit
+[server]   penyusun/m2d10-tirt-a2/p7/gerbang-tebak/o2/t3: keluar 441 stop US$0.001078 SiliconFlow
+[server]   penyusun/m2d10-tirt-a2/p8/tulis-pesan/o2: keluar 1764 stop US$0.000855 DekaLLM
+[server]   penyusun/m2d10-tirt-a2/p8/tulis-penjelasan/o2: keluar 2168 stop US$0.001040 DeepInfra
+[server]   penyusun/m2d10-tirt-a2/p9/tulis-penjelasan/o2: keluar 2236 stop US$0.002980 Makora
+[server]   penyusun/m2d10-tirt-a2/p9/gerbang-tebak/o2/t1: keluar 134 stop US$0.001319 Amazon Bedrock
+[server]   penyusun/m2d10-tirt-a2/p9/gerbang-tebak/o2/t2: keluar 8000 length US$0.006021 InferenceNet
+[server]   penyusun/m2d10-tirt-a2/p9/gerbang-tebak/o2/t2/u1: keluar 1739 stop US$0.000918 Morph
+[server]   penyusun/m2d10-tirt-a2/p9/gerbang-kartu/o2: keluar 613 stop US$0.000299 Io Net
+[server] jalan m2d10-tirt-a2: TIDAK TERBIT (9 putaran, biaya nyata US$0.1195)
+SELESAI: TIDAK TERBIT; versi 9; biaya nyata US$0.119452; pagu tercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$1.445791 + perkiraan maksimum US$0.184540 untuk z-ai/glm-5.3 > pagu milestone US$1.58. Panggilan tidak dikirim.
+exit 3
