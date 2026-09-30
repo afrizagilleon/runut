@@ -1,0 +1,73 @@
+agentId: a32f82e399e16de7c (subagent general-purpose, model opus, sinkron). Bahan: .cache/e2e/m314/sesudah-r0/ + sebelum/ + docs/desain.md
+**Temuan**
+
+1. [tinggi] 04-petunjuk, semua mode, 360 dan 390: guliran berhenti terlalu tinggi. Label "Coba cek kartu ini" terpotong di bawah keping dan balon yang terlipat. Padahal label itulah isi petunjuknya. Masalah yang sama ada di pemandu-2 (kepala kartu "Pengumuman bursa" terpotong). Perbaikan: pasang `scroll-margin-top: calc(var(--tinggi-keping) + var(--tinggi-balon-lipat) + 16px)` (kira-kira 100px) pada setiap sasaran petunjuk dan pemandu. Kalau sasaran lebih tinggi dari ruang yang tersisa, ratakan ke atas, jangan ke tengah.
+
+2. [tinggi] 02-pemandu-1..4, 360: keluhan penguji benar. Di langkah 3, panel setinggi kira-kira 215 px ditambah bagian atas yang menempel kira-kira 82 px. Ruang baca tinggal kira-kira 340 dari 640 px (53 %). Kartu kedua terpotong, dan di langkah 4 tombol "Minta petunjuk" tertutup. Perbaikan: lihat Putusan A.
+
+3. [tinggi] 02-pemandu-3: langkah ini menyebut tombol yang tidak terlihat, dan kalimatnya 4 baris. Tombolnya berada di bawah pilihan, di luar layar. Perbaikan: lihat Putusan B.
+
+4. [sedang] Cincin sorot, gelap: garis kira-kira 3 px berwarna `--tinta` (#E6E3DC) menjadi benda paling terang di layar. Ia mengalahkan isinya dan gagal uji sipit. Sudutnya membulat kira-kira 8 px, padahal kertas bersudut 2 px. Perbaikan: `outline: 2px solid var(--tinta); outline-offset: 4px; border-radius: 4px` di kedua mode. Di balon, ikuti sudut balon 4/16/16/16.
+
+5. [sedang] Label "Coba cek kartu ini", semua mode: label ini adalah suara kami, tetapi ditaruh di dalam lembar resmi, jadi dua suara bercampur. Perbaikan: pindahkan ke atas lembar, di luar cincin, peran *isi* 600 17px. Jangan pakai panah (panah berarti bisa diketuk).
+
+6. [sedang] 05-terima-kasih: ada dua pelanggaran.
+   - Penutup "Tidak semua saham seperti ini…" tampil sebagai kotak lembar. `desain.md` mewajibkan pesan penutup ditulis dengan "garis kiri tipis, bukan sebagai lembar". Perbaikan: `border-left: 2px solid var(--garis-tegas); padding-left: 12px`, tanpa latar dan tanpa bingkai.
+   - "Hari bursa lain" adalah judul kedua di layar yang sudah punya "Terima kasih." (aturannya satu judul per layar). Perbaikan: ganti dengan satu baris *meta* (lihat Putusan D).
+
+7. [sedang] 05-terima-kasih-penuh, 360: pintu "Lihat dapur agen AI kami" jatuh di kira-kira 1.600 px, sesudah dua kalender. Juri Track 01 dan orang yang penasaran tidak akan sampai ke sana. Perbaikan: lihat Putusan D. Tinggi baris tanggal 40 → 32 px (satu bulan menyusut kira-kira 50 px).
+
+8. [sedang] Kalender simulasi: kalau lingkaran merah bisa diketuk, ia melanggar aturan "ungu = bisa diketuk". Perbaikan: lingkaran tidak interaktif (`aria-hidden`); pintunya hanya baris berbingkai. Tanda › di baris diperbesar ke 16px 500 `--stempel`. Keterangan status disingkat menjadi "Sudah selesai" supaya tidak pecah dua baris di 360.
+
+9. [sedang] Pengunjung yang kembali: tombol utama masih "Mulai simulasi" untuk simulasi D yang sudah ia selesaikan, sedangkan simulasi yang belum dimainkan hanya lewat tautan kecil. Perbaikan (hanya untuk yang kembali, 01 tetap): tautannya berkata "Simulasi baru: Senin, 4 Mei 2026 ›", lalu baris kedua "Pilih dari kalender simulasi ›".
+
+10. [rendah] 07-pertama-kembali: tautan diratakan tengah, sedangkan ajakan di atasnya rata kiri. Perbaikan: `text-align: left; margin-top: 16px`. Dengan begitu 01 sama persis untuk pengunjung baru. Sudah saya cocokkan: 01 identik dengan versi lama.
+
+11. [rendah] Keterangan di kalender 3 baris. Perbaikan: "Tiap lingkaran = satu simulasi. Penuh = sudah kamu mainkan."
+
+12. [sedang] Proses: tombol petunjuk, pemandu, dan kalender tidak ada di `desain.md` maupun di patokan. Menurut dokumen itu sendiri, "yang tidak disebut … tidak ditambahkan". Perbaikan: amandemen `desain.md` (Urutan layar soal, Kata-kata, Afordans) sebelum digabung.
+
+13. [sedang] 08-dapur, terang dan gelap: ada tiga pelanggaran.
+   - "Ditolak — tidak terbit" tebal sekaligus berwarna ambar, padahal aturannya satu teknik penekanan. Perbaikan: warna saja, 400.
+   - Kotak "Berhenti karena" bergaris kiri ambar tebal, padahal strip warna di tepi kiri dilarang. Perbaikan: `2px var(--garis-tegas)`.
+   - Di gelap, sel "sudah dikunci" menjadi balok hitam pekat. Perbaikan: latar `--garis`, bukan gelap penuh.
+
+14. [sedang] 08-dapur, 360: tabel putaran × omongan tidak terbaca. Setiap sel pecah 4–5 baris, dan tinggi tabel kira-kira 1.200 px. Perbaikan: tiga pita, satu per omongan, masing-masing 15 kotak 14 px (lebar 270 px, muat). Warnanya `--belum-cocok` untuk tertebak, `--cocok` untuk dikunci, dan netral untuk ganti fakta, disertai legenda. Di bawahnya satu kalimat per omongan, misalnya "Omongan 1 dikunci di putaran 8, sesudah 5 kali jawabannya tertebak tanpa kartu."
+
+**Putusan A–E**
+
+**A. Panel pemandu.** Tetap di bilah bawah, karena di situlah jempol berada dan desain sudah memberi tempat itu satu tindakan, tetapi tingginya dipangkas menjadi paling banyak 104 px (16 % dari 640).
+- Tata letaknya: baris *meta* "Cara main · 1/4" dengan "Lewati" di kanan baris yang sama. Di bawahnya teks *isi* paling banyak 2 baris, dengan tombol "Lanjut" (96 px, 44 px) di kanan baris teks.
+- Kata-kata:
+  1. "Ini omongan teman. Betul atau keliru?"
+  2. "Buktinya ada di kartu-kartu ini."
+  3. "Pilih yang cocok dengan kartu."
+  4. Lihat B.
+- Ditambah perbaikan temuan 1. Alasannya: sasaran selalu utuh di antara bagian atas yang menempel dan panel, jadi tidak ada lagi yang tertutup.
+
+**B. Langkah petunjuk.** Urutannya diubah: omongan → kartu → pilihan → petunjuk.
+- Di langkah pilihan, keempat opsi ditambah tombol "Minta petunjuk" muat dalam kira-kira 458 px ruang di 360.
+- Langkah 4 menyorot tombol yang sebenarnya. Teksnya: "Buntu? Tombol ini menunjuk kartu yang perlu dicek, bukan jawabannya." Aksinya "Coba" (menjalankan petunjuk sungguhan, lalu pemandu selesai) atau "Selesai".
+- Alasannya: tombolnya terlihat karena sudah ada di layar. Pemain juga menyaksikan sendiri guliran berhenti di kartu, bukan di opsi, dan itu bukti paling kuat bahwa petunjuk tidak membocorkan jawaban. Langkah ini bisa dilewati, sesuai penilaian "kurang penting" dari penguji. Sesudahnya bilah "↓ Pilih jawaban" membawa pemain kembali ke opsi.
+
+**C. Tombol.** Tetap di bawah opsi, karena pemain buntu tepat saat membaca opsi.
+- Satu baris: tombol garis tepi "Minta petunjuk" di kiri, tautan "Cara main" di kanan.
+- Tombol memakai spesifikasi "↓ Pilih jawaban": 1,5 px `--stempel`, sudut 3 px, tinggi ≥ 44 px, 16px 500. Sekarang tulisannya tampak kira-kira 17px, lebih besar dari opsi.
+- `margin-top: 24px` supaya tidak terbaca sebagai opsi kelima.
+- "↑ Kembali ke dokumen" tetap di bawahnya sesuai urutan yang mengikat.
+
+**D. Layar terima kasih.** Urutannya: kalender besar → "Terima kasih." → dua kalimat → penutup bergaris kiri (kalimat "Simulasi berikutnya…" menjadi pengantar kalender) → baris *meta* "Hari bursa lain, ketuk untuk main:" → kalender per bulan beserta barisnya → "Lihat dapur agen AI kami ›" → kaki.
+- Penutup ditaruh tepat di atas kalender karena memang berbicara tentang simulasi berikutnya.
+- Pintu dapur tetap di akhir karena layar ini milik pemain.
+- Kalender dipadatkan (temuan 7) supaya pintu dapur kira-kira satu layar lebih dekat.
+- Tautan di layar pertama: rata kiri, *aksi* 16px `--stempel` dengan ›, seperti temuan 9–10.
+
+**E. Dapur.** Sudah lebih mudah dibaca: kisi angka, ikon peran, dan alasan penolakan dalam bahasa awam jelas lebih baik. Tetapi halamannya masih kira-kira 4.500 px dan masih berbahasa pabrik. Yang perlu diubah:
+- Pengantar 7 baris dipangkas jadi 2 kalimat.
+- Kisi 4 angka menjadi 2: "15 kali dicoba" dan "US$1,84 biaya". "133 panggilan model" dan "143 menit" dipindah ke Rincian teknis.
+- Nama model (deepseek…, z-ai/glm…) dipindah ke Rincian teknis; di badan halaman cukup "model murah" dan "model lain".
+- Bagian "Lima peran" dipindah ke atas dan digabung dengan "Siapa mengerjakan apa" (sekarang penjelasannya baru datang sesudah dibutuhkan).
+- Beri keterangan di sebelah kutipan untuk "cooling down" dan "volume nol".
+- "Simulasi yang tayang: hanya angka, tanpa isi" diperjelas atau dibuang.
+- "Tulisan penulis … tidak terbaca" diganti alasan yang nyata.
+- Tabel diganti pita (temuan 14), ditambah perbaikan temuan 13.

@@ -452,3 +452,23 @@ export async function kunciJawaban(page: Page): Promise<void> {
 export async function lanjut(page: Page, label: string): Promise<void> {
   await ketuk(page.getByRole('button', { name: label }));
 }
+
+/**
+ * M3.14 (kritik D-6 butir 1): apakah elemen ini tertutup keping kalender atau
+ * salinan balon melayang di puncak layar. `toBeInViewport` tidak tahu soal
+ * elemen `sticky`/`fixed` yang menindih; ini mengukur tepi atas sasaran
+ * terhadap tepi bawah keduanya.
+ */
+export async function tertutupPuncak(sasaran: Locator): Promise<{ tertutup: boolean; atas: number; tepi: number }> {
+  return await sasaran.evaluate((el) => {
+    const atas = el.getBoundingClientRect().top;
+    const penutup = [
+      document.querySelector('[data-uid="keping"]'),
+      document.querySelector('.melayang-aktif .melayang-balon'),
+    ]
+      .filter((x): x is Element => x !== null)
+      .map((x) => x.getBoundingClientRect().bottom);
+    const tepi = Math.max(0, ...penutup);
+    return { tertutup: atas < tepi, atas, tepi };
+  });
+}

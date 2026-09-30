@@ -76,18 +76,19 @@ describe('alur pemandu', () => {
     expect(sorotPemandu(k)).toBeNull();
   });
 
-  it('urutan sorotan = urutan kontrak: omongan → kartu → penentu (petunjuk) → pilihan', () => {
+  // Urutan diubah di putaran kritik D-6 (putusan B): petunjuk pindah ke akhir, supaya tombolnya terlihat.
+  it('urutan sorotan: omongan → kartu → pilihan → tombol petunjuk', () => {
     let k = jalankan(tampilanAwal(true), { jenis: 'tiba_di_soal_pertama' });
     const urutan: Array<string | null> = [];
     for (let i = 0; i < 4; i += 1) {
       urutan.push(sorotPemandu(k));
       k = langkahTampilan(k, { jenis: 'lanjut_pemandu' });
     }
-    expect(urutan).toEqual(['omongan', 'kartu', 'penentu', 'pilihan']);
+    expect(urutan).toEqual(['omongan', 'kartu', 'pilihan', 'petunjuk']);
     expect(k.pemandu.langkah, 'langkah keempat menutup pemandu').toBeNull();
   });
 
-  it('langkah terakhir dikenali (tombolnya "Mulai menjawab")', () => {
+  it('langkah terakhir dikenali; "Tunjukkan" menjalankan petunjuk sekali lalu pemandu selesai', () => {
     const k = jalankan(
       tampilanAwal(true),
       { jenis: 'tiba_di_soal_pertama' },
@@ -96,6 +97,9 @@ describe('alur pemandu', () => {
       { jenis: 'lanjut_pemandu' },
     );
     expect(langkahTerakhir(k)).toBe(true);
+    const sesudah = langkahTampilan(k, { jenis: 'tunjukkan_petunjuk', soal_id: 's1' });
+    expect(sesudah.pemandu.langkah).toBeNull();
+    expect(sesudah.petunjuk).toEqual({ soal_id: 's1', ke: 1 });
   });
 
   it('bisa dilewati dari langkah mana pun, dan tidak kembali sendiri di pemuatan yang sama', () => {

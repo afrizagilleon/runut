@@ -126,16 +126,25 @@ export function KalenderSimulasi({
   pilih,
 }: {
   bulan: readonly BulanKalender[];
-  judul: string;
+  /** Judul halaman kalender; `null` di layar yang sudah punya judul (terima kasih). */
+  judul: string | null;
   pengantar: string;
   pilih: (kasus_id: string) => void;
 }): JSX.Element {
   return (
-    <section className="kalender-simulasi" data-uid="kalender-simulasi" aria-labelledby="judul-kalender-simulasi">
-      <h2 id="judul-kalender-simulasi" className="judul">
-        {judul}
-      </h2>
-      <p className="meta kalender-pengantar">{pengantar}</p>
+    <section
+      className="kalender-simulasi"
+      data-uid="kalender-simulasi"
+      aria-labelledby={judul === null ? 'pengantar-kalender-simulasi' : 'judul-kalender-simulasi'}
+    >
+      {judul !== null && (
+        <h2 id="judul-kalender-simulasi" className="judul">
+          {judul}
+        </h2>
+      )}
+      <p className="meta kalender-pengantar" id="pengantar-kalender-simulasi">
+        {pengantar}
+      </p>
       {bulan.map((b) => (
         <div key={b.kunci} className="kalender-bulan-blok">
           <div className="kalender-halaman kalender-bulan" aria-hidden="true">

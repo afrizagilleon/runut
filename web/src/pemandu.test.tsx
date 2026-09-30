@@ -114,10 +114,13 @@ describe('layar pemanasan (fixture)', () => {
     expect(html.match(/data-uid="pemanasan:opsi:/g)).toHaveLength(2);
   });
 
-  it('langkah ketiga menandai kartu penentu saja, bukan pilihan', () => {
-    const html = render(jalankan(aktif, { jenis: 'lanjut_pemandu' }, { jenis: 'lanjut_pemandu' }));
+  it('langkah terakhir menyorot tombol petunjuk; "Tunjukkan" menandai kartu penentu saja, bukan pilihan', () => {
+    const terakhir = jalankan(aktif, { jenis: 'lanjut_pemandu' }, { jenis: 'lanjut_pemandu' }, { jenis: 'lanjut_pemandu' });
+    expect(render(terakhir)).toMatch(/tombol-petunjuk disorot/);
+    const html = render(jalankan(terakhir, { jenis: 'tunjukkan_petunjuk', soal_id: p.soal.soal_id }));
     expect(html.match(/lembar-ditandai/g)).toHaveLength(1);
     expect(html).toMatch(/lembar-ditandai" aria-labelledby="kartu-uji-pengumuman"/);
+    expect(html).not.toContain('class="tindakan pemandu"');
     expect(html).toContain(LABEL_PETUNJUK_KARTU);
     const pilihan = html.slice(html.indexOf('<fieldset'), html.indexOf('</fieldset>'));
     expect(pilihan).not.toMatch(/disorot|ditandai/);
@@ -154,7 +157,7 @@ describe('layar soal yang disorot pemandu (kedua simulasi, setiap soal)', () => 
       );
 
     it(`${kasus.kasus_id}: tiap langkah menyorot satu benda, dan tidak pernah satu pilihan`, () => {
-      const harapan = ['pesan disorot', 'tumpukan disorot', 'lembar-ditandai', 'pilihan disorot'];
+      const harapan = ['pesan disorot', 'tumpukan disorot', 'pilihan disorot', 'tombol-petunjuk disorot'];
       for (const [n, kelas] of harapan.entries()) {
         const html = render(diLangkah(n));
         expect(html, `langkah ${String(n + 1)}`).toContain(kelas);
@@ -164,8 +167,9 @@ describe('layar soal yang disorot pemandu (kedua simulasi, setiap soal)', () => 
       }
     });
 
-    it(`${kasus.kasus_id}: langkah ketiga menandai TEPAT kartu_penentu soal 1`, () => {
-      const html = render(diLangkah(2));
+    it(`${kasus.kasus_id}: "Tunjukkan" di langkah terakhir menandai TEPAT kartu_penentu soal 1`, () => {
+      expect(render(diLangkah(3))).not.toContain('lembar-ditandai');
+      const html = render(langkahTampilan(diLangkah(3), { jenis: 'tunjukkan_petunjuk', soal_id: soal.soal_id }));
       const ditandai = [...html.matchAll(/lembar-ditandai" aria-labelledby="kartu-([^"]+)"/g)].map((m) => m[1]);
       expect(ditandai.sort()).toEqual([...soal.kartu_penentu].sort());
     });

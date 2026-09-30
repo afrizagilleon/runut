@@ -24,6 +24,7 @@ import {
   berhentiAwam,
   garisWaktu,
   kalimatAgregatAwam,
+  kalimatOmongan,
   omonganPenolakan,
   tersingkirAwam,
   type AgregatDapur,
@@ -218,7 +219,11 @@ describe('M3.14 D-4 — dapur lebih visual, kode internal tidak di tampilan utam
         ).toBe(true);
       }
     }
-    expect((html.match(/<tr>/g) ?? []).length).toBeGreaterThanOrEqual(tirt.putaran + 1);
+    // Pita (kritik D-6 butir 14): satu kotak per putaran per omongan, dan satu kalimat per omongan dari data yang sama.
+    expect((html.match(/<li class="kotak-/g) ?? []).length).toBe(tirt.putaran * tirt.sudut.length);
+    for (const s of tirt.sudut) expect(teks).toContain(kalimatOmongan(tirt, s.omongan));
+    expect(kalimatOmongan(tirt, 2)).toMatch(/^Omongan 2 dikunci di putaran 3; ditolak di 2 putaran/);
+    expect(kalimatOmongan(tirt, 3)).toMatch(/^Omongan 3 tidak pernah dikunci; .*faktanya diganti 3 kali\.$/);
   });
 
   it('status berwarna dan ikon per peran (SVG, bukan emoji)', () => {

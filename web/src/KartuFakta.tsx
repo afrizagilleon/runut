@@ -58,15 +58,24 @@ export function KartuFakta({
   const judul = `kartu-${fakta.fact_id}`;
 
   return (
+    <>
+    {/*
+      Label petunjuk DI ATAS lembar, di luar cincinnya (kritik D-6 butir 5):
+      ia suara kami, bukan bagian dokumen resmi. Sasaran gulir petunjuk ada di
+      label ini, supaya ia yang mendarat tepat di bawah keping.
+    */}
+    {ditandai && (
+      <p className="tanda-kartu" data-gulir-sorot="penentu">
+        {LABEL_PETUNJUK_KARTU}
+      </p>
+    )}
     <section
       className={`lembar${dihitung ? ' lembar-hitung' : ''}${
         menentukan ? ' lembar-menentukan' : ''
       }${ditandai ? ' lembar-ditandai' : ''}`}
       aria-labelledby={judul}
       data-uid={`lembar:${fakta.fact_id}`}
-      {...(ditandai ? { 'data-gulir-sorot': 'penentu' } : {})}
     >
-      {ditandai && <p className="tanda-kartu">{LABEL_PETUNJUK_KARTU}</p>}
       <div className="lembar-badan">
         <p className="meta" id={judul}>
           {awam?.kepala ?? fakta.fact_id}
@@ -95,5 +104,6 @@ export function KartuFakta({
 
       {terbuka && <div className="buka">{children}</div>}
     </section>
+    </>
   );
 }

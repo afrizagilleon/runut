@@ -63,11 +63,12 @@ import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } fro
 import { PARAM_DAPUR, TAUTAN_DAPUR } from './dapur.ts';
 import {
   JUDUL_KALENDER,
-  JUDUL_KALENDER_AKHIR,
+  PENGANTAR_KALENDER_AKHIR,
   LABEL_CARA_MAIN,
   LABEL_TAUTAN_KALENDER,
   LABEL_TOMBOL_PETUNJUK,
   PENGANTAR_KALENDER,
+  simulasiBaru,
   tautanKalenderDiPembuka,
   kartuDitandai,
   LABEL_PEMANDU_LANJUT,
@@ -627,6 +628,7 @@ export function Aplikasi(): JSX.Element {
     [kirim, bukaKasusLain, kasus.kasus_id],
   );
   const kalenderTerbuka = layar.jenis === 'pembuka' && tampilan.kalender.terbuka;
+  const baru = simulasiBaru(DAFTAR_KASUS, kasus.kasus_id, tampilan.kalender.selesai);
 
   const tekanPetunjuk = tampilan.petunjuk?.ke ?? 0;
   useEffect(() => {
@@ -661,9 +663,13 @@ export function Aplikasi(): JSX.Element {
   useEffect(() => {
     if (sorot === null) return;
     const pinta = requestAnimationFrame(() => {
+      /*
+       * Tombol petunjuk ke TENGAH layar (pilihan di atasnya tetap terlihat);
+       * yang lain rata atas, di bawah keping dan balon (kritik D-6 butir 1).
+       */
       document
         .querySelector(`[data-gulir-sorot="${sorot}"]`)
-        ?.scrollIntoView({ block: 'start', behavior: gerakHalus() });
+        ?.scrollIntoView({ block: sorot === 'petunjuk' ? 'center' : 'start', behavior: gerakHalus() });
     });
     return () => {
       cancelAnimationFrame(pinta);
@@ -788,6 +794,17 @@ export function Aplikasi(): JSX.Element {
                   },
                 }
               : {})}
+            {...(baru !== null
+              ? {
+                  simulasiBaru: {
+                    tanggal: `${penanda(baru.tanggal_t).hari}, ${penanda(baru.tanggal_t).panjang}`,
+                    kasus_id: baru.kasus_id,
+                    buka: () => {
+                      pilihDariKalender(baru.kasus_id, false);
+                    },
+                  },
+                }
+              : {})}
           />
         )}
         {kalenderTerbuka && (
@@ -857,7 +874,17 @@ export function Aplikasi(): JSX.Element {
       </main>
 
       {(layar.jenis === 'soal' || diPemanasan) && langkahPemanduKini(tampilan) !== null && (
-        <PanelPemandu tampilan={tampilan} kirimTampilan={kirimTampilan} />
+        <PanelPemandu
+          tampilan={tampilan}
+          kirimTampilan={kirimTampilan}
+          soal_id={
+            diPemanasan
+              ? (PEMANASAN?.soal.soal_id ?? '')
+              : layar.jenis === 'soal'
+                ? (keadaan.urutanSoal[layar.nomor] ?? '')
+                : ''
+          }
+        />
       )}
 
       {((layar.jenis === 'pembuka' && !diPemanasan && !kalenderTerbuka) || layar.jenis === 'akhir') && (
@@ -966,6 +993,7 @@ export function LayarPembuka({
   sakelarSumber,
   mulai,
   bukaKalender,
+  simulasiBaru: tawaranBaru,
 }: {
   kasus: Kasus;
   hari: ReturnType<typeof penanda>;
@@ -975,6 +1003,8 @@ export function LayarPembuka({
   mulai?: () => void;
   /** Tautan kecil ke kalender simulasi (M3.14 D-3) — hanya untuk pengunjung yang kembali. */
   bukaKalender?: () => void;
+  /** "Simulasi baru: …" (kritik D-6 butir 9) — bila simulasi ini sudah selesai dan ada yang belum. */
+  simulasiBaru?: { tanggal: string; kasus_id: string; buka: () => void };
 }): JSX.Element {
   const contoh = contohPembuka(kasus);
   useTinggiBilah();
@@ -1019,12 +1049,28 @@ export function LayarPembuka({
       <p className="isi" data-uid="ajak">
         <Teks teks={kasus.pembuka.ajak} sakelarSumber={sakelarSumber} />
       </p>
-      {bukaKalender !== undefined && (
-        <p className="tautan-kalender">
-          <button type="button" className="cara-main" data-uid="kalender:buka" onClick={bukaKalender}>
-            {LABEL_TAUTAN_KALENDER} ›
-          </button>
-        </p>
+      {/*
+        Pengunjung yang kembali saja (pengunjung baru: layar ini tidak berubah
+        satu piksel pun). Rata kiri seperti ajakan di atasnya (kritik D-6 butir 10).
+      */}
+      {(tawaranBaru !== undefined || bukaKalender !== undefined) && (
+        <div className="tautan-kalender">
+          {tawaranBaru !== undefined && (
+            <button
+              type="button"
+              className="tautan-kecil"
+              data-uid={`kalender:baru:${tawaranBaru.kasus_id}`}
+              onClick={tawaranBaru.buka}
+            >
+              Simulasi baru: {tawaranBaru.tanggal} ›
+            </button>
+          )}
+          {bukaKalender !== undefined && (
+            <button type="button" className="tautan-kecil" data-uid="kalender:buka" onClick={bukaKalender}>
+              {LABEL_TAUTAN_KALENDER} ›
+            </button>
+          )}
+        </div>
       )}
       <div className="tindakan" data-uid="bilah">
         <button
@@ -1975,8 +2021,9 @@ export function LayarSoal({
           */}
           <button
             type="button"
-            className="tombol-petunjuk"
+            className={sorotKini === 'petunjuk' ? 'tombol-petunjuk disorot' : 'tombol-petunjuk'}
             data-uid="petunjuk-kartu"
+            data-gulir-sorot="petunjuk"
             onClick={() => {
               kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
             }}
@@ -2473,8 +2520,8 @@ export function LayarAkhir({
         </div>
         <KalenderSimulasi
           bulan={bulanKalender}
-          judul={JUDUL_KALENDER_AKHIR}
-          pengantar={PENGANTAR_KALENDER}
+          judul={null}
+          pengantar={PENGANTAR_KALENDER_AKHIR}
           pilih={pilihDariKalender}
         />
         {/*
@@ -2616,9 +2663,12 @@ export function LayarAkhir({
 function PanelPemandu({
   tampilan,
   kirimTampilan,
+  soal_id,
 }: {
   tampilan: KeadaanTampilan;
   kirimTampilan: (aksi: AksiTampilan) => void;
+  /** Soal tempat pemandu menempel; langkah terakhir menjalankan petunjuk di sini. */
+  soal_id: string;
 }): JSX.Element | null {
   const langkahIni = langkahPemanduKini(tampilan);
   const nomor = nomorLangkah(tampilan);
@@ -2626,31 +2676,39 @@ function PanelPemandu({
   const ke = String(tampilan.pemandu.langkah + 1);
   const terakhir = langkahTerakhir(tampilan);
   return (
+    /*
+     * Rupa sesudah kritik D-6 (putusan A): paling banyak ±110 px — baris meta
+     * "Cara main · n dari 4" dengan "Lewati" di kanannya, lalu satu kalimat
+     * pendek dengan tombol utama di kanannya. Yang diterangkan tidak lagi
+     * tertutup (keluhan 3/5 penguji D-5).
+     */
     <div className="tindakan pemandu" role="region" aria-label="Cara main" data-uid="pemandu">
       <div className="pemandu-kolom">
-        <p className="meta pemandu-nomor">Cara main · {nomor}</p>
-        <p className="pemandu-teks" aria-live="polite">
-          {langkahIni.teks}
-        </p>
-        <div className="pemandu-tombol">
-          {!terakhir && (
-            <button
-              type="button"
-              className="pemandu-lewati"
-              data-uid={`pemandu:lewati:${ke}`}
-              onClick={() => {
-                kirimTampilan({ jenis: 'lewati_pemandu' });
-              }}
-            >
-              {LABEL_PEMANDU_LEWATI}
-            </button>
-          )}
+        <div className="pemandu-kepala">
+          <p className="meta pemandu-nomor">Cara main · {nomor}</p>
+          <button
+            type="button"
+            className="pemandu-lewati"
+            data-uid={`pemandu:lewati:${ke}`}
+            onClick={() => {
+              kirimTampilan({ jenis: 'lewati_pemandu' });
+            }}
+          >
+            {LABEL_PEMANDU_LEWATI}
+          </button>
+        </div>
+        <div className="pemandu-badan">
+          <p className="pemandu-teks" aria-live="polite">
+            {langkahIni.teks}
+          </p>
           <button
             type="button"
             className="tombol-utama pemandu-lanjut"
             data-uid={terakhir ? `pemandu:selesai:${ke}` : `pemandu:lanjut:${ke}`}
             onClick={() => {
-              kirimTampilan({ jenis: 'lanjut_pemandu' });
+              kirimTampilan(
+                terakhir ? { jenis: 'tunjukkan_petunjuk', soal_id } : { jenis: 'lanjut_pemandu' },
+              );
             }}
           >
             {terakhir ? LABEL_PEMANDU_SELESAI : LABEL_PEMANDU_LANJUT}
@@ -2765,8 +2823,9 @@ export function LayarPemanasan({
         <div className="bantuan-soal">
           <button
             type="button"
-            className="tombol-petunjuk"
+            className={sorotKini === 'petunjuk' ? 'tombol-petunjuk disorot' : 'tombol-petunjuk'}
             data-uid="pemanasan:petunjuk-kartu"
+            data-gulir-sorot="petunjuk"
             onClick={() => {
               kirimTampilan({ jenis: 'minta_petunjuk', soal_id: soal.soal_id });
             }}

@@ -171,8 +171,8 @@ export function labelSimulasi(e: EntriSimulasi): string {
 
 /** Keterangan status satu simulasi di baris kalender. */
 export function statusSimulasi(e: EntriSimulasi): string {
-  if (e.kini && e.selesai) return 'Baru saja kamu selesaikan';
-  if (e.selesai) return 'Sudah kamu selesaikan';
-  if (e.kini) return 'Sedang kamu buka';
+  if (e.kini && e.selesai) return 'Baru saja selesai';
+  if (e.selesai) return 'Sudah selesai';
+  if (e.kini) return 'Sedang dibuka';
   return 'Belum dimainkan';
 }

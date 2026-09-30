@@ -1,5 +1,5 @@
 import { expect, test, type Page } from '@playwright/test';
-import { LABEL_MULAI, awasiGalat, gagalYangBerarti, ketuk, penandaBaru, tungguSoal } from './bantu/main.ts';
+import { LABEL_MULAI, awasiGalat, gagalYangBerarti, ketuk, penandaBaru, tertutupPuncak, tungguSoal } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
 import { tungguCocok, tungguSatuSesi } from './bantu/peristiwa.ts';
 
@@ -53,25 +53,25 @@ test('E-60a pengunjung baru: layar pertama sama, lalu empat langkah di soal 1', 
   await expect(page.locator('[data-uid^="bilah:"]'), 'bilah bawah menyingkir selama pemandu').toHaveCount(0);
   const awal = await sidikPilihan(page);
 
-  const harapan = ['figure.pesan.disorot', '.tumpukan.disorot', '.lembar-ditandai', 'fieldset.pilihan.disorot'];
+  // Urutan sesudah kritik D-6 (putusan B): omongan → kartu → pilihan → tombol petunjuk.
+  const harapan = ['figure.pesan.disorot', '.tumpukan.disorot', 'fieldset.pilihan.disorot', '.tombol-petunjuk.disorot'];
   for (const [n, pemilih] of harapan.entries()) {
     await expect(panel(page)).toContainText(`${String(n + 1)} dari 4`);
-    await expect(page.locator(pemilih).first(), `langkah ${String(n + 1)}`).toBeVisible();
-    await expect(page.locator('label.opsi.disorot, label.opsi .lembar-ditandai')).toHaveCount(0);
-    if (n === 2) {
-      /* Langkah ketiga = petunjuk yang didemonstrasikan: TEPAT kartu_penentu. */
-      const ditandai = await page
-        .locator('.lembar-ditandai')
-        .evaluateAll((els) => els.map((e) => (e.getAttribute('data-uid') ?? '').replace('lembar:', '')));
-      expect(ditandai.sort()).toEqual([...(SOAL1?.kartu_penentu ?? [])].sort());
-      await expect(page.locator('.lembar-ditandai').first()).toContainText('Coba cek kartu ini');
-      await expect(page.locator('.lembar-ditandai').first()).toBeInViewport();
-    }
+    await expect(page.locator(pemilih).first(), `langkah ${String(n + 1)}`).toBeInViewport();
+    await expect(page.locator('label.opsi.disorot, .lembar-ditandai')).toHaveCount(0);
     const tombol = page.locator(n === 3 ? '[data-uid="pemandu:selesai:4"]' : `[data-uid="pemandu:lanjut:${String(n + 1)}"]`);
     await ketuk(tombol);
   }
+  /* "Tunjukkan" = petunjuk didemonstrasikan sekali: TEPAT kartu_penentu, label terbaca, pemandu selesai. */
   await expect(panel(page)).toHaveCount(0);
-  await expect(page.locator('.disorot, .lembar-ditandai')).toHaveCount(0);
+  const ditandai = await page
+    .locator('.lembar-ditandai')
+    .evaluateAll((els) => els.map((e) => (e.getAttribute('data-uid') ?? '').replace('lembar:', '')));
+  expect(ditandai.sort()).toEqual([...(SOAL1?.kartu_penentu ?? [])].sort());
+  await expect(page.locator('.tanda-kartu').first()).toHaveText('Coba cek kartu ini');
+  await expect(page.locator('.tanda-kartu').first(), 'label petunjuk di layar').toBeInViewport({ ratio: 1 });
+  await expect.poll(async () => (await tertutupPuncak(page.locator('.tanda-kartu').first())).tertutup, { message: 'label tidak tertutup keping/balon' }).toBe(false);
+  await expect(page.locator('.disorot')).toHaveCount(0);
   expect(await sidikPilihan(page), 'pemandu tidak menyentuh pilihan').toBe(awal);
 
   /*
@@ -135,8 +135,8 @@ test('E-60d gerak menghormati prefers-reduced-motion', async ({ page }) => {
   await tungguSoal(page, 1);
   const transisi = await page.locator('figure.pesan.disorot').evaluate((el) => getComputedStyle(el).transitionDuration);
   expect(transisi).toBe('0s');
-  await ketuk(page.locator('[data-uid="pemandu:lanjut:1"]'));
-  await ketuk(page.locator('[data-uid="pemandu:lanjut:2"]'));
+  for (const n of [1, 2, 3]) await ketuk(page.locator(`[data-uid="pemandu:lanjut:${String(n)}"]`));
+  await ketuk(page.locator('[data-uid="pemandu:selesai:4"]'));
   /* Tanpa gerak: kartunya sudah di layar pada frame berikutnya, tanpa luncuran. */
   await expect(page.locator('.lembar-ditandai').first()).toBeInViewport();
 });

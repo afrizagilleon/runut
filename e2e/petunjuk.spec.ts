@@ -10,6 +10,7 @@ import {
   mulaiKasus,
   penandaBaru,
   pilihOpsi,
+  tertutupPuncak,
   tungguSoal,
 } from './bantu/main.ts';
 import { bacaKasus } from './bantu/kasus.ts';
@@ -54,13 +55,14 @@ test('E-61a petunjuk menandai kartu penentu, tidak menyentuh pilihan, dan tercat
     await petunjuk(page).scrollIntoViewIfNeeded();
     await ketuk(petunjuk(page));
     expect(await kartuDitandai(page), `soal ${String(nomor + 1)}`).toEqual([...soal.kartu_penentu].sort());
-    const pertama = page.locator('.lembar-ditandai').first();
-    await expect(pertama).toContainText('Coba cek kartu ini');
-    await expect(pertama, 'petunjuk menggulir ke kartunya').toBeInViewport();
+    const label = page.locator('.tanda-kartu').first();
+    await expect(label).toHaveText('Coba cek kartu ini');
+    await expect(label, 'petunjuk menggulir ke kartunya').toBeInViewport({ ratio: 1 });
+    await expect.poll(async () => (await tertutupPuncak(label)).tertutup, { message: 'label tidak tertutup keping/balon' }).toBe(false);
     expect(await sidikPilihan(page), 'pilihan tidak berubah satu atribut pun').toBe(sebelum);
-    const label = (await page.locator('.tanda-kartu').allInnerTexts()).join(' ');
+    const teksLabel = (await page.locator('.tanda-kartu').allInnerTexts()).join(' ');
     for (const p of soal.pilihan) {
-      expect(label.includes(p.teks.replace(/\[\[[^|]+\|([^\]]+)\]\]/g, '$1'))).toBe(false);
+      expect(teksLabel.includes(p.teks.replace(/\[\[[^|]+\|([^\]]+)\]\]/g, '$1'))).toBe(false);
     }
 
     await bilahTurunAda(page, soal.pilihan[0]?.kunci ?? 'a');

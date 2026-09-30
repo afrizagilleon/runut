@@ -64,7 +64,7 @@ test('E-62a sesudah satu simulasi: kalender nyata, tanda selesai, pilih hari lai
   await expect(page.locator('[data-uid^="kalender:pilih:"]'), 'satu baris per simulasi nyata').toHaveCount(ID_KASUS.length);
   await expect(page.locator('.kisi-simulasi'), 'satu lingkaran per simulasi nyata').toHaveCount(ID_KASUS.length);
   await expect(kalender).not.toContainText(/segera|hadir|menyusul/i);
-  await expect(baris(page, pertama)).toContainText('Baru saja kamu selesaikan');
+  await expect(baris(page, pertama)).toContainText('Baru saja selesai');
   await expect(baris(page, kedua)).toContainText('Belum dimainkan');
   await expect(page.locator('.kisi-selesai')).toHaveCount(1);
   expect(
@@ -98,7 +98,7 @@ test('E-62b localStorage melempar: kalender tetap tampil dan tanda selesai tetap
   await buka(page, penandaBaru(), pertama);
   await mainkanSampaiTerimaKasih(page, pertama);
   await expect(page.locator('[data-uid^="kalender:pilih:"]')).toHaveCount(ID_KASUS.length);
-  await expect(baris(page, pertama)).toContainText('Baru saja kamu selesaikan');
+  await expect(baris(page, pertama)).toContainText('Baru saja selesai');
   await expect(page.locator('.kisi-selesai')).toHaveCount(1);
   expect(galat.kode(), 'tanpa galat walau penyimpanan diblokir').toEqual([]);
 });
@@ -121,4 +121,19 @@ test('E-62c pengunjung yang kembali: tautan kecil di layar pertama membuka kalen
   await ketuk(baris(page, kedua));
   await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
   await expect(page.getByText(bacaKasus(kedua).soal[0]?.pesan.isi ?? '—')).toBeVisible();
+});
+
+test('E-62d kembali ke simulasi yang sudah selesai: tautan "Simulasi baru" membuka yang belum', async ({ page }) => {
+  const penanda = penandaBaru();
+  const [pertama, kedua] = ID_KASUS as [string, string];
+  await buka(page, penanda, pertama);
+  await mainkanSampaiTerimaKasih(page, pertama);
+  await buka(page, penanda, pertama);
+  const baru = page.locator(`[data-uid="kalender:baru:${kedua}"]`);
+  await expect(baru).toBeVisible();
+  await expect(baru).toContainText('Simulasi baru: Senin, 4 Mei 2026');
+  await ketuk(baru);
+  await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
+  await expect(page.getByText(bacaKasus(kedua).soal[0]?.pesan.isi ?? '—')).toBeVisible();
+  await expect(page.locator('[data-uid^="kalender:baru:"]'), 'ULTJ belum selesai: tidak ada tawaran').toHaveCount(0);
 });

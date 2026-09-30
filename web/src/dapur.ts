@@ -341,7 +341,7 @@ export function awamAlasan(peran: string, alasan: string): AlasanAwam {
   if (kosong !== null) {
     return {
       label: 'tak terbaca',
-      kalimat: `Tulisan penulis untuk omongan ${kosong[1] ?? ''} tidak terbaca.`,
+      kalimat: `Mesin tidak menemukan omongan ${kosong[1] ?? ''} di jawaban penulis; penulis diminta menulis lagi.`,
       kutipan: null,
     };
   }
@@ -457,4 +457,33 @@ export function berhentiAwam(berhenti: string): string {
 /** Baris agregat tanpa kode milestone: "Satu jalan agen: tidak terbit · …". */
 export function kalimatAgregatAwam(a: AgregatDapur): string {
   return kalimatAgregat(a).replace(/^Jalan [^:]+: /, 'Satu jalan agen: ');
+}
+
+/**
+ * Satu kalimat per omongan di bawah pita garis waktu (kritik D-6 butir 14),
+ * dihitung dari `garisWaktu` saja: kapan dikunci (atau tidak pernah), berapa
+ * putaran ditolak, alasan terbanyak, berapa kali fakta diganti.
+ */
+export function kalimatOmongan(jalan: JalanDapur, omongan: number): string {
+  const sel = garisWaktu(jalan).map((b) => ({ putaran: b.putaran, s: b.sel.find((x) => x.omongan === omongan) }));
+  const tolak = sel.filter((x) => x.s?.keadaan === 'tolak');
+  const ganti = sel.filter((x) => x.s?.keadaan === 'ganti').length;
+  const kunci = sel.find((x) => x.s?.keadaan === 'kunci')?.putaran ?? null;
+  const hitung = new Map<string, number>();
+  for (const x of tolak) hitung.set(x.s?.label ?? '', (hitung.get(x.s?.label ?? '') ?? 0) + 1);
+  const terbanyak = [...hitung.entries()].sort((a, b) => b[1] - a[1])[0];
+  const bagian: string[] = [];
+  bagian.push(
+    kunci !== null
+      ? `Omongan ${String(omongan)} dikunci di putaran ${String(kunci)}`
+      : `Omongan ${String(omongan)} tidak pernah dikunci`,
+  );
+  if (tolak.length > 0) {
+    bagian.push(
+      `ditolak di ${String(tolak.length)} putaran` +
+        (terbanyak === undefined ? '' : ` (terbanyak: ${terbanyak[0]}, ${String(terbanyak[1])} kali)`),
+    );
+  }
+  if (ganti > 0) bagian.push(`faktanya diganti ${String(ganti)} kali`);
+  return `${bagian.join('; ')}.`;
 }

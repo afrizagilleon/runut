@@ -121,7 +121,7 @@ describe('tanda selesai dan penyimpanan', () => {
     const bulan = susunKalender(DAFTAR, ['dada-2025-10-08'], 'dada-2025-10-08');
     const dada = bulan[0]?.simulasi[0];
     expect(dada?.selesai).toBe(true);
-    expect(statusSimulasi(dada as NonNullable<typeof dada>)).toBe('Baru saja kamu selesaikan');
+    expect(statusSimulasi(dada as NonNullable<typeof dada>)).toBe('Baru saja selesai');
     expect(bulan[1]?.simulasi[0]?.selesai).toBe(false);
     expect(statusSimulasi(bulan[1]?.simulasi[0] as NonNullable<typeof dada>)).toBe('Belum dimainkan');
     expect(labelSimulasi(dada as NonNullable<typeof dada>)).toBe('Rabu, 8 Oktober 2025 · Perusahaan D · 3 soal');

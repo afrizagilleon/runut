@@ -1954,11 +1954,14 @@ textarea {
   resize: vertical;
 }
 
+/*
+ * Pesan penutup = suara kami: garis kiri tipis, bukan lembar (`docs/desain.md`,
+ * "Dua bahan"; kritik M3.14 D-6 butir 6 — sampai M3.13 ia kotak berbingkai).
+ */
 .pesan-alpha {
-  border: 1px solid var(--garis-tegas);
-  border-radius: 3px;
-  padding: 16px;
-  background: var(--lembar);
+  margin: 24px 0 0;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--garis-tegas);
 }
 
 .pesan-alpha p {
@@ -2278,7 +2281,13 @@ textarea {
  * balon melayang, dengan aturan yang sama seperti `.tanya` (M3.8 D-10).
  */
 [data-gulir-sorot] {
-  scroll-margin-top: var(--tepi-atas, 64px);
+  /*
+   * Kritik D-6 butir 1: sasaran mendarat di bawah keping DAN balon yang
+   * mengintip — balon baru aktif SESUDAH guliran, jadi `--tepi-atas` belum
+   * terukur saat tujuan dihitung. 112 px = keping (±56) + intip (28) + garis
+   * dan jarak.
+   */
+  scroll-margin-top: max(var(--tepi-atas, 64px), 112px);
 }
 
 /*
@@ -2289,9 +2298,15 @@ textarea {
  * hanya transisi 140 ms, dimatikan untuk `prefers-reduced-motion`.
  */
 .disorot {
-  outline: 3px solid var(--tinta);
+  outline: 2px solid var(--tinta);
   outline-offset: 4px;
+  border-radius: 3px;
   transition: outline-color var(--gerak) ease;
+}
+
+/* Cincin mengikuti sudut balon (kritik D-6 butir 4). */
+.pesan.disorot {
+  border-radius: 4px 16px 16px 16px;
 }
 
 /*
@@ -2299,17 +2314,17 @@ textarea {
  * sama, ditambah satu label netral di dalam lembar, di atas kepalanya.
  */
 .lembar-ditandai {
-  outline: 3px solid var(--tinta);
+  outline: 2px solid var(--tinta);
   outline-offset: 3px;
 }
 
+/* Label petunjuk: di atas lembar, di luar cincin, peran *isi* 600 (kritik D-6 butir 5). */
 .tanda-kartu {
-  margin: 0;
-  padding: 8px 12px 0;
+  margin: 4px 0 0;
   font-family: var(--baca);
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 600;
-  line-height: 1.35;
+  line-height: 1.45;
   color: var(--tinta);
 }
 
@@ -2325,7 +2340,7 @@ textarea {
  * supaya pilihan terakhir tetap bisa digulir ke atasnya.
  */
 .pemandu {
-  padding: 12px var(--sisi) 16px;
+  padding: 2px var(--sisi) 10px;
 }
 
 .pemandu-kolom {
@@ -2333,12 +2348,26 @@ textarea {
   margin: 0 auto;
 }
 
+/* Rupa sesudah kritik D-6 (putusan A): dua baris, ±110 px. */
+.pemandu-kepala {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .pemandu-nomor {
-  margin: 0 0 4px;
+  margin: 0;
+}
+
+.pemandu-badan {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .pemandu-teks {
-  margin: 0 0 12px;
+  flex: 1;
+  margin: 0;
   font-family: var(--baca);
   font-size: 17px;
   font-weight: 400;
@@ -2346,20 +2375,18 @@ textarea {
   color: var(--tinta);
 }
 
-.pemandu-tombol {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.pemandu-tombol .tombol-utama {
-  flex: 1;
+.pemandu-badan .tombol-utama {
+  flex: none;
   width: auto;
+  min-width: 96px;
+  min-height: 44px;
   margin: 0;
+  padding: 0 16px;
 }
 
 .pemandu-lewati {
   min-height: 44px;
+  margin-right: -12px;
   padding: 0 12px;
   border: 0;
   border-radius: 3px;
@@ -2378,7 +2405,7 @@ textarea {
 }
 
 body:has(.pemandu) .halaman {
-  padding-bottom: 240px;
+  padding-bottom: 160px;
 }
 
 /* --- bantuan di layar soal: "Minta petunjuk", "Cara main" ------------------ */
@@ -2389,7 +2416,7 @@ body:has(.pemandu) .halaman {
   align-items: center;
   justify-content: space-between;
   gap: 8px 16px;
-  margin: 0 0 4px;
+  margin: 24px 0 4px;
 }
 
 /*
@@ -2486,7 +2513,7 @@ body:has(.pemandu) .halaman {
 }
 
 .kalender-kisi td {
-  height: 40px;
+  height: 32px;
   padding: 0;
   font-size: 14px;
   font-weight: 400;
@@ -2498,8 +2525,8 @@ body:has(.pemandu) .halaman {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
 }
 
@@ -2570,11 +2597,38 @@ body:has(.pemandu) .halaman {
 
 .kalender-baris .panah {
   color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
 }
 
+/* Tautan pengunjung yang kembali di layar pertama: rata kiri, *aksi* 16 px (kritik D-6 butir 9–10). */
 .tautan-kalender {
-  margin: 8px 0 0;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 16px 0 0;
+}
+
+.tautan-kecil {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tautan-kecil:active {
+  background: var(--garis);
 }
 
 .layar-kalender .kalender-simulasi {
@@ -2596,8 +2650,13 @@ body:has(.pemandu) .halaman {
   color: var(--cocok);
 }
 
+/* Satu teknik penekanan: warna saja (kritik D-6 butir 13). */
 .dapur-status-teks {
-  font-weight: 600;
+  font-weight: 400;
+}
+
+.dapur .dapur-status {
+  font-weight: 400;
 }
 
 /* Empat angka jalan sebagai kisi 2 × 2: angka *judul* 20 px, labelnya *meta*. */
@@ -2631,7 +2690,7 @@ body:has(.pemandu) .halaman {
 .dapur-berhenti {
   margin: 0 0 8px;
   padding: 0 0 0 12px;
-  border-left: 2px solid var(--belum-cocok);
+  border-left: 2px solid var(--garis-tegas);
 }
 
 .ikon-peran {
@@ -2671,75 +2730,82 @@ body:has(.pemandu) .halaman {
   min-height: 24px;
 }
 
-/* Garis waktu: satu baris per putaran, satu kolom per omongan. */
+/*
+ * Garis waktu sebagai pita (kritik D-6 butir 14): satu pita per omongan, satu
+ * kotak 19 px per putaran (15 × 21 px = 315 px, muat di 360). Warna menurut
+ * keadaan: --belum-cocok = ditolak, --cocok = dikunci, netral = fakta diganti.
+ */
 .dapur-waktu {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed;
   margin: 0 0 16px;
+}
+
+.pita {
+  margin: 0 0 16px;
+}
+
+.pita-judul {
+  margin: 0 0 4px;
   font-family: var(--baca);
   font-size: 14px;
-  line-height: 1.35;
-}
-
-.dapur-waktu th {
-  padding: 6px 4px;
   font-weight: 500;
-  text-align: left;
-  color: var(--tinta-redup);
-  border-bottom: 1px solid var(--garis-tegas);
+  line-height: 1.35;
+  color: var(--tinta);
 }
 
-.dapur-waktu th:first-child {
-  width: 60px;
-}
-
-.dapur-waktu tbody th {
-  font-weight: 400;
-  border-bottom: 1px solid var(--garis);
-}
-
-.dapur-waktu td {
-  padding: 6px 4px;
-  vertical-align: top;
-  border-bottom: 1px solid var(--garis);
-}
-
-.sel-isi {
+.pita-kotak {
+  list-style: none;
   display: flex;
-  align-items: flex-start;
-  gap: 4px;
+  flex-wrap: wrap;
+  gap: 2px;
+  margin: 0 0 6px;
+  padding: 0;
 }
 
-.sel-isi .ikon-peran {
-  width: 16px;
-  height: 16px;
-  margin-top: 1px;
+.pita-kotak > li,
+.kotak-legenda {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 2px;
+  font-family: var(--baca);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
 }
 
-.sel-tolak {
-  color: var(--belum-cocok);
+.pita-kotak .ikon-peran {
+  width: 13px;
+  height: 13px;
 }
 
-.sel-kunci {
-  color: var(--cocok);
-  font-weight: 600;
+.kotak-tolak {
+  background: var(--belum-cocok);
+  color: var(--kertas);
 }
 
-.sel-ganti {
+.kotak-kunci {
+  background: var(--cocok);
+  color: var(--kertas);
+}
+
+.kotak-ganti {
+  border: 1px solid var(--garis-kontrol);
   color: var(--tinta-redup);
 }
 
-/* Omongan yang sudah dikunci: sel diarsir tipis, supaya lajurnya terbaca "selesai". */
-.sel-selesai {
-  background: var(--garis);
+/* Sesudah dikunci: garis tipis saja — lajurnya terbaca "selesai", bukan balok gelap (butir 13). */
+.kotak-selesai {
+  border-bottom: 2px solid var(--garis-tegas);
 }
 
-.sel-centang {
-  display: inline-flex;
-  width: 16px;
-  justify-content: center;
-  font-weight: 700;
+.kotak-kosong {
+  border: 1px dashed var(--garis-tegas);
+}
+
+.pita-skala {
+  margin: 0;
 }
 
 .dapur-tolak-kepala {

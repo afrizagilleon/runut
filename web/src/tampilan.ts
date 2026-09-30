@@ -19,7 +19,7 @@
 /* ------------------------------------------------------------------ */
 
 /** Apa yang disorot satu langkah pemandu; nama ini juga `data-sorot` di markup. */
-export type SasaranSorot = 'omongan' | 'kartu' | 'penentu' | 'pilihan';
+export type SasaranSorot = 'omongan' | 'kartu' | 'pilihan' | 'petunjuk';
 
 export interface LangkahPemandu {
   sasaran: SasaranSorot;
@@ -27,37 +27,29 @@ export interface LangkahPemandu {
 }
 
 /**
- * Empat langkah, urutan kontrak D-1: omongan → kartu → petunjuk → pilihan.
+ * Empat langkah: omongan → kartu → pilihan → petunjuk.
  *
- * Langkah ketiga MENDEMONSTRASIKAN petunjuk: yang disorot adalah kartu yang
- * akan ditunjuk tombol "Minta petunjuk" (`kartu_penentu`), dengan label yang
- * sama persis — bukan pilihannya. Teksnya netral: tidak ada satu kata pun dari
- * pilihan, kunci, atau penjelasan soal mana pun (dites).
+ * Urutan kontrak D-1 menaruh petunjuk sebelum pilihan; putaran kritik D-6
+ * (`eval/m314/kritik/kritik-desain-r0.txt`, putusan B) memindahkannya ke
+ * akhir, dan 3/5 penguji D-5 mendukung alasannya: tombol "Minta petunjuk"
+ * berada DI BAWAH pilihan, jadi langkah petunjuk sebelum pilihan menunjuk
+ * tombol yang belum terlihat. Di urutan baru, langkah terakhir menyorot tombol
+ * yang sebenarnya, dan tombol utamanya ("Tunjukkan") menjalankan petunjuk itu
+ * sekali (`tunjukkan_petunjuk`): layar menggulir ke kartu penentu, bukan ke
+ * pilihan — demonstrasinya sekaligus bukti bahwa petunjuk tidak membocorkan
+ * jawaban. Teksnya netral: tidak ada potongan pilihan, kunci, atau penjelasan
+ * soal mana pun (dites).
  *
- * Panjangnya dijaga tes (≤ 70 kata seluruhnya, ±30 detik baca).
+ * Panjangnya dijaga tes (≤ 70 kata seluruhnya; sekarang ±30 kata).
  */
 export const LANGKAH_PEMANDU: readonly LangkahPemandu[] = [
-  {
-    sasaran: 'omongan',
-    teks: 'Ini omongan teman di grup. Isinya klaim yang kamu cek.',
-  },
-  {
-    sasaran: 'kartu',
-    teks: 'Buktinya ada di kartu-kartu ini: dokumen resmi dan hitungan dari datanya.',
-  },
-  {
-    sasaran: 'penentu',
-    teks:
-      'Kalau bingung, tombol “Minta petunjuk” di bawah pilihan menandai kartu yang penting, ' +
-      'seperti ini. Jawabannya tetap kamu yang cari.',
-  },
-  {
-    sasaran: 'pilihan',
-    teks: 'Sekarang kamu yang memutuskan: pilih jawaban yang cocok dengan kartu.',
-  },
+  { sasaran: 'omongan', teks: 'Ini omongan teman. Betul atau keliru?' },
+  { sasaran: 'kartu', teks: 'Buktinya ada di kartu-kartu ini.' },
+  { sasaran: 'pilihan', teks: 'Pilih yang cocok dengan kartu.' },
+  { sasaran: 'petunjuk', teks: 'Buntu? Tombol ini menandai kartu yang perlu dicek, bukan jawabannya.' },
 ];
 
-/** Label penanda kartu — dipakai petunjuk DAN langkah ketiga pemandu, satu kalimat. */
+/** Label penanda kartu — dipakai petunjuk (juga saat didemonstrasikan pemandu), satu kalimat. */
 export const LABEL_PETUNJUK_KARTU = 'Coba cek kartu ini';
 
 /** Tombol petunjuk di layar soal (D-2). */
@@ -67,7 +59,8 @@ export const LABEL_TOMBOL_PETUNJUK = 'Minta petunjuk';
 export const LABEL_CARA_MAIN = 'Cara main';
 
 export const LABEL_PEMANDU_LANJUT = 'Lanjut';
-export const LABEL_PEMANDU_SELESAI = 'Mulai menjawab';
+/** Tombol utama langkah terakhir: menjalankan petunjuk sekali (demonstrasi), lalu pemandu selesai. */
+export const LABEL_PEMANDU_SELESAI = 'Tunjukkan';
 export const LABEL_PEMANDU_LEWATI = 'Lewati';
 
 /**
@@ -147,6 +140,8 @@ export type AksiTampilan =
   /** "Cara main": buka pemandu lagi dari langkah pertama. */
   | { jenis: 'buka_pemandu' }
   | { jenis: 'lanjut_pemandu' }
+  /** Langkah terakhir: jalankan petunjuk di soal ini sekali, lalu pemandu selesai. */
+  | { jenis: 'tunjukkan_petunjuk'; soal_id: string }
   | { jenis: 'lewati_pemandu' }
   /** Pemain memilih jawaban: ia sudah bermain, pemandu menyingkir. */
   | { jenis: 'pemain_memilih' }
@@ -198,6 +193,11 @@ export function langkahTampilan(k: KeadaanTampilan, aksi: AksiTampilan): Keadaan
       if (kini + 1 >= LANGKAH_PEMANDU.length) return tutupPemandu(k);
       return { ...k, pemandu: { langkah: kini + 1, sudah: true } };
     }
+    case 'tunjukkan_petunjuk':
+      return {
+        ...tutupPemandu(k),
+        petunjuk: { soal_id: aksi.soal_id, ke: (k.petunjuk?.ke ?? 0) + 1 },
+      };
     case 'lewati_pemandu':
     case 'pemain_memilih':
       return tutupPemandu(k);
@@ -273,14 +273,13 @@ export function petunjukAktif(k: KeadaanTampilan, soal_id: string): boolean {
   return k.petunjuk?.soal_id === soal_id;
 }
 
-/** Kartu mana yang ditandai di soal ini sekarang: oleh petunjuk ATAU langkah ketiga pemandu. */
+/** Kartu mana yang ditandai petunjuk di soal ini sekarang (juga saat didemonstrasikan pemandu). */
 export function kartuDitandai(
   k: KeadaanTampilan | undefined,
   soal: { soal_id: string; kartu: readonly string[]; kartu_penentu: readonly string[] },
   dikunci: boolean,
 ): Set<string> {
-  if (k === undefined || dikunci) return new Set();
-  if (!petunjukAktif(k, soal.soal_id) && sorotPemandu(k) !== 'penentu') return new Set();
+  if (k === undefined || dikunci || !petunjukAktif(k, soal.soal_id)) return new Set();
   return new Set(kartuPetunjuk(soal));
 }
 
@@ -299,7 +298,22 @@ export function tautanKalenderDiPembuka(k: KeadaanTampilan): boolean {
 }
 
 export const LABEL_TAUTAN_KALENDER = 'Pilih dari kalender simulasi';
-export const JUDUL_KALENDER_AKHIR = 'Hari bursa lain';
+
+/**
+ * Simulasi yang ditawarkan tautan "Simulasi baru: …" di layar pertama (kritik
+ * D-6 butir 9): hanya bila simulasi yang sedang dibuka SUDAH selesai (orang
+ * itu akan mengulang) dan masih ada simulasi lain yang belum selesai — yang
+ * pertama dalam urutan daftar. Selain itu `null`.
+ */
+export function simulasiBaru<T extends { kasus_id: string }>(
+  daftar: readonly T[],
+  kini: string,
+  selesai: readonly string[],
+): T | null {
+  if (!selesai.includes(kini)) return null;
+  return daftar.find((k) => k.kasus_id !== kini && !selesai.includes(k.kasus_id)) ?? null;
+}
+/** Di layar terima kasih: satu baris *meta*, bukan judul kedua (kritik D-6 butir 6). */
+export const PENGANTAR_KALENDER_AKHIR = 'Hari bursa lain, ketuk untuk main:';
 export const JUDUL_KALENDER = 'Kalender simulasi';
-export const PENGANTAR_KALENDER =
-  'Tiap lingkaran adalah satu hari bursa nyata yang dibekukan menjadi simulasi. Lingkaran penuh: sudah kamu selesaikan.';
+export const PENGANTAR_KALENDER = 'Tiap lingkaran = satu hari bursa nyata. Penuh = sudah kamu selesaikan.';

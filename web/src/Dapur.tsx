@@ -31,6 +31,7 @@ import {
   garisWaktu,
   judulJalan,
   kalimatAgregat as kalimatAgregatMentah,
+  kalimatOmongan,
   kalimatAgregatAwam,
   kepalaPenolakan,
   kepalaPenolakanAwam,
@@ -166,61 +167,40 @@ function PenolakanAwam({ p }: { p: PenolakanDapur }): JSX.Element {
   );
 }
 
-/** Sel garis waktu: ikon + label pendek, warna menurut keadaan. */
-function SelWaktu({ sel }: { sel: SelGaris }): JSX.Element {
-  if (sel.keadaan === 'selesai' || sel.keadaan === 'kosong') {
-    return (
-      <td className={`sel-${sel.keadaan}`}>
-        <span className="tersembunyi">{sel.keadaan === 'selesai' ? 'sudah dikunci' : 'tidak ada catatan'}</span>
-      </td>
-    );
-  }
+/** Satu kotak pita: warna menurut keadaan, ikon peran yang menolak, ✓ saat dikunci. */
+function KotakWaktu({ sel }: { sel: SelGaris }): JSX.Element {
   return (
-    <td className={`sel-${sel.keadaan}`}>
-      <span className="sel-isi">
-        {sel.keadaan === 'kunci' ? (
-          <span className="sel-centang" aria-hidden="true">
-            ✓
-          </span>
-        ) : (
-          sel.peran !== null && <IkonPeran peran={sel.peran} />
-        )}
-        <span>
-          {sel.peran !== null && <span className="tersembunyi">{namaPeran(sel.peran)}: </span>}
-          {sel.label}
-        </span>
-      </span>
-    </td>
+    <li className={`kotak-${sel.keadaan}`} title={sel.label === '' ? undefined : sel.label}>
+      {sel.keadaan === 'kunci' ? '✓' : sel.peran !== null ? <IkonPeran peran={sel.peran} /> : null}
+    </li>
   );
 }
 
+/**
+ * Garis waktu sebagai pita (kritik D-6 butir 14): satu pita per omongan, satu
+ * kotak per putaran, ikon peran yang menolak di dalam kotak. Pitanya gambar
+ * (`aria-hidden`); isinya dikatakan kalimat di bawahnya, yang dihitung dari
+ * data yang sama (`kalimatOmongan`).
+ */
 function GarisWaktu({ jalan }: { jalan: JalanDapur }): JSX.Element {
   const baris = garisWaktu(jalan);
   const omongan = baris[0]?.sel.map((s) => s.omongan) ?? [];
   return (
-    <table className="dapur-waktu" data-uid={`dapur:waktu-${jalan.id}`}>
-      <caption className="tersembunyi">Garis waktu putaran: apa yang terjadi pada tiap omongan</caption>
-      <thead>
-        <tr>
-          <th scope="col">Putaran</th>
-          {omongan.map((o) => (
-            <th key={o} scope="col">
-              Omongan {o}
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {baris.map((b) => (
-          <tr key={b.putaran}>
-            <th scope="row">{b.putaran}</th>
-            {b.sel.map((s) => (
-              <SelWaktu key={s.omongan} sel={s} />
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className="dapur-waktu" data-uid={`dapur:waktu-${jalan.id}`}>
+      {omongan.map((o) => (
+        <div key={o} className="pita">
+          <p className="pita-judul">Omongan {o}</p>
+          <ol className="pita-kotak" aria-hidden="true">
+            {baris.map((b) => {
+              const sel = b.sel.find((x) => x.omongan === o);
+              return sel === undefined ? null : <KotakWaktu key={b.putaran} sel={sel} />;
+            })}
+          </ol>
+          <p className="dapur-awam">{kalimatOmongan(jalan, o)}</p>
+        </div>
+      ))}
+      <p className="meta pita-skala">Satu kotak = satu putaran, dari putaran 1 sampai {angkaId(jalan.putaran)}.</p>
+    </div>
   );
 }
 
@@ -233,11 +213,15 @@ function Legenda(): JSX.Element {
           <span>{namaPeran(p)}</span>
         </li>
       ))}
-      <li className="sel-kunci">
-        <span className="sel-centang" aria-hidden="true">
+      <li>
+        <span className="kotak-legenda kotak-kunci" aria-hidden="true">
           ✓
         </span>
         <span>omongan dikunci</span>
+      </li>
+      <li>
+        <span className="kotak-legenda kotak-tolak" aria-hidden="true" />
+        <span>ditolak</span>
       </li>
     </ul>
   );
@@ -301,10 +285,9 @@ function Jalan({ jalan }: { jalan: JalanDapur }): JSX.Element {
   const status = statusJalan(jalan);
   const contoh = contohPenolakan(jalan);
   const tersingkir = tersingkirAwam(jalan);
+  /* Dua angka di badan (kritik D-6, putusan E); panggilan dan menit di Rincian teknis. */
   const angka: Array<[string, string]> = [
     [angkaId(jalan.putaran), 'putaran'],
-    [angkaId(jalan.panggilan), 'panggilan model'],
-    [angkaId(menit(jalan.durasi_ms)), 'menit'],
     jalan.biaya_usd === null ? ['—', 'biaya nyata tidak tercatat'] : [dolar(jalan.biaya_usd), 'biaya nyata'],
   ];
   return (
@@ -397,6 +380,11 @@ function Jalan({ jalan }: { jalan: JalanDapur }): JSX.Element {
           <dd>
             {jalan.milestone} · {jalan.folder}
           </dd>
+          <dt>Angka</dt>
+          <dd>
+            {angkaId(jalan.panggilan)} panggilan model · {angkaId(menit(jalan.durasi_ms))} menit ·{' '}
+            {angkaId(jalan.token_masuk)} token masuk · {angkaId(jalan.token_keluar)} token keluar
+          </dd>
           {jalan.berhenti !== null && (
             <>
               <dt>Berhenti</dt>
@@ -442,8 +430,7 @@ export default function Dapur(): JSX.Element {
         <h1 className="judul">Dapur agen</h1>
         <p>
           Simulasi yang kamu mainkan di sini ditulis manusia. Di dapur ini kami melatih agen AI menulis
-          simulasi baru, dan belum ada satu pun draf agen yang dimainkan orang. Di bawah ini jejak kerjanya
-          atas data perusahaan yang tidak ada di simulasi mana pun, apa adanya.
+          simulasi baru, dan belum ada satu pun draf agen yang dimainkan orang.
         </p>
         {/* Kritik D-5 butir 1: status kedua jalan terlihat di layar pertama, bertaut ke jalannya. */}
         <ul className="dapur-daftar dapur-ringkas">
@@ -458,9 +445,9 @@ export default function Dapur(): JSX.Element {
           {DATA.agregat.length > 0 && (
             <li>
               <a className="dapur-tautan" href="#judul-agregat" data-uid="dapur:ke-agregat">
-                Simulasi yang tayang
+                Simulasi yang bisa kamu mainkan
               </a>
-              : hanya angka, tanpa isi
+              : hanya angka, supaya jawabannya tidak bocor
             </li>
           )}
         </ul>
@@ -468,6 +455,31 @@ export default function Dapur(): JSX.Element {
           Angka, nama model, dan kalimat dalam tanda kutip dibaca dari jejak mentah lingkar agen, tanpa
           disunting. Kode teknisnya diterjemahkan; aslinya ada di lipatan “Rincian teknis”.
         </p>
+
+        {/* Kritik D-6 (putusan E): penjelasan peran datang SEBELUM jalan yang memakainya. */}
+        <section className="dapur-bagian" aria-labelledby="judul-peran">
+          <h2 id="judul-peran" className="dapur-subjudul">
+            Lima peran di tiap draf: satu menulis, empat menjaga
+          </h2>
+          <p>
+            Tidak satu pun bisa meloloskan draf sendirian: satu omongan dikunci hanya kalau keempat penjaga
+            tidak berkeberatan.
+          </p>
+          <ul className="dapur-daftar dapur-peran">
+            {TUGAS_PERAN.map((t) => (
+              <li key={t.peran}>
+                <IkonPeran peran={t.peran} />
+                <span>
+                  <strong>{namaPeran(t.peran)}</strong> ({t.oleh}). {t.tugas}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p className="meta">
+            Di luar kelimanya, perencana (kode) memilih fakta penentu tiap omongan dan menggantinya sesudah lima
+            putaran gagal.
+          </p>
+        </section>
 
         {DATA.jalan.map((j) => (
           <Jalan key={j.id} jalan={j} />
@@ -499,30 +511,6 @@ export default function Dapur(): JSX.Element {
             </ul>
           </section>
         )}
-
-        <section className="dapur-bagian" aria-labelledby="judul-peran">
-          <h2 id="judul-peran" className="dapur-subjudul">
-            Lima peran di tiap draf: satu menulis, empat menjaga
-          </h2>
-          <p>
-            Tidak satu pun bisa meloloskan draf sendirian: satu omongan dikunci hanya kalau keempat penjaga
-            tidak berkeberatan.
-          </p>
-          <ul className="dapur-daftar dapur-peran">
-            {TUGAS_PERAN.map((t) => (
-              <li key={t.peran}>
-                <IkonPeran peran={t.peran} />
-                <span>
-                  <strong>{namaPeran(t.peran)}</strong> ({t.oleh}). {t.tugas}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <p className="meta">
-            Di luar kelimanya, perencana (kode) memilih fakta penentu tiap omongan dan menggantinya sesudah lima
-            putaran gagal.
-          </p>
-        </section>
 
         <details className="rincian-teknis">
           <summary>Rincian teknis</summary>
