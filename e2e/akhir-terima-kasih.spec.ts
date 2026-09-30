@@ -117,7 +117,11 @@ test('E-37 layar akhir: judul peran judul, legend di dalam garis, jangkar peran 
     const kalender = document.querySelector('.layar-akhir [data-uid="kalender"] .kalender-halaman');
     const h1 = document.querySelector('#judul-terima');
     const kalimat = [...document.querySelectorAll('.layar-akhir p')].filter(
-      (p) => p.closest('.pesan-alpha') === null && p.closest('.kalender-halaman') === null,
+      // M3.14 D-3: kalender simulasi di bawahnya rata kiri seperti daftar; aturan rata tengah milik blok terima kasih.
+      (p) =>
+        p.closest('.pesan-alpha') === null &&
+        p.closest('.kalender-halaman') === null &&
+        p.closest('.kalender-simulasi') === null,
     );
     if (kalender === null || h1 === null) throw new Error('layar terima kasih tidak lengkap');
     return {

@@ -22,7 +22,8 @@ import {
   tandaOpsi,
   tujuanRiwayat,
 } from './alur.ts';
-import { HalamanKalender, KalenderSobek, KepingKalender } from './Kalender.tsx';
+import { HalamanKalender, KalenderSimulasi, KalenderSobek, KepingKalender } from './Kalender.tsx';
+import { bacaSelesai, catatSelesai, susunKalender, type BulanKalender } from './kalender-simulasi.ts';
 import { KartuFakta } from './KartuFakta.tsx';
 import { Teks, idPenjelasan, type SakelarSumber } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
@@ -30,7 +31,6 @@ import { DAFTAR_KASUS, indeksFakta, kartuSoal } from './kasus.ts';
 import { awalBungkus, reduksi } from './bungkus.ts';
 import {
   bacaDimainkan,
-  kasusBerikut,
   kodeKasus,
   pilihKasus,
   simpanDimainkan,
@@ -62,8 +62,13 @@ import { berkasDariTumpukan, pasangPelaporAkar, pesanDari, sumberGalat } from '.
 import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } from './jejak.ts';
 import { PARAM_DAPUR, TAUTAN_DAPUR } from './dapur.ts';
 import {
+  JUDUL_KALENDER,
+  JUDUL_KALENDER_AKHIR,
   LABEL_CARA_MAIN,
+  LABEL_TAUTAN_KALENDER,
   LABEL_TOMBOL_PETUNJUK,
+  PENGANTAR_KALENDER,
+  tautanKalenderDiPembuka,
   kartuDitandai,
   LABEL_PEMANDU_LANJUT,
   LABEL_PEMANDU_LEWATI,
@@ -237,11 +242,13 @@ export function Aplikasi(): JSX.Element {
    * diputuskan sekali per pemuatan dari nomor kunjungan (pengunjung baru saja)
    * dan `?pemandu=`.
    */
-  const [tampilan, kirimTampilan] = useReducer(langkahTampilan, null, () =>
-    tampilanAwal(
-      pemanduOtomatis(pengunjungSekali().kunjungan_ke, kodePemandu(window.location.search)),
-    ),
-  );
+  const [tampilan, kirimTampilan] = useReducer(langkahTampilan, null, () => {
+    const { kunjungan_ke } = pengunjungSekali();
+    return tampilanAwal(pemanduOtomatis(kunjungan_ke, kodePemandu(window.location.search)), {
+      selesai: bacaSelesai(penyimpananPeramban()),
+      kembali: kunjungan_ke !== null && kunjungan_ke > 1,
+    });
+  });
 
   /**
    * Buka kasus berikutnya yang belum dimainkan: **sesi baru, pengunjung sama**
@@ -588,6 +595,39 @@ export function Aplikasi(): JSX.Element {
   useEffect(() => {
     kirimTampilan({ jenis: 'tutup_petunjuk' });
   }, [namaLayarKini]);
+  /*
+   * Kalender simulasi (M3.14 D-3). Simulasi SELESAI saat pembukaan tercapai —
+   * layar itu hanya bisa dicapai sesudah ketiga soal dikunci. Keadaannya di
+   * reducer tampilan (kalender tetap benar tanpa penyimpanan); penyimpanannya
+   * hanya supaya kunjungan berikutnya ingat.
+   */
+  const diPembukaan = layar.jenis === 'pembukaan';
+  useEffect(() => {
+    if (!diPembukaan) return;
+    kirimTampilan({ jenis: 'simulasi_selesai', kasus_id: kasus.kasus_id });
+    catatSelesai(penyimpananPeramban(), kasus.kasus_id);
+  }, [diPembukaan, kasus.kasus_id]);
+  const bulanKalender = useMemo(
+    () => susunKalender(DAFTAR_KASUS, tampilan.kalender.selesai, kasus.kasus_id),
+    [tampilan.kalender.selesai, kasus.kasus_id],
+  );
+  /*
+   * Memilih dari kalender. Dari layar terima kasih ia menggantikan "Coba
+   * simulasi lain" — jadi `minat_kasus_lain` tetap lahir, dari sesi yang
+   * ditinggalkan, persis seperti tombol lama. Dari layar pertama, memilih
+   * simulasi yang sama hanya menutup kalender.
+   */
+  const pilihDariKalender = useCallback(
+    (kasus_id: string, dariAkhir: boolean): void => {
+      const berikut = DAFTAR_KASUS.find((k) => k.kasus_id === kasus_id);
+      if (dariAkhir) kirim({ jenis: 'minat_kasus_lain' });
+      kirimTampilan({ jenis: 'tutup_kalender' });
+      if (berikut !== undefined && (dariAkhir || kasus_id !== kasus.kasus_id)) bukaKasusLain(berikut);
+    },
+    [kirim, bukaKasusLain, kasus.kasus_id],
+  );
+  const kalenderTerbuka = layar.jenis === 'pembuka' && tampilan.kalender.terbuka;
+
   const tekanPetunjuk = tampilan.petunjuk?.ke ?? 0;
   useEffect(() => {
     if (tekanPetunjuk === 0) return;
@@ -734,14 +774,43 @@ export function Aplikasi(): JSX.Element {
       )}
 
       <main className="halaman" id="isi">
-        {layar.jenis === 'pembuka' && !diPemanasan && (
+        {layar.jenis === 'pembuka' && !diPemanasan && !kalenderTerbuka && (
           <LayarPembuka
             kasus={kasus}
             hari={hari}
             kirim={kirim}
             sakelarSumber={sakelarSumber}
             mulai={mulaiSimulasi}
+            {...(tautanKalenderDiPembuka(tampilan)
+              ? {
+                  bukaKalender: () => {
+                    kirimTampilan({ jenis: 'buka_kalender' });
+                  },
+                }
+              : {})}
           />
+        )}
+        {kalenderTerbuka && (
+          <section className="layar layar-kalender" aria-label={JUDUL_KALENDER}>
+            <button
+              type="button"
+              className="kembali"
+              data-uid="kalender:tutup"
+              onClick={() => {
+                kirimTampilan({ jenis: 'tutup_kalender' });
+              }}
+            >
+              ← Kembali
+            </button>
+            <KalenderSimulasi
+              bulan={bulanKalender}
+              judul={JUDUL_KALENDER}
+              pengantar={PENGANTAR_KALENDER}
+              pilih={(id) => {
+                pilihDariKalender(id, false);
+              }}
+            />
+          </section>
         )}
         {diPemanasan && PEMANASAN !== null && (
           <LayarPemanasan
@@ -779,7 +848,10 @@ export function Aplikasi(): JSX.Element {
             keadaan={keadaan}
             kirim={kirim}
             hariIni={hariIni}
-            bukaKasusLain={bukaKasusLain}
+            bulanKalender={bulanKalender}
+            pilihDariKalender={(id) => {
+              pilihDariKalender(id, true);
+            }}
           />
         )}
       </main>
@@ -788,7 +860,7 @@ export function Aplikasi(): JSX.Element {
         <PanelPemandu tampilan={tampilan} kirimTampilan={kirimTampilan} />
       )}
 
-      {((layar.jenis === 'pembuka' && !diPemanasan) || layar.jenis === 'akhir') && (
+      {((layar.jenis === 'pembuka' && !diPemanasan && !kalenderTerbuka) || layar.jenis === 'akhir') && (
         <Kaki kasus={kasus} diBawahBilah={layar.jenis === 'pembuka'} />
       )}
 
@@ -893,6 +965,7 @@ export function LayarPembuka({
   kirim,
   sakelarSumber,
   mulai,
+  bukaKalender,
 }: {
   kasus: Kasus;
   hari: ReturnType<typeof penanda>;
@@ -900,6 +973,8 @@ export function LayarPembuka({
   sakelarSumber: SakelarSumber;
   /** "Mulai simulasi" (M3.14): bawaannya `lanjut`; Aplikasi bisa membelokkannya ke soal pemanasan. */
   mulai?: () => void;
+  /** Tautan kecil ke kalender simulasi (M3.14 D-3) — hanya untuk pengunjung yang kembali. */
+  bukaKalender?: () => void;
 }): JSX.Element {
   const contoh = contohPembuka(kasus);
   useTinggiBilah();
@@ -944,6 +1019,13 @@ export function LayarPembuka({
       <p className="isi" data-uid="ajak">
         <Teks teks={kasus.pembuka.ajak} sakelarSumber={sakelarSumber} />
       </p>
+      {bukaKalender !== undefined && (
+        <p className="tautan-kalender">
+          <button type="button" className="cara-main" data-uid="kalender:buka" onClick={bukaKalender}>
+            {LABEL_TAUTAN_KALENDER} ›
+          </button>
+        </p>
+      )}
       <div className="tindakan" data-uid="bilah">
         <button
           type="button"
@@ -2343,13 +2425,16 @@ export function LayarAkhir({
   keadaan,
   kirim,
   hariIni,
-  bukaKasusLain,
+  bulanKalender,
+  pilihDariKalender,
 }: {
   kasus: Kasus;
   keadaan: Keadaan;
   kirim: (aksi: Aksi) => void;
   hariIni: Penanda;
-  bukaKasusLain: (berikut: Kasus) => void;
+  /** Kalender simulasi (M3.14 D-3) yang menggantikan "Coba simulasi lain". */
+  bulanKalender: readonly BulanKalender[];
+  pilihDariKalender: (kasus_id: string) => void;
 }): JSX.Element {
   if (keadaan.akhirTerkirim) {
     return (
@@ -2374,40 +2459,24 @@ export function LayarAkhir({
           browser saya", dan sejak D-13 itu tidak benar.
         */}
         <p className="terima-kalimat">{KALIMAT_TERIMA_KASIH}</p>
-        {!keadaan.minatDitekan ? (
-          <button
-            type="button"
-            className="tombol-kedua"
-            data-uid="kasus-lain"
-            onClick={() => {
-              /*
-               * Dua hal dalam satu ketukan (M4 D-4), dan urutannya penting.
-               *
-               * `minat_kasus_lain` lahir lebih dulu, dari sesi yang sedang
-               * berjalan — ia mencatat keinginannya, bukan hasilnya, dan ia
-               * tetap lahir walau tidak ada kasus lain yang tersisa. Baru
-               * sesudah itu kasus berikutnya dibuka, kalau memang ada; kalau
-               * tidak, `minatDitekan` menyalakan pesan penutup kasus ini.
-               *
-               * Daftar "sudah dimainkan" dibaca di sini, bukan di render:
-               * ketukan inilah satu-satunya saat jawabannya dipakai, dan
-               * membacanya di render akan membuat setiap render menyentuh
-               * `localStorage`.
-               */
-              kirim({ jenis: 'minat_kasus_lain' });
-              const berikut = kasusBerikut(DAFTAR_KASUS, dimainkanSekarang());
-              if (berikut !== null) bukaKasusLain(berikut);
-            }}
-          >
-            Coba simulasi lain
-          </button>
-        ) : (
-          <div className="pesan-alpha" data-uid="pesan-alpha">
-            <p>
-              <strong>{kasus.penutup.kepala}</strong> {kasus.penutup.isi}
-            </p>
-          </div>
-        )}
+        {/*
+          M3.14 D-3: kalender simulasi menggantikan "Coba simulasi lain" yang
+          acak. Kalimat penutup simulasi ini (dari berkas simulasi) tetap
+          tampil, sekarang sebagai pengantar kalendernya. Memilih satu hari
+          melahirkan `minat_kasus_lain` dari sesi ini lalu membuka
+          simulasinya — sesi baru, pengunjung sama, seperti tombol lama.
+        */}
+        <div className="pesan-alpha" data-uid="pesan-alpha">
+          <p>
+            <strong>{kasus.penutup.kepala}</strong> {kasus.penutup.isi}
+          </p>
+        </div>
+        <KalenderSimulasi
+          bulan={bulanKalender}
+          judul={JUDUL_KALENDER_AKHIR}
+          pengantar={PENGANTAR_KALENDER}
+          pilih={pilihDariKalender}
+        />
         {/*
           Pintu ke "Dapur agen" (M3.13 D-4) di layar terakhir: permainan sudah
           selesai dan jawaban sudah terkirim, jadi pindah halaman di tab yang

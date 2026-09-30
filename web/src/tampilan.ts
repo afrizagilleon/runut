@@ -133,6 +133,12 @@ export interface KeadaanTampilan {
   pemandu: KeadaanPemandu;
   pemanasan: KeadaanPemanasan;
   petunjuk: KeadaanPetunjuk | null;
+  /**
+   * Kalender simulasi (D-3). `selesai` dibaca dari penyimpanan SEKALI saat
+   * memuat, lalu hidup di sini: simulasi yang diselesaikan di pemuatan ini
+   * tetap ditandai walau penyimpanannya mati.
+   */
+  kalender: { terbuka: boolean; selesai: readonly string[]; kembali: boolean };
 }
 
 export type AksiTampilan =
@@ -152,10 +158,22 @@ export type AksiTampilan =
   /** "Minta petunjuk" di soal ini (D-2). */
   | { jenis: 'minta_petunjuk'; soal_id: string }
   /** Layar berganti: tanda petunjuk tidak ikut ke layar lain. */
-  | { jenis: 'tutup_petunjuk' };
+  | { jenis: 'tutup_petunjuk' }
+  /** Ketiga soal dikunci dan pembukaan tercapai: simulasi ini selesai. */
+  | { jenis: 'simulasi_selesai'; kasus_id: string }
+  | { jenis: 'buka_kalender' }
+  | { jenis: 'tutup_kalender' };
 
-export function tampilanAwal(otomatis: boolean): KeadaanTampilan {
+export interface BekalTampilan {
+  /** Daftar selesai dari penyimpanan (`bacaSelesai`). */
+  selesai?: readonly string[];
+  /** Pengunjung yang kembali (kunjungan kedua dan seterusnya). */
+  kembali?: boolean;
+}
+
+export function tampilanAwal(otomatis: boolean, bekal: BekalTampilan = {}): KeadaanTampilan {
   return {
+    kalender: { terbuka: false, selesai: [...(bekal.selesai ?? [])], kembali: bekal.kembali ?? false },
     otomatis,
     pemandu: { langkah: null, sudah: false },
     pemanasan: { aktif: false, kunci: null, dikunci: false },
@@ -202,6 +220,13 @@ export function langkahTampilan(k: KeadaanTampilan, aksi: AksiTampilan): Keadaan
       return { ...k, petunjuk: { soal_id: aksi.soal_id, ke: (k.petunjuk?.ke ?? 0) + 1 } };
     case 'tutup_petunjuk':
       return k.petunjuk === null ? k : { ...k, petunjuk: null };
+    case 'simulasi_selesai':
+      if (k.kalender.selesai.includes(aksi.kasus_id)) return k;
+      return { ...k, kalender: { ...k.kalender, selesai: [...k.kalender.selesai, aksi.kasus_id] } };
+    case 'buka_kalender':
+      return k.kalender.terbuka ? k : { ...tutupPemandu(k), kalender: { ...k.kalender, terbuka: true } };
+    case 'tutup_kalender':
+      return k.kalender.terbuka ? { ...k, kalender: { ...k.kalender, terbuka: false } } : k;
   }
 }
 
@@ -258,3 +283,23 @@ export function kartuDitandai(
   if (!petunjukAktif(k, soal.soal_id) && sorotPemandu(k) !== 'penentu') return new Set();
   return new Set(kartuPetunjuk(soal));
 }
+
+/* ------------------------------------------------------------------ */
+/* Kalender simulasi (D-3)                                            */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Tautan kecil "Kalender simulasi" di layar pertama: hanya untuk pengunjung
+ * yang kembali atau yang sudah menyelesaikan satu simulasi. Pengunjung baru
+ * mendapat layar pertama yang sama persis seperti sebelum M3.14 — tanpa
+ * langkah tambahan sebelum "Mulai simulasi" (kontrak D-3).
+ */
+export function tautanKalenderDiPembuka(k: KeadaanTampilan): boolean {
+  return k.kalender.kembali || k.kalender.selesai.length > 0;
+}
+
+export const LABEL_TAUTAN_KALENDER = 'Pilih dari kalender simulasi';
+export const JUDUL_KALENDER_AKHIR = 'Hari bursa lain';
+export const JUDUL_KALENDER = 'Kalender simulasi';
+export const PENGANTAR_KALENDER =
+  'Tiap lingkaran adalah satu hari bursa nyata yang dibekukan menjadi simulasi. Lingkaran penuh: sudah kamu selesaikan.';

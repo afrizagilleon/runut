@@ -53,6 +53,7 @@ import { LABEL_MUAT_ULANG, PESAN_MACET } from './BatasGalat.tsx';
 import { awalBungkus } from './bungkus.ts';
 import { KepingKalender } from './Kalender.tsx';
 import { DAFTAR_KASUS, indeksFakta } from './kasus.ts';
+import { susunKalender } from './kalender-simulasi.ts';
 import { penanda } from './tanggal.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
@@ -190,7 +191,10 @@ function semuaLayar(kasus: Kasus): Array<[string, string]> {
   k = jalan(k, { jenis: 'lanjut' });
   expect(k.layar.jenis).toBe('akhir');
   const akhir = (nama: string, keadaan: Keadaan): void => {
-    render(nama, h(LayarAkhir, { kasus, keadaan, kirim: kosong, hariIni, bukaKasusLain: kosong }));
+    // M3.14 D-3: kalender simulasi menggantikan tombol 'Coba simulasi lain'; dirender dua kali (belum ada / semua selesai).
+    for (const selesai of [[], DAFTAR_KASUS.map((x) => x.kasus_id)]) {
+      render(`${nama} (selesai: ${String(selesai.length)})`, h(LayarAkhir, { kasus, keadaan, kirim: kosong, hariIni, bulanKalender: susunKalender(DAFTAR_KASUS, selesai, kasus.kasus_id), pilihDariKalender: kosong }));
+    }
   };
   akhir('akhir: tiga pertanyaan', k);
   render('kaki (akhir)', h(Kaki, { kasus }));

@@ -2443,3 +2443,140 @@ body:has(.pemandu) .halaman {
 .pemanasan-label {
   margin: 0 0 12px;
 }
+
+/* --- kalender simulasi (D-3) ----------------------------------------------- */
+
+/*
+ * Halaman kalender yang sama dengan layar pertama (`.kalender-halaman`: pita
+ * merah, gerigi, kertas yang tetap terang di malam hari), selebar kolom.
+ * Tanggal simulasi dilingkari merah seperti coretan pena di kalender dinding;
+ * yang sudah selesai dilingkari penuh. Merah tetap hanya di kalender.
+ */
+.kalender-simulasi {
+  margin: 24px 0 0;
+}
+
+.kalender-pengantar {
+  margin: 4px 0 16px;
+}
+
+.kalender-bulan-blok {
+  margin: 0 0 24px;
+}
+
+.kalender-bulan {
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 12px;
+}
+
+.kalender-kisi {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  margin: 4px 0 8px;
+  font-family: var(--baca);
+}
+
+.kalender-kisi th {
+  padding: 6px 0 2px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tinta-redup);
+}
+
+.kalender-kisi td {
+  height: 40px;
+  padding: 0;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.kalender-kisi td span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.kalender-kisi .kisi-libur {
+  color: var(--tinta-redup);
+}
+
+.kalender-kisi .kisi-simulasi span {
+  border: 2px solid var(--merah-kalender);
+  font-weight: 700;
+}
+
+.kalender-kisi .kisi-selesai span {
+  background: var(--merah-kalender);
+  color: var(--di-atas-pekat);
+}
+
+@media (prefers-color-scheme: dark) {
+  .kalender-kisi th,
+  .kalender-kisi .kisi-libur {
+    color: #4a5670;
+  }
+}
+
+.kalender-daftar {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Satu baris per simulasi: keluarga opsi (kertas, tepi --garis-kontrol, sudut 3 px, >= 56 px). */
+.kalender-baris {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 56px;
+  padding: 10px 14px;
+  border: 1px solid var(--garis-kontrol);
+  border-radius: 3px;
+  background: var(--lembar);
+  color: var(--tinta);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.kalender-baris:active {
+  background: var(--garis);
+}
+
+.kalender-baris-teks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kalender-baris-tanggal {
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.kalender-baris .panah {
+  color: var(--stempel);
+}
+
+.tautan-kalender {
+  margin: 8px 0 0;
+  text-align: center;
+}
+
+.layar-kalender .kalender-simulasi {
+  margin-top: 8px;
+}

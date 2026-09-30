@@ -1,0 +1,17 @@
+== Sabotase 1: hari 'segera hadir' — satu tanda palsu (tanggal 28 bulan simulasi terakhir) ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/kalender-simulasi.test.tsx > hanya simulasi nyata > dua simulasi di repo → dua bulan, dua tanda, tiap tanda di tanggal_t simulasinya
+ FAIL  web/src/kalender-simulasi.test.tsx > hanya simulasi nyata > 100 simulasi → tepat 100 tanda, satu baris per simulasi, bulan tanpa simulasi tidak ada
+ FAIL  web/src/kalender-simulasi.test.tsx > hanya simulasi nyata > render: tidak ada kata "segera", "hadir", "menyusul"; tombol = jumlah simulasi
+ FAIL  web/src/kalender-simulasi.test.tsx > tanda selesai dan penyimpanan > tanpa penyimpanan (null atau melempar): tidak melempar, kalender tetap utuh
+      Tests  4 failed | 8 passed (12)
+    Error: satu baris per simulasi nyata
+    expect(locator).toHaveCount(expected) failed
+  1 failed
+== Sabotase 2: bacaSelesai tanpa try/catch (penyimpanan yang melempar menjatuhkan halaman) ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/kalender-simulasi.test.tsx > tanda selesai dan penyimpanan > tanpa penyimpanan (null atau melempar): tidak melempar, kalender tetap utuh
+ FAIL  web/src/kalender-simulasi.test.tsx > tanda selesai dan penyimpanan > selesai di pemuatan ini tetap ditandai walau penyimpanan mati (keadaan di reducer)
+      Tests  2 failed | 10 passed (12)
+== Pulih ==
+      Tests  12 passed (12)

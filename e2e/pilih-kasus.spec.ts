@@ -3,7 +3,6 @@ import { DIR_DIST_DENGAN, ID_KASUS } from './bantu/jalur.ts';
 import { bacaBundel } from './bantu/bundel.ts';
 import { bacaKasus } from './bantu/kasus.ts';
 import {
-  LABEL_KASUS_LAIN,
   LABEL_LANJUT_AKHIR,
   LABEL_MULAI,
   LABEL_SELESAI,
@@ -195,7 +194,8 @@ test('E-20e "Coba simulasi lain" membuka kasus yang BELUM dimainkan, sesi baru',
   const sesiPertama = await tungguSatuSesi(penanda);
   await mainkanSampaiTerimaKasih(page, pertama);
 
-  await ketuk(page.getByRole('button', { name: LABEL_KASUS_LAIN }));
+  /* M3.14 D-3: "Coba simulasi lain" kini kalender simulasi; yang dipilih adalah hari simulasi kedua. */
+  await ketuk(page.locator(`[data-uid="kalender:pilih:${kedua}"]`));
 
   /*
    * Kasus berikutnya terbuka LANGSUNG — bukan pesan penutup. Yang diperiksa

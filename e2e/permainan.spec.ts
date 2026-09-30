@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 import {
   AMBANG_OPSI,
-  LABEL_KASUS_LAIN,
   LABEL_LANJUT_AKHIR,
   LABEL_LONCAT,
   LABEL_MULAI,
@@ -247,8 +246,10 @@ test(`E-10 [${kasus_id}] satu permainan penuh, tanpa galat konsol, dengan tangka
   await expect(page.getByRole('heading', { name: 'Terima kasih.' })).toBeVisible();
   await simpanLayar(page, 11, 'terima-kasih', false, subfolder);
 
-  await ketuk(page.getByRole('button', { name: LABEL_KASUS_LAIN }));
   /*
+   * M3.14 D-3: kalender simulasi menggantikan "Coba simulasi lain"; pesan
+   * penutupnya kini tampil langsung sebagai pengantar kalender.
+   *
    * Pesan penutupnya dibaca dari berkas kasus, bukan disalin ke dalam tes:
    * sejak M4 tiap kasus menutup dengan kalimatnya sendiri, dan tes yang
    * menuliskan kalimat DADA akan hijau atas kasus mana pun yang kebetulan
@@ -256,6 +257,8 @@ test(`E-10 [${kasus_id}] satu permainan penuh, tanpa galat konsol, dengan tangka
    */
   await expect(page.getByText(kasus.penutup.kepala)).toBeVisible();
   await expect(page.getByText(kasus.penutup.isi)).toBeVisible();
+  await expect(page.locator('[data-uid="kalender-simulasi"]')).toBeVisible();
+  await expect(page.locator('[data-uid^="kalender:pilih:"]').first()).toBeVisible();
   await simpanLayar(page, 12, 'kasus-lain', false, subfolder);
 
   expect(galat.kode(), 'tidak boleh ada galat konsol maupun pageerror sepanjang permainan').toEqual(

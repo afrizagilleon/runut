@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import type { Penanda } from './tanggal.ts';
+import { KEPALA_HARI, statusSimulasi, type BulanKalender } from './kalender-simulasi.ts';
 
 /**
  * Tanda tangan desain (D-8): halaman kalender sobek, benda yang ada di hampir
@@ -100,5 +101,107 @@ export function KalenderSobek({ hari }: { hari: Penanda }): JSX.Element {
         <div className="kalender-hari">{hari.hariBesar}</div>
       </div>
     </div>
+  );
+}
+
+/**
+ * Kalender simulasi (M3.14 D-3): satu halaman kalender per bulan yang punya
+ * simulasi — benda yang sama dengan halaman besar di layar pertama (pita
+ * merah, sisi atas bergerigi, kertas yang tetap terang di malam hari).
+ *
+ * Kisi tanggalnya GAMBAR, bukan kontrol (`aria-hidden`): hari bursa yang
+ * dibekukan menjadi simulasi dilingkari seperti coretan pena di kalender
+ * dinding, yang sudah selesai dilingkari penuh. Yang bisa diketuk hanya daftar
+ * di bawah halaman — satu baris berbingkai per simulasi, lengkap dengan
+ * tanggal, nama samaran, jumlah soal, dan statusnya — jadi tidak ada benda
+ * yang tampak bisa diketuk padahal tidak (`docs/desain.md`, Afordans).
+ *
+ * Hanya simulasi nyata: tanda = anggota `DAFTAR_KASUS`, tidak ada hari
+ * "segera hadir" (`kalender-simulasi.ts`, dites).
+ */
+export function KalenderSimulasi({
+  bulan,
+  judul,
+  pengantar,
+  pilih,
+}: {
+  bulan: readonly BulanKalender[];
+  judul: string;
+  pengantar: string;
+  pilih: (kasus_id: string) => void;
+}): JSX.Element {
+  return (
+    <section className="kalender-simulasi" data-uid="kalender-simulasi" aria-labelledby="judul-kalender-simulasi">
+      <h2 id="judul-kalender-simulasi" className="judul">
+        {judul}
+      </h2>
+      <p className="meta kalender-pengantar">{pengantar}</p>
+      {bulan.map((b) => (
+        <div key={b.kunci} className="kalender-bulan-blok">
+          <div className="kalender-halaman kalender-bulan" aria-hidden="true">
+            <div className="kalender-pita">{b.pita}</div>
+            <table className="kalender-kisi">
+              <thead>
+                <tr>
+                  {KEPALA_HARI.map((h) => (
+                    <th key={h} scope="col">
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {b.minggu.map((baris, i) => (
+                  <tr key={i}>
+                    {baris.map((sel, j) => (
+                      <td
+                        key={j}
+                        className={
+                          sel === null
+                            ? undefined
+                            : [
+                                sel.akhirPekan ? 'kisi-libur' : '',
+                                sel.kasus_id !== null ? 'kisi-simulasi' : '',
+                                sel.selesai ? 'kisi-selesai' : '',
+                              ]
+                                .filter((k) => k !== '')
+                                .join(' ') || undefined
+                        }
+                      >
+                        {sel === null ? '' : <span>{sel.angka}</span>}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <ul className="kalender-daftar">
+            {b.simulasi.map((e) => (
+              <li key={e.kasus_id}>
+                <button
+                  type="button"
+                  className={`kalender-baris${e.selesai ? ' kalender-baris-selesai' : ''}`}
+                  data-uid={`kalender:pilih:${e.kasus_id}`}
+                  onClick={() => {
+                    pilih(e.kasus_id);
+                  }}
+                >
+                  <span className="kalender-baris-teks">
+                    <span className="kalender-baris-tanggal">{e.tanggal}</span>
+                    <span className="meta">
+                      {e.nama_samaran} · {e.jumlah_soal} soal · {statusSimulasi(e)}
+                    </span>
+                  </span>
+                  <span className="panah" aria-hidden="true">
+                    ›
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
   );
 }
