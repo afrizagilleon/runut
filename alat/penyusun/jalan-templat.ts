@@ -26,13 +26,37 @@ function tunggu(ms: number): Promise<void> {
   return new Promise((r) => setTimeout(r, ms));
 }
 
+/** `--id <id>` (bawaan m2d10-tirt; A-1: m2d10-tirt-a1), `--pagu <usd>` (A-1: 0,45; ≤ sisa pagu milestone). */
+export function uraiArgumenJalan(argv: readonly string[]): { id: string; pagu: number | null } {
+  const h: { id: string; pagu: number | null } = { id: ID_JALAN_TIRT, pagu: null };
+  for (let i = 0; i < argv.length; i++) {
+    const a = argv[i];
+    const n = argv[i + 1];
+    if (a === '--id' && n !== undefined && /^m2d10-[a-z0-9-]{2,40}$/.test(n)) {
+      h.id = n;
+      i++;
+    } else if (a === '--pagu' && n !== undefined && Number.isFinite(Number(n)) && Number(n) > 0) {
+      h.pagu = Number(n);
+      i++;
+    } else throw new Error(`Argumen tidak dikenal atau tidak sah: ${String(a)}`);
+  }
+  return h;
+}
+
 async function utama(): Promise<number> {
+  const arg = uraiArgumenJalan(process.argv.slice(2));
+  const ID = arg.id;
   const folder = join(AKAR, 'eval', 'penyusun');
-  if (existsSync(join(folder, ID_JALAN_TIRT))) {
-    console.error(`eval/penyusun/${ID_JALAN_TIRT} sudah ada; M2d-10 hanya SATU jalan TIRT (pra-registrasi §6).`);
+  if (existsSync(join(folder, ID))) {
+    console.error(`eval/penyusun/${ID} sudah ada; jalan ini hanya SATU kali.`);
     return 1;
   }
-  const sisa = sisaPaguJalan();
+  const sisaMilestone = sisaPaguJalan();
+  if (arg.pagu !== null && arg.pagu > sisaMilestone) {
+    console.error(`Pagu jalan US$${arg.pagu.toFixed(2)} melebihi sisa pagu milestone US$${sisaMilestone.toFixed(2)}.`);
+    return 2;
+  }
+  const sisa = arg.pagu ?? sisaMilestone;
   if (sisa < PAGU_JALAN_MIN) {
     console.error(`Sisa pagu milestone US$${sisa.toFixed(2)} di bawah pagu jalan minimum US$${PAGU_JALAN_MIN.toFixed(2)}; jalan tidak dimulai.`);
     return 2;
@@ -48,12 +72,12 @@ async function utama(): Promise<number> {
   };
   try {
     console.log(`Pintu penyusun (mesin templat) di ${asal}; pagu jalan US$${sisa.toFixed(2)}; pagu penyusun US$${paguPenyusun.toFixed(3)} (terpakai US$${terpakai.toFixed(4)}).`);
-    const s = await kirim('/api/siapkan', { kode: 'TIRT', tanggal: '2025-12-10', jendela: 10, id: ID_JALAN_TIRT });
+    const s = await kirim('/api/siapkan', { kode: 'TIRT', tanggal: '2025-12-10', jendela: 10, id: ID });
     console.log(`siapkan → ${String(s.status)} ${JSON.stringify(s.isi)}`);
     if (s.status !== 202) return 1;
     let p: Record<string, unknown> = {};
     for (let i = 0; i < 120; i++) {
-      p = (await kirim(`/api/jalan/${ID_JALAN_TIRT}`)).isi;
+      p = (await kirim(`/api/jalan/${ID}`)).isi;
       if (p['tahap'] !== 'menyiapkan') break;
       await tunggu(1_000);
     }
@@ -62,12 +86,12 @@ async function utama(): Promise<number> {
       console.log(JSON.stringify(p['hasil'] ?? p['galat'] ?? null));
       return 1;
     }
-    const m = await kirim(`/api/jalan/${ID_JALAN_TIRT}/mulai`, { setuju: true, pagu_usd: sisa });
+    const m = await kirim(`/api/jalan/${ID}/mulai`, { setuju: true, pagu_usd: sisa });
     console.log(`mulai → ${String(m.status)} ${JSON.stringify(m.isi)}`);
     if (m.status !== 202) return 1;
     for (;;) {
       await tunggu(10_000);
-      p = (await kirim(`/api/jalan/${ID_JALAN_TIRT}`)).isi;
+      p = (await kirim(`/api/jalan/${ID}`)).isi;
       if (p['tahap'] === 'selesai' || p['tahap'] === 'galat') break;
     }
     const h = p['hasil'] as { terbit?: boolean; berhenti?: string | null; putaran?: number; biaya_ledger_usd?: number } | undefined;

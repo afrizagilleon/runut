@@ -334,7 +334,7 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
         } catch (galat) {
           if (galat instanceof PaguTercapai) {
             selesaiVersi('pagu', [teksGalat(galat)]);
-            hasil.berhenti = `pagu tercapai: ${galat.message}`;
+            hasil.berhenti = galat.name === 'PenyediaTidakTersedia' ? `penyedia tidak tersedia: ${galat.message}` : `pagu tercapai: ${galat.message}`;
             return akhiri();
           }
           selesaiVersi('galat', [teksGalat(galat)]);

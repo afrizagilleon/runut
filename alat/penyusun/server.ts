@@ -25,7 +25,7 @@ import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
 import { periksaFolderKeluaran } from './jalan.ts';
 import { mesinSungguhan, panggilSungguhan, type MesinPenulis } from './mesin.ts';
-import { mesinTemplatPalsu, mesinTemplatSungguhan } from './mesin-templat.ts';
+import { KRITIKUS_TERKUNCI_A1, mesinTemplatPalsu, mesinTemplatSungguhan } from './mesin-templat.ts';
 import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
@@ -364,7 +364,7 @@ export function buatAplikasi(opsi: OpsiServer): { server: Server; keadaan: Keada
         ? mesinTemplatPalsu()
         : mesinPalsu()
       : templat
-        ? mesinTemplatSungguhan(panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log), siapLlm)
+        ? mesinTemplatSungguhan(panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log, KRITIKUS_TERKUNCI_A1), siapLlm)
         : mesinSungguhan(opsi.akar, opsi.paguPenyusunUsd, siapLlm, opsi.log));
   const alur: KonteksAlur = {
     akar: opsi.akar,

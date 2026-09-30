@@ -278,7 +278,13 @@ export function tagPanggilan(awalan: string, info: Pick<InfoPanggilPintu, 'jenis
  * (`bacaKonfigLlm`) SAAT jalan disetujui, dan hanya berpindah ke header klien.
  * Pagu berlapis ditegakkan `PencatatBiaya` sebelum setiap percobaan HTTP.
  */
-export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b: string) => void = () => undefined): (awalanTag: string, paguBagianUsd: number) => PanggilPintu {
+/** M2d-10 A-1: pagar & bungkus khusus panggilan kritikus (penyedia dikunci). */
+export interface OpsiKritikusPintu {
+  pagarKritikus: (model: string, abaikan?: readonly string[]) => Readonly<Record<string, unknown>>;
+  bungkus: (p: PanggilPintu) => PanggilPintu;
+}
+
+export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b: string) => void = () => undefined, kritikus?: OpsiKritikusPintu): (awalanTag: string, paguBagianUsd: number) => PanggilPintu {
   return (awalanTag, paguBagianUsd) => {
     const konfig = bacaKonfigLlm(akar);
     if (konfig.baseUrl !== BASE_URL_OPENROUTER) throw new Error('LLM_BASE_URL bukan OpenRouter (nilainya tidak dicetak); pintu penyusun hanya memanggil OpenRouter.');
@@ -290,12 +296,13 @@ export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b:
       paguMilestone: { usd: paguPenyusunUsd, awalanTag: AWALAN_TAG_PENYUSUN },
       paguBagian: [{ usd: paguBagianUsd, awalanTag }],
     });
-    return async (pesan: PesanChat[], setelan: SetelanPanggil, info: InfoPanggilPintu): Promise<JawabanModel> => {
+    const klienKritikus = kritikus === undefined ? klien : { ...klien, pagar: kritikus.pagarKritikus };
+    const dasar = async (pesan: PesanChat[], setelan: SetelanPanggil, info: InfoPanggilPintu): Promise<JawabanModel> => {
       if (!(MODEL_OPENROUTER as readonly string[]).includes(info.model)) throw new Error(`Model ${info.model} tidak diizinkan pintu penyusun.`);
       const tag = tagPanggilan(awalanTag, info);
       try {
         const j = await chatBerpagu(
-          klien,
+          info.jenis === 'kritikus' ? klienKritikus : klien,
           biaya,
           { model: info.model, pesan, suhu: setelan.suhu, maxTokens: setelan.maxTokens, tambahanBadan: setelan.tambahanBadan, ...(setelan.abaikanPenyedia === undefined ? {} : { abaikanPenyedia: setelan.abaikanPenyedia }) },
           tag,
@@ -307,6 +314,9 @@ export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b:
         throw ubahGalatSaldo(galat, info.model);
       }
     };
+    if (kritikus === undefined) return dasar;
+    const terkunci = kritikus.bungkus(dasar);
+    return (pesan, setelan, info) => (info.jenis === 'kritikus' ? terkunci(pesan, setelan, info) : dasar(pesan, setelan, info));
   };
 }
 

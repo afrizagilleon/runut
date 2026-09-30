@@ -95,3 +95,17 @@ describe('setelan mesin = keluaran kalibrasi (tidak disetel tangan)', async () =
     expect(p.syarat).toMatchObject({ tayang_diterima: 5, tayang_terukur: 6, terpenuhi: true });
   });
 });
+
+describe('A-1: setelan S1 + pembaca kartu dicatat atas data kalibrasi yang sama (tanpa panggilan baru)', async () => {
+  const { bacaMentahTemplat, lengkapTemplat, putusanSoalTemplat: ps } = await import('./kalibrasi.ts');
+  const { SETELAN_TEMPLAT_A1 } = await import('./setelan.ts');
+  it('soal tayang diterima 5/6 (ULTJ s3 ditolak kritikus); soal bocor tertangkap sebelum kritikus 3/3', () => {
+    const m = bacaMentahTemplat().filter(lengkapTemplat);
+    const tayang = m.filter((x) => x.kelompok === 'tayang');
+    const bocor = m.filter((x) => x.kelompok === 'bocor');
+    expect(tayang.filter((x) => !ps(x, SETELAN_TEMPLAT_A1).ditolak).length).toBe(5);
+    expect(tayang.filter((x) => ps(x, SETELAN_TEMPLAT_A1).ditolak).map((x) => x.id)).toEqual(['ultj-siapa-yang-membeli']);
+    expect(bocor.filter((x) => ps(x, SETELAN_TEMPLAT_A1).sebelum_kritikus).length).toBe(3);
+    expect(bocor.length).toBe(3);
+  });
+});

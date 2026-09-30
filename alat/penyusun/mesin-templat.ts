@@ -19,7 +19,8 @@ import type { PanggilTemplat } from '../../factory/llm/templat/penulis.ts';
 import { SETELAN_PENYEMPURNA } from '../../factory/llm/templat/penyempurna.ts';
 import { pilihRencanaSimulasi } from '../../factory/llm/templat/pilih.ts';
 import type { PaketFakta } from '../../factory/llm/paket.ts';
-import { SETELAN_TEMPLAT_M2D10 } from '../../factory/llm/templat/setelan.ts';
+import { SETELAN_TEMPLAT_A1 } from '../../factory/llm/templat/setelan.ts';
+import { kritikusTerkunci, pagarKritikusTerkunci } from '../../factory/llm/templat/penyedia.ts';
 import { ujiUlangTemplat } from '../../factory/llm/templat/uji-ulang.ts';
 import { AWALAN_TAG_PENYUSUN } from './biaya.ts';
 import {
@@ -31,6 +32,7 @@ import {
   type KonteksJalan,
   type KonteksUjiUlang,
   type MesinPenulis,
+  type OpsiKritikusPintu,
   type PerkiraanBiaya,
 } from './mesin.ts';
 
@@ -118,7 +120,7 @@ export class MesinTemplat implements MesinPenulis {
   }
 
   get setelan(): SetelanTumpukan {
-    return this.o.setelan ?? SETELAN_TEMPLAT_M2D10;
+    return this.o.setelan ?? SETELAN_TEMPLAT_A1;
   }
 
   siap(): { siap: boolean; alasan: string | null } {
@@ -202,6 +204,9 @@ export class MesinTemplat implements MesinPenulis {
     };
   }
 }
+
+/** A-1: kritikus dikunci ke Wafer tanpa fallback; tak tersedia → berhenti. */
+export const KRITIKUS_TERKUNCI_A1: OpsiKritikusPintu = { pagarKritikus: pagarKritikusTerkunci, bungkus: (p) => kritikusTerkunci(p) };
 
 /** Mesin templat sungguhan (OpenRouter, pagu berlapis pintu). */
 export function mesinTemplatSungguhan(buatPanggil: BuatPanggilTemplat, siap: () => { siap: boolean; alasan: string | null }): MesinTemplat {
