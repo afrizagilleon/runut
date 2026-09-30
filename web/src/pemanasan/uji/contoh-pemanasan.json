@@ -1,0 +1,69 @@
+{
+  "versi": 1,
+  "disetujui": true,
+  "disetujui_oleh": "FIXTURE UJI M3.14 — bukan soal sungguhan, tidak pernah ikut bundel",
+  "fakta": [
+    {
+      "fact_id": "uji-pengumuman",
+      "klaim": "FIXTUREUJI pengumuman contoh: rapat pemegang saham dijadwalkan ulang.",
+      "nilai": null,
+      "satuan": null,
+      "sumber": {
+        "jenis": "api",
+        "endpoint": "/uji/",
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-01-02",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Pengumuman contoh · 2 Jan 2025",
+        "isi": "FIXTUREUJI Rapat pemegang saham dijadwalkan ulang ke bulan depan."
+      }
+    },
+    {
+      "fact_id": "uji-harga",
+      "klaim": "FIXTUREUJI harga contoh naik dua kali lipat.",
+      "nilai": 2,
+      "satuan": "kali",
+      "sumber": {
+        "jenis": "turunan",
+        "endpoint": null,
+        "berkas": null,
+        "parameter": {},
+        "diambil_pada": null,
+        "keterangan": null
+      },
+      "turunan_dari": [],
+      "tersedia_sejak": "2025-01-02",
+      "status": "TERVERIFIKASI",
+      "awam": {
+        "kepala": "Dihitung dari data harga contoh",
+        "isi": "FIXTUREUJI Harga naik 2 kali dalam sebulan."
+      }
+    }
+  ],
+  "soal": {
+    "soal_id": "pemanasan-uji",
+    "kartu": ["uji-pengumuman", "uji-harga"],
+    "kartu_penentu": ["uji-pengumuman"],
+    "istilah": [],
+    "petunjuk": null,
+    "pesan": {
+      "nama": "Tono",
+      "jam": "08.15",
+      "isi": "FIXTUREUJI Sahamnya naik 2 kali karena mau dibagi dividen besar!"
+    },
+    "tanya": "FIXTUREUJI Menurut dokumennya, omongan Tono betul atau keliru?",
+    "pilihan": [
+      { "kunci": "a", "teks": "FIXTUREUJI Betul, pengumumannya soal dividen." },
+      { "kunci": "b", "teks": "FIXTUREUJI Keliru, pengumumannya soal jadwal rapat." }
+    ],
+    "jawaban": "b",
+    "penjelasan": "FIXTUREUJI Pengumumannya soal jadwal rapat, bukan dividen.",
+    "fact_ids": ["uji-pengumuman", "uji-harga"]
+  }
+}

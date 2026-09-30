@@ -53,7 +53,7 @@ test.describe('E-21 perangkat', () => {
     const penanda = penandaBaru();
     const jamSebelum = jamJakarta();
     // Perujuk sengaja membawa path dan query: yang boleh sampai hanya kategorinya.
-    await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}`, {
+    await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}&pemandu=0`, {
       referer: 'https://l.threads.net/?u=https%3A%2F%2Frahasia.contoh%2Fjalur&e=AT0kodeRahasia',
     });
     await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
@@ -98,7 +98,7 @@ test.describe('E-21 perangkat', () => {
   test('E-21b tanpa perujuk = langsung; gerak dikurangi terbaca', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     const penanda = penandaBaru();
-    await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}`);
+    await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}&pemandu=0`);
     await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
     await tungguSatuSesi(penanda);
     const isi = mulaiDenganPenanda(penanda)[0]?.isi ?? {};
@@ -121,7 +121,7 @@ test.describe('E-21c peramban dalam aplikasi Threads', () => {
 
   test('E-21c UA Threads → peramban_dalam threads, dan UA-nya tidak ikut', async ({ page }) => {
     const penanda = penandaBaru();
-    await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}`);
+    await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}&pemandu=0`);
     await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
     const sesi = await tungguSatuSesi(penanda);
     const isi = mulaiDenganPenanda(penanda)[0]?.isi ?? {};

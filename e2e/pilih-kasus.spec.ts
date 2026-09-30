@@ -91,7 +91,7 @@ test('E-20b `?kasus=` yang tak dikenal DIABAIKAN — kasus sungguhan tetap terbu
   const galat = awasiGalat(page);
   const penanda = penandaBaru();
 
-  await page.goto(`/?k=${penanda}&kasus=kasus-yang-tidak-pernah-ada`);
+  await page.goto(`/?k=${penanda}&kasus=kasus-yang-tidak-pernah-ada&pemandu=0`);
 
   /*
    * Yang diuji bukan "tidak melempar" melainkan "tetap memainkan kasus yang

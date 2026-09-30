@@ -1,0 +1,25 @@
+== Sabotase 1: pemandu untuk semua pengunjung yang punya nomor (kunjungan_ke !== 0) ==
+100:  return kunjungan_ke !== 0;
+ × web/src/tampilan.test.ts > siapa yang dipandu (D-1: pengunjung baru saja) > kunjungan kedua dan seterusnya → tidak
+ × web/src/tampilan.test.ts > siapa yang dipandu (D-1: pengunjung baru saja) > penyimpanan tidak bisa dipakai (null) tidak ditebak sebagai orang baru
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/tampilan.test.ts > siapa yang dipandu (D-1: pengunjung baru saja) > kunjungan kedua dan seterusnya → tidak
+ FAIL  web/src/tampilan.test.ts > siapa yang dipandu (D-1: pengunjung baru saja) > penyimpanan tidak bisa dipakai (null) tidak ditebak sebagai orang baru
+      Tests  2 failed | 32 passed (34)
+== Sabotase 2: Lewati tidak menutup pemandu ==
+168:    case 'lewati_pemandu':
+169-      return k;
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/tampilan.test.ts > alur pemandu > bisa dilewati dari langkah mana pun, dan tidak kembali sendiri di pemuatan yang sama
+      Tests  1 failed | 33 passed (34)
+== Sabotase 3: langkah ketiga menyorot pilihan (sasaran 'pilihan') ==
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+ FAIL  web/src/pemandu.test.tsx > layar pemanasan (fixture) > langkah ketiga menandai kartu penentu saja, bukan pilihan
+ FAIL  web/src/pemandu.test.tsx > layar soal yang disorot pemandu (kedua simulasi, setiap soal) > dada-2025-10-08: tiap langkah menyorot satu benda, dan tidak pernah satu pilihan
+ FAIL  web/src/pemandu.test.tsx > layar soal yang disorot pemandu (kedua simulasi, setiap soal) > ultj-2026-05-04: tiap langkah menyorot satu benda, dan tidak pernah satu pilihan
+ FAIL  web/src/pemandu.test.tsx > layar soal yang disorot pemandu (kedua simulasi, setiap soal) > dada-2025-10-08: langkah ketiga menandai TEPAT kartu_penentu soal 1
+ FAIL  web/src/pemandu.test.tsx > layar soal yang disorot pemandu (kedua simulasi, setiap soal) > ultj-2026-05-04: langkah ketiga menandai TEPAT kartu_penentu soal 1
+ FAIL  web/src/tampilan.test.ts > alur pemandu > urutan sorotan = urutan kontrak: omongan → kartu → penentu (petunjuk) → pilihan
+      Tests  6 failed | 28 passed (34)
+== Pulih ==
+      Tests  34 passed (34)

@@ -10,7 +10,9 @@ import {
   type Aksi,
   type Keadaan,
   type KeadaanBalon,
+  type KeadaanSoal,
   LABEL_COCOK,
+  LABEL_KUNCI,
   balonMelayang,
   bilahBawah,
   kalimatAntar,
@@ -59,6 +61,24 @@ import { bacaPerangkat, type InfoKoneksi, type Perangkat } from './perangkat.ts'
 import { berkasDariTumpukan, pasangPelaporAkar, pesanDari, sumberGalat } from './galat.ts';
 import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } from './jejak.ts';
 import { PARAM_DAPUR, TAUTAN_DAPUR } from './dapur.ts';
+import {
+  LABEL_CARA_MAIN,
+  LABEL_PEMANDU_LANJUT,
+  LABEL_PEMANDU_LEWATI,
+  LABEL_PEMANDU_SELESAI,
+  type AksiTampilan,
+  type KeadaanTampilan,
+  kodePemandu,
+  langkahPemanduKini,
+  langkahTampilan,
+  langkahTerakhir,
+  nomorLangkah,
+  pemanduOtomatis,
+  sorotPemandu,
+  tampilanAwal,
+} from './tampilan.ts';
+import { PEMANASAN } from './pemanasan-slot.ts';
+import { kartuPemanasan, type Pemanasan } from './pemanasan.ts';
 
 /**
  * Komponen hanya `dispatch` dan merender (D-5).
@@ -207,6 +227,19 @@ export function Aplikasi(): JSX.Element {
   const kirim = useCallback((aksi: Aksi): void => {
     dispatch({ aksi, waktu: Date.now() });
   }, []);
+
+  /*
+   * Keadaan tampilan di luar permainan (M3.14): pemandu, soal pemanasan,
+   * petunjuk. Reducer murni di `tampilan.ts`; tidak ada peristiwa baru —
+   * ketukan tombolnya tercatat `ketuk` lewat `data-uid`. "Berjalan sendiri"
+   * diputuskan sekali per pemuatan dari nomor kunjungan (pengunjung baru saja)
+   * dan `?pemandu=`.
+   */
+  const [tampilan, kirimTampilan] = useReducer(langkahTampilan, null, () =>
+    tampilanAwal(
+      pemanduOtomatis(pengunjungSekali().kunjungan_ke, kodePemandu(window.location.search)),
+    ),
+  );
 
   /**
    * Buka kasus berikutnya yang belum dimainkan: **sesi baru, pengunjung sama**
@@ -526,6 +559,55 @@ export function Aplikasi(): JSX.Element {
    * diambil sesudah gulir dikembalikan ke puncak layar baru — kalau tidak,
    * setiap layar baru akan mewarisi kedalaman gulir layar sebelumnya.
    */
+  /*
+   * Pemandu menempel pada layar pertama tempat pemain benar-benar bermain
+   * (M3.14 D-1): soal pemanasan kalau ada dan disetujui, kalau tidak soal 1.
+   * Reducer yang memutuskan apakah ia berjalan (pengunjung baru, belum pernah
+   * tampil di pemuatan ini); efek ini hanya memberi tahu "sudah tiba".
+   */
+  const diSoalPertama = layar.jenis === 'soal' && layar.nomor === 0;
+  const diPemanasan = layar.jenis === 'pembuka' && tampilan.pemanasan.aktif;
+  useEffect(() => {
+    if (diSoalPertama || diPemanasan) kirimTampilan({ jenis: 'tiba_di_soal_pertama' });
+  }, [diSoalPertama, diPemanasan]);
+
+  /*
+   * Langkah pemandu yang berganti menggulir sasarannya ke bawah keping (dan
+   * balon melayang: `scroll-margin-top` memakai `--tepi-atas`), dengan gerak
+   * yang menghormati `prefers-reduced-motion`. Menggulir adalah kerja
+   * tampilan; tidak ada peristiwa.
+   */
+  const sorot = sorotPemandu(tampilan);
+
+  /*
+   * "Mulai simulasi": pengunjung yang dipandu dan punya soal pemanasan yang
+   * disetujui masuk ke soal latihan dulu (M3.14 D-1); yang lain langsung ke
+   * soal 1, seperti sebelumnya. Slot pemanasan kosong di milestone ini.
+   */
+  const mulaiSimulasi = useCallback((): void => {
+    if (PEMANASAN !== null && tampilan.otomatis && !tampilan.pemandu.sudah) {
+      kirimTampilan({ jenis: 'mulai_pemanasan' });
+      return;
+    }
+    kirim({ jenis: 'lanjut' });
+  }, [kirim, tampilan.otomatis, tampilan.pemandu.sudah]);
+
+  const selesaiPemanasan = useCallback((): void => {
+    kirimTampilan({ jenis: 'selesai_pemanasan' });
+    kirim({ jenis: 'lanjut' });
+  }, [kirim]);
+  useEffect(() => {
+    if (sorot === null) return;
+    const pinta = requestAnimationFrame(() => {
+      document
+        .querySelector(`[data-gulir-sorot="${sorot}"]`)
+        ?.scrollIntoView({ block: 'start', behavior: gerakHalus() });
+    });
+    return () => {
+      cancelAnimationFrame(pinta);
+    };
+  }, [sorot, namaLayarKini]);
+
   useEffect(() => {
     catatGulirSekarang();
     window.addEventListener('scroll', catatGulirSekarang, { passive: true });
@@ -630,8 +712,22 @@ export function Aplikasi(): JSX.Element {
       )}
 
       <main className="halaman" id="isi">
-        {layar.jenis === 'pembuka' && (
-          <LayarPembuka kasus={kasus} hari={hari} kirim={kirim} sakelarSumber={sakelarSumber} />
+        {layar.jenis === 'pembuka' && !diPemanasan && (
+          <LayarPembuka
+            kasus={kasus}
+            hari={hari}
+            kirim={kirim}
+            sakelarSumber={sakelarSumber}
+            mulai={mulaiSimulasi}
+          />
+        )}
+        {diPemanasan && PEMANASAN !== null && (
+          <LayarPemanasan
+            pemanasan={PEMANASAN}
+            tampilan={tampilan}
+            kirimTampilan={kirimTampilan}
+            selesai={selesaiPemanasan}
+          />
         )}
         {layar.jenis === 'soal' && (
           <LayarSoal
@@ -641,6 +737,8 @@ export function Aplikasi(): JSX.Element {
             kirim={kirim}
             sakelarSumber={sakelarSumber}
             indeks={indeks}
+            tampilan={tampilan}
+            kirimTampilan={kirimTampilan}
           />
         )}
         {layar.jenis === 'pembukaan' && (
@@ -664,7 +762,11 @@ export function Aplikasi(): JSX.Element {
         )}
       </main>
 
-      {(layar.jenis === 'pembuka' || layar.jenis === 'akhir') && (
+      {(layar.jenis === 'soal' || diPemanasan) && langkahPemanduKini(tampilan) !== null && (
+        <PanelPemandu tampilan={tampilan} kirimTampilan={kirimTampilan} />
+      )}
+
+      {((layar.jenis === 'pembuka' && !diPemanasan) || layar.jenis === 'akhir') && (
         <Kaki kasus={kasus} diBawahBilah={layar.jenis === 'pembuka'} />
       )}
 
@@ -768,11 +870,14 @@ export function LayarPembuka({
   hari,
   kirim,
   sakelarSumber,
+  mulai,
 }: {
   kasus: Kasus;
   hari: ReturnType<typeof penanda>;
   kirim: (aksi: Aksi) => void;
   sakelarSumber: SakelarSumber;
+  /** "Mulai simulasi" (M3.14): bawaannya `lanjut`; Aplikasi bisa membelokkannya ke soal pemanasan. */
+  mulai?: () => void;
 }): JSX.Element {
   const contoh = contohPembuka(kasus);
   useTinggiBilah();
@@ -822,7 +927,8 @@ export function LayarPembuka({
           type="button"
           className="tombol-utama"
           onClick={() => {
-            kirim({ jenis: 'lanjut' });
+            if (mulai !== undefined) mulai();
+            else kirim({ jenis: 'lanjut' });
           }}
         >
           Mulai simulasi
@@ -1523,6 +1629,8 @@ export function LayarSoal({
   kirim,
   sakelarSumber,
   indeks,
+  tampilan,
+  kirimTampilan,
 }: {
   kasus: Kasus;
   keadaan: Keadaan;
@@ -1530,6 +1638,9 @@ export function LayarSoal({
   kirim: (aksi: Aksi) => void;
   sakelarSumber: SakelarSumber;
   indeks: ReadonlyMap<string, Fakta>;
+  /** Keadaan pemandu/petunjuk (M3.14); tanpa ini layar dirender seperti sebelum M3.14. */
+  tampilan?: KeadaanTampilan;
+  kirimTampilan?: (aksi: AksiTampilan) => void;
 }): JSX.Element {
   const soal: Soal | undefined = kasus.soal[nomor];
   if (soal === undefined) return <p>Soal tidak ditemukan.</p>;
@@ -1547,6 +1658,15 @@ export function LayarSoal({
   // D-2: tanggalnya lahir dari fungsi murni, tidak diketik tangan di data.
   const tanggal = tanggalBalon(kasus.tanggal_t);
   const gulirKeCap = useGulirKeCap(soal.soal_id, s.dikunci);
+  /*
+   * M3.14: apa yang disorot pemandu, dan kartu mana yang ditandai. Kartu yang
+   * ditandai SELALU `kartu_penentu` — tidak pernah pilihan (D-2) — dan hanya
+   * sebelum dikunci; sesudah dikunci salinan "Kartu yang menentukan" yang
+   * mengambil alih.
+   */
+  const sorotKini = tampilan === undefined ? null : sorotPemandu(tampilan);
+  const pemanduTampil = tampilan !== undefined && tampilan.pemandu.langkah !== null;
+  const tandaiKartu = !s.dikunci && sorotKini === 'penentu';
 
   return (
     <section className="layar layar-soal" aria-labelledby={`judul-${soal.soal_id}`}>
@@ -1570,8 +1690,9 @@ export function LayarSoal({
       )}
 
       <figure
-        className="pesan"
+        className={sorotKini === 'omongan' ? 'pesan disorot' : 'pesan'}
         data-uid="pesan"
+        data-gulir-sorot="omongan"
         ref={acuanPesan}
         /*
          * Nama untuk pembaca layar: tidak berubah sejak M3.5 D-2, kata demi
@@ -1640,12 +1761,17 @@ export function LayarSoal({
         {kalimatAntar(kartu.length)}
       </p>
 
-      <div className="tumpukan" ref={acuanTumpukan}>
+      <div
+        className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'}
+        ref={acuanTumpukan}
+        data-gulir-sorot="kartu"
+      >
         {kartu.map((fakta) => (
           <KartuFakta
             key={fakta.fact_id}
             fakta={fakta}
             menentukan={s.dikunci && menentukan.has(fakta.fact_id)}
+            ditandai={tandaiKartu && menentukan.has(fakta.fact_id)}
             sakelarSumber={sakelarSumber}
             terbuka={keadaan.sumberTerbuka.includes(fakta.fact_id)}
           >
@@ -1668,11 +1794,16 @@ export function LayarSoal({
         />
       )}
 
-      <h1 className="judul tanya" id={`tanya-${soal.soal_id}`} data-uid="tanya">
+      <h1
+        className="judul tanya"
+        id={`tanya-${soal.soal_id}`}
+        data-uid="tanya"
+        data-gulir-sorot="pilihan"
+      >
         {soal.tanya}
       </h1>
 
-      <fieldset className="pilihan" disabled={s.dikunci}>
+      <fieldset className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'} disabled={s.dikunci}>
         <legend className="tersembunyi">Pilih satu jawaban</legend>
         {soal.pilihan.map((p) => {
           // "Opsi mana mendapat tanda apa" adalah aturan, dan aturannya ada di
@@ -1692,6 +1823,7 @@ export function LayarSoal({
                 checked={s.kunci === p.kunci}
                 onChange={() => {
                   kirim({ jenis: 'pilih', soal_id: soal.soal_id, kunci: p.kunci });
+                  kirimTampilan?.({ jenis: 'pemain_memilih' });
                 }}
               />
               <span className="opsi-huruf" aria-hidden="true">
@@ -1724,6 +1856,26 @@ export function LayarSoal({
           );
         })}
       </fieldset>
+
+      {/*
+        Bantuan sebelum dikunci (M3.14): "Cara main" membuka pemandu lagi dari
+        langkah pertama. Sesudah dikunci baris ini hilang — pemandu yang
+        berkata "sekarang kamu yang memutuskan" tidak berarti lagi di sana.
+      */}
+      {!s.dikunci && kirimTampilan !== undefined && (
+        <div className="bantuan-soal">
+          <button
+            type="button"
+            className="cara-main"
+            data-uid="cara-main"
+            onClick={() => {
+              kirimTampilan({ jenis: 'buka_pemandu' });
+            }}
+          >
+            {LABEL_CARA_MAIN}
+          </button>
+        </div>
+      )}
 
       <button
         type="button"
@@ -1852,7 +2004,7 @@ export function LayarSoal({
         satu-satunya angka yang memberi tahu apakah opsi pertama memang tidak
         terlihat di ponsel pemilik.
       */}
-      {bilah.jenis !== 'tidak-ada' && (
+      {bilah.jenis !== 'tidak-ada' && !pemanduTampil && (
         <div className="tindakan" data-uid={`bilah:${bilah.jenis}`}>
           <button
             type="button"
@@ -2337,6 +2489,201 @@ export function LayarAkhir({
           Selesai
         </button>
       </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Pemandu pengguna baru dan soal pemanasan (M3.14 D-1)                */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Panel pemandu: menempati tempat bilah bawah selama pemandu tampil (bilah
+ * aslinya menyingkir), jadi tata letak layar soal tidak bergeser satu piksel
+ * pun dan tidak ada yang tertutup selain yang memang biasa ditutup bilah.
+ *
+ * Tidak modal: pemain tetap bisa menggulir, membuka kartu, dan memilih — dan
+ * memilih jawaban menutup pemandunya (`pemain_memilih`). Setiap tombol membawa
+ * `data-uid` bernomor langkah, jadi "di langkah mana orang melewati" terbaca
+ * dari peristiwa `ketuk` yang sudah ada, tanpa peristiwa baru.
+ */
+function PanelPemandu({
+  tampilan,
+  kirimTampilan,
+}: {
+  tampilan: KeadaanTampilan;
+  kirimTampilan: (aksi: AksiTampilan) => void;
+}): JSX.Element | null {
+  const langkahIni = langkahPemanduKini(tampilan);
+  const nomor = nomorLangkah(tampilan);
+  if (langkahIni === null || nomor === null || tampilan.pemandu.langkah === null) return null;
+  const ke = String(tampilan.pemandu.langkah + 1);
+  const terakhir = langkahTerakhir(tampilan);
+  return (
+    <div className="tindakan pemandu" role="region" aria-label="Cara main" data-uid="pemandu">
+      <div className="pemandu-kolom">
+        <p className="meta pemandu-nomor">Cara main · {nomor}</p>
+        <p className="pemandu-teks" aria-live="polite">
+          {langkahIni.teks}
+        </p>
+        <div className="pemandu-tombol">
+          {!terakhir && (
+            <button
+              type="button"
+              className="pemandu-lewati"
+              data-uid={`pemandu:lewati:${ke}`}
+              onClick={() => {
+                kirimTampilan({ jenis: 'lewati_pemandu' });
+              }}
+            >
+              {LABEL_PEMANDU_LEWATI}
+            </button>
+          )}
+          <button
+            type="button"
+            className="tombol-utama pemandu-lanjut"
+            data-uid={terakhir ? `pemandu:selesai:${ke}` : `pemandu:lanjut:${ke}`}
+            onClick={() => {
+              kirimTampilan({ jenis: 'lanjut_pemandu' });
+            }}
+          >
+            {terakhir ? LABEL_PEMANDU_SELESAI : LABEL_PEMANDU_LANJUT}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Soal pemanasan (soal 0) — slot berbasis data, KOSONG di M3.14.
+ *
+ * Tampil hanya bagi pengunjung yang dipandu dan hanya kalau
+ * `web/src/pemanasan/soal-pemanasan.json` ada dan disetujui
+ * (`pemanasan.ts`). Susunannya sama dengan layar soal — pesan teman, kartu,
+ * pertanyaan, pilihan — supaya yang dipelajari di sini persis yang dipakai di
+ * soal 1. Bedanya: tanpa keping tanggal (soal latihan bukan hari bursa
+ * simulasi ini), tanpa kaki lembar (tidak ada dokumen sumber), dan jawabannya
+ * tidak dikirim ke mana pun — hanya ketukannya yang tercatat (`pemanasan:*`).
+ */
+export function LayarPemanasan({
+  pemanasan,
+  tampilan,
+  kirimTampilan,
+  selesai,
+}: {
+  pemanasan: Pemanasan;
+  tampilan: KeadaanTampilan;
+  kirimTampilan: (aksi: AksiTampilan) => void;
+  selesai: () => void;
+}): JSX.Element {
+  const { soal } = pemanasan;
+  const kartu = kartuPemanasan(pemanasan);
+  const k = tampilan.pemanasan;
+  const sorotKini = sorotPemandu(tampilan);
+  const pemanduTampil = tampilan.pemandu.langkah !== null;
+  const menentukan = new Set(soal.kartu_penentu);
+  const tandaiKartu = !k.dikunci && sorotKini === 'penentu';
+  const benar = k.dikunci ? k.kunci === soal.jawaban : null;
+  const tanpaAksi = (): void => undefined;
+  const keadaanOpsi = { kunci: k.kunci, dikunci: k.dikunci } as KeadaanSoal;
+  return (
+    <section className="layar layar-soal layar-pemanasan" aria-labelledby="judul-pemanasan">
+      <p className="meta pemanasan-label" id="judul-pemanasan">
+        Soal latihan — tidak dihitung
+      </p>
+      <figure
+        className={sorotKini === 'omongan' ? 'pesan disorot' : 'pesan'}
+        data-uid="pemanasan:pesan"
+        data-gulir-sorot="omongan"
+        aria-label={`Pesan dari ${soal.pesan.nama} · ${soal.pesan.jam}`}
+      >
+        <blockquote className="pesan-balon">
+          <p className="pesan-meta">
+            <span className="pesan-nama">{soal.pesan.nama}</span>
+          </p>
+          <p className="isi">{soal.pesan.isi}</p>
+          <time className="pesan-jam">{soal.pesan.jam}</time>
+        </blockquote>
+      </figure>
+      <p className="meta antar">{kalimatAntar(kartu.length)}</p>
+      <div className={sorotKini === 'kartu' ? 'tumpukan disorot' : 'tumpukan'} data-gulir-sorot="kartu">
+        {kartu.map((fakta) => (
+          <KartuFakta
+            key={fakta.fact_id}
+            fakta={fakta}
+            menentukan={k.dikunci && menentukan.has(fakta.fact_id)}
+            ditandai={tandaiKartu && menentukan.has(fakta.fact_id)}
+            sakelarSumber={tanpaAksi}
+            tanpaKaki
+          />
+        ))}
+      </div>
+      <h1 className="judul tanya" id="tanya-pemanasan" data-gulir-sorot="pilihan">
+        {soal.tanya}
+      </h1>
+      <fieldset className={sorotKini === 'pilihan' ? 'pilihan disorot' : 'pilihan'} disabled={k.dikunci}>
+        <legend className="tersembunyi">Pilih satu jawaban</legend>
+        {soal.pilihan.map((p) => {
+          const tanda = tandaOpsi(keadaanOpsi, p.kunci, soal.jawaban);
+          return (
+            <label key={p.kunci} className={`opsi aksi opsi-${tanda.keadaan}`} data-uid={`pemanasan:opsi:${p.kunci}`}>
+              <input
+                type="radio"
+                name={soal.soal_id}
+                value={p.kunci}
+                checked={k.kunci === p.kunci}
+                onChange={() => {
+                  kirimTampilan({ jenis: 'pilih_pemanasan', kunci: p.kunci });
+                }}
+              />
+              <span className="opsi-huruf" aria-hidden="true">
+                {p.kunci}
+              </span>
+              <span className="opsi-teks">
+                <Teks teks={p.teks} sakelarSumber={tanpaAksi} interaktif={false} />
+                {tanda.label.map((kata) => (
+                  <span
+                    key={kata}
+                    className={kata === LABEL_COCOK ? 'opsi-tanda opsi-tanda-cocok' : 'opsi-tanda opsi-tanda-pemain'}
+                  >
+                    {kata}
+                  </span>
+                ))}
+              </span>
+            </label>
+          );
+        })}
+      </fieldset>
+      <div className="kunci-jawaban" role="status" aria-live="polite" data-uid="pemanasan:sesudah">
+        {k.dikunci && (
+          <>
+            <p className={`cap${benar === true ? ' cap-cocok' : ' cap-belum'}`}>
+              <span aria-hidden="true" className="cap-tanda">
+                {benar === true ? '✓' : '!'}
+              </span>
+              {benar === true ? 'Cocok dengan kartu' : 'Belum cocok dengan kartu'}
+            </p>
+            <div className="teks-kunci">
+              <Teks teks={soal.penjelasan} sakelarSumber={tanpaAksi} tebalSaja />
+            </div>
+          </>
+        )}
+      </div>
+      {!pemanduTampil && (k.kunci !== null || k.dikunci) && (
+        <div className="tindakan" data-uid={k.dikunci ? 'pemanasan:lanjut' : 'pemanasan:kunci'}>
+          <button
+            type="button"
+            className="tombol-utama"
+            onClick={() => {
+              if (k.dikunci) selesai();
+              else kirimTampilan({ jenis: 'kunci_pemanasan' });
+            }}
+          >
+            {k.dikunci ? 'Lanjut ke soal 1' : LABEL_KUNCI}
+          </button>
+        </div>
+      )}
     </section>
   );
 }

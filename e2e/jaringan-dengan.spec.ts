@@ -138,3 +138,17 @@ test('E-08 dengan pengumpul: semua seasal, satu-satunya tujuan tulis adalah /e',
         .join('\n'),
   );
 });
+
+/**
+ * E-08m314 (M3.14 D-1) — slot soal pemanasan KOSONG di bundel produksi, dan
+ * fixture ujinya (`web/src/pemanasan/uji/`) tidak ikut: penanda FIXTUREUJI
+ * yang ditulis di setiap kalimat fixture tidak boleh ada di berkas mana pun.
+ */
+test('E-08m314 fixture soal pemanasan tidak ikut ke bundel produksi', () => {
+  const isi = bacaBundel(DIR_DIST_DENGAN)
+    .map((b) => b.teks)
+    .join('\n');
+  expect(isi.length, 'bundel terbaca').toBeGreaterThan(1000);
+  expect(isi.includes('FIXTUREUJI'), 'fixture pemanasan bocor ke bundel').toBe(false);
+  expect(isi.includes('pemanasan-uji'), 'soal_id fixture bocor ke bundel').toBe(false);
+});

@@ -100,7 +100,7 @@ test('E-26 satu permainan penuh: nol Mozilla, nol AppleWebKit, nol :// di seluru
 
   const kasus = bacaKasus();
   const penanda = penandaBaru();
-  await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}`, { referer: PERUJUK });
+  await page.goto(`/?k=${penanda}&kasus=${KASUS_BAWAAN}&pemandu=0`, { referer: PERUJUK });
   await expect(page.getByRole('button', { name: LABEL_MULAI })).toBeVisible();
   await tungguTerkirim(kiriman, 'mulai');
   const sesi = terkirim(kiriman).find((p) => p.nama === 'mulai')?.sesi ?? '';

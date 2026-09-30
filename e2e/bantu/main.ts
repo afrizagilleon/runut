@@ -71,12 +71,12 @@ export async function buka(
   penanda: string,
   kasus: string = KASUS_BAWAAN,
 ): Promise<void> {
-  await page.goto(`/?k=${penanda}&kasus=${kasus}`);
+  await page.goto(`/?k=${penanda}&kasus=${kasus}&pemandu=0`);
 }
 
 /** Buka tanpa `?kasus=`: kasusnya dipilih aplikasi, seperti pemain sungguhan. */
 export async function bukaTanpaKasus(page: Page, penanda: string): Promise<void> {
-  await page.goto(`/?k=${penanda}`);
+  await page.goto(`/?k=${penanda}&pemandu=0`);
 }
 
 /**

@@ -2268,3 +2268,152 @@ textarea {
 .dapur-pintu-tautan:active {
   background: var(--garis);
 }
+
+/* ======================================================================== */
+/* M3.14 — pemandu pengguna baru, petunjuk, soal pemanasan                  */
+/* ======================================================================== */
+
+/*
+ * Sasaran gulir langkah pemandu dan petunjuk mendarat di bawah keping DAN
+ * balon melayang, dengan aturan yang sama seperti `.tanya` (M3.8 D-10).
+ */
+[data-gulir-sorot] {
+  scroll-margin-top: var(--tepi-atas, 64px);
+}
+
+/*
+ * Sorotan pemandu: cincin TINTA di luar benda yang sedang diterangkan.
+ * Bukan --stempel: ungu di produk ini berarti "bisa diketuk" (dan cincin fokus
+ * papan ketik), sedangkan yang disorot di sini belum tentu bisa diketuk
+ * (pesan teman, tumpukan kartu). Tanpa bayangan, tanpa gerak berulang —
+ * hanya transisi 140 ms, dimatikan untuk `prefers-reduced-motion`.
+ */
+.disorot {
+  outline: 3px solid var(--tinta);
+  outline-offset: 4px;
+  transition: outline-color var(--gerak) ease;
+}
+
+/*
+ * Kartu yang ditandai petunjuk (D-2) atau langkah ketiga pemandu: cincin yang
+ * sama, ditambah satu label netral di dalam lembar, di atas kepalanya.
+ */
+.lembar-ditandai {
+  outline: 3px solid var(--tinta);
+  outline-offset: 3px;
+}
+
+.tanda-kartu {
+  margin: 0;
+  padding: 8px 12px 0;
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--tinta);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .disorot {
+    transition: none;
+  }
+}
+
+/*
+ * Panel pemandu: menempati tempat bilah bawah (`.tindakan`), bahan yang sama —
+ * kertas, garis atas tipis. Halaman mendapat bantalan bawah setinggi panel
+ * supaya pilihan terakhir tetap bisa digulir ke atasnya.
+ */
+.pemandu {
+  padding: 12px var(--sisi) 16px;
+}
+
+.pemandu-kolom {
+  max-width: 528px;
+  margin: 0 auto;
+}
+
+.pemandu-nomor {
+  margin: 0 0 4px;
+}
+
+.pemandu-teks {
+  margin: 0 0 12px;
+  font-family: var(--baca);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--tinta);
+}
+
+.pemandu-tombol {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pemandu-tombol .tombol-utama {
+  flex: 1;
+  width: auto;
+  margin: 0;
+}
+
+.pemandu-lewati {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.pemandu-lewati:active {
+  background: var(--garis);
+}
+
+body:has(.pemandu) .halaman {
+  padding-bottom: 240px;
+}
+
+/* --- bantuan di layar soal: "Minta petunjuk", "Cara main" ------------------ */
+
+.bantuan-soal {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin: 0 0 4px;
+}
+
+.cara-main {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--stempel);
+  font-family: var(--baca);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cara-main:active {
+  background: var(--garis);
+}
+
+/* --- soal pemanasan -------------------------------------------------------- */
+
+.pemanasan-label {
+  margin: 0 0 12px;
+}

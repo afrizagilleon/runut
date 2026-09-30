@@ -1,6 +1,7 @@
 import type { Fakta } from '../../factory/skema/tipe.ts';
 import { PINTU_HITUNG, PINTU_SUMBER } from './sumber.ts';
 import { Teks } from './Teks.tsx';
+import { LABEL_PETUNJUK_KARTU } from './tampilan.ts';
 
 export interface KartuFaktaProps {
   fakta: Fakta;
@@ -12,6 +13,18 @@ export interface KartuFaktaProps {
   terbuka?: boolean;
   /** Isi yang tampil di dalam lembar ini ketika terbuka. */
   children?: React.ReactNode;
+  /**
+   * Ditandai petunjuk atau langkah ketiga pemandu (M3.14 D-1/D-2): cincin dan
+   * satu label netral di atas lembar. Hanya pernah dipakai untuk
+   * `kartu_penentu`, dan hanya sebelum jawaban dikunci.
+   */
+  ditandai?: boolean;
+  /**
+   * Tanpa kaki (M3.14, soal pemanasan): lembar latihan tidak punya dokumen
+   * sumber untuk dibuka, dan tombol yang tidak membuka apa pun dilarang
+   * (`docs/desain.md`, "tidak ada yang diam-diam bisa diketuk").
+   */
+  tanpaKaki?: boolean;
 }
 
 /**
@@ -37,6 +50,8 @@ export function KartuFakta({
   sakelarSumber,
   terbuka = false,
   children,
+  ditandai = false,
+  tanpaKaki = false,
 }: KartuFaktaProps): JSX.Element {
   const awam = fakta.awam;
   const dihitung = fakta.sumber.jenis === 'turunan';
@@ -46,10 +61,12 @@ export function KartuFakta({
     <section
       className={`lembar${dihitung ? ' lembar-hitung' : ''}${
         menentukan ? ' lembar-menentukan' : ''
-      }`}
+      }${ditandai ? ' lembar-ditandai' : ''}`}
       aria-labelledby={judul}
       data-uid={`lembar:${fakta.fact_id}`}
+      {...(ditandai ? { 'data-gulir-sorot': 'penentu' } : {})}
     >
+      {ditandai && <p className="tanda-kartu">{LABEL_PETUNJUK_KARTU}</p>}
       <div className="lembar-badan">
         <p className="meta" id={judul}>
           {awam?.kepala ?? fakta.fact_id}
@@ -59,6 +76,7 @@ export function KartuFakta({
         </p>
       </div>
 
+      {!tanpaKaki && (
       <button
         type="button"
         className="lembar-kaki"
@@ -73,6 +91,7 @@ export function KartuFakta({
           ›
         </span>
       </button>
+      )}
 
       {terbuka && <div className="buka">{children}</div>}
     </section>

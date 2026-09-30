@@ -39,7 +39,7 @@ function alamatTidakAman(penanda: string): string {
   url.hostname = HOST_TIDAK_AMAN;
   // `kasus=` ikut karena alasan yang sama seperti `buka()` di bantu/main.ts:
   // tanpa itu kasusnya dipilih acak dan tes ini membandingkan layar dengan DADA.
-  url.search = `k=${penanda}&kasus=${KASUS_BAWAAN}`;
+  url.search = `k=${penanda}&kasus=${KASUS_BAWAAN}&pemandu=0`;
   return url.toString();
 }
 
