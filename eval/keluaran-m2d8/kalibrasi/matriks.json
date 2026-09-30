@@ -1,0 +1,504 @@
+{
+  "awal": [
+    {
+      "gerbang": "kode",
+      "manusia": [
+        3,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "meresmikan",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "keseimbangan",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "pilihan_saja",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "kartu",
+      "manusia": [
+        1,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "kritikus",
+      "manusia": [
+        1,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "penebak",
+      "manusia": [
+        5,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "tumpukan",
+      "manusia": [
+        5,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    }
+  ],
+  "putusan": {
+    "setelan": {
+      "tingkat": {
+        "penebak": 2,
+        "pilihan_saja": 0,
+        "meresmikan": 0,
+        "keseimbangan": 0,
+        "kritikus": 1,
+        "kartu": 1
+      },
+      "dicatat": [
+        "kartu"
+      ],
+      "kode_dicatat": [
+        "G-register",
+        "ANDAIAN_DI_PENJELASAN",
+        "PENJELASAN_TANPA_PENENTU"
+      ]
+    },
+    "langkah": [
+      "awal: tumpukan menerima 0/5 soal manusia",
+      "kode G-register (menolak 2 soal manusia) → dicatat; tumpukan menerima 0/5",
+      "kode ANDAIAN_DI_PENJELASAN (menolak 1 soal manusia) → dicatat; tumpukan menerima 0/5",
+      "kode PENJELASAN_TANPA_PENENTU (menolak 1 soal manusia) → dicatat; tumpukan menerima 0/5",
+      "penebak → tingkat 1: penebak menolak 1 soal manusia; tumpukan menerima 2/5",
+      "penebak → tingkat 2: penebak menolak 0 soal manusia; tumpukan menerima 3/5",
+      "kritikus → tingkat 1: kritikus menolak 0 soal manusia; tumpukan menerima 4/5",
+      "kartu → tingkat 1: kartu menolak 1 soal manusia; tumpukan menerima 4/5",
+      "kartu di batas masih menolak soal manusia → DITURUNKAN menjadi \"dicatat\"; tumpukan menerima 5/5"
+    ],
+    "syarat": {
+      "manusia_diterima": 5,
+      "manusia_terukur": 5,
+      "bocor_ditolak": 0,
+      "bocor_terukur": 0,
+      "manusia_terpenuhi": true,
+      "bocor_terpenuhi": false
+    }
+  },
+  "akhir": [
+    {
+      "gerbang": "kode",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "meresmikan",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "keseimbangan",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "pilihan_saja",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "kartu",
+      "manusia": [
+        1,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": true
+    },
+    {
+      "gerbang": "kritikus",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "penebak",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    },
+    {
+      "gerbang": "tumpukan",
+      "manusia": [
+        0,
+        5
+      ],
+      "bocor": [
+        0,
+        0
+      ],
+      "aman": [
+        0,
+        0
+      ],
+      "tambahan": [
+        0,
+        0
+      ],
+      "dicatat": false
+    }
+  ],
+  "per_soal": [
+    {
+      "id": "dada-s1-kata-bursa",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "lengkap": true,
+      "awal": {
+        "kode": true,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": false,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "kode": false,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": false,
+        "penebak": false,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "dada-s2-dividen-pemilik-kecil",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "lengkap": true,
+      "awal": {
+        "kode": true,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": true,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "kode": false,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": false,
+        "penebak": false,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "dada-s3-siapa-yang-menjual",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": false,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "kode": false,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": false,
+        "penebak": false,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "ultj-turun-di-tanggal-ex",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "lengkap": true,
+      "awal": {
+        "kode": false,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": false,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "kode": false,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": false,
+        "kritikus": false,
+        "penebak": false,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "ultj-riwayat-dividen",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "lengkap": true,
+      "awal": {
+        "kode": true,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": true,
+        "kritikus": false,
+        "penebak": true,
+        "ditolak": true
+      },
+      "akhir": {
+        "kode": false,
+        "meresmikan": false,
+        "keseimbangan": false,
+        "pilihan_saja": false,
+        "kartu": true,
+        "kritikus": false,
+        "penebak": false,
+        "ditolak": false
+      }
+    },
+    {
+      "id": "ultj-siapa-yang-membeli",
+      "kelompok": "manusia",
+      "tambahan": false,
+      "lengkap": false,
+      "galat": "PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d8/kalibrasi/*) US$0.590683 + perkiraan maksimum US$0.185187 untuk z-ai/glm-5.3 > pagu milestone US$0.70. Panggilan tidak dikirim."
+    }
+  ]
+}

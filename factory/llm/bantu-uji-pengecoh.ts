@@ -3,13 +3,14 @@
  * sungguhan; hanya model yang dipalsukan. Tulisan palsu: `bantu-uji-tulisan.ts`.
  */
 import { teksPolos } from '../skema/rujukan.ts';
-import { GENERASI_M2D7, jalankanPengecoh, type HasilPengecoh } from './agen-pengecoh.ts';
+import { GENERASI_M2D7, jalankanPengecoh, type GenerasiPengecoh, type HasilPengecoh } from './agen-pengecoh.ts';
 import type { InfoPeran, PanggilPeran } from './agen-peran.ts';
-import type { KunciOpsi } from './draf.ts';
+import type { KunciOpsi, MasalahDraf } from './draf.ts';
 import { PencatatJejak } from './jejak.ts';
 import type { PesanChat } from './klien.ts';
 import { MODEL_OR_DEEPSEEK } from './model.ts';
 import { PAKET_T, TULISAN, type TulisanPalsu } from './bantu-uji-tulisan.ts';
+import type { PaketFakta } from './paket.ts';
 import { promptPesan, susunHuruf } from './penulis-pecah.ts';
 import { hurufKunciKode } from './posisi-kunci.ts';
 import type { JawabanModel, SetelanPanggil } from './susun.ts';
@@ -105,7 +106,13 @@ export function teksKunci(extra: readonly string[] = []): string[] {
 
 export { PAKET_T, TULISAN, type TulisanPalsu };
 
-export async function jalanP(s: SkenarioP, maksPutaran?: number, kunciExtra: readonly string[] = []): Promise<{ hasil: HasilPengecoh; rekaman: RekamanP[]; jejak: PencatatJejak }> {
+export async function jalanP(
+  s: SkenarioP,
+  maksPutaran?: number,
+  kunciExtra: readonly string[] = [],
+  generasi: GenerasiPengecoh = GENERASI_M2D7,
+  validasi: (draf: unknown, paket: PaketFakta) => MasalahDraf[] = validasiDraf,
+): Promise<{ hasil: HasilPengecoh; rekaman: RekamanP[]; jejak: PencatatJejak }> {
   const { panggil, rekaman } = palsuP(s, () => teksKunci(kunciExtra));
   const jam = (): Date => new Date('2026-09-30T00:00:00Z');
   const jejak = new PencatatJejak({
@@ -113,7 +120,7 @@ export async function jalanP(s: SkenarioP, maksPutaran?: number, kunciExtra: rea
     jalur: null, jam, versi: 2, dibuatOleh: 'factory/llm/agen-pengecoh.ts',
   });
   const hasil = await jalankanPengecoh({
-    paket: PAKET_T, panggil, validasi: validasiDraf, jam, jejak, generasi: GENERASI_M2D7, ...(maksPutaran === undefined ? {} : { maksPutaran }),
+    paket: PAKET_T, panggil, validasi, jam, jejak, generasi, ...(maksPutaran === undefined ? {} : { maksPutaran }),
   });
   return { hasil, rekaman, jejak };
 }

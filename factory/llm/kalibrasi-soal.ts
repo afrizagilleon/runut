@@ -23,7 +23,7 @@
 import { readFileSync } from 'node:fs';
 import { teksPolos } from '../skema/rujukan.ts';
 import type { Fakta } from '../skema/tipe.ts';
-import type { KunciOpsi, OmonganDraf } from './draf.ts';
+import type { KunciOpsi, MasalahDraf, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
 import { gerbangG } from './gerbang-g.ts';
 import { gerbangGaya } from './gerbang-gaya.ts';
@@ -34,6 +34,9 @@ import { soalHimpunan } from './pengecoh-kalibrasi.ts';
 import { SOAL_KALIBRASI } from './penalar-kalibrasi.ts';
 import { periksaRujukanHuruf } from './posisi-kunci.ts';
 import { angkaTakBerjejak, validasiDraf } from './validasi.ts';
+import { KODE_PELINDUNG, type ButirKode } from './kalibrasi-setelan.ts';
+
+export { KODE_PELINDUNG, type ButirKode };
 
 export const BERKAS_MANUSIA = ['dada-2025-10-08', 'ultj-2026-05-04'] as const;
 const ID_PAKET_KASUS: Record<(typeof BERKAS_MANUSIA)[number], 'dada' | 'ultj'> = { 'dada-2025-10-08': 'dada', 'ultj-2026-05-04': 'ultj' };
@@ -180,24 +183,6 @@ export function himpunanBeku(): SoalKalibrasiM2d8[] {
 /* gerbang kode                                                            */
 /* ---------------------------------------------------------------------- */
 
-export interface ButirKode {
-  /** Kode aturan: kode validator (mis. `OPSI_PANJANG_TIMPANG`) atau nama gerbang (`G-kaku`). */
-  kode: string;
-  alasan: string;
-}
-
-/**
- * Kode PELINDUNG: fakta, rujukan, tanggal, emiten, penilaian/ajakan, dan bentuk
- * K-05. Tidak pernah dilonggarkan atau diturunkan (pra-registrasi); bila
- * menolak soal manusia, itu temuan tentang soal itu, dilaporkan.
- */
-export const KODE_PELINDUNG: readonly string[] = [
-  'SKEMA', 'FAKTA_DI_LUAR_PAKET', 'ANGKA_TAK_COCOK', 'ANGKA_TANPA_RUJUKAN', 'ANGKA_PESAN_TAK_ADA', 'ANGKA_PESAN_TANPA_JEJAK',
-  'ANDAIAN_DI_OMONGAN_BETUL', 'HARI_INI_TAK_COCOK', 'TANGGAL_SESUDAH_T', 'EMITEN_TERBUKA', 'KATA_PENILAIAN',
-  'AJAKAN_TRANSAKSI', 'KUNCI_TAK_ADA', 'KUNCI_TAK_TERBUKTI_KARTU', 'KARTU_JUMLAH', 'KARTU_KEMBAR', 'PENENTU_JUMLAH', 'PENENTU_BUKAN_KARTU',
-  'OPSI_TANPA_LABEL', 'OPSI_TAK_DUA_DUA', 'PESAN_KOSONG', 'G-penilaian',
-];
-
 /** Tidak dinilai per soal (pra-registrasi): lihat kepala berkas. */
 export const KODE_TAK_BERLAKU: readonly string[] = ['NAMA_TERLARANG'];
 
@@ -242,6 +227,27 @@ export function gerbangKode(o: OmonganDraf, paket: PaketFakta): ButirKode[] {
   const k = gKembar(o.pilihan);
   for (const x of k.kembar) butir.push({ kode: 'G-pilihan-kembar', alasan: `pilihan ${x.a} dan ${x.b} kemiripan ${x.kemiripan.toFixed(2)}` });
   return butir.filter((b) => !KODE_TAK_BERLAKU.includes(b.kode));
+}
+
+/**
+ * Validator lingkar M2d-8: `validasiDraf` dengan `KATA_PENILAIAN` dihitung
+ * ulang memakai pengecualian M2d-5 (`kataPenilaian`) — sama dengan gerbang
+ * kode kalibrasi. Kode lain tidak berubah (penurunan kode dilakukan lingkar
+ * dari setelan kalibrasi). Murni.
+ */
+export function validasiM2d8(draf: unknown, paket: PaketFakta): MasalahDraf[] {
+  const dasar = validasiDraf(draf, paket).filter((m) => m.kode !== 'KATA_PENILAIAN');
+  const omongan = (draf as { omongan?: unknown } | null)?.omongan;
+  if (!Array.isArray(omongan)) return dasar;
+  const tambahan: MasalahDraf[] = [];
+  omongan.forEach((o: unknown, i) => {
+    const x = o as Partial<OmonganDraf> | null;
+    if (x === null || typeof x !== 'object' || typeof x.pesan !== 'string' || typeof x.nama !== 'string' || typeof x.penjelasan !== 'string' || typeof x.pilihan !== 'object' || x.pilihan === null) return;
+    const pil = x.pilihan as Partial<Record<KunciOpsi, unknown>>;
+    if (!(['a', 'b', 'c', 'd'] as const).every((h) => typeof pil[h] === 'string')) return;
+    for (const a of kataPenilaian(x as OmonganDraf)) tambahan.push({ kode: 'KATA_PENILAIAN', omongan: i + 1, pesan: a });
+  });
+  return [...dasar, ...tambahan];
 }
 
 /** Teks polos soal untuk tampilan laporan. */

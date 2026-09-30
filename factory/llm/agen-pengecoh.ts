@@ -54,6 +54,7 @@ import {
   type SetPilihan,
 } from './penulis-pecah.ts';
 import { hurufKunciKode, periksaRujukanHuruf } from './posisi-kunci.ts';
+import { KODE_PELINDUNG, aturanPenebak, bingungMenolak, jenisKritikus, penebakMenolak, type SetelanGerbangM2d8 } from './kalibrasi-setelan.ts';
 import { MAKS_PUTARAN_SUDUT, MAKS_SUDUT, rencanaSudut, sudutBerikutnya, type CatatanSudut, type Sudut } from './sudut.ts';
 import { SUHU, type JawabanModel, type SetelanPanggil } from './susun.ts';
 import {
@@ -107,7 +108,7 @@ export interface SetelanTulis {
 const tulis = (b: BatasPenalaran): SetelanTulis => ({ berpikir: setelanPenalaran(SUHU, b), cadangan: setelanTanpaPenalaran(SUHU, 4_000) });
 
 export interface GenerasiPengecoh {
-  nama: 'm2d7';
+  nama: 'm2d7' | 'm2d8';
   model: Readonly<Record<PeranModel, ModelOpenRouter>>;
   modelPilihanSaja: ModelOpenRouter;
   penulis: Record<Bagian, SetelanTulis>;
@@ -121,6 +122,14 @@ export interface GenerasiPengecoh {
   maksBank: number;
   /** Ambang gerbang artefak + aturan penebak (kalibrasi D-6). */
   ambang: AmbangArtefak;
+  /**
+   * M2d-8: setelan tumpukan hasil kalibrasi terhadap soal manusia
+   * (`kalibrasi-setelan.ts`). Bila ada: kode yang diturunkan dan gerbang
+   * "dicatat" tetap dijalankan dan dicatat, tetapi tidak menolak; aturan
+   * penebak/kritikus/pembaca kartu mengikuti tingkatnya. Tanpa medan ini
+   * lingkar berperilaku persis M2d-7.
+   */
+  kalibrasi?: SetelanGerbangM2d8;
 }
 
 /**
@@ -185,6 +194,8 @@ const RENCANA_PENUH: RencanaPerbaikan = { gagal: [], tulisPesan: true, tulisPili
 const NOL: HitungPerbaikan = { pesan: 0, pilihan: 0, penjelasan: 0 };
 
 export interface PemeriksaanPengecoh extends PemeriksaanPeran {
+  /** M2d-8: penolakan gerbang/kode yang diturunkan menjadi "dicatat" (tidak menolak). */
+  dicatat?: Array<{ sumber: string; alasan: string }>;
   artefak?: PutusanArtefak | null;
   pilihan_saja?: PutusanPilihanSaja | null;
   ikatan?: Array<{ lokasi: LokasiBagian; teramati: string; alasan: string }>;
@@ -200,7 +211,7 @@ export interface PutaranPengecoh extends PutaranPeran {
 }
 
 export interface HasilPengecoh extends HasilPeran {
-  generasi: 'm2d7';
+  generasi: 'm2d7' | 'm2d8';
   label: Label[];
   /** Bank pengecoh per sudut yang dipakai. */
   bank: Record<string, KandidatPengecoh[]>;
@@ -278,7 +289,7 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
     rencana_sudut: [],
     sudut: [[], [], []],
     riwayat: [],
-    generasi: 'm2d7',
+    generasi: gen.nama,
     label,
     bank: {},
   };
@@ -583,8 +594,24 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
           sha256_prompt: null, rincian: { meresmikan: artefak.meresmikan, keseimbangan: artefak.keseimbangan }, peran: 'pemeriksa',
         });
       }
+      // M2d-8: kode bukan-pelindung yang diturunkan dan gerbang artefak "dicatat" tidak menolak (tetap dicatat).
+      const kal = gen.kalibrasi;
+      const dicatat: Array<{ sumber: string; alasan: string }> = [];
+      if (kal !== undefined) {
+        const turun = (u: UmpanMentah): boolean => {
+          const kode = u.sumber.startsWith('pemeriksa: ') ? u.sumber.slice('pemeriksa: '.length) : null;
+          if (kode !== null && kal.kode_dicatat.includes(kode) && !KODE_PELINDUNG.includes(kode)) return true;
+          if (u.sumber === 'gerbang artefak: meresmikan' && kal.dicatat.includes('meresmikan')) return true;
+          return u.sumber === 'gerbang artefak: keseimbangan' && kal.dicatat.includes('keseimbangan');
+        };
+        for (const u of mentah) if (turun(u) && !dicatat.some((d) => d.sumber === u.sumber && d.alasan === u.alasan)) dicatat.push({ sumber: u.sumber, alasan: u.alasan });
+        mentah.splice(0, mentah.length, ...mentah.filter((u) => !turun(u)));
+      }
+      const catatGerbang = (sumber: string, alasan: readonly string[]): void => {
+        for (const a of alasan) dicatat.push({ sumber, alasan: a });
+      };
       if (mentah.length > 0) {
-        tolak('ditolak-pemeriksa', mentah, { g, gaya, artefak, ikatan });
+        tolak('ditolak-pemeriksa', mentah, { g, gaya, artefak, ikatan, ...(kal === undefined ? {} : { dicatat }) });
         continue;
       }
       suara.pemeriksa = true;
@@ -595,7 +622,7 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
       let kartu: PutusanKartu | null = null;
       let kr: PutusanKritik | null = null;
       let tebak: PutusanTebak | null = null;
-      const isi = (): Partial<PemeriksaanPengecoh> => ({ g, gaya, artefak, ikatan, pilihan_saja: pilihanSaja, kartu, kritik: kr, tebak });
+      const isi = (): Partial<PemeriksaanPengecoh> => ({ g, gaya, artefak, ikatan, pilihan_saja: pilihanSaja, kartu, kritik: kr, tebak, ...(kal === undefined ? {} : { dicatat }) });
       try {
         // 3b. pilihan-saja (D-4a)
         pilihanSaja = await gPilihanSaja(o, { ...opsiGerbang, maxTokens: gen.pilihanSaja.maxTokens, tambahanBadan: gen.pilihanSaja.tambahanBadan, yakinMin: gen.ambang.pilihanSajaYakin });
@@ -609,7 +636,8 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
           rincian: { kunci: o.kunci, tebakan: pilihanSaja.tebakan.map((t) => ({ ke: t.ke, pilihan: t.pilihan, yakin: t.yakin, alasan: t.alasan, terbaca: t.terbaca })), ...penyediaDari(semuaPS) },
           peran: 'penebak',
         });
-        if (pilihanSaja.tolak) {
+        if (pilihanSaja.tolak && kal?.dicatat.includes('pilihan_saja') === true) catatGerbang('gerbang pilihan-saja', pilihanSaja.alasan);
+        else if (pilihanSaja.tolak) {
           tolak('ditolak-artefak', dariPilihanSaja(pilihanSaja.alasan, o), isi());
           continue;
         }
@@ -617,6 +645,14 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
         tahap = 'gerbang-kartu';
         mulai = jam().toISOString();
         kartu = await gerbangKartu(o, paket, { ...opsiGerbang, tandaiBingung: true, ...gen.kartu });
+        // M2d-8: di tingkat 1 kalimat membingungkan tidak menolak (jawaban salah tetap menolak); "dicatat" = tidak menolak.
+        if (kal !== undefined && !kartu.lolos) {
+          const benar = kartu.pilihan === o.kunci;
+          if (kal.dicatat.includes('kartu') || (benar && !bingungMenolak(kal))) {
+            catatGerbang('pembaca kartu', [kartu.alasan]);
+            kartu = { ...kartu, lolos: true };
+          }
+        }
         suara.kartu = kartu.lolos;
         catat({
           putaran, jenis: 'gerbang-kartu', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.model['pembaca-kartu'],
@@ -643,6 +679,14 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
           },
           { ...opsiGerbang, cekMakna: true, maxTokens: gen.kritikus.maxTokens, tambahanBadan: gen.kritikus.tambahanBadan, ambangPenalaran: gen.kritikus.ambang },
         );
+        // M2d-8: hanya keberatan berjenis tingkat setelan yang menolak; "dicatat" = tidak menolak (juga bila tidak menjawab).
+        if (kal !== undefined && !kr.tanpa_keberatan) {
+          const menolak = kr.menjawab ? kr.keberatan.some((x) => jenisKritikus(kal).includes(x.jenis)) : true;
+          if (kal.dicatat.includes('kritikus') || !menolak) {
+            catatGerbang('kritikus', umpanKritik(kr));
+            kr = { ...kr, menjawab: true, tanpa_keberatan: true };
+          }
+        }
         suara.kritikus = kr.tanpa_keberatan;
         catat({
           putaran, jenis: 'kritikus', omongan: no, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: gen.model.kritikus,
@@ -675,7 +719,14 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
           tambahanBadanKe: gen.penebak.model.map(() => gen.penebak.tambahanBadan), ambangPenalaranKe: gen.penebak.model.map(() => gen.penebak.ambang),
         });
         // Kalibrasi D-6 bisa melepas klausa "yakin ≥ 40" K-05: tolak hanya bila ≥ 2/3 benar (tak terbaca = benar).
-        if (!gen.ambang.penebakYakin) tebak = { ...tebak, lolos: tebak.benar <= 1, alasan: tebak.benar <= 1 ? '' : tebak.alasan };
+        if (kal === undefined && !gen.ambang.penebakYakin) tebak = { ...tebak, lolos: tebak.benar <= 1, alasan: tebak.benar <= 1 ? '' : tebak.alasan };
+        // M2d-8: aturan penebak menurut tingkat setelan; "dicatat" = tidak menolak.
+        if (kal !== undefined) {
+          const t0 = tebak;
+          const menolak = penebakMenolak(t0.tebakan.map((x) => ({ pilihan: x.terbaca ? x.pilihan : null, yakin: x.terbaca ? x.yakin : null, terbaca: x.terbaca })), o.kunci, aturanPenebak(kal));
+          if (menolak && kal.dicatat.includes('penebak')) catatGerbang('penebak tanpa kartu', [t0.alasan === '' ? `${String(t0.benar)}/3 memilih kunci` : t0.alasan]);
+          tebak = { ...t0, lolos: !menolak || kal.dicatat.includes('penebak'), alasan: menolak ? (t0.alasan === '' ? `${String(t0.benar)}/3 penebak tanpa kartu memilih kunci "${o.kunci}"` : t0.alasan) : '' };
+        }
         suara.tebak = tebak.lolos;
         const semuaT: PanggilanGerbang[] = tebak.tebakan.flatMap((x) => x.panggilan);
         catat({
@@ -716,7 +767,10 @@ export async function jalankanPengecoh(opsi: OpsiPengecoh): Promise<HasilPengeco
         continue;
       }
       if (!putusanAkhir(suara)) throw new Error('putusan tidak konsisten');
-      catatan.omongan.push({ no, status: 'lolos', suara, umpan: [], kartu, tebak, kritik: kr, g, gaya, dibawa: false, artefak, ikatan, pilihan_saja: pilihanSaja, perbaikan: { ...p.perbaikan } });
+      catatan.omongan.push({
+        no, status: 'lolos', suara, umpan: [], kartu, tebak, kritik: kr, g, gaya, dibawa: false, artefak, ikatan, pilihan_saja: pilihanSaja, perbaikan: { ...p.perbaikan },
+        ...(kal === undefined ? {} : { dicatat }),
+      });
       terkunci.add(no);
       p.bawa = false;
     }
