@@ -1,0 +1,221 @@
+{
+  "catatan": "TAMBAHAN — bukan putusan pra-registrasi (tidak ada omongan dikunci). Diuji: 1 = jalan versi 1 (sebab-resmi), 2 = jalan versi 2 (besaran-hitungan), 3 = soal pemanasan.",
+  "a_terbit": false,
+  "b_tebak": {
+    "lolos": 0,
+    "total": 3,
+    "syarat": "≥ 2/6 (proporsi soal manusia)",
+    "terpenuhi": false
+  },
+  "c_kartu": {
+    "lolos": 3,
+    "total": 3,
+    "terpenuhi": true
+  },
+  "d_makna": {
+    "masalah": 2,
+    "terpenuhi": false
+  },
+  "layak_tayang": false,
+  "omongan": [
+    {
+      "no": 1,
+      "kunci": "c",
+      "tebak": [
+        {
+          "id": "Q2",
+          "pilihan": "c",
+          "yakin": 50
+        },
+        {
+          "id": "Q2",
+          "pilihan": "a",
+          "yakin": 45
+        },
+        {
+          "id": "Q2",
+          "pilihan": "a",
+          "yakin": 35
+        }
+      ],
+      "lolos_tebak": false,
+      "kartu": [
+        {
+          "id": "Q2",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "Gw yakin bursa stop dagang saham Perusahaan T hari ini — soal tidak menyebut tanggal hari ini, jadi saya anggap 'hari ini' = 10 Desember 2025 (kartu terbaru)",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q2",
+          "pilihan": "c",
+          "kartu": [
+            1,
+            2
+          ],
+          "bingung": "Pesan Dita tidak menyebut tanggal. Saya anggap \"hari ini\" itu 10 Desember 2025 karena itu kartu yang paling baru. Alasan yang disebut Dita justru ada di Kartu 2, yang terbit 21 Januari 2025.",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q2",
+          "pilihan": "c",
+          "kartu": [
+            1,
+            2
+          ],
+          "bingung": "Pesan Dita tidak menyebut tanggal, jadi saya anggap 'hari ini' = 10 Desember 2025 (kartu yang paling baru).",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        }
+      ],
+      "lolos_kartu": true,
+      "masalah": []
+    },
+    {
+      "no": 2,
+      "kunci": "c",
+      "tebak": [
+        {
+          "id": "Q3",
+          "pilihan": "c",
+          "yakin": 40
+        },
+        {
+          "id": "Q3",
+          "pilihan": "c",
+          "yakin": 35
+        },
+        {
+          "id": "Q3",
+          "pilihan": "c",
+          "yakin": 50
+        }
+      ],
+      "lolos_tebak": false,
+      "kartu": [
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "",
+          "penilaian": "Gw panik nih, ini gila banget!",
+          "kunci_lain": "",
+          "tak_tercek": "ini gila banget",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "",
+          "penilaian": "ini gila banget!",
+          "kunci_lain": "",
+          "tak_tercek": "ini gila banget!",
+          "kembar": ""
+        },
+        {
+          "id": "Q1",
+          "pilihan": "c",
+          "kartu": [
+            1
+          ],
+          "bingung": "",
+          "penilaian": "ini gila banget!",
+          "kunci_lain": "",
+          "tak_tercek": "ini gila banget!",
+          "kembar": ""
+        }
+      ],
+      "lolos_kartu": true,
+      "masalah": [
+        {
+          "butir": "M2 setiap bagian klaim tercek kartu",
+          "sumber": "3/3 penguji kartu (\"tak_tercek\")"
+        },
+        {
+          "butir": "M3 tanpa penilaian investasi",
+          "sumber": "3/3 penguji kartu (\"penilaian\")"
+        }
+      ]
+    },
+    {
+      "no": 3,
+      "kunci": "b",
+      "tebak": [
+        {
+          "id": "Q1",
+          "pilihan": "b",
+          "yakin": 50
+        },
+        {
+          "id": "Q1",
+          "pilihan": "a",
+          "yakin": 45
+        },
+        {
+          "id": "Q1",
+          "pilihan": "a",
+          "yakin": 35
+        }
+      ],
+      "lolos_tebak": false,
+      "kartu": [
+        {
+          "id": "Q3",
+          "pilihan": "b",
+          "kartu": [
+            1
+          ],
+          "bingung": "Gw yakin banget bursa stop dagang saham Perusahaan T hari ini — tanggal hari ini tidak disebut, saya anggap 10 Desember 2025",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q3",
+          "pilihan": "b",
+          "kartu": [
+            1,
+            2
+          ],
+          "bingung": "Pesan Dita tidak menyebut tanggal. Saya anggap \"hari ini\" itu 10 Desember 2025 karena itu kartu yang paling baru. Alasan yang disebut Dita justru ada di Kartu 2, yang terbit 21 Januari 2025.",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        },
+        {
+          "id": "Q3",
+          "pilihan": "b",
+          "kartu": [
+            1,
+            2
+          ],
+          "bingung": "Pesan Dita tidak menyebut tanggal, jadi saya anggap 'hari ini' = 10 Desember 2025 (kartu yang paling baru).",
+          "penilaian": "",
+          "kunci_lain": "",
+          "tak_tercek": "",
+          "kembar": ""
+        }
+      ],
+      "lolos_kartu": true,
+      "masalah": []
+    }
+  ]
+}
