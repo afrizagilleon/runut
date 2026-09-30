@@ -1,0 +1,15 @@
+
+> runut@0.1.0 kalibrasi:probe
+> node --experimental-strip-types factory/llm/kalibrasi-probe.ts
+
+Pagu milestone US$2.30 (terpakai US$0.000000); pagu probe US$0.25.
+m2d8/probe/penebak/p2-o2: Wafer stop keluar 2227 (penalaran 2123) US$0.006870 — d/60 (kunci d)
+m2d8/probe/penebak/p4-o2: Wafer stop keluar 6574 (penalaran 6463) US$0.019822 — a/60 (kunci d)
+m2d8/probe/penebak/p5-o2: Wafer stop keluar 327 (penalaran 240) US$0.001155 — tak terbaca
+m2d8/probe/penebak/p6-o2: Wafer stop keluar 3876 (penalaran 3775) US$0.011748 — a/60 (kunci d)
+m2d8/probe/kritikus/p5-o2: Wafer length keluar 32000 (penalaran 32001) US$0.096508 — tak terbaca
+m2d8/probe/kritikus/p6-o2: GALAT PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag m2d8/probe/*) US$0.136102 + perkiraan maksimum US$0.150571 untuk z-ai/glm-5.3 > pagu milestone US$0.25. Panggilan tidak dikirim.
+Probe selesai: US$0.136102; milestone US$0.136102.
+  effort "high": 0 panggilan probe ditolak penyedia (4xx)
+  kritikus: keluaran selesai terpanjang 16121 (M2d-6 43 selesai + probe 0/1 selesai); ada kritikus probe yang habis di 32.000 → max_tokens 40000; ambang 1000
+  penebak: kumpulan 70 (M2d-6 Wafer 66 + probe 4), kuartil bawah 508 → ambang 250; habis token 6/76 → max_tokens 8000
