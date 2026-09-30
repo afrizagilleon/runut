@@ -315,7 +315,9 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
           });
           if (tolakR) {
             selesaiVersi('kritikus', kr.menjawab ? umpanKritik(kr) : ['kritikus tidak menjawab (dua kali)']);
-            if (!kr.menjawab) break;
+            // Tidak menjawab dua kali = versi ini ditolak; rencana TIDAK dibuang (pra-registrasi §3: ≤ 4 versi per rencana).
+            // Perbaikan sesudah jalan TIRT M2d-10: versi sebelumnya membuang rencana di sini.
+            if (!kr.menjawab) continue;
             const lok = dariKritik(kr, o).map((u) => ({ lokasi: (u.lokasi === 'pesan' ? 'pesan' : u.lokasi === 'penjelasan' ? 'penjelasan' : 'pilihan') as MasalahKode['lokasi'], alasan: `kritikus: ${u.alasan}` }));
             const tindak = await tindakLokasi(lok.length > 0 ? lok : [{ lokasi: 'pilihan', alasan: umpanKritik(kr).join(' ') }], 'kritikus');
             if (tindak === 'ganti-rencana') break;

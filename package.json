@@ -73,7 +73,7 @@
     "templat:kalibrasi": "node --experimental-strip-types factory/llm/templat/kalibrasi.ts",
     "templat:pemanasan": "node --experimental-strip-types factory/llm/templat/pemanasan.ts",
     "templat:jalan": "node --experimental-strip-types alat/penyusun/jalan-templat.ts",
-    "templat:penguji": "node --experimental-strip-types factory/llm/templat/penguji.ts"
+    "templat:penguji": "node --experimental-strip-types factory/llm/templat/uji-luar.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

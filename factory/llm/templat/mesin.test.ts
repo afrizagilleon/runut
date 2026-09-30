@@ -163,6 +163,14 @@ describe('lingkar templat dengan model palsu', () => {
     expect(h.lolos).toBe(true);
   });
 
+  it('kritikus tidak menjawab terus → rencana tidak dibuang sesudah satu versi (≤ 4 versi per rencana)', async () => {
+    const { panggil } = palsu({ kritikus: (info) => (info.omongan === 1 ? 'ngaco' : JSON.stringify({ keberatan: [], arahan: '', cek_klaim: { bagian_tak_tercek: [], kunci_menyatakan_tak_pasti: false }, cek_pilihan: { juga_benar: [], alasan: '' } })) });
+    const h = await jalankanTemplat({ paket: TIRT, panggil, setelan: S1 });
+    const pertama = h.versi.filter((v) => v.no === 1 && v.rencana === 'sebab-resmi:susp-2025-12-10');
+    expect(pertama.map((v) => v.berhenti)).toEqual(['kritikus', 'kritikus', 'kritikus', 'kritikus']);
+    expect(h.lolos).toBe(false);
+  });
+
   it('pagu tercapai → berhenti dengan alasan tertulis', async () => {
     const { PaguTercapai } = await import('../pagu.ts');
     const h = await jalankanTemplat({

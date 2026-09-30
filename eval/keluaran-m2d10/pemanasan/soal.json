@@ -1,0 +1,42 @@
+{
+  "soal_id": "pemanasan-tirt-1",
+  "kartu": [
+    "susp-2025-12-10",
+    "susp-2025-01-21"
+  ],
+  "kartu_penentu": [
+    "susp-2025-12-10"
+  ],
+  "istilah": [],
+  "pesan": {
+    "nama": "Dita",
+    "jam": "20.15",
+    "isi": "Gw yakin banget bursa stop dagang saham Perusahaan T hari ini, soalnya bursa ragu usaha Perusahaan T bisa terus jalan."
+  },
+  "tanya": "Omongan Dita cocok dengan dokumennya?",
+  "petunjuk": "Pemanasan: jawabannya ada di kartu 1. Baca alasan resmi di kartu itu, lalu cocokkan dengan omongan Dita.",
+  "pilihan": [
+    {
+      "kunci": "a",
+      "teks": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan."
+    },
+    {
+      "kunci": "b",
+      "teks": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam."
+    },
+    {
+      "kunci": "c",
+      "teks": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan."
+    },
+    {
+      "kunci": "d",
+      "teks": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+    }
+  ],
+  "jawaban": "b",
+  "penjelasan": "Yang terbaca: perdagangan saham Perusahaan T dihentikan sementara oleh bursa pada [[susp-2025-12-10|10 Desember]]. Alasan resminya kenaikan harga kumulatif yang signifikan, sebagai cooling down perlindungan investor. Karena itu, tuduhan bahwa bursa ragu usaha Perusahaan T bisa terus jalan tidak cocok untuk penghentian hari ini. Alasan keraguan kelangsungan usaha justru tercatat untuk penghentian pada [[susp-2025-01-21|21 Januari]], bukan untuk kejadian hari ini. Jadi isi yang benar: keliru, alasan resmi hari ini kenaikan harganya terlalu tajam. Yang menggoda, yaitu membenarkan karena usaha diragukan, keliru karena mencampur alasan penghentian berbeda. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini.",
+  "fact_ids": [
+    "susp-2025-01-21",
+    "susp-2025-12-10"
+  ]
+}

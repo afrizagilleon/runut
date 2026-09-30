@@ -1,0 +1,117 @@
+{
+  "id": "m2d10-tirt",
+  "kode": "TIRT",
+  "tanggal": "2025-12-10",
+  "jendela": 10,
+  "dibuat": "2026-09-30T17:36:49.208Z",
+  "tahap": "selesai",
+  "sumber_paket": {
+    "sumber": "kurasi",
+    "keterangan": "definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"
+  },
+  "sesudahnya": 108,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis (pesan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penulis (penjelasan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penyempurna struktur",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.0135
+      },
+      {
+        "peran": "penebak 1 tanpa kartu",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penebak 2 tanpa kartu",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0228
+      },
+      {
+        "peran": "penebak 3 tanpa kartu",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.0872
+      },
+      {
+        "peran": "pembaca kartu",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0324
+      },
+      {
+        "peran": "kritikus (dengan satu pemeriksaan ulang)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.7376
+      }
+    ],
+    "per_omongan_usd": 0.9475,
+    "per_putaran_usd": 2.8425,
+    "maks_putaran": 12,
+    "catatan": [
+      "Perkiraan per panggilan = 6.000 token masukan + max_tokens peran × harga daftar OpenRouter (factory/llm/harga.ts).",
+      "Per omongan = satu versi melewati semua peran sekali (dengan ulangan tebakan tak terbaca dan satu pemeriksaan ulang kritikus). Dalam praktik kritikus hanya dipanggil untuk versi yang lolos semua gerbang lain.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD."
+    ]
+  },
+  "pagu_jalan_usd": 0.86,
+  "mesin": {
+    "nama": "templat-m2d10",
+    "keterangan": "mesin templat M2d-10: struktur soal dari pola soal tayang (kunci tunggal dibuktikan kode), penulis kata DeepSeek, penyempurna Haiku 4.5, penebak campur Haiku/DeepSeek/GLM, kritikus GLM \"high\" paling akhir",
+    "palsu": false
+  },
+  "hasil": {
+    "terbit": false,
+    "berhenti": "omongan 1: rencana besaran-hitungan:kelipatan-2025-11-26-2025-12-09 habis dan tidak ada rencana pengganti; simulasi tidak terbit",
+    "putaran": 2,
+    "biaya_usd": 0.03645,
+    "biaya_ledger_usd": 0.03645,
+    "penolakan": [
+      "omongan 1 (ditolak-kritikus, putaran 2): kritikus tidak menjawab (dua kali)"
+    ]
+  },
+  "draf": null,
+  "draf_terakhir": [
+    {
+      "nama": "Tio",
+      "jam": "20.15",
+      "pesan": "Waduh, sejak 26 November harga penutupannya udah lebih dari dua kali lipat. Gw panik nih, ini gila banget!",
+      "angka_pesan": [
+        {
+          "teks": "26 November",
+          "fact_id": "kelipatan-2025-11-26-2025-12-09"
+        }
+      ],
+      "kartu": [
+        "kelipatan-2025-11-26-2025-12-09",
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "kelipatan-2025-11-26-2025-12-09"
+      ],
+      "pilihan": {
+        "c": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+        "a": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|3,51 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+        "b": "Keliru, naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]], bukan dua kali lipat.",
+        "d": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+      },
+      "kunci": "c",
+      "penjelasan": "Di kartu tertulis harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Itu yang menjawab pesan Tio: lonjakannya memang kelipatan, bukan sekadar selisih. Yang bilang naiknya cuma [[naik-2025-11-26-2025-12-09|Rp58]] keliru karena [[naik-2025-11-26-2025-12-09|Rp58]] itu selisih, bukan kelipatan. Yang bilang harga malah lebih rendah juga tidak cocok dengan angka tertulis. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+    },
+    null,
+    null
+  ],
+  "keadaan": [],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}
