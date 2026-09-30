@@ -80,3 +80,42 @@ export function klipSelubung(l: Kotak): string {
   const dalam = [a, `${px(l.kanan)} ${px(l.atas)}`, `${px(l.kanan)} ${px(l.bawah)}`, `${px(l.kiri)} ${px(l.bawah)}`, a];
   return `polygon(evenodd, ${luar}, ${dalam.join(', ')})`;
 }
+
+/** Bagian pohon DOM yang dibutuhkan `simpulDisembunyikan` (dites dengan pohon tiruan). */
+export interface Simpul {
+  readonly parentElement: Simpul | null;
+  readonly children: ArrayLike<Simpul>;
+}
+
+/**
+ * Simpul yang disembunyikan dari pembaca layar dan papan ketik (`inert` +
+ * `aria-hidden`) selama sorotan tampil: setiap saudara di sepanjang jalan dari
+ * `simpan` (panel, lapisan, sasaran) naik ke `akar`, yang tidak memuat satu
+ * pun `simpan`. Pola "sembunyikan yang lain" dialog modal, dengan satu beda:
+ * sasaran di dalam lubang TETAP hidup — kartu masih bisa dibuka, pilihan
+ * masih bisa dipilih.
+ *
+ * Isi `simpan` sendiri tidak pernah disentuh; `akar` dan leluhur `simpan`
+ * juga tidak (menyembunyikan leluhur berarti menyembunyikan panelnya).
+ */
+export function simpulDisembunyikan<S extends Simpul>(akar: S, simpan: readonly S[]): S[] {
+  const jalan = new Set<Simpul>();
+  for (const s of simpan) {
+    let kini: Simpul | null = s;
+    while (kini !== null) {
+      jalan.add(kini);
+      if (kini === akar) break;
+      kini = kini.parentElement;
+    }
+  }
+  const utuh = new Set<Simpul>(simpan);
+  const keluar: S[] = [];
+  const telusuri = (induk: Simpul): void => {
+    for (const anak of Array.from(induk.children)) {
+      if (!jalan.has(anak)) keluar.push(anak as S);
+      else if (!utuh.has(anak)) telusuri(anak);
+    }
+  };
+  if (jalan.has(akar)) telusuri(akar);
+  return keluar;
+}

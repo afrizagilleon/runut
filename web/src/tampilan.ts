@@ -217,7 +217,13 @@ export function langkahTampilan(k: KeadaanTampilan, aksi: AksiTampilan): Keadaan
         petunjuk: null,
       });
     case 'minta_petunjuk':
-      return { ...k, petunjuk: { soal_id: aksi.soal_id, ke: (k.petunjuk?.ke ?? 0) + 1 } };
+      /*
+       * M3.16: di langkah terakhir tombol petunjuk berada DI DALAM lubang
+       * sorotan dan bisa diketuk langsung. Pemandunya ikut selesai — kalau
+       * tidak, petunjuk menggulir ke kartu penentu yang masih teredup lapisan.
+       * Tanpa pemandu, `tutupPemandu` tidak mengubah apa pun.
+       */
+      return { ...tutupPemandu(k), petunjuk: { soal_id: aksi.soal_id, ke: (k.petunjuk?.ke ?? 0) + 1 } };
     case 'tutup_petunjuk':
       return k.petunjuk === null ? k : { ...k, petunjuk: null };
     case 'simulasi_selesai':

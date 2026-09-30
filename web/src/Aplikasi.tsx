@@ -2671,10 +2671,20 @@ export function LayarAkhir({
  * aslinya menyingkir), jadi tata letak layar soal tidak bergeser satu piksel
  * pun dan tidak ada yang tertutup selain yang memang biasa ditutup bilah.
  *
- * Tidak modal: pemain tetap bisa menggulir, membuka kartu, dan memilih — dan
- * memilih jawaban menutup pemandunya (`pemain_memilih`). Setiap tombol membawa
+ * Sejak M3.16 panel ini berdiri DI ATAS lapisan sorotan (`Sorotan.tsx`): sisa
+ * layar redup dan tidak menerima ketukan, kecuali benda di dalam lubang —
+ * pemain tetap bisa menggulir, membuka kartu yang disorot, dan memilih ketika
+ * pilihan yang disorot; memilih jawaban menutup pemandunya (`pemain_memilih`),
+ * begitu pula "Minta petunjuk" di dalam lubang langkah 4. Setiap tombol membawa
  * `data-uid` bernomor langkah, jadi "di langkah mana orang melewati" terbaca
  * dari peristiwa `ketuk` yang sudah ada, tanpa peristiwa baru.
+ *
+ * Fokus papan ketik (M3.16 D-2): saat panel muncul fokus pindah ke tombol
+ * utamanya (tombol yang sama di setiap langkah, jadi fokusnya tidak lompat);
+ * teks langkah menjadi deskripsinya dan tetap `aria-live`. Saat panel
+ * ditutup dan fokus ikut hilang bersama tombolnya, fokus kembali ke tempatnya
+ * semula (mis. "Cara main") — tetapi tidak pernah merebut fokus dari pilihan
+ * yang baru saja diketuk pemain.
  */
 function PanelPemandu({
   tampilan,
@@ -2688,6 +2698,18 @@ function PanelPemandu({
 }): JSX.Element | null {
   const langkahIni = langkahPemanduKini(tampilan);
   const nomor = nomorLangkah(tampilan);
+  const acuanUtama = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    const semula = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    acuanUtama.current?.focus({ preventScroll: true });
+    return () => {
+      const kini = document.activeElement;
+      const hilang = kini === null || kini === document.body || !kini.isConnected;
+      if (hilang && semula !== null && semula !== document.body && semula.isConnected) {
+        semula.focus({ preventScroll: true });
+      }
+    };
+  }, []);
   if (langkahIni === null || nomor === null || tampilan.pemandu.langkah === null) return null;
   const ke = String(tampilan.pemandu.langkah + 1);
   const terakhir = langkahTerakhir(tampilan);
@@ -2714,11 +2736,13 @@ function PanelPemandu({
           </button>
         </div>
         <div className="pemandu-badan">
-          <p className="pemandu-teks" aria-live="polite">
+          <p className="pemandu-teks" id="pemandu-teks" aria-live="polite">
             {langkahIni.teks}
           </p>
           <button
             type="button"
+            ref={acuanUtama}
+            aria-describedby="pemandu-teks"
             className="tombol-utama pemandu-lanjut"
             data-uid={terakhir ? `pemandu:selesai:${ke}` : `pemandu:lanjut:${ke}`}
             onClick={() => {

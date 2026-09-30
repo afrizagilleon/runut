@@ -122,7 +122,7 @@ async function panelMenerimaKetukan(page: Page): Promise<string[]> {
   });
 }
 
-test('E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertutup', async ({ page }) => {
+test('E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertutup, fokus di panel', async ({ page }) => {
   const galat = awasiGalat(page);
   await keLangkah(page, 1);
   for (const [n, sasaran] of SASARAN.entries()) {
@@ -158,6 +158,26 @@ test('E-63a tiap langkah: lapisan redup, lubang di atas sasaran, panel tak tertu
     expect(hit.luar, `langkah ${String(n + 1)}: tepat di luar lubang = lapisan (atau keping berselubung)`).toMatch(
       /sorotan|penanda/,
     );
+
+    /* Aksesibilitas: konten di bawah lapisan inert + aria-hidden; sasaran & panel tidak. */
+    const a11y = await page.evaluate((s) => {
+      const kepala = document.querySelector('[data-uid="keping"]');
+      const sasaranEl = document.querySelector(`[data-lubang="${s}"]`);
+      const p = document.querySelector('.pemandu');
+      const tertutup = (e: Element | null): boolean => e !== null && e.closest('[inert]') !== null;
+      return {
+        kepalaInert: tertutup(kepala) && kepala?.closest('[aria-hidden="true"]') !== null,
+        sasaranInert: tertutup(sasaranEl),
+        panelInert: tertutup(p),
+        fokusDiPanel: p !== null && p.contains(document.activeElement),
+      };
+    }, sasaran);
+    expect(a11y, `langkah ${String(n + 1)}: a11y`).toEqual({
+      kepalaInert: true,
+      sasaranInert: false,
+      panelInert: false,
+      fokusDiPanel: true,
+    });
 
     if (n < 3) await ketuk(page.locator(`[data-uid="pemandu:lanjut:${String(n + 1)}"]`));
   }
@@ -238,4 +258,33 @@ test('E-63c ketukan di luar lubang tidak menjalankan apa pun; di dalam lubang ja
   await expect(page.locator(`[data-uid="opsi:${kunci}"] input`)).toBeChecked();
   await expect(page.locator('fieldset.pilihan')).not.toHaveAttribute('disabled');
   await expect(page.locator('[data-uid="bilah:kunci"]')).toBeVisible();
+});
+
+test('E-63d "Lewati" menutup lapisan seketika di tiap langkah, tanpa sisa inert', async ({ page }) => {
+  for (const n of [1, 2, 3, 4]) {
+    await keLangkah(page, n);
+    await expect(lapisan(page)).toHaveCount(1);
+    await ketuk(page.locator(`[data-uid="pemandu:lewati:${String(n)}"]`));
+    /* Seketika: dibaca langsung sesudah ketukan, tanpa menunggu. */
+    const sisa = await page.evaluate(() => ({
+      lapisan: document.querySelectorAll('.sorotan').length,
+      inert: document.querySelectorAll('[inert]').length,
+      tersembunyi: document.querySelectorAll('[data-sorotan-sembunyi]').length,
+    }));
+    expect(sisa, `langkah ${String(n)}`).toEqual({ lapisan: 0, inert: 0, tersembunyi: 0 });
+    /* Tidak ada yang terkunci: "Cara main" di bawah pilihan bisa diketuk dan membuka pemandu lagi. */
+    await ketuk(page.locator('[data-uid="cara-main"]'));
+    await expect(panel(page)).toContainText('1 dari 4');
+  }
+});
+
+test('E-63e "Minta petunjuk" di dalam lubang langkah 4: pemandu selesai, kartu penentu ditandai', async ({ page }) => {
+  await keLangkah(page, 4);
+  await ketuk(page.locator('[data-uid="petunjuk-kartu"]'));
+  await expect(panel(page)).toHaveCount(0);
+  await expect(lapisan(page)).toHaveCount(0);
+  const ditandai = await page
+    .locator('.lembar-ditandai')
+    .evaluateAll((els) => els.map((e) => (e.getAttribute('data-uid') ?? '').replace('lembar:', '')));
+  expect(ditandai.sort()).toEqual([...(SOAL1?.kartu_penentu ?? [])].sort());
 });

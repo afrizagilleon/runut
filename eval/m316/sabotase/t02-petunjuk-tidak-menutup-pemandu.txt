@@ -1,0 +1,10 @@
+ × web/src/sorotan.test.ts > reducer: petunjuk yang diketuk di dalam sorotan menutup pemandu > "Minta petunjuk" di langkah 4: pemandu selesai, kartu ditandai
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 13 passed (14)
+    Error: expect(locator).toHaveCount(expected) failed
+    Expected: 0
+    Received: 1
+      - Expect "toHaveCount" locator('.pemandu') with timeout 15000ms
+      - waiting for locator('.pemandu')
+           - unexpected value "1"
+  1 failed

@@ -8,7 +8,9 @@
  * 1. mengukur sasaran dalam koordinat DOKUMEN (sekali per langkah, lalu tiap
  *    kali tata letak berubah: ubah ukuran, putar, kartu dibuka, huruf termuat)
  *    — bukan tiap gulir: lapisannya ikut tergulir bersama halaman;
- * 2. merender lapisannya (`aria-hidden`: ia hanya cat).
+ * 2. menyembunyikan sisa halaman dari pembaca layar dan papan ketik
+ *    (`inert` + `aria-hidden`) — sasaran, panel, dan lapisan sendiri tidak;
+ * 3. merender lapisannya (`aria-hidden`: ia hanya cat).
  *
  * Ketukan di luar lubang jatuh ke lapisan dan tidak melakukan apa pun (D-2);
  * ketukan di dalam lubang jatuh ke sasaran. Panel panduan berada di atas
@@ -19,11 +21,14 @@
  * membaca daftar berkas tetap) tidak kehilangan apa pun.
  */
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { klipSelubung, lubangDari, type Kotak } from './sorotan.ts';
+import { klipSelubung, lubangDari, simpulDisembunyikan, type Kotak } from './sorotan.ts';
 import type { SasaranSorot } from './tampilan.ts';
 
 /** `useLayoutEffect` di peramban (ukur sebelum dilukis); di render server tidak ada apa-apa. */
 const efekTataLetak = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+
+/** Tanda pada simpul yang disembunyikan komponen ini — supaya hanya itu yang dipulihkan. */
+const TANDA = 'data-sorotan-sembunyi';
 
 function sasaranDi(sasaran: SasaranSorot): Element[] {
   return [...document.querySelectorAll(`[data-lubang="${sasaran}"]`)];
@@ -90,6 +95,33 @@ export function Sorotan({ sasaran }: { sasaran: SasaranSorot }): JSX.Element {
       window.removeEventListener('resize', jadwal);
       window.removeEventListener('orientationchange', jadwal);
       pengamat?.disconnect();
+    };
+  }, [sasaran]);
+
+  /*
+   * Konten di bawah lapisan: `inert` (tidak bisa difokus, tidak bisa diketuk)
+   * dan `aria-hidden` (untuk pembaca layar yang belum mengenal `inert`).
+   * Simpul yang sudah tersembunyi sebelumnya dilewati, jadi pemulihan tidak
+   * pernah membuka sesuatu yang memang tersembunyi.
+   */
+  useEffect(() => {
+    const simpan = [acuan.current, document.querySelector('.pemandu'), ...sasaranDi(sasaran)].filter(
+      (e): e is Element => e !== null,
+    );
+    const disembunyikan = simpulDisembunyikan<Element>(document.body, simpan).filter(
+      (e) => !e.hasAttribute('inert') && e.getAttribute('aria-hidden') !== 'true',
+    );
+    for (const e of disembunyikan) {
+      e.setAttribute('inert', '');
+      e.setAttribute('aria-hidden', 'true');
+      e.setAttribute(TANDA, '');
+    }
+    return () => {
+      for (const e of disembunyikan) {
+        e.removeAttribute('inert');
+        e.removeAttribute('aria-hidden');
+        e.removeAttribute(TANDA);
+      }
     };
   }, [sasaran]);
 
