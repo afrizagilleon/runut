@@ -2446,12 +2446,28 @@ body:has(.pemandu) .halaman {
   z-index: 5;
   background: var(--selubung);
   -webkit-tap-highlight-color: transparent;
+  /*
+   * M3.16 D-3: lubang berpindah antar-langkah dengan satu peralihan --gerak
+   * (140 ms, di dalam 120–160 ms docs/desain.md dan ≤ 250 ms kontrak) —
+   * poligonnya selalu sepuluh titik, jadi bisa diinterpolasi. Kemunculan
+   * pertama tidak dianimasikan (dari tanpa klip tidak ada yang bisa
+   * diinterpolasi) dan "Lewati" melepas lapisan tanpa animasi keluar.
+   */
+  transition: clip-path var(--gerak) ease;
 }
 
 /* Penanda lubang: tanpa cat, tidak menangkap ketukan — ukuran untuk tes dan pembaca kode. */
 .sorotan-lubang {
   position: absolute;
   pointer-events: none;
+  transition: top var(--gerak) ease, left var(--gerak) ease, width var(--gerak) ease, height var(--gerak) ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sorotan,
+  .sorotan-lubang {
+    transition: none;
+  }
 }
 
 /*

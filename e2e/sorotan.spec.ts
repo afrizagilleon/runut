@@ -288,3 +288,56 @@ test('E-63e "Minta petunjuk" di dalam lubang langkah 4: pemandu selesai, kartu p
     .evaluateAll((els) => els.map((e) => (e.getAttribute('data-uid') ?? '').replace('lembar:', '')));
   expect(ditandai.sort()).toEqual([...(SOAL1?.kartu_penentu ?? [])].sort());
 });
+
+test('E-63f peralihan lubang ≤ 250 ms; prefers-reduced-motion tanpa transisi', async ({ page }) => {
+  await keLangkah(page, 1);
+  const durasi = async (): Promise<number[]> =>
+    await lapisan(page).evaluate((el) =>
+      getComputedStyle(el)
+        .transitionDuration.split(',')
+        .map((d) => (d.trim().endsWith('ms') ? parseFloat(d) / 1000 : parseFloat(d))),
+    );
+  const halus = await durasi();
+  expect(Math.max(...halus), 'ada peralihan').toBeGreaterThan(0);
+  expect(Math.max(...halus), '≤ 250 ms').toBeLessThanOrEqual(0.25);
+  expect((await jejakPeralihan(page, 1)).antara, 'lubang meluncur: ada posisi antara').toBeGreaterThan(0);
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  expect(Math.max(...(await durasi())), 'reduced-motion: tanpa transisi').toBe(0);
+  const penanda = await page.locator('.sorotan-lubang').evaluate((el) => getComputedStyle(el).transitionDuration);
+  expect(penanda.split(',').every((d) => parseFloat(d) === 0)).toBe(true);
+  expect((await jejakPeralihan(page, 2)).antara, 'reduced-motion: lubang langsung pindah').toBe(0);
+});
+
+/**
+ * Tekan "Lanjut" di langkah ke-n sambil mencatat `top` TERHITUNG penanda
+ * lubang tiap frame (nilai yang sedang dianimasikan, dalam koordinat dokumen
+ * — tidak terpengaruh gulir). `antara` = jumlah frame yang posisinya di antara
+ * awal dan akhir.
+ */
+async function jejakPeralihan(page: Page, n: number): Promise<{ antara: number; jejak: number[] }> {
+  await page.evaluate(() => {
+    const w = window as unknown as { __jejak: number[]; __henti: boolean };
+    w.__jejak = [];
+    w.__henti = false;
+    const catat = (): void => {
+      const el = document.querySelector('.sorotan-lubang');
+      if (el !== null) w.__jejak.push(parseFloat(getComputedStyle(el).top));
+      if (!w.__henti) requestAnimationFrame(catat);
+    };
+    requestAnimationFrame(catat);
+  });
+  await ketuk(page.locator(`[data-uid="pemandu:lanjut:${String(n)}"]`));
+  await expect(panel(page)).toContainText(`${String(n + 1)} dari 4`);
+  await tungguGulirBerhenti(page);
+  const jejak = await page.evaluate(() => {
+    const w = window as unknown as { __jejak: number[]; __henti: boolean };
+    w.__henti = true;
+    return w.__jejak;
+  });
+  const awal = jejak[0] ?? 0;
+  const akhir = jejak[jejak.length - 1] ?? 0;
+  const [bawah, atas] = [Math.min(awal, akhir), Math.max(awal, akhir)];
+  const antara = jejak.filter((t) => t > bawah + 1 && t < atas - 1).length;
+  return { antara, jejak };
+}
