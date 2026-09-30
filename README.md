@@ -70,7 +70,8 @@ Ada dua kasus sekarang, dan pemain tidak memilih sendiri:
 - **Kunjungan berikutnya:** kasus yang **belum** dimainkan dari peramban itu.
   Daftarnya disimpan di `localStorage` (`kasus_dimainkan`). Kalau semuanya sudah
   dimainkan, kasusnya acak lagi.
-- **"Coba simulasi lain"** (dulu "Mau coba kasus lain", M3.12) di layar terima kasih **langsung membuka** kasus
+- **Kalender simulasi** (M3.14) menggantikan tombol acak di layar terima kasih: hanya simulasi nyata yang tampil, yang sudah selesai diberi centang. Pengunjung yang kembali juga mendapat tautan kecil ke kalender di layar pertama.
+- (Sebelum M3.14) **"Coba simulasi lain"** (dulu "Mau coba kasus lain", M3.12) di layar terima kasih **langsung membuka** kasus
   berikutnya yang belum dimainkan — sesi baru, pengunjung yang sama. Kalau tidak
   ada lagi, barulah pesan penutup kasus itu tampil.
 - **`?kasus=<id>`** memaksa satu kasus, untuk juri dan untuk uji. Nilai yang
@@ -200,8 +201,9 @@ harfiah:
 > ditinggalkan, dan kesalahan teknisnya; juga jenis perangkat dan pengaturan
 > tampilan secara garis besar, jam setempat, dan asal tautan — tanpa alamat IP dan
 > tanpa identitas. Kami menyimpan satu nomor acak di browsermu supaya tahu kalau
-> kamu kembali. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang
-> kamu ketik tidak dicatat, kecuali kotak masukan ini.
+> kamu kembali, dan daftar simulasi yang sudah kamu mainkan. Bukan nama, bukan
+> akun; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak dicatat, kecuali
+> kotak masukan ini.
 
 Yang tercatat adalah perilaku di halaman, bukan orangnya:
 
@@ -317,8 +319,9 @@ menyimpan **satu** angka acak (UUID v4) di `localStorage` browser pemain:
 | `pengunjung` | satu UUID v4 acak, dibuat di browser pemain, tidak pernah dipakai di tempat lain |
 | `kunjungan_ke` | sudah berapa kali halaman ini dibuka dari browser itu |
 | `kasus_dimainkan` | daftar `kasus_id` yang sudah dimainkan dari browser itu, supaya kunjungan berikutnya mendapat kasus lain |
+| `simulasi_selesai` | daftar `kasus_id` yang sudah diselesaikan dari browser itu, untuk tanda centang di kalender simulasi (M3.14) |
 
-Kunci ketiga lahir bersama kasus kedua: tanpa daftar itu, orang yang kembali
+Kunci ketiga lahir bersama kasus kedua, kunci keempat bersama kalender simulasi: tanpa daftar itu, orang yang kembali
 besok disodori kasus yang persis sama. Isinya nama kasus, bukan jawaban —
 jawaban tidak pernah disimpan di browser pemain.
 

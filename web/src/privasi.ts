@@ -25,7 +25,7 @@ export const KALIMAT_PRIVASI =
   'ditinggalkan, dan kesalahan teknisnya; juga jenis perangkat dan pengaturan tampilan ' +
   'secara garis besar, jam setempat, dan asal tautan — tanpa alamat IP dan tanpa ' +
   'identitas. Kami menyimpan satu nomor acak di browsermu supaya tahu kalau kamu ' +
-  'kembali. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang kamu ' +
+  'kembali, dan daftar simulasi yang sudah kamu mainkan. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang kamu ' +
   'ketik tidak dicatat, kecuali kotak masukan ini.';
 
 /** Kalimat layar terima kasih (D-11). Dua janji, dan keduanya benar. */

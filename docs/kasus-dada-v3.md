@@ -55,7 +55,7 @@ Disalin persis dari kontrak M3.9 D-4 dan dijaga huruf demi huruf oleh `factory/k
 **Kartu 2 — `kelipatan-2025-08-01-2025-10-08`** (turunan) · *Dihitung dari data harga*
 > **Rp8** pada **1 Agustus**, **Rp178** hari ini: naik **22 kali**.
 
-**Judul pertanyaan:** Omongan Bayu cocok dengan dokumennya?
+**Judul pertanyaan:** Menurut dokumennya, omongan Bayu betul atau keliru? (M3.13; dulu "Omongan Bayu cocok dengan dokumennya?" — 16/40 pemain memilih jebakan c)
 
 - a. Betul, pengumuman bursanya soal investor asing.
 - **b. Keliru, pengumumannya soal laporan keuangan telat.** ← jawaban
@@ -99,6 +99,6 @@ Kenapa berubah: di uji K-06, penguji yang sampai di kartu soal 1 lama "belum tah
 ## Layar akhir dan pesan penutup
 
 Seperti v2, dengan dua perubahan:
-- Kalimat di bawah tombol Selesai (diperbarui M3.8 D-9, karena yang dicatat bertambah): *Kami mencatat apa yang diketuk, seberapa jauh layar digulir, kapan halaman ditinggalkan, dan kesalahan teknisnya; juga jenis perangkat dan pengaturan tampilan secara garis besar, jam setempat, dan asal tautan — tanpa alamat IP dan tanpa identitas. Kami menyimpan satu nomor acak di browsermu supaya tahu kalau kamu kembali. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak dicatat, kecuali kotak masukan ini.* Layar terima kasih: "Jawabanmu tercatat tanpa nama dan tanpa akun." Klaim "tanpa cookie" tidak dipakai di mana pun: nomor acak itu memang bukan cookie, tetapi janji tidak boleh terdengar lebih bersih dari kenyataannya.
+- Kalimat di bawah tombol Selesai (diperbarui M3.8 D-9, karena yang dicatat bertambah; M3.14 menambah daftar simulasi yang dimainkan): *Kami mencatat apa yang diketuk, seberapa jauh layar digulir, kapan halaman ditinggalkan, dan kesalahan teknisnya; juga jenis perangkat dan pengaturan tampilan secara garis besar, jam setempat, dan asal tautan — tanpa alamat IP dan tanpa identitas. Kami menyimpan satu nomor acak di browsermu supaya tahu kalau kamu kembali, dan daftar simulasi yang sudah kamu mainkan. Bukan nama, bukan akun; tidak dibagikan ke siapa pun. Teks yang kamu ketik tidak dicatat, kecuali kotak masukan ini.* Layar terima kasih: "Jawabanmu tercatat tanpa nama dan tanpa akun." Klaim "tanpa cookie" tidak dipakai di mana pun: nomor acak itu memang bukan cookie, tetapi janji tidak boleh terdengar lebih bersih dari kenyataannya.
 - Pesan penutup (M4): **Tidak semua saham seperti ini.** Simulasi berikutnya: perusahaan yang membagi dividen tiap tahun. Selamat belajar membaca data. (M3.12: dulu "Kasus berikutnya: … membaca data, folks.") Sejak M4 ia tinggal di medan `penutup` berkas kasus, bukan di kode komponen, dan hanya tampil ketika tidak ada lagi kasus yang belum dimainkan — kalau masih ada, tombol "Coba simulasi lain" langsung membukanya.
 - Pembukaan (M3.12, lewat `factory/kasus/dada-2025-10-08.ts`): "tanggal kasus" → **tanggal simulasi** di tiga kalimat (`paragraf[1]` "Sehari sesudah tanggal simulasi, …", `paragraf[2]` "… yang terbit sesudah tanggal simulasi …", `bisa_dibaca[2]` "… sebelum tanggal simulasi …"); "Harga tertinggi kasus ini" → **Harga tertinggi di simulasi ini**; "jejak verifikasi kasus ini" → **jejak verifikasi simulasi ini**; `paragraf[3]` "Rantai laporan itu sendiri tidak bersih." → **Laporan-laporan itu sendiri tidak bersih.** Teks soal 1–3 tidak berubah.
