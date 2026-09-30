@@ -85,4 +85,4 @@ export const MODEL_PERAN_M2D5: Readonly<Record<PeranModel, ModelOpenRouter>> = {
 export const MODEL_PENEBAK_M2D5: readonly ModelOpenRouter[] = [MODEL_OR_DEEPSEEK, MODEL_OR_DEEPSEEK, MODEL_OR_GLM];
 
 /** Model yang boleh dipanggil M2d-5. */
-export const MODEL_M2D5: readonly ModelOpenRouter[] = MODEL_OPENROUTER;
+export const MODEL_M2D5: readonly ModelOpenRouter[] = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM];
