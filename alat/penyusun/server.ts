@@ -23,6 +23,7 @@ import { PAGU_PENYUSUN_BAWAAN, jalurBukuKas, ringkasBiaya } from './biaya.ts';
 import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
 import { pengambilPalsu } from './palsu.ts';
+import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
 
 /** Satu-satunya alamat yang boleh didengar. Tidak bisa diubah lewat argumen. */
@@ -249,6 +250,20 @@ daftarRute('POST', '/api/ambil-data', async (_req, res, { keadaan, badan }) => {
   keadaan.gudang.lupakan();
   o.log(`ambil data ${kode}: ${String(hasil.kredit_dipakai)} kredit; ${hasil.berhenti ?? 'selesai'}`);
   kirimJson(res, 200, { kode, ...hasil, ada_data: keadaan.gudang.emiten(kode) !== null });
+});
+
+/** D-3: validasi tanggal ketikan (alasan awam + tawaran hari bursa terdekat). */
+daftarRute('POST', '/api/periksa-tanggal', (_req, res, { keadaan, badan }) => {
+  const b = bacaBadanObyek(badan);
+  const kode = wajibKode(b['kode']);
+  const jendela = wajibJendela(b['jendela']);
+  const data = keadaan.gudang.emiten(kode);
+  if (data === null) throw new GalatPermintaan(404, `Data ${kode} belum ada di cache.`);
+  const hasil = periksaTanggal(typeof b['tanggal'] === 'string' ? b['tanggal'] : '', data, keadaan.gudang.kalender(), {
+    jendela,
+    hariIni: keadaan.opsi.jam().toISOString().slice(0, 10),
+  });
+  kirimJson(res, 200, { emiten: kode, jendela, ...hasil });
 });
 
 daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {

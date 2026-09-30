@@ -223,7 +223,43 @@ async function cariHari(kode, jendela) {
 
 function pilihHari(tanggal) {
   $('tanggal').value = tanggal;
-  $('form-tanggal').requestSubmit();
+  periksaTanggal(tanggal, true);
+}
+
+/* ------------------------------------------------------------------ */
+/* 2 · validasi tanggal                                                */
+/* ------------------------------------------------------------------ */
+
+async function periksaTanggal(tanggal, lanjutBilaSah) {
+  const isi = kosongkan($('tanggal-isi'));
+  try {
+    const r = await api('/api/periksa-tanggal', { kode: keadaan.kode, tanggal, jendela: keadaan.jendela });
+    if (!r.sah) {
+      isi.append(el('div', { kelas: 'kotak-catatan tolak', 'data-kode': r.kode },
+        el('p', {}, r.alasan),
+        r.tawaran.length > 0
+          ? el('p', {}, 'Hari bursa terdekat: ', r.tawaran.map((t) => el('button', {
+              kelas: 'tombol', type: 'button', onclick: () => { $('tanggal').value = t.tanggal; periksaTanggal(t.tanggal, false); },
+            }, `${t.arah} · ${tanggalId(t.tanggal)}${t.sah ? '' : ' (juga tidak sah)'}`)))
+          : null,
+      ));
+      return;
+    }
+    isi.append(el('div', { kelas: 'kotak-catatan lolos' },
+      el('p', {}, r.alasan),
+      r.peristiwa.map((p) => el('p', { kelas: 'meta' }, p)),
+      el('button', { kelas: 'tombol tombol-utama', type: 'button', onclick: () => siapkanJalan(r.tanggal) }, `Bekukan ${tanggalId(r.tanggal)}: siapkan paket fakta (gratis)`),
+    ));
+    if (lanjutBilaSah) siapkanJalan(r.tanggal);
+  } catch (e) {
+    isi.append(el('p', { kelas: 'tidak' }, e.message));
+  }
+}
+
+async function siapkanJalan(tanggal) {
+  // T-04: tahapan data → aturan → paket, lalu perkiraan biaya.
+  kosongkan($('tahap-ringkas')).append(`Hari dipilih: ${tanggalId(tanggal)}.`);
+  $('langkah-tahap').hidden = false;
 }
 
 /* ------------------------------------------------------------------ */
@@ -231,6 +267,10 @@ function pilihHari(tanggal) {
 /* ------------------------------------------------------------------ */
 
 window.addEventListener('DOMContentLoaded', () => {
+  $('form-tanggal').addEventListener('submit', (e) => {
+    e.preventDefault();
+    periksaTanggal($('tanggal').value.trim(), false);
+  });
   $('form-kode').addEventListener('submit', (e) => {
     e.preventDefault();
     cariHari($('kode').value.trim().toUpperCase(), Number($('jendela').value || 10));
