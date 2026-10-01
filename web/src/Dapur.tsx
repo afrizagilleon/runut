@@ -234,8 +234,8 @@ function Draf({ jalan }: { jalan: JalanDapur }): JSX.Element | null {
     <>
       <h3>Draf yang lolos</h3>
       <p>
-        Tiga omongan ini lolos semua penjaga di atas, lalu diuji lagi oleh penguji luar (subagent Claude Opus
-        baru).{' '}
+        Tiga omongan ini lolos semua penjaga di atas, lalu diuji lagi oleh penguji AI terpisah di luar
+        lingkar.{' '}
         {luar !== null && (
           <>
             Tanpa kartu, {angkaId(luar.tebak_benar)} dari {angkaId(luar.tebak_n)} tebakan kena kunci; dengan
