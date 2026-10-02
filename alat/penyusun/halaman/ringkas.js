@@ -93,6 +93,7 @@ export function nomorTahap(p) {
 /** Sebab berhenti yang pendek untuk papan: "pagu", "batas versi", atau kalimat log pertama. */
 export function sebabBerhenti(berhenti) {
   const b = String(berhenti || '');
+  if (b.startsWith('terpotong pagu: PaguMilestoneTercapai')) return 'pagu milestone';
   if (b.startsWith('pagu tercapai') || b.startsWith('terpotong pagu')) return 'pagu';
   if (b.startsWith('batas')) return 'batas versi';
   if (b.startsWith('paket hanya memberi')) return 'paket terlalu tipis';
@@ -231,7 +232,7 @@ export function ringkasPapan(daftar) {
     }
     if (t.kunci === 'penyetuju' && hasil !== null && !hasil.terbit) {
       keadaan = 'lewat';
-      catatan = 'tidak ada draf';
+      catatan = 'draf tidak terbit';
     }
     if (t.kunci === 'penyetuju' && hasil !== null && hasil.terbit && sedang === 'hasil') {
       keadaan = 'sedang';

@@ -59,7 +59,7 @@ export const MAKS_TOKEN_KRITIKUS_DEMO = 16_000;
  * alur penuh muat ≤ 150 d. Setiap jeda tetap diumumkan di layar
  * ("Dipercepat ×N: jeda asli …, diputar …").
  */
-export const RUMUS_JEDA_DEMO = { ...RUMUS_JEDA, MIN_MS: 450, BATAS_MS: 1_100 } as const;
+export const RUMUS_JEDA_DEMO = { ...RUMUS_JEDA, MIN_MS: 550, BATAS_MS: 1_250 } as const;
 /** Folder hasil uji ulang sungguhan yang disimpan (diputar ulang tanpa panggilan). */
 export const FOLDER_SIMPAN_BAWAAN = fileURLToPath(new URL('./rekaman/uji-ulang/', import.meta.url));
 
@@ -492,6 +492,8 @@ export interface StatusOmongan {
   berhenti_jalan: string;
   alasan_jalan: string[];
   disunting: boolean;
+  /** Sidik teks omongan SEKARANG (untuk membedakan hasil uji ulang teks lama). */
+  sidik: string;
   kode: HasilKode | null;
   /** Hasil gerbang AI untuk teks SEKARANG (sidik sama), bila ada. */
   ai: HasilAi | null;
@@ -704,7 +706,7 @@ export class Demo {
       else if (kode === null || !kode.lolos) ket = 'disunting; gerbang kode masih menolak';
       else if (ai === null) ket = 'disunting; gerbang kode lolos; gerbang AI belum diuji ulang';
       else ket = ai.lolos ? 'disunting; lolos gerbang kode dan gerbang AI (uji ulang)' : `disunting; gerbang AI menolak (${ai.berhenti})`;
-      return { no: t.no, versi_jalan: t.versi, lulus_jalan: t.lulus_jalan, berhenti_jalan: t.berhenti, alasan_jalan: t.alasan, disunting, kode, ai, lolos_sekarang: lolos, keterangan: ket };
+      return { no: t.no, versi_jalan: t.versi, lulus_jalan: t.lulus_jalan, berhenti_jalan: t.berhenti, alasan_jalan: t.alasan, disunting, sidik: sidikOmongan(o), kode, ai, lolos_sekarang: lolos, keterangan: ket };
     });
   }
 

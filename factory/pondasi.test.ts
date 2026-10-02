@@ -67,6 +67,8 @@ describe('pondasi proyek', () => {
     const M2D11 = ['patokan:cacat', 'patokan:uji-ulang', 'patokan:jalan', 'patokan:pemanasan', 'patokan:audit', 'patokan:laporan'];
     // M2d-13 D-A: analisis gratis data M2d-11 (atribusi penulis, matriks penulis × penebak).
     const M2D13 = ['penulis:analisis-lama', 'penulis:jalan', 'penulis:audit', 'penulis:mutu', 'penulis:laporan'];
+    // M2d-14 D-4: perekam alur penuh mode demo pintu penyusun.
+    const M2D14 = ['penyusun:rekam-alur'];
     const skrip = Object.keys(paket.scripts).sort();
     for (const wajib of [...M1, ...M32, ...M33, ...A3, ...M2A]) {
       expect(skrip).toContain(wajib);
@@ -92,6 +94,7 @@ describe('pondasi proyek', () => {
         !M2D10.includes(s) &&
         !M2D11.includes(s) &&
         !M2D13.includes(s) &&
+        !M2D14.includes(s) &&
         !M4A.includes(s),
     );
     expect(takDikenal).toEqual([]);

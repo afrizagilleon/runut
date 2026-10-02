@@ -577,6 +577,7 @@ const JALUR_CATATAN = fileURLToPath(new URL('./rekaman/catatan.json', import.met
 /** Catatan sesudah jalan (bukan bagian log) untuk satu id, bila ada. */
 interface CatatanRekaman {
   konteks: string | null;
+  batas_gerbang: string | null;
   konteks_singkat: string | null;
   persetujuan: string | null;
   sesudah: string[];
@@ -584,10 +585,10 @@ interface CatatanRekaman {
 }
 
 function catatanRekaman(id: string): CatatanRekaman {
-  if (!existsSync(JALUR_CATATAN)) return { konteks: null, konteks_singkat: null, persetujuan: null, sesudah: [], sumber: null };
+  if (!existsSync(JALUR_CATATAN)) return { konteks: null, batas_gerbang: null, konteks_singkat: null, persetujuan: null, sesudah: [], sumber: null };
   const semua = JSON.parse(readFileSync(JALUR_CATATAN, 'utf8')) as { jalan?: Record<string, Partial<CatatanRekaman>> };
   const c = semua.jalan?.[id];
-  return { konteks: c?.konteks ?? null, konteks_singkat: c?.konteks_singkat ?? null, persetujuan: c?.persetujuan ?? null, sesudah: c?.sesudah ?? [], sumber: c?.sumber ?? null };
+  return { konteks: c?.konteks ?? null, batas_gerbang: c?.batas_gerbang ?? null, konteks_singkat: c?.konteks_singkat ?? null, persetujuan: c?.persetujuan ?? null, sesudah: c?.sesudah ?? [], sumber: c?.sumber ?? null };
 }
 
 /** Status rekaman untuk halaman (semua dari log + keadaan.json jalan; catatan terpisah). */

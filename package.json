@@ -70,6 +70,7 @@
     "audit:gudang": "node --experimental-strip-types alat/audit-gudang.ts",
     "audit:paket": "node --experimental-strip-types alat/audit-paket.ts",
     "penyusun": "node --experimental-strip-types alat/penyusun/server.ts",
+    "penyusun:rekam-alur": "node alat/penyusun/rekam-alur.mjs",
     "templat:kalibrasi": "node --experimental-strip-types factory/llm/templat/kalibrasi.ts",
     "templat:pemanasan": "node --experimental-strip-types factory/llm/templat/pemanasan.ts",
     "templat:jalan": "node --experimental-strip-types alat/penyusun/jalan-templat.ts",

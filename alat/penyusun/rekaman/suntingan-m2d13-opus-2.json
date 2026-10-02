@@ -2,11 +2,11 @@
   "keterangan": "Suntingan penyetuju untuk mode demo M2d-14 (npm run penyusun -- --demo eval/penyusun/m2d13-opus-2 --draf akhir --suntingan alat/penyusun/rekaman/suntingan-m2d13-opus-2.json). Putaran 1 = isian reviewer (penyetuju, mewakili pemilik) apa adanya; angka yang ada di kartu omongan ini ditulis sebagai rujukan [[fact_id|teks]] (bentuk yang diperiksa gerbang) — teks yang dilihat pemain sama dengan isian reviewer. Label pengecoh dan umpan balik tidak diubah: jenis kesalahan dan nomor kartunya tetap cocok dengan pilihan baru. Putaran berikutnya hanya ditambahkan bila uji ulang menolak (maks 2), berupa usulan suntingan kecil eksekutor berdasarkan alasan gerbang.",
   "jalan": "m2d13-opus-2",
   "draf": "akhir",
-  "penyetuju": "reviewer (mewakili pemilik sebagai penyetuju)",
+  "penyetuju": "reviewer (agen Claude, mewakili pemilik sebagai penyetuju)",
   "putaran": [
     {
       "ke": 1,
-      "oleh": "reviewer (penyetuju, mewakili pemilik)",
+      "oleh": "reviewer (agen Claude, penyetuju mewakili pemilik)",
       "alasan": "Angka penentu hanya di kartu: pesan tanpa Rp48/Rp106 (2,21 bisa dihitung dari keduanya); satu klausa per pilihan; kunci tetap posisi b.",
       "ubah": [
         {
@@ -38,7 +38,7 @@
     },
     {
       "ke": 2,
-      "oleh": "eksekutor (usulan suntingan penyetuju ke-2, berdasar alasan gerbang)",
+      "oleh": "eksekutor (agen Claude; usulan suntingan penyetuju ke-2 dari alasan gerbang)",
       "alasan": "Gerbang kode menolak suntingan ke-1. (1) Pilihan d memuat angka 9 yang tidak ada di kartu omongan ini (ANGKA_TANPA_RUJUKAN; angka-di-kartu) dan membuat angka pilihan 58 / 2,21 / 2,21 / 9 tidak urut (D9): angka dibuang, kembali ke klausa versi agen \"bertahap, bukan sekaligus\". (2) D5: kunci \"pusat\" berbagi 5 unsur dengan pilihan lain (pengecoh tertinggi 3): \"mencatat\" diganti \"menyebut\" supaya kunci tidak meniru pilihan a. (3) Validator seluruh draf: huruf kunci ketiga omongan sama (b): isi pilihan b dan c ditukar sehingga kunci omongan 2 pindah ke c. Ini menyimpang dari \"kunci tetap posisi b\" di putaran 1 karena gerbang menuntutnya; isi pilihan tidak berubah.",
       "ubah": [
         {
@@ -62,7 +62,7 @@
     },
     {
       "ke": 3,
-      "oleh": "eksekutor (usulan suntingan penyetuju ke-3, berdasar alasan gerbang; suntingan terakhir yang diizinkan)",
+      "oleh": "eksekutor (agen Claude; usulan suntingan penyetuju ke-3 dari alasan gerbang, terakhir yang diizinkan)",
       "alasan": "Uji ulang gerbang AI sesudah suntingan ke-2 menolak di penebak: tanpa kartu, penebak memilih isi kunci terlalu sering (pesan+pilihan 11/12; pilihan saja: DeepSeek dan GLM ≥ 3/4 rotasi). Pengecoh \"dihitung sejak awal tahun\" langsung gugur oleh pesan (\"sejak akhir November\"), jadi tinggal satu \"Betul\". Usulan: dua pilihan \"Betul\" dibuat setara dan hanya bisa dibedakan dengan tanggal di kartu hitungan (sampai kemarin = 9 Desember, bukan sampai hari ini); umpan balik pengecoh dan satu kalimat penjelasan disesuaikan.",
       "ubah": [
         {

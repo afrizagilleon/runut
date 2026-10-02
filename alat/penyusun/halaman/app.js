@@ -8,7 +8,7 @@
 // hanya menambah penanda rekaman dan penanda jeda (event `tayang`).
 import {
   hariId, labelPeristiwa, nomorTahap, teksBerhenti, lama, ringkasPapan, statusPeristiwa, tanggalId,
-  judulTanpaAwalan, teksHasil, teksJeda, teksRekaman, teksStatus, usd, usdBiaya,
+  judulTanpaAwalan, teksHasil, teksJeda, teksRekaman, teksStatus, usd, usdBiaya, alasanSingkat,
   teksModeDemo, teksTransisiDemo, teksSumberUji, TEKS_AI_BELUM, waktuWib,
 } from './ringkas.js';
 
@@ -166,6 +166,8 @@ function siapkanDemo(s) {
   t.hidden = false;
   kosongkan(t).append(el('span', { kelas: 'demo-label' }, 'Mode demo'), el('span', {}, teksModeDemo(d).replace(/^Mode demo\. /, '')));
   pasangPenandaLangsung(d, 'input');
+  const judul = document.querySelector('.kepala-judul .meta');
+  if (judul) judul.textContent = `Runut Agent menyusun satu simulasi dari data bursa: data → 33 aturan → paket fakta → persetujuan biaya → agen AI menulis dan diuji gerbang → penyetuju. Di demo ini peran penyetuju dimainkan ${d.penyetuju}; suntingannya diketik otomatis oleh perekam dari berkas. Berjalan di komputer ini saja (127.0.0.1).`;
 }
 
 /**
@@ -207,11 +209,42 @@ function mulaiTayangDemo(d) {
   gambarPapan();
   ikutiTerbaru($('transisi-demo'));
   sambungAliran(keadaan.jalan, tampilkanPeristiwa, () => {
-    keadaan.fase = 'penyetuju';
-    document.documentElement.dataset.fase = 'penyetuju';
-    pasangPenandaLangsung(d);
+    // Log selesai diputar: hasil & catatan di bawahnya masih bagian rekaman. Penanda baru
+    // berganti ke "Langsung" saat panel penyetuju masuk layar (pantauPanelPenyetuju).
+    keadaan.fase = 'hasil';
+    document.documentElement.dataset.fase = 'hasil';
+    const j = $('rekaman-jeda');
+    if (j) j.textContent = 'Log selesai diputar.';
     muatJalan(keadaan.jalan);
   });
+}
+
+/** Panel penyetuju masuk layar → fase penyetuju (langsung). Sebelum itu penanda tetap "Rekaman". */
+function pantauPanelPenyetuju() {
+  if (keadaan.pantau || !keadaan.rekamanAgen) return;
+  const panel = $('langkah-penyetuju');
+  const masuk = () => {
+    if (keadaan.fase !== 'hasil') return;
+    keadaan.fase = 'penyetuju';
+    document.documentElement.dataset.fase = 'penyetuju';
+    pasangPenandaLangsung(keadaan.rekamanAgen);
+    gambarPapan();
+  };
+  keadaan.pantau = new IntersectionObserver((xs) => { if (xs.some((x) => x.isIntersecting)) masuk(); }, { rootMargin: '0px 0px -50% 0px' });
+  keadaan.pantau.observe(panel);
+}
+
+/** Penanda uji ulang tersimpan: hanya data uji ulang itu (bukan konteks jalan agen). */
+function pasangPenandaUji(u) {
+  const tandaR = $('rekaman');
+  tandaR.hidden = false;
+  tandaR.dataset.jenis = 'rekaman';
+  kosongkan(tandaR).append(
+    el('span', { kelas: 'rekaman-label' }, 'Rekaman'),
+    el('span', { kelas: 'rekaman-isi' }, el('b', {}, `Uji ulang gerbang AI sungguhan, ${waktuWib(u.waktu_uji)}`),
+      el('span', { kelas: 'rekaman-tambahan' }, ` · biaya nyata ${usdBiaya(u.biaya_ledger_usd)} · diputar dari catatan, tanpa panggilan baru`)),
+    el('span', { kelas: 'rekaman-jeda', id: 'rekaman-jeda', 'aria-live': 'off' }, ''),
+  );
 }
 
 /** Keping kalender: hari yang dibekukan, seperti di layar pemain. */
@@ -431,7 +464,9 @@ function bukaJalan(id) {
   $('papan').hidden = false;
   kosongkan($('tahap'));
   kosongkan($('persetujuan-biaya'));
-  $('tahap-ringkas').textContent = `Jalan ${id}. Setiap baris adalah satu peristiwa log, urut seperti terjadi; teksnya apa adanya dari log ("putaran" di log lama = versi). "+n d" = waktu asli sejak baris sebelumnya.`;
+  $('tahap-ringkas').textContent = keadaan.demo
+    ? 'Tahap 1–4 dijalankan sekarang di folder sementara (tidak disimpan ke eval/). Sesudah persetujuan, baris-baris berikutnya adalah log jalan rekaman apa adanya. "+n d" = waktu asli sejak baris sebelumnya.'
+    : `Jalan ${id}. Setiap baris adalah satu peristiwa log, urut seperti terjadi; teksnya apa adanya dari log ("putaran" di log lama = versi). "+n d" = waktu asli sejak baris sebelumnya.`;
   gambarPapan();
   sambungAliran(id, tampilkanPeristiwa, () => muatJalan(id));
 }
@@ -601,6 +636,7 @@ function gambarPapan() {
     // Mode demo: draf yang tidak terbit di log tetap dibuka penyetuju (langsung) untuk disunting & diuji ulang.
     r.tahap = r.tahap.map((t) => (t.kunci === 'penyetuju' ? { ...t, keadaan: 'sedang', catatan: 'langsung (demo)' } : t));
   }
+  const dd = keadaan.demo && keadaan.fase === 'penyetuju' ? keadaan.dataDemo : null;
   kosongkan($('papan-tahap')).append(...r.tahap.map((t, i) => el('li', { kelas: `langkah ${t.keadaan}`, 'data-langkah': t.kunci, 'aria-current': t.keadaan === 'sedang' ? 'step' : null },
     el('span', { kelas: 'langkah-no' }, String(i + 1)),
     el('span', { kelas: 'langkah-nama' }, t.nama,
@@ -608,13 +644,32 @@ function gambarPapan() {
       t.kunci === 'perkiraan' && r.pagu !== null ? el('span', { kelas: 'langkah-rincian' }, ` · pagu ${usd(r.pagu)}`) : null),
     el('span', { kelas: 'langkah-keadaan' }, t.catatan),
   )));
+  if (dd) {
+    // Fase penyetuju: omongan yang disunting memakai status penyetuju, bukan status akhir di log.
+    r.omongan = r.omongan.map((o) => {
+      const s = dd.status_omongan.find((x) => x.no === o.no);
+      return s && s.disunting ? { no: o.no, keadaan: s.lolos_sekarang ? 'dikunci' : 'tolak', teks: `disunting penyetuju: ${s.keterangan.replace(/^disunting; /, '')}`, ditolak: null } : o;
+    });
+  }
   kosongkan($('papan-omongan')).append(...r.omongan.map((o) => el('li', { kelas: `omongan-${o.keadaan}` },
     el('span', { kelas: 'omongan-no' }, `Omongan ${o.no}`),
     el('span', {}, o.keadaan === 'dikunci' ? `✓ ${o.teks}` : o.keadaan === 'tolak' ? `✗ ${o.teks}` : o.teks),
     o.ditolak ? el('span', { kelas: 'omongan-ditolak' }, o.ditolak) : null)));
   const g = $('papan-gerbang');
   kosongkan(g);
-  if (r.gerbang.length === 0) {
+  if (dd) {
+    // Penyetuju (langsung): gerbang untuk omongan yang disunting, bukan gerbang terakhir di log.
+    const s = dd.status_omongan.find((x) => x.disunting) || dd.status_omongan.find((x) => !x.lulus_jalan);
+    $('papan-gerbang-judul').textContent = `Penyetuju · omongan ${s.no}`;
+    const ai = dd.uji_ulang.filter((u) => u.omongan === s.no && u.selesai && u.sidik === s.sidik).at(-1);
+    const baris = [
+      { st: s.kode ? (s.kode.lolos ? 'lolos' : 'tolak') : 'info', nama: s.kode ? 'gerbang kode — langsung' : 'gerbang kode — belum ada suntingan', alasan: s.kode && !s.kode.lolos ? `${s.kode.menolak.length + s.kode.seluruh_draf.length} alasan` : '' },
+      { st: ai && ai.hasil ? (ai.hasil.lolos ? 'lolos' : 'tolak') : 'info', nama: `gerbang AI — ${ai ? `uji ulang ${ai.ke} (rekaman uji sungguhan)` : 'belum diuji ulang untuk teks ini'}`, alasan: ai && ai.hasil && !ai.hasil.lolos ? `ditolak ${ai.hasil.berhenti}` : '' },
+      { st: dd.putusan ? (dd.putusan.putusan === 'disetujui' ? 'lolos' : 'tolak') : 'info', nama: `putusan — ${dd.putusan ? (dd.putusan.putusan === 'disetujui' ? 'disetujui' : 'ditolak') : 'belum'}`, alasan: '' },
+    ];
+    g.append(el('ol', { kelas: 'daftar-gerbang' }, baris.map((x) => el('li', { kelas: `gerbang ${x.st}` },
+      el('span', { kelas: 'tanda-status' }, teksStatus(x.st) || '—'), el('span', { kelas: 'gerbang-nama' }, x.nama), x.alasan ? el('span', { kelas: 'gerbang-alasan' }, x.alasan) : null))));
+  } else if (r.gerbang.length === 0) {
     g.append(el('p', { kelas: 'meta' }, r.tahap.find((t) => t.kunci === 'agen').keadaan === 'belum' ? 'Agen AI belum mulai.' : '—'));
   } else {
     $('papan-gerbang-judul').textContent = `Gerbang versi ${r.versi}${r.omonganAktif ? ` · omongan ${r.omonganAktif}` : ''}`;
@@ -634,6 +689,7 @@ function gambarPapan() {
     ].filter(Boolean).join(' · ')),
     r.hasil && r.hasil.ledger !== null ? el('p', { kelas: 'meta' }, `Dicocokkan ke ledger di akhir jalan: ${usdBiaya(r.hasil.ledger)}.`) : null,
     r.hasil && !r.hasil.terbit && r.hasil.berhenti ? el('p', { kelas: 'papan-berhenti' }, `Berhenti (dari log): ${teksBerhenti(r.hasil.berhenti)}`) : null,
+    dd && dd.uji_ulang.length > 0 ? el('p', { kelas: 'papan-uji' }, `Uji ulang gerbang AI oleh penyetuju: ${usdBiaya(dd.uji_ulang.reduce((a, u) => a + (u.biaya_ledger_usd || 0), 0))} nyata (${dd.uji_ulang.length} uji ulang sungguhan, diputar dari catatan).`) : null,
   ].filter(Boolean));
   $('papan-ringkas').textContent = r.hasil
     ? (r.hasil.terbit ? 'Selesai: terbit, menunggu penyetuju.' : 'Selesai: tidak terbit.')
@@ -908,14 +964,21 @@ function formSuntingDemo(d, no) {
   const o = d.draf[no - 1];
   const pilih = el('select', { id: `lokasi-demo-${no}`, 'aria-label': `bagian omongan ${no} yang disunting` }, LOKASI_DEMO.map(([v, t]) => el('option', { value: v }, t)));
   const area = el('textarea', { id: `teks-demo-${no}`, rows: '3', spellcheck: 'false', 'aria-label': `teks baru omongan ${no}` });
-  const isiUlang = () => { area.value = teksLokasiDemo(o, pilih.value); };
+  const pratinjau = el('p', { kelas: 'pratinjau-demo', id: `pratinjau-demo-${no}` });
+  const segarkan = () => { pratinjau.textContent = `Tampil ke pemain: ${polos(area.value)}`; };
+  const isiUlang = () => { area.value = teksLokasiDemo(o, pilih.value); keadaan.lokasiDemo = pilih.value; segarkan(); };
+  pilih.value = keadaan.lokasiDemo || 'pesan';
   pilih.addEventListener('change', isiUlang);
+  area.addEventListener('input', segarkan);
   isiUlang();
   const simpan = el('button', { kelas: 'tombol tombol-utama', type: 'button', id: `simpan-demo-${no}` }, 'Simpan dan uji gerbang kode');
   simpan.addEventListener('click', () => kirimDemo('/api/demo/sunting', { omongan: no, lokasi: pilih.value, teks: area.value }));
   const x = el('select', { id: `tukar-x-${no}`, 'aria-label': 'pilihan pertama yang ditukar' }, ['a', 'b', 'c', 'd'].map((h) => el('option', { value: h }, h)));
   const y = el('select', { id: `tukar-y-${no}`, 'aria-label': 'pilihan kedua yang ditukar' }, ['a', 'b', 'c', 'd'].map((h) => el('option', { value: h }, h)));
-  y.value = 'c';
+  x.value = keadaan.tukarX || 'a';
+  y.value = keadaan.tukarY || 'c';
+  x.addEventListener('change', () => { keadaan.tukarX = x.value; });
+  y.addEventListener('change', () => { keadaan.tukarY = y.value; });
   const tukar = el('button', { kelas: 'tombol', type: 'button', id: `tukar-demo-${no}` }, 'Tukar isi');
   tukar.addEventListener('click', () => kirimDemo('/api/demo/sunting', { omongan: no, tukar: [x.value, y.value] }));
   return el('div', { kelas: 'sunting-demo', 'data-sunting-demo': no },
@@ -923,6 +986,7 @@ function formSuntingDemo(d, no) {
       el('label', { for: `lokasi-demo-${no}` }, 'Bagian'), pilih,
       el('span', { kelas: 'tukar-demo' }, el('span', { kelas: 'meta' }, 'Tukar isi pilihan'), x, el('span', { kelas: 'meta' }, '↔'), y, tukar)),
     area,
+    pratinjau,
     el('p', { kelas: 'meta' }, 'Angka yang ada di kartu ditulis [[kartu|teks]]; pemain hanya melihat teksnya.'),
     el('p', {}, simpan),
     el('p', { id: 'pesan-demo', 'aria-live': 'polite' }));
@@ -934,7 +998,7 @@ function kotakGerbangKode(d, no) {
   const kotak = el('div', { kelas: 'gerbang-demo', id: `gerbang-kode-${no}`, 'data-gerbang': 'kode' },
     el('h3', {}, 'Gerbang kode', el('span', { kelas: 'meta' }, ' · langsung, gratis, diuji ulang tiap suntingan')));
   if (!k) {
-    kotak.append(el('p', { kelas: 'meta' }, `Belum ada suntingan. Di log, versi ${s.versi_jalan} omongan ini ditolak: ${(s.alasan_jalan[0] || '').slice(0, 160)}`));
+    kotak.append(el('p', { kelas: 'meta' }, `Belum ada suntingan. Di log, versi ${s.versi_jalan} omongan ini ditolak: ${alasanSingkat(s.alasan_jalan[0] || '', 200)}`));
     return kotak;
   }
   const tolak = [...k.menolak.map((m) => `${m.sumber}: ${m.alasan}`), ...k.seluruh_draf.map((m) => `validator seluruh draf: ${m}`)];
@@ -955,7 +1019,9 @@ function kotakGerbangAi(d, no) {
   for (const u of uji) {
     const h = u.hasil;
     kotak.append(el('div', { kelas: 'uji-demo', 'data-uji': u.ke, 'data-sumber': u.sumber },
-      el('p', { kelas: 'meta sumber-uji' }, `Uji ulang ${u.ke}: ${teksSumberUji(u)}`),
+      u.sumber === 'tersimpan' ? el('p', { kelas: 'lencana-uji' }, el('span', { kelas: 'rekaman-label' }, 'Rekaman'), ` Uji ulang ${u.ke} · ${waktuWib(u.waktu_uji)}`) : null,
+      u.sidik !== s.sidik ? el('p', { kelas: 'meta teks-lama' }, 'Hasil ini untuk teks sebelumnya (sudah diganti); teks sekarang belum diuji ulang di uji ini.') : null,
+      el('p', { kelas: 'sumber-uji' }, `Uji ulang ${u.ke}: ${teksSumberUji(u)}`),
       !u.selesai ? el('p', { kelas: 'meta' }, 'Berjalan…')
         : h && h.lolos ? el('p', { kelas: 'ok' }, '✓ lolos penebak, pembaca kartu, dan kritikus')
           : el('p', { kelas: 'tidak' }, `✗ ditolak ${h ? h.berhenti : ''}: ${h && h.alasan[0] ? (h.alasan[0].length > 200 ? `${h.alasan[0].slice(0, 199)}…` : h.alasan[0]) : ''}`)));
@@ -985,9 +1051,7 @@ function kotakGerbangAi(d, no) {
 /** Aliran uji ulang gerbang AI: baris peristiwa di kotak gerbang AI; hasil tersimpan diberi penanda rekaman. */
 function sambungUjiDemo(u) {
   if (keadaan.sumberUji) keadaan.sumberUji.close();
-  if (u.sumber === 'tersimpan' && keadaan.demo) {
-    pasangPenandaRekaman(keadaan.demo, `Rekaman uji ulang gerbang AI, ${waktuWib(u.waktu_uji)}`);
-  }
+  if (u.sumber === 'tersimpan' && keadaan.demo) pasangPenandaUji(u);
   document.documentElement.dataset.nomorUji = '0';
   document.documentElement.dataset.uji = 'berjalan';
   keadaan.barisUji = [];
@@ -1035,9 +1099,12 @@ function sambungUjiDemo(u) {
 function tampilkanPenyetujuDemo(d) {
   keadaan.dataDemo = d;
   $('langkah-penyetuju').hidden = false;
+  // Jangkar gulir: blok suntingan tetap di tempat yang sama di layar sesudah panel digambar ulang.
+  const jangkar = document.querySelector('.blok-sunting');
+  const atasLama = jangkar ? jangkar.getBoundingClientRect().top : null;
   const isi = kosongkan($('penyetuju-isi'));
   isi.append(el('p', { kelas: 'catatan-demo', 'data-demo': 'penyetuju' },
-    el('b', {}, 'Langsung. '), `Penyetuju: ${d.penyetuju}. Suntingannya diambil dari berkas ${d.berkas_suntingan} dan diketik di halaman ini; setiap suntingan dicatat dan diuji ulang oleh gerbang yang sama.`));
+    el('b', {}, 'Langsung. '), `Peran penyetuju di demo ini: ${d.penyetuju}. Suntingan ke-2 dan ke-3 adalah usulan eksekutor (agen Claude) dari alasan gerbang. Semua diambil dari berkas ${d.berkas_suntingan} dan diketik otomatis oleh perekam; setiap suntingan dicatat dan diuji ulang oleh gerbang yang sama.`));
   isi.append(el('ol', { kelas: 'status-omongan-demo', id: 'status-omongan-demo' }, d.status_omongan.map((s) => el('li', { kelas: s.lolos_sekarang ? 'ok-baris' : 'tidak-baris', 'data-omongan': s.no },
     el('b', {}, `Omongan ${s.no}`), el('span', { kelas: s.lolos_sekarang ? 'ok' : 'tidak' }, s.lolos_sekarang ? ' ✓ ' : ' ✗ '), s.keterangan))));
   if (d.putusan) {
@@ -1046,6 +1113,7 @@ function tampilkanPenyetujuDemo(d) {
       el('p', { kelas: `cap ${setuju ? 'cap-cocok' : 'cap-belum'}` }, setuju ? 'Disetujui (demo)' : 'Tidak disetujui (demo)'),
       setuju ? null : el('p', {}, `Alasan penyetuju: ${d.putusan.alasan}`),
       el('p', {}, `Diputus ${waktuWib(d.putusan.waktu)}. Ditulis ke ${d.putusan.berkas}: bukan cases/, tidak dipasang ke produk.`)));
+    isi.append(ringkasanAlurDemo(d));
   }
   const disunting = d.status_omongan.filter((s) => !s.lulus_jalan || s.disunting).map((s) => s.no);
   for (const no of disunting) {
@@ -1088,10 +1156,31 @@ function tampilkanPenyetujuDemo(d) {
         el('td', {}, `omongan ${x.omongan}, ${x.lokasi}`),
         el('td', {}, el('del', {}, polos(x.dari)), ' → ', el('ins', {}, polos(x.ke_teks)), x.catatan.length > 0 ? el('span', { kelas: 'meta' }, ` (${x.catatan.join('; ')})`) : null))))));
   }
+  const jangkarBaru = document.querySelector('.blok-sunting');
+  if (atasLama !== null && jangkarBaru) window.scrollBy(0, jangkarBaru.getBoundingClientRect().top - atasLama);
+  pantauPanelPenyetuju();
   document.documentElement.dataset.demoSunting = String(d.suntingan.length);
   document.documentElement.dataset.demoBoleh = d.boleh.boleh ? '1' : '0';
   document.documentElement.dataset.demoPutusan = d.putusan ? '1' : '0';
   gambarPapan();
+}
+
+/** Ringkasan penutup: semua dari log, catatan, dan keadaan demo (tanpa angka karangan). */
+function ringkasanAlurDemo(d) {
+  const ra = keadaan.rekamanAgen || keadaan.demo;
+  const tolakKode = new Set(d.suntingan.filter((x) => x.putaran !== null).map((x) => x.putaran)).size - d.uji_ulang.length;
+  const ai = d.uji_ulang.filter((u) => u.hasil);
+  const angka = ai.map((u) => (/kunci (\d+\/12)/.exec(u.hasil.alasan[0] || '') || [])[1]).filter(Boolean);
+  const biayaUji = d.uji_ulang.reduce((a, u) => a + (u.biaya_ledger_usd || 0), 0);
+  const setuju = d.putusan && d.putusan.putusan === 'disetujui';
+  return el('div', { kelas: 'ringkasan-demo', id: 'ringkasan-demo' },
+    el('h3', {}, 'Ringkasan alur ini'),
+    el('ul', {},
+      el('li', {}, `Agen AI (jalan nyata ${ra.id}, diputar dari log): biaya asli ${usdBiaya(ra.biaya_asli_usd)}, tidak terbit. ${ra.catatan && ra.catatan.konteks ? ra.catatan.konteks : ''}`),
+      el('li', {}, `Penyetuju (diperankan agen Claude): ${d.putaran_berkas.length} putaran suntingan; gerbang kode menolak ${Math.max(0, tolakKode)}×, gerbang AI menolak ${ai.filter((u) => !u.hasil.lolos).length}×${angka.length > 0 ? ` (tanpa kartu, penebak memilih kunci ${angka.join(' lalu ')})` : ''}.`),
+      el('li', {}, `Uji ulang gerbang AI sungguhan: ${usdBiaya(biayaUji)} (ledger), diputar di rekaman ini tanpa panggilan baru. Total biaya model alur ini: ${usdBiaya((ra.biaya_asli_usd || 0) + biayaUji)}.`),
+      el('li', {}, setuju ? 'Putusan: disetujui (demo). Draf tidak dipasang ke produk.' : 'Putusan: ditolak. Omongan 2 yang masih bisa ditebak tanpa kartu tidak sampai ke pemain.'),
+      ra.catatan && ra.catatan.batas_gerbang ? el('li', {}, ra.catatan.batas_gerbang) : null));
 }
 
 /* ------------------------------------------------------------------ */
