@@ -1,0 +1,967 @@
+{
+  "benih": "m2d13-audit-opus",
+  "butir": [
+    {
+      "id_buta": "b01",
+      "jalan": "m2d13-haiku-2",
+      "penulis": "haiku",
+      "no": 3,
+      "versi": 3,
+      "lulus": false
+    },
+    {
+      "id_buta": "b02",
+      "jalan": "m2d13-opus-2",
+      "penulis": "opus",
+      "no": 2,
+      "versi": 2,
+      "lulus": false
+    },
+    {
+      "id_buta": "b03",
+      "jalan": "m2d13-opus-1",
+      "penulis": "opus",
+      "no": 2,
+      "versi": 2,
+      "lulus": false
+    },
+    {
+      "id_buta": "b04",
+      "jalan": "m2d13-opus-2",
+      "penulis": "opus",
+      "no": 3,
+      "versi": 2,
+      "lulus": true
+    },
+    {
+      "id_buta": "b05",
+      "jalan": "m2d13-haiku-1",
+      "penulis": "haiku",
+      "no": 2,
+      "versi": 3,
+      "lulus": false
+    },
+    {
+      "id_buta": "b06",
+      "jalan": "m2d13-opus-1",
+      "penulis": "opus",
+      "no": 3,
+      "versi": 2,
+      "lulus": false
+    },
+    {
+      "id_buta": "b07",
+      "jalan": "m2d13-haiku-2",
+      "penulis": "haiku",
+      "no": 1,
+      "versi": 3,
+      "lulus": false
+    },
+    {
+      "id_buta": "b08",
+      "jalan": "m2d13-haiku-1",
+      "penulis": "haiku",
+      "no": 3,
+      "versi": 3,
+      "lulus": false
+    },
+    {
+      "id_buta": "b09",
+      "jalan": "m2d13-opus-1",
+      "penulis": "opus",
+      "no": 1,
+      "versi": 2,
+      "lulus": false
+    },
+    {
+      "id_buta": "b10",
+      "jalan": "m2d13-haiku-1",
+      "penulis": "haiku",
+      "no": 1,
+      "versi": 3,
+      "lulus": false
+    },
+    {
+      "id_buta": "b11",
+      "jalan": "m2d13-opus-2",
+      "penulis": "opus",
+      "no": 1,
+      "versi": 2,
+      "lulus": true
+    },
+    {
+      "id_buta": "b12",
+      "jalan": "m2d13-haiku-2",
+      "penulis": "haiku",
+      "no": 2,
+      "versi": 3,
+      "lulus": false
+    }
+  ],
+  "berkas": [
+    {
+      "nama": "b01--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, harga naik dari Rp48 menjadi Rp106 tetapi itu beda rupiah saja.",
+            "b": "Keliru, periode kenaikan itu adalah Oktober bukan November sampai Desember.",
+            "c": "Betul, harga mencapai 2,21 kali dari Rp48.",
+            "d": "Betul, bursa setop karena dokumen menyebut peningkatan harga signifikan."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b01--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Betul, bursa setop karena dokumen menyebut peningkatan harga signifikan.",
+            "b": "Keliru, harga naik dari Rp48 menjadi Rp106 tetapi itu beda rupiah saja.",
+            "c": "Keliru, periode kenaikan itu adalah Oktober bukan November sampai Desember.",
+            "d": "Betul, harga mencapai 2,21 kali dari Rp48."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b01--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, harga mencapai 2,21 kali dari Rp48.",
+            "b": "Betul, bursa setop karena dokumen menyebut peningkatan harga signifikan.",
+            "c": "Keliru, harga naik dari Rp48 menjadi Rp106 tetapi itu beda rupiah saja.",
+            "d": "Keliru, periode kenaikan itu adalah Oktober bukan November sampai Desember."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b01--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Keliru, periode kenaikan itu adalah Oktober bukan November sampai Desember.",
+            "b": "Betul, harga mencapai 2,21 kali dari Rp48.",
+            "c": "Betul, bursa setop karena dokumen menyebut peningkatan harga signifikan.",
+            "d": "Keliru, harga naik dari Rp48 menjadi Rp106 tetapi itu beda rupiah saja."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Keliru, naiknya Rp58, belum sampai dua kali lipat.",
+            "b": "Betul, kartu hitungan mencatat 2,21 kali penutupan awal.",
+            "c": "Betul, kelipatan 2,21 kali itu dihitung sejak awal tahun.",
+            "d": "Keliru, kenaikan Rp58 itu terjadi bertahap, bukan sekaligus."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, kenaikan Rp58 itu terjadi bertahap, bukan sekaligus.",
+            "b": "Keliru, naiknya Rp58, belum sampai dua kali lipat.",
+            "c": "Betul, kartu hitungan mencatat 2,21 kali penutupan awal.",
+            "d": "Betul, kelipatan 2,21 kali itu dihitung sejak awal tahun."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Betul, kelipatan 2,21 kali itu dihitung sejak awal tahun.",
+            "b": "Keliru, kenaikan Rp58 itu terjadi bertahap, bukan sekaligus.",
+            "c": "Keliru, naiknya Rp58, belum sampai dua kali lipat.",
+            "d": "Betul, kartu hitungan mencatat 2,21 kali penutupan awal."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, kartu hitungan mencatat 2,21 kali penutupan awal.",
+            "b": "Betul, kelipatan 2,21 kali itu dihitung sejak awal tahun.",
+            "c": "Keliru, kenaikan Rp58 itu terjadi bertahap, bukan sekaligus.",
+            "d": "Keliru, naiknya Rp58, belum sampai dua kali lipat."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, kenaikannya Rp48, bukan Rp106.",
+            "b": "Betul, kenaikannya Rp58 sampai harga Rp106.",
+            "c": "Betul, harganya naik dari Rp48 sampai Rp106.",
+            "d": "Keliru, kenaikannya Rp58, bukan Rp106."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Keliru, kenaikannya Rp58, bukan Rp106.",
+            "b": "Keliru, kenaikannya Rp48, bukan Rp106.",
+            "c": "Betul, kenaikannya Rp58 sampai harga Rp106.",
+            "d": "Betul, harganya naik dari Rp48 sampai Rp106."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, harganya naik dari Rp48 sampai Rp106.",
+            "b": "Keliru, kenaikannya Rp58, bukan Rp106.",
+            "c": "Keliru, kenaikannya Rp48, bukan Rp106.",
+            "d": "Betul, kenaikannya Rp58 sampai harga Rp106."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Betul, kenaikannya Rp58 sampai harga Rp106.",
+            "b": "Betul, harganya naik dari Rp48 sampai Rp106.",
+            "c": "Keliru, kenaikannya Rp58, bukan Rp106.",
+            "d": "Keliru, kenaikannya Rp48, bukan Rp106."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b04--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b04",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, angka itu tercatat di kartu volume hari ini.",
+            "b": "Keliru, kartu volume hari ini mencatat tidak ada transaksi.",
+            "c": "Betul, bursa menyetopnya karena transaksinya terlalu ramai.",
+            "d": "Keliru, angka itu milik kartu volume akhir November."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b04--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b04",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, angka itu milik kartu volume akhir November.",
+            "b": "Betul, angka itu tercatat di kartu volume hari ini.",
+            "c": "Keliru, kartu volume hari ini mencatat tidak ada transaksi.",
+            "d": "Betul, bursa menyetopnya karena transaksinya terlalu ramai."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b04--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b04",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Betul, bursa menyetopnya karena transaksinya terlalu ramai.",
+            "b": "Keliru, angka itu milik kartu volume akhir November.",
+            "c": "Betul, angka itu tercatat di kartu volume hari ini.",
+            "d": "Keliru, kartu volume hari ini mencatat tidak ada transaksi."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b04--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b04",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Keliru, kartu volume hari ini mencatat tidak ada transaksi.",
+            "b": "Betul, bursa menyetopnya karena transaksinya terlalu ramai.",
+            "c": "Keliru, angka itu milik kartu volume akhir November.",
+            "d": "Betul, angka itu tercatat di kartu volume hari ini."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b05--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b05",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Keliru, kedua penghentian terjadi karena hal yang mirip satu sama lain.",
+            "b": "Betul, penghentian Januari terjadi karena keraguan atas kelangsungan usaha.",
+            "c": "Betul, penghentian hari ini juga disebabkan keraguan fundamental.",
+            "d": "Keliru, penghentian Januari adalah respons atas keraguan fundamental, tidak sama dengan hari ini."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b05--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b05",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, penghentian Januari adalah respons atas keraguan fundamental, tidak sama dengan hari ini.",
+            "b": "Keliru, kedua penghentian terjadi karena hal yang mirip satu sama lain.",
+            "c": "Betul, penghentian Januari terjadi karena keraguan atas kelangsungan usaha.",
+            "d": "Betul, penghentian hari ini juga disebabkan keraguan fundamental."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b05--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b05",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Betul, penghentian hari ini juga disebabkan keraguan fundamental.",
+            "b": "Keliru, penghentian Januari adalah respons atas keraguan fundamental, tidak sama dengan hari ini.",
+            "c": "Keliru, kedua penghentian terjadi karena hal yang mirip satu sama lain.",
+            "d": "Betul, penghentian Januari terjadi karena keraguan atas kelangsungan usaha."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b05--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b05",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, penghentian Januari terjadi karena keraguan atas kelangsungan usaha.",
+            "b": "Betul, penghentian hari ini juga disebabkan keraguan fundamental.",
+            "c": "Keliru, penghentian Januari adalah respons atas keraguan fundamental, tidak sama dengan hari ini.",
+            "d": "Keliru, kedua penghentian terjadi karena hal yang mirip satu sama lain."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b06--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b06",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Keliru, angka nol itu tercatat untuk 9 Desember 2025.",
+            "b": "Betul, angka nol itu tercatat untuk 10 Desember 2025.",
+            "c": "Keliru, angka besar itu tercatat untuk 26 November 2025.",
+            "d": "Betul, angka besar itu tercatat untuk 26 November 2025."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b06--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b06",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Betul, angka besar itu tercatat untuk 26 November 2025.",
+            "b": "Keliru, angka nol itu tercatat untuk 9 Desember 2025.",
+            "c": "Betul, angka nol itu tercatat untuk 10 Desember 2025.",
+            "d": "Keliru, angka besar itu tercatat untuk 26 November 2025."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b06--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b06",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, angka besar itu tercatat untuk 26 November 2025.",
+            "b": "Betul, angka besar itu tercatat untuk 26 November 2025.",
+            "c": "Keliru, angka nol itu tercatat untuk 9 Desember 2025.",
+            "d": "Betul, angka nol itu tercatat untuk 10 Desember 2025."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b06--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b06",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, angka nol itu tercatat untuk 10 Desember 2025.",
+            "b": "Keliru, angka besar itu tercatat untuk 26 November 2025.",
+            "c": "Betul, angka besar itu tercatat untuk 26 November 2025.",
+            "d": "Keliru, angka nol itu tercatat untuk 9 Desember 2025."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b07--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b07",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, penghentian hari ini alasannya keraguan atas kelangsungan usaha.",
+            "b": "Betul, pengumuman bursa menyebut peningkatan harga signifikan sebagai alasan.",
+            "c": "Betul, dokumen hari ini menulis cooling down untuk melindungi investor.",
+            "d": "Keliru, penghentian saat harga naik sama seperti penghentian di bulan lain."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b07--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b07",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, penghentian saat harga naik sama seperti penghentian di bulan lain.",
+            "b": "Keliru, penghentian hari ini alasannya keraguan atas kelangsungan usaha.",
+            "c": "Betul, pengumuman bursa menyebut peningkatan harga signifikan sebagai alasan.",
+            "d": "Betul, dokumen hari ini menulis cooling down untuk melindungi investor."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b07--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b07",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, dokumen hari ini menulis cooling down untuk melindungi investor.",
+            "b": "Keliru, penghentian saat harga naik sama seperti penghentian di bulan lain.",
+            "c": "Keliru, penghentian hari ini alasannya keraguan atas kelangsungan usaha.",
+            "d": "Betul, pengumuman bursa menyebut peningkatan harga signifikan sebagai alasan."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b07--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b07",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, pengumuman bursa menyebut peningkatan harga signifikan sebagai alasan.",
+            "b": "Betul, dokumen hari ini menulis cooling down untuk melindungi investor.",
+            "c": "Keliru, penghentian saat harga naik sama seperti penghentian di bulan lain.",
+            "d": "Keliru, penghentian hari ini alasannya keraguan atas kelangsungan usaha."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b08--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b08",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, hitungan Siti mencocok dengan catatan kenaikan nominal harga.",
+            "b": "Keliru, Rp58 adalah angka kelipatan harga, bukan kenaikan.",
+            "c": "Betul, periode dari 26 November ke 9 Desember tepat.",
+            "d": "Keliru, angka itu milik penghentian hari ini, bukan kenaikan harga periode itu."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b08--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b08",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Keliru, angka itu milik penghentian hari ini, bukan kenaikan harga periode itu.",
+            "b": "Betul, hitungan Siti mencocok dengan catatan kenaikan nominal harga.",
+            "c": "Keliru, Rp58 adalah angka kelipatan harga, bukan kenaikan.",
+            "d": "Betul, periode dari 26 November ke 9 Desember tepat."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b08--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b08",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Betul, periode dari 26 November ke 9 Desember tepat.",
+            "b": "Keliru, angka itu milik penghentian hari ini, bukan kenaikan harga periode itu.",
+            "c": "Betul, hitungan Siti mencocok dengan catatan kenaikan nominal harga.",
+            "d": "Keliru, Rp58 adalah angka kelipatan harga, bukan kenaikan."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b08--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b08",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, Rp58 adalah angka kelipatan harga, bukan kenaikan.",
+            "b": "Betul, periode dari 26 November ke 9 Desember tepat.",
+            "c": "Keliru, angka itu milik penghentian hari ini, bukan kenaikan harga periode itu.",
+            "d": "Betul, hitungan Siti mencocok dengan catatan kenaikan nominal harga."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b09--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b09",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, alasan itu tercatat di pengumuman penghentian hari ini.",
+            "b": "Keliru, alasan itu tercatat di pengumuman penghentian awal tahun.",
+            "c": "Betul, alasan itu tercatat di pengumuman hari ini dan awal tahun.",
+            "d": "Keliru, alasan itu tercatat di jadwal rapat pemegang saham."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b09--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b09",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, alasan itu tercatat di jadwal rapat pemegang saham.",
+            "b": "Betul, alasan itu tercatat di pengumuman penghentian hari ini.",
+            "c": "Keliru, alasan itu tercatat di pengumuman penghentian awal tahun.",
+            "d": "Betul, alasan itu tercatat di pengumuman hari ini dan awal tahun."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b09--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b09",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Betul, alasan itu tercatat di pengumuman hari ini dan awal tahun.",
+            "b": "Keliru, alasan itu tercatat di jadwal rapat pemegang saham.",
+            "c": "Betul, alasan itu tercatat di pengumuman penghentian hari ini.",
+            "d": "Keliru, alasan itu tercatat di pengumuman penghentian awal tahun."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b09--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b09",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Keliru, alasan itu tercatat di pengumuman penghentian awal tahun.",
+            "b": "Betul, alasan itu tercatat di pengumuman hari ini dan awal tahun.",
+            "c": "Keliru, alasan itu tercatat di jadwal rapat pemegang saham.",
+            "d": "Betul, alasan itu tercatat di pengumuman penghentian hari ini."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b10--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b10",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "b": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+            "c": "Betul, cooling down adalah nama resmi tindakan bursa hari ini.",
+            "d": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b10--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b10",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "b": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "c": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+            "d": "Betul, cooling down adalah nama resmi tindakan bursa hari ini."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b10--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b10",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Betul, cooling down adalah nama resmi tindakan bursa hari ini.",
+            "b": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "c": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "d": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b10--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b10",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+            "b": "Betul, cooling down adalah nama resmi tindakan bursa hari ini.",
+            "c": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "d": "Betul, alasan resminya peningkatan harga untuk perlindungan investor."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b11--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b11",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, penghentian awal tahun juga karena harga naik tajam.",
+            "b": "Keliru, penghentian awal tahun karena bursa ragu usahanya berlanjut.",
+            "c": "Betul, keduanya disebut bursa sebagai perlindungan bagi investor.",
+            "d": "Keliru, kartu awal tahun itu jadwal rapat, bukan penghentian."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b11--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b11",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, kartu awal tahun itu jadwal rapat, bukan penghentian.",
+            "b": "Betul, penghentian awal tahun juga karena harga naik tajam.",
+            "c": "Keliru, penghentian awal tahun karena bursa ragu usahanya berlanjut.",
+            "d": "Betul, keduanya disebut bursa sebagai perlindungan bagi investor."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b11--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b11",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Betul, keduanya disebut bursa sebagai perlindungan bagi investor.",
+            "b": "Keliru, kartu awal tahun itu jadwal rapat, bukan penghentian.",
+            "c": "Betul, penghentian awal tahun juga karena harga naik tajam.",
+            "d": "Keliru, penghentian awal tahun karena bursa ragu usahanya berlanjut."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b11--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b11",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Keliru, penghentian awal tahun karena bursa ragu usahanya berlanjut.",
+            "b": "Betul, keduanya disebut bursa sebagai perlindungan bagi investor.",
+            "c": "Keliru, kartu awal tahun itu jadwal rapat, bukan penghentian.",
+            "d": "Betul, penghentian awal tahun juga karena harga naik tajam."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b12--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b12",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, kedua penghentian tahun ini punya alasan yang berbeda.",
+            "b": "Keliru, penghentian kedua bukan karena harga naik tetapi perubahan manajemen.",
+            "c": "Keliru, penghentian Januari juga alasannya harga naik seperti hari ini.",
+            "d": "Betul, dokumen bursa mencatat dua alasan penghentian berlainan tahun ini."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b12--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b12",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, dokumen bursa mencatat dua alasan penghentian berlainan tahun ini.",
+            "b": "Betul, kedua penghentian tahun ini punya alasan yang berbeda.",
+            "c": "Keliru, penghentian kedua bukan karena harga naik tetapi perubahan manajemen.",
+            "d": "Keliru, penghentian Januari juga alasannya harga naik seperti hari ini."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b12--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b12",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, penghentian Januari juga alasannya harga naik seperti hari ini.",
+            "b": "Betul, dokumen bursa mencatat dua alasan penghentian berlainan tahun ini.",
+            "c": "Betul, kedua penghentian tahun ini punya alasan yang berbeda.",
+            "d": "Keliru, penghentian kedua bukan karena harga naik tetapi perubahan manajemen."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b12--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b12",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, penghentian kedua bukan karena harga naik tetapi perubahan manajemen.",
+            "b": "Keliru, penghentian Januari juga alasannya harga naik seperti hari ini.",
+            "c": "Betul, dokumen bursa mencatat dua alasan penghentian berlainan tahun ini.",
+            "d": "Betul, kedua penghentian tahun ini punya alasan yang berbeda."
+          }
+        }
+      ]
+    }
+  ]
+}

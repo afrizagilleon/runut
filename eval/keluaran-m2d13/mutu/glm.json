@@ -1,0 +1,423 @@
+{
+  "setelan": {
+    "suhu": 0,
+    "maxTokens": 16000,
+    "tambahanBadan": {
+      "reasoning": {
+        "effort": "medium"
+      }
+    },
+    "ambangPenalaran": 500
+  },
+  "model": "z-ai/glm-5.3",
+  "biaya_tag_usd": 0.04166695079999999,
+  "hasil": [
+    {
+      "id_buta": "m01",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dari kartu (2,21 kali), pengecoh mewakili salah baca yang wajar (kelipatan mirip, selisih vs kelipatan, arah kenaikan), penjelasan menunjuk kartu dan meluruskan kekeliruan, bahasa santai, dan kunci tunggal yang benar.\"}",
+          "token_penalaran": 71,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0010346016,
+          "sah": false,
+          "alasan": "penalaran 71 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut pembacaan kartu untuk membedakan kelipatan (2,21) dari selisih (Rp58), pengecohnya mewakili salah baca yang umum, dan penjelasannya menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 63,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0008851428,
+          "sah": false,
+          "alasan": "penalaran 63 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m02",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut pembandingan dua kartu penghentian dengan tanggal dan alasan berbeda, pengecohnya mewakili salah baca umum, dan penjelasannya menunjuk bagian kartu yang menentu serta meluruskan salah kaprah.\"}",
+          "token_penalaran": 1,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0007092344,
+          "sah": false,
+          "alasan": "penalaran 1 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemula mencocokkan omongan teman dengan isi kartu (membedakan dua penghentian dengan alasan berbeda), pengecohnya mewakili salah baca tanggal dan salah baca alasan, dan penjelasannya menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 80,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0009848216,
+          "sah": false,
+          "alasan": "penalaran 80 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m03",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut membaca kedua kartu untuk membandingkan penyebab penghentian, pengecohnya mewakili salah baca umum (menganggap semua penghentian sama-sama fundamental), dan penjelasan menunjuk bagian kartu yang menentukan sambil meluruskan salah kaprah.\"}",
+          "token_penalaran": 315,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0018240391,
+          "sah": false,
+          "alasan": "penalaran 315 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membandingkan dua kartu untuk melihat perbedaan alasan penghentian, pengecohnya diagnostik (termasuk jebakan label 'Keliru' dengan isi benar), penjelasan menunjuk kedua kartu, dan kunci tunggal benar sesuai kartu.\"}",
+          "token_penalaran": 230,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0015103147,
+          "sah": false,
+          "alasan": "penalaran 230 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m04",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membandingkan dua kartu penghentian dengan alasan berbeda, pengecohnya mewakili salah baca yang wajar, dan penjelasannya menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 60,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0009147063,
+          "sah": false,
+          "alasan": "penalaran 60 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut pembandingan dua kartu penghentian dengan alasan berbeda, pengecohnya mewakili salah baca yang wajar, dan penjelasannya menunjuk bagian kartu secara tepat.\"}",
+          "token_penalaran": 1,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0006761103,
+          "sah": false,
+          "alasan": "penalaran 1 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m05",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membandingkan dua kartu penghentian dengan tanggal dan alasan berbeda, pengecohnya mewakili salah baca yang wajar, dan penjelasannya menunjuk bagian kartu penentu.\"}",
+          "token_penalaran": 66,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.000931539,
+          "sah": false,
+          "alasan": "penalaran 66 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membandingkan dua kartu penghentian dengan tanggal dan alasan berbeda, pengecohnya mewakili salah baca yang wajar, dan penjelasannya menunjuk bagian kartu penentu dengan jelas.\"}",
+          "token_penalaran": 66,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0009161346,
+          "sah": false,
+          "alasan": "penalaran 66 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m06",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 0}, \"layak_tayang\": false, \"alasan\": \"Pilihan b juga benar menurut kartu (pengumuman memang menyebut peningkatan harga signifikan sebagai alasan), sehingga ada dua jawaban benar dan kunci c tidak tunggal.\"}",
+          "token_penalaran": 194,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.001316932,
+          "sah": false,
+          "alasan": "penalaran 194 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 1, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 0}, \"layak_tayang\": false, \"alasan\": \"Pilihan b juga benar menurut kartu (pengumuman memang menyebut peningkatan harga signifikan sebagai alasan), sehingga ada dua kunci dan soal tidak bisa ditayangkan sebelum diperbaiki.\"}",
+          "token_penalaran": 187,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0012845776,
+          "sah": false,
+          "alasan": "penalaran 187 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m07",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 1}, \"layak_tayang\": true, \"alasan\": \"Soal melatih pencocokan tanggal-vs-angka dengan pengecoh yang mewakili salah baca umum, tetapi \"kemarin\" tidak dijangkar eksplisit pada kartu mana pun sehingga pembaca bisa menafsirkan hari terbaru sebagai 8 Desember dan menganggap jawaban b/d juga masuk akal.\"}",
+          "token_penalaran": 423,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0021619835,
+          "sah": false,
+          "alasan": "tak terbaca"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 1, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 1}, \"layak_tayang\": true, \"alasan\": \"Soal melatih pencocokan tanggal dan angka dengan kartu secara jelas, tetapi pengecoh a memakai angka Rp89 yang tidak ada di kartu dan kata 'kemarin' sedikit ambigu soal tanggal acuannya, sehingga perlu sedikit perbaikan sebelum ditayangkan.\"}",
+          "token_penalaran": 214,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0014087555,
+          "sah": false,
+          "alasan": "penalaran 214 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m08",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan lewat kartu (Rp106 − Rp48 = Rp58), pengecoh mewakili salah baca yang wajar (kelipatan harga, setengah benar soal periode, salah istilah), penjelasan menunjuk bagian kartu yang menentukan, dan bahasanya ramah pemula.\"}",
+          "token_penalaran": 141,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0012238354,
+          "sah": false,
+          "alasan": "penalaran 141 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal mengharuskan pemain membaca kartu untuk memverifikasi hitungan kenaikan harga, pengecohnya mewakili salah baca yang wajar, dan penjelasannya mengajar dengan menunjuk bagian kartu yang menentu.\"}",
+          "token_penalaran": 1,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0006479842,
+          "sah": false,
+          "alasan": "penalaran 1 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m09",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal melatih membedakan harga akhir vs besar kenaikan lewat kartu, semua pengecoh mewakili salah baca yang umum (harga awal dianggap kenaikan, isi benar tapi vonis salah), dan penjelasan menunjuk bagian kartu penentu.\"}",
+          "token_penalaran": 326,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0018190026,
+          "sah": false,
+          "alasan": "penalaran 326 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membedakan harga akhir (Rp106) dari besar kenaikan (Rp58) lewat kartu, semua pengecoh mewakili salah baca yang umum, dan penjelasannya menunjuk bagian kartu penentu dengan jelas.\"}",
+          "token_penalaran": 524,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0024533814,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Soal memaksa pemain membedakan harga akhir (Rp106) dari besar kenaikan (Rp58) lewat kartu, semua pengecoh mewakili salah baca yang umum, dan penjelasannya menunjuk bagian kartu penentu dengan jelas."
+      }
+    },
+    {
+      "id_buta": "m10",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain mencocokkan tanggal dan angka pada kartu, semua pengecoh mewakili salah baca khas pemula, dan penjelasan menunjuk bagian kartu penentu dengan jelas.\"}",
+          "token_penalaran": 70,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0009110811,
+          "sah": false,
+          "alasan": "penalaran 70 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut pembacaan tanggal pada kartu, pengecoh mewakili salah baca khas pemula, dan penjelasan mengajar dengan menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 1,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0006374883,
+          "sah": false,
+          "alasan": "penalaran 1 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m11",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemula membaca kartu untuk membantah omongan teman, pengecohnya mewakili salah baca arah transaksi dan salah harga, dan penjelasannya menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 73,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0009886713,
+          "sah": false,
+          "alasan": "penalaran 73 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membaca kartu untuk membantah klaim teman (pemilik besar justru menjual 299,5 juta lembar di harga belasan rupiah), pengecohnya mewakili salah baca yang masuk akal (beli vs jual, harga ratusan vs belasan), dan penjelasannya menunjuk bagian kartu yang menentu sekaligus meluruskan salah kaprah umum pemula.\"}",
+          "token_penalaran": 107,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0012393321,
+          "sah": false,
+          "alasan": "penalaran 107 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m12",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 1, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 0}, \"layak_tayang\": false, \"alasan\": \"Pilihan d pada dasarnya juga benar menurut kartu (dua alasan penghentian berbeda tahun ini), sehingga soal punya dua kunci dan tidak bisa ditayangkan sebelum diperbaiki.\"}",
+          "token_penalaran": 173,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0012650714,
+          "sah": false,
+          "alasan": "penalaran 173 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 1, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 0}, \"layak_tayang\": false, \"alasan\": \"Pilihan a dan d pada dasarnya sama-sama benar menurut kartu, sehingga soal punya dua kunci dan harus direvisi sebelum ditayangkan.\"}",
+          "token_penalaran": 199,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.001283567,
+          "sah": false,
+          "alasan": "penalaran 199 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m13",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menguji kebiasaan membaca kartu dengan pengecoh yang mewakili salah baca umum (selisih vs kelipatan, salah bulan, menjawab hal lain) dan penjelasan yang merujuk langsung ke kartu penentu.\"}",
+          "token_penalaran": 75,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0009741172,
+          "sah": false,
+          "alasan": "penalaran 75 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Kunci hanya bisa dipastikan lewat kartu (kelipatan 2,21 kali), pengecoh mewakili salah baca khas pemula (selisih rupiah vs kelipatan, salah bulan, menjawab hal lain), dan penjelasan menunjuk kartu penentu sambil membongkar tiap pengecoh.\"}",
+          "token_penalaran": 196,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0014163628,
+          "sah": false,
+          "alasan": "penalaran 196 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m14",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut pemain membaca kartu untuk tahu isi pengumuman bursa, pengecohnya mewakili salah baca yang wajar, dan penjelasannya menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 32,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0007614025,
+          "sah": false,
+          "alasan": "penalaran 32 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membaca kartu untuk melihat isi pengumuman bursa yang sebenarnya, pengecohnya mewakili salah baca yang wajar, dan penjelasannya menunjuk kartu serta meluruskan tiap kekeliruan.\"}",
+          "token_penalaran": 60,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0008669413,
+          "sah": false,
+          "alasan": "penalaran 60 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m15",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menguji pencocokan angka volume dengan tanggal pada kartu secara sederhana, pengecohnya mewakili salah baca tanggal yang wajar, dan penjelasannya menunjuk kartu penentu dengan jelas.\"}",
+          "token_penalaran": 28,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0007447974,
+          "sah": false,
+          "alasan": "penalaran 28 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menguji pencocokan angka volume dengan tanggal pada kartu secara murni, pengecohnya mewakili salah baca tanggal yang wajar, dan penjelasannya menunjuk kartu penentu serta menjelaskan kesalahan umum.\"}",
+          "token_penalaran": 28,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0007480878,
+          "sah": false,
+          "alasan": "penalaran 28 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m16",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membaca kartu hitungan untuk membedakan selisih rupiah (Rp58) dengan kelipatan harga (2,21 kali), pengecohnya mewakili salah baca yang umum, dan penjelasannya menunjuk bagian kartu yang menentu.\"}",
+          "token_penalaran": 87,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0010177859,
+          "sah": false,
+          "alasan": "penalaran 87 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membaca kartu hitungan untuk membedakan kelipatan (2,21x) dari selisih (Rp58), pengecohnya mewakili salah baca yang umum, dan penjelasannya mengajar dengan menunjuk kartu penentu.\"}",
+          "token_penalaran": 89,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0009916631,
+          "sah": false,
+          "alasan": "penalaran 89 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m17",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut pembacaan kartu untuk membedakan puluhan vs ratusan rupiah dan naik vs turun, pengecohnya mewakili salah baca yang wajar, dan penjelasannya menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 96,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0010219031,
+          "sah": false,
+          "alasan": "penalaran 96 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal menuntut pemain membaca kartu untuk tahu harga 9 Desember sudah ratusan rupiah dan naik beruntun, semua pengecoh mewakili salah baca yang masuk akal, dan penjelasan menunjuk bagian kartu penentu serta menjelaskan godaan opsi a.\"}",
+          "token_penalaran": 133,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0011652803,
+          "sah": false,
+          "alasan": "penalaran 133 < 500"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m18",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membaca kartu untuk menghitung dividen per lembar, pengecohnya mewakili salah baca umum (per lot vs per lembar, salah paham tanggal ex, salah menilai besaran), dan penjelasannya mengajar dengan menunjuk bagian kartu yang menentukan.\"}",
+          "token_penalaran": 161,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0012835614,
+          "sah": false,
+          "alasan": "penalaran 161 < 500"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Soal memaksa pemain membaca kartu (hitungan 10 lot dan tanggal ex), pengecohnya mewakili salah baca umum (salah satuan lembar/lot dan salah paham tanggal ex), dan penjelasannya menunjuk bagian kartu yang menentukan sambil membantah pilihan lain.\"}",
+          "token_penalaran": 274,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.0016467402,
+          "sah": false,
+          "alasan": "penalaran 274 < 500"
+        }
+      ],
+      "penilaian": null
+    }
+  ]
+}

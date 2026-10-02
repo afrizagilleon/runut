@@ -39,6 +39,16 @@ export const BENIH_MUTU = 'm2d13-mutu';
 export const KRITERIA = ['bergantung_kartu', 'pengecoh_diagnostik', 'penjelasan_mengajar', 'bahasa_pemula', 'benar_satu_kunci'] as const;
 export type Kriteria = (typeof KRITERIA)[number];
 export const SETELAN_PENILAI_GLM = { suhu: 0, maxTokens: 16_000, tambahanBadan: { reasoning: { effort: 'medium' } }, ambangPenalaran: 500 } as const;
+/**
+ * AMANDEMEN TEKNIS (sesudah jalan penilai pra-registrasi, sebelum skor sah
+ * mana pun ada): di Wafer `effort:"medium"` membuat GLM nyaris tidak berpikir
+ * (1–80 token penalaran) sehingga hampir semua penilaian tidak sah menurut
+ * penjaga 500 token pra-registrasi. Setelan terdekat yang terbukti berpikir =
+ * effort kritikus ("high", M2d-8); `max_tokens`, suhu, penjaga, rubrik,
+ * butir, dan pagu bagian D-D tidak berubah. Hasil disimpan terpisah
+ * (`glm-tinggi.json`, tag `m2d13/mutu/tinggi/`).
+ */
+export const SETELAN_PENILAI_GLM_TINGGI = { suhu: 0, maxTokens: 16_000, tambahanBadan: { reasoning: { effort: 'high' } }, ambangPenalaran: 500 } as const;
 export const AWALAN_MUTU = 'm2d13/mutu/';
 
 export type AsalMutu = 'opus' | 'haiku' | 'deepseek' | 'templat-m2d11' | 'tayang-dada';
@@ -143,7 +153,9 @@ export interface HasilGlm {
   penilaian: PenilaianMutu | null;
 }
 
-async function glm(): Promise<number> {
+async function glm(tinggi = false): Promise<number> {
+  const SETELAN = tinggi ? SETELAN_PENILAI_GLM_TINGGI : SETELAN_PENILAI_GLM;
+  const awalanTag = tinggi ? `${AWALAN_MUTU}tinggi/` : AWALAN_MUTU;
   const konfig = bacaKonfigLlm();
   if (konfig.baseUrl !== BASE_URL_OPENROUTER) throw new Error('LLM_BASE_URL bukan OpenRouter (nilainya tidak dicetak).');
   const biayaPenyusun = entri().filter((e) => e.tag.startsWith('penyusun/m2d13-')).reduce((a, e) => a + e.biaya_usd, 0);
@@ -158,10 +170,10 @@ async function glm(): Promise<number> {
   const butir = butirMutu();
   tulisKunci(butir);
   mkdirSync(FOLDER_MUTU, { recursive: true });
-  const jalur = `${FOLDER_MUTU}/glm.json`;
+  const jalur = `${FOLDER_MUTU}/${tinggi ? 'glm-tinggi' : 'glm'}.json`;
   const lama = existsSync(jalur) ? (JSON.parse(readFileSync(jalur, 'utf8')) as { hasil: HasilGlm[] }).hasil : [];
   const hasil: HasilGlm[] = lama.filter((h) => butir.some((b) => b.id_buta === h.id_buta) && h.penilaian !== null);
-  const simpan = (): void => writeFileSync(jalur, `${JSON.stringify({ setelan: SETELAN_PENILAI_GLM, model: MODEL_OR_GLM, biaya_tag_usd: biaya.totalAwalan(AWALAN_MUTU), hasil }, null, 2)}\n`, 'utf8');
+  const simpan = (): void => writeFileSync(jalur, `${JSON.stringify({ setelan: SETELAN, model: MODEL_OR_GLM, biaya_tag_usd: biaya.totalAwalan(awalanTag), hasil }, null, 2)}\n`, 'utf8');
   for (const b of butir) {
     if (hasil.some((h) => h.id_buta === b.id_buta)) continue;
     const pesan: PesanChat[] = [
@@ -171,12 +183,12 @@ async function glm(): Promise<number> {
     const h: HasilGlm = { id_buta: b.id_buta, percobaan: [], penilaian: null };
     try {
       for (let ulang = 0; ulang < 2 && h.penilaian === null; ulang++) {
-        const j = await chatBerpagu(klien, biaya, { model: MODEL_OR_GLM, pesan, suhu: SETELAN_PENILAI_GLM.suhu, maxTokens: SETELAN_PENILAI_GLM.maxTokens, tambahanBadan: SETELAN_PENILAI_GLM.tambahanBadan }, `${AWALAN_MUTU}${b.id_buta}${ulang > 0 ? `/u${String(ulang)}` : ''}`, { ambangPenalaran: SETELAN_PENILAI_GLM.ambangPenalaran });
+        const j = await chatBerpagu(klien, biaya, { model: MODEL_OR_GLM, pesan, suhu: SETELAN.suhu, maxTokens: SETELAN.maxTokens, tambahanBadan: SETELAN.tambahanBadan }, `${awalanTag}${b.id_buta}${ulang > 0 ? `/u${String(ulang)}` : ''}`, { ambangPenalaran: SETELAN.ambangPenalaran });
         const tp = j.token_penalaran ?? null;
         const p = uraiPenilaian(j.teks);
-        const sahPenalaran = tp !== null && tp >= SETELAN_PENILAI_GLM.ambangPenalaran;
+        const sahPenalaran = tp !== null && tp >= SETELAN.ambangPenalaran;
         const sah = p !== null && sahPenalaran;
-        h.percobaan.push({ teks: j.teks, token_penalaran: tp, penyedia: j.penyedia ?? null, biaya_usd: j.biaya_usd, sah, alasan: p === null ? 'tak terbaca' : sahPenalaran ? '' : `penalaran ${String(tp)} < ${String(SETELAN_PENILAI_GLM.ambangPenalaran)}` });
+        h.percobaan.push({ teks: j.teks, token_penalaran: tp, penyedia: j.penyedia ?? null, biaya_usd: j.biaya_usd, sah, alasan: p === null ? 'tak terbaca' : sahPenalaran ? '' : `penalaran ${String(tp)} < ${String(SETELAN.ambangPenalaran)}` });
         if (sah) h.penilaian = p;
       }
     } catch (galat) {
@@ -209,7 +221,7 @@ function nilaiOpus(): number {
 if (/(^|[\\/])bebas[\\/]mutu\.ts$/.test(process.argv[1] ?? '')) {
   const a = process.argv;
   if (a.includes('--glm')) {
-    glm().then(
+    glm(a.includes('--tinggi')).then(
       (k) => {
         process.exitCode = k;
       },
