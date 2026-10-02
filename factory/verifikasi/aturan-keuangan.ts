@@ -632,6 +632,116 @@ export function bacaAngkaRupiah(teks: string): AngkaRupiah[] {
 
 // --- R23 laba beda antar endpoint --------------------------------------------
 
+/**
+ * Satu angka rupiah di teks keputusan RUPS sebagaimana dibaca R23 (M4c D-1).
+ *
+ * Berbeda dari {@link AngkaRupiah}: kata skala sesudah angka ikut dibaca
+ * ("Rp1.74 trillion" = 1.740.000.000.000), dan angkanya membawa **presisi
+ * yang tertulis** — satu satuan digit terakhir yang ditulis, dalam rupiah
+ * ("Rp1.74 trillion" → Rp10.000.000.000; "Rp285,747,406,391" → Rp1).
+ */
+export interface AngkaLabaR23 {
+  /** Nilai dalam rupiah, dibulatkan; `null` bila angka berskalanya tidak terbaca pasti. */
+  rupiah: number | null;
+  /** Satu satuan digit terakhir yang tertulis, dalam rupiah; paling kecil 1. */
+  presisi: number;
+  /** Kata skala yang tertulis ("trillion", "juta", …); `null` bila tanpa kata skala. */
+  skala: string | null;
+  /** Teks aslinya, apa adanya, termasuk kata skalanya. */
+  teks: string;
+  /** Indeks awal `Rp` di dalam teks keputusan. */
+  mulai: number;
+  /** Indeks tepat sesudah angka (atau kata skalanya). */
+  selesai: number;
+}
+
+/**
+ * Kata skala dan pangkat sepuluhnya. Hanya kata yang ditulis utuh; singkatan
+ * ("bn", "T", "M", "B") tidak dibaca karena tidak satu pun ada di teks RUPS
+ * gudang beku (M4c: 19 angka berskala, semuanya million/billion/trillion), dan
+ * "M" bisa berarti juta (Inggris) atau miliar (Indonesia).
+ */
+const SKALA_INGGRIS: Record<string, number> = { thousand: 3, million: 6, billion: 9, trillion: 12 };
+const SKALA_INDONESIA: Record<string, number> = { ribu: 3, juta: 6, miliar: 9, milyar: 9, triliun: 12 };
+
+const POLA_RUPIAH_BERSKALA =
+  /Rp\s?(\d[\d.,]*)\s*(thousand|million|billion|trillion|ribu|juta|miliar|milyar|triliun)\b/gi;
+
+/**
+ * Bentuk angka yang sah di depan kata skala. Kata Inggris → gaya Inggris (koma
+ * ribuan, titik desimal); kata Indonesia → gaya Indonesia (titik ribuan, koma
+ * desimal). Bentuk lain — "Rp1.74 miliar" — tidak ditebak: titiknya bisa
+ * desimal atau ribuan, dan salah tebak menggeser angkanya seribu kali.
+ */
+const BENTUK_INGGRIS = /^(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?$/;
+const BENTUK_INDONESIA = /^(?:\d{1,3}(?:\.\d{3})+|\d+)(?:,(\d+))?$/;
+
+function nilaiBerskala(mentah: string, kata: string): { rupiah: number | null; presisi: number } {
+  const k = kata.toLowerCase();
+  const inggris = k in SKALA_INGGRIS;
+  const pangkat = (inggris ? SKALA_INGGRIS[k] : SKALA_INDONESIA[k]) ?? 0;
+  const cocok = (inggris ? BENTUK_INGGRIS : BENTUK_INDONESIA).exec(mentah);
+  if (cocok === null) return { rupiah: null, presisi: 10 ** pangkat };
+  const desimal = cocok[1]?.length ?? 0;
+  const digit = Number(mentah.replace(/[.,]/g, ''));
+  const geser = pangkat - desimal;
+  const rupiah = Math.round(geser >= 0 ? digit * 10 ** geser : digit / 10 ** -geser);
+  return {
+    rupiah: Number.isSafeInteger(rupiah) ? rupiah : null,
+    presisi: geser > 0 ? 10 ** geser : 1,
+  };
+}
+
+/**
+ * Pembaca angka rupiah khusus R23 (M4c D-1).
+ *
+ * Angka yang diikuti kata skala dibaca bersama skalanya, dengan presisi yang
+ * tertulis. Angka tanpa kata skala dibaca **persis seperti
+ * {@link bacaAngkaRupiah}** dan dibulatkan ke rupiah, presisi Rp1 — jadi
+ * "Rp1.740" tetap Rp1,74, tidak pernah triliun. `bacaAngkaRupiah` sendiri
+ * tidak diubah: R31 dan aturan lain tetap membaca "Rp1.74 trillion" sebagai
+ * Rp1,74, seperti sebelum M4c.
+ */
+export function bacaAngkaLabaR23(teks: string): AngkaLabaR23[] {
+  const berskala: AngkaLabaR23[] = [];
+  POLA_RUPIAH_BERSKALA.lastIndex = 0;
+  let cocok: RegExpExecArray | null = POLA_RUPIAH_BERSKALA.exec(teks);
+  while (cocok !== null) {
+    berskala.push({
+      ...nilaiBerskala(cocok[1] ?? '', cocok[2] ?? ''),
+      skala: cocok[2] ?? null,
+      teks: cocok[0],
+      mulai: cocok.index,
+      selesai: cocok.index + cocok[0].length,
+    });
+    cocok = POLA_RUPIAH_BERSKALA.exec(teks);
+  }
+  const awalBerskala = new Set(berskala.map((a) => a.mulai));
+  const polos: AngkaLabaR23[] = bacaAngkaRupiah(teks)
+    .filter((a) => !awalBerskala.has(a.mulai))
+    .map((a) => ({
+      rupiah: Math.round(a.milli / 1000),
+      presisi: 1,
+      skala: null,
+      teks: a.teks,
+      mulai: a.mulai,
+      selesai: a.selesai,
+    }));
+  return [...berskala, ...polos].sort((a, b) => a.mulai - b.mulai);
+}
+
+/**
+ * Dua angka laba cocok bila selisihnya kurang dari satu satuan presisi.
+ *
+ * Bukan "sama setelah dibulatkan": angka RUPS bisa dipotong, bukan dibulatkan
+ * (AVIA "Rp1.74 trillion" untuk 1.747.462.000.000 — dibulatkan dua desimal
+ * menjadi 1,75). Dengan presisi Rp1 aturan ini sama dengan sama persis
+ * sampai rupiah, seperti R23 sebelum M4c.
+ */
+function labaCocok(dariRups: number, menurutKeuangan: number, presisi: number): boolean {
+  return Math.abs(dariRups - Math.round(menurutKeuangan)) < presisi;
+}
+
 /** Jangkar R23: angka laba harus menempel pada frasa ini, bukan sekadar sekalimat. */
 const JANGKAR_LABA = /net profit of\s+$/i;
 
@@ -694,7 +804,7 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
       alasan.push('Teks keputusan RUPS ini kosong di data, jadi tidak ada angka laba untuk dibaca.');
       continue;
     }
-    const berjangkar = bacaAngkaRupiah(r.ringkasan).filter((a) =>
+    const berjangkar = bacaAngkaLabaR23(r.ringkasan).filter((a) =>
       JANGKAR_LABA.test(r.ringkasan?.slice(Math.max(0, a.mulai - 20), a.mulai) ?? ''),
     );
     if (berjangkar.length === 0) {
@@ -715,10 +825,20 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
         );
         continue;
       }
-      const dariRups = Math.round(a.milli / 1000);
-      if (dariRups === Math.round(menurutKeuangan)) continue;
+      if (a.rupiah === null) {
+        tidakLengkap += 1;
+        alasan.push(
+          `Angka laba "${a.teks}" memakai kata skala, tetapi penulisan angkanya tidak bisa dibaca pasti ` +
+            '(titik dan koma bisa berarti desimal atau ribuan), jadi tidak diadu dengan apa pun.',
+        );
+        continue;
+      }
+      // M4c D-1: angka berskala dibandingkan pada presisi yang tertulis.
+      const presisi = a.presisi;
+      const dariRups = a.rupiah;
+      if (labaCocok(dariRups, menurutKeuangan, presisi)) continue;
       const kedua = sesudahPajak.get(tahunBuku);
-      if (kedua !== undefined && dariRups === Math.round(kedua)) continue;
+      if (kedua !== undefined && labaCocok(dariRups, kedua, presisi)) continue;
 
       merah += 1;
       const selisih = Math.abs(dariRups - Math.round(menurutKeuangan));
@@ -727,14 +847,20 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
           ? ''
           : `Laba sebelum pajak dikurangi pajak di laporan yang sama, Rp${angka(Math.round(kedua))}, ` +
             'juga tidak sama dengan angka RUPS. ';
+      const ditulis = a.skala === null ? '' : ` (ditulis "${a.teks}")`;
+      const kalimatPresisi =
+        presisi <= 1
+          ? ''
+          : `Kedua angka dibandingkan pada presisi Rp${angka(presisi)}, satu satuan angka yang lebih kasar ` +
+            'di antara keduanya, dan selisihnya tidak kurang dari itu. ';
       temuan.push({
         temuan_id: `R23-${konteks.simbol}-${r.tanggal}`,
         aturan: 'R23',
         ringkasan:
           `Laba bersih tahun buku ${String(tahunBuku)} ditulis dua kali dengan angka yang berbeda. ` +
-          `Keputusan RUPS ${konteks.simbol} pada ${r.tanggal} menyebut Rp${angka(dariRups)}; ` +
+          `Keputusan RUPS ${konteks.simbol} pada ${r.tanggal} menyebut Rp${angka(dariRups)}${ditulis}; ` +
           `laporan keuangan menyebut Rp${angka(Math.round(menurutKeuangan))}. Selisihnya ` +
-          `Rp${angka(selisih)}. ${kalimatKedua}Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa ` +
+          `Rp${angka(selisih)}. ${kalimatPresisi}${kalimatKedua}Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa ` +
           `menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok ` +
           `usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia ` +
           `diambil.`,
@@ -745,6 +871,7 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
           ...(kedua === undefined
             ? []
             : [{ label: 'laba sebelum pajak dikurangi pajak', nilai: Math.round(kedua), satuan: 'rupiah' }]),
+          ...(presisi <= 1 ? [] : [{ label: 'presisi pembanding', nilai: presisi, satuan: 'rupiah' }]),
         ],
         fakta_terkait: [],
         rujukan: [`RUPS ${r.tanggal}`, `tahun buku ${String(tahunBuku)}`],
