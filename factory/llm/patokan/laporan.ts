@@ -12,6 +12,8 @@ import type { HasilKalibrasiCacat } from '../cacat/kalibrasi.ts';
 import { FOLDER_M2D11, PAGU_MILESTONE_M2D11, tagMilestoneM2d11 } from './konfig.ts';
 import type { MentahUjiUlang, ringkasUjiUlang } from './uji-ulang.ts';
 
+const AUDIT_ADA = existsSync(`${AKAR}eval/keluaran-m2d11/audit-opus/uji-ulang/nilai.json`) && existsSync(`${AKAR}eval/keluaran-m2d11/audit-opus/tirt-7/nilai.json`);
+
 export const JALUR_LAPORAN_M2D11 = `${AKAR}docs/bukti/lingkar-agen-pemula.md`;
 
 const pct = (x: number): string => `${(x * 100).toFixed(0)} %`;
@@ -123,7 +125,8 @@ export function bangunLaporan(): string {
     p(`| ${h.model} | ${pct(h.proporsi_kunci['pilihan-saja'] ?? 0)} | ${pct(h.proporsi_kunci['pesan-pilihan'] ?? 0)} | ${pct(h.laju_isi_kunci_konsisten['pilihan-saja'] ?? 0)} / ${pct(h.laju_isi_kunci_konsisten['pesan-pilihan'] ?? 0)} | ${pct(h.laju_isi_konsisten['pilihan-saja'] ?? 0)} / ${pct(h.laju_isi_konsisten['pesan-pilihan'] ?? 0)} | ${pct(h.laju_huruf_konsisten['pilihan-saja'] ?? 0)} / ${pct(h.laju_huruf_konsisten['pesan-pilihan'] ?? 0)} | ${String(pr['a'])}/${String(pr['b'])}/${String(pr['c'])}/${String(pr['d'])} | ${String(h.tak_terbaca)} |`);
   }
   p('', 'Proporsi kunci menghitung jawaban tak terbaca sebagai kunci (aturan pra-registrasi). Acak = 25 %.', '');
-  p('**H3 — kesepakatan vonis tiap keluarga dengan audit Opus: MENUNGGU audit reviewer.** Paket siap di `eval/keluaran-m2d11/audit-opus/` (5 soal lulus putusan inti × 4 rotasi × tanpa/dengan kartu); penilai `npm run patokan:audit -- --nilai uji-ulang`.', '');
+  if (AUDIT_ADA) p('**H3 — kesepakatan vonis tiap keluarga dengan audit Opus:** audit reviewer sudah dijalankan; hasil, tabel per keluarga, dan bias seleksinya di `docs/bukti/lingkar-agen-pemula-audit.md` (eksploratif; H3 belum terjawab).', '');
+  else p('**H3 — kesepakatan vonis tiap keluarga dengan audit Opus: MENUNGGU audit reviewer.** Paket siap di `eval/keluaran-m2d11/audit-opus/` (5 soal lulus putusan inti × 4 rotasi × tanpa/dengan kartu); penilai `npm run patokan:audit -- --nilai uji-ulang`.', '');
 
   // --- mesin
   p(
@@ -181,7 +184,7 @@ export function bangunLaporan(): string {
       );
     }
     p(
-      '**Catatan untuk penyetuju (pemilik).** (1) Omongan 1 lolos tebak rotasi di versi ke-3 jalan ke-7 sesudah berulang kali abu-abu tepat 6/12; omongan 3 lolos tepat di batas 5/12 — lulusnya rapuh dan sebagian karena kebetulan percobaan berulang. (2) Kritikus mencatat Rp89 di pengecoh omongan 1 tidak ada di kartu yang ditampilkan (harga 5 Desember); pemain tetap bisa menolaknya dari kartu 9 Desember, tetapi pengecoh itu tidak "menunjuk" kartu. (3) Pembaca kartu menandai kalimat teman ("Gw yakin banget…") sebagai membingungkan di kedua rotasi — dicatat, bukan penolakan. (4) Audit Opus (paket `eval/keluaran-m2d11/audit-opus/tirt-7/`) belum dijalankan. Draf tidak dipasang.',
+      '**Catatan untuk penyetuju (pemilik).** (1) Omongan 1 lolos tebak rotasi di versi ke-3 jalan ke-7 sesudah berulang kali abu-abu tepat 6/12; omongan 3 lolos tepat di batas 5/12 — lulusnya rapuh dan sebagian karena kebetulan percobaan berulang. (2) Kritikus mencatat Rp89 di pengecoh omongan 1 tidak ada di kartu yang ditampilkan (harga 5 Desember); pemain tetap bisa menolaknya dari kartu 9 Desember, tetapi pengecoh itu tidak "menunjuk" kartu. (3) Pembaca kartu menandai kalimat teman ("Gw yakin banget…") sebagai membingungkan di kedua rotasi — dicatat, bukan penolakan. (4) ' + (AUDIT_ADA ? 'Audit Opus reviewer: dengan kartu 4/4 tiap omongan, TANPA kartu juga 4/4 tiap omongan (tertebak model kuat; sinyal ditinjau, bukan patokan) — lihat `docs/bukti/lingkar-agen-pemula-audit.md`.' : 'Audit Opus (paket `eval/keluaran-m2d11/audit-opus/tirt-7/`) belum dijalankan.') + ' Draf tidak dipasang.',
       '',
     );
   }
@@ -225,7 +228,7 @@ export function bangunLaporan(): string {
     '- **LLM bukan pemula.** Lulus/gagal tebak rotasi mengukur petunjuk permukaan bagi model, bukan kesulitan bagi pemain; data pemain n kecil.',
     '- Kondisi pilihan-saja ikut menentukan konsistensi isi kunci (pra-registrasi); banyak kegagalan terjadi di kondisi itu. Penolakan Haiku ("tidak dapat menjawab" tanpa pesan) dihitung kunci — lihat kepekaan §2.',
     '- Jalan TIRT diulang sampai lulus atau pagu habis (kontrak D-5); bila ada yang lulus, peluang lolos karena kebetulan bertambah dengan jumlah percobaan — jumlah jalan dan versi dilaporkan di §5.',
-    '- Audit Opus belum dijalankan (eksekutor tidak boleh memanggil Opus); H3 menunggu reviewer.',
+    AUDIT_ADA ? '- Audit Opus (reviewer, `docs/bukti/lingkar-agen-pemula-audit.md`): 6/8 soal yang lulus tebak rotasi tiga keluarga tetap ditebak Opus tanpa kartu — lulus patokan ≠ tidak tertebak model kuat.' : '- Audit Opus belum dijalankan (eksekutor tidak boleh memanggil Opus); H3 menunggu reviewer.',
     '- Schmucker & Moore: angka versi v1/v3 berbeda; cek versi terbit sebelum dikutip publik (dari sintesis riset).',
     '',
   );

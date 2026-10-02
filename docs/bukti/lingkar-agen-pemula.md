@@ -106,7 +106,7 @@ Biaya bagian uji ulang (tag `m2d11/uji-ulang/`): US$0,4975 dari US$0,80.
 
 Proporsi kunci menghitung jawaban tak terbaca sebagai kunci (aturan pra-registrasi). Acak = 25 %.
 
-**H3 — kesepakatan vonis tiap keluarga dengan audit Opus: MENUNGGU audit reviewer.** Paket siap di `eval/keluaran-m2d11/audit-opus/` (5 soal lulus putusan inti × 4 rotasi × tanpa/dengan kartu); penilai `npm run patokan:audit -- --nilai uji-ulang`.
+**H3 — kesepakatan vonis tiap keluarga dengan audit Opus:** audit reviewer sudah dijalankan; hasil, tabel per keluarga, dan bias seleksinya di `docs/bukti/lingkar-agen-pemula-audit.md` (eksploratif; H3 belum terjawab).
 
 ## 4. Mesin templat M2d-11 (D-4)
 
@@ -257,7 +257,7 @@ Pesan: "Sejak 26 November harga penutupan Perusahaan T udah lebih dari dua kali 
 - kritikus (Wafer, 10565 token penalaran): tanpa keberatan; arahan dicatat: "Di penjelasan, tegaskan eksplisit bahwa 2,21 kali berarti lebih dari dua kali lipat; saat ini hubungan angka kartu dengan frasa 'dua kali lipat' di pesan Sari hanya implisit."
 - umpan balik: Yang menentukan jawabannya: kartu 1 (terbit 9 Desember 2025). a) sebagian benar: sebagian isinya cocok, tetapi ada bagian yang tidak cocok dengan kartu — cek kartu 1. b) angka nyaris benar: angkanya dekat, tetapi bukan angka di kartu — cek kartu 1. c) menjawab pertanyaan lain: kalimat ini menjawab hal lain, bukan apakah omongan teman cocok — cek kartu 1. Pertanyaan cek: Ini kelipatan harga atau selisih rupiah, dan berapa angkanya di kartu?
 
-**Catatan untuk penyetuju (pemilik).** (1) Omongan 1 lolos tebak rotasi di versi ke-3 jalan ke-7 sesudah berulang kali abu-abu tepat 6/12; omongan 3 lolos tepat di batas 5/12 — lulusnya rapuh dan sebagian karena kebetulan percobaan berulang. (2) Kritikus mencatat Rp89 di pengecoh omongan 1 tidak ada di kartu yang ditampilkan (harga 5 Desember); pemain tetap bisa menolaknya dari kartu 9 Desember, tetapi pengecoh itu tidak "menunjuk" kartu. (3) Pembaca kartu menandai kalimat teman ("Gw yakin banget…") sebagai membingungkan di kedua rotasi — dicatat, bukan penolakan. (4) Audit Opus (paket `eval/keluaran-m2d11/audit-opus/tirt-7/`) belum dijalankan. Draf tidak dipasang.
+**Catatan untuk penyetuju (pemilik).** (1) Omongan 1 lolos tebak rotasi di versi ke-3 jalan ke-7 sesudah berulang kali abu-abu tepat 6/12; omongan 3 lolos tepat di batas 5/12 — lulusnya rapuh dan sebagian karena kebetulan percobaan berulang. (2) Kritikus mencatat Rp89 di pengecoh omongan 1 tidak ada di kartu yang ditampilkan (harga 5 Desember); pemain tetap bisa menolaknya dari kartu 9 Desember, tetapi pengecoh itu tidak "menunjuk" kartu. (3) Pembaca kartu menandai kalimat teman ("Gw yakin banget…") sebagai membingungkan di kedua rotasi — dicatat, bukan penolakan. (4) Audit Opus reviewer: dengan kartu 4/4 tiap omongan, TANPA kartu juga 4/4 tiap omongan (tertebak model kuat; sinyal ditinjau, bukan patokan) — lihat `docs/bukti/lingkar-agen-pemula-audit.md`. Draf tidak dipasang.
 
 ## 6. Soal pemanasan (D-6)
 
@@ -297,6 +297,6 @@ Umpan balik: Yang menentukan jawabannya: kartu 1 (terbit 10 Desember 2025). a) p
 - **LLM bukan pemula.** Lulus/gagal tebak rotasi mengukur petunjuk permukaan bagi model, bukan kesulitan bagi pemain; data pemain n kecil.
 - Kondisi pilihan-saja ikut menentukan konsistensi isi kunci (pra-registrasi); banyak kegagalan terjadi di kondisi itu. Penolakan Haiku ("tidak dapat menjawab" tanpa pesan) dihitung kunci — lihat kepekaan §2.
 - Jalan TIRT diulang sampai lulus atau pagu habis (kontrak D-5); bila ada yang lulus, peluang lolos karena kebetulan bertambah dengan jumlah percobaan — jumlah jalan dan versi dilaporkan di §5.
-- Audit Opus belum dijalankan (eksekutor tidak boleh memanggil Opus); H3 menunggu reviewer.
+- Audit Opus (reviewer, `docs/bukti/lingkar-agen-pemula-audit.md`): 6/8 soal yang lulus tebak rotasi tiga keluarga tetap ditebak Opus tanpa kartu — lulus patokan ≠ tidak tertebak model kuat.
 - Schmucker & Moore: angka versi v1/v3 berbeda; cek versi terbit sebelum dikutip publik (dari sintesis riset).
 
