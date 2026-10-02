@@ -1,0 +1,299 @@
+{
+  "penulis": "deepseek/deepseek-v4.1-flash",
+  "terbit": false,
+  "berhenti": "omongan tidak lulus dalam 3 versi: 1, 2, 3; simulasi tidak terbit",
+  "tersensor": false,
+  "versi": [
+    {
+      "no": 1,
+      "versi": 1,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 2,
+      "versi": 1,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 3,
+      "versi": 1,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 1,
+      "versi": 2,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 2,
+      "versi": 2,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 3,
+      "versi": 2,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 1,
+      "versi": 3,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 2,
+      "versi": 3,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 3,
+      "versi": 3,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali"
+      ],
+      "dicatat": [],
+      "omongan": null,
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    }
+  ],
+  "panggilan_penulis": [
+    {
+      "versi": 1,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 0,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "token_masuk": 5082,
+      "token_keluar": 8000,
+      "token_penalaran": 8000,
+      "penyedia": "Morph",
+      "finish_reason": "length",
+      "biaya_usd": 0.003170722,
+      "terbaca": [],
+      "masalah": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "f2470c0da328259ed03eba3d706cb9a8ba2f8d16c744e996ebea56cbb277a228"
+    },
+    {
+      "versi": 1,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 1,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "token_masuk": 5082,
+      "token_keluar": 8000,
+      "token_penalaran": 8000,
+      "penyedia": "DekaLLM",
+      "finish_reason": "length",
+      "biaya_usd": 0.00380984,
+      "terbaca": [],
+      "masalah": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "f2470c0da328259ed03eba3d706cb9a8ba2f8d16c744e996ebea56cbb277a228"
+    },
+    {
+      "versi": 2,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 0,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "token_penalaran": 8000,
+      "penyedia": "Morph",
+      "finish_reason": "length",
+      "biaya_usd": 0.003174985,
+      "terbaca": [],
+      "masalah": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21"
+    },
+    {
+      "versi": 2,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 1,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "token_penalaran": 8004,
+      "penyedia": "Wafer",
+      "finish_reason": "length",
+      "biaya_usd": 0.00506425,
+      "terbaca": [],
+      "masalah": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21"
+    },
+    {
+      "versi": 3,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 0,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "token_penalaran": 6556,
+      "penyedia": "Relace",
+      "finish_reason": "length",
+      "biaya_usd": 0.0049057,
+      "terbaca": [],
+      "masalah": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21"
+    },
+    {
+      "versi": 3,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 1,
+      "model": "deepseek/deepseek-v4.1-flash",
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "token_penalaran": 6764,
+      "penyedia": "Relace",
+      "finish_reason": "length",
+      "biaya_usd": 0.0049057,
+      "terbaca": [],
+      "masalah": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21"
+    }
+  ],
+  "lulus": [],
+  "akhir": [
+    null,
+    null,
+    null
+  ],
+  "validasi_draf": [],
+  "draf": null,
+  "sha256_prompt_sistem": "e2d4457eca898aea8d655f5aea98b5c736cae1b5b7e6ce7d8aaba727dbe92d32",
+  "riwayat": [
+    {
+      "putaran": 3,
+      "omongan": [
+        {
+          "no": 1,
+          "status": "ditolak-tulis-gagal",
+          "umpan": [
+            "keluaran penulis tak terbaca dua kali"
+          ]
+        },
+        {
+          "no": 2,
+          "status": "ditolak-tulis-gagal",
+          "umpan": [
+            "keluaran penulis tak terbaca dua kali"
+          ]
+        },
+        {
+          "no": 3,
+          "status": "ditolak-tulis-gagal",
+          "umpan": [
+            "keluaran penulis tak terbaca dua kali"
+          ]
+        }
+      ]
+    }
+  ]
+}

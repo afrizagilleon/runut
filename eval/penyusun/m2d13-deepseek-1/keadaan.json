@@ -1,0 +1,83 @@
+{
+  "id": "m2d13-deepseek-1",
+  "kode": "TIRT",
+  "tanggal": "2025-12-10",
+  "jendela": 10,
+  "dibuat": "2026-10-02T16:46:50.374Z",
+  "tahap": "selesai",
+  "sumber_paket": {
+    "sumber": "kurasi",
+    "keterangan": "definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"
+  },
+  "sesudahnya": 108,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis bebas deepseek/deepseek-v4.1-flash (≈ 9.000 token masuk; satu panggilan per putaran versi, + 1 ulangan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0246
+      },
+      {
+        "peran": "penebak rotasi haiku (8 panggilan, tanpa kartu)",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.12
+      },
+      {
+        "peran": "penebak rotasi deepseek (8 panggilan, tanpa kartu)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0403
+      },
+      {
+        "peran": "penebak rotasi glm (8 panggilan, tanpa kartu)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.3456
+      },
+      {
+        "peran": "pembaca kartu (2 rotasi)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0648
+      },
+      {
+        "peran": "kritikus (dengan satu pemeriksaan ulang)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.7376
+      }
+    ],
+    "per_omongan_usd": 1.3083,
+    "per_putaran_usd": 3.9495,
+    "maks_putaran": 3,
+    "catatan": [
+      "Pra-registrasi M2d-13 §3: versi 1 satu panggilan penulis untuk tiga omongan; versi 2–3 satu panggilan per putaran untuk semua omongan yang ditolak; maks 3 versi per omongan.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD."
+    ]
+  },
+  "pagu_jalan_usd": 0.22,
+  "mesin": {
+    "nama": "bebas-deepseek",
+    "keterangan": "penulis bebas M2d-13 (deepseek/deepseek-v4.1-flash), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu",
+    "palsu": false
+  },
+  "hasil": {
+    "terbit": false,
+    "berhenti": "omongan tidak lulus dalam 3 versi: 1, 2, 3; simulasi tidak terbit",
+    "putaran": 3,
+    "biaya_usd": 0.025031,
+    "biaya_ledger_usd": 0.025031,
+    "penolakan": [
+      "omongan 1 (ditolak-tulis-gagal, putaran 3): keluaran penulis tak terbaca dua kali",
+      "omongan 2 (ditolak-tulis-gagal, putaran 3): keluaran penulis tak terbaca dua kali",
+      "omongan 3 (ditolak-tulis-gagal, putaran 3): keluaran penulis tak terbaca dua kali"
+    ]
+  },
+  "draf": null,
+  "draf_terakhir": [
+    null,
+    null,
+    null
+  ],
+  "keadaan": [],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}

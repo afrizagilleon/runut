@@ -1,0 +1,239 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/bebas/mesin.ts",
+  "simulasi": {
+    "paket_id": "tirt",
+    "nama_samaran": "Perusahaan T",
+    "tanggal_t": "2025-12-10",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+  },
+  "model": "deepseek/deepseek-v4.1-flash",
+  "model_peran": {
+    "penulis": "deepseek/deepseek-v4.1-flash",
+    "penebak": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3"
+  },
+  "paket": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": 11,
+    "fakta_lolos": 20,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2025-11-25",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "harga-2025-12-10",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "789991ae8c4f455cbde7be87b843cd8217bfef20aaf7b5fd4675ec1b081586ef",
+    "sha256_paket": "00ee7ff29751650fd42d323984c8398fdd0536ce383a788f1fe1ad2b2dea7292",
+    "ringkasan": "Pintu penyusun, mesin \"bebas-deepseek\": penulis bebas deepseek/deepseek-v4.1-flash tanpa penyempurna; gerbang M2d-11 + angka-di-kartu. Di sini hanya hash."
+  },
+  "mulai": "2026-10-02T16:46:50.450Z",
+  "selesai": "2026-10-02T17:01:27.910Z",
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T16:46:50.474Z",
+      "waktu_selesai": "2026-10-02T16:52:51.348Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 5082,
+      "token_keluar": 8000,
+      "biaya_usd": 0.003170722,
+      "putusan": "galat",
+      "alasan": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "f2470c0da328259ed03eba3d706cb9a8ba2f8d16c744e996ebea56cbb277a228",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [],
+        "token_penalaran": 8000,
+        "penyedia": "Morph",
+        "finish_reason": "length",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T16:52:51.355Z",
+      "waktu_selesai": "2026-10-02T16:54:15.638Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 5082,
+      "token_keluar": 8000,
+      "biaya_usd": 0.00380984,
+      "putusan": "galat",
+      "alasan": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "f2470c0da328259ed03eba3d706cb9a8ba2f8d16c744e996ebea56cbb277a228",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [],
+        "token_penalaran": 8000,
+        "penyedia": "DekaLLM",
+        "finish_reason": "length",
+        "ulang": 1
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 3,
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T16:54:15.647Z",
+      "waktu_selesai": "2026-10-02T16:59:25.439Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "biaya_usd": 0.003174985,
+      "putusan": "galat",
+      "alasan": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [],
+        "token_penalaran": 8000,
+        "penyedia": "Morph",
+        "finish_reason": "length",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 4,
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T16:59:25.452Z",
+      "waktu_selesai": "2026-10-02T17:00:05.637Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "biaya_usd": 0.00506425,
+      "putusan": "galat",
+      "alasan": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [],
+        "token_penalaran": 8004,
+        "penyedia": "Wafer",
+        "finish_reason": "length",
+        "ulang": 1
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 5,
+      "putaran": 3,
+      "jenis": "tulis-ulang",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T17:00:05.647Z",
+      "waktu_selesai": "2026-10-02T17:00:53.934Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "biaya_usd": 0.0049057,
+      "putusan": "galat",
+      "alasan": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [],
+        "token_penalaran": 6556,
+        "penyedia": "Relace",
+        "finish_reason": "length",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 6,
+      "putaran": 3,
+      "jenis": "tulis-ulang",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T17:00:53.945Z",
+      "waktu_selesai": "2026-10-02T17:01:27.907Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 5285,
+      "token_keluar": 8000,
+      "biaya_usd": 0.0049057,
+      "putusan": "galat",
+      "alasan": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "d8b96ac34a6423cc9005e0d76e5465025b05d0dab4a4ae89201835009fafeb21",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [],
+        "token_penalaran": 6764,
+        "penyedia": "Relace",
+        "finish_reason": "length",
+        "ulang": 1
+      },
+      "peran": "penulis"
+    }
+  ],
+  "hasil": {
+    "lolos": false,
+    "putaran": 3,
+    "berhenti": "omongan tidak lulus dalam 3 versi: 1, 2, 3; simulasi tidak terbit",
+    "panggilan": 6,
+    "token_masuk": 31304,
+    "token_keluar": 48000,
+    "biaya_usd": 0.0250312,
+    "durasi_ms": 877460
+  }
+}
