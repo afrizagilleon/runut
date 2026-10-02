@@ -1,0 +1,1017 @@
+{
+  "ambang_awal": {
+    "D1": 0,
+    "D2": 0,
+    "D3": 0,
+    "D4": 0,
+    "D5": 0,
+    "D6": 0,
+    "D7": 0,
+    "D8": 0,
+    "D9": 0
+  },
+  "ambang_akhir": {
+    "D1": 0,
+    "D2": 1,
+    "D3": 0,
+    "D4": 0,
+    "D5": 1,
+    "D6": 2,
+    "D7": 0,
+    "D8": 0,
+    "D9": 0
+  },
+  "langkah": [
+    {
+      "ambang": {
+        "D1": 0,
+        "D2": 0,
+        "D3": 0,
+        "D4": 0,
+        "D5": 0,
+        "D6": 0,
+        "D7": 0,
+        "D8": 0,
+        "D9": 0
+      },
+      "ditandai": [
+        "tayang-dada-s1-kata-bursa",
+        "tayang-dada-s2-dividen-pemilik-kecil",
+        "tayang-ultj-turun-di-tanggal-ex",
+        "tayang-ultj-riwayat-dividen"
+      ],
+      "per_detektor": {
+        "D2": 1,
+        "D5": 2,
+        "D6": 3
+      },
+      "turun": "D6"
+    },
+    {
+      "ambang": {
+        "D1": 0,
+        "D2": 0,
+        "D3": 0,
+        "D4": 0,
+        "D5": 0,
+        "D6": 1,
+        "D7": 0,
+        "D8": 0,
+        "D9": 0
+      },
+      "ditandai": [
+        "tayang-dada-s1-kata-bursa",
+        "tayang-dada-s2-dividen-pemilik-kecil",
+        "tayang-ultj-riwayat-dividen"
+      ],
+      "per_detektor": {
+        "D2": 1,
+        "D5": 2,
+        "D6": 2
+      },
+      "turun": "D5"
+    },
+    {
+      "ambang": {
+        "D1": 0,
+        "D2": 0,
+        "D3": 0,
+        "D4": 0,
+        "D5": 1,
+        "D6": 1,
+        "D7": 0,
+        "D8": 0,
+        "D9": 0
+      },
+      "ditandai": [
+        "tayang-dada-s1-kata-bursa",
+        "tayang-dada-s2-dividen-pemilik-kecil",
+        "tayang-ultj-riwayat-dividen"
+      ],
+      "per_detektor": {
+        "D2": 1,
+        "D6": 2
+      },
+      "turun": "D6"
+    },
+    {
+      "ambang": {
+        "D1": 0,
+        "D2": 0,
+        "D3": 0,
+        "D4": 0,
+        "D5": 1,
+        "D6": 2,
+        "D7": 0,
+        "D8": 0,
+        "D9": 0
+      },
+      "ditandai": [
+        "tayang-dada-s1-kata-bursa",
+        "tayang-dada-s2-dividen-pemilik-kecil"
+      ],
+      "per_detektor": {
+        "D2": 1,
+        "D6": 1
+      },
+      "turun": "D2"
+    },
+    {
+      "ambang": {
+        "D1": 0,
+        "D2": 1,
+        "D3": 0,
+        "D4": 0,
+        "D5": 1,
+        "D6": 2,
+        "D7": 0,
+        "D8": 0,
+        "D9": 0
+      },
+      "ditandai": [
+        "tayang-dada-s2-dividen-pemilik-kecil"
+      ],
+      "per_detektor": {
+        "D6": 1
+      },
+      "turun": null
+    }
+  ],
+  "tayang": {
+    "ditandai_awal": 4,
+    "ditandai_akhir": 1,
+    "total": 6
+  },
+  "recall": {
+    "menolak": 4,
+    "menyala_termasuk_dicatat": 4,
+    "total": 12,
+    "luput": [
+      "m2d3-tirt-o1",
+      "m2d3-ultj-o3",
+      "m2d3-ultj-o2",
+      "m2d3-tirt-o3",
+      "m2d5-tirt-o3",
+      "m2d8-tirt-o1",
+      "m2d10a1-tirt-o1",
+      "m2d10a2-tirt-o1"
+    ]
+  },
+  "lama_tidak_tertebak": {
+    "menolak": 6,
+    "total": 15
+  },
+  "per_detektor_akhir": {
+    "D1": {
+      "tayang": 0,
+      "recall": 1,
+      "lama_tidak_tertebak": 3
+    },
+    "D2": {
+      "tayang": 0,
+      "recall": 2,
+      "lama_tidak_tertebak": 1
+    },
+    "D3": {
+      "tayang": 0,
+      "recall": 0,
+      "lama_tidak_tertebak": 1
+    },
+    "D4": {
+      "tayang": 0,
+      "recall": 0,
+      "lama_tidak_tertebak": 0
+    },
+    "D5": {
+      "tayang": 0,
+      "recall": 1,
+      "lama_tidak_tertebak": 1
+    },
+    "D6": {
+      "tayang": 1,
+      "recall": 0,
+      "lama_tidak_tertebak": 0
+    },
+    "D7": {
+      "tayang": 0,
+      "recall": 0,
+      "lama_tidak_tertebak": 0
+    },
+    "D8": {
+      "tayang": 0,
+      "recall": 0,
+      "lama_tidak_tertebak": 0
+    },
+    "D9": {
+      "tayang": 0,
+      "recall": 1,
+      "lama_tidak_tertebak": 0
+    }
+  },
+  "per_soal": [
+    {
+      "id": "tayang-dada-s1-kata-bursa",
+      "kelompok": "tayang",
+      "tertebak_luar": false,
+      "luar": null,
+      "kunci": "b",
+      "awal": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (c); harus di 0 atau ≥ 2 opsi"
+        }
+      ],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "tayang-dada-s2-dividen-pemilik-kecil",
+      "kelompok": "tayang",
+      "tertebak_luar": false,
+      "luar": null,
+      "kunci": "a",
+      "awal": [
+        {
+          "kode": "D5",
+          "nama": "konvergensi",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "kunci \"pusat\": berbagi 3 unsur dengan opsi lain, pengecoh tertinggi 2 (selisih ≥ 1)"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "kata absolut hanya di kunci: cuma"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "kata absolut hanya di kunci: cuma"
+        }
+      ],
+      "menolak_akhir": [
+        "D6"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "tayang-dada-s3-siapa-yang-menjual",
+      "kelompok": "tayang",
+      "tertebak_luar": false,
+      "luar": null,
+      "kunci": "c",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "tayang-ultj-turun-di-tanggal-ex",
+      "kelompok": "tayang",
+      "tertebak_luar": false,
+      "luar": null,
+      "kunci": "b",
+      "awal": [
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (a: cuma)"
+        }
+      ],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "tayang-ultj-riwayat-dividen",
+      "kelompok": "tayang",
+      "tertebak_luar": false,
+      "luar": null,
+      "kunci": "a",
+      "awal": [
+        {
+          "kode": "D5",
+          "nama": "konvergensi",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "kunci \"pusat\": berbagi 8 unsur dengan opsi lain, pengecoh tertinggi 7 (selisih ≥ 1)"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "c",
+            "d"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (c: tidak pernah; d: sama sekali)"
+        }
+      ],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "tayang-ultj-siapa-yang-membeli",
+      "kelompok": "tayang",
+      "tertebak_luar": false,
+      "luar": null,
+      "kunci": "d",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-tirt-o1",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "a/40 · a/40 · a/45 (3/3 kunci)",
+      "kunci": "a",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-dada-o1",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "b/40 · b/35 · b/40 (3/3 kunci)",
+      "kunci": "b",
+      "awal": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "b"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (b = kunci); harus di 0 atau ≥ 2 opsi"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "c",
+            "d"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (c: cuma; d: cuma)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "b"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (b = kunci); harus di 0 atau ≥ 2 opsi"
+        }
+      ],
+      "menolak_akhir": [
+        "D2"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-dada-o3",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "d/45 · d/40 · d/45 (0/3 kunci)",
+      "kunci": "b",
+      "awal": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "token tanggal hanya ada di satu opsi (d); harus di 0 atau ≥ 2 opsi"
+        }
+      ],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-ultj-o3",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "a/35 · a/30 · a/35 (3/3 kunci)",
+      "kunci": "a",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-ultj-o2",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "b/35 · b/30 · b/35 (3/3 kunci)",
+      "kunci": "b",
+      "awal": [
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (d: sama sekali)"
+        }
+      ],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-tirt-o2",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "c/55 · c/60 · c/55 (0/3 kunci)",
+      "kunci": "b",
+      "awal": [
+        {
+          "kode": "D5",
+          "nama": "konvergensi",
+          "status": "menolak",
+          "opsi": [
+            "b"
+          ],
+          "alasan": "kunci \"pusat\": berbagi 9 unsur dengan opsi lain, pengecoh tertinggi 7 (selisih ≥ 1)"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (d: cuma)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D5",
+          "nama": "konvergensi",
+          "status": "menolak",
+          "opsi": [
+            "b"
+          ],
+          "alasan": "kunci \"pusat\": berbagi 9 unsur dengan opsi lain, pengecoh tertinggi 7 (selisih ≥ 2)"
+        }
+      ],
+      "menolak_akhir": [
+        "D5"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-ultj-o1",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "a/40 · a/50 · a/45 (0/3 kunci)",
+      "kunci": "b",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d3-tirt-o3",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "c/45 · c/55 · c/50 (3/3 kunci)",
+      "kunci": "c",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d4-ultj-o1",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "b/45 · b/55 · b/50 (0/3 kunci)",
+      "kunci": "c",
+      "awal": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (c = kunci); harus di 0 atau ≥ 2 opsi"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (d: cuma)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (c = kunci); harus di 0 atau ≥ 2 opsi"
+        }
+      ],
+      "menolak_akhir": [
+        "D2"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "b/55 · a/40 · b/55 (1/3 kunci)",
+      "kunci": "a",
+      "awal": [
+        {
+          "kode": "D3",
+          "nama": "tumpang-tindih leksikal dengan pesan",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "Jaccard kunci dengan pesan 0,33, tertinggi; selisih 0,24 > 0,15"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D3",
+          "nama": "tumpang-tindih leksikal dengan pesan",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "Jaccard kunci dengan pesan 0,33, tertinggi; selisih 0,24 > 0,15"
+        }
+      ],
+      "menolak_akhir": [
+        "D3"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "b/50 · a/50 · b/50 (1/3 kunci)",
+      "kunci": "a",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d4-ultj-o2",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "b/45 · b/40 · b/40 (0/3 kunci)",
+      "kunci": "a",
+      "awal": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "b",
+            "d"
+          ],
+          "alasan": "panjang alasan tidak seragam: terpanjang/terpendek 1,63 > 1,60 (b 52 vs d 32 karakter)"
+        },
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "token dokumen hanya ada di satu opsi (c); harus di 0 atau ≥ 2 opsi"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "c",
+            "d"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (c: cuma; d: cuma)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "b",
+            "d"
+          ],
+          "alasan": "panjang alasan tidak seragam: terpanjang/terpendek 1,63 > 1,60 (b 52 vs d 32 karakter)"
+        }
+      ],
+      "menolak_akhir": [
+        "D1"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d4-dada-o2",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "d/45 · d/40 · d/40 (0/3 kunci)",
+      "kunci": "b",
+      "awal": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "b"
+          ],
+          "alasan": "alasan kunci 58 karakter, terpanjang dan > 1,25 × median pengecoh (41,00)"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (c: cuma)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "b"
+          ],
+          "alasan": "alasan kunci 58 karakter, terpanjang dan > 1,25 × median pengecoh (41,00)"
+        }
+      ],
+      "menolak_akhir": [
+        "D1"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d4-dada-o1",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "c/60 · c/35 · c/55 (0/3 kunci)",
+      "kunci": "a",
+      "awal": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (c); harus di 0 atau ≥ 2 opsi"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (c: cuma)"
+        }
+      ],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d4-ultj-o3",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "b/55 · b/45 · b/55 (0/3 kunci)",
+      "kunci": "a",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "d/40 · d/40 · d/40 (3/3 kunci)",
+      "kunci": "d",
+      "awal": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "b",
+            "d"
+          ],
+          "alasan": "panjang alasan tidak seragam: terpanjang/terpendek 1,67 > 1,60 (b 55 vs d 33 karakter)"
+        },
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (d = kunci); harus di 0 atau ≥ 2 opsi"
+        },
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "a"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (a: tidak pernah)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "b",
+            "d"
+          ],
+          "alasan": "panjang alasan tidak seragam: terpanjang/terpendek 1,67 > 1,60 (b 55 vs d 33 karakter)"
+        },
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (d = kunci); harus di 0 atau ≥ 2 opsi"
+        }
+      ],
+      "menolak_akhir": [
+        "D1",
+        "D2"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "d/55 · d/60 · d/55 (3/3 kunci)",
+      "kunci": "d",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d5-tirt-o1",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "b/40 · b/35 · c/30 (1/3 kunci)",
+      "kunci": "c",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d6-tirt-o2",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "a/35 · b/35 · a/30 (0/3 kunci)",
+      "kunci": "d",
+      "awal": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "alasan kunci 49 karakter, terpanjang dan > 1,25 × median pengecoh (31,00)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D1",
+          "nama": "panjang",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "alasan kunci 49 karakter, terpanjang dan > 1,25 × median pengecoh (31,00)"
+        }
+      ],
+      "menolak_akhir": [
+        "D1"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d6-tirt-o1",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "c/55 · c/50 · c/50 (3/3 kunci)",
+      "kunci": "c",
+      "awal": [
+        {
+          "kode": "D5",
+          "nama": "konvergensi",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "kunci \"pusat\": berbagi 9 unsur dengan opsi lain, pengecoh tertinggi 7 (selisih ≥ 1)"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D5",
+          "nama": "konvergensi",
+          "status": "menolak",
+          "opsi": [
+            "c"
+          ],
+          "alasan": "kunci \"pusat\": berbagi 9 unsur dengan opsi lain, pengecoh tertinggi 7 (selisih ≥ 2)"
+        }
+      ],
+      "menolak_akhir": [
+        "D5"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d8-tirt-o1",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "c/50 · c/55 · c/55 (3/3 kunci)",
+      "kunci": "c",
+      "awal": [
+        {
+          "kode": "D2",
+          "nama": "spesifisitas unik",
+          "status": "menolak",
+          "opsi": [
+            "d"
+          ],
+          "alasan": "token angka hanya ada di satu opsi (d); harus di 0 atau ≥ 2 opsi"
+        }
+      ],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d10-pemanasan",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "b/50 · a/45 · a/35 (1/3 kunci)",
+      "kunci": "b",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d10-tirt-v1",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "c/50 · a/45 · a/35 (1/3 kunci)",
+      "kunci": "c",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d10-tirt-v2",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "c/40 · c/35 · c/50 (3/3 kunci)",
+      "kunci": "c",
+      "awal": [
+        {
+          "kode": "D6",
+          "nama": "kata absolut",
+          "status": "menolak",
+          "opsi": [
+            "b"
+          ],
+          "alasan": "kata absolut hanya di pengecoh (b: cuma)"
+        },
+        {
+          "kode": "D9",
+          "nama": "urutan numerik",
+          "status": "menolak",
+          "opsi": [
+            "a",
+            "b",
+            "c"
+          ],
+          "alasan": "nilai angka opsi a=3.51, b=58, c=2.21 tidak urut"
+        }
+      ],
+      "akhir": [
+        {
+          "kode": "D9",
+          "nama": "urutan numerik",
+          "status": "menolak",
+          "opsi": [
+            "a",
+            "b",
+            "c"
+          ],
+          "alasan": "nilai angka opsi a=3.51, b=58, c=2.21 tidak urut"
+        }
+      ],
+      "menolak_akhir": [
+        "D9"
+      ],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d10a1-tirt-o1",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "c/40 · c/40 · a/35 (2/3 kunci)",
+      "kunci": "c",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d10a1-tirt-o2",
+      "kelompok": "lama",
+      "tertebak_luar": false,
+      "luar": "c/35 · c/30 · a/30 (0/3 kunci)",
+      "kunci": "d",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    },
+    {
+      "id": "m2d10a2-tirt-o1",
+      "kelompok": "lama",
+      "tertebak_luar": true,
+      "luar": "c/45 · c/45 · c/50 (3/3 kunci)",
+      "kunci": "c",
+      "awal": [],
+      "akhir": [],
+      "menolak_akhir": [],
+      "dicatat_akhir": []
+    }
+  ]
+}
