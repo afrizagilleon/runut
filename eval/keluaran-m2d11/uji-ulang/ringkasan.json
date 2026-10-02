@@ -1,0 +1,761 @@
+{
+  "terukur": 33,
+  "total_bank": 33,
+  "biaya_usd": 0.48366155132000005,
+  "lulus_inti": [
+    "tayang-dada-s3-siapa-yang-menjual",
+    "tayang-ultj-turun-di-tanggal-ex",
+    "m2d3-tirt-o1",
+    "m2d3-ultj-o2",
+    "m2d3-ultj-o1"
+  ],
+  "baris": [
+    {
+      "id": "tayang-dada-s1-kata-bursa",
+      "kelompok": "tayang",
+      "kunci": "b",
+      "luar": null,
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "6/12",
+      "rotasi_pilihan_saja": "6/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "soal tayang (tanpa uji luar tebak buta di bank ini)"
+    },
+    {
+      "id": "tayang-dada-s2-dividen-pemilik-kecil",
+      "kelompok": "tayang",
+      "kunci": "a",
+      "luar": null,
+      "tertebak_luar": false,
+      "detektor": [
+        "D6"
+      ],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "7/12",
+      "rotasi_pilihan_saja": "6/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "soal tayang (tanpa uji luar tebak buta di bank ini)"
+    },
+    {
+      "id": "tayang-dada-s3-siapa-yang-menjual",
+      "kelompok": "tayang",
+      "kunci": "c",
+      "luar": null,
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "0/12",
+      "rotasi_pilihan_saja": "2/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": true
+      },
+      "banding": "soal tayang (tanpa uji luar tebak buta di bank ini)"
+    },
+    {
+      "id": "tayang-ultj-turun-di-tanggal-ex",
+      "kelompok": "tayang",
+      "kunci": "b",
+      "luar": null,
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "1/8 (diabaikan: glm-5.3)",
+      "rotasi_pilihan_saja": "2/8 (diabaikan: deepseek-v4.1-flash)",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": true
+      },
+      "banding": "soal tayang (tanpa uji luar tebak buta di bank ini)"
+    },
+    {
+      "id": "tayang-ultj-riwayat-dividen",
+      "kelompok": "tayang",
+      "kunci": "a",
+      "luar": null,
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:null✗ r2:d✗",
+      "rotasi_pesan_pilihan": "2/8 (diabaikan: glm-5.3)",
+      "rotasi_pilihan_saja": "8/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": false,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "soal tayang (tanpa uji luar tebak buta di bank ini)"
+    },
+    {
+      "id": "tayang-ultj-siapa-yang-membeli",
+      "kelompok": "tayang",
+      "kunci": "d",
+      "luar": null,
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:b✗ r2:d✗",
+      "rotasi_pesan_pilihan": "1/8 (diabaikan: glm-5.3)",
+      "rotasi_pilihan_saja": "3/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": false,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": false
+      },
+      "banding": "soal tayang (tanpa uji luar tebak buta di bank ini)"
+    },
+    {
+      "id": "m2d3-tirt-o1",
+      "kelompok": "lama",
+      "kunci": "a",
+      "luar": "a/40 · a/40 · a/45 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "1/8 (diabaikan: deepseek-v4.1-flash)",
+      "rotasi_pilihan_saja": "5/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": true
+      },
+      "banding": "kemungkinan artefak posisi: dulu tertebak luar, kini lulus tebak rotasi"
+    },
+    {
+      "id": "m2d3-dada-o1",
+      "kelompok": "lama",
+      "kunci": "b",
+      "luar": "b/40 · b/35 · b/40 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [
+        "D2"
+      ],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "0/12",
+      "rotasi_pilihan_saja": "7/8 (diabaikan: deepseek-v4.1-flash)",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d3-ultj-o3",
+      "kelompok": "lama",
+      "kunci": "a",
+      "luar": "a/35 · a/30 · a/35 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "2/12",
+      "rotasi_pilihan_saja": "5/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d3-ultj-o2",
+      "kelompok": "lama",
+      "kunci": "b",
+      "luar": "b/35 · b/30 · b/35 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "2/12",
+      "rotasi_pilihan_saja": "1/4 (diabaikan: claude-haiku-4.5, deepseek-v4.1-flash)",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": true
+      },
+      "banding": "kemungkinan artefak posisi: dulu tertebak luar, kini lulus tebak rotasi"
+    },
+    {
+      "id": "m2d3-tirt-o3",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "c/45 · c/55 · c/50 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "9/12",
+      "rotasi_pilihan_saja": "7/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "lama",
+      "kunci": "d",
+      "luar": "d/40 · d/40 · d/40 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [
+        "D1",
+        "D2"
+      ],
+      "kartu": "r0:d✓ r2:b✓",
+      "rotasi_pesan_pilihan": "4/12",
+      "rotasi_pilihan_saja": "3/8 (diabaikan: claude-haiku-4.5)",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "lama",
+      "kunci": "d",
+      "luar": "d/55 · d/60 · d/55 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:d✓ r2:b✓",
+      "rotasi_pesan_pilihan": "0/12",
+      "rotasi_pilihan_saja": "6/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d6-tirt-o1",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "c/55 · c/50 · c/50 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [
+        "D5"
+      ],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "4/12",
+      "rotasi_pilihan_saja": "3/8 (diabaikan: glm-5.3)",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "lulus",
+        "lulus": false
+      },
+      "banding": "kemungkinan artefak posisi: dulu tertebak luar, kini lulus tebak rotasi"
+    },
+    {
+      "id": "m2d8-tirt-o1",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "c/50 · c/55 · c/55 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:c✓ r2:c✗",
+      "rotasi_pesan_pilihan": "2/12",
+      "rotasi_pilihan_saja": "2/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": false,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": false
+      },
+      "banding": "kemungkinan artefak posisi: dulu tertebak luar, kini lulus tebak rotasi"
+    },
+    {
+      "id": "m2d10-tirt-v2",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "c/40 · c/35 · c/50 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [
+        "D9"
+      ],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "11/12",
+      "rotasi_pilihan_saja": "7/8 (diabaikan: claude-haiku-4.5)",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d10a1-tirt-o1",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "c/40 · c/40 · a/35 (2/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "4/12",
+      "rotasi_pilihan_saja": "6/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d10a2-tirt-o1",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "c/45 · c/45 · c/50 (3/3 kunci)",
+      "tertebak_luar": true,
+      "detektor": [],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "7/12",
+      "rotasi_pilihan_saja": "5/8 (diabaikan: deepseek-v4.1-flash)",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "sejalan: tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d3-dada-o3",
+      "kelompok": "lama",
+      "kunci": "b",
+      "luar": "d/45 · d/40 · d/45 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "1/12",
+      "rotasi_pilihan_saja": "3/8 (diabaikan: deepseek-v4.1-flash)",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d3-tirt-o2",
+      "kelompok": "lama",
+      "kunci": "b",
+      "luar": "c/55 · c/60 · c/55 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [
+        "D5"
+      ],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "0/12",
+      "rotasi_pilihan_saja": "4/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "lulus",
+        "lulus": false
+      },
+      "banding": "sejalan: tidak tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d3-ultj-o1",
+      "kelompok": "lama",
+      "kunci": "b",
+      "luar": "a/40 · a/50 · a/45 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "0/12",
+      "rotasi_pilihan_saja": "0/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": true
+      },
+      "banding": "sejalan: tidak tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d4-ultj-o1",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "b/45 · b/55 · b/50 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [
+        "D2"
+      ],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "7/12",
+      "rotasi_pilihan_saja": "3/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "lama",
+      "kunci": "a",
+      "luar": "b/55 · a/40 · b/55 (1/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [
+        "D3"
+      ],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "10/12",
+      "rotasi_pilihan_saja": "7/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "lama",
+      "kunci": "a",
+      "luar": "b/50 · a/50 · b/50 (1/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "12/12",
+      "rotasi_pilihan_saja": "8/8 (diabaikan: claude-haiku-4.5)",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d4-ultj-o2",
+      "kelompok": "lama",
+      "kunci": "a",
+      "luar": "b/45 · b/40 · b/40 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [
+        "D1"
+      ],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "11/12",
+      "rotasi_pilihan_saja": "9/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d4-dada-o2",
+      "kelompok": "lama",
+      "kunci": "b",
+      "luar": "d/45 · d/40 · d/40 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [
+        "D1"
+      ],
+      "kartu": "r0:b✓ r2:d✓",
+      "rotasi_pesan_pilihan": "9/12",
+      "rotasi_pilihan_saja": "6/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d4-dada-o1",
+      "kelompok": "lama",
+      "kunci": "a",
+      "luar": "c/60 · c/35 · c/55 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "4/12",
+      "rotasi_pilihan_saja": "12/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d4-ultj-o3",
+      "kelompok": "lama",
+      "kunci": "a",
+      "luar": "b/55 · b/45 · b/55 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:a✓ r2:c✓",
+      "rotasi_pesan_pilihan": "1/12",
+      "rotasi_pilihan_saja": "5/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d5-tirt-o1",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "b/40 · b/35 · c/30 (1/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:c✓ r2:a✓",
+      "rotasi_pesan_pilihan": "3/12",
+      "rotasi_pilihan_saja": "7/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d6-tirt-o2",
+      "kelompok": "lama",
+      "kunci": "d",
+      "luar": "a/35 · b/35 · a/30 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [
+        "D1"
+      ],
+      "kartu": "r0:d✓ r2:b✓",
+      "rotasi_pesan_pilihan": "2/12",
+      "rotasi_pilihan_saja": "1/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": false,
+        "s3_tebak": "lulus",
+        "lulus": false
+      },
+      "banding": "sejalan: tidak tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d10-pemanasan",
+      "kelompok": "lama",
+      "kunci": "b",
+      "luar": "b/50 · a/45 · a/35 (1/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:b✓ r2:c✗",
+      "rotasi_pesan_pilihan": "3/12",
+      "rotasi_pilihan_saja": "5/8 (diabaikan: deepseek-v4.1-flash)",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": false,
+        "s2_detektor": true,
+        "s3_tebak": "tidak-disyaratkan",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    },
+    {
+      "id": "m2d10-tirt-v1",
+      "kelompok": "lama",
+      "kunci": "c",
+      "luar": "c/50 · a/45 · a/35 (1/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:a✗ r2:a✓",
+      "rotasi_pesan_pilihan": "0/12",
+      "rotasi_pilihan_saja": "6/12",
+      "putusan_rotasi": "lulus",
+      "putusan": {
+        "s1_kartu": false,
+        "s2_detektor": true,
+        "s3_tebak": "lulus",
+        "lulus": false
+      },
+      "banding": "sejalan: tidak tertebak dulu dan kini"
+    },
+    {
+      "id": "m2d10a1-tirt-o2",
+      "kelompok": "lama",
+      "kunci": "d",
+      "luar": "c/35 · c/30 · a/30 (0/3 kunci)",
+      "tertebak_luar": false,
+      "detektor": [],
+      "kartu": "r0:d✓ r2:b✓",
+      "rotasi_pesan_pilihan": "4/8 (diabaikan: deepseek-v4.1-flash)",
+      "rotasi_pilihan_saja": "9/12",
+      "putusan_rotasi": "gagal",
+      "putusan": {
+        "s1_kartu": true,
+        "s2_detektor": true,
+        "s3_tebak": "gagal",
+        "lulus": false
+      },
+      "banding": "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi"
+    }
+  ],
+  "hitung": {
+    "rotasi gagal": 22,
+    "soal tayang (tanpa uji luar tebak buta di bank ini)": 6,
+    "syarat 1 (kartu 2/2)": 28,
+    "syarat 2 (nol bendera)": 22,
+    "rotasi lulus": 11,
+    "kemungkinan artefak posisi: dulu tertebak luar, kini lulus tebak rotasi": 4,
+    "sejalan: tertebak dulu dan kini": 8,
+    "kebalikan: dulu tidak tertebak luar, kini gagal tebak rotasi": 11,
+    "sejalan: tidak tertebak dulu dan kini": 4
+  },
+  "h2": [
+    {
+      "model": "anthropic/claude-haiku-4.5",
+      "jawaban": 264,
+      "proporsi_kunci": {
+        "pilihan-saja": 0.5075757575757576,
+        "pesan-pilihan": 0.29545454545454547
+      },
+      "laju_isi_kunci_konsisten": {
+        "pilihan-saja": 0.3939393939393939,
+        "pesan-pilihan": 0.24242424242424243
+      },
+      "laju_isi_konsisten": {
+        "pilihan-saja": 0.5757575757575758,
+        "pesan-pilihan": 0.7878787878787878
+      },
+      "laju_huruf_konsisten": {
+        "pilihan-saja": 0.12121212121212122,
+        "pesan-pilihan": 0
+      },
+      "prior_huruf": {
+        "a": 47,
+        "b": 83,
+        "c": 53,
+        "d": 46,
+        "tak_terbaca": 35
+      },
+      "tak_terbaca": 35
+    },
+    {
+      "model": "deepseek/deepseek-v4.1-flash",
+      "jawaban": 264,
+      "proporsi_kunci": {
+        "pilihan-saja": 0.45454545454545453,
+        "pesan-pilihan": 0.3939393939393939
+      },
+      "laju_isi_kunci_konsisten": {
+        "pilihan-saja": 0.3333333333333333,
+        "pesan-pilihan": 0.2727272727272727
+      },
+      "laju_isi_konsisten": {
+        "pilihan-saja": 0.5454545454545454,
+        "pesan-pilihan": 0.6666666666666666
+      },
+      "laju_huruf_konsisten": {
+        "pilihan-saja": 0.18181818181818182,
+        "pesan-pilihan": 0.06060606060606061
+      },
+      "prior_huruf": {
+        "a": 57,
+        "b": 78,
+        "c": 60,
+        "d": 62,
+        "tak_terbaca": 7
+      },
+      "tak_terbaca": 7
+    },
+    {
+      "model": "z-ai/glm-5.3",
+      "jawaban": 264,
+      "proporsi_kunci": {
+        "pilihan-saja": 0.4166666666666667,
+        "pesan-pilihan": 0.3409090909090909
+      },
+      "laju_isi_kunci_konsisten": {
+        "pilihan-saja": 0.30303030303030304,
+        "pesan-pilihan": 0.18181818181818182
+      },
+      "laju_isi_konsisten": {
+        "pilihan-saja": 0.7272727272727273,
+        "pesan-pilihan": 0.6060606060606061
+      },
+      "laju_huruf_konsisten": {
+        "pilihan-saja": 0.030303030303030304,
+        "pesan-pilihan": 0.09090909090909091
+      },
+      "prior_huruf": {
+        "a": 62,
+        "b": 65,
+        "c": 73,
+        "d": 59,
+        "tak_terbaca": 5
+      },
+      "tak_terbaca": 5
+    }
+  ]
+}
