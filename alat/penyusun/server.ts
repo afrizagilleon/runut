@@ -402,11 +402,19 @@ export function waktuWib(iso: string): { tanggal: string; jam: string } {
 const JALUR_CATATAN = fileURLToPath(new URL('./rekaman/catatan.json', import.meta.url));
 
 /** Catatan sesudah jalan (bukan bagian log) untuk satu id, bila ada. */
-function catatanRekaman(id: string): { persetujuan: string | null; sesudah: string[]; sumber: string | null } {
-  if (!existsSync(JALUR_CATATAN)) return { persetujuan: null, sesudah: [], sumber: null };
-  const semua = JSON.parse(readFileSync(JALUR_CATATAN, 'utf8')) as { jalan?: Record<string, { persetujuan?: string; sesudah?: string[]; sumber?: string }> };
+interface CatatanRekaman {
+  konteks: string | null;
+  konteks_singkat: string | null;
+  persetujuan: string | null;
+  sesudah: string[];
+  sumber: string | null;
+}
+
+function catatanRekaman(id: string): CatatanRekaman {
+  if (!existsSync(JALUR_CATATAN)) return { konteks: null, konteks_singkat: null, persetujuan: null, sesudah: [], sumber: null };
+  const semua = JSON.parse(readFileSync(JALUR_CATATAN, 'utf8')) as { jalan?: Record<string, Partial<CatatanRekaman>> };
   const c = semua.jalan?.[id];
-  return { persetujuan: c?.persetujuan ?? null, sesudah: c?.sesudah ?? [], sumber: c?.sumber ?? null };
+  return { konteks: c?.konteks ?? null, konteks_singkat: c?.konteks_singkat ?? null, persetujuan: c?.persetujuan ?? null, sesudah: c?.sesudah ?? [], sumber: c?.sumber ?? null };
 }
 
 /** Status rekaman untuk halaman (semua dari log + keadaan.json jalan; catatan terpisah). */

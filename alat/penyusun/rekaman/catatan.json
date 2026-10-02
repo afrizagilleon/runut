@@ -2,6 +2,8 @@
   "keterangan": "Catatan sesudah jalan untuk mode tayang ulang (M2d-12). BUKAN bagian log jalan: halaman menampilkannya terpisah, berlabel 'catatan sesudah jalan', dengan sumbernya. Isi log (aliran.jsonl) tidak pernah diubah.",
   "jalan": {
     "m2d11-tirt-7": {
+      "konteks": "Jalan ke-7 dari 7 jalan M2d-11 (29 versi); jalan 1–6 tidak terbit.",
+      "konteks_singkat": "jalan 7 dari 7 (1–6 tidak terbit)",
       "persetujuan": "Di jalan ini persetujuan biaya dikirim oleh skrip jalan (npm run patokan:jalan) lewat API yang sama dengan tombol di halaman, bukan klik di halaman.",
       "sesudah": [
         "Audit luar sesudah jalan (Opus, 4 rotasi): dengan kartu benar 4/4 di ketiga omongan; tanpa kartu pun memilih kunci 4/4 di ketiga omongan. Lulus patokan pra-registrasi M2d-11 tidak berarti tidak tertebak oleh model kuat.",
@@ -11,6 +13,8 @@
       "sumber": "docs/bukti/lingkar-agen-pemula-audit.md; docs/bukti/lingkar-agen-pemula.md"
     },
     "m2d10-tirt-a2": {
+      "konteks": "Jalan ke-3 dari 3 jalan TIRT M2d-10; ketiganya tidak terbit.",
+      "konteks_singkat": "jalan 3 dari 3, semua tidak terbit",
       "persetujuan": "Di jalan ini persetujuan biaya dikirim oleh skrip jalan (npm run templat:jalan -- --id m2d10-tirt-a2 --pagu 0.25) lewat API yang sama dengan tombol di halaman, bukan klik di halaman.",
       "sesudah": [
         "Jalan berhenti karena pagu milestone M2d-10: biaya tercatat ditambah cadangan satu panggilan kritikus melewati pagu, jadi panggilan itu tidak dikirim.",

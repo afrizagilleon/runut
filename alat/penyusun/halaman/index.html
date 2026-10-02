@@ -5,63 +5,87 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Agen penyusun — lokal</title>
   <link rel="stylesheet" href="/gaya.css">
-  <script src="/app.js" defer></script>
+  <script type="module" src="/app.js"></script>
 </head>
 <body>
-  <main id="utama">
-    <header class="kepala">
-      <h1>Agen penyusun</h1>
-      <p class="meta">Berjalan di komputermu saja (127.0.0.1). Kunci API dibaca server dari <code>.env</code> dan tidak pernah dikirim ke halaman ini.</p>
-      <p class="meta" id="mode"></p>
-    </header>
+  <header class="kepala">
+    <div class="kepala-isi">
+      <div class="kepala-judul">
+        <h1>Agen penyusun</h1>
+        <p class="meta">Runut Agent menyusun satu simulasi dari data bursa: data → 33 aturan → paket fakta → persetujuan biaya → agen AI menulis dan diuji gerbang → penyetuju manusia. Berjalan di komputermu saja (127.0.0.1); kunci API tidak pernah dikirim ke halaman ini.</p>
+        <p class="meta" id="mode"></p>
+      </div>
+      <p class="kalender-keping" id="keping" hidden></p>
+    </div>
+    <p class="meta rekaman-rincian" id="rekaman-rincian"></p>
+  </header>
+  <p class="tanda-rekaman" id="rekaman" hidden></p>
 
-    <section id="status" class="bagian" aria-labelledby="judul-status">
-      <h2 id="judul-status">Kunci dan pagu</h2>
-      <div id="status-isi"><p class="meta">Memuat…</p></div>
-    </section>
+  <div class="tata">
+    <main id="utama">
+      <section id="status" class="bagian" aria-labelledby="judul-status">
+        <h2 id="judul-status">Kunci dan pagu</h2>
+        <div id="status-isi"><p class="meta">Memuat…</p></div>
+      </section>
 
-    <section id="langkah-kode" class="bagian" aria-labelledby="judul-kode">
-      <h2 id="judul-kode">1 · Kode saham</h2>
-      <form id="form-kode" class="baris-form" autocomplete="off">
-        <label for="kode">Kode saham</label>
-        <input id="kode" name="kode" type="text" inputmode="text" maxlength="6" placeholder="mis. TIRT" required>
-        <label for="jendela">Jendela "sesudahnya" (hari bursa)</label>
-        <input id="jendela" name="jendela" type="number" min="5" max="20" step="1" value="10">
-        <button type="submit" class="tombol">Cari hari yang layak</button>
-      </form>
-      <p class="meta">Agen mengusulkan tiga hari yang layak dibekukan: hari dengan peristiwa yang biasa disalahpahami, dan data "sesudahnya" yang cukup untuk ditunjukkan di akhir simulasi.</p>
-      <div id="kode-isi" aria-live="polite"></div>
-    </section>
+      <section id="langkah-kode" class="bagian" aria-labelledby="judul-kode">
+        <h2 id="judul-kode">1 · Kode saham</h2>
+        <form id="form-kode" class="baris-form" autocomplete="off">
+          <label for="kode">Kode saham</label>
+          <input id="kode" name="kode" type="text" inputmode="text" maxlength="6" placeholder="mis. TIRT" required>
+          <label for="jendela">Jendela "sesudahnya" (hari bursa)</label>
+          <input id="jendela" name="jendela" type="number" min="5" max="20" step="1" value="10">
+          <button type="submit" class="tombol">Cari hari yang layak</button>
+        </form>
+        <p class="meta">Agen mengusulkan tiga hari yang layak dibekukan: hari dengan peristiwa yang biasa disalahpahami, dan data "sesudahnya" yang cukup untuk ditunjukkan di akhir simulasi.</p>
+        <div id="kode-isi" aria-live="polite"></div>
+      </section>
 
-    <section id="langkah-hari" class="bagian" aria-labelledby="judul-hari" hidden>
-      <h2 id="judul-hari">2 · Pilih hari</h2>
-      <div id="usulan"></div>
-      <form id="form-tanggal" class="baris-form" autocomplete="off">
-        <label for="tanggal">Atau ketik tanggal sendiri</label>
-        <input id="tanggal" name="tanggal" type="text" placeholder="YYYY-MM-DD" maxlength="10">
-        <button type="submit" class="tombol">Periksa tanggal</button>
-        <label for="nama-jalan">Nama jalan (opsional; folder keluaran eval/penyusun/&lt;nama&gt;)</label>
-        <input id="nama-jalan" name="nama-jalan" type="text" placeholder="mis. demo-tirt" maxlength="60" pattern="[a-z0-9][a-z0-9-]{2,59}">
-      </form>
-      <div id="tanggal-isi" aria-live="polite"></div>
-    </section>
+      <section id="langkah-hari" class="bagian" aria-labelledby="judul-hari" hidden>
+        <h2 id="judul-hari">2 · Pilih hari</h2>
+        <div id="usulan"></div>
+        <form id="form-tanggal" class="baris-form" autocomplete="off">
+          <label for="tanggal">Atau ketik tanggal sendiri</label>
+          <input id="tanggal" name="tanggal" type="text" placeholder="YYYY-MM-DD" maxlength="10">
+          <button type="submit" class="tombol">Periksa tanggal</button>
+          <label for="nama-jalan">Nama jalan (opsional; folder keluaran eval/penyusun/&lt;nama&gt;)</label>
+          <input id="nama-jalan" name="nama-jalan" type="text" placeholder="mis. demo-tirt" maxlength="60" pattern="[a-z0-9][a-z0-9-]{2,59}">
+        </form>
+        <div id="tanggal-isi" aria-live="polite"></div>
+      </section>
 
-    <section id="langkah-tahap" class="bagian" aria-labelledby="judul-tahap" hidden>
-      <h2 id="judul-tahap">3 · Agen bekerja</h2>
-      <p class="meta" id="tahap-ringkas"></p>
-      <ol id="tahap" class="daftar-tahap"></ol>
-      <div id="persetujuan-biaya"></div>
-    </section>
+      <section id="langkah-tahap" class="bagian bagian-tahap" aria-labelledby="judul-tahap" hidden>
+        <h2 id="judul-tahap">Agen bekerja</h2>
+        <p class="meta" id="tahap-ringkas"></p>
+        <ol id="tahap" class="daftar-tahap"></ol>
+        <div id="persetujuan-biaya"></div>
+      </section>
 
-    <section id="langkah-hasil" class="bagian" aria-labelledby="judul-hasil" hidden>
-      <h2 id="judul-hasil">4 · Hasil</h2>
-      <div id="hasil-isi"></div>
-    </section>
+      <section id="langkah-hasil" class="bagian" aria-labelledby="judul-hasil" hidden>
+        <h2 id="judul-hasil">Hasil</h2>
+        <div id="hasil-isi"></div>
+      </section>
 
-    <section id="langkah-penyetuju" class="bagian" aria-labelledby="judul-penyetuju" hidden>
-      <h2 id="judul-penyetuju">5 · Penyetuju</h2>
-      <div id="penyetuju-isi"></div>
-    </section>
-  </main>
+      <section id="langkah-penyetuju" class="bagian" aria-labelledby="judul-penyetuju" hidden>
+        <h2 id="judul-penyetuju">Penyetuju</h2>
+        <div id="penyetuju-isi"></div>
+      </section>
+    </main>
+
+    <aside id="papan" class="papan" aria-labelledby="judul-papan" hidden>
+      <h2 id="judul-papan" class="sembunyi">Ringkasan jalan</h2>
+      <p class="sembunyi" id="papan-ringkas" aria-live="polite"></p>
+      <ol id="papan-tahap" class="urutan-tahap" aria-label="Urutan tahap"></ol>
+      <div class="papan-blok" id="papan-biaya"></div>
+      <div class="papan-blok">
+        <h3>Tiga omongan</h3>
+        <ol id="papan-omongan" class="daftar-omongan"></ol>
+      </div>
+      <div class="papan-blok">
+        <h3 id="papan-gerbang-judul">Gerbang</h3>
+        <div id="papan-gerbang"></div>
+      </div>
+    </aside>
+  </div>
 </body>
 </html>

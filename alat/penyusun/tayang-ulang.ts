@@ -216,6 +216,10 @@ export function putarRekaman(res: ServerResponse, rekaman: Rekaman, jam: JamTaya
   const sisa = rekaman.peristiwa.map((p, i) => ({ p, baris: rekaman.baris[i] ?? '', j: rekaman.jadwal[i] })).filter((x) => x.p.no > sesudah);
   const awalJadwal = rekaman.jadwal.find((j) => j.no === sesudah)?.pada_ms ?? 0;
   const mulai = jam.sekarang();
+  if (keadaan !== undefined) {
+    keadaan.terkirim = sesudah;
+    keadaan.selesai = false;
+  }
   void (async () => {
     for (const x of sisa) {
       if (x.j === undefined) continue;

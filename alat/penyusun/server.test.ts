@@ -54,7 +54,9 @@ describe('halaman', () => {
     expect(h.status).toBe(200);
     expect(h.header['content-type']).toMatch(/text\/html/);
     expect(h.header['content-security-policy']).toMatch(/default-src 'self'/);
-    expect(h.teks).toContain('<script src="/app.js" defer></script>');
+    // M2d-12: halaman = modul ES (app.js mengimpor ringkas.js, fungsi murni yang juga dites Vitest).
+    expect(h.teks).toContain('<script type="module" src="/app.js"></script>');
+    expect((await minta(s.port, 'GET', '/ringkas.js')).header['content-type']).toMatch(/javascript/);
     expect((await minta(s.port, 'GET', '/app.js')).header['content-type']).toMatch(/javascript/);
     expect((await minta(s.port, 'GET', '/gaya.css')).header['content-type']).toMatch(/css/);
     expect((await minta(s.port, 'GET', '/../../.env')).status).toBe(404);
