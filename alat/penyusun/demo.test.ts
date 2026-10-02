@@ -9,7 +9,7 @@
  * - hasil uji ulang sungguhan disimpan dan diputar lagi tanpa panggilan (sumber "tersimpan");
  * - setujui hanya bila semua lolos dan HANYA menulis persetujuan-demo.json.
  */
-import { appendFileSync, cpSync, mkdtempSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { appendFileSync, cpSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -35,6 +35,8 @@ function salinJalan(): string {
   const d = mkdtempSync(join(tmpdir(), 'demo-jalan-'));
   const f = join(d, 'm2d13-opus-2');
   cpSync(JALAN, f, { recursive: true });
+  // Salinan bersih: putusan demo dari rekaman sebelumnya (bila ada) tidak ikut.
+  rmSync(join(f, 'persetujuan-demo.json'), { force: true });
   return f;
 }
 
@@ -281,6 +283,26 @@ describe('uji ulang tersimpan dan persetujuan demo', () => {
     expect(isi['mode']).toBe('demo');
     expect(String(isi['keterangan'])).toMatch(/BUKAN cases\//);
     expect(isi['semua_suntingan_sesuai_berkas']).toBe(true);
-    expect(() => d.sunting({ omongan: 2, lokasi: 'penjelasan', teks: 'x x x x' })).toThrow(/sudah disetujui/);
+    expect(isi['putusan']).toBe('disetujui');
+    expect(() => d.sunting({ omongan: 2, lokasi: 'penjelasan', teks: 'x x x x' })).toThrow(/sudah diputus/);
+    expect(() => d.tolak('alasan apa pun')).toThrow(/sudah diputus/);
+  });
+
+  it('tolak (masih ditolak gerbang): putusan "ditolak" + alasan di persetujuan-demo.json saja; setujui sesudahnya ditolak', () => {
+    const folderJalan = salinJalan();
+    const sebelum = sidikFolder(folderJalan);
+    const d = new Demo(opsi({ folderJalan }));
+    for (const u of muatBerkasSuntingan(SUNTINGAN).putaran[0]?.ubah ?? []) d.sunting(u);
+    expect(() => d.tolak('x')).toThrow(/paling sedikit 5 huruf/);
+    const berkas = d.tolak(d.boleh().alasan);
+    expect(berkas.endsWith('persetujuan-demo.json')).toBe(true);
+    const sesudah = sidikFolder(folderJalan);
+    expect(Object.keys(sesudah).filter((n) => !(n in sebelum))).toEqual(['persetujuan-demo.json']);
+    for (const n of Object.keys(sebelum)) expect(sesudah[n], n).toBe(sebelum[n]);
+    const isi = JSON.parse(readFileSync(join(folderJalan, 'persetujuan-demo.json'), 'utf8')) as Record<string, unknown>;
+    expect(isi['putusan']).toBe('ditolak');
+    expect(String(isi['alasan'])).toMatch(/^Masih ditolak: omongan 2/);
+    expect(String(isi['keterangan'])).toMatch(/TIDAK DISETUJUI/);
+    expect(() => d.setujui()).toThrow(/sudah diputus|Sudah diputus/);
   });
 });

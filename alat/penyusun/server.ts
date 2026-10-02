@@ -14,18 +14,22 @@
  * boolean (`konfig.ts`).
  */
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { extname, isAbsolute, join, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { pengambilSungguhan, type Pengambil } from '../sectors.ts';
 import { Aliran, sambungSse } from './aliran.ts';
 import { ambilJalan, GalatAlur, mulai, potret, setujui, siapkan, sunting, tolak, ujiUlang, type KonteksAlur } from './alur.ts';
+import { alasanAwam } from './jalan.ts';
 import { PAGU_PENYUSUN_BAWAAN, jalurBukuKas, ringkasBiaya } from './biaya.ts';
 import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
 import { periksaFolderKeluaran } from './jalan.ts';
 import { mesinSungguhan, panggilSungguhan, type MesinPenulis } from './mesin.ts';
-import { mesinBebasPalsu, mesinBebasSungguhan } from './mesin-bebas.ts';
+import { mesinBebasPalsu, mesinBebasSungguhan, shaPaket } from './mesin-bebas.ts';
+import { AWALAN_TAG_DEMO, Demo, GalatDemo, LOKASI_DEMO, mesinDemo, PAGU_UJI_ULANG_MAKS_USD, RUMUS_JEDA_DEMO, type LokasiDemo, type Ubah } from './demo.ts';
+import type { KunciOpsi } from '../../factory/llm/draf.ts';
 import type { NamaPenulis } from '../../factory/llm/bebas/pagu-adil.ts';
 import { KRITIKUS_TERKUNCI_A1, mesinTemplatM2d11Palsu, mesinTemplatM2d11Sungguhan, mesinTemplatPalsu, mesinTemplatSungguhan } from './mesin-templat.ts';
 import { mesinPalsu, pengambilPalsu } from './palsu.ts';
@@ -82,6 +86,11 @@ export interface OpsiServer {
    * `jam`: bawaan jam sungguhan; perekam memakai `JamVirtual`.
    */
   tayangUlang?: { folder: string; jam?: JamTayang };
+  /**
+   * M2d-14: mode demo — tahap 1–4 hidup (tanpa biaya model), tahap agen =
+   * tayang ulang log jalan `folder`, panel penyetuju hidup atas draf terpilih.
+   */
+  demo?: { folder: string; draf: string; suntingan: string; paguUjiUlangUsd: number | null; jam?: JamTayang; folderSimpan?: string };
 }
 
 export type NamaMesin = 'lingkar' | 'templat' | 'templat-m2d11' | 'bebas';
@@ -96,12 +105,26 @@ export interface KeadaanTayang {
   status: Record<string, unknown>;
 }
 
+export interface KeadaanDemo {
+  demo: Demo;
+  jam: JamTayang;
+  virtual: JamVirtual | null;
+  status: Record<string, unknown>;
+  /** Jalan hidup yang sudah disetujui: tahap agennya diputar dari log rekaman. */
+  jalanHidup: string | null;
+  /** Nomor peristiwa `perkiraan` di log rekaman (= di jalan hidup). */
+  noPerkiraan: number;
+  pemutar: PemutarTayang;
+  pemutarUji: PemutarTayang;
+}
+
 export interface KeadaanServer {
   opsi: OpsiServer;
   aliran: Map<string, Aliran>;
   gudang: PemuatGudang;
   alur: KonteksAlur;
   tayang: KeadaanTayang | null;
+  demo: KeadaanDemo | null;
 }
 
 export class GalatPermintaan extends Error {
@@ -214,6 +237,10 @@ daftarRute('GET', '/api/status', (_req, res, { keadaan }) => {
     kirimJson(res, 200, { mode: 'tayang-ulang', hari_ini: o.jam().toISOString().slice(0, 10), rekaman: keadaan.tayang.status });
     return;
   }
+  if (keadaan.demo !== null) {
+    kirimJson(res, 200, { mode: 'demo', hari_ini: o.jam().toISOString().slice(0, 10), demo: keadaan.demo.status });
+    return;
+  }
   const k = statusKonfig(o.akar, o.proses ?? process.env);
   kirimJson(res, 200, {
     mode: o.palsu ? 'palsu' : 'sungguhan',
@@ -316,6 +343,11 @@ daftarRute('POST', '/api/siapkan', (_req, res, { keadaan, badan }) => {
 });
 
 daftarRute('GET', '/api/jalan/:id', (_req, res, { keadaan, bagian }) => {
+  const d = keadaan.demo;
+  if (d !== null && d.jalanHidup !== null && bagian[0] === d.jalanHidup) {
+    kirimJson(res, 200, potretDemo(d));
+    return;
+  }
   const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
   kirimJson(res, 200, potret(keadaan.alur, j));
 });
@@ -324,6 +356,10 @@ daftarRute('GET', '/api/jalan/:id', (_req, res, { keadaan, bagian }) => {
 daftarRute('POST', '/api/jalan/:id/mulai', (_req, res, { keadaan, bagian, badan }) => {
   const b = bacaBadanObyek(badan);
   const j = ambilJalan(keadaan.alur, bagian[0] ?? '');
+  if (keadaan.demo !== null) {
+    kirimJson(res, 202, mulaiDemo(keadaan, keadaan.demo, j, b));
+    return;
+  }
   const pagu = mulai(keadaan.alur, j, b['setuju'], b['pagu_usd']);
   kirimJson(res, 202, { id: j.data.id, pagu_usd: pagu });
 });
@@ -368,6 +404,12 @@ daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
     putarRekaman(res, keadaan.tayang.rekaman, keadaan.tayang.jam, nomorSesudah(req), keadaan.tayang.pemutar);
     return;
   }
+  const d = keadaan.demo;
+  if (d !== null && d.jalanHidup !== null && id === d.jalanHidup) {
+    // Demo: sesudah persetujuan, tahap agen = log jalan rekaman apa adanya (mulai sesudah peristiwa perkiraan).
+    putarRekaman(res, d.demo.rekaman, d.jam, Math.max(nomorSesudah(req), d.noPerkiraan), d.pemutar);
+    return;
+  }
   let a = keadaan.aliran.get(id);
   if (a === undefined) {
     try {
@@ -383,11 +425,137 @@ daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
 /** M2d-12: perekam bingkai memajukan jam virtual tayang ulang (hanya `--jam-virtual`). */
 daftarRute('POST', '/api/tayang/maju', async (_req, res, { keadaan, badan }) => {
   const t = keadaan.tayang;
-  if (t === null || t.virtual === null) throw new GalatPermintaan(409, 'Jam virtual hanya ada di mode tayang ulang dengan --jam-virtual.');
+  const d = keadaan.demo;
   const ms = Number(bacaBadanObyek(badan)['ms']);
+  if (d !== null && d.virtual !== null) {
+    if (!Number.isFinite(ms) || ms < 0 || ms > 60_000) throw new GalatPermintaan(400, 'ms harus 0–60000.');
+    const waktu = await d.virtual.maju(ms);
+    kirimJson(res, 200, { waktu_ms: waktu, terkirim: d.pemutar.terkirim, selesai: d.pemutar.selesai, jumlah: d.demo.rekaman.peristiwa.length, uji: { terkirim: d.pemutarUji.terkirim, selesai: d.pemutarUji.selesai } });
+    return;
+  }
+  if (t === null || t.virtual === null) throw new GalatPermintaan(409, 'Jam virtual hanya ada di mode tayang ulang atau demo dengan --jam-virtual.');
   if (!Number.isFinite(ms) || ms < 0 || ms > 60_000) throw new GalatPermintaan(400, 'ms harus 0–60000.');
   const waktu = await t.virtual.maju(ms);
   kirimJson(res, 200, { waktu_ms: waktu, terkirim: t.pemutar.terkirim, selesai: t.pemutar.selesai, jumlah: t.rekaman.peristiwa.length });
+});
+
+/* ---------------------------------------------------------------------- */
+/* mode demo (M2d-14)                                                      */
+/* ---------------------------------------------------------------------- */
+
+function wajibDemo(keadaan: KeadaanServer): KeadaanDemo {
+  if (keadaan.demo === null) throw new GalatPermintaan(404, 'Hanya ada di mode demo (--demo).');
+  return keadaan.demo;
+}
+
+/** Status demo untuk halaman: penanda rekaman bagian agen + kalimat transisi (semua dari log & berkas). */
+export function statusDemo(d: Demo, akar: string, paguUjiUlangUsd: number | null): Record<string, unknown> {
+  const st = statusRekaman(d.rekaman, akar);
+  const p = d.rekaman.peristiwa;
+  const iPerk = p.findIndex((x) => x.tahap === 'perkiraan');
+  if (iPerk < 0) throw new GalatDemo(400, `Log jalan ${d.id} tidak memuat peristiwa perkiraan.`);
+  const perk = p[iPerk] as (typeof p)[number];
+  const hasil = [...p].reverse().find((x) => x.tahap === 'hasil');
+  const biaya = typeof hasil?.isi['biaya_ledger_usd'] === 'number' ? hasil.isi['biaya_ledger_usd'] : typeof hasil?.isi['biaya_usd'] === 'number' ? hasil.isi['biaya_usd'] : null;
+  const jadwal = d.rekaman.jadwal;
+  const awal = jadwal[iPerk]?.pada_ms ?? 0;
+  const akhir = jadwal.at(-1)?.pada_ms ?? awal;
+  const terakhir = p.at(-1);
+  return {
+    ...st,
+    rumus: RUMUS_JEDA_DEMO,
+    no_perkiraan: perk.no,
+    waktu_perkiraan_asli: perk.waktu,
+    jumlah_peristiwa_agen: p.length - iPerk - 1,
+    asli_agen_ms: terakhir === undefined ? 0 : Math.max(0, Date.parse(terakhir.waktu) - Date.parse(perk.waktu)),
+    putar_agen_ms: akhir - awal,
+    biaya_asli_usd: biaya,
+    berkas_suntingan: d.potret()['berkas_suntingan'],
+    penyetuju: d.berkas.penyetuju,
+    pagu_uji_ulang_usd: paguUjiUlangUsd,
+    pagu_uji_ulang_maks_usd: PAGU_UJI_ULANG_MAKS_USD,
+    awalan_tag_uji_ulang: AWALAN_TAG_DEMO,
+  };
+}
+
+/** Persetujuan klik di mode demo: tidak memanggil model; tahap agen sesudahnya = log jalan rekaman. */
+function mulaiDemo(keadaan: KeadaanServer, d: KeadaanDemo, j: { data: { id: string; tahap: string }; paket: unknown; aliran: Aliran }, b: Record<string, unknown>): Record<string, unknown> {
+  if (j.data.tahap !== 'menunggu-persetujuan') throw new GalatPermintaan(409, `Jalan ini tidak sedang menunggu persetujuan (tahap: ${j.data.tahap}).`);
+  if (b['setuju'] !== true) throw new GalatPermintaan(400, 'Setujui perkiraan biayanya di layar dulu.');
+  if (j.paket === null || shaPaket(j.paket as Parameters<typeof shaPaket>[0]) !== shaPaket(d.demo.paket)) {
+    throw new GalatPermintaan(409, `Paket jalan ini tidak sama dengan paket jalan rekaman ${d.demo.id}; mode demo hanya bisa memutar jalan itu.`);
+  }
+  const terakhir = j.aliran.semua().at(-1);
+  if (terakhir?.tahap !== 'perkiraan' || terakhir.no !== d.noPerkiraan) throw new GalatPermintaan(409, 'Urutan tahap jalan hidup tidak cocok dengan log rekaman.');
+  j.data.tahap = 'diputar-dari-rekaman';
+  d.jalanHidup = j.data.id;
+  j.aliran.tutup();
+  keadaan.opsi.log(`demo: persetujuan diklik untuk ${j.data.id}; tahap agen diputar dari log ${d.demo.id} (tanpa panggilan model)`);
+  return { id: j.data.id, demo: d.status };
+}
+
+/** Potret jalan sesudah tahap agen: isi keadaan.json jalan rekaman + status per omongan + keadaan demo. */
+function potretDemo(d: KeadaanDemo): Record<string, unknown> {
+  const k = d.demo.keadaanRekaman as Record<string, unknown> & { hasil?: { berhenti: string | null } | null; pagu_jalan_usd?: number | null; draf_terakhir?: Array<{ kartu: string[] } | null>; kode?: string; tanggal?: string };
+  const dirujuk = new Set([...(k.draf_terakhir ?? []).flatMap((o) => o?.kartu ?? []), ...d.demo.terpilih.flatMap((t) => t.omongan.kartu)]);
+  return {
+    ...k,
+    judul: `${String(k.kode)} · ${String(k.tanggal)}`,
+    nama_samaran: d.demo.paket.nama_samaran ?? null,
+    kartu: Object.fromEntries(d.demo.paket.fakta.filter((f) => dirujuk.has(f.fact_id)).map((f) => [f.fact_id, { klaim: f.klaim, asal: f.asal, jenis: f.jenis, terbit: f.terbit }])),
+    alasan_awam: k.hasil === null || k.hasil === undefined ? null : alasanAwam(k.hasil.berhenti, k.pagu_jalan_usd ?? null),
+    status_omongan_jalan: d.demo.terpilih.map((t) => ({ no: t.no, versi: t.versi, lulus: t.lulus_jalan, berhenti: t.berhenti })),
+    demo: d.demo.potret(),
+  };
+}
+
+daftarRute('GET', '/api/demo', (_req, res, { keadaan }) => {
+  kirimJson(res, 200, wajibDemo(keadaan).demo.potret());
+});
+
+/** Suntingan penyetuju (demo): diterapkan, dicatat, dan gerbang KODE diuji ulang langsung. */
+daftarRute('POST', '/api/demo/sunting', (_req, res, { keadaan, badan }) => {
+  const d = wajibDemo(keadaan);
+  if (d.jalanHidup === null) throw new GalatPermintaan(409, 'Panel penyetuju terbuka sesudah tahap agen.');
+  const b = bacaBadanObyek(badan);
+  const no = Number(b['omongan']);
+  const u: Ubah = Array.isArray(b['tukar'])
+    ? { omongan: no, tukar: [String(b['tukar'][0]), String(b['tukar'][1])] as [KunciOpsi, KunciOpsi] }
+    : { omongan: no, lokasi: String(b['lokasi']) as LokasiDemo, teks: typeof b['teks'] === 'string' ? b['teks'] : '' };
+  if (!Number.isInteger(no) || no < 1 || no > 3) throw new GalatPermintaan(400, 'Nomor omongan harus 1–3.');
+  if ('lokasi' in u && !(LOKASI_DEMO as readonly string[]).includes(u.lokasi)) throw new GalatPermintaan(400, `Lokasi harus salah satu dari: ${LOKASI_DEMO.join(', ')}.`);
+  if ('tukar' in u && (!u.tukar.every((h) => ['a', 'b', 'c', 'd'].includes(h)) || u.tukar[0] === u.tukar[1])) throw new GalatPermintaan(400, 'Tukar harus dua huruf a–d yang berbeda.');
+  const h = d.demo.sunting(u);
+  kirimJson(res, 200, { ...h, demo: d.demo.potret() });
+});
+
+/** Uji ulang gerbang AI (demo): hasil tersimpan → diputar; selain itu hanya dengan --pagu-uji-ulang. */
+daftarRute('POST', '/api/demo/uji-ulang', (_req, res, { keadaan, badan }) => {
+  const d = wajibDemo(keadaan);
+  const u = d.demo.mulaiUjiAi(bacaBadanObyek(badan)['setuju']);
+  kirimJson(res, 202, { uji: u, demo: d.demo.potret() });
+});
+
+daftarRute('GET', '/api/demo/uji-ulang/aliran', (req, res, { keadaan }) => {
+  const d = wajibDemo(keadaan);
+  const a = d.demo.aliranUji;
+  if (a === null) throw new GalatPermintaan(404, 'Belum ada uji ulang.');
+  if (a.jenis === 'langsung') sambungSse(res, a.aliran, nomorSesudah(req));
+  else putarRekaman(res, a.rekaman, d.jam, nomorSesudah(req), d.pemutarUji);
+});
+
+/** Tolak (demo): putusan "ditolak" dengan alasan; berkas yang sama (persetujuan-demo.json). */
+daftarRute('POST', '/api/demo/tolak', (_req, res, { keadaan, badan }) => {
+  const d = wajibDemo(keadaan);
+  const berkas = d.demo.tolak(bacaBadanObyek(badan)['alasan']);
+  kirimJson(res, 200, { berkas, demo: d.demo.potret() });
+});
+
+/** Setujui (demo): hanya bila semua lolos; menulis eval/penyusun/<jalan>/persetujuan-demo.json saja. */
+daftarRute('POST', '/api/demo/setujui', (_req, res, { keadaan }) => {
+  const d = wajibDemo(keadaan);
+  const berkas = d.demo.setujui();
+  kirimJson(res, 200, { berkas, demo: d.demo.potret() });
 });
 
 /* ---------------------------------------------------------------------- */
@@ -467,8 +635,30 @@ function mesinRekaman(): MesinPenulis {
 
 export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan: KeadaanServer } {
   const rekaman = opsiMentah.tayangUlang === undefined ? null : bacaRekaman(opsiMentah.tayangUlang.folder);
+  const od = opsiMentah.demo;
+  if (od !== undefined && rekaman !== null) throw new Error('--demo dan --tayang-ulang tidak bisa dipakai bersama.');
+  const demo =
+    od === undefined
+      ? null
+      : new Demo({
+          akar: opsiMentah.akar,
+          folderJalan: od.folder,
+          pilihDraf: od.draf,
+          jalurSuntingan: od.suntingan,
+          paguUjiUlangUsd: od.paguUjiUlangUsd,
+          jam: opsiMentah.jam,
+          log: opsiMentah.log,
+          ...(od.folderSimpan === undefined ? {} : { folderSimpan: od.folderSimpan }),
+          ...(od.paguUjiUlangUsd === null ? {} : { buatPanggil: (tag: string, pagu: number) => panggilSungguhan(opsiMentah.akar, pagu, opsiMentah.log, KRITIKUS_TERKUNCI_A1, AWALAN_TAG_DEMO)(tag, pagu) }),
+        });
   // Tayang ulang: tanpa jaringan (palsu), folder keluaran = induk folder jalan (hanya dibaca), mesin pengganti.
-  const opsi: OpsiServer = rekaman === null ? opsiMentah : { ...opsiMentah, palsu: true, folderKeluaran: rekaman.folderInduk, mesin: mesinRekaman() };
+  // Demo: tahap 1–4 hidup dari gudang; folder keluaran sementara (bukan eval/); mesin demo tidak pernah menjalankan agen.
+  const opsi: OpsiServer =
+    rekaman !== null
+      ? { ...opsiMentah, palsu: true, folderKeluaran: rekaman.folderInduk, mesin: mesinRekaman() }
+      : demo !== null
+        ? { ...opsiMentah, palsu: false, folderKeluaran: mkdtempSync(join(tmpdir(), 'penyusun-demo-')), mesin: mesinDemo(demo.keadaanRekaman, shaPaket(demo.paket), shaPaket, demo.id) }
+        : opsiMentah;
   const aliran = new Map<string, Aliran>();
   const gudang = new PemuatGudang(opsi.folderGudang ?? join(opsi.akar, '.cache', 'sectors'));
   const proses = opsi.proses ?? process.env;
@@ -509,13 +699,28 @@ export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan:
     mesin,
     jalan: new Map(),
     daftarAliran: (j) => aliran.set(j.data.id, j.aliran),
+    ...(demo === null ? {} : { demo: { id: demo.id, pagu_usd: typeof demo.keadaanRekaman['pagu_jalan_usd'] === 'number' ? demo.keadaanRekaman['pagu_jalan_usd'] : 0.6 } }),
   };
   let tayang: KeadaanTayang | null = null;
   if (rekaman !== null) {
     const jam = opsiMentah.tayangUlang?.jam ?? jamSungguhan();
     tayang = { rekaman, jam, virtual: jam instanceof JamVirtual ? jam : null, pemutar: { terkirim: 0, selesai: false }, status: statusRekaman(rekaman, opsi.akar) };
   }
-  const keadaan: KeadaanServer = { opsi, aliran, gudang, alur, tayang };
+  let keadaanDemo: KeadaanDemo | null = null;
+  if (demo !== null && od !== undefined) {
+    const jam = od.jam ?? jamSungguhan();
+    keadaanDemo = {
+      demo,
+      jam,
+      virtual: jam instanceof JamVirtual ? jam : null,
+      status: statusDemo(demo, opsi.akar, od.paguUjiUlangUsd),
+      jalanHidup: null,
+      noPerkiraan: demo.rekaman.peristiwa.find((p) => p.tahap === 'perkiraan')?.no ?? 0,
+      pemutar: { terkirim: 0, selesai: false },
+      pemutarUji: { terkirim: 0, selesai: false },
+    };
+  }
+  const keadaan: KeadaanServer = { opsi, aliran, gudang, alur, tayang, demo: keadaanDemo };
   const server = createServer((req, res) => {
     void layani(req, res, keadaan);
   });
@@ -527,6 +732,19 @@ export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan:
  * direkam, dan (bila jam virtual) `POST /api/tayang/maju`. Tindakan lain —
  * siapkan, mulai, sunting, uji ulang, setujui, tolak, ambil data — ditolak 409.
  */
+/**
+ * Mode demo: tanpa ambil data Sectors (kredit), tanpa agen sungguhan, tanpa
+ * penyetuju lama; tahap 1–4, persetujuan klik (memutar log), panel penyetuju
+ * demo, dan jam virtual (perekam) saja.
+ */
+const POST_DEMO = new Set(['/api/periksa-tanggal', '/api/siapkan', '/api/demo/sunting', '/api/demo/uji-ulang', '/api/demo/setujui', '/api/demo/tolak']);
+function jagaDemo(metode: string, jalur: string, d: KeadaanDemo): void {
+  if (metode !== 'POST') return;
+  if (jalur === '/api/tayang/maju' && d.virtual !== null) return;
+  if (POST_DEMO.has(jalur) || /^\/api\/jalan\/[^/]+\/mulai$/.test(jalur)) return;
+  throw new GalatPermintaan(409, 'Mode demo: tindakan ini tidak tersedia (tanpa ambil data Sectors, tanpa agen sungguhan; penyetuju lewat panel demo).');
+}
+
 function jagaTayang(metode: string, jalur: string, t: KeadaanTayang): void {
   const tolak = (): never => {
     throw new GalatPermintaan(409, `Mode tayang ulang: ini rekaman jalan ${t.rekaman.id}; tidak ada tindakan yang dijalankan dan tidak ada panggilan model.`);
@@ -547,6 +765,7 @@ async function layani(req: IncomingMessage, res: ServerResponse, keadaan: Keadaa
   try {
     if (!hostSah(req.headers.host)) throw new GalatPermintaan(403, 'Host tidak dikenal; pintu penyusun hanya melayani 127.0.0.1.');
     if (keadaan.tayang !== null) jagaTayang(metode, url.pathname, keadaan.tayang);
+    if (keadaan.demo !== null) jagaDemo(metode, url.pathname, keadaan.demo);
     if (metode === 'GET') {
       const berkas = BERKAS_HALAMAN[url.pathname];
       if (berkas !== undefined) {
@@ -575,7 +794,7 @@ async function layani(req: IncomingMessage, res: ServerResponse, keadaan: Keadaa
       res.end();
       return;
     }
-    if (galat instanceof GalatPermintaan || galat instanceof GalatAlur) {
+    if (galat instanceof GalatPermintaan || galat instanceof GalatAlur || galat instanceof GalatDemo) {
       kirimJson(res, galat.status, { galat: galat.message });
       return;
     }
@@ -613,6 +832,8 @@ export interface ArgumenServer {
   tayangUlang: string | null;
   /** M2d-12: jam virtual untuk perekam bingkai (`--jam-virtual`). */
   jamVirtual: boolean;
+  /** M2d-14: `--demo <folder jalan> --draf <pilihan> --suntingan <berkas> [--pagu-uji-ulang <usd>]`. */
+  demo: { folder: string; draf: string; suntingan: string | null; paguUjiUlangUsd: number | null } | null;
 }
 
 /**
@@ -621,7 +842,10 @@ export interface ArgumenServer {
  * `--host` sengaja DITOLAK: server ini hanya untuk 127.0.0.1.
  */
 export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): ArgumenServer {
-  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, tayangUlang: null, jamVirtual: false };
+  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, tayangUlang: null, jamVirtual: false, demo: null };
+  let draf: string | null = null;
+  let suntingan: string | null = null;
+  let paguUji: number | null = null;
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const nilai = argv[i + 1];
@@ -652,11 +876,31 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
       hasil.tayangUlang = nilai;
       i++;
     } else if (a === '--jam-virtual') hasil.jamVirtual = true;
-    else throw new Error(`Argumen tidak dikenal: ${String(a)}`);
+    else if (a === '--demo' && nilai !== undefined) {
+      hasil.demo = { folder: nilai, draf: 'akhir', suntingan: null, paguUjiUlangUsd: null };
+      i++;
+    } else if (a === '--draf' && nilai !== undefined) {
+      draf = nilai;
+      i++;
+    } else if (a === '--suntingan' && nilai !== undefined) {
+      suntingan = nilai;
+      i++;
+    } else if (a === '--pagu-uji-ulang' && nilai !== undefined) {
+      const n = Number(nilai);
+      if (!Number.isFinite(n) || n <= 0 || n > PAGU_UJI_ULANG_MAKS_USD) throw new Error(`--pagu-uji-ulang harus angka dolar > 0 dan ≤ ${String(PAGU_UJI_ULANG_MAKS_USD)}.`);
+      paguUji = n;
+      i++;
+    } else throw new Error(`Argumen tidak dikenal: ${String(a)}`);
+  }
+  if (hasil.demo === null && (draf !== null || suntingan !== null || paguUji !== null)) throw new Error('--draf, --suntingan, dan --pagu-uji-ulang hanya berlaku bersama --demo <folder jalan>.');
+  if (hasil.demo !== null) {
+    if (suntingan === null) throw new Error('--demo butuh --suntingan <berkas suntingan penyetuju>.');
+    if (hasil.tayangUlang !== null || hasil.palsu) throw new Error('--demo tidak bisa digabung dengan --tayang-ulang atau --palsu.');
+    hasil.demo = { ...hasil.demo, draf: draf ?? 'akhir', suntingan, paguUjiUlangUsd: paguUji };
   }
   if (hasil.mesin === 'bebas' && hasil.penulis === null) throw new Error('--mesin bebas butuh --penulis opus|haiku|deepseek (M2d-13).');
   if (hasil.penulis !== null && hasil.mesin !== 'bebas') throw new Error('--penulis hanya berlaku bersama --mesin bebas.');
-  if (hasil.jamVirtual && hasil.tayangUlang === null) throw new Error('--jam-virtual hanya berlaku bersama --tayang-ulang <folder jalan>.');
+  if (hasil.jamVirtual && hasil.tayangUlang === null && hasil.demo === null) throw new Error('--jam-virtual hanya berlaku bersama --tayang-ulang <folder jalan> atau --demo <folder jalan>.');
   return hasil;
 }
 
@@ -672,8 +916,18 @@ async function utama(): Promise<number> {
     namaMesin: arg.mesin,
     ...(arg.penulis === null ? {} : { penulisBebas: arg.penulis }),
     ...(arg.tayangUlang === null ? {} : { tayangUlang: { folder: arg.tayangUlang, ...(arg.jamVirtual ? { jam: new JamVirtual() } : {}) } }),
+    ...(arg.demo === null || arg.demo.suntingan === null
+      ? {}
+      : { demo: { folder: arg.demo.folder, draf: arg.demo.draf, suntingan: arg.demo.suntingan, paguUjiUlangUsd: arg.demo.paguUjiUlangUsd, ...(arg.jamVirtual ? { jam: new JamVirtual() } : {}) } }),
   });
   const port = await dengarkan(server, arg.port);
+  if (arg.demo !== null) {
+    console.log(`Pintu penyusun — MODE DEMO ${arg.demo.folder} (draf ${arg.demo.draf})${arg.jamVirtual ? ' (jam virtual)' : ''}: http://${HOST}:${String(port)}/`);
+    console.log(
+      `Tahap 1–4 hidup tanpa biaya model; tahap agen diputar dari log; penyetuju hidup. Gerbang AI ${arg.demo.paguUjiUlangUsd === null ? 'TIDAK diuji ulang (tanpa --pagu-uji-ulang; hasil tersimpan tetap diputar)' : `diuji ulang sungguhan, pagu US$${arg.demo.paguUjiUlangUsd.toFixed(2)} (tag ${AWALAN_TAG_DEMO})`}.`,
+    );
+    return 0;
+  }
   if (arg.tayangUlang !== null) {
     console.log(`Pintu penyusun — TAYANG ULANG ${arg.tayangUlang}${arg.jamVirtual ? ' (jam virtual: maju lewat POST /api/tayang/maju)' : ''}: http://${HOST}:${String(port)}/`);
     console.log('Tanpa panggilan model, tanpa Sectors, tanpa tulisan ke folder jalan. Muat ulang halaman untuk memutar dari awal.');

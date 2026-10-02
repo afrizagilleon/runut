@@ -93,7 +93,7 @@ export function nomorTahap(p) {
 /** Sebab berhenti yang pendek untuk papan: "pagu", "batas versi", atau kalimat log pertama. */
 export function sebabBerhenti(berhenti) {
   const b = String(berhenti || '');
-  if (b.startsWith('pagu tercapai')) return 'pagu';
+  if (b.startsWith('pagu tercapai') || b.startsWith('terpotong pagu')) return 'pagu';
   if (b.startsWith('batas')) return 'batas versi';
   if (b.startsWith('paket hanya memberi')) return 'paket terlalu tipis';
   return b === '' ? '' : alasanSingkat(b, 40);
@@ -285,3 +285,38 @@ export function teksRekaman(r) {
 
 /** Pola teks terlarang (tes kejujuran). */
 export const POLA_TERLARANG = [/ditulis\s+(oleh\s+)?manusia/i, /buatan\s+manusia/i];
+
+/* ------------------------------------------------------------------ */
+/* M2d-14 mode demo                                                    */
+/* ------------------------------------------------------------------ */
+
+/** Tanggal & jam WIB (UTC+7) dari stempel ISO: "3 Okt 2026, 00.01 WIB". */
+export function waktuWib(iso) {
+  const t = new Date(Date.parse(iso) + 7 * 3_600_000);
+  if (Number.isNaN(t.getTime())) return String(iso);
+  const dua = (n) => String(n).padStart(2, '0');
+  return `${t.getUTCDate()} ${BULAN[t.getUTCMonth()]} ${t.getUTCFullYear()}, ${dua(t.getUTCHours())}.${dua(t.getUTCMinutes())} WIB`;
+}
+
+/** Penanda mode demo yang tampil sejak awal (bagian mana hidup, mana rekaman). */
+export function teksModeDemo(d) {
+  if (!d) return null;
+  return `Mode demo. Tahap 1–4 berjalan langsung tanpa biaya model. Bagian agen diputar dari log jalan nyata ${d.id}. Penyetuju bekerja langsung.`;
+}
+
+/** Kalimat transisi saat persetujuan diklik (D-1): jujur bahwa tahap agen adalah rekaman. */
+export function teksTransisiDemo(d) {
+  if (!d) return null;
+  return `Bagian agen diputar dari jalan nyata ${d.id} (biaya asli ${usdBiaya(d.biaya_asli_usd)}).`;
+}
+
+/** Tanpa pagu uji ulang dan tanpa hasil tersimpan: gerbang AI tidak diuji ulang. */
+export const TEKS_AI_BELUM = 'Gerbang AI belum diuji ulang.';
+
+/** Sumber hasil gerbang AI di panel penyetuju demo. */
+export function teksSumberUji(u) {
+  if (!u) return TEKS_AI_BELUM;
+  const biaya = typeof u.biaya_ledger_usd === 'number' ? `biaya nyata ${usdBiaya(u.biaya_ledger_usd)} (ledger)` : 'biaya nyata belum tercatat';
+  if (u.sumber === 'tersimpan') return `Hasil uji ulang sungguhan ${waktuWib(u.waktu_uji)}, ${biaya}. Diputar dari catatan, tanpa panggilan baru.`;
+  return `Uji ulang sungguhan sekarang (${biaya}).`;
+}

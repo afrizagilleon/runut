@@ -40,7 +40,7 @@ import type { PanggilTemplat } from '../../factory/llm/templat/penulis.ts';
 import { Aliran } from './aliran.ts';
 import { biayaAwalan } from './biaya.ts';
 import type { HasilMesin, HasilUjiUlang, MesinPenulis, PerkiraanBiaya } from './mesin.ts';
-import { barisLog, bacaRekaman, jadwalTayang, type Rekaman } from './tayang-ulang.ts';
+import { barisLog, bacaRekaman, jadwalTayang, RUMUS_JEDA, type Rekaman } from './tayang-ulang.ts';
 
 /** Pagu uji ulang gerbang AI paling besar yang boleh diminta (isian reviewer M2d-14). */
 export const PAGU_UJI_ULANG_MAKS_USD = 0.15;
@@ -54,6 +54,12 @@ export const AWALAN_TAG_DEMO = 'm2d14/';
  * (9.166); effort, ambang penalaran, prompt, dan penyedia tetap.
  */
 export const MAKS_TOKEN_KRITIKUS_DEMO = 16_000;
+/**
+ * Tempo putar mode demo: rumus jeda M2d-12 dengan batas lebih pendek supaya
+ * alur penuh muat ≤ 150 d. Setiap jeda tetap diumumkan di layar
+ * ("Dipercepat ×N: jeda asli …, diputar …").
+ */
+export const RUMUS_JEDA_DEMO = { ...RUMUS_JEDA, MIN_MS: 450, BATAS_MS: 1_100 } as const;
 /** Folder hasil uji ulang sungguhan yang disimpan (diputar ulang tanpa panggilan). */
 export const FOLDER_SIMPAN_BAWAAN = fileURLToPath(new URL('./rekaman/uji-ulang/', import.meta.url));
 
@@ -416,7 +422,7 @@ export function bacaSimpanan(folderSimpan: string, jalan: string, sidik: string)
 export function rekamanUji(jalurLog: string, id: string): Rekaman {
   const baris = barisLog(readFileSync(jalurLog, 'utf8'));
   const peristiwa = baris.map((b) => JSON.parse(b) as Rekaman['peristiwa'][number]);
-  return { id, folder: dirname(jalurLog), folderInduk: dirname(dirname(jalurLog)), baris, peristiwa, jadwal: jadwalTayang(peristiwa), berkas: { keadaan: false, hasil: false, jejak: false, paket: false } };
+  return { id, folder: dirname(jalurLog), folderInduk: dirname(dirname(jalurLog)), baris, peristiwa, jadwal: jadwalTayang(peristiwa, RUMUS_JEDA_DEMO), berkas: { keadaan: false, hasil: false, jejak: false, paket: false } };
 }
 
 /* ---------------------------------------------------------------------- */
@@ -529,11 +535,12 @@ export class Demo {
   /** Aliran uji ulang yang sedang/terakhir berjalan (langsung) atau rekaman tersimpan yang diputar. */
   aliranUji: { jenis: 'langsung'; aliran: Aliran } | { jenis: 'tersimpan'; rekaman: Rekaman } | null = null;
   sibuk = false;
-  putusan: { waktu: string; berkas: string } | null = null;
+  putusan: { putusan: 'disetujui' | 'ditolak'; alasan: string | null; waktu: string; berkas: string } | null = null;
 
   constructor(o: OpsiDemo) {
     this.o = o;
-    this.rekaman = bacaRekaman(o.folderJalan);
+    const r = bacaRekaman(o.folderJalan);
+    this.rekaman = { ...r, jadwal: jadwalTayang(r.peristiwa, RUMUS_JEDA_DEMO) };
     this.id = this.rekaman.id;
     const jalurPaket = join(this.rekaman.folder, 'paket.json');
     const jalurKeadaan = join(this.rekaman.folder, 'keadaan.json');
@@ -581,7 +588,7 @@ export class Demo {
   }
 
   sunting(u: Ubah): { catatan: CatatanSuntingDemo; kode: HasilKode } {
-    if (this.putusan !== null) throw new GalatDemo(409, 'Draf demo ini sudah disetujui.');
+    if (this.putusan !== null) throw new GalatDemo(409, 'Draf demo ini sudah diputus penyetuju.');
     if (this.sibuk) throw new GalatDemo(409, 'Uji ulang gerbang AI sedang berjalan; tunggu hasilnya.');
     const o = this.draf[u.omongan - 1];
     if (o === undefined) throw new GalatDemo(404, 'Omongan tidak ada.');
@@ -625,7 +632,7 @@ export class Demo {
    * itu wajib ada pagu (`--pagu-uji-ulang`); tanpa pagu → 409.
    */
   mulaiUjiAi(setuju: unknown): UjiUlangDemo {
-    if (this.putusan !== null) throw new GalatDemo(409, 'Draf demo ini sudah disetujui.');
+    if (this.putusan !== null) throw new GalatDemo(409, 'Draf demo ini sudah diputus penyetuju.');
     if (this.sibuk) throw new GalatDemo(409, 'Uji ulang sedang berjalan.');
     const no = this.perluUjiAi()[0];
     if (no === undefined) {
@@ -709,7 +716,7 @@ export class Demo {
   }
 
   boleh(): { boleh: boolean; alasan: string | null } {
-    if (this.putusan !== null) return { boleh: false, alasan: 'Sudah disetujui.' };
+    if (this.putusan !== null) return { boleh: false, alasan: 'Sudah diputus penyetuju.' };
     if (this.sibuk) return { boleh: false, alasan: 'Uji ulang gerbang AI sedang berjalan.' };
     const st = this.statusOmongan();
     const belum = st.filter((s) => !s.lolos_sekarang);
@@ -719,33 +726,55 @@ export class Demo {
     return { boleh: true, alasan: null };
   }
 
-  /** Setujui (demo): menulis HANYA `<folder jalan>/persetujuan-demo.json`. */
+  /** Setujui (demo): hanya bila semua lolos; menulis HANYA `<folder jalan>/persetujuan-demo.json`. */
   setujui(): string {
     const b = this.boleh();
     if (!b.boleh) throw new GalatDemo(409, b.alasan ?? 'Belum boleh disetujui.');
+    return this.tulisPutusan('disetujui', null);
+  }
+
+  /**
+   * Tolak (demo): penyetuju mencatat bahwa draf TIDAK disetujui, dengan alasan.
+   * Menulis berkas yang sama (`persetujuan-demo.json`, putusan "ditolak").
+   */
+  tolak(alasan: unknown): string {
+    if (this.putusan !== null) throw new GalatDemo(409, 'Draf demo ini sudah diputus penyetuju.');
+    if (this.sibuk) throw new GalatDemo(409, 'Uji ulang gerbang AI sedang berjalan; tunggu hasilnya.');
+    const a = typeof alasan === 'string' ? alasan.trim() : '';
+    if (a.length < 5) throw new GalatDemo(400, 'Tulis alasan penolakan (paling sedikit 5 huruf).');
+    return this.tulisPutusan('ditolak', a);
+  }
+
+  private tulisPutusan(putusan: 'disetujui' | 'ditolak', alasan: string | null): string {
     const waktu = this.o.jam().toISOString();
     const jalur = join(this.rekaman.folder, 'persetujuan-demo.json');
     const isi = {
       keterangan:
-        'Persetujuan DEMO (M2d-14) lewat mode demo pintu penyusun. Draf = versi terpilih jalan agen AI ini + suntingan penyetuju yang lolos uji ulang gerbang yang sama. BUKAN cases/: tidak dipasang ke produk; memasang adalah langkah terpisah dengan izin deploy.',
+        putusan === 'disetujui'
+          ? 'Putusan penyetuju DEMO (M2d-14): DISETUJUI. Draf = versi terpilih jalan agen AI ini + suntingan penyetuju yang lolos uji ulang gerbang yang sama. BUKAN cases/: tidak dipasang ke produk; memasang adalah langkah terpisah dengan izin deploy.'
+          : 'Putusan penyetuju DEMO (M2d-14): TIDAK DISETUJUI (ditolak dengan alasan). Draf = versi terpilih jalan agen AI ini + suntingan penyetuju; uji ulang gerbang yang sama masih menolak. BUKAN cases/: tidak dipasang ke produk.',
       mode: 'demo',
+      putusan,
+      alasan,
       jalan: this.id,
       draf_pilihan: this.o.pilihDraf,
-      disetujui: { oleh: this.berkas.penyetuju, cara: 'suntingan diketik di halaman dari berkas suntingan penyetuju (perekam), lalu tombol Setujui', waktu },
+      oleh: { penyetuju: this.berkas.penyetuju, cara: 'suntingan diketik di halaman dari berkas suntingan penyetuju (perekam), lalu tombol putusan', waktu },
       berkas_suntingan: rel(this.o.akar, this.o.jalurSuntingan),
       sha256_berkas_suntingan: sha256(readFileSync(this.o.jalurSuntingan, 'utf8')),
-      semua_suntingan_sesuai_berkas: this.suntingan.every((s) => s.sesuai_berkas),
+      semua_suntingan_sesuai_berkas: this.suntingan.every((x) => x.sesuai_berkas),
       suntingan: this.suntingan,
       gerbang_kode: Object.fromEntries([...this.kode].map(([no, k]) => [`omongan_${String(no)}`, k])),
       uji_ulang_ai: this.ujiUlang,
       biaya_uji_ulang_ledger_usd: Math.round(this.ujiUlang.reduce((a, u) => a + (u.sumber === 'langsung' ? (u.biaya_ledger_usd ?? 0) : 0), 0) * 1e6) / 1e6,
-      status_omongan: this.statusOmongan().map(({ kode: _k, ...s }) => s),
+      biaya_uji_ulang_tersimpan_usd: Math.round(this.ujiUlang.reduce((a, u) => a + (u.sumber === 'tersimpan' ? (u.biaya_ledger_usd ?? 0) : 0), 0) * 1e6) / 1e6,
+      status_omongan: this.statusOmongan().map(({ kode: _k, ...x }) => x),
       validator_seluruh_draf: this.seluruhDraf(),
+      boleh_disetujui: this.boleh(),
       draf: { omongan: this.draf },
     };
     writeFileSync(jalur, `${JSON.stringify(isi, null, 2)}\n`, 'utf8');
-    this.putusan = { waktu, berkas: rel(this.o.akar, jalur) };
-    this.o.log(`demo: disetujui → ${this.putusan.berkas}`);
+    this.putusan = { putusan, alasan, waktu, berkas: rel(this.o.akar, jalur) };
+    this.o.log(`demo: ${putusan} → ${this.putusan.berkas}`);
     return this.putusan.berkas;
   }
 

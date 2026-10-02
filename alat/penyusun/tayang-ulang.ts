@@ -83,7 +83,7 @@ export function barisLog(teks: string): string[] {
 }
 
 /** Jadwal putar dari stempel waktu log (rumus di atas). */
-export function jadwalTayang(peristiwa: readonly Pick<Peristiwa, 'no' | 'waktu' | 'tahap'>[], r: typeof RUMUS_JEDA = RUMUS_JEDA): JedaTayang[] {
+export function jadwalTayang(peristiwa: readonly Pick<Peristiwa, 'no' | 'waktu' | 'tahap'>[], r: Readonly<Record<keyof typeof RUMUS_JEDA, number>> = RUMUS_JEDA): JedaTayang[] {
   const keluar: JedaTayang[] = [];
   let pada = 0;
   peristiwa.forEach((p, i) => {

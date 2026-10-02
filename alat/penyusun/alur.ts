@@ -27,6 +27,11 @@ export interface KonteksAlur {
   mesin: MesinPenulis;
   jalan: Map<string, Jalan>;
   daftarAliran: (j: Jalan) => void;
+  /**
+   * M2d-14 mode demo: klik setuju memutar log jalan nyata `id` (tanpa panggilan model).
+   * Kotak perkiraan menyebutnya, dan pagu jalan = pagu jalan aslinya (tetap).
+   */
+  demo?: { id: string; pagu_usd: number };
 }
 
 export class GalatAlur extends Error {
@@ -129,15 +134,20 @@ function tahapGratis(k: KonteksAlur, j: Jalan): void {
     const perkiraan = k.mesin.perkiraan();
     j.data.perkiraan = perkiraan;
     j.data.mesin = { nama: k.mesin.nama, keterangan: k.mesin.keterangan, palsu: k.mesin.palsu };
-    const batas = batasPagu(k);
+    const d = k.demo;
+    const batas: BatasPagu = d === undefined ? batasPagu(k) : { sisa_penyusun_usd: d.pagu_usd, sisa_llm_usd: null, maks_usd: d.pagu_usd, bawaan_usd: d.pagu_usd, min_usd: d.pagu_usd };
     const siap = k.mesin.siap();
     j.data.tahap = 'menunggu-persetujuan';
     j.simpan();
+    const angka =
+      `satu omongan melewati semua gerbang ≤ US$${perkiraan.per_omongan_usd.toFixed(2)}, ` +
+      `satu putaran tiga omongan ≤ US$${perkiraan.per_putaran_usd.toFixed(2)}, paling banyak ${String(perkiraan.maks_putaran)} putaran.`;
     a.kirim(
       'perkiraan',
-      `Siap menjalankan agen (${k.mesin.palsu ? 'PALSU, tanpa biaya' : 'berbayar'}). Perkiraan maksimum: satu omongan melewati semua gerbang ≤ US$${perkiraan.per_omongan_usd.toFixed(2)}, ` +
-        `satu putaran tiga omongan ≤ US$${perkiraan.per_putaran_usd.toFixed(2)}, paling banyak ${String(perkiraan.maks_putaran)} putaran. Jalan dibatasi pagu yang kamu setujui; menunggu persetujuan.`,
-      { perkiraan, batas, mesin: j.data.mesin, siap },
+      d === undefined
+        ? `Siap menjalankan agen (${k.mesin.palsu ? 'PALSU, tanpa biaya' : 'berbayar'}). Perkiraan maksimum: ${angka} Jalan dibatasi pagu yang kamu setujui; menunggu persetujuan.`
+        : `Siap menjalankan agen. Mode demo: klik setuju TIDAK memanggil model; bagian agen diputar dari log jalan nyata ${d.id}. Perkiraan maksimum mesin ${k.mesin.nama} (sama dengan jalan aslinya): ${angka} Menunggu persetujuan.`,
+      { perkiraan, batas, mesin: j.data.mesin, siap, ...(d === undefined ? {} : { demo: d }) },
     );
   } catch (galat) {
     j.data.tahap = 'galat';
