@@ -88,6 +88,8 @@ export interface UkuranPenulis {
   tokenKeluar: number;
   tokenPenalaran: number;
   takTerbacaPenulis: number;
+  /** Panggilan penulis yang berhenti di max_tokens (finish "length"). */
+  terpotong: number;
   butirRotasi: number;
   ps: Laju;
   pp: Laju;
@@ -131,6 +133,7 @@ export function ukurPenulis(js: readonly DataJalan[], p: NamaPenulis): UkuranPen
     tokenKeluar: pp.reduce((a, x) => a + x.token_keluar, 0),
     tokenPenalaran: pp.reduce((a, x) => a + (x.token_penalaran ?? 0), 0),
     takTerbacaPenulis: versi.filter((v) => v.berhenti === 'tulis-gagal').length,
+    terpotong: pp.filter((x) => x.finish_reason === 'length').length,
     butirRotasi: versi.filter((v) => v.rotasi !== null).length,
     ps: lajuKunci(jw.filter((x) => x.kondisi === 'pilihan-saja')),
     pp: lajuKunci(jw.filter((x) => x.kondisi === 'pesan-pilihan')),
@@ -191,11 +194,17 @@ export interface Mutu {
   glm: Map<string, PenilaianMutu | null>;
   opus: Map<string, PenilaianMutu | null> | null;
   biayaGlm: number;
+  /** Penilai GLM pra-registrasi (effort "medium"): sah / total. */
+  medium: { sah: number; total: number; biaya: number };
+  /** Skor yang dipakai = amandemen effort "high" bila ada. */
+  amandemen: boolean;
 }
 
 function muatMutu(): Mutu {
   const kunci = json<KunciMutu>(`${FOLDER_M2D13}/kunci-mutu.json`);
-  const g = json<{ hasil: HasilGlm[]; biaya_tag_usd: number }>(`${FOLDER_MUTU}/glm.json`);
+  const gm = json<{ hasil: HasilGlm[]; biaya_tag_usd: number }>(`${FOLDER_MUTU}/glm.json`);
+  const gt = json<{ hasil: HasilGlm[]; biaya_tag_usd: number }>(`${FOLDER_MUTU}/glm-tinggi.json`);
+  const g = gt ?? gm;
   const o = json<{ hasil: Array<{ id_buta: string; penilaian: PenilaianMutu | null }> }>(`${FOLDER_MUTU_OPUS}/nilai.json`);
   const opusAda = o !== null && o.hasil.some((x) => x.penilaian !== null);
   return {
@@ -203,6 +212,8 @@ function muatMutu(): Mutu {
     glm: new Map((g?.hasil ?? []).map((x) => [x.id_buta, x.penilaian])),
     opus: opusAda ? new Map(o.hasil.map((x) => [x.id_buta, x.penilaian])) : null,
     biayaGlm: g?.biaya_tag_usd ?? 0,
+    medium: { sah: (gm?.hasil ?? []).filter((x) => x.penilaian !== null).length, total: gm?.hasil.length ?? 0, biaya: gm?.biaya_tag_usd ?? 0 },
+    amandemen: gt !== null,
   };
 }
 
@@ -280,12 +291,13 @@ export function bangunLaporan(): string {
   const totalM = L.filter((x) => x.tag.startsWith('m2d13/') || x.tag.startsWith('penyusun/m2d13-')).reduce((a, x) => a + x.biaya_usd, 0);
 
   b.push('# Lingkar agen M2d-13 — keluarga penulis × penguji (H1–H4)', '');
-  b.push('> Laporan ini dibangun skrip (`npm run penulis:laporan`, `factory/llm/bebas/laporan.ts`) dari keluaran tersimpan (`eval/penyusun/m2d13-*/`, `eval/keluaran-m2d13/`) dan ledger OpenRouter. Kalimat bertanda **Tafsiran** adalah bacaan eksekutor. Pra-registrasi: `docs/bukti/m2d13-praregistrasi.md` (commit 15c3766, sebelum panggilan berbayar pertama; dites). **H4 diuji pada effort penalaran "low" untuk ketiga penulis.**', '');
+  b.push('> Laporan ini dibangun skrip (`npm run penulis:laporan`, `factory/llm/bebas/laporan-penulis.ts`) dari keluaran tersimpan (`eval/penyusun/m2d13-*/`, `eval/keluaran-m2d13/`) dan ledger OpenRouter. Kalimat bertanda **Tafsiran** adalah bacaan eksekutor. Pra-registrasi: `docs/bukti/m2d13-praregistrasi.md` (commit 15c3766, sebelum panggilan berbayar pertama; dites). **H4 diuji pada effort penalaran "low" untuk ketiga penulis.**', '');
 
   // ---- ringkasan
   b.push('## Ringkasan', '');
   b.push(`- **Jalan D-B:** ${String(js.length)} dari 6 slot (${js.map((j) => `${j.slot.id}${j.h.tersensor ? ' (tersensor)' : ''}`).join(', ') || '—'}). Biaya nyata D-B ${usd(db)} dari pagu ${usd(PAGU_DB)}; penilai GLM ${usd(dd)} dari ${usd(PAGU_DD)}; total milestone ${usd(totalM)} dari ${usd(PAGU_MILESTONE_M2D13)}.`);
   b.push(`- **Omongan lulus (≤ 3 versi):** ${U.map((u) => `${NAMA[u.penulis]} ${String(u.L)}/${String(u.omongan)}`).join(' · ')}; simulasi terbit: ${U.map((u) => `${NAMA[u.penulis]} ${String(u.terbit)}`).join(' · ')}.`);
+  b.push(`- **Penyimpangan yang memengaruhi bacaan (bukan perubahan pra-registrasi):** (1) jalan Opus tersensor ${String(U[0]?.tersensor ?? 0)}/${String(U[0]?.jalan ?? 0)} — pagu jalan US$0,60 tidak memuat versi 3 (perkiraan maksimum panggilan penulis Opus ≈ US$0,25 dicek sebelum kirim); (2) penulis DeepSeek: ${String(U[2]?.terpotong ?? 0)}/${String(U[2]?.panggilanPenulis ?? 0)} panggilan habis di max_tokens 8.000 seluruhnya penalaran walau effort "low" → semua versi tulis-gagal; (3) penilai GLM pra-registrasi (effort "medium") nyaris tidak berpikir → amandemen teknis effort "high" (lihat §3).`);
   b.push('');
 
   // ---- D-A
@@ -314,15 +326,21 @@ export function bangunLaporan(): string {
 
   // ---- tabel per penulis
   b.push('## 3. Tabel per penulis', '');
-  b.push('| penulis | jalan (tersensor) | lulus ≤ 3 versi | lulus ≤ 2 versi (post-hoc) | V̄ versi/omongan | versi per omongan lulus | distribusi berhenti (versi) | terbit | biaya | biaya per omongan lulus | panggilan penulis · token masuk/keluar/penalaran | kunci pilihan-saja (H1b) | kunci pesan+pilihan | mutu GLM (rata, n, layak) |', '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
+  b.push('| penulis | jalan (tersensor) | lulus ≤ 3 versi | lulus ≤ 2 versi (post-hoc) | V̄ versi/omongan | versi per omongan lulus | distribusi berhenti (versi) | terbit | biaya | biaya per omongan lulus | panggilan penulis (terpotong) · token masuk/keluar/penalaran | kunci pilihan-saja (H1b) | kunci pesan+pilihan | mutu GLM (rata, n, layak) |', '|---|---|---|---|---|---|---|---|---|---|---|---|---|---|');
   for (const u of U) {
     const g = rataMutu(mutu, 'glm', u.penulis);
     b.push(
-      `| ${NAMA[u.penulis]} | ${String(u.jalan)} (${String(u.tersensor)}) | ${String(u.L)}/${String(u.omongan)} | ${String(u.L2)}/${String(u.omongan)} | ${dua(u.vRata)} | ${dua(u.versiPerLulus)} | ${Object.entries(u.berhenti).map(([k, n]) => `${k} ${String(n)}`).join(', ')} | ${String(u.terbit)} | ${usd(u.biaya)} (penulis ${usd(u.biayaPenulis)}) | ${usd(u.biayaPerLulus)} | ${String(u.panggilanPenulis)} · ${String(u.tokenMasuk)}/${String(u.tokenKeluar)}/${String(u.tokenPenalaran)} | ${persen(u.ps.laju)}${wil(u.ps.kunci, u.ps.n)} (kepekaan ${persen(u.ps.laju_kepekaan)}; n ${String(u.ps.n)}, tak terbaca ${String(u.ps.tak_terbaca)}; butir ${String(u.butirRotasi)}) | ${persen(u.pp.laju)} (n ${String(u.pp.n)}) | ${dua(g.rata)} (${String(g.n)}, ${String(g.layak)}) |`,
+      `| ${NAMA[u.penulis]} | ${String(u.jalan)} (${String(u.tersensor)}) | ${String(u.L)}/${String(u.omongan)} | ${String(u.L2)}/${String(u.omongan)} | ${dua(u.vRata)} | ${dua(u.versiPerLulus)} | ${Object.entries(u.berhenti).map(([k, n]) => `${k} ${String(n)}`).join(', ')} | ${String(u.terbit)} | ${usd(u.biaya)} (penulis ${usd(u.biayaPenulis)}) | ${usd(u.biayaPerLulus)} | ${String(u.panggilanPenulis)} (${String(u.terpotong)}) · ${String(u.tokenMasuk)}/${String(u.tokenKeluar)}/${String(u.tokenPenalaran)} | ${persen(u.ps.laju)}${wil(u.ps.kunci, u.ps.n)} (kepekaan ${persen(u.ps.laju_kepekaan)}; n ${String(u.ps.n)}, tak terbaca ${String(u.ps.tak_terbaca)}; butir ${String(u.butirRotasi)}) | ${persen(u.pp.laju)} (n ${String(u.pp.n)}) | ${dua(g.rata)} (${String(g.n)}, ${String(g.layak)}) |`,
     );
   }
   const gT = rataMutu(mutu, 'glm', 'templat-m2d11');
   const gD = rataMutu(mutu, 'glm', 'tayang-dada');
+  b.push('', `**Penilai GLM:** pra-registrasi (effort "medium") sah ${String(mutu.medium.sah)}/${String(mutu.medium.total)} butir (penjaga penalaran 500 token; ${usd(mutu.medium.biaya)}). ${mutu.amandemen ? 'Skor mutu di laporan ini dari **amandemen teknis effort "high"** (setelan kritikus; rubrik, butir, penjaga, `max_tokens` sama) — `eval/keluaran-m2d13/mutu/glm-tinggi.json`.' : 'Amandemen effort "high" belum dijalankan.'}`);
+  {
+    const skor = [...mutu.glm.values()].filter((x): x is PenilaianMutu => x !== null);
+    const penuh = skor.filter((x) => x.total === 10).length;
+    b.push('', `GLM menilai ${String(skor.length)}/${String(mutu.kunci?.butir.length ?? 0)} butir sebelum pagu D-D US$0,40 habis (urutan buta, sehingga butir yang tidak dinilai acak); ${String(penuh)}/${String(skor.length)} diberi 10/10. **Tafsiran:** dengan rubrik ini GLM nyaris tidak membedakan (efek langit-langit) — skor mutu GLM tidak cukup untuk membandingkan penulis; bagian mutu H4 bergantung pada penilai Opus.`);
+  }
   b.push('', `Pembanding mutu GLM: templat TIRT-7 ${dua(gT.rata)} (n ${String(gT.n)}, layak ${String(gT.layak)}); DADA tayang ${dua(gD.rata)} (n ${String(gD.n)}, layak ${String(gD.layak)}). Skala 0–10 (rubrik pra-registrasi §7). Templat M2d-11 butuh 29 versi untuk 3 omongan lulus (9,7 versi per omongan lulus).`, '');
 
   // ---- H1
@@ -459,7 +477,7 @@ export function bangunLaporan(): string {
   return `${b.join('\n')}\n`;
 }
 
-if (/(^|[\\/])bebas[\\/]laporan\.ts$/.test(process.argv[1] ?? '')) {
+if (/(^|[\\/])bebas[\\/]laporan-penulis\.ts$/.test(process.argv[1] ?? '')) {
   writeFileSync(JALUR_LAPORAN, bangunLaporan(), 'utf8');
   console.log(`ditulis ${JALUR_LAPORAN}`);
 }

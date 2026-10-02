@@ -24,7 +24,7 @@ export const PAGU_BAGIAN_M2D11 = {
   pemanasan: { usd: 0.3, awalanTag: 'm2d11/pemanasan/' },
 } as const satisfies Record<string, PaguMilestone>;
 
-const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', 'm2d8/', 'm2d10/', 'penyusun/', AWALAN_TAG_M2D11] as const;
+const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', 'm2d8/', 'm2d10/', 'penyusun/', AWALAN_TAG_M2D11, 'm2d13/'] as const; // M2d-13: penilai mutu D-D
 
 function entri(jalur: string): EntriLedger[] {
   if (!existsSync(jalur)) return [];

@@ -36,7 +36,7 @@ export const AWALAN_TAG_JALAN_M2D8 = 'm2d8/jalan/';
  * sah dan tidak dihitung laporan M2d-8 (laporan memfilter `m2d5/`–`m2d8/`).
  */
 // M2d-10: entri `m2d10/` (mesin templat) juga sah dan tidak dihitung laporan M2d-8; M2d-11: `m2d11/` juga.
-const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', AWALAN_TAG_M2D8, 'penyusun/', 'm2d10/', 'm2d11/'] as const;
+const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', AWALAN_TAG_M2D8, 'penyusun/', 'm2d10/', 'm2d11/', 'm2d13/'] as const; // M2d-13: penilai mutu D-D (tag m2d13/)
 
 /** Ledger hanya boleh memuat panggilan OpenRouter M2d-5…M2d-8. `null` = siap. */
 export function siapM2d8(jalurLedger: string = JALUR_LEDGER): string | null {

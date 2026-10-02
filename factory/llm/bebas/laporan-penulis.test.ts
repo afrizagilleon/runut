@@ -1,7 +1,7 @@
 /** Laporan M2d-13 (D-E) = hasil skrip dari keluaran tersimpan; Spearman. */
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { bangunLaporan, JALUR_LAPORAN, spearman } from './laporan.ts';
+import { bangunLaporan, JALUR_LAPORAN, spearman } from './laporan-penulis.ts';
 
 describe('laporan M2d-13', () => {
   it.skipIf(!existsSync(JALUR_LAPORAN))('berkas laporan = keluaran `npm run penulis:laporan`', () => {
