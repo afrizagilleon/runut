@@ -154,3 +154,108 @@ Pilihan jalan (b): `m2d10-tirt-a2`, bukan jalan pemanasan. Soal pemanasan M2d-11
   - Tayang ulang hanya untuk jalan yang punya `aliran.jsonl`.
   - Rumus jeda adalah pilihan tampilan, bukan data.
   - Papan adalah ringkasan hitungan dari log. Bila format judul peristiwa berubah, `uraiJudulAgen` perlu ikut diubah; judul yang tidak dikenali tetap tampil apa adanya di aliran.
+
+## 8. M2d-14 — alur penuh terekam (mode demo)
+
+Kontrak: `.contracts/M-02d14-alur-penuh-terekam.md`. Branch `m2d14-alur`. Isian reviewer: jalan `eval/penyusun/m2d13-opus-2`, draf `akhir`, suntingan omongan 2, pagu uji ulang US$0,15.
+
+### 8.1 Cara menjalankan
+
+```bash
+npm run penyusun -- --demo eval/penyusun/m2d13-opus-2 --draf akhir \
+  --suntingan alat/penyusun/rekaman/suntingan-m2d13-opus-2.json            # tanpa biaya model
+npm run penyusun -- --demo … --suntingan … --pagu-uji-ulang 0.15           # gerbang AI diuji ulang sungguhan
+npm run penyusun:rekam-alur -- --demo eval/penyusun/m2d13-opus-2 \
+  --suntingan alat/penyusun/rekaman/suntingan-m2d13-opus-2.json            # video ke .context/videos/penyusun/
+```
+
+### 8.2 Apa yang hidup, apa yang rekaman
+
+| bagian | sumber | penanda di layar |
+|---|---|---|
+| Tahap 1–4: kode TIRT → usulan hari dari cache → 33 aturan → paket → perkiraan | hidup, tanpa biaya model, folder sementara (tidak ke `eval/`). Paket hidup harus sama persis (sha256) dengan `paket.json` jalan rekaman; selain itu tidak ada perkiraan dan persetujuan ditolak 409 | bilah menempel **Langsung** · "Tahap 1–4 dijalankan sekarang"; kotak persetujuan: "Mode demo: klik ini tidak memanggil model" |
+| Klik setuju | tidak memanggil model; server memeriksa urutan tahap & paket, lalu menutup aliran hidup | baris transisi "Bagian agen diputar dari jalan nyata m2d13-opus-2 (biaya asli US$0,4080)." + bilah **Rekaman jalan m2d13-opus-2, 3 Okt 2026** |
+| Tahap agen + hasil + catatan sesudah jalan | baris `aliran.jsonl` apa adanya (dites byte demi byte); tempo demo: rumus jeda M2d-12 dengan min 550 ms, batas 1,25 d; tiap jeda diumumkan "Dipercepat ×N" | bilah tetap **Rekaman** sampai panel penyetuju masuk layar |
+| Penyetuju | hidup: tiap suntingan dicatat (dari → ke) dan gerbang KODE diuji ulang langsung | bilah **Langsung** · "Penyetuju bekerja langsung"; catatan siapa memerankan penyetuju |
+| Gerbang AI uji ulang | sungguhan dengan `--pagu-uji-ulang` (sekali); hasilnya disimpan (`alat/penyusun/rekaman/uji-ulang/<jalan>/<sidik>.jsonl/.json`) dan diputar tanpa panggilan bila teks omongan sama (sidik sha256) | bilah **Rekaman · Uji ulang gerbang AI sungguhan, <waktu>**; lencana "Rekaman" di tiap blok uji ulang |
+| Putusan | hidup: Setujui (hanya bila semua lolos) atau Tolak dengan alasan → satu berkas `eval/penyusun/<jalan>/persetujuan-demo.json` | cap DISETUJUI / TIDAK DISETUJUI (DEMO) + ringkasan alur |
+
+Tanpa `--pagu-uji-ulang` dan tanpa hasil tersimpan, kotak gerbang AI menulis "Gerbang AI belum diuji ulang." dan putusan setuju tidak mungkin.
+
+### 8.3 Gerbang yang diuji ulang
+
+- **Kode** (`gerbangKodeDemo`): `periksaKodeBebas` — sama persis dengan langkah 1 mesin bebas M2d-13 (validator, gerbang G, gaya, huruf, kembar, penilaian, mirip, artefak, kalender A-2, detektor D1–D9 ambang M2d-11, angka-di-kartu, label & umpan balik, sudut, anti-salin) + validator seluruh draf (di mesin bebas dijalankan sesudah ketiga omongan lolos; di demo lebih dulu karena gratis — urutan tidak mengubah putusan).
+- **AI** (`ujiGerbangAi`): tebak rotasi tanpa kartu (24 panggilan) → pembaca kartu r0+r2 → kritikus GLM (tidak menjawab → sekali lagi); berhenti di gerbang pertama yang menolak — urutan dan putusan mesin bebas.
+- **Pagu** ditegakkan `PencatatBiaya` sebelum SETIAP panggilan: biaya nyata ledger bertag `m2d14/` + perkiraan maksimum panggilan itu ≤ pagu (≤ US$0,15, juga pagu milestone `m2d14/`), dan ≤ `LLM_PAGU_USD`. Tag `m2d14/` (bukan `penyusun/m2d13-…`) supaya biaya demo tidak masuk laporan M2d-13.
+- **Amandemen teknis:** `max_tokens` kritikus 16.000 saat uji ulang demo. Setelan M2d-11 (≈ 40.000 token) membuat perkiraan maksimum SATU panggilan kritikus ≈ US$0,185 > pagu US$0,15, jadi kritikus tidak akan pernah dikirim. 16.000 = 1,7× token keluar kritikus terbesar di jalan ini (9.166). Effort, ambang penalaran, prompt, penyedia tetap. (Di uji ulang nyata, kritikus tidak sempat dipanggil: penebak menolak dulu.)
+
+### 8.4 Suntingan penyetuju dan hasil uji ulang (omongan 2)
+
+Berkas `alat/penyusun/rekaman/suntingan-m2d13-opus-2.json`. Penyetuju diperankan reviewer (agen Claude, mewakili pemilik); suntingan ke-2 dan ke-3 adalah usulan eksekutor (agen Claude) dari alasan gerbang (isian reviewer: maks 2 suntingan tambahan). Semua diketik oleh perekam (blok berubah dipilih, dihapus, lalu diketik huruf demi huruf; ±14 huruf/d).
+
+| putaran | isi | gerbang kode | gerbang AI (sungguhan) |
+|---|---|---|---|
+| 1 (reviewer) | pesan tanpa Rp48/Rp106; a "kartu hanya mencatat selisih Rp58"; b "kartu hitungan mencatat 2,21 kali lipat" (kunci, tetap b); c "2,21 kali lipat itu dihitung sejak awal tahun"; d "bertahap selama 9 hari bursa" | **ditolak**: ANGKA_TANPA_RUJUKAN & angka-di-kartu (9 tidak ada di kartu omongan ini), D9 (58/2,21/2,21/9 tidak urut), D5 (kunci "pusat": 5 unsur bersama vs 3), validator seluruh draf KUNCI_SERAGAM (b, b, b) | tidak dijalankan (kode dulu) |
+| 2 (eksekutor) | b "mencatat" → "menyebut" (D5); d tanpa angka, "bertahap, bukan sekaligus" (angka/D9); tukar isi b ↔ c → kunci c (KUNCI_SERAGAM; menyimpang dari "kunci tetap b" karena gerbang menuntutnya) | lolos | **ditolak penebak**: pesan+pilihan kunci 11/12; pilihan saja DeepSeek & GLM ≥ 3/4 rotasi. US$0,010248 |
+| 3 (eksekutor, terakhir) | dua pilihan "Betul" setara, hanya beda tanggal di kartu: b "…dihitung sampai hari ini", c (kunci) "…dihitung sampai kemarin"; umpan balik b dan satu kalimat penjelasan disesuaikan | lolos | **ditolak penebak**: pesan+pilihan 8/12; pilihan saja GLM; pesan+pilihan DeepSeek & GLM ≥ 3/4. US$0,011177 |
+
+**Hasil: omongan 2 MASIH DITOLAK** sesudah semua suntingan yang diizinkan; penyetuju menolak dengan alasan; `persetujuan-demo.json` berisi putusan "ditolak". Tidak ada yang dipasang ke `cases/`.
+
+Biaya: ledger 3.125 → 3.175 baris; kumulatif US$11,246187 → US$11,267611 (+US$0,021425; 50 entri `m2d14/`, semuanya `usage.cost`; perkiraan maksimum per panggilan terbesar US$0,0144).
+
+### 8.5 Koreksi catatan audit (D-3)
+
+`alat/penyusun/rekaman/catatan.json` kini memakai audit satu soal per penguji (`docs/bukti/lingkar-agen-pemula-audit.md` bagian "Ulang"): TIRT-7 omongan 1 1/4, omongan 2 4/4 (tertebak), omongan 3 2/4. Catatan baru m2d13-opus-2: omongan 1 4/4 tertebak (sinyal, bukan patokan), omongan 3 1/4; penilai mutu Opus 8,83 (sekeluarga dengan penulis — disebut). Kalimat lama dari angka dibundel kini terlarang (pola `FRASA_LAMA` di `alat/penyusun/kejujuran.test.ts`; juga diperiksa perekam tiap detik).
+
+### 8.6 Kritikus (subagent Opus terpisah, hanya membaca; lembar kontak + bingkai penuh + transkrip)
+
+Selera diputuskan kritikus + alasan tertulis; pemilik tidak diminta menilai.
+
+**Putaran 1 (ambilan r1, 139,3 d) — sutradara: tidak siap; juri Track 01: tidak siap.**
+
+| temuan | dari | keputusan dan alasan |
+|---|---|---|
+| 33–41 d penanda sudah "Langsung" padahal layar masih log/hasil/catatan rekaman (P1) | keduanya | **Diterima.** Bilah tetap "Rekaman … Log selesai diputar." sampai panel penyetuju masuk layar (IntersectionObserver); perekam memeriksa fase "hasil" wajib penanda Rekaman. Ini persis kegagalan yang disebut kontrak. |
+| Hasil uji ulang tersimpan tampil di bawah "Langsung"; label kecil (P1/P2) | keduanya | **Diterima.** Bilah khusus uji ulang (hanya data uji itu) + lencana "Rekaman · Uji ulang n · waktu" ukuran isi di tiap blok. |
+| "Penyetuju manusia" padahal suntingan dari reviewer/eksekutor agen, diketik otomatis (P1) | juri | **Diterima.** Judul halaman (mode demo), panel penyetuju, dan berkas suntingan menyebut agen Claude & "diketik otomatis oleh perekam". |
+| Akhir terlihat sebagai kegagalan; perlu kartu penutup (P1) | juri | **Diterima.** "Ringkasan alur ini" dari log/catatan/keadaan: jalan agen (biaya asli, 0 dari 6 jalan M2d-13 terbit), putaran penyetuju, penolakan gerbang, biaya uji ulang, putusan. |
+| Panel kanan basi (gerbang versi 2 · omongan 3 hijau) di fase penyetuju (P2) | keduanya | **Diterima.** "Penyetuju · omongan 2" (kode, AI, putusan) + baris biaya uji ulang. |
+| Dropdown bawaan terbuka; klik tak terlihat; layar melompat sesudah simpan (P2) | sutradara | **Diterima.** Nilai pilihan diganti lewat kode + cincin penunjuk 52 px; jangkar gulir; pilihan "Bagian" diingat. |
+| Jeda alasan tolak dan 11/12 terlalu pendek; log agen terlalu cepat (P2) | keduanya | **Diterima sebagian.** +1,4 d / +1,5 d; tempo log min 550 ms, batas 1,25 d. Tidak lebih lambat lagi: batas 150 d. |
+| Alasan berhenti kabur (pagu jalan vs milestone) (P2) | juri | **Diterima.** Langkah 5 "✗ berhenti (pagu milestone)". |
+| Teks terpotong "meng"; markup mentah; id jalan bertanggal UTC; potongan penyetuju mulai terlalu awal (P3) | keduanya | **Diterima.** Potong di batas kata; pratinjau "Tampil ke pemain"; kalimat folder sementara; potongan mulai saat panel masuk layar. |
+| Pilih semua lalu ketik ulang (P3) | sutradara | **Ditolak.** Menambah ±25 d (batas 150 d) dan menyembunyikan apa yang benar-benar diubah; mengetik per blok berubah = diff yang dicatat. |
+
+**Putaran 2 (ambilan r2, 144,5 d) — sutradara: SIAP; juri Track 01: SIAP.** Tidak ada P1. Sisa P2/P3, semuanya diterima untuk ambilan akhir:
+- pemilih tukar tampil a ↔ c saat klik → pilihan tukar diingat, diisi terlihat ≥ 1 d sebelum klik (sutradara);
+- hasil uji ulang teks lama tampak berlaku untuk teks baru → panel kanan "belum diuji ulang untuk teks ini"; blok lama diberi keterangan "untuk teks sebelumnya (sudah diganti)" (sutradara);
+- "Tiga omongan" basi untuk omongan 2 → "disunting penyetuju: …" (keduanya); ikon netral "—" (sutradara);
+- ringkasan terlalu singkat → 8 d (juri);
+- kalimat putusan menyiratkan gerbang menangkap semua → baris "Batas gerbang: omongan 1 lolos semua gerbang, tetapi Opus tetap menebak kuncinya tanpa kartu 4/4" dari `catatan.json` (juri);
+- "(diperankan agen Claude)" dan total biaya model alur US$0,4294 di ringkasan (juri);
+- langkah 7 "draf tidak terbit" (juri; kata "tidak ada draf terbit" ditolak tes kejujuran karena "terbit" tanpa "tidak" di depannya).
+
+### 8.7 Rekaman (`.context/videos/penyusun/`, tidak di-commit)
+
+Perekam `npm run penyusun:rekam-alur` (`alat/penyusun/rekam-alur.mjs`): server demo `--jam-virtual` TANPA `--pagu-uji-ulang` (tidak mungkin ada panggilan berbayar), satu Chromium 1920×1080 dsf 1, tiap bingkai = jam maju tepat 1/30 d, PNG → ffmpeg libx264 CRF 16 yuv420p 30 fps. Ketikan per huruf (±14 huruf/d), blok yang berubah dipilih lalu dihapus (diff token, rujukan `[[…]]` utuh). Cincin penunjuk = alat bantu perekam (bukan isi halaman). Pemeriksaan kejujuran tiap detik video: penanda Langsung/Rekaman terlihat; fase agen & hasil wajib "Rekaman jalan …" + kalimat transisi; uji ulang tersimpan tidak di bawah "Langsung"; tanpa "ditulis manusia", tanpa kalimat audit lama, tanpa "draf terbit".
+
+| berkas | durasi | ffprobe |
+|---|---:|---|
+| `penyusun-alur-penuh.mp4` (ambilan akhir) | **148,53 d** (4.456 bingkai, 1.631 potret unik) | h264 High yuv420p 1920×1080, r = avg = 30/1, CRF 16 (SEI x264), 34,0 MB |
+| `penyusun-alur-penuh-input.mp4` | 15,30 d (0 → klik setuju +1 d) | sama, CRF 16 |
+| `penyusun-alur-penuh-agen.mp4` | 29,37 d (13,8 → 43,1 d: transisi, log, hasil, catatan) | sama |
+| `penyusun-alur-penuh-penyetuju.mp4` | 105,40 d (43,1 d → akhir) | sama |
+
+- Transkrip per detik untuk penulis naskah: `alur-penuh-waktu.json` (detik → peristiwa di layar, termasuk tiap baris log yang muncul dan teks gerbang).
+- Lembar kontak: `kontak-penyusun-alur-penuh/lembar-01…05.png`; ffprobe: `*.ffprobe.json`; log perekam: `log-rekam-alur-penuh.txt` (kejujuran: bersih; galat halaman: tidak ada).
+- Ambilan kritikus: `penyusun-alur-penuh-r1.mp4` (139,27 d), `penyusun-alur-penuh-r2.mp4` (144,47 d) + `bingkai-r1/`, `bingkai-r2/`.
+- Bingkai akhir dicek mata (`periksa-bingkai-alur/`: 3, 16, 30, 40, 47, 90,5, 92, 96, 128, 146 d): teks tajam, bilah Langsung/Rekaman utuh, tidak ada yang terpotong; tukar b ↔ c terlihat sebelum klik.
+- Setiap ambilan menulis ulang `eval/penyusun/m2d13-opus-2/persetujuan-demo.json`; yang di-commit = ambilan akhir (putusan "ditolak", semua suntingan sesuai berkas, biaya uji ulang tersimpan US$0,021425).
+
+### 8.8 Batas dan catatan
+
+- Demo hanya memutar jalan mesin bebas yang punya `hasil.json` (`versi`, `akhir`) dan paket yang bisa dibangun ulang sama persis dari gudang lokal (`.cache/sectors`, tidak di-commit). Di mesin tanpa cache TIRT tahap 1 berhenti di perkiraan kredit (pengambilan data ditolak 409 di mode demo).
+- Bagian agen tetap rekaman; tidak ada klaim "langsung" untuknya.
+- Tempo demo (min 550 ms, batas 1,25 d) lebih cepat dari tayang ulang M2d-12; rumusnya tertulis di `RUMUS_JEDA_DEMO` dan setiap jeda diumumkan.
+- `max_tokens` kritikus 16.000 hanya untuk uji ulang demo (amandemen teknis, §8.3); di uji ulang nyata kritikus tidak sampai dipanggil.
+- Dua tes lama bergantung pada ledger hidup dan kini merah karena panggilan berbayar M2d-14 yang diizinkan (jalur di luar batas kontrak ini, tidak diubah): `factory/llm/kalibrasi-probe.test.ts` (daftar awalan tag ledger belum memuat `m2d14/`; perbaikan satu baris di `factory/llm/kalibrasi-konfig.ts` `AWALAN_BOLEH`) dan `factory/llm/bebas/laporan-penulis.test.ts` (baris "Kumulatif ledger" laporan M2d-13; `npm run penulis:laporan` memperbaruinya ke US$11,2676 / 3.175 entri).

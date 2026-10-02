@@ -1,0 +1,404 @@
+{
+  "keterangan": "Putusan penyetuju DEMO (M2d-14): TIDAK DISETUJUI (ditolak dengan alasan). Draf = versi terpilih jalan agen AI ini + suntingan penyetuju; uji ulang gerbang yang sama masih menolak. BUKAN cases/: tidak dipasang ke produk.",
+  "mode": "demo",
+  "putusan": "ditolak",
+  "alasan": "Masih ditolak: omongan 2 (disunting; gerbang AI menolak (penebak)).",
+  "jalan": "m2d13-opus-2",
+  "draf_pilihan": "akhir",
+  "oleh": {
+    "penyetuju": "reviewer (agen Claude, mewakili pemilik sebagai penyetuju)",
+    "cara": "suntingan diketik di halaman dari berkas suntingan penyetuju (perekam), lalu tombol putusan",
+    "waktu": "2026-10-02T19:38:16.123Z"
+  },
+  "berkas_suntingan": "alat/penyusun/rekaman/suntingan-m2d13-opus-2.json",
+  "sha256_berkas_suntingan": "7558d3ab96f3afd4992bad530cce20abe89db8a9eeb2a1c75c7d3cdab3d270cc",
+  "semua_suntingan_sesuai_berkas": true,
+  "suntingan": [
+    {
+      "ke": 1,
+      "putaran": 1,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pesan",
+      "dari": "Gw cek, dari Rp48 ke Rp106 dalam dua mingguan. Berarti harganya udah lebih dari dua kali lipat ya?",
+      "ke_teks": "Katanya sejak akhir November harga Perusahaan T udah lebih dari dua kali lipat. Beneran ga sih?",
+      "catatan": [
+        "angka pesan Rp48, Rp106 dilepas dari daftar angka_pesan karena tidak tertulis lagi di pesan"
+      ],
+      "waktu": "2026-10-02T19:35:28.178Z"
+    },
+    {
+      "ke": 2,
+      "putaran": 1,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-a",
+      "dari": "Keliru, naiknya [[naik-2025-11-26-2025-12-09|Rp58]], belum sampai dua kali lipat.",
+      "ke_teks": "Keliru, kartu hanya mencatat selisih [[naik-2025-11-26-2025-12-09|Rp58]].",
+      "catatan": [],
+      "waktu": "2026-10-02T19:35:42.993Z"
+    },
+    {
+      "ke": 3,
+      "putaran": 1,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-b",
+      "dari": "Betul, kartu hitungan mencatat [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan awal.",
+      "ke_teks": "Betul, kartu hitungan mencatat [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:35:47.759Z"
+    },
+    {
+      "ke": 4,
+      "putaran": 1,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-c",
+      "dari": "Betul, kelipatan [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] itu dihitung sejak awal tahun.",
+      "ke_teks": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sejak awal tahun.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:35:59.374Z"
+    },
+    {
+      "ke": 5,
+      "putaran": 1,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-d",
+      "dari": "Keliru, kenaikan [[naik-2025-11-26-2025-12-09|Rp58]] itu terjadi bertahap, bukan sekaligus.",
+      "ke_teks": "Keliru, kenaikannya terjadi bertahap selama 9 hari bursa.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:36:12.344Z"
+    },
+    {
+      "ke": 6,
+      "putaran": 2,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-b",
+      "dari": "Betul, kartu hitungan mencatat [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat.",
+      "ke_teks": "Betul, kartu hitungan menyebut [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:36:28.491Z"
+    },
+    {
+      "ke": 7,
+      "putaran": 2,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-d",
+      "dari": "Keliru, kenaikannya terjadi bertahap selama 9 hari bursa.",
+      "ke_teks": "Keliru, kenaikannya terjadi bertahap, bukan sekaligus.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:36:37.008Z"
+    },
+    {
+      "ke": 8,
+      "putaran": 2,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "tukar b ↔ c",
+      "dari": "kunci b",
+      "ke_teks": "kunci c",
+      "catatan": [
+        "isi pilihan b dan c ditukar beserta label pengecohnya; kunci b → c"
+      ],
+      "waktu": "2026-10-02T19:36:42.474Z"
+    },
+    {
+      "ke": 9,
+      "putaran": 3,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-b",
+      "dari": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sejak awal tahun.",
+      "ke_teks": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai hari ini.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:37:09.243Z"
+    },
+    {
+      "ke": 10,
+      "putaran": 3,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "pilihan-c",
+      "dari": "Betul, kartu hitungan menyebut [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat.",
+      "ke_teks": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai kemarin.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:37:26.424Z"
+    },
+    {
+      "ke": 11,
+      "putaran": 3,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "umpan-balik-b",
+      "dari": "Ini salah periode: kartu 3 menghitung kelipatan sejak akhir November, bukan sejak awal tahun.",
+      "ke_teks": "Ini salah periode: kartu 3 menghitung kelipatan sampai sehari sebelum penghentian, bukan sampai hari ini.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:37:40.206Z"
+    },
+    {
+      "ke": 12,
+      "putaran": 3,
+      "sesuai_berkas": true,
+      "omongan": 2,
+      "lokasi": "penjelasan",
+      "dari": "Kartu hitungan mencatat harga penutupan [[harga-2025-12-09|9 Desember 2025]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[harga-2025-11-26|26 November 2025]]. Lebih dari dua kali lipat, jadi Wulan betul. Angka [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisihnya, bukan kelipatannya. Selisih itu malah lebih besar dari harga awal. Hitungannya dimulai akhir November, bukan awal tahun. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga.",
+      "ke_teks": "Kartu hitungan mencatat harga penutupan [[harga-2025-12-09|9 Desember 2025]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[harga-2025-11-26|26 November 2025]]. Lebih dari dua kali lipat, jadi Wulan betul. Angka [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisihnya, bukan kelipatannya. Selisih itu malah lebih besar dari harga awal. Hitungannya berakhir kemarin, bukan hari ini. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga.",
+      "catatan": [],
+      "waktu": "2026-10-02T19:37:49.756Z"
+    }
+  ],
+  "gerbang_kode": {
+    "omongan_2": {
+      "lolos": true,
+      "menolak": [],
+      "dicatat": [],
+      "seluruh_draf": [],
+      "diperiksa": [
+        "validator draf",
+        "gerbang G (satu klausa, angka cukup, panjang)",
+        "gaya, huruf pilihan, kembar, penilaian, mirip, artefak",
+        "kalender (A-2)",
+        "detektor D1–D9",
+        "angka/tanggal harus di kartu omongan ini",
+        "label pengecoh dan umpan balik",
+        "sudut berbeda, anti-salin",
+        "validator seluruh draf (tiga omongan)"
+      ]
+    }
+  },
+  "uji_ulang_ai": [
+    {
+      "ke": 1,
+      "omongan": 2,
+      "sidik": "24721d8073141036014e1c4cbf8ba906562316593bd9cd17f91816270a2b8256",
+      "sumber": "tersimpan",
+      "selesai": true,
+      "hasil": {
+        "lolos": false,
+        "berhenti": "penebak",
+        "alasan": [
+          "tebak rotasi gagal: pesan-pilihan: kunci 11/12 (11,0/12); pilihan-saja: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi; pilihan-saja: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi opsi asal c, glm-5.3 isi opsi asal c; pesan-pilihan: claude-haiku-4.5 isi opsi asal c, deepseek-v4.1-flash isi opsi asal c, glm-5.3 isi opsi asal c] — kunci = pilihan c; tanpa kartu, penebak memilih isi kunci terlalu sering"
+        ],
+        "biaya_usd": 0.010248,
+        "panggilan": 25
+      },
+      "biaya_ledger_usd": 0.010248,
+      "waktu_uji": "2026-10-02T18:29:21.381Z",
+      "tag": "m2d14/uji-ulang/m2d13-opus-2/24721d807314/",
+      "berkas_log": "alat/penyusun/rekaman/uji-ulang/m2d13-opus-2/24721d8073141036.jsonl"
+    },
+    {
+      "ke": 2,
+      "omongan": 2,
+      "sidik": "0648031f0be91f94d32ef3690f729ac0aef5203662200f2ac334850a018acaf7",
+      "sumber": "tersimpan",
+      "selesai": true,
+      "hasil": {
+        "lolos": false,
+        "berhenti": "penebak",
+        "alasan": [
+          "tebak rotasi gagal: pesan-pilihan: kunci 8/12 (8,0/12); pilihan-saja: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi -, glm-5.3 isi opsi asal c; pesan-pilihan: claude-haiku-4.5 isi opsi asal b, deepseek-v4.1-flash isi opsi asal c, glm-5.3 isi opsi asal c] — kunci = pilihan c; tanpa kartu, penebak memilih isi kunci terlalu sering"
+        ],
+        "biaya_usd": 0.011177,
+        "panggilan": 25
+      },
+      "biaya_ledger_usd": 0.011177,
+      "waktu_uji": "2026-10-02T18:31:21.157Z",
+      "tag": "m2d14/uji-ulang/m2d13-opus-2/0648031f0be9/",
+      "berkas_log": "alat/penyusun/rekaman/uji-ulang/m2d13-opus-2/0648031f0be91f94.jsonl"
+    }
+  ],
+  "biaya_uji_ulang_ledger_usd": 0,
+  "biaya_uji_ulang_tersimpan_usd": 0.021425,
+  "status_omongan": [
+    {
+      "no": 1,
+      "versi_jalan": 2,
+      "lulus_jalan": true,
+      "berhenti_jalan": "lolos",
+      "alasan_jalan": [],
+      "disunting": false,
+      "sidik": "02ff822a7f76a93c1d4f379aeba5d5b6f622f2a9590da9f7ad36422c47aff814",
+      "ai": null,
+      "lolos_sekarang": true,
+      "keterangan": "lolos semua gerbang di versi 2 (dari log, tidak disunting)"
+    },
+    {
+      "no": 2,
+      "versi_jalan": 2,
+      "lulus_jalan": false,
+      "berhenti_jalan": "kode",
+      "alasan_jalan": [
+        "pemeriksa: G-angka-cukup: Pilihan kunci b bisa dihitung dari angka yang sudah ada di pesan dan pilihan, tanpa kartu: \"2,21\" = 106 ÷ 48 = 2,21. Penebak akan menghitungnya. Jangan taruh di pesan dan pilihan semua angka yang dibutuhkan untuk menghitung klaim kunci — biarkan angka penentunya hanya ada di kartu.",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", belum …\")",
+        "detektor D2 (spesifisitas unik; pilihan): token dokumen hanya ada di satu opsi (b = kunci); harus di 0 atau ≥ 2 opsi; opsi b",
+        "detektor D9 (urutan numerik; pilihan): nilai angka opsi a=58, b=2.21, c=2.21, d=58 tidak urut; opsi a, b, c, d"
+      ],
+      "disunting": true,
+      "sidik": "0648031f0be91f94d32ef3690f729ac0aef5203662200f2ac334850a018acaf7",
+      "ai": {
+        "lolos": false,
+        "berhenti": "penebak",
+        "alasan": [
+          "tebak rotasi gagal: pesan-pilihan: kunci 8/12 (8,0/12); pilihan-saja: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi -, glm-5.3 isi opsi asal c; pesan-pilihan: claude-haiku-4.5 isi opsi asal b, deepseek-v4.1-flash isi opsi asal c, glm-5.3 isi opsi asal c] — kunci = pilihan c; tanpa kartu, penebak memilih isi kunci terlalu sering"
+        ],
+        "biaya_usd": 0.011177,
+        "panggilan": 25
+      },
+      "lolos_sekarang": false,
+      "keterangan": "disunting; gerbang AI menolak (penebak)"
+    },
+    {
+      "no": 3,
+      "versi_jalan": 2,
+      "lulus_jalan": true,
+      "berhenti_jalan": "lolos",
+      "alasan_jalan": [],
+      "disunting": false,
+      "sidik": "4a6ff587fe38285c3b23f97d64045220dce31036948755e3cbdf0e2c2ea93ab8",
+      "ai": null,
+      "lolos_sekarang": true,
+      "keterangan": "lolos semua gerbang di versi 2 (dari log, tidak disunting)"
+    }
+  ],
+  "validator_seluruh_draf": [],
+  "boleh_disetujui": {
+    "boleh": false,
+    "alasan": "Masih ditolak: omongan 2 (disunting; gerbang AI menolak (penebak))."
+  },
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Sinta",
+        "jam": "16.20",
+        "pesan": "Ini bukan pertama kali disetop lho, awal tahun juga pernah. Alasannya sama kayak sekarang, harganya naik kenceng.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21",
+          "rups-2025-09-25"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Betul, penghentian awal tahun juga karena harga naik tajam.",
+          "b": "Keliru, penghentian awal tahun karena bursa ragu usahanya berlanjut.",
+          "c": "Betul, keduanya disebut bursa sebagai perlindungan bagi investor.",
+          "d": "Keliru, kartu awal tahun itu jadwal rapat, bukan penghentian."
+        },
+        "kunci": "b",
+        "penjelasan": "Ada dua kartu penghentian dengan alasan berbeda. Kartu [[susp-2025-01-21|21 Januari 2025]] menyebut bursa menilai ada keraguan atas kelangsungan usaha perusahaan. Kartu [[susp-2025-12-10|10 Desember 2025]] yang menyebut kenaikan harga dan perlindungan bagi investor. Frasa perlindungan investor hanya ada di kartu Desember. Kartu rapat pemegang saham hanya berisi jadwal rapat, tidak terkait penghentian. Salah-kaprah yang umum: mengira semua penghentian oleh bursa punya alasan yang sama.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 menyebut alasan awal tahun adalah keraguan atas kelangsungan usaha, bukan kenaikan harga."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini sebagian benar: perlindungan investor memang disebut, tetapi hanya di kartu Desember. Kartu 2 tidak menyebutnya."
+          },
+          "d": {
+            "jenis": "salah-entitas",
+            "rujukan": "rups-2025-09-25",
+            "umpan_balik": "Ini salah entitas: kartu 3 memang jadwal rapat, tetapi penghentian awal tahun tetap tercatat di kartu lain."
+          }
+        },
+        "pertanyaan_cek": "Alasan resmi apa yang tertulis di kartu penghentian tanggal itu?"
+      },
+      {
+        "nama": "Wulan",
+        "jam": "19.45",
+        "pesan": "Katanya sejak akhir November harga Perusahaan T udah lebih dari dua kali lipat. Beneran ga sih?",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "kelipatan-2025-11-26-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Keliru, kartu hanya mencatat selisih [[naik-2025-11-26-2025-12-09|Rp58]].",
+          "b": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai hari ini.",
+          "c": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai kemarin.",
+          "d": "Keliru, kenaikannya terjadi bertahap, bukan sekaligus."
+        },
+        "kunci": "c",
+        "penjelasan": "Kartu hitungan mencatat harga penutupan [[harga-2025-12-09|9 Desember 2025]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[harga-2025-11-26|26 November 2025]]. Lebih dari dua kali lipat, jadi Wulan betul. Angka [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisihnya, bukan kelipatannya. Selisih itu malah lebih besar dari harga awal. Hitungannya berakhir kemarin, bukan hari ini. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga.",
+        "pengecoh": {
+          "a": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "naik-2025-11-26-2025-12-09",
+            "umpan_balik": "Ini angka nyaris benar: kartu 4 mencatat selisih harga, bukan kelipatan. Selisihnya malah lebih besar dari harga awal."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "kelipatan-2025-11-26-2025-12-09",
+            "umpan_balik": "Ini menjawab pertanyaan lain: soalnya berapa kali lipat, dan kartu 3 menjawab lebih dari dua kali."
+          },
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "kelipatan-2025-11-26-2025-12-09",
+            "umpan_balik": "Ini salah periode: kartu 3 menghitung kelipatan sampai sehari sebelum penghentian, bukan sampai hari ini."
+          }
+        },
+        "pertanyaan_cek": "Angka di kartu ini selisih atau kelipatan?"
+      },
+      {
+        "nama": "Yoga",
+        "jam": "21.10",
+        "pesan": "Hari ini volumenya 1.461.200 lembar, rame banget yang jual-beli.",
+        "angka_pesan": [
+          {
+            "teks": "1.461.200",
+            "fact_id": "volume-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "volume-2025-12-10",
+          "volume-2025-12-09",
+          "susp-2025-12-10",
+          "volume-2025-11-26"
+        ],
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, angka itu tercatat di kartu volume hari ini.",
+          "b": "Keliru, kartu volume hari ini mencatat tidak ada transaksi.",
+          "c": "Betul, bursa menyetopnya karena transaksinya terlalu ramai.",
+          "d": "Keliru, angka itu milik kartu volume akhir November."
+        },
+        "kunci": "b",
+        "penjelasan": "Kartu volume [[volume-2025-12-10|10 Desember 2025]] mencatat [[volume-2025-12-10|0 lembar]], karena hari itu perdagangan dihentikan. Angka [[volume-2025-12-09|1.461.200 lembar]] milik [[volume-2025-12-09|9 Desember 2025]], sehari sebelumnya. Akhir November volumenya [[volume-2025-11-26|178.100 lembar]]. Alasan penghentian adalah kenaikan harga, bukan ramainya transaksi. Salah-kaprah yang umum: memakai angka terbaru yang terlihat tanpa mengecek tanggal di kartunya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-12-09",
+            "umpan_balik": "Ini salah periode: angka itu ada di kartu 2, bertanggal sehari sebelum perdagangan dihentikan."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 3 menyebut alasan penghentian adalah kenaikan harga, bukan ramainya transaksi."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-11-26",
+            "umpan_balik": "Ini salah periode: kartu 4 untuk akhir November mencatat angka lain. Angka itu milik sehari sebelum penghentian."
+          }
+        },
+        "pertanyaan_cek": "Tanggal berapa yang tertulis di kartu angka ini?"
+      }
+    ]
+  }
+}
