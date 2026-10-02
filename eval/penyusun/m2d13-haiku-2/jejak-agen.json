@@ -1,0 +1,419 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/bebas/mesin.ts",
+  "simulasi": {
+    "paket_id": "tirt",
+    "nama_samaran": "Perusahaan T",
+    "tanggal_t": "2025-12-10",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+  },
+  "model": "anthropic/claude-haiku-4.5",
+  "model_peran": {
+    "penulis": "anthropic/claude-haiku-4.5",
+    "penebak": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3"
+  },
+  "paket": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": 11,
+    "fakta_lolos": 20,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2025-11-25",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "harga-2025-12-10",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "789991ae8c4f455cbde7be87b843cd8217bfef20aaf7b5fd4675ec1b081586ef",
+    "sha256_paket": "00ee7ff29751650fd42d323984c8398fdd0536ce383a788f1fe1ad2b2dea7292",
+    "ringkasan": "Pintu penyusun, mesin \"bebas-haiku\": penulis bebas anthropic/claude-haiku-4.5 tanpa penyempurna; gerbang M2d-11 + angka-di-kartu. Di sini hanya hash."
+  },
+  "mulai": "2026-10-02T17:10:32.986Z",
+  "selesai": "2026-10-02T17:11:54.906Z",
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T17:10:33.015Z",
+      "waktu_selesai": "2026-10-02T17:11:00.373Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 6361,
+      "token_keluar": 3439,
+      "biaya_usd": 0.023556,
+      "putusan": "ditulis",
+      "alasan": [],
+      "sha256_prompt": "f2470c0da328259ed03eba3d706cb9a8ba2f8d16c744e996ebea56cbb277a228",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [
+          1,
+          2,
+          3
+        ],
+        "token_penalaran": 835,
+        "penyedia": "Amazon Bedrock",
+        "finish_reason": "stop",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T17:11:00.374Z",
+      "waktu_selesai": "2026-10-02T17:11:00.443Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 21. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: HURUF_PILIHAN: Penjelasan merujuk huruf pilihan (\"Opsi b\", \"Opsi d\"). Huruf kunci diatur ulang kode, jadi urutan pilihan bisa berubah: sebut ISI pilihannya, bukan hurufnya.",
+        "detektor D2 (spesifisitas unik; pilihan): token dokumen hanya ada di satu opsi (c = kunci); harus di 0 atau ≥ 2 opsi; opsi c",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: (21",
+        "M2d-13: angka-di-kartu: umpan balik b: angka di luar rujukan kartu: (21",
+        "M2d-13: label pengecoh: pengecoh a: label (jenis, rujukan, umpan_balik) tidak ada",
+        "M2d-13: label pengecoh: pengecoh d: jenis \"percaya-omongan-tanpa-cek\" bukan salah satu dari salah-periode, salah-entitas, nyaris-benar-angka, pertanyaan-lain, sebagian-benar, percaya-otoritas",
+        "M2d-13: umpan balik: umpan balik b: harus memuat nama jenis kesalahannya \"salah periode\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 3,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": 2,
+      "waktu_mulai": "2026-10-02T17:11:00.444Z",
+      "waktu_selesai": "2026-10-02T17:11:00.466Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan a memuat angka di luar rujukan: 2025. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", sama …\")",
+        "pemeriksa: HURUF_PILIHAN: Penjelasan merujuk huruf pilihan (\"Opsi b\", \"opsi d\"). Huruf kunci diatur ulang kode, jadi urutan pilihan bisa berubah: sebut ISI pilihannya, bukan hurufnya.",
+        "detektor D2 (spesifisitas unik; pilihan): token dokumen hanya ada di satu opsi (c = kunci); harus di 0 atau ≥ 2 opsi; opsi c",
+        "M2d-13: angka-di-kartu: pilihan a: angka di luar rujukan kartu: 2025",
+        "M2d-13: angka-di-kartu: umpan balik b: angka di luar rujukan kartu: 2",
+        "M2d-13: angka-di-kartu: pertanyaan cek memuat angka (\"Apa perbedaan alasan penghentian di 21 Januari dan 10 Desember?\"); pertanyaan cek harus bisa dipakai lagi tanpa angka",
+        "M2d-13: label pengecoh: pengecoh a: label (jenis, rujukan, umpan_balik) tidak ada",
+        "M2d-13: umpan balik: umpan balik d: harus memuat nama jenis kesalahannya \"salah periode\"",
+        "M2d-13: sudut: sudut sama dengan omongan 1: kartu penentu susp-2025-12-10 sudah dipakai; pilih fakta penentu lain"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 4,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": 3,
+      "waktu_mulai": "2026-10-02T17:11:00.467Z",
+      "waktu_selesai": "2026-10-02T17:11:00.474Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan a memuat angka di luar rujukan: 58. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 58, 25. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-angka-cukup: Pilihan kunci b bisa dihitung dari angka yang sudah ada di pesan dan pilihan, tanpa kartu: \"2,21\" = 106 ÷ 48 = 2,21. Penebak akan menghitungnya. Jangan taruh di pesan dan pilihan semua angka yang dibutuhkan untuk menghitung klaim kunci — biarkan angka penentunya hanya ada di kartu.",
+        "pemeriksa: G-panjang: 13 kata; paling banyak 11",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", yaitu …\")",
+        "pemeriksa: HURUF_PILIHAN: Penjelasan merujuk huruf pilihan (\"Opsi a\", \"Opsi c\", \"Opsi d\"). Huruf kunci diatur ulang kode, jadi urutan pilihan bisa berubah: sebut ISI pilihannya, bukan hurufnya.",
+        "detektor D7 (kata pelunak; pilihan): kata pelunak hanya di pengecoh (a: sekitar); opsi a",
+        "M2d-13: angka-di-kartu: pilihan a: angka di luar rujukan kartu: 58",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: 58, 25",
+        "M2d-13: angka-di-kartu: umpan balik a: angka di luar rujukan kartu: 58, 58",
+        "M2d-13: angka-di-kartu: umpan balik c: angka di luar rujukan kartu: 25",
+        "M2d-13: angka-di-kartu: pertanyaan cek memuat angka (\"Berapa kali lipat harga naik dari 26 November ke 9 Desember menurut kartu?\"); pertanyaan cek harus bisa dipakai lagi tanpa angka",
+        "M2d-13: label pengecoh: pengecoh a: rujukan \"naik-2025-11-26-2025-12-09\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, kelipatan-2025-11-26-2025-12-09, susp-2025-12-10)",
+        "M2d-13: label pengecoh: pengecoh d: label (jenis, rujukan, umpan_balik) tidak ada",
+        "M2d-13: umpan balik: umpan balik a: harus memuat nama jenis kesalahannya \"angka nyaris benar\"",
+        "M2d-13: umpan balik: umpan balik c: harus memuat nama jenis kesalahannya \"salah periode\"",
+        "M2d-13: umpan balik: umpan balik c: harus menyebut \"kartu 1\" (nomor urut rujukan harga-2025-11-26)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 5,
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T17:11:00.479Z",
+      "waktu_selesai": "2026-10-02T17:11:28.724Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 10576,
+      "token_keluar": 3390,
+      "biaya_usd": 0.027526,
+      "putusan": "ditulis",
+      "alasan": [],
+      "sha256_prompt": "c4d34dde5481ee38283f205507c9eff9e260b4c550096d1c42b2e2968357c65d",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [
+          1,
+          2,
+          3
+        ],
+        "token_penalaran": 854,
+        "penyedia": "Amazon Bedrock",
+        "finish_reason": "stop",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 6,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T17:11:28.726Z",
+      "waktu_selesai": "2026-10-02T17:11:28.731Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "M2d-13: label pengecoh: pengecoh b: label (jenis, rujukan, umpan_balik) tidak ada",
+        "M2d-13: label pengecoh: pengecoh d: percaya-otoritas hanya sah bila pengecoh berawalan \"Betul\" dan kunci berawalan \"Keliru\" (pengecoh membenarkan teman yang salah)",
+        "M2d-13: umpan balik: umpan balik d: harus memuat nama jenis kesalahannya \"percaya omongan tanpa cek\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 7,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": 2,
+      "waktu_mulai": "2026-10-02T17:11:28.737Z",
+      "waktu_selesai": "2026-10-02T17:11:28.739Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 1, 2. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", seperti …\")",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: 1, 2",
+        "M2d-13: label pengecoh: pengecoh d: label (jenis, rujukan, umpan_balik) tidak ada",
+        "M2d-13: umpan balik: umpan balik c: harus memuat nama jenis kesalahannya \"salah periode\""
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 8,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": 3,
+      "waktu_mulai": "2026-10-02T17:11:28.743Z",
+      "waktu_selesai": "2026-10-02T17:11:28.747Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 1. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-angka-cukup: Pilihan kunci b bisa dihitung dari angka yang sudah ada di pesan dan pilihan, tanpa kartu: \"48\" = 106 − 58 = 48; \"2,21\" = 106 ÷ 48 = 2,21. Penebak akan menghitungnya. Jangan taruh di pesan dan pilihan semua angka yang dibutuhkan untuk menghitung klaim kunci — biarkan angka penentunya hanya ada di kartu.",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "pemeriksa: G-panjang: 13 kata; paling banyak 11",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", mencapai …\")",
+        "detektor D1 (panjang; pilihan): panjang alasan tidak seragam: terpanjang/terpendek 1,62 > 1,60 (d 89 vs b 55 karakter); opsi d, b",
+        "M2d-13: angka-di-kartu: pilihan a: \"Rp58\" merujuk naik-2025-11-26-2025-12-09, yang bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, kelipatan-2025-11-26-2025-12-09, susp-2025-12-10)",
+        "M2d-13: angka-di-kartu: penjelasan: \"selisih Rp58\" merujuk naik-2025-11-26-2025-12-09, yang bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, kelipatan-2025-11-26-2025-12-09, susp-2025-12-10)",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: 1",
+        "M2d-13: label pengecoh: pengecoh a: rujukan \"naik-2025-11-26-2025-12-09\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, kelipatan-2025-11-26-2025-12-09, susp-2025-12-10)",
+        "M2d-13: label pengecoh: pengecoh d: label (jenis, rujukan, umpan_balik) tidak ada"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 9,
+      "putaran": 3,
+      "jenis": "tulis-ulang",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T17:11:28.758Z",
+      "waktu_selesai": "2026-10-02T17:11:54.874Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 9837,
+      "token_keluar": 3374,
+      "biaya_usd": 0.026707,
+      "putusan": "ditulis",
+      "alasan": [],
+      "sha256_prompt": "ccd7ce1e7d7abf080d498ec38fc7df60ed14c050348603beb2ab9443ed6927b1",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [
+          1,
+          2,
+          3
+        ],
+        "token_penalaran": 729,
+        "penyedia": "Amazon Bedrock",
+        "finish_reason": "stop",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 10,
+      "putaran": 3,
+      "jenis": "validator",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T17:11:54.876Z",
+      "waktu_selesai": "2026-10-02T17:11:54.882Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "M2d-13: umpan balik: umpan balik b: harus menyebut \"kartu 1\" (nomor urut rujukan susp-2025-12-10)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 11,
+      "putaran": 3,
+      "jenis": "validator",
+      "omongan": 2,
+      "waktu_mulai": "2026-10-02T17:11:54.887Z",
+      "waktu_selesai": "2026-10-02T17:11:54.891Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "M2d-13: umpan balik: umpan balik d: harus menyebut \"kartu 2\" (nomor urut rujukan susp-2025-12-10)",
+        "M2d-13: sudut: sudut sama dengan omongan 1: kartu penentu susp-2025-12-10 sudah dipakai; pilih fakta penentu lain"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 12,
+      "putaran": 3,
+      "jenis": "validator",
+      "omongan": 3,
+      "waktu_mulai": "2026-10-02T17:11:54.895Z",
+      "waktu_selesai": "2026-10-02T17:11:54.899Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan a memuat angka di luar rujukan: 48, 106. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan c memuat angka di luar rujukan: 48.. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: OPSI_PANJANG_TIMPANG: Panjang pilihan timpang: 42 lawan 75 karakter; yang terpendek harus ≥ 60% yang terpanjang.",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 1. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TAK_COCOK: Penjelasan: [[susp-2025-12-10|kartu 4]] menampilkan 4, yang tidak ada di fakta itu (Perdagangan saham dihentikan sementara oleh bursa pada 10 Desember 2025. Alasan resmi: Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan T, dalam rangka cooling down sebagai bentuk perlindungan bagi investor. Kapan perdagangannya dibuka lagi tidak tercatat, jadi lama penghentiannya tidak bisa dipastikan.)",
+        "pemeriksa: G-angka-cukup: Pilihan kunci c bisa dihitung dari angka yang sudah ada di pesan dan pilihan, tanpa kartu: \"2,21\" = 106 ÷ 48 = 2,21. Penebak akan menghitungnya. Jangan taruh di pesan dan pilihan semua angka yang dibutuhkan untuk menghitung klaim kunci — biarkan angka penentunya hanya ada di kartu.",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "detektor D1 (panjang; pilihan): panjang alasan tidak seragam: terpanjang/terpendek 1,91 > 1,60 (b 67 vs c 35 karakter); opsi b, c",
+        "M2d-13: angka-di-kartu: pilihan a: angka di luar rujukan kartu: Rp48, Rp106",
+        "M2d-13: angka-di-kartu: pilihan c: angka di luar rujukan kartu: Rp48.",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: 1",
+        "M2d-13: angka-di-kartu: umpan balik a: angka di luar rujukan kartu: Rp48, Rp106",
+        "M2d-13: umpan balik: umpan balik a: harus menyebut \"kartu 2\" (nomor urut rujukan harga-2025-12-09)",
+        "M2d-13: umpan balik: umpan balik d: harus menyebut \"kartu 4\" (nomor urut rujukan susp-2025-12-10)",
+        "M2d-13: sudut: sudut sama dengan omongan 1: kartu penentu susp-2025-12-10 sudah dipakai; pilih fakta penentu lain",
+        "M2d-13: sudut: sudut sama dengan omongan 2: kartu penentu susp-2025-12-10 sudah dipakai; pilih fakta penentu lain",
+        "anti-salin: umpan balik b menyalin soal tayang: \"yang tidak ada di kartu\" (dari ultj-2026-05-04.json penjelasan)",
+        "anti-salin: umpan balik b menyalin soal tayang: \"tidak ada di kartu ini\" (dari ultj-2026-05-04.json penjelasan)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    }
+  ],
+  "hasil": {
+    "lolos": false,
+    "putaran": 3,
+    "berhenti": "omongan tidak lulus dalam 3 versi: 1, 2, 3; simulasi tidak terbit",
+    "panggilan": 3,
+    "token_masuk": 26774,
+    "token_keluar": 10203,
+    "biaya_usd": 0.077789,
+    "durasi_ms": 81920
+  }
+}
