@@ -142,3 +142,29 @@ describe('pembaca kartu 2 rotasi menolak', () => {
     expect(p.log.some((x) => x.jenis === 'kritikus')).toBe(false);
   });
 });
+
+describe('susunan label berselang (perubahan templat 2)', () => {
+  it('pengecoh berlabel sama dengan kunci di seberang kunci; heuristik "opsi berlabel sama pertama" memilih kunci tepat 2/4 rotasi', async () => {
+    const { hurufSlotSeimbang } = await import('./rakit.ts');
+    const { putar } = await import('../rotasi/rotasi.ts');
+    const H = ['a', 'b', 'c', 'd'] as const;
+    for (const r of calonRencanaM2d11(TIRT)) {
+      for (const hk of H) {
+        const peta = hurufSlotSeimbang(hk, r);
+        const labelKunci = r.slot[0].varian[0]?.label;
+        const sama = r.slot.slice(1).find((s) => s.varian[0]?.label === labelKunci);
+        if (sama === undefined) throw new Error('tidak ada pengecoh berlabel sama');
+        expect(H.indexOf(peta[sama.slot])).toBe((H.indexOf(hk) + 2) % 4);
+        expect(new Set(Object.values(peta)).size).toBe(4);
+        const pilihan = Object.fromEntries(SLOT.map((s) => [peta[s], `${r.slot.find((x) => x.slot === s)?.varian[0]?.label ?? ''}, ${s}`])) as Record<'a' | 'b' | 'c' | 'd', string>;
+        let kena = 0;
+        for (const rot of [0, 1, 2, 3]) {
+          const p = putar({ pilihan, kunci: hk }, rot);
+          const pertama = H.find((h) => p.pilihan[h].startsWith(`${labelKunci ?? ''},`));
+          if (pertama === p.kunci) kena += 1;
+        }
+        expect(kena).toBe(2);
+      }
+    }
+  });
+});

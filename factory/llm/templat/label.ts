@@ -15,7 +15,7 @@ import type { PaketFakta } from '../paket.ts';
 import { fakta, kelas } from './fakta.ts';
 import type { IdPola, Label, NamaSlot, RencanaSoal, SlotPilihan, VarianPilihan } from './pola.ts';
 import { bacaanLain, evaluasi, faktaDisebut, type Proposisi } from './proposisi.ts';
-import { hurufSlot } from './rakit.ts';
+import { hurufSlotSeimbang } from './rakit.ts';
 
 export type JenisKesalahan = 'salah-periode' | 'salah-entitas' | 'nyaris-benar-angka' | 'pertanyaan-lain' | 'sebagian-benar' | 'percaya-otoritas';
 export const JENIS_KESALAHAN: readonly JenisKesalahan[] = ['salah-periode', 'salah-entitas', 'nyaris-benar-angka', 'pertanyaan-lain', 'sebagian-benar', 'percaya-otoritas'];
@@ -213,7 +213,7 @@ function noKartu(r: RencanaSoal, id: string): number {
 
 /** Umpan balik soal dari rencana berlabel + huruf kunci. Murni. */
 export function umpanBalik(r: RencanaSoal, paket: PaketFakta, hurufKunci: KunciOpsi): UmpanBalikSoal {
-  const peta = hurufSlot(hurufKunci);
+  const peta = hurufSlotSeimbang(hurufKunci, r);
   const penentu = r.kartu_penentu.map((id) => `kartu ${String(noKartu(r, id))} (terbit ${tanggalId(fakta(paket, id).terbit)})`).join(' dan ');
   const per = (['p1', 'p2', 'p3'] as const).flatMap((s) => {
     const l = labelSlot(r, s);

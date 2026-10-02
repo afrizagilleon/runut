@@ -1,0 +1,1400 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/templat/mesin.ts",
+  "simulasi": {
+    "paket_id": "tirt",
+    "nama_samaran": "Perusahaan T",
+    "tanggal_t": "2025-12-10",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+  },
+  "model": "deepseek/deepseek-v4.1-flash",
+  "model_peran": {
+    "penulis": "deepseek/deepseek-v4.1-flash",
+    "penyempurna": "anthropic/claude-haiku-4.5",
+    "penebak": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3"
+  },
+  "paket": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": 11,
+    "fakta_lolos": 20,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2025-11-25",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "harga-2025-12-10",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "cbab05892ffdb6f253f8100c54227de6af2f06d671fe1a711f1dc55fa0060e2e",
+    "sha256_paket": "00ee7ff29751650fd42d323984c8398fdd0536ce383a788f1fe1ad2b2dea7292",
+    "ringkasan": "Pintu penyusun, mesin \"templat-m2d11\": templat dari pola soal tayang (factory/llm/templat/pola.ts), penulis kata DeepSeek, penyempurna Haiku 4.5, penebak keluarga campur Haiku/DeepSeek/GLM, pembaca kartu DeepSeek, kritikus GLM paling akhir; setelan SETELAN_TEMPLAT_M2D10. Di sini hanya hash."
+  },
+  "mulai": "2026-10-02T11:28:36.309Z",
+  "selesai": "2026-10-02T11:31:12.269Z",
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "rencana-templat",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T11:28:36.333Z",
+      "waktu_selesai": "2026-10-02T11:28:36.333Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "5 calon rencana lolos bukti kunci tunggal: sebab-resmi:susp-2025-12-10, angka-lain-waktu:harga-2025-12-09, setengah-benar:susp-2025-01-21, arah-kali-tingkat:hari-naik-beruntun, besaran-hitungan:kelipatan-2025-11-26-2025-12-09",
+        "anti-ulang pemanasan: sebab-resmi:susp-2025-12-10 tidak dipakai (sama dengan soal pemanasan)",
+        "posisi: angka-lain-waktu:harga-2025-12-09, setengah-benar:susp-2025-01-21, besaran-hitungan:kelipatan-2025-11-26-2025-12-09"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": [
+          {
+            "pola": "angka-lain-waktu",
+            "asal": "ULTJ s1 (soal tayang): angka hari lain dipakai untuk hari yang dibicarakan",
+            "sudut": "harga-2025-12-09",
+            "kartu": [
+              "harga-2025-12-09",
+              "harga-2025-12-08"
+            ],
+            "label_klaim": "Keliru"
+          },
+          {
+            "pola": "setengah-benar",
+            "asal": "ULTJ s2 (soal tayang): klaim dua bagian, satu benar satu salah",
+            "sudut": "susp-2025-01-21",
+            "kartu": [
+              "hari-naik-beruntun",
+              "susp-2025-01-21"
+            ],
+            "label_klaim": "Keliru"
+          },
+          {
+            "pola": "besaran-hitungan",
+            "asal": "DADA s2 (soal tayang): besaran hitungan yang disebut teman dengan kata-kata",
+            "sudut": "kelipatan-2025-11-26-2025-12-09",
+            "kartu": [
+              "kelipatan-2025-11-26-2025-12-09",
+              "naik-2025-11-26-2025-12-09"
+            ],
+            "label_klaim": "Betul"
+          }
+        ],
+        "calon": [
+          "angka-lain-waktu:harga-2025-12-09",
+          "setengah-benar:susp-2025-01-21",
+          "arah-kali-tingkat:hari-naik-beruntun",
+          "besaran-hitungan:kelipatan-2025-11-26-2025-12-09"
+        ]
+      },
+      "peran": "perencana"
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "tulis-pesan",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:28:46.882Z",
+      "waktu_selesai": "2026-10-02T11:28:46.882Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 1236,
+      "token_keluar": 720,
+      "biaya_usd": 0.00045672,
+      "putusan": "ditulis",
+      "alasan": [
+        "pesan omongan 1"
+      ],
+      "sha256_prompt": "c44dbfcad9b6a051d858de4ef41840de2f896332aec8fae936a89b1cfd915d56",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"nama\": \"Dika\", \"jam\": \"20.15\", \"pesan\": \"Perusahaan T tutup kemarin di Rp97, gw yakin banget itu harga penutupannya.\"}",
+        "penyedia": "Relace"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 3,
+      "putaran": 1,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:10.576Z",
+      "waktu_selesai": "2026-10-02T11:29:10.576Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 850,
+      "token_keluar": 2949,
+      "biaya_usd": 0.0018034,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "98bfcbe68c6ba89dab1c3e13c9665bd2b57b739f60a2be6dc7a12537107fb6a8",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Di kartu tertulis harga penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]]. Dika bilang Perusahaan T tutup kemarin di [[harga-2025-12-08|Rp97]]. Karena pesan dikirim sesudah bursa tutup, kemarin berarti [[harga-2025-12-09|9 Desember]]. Jadi angka Dika tidak cocok. [[harga-2025-12-08|Rp97]] memang muncul, tapi untuk penutupan [[harga-2025-12-08|8 Desember]], bukan [[harga-2025-12-09|9 Desember]]. Itu sebabnya jawabannya keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Pilihan yang menyebut [[harga-2025-12-09|Rp106]] benar; yang menyebut [[harga-2025-12-05|Rp89]] tidak sesuai isi kartu. Pilihan yang bilang [[harga-2025-12-08|Rp97]] penutupan tertinggi sebelum hari ini juga tidak didukung kartu. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin.\"}",
+        "penyedia": "InferenceNet"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 4,
+      "putaran": 1,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:10.675Z",
+      "waktu_selesai": "2026-10-02T11:29:10.675Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "angka-lain-waktu:harga-2025-12-09",
+        "versi": 1,
+        "pesan": "Perusahaan T tutup kemarin di Rp97, gw yakin banget itu harga penutupannya.",
+        "pilihan": {
+          "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "c",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 5,
+      "putaran": 1,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:10.676Z",
+      "waktu_selesai": "2026-10-02T11:29:24.174Z",
+      "model": "haiku + deepseek + glm (rotasi)",
+      "panggilan": 24,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0.008823090399999999,
+      "putusan": "tolak",
+      "alasan": [
+        "tebak rotasi gagal: pesan-pilihan: kunci 7/12 (7,0/12); pilihan-saja: deepseek/deepseek-v4.1-flash diabaikan (huruf \"c\" di ≥ 3/4 rotasi); pesan-pilihan: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi - (diabaikan), glm-5.3 isi -; pesan-pilihan: claude-haiku-4.5 isi opsi asal c, deepseek-v4.1-flash isi -, glm-5.3 isi -]"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "putusan": "gagal",
+        "kondisi": {
+          "pilihan-saja": {
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "huruf_konsisten": "c",
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": true,
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ],
+            "kunci": 3,
+            "n": 8,
+            "proporsi": 0.375,
+            "tak_terbaca": 0
+          },
+          "pesan-pilihan": {
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "huruf_konsisten": null,
+                "isi_konsisten": 2,
+                "isi_kunci_konsisten": true,
+                "diabaikan": false,
+                "kunci": 3,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ],
+            "kunci": 7,
+            "n": 12,
+            "proporsi": 0.5833333333333334,
+            "tak_terbaca": 0
+          }
+        },
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan c paling logis sebagai koreksi spesifik."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling netral dan masuk akal."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Pilihan c paling netral tanpa asumsi tambahan tentang data."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling spesifik dengan data alternatif."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan c paling logis sebagai koreksi spesifik."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan a paling spesifik dengan data konkret berbeda."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan a paling spesifik dengan angka alternatif konkret."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling masuk akal sebagai koreksi."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Pilihan paling langsung mengonfirmasi angka disebut teman."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Harga penutupan 9 Desember adalah Rp89."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi koreksi spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Dika yakin penutupan Rp97, opsi ini setuju."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Dokumen tidak ada, pilih opsi paling spesifik."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi koreksi angka ini paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi yang menyatakan kecocokan langsung paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi konfirmasi sederhana paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "terbaca": true,
+            "alasan": "Klaim spesifik tentang penutupan tertinggi sebelum hari ini paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim Dika kemungkinan keliru; Rp106 paling mungkin."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim Dika kemungkinan besar keliru soal angka penutupan."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim spesifik Dika paling mungkin sesuai data."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Klaim terlalu percaya diri biasanya keliru; dokumen menunjukkan Rp106."
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 6,
+      "putaran": 1,
+      "jenis": "sempurnakan-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:24.178Z",
+      "waktu_selesai": "2026-10-02T11:29:27.425Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 2071,
+      "token_keluar": 353,
+      "biaya_usd": 0.003836,
+      "putusan": "ditulis",
+      "alasan": [
+        "tertebak: 3 slot diterima kode, 0 dibuang"
+      ],
+      "sha256_prompt": "b56954cc4dbdc1f51f58fb1b51412867f219f956a55e295ca4a6456487e4c115",
+      "rincian": {
+        "diterima": [
+          {
+            "slot": "kunci",
+            "varian": "K2",
+            "dari": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+            "ke": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]."
+          },
+          {
+            "slot": "p1",
+            "varian": "P1b",
+            "dari": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+            "ke": "Betul, angka [[harga-2025-12-09|9 Desember]] yang tercatat memang [[harga-2025-12-08|Rp97]]."
+          },
+          {
+            "slot": "p3",
+            "varian": "P3b",
+            "dari": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]].",
+            "ke": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+          }
+        ],
+        "dibuang": [],
+        "alasan_penyempurna": "Mengganti kata \"penutupan\" dengan \"tercatat\" di kunci dan p3, serta di p1 menambah \"angka\" dan \"tercatat\" untuk menyamakan struktur dan tingkat rincian keempat pilihan agar tidak tertebak tanpa membaca kartu.",
+        "teks_mentah": "```json\n{\n  \"pilihan\": {\n    \"kunci\": {\n      \"varian\": \"K2\",\n      \"teks\": \"Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].\"\n    },\n    \"p1\": {\n      \"varian\": \"P1b\",\n      \"teks\": \"Betul, angka [[harga-2025-12-09|9 Desember]] yang tercatat memang [[harga-2025-12-08|Rp97]].\"\n    },\n    \"p3\": {\n      \"varian\": \"P3b\",\n      \"teks\": \"Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]].\"\n    }\n  },\n  \"alasan\": \"Mengganti kata \\\"penutupan\\\" dengan \\\"tercatat\\\" di kunci dan p3, serta di p1 menambah \\\"angka\\\" dan \\\"tercatat\\\" untuk menyamakan struktur dan tingkat rincian keempat pilihan agar tidak tertebak tanpa membaca kartu.\"\n}\n```",
+        "penyedia": "Amazon Bedrock"
+      },
+      "peran": "penyempurna"
+    },
+    {
+      "no": 7,
+      "putaran": 2,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:36.303Z",
+      "waktu_selesai": "2026-10-02T11:29:36.303Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 854,
+      "token_keluar": 2991,
+      "biaya_usd": 0.0038454,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "2da8d6e61cb982bfbf522b3bba7df832c3d31ebc65cca361482823f22cedfbb0",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Pesan Dika menyebut penutupan kemarin, jadi yang dimaksud adalah hari bursa sebelumnya. Di kartu tertulis untuk [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]] per lembar. Jadi angka [[harga-2025-12-08|Rp97]] bukan penutupan kemarin; itu tercatat untuk [[harga-2025-12-08|8 Desember]]. Karena itu jawabannya: keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Pilihan yang menyebut [[harga-2025-12-09|9 Desember]] tercatat [[harga-2025-12-08|Rp97]] keliru karena tertukar dengan [[harga-2025-12-08|8 Desember]]. Angka [[harga-2025-12-05|Rp89]] juga bukan penutupan [[harga-2025-12-09|9 Desember]]. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin.\"}",
+        "penyedia": "BaseTen"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 8,
+      "putaran": 2,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:36.375Z",
+      "waktu_selesai": "2026-10-02T11:29:36.375Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "angka-lain-waktu:harga-2025-12-09",
+        "versi": 2,
+        "pesan": "Perusahaan T tutup kemarin di Rp97, gw yakin banget itu harga penutupannya.",
+        "pilihan": {
+          "c": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, angka [[harga-2025-12-09|9 Desember]] yang tercatat memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "d": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "c",
+        "varian": {
+          "kunci": "K2",
+          "p1": "P1b",
+          "p2": "P2a",
+          "p3": "P3b"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 9,
+      "putaran": 2,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:36.376Z",
+      "waktu_selesai": "2026-10-02T11:29:49.519Z",
+      "model": "haiku + deepseek + glm (rotasi)",
+      "panggilan": 24,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0.0088688744,
+      "putusan": "tolak",
+      "alasan": [
+        "tebak rotasi gagal: pesan-pilihan: kunci 6/12 (6,0/12); pilihan-saja: z-ai/glm-5.3 diabaikan (huruf \"a\" di ≥ 3/4 rotasi); pesan-pilihan: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi -, glm-5.3 isi - (diabaikan); pesan-pilihan: claude-haiku-4.5 isi opsi asal c, deepseek-v4.1-flash isi opsi asal d, glm-5.3 isi -]"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "putusan": "gagal",
+        "kondisi": {
+          "pilihan-saja": {
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "huruf_konsisten": "a",
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": true,
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ],
+            "kunci": 4,
+            "n": 8,
+            "proporsi": 0.5,
+            "tak_terbaca": 0
+          },
+          "pesan-pilihan": {
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "huruf_konsisten": null,
+                "isi_konsisten": 2,
+                "isi_kunci_konsisten": true,
+                "diabaikan": false,
+                "kunci": 3,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "huruf_konsisten": null,
+                "isi_konsisten": 3,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ],
+            "kunci": 6,
+            "n": 12,
+            "proporsi": 0.5,
+            "tak_terbaca": 0
+          }
+        },
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan c paling logis sebagai koreksi data."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Pilihan paling netral tanpa asumsi spesifik tentang dokumen yang tidak ditampilkan."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan c paling netral dan logis sebagai konfirmasi."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling spesifik dengan angka alternatif konkret."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan c paling logis sebagai koreksi data."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan a paling spesifik dengan data konkret Rp89."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan a paling logis sebagai koreksi spesifik dengan data alternatif."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling logis sebagai koreksi data harga saham."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan ini paling spesifik dan masuk akal."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi koreksi angka."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan koreksi spesifik paling mungkin benar."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan d paling spesifik dan mungkin benar."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi koreksi spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi a paling mungkin."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi spesifik yang menantang klaim."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi konfirmasi angka Rp97 paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi koreksi angka Rp89 tampak paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, tebakan paling mungkin berdasarkan pola soal."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi afirmatif paling mungkin sesuai klaim teman."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, tebakan paling mungkin: harga tercatat Rp106."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim pasti Dika kemungkinan tidak cocok dengan catatan."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim Dika paling mungkin sesuai catatan."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, kemungkinan angka Dika tidak cocok dengan catatan resmi."
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 10,
+      "putaran": 2,
+      "jenis": "sempurnakan-pilihan",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:29:49.523Z",
+      "waktu_selesai": "2026-10-02T11:29:52.433Z",
+      "model": "anthropic/claude-haiku-4.5",
+      "panggilan": 1,
+      "token_masuk": 2081,
+      "token_keluar": 346,
+      "biaya_usd": 0.003811,
+      "putusan": "ditulis",
+      "alasan": [
+        "tertebak: 3 slot diterima kode, 0 dibuang"
+      ],
+      "sha256_prompt": "924aca36d5c71bf2774df739f409d826a1c49387cd25081367700f4be28b818e",
+      "rincian": {
+        "diterima": [
+          {
+            "slot": "kunci",
+            "varian": "K1",
+            "dari": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+            "ke": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]."
+          },
+          {
+            "slot": "p1",
+            "varian": "P1a",
+            "dari": "Betul, angka [[harga-2025-12-09|9 Desember]] yang tercatat memang [[harga-2025-12-08|Rp97]].",
+            "ke": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]]."
+          },
+          {
+            "slot": "p3",
+            "varian": "P3a",
+            "dari": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]].",
+            "ke": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+          }
+        ],
+        "dibuang": [],
+        "alasan_penyempurna": "Menghilangkan frasa 'yang tercatat' dari kunci dan p3 serta menyederhanakan struktur kalimat agar keempat pilihan lebih seimbang dalam bentuk dan tingkat rincian, sehingga tidak tertebak tanpa membaca kartu.",
+        "teks_mentah": "```json\n{\n  \"pilihan\": {\n    \"kunci\": {\n      \"varian\": \"K1\",\n      \"teks\": \"Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].\"\n    },\n    \"p1\": {\n      \"varian\": \"P1a\",\n      \"teks\": \"Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].\"\n    },\n    \"p3\": {\n      \"varian\": \"P3a\",\n      \"teks\": \"Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]].\"\n    }\n  },\n  \"alasan\": \"Menghilangkan frasa 'yang tercatat' dari kunci dan p3 serta menyederhanakan struktur kalimat agar keempat pilihan lebih seimbang dalam bentuk dan tingkat rincian, sehingga tidak tertebak tanpa membaca kartu.\"\n}\n```",
+        "penyedia": "Amazon Bedrock"
+      },
+      "peran": "penyempurna"
+    },
+    {
+      "no": 11,
+      "putaran": 3,
+      "jenis": "tulis-penjelasan",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:30:59.180Z",
+      "waktu_selesai": "2026-10-02T11:30:59.180Z",
+      "model": "deepseek/deepseek-v4.1-flash",
+      "panggilan": 1,
+      "token_masuk": 850,
+      "token_keluar": 3756,
+      "biaya_usd": 0.0022706,
+      "putusan": "ditulis",
+      "alasan": [
+        "penjelasan omongan 1"
+      ],
+      "sha256_prompt": "98bfcbe68c6ba89dab1c3e13c9665bd2b57b739f60a2be6dc7a12537107fb6a8",
+      "rincian": {
+        "terurai": true,
+        "finish_reason": "stop",
+        "teks_mentah": "{\"penjelasan\": \"Pesan Dika dikirim sesudah bursa tutup, jadi 'kemarin' berarti hari bursa sebelumnya. Di kartu tertulis harga penutupan [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru penutupan [[harga-2025-12-08|8 Desember]]. Jadi jawabannya: keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Pilihan yang menyebut [[harga-2025-12-08|Rp97]] sebagai penutupan [[harga-2025-12-09|9 Desember]] keliru karena catatan [[harga-2025-12-09|9 Desember]] menunjukkan [[harga-2025-12-09|Rp106]]. Pilihan yang menyebut [[harga-2025-12-05|Rp89]] juga tidak cocok dengan catatan [[harga-2025-12-09|9 Desember]]. Salah-kaprah yang umum: memakai angka penutupan dari hari lain seolah-olah itu angka kemarin.\"}",
+        "penyedia": "Relace"
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 12,
+      "putaran": 3,
+      "jenis": "gerbang-g",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:30:59.237Z",
+      "waktu_selesai": "2026-10-02T11:30:59.237Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [
+        "struktur templat, validator, dan gerbang kode tidak keberatan"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "rencana": "angka-lain-waktu:harga-2025-12-09",
+        "versi": 3,
+        "pesan": "Perusahaan T tutup kemarin di Rp97, gw yakin banget itu harga penutupannya.",
+        "pilihan": {
+          "c": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "a": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "d": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "c",
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 13,
+      "putaran": 3,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:30:59.237Z",
+      "waktu_selesai": "2026-10-02T11:31:12.256Z",
+      "model": "haiku + deepseek + glm (rotasi)",
+      "panggilan": 24,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0.0087668084,
+      "putusan": "tolak",
+      "alasan": [
+        "tebak rotasi gagal: pesan-pilihan: kunci 4/8 (6,0/12); pilihan-saja: deepseek/deepseek-v4.1-flash diabaikan (huruf \"c\" di ≥ 3/4 rotasi); pesan-pilihan: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: deepseek/deepseek-v4.1-flash diabaikan (huruf \"c\" di ≥ 3/4 rotasi) [pilihan-saja: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi - (diabaikan), glm-5.3 isi opsi asal a; pesan-pilihan: claude-haiku-4.5 isi opsi asal c, deepseek-v4.1-flash isi - (diabaikan), glm-5.3 isi -]"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "c",
+        "putusan": "gagal",
+        "kondisi": {
+          "pilihan-saja": {
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "huruf_konsisten": "c",
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": true,
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "huruf_konsisten": null,
+                "isi_konsisten": 0,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 0,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ],
+            "kunci": 2,
+            "n": 8,
+            "proporsi": 0.25,
+            "tak_terbaca": 0
+          },
+          "pesan-pilihan": {
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "huruf_konsisten": null,
+                "isi_konsisten": 2,
+                "isi_kunci_konsisten": true,
+                "diabaikan": false,
+                "kunci": 3,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "huruf_konsisten": "c",
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": true,
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "huruf_konsisten": null,
+                "isi_konsisten": null,
+                "isi_kunci_konsisten": false,
+                "diabaikan": false,
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ],
+            "kunci": 4,
+            "n": 8,
+            "proporsi": 0.5,
+            "tak_terbaca": 0
+          }
+        },
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan c paling logis sebagai koreksi spesifik."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling netral dan masuk akal."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Pilihan c paling netral tanpa asumsi tambahan tentang data."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling spesifik dengan data alternatif."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan c paling logis sebagai koreksi spesifik."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan a paling spesifik dengan data konkret berbeda."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan a paling spesifik dengan angka alternatif konkret."
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan b paling masuk akal sebagai koreksi."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilihan paling netral mengonfirmasi klaim."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan ini paling spesifik dan konsisten."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih opsi paling spesifik."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tidak ada dokumen, pilih yang paling mungkin benar."
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, pilihan spesifik ini paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Angka Rp97 kemungkinan keliru; penutupan sebenarnya Rp89."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim Rp97 paling mungkin sesuai."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi afirmatif langsung paling mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, opsi konfirmasi paling mungkin sesuai."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim Dika kemungkinan tidak cocok dengan data."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "terbaca": true,
+            "alasan": "Klaim terlalu yakin biasanya keliru; Rp89 lebih mungkin benar."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Tanpa dokumen, klaim spesifik Dika paling mungkin sesuai."
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "terbaca": true,
+            "alasan": "Klaim Dika kemungkinan sesuai data penutupan saham T."
+          }
+        ]
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 14,
+      "putaran": 3,
+      "jenis": "buang-sudut",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T11:31:12.260Z",
+      "waktu_selesai": "2026-10-02T11:31:12.260Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "rencana angka-lain-waktu:harga-2025-12-09 habis (4 versi atau struktur/penyempurna habis)",
+        "tidak ada rencana pengganti yang cocok"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dibuang": "angka-lain-waktu:harga-2025-12-09",
+        "pengganti": null
+      },
+      "peran": "perencana"
+    }
+  ],
+  "hasil": {
+    "lolos": false,
+    "putaran": 3,
+    "berhenti": "omongan 1: rencana angka-lain-waktu:harga-2025-12-09 habis dan tidak ada rencana pengganti; simulasi tidak terbit",
+    "panggilan": 78,
+    "token_masuk": 7942,
+    "token_keluar": 11115,
+    "biaya_usd": 0.04248189,
+    "durasi_ms": 155960
+  }
+}

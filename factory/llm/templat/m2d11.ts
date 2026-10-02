@@ -13,7 +13,7 @@ import { hargaHarian } from './fakta.ts';
 import { rencanaBerlabel } from './label.ts';
 import { calonRencana } from './pilih.ts';
 import type { RencanaSoal, VarianPilihan } from './pola.ts';
-import { hurufSlot, SLOT, type PilihanAktif } from './rakit.ts';
+import { hurufSlotSeimbang, SLOT, type PilihanAktif } from './rakit.ts';
 
 /** Kritikus tingkat 1 (syarat 6); penebak & kartu M2d-11 memakai protokol rotasi (selalu menolak). */
 export const SETELAN_TEMPLAT_M2D11: SetelanTumpukan = {
@@ -99,7 +99,7 @@ export function calonRencanaM2d11(paket: PaketFakta): RencanaSoal[] {
  * tidak ada → varian bawaan. Murni.
  */
 export function pilihVarianBersih(r: RencanaSoal, hurufKunci: KunciOpsi, ambang: AmbangCacat = AMBANG_M2D11): PilihanAktif {
-  const peta = hurufSlot(hurufKunci);
+  const peta = hurufSlotSeimbang(hurufKunci, r);
   const daftar = r.slot.map((s) => s.varian);
   const kombinasi = (i: number): VarianPilihan[] | null => {
     const hasil: VarianPilihan[] = [];

@@ -49,7 +49,7 @@ import {
 import { MODEL_PENYEMPURNA, pesanPenyempurna, SETELAN_PENYEMPURNA, uraiPenyempurna, verifikasiPerbaikan, type JenisKegagalan } from './penyempurna.ts';
 import { calonRencana, kunciRencana, penggantiRencana, pilihRencanaSimulasi } from './pilih.ts';
 import type { RencanaSoal } from './pola.ts';
-import { pilihanBawaan, rakitOmonganTemplat, slotDariHuruf, type PilihanAktif, type TulisanPesan } from './rakit.ts';
+import { hurufSlotSeimbang, pilihanBawaan, rakitOmonganTemplat, slotDariHuruf, type PilihanAktif, type TulisanPesan } from './rakit.ts';
 import { AMBANG_M2D11 } from '../cacat/ambang.ts';
 import { kartuRotasi, tebakRotasi, type HasilTebakRotasi, type KartuRotasi } from '../rotasi/jalan.ts';
 import { umpanBalik, type UmpanBalikSoal } from './label.ts';
@@ -226,7 +226,7 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
             penjelasan = null;
           }
           if (penjelasan === null) {
-            const tanpa = rakitOmonganTemplat(r, pilihan, tulisan, '', hurufKunci);
+            const tanpa = rakitOmonganTemplat(r, pilihan, tulisan, '', hurufKunci, m2d11 ? hurufSlotSeimbang(hurufKunci, r) : undefined);
             const { penjelasan: _p, ...inti } = tanpa;
             void _p;
             const pesan = pesanTulisPenjelasanTemplat({ paket, r, o: inti, umpan: umpanPenjelasan });
@@ -237,7 +237,7 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
             }
             penjelasan = pj;
           }
-          const o = rakitOmonganTemplat(r, pilihan, tulisan, penjelasan, hurufKunci);
+          const o = rakitOmonganTemplat(r, pilihan, tulisan, penjelasan, hurufKunci, m2d11 ? hurufSlotSeimbang(hurufKunci, r) : undefined);
           cv.omongan = o;
           gabung[no - 1] = o;
           hasil.draf_terakhir[no - 1] = o;

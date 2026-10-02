@@ -32,7 +32,7 @@ import { pagarKritikusTerkunci, kritikusTerkunci } from '../templat/penyedia.ts'
 import { pesanTulisPenjelasanTemplat, pesanTulisPesanTemplat, periksaTulisanPenjelasan, periksaTulisanPesan, tulisBercadangan, uraiPenjelasan, uraiTulisanPesan, type PanggilTemplat } from '../templat/penulis.ts';
 import { MODEL_PENYEMPURNA, pesanPenyempurna, SETELAN_PENYEMPURNA, uraiPenyempurna, verifikasiPerbaikan } from '../templat/penyempurna.ts';
 import { pilihRencanaPemanasan } from '../templat/pilih.ts';
-import { rakitOmonganTemplat, type PilihanAktif, type TulisanPesan } from '../templat/rakit.ts';
+import { hurufSlotSeimbang, rakitOmonganTemplat, type PilihanAktif, type TulisanPesan } from '../templat/rakit.ts';
 import { FOLDER_M2D11, PAGU_BAGIAN_M2D11, siapkanM2d11 } from './konfig.ts';
 
 export const FOLDER_PEMANASAN_M2D11 = `${FOLDER_M2D11}/pemanasan`;
@@ -87,7 +87,7 @@ export async function jalankanPemanasanM2d11(paket: PaketFakta, panggil: Panggil
         }
       }
       if (penjelasan === null) {
-        const { penjelasan: _p, ...inti } = rakitOmonganTemplat(r, pilihan, tulisan, '', HURUF_KUNCI_PEMANASAN);
+        const { penjelasan: _p, ...inti } = rakitOmonganTemplat(r, pilihan, tulisan, '', HURUF_KUNCI_PEMANASAN, hurufSlotSeimbang(HURUF_KUNCI_PEMANASAN, r));
         void _p;
         penjelasan = await tulisBercadangan(panggil, pesanTulisPenjelasanTemplat({ paket, r, o: inti, umpan: umpanPenjelasan }), SETELAN_PENULIS.penjelasan, { jenis: 'tulis-penjelasan', putaran: ke, omongan: 1, ke: 1, peran: 'penulis', model: MODEL_OR_DEEPSEEK }, uraiPenjelasan, () => undefined);
         if (penjelasan === null) {
@@ -96,7 +96,7 @@ export async function jalankanPemanasanM2d11(paket: PaketFakta, panggil: Panggil
         }
       }
       c.varian = Object.fromEntries(Object.entries(pilihan).map(([s, v]) => [s, v.id]));
-      const o = rakitOmonganTemplat(r, pilihan, tulisan, penjelasan, HURUF_KUNCI_PEMANASAN);
+      const o = rakitOmonganTemplat(r, pilihan, tulisan, penjelasan, HURUF_KUNCI_PEMANASAN, hurufSlotSeimbang(HURUF_KUNCI_PEMANASAN, r));
       c.omongan = o;
       // syarat 2, 4, 5 + struktur (gratis)
       c.menolak.push(

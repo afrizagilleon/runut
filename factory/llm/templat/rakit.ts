@@ -81,13 +81,32 @@ export function hurufSlot(hurufKunci: KunciOpsi): Record<NamaSlot, KunciOpsi> {
   return { kunci: hurufKunci, p1: sisa[0] as KunciOpsi, p2: sisa[1] as KunciOpsi, p3: sisa[2] as KunciOpsi };
 }
 
+/**
+ * M2d-11 (perubahan templat 2, sesudah jalan TIRT #2): susunan label
+ * berselang — pengecoh yang labelnya SAMA dengan kunci ditaruh di seberang
+ * kunci (huruf k+2), dua pengecoh berlabel lain di k+1 dan k+3 (urut slot).
+ * Penebak yang memilih "opsi Keliru/Betul pertama" (pola terukur di jejak #2:
+ * Haiku c→a→a→b) dengan begitu memilih kunci tepat 2 dari 4 rotasi, bukan 3;
+ * rotasi siklik mempertahankan susunan ini. Murni.
+ */
+export function hurufSlotSeimbang(hurufKunci: KunciOpsi, r: Pick<RencanaSoal, 'slot'>): Record<NamaSlot, KunciOpsi> {
+  const k = HURUF.indexOf(hurufKunci);
+  const label = (s: NamaSlot): string | undefined => r.slot.find((x) => x.slot === s)?.varian[0]?.label;
+  const lk = label('kunci');
+  const sama = (['p1', 'p2', 'p3'] as const).filter((s) => label(s) === lk);
+  if (sama.length !== 1) return hurufSlot(hurufKunci);
+  const lain = (['p1', 'p2', 'p3'] as const).filter((s) => s !== sama[0]);
+  const h = (i: number): KunciOpsi => HURUF[(k + i) % 4] as KunciOpsi;
+  return { kunci: hurufKunci, [sama[0] as NamaSlot]: h(2), [lain[0] as NamaSlot]: h(1), [lain[1] as NamaSlot]: h(3) } as Record<NamaSlot, KunciOpsi>;
+}
+
 export function slotDariHuruf(hurufKunci: KunciOpsi, h: KunciOpsi): NamaSlot {
   const peta = hurufSlot(hurufKunci);
   return SLOT.find((s) => peta[s] === h) as NamaSlot;
 }
 
-export function rakitOmonganTemplat(r: RencanaSoal, pilihan: PilihanAktif, tulisan: TulisanPesan, penjelasan: string, hurufKunci: KunciOpsi): OmonganDraf {
-  const peta = hurufSlot(hurufKunci);
+export function rakitOmonganTemplat(r: RencanaSoal, pilihan: PilihanAktif, tulisan: TulisanPesan, penjelasan: string, hurufKunci: KunciOpsi, petaHuruf?: Record<NamaSlot, KunciOpsi>): OmonganDraf {
+  const peta = petaHuruf ?? hurufSlot(hurufKunci);
   const p = {} as Record<KunciOpsi, string>;
   for (const s of SLOT) p[peta[s]] = pilihan[s].teks;
   return {
