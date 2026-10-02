@@ -16,6 +16,7 @@
  * berkas disebut di atas tiap fixture). Yang sintetis ditandai SINTETIS.
  * Ditulis MERAH lebih dulu, sebelum pembacanya ada.
  */
+import { existsSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   bacaAngkaLabaR23,
@@ -24,6 +25,8 @@ import {
   r23LabaBedaEndpoint,
 } from './aturan-keuangan.ts';
 import { konteksGudang } from './contoh.ts';
+import { konteksEmiten } from './konteks.ts';
+import { muatGudangManifest } from '../muat/gudang-manifest.ts';
 import type { KeuanganTahunan } from './tipe.ts';
 
 // AVIA-m4a-overview-financials.json, tahun buku 2025 (semua medan uang kelipatan satu juta).
@@ -296,5 +299,29 @@ describe('R23 — presisi yang lebih kasar dari kedua angka (M4c D-2)', () => {
       konteksGudang({ simbol: 'ASLC', rups: [{ tanggal: '2026-05-19', ringkasan: teks }], keuangan_tahunan: [ASLC_2025] }),
     );
     expect(h.hitungan.merah).toBe(1);
+  });
+});
+
+const MANIFEST_ADA = existsSync(new URL('../../.cache/sectors/AVIA-m4a-corpactions.json', import.meta.url));
+
+/*
+ * Hitung ulang R23 di gudang beku (M4c D-5). Sebelum M4c: 6 diperiksa, 2 merah
+ * (AVIA, BSIM — keduanya dibantah penguji M4b B05, B06), 4 hijau. Sesudah: 0
+ * merah. Keenamnya diperiksa satu per satu dari data: empat sama persis sampai
+ * rupiah (ARNA dan BEST dengan earnings; ASLC dan RLCO dengan laba sebelum
+ * pajak − pajak), AVIA dan BSIM cocok pada presisi yang lebih kasar.
+ */
+describe.runIf(MANIFEST_ADA)('R23 atas gudang beku (372 berkas manifest, sha diperiksa)', () => {
+  it('6 keputusan RUPS diperiksa, 0 bertentangan; AVIA dan BSIM kini hijau', () => {
+    const gudang = muatGudangManifest();
+    const diperiksa: string[] = [];
+    const merah: string[] = [];
+    for (const data of gudang.emiten.values()) {
+      const h = r23LabaBedaEndpoint(konteksEmiten(data));
+      if (h.hitungan.diperiksa > 0) diperiksa.push(`${data.simbol} ${String(h.hitungan.diperiksa)}`);
+      for (const t of h.temuan) merah.push(t.temuan_id);
+    }
+    expect(diperiksa).toEqual(['ARNA 1', 'ASLC 1', 'AVIA 1', 'BEST 1', 'BSIM 1', 'RLCO 1']);
+    expect(merah).toEqual([]);
   });
 });

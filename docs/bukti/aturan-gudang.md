@@ -16,7 +16,7 @@ Kurikulum melabeli kasus menurut **peristiwa**: perusahaan membagi dividen, mene
 
 | peristiwa | kejadian | punya harga di kedua sisi | lolos jadi bahan kartu | emiten |
 |---|---:|---:|---:|---|
-| dividen tunai | 131 | 31 | 27 | ABMM, ADHI, ADRO, ALII, AMAG, ARCI, ARNA, ARTA, ASLC, ASPR, ASSA, ATAP, AVIA, BBMD, BIRD, BNII, BOLT, CAMP, DADA, KRYA, MERK, MLPT, MTLA, RAJA, ULTJ |
+| dividen tunai | 131 | 31 | 30 | ABMM, ADHI, ADRO, ALII, AMAG, ARCI, ARNA, ARTA, ASLC, ASPR, ASSA, ATAP, AVIA, BBMD, BIRD, BNII, BOLT, CAMP, DADA, KRYA, MERK, MLPT, MTLA, RAJA, ULTJ |
 | penerbitan saham baru | 25 | 6 | 2 | ADHI, AHAP, AKKU, ASSA, BAJA, BBRM, BCIC, BNII, BRNA, BSIM, BSWD, COCO, FORU |
 | pemecahan saham | 13 | 2 | 1 | AIMS, ALKA, ARNA, BATA, BBRM, BCIC, MERK, MLPT, RAJA, RMKE, ULTJ |
 | saham bonus | 1 | 0 | 0 | MTLA |
@@ -67,7 +67,7 @@ Yang wajib dijelaskan di kartu, per jenis peristiwa:
 | R19b | hari bursa | 7.523 | 6.049 | 1.474 | 0 | 0 |
 | R28 | aksi korporasi | 39 | 8 | 0 | 31 | 0 |
 | R35 | nilai harga ekstrem | 440 | 174 | 4 | 262 | 0 |
-| R23 | keputusan RUPS | 6 | 4 | 2 | 0 | 385 |
+| R23 | keputusan RUPS | 6 | 6 | 0 | 0 | 385 |
 | R31 | angka dividen di keputusan RUPS | 11 | 9 | 2 | 0 | 381 |
 | R26 | tahun buku berdividen | 112 | 84 | 10 | 18 | 0 |
 | R27 | medan rasio | 4.344 | 1.369 | 14 | 2.961 | 0 |
@@ -419,14 +419,10 @@ Contoh nyata:
 
 Kami menolak kartu kalau laba yang disebut keputusan RUPS berbeda dari laba di laporan keuangan tahun buku yang sama.
 
-Diperiksa 6 keputusan RUPS: 4 tidak bermasalah, 2 bertentangan, 0 datanya tidak cukup untuk memutuskan. 385 keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 56 emiten dan dilewati untuk 261.
+Diperiksa 6 keputusan RUPS: 6 tidak bermasalah, 0 bertentangan, 0 datanya tidak cukup untuk memutuskan. 385 keputusan RUPS tidak masuk pemeriksaan ini. Aturannya jalan untuk 56 emiten dan dilewati untuk 261.
 
 Alasan dilewati:
 - Emiten ini tidak punya satu pun RUPS tercatat.
-
-Contoh nyata:
-- **AVIA** — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS AVIA pada 2026-04-09 menyebut Rp2; laporan keuangan menyebut Rp1.747.462.000.000. Selisihnya Rp1.747.461.999.998. Laba sebelum pajak dikurangi pajak di laporan yang sama, Rp1.744.020.000.000, juga tidak sama dengan angka RUPS. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
-- **BSIM** — Laba bersih tahun buku 2025 ditulis dua kali dengan angka yang berbeda. Keputusan RUPS BSIM pada 2026-06-25 menyebut Rp285.747.406.391; laporan keuangan menyebut Rp285.748.000.000. Selisihnya Rp593.609. Laba sebelum pajak dikurangi pajak di laporan yang sama, Rp322.430.000.000, juga tidak sama dengan angka RUPS. Mana yang benar tidak terbaca dari data ini — keputusan RUPS bisa menyebut laba induk saja sementara laporan keuangan menyebut laba seluruh kelompok usaha, dan keduanya sah. Angka laba yang dipakai di kartu harus menyebut dari mana ia diambil.
 
 ### R31 — Dividen di keputusan RUPS versus medan dividend
 
