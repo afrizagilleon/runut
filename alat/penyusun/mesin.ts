@@ -284,7 +284,17 @@ export interface OpsiKritikusPintu {
   bungkus: (p: PanggilPintu) => PanggilPintu;
 }
 
-export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b: string) => void = () => undefined, kritikus?: OpsiKritikusPintu): (awalanTag: string, paguBagianUsd: number) => PanggilPintu {
+/**
+ * `awalanMilestone`: awalan tag yang dijumlah pagu milestone (bawaan `penyusun/`). M2d-14: uji ulang
+ * mode demo memakai `m2d14/` dengan pagu US$0,15 sendiri, supaya biayanya tidak masuk laporan M2d-13.
+ */
+export function panggilSungguhan(
+  akar: string,
+  paguPenyusunUsd: number,
+  log: (b: string) => void = () => undefined,
+  kritikus?: OpsiKritikusPintu,
+  awalanMilestone: string = AWALAN_TAG_PENYUSUN,
+): (awalanTag: string, paguBagianUsd: number) => PanggilPintu {
   return (awalanTag, paguBagianUsd) => {
     const konfig = bacaKonfigLlm(akar);
     if (konfig.baseUrl !== BASE_URL_OPENROUTER) throw new Error('LLM_BASE_URL bukan OpenRouter (nilainya tidak dicetak); pintu penyusun hanya memanggil OpenRouter.');
@@ -293,7 +303,7 @@ export function panggilSungguhan(akar: string, paguPenyusunUsd: number, log: (b:
       paguUsd: konfig.paguUsd,
       jalurLedger: jalurLedger(akar),
       biayaNyata: true,
-      paguMilestone: { usd: paguPenyusunUsd, awalanTag: AWALAN_TAG_PENYUSUN },
+      paguMilestone: { usd: paguPenyusunUsd, awalanTag: awalanMilestone },
       paguBagian: [{ usd: paguBagianUsd, awalanTag }],
     });
     const klienKritikus = kritikus === undefined ? klien : { ...klien, pagar: kritikus.pagarKritikus };
