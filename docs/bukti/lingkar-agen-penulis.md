@@ -158,12 +158,24 @@ Pembanding mutu GLM: templat TIRT-7 10,00 (n 2, layak 2); DADA tayang — (n 0, 
 - Haiku 4.5: sudut susp-2025-12-10 9, susp-2025-01-21 6, naik-2025-11-26-2025-12-09 3, kelipatan-2025-11-26-2025-12-09 3; label salah-periode 16, salah-entitas 9, sebagian-benar 8, nyaris-benar-angka 6, pertanyaan-lain 4, percaya-otoritas 3, percaya-omongan-tanpa-cek 2.
 - DeepSeek V4.1 Flash: sudut —; label —.
 
-- **H2-Opus (auditor Opus tanpa kartu, D-C): **menunggu reviewer**.** Paket siap: `eval/keluaran-m2d13/audit-opus/` (satu soal per berkas, 4 rotasi, kunci di luar `bahan/`).
+- **H2-Opus (auditor Opus tanpa kartu, D-C): tak bisa disimpulkan.** Opus pada butir Opus 71 % (17/24), pada butir DeepSeek — (0/0); GLM (rotasi, versi akhir) 0 % vs —; selisih —.
 
 ### H3 — keluaran Haiku terasa "masuk akal" bagi Opus
 
-- **H3a (auditor Opus): **menunggu reviewer**.** 
-- **H3b (self-preference penilai): **menunggu reviewer**.** Paket siap: `eval/keluaran-m2d13/mutu-opus/` (satu butir per berkas, rubrik sama, asal disamarkan).
+- **H3a (auditor Opus): tak bisa disimpulkan.** Opus pada butir Haiku 63 % (15/24), pada butir DeepSeek —; GLM 25 % vs —; selisih —.
+- **H3b (self-preference penilai): tak bisa disimpulkan.** S = — (Opus − GLM pada butir Anthropic dikurangi pada butir DeepSeek).
+
+### Kesepakatan dua penilai
+
+n 7 butir; ρ Spearman total 0,62; rata-rata |selisih| 2,29; layak tayang sama 4/7.
+
+| asal | GLM | Opus |
+|---|---|---|
+| opus | 10,00 | 8,83 |
+| haiku | 9,00 | 5,00 |
+| deepseek | — | — |
+| templat-m2d11 | 10,00 | 7,67 |
+| tayang-dada | — | 8,00 |
 
 ### H4 — Opus 5.5 tanpa penyempurna: soal lebih baik, revisi lebih sedikit (effort "low")
 
@@ -285,7 +297,7 @@ Bagian: D-B US$1.0050 (pagu US$2.1000); D-D penilai GLM US$0.3254 (pagu US$0.400
 
 ## 8. Menunggu reviewer
 
-- **Audit Opus satu soal (D-C):** menunggu — `eval/keluaran-m2d13/audit-opus/` (PETUNJUK.md).
-- **Penilai mutu Opus (D-D):** menunggu — `eval/keluaran-m2d13/mutu-opus/` (PETUNJUK.md).
+- **Audit Opus satu soal (D-C):** sudah dinilai — `eval/keluaran-m2d13/audit-opus/` (PETUNJUK.md).
+- **Penilai mutu Opus (D-D):** sudah dinilai — `eval/keluaran-m2d13/mutu-opus/` (PETUNJUK.md).
 - Sesudah keduanya: `npm run penulis:audit -- --nilai`, `npm run penulis:mutu -- --nilai-opus`, `npm run penulis:laporan`.
 

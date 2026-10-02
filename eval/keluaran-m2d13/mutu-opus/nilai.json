@@ -1,0 +1,292 @@
+{
+  "hasil": [
+    {
+      "id_buta": "m01",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 1,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 2
+        },
+        "total": 7,
+        "layak_tayang": true,
+        "alasan": "Kunci 2,21 kali benar menurut kartu (106/48) dan pengecoh selisih-vs-kelipatan serta angka tertukar 2,02 mendidik, meski pilihan c terlalu mudah dibuang, kalimat pilihan a agak janggal, dan penjelasan tidak menyatakan eksplisit bahwa 2,21 lebih dari 2."
+      }
+    },
+    {
+      "id_buta": "m02",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 1,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 1
+        },
+        "total": 6,
+        "layak_tayang": false,
+        "alasan": "Pilihan c bisa dibela pemula sebagai benar karena kartu memang menyebut cooling down, penjelasan tidak membahas mengapa c salah, dan \"hari ini\" tidak dikaitkan dengan tanggal kartu, jadi soal perlu diperbaiki dulu sebelum tayang."
+      }
+    },
+    {
+      "id_buta": "m03",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 1,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 2
+        },
+        "total": 6,
+        "layak_tayang": false,
+        "alasan": "Kunci b benar menurut kartu, tetapi pengecoh c dan d bertentangan dengan dirinya sendiri (d menyebut fakta yang mendukung Indra namun memvonis \"Keliru\"), sehingga bisa dieliminasi tanpa membaca kartu dan membingungkan pemula, sementara penjelasan tidak membahas mengapa d salah dan istilah \"keraguan fundamental\" serta \"hari ini\" tidak dijelaskan di pilihan."
+      }
+    },
+    {
+      "id_buta": "m04",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Kunci b hanya bisa dipastikan dengan membandingkan alasan resmi di kartu Januari dan Desember, pengecohnya mewakili salah baca yang wajar (ikut omongan teman, mencampur frasa antar-kartu, salah kartu), dan penjelasannya menunjuk kartu penentu dengan bahasa yang mudah."
+      }
+    },
+    {
+      "id_buta": "m05",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Kunci b hanya bisa dipastikan dengan membandingkan alasan resmi di dua pengumuman penghentian, pengecohnya mewakili salah baca yang wajar (ikut omongan teman, menggabungkan dua penghentian, salah dokumen), dan penjelasannya menunjuk kartu penentu serta salah-kaprah yang umum."
+      }
+    },
+    {
+      "id_buta": "m06",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 1,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 0
+        },
+        "total": 4,
+        "layak_tayang": false,
+        "alasan": "Pilihan b juga benar menurut Kartu 1 (alasan resminya memang peningkatan harga kumulatif yang signifikan), jadi soal ini punya dua jawaban benar dan pemula yang membaca kartu dengan teliti bisa disalahkan."
+      }
+    },
+    {
+      "id_buta": "m07",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 1
+        },
+        "total": 8,
+        "layak_tayang": false,
+        "alasan": "Soal tidak menyebut tanggal hari ini, padahal pesan dikirim pukul 20.15 dan kartu 9 Desember sudah terbit, sehingga \"kemarin\" bisa dibaca 8 Desember (Andi benar) dan kunci jadi meragukan, ditambah pengecoh Rp89 yang memakai angka di luar kartu dan pengecoh b yang asal salah."
+      }
+    },
+    {
+      "id_buta": "m08",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 1,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 0
+        },
+        "total": 4,
+        "layak_tayang": false,
+        "alasan": "Pilihan c (\"Betul, periode 26 November ke 9 Desember tepat\") juga benar menurut kartu sehingga ada dua jawaban benar, pengecoh d tentang \"penghentian hari ini\" tidak terkait kartu dan memakai istilah tak dijelaskan, dan pilihan a mengandung salah ketik \"mencocok\"."
+      }
+    },
+    {
+      "id_buta": "m09",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Soal melatih pembedaan harga akhir dan besar kenaikan yang hanya bisa dipastikan lewat kartu, dengan kunci tunggal yang benar, pengecoh dari salah baca yang wajar, dan penjelasan yang menunjuk kartu penentu."
+      }
+    },
+    {
+      "id_buta": "m10",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 1
+        },
+        "total": 9,
+        "layak_tayang": true,
+        "alasan": "Soal memaksa pemain mencocokkan tanggal di kartu, dan tiap pengecohnya mewakili salah baca yang nyata (ikut omongan teman, salah alasan penghentian, salah tanggal), hanya saja 'hari ini' tidak disebut tanggalnya sehingga pemain harus menganggap sendiri bahwa hari ini 10 Desember 2025."
+      }
+    },
+    {
+      "id_buta": "m11",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Pilihan disusun rapi dua sumbu (beli/jual dan belasan/ratusan rupiah) sehingga pemula harus membaca jenis transaksi dan harga di kartu, kuncinya tepat, dan penjelasannya membongkar salah kaprah \"nggak kedengeran jual\" berdasarkan ketiga laporan."
+      }
+    },
+    {
+      "id_buta": "m12",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 1,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 0
+        },
+        "total": 4,
+        "layak_tayang": false,
+        "alasan": "Pilihan d sama benarnya dengan kunci a (keduanya menyatakan omongan Joko betul karena dua alasan penghentian berbeda), sehingga soal punya dua jawaban benar, sementara pengecoh b soal perubahan manajemen asal salah dan istilah going concern tidak dijelaskan untuk pemula."
+      }
+    },
+    {
+      "id_buta": "m13",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 1
+        },
+        "total": 6,
+        "layak_tayang": false,
+        "alasan": "Pilihan d juga menyatakan omongan Siti betul dengan alasan yang benar menurut kartu 4 sehingga pemula yang membaca kartu bisa dihukum karena jawaban yang tidak salah, sementara pengecoh b (Oktober) asal salah dan pilihan a berbahasa kaku."
+      }
+    },
+    {
+      "id_buta": "m14",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 2
+        },
+        "total": 8,
+        "layak_tayang": true,
+        "alasan": "Kunci b tunggal dan benar menurut Kartu 1, dan pengecoh d (harga naik terlalu cepat) memaksa pemain membaca alasan resmi penghentian; kekurangannya, nada \"pasti\" Bayu sedikit membocorkan arah \"Keliru\", dan label kartu \"api\" serta \"hitungan dari kartu lain\" terasa kaku bagi pemula."
+      }
+    },
+    {
+      "id_buta": "m15",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 1,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 1
+        },
+        "total": 6,
+        "layak_tayang": false,
+        "alasan": "Kunci \"Betul\" ikut membenarkan klaim Tika bahwa saham \"disetop\" padahal tidak ada kartu yang memuat penghentian (penjelasan pun menyebut penghentian dari luar kartu), tanggal \"hari ini\" tidak dipastikan, dan dua pengecoh sama-sama memakai 26 November sehingga lemah sebagai pembeda."
+      }
+    },
+    {
+      "id_buta": "m16",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 8,
+        "layak_tayang": true,
+        "alasan": "Kunci benar dan penjelasan mengajarkan beda selisih dan kelipatan dengan baik, meski angka di pesan Wulan sudah cukup untuk menghitung sendiri tanpa kartu dan pengecoh d kurang terkait dengan klaimnya."
+      }
+    },
+    {
+      "id_buta": "m17",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 8,
+        "layak_tayang": true,
+        "alasan": "Kunci d benar dan tunggal menurut kartu (Rp106 pada 9 Desember, naik beruntun) dengan penjelasan yang mengajar, meski dua pengecoh bernada \"turun\" mudah dibuang karena kartu jelas menyebut naik dan nada santai Tio sedikit membocorkan bahwa omongannya keliru."
+      }
+    },
+    {
+      "id_buta": "m18",
+      "ada": true,
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 1,
+          "pengecoh_diagnostik": 1,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 1,
+          "benar_satu_kunci": 1
+        },
+        "total": 6,
+        "layak_tayang": false,
+        "alasan": "Kunci a benar menurut kartu dan pengecoh b serta c mewakili salah baca yang nyata, tetapi penjelasan memakai harga saham Rp178 dan nilai Rp178.000 yang tidak ada di kartu mana pun, pilihan a ikut nada 'receh' Dimas, dan pengecoh d hanya opini yang tidak bisa dibantah dari kartu, jadi soal perlu diperbaiki dulu sebelum tayang."
+      }
+    }
+  ]
+}
