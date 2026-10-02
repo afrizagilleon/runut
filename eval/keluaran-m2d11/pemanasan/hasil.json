@@ -1,0 +1,148 @@
+{
+  "lolos": true,
+  "rencana": "sebab-resmi:susp-2025-12-10",
+  "omongan": {
+    "nama": "Dita",
+    "jam": "20.15",
+    "pesan": "Gw yakin banget bursa nyetop dagang saham Perusahaan T hari ini, soalnya bursa ragu usahanya bisa lanjut terus.",
+    "angka_pesan": [],
+    "kartu": [
+      "susp-2025-12-10",
+      "susp-2025-01-21"
+    ],
+    "kartu_penentu": [
+      "susp-2025-12-10"
+    ],
+    "pilihan": {
+      "b": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+      "c": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+      "a": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+      "d": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+    },
+    "kunci": "b",
+    "penjelasan": "Di catatan resmi [[susp-2025-12-10|10 Desember]], perdagangan saham Perusahaan T dihentikan sementara karena harga kumulatifnya naik signifikan, sebagai cooling down untuk melindungi investor. Karena itu, yang benar: keliru, alasan resmi hari ini kenaikan harganya terlalu tajam. Pilihan yang menggoda adalah yang menyebut keraguan kelangsungan usaha; alasan itu tertulis di catatan [[susp-2025-01-21|21 Januari]], bukan penghentian hari ini. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini."
+  },
+  "umpan_balik": {
+    "penentu": "Yang menentukan jawabannya: kartu 1 (terbit 10 Desember 2025).",
+    "per_pengecoh": [
+      {
+        "huruf": "a",
+        "slot": "p2",
+        "jenis": "percaya-otoritas",
+        "rujukan": "susp-2025-12-10",
+        "kartu_no": 1,
+        "kalimat": "a) percaya omongan tanpa cek: ini mengulang omongan teman tanpa dicek ke kartu — cek kartu 1."
+      },
+      {
+        "huruf": "c",
+        "slot": "p1",
+        "jenis": "salah-periode",
+        "rujukan": "susp-2025-01-21",
+        "kartu_no": 2,
+        "kalimat": "c) salah periode: isinya milik tanggal lain, bukan hari yang dibicarakan — cek kartu 2."
+      },
+      {
+        "huruf": "d",
+        "slot": "p3",
+        "jenis": "sebagian-benar",
+        "rujukan": "susp-2025-12-10",
+        "kartu_no": 1,
+        "kalimat": "d) sebagian benar: sebagian isinya cocok, tetapi ada bagian yang tidak cocok dengan kartu — cek kartu 1."
+      }
+    ],
+    "pertanyaan_cek": "Penghentian tanggal berapa yang dibicarakan, dan apa alasan resminya di kartu?"
+  },
+  "percobaan": [
+    {
+      "ke": 1,
+      "omongan": {
+        "nama": "Dita",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget bursa nyetop dagang saham Perusahaan T hari ini, soalnya bursa ragu usahanya bisa lanjut terus.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "b": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+          "c": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+          "a": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+          "d": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+        },
+        "kunci": "b",
+        "penjelasan": "Catatan penghentian 10 Desember menyebut perdagangan saham Perusahaan T dihentikan sementara karena kenaikan harga kumulatif yang signifikan, sebagai cooling down untuk melindungi investor. Jadi alasan resmi hari itu bukan keraguan kelangsungan usaha. Yang benar: keliru, alasan resmi hari ini kenaikan harganya terlalu tajam. Pilihan yang menggoda adalah yang menyebut usaha diragukan bisa terus berjalan; itu cocok dengan catatan 21 Januari, bukan penghentian hari ini. Pilihan soal pengambilalihan dan laporan keuangan terlambat tidak disebut di catatan. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini."
+      },
+      "varian": {
+        "kunci": "K1",
+        "p1": "P1a",
+        "p2": "P2a",
+        "p3": "P3a"
+      },
+      "menolak": [
+        {
+          "lokasi": "penjelasan",
+          "alasan": "penjelasan harus merujuk kartu penentu (susp-2025-12-10)"
+        }
+      ],
+      "kartu": null,
+      "kritik": null
+    },
+    {
+      "ke": 2,
+      "omongan": {
+        "nama": "Dita",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget bursa nyetop dagang saham Perusahaan T hari ini, soalnya bursa ragu usahanya bisa lanjut terus.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "b": "Keliru, alasan resmi hari ini: kenaikan harganya terlalu tajam.",
+          "c": "Betul, bursa menghentikannya hari ini karena usahanya diragukan bisa terus berjalan.",
+          "a": "Betul, pengumuman hari ini juga menyebut rencana pengambilalihan belum diumumkan.",
+          "d": "Keliru, alasan resmi hari ini: laporan keuangannya terlambat diserahkan."
+        },
+        "kunci": "b",
+        "penjelasan": "Di catatan resmi [[susp-2025-12-10|10 Desember]], perdagangan saham Perusahaan T dihentikan sementara karena harga kumulatifnya naik signifikan, sebagai cooling down untuk melindungi investor. Karena itu, yang benar: keliru, alasan resmi hari ini kenaikan harganya terlalu tajam. Pilihan yang menggoda adalah yang menyebut keraguan kelangsungan usaha; alasan itu tertulis di catatan [[susp-2025-01-21|21 Januari]], bukan penghentian hari ini. Salah-kaprah yang umum: mengira alasan penghentian yang lebih dulu juga berlaku untuk penghentian hari ini."
+      },
+      "varian": {
+        "kunci": "K1",
+        "p1": "P1a",
+        "p2": "P2a",
+        "p3": "P3a"
+      },
+      "menolak": [],
+      "kartu": [
+        {
+          "r": 0,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true
+        },
+        {
+          "r": 2,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true
+        }
+      ],
+      "kritik": {
+        "menjawab": true,
+        "keberatan": [],
+        "arahan": "Pastikan ringkasan 'Peristiwa hari itu' tidak tampil ke pemain, karena kalimatnya sudah menyebut cooling down dan kenaikan harga berturut-turut sehingga soal bisa dijawab tanpa membaca kartu."
+      }
+    }
+  ],
+  "berhenti": null,
+  "huruf_kunci": "b",
+  "biaya_usd": 0.028280343099999997
+}
