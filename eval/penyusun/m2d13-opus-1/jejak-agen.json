@@ -1,0 +1,318 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/bebas/mesin.ts",
+  "simulasi": {
+    "paket_id": "tirt",
+    "nama_samaran": "Perusahaan T",
+    "tanggal_t": "2025-12-10",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+  },
+  "model": "anthropic/claude-opus-5.5",
+  "model_peran": {
+    "penulis": "anthropic/claude-opus-5.5",
+    "penebak": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3"
+  },
+  "paket": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": 11,
+    "fakta_lolos": 20,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2025-11-25",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "harga-2025-12-10",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "789991ae8c4f455cbde7be87b843cd8217bfef20aaf7b5fd4675ec1b081586ef",
+    "sha256_paket": "00ee7ff29751650fd42d323984c8398fdd0536ce383a788f1fe1ad2b2dea7292",
+    "ringkasan": "Pintu penyusun, mesin \"bebas-opus\": penulis bebas anthropic/claude-opus-5.5 tanpa penyempurna; gerbang M2d-11 + angka-di-kartu. Di sini hanya hash."
+  },
+  "mulai": "2026-10-02T16:39:54.975Z",
+  "selesai": "2026-10-02T16:43:29.425Z",
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T16:39:54.999Z",
+      "waktu_selesai": "2026-10-02T16:40:51.528Z",
+      "model": "anthropic/claude-opus-5.5",
+      "panggilan": 1,
+      "token_masuk": 7957,
+      "token_keluar": 5797,
+      "biaya_usd": 0.147768,
+      "putusan": "ditulis",
+      "alasan": [],
+      "sha256_prompt": "f2470c0da328259ed03eba3d706cb9a8ba2f8d16c744e996ebea56cbb277a228",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [
+          1,
+          2,
+          3
+        ],
+        "token_penalaran": 2996,
+        "penyedia": "Azure",
+        "finish_reason": "stop",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 2,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T16:40:51.531Z",
+      "waktu_selesai": "2026-10-02T16:40:51.612Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 3,
+      "putaran": 1,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T16:40:51.613Z",
+      "waktu_selesai": "2026-10-02T16:41:21.703Z",
+      "model": "haiku + deepseek + glm (rotasi)",
+      "panggilan": 24,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0.00913564,
+      "putusan": "tolak",
+      "alasan": [
+        "tebak rotasi gagal: pesan-pilihan: kunci 5/12 (5,0/12); pesan-pilihan: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi opsi asal a, deepseek-v4.1-flash isi opsi asal a, glm-5.3 isi opsi asal a; pesan-pilihan: claude-haiku-4.5 isi opsi asal a, deepseek-v4.1-flash isi opsi asal b, glm-5.3 isi -] — kunci = pilihan b; tanpa kartu, penebak memilih isi kunci terlalu sering"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "putusan": "gagal"
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 4,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": 2,
+      "waktu_mulai": "2026-10-02T16:41:21.706Z",
+      "waktu_selesai": "2026-10-02T16:41:21.763Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 5,
+      "putaran": 1,
+      "jenis": "gerbang-tebak",
+      "omongan": 2,
+      "waktu_mulai": "2026-10-02T16:41:21.764Z",
+      "waktu_selesai": "2026-10-02T16:41:45.054Z",
+      "model": "haiku + deepseek + glm (rotasi)",
+      "panggilan": 26,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0.013272900999999998,
+      "putusan": "tolak",
+      "alasan": [
+        "tebak rotasi gagal: pesan-pilihan: kunci 11/12 (11,0/12); pilihan-saja: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pilihan-saja: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi; pilihan-saja: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi opsi asal a, deepseek-v4.1-flash isi opsi asal a, glm-5.3 isi opsi asal a; pesan-pilihan: claude-haiku-4.5 isi opsi asal a, deepseek-v4.1-flash isi opsi asal a, glm-5.3 isi opsi asal a] — kunci = pilihan a; tanpa kartu, penebak memilih isi kunci terlalu sering"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "a",
+        "putusan": "gagal"
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 6,
+      "putaran": 1,
+      "jenis": "validator",
+      "omongan": 3,
+      "waktu_mulai": "2026-10-02T16:41:45.056Z",
+      "waktu_selesai": "2026-10-02T16:41:45.112Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\",  …\")",
+        "detektor D9 (urutan numerik; pilihan): nilai angka opsi a=178100, b=0, c=1461200 tidak urut; opsi a, b, c"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 7,
+      "putaran": 2,
+      "jenis": "tulis-ulang",
+      "omongan": null,
+      "waktu_mulai": "2026-10-02T16:41:45.121Z",
+      "waktu_selesai": "2026-10-02T16:42:50.585Z",
+      "model": "anthropic/claude-opus-5.5",
+      "panggilan": 1,
+      "token_masuk": 11757,
+      "token_keluar": 7423,
+      "biaya_usd": 0.195488,
+      "putusan": "ditulis",
+      "alasan": [],
+      "sha256_prompt": "ecabf85c591719bf2f8fff01382fddfd1de823982a8c96a3f286e82c4f0c95e4",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [
+          1,
+          2,
+          3
+        ],
+        "token_penalaran": 4597,
+        "penyedia": "Azure",
+        "finish_reason": "stop",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    },
+    {
+      "no": 8,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T16:42:50.587Z",
+      "waktu_selesai": "2026-10-02T16:42:50.639Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "lolos",
+      "alasan": [],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 9,
+      "putaran": 2,
+      "jenis": "gerbang-tebak",
+      "omongan": 1,
+      "waktu_mulai": "2026-10-02T16:42:50.640Z",
+      "waktu_selesai": "2026-10-02T16:43:29.383Z",
+      "model": "haiku + deepseek + glm (rotasi)",
+      "panggilan": 24,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0.008754298800000003,
+      "putusan": "tolak",
+      "alasan": [
+        "tebak rotasi gagal: pesan-pilihan: kunci 2/12 (2,0/12); pilihan-saja: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pilihan-saja: deepseek/deepseek-v4.1-flash diabaikan (huruf \"b\" di ≥ 3/4 rotasi) [pilihan-saja: claude-haiku-4.5 isi opsi asal b, deepseek-v4.1-flash isi - (diabaikan), glm-5.3 isi opsi asal a; pesan-pilihan: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi opsi asal a, glm-5.3 isi opsi asal a] — kunci = pilihan b; tanpa kartu, penebak memilih isi kunci terlalu sering"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "kunci": "b",
+        "putusan": "gagal"
+      },
+      "peran": "penebak"
+    },
+    {
+      "no": 10,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": 2,
+      "waktu_mulai": "2026-10-02T16:43:29.385Z",
+      "waktu_selesai": "2026-10-02T16:43:29.410Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 106, 48. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-angka-cukup: Pilihan kunci d bisa dihitung dari angka yang sudah ada di pesan dan pilihan, tanpa kartu: \"58\" = 106 − 48 = 58. Penebak akan menghitungnya. Jangan taruh di pesan dan pilihan semua angka yang dibutuhkan untuk menghitung klaim kunci — biarkan angka penentunya hanya ada di kartu.",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: Rp106, Rp48",
+        "M2d-13: angka-di-kartu: umpan balik a: angka di luar rujukan kartu: Rp48"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    },
+    {
+      "no": 11,
+      "putaran": 2,
+      "jenis": "validator",
+      "omongan": 3,
+      "waktu_mulai": "2026-10-02T16:43:29.411Z",
+      "waktu_selesai": "2026-10-02T16:43:29.415Z",
+      "model": null,
+      "panggilan": 0,
+      "token_masuk": 0,
+      "token_keluar": 0,
+      "biaya_usd": 0,
+      "putusan": "tolak",
+      "alasan": [
+        "pemeriksa: G-pilihan-kembar: pilihan c dan d isinya sama (kemiripan 1,00)"
+      ],
+      "sha256_prompt": null,
+      "rincian": {
+        "dicatat": []
+      },
+      "peran": "pemeriksa"
+    }
+  ],
+  "hasil": {
+    "lolos": false,
+    "putaran": 3,
+    "berhenti": "terpotong pagu: PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$2.258749 + perkiraan maksimum US$0.249672 untuk anthropic/claude-opus-5.5 > pagu milestone US$2.49. Panggilan tidak dikirim.",
+    "panggilan": 76,
+    "token_masuk": 19714,
+    "token_keluar": 13220,
+    "biaya_usd": 0.37441884,
+    "durasi_ms": 214450
+  }
+}

@@ -1,0 +1,1239 @@
+{
+  "penulis": "anthropic/claude-haiku-4.5",
+  "terbit": false,
+  "berhenti": "omongan tidak lulus dalam 3 versi: 1, 2, 3; simulasi tidak terbit",
+  "tersensor": false,
+  "versi": [
+    {
+      "no": 1,
+      "versi": 1,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 26, 9. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", mirip …\")",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: 26, 9",
+        "M2d-13: angka-di-kartu: umpan balik d: \"1.461.200 lembar\" merujuk volume-2025-12-09, yang bukan kartu omongan ini (kartu: susp-2025-12-10, hari-naik-beruntun)",
+        "M2d-13: angka-di-kartu: umpan balik d: angka di luar rujukan kartu: 9",
+        "M2d-13: umpan balik: umpan balik b: harus memuat nama jenis kesalahannya \"salah periode\"",
+        "M2d-13: umpan balik: umpan balik c: harus memuat nama jenis kesalahannya \"sebagian benar\"",
+        "M2d-13: umpan balik: umpan balik c: 266 karakter, lebih dari 200",
+        "M2d-13: umpan balik: umpan balik d: harus memuat nama jenis kesalahannya \"salah entitas\"",
+        "M2d-13: umpan balik: umpan balik d: 229 karakter, lebih dari 200",
+        "M2d-13: umpan balik: penjelasan harus merujuk minimal satu kartu penentu (susp-2025-12-10) dengan [[fact_id|teks]]"
+      ],
+      "dicatat": [
+        "pemeriksa: PENJELASAN_TANPA_PENENTU (dicatat): Penjelasan tidak merujuk satu pun kartu penentu."
+      ],
+      "omongan": {
+        "nama": "Arif",
+        "jam": "21.45",
+        "pesan": "Bursa hari ini setop perdagangan T karena harga naik signifikan ya? Ini cooling down.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "hari-naik-beruntun"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, alasan resmi memang perlindungan investor dari kenaikan harga kumulatif.",
+          "b": "Keliru, alasannya justru keraguan atas kelangsungan usaha perusahaan.",
+          "c": "Betul, penghentian ini disebut cooling down, mirip dengan tindakan bursa di Januari.",
+          "d": "Keliru, penghentian terjadi karena volume perdagangan yang terlalu tinggi hari itu."
+        },
+        "kunci": "a",
+        "penjelasan": "Pengumuman bursa tertanggal [[hari-ini|10 Desember 2025]] memang menyebut alasan resmi adalah terjadinya peningkatan harga kumulatif yang signifikan, dalam rangka cooling down sebagai bentuk perlindungan bagi investor. Itu persis dengan yang dikatakan Arif. Jangan bingung dengan penghentian di Januari, yang memiliki alasan berbeda. Juga, \"cooling down\" adalah nama tindakan, bukan sebab — sebabnya adalah kenaikan harga berturut-turut [[hari-naik-beruntun|9 hari bursa]] dari 26 November sampai 9 Desember. Salah-kaprah yang umum: mengira semua penghentian sementara oleh bursa memiliki alasan yang sama, padahal setiap penghentian bisa terjadi karena hal berbeda.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Alasan itu benar, tetapi itu untuk penghentian di [[hari-ini|10 Desember 2025]] tahun ini atau tahun sebelumnya? Periksa tanggal di kartu 1."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Betul, nama tindakannya cooling down, tetapi periksa kartu 1 — alasan penghentian di Januari berbeda dari [[hari-ini|hari ini]]. Itu bukan salah baca, tetapi kesimpulan yang tergesa-gesa — salah-kaprah yang umum: menyamakan alasan penghentian yang berlainan periode."
+          },
+          "d": {
+            "jenis": "salah-entitas",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Volume memang tinggi — [[volume-2025-12-09|1.461.200 lembar]] pada 9 Desember — tetapi alasan penghentian menurut kartu 1 adalah kenaikan harga, bukan volume. Volume di kartu 2 hanya melaporkan fakta, bukan alasan tindakan bursa."
+          }
+        },
+        "pertanyaan_cek": "Alasan penghentian sementara di Januari berbeda apa dengan alasan hari ini?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 2,
+      "versi": 1,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", serupa …\")",
+        "M2d-13: angka-di-kartu: umpan balik d: angka di luar rujukan kartu: 2",
+        "M2d-13: label pengecoh: pengecoh d: jenis \"percaya-omongan-tanpa-cek\" bukan salah satu dari salah-periode, salah-entitas, nyaris-benar-angka, pertanyaan-lain, sebagian-benar, percaya-otoritas",
+        "M2d-13: umpan balik: umpan balik a: harus memuat nama jenis kesalahannya \"sebagian benar\"",
+        "M2d-13: umpan balik: umpan balik a: 201 karakter, lebih dari 200",
+        "M2d-13: umpan balik: umpan balik c: harus memuat nama jenis kesalahannya \"salah entitas\"",
+        "M2d-13: umpan balik: umpan balik d: 212 karakter, lebih dari 200"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Indra",
+        "jam": "19.30",
+        "pesan": "Di Januari bursa juga pernah stop karena rupa-rupa kebetulan saja, sejajar banget dengan stop hari ini.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Betul, kedua penghentian terjadi karena faktor internal perusahaan yang sama.",
+          "b": "Keliru, penghentian Januari disebabkan keraguan atas kelangsungan usaha, bukan kenaikan harga.",
+          "c": "Keliru, penghentian hari ini disebabkan faktor fundamental, serupa dengan Januari.",
+          "d": "Betul, kedua penghentian adalah tindakan biasa yang sering terjadi di bursa."
+        },
+        "kunci": "b",
+        "penjelasan": "Indra menganggap kedua penghentian sejajar, tetapi kartu membuktikan lain. [[susp-2025-01-21|Penghentian 21 Januari 2025]] bersebab keraguan atas kelangsungan usaha — faktor fundamental. [[susp-2025-12-10|Penghentian 10 Desember 2025]] bersebab peningkatan harga kumulatif yang signifikan — faktor teknis (cooling down). Dua alasan yang sangat berbeda. Perubahan harga saham di pasar tidak sama dengan keraguan atas kemampuan perusahaan mengoperasikan bisnis. Salah-kaprah yang umum: mengira setiap penghentian perdagangan adalah sinyal masalah fundamental perusahaan, padahal cooling down adalah perlindungan teknis mekanisme pasar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Betul, kedua penghentian adalah tindakan internal bursa, tetapi alasannya berbeda — periksa kartu 1 dan kartu 2. Penghentian Januari adalah karena fundamental, bukan karena harga naik seperti hari ini."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Penghentian hari ini bukan disebabkan keraguan fundamental, melainkan kenaikan harga — lihat kartu 2. Jangan campur alasan Januari ke penghentian hari ini."
+          },
+          "d": {
+            "jenis": "percaya-omongan-tanpa-cek",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Indra mengatakan kebetulan saja, tetapi kartu 1 dan 2 menunjukkan alasan yang jelas dan berbeda untuk setiap penghentian — bukan kebetulan. Cek selalu alasan resmi di pengumuman bursa, jangan percaya tanpa kartu."
+          }
+        },
+        "pertanyaan_cek": "Apakah alasan resmi kedua penghentian memiliki jenis yang sama atau berbeda?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 3,
+      "versi": 1,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan a memuat angka di luar rujukan: 58, 26, 25. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan b memuat angka di luar rujukan: 58. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan d memuat angka di luar rujukan: 58. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 58,, 26, 9, 26, 9, 58, 9. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-panjang: 16 kata; paling banyak 11",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "pemeriksa: G-panjang: 14 kata; paling banyak 11",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", harga …\")",
+        "M2d-13: angka-di-kartu: pilihan a: angka di luar rujukan kartu: Rp58, 26, 25",
+        "M2d-13: angka-di-kartu: pilihan b: angka di luar rujukan kartu: Rp58",
+        "M2d-13: angka-di-kartu: pilihan d: angka di luar rujukan kartu: Rp58",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: Rp58,, 26, 9, (26, (9, Rp58, 9",
+        "M2d-13: angka-di-kartu: umpan balik a: angka di luar rujukan kartu: Rp58,",
+        "M2d-13: angka-di-kartu: umpan balik b: \"2,21 kali\" merujuk kelipatan-2025-11-26-2025-12-09, yang bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+        "M2d-13: angka-di-kartu: umpan balik b: angka di luar rujukan kartu: Rp58",
+        "M2d-13: angka-di-kartu: umpan balik d: angka di luar rujukan kartu: Rp58,, Rp58, Rp58",
+        "M2d-13: label pengecoh: pengecoh b: rujukan \"kelipatan-2025-11-26-2025-12-09\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+        "M2d-13: label pengecoh: pengecoh d: rujukan \"susp-2025-12-10\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+        "M2d-13: umpan balik: umpan balik a: harus memuat nama jenis kesalahannya \"angka nyaris benar\"",
+        "M2d-13: umpan balik: umpan balik a: 207 karakter, lebih dari 200",
+        "M2d-13: umpan balik: umpan balik b: harus memuat nama jenis kesalahannya \"salah entitas\"",
+        "M2d-13: umpan balik: umpan balik b: 207 karakter, lebih dari 200",
+        "M2d-13: umpan balik: umpan balik d: harus memuat nama jenis kesalahannya \"salah periode\"",
+        "M2d-13: umpan balik: umpan balik d: 280 karakter, lebih dari 200"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Siti",
+        "jam": "18.15",
+        "pesan": "Dari akhir November ke kemarin, harga T udah naik Rp58 lho. Gila banget!",
+        "angka_pesan": [
+          {
+            "teks": "Rp58",
+            "fact_id": "naik-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Keliru, kenaikannya Rp58 per lembar tetapi periode mulai dari 26 November atau 25 November belum jelas.",
+          "b": "Keliru, angka Rp58 itu kelipatan harga, bukan kenaikan nominal dalam rupiah.",
+          "c": "Betul, dari [[harga-2025-11-26|26 November]] sampai [[harga-2025-12-09|9 Desember]], harga naik [[naik-2025-11-26-2025-12-09|Rp58 per lembar]].",
+          "d": "Betul, kenaikan Rp58 itu tercatat di pengumuman bursa sebagai alasan cooling down hari ini."
+        },
+        "kunci": "c",
+        "penjelasan": "Siti menyebut angka Rp58, dan kartu penentu membuktikan itu benar: dari [[harga-2025-11-26|Rp48]] pada 26 November sampai [[harga-2025-12-09|Rp106]] pada 9 Desember, selisihnya adalah [[naik-2025-11-26-2025-12-09|Rp58 per lembar]]. Periode yang disebutnya jelas: \"akhir November\" (26 November) ke \"kemarin\" (9 Desember). Jangan rancu kenaikan nominal (rupiah) dengan kelipatan harga. Juga, bursa tidak mencatat angka Rp58 sebagai alasan cooling down; yang dicatat adalah \"peningkatan harga kumulatif yang signifikan\", yaitu fenomena 9 hari naik berturut-turut. Salah-kaprah yang umum: mengira pengumuman bursa merinci setiap angka perubahan harga, padahal bursa hanya menyebut fenomenanya secara umum.",
+        "pengecoh": {
+          "a": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "naik-2025-11-26-2025-12-09",
+            "umpan_balik": "Betul Rp58, tetapi periode di kartu 3 sudah jelas dari [[harga-2025-11-26|26 November]] — bukan \"belum jelas\". Jangan tanya \"dari tanggal berapa mulai\", jika semua harga untuk periode itu sudah ada di kartu."
+          },
+          "b": {
+            "jenis": "salah-entitas",
+            "rujukan": "kelipatan-2025-11-26-2025-12-09",
+            "umpan_balik": "Rp58 adalah kenaikan nominal, bukan kelipatan harga. Kelipatan harganya [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] (lihat kartu 3 lain). Jangan campur dua ukuran yang berbeda — kartu menunjukkan keduanya."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Betul Rp58, tetapi itu angka harga, bukan bagian dari pengumuman cooling down. Pengumuman bursa hanya menyebut \"peningkatan harga kumulatif yang signifikan\" secara umum, tidak menyebut Rp58 secara khusus. Rp58 adalah angka dari kartu harga kami, bukan dari kartu pengumuman bursa."
+          }
+        },
+        "pertanyaan_cek": "Berapa besaran kenaikan nominal harga antara dua tanggal yang mana?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 1,
+      "versi": 2,
+      "berhenti": "kode",
+      "alasan": [
+        "M2d-13: umpan balik: umpan balik d: harus menyebut \"kartu 2\" (nomor urut rujukan hari-naik-beruntun)"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Arif",
+        "jam": "21.45",
+        "pesan": "Bursa hari ini setop perdagangan T karena harga naik signifikan ya? Ini cooling down.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "hari-naik-beruntun"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, alasan resmi memang perlindungan investor dari kenaikan harga.",
+          "b": "Keliru, alasannya keraguan atas kelangsungan usaha perusahaan saja.",
+          "c": "Betul, penghentian ini disebut cooling down sebagai tindakan bursa.",
+          "d": "Keliru, penghentian itu disebabkan keraguan fundamental, bukan harga."
+        },
+        "kunci": "a",
+        "penjelasan": "Pengumuman bursa [[susp-2025-12-10|tertanggal 10 Desember 2025]] menyebutkan alasan resmi adalah terjadinya peningkatan harga kumulatif yang signifikan, dalam rangka cooling down sebagai bentuk perlindungan bagi investor. Itu persis dengan yang dikatakan Arif. Perhatian: penghentian di Januari memiliki alasan berbeda (keraguan usaha), bukan kenaikan harga. Salah-kaprah yang umum: mengira semua penghentian sementara oleh bursa memiliki alasan yang sama.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Alasan itu benar untuk penghentian lain, tetapi [[susp-2025-12-10|kartu 1]] menunjukkan penghentian hari ini bersebab kenaikan harga, bukan keraguan usaha — salah periode."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Nama tindakannya benar (cooling down), tetapi [[susp-2025-12-10|kartu 1]] mencatat alasan resminya adalah kenaikan harga kumulatif — sebagian benar saja."
+          },
+          "d": {
+            "jenis": "salah-entitas",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Keraguan fundamental itu alasan penghentian Januari, bukan hari ini. [[susp-2025-12-10|Kartu 1]] menunjukkan penyebab yang berbeda — salah entitas."
+          }
+        },
+        "pertanyaan_cek": "Alasan penghentian di Januari apa atau siapa yang diragukan?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 2,
+      "versi": 2,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", sama …\")",
+        "M2d-13: angka-di-kartu: pertanyaan cek memuat angka (\"Alasan penghentian 21 Januari apa, dan alasan penghentian 10 Desember apa?\"); pertanyaan cek harus bisa dipakai lagi tanpa angka",
+        "M2d-13: label pengecoh: pengecoh d: percaya-otoritas hanya sah bila pengecoh berawalan \"Betul\" dan kunci berawalan \"Keliru\" (pengecoh membenarkan teman yang salah)",
+        "M2d-13: umpan balik: umpan balik a: harus menyebut \"kartu 1\" (nomor urut rujukan susp-2025-01-21)",
+        "M2d-13: umpan balik: umpan balik d: harus memuat nama jenis kesalahannya \"percaya omongan tanpa cek\"",
+        "M2d-13: umpan balik: umpan balik d: harus menyebut \"kartu 1\" (nomor urut rujukan susp-2025-01-21)"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Indra",
+        "jam": "19.30",
+        "pesan": "Di Januari bursa juga pernah stop, tapi alasannya hal lain dari hari ini.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Keliru, kedua penghentian terjadi karena faktor yang sangat berbeda.",
+          "b": "Betul, penghentian Januari adalah karena keraguan usaha perusahaan.",
+          "c": "Keliru, penghentian hari ini juga karena keraguan fundamental, sama.",
+          "d": "Betul, kedua penghentian adalah respons bursa atas masalah perusahaan."
+        },
+        "kunci": "b",
+        "penjelasan": "Indra benar. [[susp-2025-01-21|Penghentian 21 Januari 2025]] disebabkan keraguan atas kelangsungan usaha perusahaan — faktor fundamental perusahaan. Sementara [[susp-2025-12-10|penghentian 10 Desember 2025]] disebabkan peningkatan harga kumulatif — faktor teknis pasar. Dua alasan yang sangat berbeda, bukan masalah perusahaan. Salah-kaprah yang umum: mengira setiap penghentian adalah sinyal keraguan fundamental, padahal cooling down adalah perlindungan teknis mekanisme pasar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Betul perbedaannya jelas, tetapi pernyataan Indra mengatakan hal itu — bukan keliru. Baca kartu lagi untuk yakin alasan kedua penghentian — sebagian benar."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "[[susp-2025-12-10|Kartu 2]] menunjukkan penghentian hari ini adalah karena kenaikan harga, bukan keraguan fundamental — salah entitas."
+          },
+          "d": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Penghentian Januari benar karena masalah perusahaan, tetapi penghentian hari ini bukan masalah perusahaan — hanya kenaikan harga. Cek alasan di kartu sebelum setuju — percaya otoritas tanpa cek."
+          }
+        },
+        "pertanyaan_cek": "Alasan penghentian 21 Januari apa, dan alasan penghentian 10 Desember apa?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 3,
+      "versi": 2,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 48, 106,. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "pemeriksa: G-panjang: 14 kata; paling banyak 11",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", harga …\")",
+        "gerbang artefak: meresmikan: pilihan kunci \"Betul, dari 26 November sampai 9 Desember, harga naik Rp58 per lembar.\" mengulang \"november\", \"naik\" dari pesan yang TIDAK muncul di pengecoh mana pun — pembaca tanpa kartu cukup memilih pilihan yang \"meresmikan\" omongan teman.",
+        "detektor D2 (spesifisitas unik; pilihan): token tanggal hanya ada di satu opsi (a = kunci); harus di 0 atau ≥ 2 opsi; opsi a",
+        "detektor D3 (tumpang-tindih leksikal dengan pesan; pesan): Jaccard kunci dengan pesan 0,33, tertinggi; selisih 0,15 > 0,15; opsi a",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: Rp48, Rp106,",
+        "M2d-13: angka-di-kartu: umpan balik d: angka di luar rujukan kartu: 26, 9",
+        "M2d-13: umpan balik: umpan balik b: harus menyebut \"kartu 1\" (nomor urut rujukan harga-2025-11-26)",
+        "M2d-13: umpan balik: umpan balik c: harus menyebut \"kartu 1\" (nomor urut rujukan harga-2025-11-26)",
+        "M2d-13: umpan balik: umpan balik d: harus menyebut \"kartu 2\" (nomor urut rujukan harga-2025-12-09)"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Siti",
+        "jam": "18.15",
+        "pesan": "Dari akhir November ke kemarin, harga T udah naik Rp58 lho.",
+        "angka_pesan": [
+          {
+            "teks": "Rp58",
+            "fact_id": "naik-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Betul, dari [[harga-2025-11-26|26 November]] sampai [[harga-2025-12-09|9 Desember]], harga naik [[naik-2025-11-26-2025-12-09|Rp58 per lembar]].",
+          "b": "Keliru, [[naik-2025-11-26-2025-12-09|Rp58]] adalah kelipatan harga, bukan kenaikan nominal.",
+          "c": "Keliru, angka itu benar tetapi periode mulai dari tanggal yang belum tercatat.",
+          "d": "Betul, kenaikan itu sangat besar dan alasan pengumuman bursa soal cooling down hari ini."
+        },
+        "kunci": "a",
+        "penjelasan": "Siti menyebut [[naik-2025-11-26-2025-12-09|Rp58 per lembar]], dan kartu penentu membuktikan itu benar. [[harga-2025-11-26|Harga 26 November]] adalah Rp48 dan [[harga-2025-12-09|harga 9 Desember]] adalah Rp106, selisihnya [[naik-2025-11-26-2025-12-09|Rp58]]. Periode sudah jelas dari konteks \"akhir November\" dan \"kemarin\". Salah-kaprah yang umum: rancu antara kenaikan nominal dalam rupiah dan kelipatan harga yang disebut angka lain.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-entitas",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "[[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih harga nominal, bukan kelipatan. Jangan campur dua jenis ukuran — salah entitas."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Periode sudah tercatat jelas: [[harga-2025-11-26|26 November]] dan [[harga-2025-12-09|9 Desember]]. Angka yang mirip tetapi salah — angka nyaris benar."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-12-09",
+            "umpan_balik": "[[naik-2025-11-26-2025-12-09|Rp58]] adalah angka harga 26 November ke 9 Desember, bukan angka yang tercatat di pengumuman cooling down hari ini — salah periode."
+          }
+        },
+        "pertanyaan_cek": "Berapa besaran kenaikan nominal harga antara tanggal berapa?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 1,
+      "versi": 3,
+      "berhenti": "penebak",
+      "alasan": [
+        "tebak rotasi gagal: pesan-pilihan: kunci 0/8 (0,0/12); pilihan-saja: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pilihan-saja: deepseek/deepseek-v4.1-flash diabaikan (huruf \"d\" di ≥ 3/4 rotasi); pilihan-saja: z-ai/glm-5.3 diabaikan (huruf \"d\" di ≥ 3/4 rotasi); pesan-pilihan: z-ai/glm-5.3 diabaikan (huruf \"b\" di ≥ 3/4 rotasi) [pilihan-saja: claude-haiku-4.5 isi opsi asal a, deepseek-v4.1-flash isi - (diabaikan), glm-5.3 isi - (diabaikan); pesan-pilihan: claude-haiku-4.5 isi opsi asal d, deepseek-v4.1-flash isi opsi asal d, glm-5.3 isi - (diabaikan)] — kunci = pilihan a; tanpa kartu, penebak memilih isi kunci terlalu sering"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Arif",
+        "jam": "21.45",
+        "pesan": "Bursa stop T hari ini karena harga naik signifikan ya? Ini cooling down deh.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+          "b": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+          "c": "Betul, cooling down adalah nama resmi tindakan bursa hari ini.",
+          "d": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga."
+        },
+        "kunci": "a",
+        "penjelasan": "[[susp-2025-12-10|Pengumuman 10 Desember 2025]] menyebut alasan penghentian adalah peningkatan harga kumulatif yang signifikan, dalam rangka cooling down untuk perlindungan investor — persis dengan ucapan Arif. Penghentian [[susp-2025-01-21|21 Januari 2025]] memiliki alasan berbeda: keraguan atas kelangsungan usaha. Kedua peristiwa berbeda penyebabnya. Salah-kaprah yang umum: mengira setiap penghentian perdagangan adalah sinyal masalah fundamental perusahaan.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Alasan itu tepat untuk [[susp-2025-01-21|kartu 2]] (penghentian Januari), bukan penghentian hari ini yang disebabkan kenaikan harga — salah periode."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Nama tindakannya benar, tetapi [[susp-2025-12-10|kartu 1]] menyebutkan alasan resminya adalah kenaikan harga — sebagian benar saja."
+          },
+          "d": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "[[susp-2025-12-10|Kartu 1]] menunjukkan penghentian hari ini justru karena kenaikan harga — salah entitas."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan penghentian yang tercatat di pengumuman itu?"
+      },
+      "rotasi": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. **Pesan teman tidak ditampilkan** - Saya tidak tahu apa yang dikatakan teman di grup obrolan\n2. **Tidak ada dokumen** - Sesuai instruksi, saya tidak diberi dokumen apa pun untuk referensi\n3. **Informasi tidak lengkap** - Tanpa mengetahui klaim spe",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.00282,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "skor": 1,
+            "alasan": "Pilihan paling logis: menghubungkan tindakan bursa dengan perlindungan investor.",
+            "biaya_usd": 0.00068,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan **tidak ditampilkan** dalam soal\n2. **Tidak ada dokumen** yang diberikan untuk dibandingkan\n3. Tanpa mengetahui klaim spesifik teman, saya tidak bisa mengevaluasi kebenaran atau kesalahannya\n\nUntuk menjawab dengan akura",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.0025,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan tidak ditampilkan\n2. Tidak ada dokumen yang diberikan untuk dibandingkan\n3. Tanpa kedua informasi tersebut, saya tidak bisa menentukan apakah omongan teman cocok dengan dokumen\n\nUntuk menjawab dengan akurat, saya memerl",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.00233,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan d) paling aman karena menyanggah klaim spesifik Arif.",
+            "biaya_usd": 0.000733,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan a paling aman sebagai koreksi terhadap asumsi Arif.",
+            "biaya_usd": 0.000723,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, tidak bisa memverifikasi apakah cooling down benar-benar karena kenaikan harga atau alasan lain.",
+            "biaya_usd": 0.000763,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan c paling logis karena mengoreksi asumsi Arif tentang penyebab penghentian.",
+            "biaya_usd": 0.000763,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, opsi d paling masuk akal secara umum.",
+            "biaya_usd": 0.0000312,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, cooling down adalah nama resmi tindakan bursa hari ini.",
+            "skor": 1,
+            "alasan": "Cooling down adalah istilah resmi bursa untuk penghentian sementara.",
+            "biaya_usd": 0.000022275,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.0000216,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling masuk akal sebagai alasan resmi bursa.",
+            "biaya_usd": 0.0000618,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tidak ada dokumen, jadi tidak bisa dipastikan.",
+            "biaya_usd": 0.000021483,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tidak ada dokumen, tapi opsi a paling masuk akal.",
+            "biaya_usd": 0.00002362,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+            "skor": 1,
+            "alasan": "Bursa stop T bukan karena kenaikan harga, melainkan keraguan usaha.",
+            "biaya_usd": 0.000024164,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Tidak ada dokumen, tapi opsi c paling masuk akal.",
+            "biaya_usd": 0.00002362,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Penghentian/unsuspend biasanya bukan karena kenaikan harga, melainkan verifikasi usaha perusahaan.",
+            "biaya_usd": 0.0003489195,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, cooling down adalah nama resmi tindakan bursa hari ini.",
+            "skor": 1,
+            "alasan": "Cooling down adalah istilah resmi bursa untuk penghentian sementara",
+            "biaya_usd": 0.0004845195,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "skor": 1,
+            "alasan": "Cooling down bursa biasanya karena kenaikan harga signifikan demi perlindungan investor.",
+            "biaya_usd": 0.0003217995,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "skor": 1,
+            "alasan": "Penghentian saham biasanya karena kenaikan harga tidak wajar untuk perlindungan investor.",
+            "biaya_usd": 0.0010879395,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+            "skor": 1,
+            "alasan": "Penghentian trading biasanya UMA karena keraguan informasi usaha, bukan kenaikan harga.",
+            "biaya_usd": 0.0003693153,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+            "skor": 1,
+            "alasan": "Penghentian perdagangan biasanya karena kenaikan harga tidak wajar demi perlindungan investor.",
+            "biaya_usd": 0.0004512237,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga.",
+            "skor": 1,
+            "alasan": "Penghentian perdagangan kemungkinan bukan karena kenaikan harga saham.",
+            "biaya_usd": 0.0004478337,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+            "skor": 1,
+            "alasan": "Penghentian terkait keraguan usaha perusahaan, bukan kenaikan harga.",
+            "biaya_usd": 0.0006919137,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "putusan": "gagal",
+          "alasan": [
+            "pesan-pilihan: kunci 0/8 (0,0/12)",
+            "pilihan-saja: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi",
+            "pilihan-saja: deepseek/deepseek-v4.1-flash diabaikan (huruf \"d\" di ≥ 3/4 rotasi)",
+            "pilihan-saja: z-ai/glm-5.3 diabaikan (huruf \"d\" di ≥ 3/4 rotasi)",
+            "pesan-pilihan: z-ai/glm-5.3 diabaikan (huruf \"b\" di ≥ 3/4 rotasi)"
+          ],
+          "kondisi": {
+            "pilihan-saja": {
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "huruf_konsisten": null,
+                  "isi_konsisten": 0,
+                  "isi_kunci_konsisten": true,
+                  "diabaikan": false,
+                  "kunci": 4,
+                  "n": 4,
+                  "tak_terbaca": 3
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "huruf_konsisten": "d",
+                  "isi_konsisten": null,
+                  "isi_kunci_konsisten": false,
+                  "diabaikan": true,
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "huruf_konsisten": "d",
+                  "isi_konsisten": null,
+                  "isi_kunci_konsisten": false,
+                  "diabaikan": true,
+                  "kunci": 2,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ],
+              "kunci": 4,
+              "n": 4,
+              "proporsi": 1,
+              "tak_terbaca": 3
+            },
+            "pesan-pilihan": {
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "huruf_konsisten": null,
+                  "isi_konsisten": 3,
+                  "isi_kunci_konsisten": false,
+                  "diabaikan": false,
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "huruf_konsisten": null,
+                  "isi_konsisten": 3,
+                  "isi_kunci_konsisten": false,
+                  "diabaikan": false,
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "huruf_konsisten": "b",
+                  "isi_konsisten": null,
+                  "isi_kunci_konsisten": false,
+                  "diabaikan": true,
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ],
+              "kunci": 0,
+              "n": 8,
+              "proporsi": 0,
+              "tak_terbaca": 0
+            }
+          }
+        },
+        "biaya_usd": 0.015745226400000003
+      },
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.015745226400000003
+    },
+    {
+      "no": 2,
+      "versi": 3,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: G-panjang: 13 kata; paling banyak 11",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", tidak …\")",
+        "M2d-13: label pengecoh: pengecoh d: percaya-otoritas hanya sah bila pengecoh berawalan \"Betul\" dan kunci berawalan \"Keliru\" (pengecoh membenarkan teman yang salah)"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Indra",
+        "jam": "19.30",
+        "pesan": "Pernah ada penghentian di Januari juga, tapi penyebabnya beda.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Keliru, kedua penghentian terjadi karena hal yang mirip satu sama lain.",
+          "b": "Betul, penghentian Januari terjadi karena keraguan atas kelangsungan usaha.",
+          "c": "Betul, penghentian hari ini juga disebabkan keraguan fundamental.",
+          "d": "Keliru, penghentian Januari adalah respons atas keraguan fundamental, tidak sama dengan hari ini."
+        },
+        "kunci": "b",
+        "penjelasan": "Indra benar. [[susp-2025-01-21|Penghentian 21 Januari 2025]] dicatat karena keraguan atas kelangsungan usaha perusahaan — faktor fundamental. [[susp-2025-12-10|Penghentian 10 Desember 2025]] disebabkan peningkatan harga kumulatif — faktor teknis pasar. Dua penyebab yang sangat berbeda, bukan sama-sama masalah perusahaan. Salah-kaprah yang umum: mengira setiap penghentian adalah sinyal keraguan fundamental, padahal cooling down adalah mekanisme perlindungan teknis pasar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Betul ada perbedaan, tetapi pernyataan Indra memastikan perbedaan itu ada — bukan keliru. Baca [[susp-2025-01-21|kartu 1]] untuk alasan masing-masing — sebagian benar."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "[[susp-2025-12-10|Kartu 2]] menunjukkan penghentian hari ini adalah karena kenaikan harga, bukan keraguan fundamental — salah entitas."
+          },
+          "d": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Penghentian Januari memang karena keraguan fundamental, tetapi penghentian hari ini bukan — lihat [[susp-2025-12-10|kartu 2]] sebelum setuju — percaya omongan tanpa cek."
+          }
+        },
+        "pertanyaan_cek": "Apa perbedaan alasan kedua penghentian itu?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    },
+    {
+      "no": 3,
+      "versi": 3,
+      "berhenti": "kode",
+      "alasan": [
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 48, 106. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: Rp48, Rp106",
+        "M2d-13: angka-di-kartu: umpan balik b: \"kartu 3\" merujuk kelipatan-2025-11-26-2025-12-09, yang bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+        "M2d-13: angka-di-kartu: umpan balik d: \"pengumuman penghentian hari ini\" merujuk susp-2025-12-10, yang bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+        "M2d-13: label pengecoh: pengecoh b: rujukan \"kelipatan-2025-11-26-2025-12-09\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+        "M2d-13: label pengecoh: pengecoh d: rujukan \"susp-2025-12-10\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)"
+      ],
+      "dicatat": [],
+      "omongan": {
+        "nama": "Siti",
+        "jam": "18.15",
+        "pesan": "Aku lihat dari akhir November sampai kemarin harganya naik Rp58.",
+        "angka_pesan": [
+          {
+            "teks": "Rp58",
+            "fact_id": "naik-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Betul, hitungan Siti mencocok dengan catatan kenaikan nominal harga.",
+          "b": "Keliru, [[naik-2025-11-26-2025-12-09|Rp58]] adalah angka kelipatan harga, bukan kenaikan.",
+          "c": "Betul, periode dari [[harga-2025-11-26|26 November]] ke [[harga-2025-12-09|9 Desember]] tepat.",
+          "d": "Keliru, angka itu milik penghentian hari ini, bukan kenaikan harga periode itu."
+        },
+        "kunci": "a",
+        "penjelasan": "[[naik-2025-11-26-2025-12-09|Kenaikan Rp58 per lembar]] adalah angka yang tercatat di kartu. Periode \"akhir November sampai kemarin\" menunjuk rentang yang tepat, sebab [[harga-2025-11-26|harga 26 November]] adalah Rp48 per lembar dan [[harga-2025-12-09|harga 9 Desember]] adalah Rp106 per lembar. Selisihnya memang [[naik-2025-11-26-2025-12-09|Rp58]]. Siti membaca dengan tepat. Salah-kaprah yang umum: mencampur antara kenaikan nominal dalam rupiah dengan kelipatan harga yang merupakan angka lain.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-entitas",
+            "rujukan": "kelipatan-2025-11-26-2025-12-09",
+            "umpan_balik": "[[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih nominal, bukan kelipatan. Angka kelipatan ada di [[kelipatan-2025-11-26-2025-12-09|kartu 3]] sebagai nilai lain — salah entitas."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Tanggal itu memang tercatat [[harga-2025-11-26|di kartu 1]], tetapi ini mengacaukan kesimpulan tentang angka kenaikan itu sendiri — angka nyaris benar."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "[[naik-2025-11-26-2025-12-09|Rp58]] adalah angka harga dari dua tanggal berbeda, bukan dari [[susp-2025-12-10|pengumuman penghentian hari ini]] — salah periode."
+          }
+        },
+        "pertanyaan_cek": "Berapa besaran kenaikan nominal harga antara dua tanggal itu?"
+      },
+      "rotasi": null,
+      "kartu_rotasi": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0
+    }
+  ],
+  "panggilan_penulis": [
+    {
+      "versi": 1,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 0,
+      "model": "anthropic/claude-haiku-4.5",
+      "token_masuk": 6361,
+      "token_keluar": 4274,
+      "token_penalaran": 1203,
+      "penyedia": "Amazon Bedrock",
+      "finish_reason": "stop",
+      "biaya_usd": 0.027731,
+      "terbaca": [
+        1,
+        2,
+        3
+      ],
+      "masalah": [],
+      "sha256_prompt": "f2470c0da328259ed03eba3d706cb9a8ba2f8d16c744e996ebea56cbb277a228"
+    },
+    {
+      "versi": 2,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 0,
+      "model": "anthropic/claude-haiku-4.5",
+      "token_masuk": 11118,
+      "token_keluar": 3412,
+      "token_penalaran": 791,
+      "penyedia": "Amazon Bedrock",
+      "finish_reason": "stop",
+      "biaya_usd": 0.028178,
+      "terbaca": [
+        1,
+        2,
+        3
+      ],
+      "masalah": [],
+      "sha256_prompt": "c53438f9df5dae276f9d881a756b6ceefa8c30f3c6ef57b2813a3329b9b1816d"
+    },
+    {
+      "versi": 3,
+      "diminta": [
+        1,
+        2,
+        3
+      ],
+      "ulang": 0,
+      "model": "anthropic/claude-haiku-4.5",
+      "token_masuk": 9729,
+      "token_keluar": 3587,
+      "token_penalaran": 966,
+      "penyedia": "Amazon Bedrock",
+      "finish_reason": "stop",
+      "biaya_usd": 0.027664,
+      "terbaca": [
+        1,
+        2,
+        3
+      ],
+      "masalah": [],
+      "sha256_prompt": "857f9bda8219e000b433c5cbc7c8519df5cbba633498dec514a2c14f07f50e03"
+    }
+  ],
+  "lulus": [],
+  "akhir": [
+    {
+      "no": 1,
+      "versi": 3,
+      "lulus": false,
+      "omongan": {
+        "nama": "Arif",
+        "jam": "21.45",
+        "pesan": "Bursa stop T hari ini karena harga naik signifikan ya? Ini cooling down deh.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, alasan resminya peningkatan harga untuk perlindungan investor.",
+          "b": "Keliru, penghentian hari ini adalah karena keraguan atas usaha perusahaan.",
+          "c": "Betul, cooling down adalah nama resmi tindakan bursa hari ini.",
+          "d": "Keliru, tindakan bursa hari ini bukan respons terhadap kenaikan harga."
+        },
+        "kunci": "a",
+        "penjelasan": "[[susp-2025-12-10|Pengumuman 10 Desember 2025]] menyebut alasan penghentian adalah peningkatan harga kumulatif yang signifikan, dalam rangka cooling down untuk perlindungan investor — persis dengan ucapan Arif. Penghentian [[susp-2025-01-21|21 Januari 2025]] memiliki alasan berbeda: keraguan atas kelangsungan usaha. Kedua peristiwa berbeda penyebabnya. Salah-kaprah yang umum: mengira setiap penghentian perdagangan adalah sinyal masalah fundamental perusahaan.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Alasan itu tepat untuk [[susp-2025-01-21|kartu 2]] (penghentian Januari), bukan penghentian hari ini yang disebabkan kenaikan harga — salah periode."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Nama tindakannya benar, tetapi [[susp-2025-12-10|kartu 1]] menyebutkan alasan resminya adalah kenaikan harga — sebagian benar saja."
+          },
+          "d": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "[[susp-2025-12-10|Kartu 1]] menunjukkan penghentian hari ini justru karena kenaikan harga — salah entitas."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan penghentian yang tercatat di pengumuman itu?"
+      }
+    },
+    {
+      "no": 2,
+      "versi": 3,
+      "lulus": false,
+      "omongan": {
+        "nama": "Indra",
+        "jam": "19.30",
+        "pesan": "Pernah ada penghentian di Januari juga, tapi penyebabnya beda.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Keliru, kedua penghentian terjadi karena hal yang mirip satu sama lain.",
+          "b": "Betul, penghentian Januari terjadi karena keraguan atas kelangsungan usaha.",
+          "c": "Betul, penghentian hari ini juga disebabkan keraguan fundamental.",
+          "d": "Keliru, penghentian Januari adalah respons atas keraguan fundamental, tidak sama dengan hari ini."
+        },
+        "kunci": "b",
+        "penjelasan": "Indra benar. [[susp-2025-01-21|Penghentian 21 Januari 2025]] dicatat karena keraguan atas kelangsungan usaha perusahaan — faktor fundamental. [[susp-2025-12-10|Penghentian 10 Desember 2025]] disebabkan peningkatan harga kumulatif — faktor teknis pasar. Dua penyebab yang sangat berbeda, bukan sama-sama masalah perusahaan. Salah-kaprah yang umum: mengira setiap penghentian adalah sinyal keraguan fundamental, padahal cooling down adalah mekanisme perlindungan teknis pasar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Betul ada perbedaan, tetapi pernyataan Indra memastikan perbedaan itu ada — bukan keliru. Baca [[susp-2025-01-21|kartu 1]] untuk alasan masing-masing — sebagian benar."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "[[susp-2025-12-10|Kartu 2]] menunjukkan penghentian hari ini adalah karena kenaikan harga, bukan keraguan fundamental — salah entitas."
+          },
+          "d": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Penghentian Januari memang karena keraguan fundamental, tetapi penghentian hari ini bukan — lihat [[susp-2025-12-10|kartu 2]] sebelum setuju — percaya omongan tanpa cek."
+          }
+        },
+        "pertanyaan_cek": "Apa perbedaan alasan kedua penghentian itu?"
+      }
+    },
+    {
+      "no": 3,
+      "versi": 3,
+      "lulus": false,
+      "omongan": {
+        "nama": "Siti",
+        "jam": "18.15",
+        "pesan": "Aku lihat dari akhir November sampai kemarin harganya naik Rp58.",
+        "angka_pesan": [
+          {
+            "teks": "Rp58",
+            "fact_id": "naik-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Betul, hitungan Siti mencocok dengan catatan kenaikan nominal harga.",
+          "b": "Keliru, [[naik-2025-11-26-2025-12-09|Rp58]] adalah angka kelipatan harga, bukan kenaikan.",
+          "c": "Betul, periode dari [[harga-2025-11-26|26 November]] ke [[harga-2025-12-09|9 Desember]] tepat.",
+          "d": "Keliru, angka itu milik penghentian hari ini, bukan kenaikan harga periode itu."
+        },
+        "kunci": "a",
+        "penjelasan": "[[naik-2025-11-26-2025-12-09|Kenaikan Rp58 per lembar]] adalah angka yang tercatat di kartu. Periode \"akhir November sampai kemarin\" menunjuk rentang yang tepat, sebab [[harga-2025-11-26|harga 26 November]] adalah Rp48 per lembar dan [[harga-2025-12-09|harga 9 Desember]] adalah Rp106 per lembar. Selisihnya memang [[naik-2025-11-26-2025-12-09|Rp58]]. Siti membaca dengan tepat. Salah-kaprah yang umum: mencampur antara kenaikan nominal dalam rupiah dengan kelipatan harga yang merupakan angka lain.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-entitas",
+            "rujukan": "kelipatan-2025-11-26-2025-12-09",
+            "umpan_balik": "[[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih nominal, bukan kelipatan. Angka kelipatan ada di [[kelipatan-2025-11-26-2025-12-09|kartu 3]] sebagai nilai lain — salah entitas."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Tanggal itu memang tercatat [[harga-2025-11-26|di kartu 1]], tetapi ini mengacaukan kesimpulan tentang angka kenaikan itu sendiri — angka nyaris benar."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "[[naik-2025-11-26-2025-12-09|Rp58]] adalah angka harga dari dua tanggal berbeda, bukan dari [[susp-2025-12-10|pengumuman penghentian hari ini]] — salah periode."
+          }
+        },
+        "pertanyaan_cek": "Berapa besaran kenaikan nominal harga antara dua tanggal itu?"
+      }
+    }
+  ],
+  "validasi_draf": [],
+  "draf": null,
+  "sha256_prompt_sistem": "e2d4457eca898aea8d655f5aea98b5c736cae1b5b7e6ce7d8aaba727dbe92d32",
+  "riwayat": [
+    {
+      "putaran": 3,
+      "omongan": [
+        {
+          "no": 1,
+          "status": "ditolak-penebak",
+          "umpan": [
+            "tebak rotasi gagal: pesan-pilihan: kunci 0/8 (0,0/12); pilihan-saja: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pilihan-saja: deepseek/deepseek-v4.1-flash diabaikan (huruf \"d\" di ≥ 3/4 rotasi); pilihan-saja: z-ai/glm-5.3 diabaikan (huruf \"d\" di ≥ 3/4 rotasi); pesan-pilihan: z-ai/glm-5.3 diabaikan (huruf \"b\" di ≥ 3/4 rotasi) [pilihan-saja: claude-haiku-4.5 isi opsi asal a, deepseek-v4.1-flash isi - (diabaikan), glm-5.3 isi - (diabaikan); pesan-pilihan: claude-haiku-4.5 isi opsi asal d, deepseek-v4.1-flash isi opsi asal d, glm-5.3 isi - (diabaikan)] — kunci = pilihan a; tanpa kartu, penebak memilih isi kunci terlalu sering"
+          ]
+        },
+        {
+          "no": 2,
+          "status": "ditolak-kode",
+          "umpan": [
+            "pemeriksa: G-panjang: 13 kata; paling banyak 11",
+            "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", tidak …\")",
+            "M2d-13: label pengecoh: pengecoh d: percaya-otoritas hanya sah bila pengecoh berawalan \"Betul\" dan kunci berawalan \"Keliru\" (pengecoh membenarkan teman yang salah)"
+          ]
+        },
+        {
+          "no": 3,
+          "status": "ditolak-kode",
+          "umpan": [
+            "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 48, 106. Tulis tiap angka sebagai [[fact_id|teks]].",
+            "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+            "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: Rp48, Rp106",
+            "M2d-13: angka-di-kartu: umpan balik b: \"kartu 3\" merujuk kelipatan-2025-11-26-2025-12-09, yang bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+            "M2d-13: angka-di-kartu: umpan balik d: \"pengumuman penghentian hari ini\" merujuk susp-2025-12-10, yang bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+            "M2d-13: label pengecoh: pengecoh b: rujukan \"kelipatan-2025-11-26-2025-12-09\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)",
+            "M2d-13: label pengecoh: pengecoh d: rujukan \"susp-2025-12-10\" bukan kartu omongan ini (kartu: harga-2025-11-26, harga-2025-12-09, naik-2025-11-26-2025-12-09)"
+          ]
+        }
+      ]
+    }
+  ]
+}

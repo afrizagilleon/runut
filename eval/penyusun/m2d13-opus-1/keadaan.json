@@ -1,0 +1,165 @@
+{
+  "id": "m2d13-opus-1",
+  "kode": "TIRT",
+  "tanggal": "2025-12-10",
+  "jendela": 10,
+  "dibuat": "2026-10-02T16:39:54.900Z",
+  "tahap": "selesai",
+  "sumber_paket": {
+    "sumber": "kurasi",
+    "keterangan": "definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"
+  },
+  "sesudahnya": 108,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis bebas anthropic/claude-opus-5.5 (≈ 9.000 token masuk; satu panggilan per putaran versi, + 1 ulangan)",
+        "model": "anthropic/claude-opus-5.5",
+        "maks_usd": 0.392
+      },
+      {
+        "peran": "penebak rotasi haiku (8 panggilan, tanpa kartu)",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.12
+      },
+      {
+        "peran": "penebak rotasi deepseek (8 panggilan, tanpa kartu)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0403
+      },
+      {
+        "peran": "penebak rotasi glm (8 panggilan, tanpa kartu)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.3456
+      },
+      {
+        "peran": "pembaca kartu (2 rotasi)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0648
+      },
+      {
+        "peran": "kritikus (dengan satu pemeriksaan ulang)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.7376
+      }
+    ],
+    "per_omongan_usd": 1.3083,
+    "per_putaran_usd": 4.3169,
+    "maks_putaran": 3,
+    "catatan": [
+      "Pra-registrasi M2d-13 §3: versi 1 satu panggilan penulis untuk tiga omongan; versi 2–3 satu panggilan per putaran untuk semua omongan yang ditolak; maks 3 versi per omongan.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD."
+    ]
+  },
+  "pagu_jalan_usd": 0.6,
+  "mesin": {
+    "nama": "bebas-opus",
+    "keterangan": "penulis bebas M2d-13 (anthropic/claude-opus-5.5), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu",
+    "palsu": false
+  },
+  "hasil": {
+    "terbit": false,
+    "berhenti": "terpotong pagu: PaguMilestoneTercapai: Pagu milestone tercapai: biaya milestone (tag penyusun/*) US$2.258749 + perkiraan maksimum US$0.249672 untuk anthropic/claude-opus-5.5 > pagu milestone US$2.49. Panggilan tidak dikirim.",
+    "putaran": 2,
+    "biaya_usd": 0.374419,
+    "biaya_ledger_usd": 0.374419,
+    "penolakan": [
+      "omongan 1 (ditolak-penebak, putaran 2): tebak rotasi gagal: pesan-pilihan: kunci 2/12 (2,0/12); pilihan-saja: anthropic/claude-haiku-4.5 memilih isi kunci di ≥ 3/4 rotasi; pilihan-saja: deepseek/deepseek-v4.1-flash diabaikan (huruf \"b\" di ≥ 3/4 rotasi) [pilihan-saja: claude-haiku-4.5 isi opsi asal b, deepseek-v4.1-flash isi - (diabaikan)…",
+      "omongan 2 (ditolak-kode, putaran 2): pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 106, 48. Tulis tiap angka sebagai [[fact_id|teks]]. | pemeriksa: G-angka-cukup: Pilihan kunci d bisa dihitung dari angka yang sudah ada di pesan dan pilihan, tanpa kartu: \"58\" = 106 − 48 = 58. Penebak akan menghitungnya. Jangan taruh di pesan dan pilihan semua angka yang dibutuhkan untuk menghitung klaim kunci — biarkan angka penentunya hanya ada di k…",
+      "omongan 3 (ditolak-kode, putaran 2): pemeriksa: G-pilihan-kembar: pilihan c dan d isinya sama (kemiripan 1,00)"
+    ]
+  },
+  "draf": null,
+  "draf_terakhir": [
+    {
+      "nama": "Sinta",
+      "jam": "17.12",
+      "pesan": "Perusahaan T disetop bursa hari ini kan? Katanya gara-gara bursa ragu usahanya bisa jalan terus.",
+      "angka_pesan": [],
+      "kartu": [
+        "susp-2025-12-10",
+        "susp-2025-01-21",
+        "rups-2025-09-25"
+      ],
+      "kartu_penentu": [
+        "susp-2025-12-10"
+      ],
+      "pilihan": {
+        "a": "Betul, alasan itu tercatat di pengumuman penghentian hari ini.",
+        "b": "Keliru, alasan itu tercatat di pengumuman penghentian awal tahun.",
+        "c": "Betul, alasan itu tercatat di pengumuman hari ini dan awal tahun.",
+        "d": "Keliru, alasan itu tercatat di jadwal rapat pemegang saham."
+      },
+      "kunci": "b",
+      "penjelasan": "Ada dua pengumuman penghentian. Pengumuman [[susp-2025-12-10|10 Desember 2025]] menyebut kenaikan harga kumulatif yang signifikan, dalam rangka cooling down. Keraguan atas kelangsungan usaha tertulis di pengumuman [[susp-2025-01-21|21 Januari 2025]], penghentian awal tahun. Jadi alasan yang disebut Sinta milik penghentian lain. Kartu rapat pemegang saham tidak memuat alasan penghentian apa pun. Salah-kaprah yang umum: mengira dua penghentian pada saham yang sama punya alasan yang sama."
+    },
+    {
+      "nama": "Andi",
+      "jam": "19.40",
+      "pesan": "Gila, naiknya udah Rp106 per lembar cuma dalam 9 hari bursa, pantes aja disetop.",
+      "angka_pesan": [
+        {
+          "teks": "Rp106",
+          "fact_id": "harga-2025-12-09"
+        },
+        {
+          "teks": "9",
+          "fact_id": "hari-naik-beruntun"
+        }
+      ],
+      "kartu": [
+        "naik-2025-11-26-2025-12-09",
+        "harga-2025-12-09",
+        "harga-2025-11-26",
+        "hari-naik-beruntun"
+      ],
+      "kartu_penentu": [
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "pilihan": {
+        "a": "Keliru, kenaikannya [[harga-2025-11-26|Rp48]], bukan [[harga-2025-12-09|Rp106]].",
+        "b": "Betul, kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]] sampai harga [[harga-2025-12-09|Rp106]].",
+        "c": "Betul, harganya naik dari [[harga-2025-11-26|Rp48]] sampai [[harga-2025-12-09|Rp106]].",
+        "d": "Keliru, kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]], bukan [[harga-2025-12-09|Rp106]]."
+      },
+      "kunci": "d",
+      "penjelasan": "Harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] sampai [[harga-2025-12-09|Rp106]]. Jadi Rp106 itu harga terakhirnya, bukan besar kenaikannya. Kartu hitungan mencatat kenaikannya [[naik-2025-11-26-2025-12-09|Rp58]] per lembar. Rp48 adalah harga awalnya. Salah-kaprah yang umum: menyamakan harga terakhir dengan besar kenaikan harga."
+    },
+    {
+      "nama": "Tika",
+      "jam": "21.05",
+      "pesan": "Hari ini volumenya 0 lembar, padahal kemarin 1.461.200 lembar. Kosong karena disetop.",
+      "angka_pesan": [
+        {
+          "teks": "0",
+          "fact_id": "volume-2025-12-10"
+        },
+        {
+          "teks": "1.461.200",
+          "fact_id": "volume-2025-12-09"
+        }
+      ],
+      "kartu": [
+        "volume-2025-12-10",
+        "volume-2025-12-09",
+        "volume-2025-11-26"
+      ],
+      "kartu_penentu": [
+        "volume-2025-12-10"
+      ],
+      "pilihan": {
+        "a": "Keliru, angka nol itu tercatat untuk [[volume-2025-12-09|9 Desember 2025]].",
+        "b": "Betul, angka nol itu tercatat untuk [[volume-2025-12-10|10 Desember 2025]].",
+        "c": "Keliru, angka besar itu tercatat untuk [[volume-2025-11-26|26 November 2025]].",
+        "d": "Betul, angka besar itu tercatat untuk [[volume-2025-11-26|26 November 2025]]."
+      },
+      "kunci": "b",
+      "penjelasan": "Kartu volume [[volume-2025-12-10|10 Desember 2025]] mencatat [[volume-2025-12-10|0 lembar]], hari yang sama dengan penghentian. Angka [[volume-2025-12-09|1.461.200 lembar]] tercatat untuk [[volume-2025-12-09|9 Desember 2025]], sehari sebelumnya. Kartu [[volume-2025-11-26|26 November 2025]] memuat angka lain, yaitu [[volume-2025-11-26|178.100 lembar]]. Salah-kaprah yang umum: tidak mencocokkan angka volume dengan tanggalnya."
+    }
+  ],
+  "keadaan": [],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}
