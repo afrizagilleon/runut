@@ -1,16 +1,16 @@
 {
-  "keterangan": "Catatan sesudah jalan untuk mode tayang ulang (M2d-12). BUKAN bagian log jalan: halaman menampilkannya terpisah, berlabel 'catatan sesudah jalan', dengan sumbernya. Isi log (aliran.jsonl) tidak pernah diubah.",
+  "keterangan": "Catatan sesudah jalan untuk mode tayang ulang (M2d-12) dan mode demo (M2d-14). BUKAN bagian log jalan: halaman menampilkannya terpisah, berlabel 'catatan sesudah jalan', dengan sumbernya. Isi log (aliran.jsonl) tidak pernah diubah. Angka audit Opus memakai audit satu soal per penguji (docs/bukti/lingkar-agen-pemula-audit.md bagian \"Ulang\"); angka lama yang dibundel cacat metode dan tidak dipakai lagi.",
   "jalan": {
     "m2d11-tirt-7": {
       "konteks": "Jalan ke-7 dari 7 jalan M2d-11 (29 versi); jalan 1–6 tidak terbit.",
       "konteks_singkat": "jalan 7 dari 7 (1–6 tidak terbit)",
       "persetujuan": "Di jalan ini persetujuan biaya dikirim oleh skrip jalan (npm run patokan:jalan) lewat API yang sama dengan tombol di halaman, bukan klik di halaman.",
       "sesudah": [
-        "Audit luar sesudah jalan (Opus, 4 rotasi): dengan kartu benar 4/4 di ketiga omongan; tanpa kartu pun memilih kunci 4/4 di ketiga omongan. Lulus patokan pra-registrasi M2d-11 tidak berarti tidak tertebak oleh model kuat.",
+        "Audit luar sesudah jalan (Opus, satu soal per penguji, tanpa kartu, 4 rotasi): omongan 1 1/4, omongan 2 4/4 (tertebak), omongan 3 2/4. Angka lama yang dibundel tiga soal sekaligus cacat metode dan sudah diganti.",
         "Ini jalan ke-7 dari 7 jalan M2d-11 (29 versi). Peluang lolos kebetulan naik dengan jumlah percobaan.",
         "Draf ini belum diputus penyetuju dan tidak dipasang ke produk."
       ],
-      "sumber": "docs/bukti/lingkar-agen-pemula-audit.md; docs/bukti/lingkar-agen-pemula.md"
+      "sumber": "docs/bukti/lingkar-agen-pemula-audit.md (bagian \"Ulang\"); docs/bukti/lingkar-agen-pemula.md"
     },
     "m2d10-tirt-a2": {
       "konteks": "Jalan ke-3 dari 3 jalan TIRT M2d-10; ketiganya tidak terbit.",
@@ -21,6 +21,17 @@
         "Omongan 3 tidak pernah dicapai."
       ],
       "sumber": "docs/bukti/lingkar-agen-templat.md (Amandemen A-2)"
+    },
+    "m2d13-opus-2": {
+      "konteks": "Jalan ke-4 dari 6 jalan M2d-13 (penulis Opus 5.5, mesin bebas); tidak satu pun dari 6 jalan terbit.",
+      "konteks_singkat": "jalan 4 dari 6 M2d-13, tidak terbit",
+      "persetujuan": "Di jalan aslinya persetujuan biaya dikirim oleh skrip jalan (npm run penulis:jalan) lewat API yang sama dengan tombol di halaman, bukan klik di halaman.",
+      "sesudah": [
+        "Tidak terbit: omongan 1 dan 3 lolos semua gerbang di versi 2; omongan 2 ditolak gerbang kode di versi 2; versi 3 tidak dikirim karena pagu milestone.",
+        "Audit luar sesudah jalan (Opus, satu soal per penguji, tanpa kartu, 4 rotasi): omongan 1 4/4 tertebak (sinyal, bukan patokan); omongan 3 1/4; omongan 2 versi 2 4/4.",
+        "Penilai mutu buta Opus: butir tulisan Opus rata-rata 8,83 dari 10 (6 butir, kedua jalan Opus); di jalan ini omongan 1: 10, omongan 2 versi 2: 8, omongan 3: 9. Penilai sekeluarga dengan penulis (keduanya Opus), jadi angkanya bisa condong."
+      ],
+      "sumber": "docs/bukti/lingkar-agen-penulis.md; eval/keluaran-m2d13/audit-opus/nilai.json; eval/keluaran-m2d13/mutu-opus/nilai.json"
     }
   }
 }

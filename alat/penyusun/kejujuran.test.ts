@@ -180,3 +180,48 @@ describe('penanda rekaman dan jeda', () => {
     expect(app.match(/Rekaman, tidak aktif: /g)?.length).toBe(2);
   });
 });
+
+/**
+ * M2d-14 D-3: catatan audit memakai audit satu soal (docs/bukti/lingkar-agen-pemula-audit.md
+ * bagian "Ulang"), bukan angka dibundel yang cacat metode. Frasa lama terlarang.
+ */
+describe('catatan audit: angka dibundel yang cacat tidak tampil lagi', () => {
+  const FRASA_LAMA = /tanpa kartu pun (?:opus )?memilih kunci 4\/4/i;
+  const berkas = (): string[] => [
+    ...readdirSync(HALAMAN).map((n) => join(HALAMAN, n)),
+    ...readdirSync(join(SINI, 'rekaman')).filter((n) => n.endsWith('.json')).map((n) => join(SINI, 'rekaman', n)),
+    ...readdirSync(SINI).filter((n) => n.endsWith('.ts') && !n.endsWith('.test.ts')).map((n) => join(SINI, n)),
+    join(AKAR, 'docs', 'bukti', 'pintu-penyusun.md'),
+  ];
+
+  it('frasa "tanpa kartu pun memilih kunci 4/4" tidak ada di halaman, catatan, kode, dan laporan pintu', () => {
+    for (const b of berkas()) expect(FRASA_LAMA.test(readFileSync(b, 'utf8')), b).toBe(false);
+  });
+
+  it('frasa itu juga tidak ada di teks yang tampil untuk rekaman mana pun', () => {
+    for (const id of ['m2d11-tirt-7', 'm2d10-tirt-a2', 'm2d13-opus-2']) expect(FRASA_LAMA.test(teksTampil(id)), id).toBe(false);
+  });
+
+  it('catatan TIRT-7 memakai hasil satu soal: omongan 1 1/4, omongan 2 4/4, omongan 3 2/4', () => {
+    const c = JSON.parse(readFileSync(join(SINI, 'rekaman', 'catatan.json'), 'utf8')) as { jalan: Record<string, { sesudah: string[]; sumber: string }> };
+    const t7 = c.jalan['m2d11-tirt-7'];
+    const teks = t7?.sesudah.join(' ') ?? '';
+    expect(teks).toMatch(/satu soal/);
+    expect(teks).toMatch(/omongan 1 1\/4/);
+    expect(teks).toMatch(/omongan 2 4\/4/);
+    expect(teks).toMatch(/omongan 3 2\/4/);
+    expect(t7?.sumber).toContain('lingkar-agen-pemula-audit.md');
+  });
+
+  it('catatan m2d13-opus-2: audit satu soal o1 4/4 (sinyal), o3 1/4; penilai mutu Opus sekeluarga disebut', () => {
+    const c = JSON.parse(readFileSync(join(SINI, 'rekaman', 'catatan.json'), 'utf8')) as { jalan: Record<string, { sesudah: string[]; sumber: string }> };
+    const o = c.jalan['m2d13-opus-2'];
+    const teks = o?.sesudah.join(' ') ?? '';
+    expect(teks).toMatch(/omongan 1 4\/4/);
+    expect(teks).toMatch(/sinyal, bukan patokan/);
+    expect(teks).toMatch(/omongan 3 1\/4/);
+    expect(teks).toMatch(/8,83/);
+    expect(teks).toMatch(/sekeluarga/);
+    expect(o?.sumber).toContain('eval/keluaran-m2d13/audit-opus/nilai.json');
+  });
+});
