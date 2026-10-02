@@ -730,6 +730,38 @@ export function bacaAngkaLabaR23(teks: string): AngkaLabaR23[] {
   return [...berskala, ...polos].sort((a, b) => a.mulai - b.mulai);
 }
 
+/** Satu juta rupiah: satuan laporan keuangan yang ditulis "dalam jutaan rupiah". */
+export const SATUAN_JUTA = 1_000_000;
+
+/**
+ * Presisi medan laporan keuangan satu tahun buku, dibaca dari baris itu sendiri
+ * (M4c D-2).
+ *
+ * Laporan keuangan bank dan emiten besar ditulis dalam jutaan rupiah; data
+ * Sectors menyimpannya sebagai rupiah penuh berakhiran 000000 (BSIM 2025: laba
+ * 285.748.000.000, padahal keputusan RUPS-nya menulis 285.747.406.391). Bila
+ * **semua** medan uang yang terisi di baris itu kelipatan satu juta, presisinya
+ * satu juta; satu medan saja yang tidak, presisinya Rp1. Jumlah lembar bukan
+ * medan uang dan tidak ikut dihitung. Tanpa laba, presisinya Rp1.
+ */
+export function presisiMedanKeuangan(k: KeuanganTahunan): number {
+  if (typeof k.laba !== 'number') return 1;
+  const uang = [
+    k.laba,
+    k.pendapatan,
+    k.ekuitas,
+    k.aset,
+    k.laba_kotor,
+    k.utang,
+    k.liabilitas,
+    k.kas,
+    k.aset_lancar,
+    k.laba_sebelum_pajak,
+    k.pajak,
+  ].filter((v): v is number => typeof v === 'number');
+  return uang.every((v) => v % SATUAN_JUTA === 0) ? SATUAN_JUTA : 1;
+}
+
 /**
  * Dua angka laba cocok bila selisihnya kurang dari satu satuan presisi.
  *
@@ -784,6 +816,10 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
       .filter((k) => k.laba !== null)
       .map((k) => [k.tahun, k.laba as number]),
   );
+  // M4c D-2: presisi medan keuangan tiap tahun buku, dari baris yang sama dengan labanya.
+  const presisiKeuangan = new Map(
+    konteks.data.keuangan_tahunan.filter((k) => k.laba !== null).map((k) => [k.tahun, presisiMedanKeuangan(k)]),
+  );
   // M4b D-4: ukuran laba kedua, laba sebelum pajak − pajak dari baris yang sama.
   const sesudahPajak = new Map(
     konteks.data.keuangan_tahunan.flatMap((k) => {
@@ -833,8 +869,9 @@ export function r23LabaBedaEndpoint(konteks: KonteksGudang): HasilAturan {
         );
         continue;
       }
-      // M4c D-1: angka berskala dibandingkan pada presisi yang tertulis.
-      const presisi = a.presisi;
+      // M4c D-1/D-2: dibandingkan pada presisi yang lebih kasar dari kedua angka —
+      // presisi yang tertulis di RUPS, atau satuan juta medan keuangannya.
+      const presisi = Math.max(a.presisi, presisiKeuangan.get(tahunBuku) ?? 1);
       const dariRups = a.rupiah;
       if (labaCocok(dariRups, menurutKeuangan, presisi)) continue;
       const kedua = sesudahPajak.get(tahunBuku);

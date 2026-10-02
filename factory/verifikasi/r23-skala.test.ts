@@ -6,12 +6,23 @@
  * laba 1.747.462.000.000. Angka berskala harus dibaca dengan skalanya dan
  * dibandingkan pada presisi yang tertulis (cara R31 M4a).
  *
+ * D-2 presisi medan keuangan: laba BSIM di laporan keuangan ditulis dalam
+ * satuan juta (285.748.000.000), angka RUPS sampai rupiah (285.747.406.391),
+ * dan R23 membandingkannya persis sampai rupiah. Bila semua medan uang di baris
+ * itu kelipatan satu juta, presisinya satu juta; yang dipakai adalah presisi
+ * yang lebih kasar dari kedua angka.
+ *
  * Fixture disalin dari respons mentah Sectors di `.cache/sectors/` (nama
  * berkas disebut di atas tiap fixture). Yang sintetis ditandai SINTETIS.
  * Ditulis MERAH lebih dulu, sebelum pembacanya ada.
  */
 import { describe, expect, it } from 'vitest';
-import { bacaAngkaLabaR23, bacaAngkaRupiah, r23LabaBedaEndpoint } from './aturan-keuangan.ts';
+import {
+  bacaAngkaLabaR23,
+  bacaAngkaRupiah,
+  presisiMedanKeuangan,
+  r23LabaBedaEndpoint,
+} from './aturan-keuangan.ts';
 import { konteksGudang } from './contoh.ts';
 import type { KeuanganTahunan } from './tipe.ts';
 
@@ -168,5 +179,122 @@ describe('R23 — angka berskala dibandingkan pada presisi yang tertulis (M4c D-
     const h = r23Avia(TEKS_AVIA.replace('Rp1.74 trillion', 'Rp1.74 triliun'));
     expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0, hijau: 0, tidak_lengkap: 1 });
     expect(h.hitungan.alasan_dilewati.join(' ')).toContain('Rp1.74 triliun');
+  });
+});
+
+// BSIM-m4a-overview-financials.json, tahun buku 2025 (bank: laba_kotor, kas, aset lancar kosong).
+const BSIM_2025: KeuanganTahunan = {
+  tahun: 2025,
+  laba: 285_748_000_000,
+  pendapatan: 3_386_466_000_000,
+  ekuitas: 16_491_142_000_000,
+  aset: 58_244_487_000_000,
+  laba_kotor: null,
+  lembar: 19_716_162_403,
+  utang: 760_738_000_000,
+  liabilitas: 41_753_345_000_000,
+  kas: null,
+  aset_lancar: null,
+  laba_sebelum_pajak: 519_729_000_000,
+  pajak: 197_299_000_000,
+};
+
+// BSIM-m4a-corpactions.json, agm 2026-06-25, agenda #2 agm_result apa adanya.
+const TEKS_BSIM =
+  'Agenda #2: Determination of Profit Appropriation. Shareholders approved allocating Rp500,000,000 to ' +
+  'reserve funds and Rp285,247,406,391 as retained earnings to strengthen capital, based on net profit of ' +
+  'Rp285,747,406,391.';
+
+function r23Bsim(teks: string = TEKS_BSIM, k: KeuanganTahunan = BSIM_2025) {
+  return r23LabaBedaEndpoint(
+    konteksGudang({ simbol: 'BSIM', rups: [{ tanggal: '2026-06-25', ringkasan: teks }], keuangan_tahunan: [k] }),
+  );
+}
+
+// ASLC-m4a-overview-financials.json, tahun buku 2025 (sampai rupiah).
+const ASLC_2025: KeuanganTahunan = {
+  tahun: 2025,
+  laba: 42_078_526_731,
+  pendapatan: null,
+  ekuitas: null,
+  aset: null,
+  laba_kotor: null,
+  lembar: null,
+  laba_sebelum_pajak: 55_457_688_905,
+  pajak: 10_457_677_260,
+};
+
+describe('presisiMedanKeuangan — satuan juta dibaca dari baris itu sendiri (M4c D-2)', () => {
+  it('BSIM dan AVIA 2025: semua medan uang kelipatan satu juta → presisi Rp1.000.000', () => {
+    expect(presisiMedanKeuangan(BSIM_2025)).toBe(1_000_000);
+    expect(presisiMedanKeuangan(AVIA_2025)).toBe(1_000_000);
+  });
+
+  it('ASLC 2025: sampai rupiah → presisi Rp1', () => {
+    expect(presisiMedanKeuangan(ASLC_2025)).toBe(1);
+  });
+
+  it('jumlah lembar bukan medan uang dan tidak ikut dihitung (BSIM 19.716.162.403 lembar)', () => {
+    expect((BSIM_2025.lembar ?? 0) % 1_000_000).not.toBe(0);
+    expect(presisiMedanKeuangan({ ...BSIM_2025, lembar: 19_716_162_403 })).toBe(1_000_000);
+  });
+
+  it('SINTETIS: satu medan uang saja yang tidak kelipatan juta → presisi Rp1', () => {
+    expect(presisiMedanKeuangan({ ...BSIM_2025, pendapatan: 3_386_466_000_001 })).toBe(1);
+    expect(presisiMedanKeuangan({ ...BSIM_2025, pajak: 197_299_500_000 })).toBe(1);
+  });
+
+  it('SINTETIS: medan kosong tidak dihitung; laba kosong → presisi Rp1', () => {
+    expect(presisiMedanKeuangan({ ...BSIM_2025, pendapatan: null, utang: undefined })).toBe(1_000_000);
+    expect(presisiMedanKeuangan({ ...BSIM_2025, laba: null })).toBe(1);
+  });
+});
+
+describe('R23 — presisi yang lebih kasar dari kedua angka (M4c D-2)', () => {
+  it('B06 BSIM: Rp285.747.406.391 ↔ 285.748.000.000 (satuan juta) → cocok (selisih Rp593.609 < Rp1.000.000)', () => {
+    const h = r23Bsim();
+    expect(h.hitungan).toMatchObject({ diperiksa: 1, merah: 0, hijau: 1, tidak_lengkap: 0 });
+    expect(h.temuan).toEqual([]);
+  });
+
+  it('SABOTASE: selisih tepat atau lebih dari satu juta tetap MERAH', () => {
+    for (const ganti of ['Rp285,746,406,391', 'Rp285,749,000,000', 'Rp285,746,999,999']) {
+      expect(r23Bsim(TEKS_BSIM.replace('Rp285,747,406,391.', ganti + '.')).hitungan.merah, ganti).toBe(1);
+    }
+    expect(r23Bsim(TEKS_BSIM.replace('Rp285,747,406,391.', 'Rp285,748,999,999.')).hitungan.merah).toBe(0);
+  });
+
+  it('SABOTASE ×1000: Rp285.747.406 (atau ×1000 ke atas) tetap MERAH', () => {
+    for (const ganti of ['Rp285,747,406', 'Rp285,747,406,391,000']) {
+      expect(r23Bsim(TEKS_BSIM.replace('Rp285,747,406,391.', ganti + '.')).hitungan.merah, ganti).toBe(1);
+    }
+  });
+
+  it('SABOTASE: baris yang tidak seluruhnya satuan juta → sama persis sampai rupiah, BSIM jadi MERAH', () => {
+    const h = r23Bsim(TEKS_BSIM, { ...BSIM_2025, pendapatan: 3_386_466_000_001 });
+    expect(h.hitungan.merah).toBe(1);
+  });
+
+  it('temuan merah menyebut presisi pembanding bila lebih kasar dari Rp1', () => {
+    const h = r23Bsim(TEKS_BSIM.replace('Rp285,747,406,391.', 'Rp285,700,000,000.'));
+    expect(h.temuan[0]?.ringkasan).toContain('presisi Rp1.000.000');
+    expect(h.temuan[0]?.angka.find((a) => a.label === 'presisi pembanding')?.nilai).toBe(1_000_000);
+  });
+
+  it('presisi = yang lebih kasar: AVIA (RUPS Rp10 miliar, keuangan Rp1 juta) tetap Rp10 miliar', () => {
+    expect(r23Avia().hitungan.merah).toBe(0);
+    expect(r23Avia(TEKS_AVIA.replace('Rp1.74 trillion', 'Rp1.73 trillion')).temuan[0]?.angka).toContainEqual({
+      label: 'presisi pembanding',
+      nilai: 10_000_000_000,
+      satuan: 'rupiah',
+    });
+  });
+
+  it('ASLC (keuangan sampai rupiah): tetap sama persis — beda Rp1 sudah MERAH', () => {
+    const teks = 'reporting a net profit of Rp45,000,011,646. It allocated';
+    const h = r23LabaBedaEndpoint(
+      konteksGudang({ simbol: 'ASLC', rups: [{ tanggal: '2026-05-19', ringkasan: teks }], keuangan_tahunan: [ASLC_2025] }),
+    );
+    expect(h.hitungan.merah).toBe(1);
   });
 });
