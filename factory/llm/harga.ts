@@ -47,6 +47,11 @@ export const HARGA: Readonly<Record<ModelOpenRouter, HargaModel>> = {
     keluar: 5,
     sumber: 'M2d-10: harga daftar Anthropic 1/5 (keputusan pemilik); GET /models/anthropic/claude-haiku-4.5/endpoints 30 Sep 2026 (eval/keluaran-m2d10/haiku-endpoints.json): Azure, Amazon Bedrock, Google, Anthropic global 1/5, kuantisasi unknown',
   },
+  'anthropic/claude-opus-5.5': {
+    masuk: 4,
+    keluar: 20,
+    sumber: 'M2d-13: harga OpenRouter 2 Okt 2026 (kontrak M2d-13; GET openrouter.ai/api/v1/models 2 Okt: prompt 0,000004, completion 0,00002); penulis bebas saja',
+  },
 };
 
 /**

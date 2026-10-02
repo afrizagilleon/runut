@@ -32,7 +32,8 @@ import { angkaPesanDari, periksaPenjelasan, periksaWajib, salinanTayang, type Tu
 /* ---------------------------------------------------------------------- */
 
 export type PeranTemplat = 'penulis' | 'penyempurna' | 'penebak' | 'pembaca-kartu' | 'kritikus';
-export type JenisTemplat = 'tulis-pesan' | 'tulis-penjelasan' | 'sempurnakan-pilihan' | 'gerbang-tebak' | 'gerbang-kartu' | 'kritikus';
+/** M2d-13: `tulis-bebas` = penulis bebas (factory/llm/bebas/). */
+export type JenisTemplat = 'tulis-pesan' | 'tulis-penjelasan' | 'sempurnakan-pilihan' | 'gerbang-tebak' | 'gerbang-kartu' | 'kritikus' | 'tulis-bebas';
 
 export interface InfoTemplat {
   jenis: JenisTemplat;

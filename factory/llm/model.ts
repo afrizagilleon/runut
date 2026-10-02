@@ -65,7 +65,12 @@ export const MODEL_OR_GLM = 'z-ai/glm-5.3' as const;
  * templat). Harga daftar $1/$5 per juta (`harga.ts`).
  */
 export const MODEL_OR_HAIKU = 'anthropic/claude-haiku-4.5' as const;
-export const MODEL_OPENROUTER = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM, MODEL_OR_HAIKU] as const;
+/**
+ * M2d-13 (kontrak, pemilik 2 Okt): Claude Opus 5.5 HANYA sebagai penulis bebas
+ * (`factory/llm/bebas/`), tanpa sufiks. Harga daftar $4/$20 per juta (`harga.ts`).
+ */
+export const MODEL_OR_OPUS = 'anthropic/claude-opus-5.5' as const;
+export const MODEL_OPENROUTER = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM, MODEL_OR_HAIKU, MODEL_OR_OPUS] as const;
 /** Dua model M2d-5…M2d-9 (lingkar pengecoh); skrip lama tetap hanya boleh memanggil keduanya. */
 export const MODEL_DUA: readonly string[] = [MODEL_OR_DEEPSEEK, MODEL_OR_GLM];
 export type ModelOpenRouter = (typeof MODEL_OPENROUTER)[number];

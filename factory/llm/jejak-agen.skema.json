@@ -8,7 +8,7 @@
   "required": ["versi", "dibuat_oleh", "simulasi", "model", "paket", "prompt", "mulai", "selesai", "langkah", "hasil"],
   "properties": {
     "versi": { "type": "integer", "enum": [1, 2] },
-    "dibuat_oleh": { "type": "string", "enum": ["factory/llm/agen.ts", "factory/llm/agen-peran.ts", "factory/llm/agen-pengecoh.ts", "factory/llm/templat/mesin.ts"] },
+    "dibuat_oleh": { "type": "string", "enum": ["factory/llm/agen.ts", "factory/llm/agen-peran.ts", "factory/llm/agen-pengecoh.ts", "factory/llm/templat/mesin.ts", "factory/llm/bebas/mesin.ts"] },
     "simulasi": {
       "type": "object",
       "additionalProperties": false,
