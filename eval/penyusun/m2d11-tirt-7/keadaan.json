@@ -1,0 +1,1198 @@
+{
+  "id": "m2d11-tirt-7",
+  "kode": "TIRT",
+  "tanggal": "2025-12-10",
+  "jendela": 10,
+  "dibuat": "2026-10-02T11:44:58.866Z",
+  "tahap": "selesai",
+  "sumber_paket": {
+    "sumber": "kurasi",
+    "keterangan": "definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"
+  },
+  "sesudahnya": 108,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis (pesan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penulis (penjelasan)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.018
+      },
+      {
+        "peran": "penyempurna struktur",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.0135
+      },
+      {
+        "peran": "kritikus (dengan satu pemeriksaan ulang)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.7376
+      },
+      {
+        "peran": "penebak rotasi haiku (8 panggilan, tanpa kartu)",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.12
+      },
+      {
+        "peran": "penebak rotasi deepseek (8 panggilan, tanpa kartu)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0403
+      },
+      {
+        "peran": "penebak rotasi glm (8 panggilan, tanpa kartu)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.3456
+      },
+      {
+        "peran": "pembaca kartu (2 rotasi)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0648
+      }
+    ],
+    "per_omongan_usd": 1.3578,
+    "per_putaran_usd": 4.0734,
+    "maks_putaran": 12,
+    "catatan": [
+      "Perkiraan per panggilan = 6.000 token masukan + max_tokens peran × harga daftar OpenRouter (factory/llm/harga.ts).",
+      "Per omongan = satu versi melewati semua peran sekali (dengan ulangan tebakan tak terbaca dan satu pemeriksaan ulang kritikus). Dalam praktik kritikus hanya dipanggil untuk versi yang lolos semua gerbang lain.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD."
+    ]
+  },
+  "pagu_jalan_usd": 0.6,
+  "mesin": {
+    "nama": "templat-m2d11",
+    "keterangan": "mesin templat M2d-11: templat berlabel jenis kesalahan + umpan balik, detektor cacat (ambang kalibrasi), tebak rotasi 4 × 3 keluarga × 2 kondisi, pembaca kartu 2 rotasi, kritikus GLM \"high\" (Wafer) paling akhir",
+    "palsu": false
+  },
+  "hasil": {
+    "terbit": true,
+    "berhenti": null,
+    "putaran": 8,
+    "biaya_usd": 0.211169,
+    "biaya_ledger_usd": 0.211169,
+    "penolakan": []
+  },
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Andi",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget harga penutupan Perusahaan T kemarin Rp97.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "kartu": [
+          "harga-2025-12-09",
+          "harga-2025-12-08"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "pilihan": {
+          "c": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "d": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "a": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "c",
+        "penjelasan": "Andi menyebut harga penutupan kemarin [[harga-2025-12-08|Rp97]]. Di kartu tertulis untuk [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru tercatat untuk [[harga-2025-12-08|8 Desember]]. Jadi jawaban benar: keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Yang menganggap penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]] menukar tanggal. [[harga-2025-12-05|Rp89]] juga bukan angka untuk [[harga-2025-12-09|9 Desember]]. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin."
+      },
+      {
+        "nama": "Tio",
+        "jam": "20.15",
+        "pesan": "Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi harganya belum ke mana-mana. Gw mah santai aja wkwk.",
+        "angka_pesan": [
+          {
+            "teks": "9 Desember",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "d": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "a": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+          "c": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "b": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah."
+        },
+        "kunci": "d",
+        "penjelasan": "Di kartu tertulis bahwa sampai [[hari-naik-beruntun|9 Desember]] harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya. Jadi harganya jelas bergerak naik, dan di [[naik-2025-11-26-2025-12-09|9 Desember]] penutupannya sudah ratusan rupiah. Karena itu jawaban yang tepat: keliru, sebab bukan turun dan bukan tetap puluhan rupiah. Yang menggoda, yang membenarkan Tio karena masih puluhan rupiah, hanya melihat nominal kecil per lembar dan melewatkan kenaikan beruntun itu. Salah-kaprah yang umum: melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh."
+      },
+      {
+        "nama": "Sari",
+        "jam": "20.15",
+        "pesan": "Sejak 26 November harga penutupan Perusahaan T udah lebih dari dua kali lipat, ya? Beneran ga sih?",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "kelipatan-2025-11-26-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "b": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|2,02 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "a": "Keliru, yang bertambah cuma selisih rupiahnya, bukan dua kali lipat.",
+          "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Pesan Sari menanyakan apakah harga penutupan Perusahaan T sejak [[kelipatan-2025-11-26-2025-12-09|26 November]] sudah berlipat. Di kartu tertulis: harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Jadi jawabannya betul karena perbandingannya memang sebesar angka itu. Pilihan yang menyebut kelipatan lain terdengar mirip, tapi angka yang tertulis adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]. Pilihan yang bilang cuma selisih rupiah salah karena [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih, bukan kelipatan. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+      }
+    ]
+  },
+  "draf_terakhir": [
+    {
+      "nama": "Andi",
+      "jam": "20.15",
+      "pesan": "Gw yakin banget harga penutupan Perusahaan T kemarin Rp97.",
+      "angka_pesan": [
+        {
+          "teks": "Rp97",
+          "fact_id": "harga-2025-12-08"
+        }
+      ],
+      "kartu": [
+        "harga-2025-12-09",
+        "harga-2025-12-08"
+      ],
+      "kartu_penentu": [
+        "harga-2025-12-09"
+      ],
+      "pilihan": {
+        "c": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+        "d": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+        "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+        "a": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+      },
+      "kunci": "c",
+      "penjelasan": "Andi menyebut harga penutupan kemarin [[harga-2025-12-08|Rp97]]. Di kartu tertulis untuk [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru tercatat untuk [[harga-2025-12-08|8 Desember]]. Jadi jawaban benar: keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Yang menganggap penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]] menukar tanggal. [[harga-2025-12-05|Rp89]] juga bukan angka untuk [[harga-2025-12-09|9 Desember]]. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin."
+    },
+    {
+      "nama": "Tio",
+      "jam": "20.15",
+      "pesan": "Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi harganya belum ke mana-mana. Gw mah santai aja wkwk.",
+      "angka_pesan": [
+        {
+          "teks": "9 Desember",
+          "fact_id": "hari-naik-beruntun"
+        }
+      ],
+      "kartu": [
+        "hari-naik-beruntun",
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "hari-naik-beruntun"
+      ],
+      "pilihan": {
+        "d": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+        "a": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+        "c": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+        "b": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah."
+      },
+      "kunci": "d",
+      "penjelasan": "Di kartu tertulis bahwa sampai [[hari-naik-beruntun|9 Desember]] harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya. Jadi harganya jelas bergerak naik, dan di [[naik-2025-11-26-2025-12-09|9 Desember]] penutupannya sudah ratusan rupiah. Karena itu jawaban yang tepat: keliru, sebab bukan turun dan bukan tetap puluhan rupiah. Yang menggoda, yang membenarkan Tio karena masih puluhan rupiah, hanya melihat nominal kecil per lembar dan melewatkan kenaikan beruntun itu. Salah-kaprah yang umum: melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh."
+    },
+    {
+      "nama": "Sari",
+      "jam": "20.15",
+      "pesan": "Sejak 26 November harga penutupan Perusahaan T udah lebih dari dua kali lipat, ya? Beneran ga sih?",
+      "angka_pesan": [
+        {
+          "teks": "26 November",
+          "fact_id": "kelipatan-2025-11-26-2025-12-09"
+        }
+      ],
+      "kartu": [
+        "kelipatan-2025-11-26-2025-12-09",
+        "naik-2025-11-26-2025-12-09"
+      ],
+      "kartu_penentu": [
+        "kelipatan-2025-11-26-2025-12-09"
+      ],
+      "pilihan": {
+        "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+        "b": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|2,02 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+        "a": "Keliru, yang bertambah cuma selisih rupiahnya, bukan dua kali lipat.",
+        "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+      },
+      "kunci": "d",
+      "penjelasan": "Pesan Sari menanyakan apakah harga penutupan Perusahaan T sejak [[kelipatan-2025-11-26-2025-12-09|26 November]] sudah berlipat. Di kartu tertulis: harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Jadi jawabannya betul karena perbandingannya memang sebesar angka itu. Pilihan yang menyebut kelipatan lain terdengar mirip, tapi angka yang tertulis adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]. Pilihan yang bilang cuma selisih rupiah salah karena [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih, bukan kelipatan. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+    }
+  ],
+  "keadaan": [
+    {
+      "no": 1,
+      "label": "Keliru",
+      "kunci": {
+        "fact_id": "harga-2025-12-09",
+        "bentuk": "peristiwa",
+        "teks": "Teman menyebut harga penutupan kemarin (9 Desember) Rp97.",
+        "rujukan": null,
+        "penanda": [],
+        "menjawab": "ULTJ s1 (soal tayang): angka hari lain dipakai untuk hari yang dibicarakan",
+        "rujukan_lain": []
+      },
+      "bank": [],
+      "pesan": {
+        "nama": "Andi",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget harga penutupan Perusahaan T kemarin Rp97.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "klaim_dari": null
+      },
+      "pilihan": {
+        "a": {
+          "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]].",
+          "sumber": "templat"
+        },
+        "b": {
+          "teks": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "sumber": "templat"
+        },
+        "c": {
+          "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "sumber": "templat"
+        },
+        "d": {
+          "teks": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "sumber": "templat"
+        }
+      },
+      "penjelasan": "Andi menyebut harga penutupan kemarin [[harga-2025-12-08|Rp97]]. Di kartu tertulis untuk [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru tercatat untuk [[harga-2025-12-08|8 Desember]]. Jadi jawaban benar: keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Yang menganggap penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]] menukar tanggal. [[harga-2025-12-05|Rp89]] juga bukan angka untuk [[harga-2025-12-09|9 Desember]]. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin.",
+      "omongan": {
+        "nama": "Andi",
+        "jam": "20.15",
+        "pesan": "Gw yakin banget harga penutupan Perusahaan T kemarin Rp97.",
+        "angka_pesan": [
+          {
+            "teks": "Rp97",
+            "fact_id": "harga-2025-12-08"
+          }
+        ],
+        "kartu": [
+          "harga-2025-12-09",
+          "harga-2025-12-08"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "pilihan": {
+          "c": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+          "d": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+          "b": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+          "a": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]]."
+        },
+        "kunci": "c",
+        "penjelasan": "Andi menyebut harga penutupan kemarin [[harga-2025-12-08|Rp97]]. Di kartu tertulis untuk [[harga-2025-12-09|9 Desember]] adalah [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Angka [[harga-2025-12-08|Rp97]] justru tercatat untuk [[harga-2025-12-08|8 Desember]]. Jadi jawaban benar: keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]]. Yang menganggap penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]] menukar tanggal. [[harga-2025-12-05|Rp89]] juga bukan angka untuk [[harga-2025-12-09|9 Desember]]. Salah-kaprah yang umum: memakai angka dari hari lain seolah-olah angka kemarin."
+      },
+      "hurufKunci": "c",
+      "templat": {
+        "rencana": {
+          "pola": "angka-lain-waktu",
+          "sudut": "harga-2025-12-09",
+          "kartu": [
+            "harga-2025-12-09",
+            "harga-2025-12-08"
+          ],
+          "kartu_penentu": [
+            "harga-2025-12-09"
+          ],
+          "klaim": {
+            "proposisi": {
+              "k": "nilai",
+              "fact_id": "harga-2025-12-09",
+              "nilai": 97
+            },
+            "label": "Keliru",
+            "inti": "Teman menyebut harga penutupan kemarin (9 Desember) Rp97.",
+            "angka": [
+              {
+                "teks": "Rp97",
+                "fact_id": "harga-2025-12-08"
+              },
+              {
+                "teks": "9 Desember",
+                "fact_id": "harga-2025-12-09"
+              }
+            ],
+            "wajib": [
+              [
+                "kemarin",
+                "9 Desember"
+              ]
+            ]
+          },
+          "slot": [
+            {
+              "slot": "kunci",
+              "bentuk": "Keliru + angka yang benar, bukan angka teman",
+              "varian": [
+                {
+                  "id": "K1",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 106
+                  },
+                  "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "penutupan",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "K2",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 106
+                  },
+                  "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-09|Rp106]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "tercatat",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ]
+            },
+            {
+              "slot": "p1",
+              "bentuk": "Betul + angka teman",
+              "varian": [
+                {
+                  "id": "P1a",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 97
+                  },
+                  "teks": "Betul, penutupan [[harga-2025-12-09|9 Desember]] memang [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "penutupan",
+                    "memang"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "P1b",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 97
+                  },
+                  "teks": "Betul, angka [[harga-2025-12-09|9 Desember]] yang tercatat memang [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "tercatat",
+                    "memang"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ],
+              "kesalahan": {
+                "jenis": "salah-periode",
+                "rujukan": "harga-2025-12-08"
+              }
+            },
+            {
+              "slot": "p2",
+              "bentuk": "Betul + kesimpulan dari angka teman",
+              "varian": [
+                {
+                  "id": "P2a",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "tertinggi",
+                    "fact_id": "harga-2025-12-08"
+                  },
+                  "teks": "Betul, [[harga-2025-12-08|Rp97]] itu penutupan tertinggi sebelum hari ini.",
+                  "inti": [
+                    "tertinggi"
+                  ],
+                  "penanda": null
+                },
+                {
+                  "id": "P2b",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "tertinggi",
+                    "fact_id": "harga-2025-12-08"
+                  },
+                  "teks": "Betul, belum pernah ada penutupan di atas [[harga-2025-12-08|Rp97]] sebelum hari ini.",
+                  "inti": [
+                    "belum pernah"
+                  ],
+                  "penanda": null
+                }
+              ],
+              "kesalahan": {
+                "jenis": "pertanyaan-lain",
+                "rujukan": "harga-2025-12-08"
+              }
+            },
+            {
+              "slot": "p3",
+              "bentuk": "Keliru + angka lain yang juga bukan angka hari itu",
+              "varian": [
+                {
+                  "id": "P3a",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 89
+                  },
+                  "teks": "Keliru, penutupan [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "penutupan",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "P3b",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "harga-2025-12-09",
+                    "nilai": 89
+                  },
+                  "teks": "Keliru, yang tercatat untuk [[harga-2025-12-09|9 Desember]] [[harga-2025-12-05|Rp89]], bukan [[harga-2025-12-08|Rp97]].",
+                  "inti": [
+                    "tercatat",
+                    "bukan"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ],
+              "kesalahan": {
+                "jenis": "nyaris-benar-angka",
+                "rujukan": "harga-2025-12-09"
+              }
+            }
+          ],
+          "salah_kaprah": "memakai angka dari hari lain seolah-olah angka kemarin",
+          "topik": "harga",
+          "asal": "ULTJ s1 (soal tayang): angka hari lain dipakai untuk hari yang dibicarakan",
+          "rujukan_penjelasan": [
+            "[[harga-2025-12-09|9 Desember]]",
+            "[[harga-2025-12-09|Rp106]]",
+            "[[harga-2025-12-08|8 Desember]]",
+            "[[harga-2025-12-08|Rp97]]",
+            "[[harga-2025-12-05|Rp89]]"
+          ]
+        },
+        "varian": {
+          "kunci": "K2",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3b"
+        },
+        "hurufKunci": "c"
+      }
+    },
+    {
+      "no": 2,
+      "label": "Keliru",
+      "kunci": {
+        "fact_id": "hari-naik-beruntun",
+        "bentuk": "peristiwa",
+        "teks": "Teman bilang harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi harganya belum ke mana-mana.",
+        "rujukan": null,
+        "penanda": [],
+        "menjawab": "DADA s3 (soal tayang): kisi arah × tingkat, satu sel benar",
+        "rujukan_lain": []
+      },
+      "bank": [],
+      "pesan": {
+        "nama": "Tio",
+        "jam": "20.15",
+        "pesan": "Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi harganya belum ke mana-mana. Gw mah santai aja wkwk.",
+        "angka_pesan": [
+          {
+            "teks": "9 Desember",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "klaim_dari": null
+      },
+      "pilihan": {
+        "a": {
+          "teks": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+          "sumber": "templat"
+        },
+        "b": {
+          "teks": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah.",
+          "sumber": "templat"
+        },
+        "c": {
+          "teks": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "sumber": "templat"
+        },
+        "d": {
+          "teks": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "sumber": "templat"
+        }
+      },
+      "penjelasan": "Di kartu tertulis bahwa sampai [[hari-naik-beruntun|9 Desember]] harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya. Jadi harganya jelas bergerak naik, dan di [[naik-2025-11-26-2025-12-09|9 Desember]] penutupannya sudah ratusan rupiah. Karena itu jawaban yang tepat: keliru, sebab bukan turun dan bukan tetap puluhan rupiah. Yang menggoda, yang membenarkan Tio karena masih puluhan rupiah, hanya melihat nominal kecil per lembar dan melewatkan kenaikan beruntun itu. Salah-kaprah yang umum: melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh.",
+      "omongan": {
+        "nama": "Tio",
+        "jam": "20.15",
+        "pesan": "Harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi harganya belum ke mana-mana. Gw mah santai aja wkwk.",
+        "angka_pesan": [
+          {
+            "teks": "9 Desember",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "d": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "a": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+          "c": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+          "b": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah."
+        },
+        "kunci": "d",
+        "penjelasan": "Di kartu tertulis bahwa sampai [[hari-naik-beruntun|9 Desember]] harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya. Jadi harganya jelas bergerak naik, dan di [[naik-2025-11-26-2025-12-09|9 Desember]] penutupannya sudah ratusan rupiah. Karena itu jawaban yang tepat: keliru, sebab bukan turun dan bukan tetap puluhan rupiah. Yang menggoda, yang membenarkan Tio karena masih puluhan rupiah, hanya melihat nominal kecil per lembar dan melewatkan kenaikan beruntun itu. Salah-kaprah yang umum: melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh."
+      },
+      "hurufKunci": "d",
+      "templat": {
+        "rencana": {
+          "pola": "arah-kali-tingkat",
+          "sudut": "hari-naik-beruntun",
+          "kartu": [
+            "hari-naik-beruntun",
+            "naik-2025-11-26-2025-12-09"
+          ],
+          "kartu_penentu": [
+            "hari-naik-beruntun"
+          ],
+          "klaim": {
+            "proposisi": {
+              "k": "rentang",
+              "fact_id": "harga-2025-12-09",
+              "min": 20,
+              "maks": 100
+            },
+            "label": "Keliru",
+            "inti": "Teman bilang harga penutupan 9 Desember masih puluhan rupiah per lembar, jadi harganya belum ke mana-mana.",
+            "angka": [
+              {
+                "teks": "9 Desember",
+                "fact_id": "hari-naik-beruntun"
+              }
+            ],
+            "wajib": [
+              [
+                "9 Desember"
+              ]
+            ]
+          },
+          "slot": [
+            {
+              "slot": "kunci",
+              "bentuk": "arah benar × tingkat benar",
+              "varian": [
+                {
+                  "id": "K1",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "naik"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 100,
+                        "maks": 1000
+                      }
+                    ]
+                  },
+                  "teks": "Keliru, harganya naik sampai ratusan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+                  "inti": [
+                    "naik",
+                    "ratusan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "K2",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "naik"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 100,
+                        "maks": 1000
+                      }
+                    ]
+                  },
+                  "teks": "Keliru, penutupan [[hari-naik-beruntun|9 Desember]] sudah ratusan rupiah sesudah naik beruntun.",
+                  "inti": [
+                    "naik",
+                    "ratusan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ]
+            },
+            {
+              "slot": "p1",
+              "bentuk": "arah benar × tingkat salah",
+              "varian": [
+                {
+                  "id": "P1a",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "naik"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 20,
+                        "maks": 100
+                      }
+                    ]
+                  },
+                  "teks": "Betul, harganya naik tapi [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah.",
+                  "inti": [
+                    "naik",
+                    "puluhan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "P1b",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "naik"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 20,
+                        "maks": 100
+                      }
+                    ]
+                  },
+                  "teks": "Betul, penutupan [[hari-naik-beruntun|9 Desember]] masih puluhan rupiah walau naik beruntun.",
+                  "inti": [
+                    "naik",
+                    "puluhan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ],
+              "kesalahan": {
+                "jenis": "sebagian-benar",
+                "rujukan": "hari-naik-beruntun"
+              }
+            },
+            {
+              "slot": "p2",
+              "bentuk": "arah salah × tingkat salah",
+              "varian": [
+                {
+                  "id": "P2a",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "turun"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 20,
+                        "maks": 100
+                      }
+                    ]
+                  },
+                  "teks": "Betul, harganya turun sampai puluhan rupiah pada [[hari-naik-beruntun|9 Desember]].",
+                  "inti": [
+                    "turun",
+                    "puluhan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "P2b",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "turun"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 20,
+                        "maks": 100
+                      }
+                    ]
+                  },
+                  "teks": "Betul, penutupan [[hari-naik-beruntun|9 Desember]] tinggal puluhan rupiah sesudah turun beruntun.",
+                  "inti": [
+                    "turun",
+                    "puluhan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ],
+              "kesalahan": {
+                "jenis": "percaya-otoritas",
+                "rujukan": "hari-naik-beruntun"
+              }
+            },
+            {
+              "slot": "p3",
+              "bentuk": "arah salah × tingkat benar",
+              "varian": [
+                {
+                  "id": "P3a",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "turun"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 100,
+                        "maks": 1000
+                      }
+                    ]
+                  },
+                  "teks": "Keliru, harganya turun tapi [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah.",
+                  "inti": [
+                    "turun",
+                    "ratusan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                },
+                {
+                  "id": "P3b",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "arah",
+                        "dari": "harga-2025-11-26",
+                        "ke": "harga-2025-12-09",
+                        "arah": "turun"
+                      },
+                      {
+                        "k": "rentang",
+                        "fact_id": "harga-2025-12-09",
+                        "min": 100,
+                        "maks": 1000
+                      }
+                    ]
+                  },
+                  "teks": "Keliru, penutupan [[hari-naik-beruntun|9 Desember]] masih ratusan rupiah walau turun beruntun.",
+                  "inti": [
+                    "turun",
+                    "ratusan rupiah"
+                  ],
+                  "penanda": "9 Desember"
+                }
+              ],
+              "kesalahan": {
+                "jenis": "sebagian-benar",
+                "rujukan": "hari-naik-beruntun"
+              }
+            }
+          ],
+          "salah_kaprah": "melihat angka rupiah yang kecil lalu mengira harganya belum bergerak jauh",
+          "topik": "harga",
+          "asal": "DADA s3 (soal tayang): kisi arah × tingkat, satu sel benar",
+          "rujukan_penjelasan": [
+            "[[hari-naik-beruntun|9 Desember]]",
+            "[[hari-naik-beruntun|9 hari bursa]]",
+            "[[naik-2025-11-26-2025-12-09|9 Desember]]",
+            "[[naik-2025-11-26-2025-12-09|Rp58]]"
+          ]
+        },
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "hurufKunci": "d"
+      }
+    },
+    {
+      "no": 3,
+      "label": "Betul",
+      "kunci": {
+        "fact_id": "kelipatan-2025-11-26-2025-12-09",
+        "bentuk": "peristiwa",
+        "teks": "Teman bilang sejak 26 November harga penutupannya sudah lebih dari dua kali lipat.",
+        "rujukan": null,
+        "penanda": [],
+        "menjawab": "DADA s2 (soal tayang): besaran hitungan yang disebut teman dengan kata-kata",
+        "rujukan_lain": []
+      },
+      "bank": [],
+      "pesan": {
+        "nama": "Sari",
+        "jam": "20.15",
+        "pesan": "Sejak 26 November harga penutupan Perusahaan T udah lebih dari dua kali lipat, ya? Beneran ga sih?",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          }
+        ],
+        "klaim_dari": null
+      },
+      "pilihan": {
+        "a": {
+          "teks": "Keliru, yang bertambah cuma selisih rupiahnya, bukan dua kali lipat.",
+          "sumber": "templat"
+        },
+        "b": {
+          "teks": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|2,02 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "sumber": "templat"
+        },
+        "c": {
+          "teks": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "sumber": "templat"
+        },
+        "d": {
+          "teks": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "sumber": "templat"
+        }
+      },
+      "penjelasan": "Pesan Sari menanyakan apakah harga penutupan Perusahaan T sejak [[kelipatan-2025-11-26-2025-12-09|26 November]] sudah berlipat. Di kartu tertulis: harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Jadi jawabannya betul karena perbandingannya memang sebesar angka itu. Pilihan yang menyebut kelipatan lain terdengar mirip, tapi angka yang tertulis adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]. Pilihan yang bilang cuma selisih rupiah salah karena [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih, bukan kelipatan. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga.",
+      "omongan": {
+        "nama": "Sari",
+        "jam": "20.15",
+        "pesan": "Sejak 26 November harga penutupan Perusahaan T udah lebih dari dua kali lipat, ya? Beneran ga sih?",
+        "angka_pesan": [
+          {
+            "teks": "26 November",
+            "fact_id": "kelipatan-2025-11-26-2025-12-09"
+          }
+        ],
+        "kartu": [
+          "kelipatan-2025-11-26-2025-12-09",
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "d": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "b": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|2,02 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+          "a": "Keliru, yang bertambah cuma selisih rupiahnya, bukan dua kali lipat.",
+          "c": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Pesan Sari menanyakan apakah harga penutupan Perusahaan T sejak [[kelipatan-2025-11-26-2025-12-09|26 November]] sudah berlipat. Di kartu tertulis: harga penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]]. Jadi jawabannya betul karena perbandingannya memang sebesar angka itu. Pilihan yang menyebut kelipatan lain terdengar mirip, tapi angka yang tertulis adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]]. Pilihan yang bilang cuma selisih rupiah salah karena [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisih, bukan kelipatan. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+      },
+      "hurufKunci": "d",
+      "templat": {
+        "rencana": {
+          "pola": "besaran-hitungan",
+          "sudut": "kelipatan-2025-11-26-2025-12-09",
+          "kartu": [
+            "kelipatan-2025-11-26-2025-12-09",
+            "naik-2025-11-26-2025-12-09"
+          ],
+          "kartu_penentu": [
+            "kelipatan-2025-11-26-2025-12-09"
+          ],
+          "klaim": {
+            "proposisi": {
+              "k": "banding",
+              "fact_id": "kelipatan-2025-11-26-2025-12-09",
+              "op": ">=",
+              "ambang": 2
+            },
+            "label": "Betul",
+            "inti": "Teman bilang sejak 26 November harga penutupannya sudah lebih dari dua kali lipat.",
+            "angka": [
+              {
+                "teks": "26 November",
+                "fact_id": "kelipatan-2025-11-26-2025-12-09"
+              }
+            ],
+            "wajib": [
+              [
+                "26 November"
+              ]
+            ]
+          },
+          "slot": [
+            {
+              "slot": "kunci",
+              "bentuk": "Betul + angka hitungan",
+              "varian": [
+                {
+                  "id": "K1",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "banding",
+                        "fact_id": "kelipatan-2025-11-26-2025-12-09",
+                        "op": ">=",
+                        "ambang": 2
+                      },
+                      {
+                        "k": "nilai",
+                        "fact_id": "kelipatan-2025-11-26-2025-12-09",
+                        "nilai": 2.21
+                      }
+                    ]
+                  },
+                  "teks": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+                  "inti": [
+                    "kali"
+                  ],
+                  "penanda": null
+                },
+                {
+                  "id": "K2",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "banding",
+                        "fact_id": "kelipatan-2025-11-26-2025-12-09",
+                        "op": ">=",
+                        "ambang": 2
+                      },
+                      {
+                        "k": "nilai",
+                        "fact_id": "kelipatan-2025-11-26-2025-12-09",
+                        "nilai": 2.21
+                      }
+                    ]
+                  },
+                  "teks": "Betul, dari [[kelipatan-2025-11-26-2025-12-09|26 November]] sampai [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harganya jadi [[kelipatan-2025-11-26-2025-12-09|2,21 kali]].",
+                  "inti": [
+                    "kali"
+                  ],
+                  "penanda": null
+                }
+              ]
+            },
+            {
+              "slot": "p1",
+              "bentuk": "Betul + angka hitungan yang salah",
+              "varian": [
+                {
+                  "id": "P1a",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "kelipatan-2025-11-26-2025-12-09",
+                    "nilai": 2.02
+                  },
+                  "teks": "Betul, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] [[misal|2,02 kali]] penutupan [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+                  "inti": [
+                    "kali"
+                  ],
+                  "penanda": null
+                },
+                {
+                  "id": "P1b",
+                  "label": "Betul",
+                  "proposisi": {
+                    "k": "nilai",
+                    "fact_id": "kelipatan-2025-11-26-2025-12-09",
+                    "nilai": 2.02
+                  },
+                  "teks": "Betul, dari [[kelipatan-2025-11-26-2025-12-09|26 November]] sampai [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harganya jadi [[misal|2,02 kali]].",
+                  "inti": [
+                    "kali"
+                  ],
+                  "penanda": null
+                }
+              ],
+              "kesalahan": {
+                "jenis": "nyaris-benar-angka",
+                "rujukan": "kelipatan-2025-11-26-2025-12-09"
+              }
+            },
+            {
+              "slot": "p2",
+              "bentuk": "Keliru: selisih rupiah dikira kelipatan",
+              "varian": [
+                {
+                  "id": "P2a",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "dan",
+                    "p": [
+                      {
+                        "k": "nilai",
+                        "fact_id": "naik-2025-11-26-2025-12-09",
+                        "nilai": 58
+                      },
+                      {
+                        "k": "banding",
+                        "fact_id": "kelipatan-2025-11-26-2025-12-09",
+                        "op": "<",
+                        "ambang": 2
+                      }
+                    ]
+                  },
+                  "teks": "Keliru, yang bertambah cuma selisih rupiahnya, bukan dua kali lipat.",
+                  "inti": [
+                    "kali lipat"
+                  ],
+                  "penanda": null
+                }
+              ],
+              "kesalahan": {
+                "jenis": "sebagian-benar",
+                "rujukan": "kelipatan-2025-11-26-2025-12-09"
+              }
+            },
+            {
+              "slot": "p3",
+              "bentuk": "Keliru: arah dibalik",
+              "varian": [
+                {
+                  "id": "P3a",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "arah",
+                    "dari": "harga-2025-11-26",
+                    "ke": "harga-2025-12-09",
+                    "arah": "turun"
+                  },
+                  "teks": "Keliru, penutupan [[kelipatan-2025-11-26-2025-12-09|9 Desember]] malah lebih rendah dari [[kelipatan-2025-11-26-2025-12-09|26 November]].",
+                  "inti": [
+                    "lebih rendah"
+                  ],
+                  "penanda": null
+                },
+                {
+                  "id": "P3b",
+                  "label": "Keliru",
+                  "proposisi": {
+                    "k": "arah",
+                    "dari": "harga-2025-11-26",
+                    "ke": "harga-2025-12-09",
+                    "arah": "turun"
+                  },
+                  "teks": "Keliru, dari [[kelipatan-2025-11-26-2025-12-09|26 November]] sampai [[kelipatan-2025-11-26-2025-12-09|9 Desember]] harganya justru turun.",
+                  "inti": [
+                    "turun"
+                  ],
+                  "penanda": null
+                }
+              ],
+              "kesalahan": {
+                "jenis": "pertanyaan-lain",
+                "rujukan": "kelipatan-2025-11-26-2025-12-09"
+              }
+            }
+          ],
+          "salah_kaprah": "mencampur selisih rupiah dengan kelipatan harga",
+          "topik": "harga",
+          "asal": "DADA s2 (soal tayang): besaran hitungan yang disebut teman dengan kata-kata",
+          "rujukan_penjelasan": [
+            "[[kelipatan-2025-11-26-2025-12-09|9 Desember]]",
+            "[[kelipatan-2025-11-26-2025-12-09|2,21 kali]]",
+            "[[naik-2025-11-26-2025-12-09|9 Desember]]",
+            "[[naik-2025-11-26-2025-12-09|Rp58]]",
+            "[[kelipatan-2025-11-26-2025-12-09|26 November]]"
+          ]
+        },
+        "varian": {
+          "kunci": "K1",
+          "p1": "P1a",
+          "p2": "P2a",
+          "p3": "P3a"
+        },
+        "hurufKunci": "d"
+      }
+    }
+  ],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}
