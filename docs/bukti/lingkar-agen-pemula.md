@@ -6,7 +6,7 @@
 
 - **Pra-registrasi** `docs/bukti/m2d11-praregistrasi.md` di-commit sebelum panggilan berbayar pertama (dites). Satu amandemen teknis: GLM-5.3 menolak `reasoning.enabled=false` ("Reasoning is mandatory", HTTP 400, biaya 0) → penebak rotasi GLM memakai `effort: "minimal"`, `max_tokens` 3.000.
 - **Kalibrasi detektor**: ambang awal riset menandai 4/6 soal tayang; aturan mekanis melonggarkan D6 → L2, D5 → L1, D2 → L1 sampai 1/6 (DADA s2, "cuma" hanya di kunci). **Recall 4/12** omongan yang tertebak luar (target riset 80 % — tidak tercapai); omongan lama tak tertebak yang ditandai 6/15.
-- **Uji ulang 33 soal** (syarat 1–3): lulus 5 — tayang-dada-s3-siapa-yang-menjual, tayang-ultj-turun-di-tanggal-ex, m2d3-tirt-o1, m2d3-ultj-o2, m2d3-ultj-o1. Tebak rotasi gagal 22/33, termasuk 2 dari 6 soal tayang.
+- **Uji ulang 33 soal** (syarat 1–3): lulus 5 — tayang-dada-s3-siapa-yang-menjual, tayang-ultj-turun-di-tanggal-ex, m2d3-tirt-o1, m2d3-ultj-o2, m2d3-ultj-o1. Tebak rotasi gagal 22/33, termasuk 3 dari 6 soal tayang.
 - **Jalan TIRT**: 7 jalan, **terbit di m2d11-tirt-7**.
 - **Biaya nyata milestone** US$0,9643 dari pagu US$5,0000 (1587 entri ledger).
 
