@@ -29,11 +29,20 @@ export interface ModelRotasi {
   setelan: SetelanPanggil;
 }
 
-/** Tiga keluarga, tanpa penalaran panjang, suhu 0 (pra-registrasi §3.2). */
+/**
+ * Tiga keluarga, tanpa penalaran panjang, suhu 0 (pra-registrasi §3.2).
+ *
+ * **Amandemen teknis A-1 (2 Okt, sebelum data rotasi apa pun):** GLM-5.3 di
+ * OpenRouter menolak `reasoning.enabled: false` ("Reasoning is mandatory for
+ * this endpoint and cannot be disabled", HTTP 400, panggilan pertama uji
+ * ulang, 0 biaya). Setelan GLM diganti ke penalaran sependek yang diizinkan:
+ * `reasoning.effort: "minimal"` (±10 % `max_tokens`), `max_tokens` 3.000.
+ * Pra-registrasi tidak diubah; amandemen dicatat di laporan.
+ */
 export const MODEL_ROTASI: readonly ModelRotasi[] = [
   { model: MODEL_OR_HAIKU, nama: 'haiku', setelan: { suhu: 0, maxTokens: 300 } },
   { model: MODEL_OR_DEEPSEEK, nama: 'deepseek', setelan: { suhu: 0, maxTokens: 600, tambahanBadan: { reasoning: { enabled: false } } } },
-  { model: MODEL_OR_GLM, nama: 'glm', setelan: { suhu: 0, maxTokens: 1_500, tambahanBadan: { reasoning: { enabled: false } } } },
+  { model: MODEL_OR_GLM, nama: 'glm', setelan: { suhu: 0, maxTokens: 3_000, tambahanBadan: { reasoning: { effort: 'minimal' } } } },
 ];
 
 /* ---------------------------------------------------------------------- */

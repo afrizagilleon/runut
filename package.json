@@ -75,7 +75,8 @@
     "templat:jalan": "node --experimental-strip-types alat/penyusun/jalan-templat.ts",
     "templat:penguji": "node --experimental-strip-types factory/llm/templat/uji-luar.ts",
     "templat:laporan": "node --experimental-strip-types factory/llm/templat/tulis-laporan.ts",
-    "patokan:cacat": "node --experimental-strip-types factory/llm/cacat/kalibrasi.ts"
+    "patokan:cacat": "node --experimental-strip-types factory/llm/cacat/kalibrasi.ts",
+    "patokan:uji-ulang": "node --experimental-strip-types factory/llm/patokan/uji-ulang.ts"
   },
   "dependencies": {
     "react": "^18.3.1",

@@ -90,7 +90,9 @@ export async function kartuRotasi(o: OmonganDraf, paket: PaketFakta, opsi: OpsiR
   const per: KartuRotasi[] = [];
   for (const r of ROTASI_KARTU) {
     const p = putar(o, r);
-    const k = await pembacaKartu({ ...o, pilihan: p.pilihan, kunci: p.kunci }, paket, opsi.panggil, opsi.putaran, opsi.omongan);
+    // Nomor panggilan = r + 1 supaya tag ledger kedua rotasi berbeda.
+    const panggil: PanggilTemplat = (pesan, s, info) => opsi.panggil(pesan, s, { ...info, ke: r + 1 });
+    const k = await pembacaKartu({ ...o, pilihan: p.pilihan, kunci: p.kunci }, paket, panggil, opsi.putaran, opsi.omongan);
     per.push({
       r,
       kunci: p.kunci,
