@@ -1,0 +1,67 @@
+{
+  "keterangan": "Uji ulang gerbang AI SUNGGUHAN (M2d-14, mode demo) atas satu omongan yang disunting penyetuju. Diputar ulang tanpa panggilan bila teksnya sama (sidik).",
+  "jalan": "m2d13-opus-2",
+  "omongan": 2,
+  "sidik": "0648031f0be91f94d32ef3690f729ac0aef5203662200f2ac334850a018acaf7",
+  "omongan_diuji": {
+    "nama": "Wulan",
+    "jam": "19.45",
+    "pesan": "Katanya sejak akhir November harga Perusahaan T udah lebih dari dua kali lipat. Beneran ga sih?",
+    "angka_pesan": [],
+    "kartu": [
+      "harga-2025-11-26",
+      "harga-2025-12-09",
+      "kelipatan-2025-11-26-2025-12-09",
+      "naik-2025-11-26-2025-12-09"
+    ],
+    "kartu_penentu": [
+      "kelipatan-2025-11-26-2025-12-09"
+    ],
+    "pilihan": {
+      "a": "Keliru, kartu hanya mencatat selisih [[naik-2025-11-26-2025-12-09|Rp58]].",
+      "b": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai hari ini.",
+      "c": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai kemarin.",
+      "d": "Keliru, kenaikannya terjadi bertahap, bukan sekaligus."
+    },
+    "kunci": "c",
+    "penjelasan": "Kartu hitungan mencatat harga penutupan [[harga-2025-12-09|9 Desember 2025]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[harga-2025-11-26|26 November 2025]]. Lebih dari dua kali lipat, jadi Wulan betul. Angka [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisihnya, bukan kelipatannya. Selisih itu malah lebih besar dari harga awal. Hitungannya berakhir kemarin, bukan hari ini. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga.",
+    "pengecoh": {
+      "a": {
+        "jenis": "nyaris-benar-angka",
+        "rujukan": "naik-2025-11-26-2025-12-09",
+        "umpan_balik": "Ini angka nyaris benar: kartu 4 mencatat selisih harga, bukan kelipatan. Selisihnya malah lebih besar dari harga awal."
+      },
+      "d": {
+        "jenis": "pertanyaan-lain",
+        "rujukan": "kelipatan-2025-11-26-2025-12-09",
+        "umpan_balik": "Ini menjawab pertanyaan lain: soalnya berapa kali lipat, dan kartu 3 menjawab lebih dari dua kali."
+      },
+      "b": {
+        "jenis": "salah-periode",
+        "rujukan": "kelipatan-2025-11-26-2025-12-09",
+        "umpan_balik": "Ini salah periode: kartu 3 menghitung kelipatan sampai sehari sebelum penghentian, bukan sampai hari ini."
+      }
+    },
+    "pertanyaan_cek": "Angka di kartu ini selisih atau kelipatan?"
+  },
+  "ke": 2,
+  "tag": "m2d14/uji-ulang/m2d13-opus-2/0648031f0be9/",
+  "waktu_mulai": "2026-10-02T18:31:21.157Z",
+  "waktu_selesai": "2026-10-02T18:31:40.838Z",
+  "pagu_usd": 0.15,
+  "setelan": {
+    "kritikus_max_tokens": 16000,
+    "catatan": "amandemen teknis M2d-14: max_tokens kritikus diturunkan agar perkiraan maksimum satu panggilan muat di pagu uji ulang; hal lain sama dengan mesin bebas M2d-13"
+  },
+  "hasil": {
+    "lolos": false,
+    "berhenti": "penebak",
+    "alasan": [
+      "tebak rotasi gagal: pesan-pilihan: kunci 8/12 (8,0/12); pilihan-saja: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: deepseek/deepseek-v4.1-flash memilih isi kunci di ≥ 3/4 rotasi; pesan-pilihan: z-ai/glm-5.3 memilih isi kunci di ≥ 3/4 rotasi [pilihan-saja: claude-haiku-4.5 isi -, deepseek-v4.1-flash isi -, glm-5.3 isi opsi asal c; pesan-pilihan: claude-haiku-4.5 isi opsi asal b, deepseek-v4.1-flash isi opsi asal c, glm-5.3 isi opsi asal c] — kunci = pilihan c; tanpa kartu, penebak memilih isi kunci terlalu sering"
+    ],
+    "biaya_usd": 0.011177,
+    "panggilan": 25
+  },
+  "biaya_ledger_usd": 0.011177,
+  "berkas_log": "0648031f0be91f94.jsonl"
+}

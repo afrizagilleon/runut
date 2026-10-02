@@ -59,6 +59,33 @@
           ]
         }
       ]
+    },
+    {
+      "ke": 3,
+      "oleh": "eksekutor (usulan suntingan penyetuju ke-3, berdasar alasan gerbang; suntingan terakhir yang diizinkan)",
+      "alasan": "Uji ulang gerbang AI sesudah suntingan ke-2 menolak di penebak: tanpa kartu, penebak memilih isi kunci terlalu sering (pesan+pilihan 11/12; pilihan saja: DeepSeek dan GLM ≥ 3/4 rotasi). Pengecoh \"dihitung sejak awal tahun\" langsung gugur oleh pesan (\"sejak akhir November\"), jadi tinggal satu \"Betul\". Usulan: dua pilihan \"Betul\" dibuat setara dan hanya bisa dibedakan dengan tanggal di kartu hitungan (sampai kemarin = 9 Desember, bukan sampai hari ini); umpan balik pengecoh dan satu kalimat penjelasan disesuaikan.",
+      "ubah": [
+        {
+          "omongan": 2,
+          "lokasi": "pilihan-b",
+          "teks": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai hari ini."
+        },
+        {
+          "omongan": 2,
+          "lokasi": "pilihan-c",
+          "teks": "Betul, [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat itu dihitung sampai kemarin."
+        },
+        {
+          "omongan": 2,
+          "lokasi": "umpan-balik-b",
+          "teks": "Ini salah periode: kartu 3 menghitung kelipatan sampai sehari sebelum penghentian, bukan sampai hari ini."
+        },
+        {
+          "omongan": 2,
+          "lokasi": "penjelasan",
+          "teks": "Kartu hitungan mencatat harga penutupan [[harga-2025-12-09|9 Desember 2025]] adalah [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] harga penutupan [[harga-2025-11-26|26 November 2025]]. Lebih dari dua kali lipat, jadi Wulan betul. Angka [[naik-2025-11-26-2025-12-09|Rp58]] adalah selisihnya, bukan kelipatannya. Selisih itu malah lebih besar dari harga awal. Hitungannya berakhir kemarin, bukan hari ini. Salah-kaprah yang umum: mencampur selisih rupiah dengan kelipatan harga."
+        }
+      ]
     }
   ]
 }
