@@ -21,6 +21,15 @@ export interface SkenarioPalsu {
   kartu?: (info: InfoTemplat, n: number) => KunciOpsi;
   kritikus?: (info: InfoTemplat, n: number) => string;
   penyempurna?: (pesan: PesanChat[], info: InfoTemplat) => string;
+  /** M2d-11: penebak rotasi (salin teks). Bawaan: huruf ke-(2r mod 4) → isi berganti tiap rotasi, kunci 1/4. */
+  rotasi?: (info: InfoTemplat, opsi: Record<KunciOpsi, string>) => string;
+}
+
+const HURUF_PALSU: readonly KunciOpsi[] = ['a', 'b', 'c', 'd'];
+function opsiPesan(user: string): Record<KunciOpsi, string> {
+  const h = {} as Record<KunciOpsi, string>;
+  for (const x of HURUF_PALSU) h[x] = new RegExp(`^${x}\\) (.*)$`, 'm').exec(user)?.[1] ?? '';
+  return h;
 }
 
 export function jawabPalsu(teks: string, tokenPenalaran = 2_000): JawabanModel {
@@ -33,6 +42,8 @@ export function panggilTemplatPalsu(paketId: string, s: SkenarioPalsu = {}): { p
   const log: InfoTemplat[] = [];
   const hitung = new Map<string, number>();
   const kunci = (no: number): KunciOpsi => hurufKunciKode(paketId, no);
+  // M2d-11: pembaca kartu rotasi — teks kunci dicatat di r0 (ke 1), dicari lagi di rotasi lain.
+  const teksKunci = new Map<number, string>();
   const panggil: PanggilTemplat = async (pesan, _setelan, info) => {
     log.push(info);
     const k = `${info.jenis}/${String(info.omongan)}`;
@@ -50,11 +61,24 @@ export function panggilTemplatPalsu(paketId: string, s: SkenarioPalsu = {}): { p
       const tok = [...user.matchAll(/^- (\[\[[^\]]+\]\])$/gm)].map((m) => m[1]).slice(0, 6).join(', ');
       return jawabPalsu(JSON.stringify({ penjelasan: `Menurut dokumennya: ${tok}. Salah-kaprah yang umum: orang sering salah baca kartunya.` }));
     }
+    if (info.jenis === 'gerbang-tebak' && (pesan[0]?.content ?? '').includes('SALIN teks')) {
+      const opsi = opsiPesan(user);
+      if (s.rotasi !== undefined) return jawabPalsu(s.rotasi(info, opsi), 0);
+      const r = (info.ke - 1) % 4;
+      return jawabPalsu(JSON.stringify({ teks: opsi[HURUF_PALSU[(2 * r) % 4] as KunciOpsi], alasan: 'tebakan' }), 0);
+    }
     if (info.jenis === 'gerbang-tebak') {
       const t = s.tebak?.(info, n) ?? { pilihan: lainDari(kunci(no)), yakin: 50 };
       return jawabPalsu(JSON.stringify({ ...t, alasan: 'tebakan' }), info.ke === 3 ? 600 : 0);
     }
-    if (info.jenis === 'gerbang-kartu') return jawabPalsu(JSON.stringify({ pilihan: s.kartu?.(info, n) ?? kunci(no), kartu: [1], alasan: 'kartu 1', membingungkan: [] }));
+    if (info.jenis === 'gerbang-kartu') {
+      let h = s.kartu?.(info, n) ?? kunci(no);
+      if (s.kartu === undefined && info.ke > 1) {
+        const opsi = opsiPesan(user);
+        h = HURUF_PALSU.find((x) => opsi[x] === teksKunci.get(no)) ?? h;
+      } else if (info.ke === 1) teksKunci.set(no, opsiPesan(user)[kunci(no)]);
+      return jawabPalsu(JSON.stringify({ pilihan: h, kartu: [1], alasan: 'kartu 1', membingungkan: [] }));
+    }
     if (info.jenis === 'kritikus') return jawabPalsu(s.kritikus?.(info, n) ?? KRITIK_BERSIH, 5_000);
     if (info.jenis === 'sempurnakan-pilihan') return jawabPalsu(s.penyempurna?.(pesan, info) ?? '{"pilihan":{},"alasan":"-"}', 0);
     throw new Error(`jenis ${info.jenis}`);

@@ -50,6 +50,10 @@ import { MODEL_PENYEMPURNA, pesanPenyempurna, SETELAN_PENYEMPURNA, uraiPenyempur
 import { calonRencana, kunciRencana, penggantiRencana, pilihRencanaSimulasi } from './pilih.ts';
 import type { RencanaSoal } from './pola.ts';
 import { pilihanBawaan, rakitOmonganTemplat, slotDariHuruf, type PilihanAktif, type TulisanPesan } from './rakit.ts';
+import { AMBANG_M2D11 } from '../cacat/ambang.ts';
+import { kartuRotasi, tebakRotasi, type HasilTebakRotasi, type KartuRotasi } from '../rotasi/jalan.ts';
+import { umpanBalik, type UmpanBalikSoal } from './label.ts';
+import { calonRencanaM2d11, pilihVarianBersih } from './m2d11.ts';
 
 export const MAKS_VERSI_RENCANA = 4;
 export const MAKS_PENYEMPURNAAN = 2;
@@ -76,6 +80,9 @@ export interface CatatanVersi {
   kartu: PutusanKartu | null;
   kritik: PutusanKritik | null;
   omongan: OmonganDraf | null;
+  /** M2d-11: tebak rotasi (24 panggilan) dan pembaca kartu r0+r2. */
+  rotasi?: HasilTebakRotasi | null;
+  kartu_rotasi?: { per_rotasi: Array<Omit<KartuRotasi, 'putusan'>>; lulus: boolean } | null;
 }
 
 export interface CatatanPenyempurnaan {
@@ -97,6 +104,8 @@ export interface KunciTemplat {
   penjelasan: string;
   omongan: OmonganDraf;
   penyempurna_dipakai: boolean;
+  /** M2d-11: label pengecoh + umpan balik + pertanyaan cek (disimpan, tidak dipasang). */
+  umpan_balik?: UmpanBalikSoal;
 }
 
 export interface HasilTemplat {
@@ -121,6 +130,8 @@ export interface OpsiTemplat {
   jam?: () => Date;
   saatKunci?: (k: KunciTemplat) => void;
   maksVersiRencana?: number;
+  /** M2d-11 (pra-registrasi §5): detektor cacat + label + tebak rotasi + kartu 2 rotasi. Bawaan: M2d-10. */
+  protokol?: 'm2d10' | 'm2d11';
 }
 
 type Catat = (l: Omit<LangkahJejak, 'no'>) => void;
@@ -152,7 +163,8 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
   };
 
   // --- 0. perencana
-  const pilih = pilihRencanaSimulasi(paket, calonRencana(paket));
+  const m2d11 = opsi.protokol === 'm2d11';
+  const pilih = pilihRencanaSimulasi(paket, m2d11 ? calonRencanaM2d11(paket) : calonRencana(paket));
   const calon = pilih.calon; // A-2: tanpa rencana yang mengulang soal pemanasan
   hasil.rencana_awal = pilih.posisi.map(kunciRencana);
   catat({
@@ -180,7 +192,7 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
     let rencanaKe = 1;
     const hurufKunci = hurufKunciKode(paket.paket_id, no);
     posisi: for (;;) {
-      let pilihan = pilihanBawaan(r);
+      let pilihan = m2d11 ? pilihVarianBersih(r, hurufKunci) : pilihanBawaan(r);
       let tulisan: TulisanPesan | null = null;
       let penjelasan: string | null = null;
       let umpanPesan: string[] = [];
@@ -231,7 +243,7 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
           hasil.draf_terakhir[no - 1] = o;
 
           // --- 2. pemeriksa kode
-          const kode = periksaKodeTemplat({ no, o, r, pilihan, tulisan, paket, namaLain: namaLain(no), gabung, terkunci });
+          const kode = periksaKodeTemplat({ no, o, r, pilihan, tulisan, paket, namaLain: namaLain(no), gabung, terkunci, ...(m2d11 ? { m2d11: { ambang: AMBANG_M2D11 } } : {}) });
           cv.dicatat.push(...kode.dicatat.map((m) => `${m.sumber}: ${m.alasan}`));
           catat({
             putaran, jenis: 'gerbang-g', omongan: no, waktu_mulai: jam().toISOString(), waktu_selesai: jam().toISOString(), model: null, panggilan: 0,
@@ -247,7 +259,52 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
             continue;
           }
 
-          // --- 3. penebak keluarga campur
+          // --- 3 (M2d-11). tebak rotasi + pembaca kartu r0+r2
+          if (m2d11) {
+            const mulaiR3 = jam().toISOString();
+            const tr = await tebakRotasi(o, { panggil, putaran, omongan: no });
+            cv.rotasi = tr;
+            const pr = tr.putusan;
+            const ringkasIsi = (['pilihan-saja', 'pesan-pilihan'] as const)
+              .map((kd) => `${kd}: ${pr.kondisi[kd].per_model.map((m) => `${m.model.split('/')[1] ?? m.model} isi ${m.isi_konsisten === null ? '-' : `opsi asal ${'abcd'[m.isi_konsisten] ?? '?'}`}${m.diabaikan ? ' (diabaikan)' : ''}`).join(', ')}`)
+              .join('; ');
+            const alasanR = `tebak rotasi ${pr.putusan}: ${pr.alasan.join('; ')} [${ringkasIsi}]`;
+            catat({
+              putaran, jenis: 'gerbang-tebak', omongan: no, waktu_mulai: mulaiR3, waktu_selesai: jam().toISOString(), model: 'haiku + deepseek + glm (rotasi)',
+              panggilan: tr.jawaban.reduce((a, x) => a + x.panggilan, 0), token_masuk: 0, token_keluar: 0, biaya_usd: tr.biaya_usd,
+              putusan: pr.putusan === 'lulus' ? 'lolos' : 'tolak', alasan: [alasanR], sha256_prompt: null,
+              rincian: { kunci: o.kunci, putusan: pr.putusan, kondisi: pr.kondisi, jawaban: tr.jawaban.map((x) => ({ model: x.model, kondisi: x.kondisi, r: x.r, huruf: x.huruf, isi: x.isi, terbaca: x.terbaca, alasan: x.alasan })) },
+              peran: 'penebak',
+            });
+            if (pr.putusan !== 'lulus') {
+              selesaiVersi('penebak', [alasanR]);
+              const tindak = await tindakLokasi([{ lokasi: 'pilihan', alasan: alasanR }], 'tertebak');
+              if (tindak === 'ganti-rencana') break;
+              continue;
+            }
+            const mulaiK2 = jam().toISOString();
+            const kr2 = await kartuRotasi(o, paket, { panggil, putaran, omongan: no });
+            cv.kartu_rotasi = { per_rotasi: kr2.per_rotasi.map(({ putusan: _p, ...x }) => x), lulus: kr2.lulus };
+            cv.kartu = kr2.per_rotasi[0]?.putusan ?? null;
+            const alasanK2 = kr2.per_rotasi.map((x) => `r${String(x.r)}: memilih ${String(x.pilihan)} (kunci ${x.kunci})${x.benar ? '' : ` — ${x.alasan}`}`).join('; ');
+            for (const x of kr2.per_rotasi) if (x.bingung.length > 0) cv.dicatat.push(`pembaca kartu r${String(x.r)} bingung: ${x.bingung.map((b) => `"${b}"`).join('; ')}`);
+            catat({
+              putaran, jenis: 'gerbang-kartu', omongan: no, waktu_mulai: mulaiK2, waktu_selesai: jam().toISOString(), model: MODEL_OR_DEEPSEEK,
+              panggilan: kr2.per_rotasi.reduce((a, x) => a + x.putusan.panggilan.length, 0), token_masuk: 0, token_keluar: 0, biaya_usd: kr2.per_rotasi.reduce((a, x) => a + x.biaya_usd, 0),
+              putusan: kr2.lulus ? 'lolos' : 'tolak', alasan: [`pembaca kartu 2 rotasi: ${alasanK2}`], sha256_prompt: null,
+              rincian: { kunci: o.kunci, per_rotasi: cv.kartu_rotasi.per_rotasi },
+              peran: 'pembaca-kartu',
+            });
+            if (!kr2.lulus) {
+              selesaiVersi('kartu', [`pembaca kartu tidak memilih kunci di kedua rotasi: ${alasanK2}`]);
+              const tindak = await tindakLokasi([{ lokasi: 'pilihan', alasan: `pembaca kartu: ${alasanK2}` }], 'pembaca-kartu');
+              if (tindak === 'ganti-rencana') break;
+              continue;
+            }
+          }
+
+          // --- 3. penebak keluarga campur (M2d-10)
+          if (!m2d11) {
           const mulaiT = jam().toISOString();
           const t = await penebakCampur(o, { panggil, putaran, omongan: no, setelan: setelan.penebak, hentiDini: true });
           cv.penebak = t;
@@ -270,10 +327,13 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
             if (tindak === 'ganti-rencana') break;
             continue;
           }
+          }
 
-          // --- 4. pembaca kartu
+          // --- 4. pembaca kartu (M2d-10; M2d-11 sudah di langkah 3)
+          let k = cv.kartu as PutusanKartu;
+          if (!m2d11) {
           const mulaiK = jam().toISOString();
-          const k = await pembacaKartu(o, paket, panggil, putaran, no);
+          k = await pembacaKartu(o, paket, panggil, putaran, no);
           cv.kartu = k;
           const benarK = k.pilihan === o.kunci;
           if ((k.membingungkan ?? []).length > 0) cv.dicatat.push(`pembaca kartu bingung: ${(k.membingungkan ?? []).map((x) => `"${x.kutipan}"`).join('; ')}`);
@@ -292,6 +352,7 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
             const tindak = await tindakLokasi([{ lokasi: 'pilihan', alasan: `pembaca kartu memilih pilihan ${dipilih ?? '(tak terbaca)'} ("${k.pilihan === null ? '' : o.pilihan[k.pilihan]}"); alasannya: ${k.alasan_penjawab}` }], 'pembaca-kartu');
             if (tindak === 'ganti-rencana') break;
             continue;
+          }
           }
 
           // --- 5. kritikus makna (paling akhir)
@@ -327,7 +388,7 @@ export async function jalankanTemplat(opsi: OpsiTemplat): Promise<HasilTemplat> 
           // --- lolos: dikunci
           selesaiVersi('lolos', []);
           terkunci.add(no);
-          const kc: KunciTemplat = { no, rencana: r, pilihan, tulisan, penjelasan, omongan: o, penyempurna_dipakai: disempurnakan };
+          const kc: KunciTemplat = { no, rencana: r, pilihan, tulisan, penjelasan, omongan: o, penyempurna_dipakai: disempurnakan, ...(m2d11 ? { umpan_balik: umpanBalik(r, paket, o.kunci) } : {}) };
           hasil.kunci.push(kc);
           opsi.saatKunci?.(kc);
           break posisi;

@@ -25,7 +25,7 @@ import { ambilDataEmiten, perkiraanKredit, PemuatGudang } from './emiten.ts';
 import { statusKonfig } from './konfig.ts';
 import { periksaFolderKeluaran } from './jalan.ts';
 import { mesinSungguhan, panggilSungguhan, type MesinPenulis } from './mesin.ts';
-import { KRITIKUS_TERKUNCI_A1, mesinTemplatPalsu, mesinTemplatSungguhan } from './mesin-templat.ts';
+import { KRITIKUS_TERKUNCI_A1, mesinTemplatM2d11Palsu, mesinTemplatM2d11Sungguhan, mesinTemplatPalsu, mesinTemplatSungguhan } from './mesin-templat.ts';
 import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
@@ -72,7 +72,7 @@ export interface OpsiServer {
   namaMesin?: NamaMesin;
 }
 
-export type NamaMesin = 'lingkar' | 'templat';
+export type NamaMesin = 'lingkar' | 'templat' | 'templat-m2d11';
 
 export interface KeadaanServer {
   opsi: OpsiServer;
@@ -357,15 +357,20 @@ export function buatAplikasi(opsi: OpsiServer): { server: Server; keadaan: Keada
     return k.llm.siap ? { siap: true, alasan: null } : { siap: false, alasan: `Kunci OpenRouter belum siap: ${[...k.llm.hilang.map((n) => `isi ${n} di .env`), ...k.llm.catatan].join('; ')}.` };
   };
   const templat = opsi.namaMesin === 'templat';
+  const m2d11 = opsi.namaMesin === 'templat-m2d11';
   const mesin =
     opsi.mesin ??
     (opsi.palsu
-      ? templat
-        ? mesinTemplatPalsu()
-        : mesinPalsu()
-      : templat
-        ? mesinTemplatSungguhan(panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log, KRITIKUS_TERKUNCI_A1), siapLlm)
-        : mesinSungguhan(opsi.akar, opsi.paguPenyusunUsd, siapLlm, opsi.log));
+      ? m2d11
+        ? mesinTemplatM2d11Palsu()
+        : templat
+          ? mesinTemplatPalsu()
+          : mesinPalsu()
+      : m2d11
+        ? mesinTemplatM2d11Sungguhan(panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log, KRITIKUS_TERKUNCI_A1), siapLlm)
+        : templat
+          ? mesinTemplatSungguhan(panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log, KRITIKUS_TERKUNCI_A1), siapLlm)
+          : mesinSungguhan(opsi.akar, opsi.paguPenyusunUsd, siapLlm, opsi.log));
   const alur: KonteksAlur = {
     akar: opsi.akar,
     folderKeluaran: periksaFolderKeluaran(opsi.folderKeluaran),
@@ -474,7 +479,7 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
       hasil.paguPenyusunUsd = n;
       i++;
     } else if (a === '--mesin' && nilai !== undefined) {
-      if (nilai !== 'lingkar' && nilai !== 'templat') throw new Error('--mesin harus "lingkar" (M2d-8) atau "templat" (M2d-10).');
+      if (nilai !== 'lingkar' && nilai !== 'templat' && nilai !== 'templat-m2d11') throw new Error('--mesin harus "lingkar" (M2d-8), "templat" (M2d-10), atau "templat-m2d11" (M2d-11).');
       hasil.mesin = nilai;
       i++;
     } else if (a === '--keluaran' && nilai !== undefined) {

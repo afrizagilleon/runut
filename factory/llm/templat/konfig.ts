@@ -25,7 +25,8 @@ export const PAGU_BAGIAN_M2D10 = {
 /** Id jalan TIRT lewat pintu penyusun (tag `penyusun/<id>/…`) berawalan ini ikut pagu milestone. */
 export const AWALAN_ID_JALAN_M2D10 = 'm2d10-';
 
-const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', 'm2d8/', 'penyusun/', AWALAN_TAG_M2D10] as const;
+// M2d-11: entri `m2d11/` juga sah (tidak dihitung biaya M2d-10).
+const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', 'm2d8/', 'penyusun/', AWALAN_TAG_M2D10, 'm2d11/'] as const;
 
 function entri(jalur: string): EntriLedger[] {
   if (!existsSync(jalur)) return [];

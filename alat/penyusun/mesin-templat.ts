@@ -20,6 +20,8 @@ import { SETELAN_PENYEMPURNA } from '../../factory/llm/templat/penyempurna.ts';
 import { pilihRencanaSimulasi } from '../../factory/llm/templat/pilih.ts';
 import type { PaketFakta } from '../../factory/llm/paket.ts';
 import { SETELAN_TEMPLAT_A1 } from '../../factory/llm/templat/setelan.ts';
+import { calonRencanaM2d11, SETELAN_TEMPLAT_M2D11 } from '../../factory/llm/templat/m2d11.ts';
+import { MODEL_ROTASI } from '../../factory/llm/rotasi/rotasi.ts';
 import { kritikusTerkunci, pagarKritikusTerkunci } from '../../factory/llm/templat/penyedia.ts';
 import { ujiUlangTemplat } from '../../factory/llm/templat/uji-ulang.ts';
 import { AWALAN_TAG_PENYUSUN } from './biaya.ts';
@@ -105,6 +107,20 @@ export interface OpsiMesinTemplat {
   buatPanggil: BuatPanggilTemplat;
   siap: () => { siap: boolean; alasan: string | null };
   setelan?: SetelanTumpukan;
+  /** M2d-11: detektor cacat + label + tebak rotasi + kartu 2 rotasi. */
+  protokol?: 'm2d10' | 'm2d11';
+}
+
+/** Perkiraan M2d-11: penebak = 8 panggilan rotasi per keluarga (+ ulang), pembaca kartu × 2 rotasi. */
+export function perkiraanTemplatM2d11(): PerkiraanBiaya {
+  const dasar = perkiraanTemplat();
+  const per = [
+    ...dasar.per_panggilan.filter((x) => !x.peran.startsWith('penebak') && !x.peran.startsWith('pembaca kartu')),
+    ...MODEL_ROTASI.map((m) => ({ peran: `penebak rotasi ${m.nama} (8 panggilan, tanpa kartu)`, model: m.model, maks_usd: bulat(16 * maks(m.model, m.setelan.maxTokens)) })),
+    { peran: 'pembaca kartu (2 rotasi)', model: MODEL_OR_DEEPSEEK, maks_usd: bulat(4 * maks(MODEL_OR_DEEPSEEK, SETELAN_KARTU.maxTokens)) },
+  ];
+  const perVersi = per.reduce((a, x) => a + x.maks_usd, 0);
+  return { ...dasar, per_panggilan: per, per_omongan_usd: bulat(perVersi), per_putaran_usd: bulat(3 * perVersi) };
 }
 
 export class MesinTemplat implements MesinPenulis {
@@ -128,11 +144,11 @@ export class MesinTemplat implements MesinPenulis {
   }
 
   perkiraan(): PerkiraanBiaya {
-    return perkiraanTemplat();
+    return this.o.protokol === 'm2d11' ? perkiraanTemplatM2d11() : perkiraanTemplat();
   }
 
   cukupPaket(paket: PaketFakta): { cukup: boolean; jumlah: number; satuan: string } {
-    const n = pilihRencanaSimulasi(paket).posisi.length;
+    const n = (this.o.protokol === 'm2d11' ? pilihRencanaSimulasi(paket, calonRencanaM2d11(paket)) : pilihRencanaSimulasi(paket)).posisi.length;
     return { cukup: n >= 3, jumlah: n, satuan: 'rencana templat' };
   }
 
@@ -172,6 +188,7 @@ export class MesinTemplat implements MesinPenulis {
       jejak,
       jam: k.jam,
       saatKunci: (x) => keadaan.push(keadaanDariKunci(x)),
+      ...(this.o.protokol === undefined ? {} : { protokol: this.o.protokol }),
     });
     return {
       terbit: h.lolos,
@@ -217,6 +234,39 @@ export function mesinTemplatSungguhan(buatPanggil: BuatPanggilTemplat, siap: () 
     buatPanggil,
     siap,
   });
+}
+
+/** Mesin templat M2d-11 sungguhan (pra-registrasi M2d-11 §5). */
+export function mesinTemplatM2d11Sungguhan(buatPanggil: BuatPanggilTemplat, siap: () => { siap: boolean; alasan: string | null }): MesinTemplat {
+  return new MesinTemplat({
+    nama: 'templat-m2d11',
+    keterangan: 'mesin templat M2d-11: templat berlabel jenis kesalahan + umpan balik, detektor cacat (ambang kalibrasi), tebak rotasi 4 × 3 keluarga × 2 kondisi, pembaca kartu 2 rotasi, kritikus GLM "high" (Wafer) paling akhir',
+    palsu: false,
+    buatPanggil,
+    siap,
+    setelan: SETELAN_TEMPLAT_M2D11,
+    protokol: 'm2d11',
+  });
+}
+
+/** Mesin templat M2d-11 palsu: kode sungguhan, model palsu. */
+export function mesinTemplatM2d11Palsu(): MesinTemplat {
+  let paketId = 'tirt';
+  const m = new MesinTemplat({
+    nama: 'templat-m2d11-palsu',
+    keterangan: 'mesin templat M2d-11 dengan model PALSU, tanpa jaringan, tanpa biaya',
+    palsu: true,
+    buatPanggil: () => panggilTemplatPalsu(paketId).panggil,
+    siap: () => ({ siap: true, alasan: null }),
+    setelan: SETELAN_TEMPLAT_M2D11,
+    protokol: 'm2d11',
+  });
+  const asli = m.jalankan.bind(m);
+  m.jalankan = (k: KonteksJalan) => {
+    paketId = k.paket.paket_id;
+    return asli(k);
+  };
+  return m;
 }
 
 /** Mesin templat palsu (`--palsu --mesin templat`): gerbang kode & bukti sungguhan, model palsu. */

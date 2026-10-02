@@ -28,7 +28,9 @@ import { validasiM2d8 } from '../kalibrasi-soal.ts';
 import type { PaketFakta } from '../paket.ts';
 import { periksaRujukanHuruf } from '../posisi-kunci.ts';
 import { dariG, dariGaya, dariHuruf, dariKembar, dariMeresmikan, dariValidator, isiLokasi, type UmpanMentah } from '../umpan-terarah.ts';
+import { deteksi, menolak, type AmbangCacat } from '../cacat/detektor.ts';
 import { bocorKalender } from './a2.ts';
+import { umpanBalik, validasiUmpanBalik } from './label.ts';
 import { buktiKunciTunggal } from './bukti.ts';
 import { periksaTulisanPenjelasan, periksaTulisanPesan } from './penulis.ts';
 import type { RencanaSoal } from './pola.ts';
@@ -61,6 +63,13 @@ export interface ArgKode {
   namaLain: readonly string[];
   gabung: ReadonlyArray<OmonganDraf | null>;
   terkunci: ReadonlySet<number>;
+  /** M2d-11: ambang detektor cacat (hasil kalibrasi) + validasi label & umpan balik. */
+  m2d11?: { ambang: AmbangCacat };
+}
+
+/** Lokasi perbaikan bendera detektor M2d-11 (pra-registrasi §5): D3/D4 bergantung pesan; D8 = struktur. */
+export function lokasiDetektor(kode: string): LokasiMasalah {
+  return kode === 'D3' || kode === 'D4' ? 'pesan' : kode === 'D8' ? 'struktur' : 'pilihan';
 }
 
 /** Semua pemeriksaan kode atas satu versi omongan. Murni. */
@@ -94,6 +103,12 @@ export function periksaKodeTemplat(a: ArgKode): HasilKode {
     if (sudah.has(k)) continue;
     sudah.add(k);
     semua.push({ lokasi: lokasiDari(u), sumber: u.sumber, alasan: u.alasan });
+  }
+  if (a.m2d11 !== undefined) {
+    for (const b of menolak(deteksi({ pesan: o.pesan, pilihan: o.pilihan, kunci: o.kunci }, a.m2d11.ambang))) {
+      semua.push({ lokasi: lokasiDetektor(b.kode), sumber: `detektor ${b.kode} (${b.nama})`, alasan: `${b.alasan}; opsi ${b.opsi.join(', ')}` });
+    }
+    for (const m of validasiUmpanBalik(umpanBalik(r, paket, o.kunci), r)) semua.push({ lokasi: 'struktur', sumber: 'M2d-11: umpan balik/label', alasan: m });
   }
   const turun = (m: MasalahKode): boolean => {
     const kode = m.sumber.startsWith('pemeriksa: ') ? m.sumber.slice('pemeriksa: '.length) : null;
