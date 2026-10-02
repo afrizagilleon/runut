@@ -80,6 +80,7 @@
     "patokan:jalan": "node --experimental-strip-types alat/penyusun/jalan-patokan.ts",
     "patokan:audit": "node --experimental-strip-types factory/llm/patokan/audit.ts",
     "patokan:pemanasan": "node --experimental-strip-types factory/llm/patokan/pemanasan.ts",
+    "penulis:analisis-lama": "node --experimental-strip-types factory/llm/bebas/analisis-lama.ts",
     "patokan:laporan": "node --experimental-strip-types factory/llm/patokan/laporan.ts"
   },
   "dependencies": {
