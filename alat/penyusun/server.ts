@@ -15,7 +15,7 @@
  */
 import { createServer, type IncomingMessage, type Server, type ServerResponse } from 'node:http';
 import { existsSync, readFileSync } from 'node:fs';
-import { extname, join } from 'node:path';
+import { extname, isAbsolute, join, relative, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { pengambilSungguhan, type Pengambil } from '../sectors.ts';
 import { Aliran, sambungSse } from './aliran.ts';
@@ -29,6 +29,7 @@ import { KRITIKUS_TERKUNCI_A1, mesinTemplatM2d11Palsu, mesinTemplatM2d11Sungguha
 import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
+import { bacaRekaman, jamSungguhan, JamVirtual, putarRekaman, RUMUS_JEDA, type JamTayang, type PemutarTayang, type Rekaman } from './tayang-ulang.ts';
 
 /** Satu-satunya alamat yang boleh didengar. Tidak bisa diubah lewat argumen. */
 export const HOST = '127.0.0.1';
@@ -48,6 +49,7 @@ const BERKAS_HALAMAN: Readonly<Record<string, string>> = {
   '/index.html': 'index.html',
   '/app.js': 'app.js',
   '/gaya.css': 'gaya.css',
+  '/ringkas.js': 'ringkas.js',
 };
 
 export interface OpsiServer {
@@ -70,15 +72,31 @@ export interface OpsiServer {
   mesin?: MesinPenulis;
   /** M2d-10: mesin yang dipilih di baris perintah (`--mesin`); bawaan `lingkar`. */
   namaMesin?: NamaMesin;
+  /**
+   * M2d-12: mode tayang ulang — putar `aliran.jsonl` satu jalan yang sudah
+   * terjadi. Tanpa model, tanpa Sectors, tanpa tulisan ke folder jalan.
+   * `jam`: bawaan jam sungguhan; perekam memakai `JamVirtual`.
+   */
+  tayangUlang?: { folder: string; jam?: JamTayang };
 }
 
 export type NamaMesin = 'lingkar' | 'templat' | 'templat-m2d11';
+
+export interface KeadaanTayang {
+  rekaman: Rekaman;
+  jam: JamTayang;
+  /** Ada hanya bila jam virtual (perekam): `POST /api/tayang/maju`. */
+  virtual: JamVirtual | null;
+  pemutar: PemutarTayang;
+  status: Record<string, unknown>;
+}
 
 export interface KeadaanServer {
   opsi: OpsiServer;
   aliran: Map<string, Aliran>;
   gudang: PemuatGudang;
   alur: KonteksAlur;
+  tayang: KeadaanTayang | null;
 }
 
 export class GalatPermintaan extends Error {
@@ -187,6 +205,10 @@ function cocokkan(peta: Map<string, Penangan>, jalur: string): { f: Penangan; ba
 
 daftarRute('GET', '/api/status', (_req, res, { keadaan }) => {
   const o = keadaan.opsi;
+  if (keadaan.tayang !== null) {
+    kirimJson(res, 200, { mode: 'tayang-ulang', hari_ini: o.jam().toISOString().slice(0, 10), rekaman: keadaan.tayang.status });
+    return;
+  }
   const k = statusKonfig(o.akar, o.proses ?? process.env);
   kirimJson(res, 200, {
     mode: o.palsu ? 'palsu' : 'sungguhan',
@@ -329,8 +351,18 @@ daftarRute('POST', '/api/jalan/:id/tolak', (_req, res, { keadaan, bagian, badan 
   kirimJson(res, 200, { berkas: tolak(keadaan.alur, j, b['alasan']) });
 });
 
+function nomorSesudah(req: IncomingMessage): number {
+  const dari = Number(req.headers['last-event-id'] ?? new URL(req.url ?? '/', 'http://x').searchParams.get('sesudah') ?? 0);
+  return Number.isFinite(dari) && dari > 0 ? dari : 0;
+}
+
 daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
   const id = bagian[0] ?? '';
+  if (keadaan.tayang !== null) {
+    // Tayang ulang: setiap sambungan memutar rekaman dari nomor yang diminta.
+    putarRekaman(res, keadaan.tayang.rekaman, keadaan.tayang.jam, nomorSesudah(req), keadaan.tayang.pemutar);
+    return;
+  }
   let a = keadaan.aliran.get(id);
   if (a === undefined) {
     try {
@@ -340,15 +372,90 @@ daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
     }
   }
   if (a === undefined) throw new GalatPermintaan(404, 'Jalan tidak dikenal.');
-  const dari = Number(req.headers['last-event-id'] ?? new URL(req.url ?? '/', 'http://x').searchParams.get('sesudah') ?? 0);
-  sambungSse(res, a, Number.isFinite(dari) && dari > 0 ? dari : 0);
+  sambungSse(res, a, nomorSesudah(req));
+});
+
+/** M2d-12: perekam bingkai memajukan jam virtual tayang ulang (hanya `--jam-virtual`). */
+daftarRute('POST', '/api/tayang/maju', async (_req, res, { keadaan, badan }) => {
+  const t = keadaan.tayang;
+  if (t === null || t.virtual === null) throw new GalatPermintaan(409, 'Jam virtual hanya ada di mode tayang ulang dengan --jam-virtual.');
+  const ms = Number(bacaBadanObyek(badan)['ms']);
+  if (!Number.isFinite(ms) || ms < 0 || ms > 60_000) throw new GalatPermintaan(400, 'ms harus 0–60000.');
+  const waktu = await t.virtual.maju(ms);
+  kirimJson(res, 200, { waktu_ms: waktu, terkirim: t.pemutar.terkirim, selesai: t.pemutar.selesai, jumlah: t.rekaman.peristiwa.length });
 });
 
 /* ---------------------------------------------------------------------- */
 /* aplikasi                                                                */
 /* ---------------------------------------------------------------------- */
 
-export function buatAplikasi(opsi: OpsiServer): { server: Server; keadaan: KeadaanServer } {
+const BULAN_PENDEK = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+/** Tanggal & jam WIB (UTC+7) dari stempel ISO: { tanggal: "2 Okt 2026", jam: "18.44" }. */
+export function waktuWib(iso: string): { tanggal: string; jam: string } {
+  const t = new Date(Date.parse(iso) + 7 * 3_600_000);
+  if (Number.isNaN(t.getTime())) return { tanggal: iso, jam: '' };
+  const dua = (n: number): string => String(n).padStart(2, '0');
+  return { tanggal: `${String(t.getUTCDate())} ${BULAN_PENDEK[t.getUTCMonth()] ?? ''} ${String(t.getUTCFullYear())}`, jam: `${dua(t.getUTCHours())}.${dua(t.getUTCMinutes())}` };
+}
+
+const JALUR_CATATAN = fileURLToPath(new URL('./rekaman/catatan.json', import.meta.url));
+
+/** Catatan sesudah jalan (bukan bagian log) untuk satu id, bila ada. */
+function catatanRekaman(id: string): { persetujuan: string | null; sesudah: string[]; sumber: string | null } {
+  if (!existsSync(JALUR_CATATAN)) return { persetujuan: null, sesudah: [], sumber: null };
+  const semua = JSON.parse(readFileSync(JALUR_CATATAN, 'utf8')) as { jalan?: Record<string, { persetujuan?: string; sesudah?: string[]; sumber?: string }> };
+  const c = semua.jalan?.[id];
+  return { persetujuan: c?.persetujuan ?? null, sesudah: c?.sesudah ?? [], sumber: c?.sumber ?? null };
+}
+
+/** Status rekaman untuk halaman (semua dari log + keadaan.json jalan; catatan terpisah). */
+export function statusRekaman(r: Rekaman, akar: string): Record<string, unknown> {
+  const jalurKeadaan = join(r.folder, 'keadaan.json');
+  const k = r.berkas.keadaan ? (JSON.parse(readFileSync(jalurKeadaan, 'utf8')) as { kode?: string; tanggal?: string; dibuat?: string }) : {};
+  const pertama = r.peristiwa[0];
+  const terakhir = r.peristiwa.at(-1);
+  const dibuat = k.dibuat ?? pertama?.waktu ?? '';
+  const w = waktuWib(dibuat);
+  const pagu = r.peristiwa.find((p) => p.tahap === 'agen' && typeof p.isi['pagu_usd'] === 'number')?.isi['pagu_usd'] ?? null;
+  const rel = relative(akar, r.folder);
+  return {
+    id: r.id,
+    label: `Rekaman jalan ${r.id}, ${w.tanggal}`,
+    tanggal_jalan: w.tanggal,
+    jam_jalan_wib: w.jam,
+    kode: k.kode ?? null,
+    tanggal_t: k.tanggal ?? null,
+    jumlah_peristiwa: r.peristiwa.length,
+    asli_ms: pertama !== undefined && terakhir !== undefined ? Math.max(0, Date.parse(terakhir.waktu) - Date.parse(pertama.waktu)) : 0,
+    putar_ms: r.jadwal.at(-1)?.pada_ms ?? 0,
+    rumus: RUMUS_JEDA,
+    pagu_usd: pagu,
+    sumber_log: rel.startsWith('..') || isAbsolute(rel) ? `${r.id}/aliran.jsonl` : `${rel.split(sep).join('/')}/aliran.jsonl`,
+    berkas: r.berkas,
+    catatan: catatanRekaman(r.id),
+  };
+}
+
+/** Mesin pengganti di mode tayang ulang: tidak pernah menjalankan apa pun. */
+function mesinRekaman(): MesinPenulis {
+  const tolak = (): Promise<never> => Promise.reject(new Error('mode tayang ulang: tidak ada panggilan'));
+  return {
+    nama: 'tayang-ulang',
+    keterangan: 'rekaman jalan; tidak memanggil model',
+    palsu: true,
+    siap: () => ({ siap: false, alasan: 'Mode tayang ulang: ini rekaman, tidak ada panggilan.' }),
+    perkiraan: () => ({ per_panggilan: [], per_omongan_usd: 0, per_putaran_usd: 0, maks_putaran: 0, catatan: [] }),
+    jalankan: tolak,
+    perkiraanUjiUlang: () => 0,
+    ujiUlang: tolak,
+  };
+}
+
+export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan: KeadaanServer } {
+  const rekaman = opsiMentah.tayangUlang === undefined ? null : bacaRekaman(opsiMentah.tayangUlang.folder);
+  // Tayang ulang: tanpa jaringan (palsu), folder keluaran = induk folder jalan (hanya dibaca), mesin pengganti.
+  const opsi: OpsiServer = rekaman === null ? opsiMentah : { ...opsiMentah, palsu: true, folderKeluaran: rekaman.folderInduk, mesin: mesinRekaman() };
   const aliran = new Map<string, Aliran>();
   const gudang = new PemuatGudang(opsi.folderGudang ?? join(opsi.akar, '.cache', 'sectors'));
   const proses = opsi.proses ?? process.env;
@@ -383,11 +490,35 @@ export function buatAplikasi(opsi: OpsiServer): { server: Server; keadaan: Keada
     jalan: new Map(),
     daftarAliran: (j) => aliran.set(j.data.id, j.aliran),
   };
-  const keadaan: KeadaanServer = { opsi, aliran, gudang, alur };
+  let tayang: KeadaanTayang | null = null;
+  if (rekaman !== null) {
+    const jam = opsiMentah.tayangUlang?.jam ?? jamSungguhan();
+    tayang = { rekaman, jam, virtual: jam instanceof JamVirtual ? jam : null, pemutar: { terkirim: 0, selesai: false }, status: statusRekaman(rekaman, opsi.akar) };
+  }
+  const keadaan: KeadaanServer = { opsi, aliran, gudang, alur, tayang };
   const server = createServer((req, res) => {
     void layani(req, res, keadaan);
   });
   return { server, keadaan };
+}
+
+/**
+ * Mode tayang ulang hanya melayani: halaman, status, potret & aliran jalan yang
+ * direkam, dan (bila jam virtual) `POST /api/tayang/maju`. Tindakan lain —
+ * siapkan, mulai, sunting, uji ulang, setujui, tolak, ambil data — ditolak 409.
+ */
+function jagaTayang(metode: string, jalur: string, t: KeadaanTayang): void {
+  const tolak = (): never => {
+    throw new GalatPermintaan(409, `Mode tayang ulang: ini rekaman jalan ${t.rekaman.id}; tidak ada tindakan yang dijalankan dan tidak ada panggilan model.`);
+  };
+  if (metode === 'POST') {
+    if (jalur === '/api/tayang/maju' && t.virtual !== null) return;
+    tolak();
+  }
+  if (metode !== 'GET') return;
+  const m = /^\/api\/jalan\/([^/]+)(\/aliran)?$/.exec(jalur);
+  if (m !== null && decodeURIComponent(m[1] ?? '') !== t.rekaman.id) throw new GalatPermintaan(404, 'Jalan tidak dikenal.');
+  if (jalur.startsWith('/api/') && jalur !== '/api/status' && m === null) tolak();
 }
 
 async function layani(req: IncomingMessage, res: ServerResponse, keadaan: KeadaanServer): Promise<void> {
@@ -395,6 +526,7 @@ async function layani(req: IncomingMessage, res: ServerResponse, keadaan: Keadaa
   const url = new URL(req.url ?? '/', 'http://127.0.0.1');
   try {
     if (!hostSah(req.headers.host)) throw new GalatPermintaan(403, 'Host tidak dikenal; pintu penyusun hanya melayani 127.0.0.1.');
+    if (keadaan.tayang !== null) jagaTayang(metode, url.pathname, keadaan.tayang);
     if (metode === 'GET') {
       const berkas = BERKAS_HALAMAN[url.pathname];
       if (berkas !== undefined) {
@@ -455,14 +587,19 @@ export interface ArgumenServer {
   paguPenyusunUsd: number;
   keluaran: string;
   mesin: NamaMesin;
+  /** M2d-12: folder jalan yang diputar ulang (`--tayang-ulang <folder>`). */
+  tayangUlang: string | null;
+  /** M2d-12: jam virtual untuk perekam bingkai (`--jam-virtual`). */
+  jamVirtual: boolean;
 }
 
 /**
- * `--port <n>`, `--pagu-penyusun <usd>`, `--palsu`, `--keluaran <folder>`, `--mesin lingkar|templat` (M2d-10).
+ * `--port <n>`, `--pagu-penyusun <usd>`, `--palsu`, `--keluaran <folder>`, `--mesin lingkar|templat` (M2d-10),
+ * `--tayang-ulang <folder jalan>` dan `--jam-virtual` (M2d-12).
  * `--host` sengaja DITOLAK: server ini hanya untuk 127.0.0.1.
  */
 export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): ArgumenServer {
-  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar' };
+  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', tayangUlang: null, jamVirtual: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const nilai = argv[i + 1];
@@ -485,8 +622,13 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
     } else if (a === '--keluaran' && nilai !== undefined) {
       hasil.keluaran = nilai;
       i++;
-    } else throw new Error(`Argumen tidak dikenal: ${String(a)}`);
+    } else if (a === '--tayang-ulang' && nilai !== undefined) {
+      hasil.tayangUlang = nilai;
+      i++;
+    } else if (a === '--jam-virtual') hasil.jamVirtual = true;
+    else throw new Error(`Argumen tidak dikenal: ${String(a)}`);
   }
+  if (hasil.jamVirtual && hasil.tayangUlang === null) throw new Error('--jam-virtual hanya berlaku bersama --tayang-ulang <folder jalan>.');
   return hasil;
 }
 
@@ -500,8 +642,14 @@ async function utama(): Promise<number> {
     paguPenyusunUsd: arg.paguPenyusunUsd,
     palsu: arg.palsu,
     namaMesin: arg.mesin,
+    ...(arg.tayangUlang === null ? {} : { tayangUlang: { folder: arg.tayangUlang, ...(arg.jamVirtual ? { jam: new JamVirtual() } : {}) } }),
   });
   const port = await dengarkan(server, arg.port);
+  if (arg.tayangUlang !== null) {
+    console.log(`Pintu penyusun — TAYANG ULANG ${arg.tayangUlang}${arg.jamVirtual ? ' (jam virtual: maju lewat POST /api/tayang/maju)' : ''}: http://${HOST}:${String(port)}/`);
+    console.log('Tanpa panggilan model, tanpa Sectors, tanpa tulisan ke folder jalan. Muat ulang halaman untuk memutar dari awal.');
+    return 0;
+  }
   console.log(`Pintu penyusun${arg.palsu ? ' (MODE PALSU: agen & Sectors palsu, tanpa jaringan)' : ''}, mesin ${arg.mesin}: http://${HOST}:${String(port)}/`);
   console.log(`Hanya mendengar di ${HOST}. Hentikan dengan Ctrl+C.`);
   return 0;
