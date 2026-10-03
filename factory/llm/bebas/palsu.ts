@@ -79,10 +79,10 @@ export function panggilBebasPalsu(s: SkenarioBebas = {}): { panggil: PanggilTemp
     if (g !== null) throw g;
     log.push(info);
     const user = pesan[1]?.content ?? '';
-    if (info.jenis === 'tulis-bebas') {
+    if (info.jenis === 'tulis-bebas' || info.jenis === 'tulis-praperiksa') {
       nPenulis += 1;
       pesanPenulis.push(pesan);
-      const diminta = info.putaran === 1 && !user.includes('Tulis ulang HANYA') ? [1, 2, 3] : (/Tulis ulang HANYA omongan nomor ([\d, ]+)\./.exec(user)?.[1] ?? '').split(',').map((x) => Number(x.trim())).filter((x) => x > 0);
+      const diminta = info.putaran === 1 && info.jenis === 'tulis-bebas' && !user.includes('Tulis ulang HANYA') ? [1, 2, 3] : (/Tulis ulang HANYA omongan nomor ([\d, ]+)\./.exec(user)?.[1] ?? '').split(',').map((x) => Number(x.trim())).filter((x) => x > 0);
       const teks = (s.penulis ?? penulisPalsuBawaan)(info.putaran, diminta, pesan, nPenulis);
       for (const x of (JSON.parse(teks.startsWith('{') ? teks : '{"omongan":[]}') as { omongan: Array<OmonganBebas & { no: number }> }).omongan ?? []) {
         if (x.pilihan !== undefined) teksKunci.set(x.no, teksPolos(x.pilihan[x.kunci]));

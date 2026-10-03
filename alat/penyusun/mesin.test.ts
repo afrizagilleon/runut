@@ -86,6 +86,8 @@ describe('pemanggil sungguhan: pagu berlapis dan dua model, sebelum fetch', () =
   it('tag = penyusun/<id>/p<putaran>/<jenis>/o<n>/t<k>/u<k>', () => {
     expect(tagPanggilan('penyusun/j/', { jenis: 'gerbang-tebak', putaran: 2, omongan: 1, ke: 3, ulang: 1 })).toBe('penyusun/j/p2/gerbang-tebak/o1/t3/u1');
     expect(tagPanggilan('penyusun/j/', { jenis: 'kritikus', putaran: 1, omongan: 2, ke: 1 })).toBe('penyusun/j/p1/kritikus/o2');
+    // M2d-15: tulis-ulang pra-periksa ke-k
+    expect(tagPanggilan('penyusun/j/', { jenis: 'tulis-praperiksa', putaran: 2, omongan: null, ke: 2 })).toBe('penyusun/j/p2/tulis-praperiksa/k2');
   });
 
   it('model di luar model yang diizinkan (DeepSeek, GLM, Haiku) → ditolak tanpa fetch', async () => {

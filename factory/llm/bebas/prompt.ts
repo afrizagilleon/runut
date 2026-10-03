@@ -114,6 +114,34 @@ export function pesanRevisi(paket: PaketFakta, lulus: ReadonlyArray<{ no: number
 }
 
 /**
+ * M2d-15 D-3: tulis-ulang sesudah pra-periksa kode gratis (sebelum penguji).
+ * Omongan lain di simulasi (lulus atau sedang diperiksa) ikut sebagai konteks;
+ * alasan = alasan gerbang kode yang SAMA persis. `sistem` = prompt sistem yang
+ * dipakai jalan itu (byte sama dengan panggilan versi).
+ */
+export function pesanPraPeriksa(paket: PaketFakta, sistem: string, konteks: ReadonlyArray<{ no: number; omongan: OmonganBebas }>, ditolak: readonly Ditolak[]): PesanChat[] {
+  const nomor = ditolak.map((d) => d.no);
+  const bagian: string[] = [teksPaket(paket), ''];
+  if (konteks.length > 0) {
+    bagian.push('OMONGAN LAIN DI SIMULASI INI (konteks saja — JANGAN ditulis ulang; omonganmu harus bersudut lain dan pengirimnya berbeda):');
+    for (const l of konteks) bagian.push(jsonOmongan(l.no, l.omongan));
+    bagian.push('');
+  }
+  bagian.push('OMONGAN YANG DITOLAK PEMERIKSA KODE (diperiksa sebelum diuji; tulis ulang masing-masing sampai semua aturan terpenuhi — boleh mengganti sudut, kartu, dan seluruh kalimatnya):');
+  for (const d of ditolak) {
+    bagian.push(`--- omongan ${String(d.no)} ---`);
+    bagian.push(d.omongan === null ? 'versi sebelumnya: (tidak ada)' : `versi sebelumnya: ${jsonOmongan(d.no, d.omongan)}`);
+    bagian.push('alasan penolakan:');
+    for (const a of d.alasan) bagian.push(`- ${a}`);
+  }
+  bagian.push('', `Tulis ulang HANYA omongan nomor ${nomor.join(', ')}. Keluarkan JSON saja: {"omongan": [ ... ]} berisi tepat ${String(nomor.length)} objek, masing-masing dengan "no" yang sesuai.`);
+  return [
+    { role: 'system', content: sistem },
+    { role: 'user', content: bagian.join('\n') },
+  ];
+}
+
+/**
  * Urai keluaran penulis untuk nomor yang diminta. Omongan tanpa "no" diberi
  * nomor menurut urutan permintaan. Nomor yang tidak ada/tak terurai → hilang.
  * Murni.

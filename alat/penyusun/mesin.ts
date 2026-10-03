@@ -265,12 +265,13 @@ export interface InfoPanggilPintu {
 }
 export type PanggilPintu = (pesan: PesanChat[], setelan: SetelanPanggil, info: InfoPanggilPintu) => Promise<JawabanModel>;
 
-/** Tag ledger satu panggilan: `penyusun/<id>/p<putaran>/<jenis>[/o<n>][/t<k>][/u<k>]`. */
+/** Tag ledger satu panggilan: `penyusun/<id>/p<putaran>/<jenis>[/o<n>][/t<k>|/k<k>][/u<k>]` (`/k<k>` = tulis-ulang pra-periksa ke-k, M2d-15). */
 export function tagPanggilan(awalan: string, info: Pick<InfoPanggilPintu, 'jenis' | 'putaran' | 'omongan' | 'ke' | 'ulang'>): string {
   const o = info.omongan === null ? '' : `/o${String(info.omongan)}`;
   const ke = info.jenis === 'gerbang-tebak' || info.jenis === 'gerbang-pilihan-saja' ? `/t${String(info.ke)}` : '';
+  const pra = info.jenis === 'tulis-praperiksa' ? `/k${String(info.ke)}` : '';
   const ulang = info.ulang !== undefined && info.ulang > 0 ? `/u${String(info.ulang)}` : '';
-  return `${awalan}p${String(info.putaran)}/${info.jenis}${o}${ke}${ulang}`;
+  return `${awalan}p${String(info.putaran)}/${info.jenis}${o}${ke}${pra}${ulang}`;
 }
 
 /**

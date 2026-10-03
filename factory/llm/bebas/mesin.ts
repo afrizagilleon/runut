@@ -29,7 +29,7 @@ import { KODE_PELINDUNG } from '../kalibrasi-setelan.ts';
 import { validasiM2d8 } from '../kalibrasi-soal.ts';
 import { umpanKritik, type PutusanKritik } from '../kritikus.ts';
 import { MODEL_OR_DEEPSEEK, type ModelOpenRouter } from '../model.ts';
-import { PaguTercapai } from '../pagu.ts';
+import { PaguTercapai, SaldoPenyediaHabis } from '../pagu.ts';
 import type { PaketFakta } from '../paket.ts';
 import { periksaRujukanHuruf } from '../posisi-kunci.ts';
 import { kartuRotasi, tebakRotasi, type KartuRotasi } from '../rotasi/jalan.ts';
@@ -42,11 +42,13 @@ import { SETELAN_TEMPLAT_M2D11 } from '../templat/m2d11.ts';
 import type { PanggilTemplat } from '../templat/penulis.ts';
 import { dariG, dariGaya, dariHuruf, dariKembar, dariMeresmikan, dariValidator, isiLokasi, type UmpanMentah } from '../umpan-terarah.ts';
 import { angkaDiKartu } from './angka-kartu.ts';
-import { pesanRevisi, pesanVersi1, sha256, uraiKeluaranBebas, type Ditolak } from './prompt.ts';
+import { pesanPraPeriksa, pesanRevisi, pesanVersi1, sha256, uraiKeluaranBebas, type Ditolak } from './prompt.ts';
 import { drafDari, type OmonganBebas } from './skema.ts';
 import { periksaLabel, periksaSalin, periksaSudut, periksaUmpanBalik } from './struktur.ts';
 
 export const MAKS_VERSI_BEBAS = 3;
+/** M2d-15 D-3 (pra-registrasi M2d-15 §4): tulis-ulang pra-periksa kode paling banyak per versi. */
+export const MAKS_PRA_PERIKSA = 2;
 
 /** Setelan penulis, sama untuk ketiga model (pra-registrasi §3). */
 export const SETELAN_PENULIS_BEBAS: SetelanPanggil = { suhu: 1, maxTokens: 8_000, tambahanBadan: { reasoning: { effort: 'low' } } };
@@ -72,6 +74,22 @@ export interface PanggilanPenulis {
   terbaca: number[];
   masalah: string[];
   sha256_prompt: string;
+  /** M2d-15: `tulis` = panggilan versi (atau ulangannya); `pra-periksa` = tulis-ulang sesudah pra-periksa kode. Tidak ada di berkas M2d-13. */
+  jenis?: 'tulis' | 'pra-periksa';
+}
+
+/** Satu putaran pra-periksa kode gratis (M2d-15 D-3). */
+export interface CatatanPraPeriksa {
+  versi: number;
+  /** Tulis-ulang pra-periksa ke-berapa dalam versi ini (1…MAKS_PRA_PERIKSA). */
+  ke: number;
+  /** Omongan yang ditolak pra-periksa dan alasannya (= alasan gerbang 1 kode). */
+  ditolak: Array<{ no: number; alasan: string[] }>;
+  /** Omongan yang terbaca dari tulis-ulang (yang tidak terbaca: teks sebelumnya dipakai). */
+  terbaca: number[];
+  /** Bila tulis-ulang tidak dikirim karena pagu: alasannya. */
+  dilewati: string | null;
+  biaya_usd: number;
 }
 
 export interface VersiBebas {
@@ -101,6 +119,8 @@ export interface HasilBebas {
   validasi_draf: string[];
   draf: DrafSimulasi | null;
   sha256_prompt_sistem: string;
+  /** M2d-15: catatan pra-periksa kode (tidak ada di berkas M2d-13). */
+  pra_periksa?: CatatanPraPeriksa[];
 }
 
 export interface OpsiBebas {
@@ -109,6 +129,10 @@ export interface OpsiBebas {
   panggil: PanggilTemplat;
   jejak?: PencatatJejak;
   jam?: () => Date;
+  /** M2d-15: tulis-ulang pra-periksa kode per versi (bawaan 0 = perilaku M2d-13). */
+  praPeriksa?: number;
+  /** M2d-15: setelan penulis (bawaan `SETELAN_PENULIS_BEBAS`, M2d-13). */
+  setelan?: SetelanPanggil;
 }
 
 const jumlah = <T>(x: readonly T[], f: (y: T) => number): number => x.reduce((a, y) => a + f(y), 0);
@@ -152,13 +176,46 @@ export function periksaKodeBebas(no: number, o: OmonganBebas, paket: PaketFakta,
   return { menolak: semuaM.filter((m) => !turun(m)), dicatat: semuaM.filter(turun) };
 }
 
+/**
+ * Pra-periksa kode gratis M2d-15 D-3 (pra-registrasi M2d-15 §4): fungsi
+ * gerbang 1 yang SAMA (`periksaKodeBebas`, omongan lain = `terkini`, omongan
+ * lulus = `lulus`) untuk tiap nomor di `diminta`, alasan berformat sama
+ * dengan gerbang. Bila ketiga omongan ada, validator seluruh draf yang sama
+ * dengan pemeriksaan akhir (`validasiM2d8`, masalah tanpa nomor omongan)
+ * dibebankan ke omongan diminta bernomor TERBESAR (konvensi sudut/G-mirip).
+ * Hanya nomor yang punya masalah yang masuk peta. Murni.
+ */
+export function praPeriksaKode(paket: PaketFakta, terkini: ReadonlyArray<OmonganBebas | null>, lulus: ReadonlySet<number>, diminta: readonly number[]): Map<number, string[]> {
+  const hasil = new Map<number, string[]>();
+  const urut = [...diminta].sort((a, b) => a - b);
+  for (const no of urut) {
+    const o = terkini[no - 1];
+    if (o === null || o === undefined) continue;
+    const m = periksaKodeBebas(no, o, paket, terkini, lulus).menolak.map((x) => `${x.sumber}: ${x.alasan}`);
+    if (m.length > 0) hasil.set(no, m);
+  }
+  const ada = urut.filter((n) => terkini[n - 1] !== null && terkini[n - 1] !== undefined);
+  const terakhir = ada.at(-1);
+  if (terakhir !== undefined && [0, 1, 2].every((i) => terkini[i] !== null && terkini[i] !== undefined)) {
+    const draf = { omongan: terkini.map((x) => drafDari(x as OmonganBebas)) };
+    const seluruh = validasiM2d8(draf, paket)
+      .filter((m) => m.omongan === null)
+      .map((m) => `validator seluruh draf [${m.kode}]: ${m.pesan}`);
+    if (seluruh.length > 0) hasil.set(terakhir, [...(hasil.get(terakhir) ?? []), ...seluruh]);
+  }
+  return hasil;
+}
+
 export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
   const { paket, penulis, panggil } = opsi;
   const jam = opsi.jam ?? (() => new Date());
   const sistem = pesanVersi1(paket)[0]?.content ?? '';
+  const setelan = opsi.setelan ?? SETELAN_PENULIS_BEBAS;
+  const maksPra = Math.max(0, Math.min(MAKS_PRA_PERIKSA, opsi.praPeriksa ?? 0));
   const hasil: HasilBebas = {
     penulis, terbit: false, berhenti: null, tersensor: false, versi: [], panggilan_penulis: [], lulus: [], akhir: [null, null, null], validasi_draf: [], draf: null,
     sha256_prompt_sistem: sha256(sistem),
+    ...(maksPra > 0 ? { pra_periksa: [] } : {}),
   };
   const catat = (l: Parameters<PencatatJejak['catat']>[0]): void => {
     opsi.jejak?.catat(l);
@@ -187,12 +244,12 @@ export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
                 kurang.map((n) => ditolak.get(n) ?? { no: n, omongan: null, alasan: v === 1 ? ['(versi pertama tidak terbaca; tulis omongan ini)'] : ['(tidak ada catatan)'] }),
               );
         const mulai = jam().toISOString();
-        const j = await panggil(pesan, SETELAN_PENULIS_BEBAS, { jenis: 'tulis-bebas', putaran: v, omongan: null, ke: 1, ...(ulang > 0 ? { ulang } : {}), peran: 'penulis', model: penulis });
+        const j = await panggil(pesan, setelan, { jenis: 'tulis-bebas', putaran: v, omongan: null, ke: 1, ...(ulang > 0 ? { ulang } : {}), peran: 'penulis', model: penulis });
         const u = uraiKeluaranBebas(j.teks, kurang);
         for (const [n, o] of u.omongan) keluaran.set(n, o);
         const p: PanggilanPenulis = {
           versi: v, diminta: kurang, ulang, model: penulis, token_masuk: j.token_masuk, token_keluar: j.token_keluar, token_penalaran: j.token_penalaran ?? null,
-          penyedia: j.penyedia ?? null, finish_reason: j.finish_reason, biaya_usd: j.biaya_usd, terbaca: [...u.omongan.keys()], masalah: u.masalah, sha256_prompt: sha256(pesan.map((x) => x.content).join('\n')),
+          penyedia: j.penyedia ?? null, finish_reason: j.finish_reason, biaya_usd: j.biaya_usd, terbaca: [...u.omongan.keys()], masalah: u.masalah, sha256_prompt: sha256(pesan.map((x) => x.content).join('\n')), jenis: 'tulis',
         };
         hasil.panggilan_penulis.push(p);
         catat({
@@ -210,6 +267,52 @@ export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
         } else terkini[n - 1] = o;
       }
       keluaran = new Map([...keluaran].filter(([n]) => diminta.includes(n)));
+      // --- pra-periksa kode gratis (M2d-15 D-3): fungsi gerbang 1 yang sama; ≤ maksPra tulis-ulang per versi
+      for (let ke = 1; ke <= maksPra; ke++) {
+        const mp = jam().toISOString();
+        const tolakPra = praPeriksaKode(paket, terkini, lulus, diminta.filter((n) => keluaran.has(n)));
+        catat({
+          putaran: v, jenis: 'validator', omongan: null, waktu_mulai: mp, waktu_selesai: jam().toISOString(), model: null, panggilan: 0, token_masuk: 0, token_keluar: 0, biaya_usd: 0,
+          putusan: tolakPra.size === 0 ? 'lolos' : 'tolak', alasan: [...tolakPra].flatMap(([n, a]) => a.map((x) => `omongan ${String(n)}: ${x}`)).slice(0, 40), sha256_prompt: null,
+          rincian: { pra_periksa: ke, ditolak: [...tolakPra.keys()] }, peran: 'pemeriksa',
+        });
+        if (tolakPra.size === 0) break;
+        const nomor = [...tolakPra.keys()].sort((a, b) => a - b);
+        const cp: CatatanPraPeriksa = { versi: v, ke, ditolak: nomor.map((n) => ({ no: n, alasan: tolakPra.get(n) ?? [] })), terbaca: [], dilewati: null, biaya_usd: 0 };
+        hasil.pra_periksa?.push(cp);
+        const konteks = [1, 2, 3].filter((n) => !nomor.includes(n) && terkini[n - 1] !== null).map((n) => ({ no: n, omongan: terkini[n - 1] as OmonganBebas }));
+        const pesan = pesanPraPeriksa(paket, sistem, konteks, nomor.map((n) => ({ no: n, omongan: terkini[n - 1] ?? null, alasan: tolakPra.get(n) ?? [] })));
+        const mulai = jam().toISOString();
+        let j: Awaited<ReturnType<PanggilTemplat>>;
+        try {
+          j = await panggil(pesan, setelan, { jenis: 'tulis-praperiksa', putaran: v, omongan: null, ke, peran: 'penulis', model: penulis });
+        } catch (galat) {
+          // Pagu menolak SEBELUM kirim → tulis-ulang dilewati, versi lanjut ke gerbang (pra-registrasi M2d-15 §4). Saldo habis tetap menghentikan jalan.
+          if (galat instanceof PaguTercapai && !(galat instanceof SaldoPenyediaHabis)) {
+            cp.dilewati = teksGalat(galat);
+            break;
+          }
+          throw galat;
+        }
+        const u = uraiKeluaranBebas(j.teks, nomor);
+        for (const [n, o] of u.omongan) {
+          keluaran.set(n, o);
+          terkini[n - 1] = o;
+        }
+        cp.terbaca = [...u.omongan.keys()].sort((a, b) => a - b);
+        cp.biaya_usd = j.biaya_usd;
+        const p: PanggilanPenulis = {
+          versi: v, diminta: nomor, ulang: 0, model: penulis, token_masuk: j.token_masuk, token_keluar: j.token_keluar, token_penalaran: j.token_penalaran ?? null,
+          penyedia: j.penyedia ?? null, finish_reason: j.finish_reason, biaya_usd: j.biaya_usd, terbaca: cp.terbaca, masalah: u.masalah, sha256_prompt: sha256(pesan.map((x) => x.content).join('\n')), jenis: 'pra-periksa',
+        };
+        hasil.panggilan_penulis.push(p);
+        catat({
+          putaran: v, jenis: 'tulis-ulang', omongan: null, waktu_mulai: mulai, waktu_selesai: jam().toISOString(), model: penulis, panggilan: 1,
+          token_masuk: j.token_masuk, token_keluar: j.token_keluar, biaya_usd: j.biaya_usd, putusan: u.masalah.length === 0 ? 'ditulis' : 'galat', alasan: u.masalah, sha256_prompt: p.sha256_prompt,
+          rincian: { pra_periksa: ke, diminta: nomor, terbaca: cp.terbaca, token_penalaran: p.token_penalaran, penyedia: p.penyedia, finish_reason: p.finish_reason },
+          peran: 'penulis',
+        });
+      }
       // --- gerbang per omongan
       for (const no of diminta) {
         const o = keluaran.get(no);
