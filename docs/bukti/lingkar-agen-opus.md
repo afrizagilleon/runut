@@ -77,7 +77,11 @@ Setelan: Opus 5.5, `max_tokens` 16.000, suhu 1,0; penalaran `reasoning.effort: "
 
 ## 2. Audit Opus satu soal tanpa kartu (patokan §2 b — dijalankan reviewer)
 
-**Menunggu reviewer.** Paket siap: `eval/keluaran-m2d15/audit-opus/` (satu soal × satu rotasi per berkas, kunci di luar `bahan/`, `PETUNJUK.md`). Sesudah dijalankan: `npm run opus:audit -- --nilai`, lalu `npm run opus:laporan`.
+| jalan | omongan | versi | lulus gerbang | Opus tanpa kartu | (b) ≤ 2/4 |
+|---|---|---|---|---|---|
+| m2d15-opus-3 | 3 | 2 | ya | 1/4 | ya |
+| m2d15-opus-3 | 1 | 2 | tidak | 4/4 | tidak |
+| m2d15-opus-3 | 2 | 2 | tidak | 4/4 | tidak |
 
 ## 3. Kenapa Opus — efisien → efektif
 
@@ -91,9 +95,9 @@ Kolom "M2d-15 jalan 3" = effort "low" + prompt v2 + pra-periksa + bank sudut (am
 | simulasi terbit | 1 (jalan ke-7) | 0 | 0 | 0 |
 | kunci dipilih dari pilihan-saja (rotasi, terbaca; acak 25 %) | 35 % (n 263) | 28 % [19 %–39 %] (n 78) | 26 % [17 %–39 %] (n 57) | 26 % [17 %–39 %] (n 57) |
 | kunci dari pesan+pilihan | — | 32 % (n 84) | 41 % (n 61) | 41 % (n 61) |
-| mutu penilai Opus buta (0–10) | 7,67 (n 3, layak 2) | 8,83 (n 6, layak 5) | menunggu reviewer | sama |
+| mutu penilai Opus buta (0–10) | 7,67 (n 3, layak 2) | 8,83 (n 6, layak 5) | 9,00 (n 3, layak 3) | sama |
 | mutu penilai GLM "high" (0–10), paket M2d-15 | 10,00 (n 2, layak 2) | 10,00 (n 2, layak 2) (2 butir lulus) | 10,00 (n 3, layak 3) | sama |
-| DADA tayang (pembanding) | Opus M2d-13 8,00 (n 3, layak 2) | | Opus M2d-15 —; GLM 10,00 (n 3, layak 3) | |
+| DADA tayang (pembanding) | Opus M2d-13 8,00 (n 3, layak 2) | | Opus M2d-15 8,00 (n 3, layak 2); GLM 10,00 (n 3, layak 3) | |
 
 **Tafsiran.** Penilai GLM "high" memberi rata-rata 10,00 / 10,00 / 10,00 / 10,00 untuk semua asal — efek langit-langit yang sama dengan M2d-13; skor GLM tidak membedakan penulis. Pembanding mutu yang bermakna hanya penilai Opus buta (reviewer).
 
@@ -130,7 +134,7 @@ Kolom "M2d-15 jalan 3" = effort "low" + prompt v2 + pra-periksa + bank sudut (am
 | R5 biaya per omongan lulus ≤ US$0,50 | US$2.5654 | tidak |
 | R6 kunci pilihan-saja ≤ 30 % | 26 % (n 57) | sesuai |
 | R7 ≥ 2 dari 3 omongan lulus dengan audit ≤ 2/4 (jalan terbit) | tidak ada jalan terbit | tak terukur (tidak ada jalan terbit) |
-| R8 mutu Opus buta versi akhir ≥ 8,5 | menunggu reviewer | menunggu reviewer |
+| R8 mutu Opus buta versi akhir ≥ 8,5 | 9,00 | sesuai |
 
 ## 7. Draf lengkap (versi akhir tiap omongan)
 
@@ -142,7 +146,7 @@ Label pengecoh dan umpan balik ditulis penulis; isi label tidak divalidasi kode 
 
 ### m2d15-opus-3 — tersensor (tidak terbit)
 
-**Omongan 1** — versi 2, tidak lulus (berhenti: penebak); kunci c; kartu volume-2025-12-10, volume-2025-12-09, volume-2025-11-26 (penentu volume-2025-12-10)
+**Omongan 1** — versi 2, tidak lulus (berhenti: penebak); kunci c; kartu volume-2025-12-10, volume-2025-12-09, volume-2025-11-26 (penentu volume-2025-12-10); audit Opus tanpa kartu 4/4
 
 Pesan (Sinta, 18.20): "Kemarin saham T ditransaksiin 1.461.200 lembar. Hari ini gw kira masih segitu juga, lu udah cek belum?"
 
@@ -155,7 +159,7 @@ Penjelasan: Kartu volume bertanggal 10 Desember 2025 mencatat 0 lembar. Artinya 
 
 Pertanyaan cek: Tanggal di kartu volume ini sama dengan hari yang sedang dibicarakan teman?
 
-**Omongan 2** — versi 2, tidak lulus (berhenti: penebak); kunci a; kartu harga-2025-11-28, harga-2025-11-27, harga-2025-12-01, harga-2025-11-26 (penentu harga-2025-11-28, harga-2025-11-27)
+**Omongan 2** — versi 2, tidak lulus (berhenti: penebak); kunci a; kartu harga-2025-11-28, harga-2025-11-27, harga-2025-12-01, harga-2025-11-26 (penentu harga-2025-11-28, harga-2025-11-27); audit Opus tanpa kartu 4/4
 
 Pesan (Wulan, 19.45): "Gw liat tanggal 28 November saham T tutup lebih tinggi dari hari sebelumnya. Lu inget nggak?"
 
@@ -168,7 +172,7 @@ Penjelasan: Kartu harga 28 November 2025 mencatat penutupan Rp57. Kartu sehari s
 
 Pertanyaan cek: Angka yang aku pakai berasal dari kartu bertanggal sama dengan omongan teman?
 
-**Omongan 3** — versi 2, **LULUS gerbang**; kunci b; kartu susp-2025-01-21, susp-2025-12-10, rups-2025-09-25 (penentu susp-2025-01-21)
+**Omongan 3** — versi 2, **LULUS gerbang**; kunci b; kartu susp-2025-01-21, susp-2025-12-10, rups-2025-09-25 (penentu susp-2025-01-21); audit Opus tanpa kartu 1/4
 
 Pesan (Andi, 21.10): "Gw inget bursa juga pernah stop saham T bulan Januari. Alasannya sama kayak sekarang kan, harganya naik kekencengan, lu inget?"
 
@@ -208,6 +212,6 @@ Bagian: D-4 US$2.5654 (pagu US$2.70); penilai GLM US$0.3269. Kumulatif ledger US
 
 ## 11. Menunggu reviewer
 
-- Audit Opus satu soal (§2 b): menunggu — `eval/keluaran-m2d15/audit-opus/`.
-- Penilai mutu Opus buta: menunggu — `eval/keluaran-m2d15/mutu-opus/`.
+- Audit Opus satu soal (§2 b): sudah dinilai — `eval/keluaran-m2d15/audit-opus/`.
+- Penilai mutu Opus buta: sudah dinilai — `eval/keluaran-m2d15/mutu-opus/`.
 - Sesudah keduanya: `npm run opus:audit -- --nilai`, `npm run opus:mutu -- --nilai-opus`, `npm run opus:laporan`.

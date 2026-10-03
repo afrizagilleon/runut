@@ -1,0 +1,39 @@
+{
+  "cara": "satu soal × satu rotasi per subagent Opus, tanpa kartu; patokan §2 (b) ≤ 2/4",
+  "per_butir": [
+    {
+      "id_buta": "b01",
+      "jalan": "m2d15-opus-3",
+      "penulis": "opus",
+      "no": 3,
+      "versi": 2,
+      "lulus": true,
+      "tanpa_kartu_benar": 1,
+      "n": 4,
+      "lolos_b": true
+    },
+    {
+      "id_buta": "b02",
+      "jalan": "m2d15-opus-3",
+      "penulis": "opus",
+      "no": 1,
+      "versi": 2,
+      "lulus": false,
+      "tanpa_kartu_benar": 4,
+      "n": 4,
+      "lolos_b": false
+    },
+    {
+      "id_buta": "b03",
+      "jalan": "m2d15-opus-3",
+      "penulis": "opus",
+      "no": 2,
+      "versi": 2,
+      "lulus": false,
+      "tanpa_kartu_benar": 4,
+      "n": 4,
+      "lolos_b": false
+    }
+  ],
+  "berkas_tanpa_jawaban": []
+}
