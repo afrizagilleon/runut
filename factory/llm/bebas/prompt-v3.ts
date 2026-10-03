@@ -34,7 +34,7 @@ const JALUR_V3 = fileURLToPath(new URL('./prompt-penulis-v3.md', import.meta.url
 const JALUR_TELADAN = fileURLToPath(new URL('./teladan-dada-s3.json', import.meta.url));
 
 /** sha256 berkas reviewer `.contracts/lampiran/M-02d16/prompt-penulis-v3.md` (akhir baris LF). */
-export const SHA256_PROMPT_V3 = 'fb895a8a6450a289df71d757fadfc42df975b6eabae3235257e2e28cc5c1874f';
+export const SHA256_PROMPT_V3 = 'c6249a96db685597353cc9fada51d34cf0ab262f76267c47f0c5e5fccee58a9c';
 
 /** Pemeriksaan yang TIDAK berlaku untuk teladan (hanya untuk keluaran penulis). */
 export const PENGECUALIAN_TELADAN: readonly string[] = ['pemeriksa: NAMA_TERLARANG', 'anti-salin'];

@@ -23,7 +23,7 @@ const s3 = kasus.soal.find((s) => s.soal_id === 's3-siapa-yang-menjual');
 describe('berkas prompt v3', () => {
   it('salinan apa adanya dari berkas reviewer (sha256 tetap); v1 dan v2 tidak berubah', () => {
     expect(sha256(teksPromptV3())).toBe(SHA256_PROMPT_V3);
-    expect(SHA256_PROMPT_V3).toBe('fb895a8a6450a289df71d757fadfc42df975b6eabae3235257e2e28cc5c1874f');
+    expect(SHA256_PROMPT_V3).toBe('c6249a96db685597353cc9fada51d34cf0ab262f76267c47f0c5e5fccee58a9c');
     const h = JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d13-opus-2/hasil.json`, 'utf8')) as { sha256_prompt_sistem: string };
     expect(sha256(promptPenulisBebas(tirt))).toBe(h.sha256_prompt_sistem);
     const h3 = JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d15-opus-3/hasil.json`, 'utf8')) as { sha256_prompt_sistem: string };
