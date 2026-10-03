@@ -111,7 +111,7 @@ describe('pemanggil v3: mentah-panggilan.jsonl', () => {
     expect(b).toHaveLength(2);
     expect(b[0]).toMatchObject({
       waktu: '2026-10-03T01:02:03.000Z', tag: 'penyusun/j1/p1/tulis-bebas', peran: 'penulis', model: MODEL_OR_OPUS, penyedia: 'Anthropic', token_masuk: 3000, token_keluar: 5000, token_penalaran: 2100, finish_reason: 'stop', biaya_usd: 0.11,
-      isi: '{"omongan": [1]}', penalaran: 'aku memilih kartu suspensi', ada_penalaran: true, max_tokens: 128_000, penalaran_diminta: { effort: 'medium', exclude: false },
+      prompt: PESAN, isi: '{"omongan": [1]}', penalaran: 'aku memilih kartu suspensi', ada_penalaran: true, max_tokens: 128_000, penalaran_diminta: { effort: 'medium', exclude: false },
     });
     expect(b[1]).toMatchObject({ tag: 'penyusun/j1/p1/gerbang-tebak-kuat/o1/r4', peran: 'penebak-kuat', penalaran: 'ringkas dua', ada_penalaran: true });
     expect(s.kirim[0]?.header['authorization']).toBe(`Bearer ${KUNCI_LLM_PALSU}`);

@@ -115,7 +115,7 @@ describe('teks berpikir dari respons (klien)', () => {
 });
 
 describe('mentah-panggilan.jsonl', () => {
-  it('tiap panggilan: tag, peran, model, penyedia, token, finish_reason, isi, penalaran; rahasia disamarkan', async () => {
+  it('tiap panggilan: tag, peran, model, penyedia, token, finish_reason, prompt, isi, penalaran; rahasia disamarkan', async () => {
     const folder = mkdtempSync(join(tmpdir(), 'mentah-'));
     const jalur = join(folder, 'mentah-panggilan.jsonl');
     const dasar: PanggilTemplat = (_p, _s, i) =>
@@ -129,7 +129,7 @@ describe('mentah-panggilan.jsonl', () => {
     expect(baris).toHaveLength(2);
     expect(baris[0]).toEqual({
       waktu: '2026-10-03T00:00:00.000Z', tag: 'penyusun/j1/p1/tulis-bebas', peran: 'penulis', jenis: 'tulis-bebas', model: MODEL_OR_OPUS, penyedia: 'Anthropic', token_masuk: 111, token_keluar: 222, token_penalaran: 321,
-      finish_reason: 'stop', biaya_usd: 0.05, latensi_ms: expect.any(Number) as number, penalaran_diminta: { effort: 'medium', exclude: false }, max_tokens: 128_000, isi: '{"omongan": []} [disamarkan]', penalaran: 'aku menimbang kartu… [disamarkan]', ada_penalaran: true,
+      finish_reason: 'stop', biaya_usd: 0.05, latensi_ms: expect.any(Number) as number, penalaran_diminta: { effort: 'medium', exclude: false }, max_tokens: 128_000, prompt: [{ role: 'user', content: 'tulis' }], isi: '{"omongan": []} [disamarkan]', penalaran: 'aku menimbang kartu… [disamarkan]', ada_penalaran: true,
     });
     expect(baris[1]).toMatchObject({ tag: 'penyusun/j1/p1/gerbang-tebak-kuat/o1/r3', peran: 'penebak-kuat', penalaran: null, ada_penalaran: false });
   });

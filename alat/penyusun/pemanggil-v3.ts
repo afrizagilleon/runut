@@ -82,7 +82,7 @@ export function panggilV3(o: OpsiPanggilV3): (awalanTag: string, paguJalanUsd: n
       } catch (galat) {
         throw ubahGalatSaldo(galat, info.model);
       }
-      mentah.catat(tag, peran, info, setelan, j);
+      mentah.catat(tag, peran, info, setelan, j, pesan);
       o.log?.(`  ${tag}: masuk ${String(j.token_masuk)} keluar ${String(j.token_keluar)} penalaran ${String(j.token_penalaran ?? '-')} ${String(j.finish_reason)} US$${j.biaya_usd.toFixed(6)} ${String(j.penyedia)}`);
       periksaPenyedia(peran, j.penyedia);
       return j;

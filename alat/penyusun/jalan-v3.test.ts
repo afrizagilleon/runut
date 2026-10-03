@@ -82,6 +82,7 @@ describe('utamaV3 --palsu', () => {
     expect(m).toHaveLength(1);
     expect(m[0]).toMatchObject({ tag: 'penyusun/uji-a/p1/tulis-bebas', peran: 'penulis', ada_penalaran: true, max_tokens: 128_000 });
     expect(m[0]?.isi).toContain('"omongan"');
+    expect(m[0]?.prompt).toEqual(pesanV3(tirt, 3, []));
     const r = JSON.parse(readFileSync(`${f}/uji-a/uji-satu-panggilan.json`, 'utf8')) as RingkasUji & { palsu: boolean };
     expect(r).toMatchObject({ palsu: true, omongan_terbaca: 3, ada_teks_berpikir: true });
     expect(log.join('\n')).toMatch(/MODEL PALSU/);

@@ -43,7 +43,9 @@ export interface KunciPenyedia {
 /**
  * SATU tabel konfigurasi penyedia. Bukti ledger: entri berstatus 200 bertag
  * `penyusun/m2d1[135]-…`, `m2d11/`, `m2d13/`, `m2d15/` (dihitung `buktiPenyedia`,
- * 3 Okt 2026, ledger 3.370 baris); angkanya disalin ke `docs/bukti/alat-ukur-v2.md`.
+ * 3 Okt 2026, ledger 3.370 baris) kecuali disebut lain; angkanya disalin ke
+ * `docs/bukti/alat-ukur-v2.md`. Ledger tidak terlacak git, jadi angka di sini
+ * adalah salinan tangan dari keluaran `buktiPenyedia` — bukan hal yang dites.
  */
 export const PENYEDIA_PERAN: Readonly<Record<PeranV2, KunciPenyedia>> = {
   penulis: {
@@ -68,7 +70,7 @@ export const PENYEDIA_PERAN: Readonly<Record<PeranV2, KunciPenyedia>> = {
   },
   'pembaca-kartu': {
     model: MODEL_OR_DEEPSEEK, jenis: ['gerbang-kartu'], slug: 'wafer', nama: 'Wafer',
-    alasan: 'Keputusan reviewer 3 Okt (per peran, bukan per model). Ledger, pembaca kartu DeepSeek dengan batas penalaran 6.000: Wafer 0 dari 20 panggilan melewati batas; Relace 4 dari 61 dan InferenceNet 2 dari 35 melewatinya (sampai 11.856 dari 12.000 token, terpotong).',
+    alasan: 'Keputusan reviewer 3 Okt (per peran, bukan per model). Pembaca kartu DeepSeek dengan batas penalaran 6.000 — seluruh ledger kini (semua tag gerbang-kartu): Wafer 0 dari 20 panggilan melewati batas, Relace 4 dari 61, InferenceNet 2 dari 35 (sampai 11.856 dari 12.000 token, terpotong); hanya tag M2d-11/13/15 (`buktiPenyedia`): Wafer 0 dari 8, Relace 3 dari 39, InferenceNet 1 dari 21. Bukti Wafer tipis (8–20 panggilan).',
   },
   kritikus: {
     model: MODEL_OR_GLM, jenis: ['kritikus'], slug: 'wafer', nama: 'Wafer',
@@ -226,7 +228,7 @@ export function tagV2(awalan: string, info: Pick<InfoTemplat, 'jenis' | 'putaran
   return `${awalan}p${String(info.putaran)}/${info.jenis}${o}${ke}${ulang}`;
 }
 
-/** Satu baris `mentah-panggilan.jsonl`. Tidak memuat header, kunci, maupun isi prompt. */
+/** Satu baris `mentah-panggilan.jsonl`. Tidak memuat header maupun kunci. */
 export interface BarisMentah {
   waktu: string;
   tag: string;
@@ -243,6 +245,8 @@ export interface BarisMentah {
   /** Medan `reasoning` yang diminta dan `max_tokens` panggilan ini. */
   penalaran_diminta: Readonly<Record<string, unknown>> | null;
   max_tokens: number;
+  /** Pesan yang dikirim (prompt), apa adanya — supaya tiap prompt bisa dibaca reviewer. */
+  prompt: PesanChat[];
   /** Jawaban mentah model, apa adanya (rahasia disamarkan). */
   isi: string;
   /** Teks berpikir yang dikembalikan penyedia (ringkasan untuk Opus); `null` bila tidak ada. */
@@ -260,13 +264,14 @@ export class PencatatMentah {
     this.jam = jam;
   }
 
-  catat(tag: string, peran: PeranV2 | null, info: Pick<InfoTemplat, 'jenis' | 'model'>, setelan: SetelanPanggil, j: JawabanModel): BarisMentah {
+  catat(tag: string, peran: PeranV2 | null, info: Pick<InfoTemplat, 'jenis' | 'model'>, setelan: SetelanPanggil, j: JawabanModel, pesan: readonly PesanChat[] = []): BarisMentah {
     const pikir = typeof j.penalaran === 'string' && j.penalaran.trim() !== '' ? samarkan(j.penalaran, this.rahasia) : null;
     const r = setelan.tambahanBadan?.['reasoning'];
     const baris: BarisMentah = {
       waktu: this.jam().toISOString(), tag, peran, jenis: info.jenis, model: info.model, penyedia: j.penyedia ?? null,
       token_masuk: j.token_masuk, token_keluar: j.token_keluar, token_penalaran: j.token_penalaran ?? null, finish_reason: j.finish_reason, biaya_usd: j.biaya_usd, latensi_ms: j.latensi_ms,
       penalaran_diminta: typeof r === 'object' && r !== null ? (r as Record<string, unknown>) : null, max_tokens: setelan.maxTokens,
+      prompt: pesan.map((x) => ({ role: x.role, content: samarkan(x.content, this.rahasia) })),
       isi: samarkan(j.teks, this.rahasia), penalaran: pikir, ada_penalaran: pikir !== null,
     };
     mkdirSync(dirname(this.jalur), { recursive: true });
@@ -285,7 +290,7 @@ export function denganMentah(panggil: PanggilTemplat, pencatat: PencatatMentah, 
     } catch {
       peran = null;
     }
-    pencatat.catat(tagV2(awalanTag, info), peran, info, setelan, j);
+    pencatat.catat(tagV2(awalanTag, info), peran, info, setelan, j, pesan);
     return j;
   };
 }
