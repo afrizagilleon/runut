@@ -42,7 +42,7 @@ import { SETELAN_TEMPLAT_M2D11 } from '../templat/m2d11.ts';
 import type { PanggilTemplat } from '../templat/penulis.ts';
 import { dariG, dariGaya, dariHuruf, dariKembar, dariMeresmikan, dariValidator, isiLokasi, type UmpanMentah } from '../umpan-terarah.ts';
 import { angkaDiKartu } from './angka-kartu.ts';
-import { pesanPraPeriksa, pesanRevisi, pesanVersi1, sha256, uraiKeluaranBebas, type Ditolak } from './prompt.ts';
+import { pesanPraPeriksa, pesanRevisi, pesanVersi1, sha256, uraiKeluaranBebas, type Ditolak, type VersiPrompt } from './prompt.ts';
 import { drafDari, type OmonganBebas } from './skema.ts';
 import { periksaLabel, periksaSalin, periksaSudut, periksaUmpanBalik } from './struktur.ts';
 
@@ -52,6 +52,24 @@ export const MAKS_PRA_PERIKSA = 2;
 
 /** Setelan penulis, sama untuk ketiga model (pra-registrasi §3). */
 export const SETELAN_PENULIS_BEBAS: SetelanPanggil = { suhu: 1, maxTokens: 8_000, tambahanBadan: { reasoning: { effort: 'low' } } };
+
+/**
+ * M2d-15 (pra-registrasi `docs/bukti/m2d15-praregistrasi.md` §3): penulis Opus
+ * 5.5 effort "medium" (bukan "max"), max_tokens 16.000, suhu 1,0.
+ */
+export const SETELAN_PENULIS_M2D15: SetelanPanggil = { suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { effort: 'medium' } } };
+
+/** Profil mesin bebas: prompt, setelan penulis, dan batas tulis-ulang pra-periksa. */
+export interface ProfilBebas {
+  nama: 'm2d13' | 'm2d15';
+  prompt: VersiPrompt;
+  setelan: SetelanPanggil;
+  praPeriksa: number;
+}
+export const PROFIL_M2D13: ProfilBebas = { nama: 'm2d13', prompt: 'v1', setelan: SETELAN_PENULIS_BEBAS, praPeriksa: 0 };
+
+/** Profil M2d-15: prompt v2, effort "medium", pra-periksa ≤ 2 tulis-ulang per versi. */
+export const PROFIL_M2D15: ProfilBebas = { nama: 'm2d15', prompt: 'v2', setelan: SETELAN_PENULIS_M2D15, praPeriksa: MAKS_PRA_PERIKSA };
 
 export type BerhentiBebas = 'kode' | 'penebak' | 'kartu' | 'kritikus' | 'lolos' | 'tulis-gagal' | 'pagu' | 'galat';
 
@@ -133,6 +151,8 @@ export interface OpsiBebas {
   praPeriksa?: number;
   /** M2d-15: setelan penulis (bawaan `SETELAN_PENULIS_BEBAS`, M2d-13). */
   setelan?: SetelanPanggil;
+  /** M2d-15: versi prompt sistem (bawaan v1 = M2d-13). */
+  prompt?: VersiPrompt;
 }
 
 const jumlah = <T>(x: readonly T[], f: (y: T) => number): number => x.reduce((a, y) => a + f(y), 0);
@@ -209,7 +229,8 @@ export function praPeriksaKode(paket: PaketFakta, terkini: ReadonlyArray<Omongan
 export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
   const { paket, penulis, panggil } = opsi;
   const jam = opsi.jam ?? (() => new Date());
-  const sistem = pesanVersi1(paket)[0]?.content ?? '';
+  const versiPrompt = opsi.prompt ?? 'v1';
+  const sistem = pesanVersi1(paket, versiPrompt)[0]?.content ?? '';
   const setelan = opsi.setelan ?? SETELAN_PENULIS_BEBAS;
   const maksPra = Math.max(0, Math.min(MAKS_PRA_PERIKSA, opsi.praPeriksa ?? 0));
   const hasil: HasilBebas = {
@@ -237,11 +258,12 @@ export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
         if (kurang.length === 0) break;
         const pesan =
           v === 1 && kurang.length === 3
-            ? pesanVersi1(paket)
+            ? pesanVersi1(paket, versiPrompt)
             : pesanRevisi(
                 paket,
                 [...lulus].sort().map((n) => ({ no: n, omongan: terkini[n - 1] as OmonganBebas })),
                 kurang.map((n) => ditolak.get(n) ?? { no: n, omongan: null, alasan: v === 1 ? ['(versi pertama tidak terbaca; tulis omongan ini)'] : ['(tidak ada catatan)'] }),
+                versiPrompt,
               );
         const mulai = jam().toISOString();
         const j = await panggil(pesan, setelan, { jenis: 'tulis-bebas', putaran: v, omongan: null, ke: 1, ...(ulang > 0 ? { ulang } : {}), peran: 'penulis', model: penulis });
