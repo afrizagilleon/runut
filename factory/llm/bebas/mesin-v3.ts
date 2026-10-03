@@ -112,6 +112,8 @@ export interface OpsiV3 {
   idJalan: string;
   jam?: () => Date;
   maksPutaran?: number;
+  /** Label penulis di hasil & asal bank (bawaan = model penulis); mode palsu menandai dirinya di sini. */
+  labelPenulis?: string;
 }
 
 /** Jalan dihentikan penjaga (panggilan penulis tanpa keluaran terpakai). */
@@ -206,7 +208,7 @@ export async function jalankanV3(opsi: OpsiV3): Promise<HasilV3> {
   const maks = Math.max(1, Math.min(MAKS_PUTARAN_V3, opsi.maksPutaran ?? MAKS_PUTARAN_V3));
   const sha = shaPaketBank(paket);
   const hasil: HasilV3 = {
-    id_jalan: idJalan, penulis: MODEL_OR_OPUS, paket_sha: sha, setelan_penulis: SETELAN_PENULIS_OPUS_V3, urutan_gerbang: URUTAN_GERBANG_V3, putaran: 0, panggilan_penulis: [], nilai: [], bank_baru: [], tak_terukur: 0,
+    id_jalan: idJalan, penulis: opsi.labelPenulis ?? MODEL_OR_OPUS, paket_sha: sha, setelan_penulis: SETELAN_PENULIS_OPUS_V3, urutan_gerbang: URUTAN_GERBANG_V3, putaran: 0, panggilan_penulis: [], nilai: [], bank_baru: [], tak_terukur: 0,
     simulasi: { draf: null, dipilih: [], dicoba: 0, alasan: [] }, terbit: false, draf: null, berhenti: null, tersensor: false, biaya_usd: 0,
   };
   let ditolak: DitolakV3[] = [];
@@ -239,7 +241,7 @@ export async function jalankanV3(opsi: OpsiV3): Promise<HasilV3> {
           simpanBank(folderBank, {
             id, paket_sha: sha, kartu_penentu: [...o.kartu_penentu], omongan: o,
             jejak_gerbang: { kode: { dicatat: n.dicatat }, saringan: n.saringan, kartu: n.kartu_rotasi, penebak_kuat: n.penebak_kuat, kritikus: n.kritik },
-            asal: { jalan: idJalan, putaran: p, urut: i + 1, penulis: MODEL_OR_OPUS, sha256_prompt: hasil.panggilan_penulis.at(-1)?.sha256_prompt ?? '' },
+            asal: { jalan: idJalan, putaran: p, urut: i + 1, penulis: opsi.labelPenulis ?? MODEL_OR_OPUS, sha256_prompt: hasil.panggilan_penulis.at(-1)?.sha256_prompt ?? '' },
             waktu: jam().toISOString(),
           });
           n.id_bank = id;

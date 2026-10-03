@@ -91,6 +91,7 @@
     "opus:mutu": "node --experimental-strip-types factory/llm/bebas/m2d15.ts",
     "opus:laporan": "node --experimental-strip-types factory/llm/bebas/laporan-opus.ts",
     "rotasi:plasebo": "node --experimental-strip-types factory/llm/rotasi/plasebo.ts",
+    "penyusun:v3": "node --experimental-strip-types alat/penyusun/jalan-v3.ts",
     "patokan:laporan": "node --experimental-strip-types factory/llm/patokan/laporan.ts"
   },
   "dependencies": {

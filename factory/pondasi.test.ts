@@ -71,8 +71,8 @@ describe('pondasi proyek', () => {
     const M2D14 = ['penyusun:rekam-alur'];
     // M2d-15 D-4…D-6: satu jalan Opus ditingkatkan lewat pintu penyusun (--prompt v2), paket audit/mutu + penilai GLM, laporan.
     const M2D15 = ['opus:jalan', 'opus:audit', 'opus:mutu', 'opus:laporan'];
-    // M2d-16 D-2: uji plasebo gerbang tebak atas data tersimpan (gratis).
-    const M2D16 = ['rotasi:plasebo'];
+    // M2d-16 D-2: uji plasebo gerbang tebak atas data tersimpan (gratis). D-4 (e)/D-6: jalan mesin v3 (--uji-satu-panggilan, --palsu).
+    const M2D16 = ['rotasi:plasebo', 'penyusun:v3'];
     const skrip = Object.keys(paket.scripts).sort();
     for (const wajib of [...M1, ...M32, ...M33, ...A3, ...M2A]) {
       expect(skrip).toContain(wajib);
