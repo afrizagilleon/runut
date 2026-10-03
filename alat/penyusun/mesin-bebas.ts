@@ -9,7 +9,8 @@
  */
 import { createHash } from 'node:crypto';
 import { HARGA, biayaUsd } from '../../factory/llm/harga.ts';
-import { jalankanBebas, MAKS_VERSI_BEBAS, SETELAN_PENULIS_BEBAS, type HasilBebas } from '../../factory/llm/bebas/mesin.ts';
+import { jalankanBebas, MAKS_VERSI_BEBAS, PROFIL_M2D13, PROFIL_M2D15, type HasilBebas, type ProfilBebas } from '../../factory/llm/bebas/mesin.ts';
+import type { VersiPrompt } from '../../factory/llm/bebas/prompt.ts';
 import { panggilBebasPalsu } from '../../factory/llm/bebas/palsu.ts';
 import type { NamaPenulis } from '../../factory/llm/bebas/pagu-adil.ts';
 import { drafDari } from '../../factory/llm/bebas/skema.ts';
@@ -31,9 +32,17 @@ export const shaPaket = (p: PaketFakta): string => createHash('sha256').update(`
 const maks = (model: ModelOpenRouter, maxTokens: number, masuk = MASUKAN_MAKS_TOKEN): number => biayaUsd(HARGA[model], masuk, maxTokens);
 const bulat = (x: number): number => Math.round(x * 10_000) / 10_000;
 
-export function perkiraanBebas(penulis: ModelOpenRouter): PerkiraanBiaya {
+/** Profil menurut versi prompt (v2 = M2d-15). */
+export const profilDari = (prompt: VersiPrompt | undefined): ProfilBebas => (prompt === 'v2' ? PROFIL_M2D15 : PROFIL_M2D13);
+
+export function perkiraanBebas(penulis: ModelOpenRouter, profil: ProfilBebas = PROFIL_M2D13): PerkiraanBiaya {
+  const masuk = profil.prompt === 'v2' ? 12_000 : 9_000;
   const per = [
-    { peran: `penulis bebas ${penulis} (≈ 9.000 token masuk; satu panggilan per putaran versi, + 1 ulangan)`, model: penulis, maks_usd: bulat(2 * maks(penulis, SETELAN_PENULIS_BEBAS.maxTokens, 9_000)) },
+    {
+      peran: `penulis bebas ${penulis} (≈ ${masuk.toLocaleString('id-ID')} token masuk; satu panggilan per putaran versi + 1 ulangan${profil.praPeriksa > 0 ? ` + ≤ ${String(profil.praPeriksa)} tulis-ulang pra-periksa` : ''})`,
+      model: penulis,
+      maks_usd: bulat((2 + profil.praPeriksa) * maks(penulis, profil.setelan.maxTokens, masuk)),
+    },
     ...MODEL_ROTASI.map((m) => ({ peran: `penebak rotasi ${m.nama} (8 panggilan, tanpa kartu)`, model: m.model, maks_usd: bulat(16 * maks(m.model, m.setelan.maxTokens)) })),
     { peran: 'pembaca kartu (2 rotasi)', model: MODEL_OR_DEEPSEEK, maks_usd: bulat(4 * maks(MODEL_OR_DEEPSEEK, SETELAN_KARTU.maxTokens)) },
     { peran: 'kritikus (dengan satu pemeriksaan ulang)', model: MODEL_OR_GLM, maks_usd: bulat(4 * maks(MODEL_OR_GLM, SETELAN_KRITIKUS.maxTokens)) },
@@ -45,7 +54,9 @@ export function perkiraanBebas(penulis: ModelOpenRouter): PerkiraanBiaya {
     per_putaran_usd: bulat(3 * gerbang + (per[0]?.maks_usd ?? 0)),
     maks_putaran: MAKS_VERSI_BEBAS,
     catatan: [
-      'Pra-registrasi M2d-13 §3: versi 1 satu panggilan penulis untuk tiga omongan; versi 2–3 satu panggilan per putaran untuk semua omongan yang ditolak; maks 3 versi per omongan.',
+      profil.nama === 'm2d15'
+        ? 'Pra-registrasi M2d-15 §3–§4: Opus effort "medium", max_tokens 16.000, prompt v2; tiap versi: tulis → pra-periksa kode gratis (≤ 2 tulis-ulang) → gerbang 1 kode → gerbang berbayar; maks 3 versi per omongan.'
+        : 'Pra-registrasi M2d-13 §3: versi 1 satu panggilan penulis untuk tiga omongan; versi 2–3 satu panggilan per putaran untuk semua omongan yang ditolak; maks 3 versi per omongan.',
       'Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD.',
     ],
   };
@@ -60,6 +71,8 @@ export function riwayatBebas(h: HasilBebas): HasilBebas & { riwayat: Array<{ put
 
 export interface OpsiMesinBebas {
   penulis: NamaPenulis;
+  /** M2d-15: profil (bawaan M2d-13). */
+  profil?: ProfilBebas;
   palsu: boolean;
   buatPanggil: BuatPanggilTemplat;
   siap: () => { siap: boolean; alasan: string | null };
@@ -72,8 +85,11 @@ export class MesinBebas implements MesinPenulis {
   private readonly o: OpsiMesinBebas;
   constructor(o: OpsiMesinBebas) {
     this.o = o;
-    this.nama = `bebas-${o.penulis}${o.palsu ? '-palsu' : ''}`;
-    this.keterangan = `penulis bebas M2d-13 (${MODEL_PENULIS[o.penulis]}), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu${o.palsu ? '; model PALSU, tanpa jaringan' : ''}`;
+    const v2 = (o.profil ?? PROFIL_M2D13).nama === 'm2d15';
+    this.nama = `bebas-${o.penulis}${v2 ? '-v2' : ''}${o.palsu ? '-palsu' : ''}`;
+    this.keterangan = v2
+      ? `penulis Opus ditingkatkan M2d-15 (${MODEL_PENULIS[o.penulis]}, effort "medium", prompt v2 + bank sudut, pra-periksa kode gratis), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu${o.palsu ? '; model PALSU, tanpa jaringan' : ''}`
+      : `penulis bebas M2d-13 (${MODEL_PENULIS[o.penulis]}), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu${o.palsu ? '; model PALSU, tanpa jaringan' : ''}`;
     this.palsu = o.palsu;
   }
 
@@ -82,7 +98,7 @@ export class MesinBebas implements MesinPenulis {
   }
 
   perkiraan(): PerkiraanBiaya {
-    return perkiraanBebas(MODEL_PENULIS[this.o.penulis]);
+    return perkiraanBebas(MODEL_PENULIS[this.o.penulis], this.o.profil ?? PROFIL_M2D13);
   }
 
   cukupPaket(paket: PaketFakta): { cukup: boolean; jumlah: number; satuan: string } {
@@ -103,7 +119,7 @@ export class MesinBebas implements MesinPenulis {
       {
         paket: k.paket,
         model,
-        promptSistem: 'penulis bebas M2d-13 (factory/llm/bebas/prompt-penulis-bebas.md)',
+        promptSistem: (this.o.profil ?? PROFIL_M2D13).prompt === 'v2' ? 'penulis Opus v2 M2d-15 (factory/llm/bebas/prompt-penulis-opus-v2.md + bank sudut)' : 'penulis bebas M2d-13 (factory/llm/bebas/prompt-penulis-bebas.md)',
         pesanPaket: JSON.stringify(k.paket.fakta.map((f) => f.fact_id)),
         ringkasanPrompt: `Pintu penyusun, mesin "${this.nama}": penulis bebas ${model} tanpa penyempurna; gerbang M2d-11 + angka-di-kartu. Di sini hanya hash.`,
         jalur: `${k.folder}/jejak-agen.json`,
@@ -118,7 +134,17 @@ export class MesinBebas implements MesinPenulis {
         k.lapor('agen', r.judul.replace(/^putaran /, 'versi '), r.isi);
       },
     );
-    const h = await jalankanBebas({ paket: k.paket, penulis: model, panggil: this.o.buatPanggil(`${AWALAN_TAG_PENYUSUN}${k.id}/`, k.paguJalanUsd), jejak, jam: k.jam });
+    const profil = this.o.profil ?? PROFIL_M2D13;
+    const h = await jalankanBebas({
+      paket: k.paket,
+      penulis: model,
+      panggil: this.o.buatPanggil(`${AWALAN_TAG_PENYUSUN}${k.id}/`, k.paguJalanUsd),
+      jejak,
+      jam: k.jam,
+      prompt: profil.prompt,
+      setelan: profil.setelan,
+      praPeriksa: profil.praPeriksa,
+    });
     return {
       terbit: h.terbit,
       draf: h.draf,
@@ -137,10 +163,10 @@ export class MesinBebas implements MesinPenulis {
   }
 }
 
-export function mesinBebasSungguhan(penulis: NamaPenulis, buatPanggil: BuatPanggilTemplat, siap: () => { siap: boolean; alasan: string | null }): MesinBebas {
-  return new MesinBebas({ penulis, palsu: false, buatPanggil, siap });
+export function mesinBebasSungguhan(penulis: NamaPenulis, buatPanggil: BuatPanggilTemplat, siap: () => { siap: boolean; alasan: string | null }, prompt?: VersiPrompt): MesinBebas {
+  return new MesinBebas({ penulis, palsu: false, buatPanggil, siap, profil: profilDari(prompt) });
 }
 
-export function mesinBebasPalsu(penulis: NamaPenulis): MesinBebas {
-  return new MesinBebas({ penulis, palsu: true, buatPanggil: (): PanggilTemplat => panggilBebasPalsu().panggil, siap: () => ({ siap: true, alasan: null }) });
+export function mesinBebasPalsu(penulis: NamaPenulis, prompt?: VersiPrompt): MesinBebas {
+  return new MesinBebas({ penulis, palsu: true, buatPanggil: (): PanggilTemplat => panggilBebasPalsu().panggil, siap: () => ({ siap: true, alasan: null }), profil: profilDari(prompt) });
 }

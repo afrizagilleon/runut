@@ -86,6 +86,7 @@
     "penulis:audit": "node --experimental-strip-types factory/llm/bebas/audit.ts",
     "penulis:mutu": "node --experimental-strip-types factory/llm/bebas/mutu.ts",
     "penulis:laporan": "node --experimental-strip-types factory/llm/bebas/laporan-penulis.ts",
+    "opus:jalan": "node --experimental-strip-types alat/penyusun/jalan-opus.ts",
     "patokan:laporan": "node --experimental-strip-types factory/llm/patokan/laporan.ts"
   },
   "dependencies": {

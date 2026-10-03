@@ -31,6 +31,7 @@ import { mesinBebasPalsu, mesinBebasSungguhan, shaPaket } from './mesin-bebas.ts
 import { AWALAN_TAG_DEMO, Demo, GalatDemo, LOKASI_DEMO, mesinDemo, PAGU_UJI_ULANG_MAKS_USD, RUMUS_JEDA_DEMO, type LokasiDemo, type Ubah } from './demo.ts';
 import type { KunciOpsi } from '../../factory/llm/draf.ts';
 import type { NamaPenulis } from '../../factory/llm/bebas/pagu-adil.ts';
+import type { VersiPrompt } from '../../factory/llm/bebas/prompt.ts';
 import { KRITIKUS_TERKUNCI_A1, mesinTemplatM2d11Palsu, mesinTemplatM2d11Sungguhan, mesinTemplatPalsu, mesinTemplatSungguhan } from './mesin-templat.ts';
 import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
@@ -80,6 +81,8 @@ export interface OpsiServer {
   namaMesin?: NamaMesin;
   /** M2d-13: model penulis mesin `bebas` (`--penulis opus|haiku|deepseek`). */
   penulisBebas?: NamaPenulis;
+  /** M2d-15: `--prompt v2` (hanya penulis opus) = profil M2d-15: prompt v2, effort "medium", pra-periksa kode. */
+  promptBebas?: VersiPrompt;
   /**
    * M2d-12: mode tayang ulang — putar `aliran.jsonl` satu jalan yang sudah
    * terjadi. Tanpa model, tanpa Sectors, tanpa tulisan ke folder jalan.
@@ -671,12 +674,13 @@ export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan:
   const m2d11 = opsi.namaMesin === 'templat-m2d11';
   const bebas = opsi.namaMesin === 'bebas';
   if (bebas && opsi.penulisBebas === undefined) throw new Error('--mesin bebas butuh --penulis opus|haiku|deepseek.');
+  if (opsi.promptBebas === 'v2' && (!bebas || opsi.penulisBebas !== 'opus')) throw new Error('--prompt v2 (M2d-15) hanya untuk --mesin bebas --penulis opus.');
   const mesin =
     opsi.mesin ??
     (bebas
       ? opsi.palsu
-        ? mesinBebasPalsu(opsi.penulisBebas as NamaPenulis)
-        : mesinBebasSungguhan(opsi.penulisBebas as NamaPenulis, panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log, KRITIKUS_TERKUNCI_A1), siapLlm)
+        ? mesinBebasPalsu(opsi.penulisBebas as NamaPenulis, opsi.promptBebas)
+        : mesinBebasSungguhan(opsi.penulisBebas as NamaPenulis, panggilSungguhan(opsi.akar, opsi.paguPenyusunUsd, opsi.log, KRITIKUS_TERKUNCI_A1), siapLlm, opsi.promptBebas)
       : undefined) ??
     (opsi.palsu
       ? m2d11
@@ -829,6 +833,8 @@ export interface ArgumenServer {
   mesin: NamaMesin;
   /** M2d-13: `--penulis` untuk `--mesin bebas`. */
   penulis: NamaPenulis | null;
+  /** M2d-15: `--prompt v1|v2` untuk `--mesin bebas` (v2 hanya penulis opus). */
+  prompt: VersiPrompt | null;
   /** M2d-12: folder jalan yang diputar ulang (`--tayang-ulang <folder>`). */
   tayangUlang: string | null;
   /** M2d-12: jam virtual untuk perekam bingkai (`--jam-virtual`). */
@@ -843,7 +849,7 @@ export interface ArgumenServer {
  * `--host` sengaja DITOLAK: server ini hanya untuk 127.0.0.1.
  */
 export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): ArgumenServer {
-  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, tayangUlang: null, jamVirtual: false, demo: null };
+  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, prompt: null, tayangUlang: null, jamVirtual: false, demo: null };
   let draf: string | null = null;
   let suntingan: string | null = null;
   let paguUji: number | null = null;
@@ -869,6 +875,10 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
     } else if (a === '--penulis' && nilai !== undefined) {
       if (!(NAMA_PENULIS_BEBAS as readonly string[]).includes(nilai)) throw new Error('--penulis harus "opus", "haiku", atau "deepseek" (M2d-13).');
       hasil.penulis = nilai as NamaPenulis;
+      i++;
+    } else if (a === '--prompt' && nilai !== undefined) {
+      if (nilai !== 'v1' && nilai !== 'v2') throw new Error('--prompt harus "v1" (M2d-13) atau "v2" (M2d-15).');
+      hasil.prompt = nilai;
       i++;
     } else if (a === '--keluaran' && nilai !== undefined) {
       hasil.keluaran = nilai;
@@ -901,6 +911,8 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
   }
   if (hasil.mesin === 'bebas' && hasil.penulis === null) throw new Error('--mesin bebas butuh --penulis opus|haiku|deepseek (M2d-13).');
   if (hasil.penulis !== null && hasil.mesin !== 'bebas') throw new Error('--penulis hanya berlaku bersama --mesin bebas.');
+  if (hasil.prompt !== null && hasil.mesin !== 'bebas') throw new Error('--prompt hanya berlaku bersama --mesin bebas.');
+  if (hasil.prompt === 'v2' && hasil.penulis !== 'opus') throw new Error('--prompt v2 (M2d-15) hanya untuk --penulis opus.');
   if (hasil.jamVirtual && hasil.tayangUlang === null && hasil.demo === null) throw new Error('--jam-virtual hanya berlaku bersama --tayang-ulang <folder jalan> atau --demo <folder jalan>.');
   return hasil;
 }
@@ -916,6 +928,7 @@ async function utama(): Promise<number> {
     palsu: arg.palsu,
     namaMesin: arg.mesin,
     ...(arg.penulis === null ? {} : { penulisBebas: arg.penulis }),
+    ...(arg.prompt === null ? {} : { promptBebas: arg.prompt }),
     ...(arg.tayangUlang === null ? {} : { tayangUlang: { folder: arg.tayangUlang, ...(arg.jamVirtual ? { jam: new JamVirtual() } : {}) } }),
     ...(arg.demo === null || arg.demo.suntingan === null
       ? {}
@@ -934,7 +947,7 @@ async function utama(): Promise<number> {
     console.log('Tanpa panggilan model, tanpa Sectors, tanpa tulisan ke folder jalan. Muat ulang halaman untuk memutar dari awal.');
     return 0;
   }
-  console.log(`Pintu penyusun${arg.palsu ? ' (MODE PALSU: agen & Sectors palsu, tanpa jaringan)' : ''}, mesin ${arg.mesin}${arg.penulis === null ? '' : ` (penulis ${arg.penulis})`}: http://${HOST}:${String(port)}/`);
+  console.log(`Pintu penyusun${arg.palsu ? ' (MODE PALSU: agen & Sectors palsu, tanpa jaringan)' : ''}, mesin ${arg.mesin}${arg.penulis === null ? '' : ` (penulis ${arg.penulis}${arg.prompt === 'v2' ? ', prompt v2 M2d-15' : ''})`}: http://${HOST}:${String(port)}/`);
   console.log(`Hanya mendengar di ${HOST}. Hentikan dengan Ctrl+C.`);
   return 0;
 }

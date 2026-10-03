@@ -49,3 +49,46 @@ describe('jalan palsu lewat antarmuka pintu', () => {
     expect(h.jejak.dibuat_oleh).toBe('factory/llm/bebas/mesin.ts');
   });
 });
+
+describe('M2d-15: --prompt v2 (profil Opus ditingkatkan)', () => {
+  it('--prompt v2 hanya untuk --mesin bebas --penulis opus; v1/v2 saja', () => {
+    expect(uraiArgumen(['--mesin', 'bebas', '--penulis', 'opus', '--prompt', 'v2'], 'D:/r/')).toMatchObject({ mesin: 'bebas', penulis: 'opus', prompt: 'v2' });
+    expect(uraiArgumen(['--mesin', 'bebas', '--penulis', 'opus'], 'D:/r/').prompt).toBeNull();
+    expect(() => uraiArgumen(['--mesin', 'bebas', '--penulis', 'haiku', '--prompt', 'v2'], 'D:/r/')).toThrow(/penulis opus/);
+    expect(() => uraiArgumen(['--mesin', 'templat', '--prompt', 'v2'], 'D:/r/')).toThrow(/--mesin bebas/);
+    expect(() => uraiArgumen(['--mesin', 'bebas', '--penulis', 'opus', '--prompt', 'v3'], 'D:/r/')).toThrow(/v1.*v2/);
+  });
+
+  it('profil v2: nama, perkiraan memakai max_tokens 16.000 dan ≤ 2 tulis-ulang pra-periksa', () => {
+    const m = mesinBebasPalsu('opus', 'v2');
+    expect(m.nama).toBe('bebas-opus-v2-palsu');
+    expect(m.keterangan).toMatch(/effort "medium"/);
+    const p = m.perkiraan();
+    expect(p.per_panggilan[0]?.peran).toMatch(/≤ 2 tulis-ulang pra-periksa/);
+    expect(p.per_panggilan[0]?.maks_usd).toBeCloseTo(4 * (12_000 * 4 + 16_000 * 20) / 1e6, 3);
+    expect(p.catatan[0]).toMatch(/M2d-15/);
+    expect(mesinBebasPalsu('opus').nama).toBe('bebas-opus-palsu');
+  });
+
+  it('jalan palsu profil v2: pra-periksa tercatat di riwayat hasil', async () => {
+    const h = await mesinBebasPalsu('opus', 'v2').jalankan({ id: 'm2d15-palsu-1', paket, folder: mkdtempSync(join(tmpdir(), 'bebas-')), paguJalanUsd: 1, lapor: () => undefined, jam: () => new Date() });
+    const r = h.riwayat as { pra_periksa?: Array<{ versi: number; ke: number }>; sha256_prompt_sistem: string };
+    expect(r.pra_periksa?.length).toBeGreaterThan(0);
+    expect(h.jejak.dibuat_oleh).toBe('factory/llm/bebas/mesin.ts');
+  });
+});
+
+describe('M2d-15: jalan selesai untuk npm run opus:jalan', () => {
+  it('membaca folder m2d15-opus-<n>, biaya dari ledger (tag penyusun/<id>/), terbit dari hasil.json', async () => {
+    const { mkdirSync, writeFileSync } = await import('node:fs');
+    const { jalanSelesaiM2d15 } = await import('./jalan-opus.ts');
+    const akar = mkdtempSync(join(tmpdir(), 'opus-'));
+    expect(jalanSelesaiM2d15(akar)).toEqual([]);
+    mkdirSync(join(akar, 'eval', 'penyusun', 'm2d15-opus-1'), { recursive: true });
+    writeFileSync(join(akar, 'eval', 'penyusun', 'm2d15-opus-1', 'hasil.json'), JSON.stringify({ terbit: false }));
+    mkdirSync(join(akar, '.cache', 'llm'), { recursive: true });
+    const e = (tag: string, biaya: number): string => JSON.stringify({ waktu: '2026-10-04T00:00:00Z', model: 'x', tag, percobaan_http: 1, status: 200, token_masuk: 1, token_keluar: 1, biaya_usd: biaya, dasar_biaya: 'usage-cost', perkiraan_maks_usd: 1, latensi_ms: 1, galat: null });
+    writeFileSync(join(akar, '.cache', 'llm', 'ledger.jsonl'), [e('penyusun/m2d15-opus-1/p1/tulis-bebas', 0.3), e('penyusun/m2d15-opus-1/p1/kritikus/o1', 0.02), e('penyusun/m2d13-opus-1/p1/tulis-bebas', 9)].join('\n'));
+    expect(jalanSelesaiM2d15(akar)).toEqual([{ id: 'm2d15-opus-1', biaya_usd: 0.32, terbit: false }]);
+  });
+});
