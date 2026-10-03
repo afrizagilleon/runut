@@ -1,0 +1,45 @@
+{
+  "catatan": "Teladan gaya untuk prompt penulis v3, disusun reviewer dari soal tayang DADA s3 (siapa yang menjual). Perubahan dari soal tayang: kalimat pembuka pesan 'Harganya udah Rp178 lho.' dibuang (angka itu tidak ada di kartu soal ini); label pengecoh, umpan balik, dan pertanyaan cek ditambahkan reviewer. Pilihan dan penjelasan sama dengan soal tayang.",
+  "omongan": {
+    "no": 1,
+    "nama": "Rara",
+    "jam": "19.47",
+    "pesan": "Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Berarti dia yakin harganya masih bakal naik.",
+    "angka_pesan": [],
+    "kartu": [
+      "fil-2025-08-25-03",
+      "fil-2025-08-25-04",
+      "fil-2025-09-01-01",
+      "jumlah-jual-terverifikasi"
+    ],
+    "kartu_penentu": [
+      "fil-2025-08-25-03"
+    ],
+    "pilihan": {
+      "a": "Betul, laporannya menunjukkan ia membeli lagi di harga belasan rupiah.",
+      "b": "Betul, laporannya menunjukkan ia membeli lagi di harga ratusan rupiah.",
+      "c": "Keliru, laporannya menunjukkan ia menjual banyak di harga belasan rupiah.",
+      "d": "Keliru, laporannya menunjukkan ia menjual banyak di harga ratusan rupiah."
+    },
+    "kunci": "c",
+    "penjelasan": "Ketiga kartu laporan itu penjualan, bukan pembelian: [[fil-2025-08-25-03|70 juta]], [[fil-2025-08-25-04|179,5 juta]], dan [[fil-2025-09-01-01|50 juta lembar]] — seluruhnya [[jumlah-jual-terverifikasi|299,5 juta lembar]], semuanya di harga [[fil-2025-08-25-03|Rp13]] sampai [[fil-2025-09-01-01|Rp15]], jauh di bawah harga hari ini. Perhatikan juga tanggalnya: transaksinya terjadi [[fil-2025-08-25-03|12 Agustus]] sampai [[fil-2025-09-01-01|14 Agustus]], tetapi publik baru bisa membacanya pada [[fil-2025-08-25-04|25 Agustus]] dan [[fil-2025-09-01-01|1 September]], ketika laporannya terbit. Pemilik besar berhak menjual; yang perlu dibaca calon pembeli adalah siapa yang ada di sisi jual. Salah-kaprah yang umum: menganggap \"nggak kedengeran jual\" sama dengan \"tidak menjual\".",
+    "pengecoh": {
+      "a": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "fil-2025-08-25-03",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 mencatat penjualan, bukan pembelian."
+      },
+      "b": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "fil-2025-08-25-04",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 juga mencatat penjualan, dan harganya belasan rupiah."
+      },
+      "d": {
+        "jenis": "sebagian-benar",
+        "rujukan": "fil-2025-09-01-01",
+        "umpan_balik": "Ini sebagian benar: ia memang menjual, tetapi kartu 3 mencatat harganya belasan rupiah, bukan ratusan."
+      }
+    },
+    "pertanyaan_cek": "Laporan ini mencatat pembelian atau penjualan?"
+  }
+}
