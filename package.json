@@ -95,8 +95,11 @@
     "patokan:laporan": "node --experimental-strip-types factory/llm/patokan/laporan.ts"
   },
   "dependencies": {
+    "@openrouter/ai-sdk-provider": "^3.1.0",
+    "ai": "^7.0.127",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",
