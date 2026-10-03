@@ -158,7 +158,13 @@ interface ResponsChat {
   /** OpenRouter: nama penyedia yang melayani. */
   provider?: string;
   choices?: Array<{
-    message?: { content?: string | null; reasoning_content?: string | null; reasoning?: string | null };
+    message?: {
+      content?: string | null;
+      reasoning_content?: string | null;
+      reasoning?: string | null;
+      /** OpenRouter: rincian penalaran terstruktur (`reasoning.summary` / `reasoning.text` / `reasoning.encrypted`). */
+      reasoning_details?: Array<{ type?: string; summary?: string | null; text?: string | null }> | null;
+    };
     finish_reason?: string | null;
   }>;
   usage?: {
@@ -168,6 +174,22 @@ interface ResponsChat {
     cost?: number;
     completion_tokens_details?: { reasoning_tokens?: number };
   };
+}
+
+/**
+ * M2d-16 D-4 (b): teks berpikir dari `reasoning_details` bila `reasoning` /
+ * `reasoning_content` tidak ada — bagian `summary` dan `text` digabung;
+ * bagian terenkripsi tidak punya teks dan dilewati. `null` bila kosong.
+ */
+export function teksRincianPenalaran(rincian: unknown): string | null {
+  if (!Array.isArray(rincian)) return null;
+  const bagian: string[] = [];
+  for (const r of rincian as Array<Record<string, unknown> | null>) {
+    if (typeof r !== 'object' || r === null) continue;
+    const t = typeof r['summary'] === 'string' ? r['summary'] : typeof r['text'] === 'string' ? r['text'] : '';
+    if (t.trim() !== '') bagian.push(t);
+  }
+  return bagian.length === 0 ? null : bagian.join('\n\n');
 }
 
 function angka(x: unknown): number | null {
@@ -355,7 +377,7 @@ export async function chat(
     return {
       model: data.model ?? opsi.model,
       teks: pilihan?.message?.content ?? '',
-      penalaran: pilihan?.message?.reasoning_content ?? pilihan?.message?.reasoning ?? null,
+      penalaran: pilihan?.message?.reasoning_content ?? pilihan?.message?.reasoning ?? teksRincianPenalaran(pilihan?.message?.reasoning_details),
       finish_reason: pilihan?.finish_reason ?? null,
       token_masuk: typeof masuk === 'number' ? masuk : 0,
       token_keluar: typeof keluar === 'number' ? keluar : 0,

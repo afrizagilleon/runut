@@ -184,6 +184,16 @@ export interface OpsiPencatat {
    * biaya yang sudah terjadi.
    */
   biayaNyata?: boolean;
+  /**
+   * M2d-16 D-4 (d): perkiraan pra-kirim WAJAR untuk model/tag ini (USD), atau
+   * `null` = pakai perkiraan maksimum teoretis (perilaku lama). Hanya
+   * mengganti angka yang dipakai PEMERIKSAAN pagu sebelum kirim; perkiraan
+   * maksimum teoretis tetap dicatat di ledger (`perkiraan_maks_usd`) dan
+   * tetap menjadi biaya panggilan yang tidak mendapat respons sama sekali.
+   * Pagu tetap ditegakkan sebelum SETIAP panggilan: akumulasi nyata +
+   * perkiraan wajar > pagu → tidak dikirim.
+   */
+  perkiraanWajar?: (model: string, tag?: string) => number | null;
 }
 
 /** Medan ledger M2d-6 yang diketahui pemanggil (bukan klien). */
@@ -207,7 +217,8 @@ export class PencatatBiaya {
    * menjalankan beberapa soal serentak). Ikut dihitung di setiap pemeriksaan
    * pagu sampai panggilan itu dicatat — pagu tetap ditegakkan saat serentak.
    */
-  private readonly pesanan: Array<{ tag: string; usd: number }> = [];
+  private readonly pesanan: Array<{ tag: string; usd: number; maks: number }> = [];
+  private readonly perkiraanWajar: ((model: string, tag?: string) => number | null) | null;
 
   constructor(opsi: OpsiPencatat) {
     if (!Number.isFinite(opsi.paguUsd) || opsi.paguUsd <= 0) {
@@ -226,6 +237,7 @@ export class PencatatBiaya {
     }
     this.paguBagian = opsi.paguBagian ?? [];
     this.biayaNyata = opsi.biayaNyata ?? false;
+    this.perkiraanWajar = opsi.perkiraanWajar ?? null;
     this.jalur = opsi.jalurLedger;
     this.harga = opsi.harga ?? HARGA;
     this.jam = opsi.jam ?? (() => new Date());
@@ -268,7 +280,10 @@ export class PencatatBiaya {
    * kirim. Mengembalikan perkiraannya untuk dicatat.
    */
   periksa(model: string, pesan: readonly PesanChat[], maxTokens: number, tag?: string, pesanTempat = false): number {
-    const perkiraan = this.perkiraan(model, pesan, maxTokens);
+    const maks = this.perkiraan(model, pesan, maxTokens);
+    // M2d-16: pemeriksaan memakai perkiraan wajar bila ada (dan sah); tanpa itu = maksimum teoretis (lama).
+    const wajar = this.perkiraanWajar?.(model, tag) ?? null;
+    const perkiraan = wajar !== null && Number.isFinite(wajar) && wajar > 0 ? wajar : maks;
     const dipesan = (awalan: string): number => this.pesanan.filter((x) => x.tag.startsWith(awalan)).reduce((a, x) => a + x.usd, 0);
     const akumulasi = this.total() + dipesan('');
     if (akumulasi + perkiraan > this.paguUsd) {
@@ -287,13 +302,13 @@ export class PencatatBiaya {
       const bagian = this.totalAwalan(b.awalanTag) + dipesan(b.awalanTag);
       if (bagian + perkiraan > b.usd) throw new PaguMilestoneTercapai(bagian, perkiraan, b, model);
     }
-    if (pesanTempat && tag !== undefined) this.pesanan.push({ tag, usd: perkiraan });
-    return perkiraan;
+    if (pesanTempat && tag !== undefined) this.pesanan.push({ tag, usd: perkiraan, maks });
+    return maks;
   }
 
   /** Catat satu percobaan sesudah terjadi. */
   catat(model: string, tag: string, c: CatatanPercobaan, perkiraan: number, tambahan: TambahanLedger = {}): EntriLedger {
-    const i = this.pesanan.findIndex((x) => x.tag === tag && x.usd === perkiraan);
+    const i = this.pesanan.findIndex((x) => x.tag === tag && x.maks === perkiraan);
     if (i >= 0) this.pesanan.splice(i, 1);
     const harga = hargaModel(model, this.harga);
     let biaya: number;
