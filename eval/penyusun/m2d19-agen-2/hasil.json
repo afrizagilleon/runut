@@ -1,0 +1,2247 @@
+{
+  "id": "m2d19-agen-2",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1,
+  "berhenti": "anggaran tidak cukup untuk satu pengajuan lagi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 7,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 2,
+      "teks_akhir": ""
+    },
+    {
+      "ke": 2,
+      "langkah": 6,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 2,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 13,
+  "panggilan_model": 13,
+  "pengajuan": 4,
+  "biaya_agen_usd": 0.667932,
+  "biaya_gerbang_usd": 0.2765,
+  "biaya_usd": 0.9444,
+  "durasi_detik": 566,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "1a5abd0216e457e5",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "asal": "m2d18-agen-1"
+      },
+      {
+        "id": "adf573a6e895ac7a",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "volume-2025-12-09"
+        ],
+        "asal": "m2d18-uji-ajukan-2"
+      },
+      {
+        "id": "4615245eb6fd12e7",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "asal": "m2d19-agen-1"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": false,
+    "dipilih": [],
+    "alasan": [
+      "validator seluruh draf (1a5abd0216e457e5, adf573a6e895ac7a, 4615245eb6fd12e7): [TIDAK_ADA_BETUL] Minimal satu dari tiga omongan harus ternyata BETUL (kuncinya pilihan \"Betul,\")."
+    ],
+    "draf": null
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.12",
+        "pesan": "Eh sebelum disetop tadi, harga terakhirnya katanya udah tembus seratus perak ya? Padahal akhir November masih puluhan.",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2025-12-08",
+          "harga-2025-12-09",
+          "volume-2025-12-10",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "harga-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+          "b": "Betul, penutupan hari ini sudah di atas seratus rupiah.",
+          "c": "Keliru, penutupan hari bursa terakhirnya masih di bawah seratus rupiah.",
+          "d": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop."
+        },
+        "kunci": "a",
+        "penjelasan": "Perdagangan dihentikan pada [[susp-2025-12-10|10 Desember]] dan volumenya hari itu [[volume-2025-12-10|0 lembar]], jadi hari ini tidak ada harga penutupan baru. Penutupan pada hari bursa terakhir sebelum disetop adalah [[harga-2025-12-09|Rp106]] pada [[harga-2025-12-09|9 Desember]], memang sudah lewat seratus. Angka [[harga-2025-12-08|Rp97]] adalah penutupan [[harga-2025-12-08|8 Desember]], sehari lebih awal, jadi bukan harga terakhir. Salah-kaprah yang umum: mengambil angka hari sebelumnya, atau mengira hari disetop tidak menyisakan harga terakhir yang bisa dicek.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-12-10",
+            "umpan_balik": "Ini salah periode: kartu 3 mencatat hari ini tidak ada transaksi sama sekali, jadi harga yang tembus seratus itu milik hari bursa sebelumnya."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2025-12-08",
+            "umpan_balik": "Ini angka nyaris benar: kartu 1 memang masih di bawah seratus, tetapi itu penutupan sehari sebelum hari bursa terakhir."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "harga-2025-12-09",
+            "umpan_balik": "Ini menjawab pertanyaan lain: yang ditanyakan harga terakhir sebelum disetop, dan kartu 2 mencatat penutupan itu sudah di atas seratus."
+          }
+        },
+        "pertanyaan_cek": "Berapa harga penutupan pada hari bursa terakhir sebelum perdagangan dihentikan?"
+      },
+      "berhenti": "penebak-kuat",
+      "alasan": [
+        "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ],
+      "dicatat": [
+        "pilihan-saja (diagnosis): kunci 6 dari 11 terbaca (peluang kebetulan 0,0343); 1 tak terbaca dibuang"
+      ],
+      "saringan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, penutupan hari bursa terakhirnya masih di bawah seratus rupiah.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan c paling konservatif dan logis sebagai koreksi.",
+            "biaya_usd": 0.000695,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan tidak ditampilkan\n2. Dokumen referensi tidak disediakan\n3. Data harga saham tidak tersedia\n\nTanpa informasi tersebut, saya tidak dapat menentukan pilihan mana yang paling mungkin benar.\n\n```json\n{\n  \"teks\": \"Tidak dapat",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.00199,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, opsi b paling aman karena menjelaskan alasan teknis.",
+            "biaya_usd": 0.00068,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, opsi c paling aman karena menjelaskan alasan spesifik.",
+            "biaya_usd": 0.00069,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Nadia menyebut 'sebelum disetop' yang menunjukkan perdagangan dihentikan, bukan ditutup normal.",
+            "biaya_usd": 0.000779,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Nadia menyebut 'sebelum disetop' yang menunjukkan perdagangan dihentikan, bukan penutupan normal.",
+            "biaya_usd": 0.000784,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Nadia menyebut 'sebelum disetop' yang menunjukkan perdagangan dihentikan, bukan penutupan normal.",
+            "biaya_usd": 0.000784,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Nadia menyebut 'sebelum disetop' yang menunjukkan perdagangan dihentikan, bukan penutupan normal.",
+            "biaya_usd": 0.000784,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, opsi ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003322,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Pilihan paling masuk akal tanpa dokumen.",
+            "biaya_usd": 0.00003082,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Pilihan paling umum benar tanpa dokumen.",
+            "biaya_usd": 0.00003022,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan positif tentang penutupan.",
+            "biaya_usd": 0.00003262,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "c) Keliru, penutupan hari bursa terakhirnya masih di bawah seratus rupiah.",
+            "skor": 1,
+            "alasan": "Nadia bilang tembus seratus, tapi dokumen tak ada.",
+            "biaya_usd": 0.00003558,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, penutupan hari bursa terakhirnya masih di bawah seratus rupiah.",
+            "skor": 1,
+            "alasan": "Nadia bilang tembus seratus, padahal masih puluhan.",
+            "biaya_usd": 0.00003438,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "a) Keliru, penutupan hari bursa terakhirnya masih di bawah seratus rupiah.",
+            "skor": 1,
+            "alasan": "Tidak ada dokumen, pilih paling masuk akal.",
+            "biaya_usd": 0.00003438,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Nadia bilang harga terakhir tembus seratus perak",
+            "biaya_usd": 0.00003318,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Cocok dengan dokumen, penutupan terakhir di atas seratus rupiah.",
+            "biaya_usd": 0.00198813,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan ini paling mungkin sesuai klaim teman.",
+            "biaya_usd": 0.00045924,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, hari ini tidak ada penutupan karena perdagangannya disetop.",
+            "skor": 1,
+            "alasan": "Perdagangan disetop sehingga tidak ada harga penutupan hari ini.",
+            "biaya_usd": 0.000321972,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Pesan teman kemungkinan sesuai dokumen tentang penutupan saham.",
+            "biaya_usd": 0.000342312,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Harga terakhir sebelum penghentian merujuk penutupan bursa terakhir di atas seratus.",
+            "biaya_usd": 0.000908348,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Perdagangan disetop, jadi penutupan terakhir adalah hari bursa sebelumnya di atas seratus.",
+            "biaya_usd": 0.000410018,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Nadia menyebut harga terakhir sebelum disetop tembus seratus rupiah.",
+            "biaya_usd": 0.000454662,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Harga terakhir sebelum pemberhentian memang sudah tembus seratus rupiah.",
+            "biaya_usd": 0.000776712,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "v2-binomial-pesan-pilihan",
+          "putusan": "lulus",
+          "alasan": [
+            "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 5 dari 12 jawaban terbaca (peluang kebetulan 0,1576; batas 0,01)"
+          ],
+          "kondisi": {
+            "pilihan-saja": {
+              "total": 12,
+              "n": 11,
+              "kunci": 6,
+              "tak_terbaca": 1,
+              "p": 0.03432750701904297,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 0,
+                  "n": 3,
+                  "tak_terbaca": 1
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 3,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 3,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            },
+            "pesan-pilihan": {
+              "total": 12,
+              "n": 12,
+              "kunci": 5,
+              "tak_terbaca": 0,
+              "p": 0.15764367580413818,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 4,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            }
+          },
+          "diagnosis": "pilihan-saja (diagnosis): kunci 6 dari 11 terbaca (peluang kebetulan 0,0343); 1 tak terbaca dibuang"
+        },
+        "biaya_usd": 0.013111793999999998
+      },
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menunjukkan penutupan hari bursa terakhir sebelum penghentian, yaitu 9 Desember 2025, sudah Rp106 atau di atas seratus rupiah.",
+            "biaya_usd": 0.0002783
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 mencatat penutupan 9 Desember 2025 Rp106, dan Kartu 4 menyatakan perdagangan disetop 10 Desember 2025, jadi penutupan hari bursa terakhir sebelum disetop sudah di atas seratus rupiah.",
+            "biaya_usd": 0.000612076
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen: saham biasanya disetop setelah lonjakan harga.",
+            "biaya_usd": 0.00758,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; ini tebakan paling sejalan dengan pesan Nadia.",
+            "biaya_usd": 0.00494,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen: lonjakan harga biasanya memicu penghentian perdagangan.",
+            "biaya_usd": 0.00734,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan hari bursa terakhirnya sudah di atas seratus rupiah.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan paling konsisten dengan klaim sebelum suspensi.",
+            "biaya_usd": 0.00548,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 4,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 0,
+          "putusan": "tolak",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+        },
+        "biaya_usd": 0.025339999999999998
+      },
+      "kritik": null,
+      "biaya_gerbang_usd": 0.039342169999999996,
+      "id_bank": null
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "21.05",
+        "pesan": "Orang-orang heboh banget soal T. Padahal dari awal naik akhir November sampai kemarin, naiknya nggak sampai cepek per lembar kok, cek aja.",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "naik-2025-11-26-2025-12-09",
+          "kelipatan-2025-11-26-2025-12-09"
+        ],
+        "kartu_penentu": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+          "b": "Keliru, kenaikannya sudah lebih dari seratus rupiah per lembar.",
+          "c": "Keliru, harganya sudah naik lebih dari dua kali lipat.",
+          "d": "Betul, harganya bahkan belum naik dua kali lipat."
+        },
+        "kunci": "a",
+        "penjelasan": "Yang diomongkan adalah besar kenaikan per lembar. Harga penutupan naik dari [[harga-2025-11-26|Rp48]] pada [[harga-2025-11-26|26 November]] ke [[harga-2025-12-09|Rp106]] pada [[harga-2025-12-09|9 Desember]], jadi naiknya [[naik-2025-11-26-2025-12-09|Rp58]] per lembar, memang belum sampai seratus. Angka [[harga-2025-12-09|Rp106]] itu harganya, bukan kenaikannya. Kenaikan itu tetap besar karena harganya jadi [[kelipatan-2025-11-26-2025-12-09|2,21 kali]] lipat. Salah-kaprah yang umum: menyamakan harga penutupan dengan besar kenaikan, atau menyangka angka rupiah yang kecil berarti kenaikannya kecil.",
+        "pengecoh": {
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "harga-2025-12-09",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 adalah harga penutupannya, bukan besar kenaikannya."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "kelipatan-2025-11-26-2025-12-09",
+            "umpan_balik": "Ini sebagian benar: kartu 4 memang mencatat lebih dari dua kali lipat, tetapi yang diomongkan besar kenaikan dalam rupiah, dan itu di bawah seratus."
+          },
+          "d": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "kelipatan-2025-11-26-2025-12-09",
+            "umpan_balik": "Ini angka nyaris benar: kartu 4 mencatat harganya sudah lebih dari dua kali lipat, bukan kurang."
+          }
+        },
+        "pertanyaan_cek": "Berapa rupiah per lembar harga penutupan naik selama reli sebelum disetop?"
+      },
+      "berhenti": "saringan",
+      "alasan": [
+        "saringan tebak: pesan+pilihan: tanpa kartu, penebak memilih isi kunci 9 dari 12 jawaban terbaca (peluang kebetulan 0,0004; batas 0,01) — jawabannya bisa ditebak tanpa membaca kartu"
+      ],
+      "dicatat": [
+        "pilihan-saja (diagnosis): kunci 3 dari 9 terbaca (peluang kebetulan 0,3993); 3 tak terbaca dibuang"
+      ],
+      "saringan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Pilihan paling konservatif tanpa dokumen referensi yang jelas.",
+            "biaya_usd": 0.00063,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan **tidak ditampilkan** (\"Pesan temannya tidak ditampilkan\")\n2. **Tidak ada dokumen** yang diberikan untuk dibandingkan\n3. Saya tidak memiliki informasi tentang harga saham atau kenaikannya\n\nTanpa mengetahui klaim spesifi",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.00232,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan tidak ditampilkan\n2. Dokumen referensi tidak disediakan\n3. Data harga saham yang diperlukan untuk verifikasi tidak ada\n\nTanpa informasi tersebut, saya tidak dapat menentukan pilihan mana yang paling mungkin benar.\n\n```j",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.00206,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan **tidak ditampilkan**\n2. **Tidak ada dokumen** yang diberikan untuk dibandingkan\n3. Saya tidak memiliki informasi tentang harga saham atau kenaikannya\n\nTanpa kedua informasi tersebut, saya tidak dapat menentukan pilihan",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.00208,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan kenaikan 'nggak sampai cepek' (seratus rupiah), sesuai pilihan a.",
+            "biaya_usd": 0.000751,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan kenaikan 'nggak sampai cepek' (seratus rupiah) per lembar, pilihan b sesuai pernyataannya.",
+            "biaya_usd": 0.000796,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan kenaikan 'nggak sampai cepek' (100 rupiah) per lembar, pilihan c sesuai pernyataannya.",
+            "biaya_usd": 0.000796,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, kenaikannya sudah lebih dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan a paling logis menyanggah klaim Nadia tentang kenaikan kurang dari seratus rupiah.",
+            "biaya_usd": 0.000701,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan paling netral dan masuk akal.",
+            "biaya_usd": 0.00003244,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, harganya sudah naik lebih dari dua kali lipat.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan ini paling spesifik dan mungkin benar.",
+            "biaya_usd": 0.00003064,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, harganya bahkan belum naik dua kali lipat.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan ini paling masuk akal.",
+            "biaya_usd": 0.00002884,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003004,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia bilang naiknya nggak sampai cepek per lembar",
+            "biaya_usd": 0.00003378,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia bilang naiknya nggak sampai cepek per lembar.",
+            "biaya_usd": 0.00003438,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "c) Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia bilang naiknya nggak sampai cepek per lembar.",
+            "biaya_usd": 0.00003558,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia bilang naiknya nggak sampai cepek per lembar.",
+            "biaya_usd": 0.00003438,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, kenaikannya sudah lebih dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Pesan teman biasanya meremehkan kenaikan harga saham.",
+            "biaya_usd": 0.000441812,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, harganya sudah naik lebih dari dua kali lipat.",
+            "skor": 1,
+            "alasan": "Pesan teman kemungkinan mengklaim harga belum dua kali lipat, dokumen menunjukkan sebaliknya.",
+            "biaya_usd": 0.00035873,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, harganya sudah naik lebih dari dua kali lipat.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, menebas berdasarkan pilihan paling mungkin benar.",
+            "biaya_usd": 0.00043331,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, harganya bahkan belum naik dua kali lipat.",
+            "skor": 1,
+            "alasan": "Tanpa konteks tambahan, pilihan ini paling mungkin sesuai dokumen.",
+            "biaya_usd": 0.000428252,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, harganya sudah naik lebih dari dua kali lipat.",
+            "skor": 1,
+            "alasan": "Kenaikan heboh biasanya berarti melipatgandakan harga, bukan sekadar cepek.",
+            "biaya_usd": 0.00054852,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "\"Cepek\" berarti seratus rupiah, sesuai pernyataan Nadia.",
+            "biaya_usd": 0.000347416,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, kenaikannya sudah lebih dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Kenaikan heboh kemungkinan melebihi seratus rupiah per lembar.",
+            "biaya_usd": 0.000472272,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikannya memang kurang dari seratus rupiah per lembar.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan kenaikan kurang dari cepek per lembar, sesuai data.",
+            "biaya_usd": 0.000319148,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "v2-binomial-pesan-pilihan",
+          "putusan": "tolak",
+          "alasan": [
+            "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 9 dari 12 jawaban terbaca (peluang kebetulan 0,0004; batas 0,01)"
+          ],
+          "kondisi": {
+            "pilihan-saja": {
+              "total": 12,
+              "n": 9,
+              "kunci": 3,
+              "tak_terbaca": 3,
+              "p": 0.399322509765625,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 1,
+                  "n": 1,
+                  "tak_terbaca": 3
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 2,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            },
+            "pesan-pilihan": {
+              "total": 12,
+              "n": 12,
+              "kunci": 9,
+              "tak_terbaca": 0,
+              "p": 0.0003916621208190918,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 3,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 4,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 2,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            }
+          },
+          "diagnosis": "pilihan-saja (diagnosis): kunci 3 dari 9 terbaca (peluang kebetulan 0,3993); 3 tak terbaca dibuang"
+        },
+        "biaya_usd": 0.013743540000000002
+      },
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.013743540000000002,
+      "id_bank": null
+    },
+    {
+      "putaran": 3,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.12",
+        "pesan": "Yang di grup sebelah bilang RUPS T kemarin mutusin macem-macem, makanya naik. Ngarang itu. Di daftar aksi korporasi cuma ada jadwal rapatnya, isi keputusannya nggak dicatat.",
+        "angka_pesan": [],
+        "kartu": [
+          "rups-2025-09-25",
+          "harga-2025-11-26",
+          "susp-2025-01-21",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "rups-2025-09-25"
+        ],
+        "pilihan": {
+          "a": "Betul, yang tercatat hanya jadwal rapat [[rups-2025-09-25|25 September 2025]].",
+          "b": "Betul, yang tercatat hanya jadwal rapat [[harga-2025-11-26|26 November 2025]].",
+          "c": "Keliru, daftar itu juga mencatat isi keputusan rapat [[rups-2025-09-25|25 September 2025]].",
+          "d": "Keliru, daftar itu juga mencatat isi keputusan rapat [[harga-2025-11-26|26 November 2025]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu daftar aksi korporasi hanya mencatat bahwa rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September 2025]], dan menyebut terang-terangan bahwa isi keputusannya tidak tercatat. Jadi omongan teman ini betul: tidak ada dasar di dokumen untuk bilang rapat itu 'mutusin macem-macem'. Tanggal [[harga-2025-11-26|26 November 2025]] bukan tanggal rapat, melainkan hari harga penutupan [[harga-2025-11-26|Rp48]], titik awal kenaikan beruntun. Salah-kaprah yang umum: mengira setiap rapat pemegang saham pasti menghasilkan keputusan besar yang menggerakkan harga, padahal dokumennya tidak mencatat isinya sama sekali.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: tanggal di kartu 2 adalah hari data harga penutupan, bukan hari rapat. Jadwal rapat ada di kartu 1."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "rups-2025-09-25",
+            "umpan_balik": "Ini sebagian benar: tanggal rapatnya cocok dengan kartu 1, tetapi kartu 1 justru menyebut isi keputusannya tidak tercatat."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: tanggal di kartu 2 adalah hari data harga, bukan hari rapat, dan isi keputusan rapat tidak tercatat di kartu mana pun."
+          }
+        },
+        "pertanyaan_cek": "Kartu rapat mencatat jadwalnya saja, atau juga isi keputusannya?"
+      },
+      "berhenti": "kritikus",
+      "alasan": [
+        "[kritikus: makna, kunci] Bagian klaim teman yang tidak bisa dicek dari kartu: \"RUPS T kemarin mutusin macem-macem — isi keputusan RUPS tidak tercatat di kartu mana pun, jadi benar atau salahnya tak …\", \"makanya naik — sebab kenaikan harga tidak dijelaskan di kartu mana pun\", \"ngarang itu — kartu tak bisa memastikan omongan…",
+        "[kritikus: kunci, kunci] Verdik 'Betul' pada kunci mengesahkan seluruh omongan Nadia, padahal kesimpulan 'ngarang itu' dan sebab 'makanya naik' tidak bisa dipastikan benar atau salah dari kartu karena isi keputusan RUPS dan penyebab kenaikan memang tidak tercatat.",
+        "[kritikus: arahan] Pilihan kunci perlu menyatakan bahwa isi keputusan RUPS dan penyebab kenaikan harga tidak bisa dipastikan dari kartu, sehingga 'Betul' tidak ikut mengesahkan klaim 'ngarang itu'. Alternatifnya, batasi omongan Nadia pada klaim yang memang tercatat tanpa menyimpulkan grup sebelah mengarang."
+      ],
+      "dicatat": [
+        "pilihan-saja (diagnosis): kunci 1 dari 11 terbaca (peluang kebetulan 0,9578); 1 tak terbaca dibuang"
+      ],
+      "saringan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan **tidak ditampilkan** (\"Pesan temannya tidak ditampilkan\")\n2. **Tidak ada dokumen** yang diberikan untuk dibandingkan\n3. Tanpa kedua informasi tersebut, saya tidak bisa menentukan apakah omongan teman cocok dengan dokum",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.002682,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Pilihan paling netral tanpa informasi dokumen yang tidak tersedia",
+            "biaya_usd": 0.000646,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen dan pesan teman, pilih opsi yang paling umum logis sebagai koreksi.",
+            "biaya_usd": 0.000736,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan c paling logis karena menyebutkan detail spesifik tanggal.",
+            "biaya_usd": 0.000741,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan daftar aksi korporat hanya mencatat jadwal rapat tanpa isi keputusan",
+            "biaya_usd": 0.000785,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan daftar aksi korporat hanya mencatat jadwal rapat, bukan isi keputusan. Pilihan c sesuai klaim tersebut.",
+            "biaya_usd": 0.000855,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia klaim daftar hanya catat jadwal, tapi pilihan b menyatakan daftar juga mencatat isi keputusan.",
+            "biaya_usd": 0.000855,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia klaim hanya jadwal tercatat, tapi dokumen mencatat keputusan juga.",
+            "biaya_usd": 0.000795,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003402,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003402,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan mungkin benar.",
+            "biaya_usd": 0.00003342,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003402,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, tanpa isi keputusan.",
+            "biaya_usd": 0.00003578,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "c) Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, bukan isi keputusan.",
+            "biaya_usd": 0.00003698,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, tanpa isi keputusan.",
+            "biaya_usd": 0.00003578,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, tanpa isi keputusan.",
+            "biaya_usd": 0.00003578,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, tebakan paling mungkin: daftar memuat keputusan rapat.",
+            "biaya_usd": 0.000478792,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, opsi ini paling mungkin sesuai pola jawaban.",
+            "biaya_usd": 0.000414382,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, menebak daftar mencatat keputusan rapat September.",
+            "biaya_usd": 0.000346582,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Dokumen biasanya mencatat keputusan rapat, bukan hanya jadwalnya.",
+            "biaya_usd": 0.000272002,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat tercatat, tanpa isi keputusan.",
+            "biaya_usd": 0.000341818,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia benar: hanya jadwal RUPS tercatat, tanpa isi keputusan.",
+            "biaya_usd": 0.000397206,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat yang tercatat, tanpa isi keputusan.",
+            "biaya_usd": 0.000363306,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "RUPS T kemarin(26 Nov) keputusannya tercatat, jadi Nadia salah.",
+            "biaya_usd": 0.001756596,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "v2-binomial-pesan-pilihan",
+          "putusan": "lulus",
+          "alasan": [
+            "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 4 dari 12 jawaban terbaca (peluang kebetulan 0,3512; batas 0,01)"
+          ],
+          "kondisi": {
+            "pilihan-saja": {
+              "total": 12,
+              "n": 11,
+              "kunci": 1,
+              "tak_terbaca": 1,
+              "p": 0.9577648639678955,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 1,
+                  "n": 3,
+                  "tak_terbaca": 1
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            },
+            "pesan-pilihan": {
+              "total": 12,
+              "n": 12,
+              "kunci": 4,
+              "tak_terbaca": 0,
+              "p": 0.35122138261795044,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 2,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            }
+          },
+          "diagnosis": "pilihan-saja (diagnosis): kunci 1 dari 11 terbaca (peluang kebetulan 0,9578); 1 tak terbaca dibuang"
+        },
+        "biaya_usd": 0.012745483999999998
+      },
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat hanya jadwal rapat umum pemegang saham 25 September 2025 dan menyatakan isi keputusannya tidak tercatat, sesuai omongan Nadia.",
+            "biaya_usd": 0.00026655
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 hanya mencatat jadwal rapat umum pemegang saham 25 September 2025 dan menyatakan isi keputusannya tidak tercatat, cocok dengan omongan Nadia.",
+            "biaya_usd": 0.000221126
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; daftar aksi biasanya hanya jadwal, tanggal ditebak.",
+            "biaya_usd": 0.005696,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; tanggal tidak bisa dipastikan.",
+            "biaya_usd": 0.005736,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; daftar aksi korporasi biasanya hanya memuat jadwal, tanggal ditebak.",
+            "biaya_usd": 0.006016,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tanggal hanya tebakan, tak bisa diverifikasi.",
+            "biaya_usd": 0.005316,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 2,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.022764
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": false,
+        "keberatan": [
+          {
+            "jenis": "makna",
+            "bagian": "kunci",
+            "alasan": "Bagian klaim teman yang tidak bisa dicek dari kartu: \"RUPS T kemarin mutusin macem-macem — isi keputusan RUPS tidak tercatat di kartu mana pun, jadi benar atau salahnya tak …\", \"makanya naik — sebab kenaikan harga tidak dijelaskan di kartu mana pun\", \"ngarang itu — kartu tak bisa memastikan omongan…"
+          },
+          {
+            "jenis": "kunci",
+            "bagian": "kunci",
+            "alasan": "Verdik 'Betul' pada kunci mengesahkan seluruh omongan Nadia, padahal kesimpulan 'ngarang itu' dan sebab 'makanya naik' tidak bisa dipastikan benar atau salah dari kartu karena isi keputusan RUPS dan penyebab kenaikan memang tidak tercatat."
+          }
+        ],
+        "arahan": "Pilihan kunci perlu menyatakan bahwa isi keputusan RUPS dan penyebab kenaikan harga tidak bisa dipastikan dari kartu, sehingga 'Betul' tidak ikut mengesahkan klaim 'ngarang itu'. Alternatifnya, batasi omongan Nadia pada klaim yang memang tercatat tanpa menyimpulkan grup sebelah mengarang.",
+        "token_penalaran": [
+          18550
+        ]
+      },
+      "biaya_gerbang_usd": 0.10083026,
+      "id_bank": null
+    },
+    {
+      "putaran": 4,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.12",
+        "pesan": "Ada yang bilang RUPS T kemarin mutusin macem-macem. Aku iseng cek daftar aksi korporasinya, isinya cuma jadwal rapat doang, keputusannya nggak dicatat sama sekali.",
+        "angka_pesan": [],
+        "kartu": [
+          "rups-2025-09-25",
+          "harga-2025-11-26",
+          "susp-2025-01-21",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "rups-2025-09-25"
+        ],
+        "pilihan": {
+          "a": "Betul, yang tercatat hanya jadwal rapat [[rups-2025-09-25|25 September 2025]].",
+          "b": "Betul, yang tercatat hanya jadwal rapat [[harga-2025-11-26|26 November 2025]].",
+          "c": "Keliru, daftar itu juga mencatat isi keputusan rapat [[rups-2025-09-25|25 September 2025]].",
+          "d": "Keliru, daftar itu juga mencatat isi keputusan rapat [[harga-2025-11-26|26 November 2025]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu daftar aksi korporasi hanya mencatat bahwa rapat umum pemegang saham dijadwalkan [[rups-2025-09-25|25 September 2025]], dan menyebut terang-terangan bahwa isi keputusannya tidak tercatat. Jadi yang dicek teman ini betul: di dokumen cuma ada jadwal, tanpa isi keputusan. Artinya apa yang diputuskan rapat itu, dan apakah ada hubungannya dengan kenaikan harga, tidak bisa dipastikan dari kartu, baik untuk membenarkan maupun membantah cerita orang. Tanggal [[harga-2025-11-26|26 November 2025]] bukan tanggal rapat, melainkan hari harga penutupan [[harga-2025-11-26|Rp48]], titik awal kenaikan beruntun. Salah-kaprah yang umum: mengira ada catatan keputusan rapat hanya karena ada jadwal rapatnya.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: tanggal di kartu 2 adalah hari data harga penutupan, bukan hari rapat. Jadwal rapat ada di kartu 1."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "rups-2025-09-25",
+            "umpan_balik": "Ini sebagian benar: tanggal rapatnya cocok dengan kartu 1, tetapi kartu 1 justru menyebut isi keputusannya tidak tercatat."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: tanggal di kartu 2 adalah hari data harga, bukan hari rapat, dan isi keputusan rapat tidak tercatat di kartu mana pun."
+          }
+        },
+        "pertanyaan_cek": "Kartu rapat mencatat jadwalnya saja, atau juga isi keputusannya?"
+      },
+      "berhenti": "kritikus",
+      "alasan": [
+        "[kritikus: makna, kunci] Bagian klaim teman yang tidak bisa dicek dari kartu: \"Isi keputusan RUPS T ('mutusin macem-macem') — kartu 1 sendiri menyatakan isi keputusan rapat tidak tercatat, jadi tida…\", \"Bahwa RUPS-nya terjadi 'kemarin' — kartu hanya mencatat jadwal RUPS 25 September 2025 dan tidak ada catatan rapat pada …\"…",
+        "[kritikus: kunci, kunci] Pilihan kunci 'Betul' membenarkan omongan yang memuat klaim tak tercek (isi keputusan RUPS 'mutusin macem-macem' dan rapat 'kemarin') tanpa menyatakan bahwa bagian itu tidak bisa dipastikan dari kartu; pernyataan tak pasti baru muncul di penjelasan, bukan di pilihan.",
+        "[kritikus: arahan] Pilihan kunci perlu menyatakan sendiri bahwa isi keputusan RUPS tidak bisa dipastikan dari kartu, bukan hanya menyebut jadwal yang tercatat. Pernyataan tak pasti itu saat ini baru ada di penjelasan."
+      ],
+      "dicatat": [
+        "pilihan-saja (diagnosis): kunci 1 dari 11 terbaca (peluang kebetulan 0,9578); 1 tak terbaca dibuang"
+      ],
+      "saringan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan **tidak ditampilkan** (\"Pesan temannya tidak ditampilkan\")\n2. **Tidak ada dokumen** yang diberikan untuk dibandingkan\n3. Tanpa kedua informasi tersebut, saya tidak bisa menentukan apakah omongan teman cocok dengan dokum",
+            "skor": null,
+            "alasan": "(tak terbaca/tak terpetakan)",
+            "biaya_usd": 0.002682,
+            "panggilan": 2
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Pilihan paling netral tanpa informasi dokumen yang tidak tersedia",
+            "biaya_usd": 0.000646,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen dan pesan teman, pilih opsi yang paling umum logis sebagai koreksi.",
+            "biaya_usd": 0.000736,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan c paling logis karena menyebutkan detail spesifik tanggal.",
+            "biaya_usd": 0.000741,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan daftar aksi korporasi hanya berisi jadwal rapat tanpa keputusan. Pilihan a sesuai pernyataannya.",
+            "biaya_usd": 0.000832,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia menyatakan daftar aksi korporasi hanya berisi jadwal rapat tanpa keputusan. Pilihan c sesuai pernyataannya.",
+            "biaya_usd": 0.000832,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia klaim daftar hanya berisi jadwal tanpa keputusan. Pilihan b menyatakan daftar mencatat keputusan, membuat klaim Nadia keliru.",
+            "biaya_usd": 0.000907,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia klaim keputusan tidak dicatat, tapi pilihan c menunjukkan keputusan tercatat.",
+            "biaya_usd": 0.000812,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003402,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003402,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan mungkin benar.",
+            "biaya_usd": 0.00003342,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+            "biaya_usd": 0.00003402,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, tanpa keputusan.",
+            "biaya_usd": 0.0000345,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, tanpa keputusan.",
+            "biaya_usd": 0.0000345,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, tanpa keputusan.",
+            "biaya_usd": 0.0000345,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal rapat, tanpa keputusan.",
+            "biaya_usd": 0.0000345,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, tebakan paling mungkin: daftar memuat keputusan rapat September.",
+            "biaya_usd": 0.000465806,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, menebak daftar mencatat keputusan rapat terbaru.",
+            "biaya_usd": 0.000306476,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilih opsi yang menyebut isi keputusan rapat tercatat.",
+            "biaya_usd": 0.000296306,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Daftar umumnya mencatat keputusan rapat, bukan hanya jadwalnya.",
+            "biaya_usd": 0.000357326,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang daftar hanya memuat jadwal, tanpa isi keputusan.",
+            "biaya_usd": 0.000330988,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang hanya jadwal tercatat, tanpa isi keputusan rapat.",
+            "biaya_usd": 0.000372816,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, daftar itu juga mencatat isi keputusan rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Daftar aksi korporasi umumnya mencatat hasil keputusan RUPS, bukan hanya jadwal.",
+            "biaya_usd": 0.000303868,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Nadia bilang daftar hanya berisi jadwal, tanpa isi keputusan.",
+            "biaya_usd": 0.000382986,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "v2-binomial-pesan-pilihan",
+          "putusan": "lulus",
+          "alasan": [
+            "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 3 dari 12 jawaban terbaca (peluang kebetulan 0,6093; batas 0,01)"
+          ],
+          "kondisi": {
+            "pilihan-saja": {
+              "total": 12,
+              "n": 11,
+              "kunci": 1,
+              "tak_terbaca": 1,
+              "p": 0.9577648639678955,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 1,
+                  "n": 3,
+                  "tak_terbaca": 1
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            },
+            "pesan-pilihan": {
+              "total": 12,
+              "n": 12,
+              "kunci": 3,
+              "tak_terbaca": 0,
+              "p": 0.6093249917030334,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            }
+          },
+          "diagnosis": "pilihan-saja (diagnosis): kunci 1 dari 11 terbaca (peluang kebetulan 0,9578); 1 tak terbaca dibuang"
+        },
+        "biaya_usd": 0.011278051999999997
+      },
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat hanya jadwal rapat umum pemegang saham 25 September 2025 dan menyatakan isi keputusan rapatnya tidak tercatat, cocok dengan omongan Nadia.",
+            "biaya_usd": 0.00029755
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 memang hanya mencatat jadwal rapat 25 September 2025 dan menyatakan isi keputusan rapatnya tidak tercatat.",
+            "biaya_usd": 0.000236526
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; daftar aksi korporasi biasanya hanya memuat jadwal.",
+            "biaya_usd": 0.005628,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tebakan saja; dokumen tidak tersedia untuk memastikan.",
+            "biaya_usd": 0.005428,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 25 September 2025.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; daftar aksi korporasi umumnya hanya memuat jadwal.",
+            "biaya_usd": 0.006668,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang tercatat hanya jadwal rapat 26 November 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; daftar aksi korporasi biasanya hanya memuat jadwal.",
+            "biaya_usd": 0.006408,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 2,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.024132
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": false,
+        "keberatan": [
+          {
+            "jenis": "makna",
+            "bagian": "kunci",
+            "alasan": "Bagian klaim teman yang tidak bisa dicek dari kartu: \"Isi keputusan RUPS T ('mutusin macem-macem') — kartu 1 sendiri menyatakan isi keputusan rapat tidak tercatat, jadi tida…\", \"Bahwa RUPS-nya terjadi 'kemarin' — kartu hanya mencatat jadwal RUPS 25 September 2025 dan tidak ada catatan rapat pada …\"…"
+          },
+          {
+            "jenis": "kunci",
+            "bagian": "kunci",
+            "alasan": "Pilihan kunci 'Betul' membenarkan omongan yang memuat klaim tak tercek (isi keputusan RUPS 'mutusin macem-macem' dan rapat 'kemarin') tanpa menyatakan bahwa bagian itu tidak bisa dipastikan dari kartu; pernyataan tak pasti baru muncul di penjelasan, bukan di pilihan."
+          }
+        ],
+        "arahan": "Pilihan kunci perlu menyatakan sendiri bahwa isi keputusan RUPS tidak bisa dipastikan dari kartu, bukan hanya menyebut jadwal yang tercatat. Pernyataan tak pasti itu saat ini baru ada di penjelasan.",
+        "token_penalaran": [
+          25008
+        ]
+      },
+      "biaya_gerbang_usd": 0.122571616,
+      "id_bank": null
+    }
+  ],
+  "teks_akhir": ""
+}

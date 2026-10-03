@@ -17,7 +17,7 @@
  *   walau model memanggil beberapa alat sekaligus;
  * - tiap panggilan alat dicatat ke jejak.
  */
-import { bacaBank, idOmongan, jumlahSudut, shaPaketBank, simpanBank, sudutBank, UKURAN_SIMULASI, type EntriBank } from '../bebas/bank.ts';
+import { bacaBank, idOmongan, jumlahSudut, pilihSimulasi, shaPaketBank, simpanBank, sudutBank, UKURAN_SIMULASI, type EntriBank } from '../bebas/bank.ts';
 import { nilaiOmonganV3, type NilaiOmonganV3 } from '../bebas/mesin-v3.ts';
 import { teksPaket } from '../bebas/prompt.ts';
 import { uraiOmonganBebas, type OmonganBebas } from '../bebas/skema.ts';
@@ -66,6 +66,31 @@ export interface SudutDitolak {
 }
 
 export const MAKS_RIWAYAT_DITOLAK = 8;
+
+/** Kunci omongan ini pilihan "Betul, …"? */
+export const kunciBetul = (o: OmonganBebas): boolean => /^\s*betul\b/i.test(o.pilihan[o.kunci]);
+/** Keluarga sudut = awalan id kartu penentu ("volume-2025-12-09" → "volume"). */
+export const keluargaSudut = (kartuPenentu: readonly string[]): string => (kartuPenentu[0] ?? '').split('-')[0] ?? '';
+
+/**
+ * Apa yang masih dibutuhkan supaya bank bisa dirakit menjadi simulasi — aturan
+ * tingkat simulasi yang tidak terlihat dari satu omongan (M2d-19: bank 3/3
+ * tetapi perakit menolak karena tidak ada kunci "Betul"). Murni.
+ */
+export function kebutuhanSimulasi(bank: readonly EntriBank[], paket: PaketFakta, target: number): { terakit: boolean; butuh_betul: boolean; kebutuhan: string[] } {
+  const terakit = pilihSimulasi(bank, paket).draf !== null;
+  if (terakit) return { terakit, butuh_betul: false, kebutuhan: [] };
+  const kebutuhan: string[] = [];
+  const sudut = jumlahSudut(bank);
+  if (sudut < target) kebutuhan.push(`Bank baru memuat ${String(sudut)} dari ${String(target)} kartu penentu berbeda.`);
+  const butuhBetul = bank.length > 0 && !bank.some((e) => kunciBetul(e.omongan));
+  if (butuhBetul) kebutuhan.push('Semua omongan di bank berjawaban "Keliru". Simulasi butuh minimal satu omongan yang ternyata BETUL (kuncinya pilihan "Betul, …").');
+  const hitung = new Map<string, number>();
+  for (const e of bank) hitung.set(keluargaSudut(e.kartu_penentu), (hitung.get(keluargaSudut(e.kartu_penentu)) ?? 0) + 1);
+  for (const [k, n] of hitung) if (k !== '' && n >= 2) kebutuhan.push(`Sudut "${k}" sudah dipakai ${String(n)} omongan; pilih kartu penentu dari keluarga lain.`);
+  if (kebutuhan.length === 0) kebutuhan.push(...pilihSimulasi(bank, paket).alasan.slice(0, 2));
+  return { terakit, butuh_betul: butuhBetul, kebutuhan };
+}
 
 export interface HasilPeriksa {
   lolos: boolean;
@@ -116,10 +141,12 @@ export function buatAlat(o: OpsiAlat) {
 
   const lihatFakta = (): { hari: string; kartu: string } => lapor('lihat_fakta', 'kartu fakta dibaca', { hari: o.paket.tanggal_t, kartu: teksPaket(o.paket) });
 
-  const lihatBank = (): { omongan: Array<{ nama: string; kartu_penentu: string[]; pesan: string }>; kartu_penentu_terpakai: string[]; jumlah_sudut: number; target: number; pernah_ditolak: SudutDitolak[]; sisa_anggaran_usd: number } => {
+  const lihatBank = (): { omongan: Array<{ nama: string; kartu_penentu: string[]; pesan: string; jawaban: 'Betul' | 'Keliru' }>; kartu_penentu_terpakai: string[]; jumlah_sudut: number; target: number; kebutuhan_simulasi: string[]; pernah_ditolak: SudutDitolak[]; sisa_anggaran_usd: number } => {
     const b = bank();
-    return lapor('lihat_bank', `${String(jumlahSudut(b))} dari ${String(target)} sudut`, {
-      omongan: b.map((e) => ({ nama: e.omongan.nama, kartu_penentu: [...e.kartu_penentu], pesan: e.omongan.pesan })),
+    const butuh = kebutuhanSimulasi(b, o.paket, target);
+    return lapor('lihat_bank', `${String(jumlahSudut(b))} dari ${String(target)} sudut${butuh.terakit ? '; simulasi bisa dirakit' : ''}`, {
+      omongan: b.map((e) => ({ nama: e.omongan.nama, kartu_penentu: [...e.kartu_penentu], pesan: e.omongan.pesan, jawaban: kunciBetul(e.omongan) ? 'Betul' : 'Keliru' })),
+      kebutuhan_simulasi: butuh.kebutuhan,
       kartu_penentu_terpakai: sudutBank(b),
       jumlah_sudut: jumlahSudut(b),
       target,
@@ -146,6 +173,9 @@ export function buatAlat(o: OpsiAlat) {
     const id = idOmongan(om);
     const lama = diajukan.get(id);
     if (lama !== undefined) return lapor('ajukan', 'draf sama sudah diajukan (gratis)', dasar('sudah-diajukan', lama.penolakan, ['Draf yang persis sama sudah pernah diajukan; hasilnya tidak berubah. Ubah drafnya atau ganti sudut.']));
+    // Penjaga uang: bila simulasi hanya kurang omongan ber-kunci "Betul", draf "Keliru" tidak dibayar.
+    const butuh = kebutuhanSimulasi(bank(), o.paket, target);
+    if (butuh.butuh_betul && jumlahSudut(bank()) >= target && !kunciBetul(om)) return lapor('ajukan', 'bukan yang dibutuhkan simulasi (gratis)', dasar('kebutuhan', butuh.kebutuhan, ['Gerbang berbayar tidak dijalankan: bank sudah penuh dengan jawaban "Keliru". Ajukan omongan yang kuncinya "Betul, …".']));
     if (sisa() < CADANGAN_AJUKAN_USD) return lapor('ajukan', 'anggaran tidak cukup (gratis)', dasar('anggaran', [], [`Sisa anggaran US$${String(sisa())} di bawah cadangan satu pengajuan (US$${String(CADANGAN_AJUKAN_USD)}). Berhenti.`]));
     ajukanKe += 1;
     let n: NilaiOmonganV3 | null = null;
@@ -190,8 +220,9 @@ export function buatAlat(o: OpsiAlat) {
   return {
     lihatFakta, lihatBank, periksaKode, ajukan,
     /** Keadaan untuk penghenti dan ringkasan. */
-    keadaan: () => ({ ditolak: ditolakDiSini, jumlah_sudut: jumlahSudut(bank()), target, biaya_gerbang_usd: bulat(biayaGerbang), biaya_total_usd: bulat(terpakai()), sisa_anggaran_usd: sisa(), pengajuan: ajukanKe, nilai: semuaNilai }),
-    selesai: () => jumlahSudut(bank()) >= target,
+    keadaan: () => ({ ditolak: ditolakDiSini, jumlah_omongan: bank().length, jumlah_sudut: jumlahSudut(bank()), target, biaya_gerbang_usd: bulat(biayaGerbang), biaya_total_usd: bulat(terpakai()), sisa_anggaran_usd: sisa(), pengajuan: ajukanKe, nilai: semuaNilai }),
+    /** Selesai = bank BISA DIRAKIT menjadi simulasi (bukan sekadar jumlah sudut). */
+    selesai: () => pilihSimulasi(bank(), o.paket).draf !== null,
     anggaranHabis: () => sisa() < CADANGAN_AJUKAN_USD,
   };
 }

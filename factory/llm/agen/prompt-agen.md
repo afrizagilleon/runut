@@ -7,10 +7,10 @@ Soal yang bagus:
 - Tiap pilihan salah adalah satu salah-baca yang wajar dilakukan pemula: salah periode (`salah-periode`), salah entitas (`salah-entitas`), angka nyaris benar (`nyaris-benar-angka`), menjawab pertanyaan lain (`pertanyaan-lain`), sebagian benar (`sebagian-benar`), atau percaya omongan tanpa cek (`percaya-otoritas`).
 - Pesan teman terdengar seperti obrolan sungguhan. Pilihannya pendek dan sejajar. Penjelasannya menunjuk kartu dan menerangkan kenapa pilihan yang menggoda itu salah.
 
-Bank butuh {TARGET} omongan untuk satu hari simulasi, masing-masing dengan kartu penentu yang berbeda. Tugasmu sekarang: menambah SATU omongan baru ke bank, dengan kartu penentu yang belum terpakai. Kamu yang mengatur langkahmu sendiri dengan alat berikut.
+Bank butuh {TARGET} omongan untuk satu hari simulasi, masing-masing dengan kartu penentu yang berbeda. Tugasmu sekarang: menambah SATU omongan baru ke bank, dengan kartu penentu yang belum terpakai. Omongan teman boleh ternyata betul atau keliru; simulasi butuh keduanya. Kamu yang mengatur langkahmu sendiri dengan alat berikut.
 
 - `lihat_fakta`: semua kartu fakta hari itu. Bahanmu hanya kartu-kartu itu; jangan menambah fakta, angka, atau tanggal yang tidak ada di kartu.
-- `lihat_bank`: omongan yang sudah lolos, kartu penentu yang sudah terpakai, sudut yang pernah ditolak beserta alasannya, dan sisa anggaran. Jangan mengulang sudut yang pernah ditolak.
+- `lihat_bank`: omongan yang sudah lolos, kartu penentu yang sudah terpakai, apa yang masih dibutuhkan simulasi, sudut yang pernah ditolak beserta alasannya, dan sisa anggaran. Penuhi kebutuhan simulasi itu; jangan mengulang sudut yang pernah ditolak.
 - `periksa_kode`: gratis. Memeriksa bentuk satu draf dan mengembalikan penolakannya apa adanya. Pakai sampai lolos.
 - `ajukan`: berbayar. Draf diuji pembaca yang memegang kartu, penebak yang tidak memegang kartu, dan seorang kritikus. Yang lolos masuk bank. Ajukan hanya draf yang sudah lolos `periksa_kode`.
 

@@ -186,7 +186,7 @@ const agen = new ToolLoopAgent({
     periksa_kode: tool({ description: 'Periksa bentuk SATU draf omongan. Gratis. Mengembalikan penolakan apa adanya; kosong berarti lolos.', inputSchema: skemaOmongan, execute: ({ omongan }) => alat.periksaKode(omongan) }),
     ajukan: tool({ description: `Ajukan SATU draf ke gerbang berbayar (pembaca kartu, penebak tanpa kartu, kritikus). Yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)}.`, inputSchema: skemaOmongan, execute: ({ omongan }) => alat.ajukan(omongan) }),
   },
-  stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.keadaan().jumlah_sudut > sudutAwal || alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
+  stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.keadaan().jumlah_omongan > sudutAwal || alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
   maxOutputTokens: 128_000,
   maxRetries: 2,
   providerOptions: { openrouter: { reasoning: { effort: 'medium', exclude: false } } },
@@ -201,14 +201,14 @@ const ringkasPercakapan: Array<{ ke: number; langkah: number; sudut_sebelum: num
 try {
   while (percakapan < MAKS_PERCAKAPAN && !alat.selesai() && !alat.anggaranHabis()) {
     percakapan += 1;
-    sudutAwal = alat.keadaan().jumlah_sudut;
+    sudutAwal = alat.keadaan().jumlah_omongan;
     ditolakAwal = alat.keadaan().ditolak;
     console.log(`- percakapan ${String(percakapan)} (bank ${String(sudutAwal)}/${String(target)}, sisa US$${String(alat.keadaan().sisa_anggaran_usd)})`);
     jejak({ jenis: 'percakapan', ke: percakapan, bank: sudutAwal });
     const hasil = await agen.generate({ prompt: instruksiAgen(target) });
     teksAkhir = hasil.text;
     langkah += hasil.steps.length;
-    ringkasPercakapan.push({ ke: percakapan, langkah: hasil.steps.length, sudut_sebelum: sudutAwal, sudut_sesudah: alat.keadaan().jumlah_sudut, ditolak: alat.keadaan().ditolak - ditolakAwal, teks_akhir: hasil.text });
+    ringkasPercakapan.push({ ke: percakapan, langkah: hasil.steps.length, sudut_sebelum: sudutAwal, sudut_sesudah: alat.keadaan().jumlah_omongan, ditolak: alat.keadaan().ditolak - ditolakAwal, teks_akhir: hasil.text });
   }
 } catch (g) {
   galat = samarkan(g instanceof Error ? `${g.name}: ${g.message}` : String(g), rahasia);
@@ -217,7 +217,7 @@ try {
 const k = alat.keadaan();
 const bank = bacaBank(folderBank, shaPaketBank(paket));
 const simulasi = pilihSimulasi(bank, paket);
-const berhenti = galat !== null ? `galat: ${galat}` : alat.selesai() ? 'bank memuat target sudut' : alat.anggaranHabis() ? 'anggaran tidak cukup untuk satu pengajuan lagi' : percakapan >= MAKS_PERCAKAPAN ? 'batas percakapan' : 'agen berhenti sendiri';
+const berhenti = galat !== null ? `galat: ${galat}` : alat.selesai() ? 'bank bisa dirakit menjadi simulasi' : alat.anggaranHabis() ? 'anggaran tidak cukup untuk satu pengajuan lagi' : percakapan >= MAKS_PERCAKAPAN ? 'batas percakapan' : 'agen berhenti sendiri';
 const hasil = {
   id, model: MODEL_OR_OPUS, sdk: 'ai (ToolLoopAgent) + @openrouter/ai-sdk-provider', target, pagu_usd: pagu, berhenti, percakapan: ringkasPercakapan, langkah, panggilan_model: panggilanModel, pengajuan: k.pengajuan,
   biaya_agen_usd: bulat(biayaAgen), biaya_gerbang_usd: k.biaya_gerbang_usd, biaya_usd: k.biaya_total_usd, durasi_detik: Math.round((Date.now() - mulai) / 1000),
