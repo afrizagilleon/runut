@@ -77,12 +77,12 @@ interface Jalan {
 
 /** Jalan yang dihentikan untuk amandemen teknis (tanpa hasil.json): dibaca dari dihentikan.json. */
 function dihentikan(id: string): HasilBebas | null {
-  const d = json<{ panggilan_penulis: Array<{ token_masuk?: number; token_keluar?: number; token_penalaran?: number; finish_reason?: string; biaya_usd: number; masalah: string }>; versi: Array<{ no: number; versi: number; berhenti: string; alasan: string[] }> }>(`${AKAR}eval/penyusun/${id}/dihentikan.json`);
+  const d = json<{ keterangan: string; panggilan_penulis: Array<{ token_masuk?: number; token_keluar?: number; token_penalaran?: number; finish_reason?: string; biaya_usd: number; masalah: string }>; versi: Array<{ no: number; versi: number; berhenti: string; alasan: string[] }> }>(`${AKAR}eval/penyusun/${id}/dihentikan.json`);
   if (d === null) return null;
   return {
     penulis: 'anthropic/claude-opus-5.5',
     terbit: false,
-    berhenti: 'dihentikan untuk amandemen teknis T1 (docs/bukti/m2d15-amandemen-teknis-T1.md): dua panggilan penulis pertama habis di max_tokens 16.000 tanpa JSON',
+    berhenti: d.keterangan,
     tersensor: false,
     versi: d.versi.map((v) => ({ ...v, berhenti: v.berhenti as VersiBebas['berhenti'], dicatat: [], omongan: null, rotasi: null, kartu_rotasi: null, kritik: null, biaya_gerbang_usd: 0 })),
     panggilan_penulis: d.panggilan_penulis.map((p) => ({ versi: 1, diminta: [1, 2, 3], ulang: 0, model: 'anthropic/claude-opus-5.5', token_masuk: p.token_masuk ?? 0, token_keluar: p.token_keluar ?? 0, token_penalaran: p.token_penalaran ?? null, penyedia: null, finish_reason: p.finish_reason ?? null, biaya_usd: p.biaya_usd, terbaca: [], masalah: [p.masalah], sha256_prompt: '', jenis: 'tulis' as const })),
@@ -240,9 +240,26 @@ export function bangunLaporanOpus(): string {
   // ringkasan
   b.push('## Ringkasan', '');
   b.push(`- **Jalan:** ${String(j15.length)} dari maks ${String(MAKS_JALAN_M2D15)}. ${j15.map((j) => `${j.id}: ${kelas(j)}`).join('; ') || '—'}.`);
-  b.push(`- **Omongan lulus gerbang (≤ 3 versi):** ${String(u15.lulus)}/${String(u15.omongan)}; versi diperiksa ${String(u15.versi)}; versi per omongan lulus ${dua(u15.versiPerLulus)} (Opus M2d-13 ${dua(u13.versiPerLulus)}; templat M2d-11 ${dua(tpl.lulus === 0 ? null : tpl.versi / tpl.lulus)}).`);
+  b.push(`- **Omongan lulus gerbang (≤ 3 versi):** ${String(u15.lulus)}/${String(u15.omongan)}; versi ${String(u15.versi)} (tulis-gagal ${String(u15.berhenti['tulis-gagal'] ?? 0)}); versi per omongan lulus ${dua(u15.versiPerLulus)} (Opus M2d-13 ${dua(u13.versiPerLulus)}; templat M2d-11 ${dua(tpl.lulus === 0 ? null : tpl.versi / tpl.lulus)}).`);
   b.push(`- **Biaya nyata:** D-4 ${usd(biayaD4)} dari US$${PAGU_D4_M2D15.toFixed(2)}; penilai GLM ${usd(biayaMutu)} dari ${usd(paguPenilaiM2d15(biayaD4))}; milestone ${usd(totalM)} dari US$${PAGU_MILESTONE_M2D15.toFixed(2)}. Kumulatif ledger ${usd(kumulatif)} (${String(LK.length)} entri).`);
   b.push('');
+
+  // penyimpangan
+  const perkiraan = e15.filter((e) => e.dasar_biaya === 'perkiraan-maksimum');
+  const nyata = e15.filter((e) => e.dasar_biaya !== 'perkiraan-maksimum');
+  const butirBaru = j15.reduce((a, j) => a + j.h.akhir.filter((x) => x !== null).length, 0);
+  const penulis15 = e15.filter((e) => e.model === 'anthropic/claude-opus-5.5' && e.token_keluar !== null);
+  b.push('## Penyimpangan, amandemen, dan keputusan eksekutor', '');
+  b.push(`- **Amandemen pra-data A1–A3** (reviewer, sebelum panggilan berbayar): label "terbukti" bank sudut juga butuh tertebak penebak ≤ 0,5; pagu jalan US$2,00; tag \`m2d15/\` diizinkan. Dites.`);
+  b.push(`- **Amandemen teknis T1** (aturan pra-registrasi §9 butir kedua): dua panggilan penulis pertama jalan 1 (effort "medium") habis di max_tokens 16.000 tanpa JSON → \`reasoning.max_tokens\` 8.000 untuk sisa milestone (\`docs/bukti/m2d15-amandemen-teknis-T1.md\`). Proses jalan 1 dihentikan eksekutor.`);
+  b.push(`- **Henti-rugi T2 (penyimpangan, keputusan eksekutor, tidak terdaftar):** panggilan pertama jalan 2 dengan \`reasoning.max_tokens\` 8.000 juga memakai 16.000 token penalaran dan berhenti tanpa JSON. Tidak ada amandemen lain yang terdaftar; T1 menulis "jalan berlanjut menurut aturan tulis-gagal", tetapi eksekutor menghentikan proses jalan 2 supaya sisa pagu tidak terbakar (±US$0,37 per panggilan tanpa keluaran terbaca; bila dilanjutkan, ±4 panggilan lagi sampai pagu jalan habis). Akibatnya: jalan 2 = tidak terbit, sama dengan hasil yang hampir pasti bila dilanjutkan; tidak ada gerbang atau patokan yang berubah.`);
+  b.push(`- **Biaya perkiraan maksimum di ledger:** ${String(perkiraan.length)} panggilan penulis yang sudah terkirim saat proses dihentikan dicatat konservatif ${usd(perkiraan.reduce((a, e) => a + e.biaya_usd, 0))} (${perkiraan.map((e) => e.tag).join(', ')}); tagihan sebenarnya tidak diketahui, paling banyak sebesar itu. Biaya nyata \`usage.cost\` ${usd(nyata.reduce((a, e) => a + e.biaya_usd, 0))}.`);
+  const tokenPenulis = penulis15.map((e) => `${e.tag.replace('penyusun/', '')}: keluar ${String(e.token_keluar)}, penalaran ${String(e.token_penalaran)} (diminta ${JSON.stringify(e.penalaran_diminta)})`).join('; ');
+  b.push(`- **Token penulis yang tercatat:** ${tokenPenulis}.`);
+  b.push(`- **Akibat untuk D-5:** ${String(butirBaru)} omongan terbaca → paket audit Opus satu soal kosong (patokan §2 b tak terukur); penilai mutu GLM **tidak dijalankan** (tidak ada butir M2d-15; menilai pembanding saja tidak menjawab pertanyaan milestone, jadi pagu tidak dipakai).`);
+  b.push('');
+  b.push('**Tafsiran.** Lewat OpenRouter (penyedia Azure), Opus 5.5 dengan effort "low" berpikir 2,6–4,6 rb token (M2d-13), tetapi dengan effort "medium" — dan juga dengan batas eksplisit `reasoning.max_tokens` 8.000 — berpikir sampai seluruh 16.000 token habis (3 dari 3 panggilan yang punya respons). Batas penalaran yang diminta tidak dipatuhi. Hipotesis "Opus ditingkatkan lebih efektif" **tidak teruji**: tidak ada satu pun omongan yang ditulis, jadi aturan di prompt, pra-periksa, dan bank sudut tidak pernah diuji pada keluaran nyata. Ini hasil negatif teknis, bukan bukti bahwa Opus effort lebih tinggi menulis lebih buruk.', '');
+  b.push('**Pilihan untuk milestone berikut (tidak dijalankan; keputusan pemilik/reviewer):** (i) effort "medium" dengan `max_tokens` ±32.000 — perkiraan maksimum sebelum kirim ±US$0,73 per panggilan, biaya nyata ±US$0,40 (≈ 16 rb penalaran + 3 rb jawaban), sehingga satu jalan 3 versi butuh pagu ±US$3; (ii) effort "low" (terbukti menghasilkan JSON di M2d-13) dengan prompt v2 + pra-periksa + bank sudut — menguji ketiga perubahan itu tanpa mengubah effort, ±US$0,16–0,20 per panggilan; (iii) mode streaming tidak membantu biaya karena penalaran tetap ditagih.', '');
 
   // per jalan
   b.push('## 1. Jalan D-4 (hasil vs patokan §2)', '');
@@ -268,7 +285,8 @@ export function bangunLaporanOpus(): string {
 
   // audit
   b.push('## 2. Audit Opus satu soal tanpa kartu (patokan §2 b — dijalankan reviewer)', '');
-  if (audit === null) b.push('**Menunggu reviewer.** Paket siap: `eval/keluaran-m2d15/audit-opus/` (satu soal × satu rotasi per berkas, kunci di luar `bahan/`, `PETUNJUK.md`). Sesudah dijalankan: `npm run opus:audit -- --nilai`, lalu `npm run opus:laporan`.', '');
+  if (audit === null && butirBaru === 0) b.push('**Tak terukur:** tidak ada versi omongan terbaca di jalan M2d-15, jadi paket audit satu soal kosong (0 berkas).', '');
+  else if (audit === null) b.push('**Menunggu reviewer.** Paket siap: `eval/keluaran-m2d15/audit-opus/` (satu soal × satu rotasi per berkas, kunci di luar `bahan/`, `PETUNJUK.md`). Sesudah dijalankan: `npm run opus:audit -- --nilai`, lalu `npm run opus:laporan`.', '');
   else {
     b.push('| jalan | omongan | versi | lulus gerbang | Opus tanpa kartu | (b) ≤ 2/4 |', '|---|---|---|---|---|---|');
     for (const x of audit.per_butir) b.push(`| ${x.jalan} | ${String(x.no)} | ${String(x.versi)} | ${x.lulus ? 'ya' : 'tidak'} | ${String(x.tanpa_kartu_benar)}/${String(x.n)} | ${x.tanpa_kartu_benar <= AUDIT_MAKS_BENAR ? 'ya' : 'tidak'} |`);
@@ -285,7 +303,7 @@ export function bangunLaporanOpus(): string {
   b.push(`| simulasi terbit | 1 (jalan ke-7) | ${String(u13.terbit)} | ${String(u15.terbit)} |`);
   b.push(`| kunci dipilih dari pilihan-saja (rotasi, terbaca; acak 25 %) | ${persen(tpl.ps.laju)} (n ${String(tpl.ps.n)}) | ${persen(u13.ps.laju)}${wil(u13.ps.kunci, u13.ps.n)} (n ${String(u13.ps.n)}) | ${persen(u15.ps.laju)}${wil(u15.ps.kunci, u15.ps.n)} (n ${String(u15.ps.n)}) |`);
   b.push(`| kunci dari pesan+pilihan | — | ${persen(u13.pp.laju)} (n ${String(u13.pp.n)}) | ${persen(u15.pp.laju)} (n ${String(u15.pp.n)}) |`);
-  b.push(`| mutu penilai Opus buta (0–10) | ${q(mutuOpus13, 'templat-m2d11')} | ${q(mutuOpus13, 'opus')} | ${mutuOpus15 === null ? 'menunggu reviewer' : q(mutuOpus15, 'opus-m2d15')} |`);
+  b.push(`| mutu penilai Opus buta (0–10) | ${q(mutuOpus13, 'templat-m2d11')} | ${q(mutuOpus13, 'opus')} | ${butirBaru === 0 ? 'tak ada butir' : mutuOpus15 === null ? 'menunggu reviewer' : q(mutuOpus15, 'opus-m2d15')} |`);
   b.push(`| mutu penilai GLM "high" (0–10) | ${q(mutuGlm15, 'templat-m2d11')} | ${q(mutuGlm15, 'opus-m2d13')} (2 butir lulus) | ${q(mutuGlm15, 'opus-m2d15')} |`);
   b.push(`| DADA tayang (pembanding) | Opus M2d-13 ${q(mutuOpus13, 'tayang-dada')} | | Opus M2d-15 ${mutuOpus15 === null ? '—' : q(mutuOpus15, 'tayang-dada')}; GLM ${q(mutuGlm15, 'tayang-dada')} |`);
   b.push('');
@@ -295,10 +313,11 @@ export function bangunLaporanOpus(): string {
   const v15 = j15.flatMap((j) => j.h.versi);
   const pertama = j15.flatMap((j) => (j.h.pra_periksa ?? []).filter((p) => p.ke === 1).flatMap((p) => p.ditolak.map((d) => d.alasan)));
   const semuaPra = j15.flatMap((j) => (j.h.pra_periksa ?? []).flatMap((p) => p.ditolak.map((d) => d.alasan)));
-  const tulisanPertama = j15.reduce((a, j) => a + new Set(j.h.versi.map((v) => `${String(v.versi)}/${String(v.no)}`)).size, 0);
+  const tulisanPertama = j15.reduce((a, j) => a + new Set(j.h.versi.filter((v) => v.omongan !== null).map((v) => `${String(v.versi)}/${String(v.no)}`)).size, 0);
+  const v15Terbaca = v15.filter((v) => v.omongan !== null);
   b.push('## 4. Penolakan per jenis — sebelum / sesudah aturan di prompt', '');
   b.push('| ukuran | Opus M2d-13 (prompt v1, tanpa pra-periksa) | Opus M2d-15 |', '|---|---|---|');
-  b.push(`| versi berhenti di gerbang 1 kode resmi | ${String(v13.filter((v) => v.berhenti === 'kode').length)}/${String(v13.length)} | ${String(v15.filter((v) => v.berhenti === 'kode').length)}/${String(v15.length)} |`);
+  b.push(`| versi terbaca berhenti di gerbang 1 kode resmi | ${String(v13.filter((v) => v.berhenti === 'kode').length)}/${String(v13.filter((v) => v.omongan !== null).length)} | ${String(v15.filter((v) => v.berhenti === 'kode').length)}/${String(v15Terbaca.length)} |`);
   b.push(`| tulisan pertama tiap versi ditolak aturan kode (M2d-13: gerbang 1; M2d-15: pra-periksa ke-1) | ${String(v13.filter((v) => v.berhenti === 'kode').length)}/${String(v13.length)} | ${String(pertama.length)}/${String(tulisanPertama)} |`);
   b.push(`| jenis aturan pada tulisan pertama (versi per jenis) | ${tulisJenis(hitungJenis(v13.filter((v) => v.berhenti === 'kode').map((v) => v.alasan)))} | ${tulisJenis(hitungJenis(pertama))} |`);
   b.push(`| jenis aturan, semua pra-periksa | — | ${tulisJenis(hitungJenis(semuaPra))} |`);
@@ -310,29 +329,31 @@ export function bangunLaporanOpus(): string {
   // sudut
   const bank = bankSudut(JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d11-tirt-7/paket.json`, 'utf8')) as Parameters<typeof bankSudut>[0]);
   b.push('## 5. Sudut yang dipilih penulis (bank sudut A1)', '');
+  if (butirBaru === 0) b.push('(tidak ada versi terbaca di jalan M2d-15 — penulis tidak sempat memilih sudut)', '');
   b.push('| jalan | omongan | kartu penentu versi akhir | label bank | lulus |', '|---|---|---|---|---|');
   for (const j of j15) for (const a of j.h.akhir) if (a !== null) b.push(`| ${j.id} | ${String(a.no)} | ${a.omongan.kartu_penentu.join(', ')} | ${a.omongan.kartu_penentu.map((k) => bank.find((s) => s.fact_id === k)?.label ?? '?').join(', ')} | ${a.lulus ? 'ya' : 'tidak'} |`);
   b.push('');
 
   // ramalan
   const kode = v15.filter((v) => v.berhenti === 'kode').length;
+  const nTerbaca = v15.filter((v) => v.omongan !== null).length;
   const v1Lolos = j15.length === 0 ? null : (() => {
     const j = j15[0] as Jalan;
     const tolak = (j.h.pra_periksa ?? []).find((p) => p.versi === 1 && p.ke === 1)?.ditolak.length ?? 0;
-    const ditulis = new Set(j.h.versi.filter((v) => v.versi === 1).map((v) => v.no)).size;
+    const ditulis = new Set(j.h.versi.filter((v) => v.versi === 1 && v.omongan !== null).map((v) => v.no)).size;
     return { lolos: ditulis - tolak, n: ditulis };
   })();
   const ps = u15.ps.laju;
   const auditLulus = audit === null ? null : audit.per_butir.filter((x) => x.lulus);
   const ramal: Array<[string, string, string]> = [
-    ['R1 versi berhenti di gerbang 1 kode ≤ 1/6', `${String(kode)}/${String(v15.length)}`, v15.length === 0 ? 'tak terukur' : kode / v15.length <= 1 / 6 ? 'sesuai' : 'tidak'],
-    ['R2 lolos pra-periksa pada tulisan pertama versi 1 ≥ 2/3', v1Lolos === null ? '—' : `${String(v1Lolos.lolos)}/${String(v1Lolos.n)}`, v1Lolos === null || v1Lolos.n === 0 ? 'tak terukur' : v1Lolos.lolos / v1Lolos.n >= 2 / 3 ? 'sesuai' : 'tidak'],
+    ['R1 versi berhenti di gerbang 1 kode ≤ 1/6', `${String(kode)}/${String(nTerbaca)} versi terbaca`, nTerbaca === 0 ? 'tak terukur (tidak ada versi terbaca)' : kode / nTerbaca <= 1 / 6 ? 'sesuai' : 'tidak'],
+    ['R2 lolos pra-periksa pada tulisan pertama versi 1 ≥ 2/3', v1Lolos === null ? '—' : `${String(v1Lolos.lolos)}/${String(v1Lolos.n)}`, v1Lolos === null || v1Lolos.n === 0 ? 'tak terukur (tidak ada tulisan terbaca)' : v1Lolos.lolos / v1Lolos.n >= 2 / 3 ? 'sesuai' : 'tidak'],
     ['R3 jalan 1 terbit (a)', j15[0] === undefined ? '—' : j15[0].h.terbit ? 'terbit' : 'tidak terbit', j15[0] === undefined ? 'tak terukur' : j15[0].h.terbit ? 'sesuai' : 'tidak'],
     ['R4 versi per omongan lulus ≤ 2,0', dua(u15.versiPerLulus), u15.versiPerLulus === null ? 'tidak (tak ada yang lulus)' : u15.versiPerLulus <= 2 ? 'sesuai' : 'tidak'],
     ['R5 biaya per omongan lulus ≤ US$0,50', usd(u15.biayaPerLulus), u15.biayaPerLulus === null ? 'tidak (tak ada yang lulus)' : u15.biayaPerLulus <= 0.5 ? 'sesuai' : 'tidak'],
     ['R6 kunci pilihan-saja ≤ 30 %', `${persen(ps)} (n ${String(u15.ps.n)})`, ps === null ? 'tak terukur' : ps <= 0.3 ? 'sesuai' : 'tidak'],
-    ['R7 ≥ 2 dari 3 omongan lulus dengan audit ≤ 2/4 (jalan terbit)', auditLulus === null ? 'menunggu reviewer' : `${String(auditLulus.filter((x) => x.tanpa_kartu_benar <= 2).length)}/${String(auditLulus.length)}`, auditLulus === null ? 'menunggu reviewer' : u15.terbit === 0 ? 'tak terukur (tidak ada jalan terbit)' : auditLulus.filter((x) => x.tanpa_kartu_benar <= 2).length >= 2 ? 'sesuai' : 'tidak'],
-    ['R8 mutu Opus buta versi akhir ≥ 8,5', mutuOpus15?.['opus-m2d15'] === undefined ? 'menunggu reviewer' : dua(mutuOpus15['opus-m2d15'].rata), mutuOpus15?.['opus-m2d15'] === undefined ? 'menunggu reviewer' : mutuOpus15['opus-m2d15'].rata >= 8.5 ? 'sesuai' : 'tidak'],
+    ['R7 ≥ 2 dari 3 omongan lulus dengan audit ≤ 2/4 (jalan terbit)', u15.terbit === 0 ? 'tidak ada jalan terbit' : auditLulus === null ? 'menunggu reviewer' : `${String(auditLulus.filter((x) => x.tanpa_kartu_benar <= 2).length)}/${String(auditLulus.length)}`, u15.terbit === 0 ? 'tak terukur (tidak ada jalan terbit)' : auditLulus === null ? 'menunggu reviewer' : auditLulus.filter((x) => x.tanpa_kartu_benar <= 2).length >= 2 ? 'sesuai' : 'tidak'],
+    ['R8 mutu Opus buta versi akhir ≥ 8,5', butirBaru === 0 ? 'tidak ada butir' : mutuOpus15?.['opus-m2d15'] === undefined ? 'menunggu reviewer' : dua(mutuOpus15['opus-m2d15'].rata), butirBaru === 0 ? 'tak terukur (tidak ada butir)' : mutuOpus15?.['opus-m2d15'] === undefined ? 'menunggu reviewer' : mutuOpus15['opus-m2d15'].rata >= 8.5 ? 'sesuai' : 'tidak'],
   ];
   b.push('## 6. Ramalan arah (pra-registrasi §8)', '', '| ramalan | hasil | putusan |', '|---|---|---|');
   for (const [r, h, p] of ramal) b.push(`| ${r} | ${h} | ${p} |`);
@@ -340,6 +361,7 @@ export function bangunLaporanOpus(): string {
 
   // draf
   b.push('## 7. Draf lengkap (versi akhir tiap omongan)', '');
+  if (butirBaru === 0) b.push('(tidak ada versi terbaca di jalan M2d-15)', '');
   b.push('Label pengecoh dan umpan balik ditulis penulis; isi label tidak divalidasi kode (hanya struktur). Tidak dipasang ke produk; tidak ada yang ditulis ke `cases/`.', '');
   for (const j of j15) {
     b.push(`### ${j.id} — ${kelas(j)}`, '');
@@ -374,11 +396,20 @@ export function bangunLaporanOpus(): string {
 
   // bahan readme
   b.push('## 10. Bahan README & video (angka bersumber laporan ini)', '');
-  b.push(
+  if (u15.lulus === 0) {
+    b.push(
+      `- "Kami mulai dari efisien: mesin templat murah butuh ${String(tpl.versi)} versi di 7 jalan untuk ${String(tpl.lulus)} omongan lulus (${dua(tpl.lulus === 0 ? null : tpl.versi / tpl.lulus)} versi per omongan, ${usd(tpl.lulus === 0 ? null : tpl.biaya / tpl.lulus)} per omongan lulus). Opus 5.5 dengan penalaran pendek (effort \"low\") butuh ${dua(u13.versiPerLulus)} versi per omongan lulus (${usd(u13.biayaPerLulus)}), dan penilai Opus buta memberinya ${q(mutuOpus13, 'opus')} lawan templat ${q(mutuOpus13, 'templat-m2d11')}. Menaikkan penalaran ke \"medium\" justru gagal teknis: lewat OpenRouter penalarannya tidak bisa dibatasi dan menghabiskan 16.000 token tanpa satu soal pun." — sumber: §3 tabel, bagian Penyimpangan; M2d-13 \`docs/bukti/lingkar-agen-penulis.md\`.`,
+      '',
+    );
+  } else b.push(
     `- "Kami mulai dari efisien: mesin templat murah butuh ${String(tpl.versi)} versi di 7 jalan untuk ${String(tpl.lulus)} omongan lulus (${dua(tpl.lulus === 0 ? null : tpl.versi / tpl.lulus)} versi per omongan, ${usd(tpl.lulus === 0 ? null : tpl.biaya / tpl.lulus)} per omongan lulus). Kami pindah ke efektif: Opus 5.5 dengan aturan gerbang di prompt dan pra-periksa kode gratis butuh ${dua(u15.versiPerLulus)} versi per omongan lulus (${usd(u15.biayaPerLulus)} per omongan lulus)${u15.terbit > 0 ? ' dan menerbitkan satu simulasi utuh' : ''}." — sumber: §3 tabel; pra-registrasi M2d-15.`,
     '',
   );
   b.push('## 11. Menunggu reviewer', '');
+  if (butirBaru === 0) {
+    b.push('- Tidak ada yang menunggu: tanpa omongan terbaca, paket audit dan paket penilai mutu M2d-15 tidak berisi butir baru (§2 b dan mutu tak terukur).', '');
+    return b.join('\n');
+  }
   b.push(`- Audit Opus satu soal (§2 b): ${audit === null ? 'menunggu' : 'sudah dinilai'} — \`eval/keluaran-m2d15/audit-opus/\`.`);
   b.push(`- Penilai mutu Opus buta: ${mutuOpus15 === null ? 'menunggu' : 'sudah dinilai'} — \`eval/keluaran-m2d15/mutu-opus/\`.`);
   b.push('- Sesudah keduanya: `npm run opus:audit -- --nilai`, `npm run opus:mutu -- --nilai-opus`, `npm run opus:laporan`.', '');

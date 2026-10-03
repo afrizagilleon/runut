@@ -1,0 +1,75 @@
+{
+  "versi": 2,
+  "dibuat_oleh": "factory/llm/bebas/mesin.ts",
+  "simulasi": {
+    "paket_id": "tirt",
+    "nama_samaran": "Perusahaan T",
+    "tanggal_t": "2025-12-10",
+    "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan (cooling down) sesudah harganya naik berturut-turut; awal tahun yang sama bursa juga pernah menghentikan perdagangannya dengan alasan lain."
+  },
+  "model": "anthropic/claude-opus-5.5",
+  "model_peran": {
+    "penulis": "anthropic/claude-opus-5.5",
+    "penebak": "anthropic/claude-haiku-4.5 + deepseek/deepseek-v4.1-flash + z-ai/glm-5.3",
+    "pembaca-kartu": "deepseek/deepseek-v4.1-flash",
+    "kritikus": "z-ai/glm-5.3"
+  },
+  "paket": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": 11,
+    "fakta_lolos": 20,
+    "fakta_tersingkir": 2,
+    "tersingkir": [
+      {
+        "fact_id": "harga-2025-11-25",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      },
+      {
+        "fact_id": "harga-2025-12-10",
+        "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+      }
+    ]
+  },
+  "prompt": {
+    "sha256_sistem": "e64c914793b8c9ad4c79ed7a71744ebb7c1f5090b00b8b8488aa89298f24e68b",
+    "sha256_paket": "00ee7ff29751650fd42d323984c8398fdd0536ce383a788f1fe1ad2b2dea7292",
+    "ringkasan": "Pintu penyusun, mesin \"bebas-opus-v2\": penulis bebas anthropic/claude-opus-5.5 tanpa penyempurna; gerbang M2d-11 + angka-di-kartu. Di sini hanya hash."
+  },
+  "mulai": "2026-10-03T02:30:43.929Z",
+  "selesai": null,
+  "langkah": [
+    {
+      "no": 1,
+      "putaran": 1,
+      "jenis": "susun",
+      "omongan": null,
+      "waktu_mulai": "2026-10-03T02:30:43.979Z",
+      "waktu_selesai": "2026-10-03T02:33:33.938Z",
+      "model": "anthropic/claude-opus-5.5",
+      "panggilan": 1,
+      "token_masuk": 11688,
+      "token_keluar": 16000,
+      "biaya_usd": 0.366752,
+      "putusan": "galat",
+      "alasan": [
+        "tidak ada objek JSON di keluaran"
+      ],
+      "sha256_prompt": "1352e318ea55c566e2111fd78b37d74acbbb97c3b2a5bb96e33e02f3c9a940da",
+      "rincian": {
+        "diminta": [
+          1,
+          2,
+          3
+        ],
+        "terbaca": [],
+        "token_penalaran": 16000,
+        "penyedia": "Azure",
+        "finish_reason": "length",
+        "ulang": 0
+      },
+      "peran": "penulis"
+    }
+  ],
+  "hasil": null
+}

@@ -1,0 +1,28 @@
+{
+  "keterangan": "Jalan 2 M2d-15 dihentikan eksekutor (PID 14972) sebagai henti-rugi T2: setelan amandemen teknis T1 (reasoning.max_tokens 8.000) juga diabaikan — panggilan penulis pertama memakai 16.000 token penalaran dan berhenti di max_tokens tanpa JSON (sama dengan dua panggilan effort \"medium\" di jalan 1). Tidak ada amandemen lain yang terdaftar; melanjutkan jalan hanya akan membakar sisa pagu (±US$0,37 per panggilan) tanpa keluaran terbaca. Penyimpangan dari kalimat 'jalan berlanjut menurut aturan tulis-gagal' di docs/bukti/m2d15-amandemen-teknis-T1.md, dilaporkan di docs/bukti/lingkar-agen-opus.md. Pintu tidak menulis hasil.json.",
+  "terbit": false,
+  "omongan_terbaca": 0,
+  "panggilan_penulis": [
+    {
+      "tag": "penyusun/m2d15-opus-2/p1/tulis-bebas",
+      "token_masuk": 11688,
+      "token_keluar": 16000,
+      "token_penalaran": 16000,
+      "finish_reason": "length",
+      "biaya_usd": 0.366752,
+      "masalah": "max_tokens habis untuk penalaran walau reasoning.max_tokens 8.000 (amandemen T1)"
+    },
+    {
+      "tag": "penyusun/m2d15-opus-2/p1/tulis-bebas/u1",
+      "biaya_usd": 0.411428,
+      "dasar_biaya": "perkiraan-maksimum",
+      "masalah": "ulangan versi 1 sudah terkirim ±27 d saat proses dihentikan; tanpa respons"
+    }
+  ],
+  "versi": [
+    { "no": 1, "versi": 1, "berhenti": "tulis-gagal", "alasan": ["keluaran penulis tak terbaca (max_tokens 16.000 habis untuk penalaran; jalan dihentikan, henti-rugi T2)"] },
+    { "no": 2, "versi": 1, "berhenti": "tulis-gagal", "alasan": ["keluaran penulis tak terbaca (max_tokens 16.000 habis untuk penalaran; jalan dihentikan, henti-rugi T2)"] },
+    { "no": 3, "versi": 1, "berhenti": "tulis-gagal", "alasan": ["keluaran penulis tak terbaca (max_tokens 16.000 habis untuk penalaran; jalan dihentikan, henti-rugi T2)"] }
+  ],
+  "biaya_usd": { "nyata": 0.366752, "perkiraan_maksimum": 0.411428, "total": 0.77818 }
+}
