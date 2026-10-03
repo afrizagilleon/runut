@@ -4,9 +4,10 @@ import { describe, expect, it } from 'vitest';
 import { AKAR } from '../env.ts';
 import { auditJalan, MAKS_JALAN_M2D15, PAGU_D4_M2D15, PAGU_JALAN_M2D15, PAGU_MILESTONE_M2D15, PAGU_PENILAI_MIN_M2D15, paguPenilaiM2d15, rencanaJalanM2d15 } from './pagu-m2d15.ts';
 
-describe('angka pagu = pra-registrasi §6', () => {
-  it('3,00 / 2,70 / 1,40 / 0,30 / 2 jalan', () => {
-    expect([PAGU_MILESTONE_M2D15, PAGU_D4_M2D15, PAGU_JALAN_M2D15, PAGU_PENILAI_MIN_M2D15, MAKS_JALAN_M2D15]).toEqual([3, 2.7, 1.4, 0.3, 2]);
+describe('angka pagu = pra-registrasi §6 + amandemen A2 (pagu jalan 2,00)', () => {
+  it('3,00 / 2,70 / 2,00 / 0,30 / 2 jalan', () => {
+    expect([PAGU_MILESTONE_M2D15, PAGU_D4_M2D15, PAGU_JALAN_M2D15, PAGU_PENILAI_MIN_M2D15, MAKS_JALAN_M2D15]).toEqual([3, 2.7, 2, 0.3, 2]);
+    expect(readFileSync(`${AKAR}docs/bukti/m2d15-amandemen-A1.md`, 'utf8')).toContain('Pagu jalan = min(**US$2,00**; US$2,70 − biaya nyata jalan M2d-15 sebelumnya)');
     const pra = readFileSync(`${AKAR}docs/bukti/m2d15-praregistrasi.md`, 'utf8');
     for (const s of ['**Pagu milestone US$3,00**', '**D-4 (jalan) ≤ US$2,70.**', 'min(US$1,40; US$2,70 − biaya nyata jalan M2d-15 sebelumnya)', 'US$3,00 − biaya nyata D-4 (paling sedikit US$0,30)', 'Paling banyak 2 jalan']) expect(pra).toContain(s);
   });
@@ -14,16 +15,16 @@ describe('angka pagu = pra-registrasi §6', () => {
 });
 
 describe('rencana jalan', () => {
-  it('jalan 1 selalu, pagu 1,40', () => expect(rencanaJalanM2d15([], null)).toMatchObject({ id: 'm2d15-opus-1', pagu: 1.4 }));
-  it('jalan 1 tidak terbit → jalan 2 dengan pagu min(1,40; 2,70 − biaya)', () => {
+  it('jalan 1 selalu, pagu 2,00', () => expect(rencanaJalanM2d15([], null)).toMatchObject({ id: 'm2d15-opus-1', pagu: 2 }));
+  it('jalan 1 tidak terbit → jalan 2 dengan pagu min(2,00; 2,70 − biaya)', () => {
     expect(rencanaJalanM2d15([{ id: 'm2d15-opus-1', biaya_usd: 1.39, terbit: false }], null)).toMatchObject({ id: 'm2d15-opus-2', pagu: 1.31 });
-    expect(rencanaJalanM2d15([{ id: 'm2d15-opus-1', biaya_usd: 0.5, terbit: false }], null)).toMatchObject({ id: 'm2d15-opus-2', pagu: 1.4 });
+    expect(rencanaJalanM2d15([{ id: 'm2d15-opus-1', biaya_usd: 0.5, terbit: false }], null)).toMatchObject({ id: 'm2d15-opus-2', pagu: 2 });
   });
   it('jalan 1 terbit: menunggu audit; audit lulus → berhenti; audit gagal → jalan 2', () => {
     const s = [{ id: 'm2d15-opus-1', biaya_usd: 1.2, terbit: true }];
     expect(rencanaJalanM2d15(s, null)).toMatchObject({ berhenti: expect.stringMatching(/menunggu audit/) as unknown as string });
     expect(rencanaJalanM2d15(s, 'lulus')).toMatchObject({ berhenti: expect.stringMatching(/layak tayang/) as unknown as string });
-    expect(rencanaJalanM2d15(s, 'gagal')).toMatchObject({ id: 'm2d15-opus-2', pagu: 1.4 });
+    expect(rencanaJalanM2d15(s, 'gagal')).toMatchObject({ id: 'm2d15-opus-2', pagu: 1.5 });
   });
   it('tidak ada jalan ke-3', () => {
     expect(rencanaJalanM2d15([{ id: 'm2d15-opus-1', biaya_usd: 1, terbit: false }, { id: 'm2d15-opus-2', biaya_usd: 1, terbit: false }], 'gagal')).toHaveProperty('berhenti');

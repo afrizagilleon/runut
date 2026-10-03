@@ -7,7 +7,7 @@
  *   ledger (tag `penyusun/<id>/`), terbit dari `hasil.json`;
  * - jalan 2 hanya bila jalan 1 tidak terbit, atau audit reviewer gagal
  *   (`eval/keluaran-m2d15/audit-opus/nilai.json`);
- * - pagu jalan = min(US$1,40; US$2,70 − biaya D-4), ditegakkan `PencatatBiaya`
+ * - pagu jalan = min(US$2,00 [amandemen A2]; US$2,70 − biaya D-4), ditegakkan `PencatatBiaya`
  *   sebelum tiap percobaan HTTP (pagu bagian tag `penyusun/<id>/`); biaya
  *   milestone (tag `penyusun/m2d15-` + `m2d15/`) + pagu jalan ≤ US$3,00 −
  *   cadangan penilai US$0,30 diperiksa sebelum mulai.

@@ -3,7 +3,7 @@
  * §2, §6), murni:
  *
  * - pagu milestone US$3,00 atas tag `penyusun/m2d15-` + `m2d15/`;
- * - D-4 (jalan) ≤ US$2,70; pagu jalan = min(US$1,40; US$2,70 − biaya nyata
+ * - D-4 (jalan) ≤ US$2,70; pagu jalan = min(US$2,00 [amandemen A2; semula 1,40]; US$2,70 − biaya nyata
  *   jalan sebelumnya), dibulatkan ke bawah 4 desimal;
  * - penilai GLM D-5 = US$3,00 − biaya nyata D-4 (≥ US$0,30);
  * - paling banyak 2 jalan; jalan 2 hanya bila jalan 1 tidak terbit, ATAU jalan 1
@@ -13,7 +13,8 @@
  */
 export const PAGU_MILESTONE_M2D15 = 3.0;
 export const PAGU_D4_M2D15 = 2.7;
-export const PAGU_JALAN_M2D15 = 1.4;
+/** Amandemen A2 (docs/bukti/m2d15-amandemen-A1.md): US$2,00 (pra-registrasi: 1,40). */
+export const PAGU_JALAN_M2D15 = 2.0;
 export const PAGU_PENILAI_MIN_M2D15 = 0.3;
 export const MAKS_JALAN_M2D15 = 2;
 /** Audit (b): Opus tanpa kartu memilih kunci paling banyak 2 dari 4 rotasi. */

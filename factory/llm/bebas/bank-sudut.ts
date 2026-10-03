@@ -16,7 +16,9 @@
  * Label (pra-registrasi §5, urutan menentukan):
  * 1. **gagal** — Opus tanpa kartu Σk/Σn ≥ 0,75 dengan Σn ≥ 4, ATAU sampai
  *    tebak rotasi ≥ 2 kali dan semuanya tertebak penebak;
- * 2. **terbukti** — lulus semua gerbang ≥ 1 kali DAN Opus Σk/Σn ≤ 0,5;
+ * 2. **terbukti** — lulus semua gerbang ≥ 1 kali DAN Opus Σk/Σn ≤ 0,5 DAN
+ *    (amandemen A1, docs/bukti/m2d15-amandemen-A1.md) tertebak penebak /
+ *    sampai rotasi ≤ 0,5;
  * 3. **campuran** — dicoba, selain di atas;
  * 4. **belum dicoba** — tanpa versi.
  *
@@ -81,8 +83,8 @@ export const SUMBER_BANK: readonly SumberBank[] = ['m2d11', 'm2d13', 'm2d14'];
 export const JALAN_M2D11 = ['m2d11-tirt-1', 'm2d11-tirt-2', 'm2d11-tirt-3', 'm2d11-tirt-4', 'm2d11-tirt-5', 'm2d11-tirt-6', 'm2d11-tirt-7'] as const;
 export const JALAN_M2D13 = ['m2d13-opus-1', 'm2d13-opus-2', 'm2d13-haiku-1', 'm2d13-haiku-2'] as const;
 export const FOLDER_M2D14 = 'alat/penyusun/rekaman/uji-ulang/m2d13-opus-2';
-/** Ambang label (pra-registrasi §5). */
-export const AMBANG_LABEL = { gagalOpus: 0.75, gagalOpusMinN: 4, gagalRotasiMin: 2, terbuktiOpus: 0.5 } as const;
+/** Ambang label (pra-registrasi §5 + amandemen A1: terbukti juga butuh tertebak penebak ≤ 0,5 dari yang sampai rotasi). */
+export const AMBANG_LABEL = { gagalOpus: 0.75, gagalOpusMinN: 4, gagalRotasiMin: 2, terbuktiOpus: 0.5, terbuktiTertebak: 0.5 } as const;
 
 const nol = (): HitunganSudut => ({ dicoba: 0, sampai_rotasi: 0, tertebak_penebak: 0, ditolak_kode: 0, ditolak_kartu: 0, ditolak_kritikus: 0, tulis_gagal: 0, lulus: 0 });
 
@@ -105,7 +107,8 @@ export function labelSudut(total: HitunganSudut, opus: { k: number; n: number })
   const laju = opus.n === 0 ? null : opus.k / opus.n;
   if (laju !== null && opus.n >= AMBANG_LABEL.gagalOpusMinN && laju >= AMBANG_LABEL.gagalOpus) return 'gagal';
   if (total.sampai_rotasi >= AMBANG_LABEL.gagalRotasiMin && total.tertebak_penebak === total.sampai_rotasi) return 'gagal';
-  if (total.lulus >= 1 && laju !== null && laju <= AMBANG_LABEL.terbuktiOpus) return 'terbukti';
+  const tertebak = total.sampai_rotasi === 0 ? null : total.tertebak_penebak / total.sampai_rotasi;
+  if (total.lulus >= 1 && laju !== null && laju <= AMBANG_LABEL.terbuktiOpus && tertebak !== null && tertebak <= AMBANG_LABEL.terbuktiTertebak) return 'terbukti';
   return 'campuran';
 }
 

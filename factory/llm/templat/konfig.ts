@@ -26,7 +26,7 @@ export const PAGU_BAGIAN_M2D10 = {
 export const AWALAN_ID_JALAN_M2D10 = 'm2d10-';
 
 // M2d-11: entri `m2d11/` juga sah (tidak dihitung biaya M2d-10).
-const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', 'm2d8/', 'penyusun/', AWALAN_TAG_M2D10, 'm2d11/', 'm2d13/'] as const; // M2d-13: penilai mutu D-D
+const AWALAN_BOLEH = ['m2d5/', 'm2d6/', 'm2d7/', 'm2d8/', 'penyusun/', AWALAN_TAG_M2D10, 'm2d11/', 'm2d13/', 'm2d15/'] as const; // M2d-13: penilai mutu D-D; M2d-15 A3: penilai mutu D-5
 
 function entri(jalur: string): EntriLedger[] {
   if (!existsSync(jalur)) return [];

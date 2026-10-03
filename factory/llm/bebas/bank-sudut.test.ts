@@ -40,12 +40,12 @@ describe('bank sudut: angka dari berkas tersimpan', () => {
     expect(s.label).toBe('terbukti');
   });
 
-  it('harga kemarin (angka-lain-waktu M2d-11): 24 versi di 7 jalan, lulus 1 (TIRT-7 o1 v3), Opus satu soal 1/4 → terbukti', () => {
+  it('harga kemarin (angka-lain-waktu M2d-11): 24 versi di 7 jalan, lulus 1 (TIRT-7 o1 v3), Opus satu soal 1/4 → campuran (amandemen A1: tertebak 16/18 > 0,5)', () => {
     const s = sudut('harga-2025-12-09');
     expect(s.per_sumber.m2d11).toMatchObject({ dicoba: 24, lulus: 1 });
     expect(s.total.tertebak_penebak).toBe(16);
     expect(s.opus).toEqual({ k: 1, n: 4, butir: 1 });
-    expect(s.label).toBe('terbukti');
+    expect(s.label).toBe('campuran');
   });
 
   it('alasan penghentian awal tahun: Opus 9/12 (opus-2 o1 4/4, haiku 4/4 + 1/4) → gagal walau pernah lulus gerbang', () => {
