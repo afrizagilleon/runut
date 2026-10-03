@@ -90,6 +90,7 @@
     "opus:audit": "node --experimental-strip-types factory/llm/bebas/m2d15.ts --audit",
     "opus:mutu": "node --experimental-strip-types factory/llm/bebas/m2d15.ts",
     "opus:laporan": "node --experimental-strip-types factory/llm/bebas/laporan-opus.ts",
+    "rotasi:plasebo": "node --experimental-strip-types factory/llm/rotasi/plasebo.ts",
     "patokan:laporan": "node --experimental-strip-types factory/llm/patokan/laporan.ts"
   },
   "dependencies": {
