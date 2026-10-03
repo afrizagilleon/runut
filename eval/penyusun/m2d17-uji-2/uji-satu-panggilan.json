@@ -1,0 +1,93 @@
+{
+  "palsu": false,
+  "id": "m2d17-uji-2",
+  "waktu": "2026-10-03T11:09:40.806Z",
+  "model": "anthropic/claude-opus-5.5",
+  "penyedia": "Anthropic",
+  "token_masuk": 4497,
+  "token_keluar": 7321,
+  "token_penalaran": 3825,
+  "biaya_usd": 0.164408,
+  "finish_reason": "stop",
+  "latensi_ms": 70017,
+  "max_tokens": 128000,
+  "penalaran_diminta": {
+    "effort": "medium",
+    "exclude": false
+  },
+  "ada_teks_berpikir": true,
+  "karakter_teks_berpikir": 4086,
+  "diminta": 3,
+  "omongan_terbaca": 3,
+  "masalah": [],
+  "kode": [
+    {
+      "urut": 1,
+      "menolak": 8,
+      "alasan": [
+        "pemeriksa: NAMA_TERLARANG: Nama \"Dimas\" sudah dipakai simulasi lain; pakai nama lain.",
+        "pemeriksa: PENJELASAN_TANPA_SALAH_KAPRAH: Penjelasan harus ditutup satu kalimat \"Salah-kaprah yang umum: …\".",
+        "pemeriksa: RUJUKAN_PANJANG: Penjelasan: teks rujukan \"peningkatan harga kumulatif yang signifikan\" 43 karakter, lebih dari 36.",
+        "pemeriksa: KATA_PENILAIAN: Penjelasan memakai kata penilaian \"sehat\"; produk ini tidak menilai saham.",
+        "M2d-13: umpan balik: umpan balik d: 203 karakter, lebih dari 200",
+        "anti-salin teladan: umpan balik d menyalin teladan: \"ini percaya omongan tanpa cek\" (teladan, umpan balik a)",
+        "anti-salin teladan: umpan balik d menyalin teladan: \"percaya omongan tanpa cek kartu\" (teladan, umpan balik a)",
+        "anti-salin teladan: umpan balik d menyalin teladan: \"omongan tanpa cek kartu 2\" (teladan, umpan balik b)"
+      ]
+    },
+    {
+      "urut": 2,
+      "menolak": 23,
+      "alasan": [
+        "pemeriksa: ANGKA_PESAN_TANPA_JEJAK: Angka di pesan yang tidak dicatat di angka_pesan: 26, 3. Catat tiap angka ke fact_id-nya, atau sebagai andaian.",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan a memuat angka di luar rujukan: 9, 26. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan b memuat angka di luar rujukan: 9, 2,21, 26. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan c memuat angka di luar rujukan: 9, 2,12, 26. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan d memuat angka di luar rujukan: 58,. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: OPSI_TAK_DUA_DUA: 1 pilihan \"Betul,\" dan 3 \"Keliru,\"; harus dua-dua.",
+        "pemeriksa: PENJELASAN_TANPA_SALAH_KAPRAH: Penjelasan harus ditutup satu kalimat \"Salah-kaprah yang umum: …\".",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 26, 9, 106, 48.. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-satu-klausa: koma kedua memulai klausa baru (\", belum …\")",
+        "detektor D8 (keseimbangan label; struktur): label 1 Betul + 3 Keliru; harus 2 + 2; opsi a, b, c, d",
+        "detektor D9 (urutan numerik; pilihan): nilai angka opsi b=2.21, c=2.12, d=58 tidak urut; opsi b, c, d",
+        "M2d-13: angka-di-kartu: pilihan a: angka di luar rujukan kartu: 9, 26",
+        "M2d-13: angka-di-kartu: pilihan b: angka di luar rujukan kartu: 9, 2,21, 26",
+        "M2d-13: angka-di-kartu: pilihan c: angka di luar rujukan kartu: 9, 2,12, 26",
+        "M2d-13: angka-di-kartu: pilihan d: angka di luar rujukan kartu: Rp58,",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: 26, 9, Rp106, Rp48.",
+        "M2d-13: angka-di-kartu: umpan balik a: angka di luar rujukan kartu: 2,21",
+        "M2d-13: angka-di-kartu: umpan balik c: angka di luar rujukan kartu: 2,21, 2,12",
+        "M2d-13: angka-di-kartu: umpan balik d: angka di luar rujukan kartu: Rp58, 2,21",
+        "M2d-13: angka-di-kartu: pertanyaan cek memuat angka (\"Harga kemarin berapa kali harga 26 November menurut kartu hitungan?\"); pertanyaan cek harus bisa dipakai lagi tanpa angka"
+      ]
+    },
+    {
+      "urut": 3,
+      "menolak": 21,
+      "alasan": [
+        "pemeriksa: NAMA_TERLARANG: Nama \"Bayu\" sudah dipakai simulasi lain; pakai nama lain.",
+        "pemeriksa: ANGKA_PESAN_TANPA_JEJAK: Angka di pesan yang tidak dicatat di angka_pesan: 106. Catat tiap angka ke fact_id-nya, atau sebagai andaian.",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan a memuat angka di luar rujukan: 1.461.200. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan b memuat angka di luar rujukan: 0. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan c memuat angka di luar rujukan: 0. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Pilihan d memuat angka di luar rujukan: 106. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: PENJELASAN_TANPA_SALAH_KAPRAH: Penjelasan harus ditutup satu kalimat \"Salah-kaprah yang umum: …\".",
+        "pemeriksa: ANGKA_TANPA_RUJUKAN: Penjelasan memuat angka di luar rujukan: 106. Tulis tiap angka sebagai [[fact_id|teks]].",
+        "pemeriksa: G-panjang: 12 kata; paling banyak 11",
+        "detektor D1 (panjang; pilihan): panjang alasan tidak seragam: terpanjang/terpendek 1,76 > 1,60 (b 58 vs a 33 karakter); opsi b, a",
+        "detektor D9 (urutan numerik; pilihan): nilai angka opsi a=1461200, b=0, c=0, d=106 tidak urut; opsi a, b, c, d",
+        "M2d-13: angka-di-kartu: pilihan a: angka di luar rujukan kartu: 1.461.200",
+        "M2d-13: angka-di-kartu: pilihan b: angka di luar rujukan kartu: 0",
+        "M2d-13: angka-di-kartu: pilihan c: angka di luar rujukan kartu: 0",
+        "M2d-13: angka-di-kartu: pilihan d: angka di luar rujukan kartu: Rp106",
+        "M2d-13: angka-di-kartu: penjelasan: angka di luar rujukan kartu: Rp106",
+        "M2d-13: angka-di-kartu: umpan balik a: angka di luar rujukan kartu: 1.461.200, 9, 0",
+        "M2d-13: angka-di-kartu: umpan balik c: angka di luar rujukan kartu: 0",
+        "M2d-13: angka-di-kartu: umpan balik d: angka di luar rujukan kartu: Rp106, 9",
+        "anti-salin teladan: umpan balik d menyalin teladan: \"ini percaya omongan tanpa cek\" (teladan, umpan balik a)"
+      ]
+    }
+  ],
+  "sha256_prompt": "7fd2a7bc9a38d6d01e99ee064dda3b989df5b1f24799abf37d9360183f2602f0",
+  "karakter_prompt": 8898
+}
