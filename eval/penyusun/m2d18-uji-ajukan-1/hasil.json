@@ -1,0 +1,586 @@
+{
+  "id": "m2d18-uji-ajukan-1",
+  "mode": "uji-ajukan",
+  "sumber": "eval/penyusun/m2d18-uji-sdk-2/omongan-akhir.json",
+  "hasil": {
+    "lolos": false,
+    "berhenti": "penebak-kuat",
+    "penolakan": [
+      "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+    ],
+    "catatan": [],
+    "biaya_pengajuan_usd": 0.0336,
+    "sisa_anggaran_usd": 0.7664,
+    "bank": {
+      "kartu_penentu": [],
+      "jumlah_sudut": 0,
+      "target": 3
+    }
+  },
+  "keadaan": {
+    "jumlah_sudut": 0,
+    "target": 3,
+    "biaya_gerbang_usd": 0.0336,
+    "biaya_total_usd": 0.0336,
+    "sisa_anggaran_usd": 0.7664,
+    "pengajuan": 1,
+    "nilai": [
+      {
+        "putaran": 1,
+        "urut": 1,
+        "omongan": {
+          "nama": "Rara",
+          "jam": "16.20",
+          "pesan": "Lho, disuspen lagi? Perasaan Januari kemarin juga gini. Fix alasannya sama, bursa ragu perusahaannya bisa jalan terus.",
+          "angka_pesan": [],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "volume-2025-12-10",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "susp-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+            "b": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+            "c": "Keliru, alasan resmi hari ini: tidak ada transaksi sama sekali.",
+            "d": "Betul, alasan resmi hari ini: kelangsungan usaha dan kenaikan harga."
+          },
+          "kunci": "b",
+          "penjelasan": "Pengumuman hari ini, [[susp-2025-12-10|10 Desember 2025]], menyebut alasannya [[susp-2025-12-10|peningkatan harga kumulatif]] yang signifikan, dalam rangka [[susp-2025-12-10|cooling down]]. Kenaikannya memang terlihat: harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|Rp106]]. Alasan [[susp-2025-01-21|keraguan atas kelangsungan usaha]] hanya tertulis di pengumuman [[susp-2025-01-21|21 Januari 2025]], penghentian yang berbeda. Volume [[volume-2025-12-10|0 lembar]] hari ini adalah akibat penghentian, bukan alasannya. Salah-kaprah yang umum: mengira dua penghentian oleh bursa pasti punya alasan yang sama.",
+          "pengecoh": {
+            "a": {
+              "jenis": "salah-periode",
+              "rujukan": "susp-2025-01-21",
+              "umpan_balik": "Ini salah periode: alasan kelangsungan usaha ada di kartu 1, pengumuman Januari, bukan pengumuman hari ini."
+            },
+            "c": {
+              "jenis": "pertanyaan-lain",
+              "rujukan": "volume-2025-12-10",
+              "umpan_balik": "Ini menjawab pertanyaan lain: volume nol di kartu 3 adalah akibat penghentian, bukan alasan resminya."
+            },
+            "d": {
+              "jenis": "sebagian-benar",
+              "rujukan": "susp-2025-12-10",
+              "umpan_balik": "Ini sebagian benar: kartu 2 memang menyebut kenaikan harga, tetapi tidak menyebut kelangsungan usaha."
+            }
+          },
+          "pertanyaan_cek": "Alasan resmi apa yang tertulis di pengumuman bertanggal hari ini?"
+        },
+        "berhenti": "penebak-kuat",
+        "alasan": [
+          "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+        ],
+        "dicatat": [
+          "pilihan-saja (diagnosis): kunci 6 dari 11 terbaca (peluang kebetulan 0,0343); 1 tak terbaca dibuang"
+        ],
+        "saringan": {
+          "jawaban": [
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pilihan-saja",
+              "r": 0,
+              "huruf": "b",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, pilihan b paling netral dan masuk akal.",
+              "biaya_usd": 0.000665,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pilihan-saja",
+              "r": 1,
+              "huruf": "c",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen dan pesan teman, pilihan c paling netral dan masuk akal.",
+              "biaya_usd": 0.00069,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pilihan-saja",
+              "r": 2,
+              "huruf": null,
+              "isi": null,
+              "isi_kunci": 1,
+              "terbaca": false,
+              "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan tidak ditampilkan\n2. Dokumen yang seharusnya dirujuk tidak tersedia\n3. Tanpa kedua informasi tersebut, saya tidak bisa membandingkan kecocokan antara omongan teman dengan dokumen\n\nUntuk menjawab dengan akurat, saya meme",
+              "skor": null,
+              "alasan": "(tak terbaca/tak terpetakan)",
+              "biaya_usd": 0.00243,
+              "panggilan": 2
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pilihan-saja",
+              "r": 3,
+              "huruf": "c",
+              "isi": 3,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: kelangsungan usaha dan kenaikan harga.",
+              "skor": 1,
+              "alasan": "Pilihan paling masuk akal menggabungkan dua faktor fundamental saham.",
+              "biaya_usd": 0.00068,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebutkan bursa ragu perusahaan bisa jalan terus, sesuai pilihan a.",
+              "biaya_usd": 0.000759,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut 'bursa ragu perusahaannya bisa jalan terus' yang sesuai keraguan kelangsungan usaha.",
+              "biaya_usd": 0.000814,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut 'bursa ragu perusahaannya bisa jalan terus' yang sesuai keraguan kelangsungan usaha.",
+              "biaya_usd": 0.000814,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "d",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut 'bursa ragu perusahaannya bisa jalan terus' yang sesuai keraguan kelangsungan usaha.",
+              "biaya_usd": 0.000814,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Pilihan paling spesifik dan lazim untuk saham.",
+              "biaya_usd": 0.00003084,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 1,
+              "huruf": "c",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Pilihan paling spesifik tentang alasan resmi.",
+              "biaya_usd": 0.00003264,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Keraguan kelangsungan usaha sering jadi alasan resmi.",
+              "biaya_usd": 0.00003204,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 3,
+              "huruf": "d",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Pilihan paling spesifik tentang alasan resmi.",
+              "biaya_usd": 0.00003024,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu perusahaan bisa jalan terus",
+              "biaya_usd": 0.00003146,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "b) Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu perusahaan bisa jalan terus",
+              "biaya_usd": 0.00003266,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu perusahaan bisa jalan terus",
+              "biaya_usd": 0.00003146,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "d",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu perusahaan bisa jalan terus",
+              "biaya_usd": 0.00003146,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 0,
+              "huruf": "b",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Suspensi UMA biasanya karena kenaikan harga kumulatif signifikan, bukan kelangsungan usaha.",
+              "biaya_usd": 0.00031708,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Alasan umum penghentian pengawasan adalah keraguan kelangsungan usaha.",
+              "biaya_usd": 0.000274732,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 2,
+              "huruf": "d",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Alasan UMA bursa umumnya kenaikan harga kumulatif signifikan, bukan klaim teman.",
+              "biaya_usd": 0.000461182,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 3,
+              "huruf": "a",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Suspensi UMA biasanya karena kenaikan harga kumulatif signifikan.",
+              "biaya_usd": 0.00031708,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu kelangsungan usaha, cocok dengan alasan resmi.",
+              "biaya_usd": 0.000305588,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu perusahaan bisa jalan terus, sesuai kelangsungan usaha.",
+              "biaya_usd": 0.000312368,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu perusahaan bisa jalan terus, sesuai keraguan kelangsungan usaha.",
+              "biaya_usd": 0.000326502,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "d",
+              "isi": 0,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+              "skor": 1,
+              "alasan": "Rara menyebut bursa ragu perusahaan bisa jalan terus, cocok dengan kelangsungan usaha.",
+              "biaya_usd": 0.000306162,
+              "panggilan": 1
+            }
+          ],
+          "putusan": {
+            "aturan": "v2-binomial-pesan-pilihan",
+            "putusan": "lulus",
+            "alasan": [
+              "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 0 dari 12 jawaban terbaca (peluang kebetulan 1,0000; batas 0,01)"
+            ],
+            "kondisi": {
+              "pilihan-saja": {
+                "total": 12,
+                "n": 11,
+                "kunci": 6,
+                "tak_terbaca": 1,
+                "p": 0.03432750701904297,
+                "tak_terukur": false,
+                "per_model": [
+                  {
+                    "model": "anthropic/claude-haiku-4.5",
+                    "kunci": 2,
+                    "n": 3,
+                    "tak_terbaca": 1
+                  },
+                  {
+                    "model": "deepseek/deepseek-v4.1-flash",
+                    "kunci": 1,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  },
+                  {
+                    "model": "z-ai/glm-5.3",
+                    "kunci": 3,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  }
+                ]
+              },
+              "pesan-pilihan": {
+                "total": 12,
+                "n": 12,
+                "kunci": 0,
+                "tak_terbaca": 0,
+                "p": 1,
+                "tak_terukur": false,
+                "per_model": [
+                  {
+                    "model": "anthropic/claude-haiku-4.5",
+                    "kunci": 0,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  },
+                  {
+                    "model": "deepseek/deepseek-v4.1-flash",
+                    "kunci": 0,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  },
+                  {
+                    "model": "z-ai/glm-5.3",
+                    "kunci": 0,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  }
+                ]
+              }
+            },
+            "diagnosis": "pilihan-saja (diagnosis): kunci 6 dari 11 terbaca (peluang kebetulan 0,0343); 1 tak terbaca dibuang"
+          },
+          "biaya_usd": 0.010539494000000003
+        },
+        "kartu_rotasi": {
+          "per_rotasi": [
+            {
+              "r": 0,
+              "kunci": "b",
+              "pilihan": "b",
+              "benar": true,
+              "menunjuk_penentu": true,
+              "bingung": [],
+              "alasan": "Kartu 2 menunjukkan suspensi 10 Desember 2025 karena kenaikan harga kumulatif yang signifikan, bukan karena keraguan kelangsungan usaha seperti dugaan Rara.",
+              "biaya_usd": 0.00029925
+            },
+            {
+              "r": 2,
+              "kunci": "d",
+              "pilihan": "d",
+              "benar": true,
+              "menunjuk_penentu": true,
+              "bingung": [],
+              "alasan": "Kartu 2 menunjukkan penghentian 10 Desember 2025 karena kenaikan harga kumulatif yang signifikan, bukan karena keraguan atas kelangsungan usaha seperti pada Januari.",
+              "biaya_usd": 0.000291026
+            }
+          ],
+          "lulus": true
+        },
+        "penebak_kuat": {
+          "jawaban": [
+            {
+              "model": "anthropic/claude-opus-5.5",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "b",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Tebakan tanpa dokumen; suspensi BEI paling sering karena lonjakan harga.",
+              "biaya_usd": 0.005732,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-opus-5.5",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "c",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Tebakan tanpa dokumen; kenaikan harga alasan suspensi paling umum.",
+              "biaya_usd": 0.005772,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-opus-5.5",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "d",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen; suspensi umumnya karena lonjakan harga, Rara cuma menebak.",
+              "biaya_usd": 0.005752,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-opus-5.5",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "a",
+              "isi": 1,
+              "isi_kunci": 1,
+              "terbaca": true,
+              "salinan": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen; ini alasan suspensi bursa paling umum.",
+              "biaya_usd": 0.005172,
+              "panggilan": 1
+            }
+          ],
+          "putusan": {
+            "kunci": 4,
+            "n": 4,
+            "tak_terbaca": 0,
+            "isi_konsisten": 1,
+            "putusan": "tolak",
+            "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+          },
+          "biaya_usd": 0.022428
+        },
+        "kritik": null,
+        "biaya_gerbang_usd": 0.03355777,
+        "id_bank": null
+      }
+    ]
+  }
+}

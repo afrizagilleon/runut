@@ -1,0 +1,46 @@
+{
+  "omongan": [
+    {
+      "angka_pesan": [],
+      "jam": "22.05",
+      "kartu": [
+        "volume-2025-11-25",
+        "volume-2025-11-26",
+        "volume-2025-12-09",
+        "volume-2025-12-10"
+      ],
+      "kartu_penentu": [
+        "volume-2025-12-09"
+      ],
+      "kunci": "b",
+      "nama": "Wulan",
+      "no": 2,
+      "pengecoh": {
+        "a": {
+          "jenis": "salah-periode",
+          "rujukan": "volume-2025-11-26",
+          "umpan_balik": "Ini salah periode: ratusan ribu lembar ada di kartu 2, akhir November, bukan kemarin."
+        },
+        "c": {
+          "jenis": "pertanyaan-lain",
+          "rujukan": "volume-2025-12-10",
+          "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 soal hari ini saat perdagangan dihentikan, bukan soal kemarin."
+        },
+        "d": {
+          "jenis": "salah-periode",
+          "rujukan": "volume-2025-11-25",
+          "umpan_balik": "Ini salah periode: volume kosong ada di kartu 1 dan kartu 4, bukan di hari kemarin."
+        }
+      },
+      "penjelasan": "Volume kemarin, [[volume-2025-12-09|9 Desember]], adalah [[volume-2025-12-09|1.461.200 lembar]], jadi lebih dari sejuta, bukan ratusan ribu. Angka ratusan ribu itu milik [[volume-2025-11-26|26 November]], yaitu [[volume-2025-11-26|178.100 lembar]]. Volume kosong tercatat pada [[volume-2025-11-25|25 November]] dan hari ini, [[volume-2025-12-10|10 Desember]], saat perdagangan dihentikan. Salah-kaprah yang umum: mengingat angka dari hari lain lalu menempelkannya ke hari yang sedang dibicarakan.",
+      "pertanyaan_cek": "Berapa volume perdagangan pada hari bursa terakhir sebelum penghentian?",
+      "pesan": "Kemarin transaksinya cuma ratusan ribu lembar katanya, sepi banget. Aku sih nunggu rame dulu baru mau masuk.",
+      "pilihan": {
+        "a": "Betul, transaksi kemarin di kisaran ratusan ribu lembar.",
+        "b": "Keliru, transaksi kemarin lebih dari satu juta lembar.",
+        "c": "Betul, transaksi hari ini bahkan kosong sama sekali.",
+        "d": "Keliru, transaksi kemarin kosong sama sekali."
+      }
+    }
+  ]
+}

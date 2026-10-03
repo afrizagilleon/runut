@@ -1,0 +1,46 @@
+{
+  "omongan": [
+    {
+      "no": 1,
+      "nama": "Wulan",
+      "jam": "16.20",
+      "pesan": "Lho, disuspen lagi? Perasaan Januari kemarin juga gini. Fix alasannya sama, bursa ragu perusahaannya bisa jalan terus.",
+      "angka_pesan": [],
+      "kartu": [
+        "susp-2025-01-21",
+        "susp-2025-12-10",
+        "volume-2025-12-10",
+        "hari-naik-beruntun"
+      ],
+      "kartu_penentu": [
+        "susp-2025-12-10"
+      ],
+      "pilihan": {
+        "a": "Betul, alasan resmi hari ini: keraguan atas kelangsungan usaha.",
+        "b": "Keliru, alasan resmi hari ini: kenaikan harga kumulatif yang signifikan.",
+        "c": "Keliru, alasan resmi hari ini: tidak ada transaksi sama sekali.",
+        "d": "Betul, alasan resmi hari ini: kelangsungan usaha dan kenaikan harga."
+      },
+      "kunci": "b",
+      "penjelasan": "Pengumuman hari ini, [[susp-2025-12-10|10 Desember 2025]], menyebut alasannya [[susp-2025-12-10|peningkatan harga kumulatif]] yang signifikan, dalam rangka [[susp-2025-12-10|cooling down]]. Kenaikannya memang terlihat: harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut sampai [[hari-naik-beruntun|Rp106]]. Alasan [[susp-2025-01-21|keraguan atas kelangsungan usaha]] hanya tertulis di pengumuman [[susp-2025-01-21|21 Januari 2025]], penghentian yang berbeda. Volume [[volume-2025-12-10|0 lembar]] hari ini adalah akibat penghentian, bukan alasannya. Salah-kaprah yang umum: mengira dua penghentian oleh bursa pasti punya alasan yang sama.",
+      "pengecoh": {
+        "a": {
+          "jenis": "salah-periode",
+          "rujukan": "susp-2025-01-21",
+          "umpan_balik": "Ini salah periode: alasan kelangsungan usaha ada di kartu 1, pengumuman Januari, bukan pengumuman hari ini."
+        },
+        "c": {
+          "jenis": "pertanyaan-lain",
+          "rujukan": "volume-2025-12-10",
+          "umpan_balik": "Ini menjawab pertanyaan lain: volume nol di kartu 3 adalah akibat penghentian, bukan alasan resminya."
+        },
+        "d": {
+          "jenis": "sebagian-benar",
+          "rujukan": "susp-2025-12-10",
+          "umpan_balik": "Ini sebagian benar: kartu 2 memang menyebut kenaikan harga, tetapi tidak menyebut kelangsungan usaha."
+        }
+      },
+      "pertanyaan_cek": "Alasan resmi apa yang tertulis di pengumuman bertanggal hari ini?"
+    }
+  ]
+}

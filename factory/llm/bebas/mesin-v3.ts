@@ -128,11 +128,11 @@ const jumlah = <T>(x: readonly T[], f: (y: T) => number): number => x.reduce((a,
 const teksGalat = (g: unknown): string => (g instanceof Error ? `${g.name}: ${g.message}` : 'galat tak dikenal');
 
 /** Nilai SATU omongan lewat urutan gerbang v3; berhenti di gerbang pertama yang menolak. `catat` dipanggil lebih dulu supaya nilai tersimpan walau gerbang melempar (pagu). */
-export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil: PanggilTemplat, putaran: number, urut: number, catat: (n: NilaiOmonganV3) => void = () => undefined): Promise<NilaiOmonganV3> {
+export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil: PanggilTemplat, putaran: number, urut: number, catat: (n: NilaiOmonganV3) => void = () => undefined, periksaKode: typeof periksaKodeV3 = periksaKodeV3): Promise<NilaiOmonganV3> {
   const n: NilaiOmonganV3 = { putaran, urut, omongan: o, berhenti: 'kode', alasan: [], dicatat: [], saringan: null, kartu_rotasi: null, penebak_kuat: null, kritik: null, biaya_gerbang_usd: 0, id_bank: null };
   catat(n);
   // 1. kode (gratis)
-  const kode = periksaKodeV3(o, paket);
+  const kode = periksaKode(o, paket);
   n.dicatat.push(...kode.dicatat.map((m) => `${m.sumber} (dicatat): ${m.alasan}`));
   if (kode.menolak.length > 0) {
     n.alasan = kode.menolak.map((m) => `${m.sumber}: ${m.alasan}`);

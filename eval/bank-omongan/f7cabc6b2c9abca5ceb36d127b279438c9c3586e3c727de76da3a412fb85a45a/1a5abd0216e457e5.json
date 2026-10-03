@@ -1,0 +1,572 @@
+{
+  "id": "1a5abd0216e457e5",
+  "paket_sha": "f7cabc6b2c9abca5ceb36d127b279438c9c3586e3c727de76da3a412fb85a45a",
+  "kartu_penentu": [
+    "susp-2025-01-21"
+  ],
+  "omongan": {
+    "nama": "Dimas",
+    "jam": "20.12",
+    "pesan": "Saham T ini udah dua kali disetop bursa tahun ini. Dua-duanya gara-gara harganya kebablasan naik, jadi santai aja, nanti dibuka lagi pasti lanjut terbang.",
+    "angka_pesan": [],
+    "kartu": [
+      "susp-2025-01-21",
+      "susp-2025-12-10",
+      "hari-naik-beruntun"
+    ],
+    "kartu_penentu": [
+      "susp-2025-01-21"
+    ],
+    "pilihan": {
+      "a": "Betul, kedua penghentian beralasan kenaikan harga kumulatif.",
+      "b": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+      "c": "Betul, kedua penghentian sama-sama diputuskan oleh bursa.",
+      "d": "Keliru, yang Desember beralasan keraguan kelangsungan usaha."
+    },
+    "kunci": "b",
+    "penjelasan": "Kedua penghentian memang keputusan bursa, tetapi alasannya berbeda. Yang hari ini, [[susp-2025-12-10|10 Desember 2025]], beralasan [[susp-2025-12-10|peningkatan harga kumulatif]] dalam rangka cooling down, sesudah harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Yang pertama, [[susp-2025-01-21|21 Januari 2025]], beralasan [[susp-2025-01-21|keraguan atas kelangsungan usaha]] — itu soal kesehatan usahanya, bukan soal harga naik. Salah-kaprah yang umum: menganggap semua penghentian perdagangan punya sebab yang sama, padahal tiap pengumuman bursa mencantumkan alasannya sendiri.",
+    "pengecoh": {
+      "a": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "susp-2025-01-21",
+        "umpan_balik": "Alasan Januari di kartu 1 adalah keraguan kelangsungan usaha, bukan harga naik; memilih ini berarti percaya omongan tanpa cek."
+      },
+      "c": {
+        "jenis": "sebagian-benar",
+        "rujukan": "susp-2025-12-10",
+        "umpan_balik": "Ini sebagian benar: keduanya memang dihentikan bursa, tetapi kartu 2 menulis alasan yang lain dari pengumuman Januari."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "susp-2025-12-10",
+        "umpan_balik": "Ini salah periode: kartu 2 (Desember) beralasan kenaikan harga; keraguan kelangsungan usaha milik pengumuman Januari."
+      }
+    },
+    "pertanyaan_cek": "Apa alasan resmi yang tertulis di pengumuman penghentian Januari?"
+  },
+  "jejak_gerbang": {
+    "kode": {
+      "dicatat": [
+        "pilihan-saja (diagnosis): kunci 4 dari 8 terbaca (peluang kebetulan 0,1138); 4 tak terbaca dibuang"
+      ]
+    },
+    "saringan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pilihan-saja",
+          "r": 0,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "Saya tidak dapat melihat pesan teman di grup obrolan atau dokumen yang dirujuk. Tanpa informasi tentang:\n- Apa yang dikatakan teman\n- Dokumen apa yang dimaksud\n- Konteks penghentian (Januari/Desember)\n- Detail tentang kenaikan harga atau keraguan kelangsungan usaha\n\nSaya tidak dapat membuat penilaia",
+          "skor": null,
+          "alasan": "(tak terbaca/tak terpetakan)",
+          "biaya_usd": 0.00258,
+          "panggilan": 2
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pilihan-saja",
+          "r": 1,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan tidak ditampilkan\n2. Tidak ada dokumen yang diberikan untuk dibandingkan\n3. Tanpa kedua informasi tersebut, saya tidak dapat menentukan apakah omongan teman cocok dengan dokumen\n\nUntuk menjawab dengan akurat, saya memer",
+          "skor": null,
+          "alasan": "(tak terbaca/tak terpetakan)",
+          "biaya_usd": 0.00248,
+          "panggilan": 2
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pilihan-saja",
+          "r": 2,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "Saya tidak dapat melihat pesan teman di grup obrolan yang dirujuk dalam pertanyaan. Tanpa mengetahui apa yang dikatakan teman tersebut, saya tidak dapat membandingkannya dengan dokumen untuk menentukan apakah pernyataan tersebut benar atau keliru.\n\nUntuk menjawab pertanyaan ini dengan akurat, saya m",
+          "skor": null,
+          "alasan": "(tak terbaca/tak terpetakan)",
+          "biaya_usd": 0.0022,
+          "panggilan": 2
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pilihan-saja",
+          "r": 3,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "Saya tidak dapat menjawab pertanyaan ini karena:\n\n1. Pesan teman di grup obrolan **tidak ditampilkan**\n2. **Tidak ada dokumen** yang diberikan untuk dibandingkan\n3. Saya tidak memiliki informasi tentang peristiwa Januari, Desember, penghentian bursa, atau kenaikan harga kumulatif yang dirujuk\n\nUntuk",
+          "skor": null,
+          "alasan": "(tak terbaca/tak terpetakan)",
+          "biaya_usd": 0.00259,
+          "panggilan": 2
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Dimas menyatakan kedua penghentian gara-gara harga naik, tapi kemungkinan salah satu beralasan going concern.",
+          "biaya_usd": 0.000789,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Dimas klaim dua penghentian gara-gara harga naik, tapi salah satunya (Desember) sebenarnya keraguan kelangsungan usaha.",
+          "biaya_usd": 0.000834,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Dimas hanya menyebut kenaikan harga, padahal minimal satu penghentian berdasarkan keraguan usaha.",
+          "biaya_usd": 0.000774,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Dimas menyatakan kedua penghentian gara-gara harga naik, namun salah satunya (Desember) sebenarnya karena keraguan kelangsungan usaha.",
+          "biaya_usd": 0.000854,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pilihan-saja",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Penghentian Januari biasanya karena keraguan kelangsungan usaha.",
+          "biaya_usd": 0.00003126,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pilihan-saja",
+          "r": 1,
+          "huruf": "a",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, pilihan ini paling spesifik dan masuk akal.",
+          "biaya_usd": 0.00003186,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pilihan-saja",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Desember biasanya terkait kelangsungan usaha, bukan Januari.",
+          "biaya_usd": 0.00003066,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pilihan-saja",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, pilihan ini paling spesifik dan masuk akal.",
+          "biaya_usd": 0.00003186,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Januari biasanya keraguan usaha, bukan kenaikan harga",
+          "biaya_usd": 0.000031,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, kedua penghentian beralasan kenaikan harga kumulatif.",
+          "skor": 1,
+          "alasan": "Dimas klaim dua stop karena harga naik kumulatif",
+          "biaya_usd": 0.0000328,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Dokumen menyebut Desember soal kelangsungan usaha, bukan kenaikan harga.",
+          "biaya_usd": 0.0000346,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Januari disetop karena keraguan kelangsungan usaha, bukan kenaikan harga.",
+          "biaya_usd": 0.0000352,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pilihan-saja",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Penghentian saham sering karena opini going concern auditor.",
+          "biaya_usd": 0.000290362,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pilihan-saja",
+          "r": 1,
+          "huruf": "c",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Pola soal umumnya menyangkal klaim teman dengan alasan going concern.",
+          "biaya_usd": 0.000331042,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pilihan-saja",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Pola umum: penghentian Desember karena going concern, bukan kenaikan harga.",
+          "biaya_usd": 0.000598852,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pilihan-saja",
+          "r": 3,
+          "huruf": "b",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, kedua penghentian sama-sama diputuskan oleh bursa.",
+          "skor": 1,
+          "alasan": "Penghentian perdagangan saham umumnya diputuskan oleh bursa.",
+          "biaya_usd": 0.000459862,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Penghentian Desember biasanya karena keraguan kelangsungan usaha, bukan kenaikan harga.",
+          "biaya_usd": 0.000338298,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Penghentian Januari biasanya karena opini going concern auditor.",
+          "biaya_usd": 0.000430976,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, kedua penghentian beralasan kenaikan harga kumulatif.",
+          "skor": 1,
+          "alasan": "Penghentian karena kenaikan harga signifikan biasanya diputuskan bursa (URA).",
+          "biaya_usd": 0.000380126,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Penghentian Januari bukan karena kenaikan harga, melainkan keraguan kelangsungan usaha.",
+          "biaya_usd": 0.000336056,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "v2-binomial-pesan-pilihan",
+        "putusan": "lulus",
+        "alasan": [
+          "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 5 dari 12 jawaban terbaca (peluang kebetulan 0,1576; batas 0,01)"
+        ],
+        "kondisi": {
+          "pilihan-saja": {
+            "total": 12,
+            "n": 8,
+            "kunci": 4,
+            "tak_terbaca": 4,
+            "p": 0.1138153076171875,
+            "tak_terukur": false,
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "kunci": 0,
+                "n": 0,
+                "tak_terbaca": 4
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ]
+          },
+          "pesan-pilihan": {
+            "total": 12,
+            "n": 12,
+            "kunci": 5,
+            "tak_terbaca": 0,
+            "p": 0.15764367580413818,
+            "tak_terukur": false,
+            "per_model": [
+              {
+                "model": "anthropic/claude-haiku-4.5",
+                "kunci": 1,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "deepseek/deepseek-v4.1-flash",
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              },
+              {
+                "model": "z-ai/glm-5.3",
+                "kunci": 2,
+                "n": 4,
+                "tak_terbaca": 0
+              }
+            ]
+          }
+        },
+        "diagnosis": "pilihan-saja (diagnosis): kunci 4 dari 8 terbaca (peluang kebetulan 0,1138); 4 tak terbaca dibuang"
+      },
+      "biaya_usd": 0.016525814000000007
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan penghentian Januari 2025 beralasan keraguan atas kelangsungan usaha, bukan kenaikan harga.",
+          "biaya_usd": 0.0002484
+        },
+        {
+          "r": 2,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan penghentian Januari 2025 beralasan keraguan atas kelangsungan usaha, bukan kenaikan harga seperti kata Dimas.",
+          "biaya_usd": 0.000272576
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; hanya tebakan, bulannya bisa saja Desember.",
+          "biaya_usd": 0.005388,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan, klaim berlebihan Dimas kemungkinan keliru.",
+          "biaya_usd": 0.005508,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Desember beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; going concern biasanya menyusul setelah lonjakan harga.",
+          "biaya_usd": 0.006948,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; hanya tebakan, bulannya tidak bisa dipastikan.",
+          "biaya_usd": 0.006168,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 2,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": null,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.024012
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Penjelasan perlu juga menyinggung bagian 'nanti dibuka lagi pasti lanjut terangkat' dari omongan Dimas, bukan hanya perbedaan alasan penghentian. Kartu 1 dan 2 sudah menyediakan bahanannya karena keduanya mencatat bahwa waktu pembukaan kembali tidak bisa dipastikan.",
+      "token_penalaran": [
+        18355
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d18-agen-1",
+    "putaran": 1,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-03T14:27:31.586Z"
+}

@@ -1,8 +1,8 @@
-# Bank omongan (M2d-16 D-6)
+# Bank omongan (M2d-16 D-6; diisi sejak M2d-18)
 
-Folder ini SENGAJA kosong. Isinya baru ada sesudah jalan mesin v3 berbayar
-(`npm run penyusun:v3`) — mengisinya butuh gerbang berbayar, dan itu di luar
-M2d-16.
+Omongan yang lolos SEMUA gerbang. Sejak M2d-18 (3 Okt 2026) diisi oleh agen
+penulis ber-alat (`npm run agen`) lewat alat `ajukan`; nama teman dipasang kode
+dari daftar pemeran tetap (`factory/llm/agen/pemeran.ts`).
 
 Bentuk:
 
