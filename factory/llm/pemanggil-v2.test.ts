@@ -90,8 +90,8 @@ describe('penyedia dikunci per peran (satu tabel)', () => {
 });
 
 describe('profil penulis Opus v3', () => {
-  it('effort "medium", max_tokens 128.000, suhu 1, minta teks berpikir, TANPA reasoning.max_tokens', () => {
-    expect(SETELAN_PENULIS_OPUS_V3).toEqual({ suhu: 1, maxTokens: 128_000, tambahanBadan: { reasoning: { effort: 'medium', exclude: false } } });
+  it('effort "medium", max_tokens 128.000, TANPA temperature (M2d-17), minta teks berpikir, TANPA reasoning.max_tokens', () => {
+    expect(SETELAN_PENULIS_OPUS_V3).toEqual({ suhu: 1, tanpaSuhu: true, maxTokens: 128_000, tambahanBadan: { reasoning: { effort: 'medium', exclude: false } } });
     expect(JSON.stringify(SETELAN_PENULIS_OPUS_V3.tambahanBadan)).not.toContain('max_tokens');
   });
 });

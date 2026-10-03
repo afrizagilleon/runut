@@ -159,6 +159,8 @@ export interface HasilSusun {
 
 export interface SetelanPanggil {
   suhu: number;
+  /** M2d-17: jangan kirim `temperature` (lihat `OpsiChat.tanpaSuhu`). */
+  tanpaSuhu?: boolean;
   maxTokens: number;
   /** Medan tambahan badan permintaan (M2d-2: mematikan mode berpikir penyusun). M2d-1 tidak memakainya. */
   tambahanBadan?: Readonly<Record<string, unknown>>;

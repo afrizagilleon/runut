@@ -182,7 +182,7 @@ export function buktiPenyedia(entri: readonly BarisBuktiV2[]): BuktiPenyedia[] {
  * - `exclude: false` = teks berpikir (ringkasan) diminta dan disimpan;
  * - suhu 1 (syarat model saat berpikir).
  */
-export const SETELAN_PENULIS_OPUS_V3: SetelanPanggil = { suhu: 1, maxTokens: 128_000, tambahanBadan: { reasoning: { effort: 'medium', exclude: false } } };
+export const SETELAN_PENULIS_OPUS_V3: SetelanPanggil = { suhu: 1, tanpaSuhu: true, maxTokens: 128_000, tambahanBadan: { reasoning: { effort: 'medium', exclude: false } } };
 
 /* ---------------------------------------------------------------------- */
 /* (d) penjaga biaya                                                       */

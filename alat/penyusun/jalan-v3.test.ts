@@ -134,7 +134,8 @@ describe('utamaV3 sungguhan: pengaman sebelum uang keluar', () => {
     const kode = await utamaV3(['--uji-satu-panggilan', '--id', 'x2', '--pagu', '0.5', '--setuju-berbayar', '--keluaran', f, '--paket', `${AKAR}eval/penyusun/m2d11-tirt-7/paket.json`], { akar, log: (b) => log.push(b), jam });
     expect(kode).toBe(0);
     expect(fetchMata).toHaveBeenCalledTimes(1);
-    expect(badan[0]).toMatchObject({ model: MODEL_OR_OPUS, max_tokens: 128_000, temperature: 1, reasoning: { effort: 'medium', exclude: false }, provider: { order: ['anthropic'], allow_fallbacks: false } });
+    expect(badan[0]).toMatchObject({ model: MODEL_OR_OPUS, max_tokens: 128_000, reasoning: { effort: 'medium', exclude: false }, provider: { order: ['anthropic'], allow_fallbacks: false } });
+    expect(badan[0]).not.toHaveProperty('temperature');
     expect((badan[0]?.['messages'] as unknown[]).length).toBe(1);
     const r = JSON.parse(readFileSync(`${f}/x2/uji-satu-panggilan.json`, 'utf8')) as RingkasUji & { palsu: boolean };
     expect(r).toMatchObject({ palsu: false, penyedia: 'Anthropic', token_masuk: 2900, token_keluar: 8100, token_penalaran: 3900, biaya_usd: 0.1736, ada_teks_berpikir: true, omongan_terbaca: 3 });

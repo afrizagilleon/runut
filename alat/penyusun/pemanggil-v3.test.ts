@@ -61,7 +61,7 @@ describe('pemanggil v3: badan permintaan', () => {
     const b = s.kirim[0]?.badan as Record<string, unknown>;
     expect(b['model']).toBe(MODEL_OR_OPUS);
     expect(b['max_tokens']).toBe(128_000);
-    expect(b['temperature']).toBe(1);
+    expect(b).not.toHaveProperty('temperature'); // M2d-17: penyedia anthropic tidak menerima temperature
     expect(b['reasoning']).toEqual({ effort: 'medium', exclude: false });
     expect(b['provider']).toMatchObject({ order: ['anthropic'], allow_fallbacks: false, require_parameters: true, data_collection: 'deny', max_price: { prompt: 4, completion: 20 } });
     expect(b['provider']).not.toHaveProperty('ignore');

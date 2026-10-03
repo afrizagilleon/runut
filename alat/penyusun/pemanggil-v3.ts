@@ -75,7 +75,7 @@ export function panggilV3(o: OpsiPanggilV3): (awalanTag: string, paguJalanUsd: n
         j = await chatBerpagu(
           klien,
           biaya,
-          { model: info.model, pesan, suhu: setelan.suhu, maxTokens: setelan.maxTokens, ...(setelan.tambahanBadan === undefined ? {} : { tambahanBadan: setelan.tambahanBadan }) },
+          { model: info.model, pesan, suhu: setelan.suhu, ...(setelan.tanpaSuhu === true ? { tanpaSuhu: true } : {}), maxTokens: setelan.maxTokens, ...(setelan.tambahanBadan === undefined ? {} : { tambahanBadan: setelan.tambahanBadan }) },
           tag,
           setelan.ambangPenalaran === undefined ? {} : { ambangPenalaran: setelan.ambangPenalaran },
         );

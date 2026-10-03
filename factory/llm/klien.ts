@@ -29,6 +29,8 @@ export interface OpsiChat {
   pesan: PesanChat[];
   /** Suhu; uji tanding memakai nilai yang sama untuk semua model. */
   suhu: number;
+  /** M2d-17: jangan kirim `temperature` (Opus 5.5 di penyedia Anthropic tidak menerimanya; dengan `require_parameters` permintaan bersuhu hanya dilayani Azure). */
+  tanpaSuhu?: boolean;
   maxTokens: number;
   /**
    * Medan tambahan badan permintaan yang dikenal penyedia (mis.
@@ -220,7 +222,7 @@ export async function chat(
     ...(opsi.tambahanBadan ?? {}),
     model: opsi.model,
     messages: opsi.pesan,
-    temperature: opsi.suhu,
+    ...(opsi.tanpaSuhu === true ? {} : { temperature: opsi.suhu }),
     max_tokens: opsi.maxTokens,
     stream: false,
     ...(pagar === undefined ? {} : { provider: pagar }),
