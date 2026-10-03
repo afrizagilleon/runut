@@ -68,11 +68,11 @@ export interface KunciAuditM2d13 extends KunciAudit {
 
 export const BENIH_AUDIT = 'm2d13-audit-opus';
 
-/** Berkas bahan (satu soal × satu rotasi, tanpa kartu) + kunci. Murni. */
-export function bangunAuditSatuSoal(butir: readonly ButirAkhir[]): { berkas: Array<{ nama: string; isi: string }>; kunci: KunciAuditM2d13 } {
-  const urut = urutButa(butir, (b) => `${b.jalan}/o${String(b.no)}`, BENIH_AUDIT);
+/** Berkas bahan (satu soal × satu rotasi, tanpa kartu) + kunci. Murni. M2d-15: benih bisa diganti. */
+export function bangunAuditSatuSoal(butir: readonly ButirAkhir[], benih: string = BENIH_AUDIT): { berkas: Array<{ nama: string; isi: string }>; kunci: KunciAuditM2d13 } {
+  const urut = urutButa(butir, (b) => `${b.jalan}/o${String(b.no)}`, benih);
   const berkas: Array<{ nama: string; isi: string }> = [];
-  const kunci: KunciAuditM2d13 = { benih: BENIH_AUDIT, butir: [], berkas: [] };
+  const kunci: KunciAuditM2d13 = { benih, butir: [], berkas: [] };
   urut.forEach((b, i) => {
     const id = `b${String(i + 1).padStart(2, '0')}`;
     kunci.butir.push({ id_buta: id, jalan: b.jalan, penulis: b.penulis, no: b.no, versi: b.versi, lulus: b.lulus });
