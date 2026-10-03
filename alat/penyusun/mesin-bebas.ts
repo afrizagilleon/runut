@@ -55,7 +55,7 @@ export function perkiraanBebas(penulis: ModelOpenRouter, profil: ProfilBebas = P
     maks_putaran: MAKS_VERSI_BEBAS,
     catatan: [
       profil.nama === 'm2d15'
-        ? 'Pra-registrasi M2d-15 §3–§4: Opus effort "medium", max_tokens 16.000, prompt v2; tiap versi: tulis → pra-periksa kode gratis (≤ 2 tulis-ulang) → gerbang 1 kode → gerbang berbayar; maks 3 versi per omongan.'
+        ? 'Pra-registrasi M2d-15 §3–§4 + amandemen teknis T1: Opus reasoning.max_tokens 8.000 (semula effort "medium"), max_tokens 16.000, prompt v2; tiap versi: tulis → pra-periksa kode gratis (≤ 2 tulis-ulang) → gerbang 1 kode → gerbang berbayar; maks 3 versi per omongan.'
         : 'Pra-registrasi M2d-13 §3: versi 1 satu panggilan penulis untuk tiga omongan; versi 2–3 satu panggilan per putaran untuk semua omongan yang ditolak; maks 3 versi per omongan.',
       'Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD.',
     ],
@@ -88,7 +88,7 @@ export class MesinBebas implements MesinPenulis {
     const v2 = (o.profil ?? PROFIL_M2D13).nama === 'm2d15';
     this.nama = `bebas-${o.penulis}${v2 ? '-v2' : ''}${o.palsu ? '-palsu' : ''}`;
     this.keterangan = v2
-      ? `penulis Opus ditingkatkan M2d-15 (${MODEL_PENULIS[o.penulis]}, effort "medium", prompt v2 + bank sudut, pra-periksa kode gratis), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu${o.palsu ? '; model PALSU, tanpa jaringan' : ''}`
+      ? `penulis Opus ditingkatkan M2d-15 (${MODEL_PENULIS[o.penulis]}, penalaran ≤ 8.000 token [amandemen T1; semula effort "medium"], prompt v2 + bank sudut, pra-periksa kode gratis), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu${o.palsu ? '; model PALSU, tanpa jaringan' : ''}`
       : `penulis bebas M2d-13 (${MODEL_PENULIS[o.penulis]}), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu${o.palsu ? '; model PALSU, tanpa jaringan' : ''}`;
     this.palsu = o.palsu;
   }

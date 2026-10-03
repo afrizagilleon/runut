@@ -182,7 +182,8 @@ describe('ambang di prompt = perilaku detektor pada AMBANG_M2D11', () => {
 
 describe('profil M2d-15 = pra-registrasi §3–§4', () => {
   it('Opus effort "medium" (bukan "max"), max_tokens 16.000, suhu 1, prompt v2, pra-periksa 2; M2d-13 tetap', () => {
-    expect(PROFIL_M2D15.setelan).toEqual({ suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { effort: 'medium' } } });
+    // amandemen teknis T1 (amandemen-t1.test.ts): reasoning.max_tokens 8.000 menggantikan effort "medium"
+    expect(PROFIL_M2D15.setelan).toEqual({ suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { max_tokens: 8_000 } } });
     expect(PROFIL_M2D15.prompt).toBe('v2');
     expect(PROFIL_M2D15.praPeriksa).toBe(MAKS_PRA_PERIKSA);
     expect(PROFIL_M2D13).toEqual({ nama: 'm2d13', prompt: 'v1', setelan: SETELAN_PENULIS_BEBAS, praPeriksa: 0 });

@@ -1,0 +1,72 @@
+{
+  "id": "m2d15-opus-1",
+  "kode": "TIRT",
+  "tanggal": "2025-12-10",
+  "jendela": 10,
+  "dibuat": "2026-10-03T02:19:58.671Z",
+  "tahap": "berjalan",
+  "sumber_paket": {
+    "sumber": "kurasi",
+    "keterangan": "definisi paket kurasi M2d (factory/llm/paket.ts, paket \"tirt\") — sama dengan jalan M2d-5…M2d-8"
+  },
+  "sesudahnya": 108,
+  "perkiraan": {
+    "per_panggilan": [
+      {
+        "peran": "penulis bebas anthropic/claude-opus-5.5 (≈ 12.000 token masuk; satu panggilan per putaran versi + 1 ulangan + ≤ 2 tulis-ulang pra-periksa)",
+        "model": "anthropic/claude-opus-5.5",
+        "maks_usd": 1.472
+      },
+      {
+        "peran": "penebak rotasi haiku (8 panggilan, tanpa kartu)",
+        "model": "anthropic/claude-haiku-4.5",
+        "maks_usd": 0.12
+      },
+      {
+        "peran": "penebak rotasi deepseek (8 panggilan, tanpa kartu)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0403
+      },
+      {
+        "peran": "penebak rotasi glm (8 panggilan, tanpa kartu)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.3456
+      },
+      {
+        "peran": "pembaca kartu (2 rotasi)",
+        "model": "deepseek/deepseek-v4.1-flash",
+        "maks_usd": 0.0648
+      },
+      {
+        "peran": "kritikus (dengan satu pemeriksaan ulang)",
+        "model": "z-ai/glm-5.3",
+        "maks_usd": 0.7376
+      }
+    ],
+    "per_omongan_usd": 1.3083,
+    "per_putaran_usd": 5.3969,
+    "maks_putaran": 3,
+    "catatan": [
+      "Pra-registrasi M2d-15 §3–§4: Opus effort \"medium\", max_tokens 16.000, prompt v2; tiap versi: tulis → pra-periksa kode gratis (≤ 2 tulis-ulang) → gerbang 1 kode → gerbang berbayar; maks 3 versi per omongan.",
+      "Sebelum SETIAP panggilan kode memeriksa: biaya nyata tercatat + perkiraan maksimum panggilan itu ≤ pagu jalan, ≤ pagu semua jalan penyusun, dan ≤ LLM_PAGU_USD."
+    ]
+  },
+  "pagu_jalan_usd": 2,
+  "mesin": {
+    "nama": "bebas-opus-v2",
+    "keterangan": "penulis Opus ditingkatkan M2d-15 (anthropic/claude-opus-5.5, effort \"medium\", prompt v2 + bank sudut, pra-periksa kode gratis), tanpa penyempurna; gerbang M2d-11 + angka-di-kartu",
+    "palsu": false
+  },
+  "hasil": null,
+  "draf": null,
+  "draf_terakhir": [
+    null,
+    null,
+    null
+  ],
+  "keadaan": [],
+  "suntingan": [],
+  "uji_ulang": [],
+  "putusan": null,
+  "galat": null
+}

@@ -68,8 +68,17 @@ export interface ProfilBebas {
 }
 export const PROFIL_M2D13: ProfilBebas = { nama: 'm2d13', prompt: 'v1', setelan: SETELAN_PENULIS_BEBAS, praPeriksa: 0 };
 
-/** Profil M2d-15: prompt v2, effort "medium", pra-periksa ≤ 2 tulis-ulang per versi. */
-export const PROFIL_M2D15: ProfilBebas = { nama: 'm2d15', prompt: 'v2', setelan: SETELAN_PENULIS_M2D15, praPeriksa: MAKS_PRA_PERIKSA };
+/**
+ * AMANDEMEN TEKNIS T1 M2d-15 (pra-registrasi §9 butir kedua; `docs/bukti/m2d15-amandemen-teknis-T1.md`):
+ * dua panggilan penulis pertama jalan 1 dengan effort "medium" sama-sama berhenti di max_tokens
+ * 16.000 (penalaran 16.000 dan 14.372 token) tanpa JSON terbaca → sisa milestone memakai
+ * `reasoning.max_tokens` 8.000 (= 0,5 × max_tokens, padanan "medium" di dokumentasi OpenRouter);
+ * max_tokens, suhu, prompt, dan hal lain sama.
+ */
+export const SETELAN_PENULIS_M2D15_T1: SetelanPanggil = { suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { max_tokens: 8_000 } } };
+
+/** Profil M2d-15: prompt v2, setelan amandemen T1, pra-periksa ≤ 2 tulis-ulang per versi. */
+export const PROFIL_M2D15: ProfilBebas = { nama: 'm2d15', prompt: 'v2', setelan: SETELAN_PENULIS_M2D15_T1, praPeriksa: MAKS_PRA_PERIKSA };
 
 export type BerhentiBebas = 'kode' | 'penebak' | 'kartu' | 'kritikus' | 'lolos' | 'tulis-gagal' | 'pagu' | 'galat';
 

@@ -1,0 +1,62 @@
+{
+  "keterangan": "Jalan 1 M2d-15 dihentikan eksekutor (PID 10544) untuk amandemen teknis T1 (pra-registrasi §9 butir kedua; docs/bukti/m2d15-amandemen-teknis-T1.md). Pintu tidak menulis hasil.json.",
+  "terbit": false,
+  "omongan_terbaca": 0,
+  "panggilan_penulis": [
+    {
+      "tag": "penyusun/m2d15-opus-1/p1/tulis-bebas",
+      "token_masuk": 11688,
+      "token_keluar": 16000,
+      "token_penalaran": 16000,
+      "finish_reason": "length",
+      "biaya_usd": 0.366752,
+      "masalah": "tidak ada objek JSON di keluaran"
+    },
+    {
+      "tag": "penyusun/m2d15-opus-1/p1/tulis-bebas/u1",
+      "token_masuk": 11688,
+      "token_keluar": 16000,
+      "token_penalaran": 14372,
+      "finish_reason": "length",
+      "biaya_usd": 0.366752,
+      "masalah": "JSON terpotong (tak terurai)"
+    },
+    {
+      "tag": "penyusun/m2d15-opus-1/p2/tulis-bebas",
+      "biaya_usd": 0.414208,
+      "dasar_biaya": "perkiraan-maksimum",
+      "masalah": "kemungkinan terkirim; proses dihentikan sebelum respons"
+    }
+  ],
+  "versi": [
+    {
+      "no": 1,
+      "versi": 1,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali (max_tokens 16.000 habis untuk penalaran)"
+      ]
+    },
+    {
+      "no": 2,
+      "versi": 1,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali (max_tokens 16.000 habis untuk penalaran)"
+      ]
+    },
+    {
+      "no": 3,
+      "versi": 1,
+      "berhenti": "tulis-gagal",
+      "alasan": [
+        "keluaran penulis tak terbaca dua kali (max_tokens 16.000 habis untuk penalaran)"
+      ]
+    }
+  ],
+  "biaya_usd": {
+    "nyata": 0.733504,
+    "perkiraan_maksimum": 0.414208,
+    "total": 1.147712
+  }
+}

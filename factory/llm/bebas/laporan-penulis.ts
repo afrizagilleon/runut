@@ -459,7 +459,9 @@ export function bangunLaporan(): string {
   const bm = biayaModel(L);
   for (const x of bm) b.push(`| ${x.model} | ${String(x.n)} | ${usd(x.biaya)} |`);
   b.push(`| **total** | ${String(bm.reduce((a, x) => a + x.n, 0))} | **${usd(totalM)}** |`, '');
-  b.push(`Bagian: D-B ${usd(db)} (pagu ${usd(PAGU_DB)}); D-D penilai GLM ${usd(dd)} (pagu ${usd(PAGU_DD)}). Kumulatif ledger ${usd(L.reduce((a, x) => a + x.biaya_usd, 0))} (${String(L.length)} entri).`, '');
+  // M2d-15: kumulatif dibekukan pada ledger sebelum M2d-15 (laporan M2d-13 tidak ikut berubah oleh panggilan milestone sesudahnya)
+  const sebelumM2d15 = L.filter((x) => !x.tag.startsWith('m2d15/') && !x.tag.startsWith('penyusun/m2d15-'));
+  b.push(`Bagian: D-B ${usd(db)} (pagu ${usd(PAGU_DB)}); D-D penilai GLM ${usd(dd)} (pagu ${usd(PAGU_DD)}). Kumulatif ledger ${usd(sebelumM2d15.reduce((a, x) => a + x.biaya_usd, 0))} (${String(sebelumM2d15.length)} entri).`, '');
 
   // ---- keterbatasan
   b.push('## 7. Keterbatasan', '');
