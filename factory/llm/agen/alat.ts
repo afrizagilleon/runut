@@ -27,7 +27,8 @@ import type { PanggilTemplat } from '../templat/penulis.ts';
 import { pasangNama, periksaKodeAgen } from './pemeran.ts';
 
 /** Sisa anggaran minimum (USD) supaya satu pengajuan boleh dijalankan. */
-export const CADANGAN_AJUKAN_USD = 0.3;
+/** Pengajuan penuh termahal yang terukur (M2d-18): US$0,105 → cadangan sedikit di atasnya. */
+export const CADANGAN_AJUKAN_USD = 0.12;
 
 export interface PeristiwaAlat {
   alat: 'lihat_fakta' | 'lihat_bank' | 'periksa_kode' | 'ajukan';
@@ -48,11 +49,23 @@ export interface OpsiAlat {
   biayaAgen: () => number;
   labelPenulis: string;
   target?: number;
+  /** Sudut yang pernah ditolak gerbang berbayar di percobaan lain atas paket yang sama (pelajaran lintas percakapan). */
+  riwayatDitolak?: readonly SudutDitolak[];
   jam?: () => Date;
   catat?: (p: PeristiwaAlat) => void;
   /** Disuntik tes. */
   nilai?: typeof nilaiOmonganV3;
 }
+
+/** Satu sudut yang ditolak gerbang berbayar: cukup untuk tidak mengulanginya. */
+export interface SudutDitolak {
+  kartu_penentu: string[];
+  pesan: string;
+  berhenti: string;
+  alasan: string[];
+}
+
+export const MAKS_RIWAYAT_DITOLAK = 8;
 
 export interface HasilPeriksa {
   lolos: boolean;
@@ -79,6 +92,8 @@ export function buatAlat(o: OpsiAlat) {
   const sha = shaPaketBank(o.paket);
   const semuaNilai: NilaiOmonganV3[] = [];
   const diajukan = new Map<string, HasilAjukan>();
+  const ditolak: SudutDitolak[] = [...(o.riwayatDitolak ?? [])];
+  let ditolakDiSini = 0;
   let biayaGerbang = 0;
   let ke = 0;
   let ajukanKe = 0;
@@ -101,13 +116,14 @@ export function buatAlat(o: OpsiAlat) {
 
   const lihatFakta = (): { hari: string; kartu: string } => lapor('lihat_fakta', 'kartu fakta dibaca', { hari: o.paket.tanggal_t, kartu: teksPaket(o.paket) });
 
-  const lihatBank = (): { omongan: Array<{ nama: string; kartu_penentu: string[]; pesan: string }>; kartu_penentu_terpakai: string[]; jumlah_sudut: number; target: number; sisa_anggaran_usd: number } => {
+  const lihatBank = (): { omongan: Array<{ nama: string; kartu_penentu: string[]; pesan: string }>; kartu_penentu_terpakai: string[]; jumlah_sudut: number; target: number; pernah_ditolak: SudutDitolak[]; sisa_anggaran_usd: number } => {
     const b = bank();
     return lapor('lihat_bank', `${String(jumlahSudut(b))} dari ${String(target)} sudut`, {
       omongan: b.map((e) => ({ nama: e.omongan.nama, kartu_penentu: [...e.kartu_penentu], pesan: e.omongan.pesan })),
       kartu_penentu_terpakai: sudutBank(b),
       jumlah_sudut: jumlahSudut(b),
       target,
+      pernah_ditolak: ditolak.slice(-MAKS_RIWAYAT_DITOLAK),
       sisa_anggaran_usd: sisa(),
     });
   };
@@ -157,6 +173,10 @@ export function buatAlat(o: OpsiAlat) {
       : [];
     const h = dasar(n.berhenti, n.berhenti === 'lolos' ? [] : [...n.alasan, ...kataPenebak], n.berhenti === 'tak-terukur' ? ['Gerbang tidak bisa mengukur draf ini (bukan penolakan). Boleh diajukan lagi sesudah diubah sedikit.'] : [], n.biaya_gerbang_usd);
     if (n.berhenti !== 'tak-terukur') diajukan.set(id, h);
+    if (n.berhenti !== 'lolos' && n.berhenti !== 'tak-terukur') {
+      ditolak.push({ kartu_penentu: [...om.kartu_penentu], pesan: om.pesan, berhenti: n.berhenti, alasan: h.penolakan.slice(0, 4) });
+      ditolakDiSini += 1;
+    }
     return lapor('ajukan', n.berhenti === 'lolos' ? `lolos → bank (${String(h.bank.jumlah_sudut)}/${String(target)})` : `berhenti di ${n.berhenti}`, h);
   };
 
@@ -170,7 +190,7 @@ export function buatAlat(o: OpsiAlat) {
   return {
     lihatFakta, lihatBank, periksaKode, ajukan,
     /** Keadaan untuk penghenti dan ringkasan. */
-    keadaan: () => ({ jumlah_sudut: jumlahSudut(bank()), target, biaya_gerbang_usd: bulat(biayaGerbang), biaya_total_usd: bulat(terpakai()), sisa_anggaran_usd: sisa(), pengajuan: ajukanKe, nilai: semuaNilai }),
+    keadaan: () => ({ ditolak: ditolakDiSini, jumlah_sudut: jumlahSudut(bank()), target, biaya_gerbang_usd: bulat(biayaGerbang), biaya_total_usd: bulat(terpakai()), sisa_anggaran_usd: sisa(), pengajuan: ajukanKe, nilai: semuaNilai }),
     selesai: () => jumlahSudut(bank()) >= target,
     anggaranHabis: () => sisa() < CADANGAN_AJUKAN_USD,
   };

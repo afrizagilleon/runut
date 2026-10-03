@@ -1,0 +1,627 @@
+{
+  "id": "m2d19-agen-1",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1,
+  "berhenti": "bank memuat target sudut",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 7,
+      "sudut_sebelum": 2,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 7,
+  "panggilan_model": 7,
+  "pengajuan": 1,
+  "biaya_agen_usd": 0.469386,
+  "biaya_gerbang_usd": 0.0538,
+  "biaya_usd": 0.5232,
+  "durasi_detik": 214,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "1a5abd0216e457e5",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "asal": "m2d18-agen-1"
+      },
+      {
+        "id": "adf573a6e895ac7a",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "volume-2025-12-09"
+        ],
+        "asal": "m2d18-uji-ajukan-2"
+      },
+      {
+        "id": "4615245eb6fd12e7",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "asal": "m2d19-agen-1"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": false,
+    "dipilih": [],
+    "alasan": [
+      "validator seluruh draf (1a5abd0216e457e5, adf573a6e895ac7a, 4615245eb6fd12e7): [TIDAK_ADA_BETUL] Minimal satu dari tiga omongan harus ternyata BETUL (kuncinya pilihan \"Betul,\")."
+    ],
+    "draf": null
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "20.15",
+        "pesan": "Hari ini saham T katanya rame banget, transaksinya tembus jutaan lembar. Ada yang udah lihat datanya?",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-12-10",
+          "volume-2025-12-09",
+          "volume-2025-11-26",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Keliru, volume hari ini tercatat [[volume-2025-12-10|0 lembar]].",
+          "b": "Keliru, volume hari ini hanya [[volume-2025-11-26|178.100 lembar]].",
+          "c": "Betul, volume hari ini tercatat [[volume-2025-12-09|1.461.200 lembar]].",
+          "d": "Betul, volume hari ini ramai sebelum disetop."
+        },
+        "kunci": "a",
+        "penjelasan": "Data harian bursa mencatat volume hari ini [[volume-2025-12-10|0 lembar]]: tidak ada satu lembar pun yang berpindah tangan. Sebabnya ada di pengumuman bursa: perdagangan dihentikan sementara pada [[susp-2025-12-10|10 Desember 2025]] karena kenaikan harga kumulatif yang signifikan (cooling down). Angka jutaan lembar yang beredar itu milik hari sebelumnya, [[volume-2025-12-09|9 Desember: 1.461.200 lembar]]. Salah-kaprah yang umum: membaca data kemarin sebagai data hari ini.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-11-26",
+            "umpan_balik": "Ini salah periode: kartu 3 mencatat volume [[volume-2025-11-26|26 November]], jauh sebelum hari ini."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-12-09",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat volume [[volume-2025-12-09|9 Desember]], sehari sebelum disetop, bukan hari ini."
+          },
+          "d": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 4 menunjukkan perdagangan hari ini dihentikan bursa, jadi tidak ada transaksi yang bisa ramai."
+          }
+        },
+        "pertanyaan_cek": "Volume di data harian itu untuk tanggal berapa?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "pilihan-saja (diagnosis): kunci 5 dari 12 terbaca (peluang kebetulan 0,1576)"
+      ],
+      "saringan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Pilihan c paling spesifik dengan angka konkret volume transaksi.",
+            "biaya_usd": 0.00062,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini tercatat 0 lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan paling konservatif adalah menyatakan data tidak tersedia atau nol.",
+            "biaya_usd": 0.000635,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini tercatat 0 lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan 'keliru' lebih aman daripada 'betul'.",
+            "biaya_usd": 0.00063,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini hanya 178.100 lembar.",
+            "skor": 1,
+            "alasan": "Pilihan a paling spesifik dengan angka konkret dibanding lainnya.",
+            "biaya_usd": 0.00061,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Volume jutaan lembar sesuai dengan 1.461.200 lembar yang disebutkan.",
+            "biaya_usd": 0.000666,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini hanya 178.100 lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan c paling masuk akal sebagai koreksi terhadap klaim 'jutaan lembar'.",
+            "biaya_usd": 0.000701,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini hanya 178.100 lembar.",
+            "skor": 1,
+            "alasan": "Bayu bilang transaksi tembus jutaan lembar, tapi 178.100 jauh di bawah jutaan.",
+            "biaya_usd": 0.000691,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Volume 1.461.200 lembar sesuai klaim 'tembus jutaan lembar' Bayu",
+            "biaya_usd": 0.000691,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Angka spesifik paling mungkin benar tanpa dokumen.",
+            "biaya_usd": 0.0000286,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini hanya 178.100 lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan spesifik ini paling mungkin benar.",
+            "biaya_usd": 0.0000286,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini tercatat 0 lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, klaim volume nol paling mungkin menandakan keliru.",
+            "biaya_usd": 0.0000304,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Angka spesifik paling mungkin benar tanpa dokumen.",
+            "biaya_usd": 0.0000286,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Jutaan lembar cocok dengan 1.461.200 lembar.",
+            "biaya_usd": 0.00003276,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Jutaan lembar cocok dengan 1.461.200 lembar.",
+            "biaya_usd": 0.00003276,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Jutaan lembar cocok dengan 1.461.200 lembar",
+            "biaya_usd": 0.00003216,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Jutaan lembar cocok dengan 1.461.200 lembar.",
+            "biaya_usd": 0.00003276,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Angka spesifik ini paling mungkin sesuai data dokumen.",
+            "biaya_usd": 0.00025505,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini tercatat 0 lembar.",
+            "skor": 1,
+            "alasan": "Saham disetop perdagangannya, jadi volume nol.",
+            "biaya_usd": 0.000297452,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini tercatat 0 lembar.",
+            "skor": 1,
+            "alasan": "Saham disetop biasanya tidak memiliki transaksi, volume nol.",
+            "biaya_usd": 0.00030251,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pilihan-saja",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Angka spesifik ini paling mungkin sesuai data dokumen.",
+            "biaya_usd": 0.000253382,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Klaim jutaan lembar cocok dengan angka 1.461.200 lembar.",
+            "biaya_usd": 0.000323818,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Bayu bilang jutaan lembar, cocok dengan 1.461.200 lembar.",
+            "biaya_usd": 0.000401788,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Jutaan lembar cocok dengan angka 1.461.200.",
+            "biaya_usd": 0.000331172,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Volume jutaan lembar sesuai klaim Bayu tentang transaksi ramai.",
+            "biaya_usd": 0.000321002,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "v2-binomial-pesan-pilihan",
+          "putusan": "lulus",
+          "alasan": [
+            "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 0 dari 12 jawaban terbaca (peluang kebetulan 1,0000; batas 0,01)"
+          ],
+          "kondisi": {
+            "pilihan-saja": {
+              "total": 12,
+              "n": 12,
+              "kunci": 5,
+              "tak_terbaca": 0,
+              "p": 0.15764367580413818,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 2,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 1,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 2,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            },
+            "pesan-pilihan": {
+              "total": 12,
+              "n": 12,
+              "kunci": 0,
+              "tak_terbaca": 0,
+              "p": 1,
+              "tak_terukur": false,
+              "per_model": [
+                {
+                  "model": "anthropic/claude-haiku-4.5",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "deepseek/deepseek-v4.1-flash",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                },
+                {
+                  "model": "z-ai/glm-5.3",
+                  "kunci": 0,
+                  "n": 4,
+                  "tak_terbaca": 0
+                }
+              ]
+            }
+          },
+          "diagnosis": "pilihan-saja (diagnosis): kunci 5 dari 12 terbaca (peluang kebetulan 0,1576)"
+        },
+        "biaya_usd": 0.007976813999999999
+      },
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan volume perdagangan 10 Desember 2025 adalah 0 lembar, sehingga klaim Bayu bahwa hari ini transaksinya tembus jutaan lembar tidak cocok.",
+            "biaya_usd": 0.00072905
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat volume perdagangan 10 Desember 2025 sebesar 0 lembar, sehingga klaim Bayu tentang volume hari ini jutaan lembar keliru.",
+            "biaya_usd": 0.000476026
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; satu-satunya pilihan yang mencapai jutaan lembar.",
+            "biaya_usd": 0.007488,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini tercatat 0 lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan: saham kemungkinan disuspensi, volume nol.",
+            "biaya_usd": 0.005668,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini tercatat 0 lembar.",
+            "skor": 1,
+            "alasan": "Tebakan saja; dokumen tidak diberikan, mungkin saham disuspensi.",
+            "biaya_usd": 0.006108,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini tercatat 1.461.200 lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, hanya menebak; angka ini sesuai klaim jutaan lembar.",
+            "biaya_usd": 0.006008,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 2,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.025272
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Perkuat daya goda opsi d — misalnya dengan mengaitkan 'ramai' pada transaksi sebelum penghentian — agar pilihan a tidak langsung menang begitu pemain membaca kartu 1.",
+        "token_penalaran": [
+          5396
+        ]
+      },
+      "biaya_gerbang_usd": 0.05382104,
+      "id_bank": "4615245eb6fd12e7"
+    }
+  ],
+  "teks_akhir": ""
+}

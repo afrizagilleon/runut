@@ -26,6 +26,7 @@ import { potongan } from '../kalibrasi-pemanasan.ts';
 import type { PesanChat } from '../klien.ts';
 import type { PaketFakta } from '../paket.ts';
 import { uraiKeluaran } from '../susun.ts';
+import { NAMA_KESALAHAN } from '../templat/label.ts';
 import { periksaKodeBebas, type MasalahKodeBebas } from './mesin.ts';
 import { teksPaket } from './prompt.ts';
 import { HURUF, uraiOmonganBebas, type OmonganBebas } from './skema.ts';
@@ -122,6 +123,19 @@ export function uraiKeluaranV3(teks: string, jumlah: number): { omongan: Omongan
 
 let POTONGAN_TELADAN: Map<string, string> | null = null;
 
+/** Nama tampil jenis kesalahan hanya berisi huruf dan spasi, jadi aman digabung tanpa pelolosan. */
+const POLA_NAMA_KESALAHAN = new RegExp(Object.values(NAMA_KESALAHAN).join('|'), 'gi');
+
+/**
+ * Teladan dipecah di tiap nama jenis kesalahan ("percaya omongan tanpa cek", …)
+ * sebelum dijadikan potongan 5 kata. Nama itu WAJIB ada di umpan balik penulis
+ * (gerbang label), jadi ia bukan "kalimat teladan": tanpa pemecahan ini dua
+ * aturan bertabrakan (terukur M2d-18: dua langkah agen terbuang).
+ */
+function ruasTeladan(teks: string): string[] {
+  return teks.split(POLA_NAMA_KESALAHAN).filter((r) => r.trim() !== '');
+}
+
 /** Potongan 5 kata teladan → bagian asalnya. */
 export function potonganTeladan(): Map<string, string> {
   if (POTONGAN_TELADAN !== null) return POTONGAN_TELADAN;
@@ -132,7 +146,7 @@ export function potonganTeladan(): Map<string, string> {
     const p = t.pengecoh[h];
     if (p !== undefined) bagian.push([`umpan balik ${h}`, p.umpan_balik]);
   }
-  for (const [b, teks] of bagian) for (const p of potongan(teks)) if (!peta.has(p)) peta.set(p, b);
+  for (const [b, teks] of bagian) for (const ruas of ruasTeladan(teks)) for (const p of potongan(ruas)) if (!peta.has(p)) peta.set(p, b);
   POTONGAN_TELADAN = peta;
   return peta;
 }
