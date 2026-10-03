@@ -62,7 +62,7 @@ describe('M2d-15: --prompt v2 (profil Opus ditingkatkan)', () => {
   it('profil v2: nama, perkiraan memakai max_tokens 16.000 dan ≤ 2 tulis-ulang pra-periksa', () => {
     const m = mesinBebasPalsu('opus', 'v2');
     expect(m.nama).toBe('bebas-opus-v2-palsu');
-    expect(m.keterangan).toMatch(/amandemen T1/);
+    expect(m.keterangan).toMatch(/amandemen T2/);
     const p = m.perkiraan();
     expect(p.per_panggilan[0]?.peran).toMatch(/≤ 2 tulis-ulang pra-periksa/);
     expect(p.per_panggilan[0]?.maks_usd).toBeCloseTo(4 * (12_000 * 4 + 16_000 * 20) / 1e6, 3);

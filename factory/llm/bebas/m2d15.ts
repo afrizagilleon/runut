@@ -29,7 +29,7 @@ import { pagarKritikusTerkunci } from '../templat/penyedia.ts';
 import { bangunAuditSatuSoal, urutButa, type ButirAkhir, type KunciAuditM2d13 } from './audit.ts';
 import type { HasilBebas } from './mesin.ts';
 import { promptPenilai, SETELAN_PENILAI_GLM_TINGGI, teksButir, uraiPenilaian, type HasilGlm } from './mutu.ts';
-import { MAKS_JALAN_M2D15, PAGU_MILESTONE_M2D15, idJalanM2d15, paguPenilaiM2d15 } from './pagu-m2d15.ts';
+import { MAKS_JALAN_M2D15_T2, PAGU_MILESTONE_M2D15, idJalanM2d15, paguPenilaiM2d15 } from './pagu-m2d15.ts';
 import { drafDari } from './skema.ts';
 
 export const FOLDER_M2D15 = `${AKAR}eval/keluaran-m2d15`;
@@ -43,7 +43,7 @@ export const AWALAN_MUTU_M2D15 = 'm2d15/mutu/';
 /** Versi akhir semua omongan semua jalan M2d-15 yang ada. */
 export function butirAkhirM2d15(akar: string = AKAR): ButirAkhir[] {
   const hasil: ButirAkhir[] = [];
-  for (let n = 1; n <= MAKS_JALAN_M2D15; n++) {
+  for (let n = 1; n <= MAKS_JALAN_M2D15_T2; n++) {
     const id = idJalanM2d15(n);
     const jalur = `${akar}eval/penyusun/${id}/hasil.json`;
     if (!existsSync(jalur)) continue;

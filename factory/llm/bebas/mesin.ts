@@ -65,6 +65,8 @@ export interface ProfilBebas {
   prompt: VersiPrompt;
   setelan: SetelanPanggil;
   praPeriksa: number;
+  /** M2d-15 T2: penjaga "probe dulu" (lihat `OpsiBebas.penjagaPanjang`). */
+  penjagaPanjang?: boolean;
 }
 export const PROFIL_M2D13: ProfilBebas = { nama: 'm2d13', prompt: 'v1', setelan: SETELAN_PENULIS_BEBAS, praPeriksa: 0 };
 
@@ -77,8 +79,17 @@ export const PROFIL_M2D13: ProfilBebas = { nama: 'm2d13', prompt: 'v1', setelan:
  */
 export const SETELAN_PENULIS_M2D15_T1: SetelanPanggil = { suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { max_tokens: 8_000 } } };
 
-/** Profil M2d-15: prompt v2, setelan amandemen T1, pra-periksa ≤ 2 tulis-ulang per versi. */
-export const PROFIL_M2D15: ProfilBebas = { nama: 'm2d15', prompt: 'v2', setelan: SETELAN_PENULIS_M2D15_T1, praPeriksa: MAKS_PRA_PERIKSA };
+/**
+ * AMANDEMEN TEKNIS T2 M2d-15 (`docs/bukti/m2d15-amandemen-T2.md`, reviewer + izin pemilik): T1
+ * (`reasoning.max_tokens` 8.000) juga diabaikan di Azure (16.000 token penalaran). Penulis kembali ke
+ * effort "low" — setelan M2d-13 yang terbukti menghasilkan JSON (2,6–4,6 rb token penalaran) —
+ * dengan max_tokens 16.000; prompt v2, bank sudut A1, pra-periksa, dan aturan versi sama.
+ * Effort "medium" TIDAK teruji (temuan negatif teknis).
+ */
+export const SETELAN_PENULIS_M2D15_T2: SetelanPanggil = { suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { effort: 'low' } } };
+
+/** Profil M2d-15 (sesudah T2): prompt v2, effort "low", pra-periksa ≤ 2 tulis-ulang per versi, penjaga probe dulu. */
+export const PROFIL_M2D15: ProfilBebas = { nama: 'm2d15', prompt: 'v2', setelan: SETELAN_PENULIS_M2D15_T2, praPeriksa: MAKS_PRA_PERIKSA, penjagaPanjang: true };
 
 export type BerhentiBebas = 'kode' | 'penebak' | 'kartu' | 'kritikus' | 'lolos' | 'tulis-gagal' | 'pagu' | 'galat';
 
@@ -162,6 +173,28 @@ export interface OpsiBebas {
   setelan?: SetelanPanggil;
   /** M2d-15: versi prompt sistem (bawaan v1 = M2d-13). */
   prompt?: VersiPrompt;
+  /**
+   * M2d-15 T2 — penjaga "probe dulu": panggilan penulis PERTAMA jalan tanpa JSON terurai, atau
+   * panggilan penulis mana pun yang berhenti di max_tokens tanpa JSON terurai, menghentikan jalan
+   * seketika (tanpa ulangan). Bawaan mati (perilaku M2d-13).
+   */
+  penjagaPanjang?: boolean;
+}
+
+/** Jalan dihentikan penjaga probe (M2d-15 T2). */
+export class HentiPenjaga extends Error {
+  constructor(pesan: string) {
+    super(pesan);
+    this.name = 'HentiPenjaga';
+  }
+}
+
+/** Putusan penjaga probe untuk satu panggilan penulis. Murni. */
+export function putusanPenjaga(pertama: boolean, terbaca: number, finish: string | null): string | null {
+  if (terbaca > 0) return null;
+  if (finish === 'length') return `panggilan penulis berhenti di max_tokens tanpa JSON terurai${pertama ? ' (panggilan pertama)' : ''}`;
+  if (pertama) return `panggilan penulis pertama tanpa JSON terurai (finish ${String(finish)})`;
+  return null;
 }
 
 const jumlah = <T>(x: readonly T[], f: (y: T) => number): number => x.reduce((a, y) => a + f(y), 0);
@@ -289,6 +322,10 @@ export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
           rincian: { diminta: kurang, terbaca: p.terbaca, token_penalaran: p.token_penalaran, penyedia: p.penyedia, finish_reason: p.finish_reason, ulang },
           peran: 'penulis',
         });
+        if (opsi.penjagaPanjang === true) {
+          const henti = putusanPenjaga(hasil.panggilan_penulis.length === 1, u.omongan.size, j.finish_reason);
+          if (henti !== null) throw new HentiPenjaga(henti);
+        }
       }
       for (const n of diminta) {
         const o = keluaran.get(n);
@@ -343,6 +380,10 @@ export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
           rincian: { pra_periksa: ke, diminta: nomor, terbaca: cp.terbaca, token_penalaran: p.token_penalaran, penyedia: p.penyedia, finish_reason: p.finish_reason },
           peran: 'penulis',
         });
+        if (opsi.penjagaPanjang === true) {
+          const henti = putusanPenjaga(false, u.omongan.size, j.finish_reason);
+          if (henti !== null) throw new HentiPenjaga(henti);
+        }
       }
       // --- gerbang per omongan
       for (const no of diminta) {
@@ -434,7 +475,9 @@ export async function jalankanBebas(opsi: OpsiBebas): Promise<HasilBebas> {
       }
     }
   } catch (galat) {
-    if (galat instanceof PaguTercapai) {
+    if (galat instanceof HentiPenjaga) {
+      hasil.berhenti = `penjaga probe: ${galat.message}; jalan dihentikan tanpa ulangan (amandemen T2)`;
+    } else if (galat instanceof PaguTercapai) {
       hasil.tersensor = true;
       hasil.berhenti = `terpotong pagu: ${teksGalat(galat)}`;
     } else {

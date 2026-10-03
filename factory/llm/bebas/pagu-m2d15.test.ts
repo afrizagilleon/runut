@@ -30,9 +30,10 @@ describe('rencana jalan', () => {
     expect(rencanaJalanM2d15([{ id: 'm2d15-opus-1', biaya_usd: 1, terbit: false }, { id: 'm2d15-opus-2', biaya_usd: 1, terbit: false }], 'gagal')).toHaveProperty('berhenti');
   });
   it('pagu D-4 habis → berhenti', () => expect(rencanaJalanM2d15([{ id: 'm2d15-opus-1', biaya_usd: 2.7, terbit: false }], null)).toHaveProperty('berhenti'));
-  it('penilai = 3,00 − D-4, minimum 0,30', () => {
+  it('penilai = 3,00 − D-4 (amandemen T2: tanpa minimum)', () => {
     expect(paguPenilaiM2d15(1.25)).toBe(1.75);
     expect(paguPenilaiM2d15(2.7)).toBe(0.3);
+    expect(paguPenilaiM2d15(3.2)).toBe(0); // amandemen T2: tanpa minimum
   });
 });
 

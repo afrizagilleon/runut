@@ -15,7 +15,7 @@ import { lajuKunci, wilson } from './analisis-lama.ts';
 import { bankSudut } from './bank-sudut.ts';
 import type { HasilBebas, VersiBebas } from './mesin.ts';
 import type { PenilaianMutu } from './mutu.ts';
-import { AUDIT_MAKS_BENAR, MAKS_JALAN_M2D15, PAGU_D4_M2D15, PAGU_JALAN_M2D15, PAGU_MILESTONE_M2D15, idJalanM2d15, paguPenilaiM2d15 } from './pagu-m2d15.ts';
+import { AUDIT_MAKS_BENAR, MAKS_JALAN_M2D15, MAKS_JALAN_M2D15_T2, PAGU_D4_M2D15, PAGU_JALAN_M2D15, PAGU_MILESTONE_M2D15, idJalanM2d15, paguPenilaiM2d15 } from './pagu-m2d15.ts';
 import { HURUF, type OmonganBebas } from './skema.ts';
 
 export const JALUR_LAPORAN_OPUS = `${AKAR}docs/bukti/lingkar-agen-opus.md`;
@@ -198,7 +198,7 @@ function omonganTeks(no: number, v: VersiBebas | { versi: number; omongan: Omong
 
 export function bangunLaporanOpus(): string {
   const L = ledger();
-  const ids15 = Array.from({ length: MAKS_JALAN_M2D15 }, (_, i) => idJalanM2d15(i + 1));
+  const ids15 = Array.from({ length: MAKS_JALAN_M2D15_T2 }, (_, i) => idJalanM2d15(i + 1));
   const j15 = muat('penyusun/', ids15, L);
   const j13 = muat('penyusun/', ['m2d13-opus-1', 'm2d13-opus-2'], L);
   const u15 = ukur(j15);

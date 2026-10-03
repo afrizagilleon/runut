@@ -13,7 +13,8 @@ describe('amandemen teknis T1', () => {
   it('setelan pra-registrasi tetap tercatat; profil M2d-15 memakai setelan T1 (reasoning.max_tokens 8.000, max_tokens 16.000, suhu 1)', () => {
     expect(SETELAN_PENULIS_M2D15).toEqual({ suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { effort: 'medium' } } });
     expect(SETELAN_PENULIS_M2D15_T1).toEqual({ suhu: 1, maxTokens: 16_000, tambahanBadan: { reasoning: { max_tokens: 8_000 } } });
-    expect(PROFIL_M2D15.setelan).toBe(SETELAN_PENULIS_M2D15_T1);
+    // sesudah amandemen T2 profil memakai effort "low" (amandemen-t2.test.ts); setelan T1 tetap tercatat
+    expect(PROFIL_M2D15.setelan).not.toBe(SETELAN_PENULIS_M2D15_T1);
   });
 
   it('pra-registrasi §9 memuat aturan amandemen yang dipakai (tidak diubah)', () => {

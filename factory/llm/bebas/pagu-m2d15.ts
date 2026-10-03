@@ -59,7 +59,28 @@ export function rencanaJalanM2d15(selesai: readonly JalanSelesai[], auditJalan1:
   return { id: idJalanM2d15(n), pagu, alasan: `${sebab}; pagu jalan = min(US$${PAGU_JALAN_M2D15.toFixed(2)}, US$${PAGU_D4_M2D15.toFixed(2)} − US$${biayaD4.toFixed(4)}) = US$${pagu.toFixed(4)}` };
 }
 
-/** Pagu penilai GLM D-5 = US$3,00 − biaya nyata D-4, paling sedikit US$0,30. Murni. */
+/**
+ * Pagu penilai GLM D-5 = US$3,00 − biaya D-4 (termasuk perkiraan). Pra-registrasi menjamin ≥ US$0,30
+ * karena D-4 ≤ 2,70; sesudah amandemen T2 jalan ke-3 memakai sisa pagu milestone, jadi penilai
+ * hanya mendapat sisa sesudah jalan (tanpa minimum). Murni.
+ */
 export function paguPenilaiM2d15(biayaD4: number): number {
-  return bawah4(Math.max(PAGU_PENILAI_MIN_M2D15, PAGU_MILESTONE_M2D15 - biayaD4));
+  return bawah4(Math.max(0, PAGU_MILESTONE_M2D15 - biayaD4));
+}
+
+/** Amandemen T2: satu jalan tambahan sesudah 2 jalan pra-registrasi. */
+export const MAKS_JALAN_M2D15_T2 = 3;
+
+/**
+ * Amandemen T2 (`docs/bukti/m2d15-amandemen-T2.md`): jalan ke-3 `m2d15-opus-3` hanya bila 2 jalan
+ * pra-registrasi selesai dan tidak ada yang terbit; pagu = US$3,00 − biaya milestone (termasuk
+ * perkiraan maksimum), dibulatkan ke bawah 4 desimal. Murni.
+ */
+export function rencanaJalanT2(selesai: readonly JalanSelesai[], biayaMilestone: number): { id: string; pagu: number; alasan: string } | { berhenti: string } {
+  if (selesai.length < MAKS_JALAN_M2D15) return { berhenti: 'amandemen T2 hanya berlaku sesudah 2 jalan pra-registrasi' };
+  if (selesai.length >= MAKS_JALAN_M2D15_T2) return { berhenti: `sudah ${String(MAKS_JALAN_M2D15_T2)} jalan (2 pra-registrasi + 1 amandemen T2)` };
+  if (selesai.some((j) => j.terbit)) return { berhenti: 'ada jalan yang sudah terbit; amandemen T2 tidak berlaku' };
+  const pagu = bawah4(PAGU_MILESTONE_M2D15 - biayaMilestone);
+  if (pagu <= 0) return { berhenti: `pagu milestone habis: US${biayaMilestone.toFixed(4)} dari US${PAGU_MILESTONE_M2D15.toFixed(2)}` };
+  return { id: idJalanM2d15(MAKS_JALAN_M2D15_T2), pagu, alasan: `amandemen T2: pagu = US${PAGU_MILESTONE_M2D15.toFixed(2)} − biaya milestone US${biayaMilestone.toFixed(6)} = US${pagu.toFixed(4)}` };
 }

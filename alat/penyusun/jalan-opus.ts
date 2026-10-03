@@ -16,7 +16,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { auditJalan, idJalanM2d15, MAKS_JALAN_M2D15, PAGU_D4_M2D15, rencanaJalanM2d15, type JalanSelesai } from '../../factory/llm/bebas/pagu-m2d15.ts';
+import { auditJalan, idJalanM2d15, MAKS_JALAN_M2D15, MAKS_JALAN_M2D15_T2, PAGU_D4_M2D15, PAGU_MILESTONE_M2D15, rencanaJalanM2d15, rencanaJalanT2, type JalanSelesai } from '../../factory/llm/bebas/pagu-m2d15.ts';
 import { biayaAwalan, ringkasBiaya } from './biaya.ts';
 import { buatAplikasi, dengarkan } from './server.ts';
 
@@ -30,7 +30,7 @@ function tunggu(ms: number): Promise<void> {
 /** Jalan M2d-15 yang foldernya sudah ada, dengan biaya nyata dan status terbit. */
 export function jalanSelesaiM2d15(akar: string): JalanSelesai[] {
   const hasil: JalanSelesai[] = [];
-  for (let n = 1; n <= MAKS_JALAN_M2D15; n++) {
+  for (let n = 1; n <= MAKS_JALAN_M2D15_T2; n++) {
     const id = idJalanM2d15(n);
     const folder = join(akar, 'eval', 'penyusun', id);
     if (!existsSync(folder)) break;
@@ -45,15 +45,18 @@ async function utama(): Promise<number> {
   const selesai = jalanSelesaiM2d15(AKAR);
   const jalurAudit = join(AKAR, JALUR_AUDIT_M2D15);
   const nilai = existsSync(jalurAudit) ? (JSON.parse(readFileSync(jalurAudit, 'utf8')) as Parameters<typeof auditJalan>[0]) : null;
-  const r = rencanaJalanM2d15(selesai, auditJalan(nilai, idJalanM2d15(1)));
   const biayaM = biayaAwalan(AKAR, 'penyusun/m2d15-') + biayaAwalan(AKAR, 'm2d15/');
+  // amandemen T2: sesudah 2 jalan pra-registrasi tanpa terbit, satu jalan lagi dengan sisa pagu milestone
+  const t2 = selesai.length >= MAKS_JALAN_M2D15;
+  const r = t2 ? rencanaJalanT2(selesai, biayaM) : rencanaJalanM2d15(selesai, auditJalan(nilai, idJalanM2d15(1)));
   console.log(`Biaya milestone M2d-15 tercatat US$${biayaM.toFixed(6)}; jalan selesai: ${JSON.stringify(selesai)}`);
   if ('berhenti' in r) {
     console.log(`BERHENTI: ${r.berhenti}`);
     return 2;
   }
   const biayaD4 = selesai.reduce((a, j) => a + j.biaya_usd, 0);
-  if (biayaD4 + r.pagu > PAGU_D4_M2D15 + 1e-9 || biayaM + r.pagu > PAGU_D4_M2D15 + 1e-9) throw new Error(`pagu jalan US$${r.pagu.toFixed(4)} + biaya US$${biayaM.toFixed(4)} > US$${PAGU_D4_M2D15.toFixed(2)} (D-4)`);
+  const batas = t2 ? PAGU_MILESTONE_M2D15 : PAGU_D4_M2D15;
+  if (biayaD4 + r.pagu > batas + 1e-9 || biayaM + r.pagu > batas + 1e-9) throw new Error(`pagu jalan US${r.pagu.toFixed(4)} + biaya US${biayaM.toFixed(4)} > US${batas.toFixed(2)}`);
   const folder = join(AKAR, 'eval', 'penyusun');
   const terpakai = ringkasBiaya(AKAR, 0).terpakai_penyusun_usd;
   const paguPenyusun = Math.round((terpakai + r.pagu + 0.01) * 10_000) / 10_000;
