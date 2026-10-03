@@ -1,0 +1,297 @@
+{
+  "setelan": {
+    "suhu": 0,
+    "maxTokens": 16000,
+    "tambahanBadan": {
+      "reasoning": {
+        "effort": "high"
+      }
+    },
+    "ambangPenalaran": 500
+  },
+  "model": "z-ai/glm-5.3",
+  "pagu_bagian_usd": 0.4346,
+  "biaya_tag_usd": 0.326853638,
+  "hasil": [
+    {
+      "id_buta": "m01",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dengan mencocokkan tanggal di kartu (10 Desember volume 0 lembar, angka 1.461.200 milik kartu 9 Desember), tiap pengecoh mewakili salah baca yang berbeda dan realistis (tidak cek tanggal, ikut narasi ramai dan salah baca alasan penghentian, tertukar tanggal lama), penjelasan menunjuk kartu penentu sekaligus membongkar ketiga pengecoh, bahasa pesan dan pilihan wajar bagi pemula, dan kunci b benar tunggal tanpa angka di luar kartu.\"}",
+          "token_penalaran": 2513,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.00955273,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban hanya bisa dipastikan dengan mencocokkan tanggal di kartu (10 Desember volume 0 lembar, angka 1.461.200 milik kartu 9 Desember), tiap pengecoh mewakili salah baca yang berbeda dan realistis (tidak cek tanggal, ikut narasi ramai dan salah baca alasan penghentian, tertukar tanggal lama), penjelasan menunjuk kartu penentu sekaligus membongkar ketiga pengecoh, bahasa pesan dan pilihan wajar bagi pemula, dan kunci b benar tunggal tanpa angka di luar kartu."
+      }
+    },
+    {
+      "id_buta": "m02",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dengan membaca kartu (Rp106 = ratusan, naik 9 hari bursa beruntun), tiap pengecoh mewakili salah baca yang wajar (ikut omongan Tio, setengah benar, salah arah), penjelasan menunjuk bagian kartu yang menentu dan membongkar jebakan opsi a, bahasanya santai dan sejajar, serta kunci d satu-satunya yang benar tanpa angka di luar kartu.\"}",
+          "token_penalaran": 3562,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.01299935,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban hanya bisa dipastikan dengan membaca kartu (Rp106 = ratusan, naik 9 hari bursa beruntun), tiap pengecoh mewakili salah baca yang wajar (ikut omongan Tio, setengah benar, salah arah), penjelasan menunjuk bagian kartu yang menentu dan membongkar jebakan opsi a, bahasanya santai dan sejajar, serta kunci d satu-satunya yang benar tanpa angka di luar kartu."
+      }
+    },
+    {
+      "id_buta": "m03",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dengan membaca Kartu 1 (isi pengumuman bursa soal laporan keuangan, bukan investor asing), tiap pengecoh mewakili salah baca pemula yang masuk akal (ikut omongan teman, kaitkan pengumuman dengan kenaikan harga, anggap harga naik sebagai isi pengumuman), penjelasan menunjuk bagian kartu yang menentukan dan membongkar salah kaprah tiap pilihan, bahasa pesan dan pilihan wajar dan sejajar, serta kunci b satu-satunya yang benar sesuai kartu tanpa angka atau tanggal luar kartu.\"}",
+          "token_penalaran": 2671,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.010040084,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban hanya bisa dipastikan dengan membaca Kartu 1 (isi pengumuman bursa soal laporan keuangan, bukan investor asing), tiap pengecoh mewakili salah baca pemula yang masuk akal (ikut omongan teman, kaitkan pengumuman dengan kenaikan harga, anggap harga naik sebagai isi pengumuman), penjelasan menunjuk bagian kartu yang menentukan dan membongkar salah kaprah tiap pilihan, bahasa pesan dan pilihan wajar dan sejajar, serta kunci b satu-satunya yang benar sesuai kartu tanpa angka atau tanggal luar kartu."
+      }
+    },
+    {
+      "id_buta": "m04",
+      "percobaan": [
+        {
+          "teks": "",
+          "token_penalaran": 16002,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.054445744,
+          "sah": false,
+          "alasan": "tak terbaca"
+        },
+        {
+          "teks": "",
+          "token_penalaran": 16002,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.054431664,
+          "sah": false,
+          "alasan": "tak terbaca"
+        }
+      ],
+      "penilaian": null
+    },
+    {
+      "id_buta": "m05",
+      "percobaan": [
+        {
+          "teks": "",
+          "token_penalaran": 16001,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.054462684,
+          "sah": false,
+          "alasan": "tak terbaca"
+        },
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Kunci hanya bisa dipastikan dengan membaca kartu (Rp0,14 per lembar, 10 lot = 1.000 lembar, dan eligibilitas dari tanggal ex), tiap pengecoh memetakan salah baca khas pemula (salah paham tanggal ex, salah desimal Rp14.000, salah menilai skala), dan penjelasan menunjuk bagian kartu yang menentukan sekaligus membongkar pengecohnya.\"}",
+          "token_penalaran": 12003,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.041512938,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Kunci hanya bisa dipastikan dengan membaca kartu (Rp0,14 per lembar, 10 lot = 1.000 lembar, dan eligibilitas dari tanggal ex), tiap pengecoh memetakan salah baca khas pemula (salah paham tanggal ex, salah desimal Rp14.000, salah menilai skala), dan penjelasan menunjuk bagian kartu yang menentukan sekaligus membongkar pengecohnya."
+      }
+    },
+    {
+      "id_buta": "m06",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dengan membaca Kartu 1 (alasan Januari adalah keraguan kelangsungan usaha, bukan harga naik), pengecoh c/d/a mewakili salah baca nyata (ikut omongan teman, salah kartu, tertukar volume dengan harga), penjelasan menunjuk bagian penentu kartu dan membongkar miskonsepsi bahwa dua penghentian pasti beralasan sama.\"}",
+          "token_penalaran": 2392,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.008973004,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban hanya bisa dipastikan dengan membaca Kartu 1 (alasan Januari adalah keraguan kelangsungan usaha, bukan harga naik), pengecoh c/d/a mewakili salah baca nyata (ikut omongan teman, salah kartu, tertukar volume dengan harga), penjelasan menunjuk bagian penentu kartu dan membongkar miskonsepsi bahwa dua penghentian pasti beralasan sama."
+      }
+    },
+    {
+      "id_buta": "m07",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dengan membandingkan alasan di Kartu 1 dan Kartu 2, tiap pengecoh mewakili salah baca yang masuk akal (ikut omongan teman, setengah benar soal frasa perlindungan investor, salah kartu), penjelasan menunjuk bagian kartu yang menentukan dan membongkar tiap pengecoh, bahasanya wajar bagi pemula, dan hanya kunci b yang benar sesuai kartu.\"}",
+          "token_penalaran": 3483,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.012711774,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban hanya bisa dipastikan dengan membandingkan alasan di Kartu 1 dan Kartu 2, tiap pengecoh mewakili salah baca yang masuk akal (ikut omongan teman, setengah benar soal frasa perlindungan investor, salah kartu), penjelasan menunjuk bagian kartu yang menentukan dan membongkar tiap pengecoh, bahasanya wajar bagi pemula, dan hanya kunci b yang benar sesuai kartu."
+      }
+    },
+    {
+      "id_buta": "m08",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Kunci hanya bisa ditemukan dengan membaca kartu (kata 'penjualan' dan harga Rp13-15 yang menyingkirkan pilihan ratusan), keempat pilihan membentuk grid diagnostik yang mewakili salah baca nyata (percaya omongan teman dan tertukar harga saat ini), penjelasan menunjuk kartu sekaligus membongkar salah kaprah 'nggak kedengeran jual', bahasa pesan dan pilihan wajar bagi pemula, dan kunci c terverifikasi konsisten dengan seluruh angka di kartu tanpa pesaing.\"}",
+          "token_penalaran": 5161,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.018514554,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Kunci hanya bisa ditemukan dengan membaca kartu (kata 'penjualan' dan harga Rp13-15 yang menyingkirkan pilihan ratusan), keempat pilihan membentuk grid diagnostik yang mewakili salah baca nyata (percaya omongan teman dan tertukar harga saat ini), penjelasan menunjuk kartu sekaligus membongkar salah kaprah 'nggak kedengeran jual', bahasa pesan dan pilihan wajar bagi pemula, dan kunci c terverifikasi konsisten dengan seluruh angka di kartu tanpa pesaing."
+      }
+    },
+    {
+      "id_buta": "m09",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dengan mencocokkan tanggal 28 dan 27 November di kartu, semua pengecoh mewakili salah baca yang wajar (tukar tanggal, ambil kartu tanggal lain), penjelasan menunjuk kartu penentu dan menjelaskan angka Rp62/Rp48 milik tanggal lain, bahasanya santai dan mudah dipahami pemula, serta kunci a benar dan tunggal.\"}",
+          "token_penalaran": 2494,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.009270464,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban hanya bisa dipastikan dengan mencocokkan tanggal 28 dan 27 November di kartu, semua pengecoh mewakili salah baca yang wajar (tukar tanggal, ambil kartu tanggal lain), penjelasan menunjuk kartu penentu dan menjelaskan angka Rp62/Rp48 milik tanggal lain, bahasanya santai dan mudah dipahami pemula, serta kunci a benar dan tunggal."
+      }
+    },
+    {
+      "id_buta": "m10",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban hanya bisa dipastikan dengan mencocokkan tanggal pada kartu (hari ini = 10 Desember = 0 lembar), ketiga pengecoh mewakili salah baca khas pemula (memakai angka kemarin, memakai angka kartu lain, setengah benar soal arah), penjelasan menunjuk kartu penentu dan membongkar tiap angka palsu, bahasa obrolan wajar, dan semua angka serta kunci tunggal bersumber dari kartu.\"}",
+          "token_penalaran": 2155,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.008185004,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban hanya bisa dipastikan dengan mencocokkan tanggal pada kartu (hari ini = 10 Desember = 0 lembar), ketiga pengecoh mewakili salah baca khas pemula (memakai angka kemarin, memakai angka kartu lain, setengah benar soal arah), penjelasan menunjuk kartu penentu dan membongkar tiap angka palsu, bahasa obrolan wajar, dan semua angka serta kunci tunggal bersumber dari kartu."
+      }
+    },
+    {
+      "id_buta": "m11",
+      "percobaan": [
+        {
+          "teks": "{\"skor\": {\"bergantung_kartu\": 2, \"pengecoh_diagnostik\": 2, \"penjelasan_mengajar\": 2, \"bahasa_pemula\": 2, \"benar_satu_kunci\": 2}, \"layak_tayang\": true, \"alasan\": \"Jawaban d hanya bisa dipastikan dengan membaca kartu (2,21 kali), ketiga pengecoh mewakili salah baca khas pemula (mencampur selisih Rp58 dengan kelipatan, angka mirip 2,02, dan arah kenaikan yang tertukar), penjelasan menunjuk bagian kartu yang menentu sambil meluruskan pengecoh menggoda, bahasa pesan dan pilihan wajar serta sejajar, dan kunci d adalah satu-satunya yang cocok dengan kartu tanpa angka atau tanggal yang tidak terverifikasi.\"}",
+          "token_penalaran": 9087,
+          "penyedia": "Wafer",
+          "biaya_usd": 0.031753644,
+          "sah": true,
+          "alasan": ""
+        }
+      ],
+      "penilaian": {
+        "skor": {
+          "bergantung_kartu": 2,
+          "pengecoh_diagnostik": 2,
+          "penjelasan_mengajar": 2,
+          "bahasa_pemula": 2,
+          "benar_satu_kunci": 2
+        },
+        "total": 10,
+        "layak_tayang": true,
+        "alasan": "Jawaban d hanya bisa dipastikan dengan membaca kartu (2,21 kali), ketiga pengecoh mewakili salah baca khas pemula (mencampur selisih Rp58 dengan kelipatan, angka mirip 2,02, dan arah kenaikan yang tertukar), penjelasan menunjuk bagian kartu yang menentu sambil meluruskan pengecoh menggoda, bahasa pesan dan pilihan wajar serta sejajar, dan kunci d adalah satu-satunya yang cocok dengan kartu tanpa angka atau tanggal yang tidak terverifikasi."
+      }
+    }
+  ]
+}

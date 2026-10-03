@@ -1,0 +1,247 @@
+{
+  "benih": "m2d15-audit-opus",
+  "butir": [
+    {
+      "id_buta": "b01",
+      "jalan": "m2d15-opus-3",
+      "penulis": "opus",
+      "no": 3,
+      "versi": 2,
+      "lulus": true
+    },
+    {
+      "id_buta": "b02",
+      "jalan": "m2d15-opus-3",
+      "penulis": "opus",
+      "no": 1,
+      "versi": 2,
+      "lulus": false
+    },
+    {
+      "id_buta": "b03",
+      "jalan": "m2d15-opus-3",
+      "penulis": "opus",
+      "no": 2,
+      "versi": 2,
+      "lulus": false
+    }
+  ],
+  "berkas": [
+    {
+      "nama": "b01--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, alasannya volume transaksi yang tiba-tiba melonjak.",
+            "b": "Keliru, alasannya keraguan atas kelangsungan usaha.",
+            "c": "Betul, alasannya cooling down untuk melindungi investor.",
+            "d": "Keliru, alasannya keputusan rapat umum pemegang saham."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b01--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Keliru, alasannya keputusan rapat umum pemegang saham.",
+            "b": "Betul, alasannya volume transaksi yang tiba-tiba melonjak.",
+            "c": "Keliru, alasannya keraguan atas kelangsungan usaha.",
+            "d": "Betul, alasannya cooling down untuk melindungi investor."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b01--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Betul, alasannya cooling down untuk melindungi investor.",
+            "b": "Keliru, alasannya keputusan rapat umum pemegang saham.",
+            "c": "Betul, alasannya volume transaksi yang tiba-tiba melonjak.",
+            "d": "Keliru, alasannya keraguan atas kelangsungan usaha."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b01--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b01",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Keliru, alasannya keraguan atas kelangsungan usaha.",
+            "b": "Betul, alasannya cooling down untuk melindungi investor.",
+            "c": "Keliru, alasannya keputusan rapat umum pemegang saham.",
+            "d": "Betul, alasannya volume transaksi yang tiba-tiba melonjak."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Betul, hari ini tercatat 1.461.200 lembar berpindah tangan.",
+            "b": "Betul, hari ini tercatat 178.100 lembar berpindah tangan.",
+            "c": "Keliru, hari ini tercatat 0 lembar berpindah tangan.",
+            "d": "Keliru, hari ini lebih ramai dari kemarin, bukan sama."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, hari ini lebih ramai dari kemarin, bukan sama.",
+            "b": "Betul, hari ini tercatat 1.461.200 lembar berpindah tangan.",
+            "c": "Betul, hari ini tercatat 178.100 lembar berpindah tangan.",
+            "d": "Keliru, hari ini tercatat 0 lembar berpindah tangan."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Keliru, hari ini tercatat 0 lembar berpindah tangan.",
+            "b": "Keliru, hari ini lebih ramai dari kemarin, bukan sama.",
+            "c": "Betul, hari ini tercatat 1.461.200 lembar berpindah tangan.",
+            "d": "Betul, hari ini tercatat 178.100 lembar berpindah tangan."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b02--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b02",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Betul, hari ini tercatat 178.100 lembar berpindah tangan.",
+            "b": "Keliru, hari ini tercatat 0 lembar berpindah tangan.",
+            "c": "Keliru, hari ini lebih ramai dari kemarin, bukan sama.",
+            "d": "Betul, hari ini tercatat 1.461.200 lembar berpindah tangan."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r0",
+      "kondisi": "tanpa-kartu",
+      "r": 0,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "a",
+          "pilihan": {
+            "a": "Betul, tutupnya Rp57 lebih tinggi dari Rp52 sehari sebelumnya.",
+            "b": "Keliru, tutupnya Rp52 lebih rendah dari Rp57 sehari sebelumnya.",
+            "c": "Betul, tutupnya Rp62 lebih tinggi dari Rp57 sehari sebelumnya.",
+            "d": "Keliru, tutupnya Rp48 lebih rendah dari Rp52 sehari sebelumnya."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r1",
+      "kondisi": "tanpa-kartu",
+      "r": 1,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "b",
+          "pilihan": {
+            "a": "Keliru, tutupnya Rp48 lebih rendah dari Rp52 sehari sebelumnya.",
+            "b": "Betul, tutupnya Rp57 lebih tinggi dari Rp52 sehari sebelumnya.",
+            "c": "Keliru, tutupnya Rp52 lebih rendah dari Rp57 sehari sebelumnya.",
+            "d": "Betul, tutupnya Rp62 lebih tinggi dari Rp57 sehari sebelumnya."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r2",
+      "kondisi": "tanpa-kartu",
+      "r": 2,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "c",
+          "pilihan": {
+            "a": "Betul, tutupnya Rp62 lebih tinggi dari Rp57 sehari sebelumnya.",
+            "b": "Keliru, tutupnya Rp48 lebih rendah dari Rp52 sehari sebelumnya.",
+            "c": "Betul, tutupnya Rp57 lebih tinggi dari Rp52 sehari sebelumnya.",
+            "d": "Keliru, tutupnya Rp52 lebih rendah dari Rp57 sehari sebelumnya."
+          }
+        }
+      ]
+    },
+    {
+      "nama": "b03--r3",
+      "kondisi": "tanpa-kartu",
+      "r": 3,
+      "soal": [
+        {
+          "q": "Q1",
+          "id": "b03",
+          "kunci": "d",
+          "pilihan": {
+            "a": "Keliru, tutupnya Rp52 lebih rendah dari Rp57 sehari sebelumnya.",
+            "b": "Betul, tutupnya Rp62 lebih tinggi dari Rp57 sehari sebelumnya.",
+            "c": "Keliru, tutupnya Rp48 lebih rendah dari Rp52 sehari sebelumnya.",
+            "d": "Betul, tutupnya Rp57 lebih tinggi dari Rp52 sehari sebelumnya."
+          }
+        }
+      ]
+    }
+  ]
+}

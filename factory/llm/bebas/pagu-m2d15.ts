@@ -81,6 +81,6 @@ export function rencanaJalanT2(selesai: readonly JalanSelesai[], biayaMilestone:
   if (selesai.length >= MAKS_JALAN_M2D15_T2) return { berhenti: `sudah ${String(MAKS_JALAN_M2D15_T2)} jalan (2 pra-registrasi + 1 amandemen T2)` };
   if (selesai.some((j) => j.terbit)) return { berhenti: 'ada jalan yang sudah terbit; amandemen T2 tidak berlaku' };
   const pagu = bawah4(PAGU_MILESTONE_M2D15 - biayaMilestone);
-  if (pagu <= 0) return { berhenti: `pagu milestone habis: US${biayaMilestone.toFixed(4)} dari US${PAGU_MILESTONE_M2D15.toFixed(2)}` };
-  return { id: idJalanM2d15(MAKS_JALAN_M2D15_T2), pagu, alasan: `amandemen T2: pagu = US${PAGU_MILESTONE_M2D15.toFixed(2)} − biaya milestone US${biayaMilestone.toFixed(6)} = US${pagu.toFixed(4)}` };
+  if (pagu <= 0) return { berhenti: `pagu milestone habis: US$${biayaMilestone.toFixed(4)} dari US$${PAGU_MILESTONE_M2D15.toFixed(2)}` };
+  return { id: idJalanM2d15(MAKS_JALAN_M2D15_T2), pagu, alasan: `amandemen T2: pagu = US$${PAGU_MILESTONE_M2D15.toFixed(2)} − biaya milestone US$${biayaMilestone.toFixed(6)} = US$${pagu.toFixed(4)}` };
 }

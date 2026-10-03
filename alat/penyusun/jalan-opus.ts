@@ -56,7 +56,7 @@ async function utama(): Promise<number> {
   }
   const biayaD4 = selesai.reduce((a, j) => a + j.biaya_usd, 0);
   const batas = t2 ? PAGU_MILESTONE_M2D15 : PAGU_D4_M2D15;
-  if (biayaD4 + r.pagu > batas + 1e-9 || biayaM + r.pagu > batas + 1e-9) throw new Error(`pagu jalan US${r.pagu.toFixed(4)} + biaya US${biayaM.toFixed(4)} > US${batas.toFixed(2)}`);
+  if (biayaD4 + r.pagu > batas + 1e-9 || biayaM + r.pagu > batas + 1e-9) throw new Error(`pagu jalan US$${r.pagu.toFixed(4)} + biaya US$${biayaM.toFixed(4)} > US$${batas.toFixed(2)}`);
   const folder = join(AKAR, 'eval', 'penyusun');
   const terpakai = ringkasBiaya(AKAR, 0).terpakai_penyusun_usd;
   const paguPenyusun = Math.round((terpakai + r.pagu + 0.01) * 10_000) / 10_000;
