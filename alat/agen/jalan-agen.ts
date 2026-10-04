@@ -43,11 +43,11 @@ import { panggilV3 } from '../penyusun/pemanggil-v3.ts';
 
 const PAKET_BAWAAN = 'eval/penyusun/m2d17-uji-2/paket.json';
 /** Batas langkah SATU percakapan (satu omongan). */
-const LANGKAH_BAWAAN = 14;
+const LANGKAH_BAWAAN = 20;
 /** Pengajuan ditolak sebanyak ini: percakapan ditutup, mulai percakapan baru. */
-const MAKS_DITOLAK_PER_PERCAKAPAN = 2;
+const MAKS_DITOLAK_PER_PERCAKAPAN = 5;
 /** Percakapan paling banyak per percobaan. */
-const MAKS_PERCAKAPAN = 6;
+const MAKS_PERCAKAPAN = 4;
 /** Simpanan prompt 5 menit (bawaan): jeda antar panggilan terukur < 200 detik; TTL 1 jam bertarif tulis 2× dan memboroskan ±US$0,16 di M2d-19. */
 const SIMPAN_PROMPT = { type: 'ephemeral' } as const;
 /** Cadangan pagu kumulatif sebelum tiap panggilan model agen (USD). */
@@ -211,17 +211,17 @@ const fetchBerpenjaga: typeof fetch = async (masukan, init) => {
 };
 
 const openrouter = createOpenRouter({ apiKey: konfig.apiKey, baseURL: konfig.baseUrl, fetch: fetchBerpenjaga });
-const skemaOmongan = z.object({ omongan: z.record(z.string(), z.unknown()).describe('Satu objek omongan, bentuknya sama dengan contoh di petunjuk.') });
+const skemaDraf = z.object({ draf: z.array(z.record(z.string(), z.unknown())).min(1).max(3).describe('Satu sampai tiga objek omongan, bentuknya sama dengan contoh di petunjuk.') });
 
 const agen = new ToolLoopAgent({
   model: openrouter(MODEL_PENULIS, { usage: { include: true }, provider: pagarPeranV2('penulis') as never, extraBody: { cache_control: SIMPAN_PROMPT } }),
   tools: {
     lihat_fakta: tool({ description: 'Semua kartu fakta hari simulasi. Gratis.', inputSchema: z.object({}), execute: () => alat.lihatFakta() }),
     lihat_bank: tool({ description: 'Omongan yang sudah lolos, kartu penentu yang sudah terpakai, dan sisa anggaran. Gratis.', inputSchema: z.object({}), execute: () => alat.lihatBank() }),
-    periksa_kode: tool({ description: 'Periksa bentuk SATU draf omongan. Gratis. Mengembalikan penolakan apa adanya; kosong berarti lolos.', inputSchema: skemaOmongan, execute: ({ omongan }) => alat.periksaKode(omongan) }),
-    ajukan: tool({ description: `Ajukan SATU draf ke gerbang berbayar (pembaca kartu, penebak tanpa kartu, kritikus). Yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)}.`, inputSchema: z.object({ id_draf: z.string().describe('id_draf dari periksa_kode yang lolos.') }), execute: ({ id_draf }) => alat.ajukan({ id_draf }) }),
+    periksa_kode: tool({ description: 'Periksa bentuk satu sampai tiga draf omongan. Gratis. Untuk tiap draf: penolakan apa adanya, atau id_draf bila lolos.', inputSchema: skemaDraf, execute: ({ draf }) => ({ hasil: alat.periksaKodeBanyak(draf) }) }),
+    ajukan: tool({ description: `Ajukan satu sampai tiga draf (id_draf dari periksa_kode) ke gerbang berbayar. Tiap draf dinilai sendiri; yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)} per draf.`, inputSchema: z.object({ id_draf: z.array(z.string()).min(1).max(3) }), execute: ({ id_draf }) => alat.ajukanBanyak(id_draf) }),
   },
-  stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.rusak() !== null || alat.keadaan().jumlah_omongan > sudutAwal || alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
+  stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.rusak() !== null ||  alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
   maxOutputTokens: 128_000,
   maxRetries: 2,
   providerOptions: { openrouter: { reasoning: { effort: 'medium', exclude: false } } },
@@ -240,7 +240,7 @@ try {
     ditolakAwal = alat.keadaan().ditolak;
     console.log(`- percakapan ${String(percakapan)} (bank ${String(sudutAwal)}/${String(target)}, sisa US$${String(alat.keadaan().sisa_anggaran_usd)})`);
     jejak({ jenis: 'percakapan', ke: percakapan, bank: sudutAwal });
-    const hasil = await agen.generate({ prompt: instruksiAgen(target) });
+    const hasil = await agen.generate({ prompt: instruksiAgen(target, MAKS_DITOLAK_PER_PERCAKAPAN) });
     teksAkhir = hasil.text;
     langkah += hasil.steps.length;
     ringkasPercakapan.push({ ke: percakapan, langkah: hasil.steps.length, sudut_sebelum: sudutAwal, sudut_sesudah: alat.keadaan().jumlah_omongan, ditolak: alat.keadaan().ditolak - ditolakAwal, teks_akhir: hasil.text });

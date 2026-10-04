@@ -2,7 +2,7 @@
   "paket_sha": "f7cabc6b2c9abca5ceb36d127b279438c9c3586e3c727de76da3a412fb85a45a",
   "dipilih": [
     "1a5abd0216e457e5",
-    "adf573a6e895ac7a",
+    "4615245eb6fd12e7",
     "4f21811124c42b24"
   ],
   "draf": {
@@ -30,27 +30,27 @@
         "penjelasan": "Kedua penghentian memang keputusan bursa, tetapi alasannya berbeda. Yang hari ini, [[susp-2025-12-10|10 Desember 2025]], beralasan [[susp-2025-12-10|peningkatan harga kumulatif]] dalam rangka cooling down, sesudah harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Yang pertama, [[susp-2025-01-21|21 Januari 2025]], beralasan [[susp-2025-01-21|keraguan atas kelangsungan usaha]] — itu soal kesehatan usahanya, bukan soal harga naik. Salah-kaprah yang umum: menganggap semua penghentian perdagangan punya sebab yang sama, padahal tiap pengumuman bursa mencantumkan alasannya sendiri."
       },
       {
-        "nama": "Rara",
-        "jam": "22.05",
-        "pesan": "Kemarin transaksinya cuma ratusan ribu lembar katanya, sepi banget. Aku sih nunggu rame dulu baru mau masuk.",
+        "nama": "Bayu",
+        "jam": "20.15",
+        "pesan": "Hari ini saham T katanya rame banget, transaksinya tembus jutaan lembar. Ada yang udah lihat datanya?",
         "angka_pesan": [],
         "kartu": [
-          "volume-2025-11-25",
-          "volume-2025-11-26",
+          "volume-2025-12-10",
           "volume-2025-12-09",
-          "volume-2025-12-10"
+          "volume-2025-11-26",
+          "susp-2025-12-10"
         ],
         "kartu_penentu": [
-          "volume-2025-12-09"
+          "volume-2025-12-10"
         ],
         "pilihan": {
-          "a": "Betul, transaksi kemarin di kisaran ratusan ribu lembar.",
-          "b": "Keliru, transaksi kemarin lebih dari satu juta lembar.",
-          "c": "Betul, transaksi hari ini bahkan kosong sama sekali.",
-          "d": "Keliru, transaksi kemarin kosong sama sekali."
+          "a": "Keliru, volume hari ini tercatat [[volume-2025-12-10|0 lembar]].",
+          "b": "Keliru, volume hari ini hanya [[volume-2025-11-26|178.100 lembar]].",
+          "c": "Betul, volume hari ini tercatat [[volume-2025-12-09|1.461.200 lembar]].",
+          "d": "Betul, volume hari ini ramai sebelum disetop."
         },
-        "kunci": "b",
-        "penjelasan": "Volume kemarin, [[volume-2025-12-09|9 Desember]], adalah [[volume-2025-12-09|1.461.200 lembar]], jadi lebih dari sejuta, bukan ratusan ribu. Angka ratusan ribu itu milik [[volume-2025-11-26|26 November]], yaitu [[volume-2025-11-26|178.100 lembar]]. Volume kosong tercatat pada [[volume-2025-11-25|25 November]] dan hari ini, [[volume-2025-12-10|10 Desember]], saat perdagangan dihentikan. Salah-kaprah yang umum: mengingat angka dari hari lain lalu menempelkannya ke hari yang sedang dibicarakan."
+        "kunci": "a",
+        "penjelasan": "Data harian bursa mencatat volume hari ini [[volume-2025-12-10|0 lembar]]: tidak ada satu lembar pun yang berpindah tangan. Sebabnya ada di pengumuman bursa: perdagangan dihentikan sementara pada [[susp-2025-12-10|10 Desember 2025]] karena kenaikan harga kumulatif yang signifikan (cooling down). Angka jutaan lembar yang beredar itu milik hari sebelumnya, [[volume-2025-12-09|9 Desember: 1.461.200 lembar]]. Salah-kaprah yang umum: membaca data kemarin sebagai data hari ini."
       },
       {
         "nama": "Nadia",

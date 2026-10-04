@@ -199,8 +199,16 @@ export const SETELAN_PENULIS_OPUS_V3: SetelanPanggil = { suhu: 1, tanpaSuhu: tru
 export const BIAYA_WAJAR_OPUS_USD = 0.37864;
 
 /** `OpsiPencatat.perkiraanWajar` untuk mesin v3: Opus → wajar; model lain → maksimum teoretis (kecil). */
-export function perkiraanWajarV2(model: string): number | null {
-  return model === MODEL_OR_OPUS ? BIAYA_WAJAR_OPUS_USD : null;
+/**
+ * Perkiraan wajar satu panggilan PENGUJI Opus (penebak kuat): 2 × panggilan termahal yang terukur (US$0,0058;
+ * 32 panggilan M2d-18/19, rata-rata US$0,0059). Sebelum M2d-23 ia memakai angka penulis (US$0,38), sehingga
+ * tertolak pagu saat sisa saldo tipis walau biaya nyatanya ±US$0,02 per omongan.
+ */
+export const BIAYA_WAJAR_PENEBAK_KUAT_USD = 0.012;
+
+export function perkiraanWajarV2(model: string, tag?: string): number | null {
+  if (model !== MODEL_OR_OPUS) return null;
+  return tag !== undefined && tag.includes('/gerbang-tebak-kuat/') ? BIAYA_WAJAR_PENEBAK_KUAT_USD : BIAYA_WAJAR_OPUS_USD;
 }
 
 /** Biaya nyata tiap panggilan penulis Opus tersimpan (`jejak-agen.json` jalan `m2d1[35]-opus-*`). */

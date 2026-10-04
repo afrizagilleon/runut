@@ -7,8 +7,8 @@ import { kontrakBentuk } from './bentuk.ts';
 
 const JALUR = fileURLToPath(new URL('./prompt-agen.md', import.meta.url));
 
-export function instruksiAgen(target: number = UKURAN_SIMULASI): string {
-  const isi: Record<string, string> = { TARGET: String(target), TELADAN: teksTeladanV3(), BENTUK: kontrakBentuk() };
+export function instruksiAgen(target: number = UKURAN_SIMULASI, maksDitolak: number = 5): string {
+  const isi: Record<string, string> = { TARGET: String(target), TELADAN: teksTeladanV3(), BENTUK: kontrakBentuk(), MAKS_DITOLAK: String(maksDitolak) };
   return readFileSync(JALUR, 'utf8')
     .replace(/\r\n/g, '\n')
     .replace(/\{([A-Z_]+)\}/g, (utuh, nama: string) => {

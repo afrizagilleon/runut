@@ -34,6 +34,7 @@ import { SETELAN_PENULIS_OPUS_V3 } from '../pemanggil-v2.ts';
 import { kartuRotasi, type KartuRotasi } from '../rotasi/jalan.ts';
 import { tebakRotasiV2, type HasilTebakRotasiV2 } from '../rotasi/jalan-v2.ts';
 import { tebakKuat, type HasilTebakKuat } from '../rotasi/penebak-kuat.ts';
+import { tebakPasangan, type HasilTebakPasangan } from '../rotasi/pasangan.ts';
 import { agregasiSelabel, type PutusanSelabel } from '../rotasi/selabel.ts';
 import type { SetelanPanggil } from '../susun.ts';
 import { kritikusMakna, kritikusMenolakTemplat } from '../templat/gerbang.ts';
@@ -79,6 +80,8 @@ export interface NilaiOmonganV3 {
   saringan: HasilTebakRotasiV2 | null;
   /** M2d-21: putusan selabel (kunci lawan kembaran selabelnya), bila dipakai. */
   selabel?: PutusanSelabel | null;
+  /** M2d-23: hasil penebak berpasangan (kunci lawan kembaran selabelnya), bila dipakai. */
+  pasangan?: HasilTebakPasangan | null;
   kartu_rotasi: { per_rotasi: Array<Omit<KartuRotasi, 'putusan'>>; lulus: boolean } | null;
   penebak_kuat: HasilTebakKuat | null;
   kritik: (Pick<PutusanKritik, 'menjawab' | 'tanpa_keberatan' | 'keberatan' | 'arahan'> & { token_penalaran: Array<number | null> }) | null;
@@ -139,6 +142,8 @@ const teksGalat = (g: unknown): string => (g instanceof Error ? `${g.name}: ${g.
  *   adalah pengetahuan pasar).
  */
 export interface OpsiGerbangV3 {
+  /** M2d-23: saringan tebak = penebak BERPASANGAN (`pasangan.ts`); tebak rotasi v2 tidak dijalankan. */
+  pasangan?: boolean;
   selabel?: boolean;
   penebakKuatDicatat?: boolean;
 }
@@ -155,8 +160,23 @@ export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil
     return n;
   }
   const d = drafDari(o);
-  // 2. saringan murah v2
+  // 2. saringan tebak
   n.berhenti = 'saringan';
+  if (opsi.pasangan === true) {
+    const t = await tebakPasangan(d, { panggil, putaran, omongan: urut });
+    n.pasangan = t;
+    n.biaya_gerbang_usd += t.biaya_usd;
+    if (t.putusan.putusan === 'tak-terukur') {
+      n.berhenti = 'tak-terukur';
+      n.alasan = [`saringan tebak: ${t.putusan.alasan.join('; ')}`];
+      return n;
+    }
+    if (t.putusan.putusan === 'tolak') {
+      n.alasan = [`saringan tebak: ${t.putusan.alasan.join('; ')}`];
+      return n;
+    }
+    n.dicatat.push(`saringan berpasangan: ${t.putusan.alasan.join('; ')}`);
+  } else {
   const s = await tebakRotasiV2(d, { panggil, putaran, omongan: urut });
   n.saringan = s;
   n.biaya_gerbang_usd += s.biaya_usd;
@@ -184,6 +204,7 @@ export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil
     n.alasan = [`saringan tebak: ${s.putusan.alasan.join('; ')} — jawabannya bisa ditebak tanpa membaca kartu`];
     return n;
   }
+  }
   // 3. pembaca kartu r0 + r2
   n.berhenti = 'kartu';
   const k = await kartuRotasi(d, paket, { panggil, putaran, omongan: urut });
@@ -202,7 +223,7 @@ export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil
       const q = await tebakKuat(d, { panggil, putaran, omongan: urut });
       n.penebak_kuat = q;
       n.biaya_gerbang_usd += q.biaya_usd;
-      n.dicatat.push(`penebak kuat (dicatat, tidak menolak): ${q.putusan.alasan}`);
+      n.dicatat.push(`penguji Opus (tidak menolak): ${q.putusan.alasan}`);
     } catch (galat) {
       if (!(galat instanceof PaguTercapai)) throw galat;
       n.dicatat.push('penebak kuat (catatan) tidak dijalankan: perkiraan pra-kirimnya melebihi sisa pagu');

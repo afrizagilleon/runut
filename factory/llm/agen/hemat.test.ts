@@ -54,7 +54,8 @@ describe('riwayat sudut ditolak', () => {
     await alat.ajukan(mentah);
     const d = alat.lihatBank().pernah_ditolak;
     expect(d).toHaveLength(2);
-    expect(d[1]).toMatchObject({ kartu_penentu: ['susp-2025-12-10'], berhenti: 'penebak-kuat', alasan: ['penebak memilih kunci 4 dari 4'] });
+    // M2d-23: ringkasan per pola (kartu penentu × gerbang), bukan butir demi butir.
+    expect(d.find((x) => x.kartu_penentu[0] === 'susp-2025-12-10')).toMatchObject({ gerbang: 'penebak-kuat', berapa_kali: 1, alasan: ['penebak memilih kunci 4 dari 4'] });
     expect(alat.keadaan().ditolak).toBe(1);
   });
   it('yang lolos atau tak-terukur tidak dicatat sebagai ditolak; daftar dibatasi', async () => {

@@ -62,8 +62,11 @@ describe('kontrak bentuk: semua aturan penolak terlihat agen', () => {
     expect(p).not.toMatch(/kartu penentu yang belum terpakai/);
     expect(p).not.toMatch(/jangan mengulang sudut/i);
     expect(p).not.toMatch(/keluarga lain/);
-    expect(p).toMatch(/Sesudah dua pengajuan ditolak, percakapan ini ditutup/);
-    expect(p).toMatch(/kartu yang sama boleh dipakai lagi/);
+    expect(p).toMatch(/Sesudah 5 draf ditolak, percakapan ini ditutup/);
+    expect(p).toMatch(/Penolakan penebak berlaku untuk kalimatnya, bukan untuk kartunya/);
+    // M2d-23: tiga sekaligus, kembaran selabel dijelaskan.
+    expect(p).toMatch(/rencanakan omongan yang masih kurang sebagai satu set/);
+    expect(p).toMatch(/kembaran itu harus sama masuk akalnya dengan kunci/);
   });
 });
 

@@ -7,21 +7,30 @@ Soal yang bagus:
 - Tiap pilihan salah adalah satu salah-baca yang wajar dilakukan pemula: salah periode (`salah-periode`), salah entitas (`salah-entitas`), angka nyaris benar (`nyaris-benar-angka`), menjawab pertanyaan lain (`pertanyaan-lain`), sebagian benar (`sebagian-benar`), atau percaya omongan tanpa cek (`percaya-otoritas`).
 - Pesan teman terdengar seperti obrolan sungguhan. Pilihannya pendek dan sejajar. Penjelasannya menunjuk kartu dan menerangkan kenapa pilihan yang menggoda itu salah.
 
-Bank butuh {TARGET} omongan untuk satu hari simulasi, masing-masing dengan kartu penentu yang berbeda. Tugasmu sekarang: menambah SATU omongan baru ke bank. Omongan teman boleh ternyata betul atau keliru; simulasi butuh keduanya. Bila omongannya betul, seluruh isi pesan teman harus bisa dicek di kartu. Kamu yang mengatur langkahmu sendiri dengan alat berikut.
+Tugasmu: menyusun satu simulasi untuk satu hari, berisi {TARGET} omongan. Kamu yang mengatur langkahmu sendiri dengan alat berikut.
 
 - `lihat_fakta`: semua kartu fakta hari itu. Bahanmu hanya kartu-kartu itu; jangan menambah fakta, angka, atau tanggal yang tidak ada di kartu.
-- `lihat_bank`: omongan yang sudah lolos, kartu penentu yang sudah terpakai, apa yang masih dibutuhkan simulasi, omongan yang pernah ditolak beserta alasannya, dan sisa anggaran. Penuhi kebutuhan simulasi itu. Penolakan penebak berlaku untuk kalimatnya, bukan untuk kartunya: kartu yang sama boleh dipakai lagi dengan omongan yang berbeda.
-- `periksa_kode`: gratis. Memeriksa bentuk satu draf dan mengembalikan penolakannya apa adanya. Bila lolos, ia memberi `id_draf`.
-- `ajukan`: berbayar. Draf diuji pembaca yang memegang kartu, penebak yang tidak memegang kartu, dan seorang kritikus. Yang lolos masuk bank. Panggil dengan `id_draf` dari `periksa_kode`; jangan mengirim ulang JSON-nya.
+- `lihat_bank`: omongan yang sudah lolos beserta pilihan dan kuncinya, apa yang masih dibutuhkan simulasi, pola penolakan yang pernah terjadi beserta alasannya, dan sisa anggaran.
+- `periksa_kode`: gratis. Memeriksa bentuk satu sampai tiga draf sekaligus dan mengembalikan penolakannya apa adanya. Draf yang lolos mendapat `id_draf`.
+- `ajukan`: berbayar. Menerima satu sampai tiga `id_draf`. Tiap draf diuji sendiri oleh penebak yang tidak memegang kartu, pembaca yang memegang kartu, penguji yang lebih kuat, dan seorang kritikus. Yang lolos masuk bank.
 
-Kalau `ajukan` menolak, baca alasannya. Perbaiki drafnya bila masalahnya di kata-kata. Tinggalkan sudut itu dan pilih kartu penentu lain bila jawabannya memang bisa ditebak tanpa kartu. Tiap `ajukan` mengurangi anggaran, dan hasilnya memberi tahu sisanya. Sesudah dua pengajuan ditolak, percakapan ini ditutup dan dimulai lagi dari awal.
+Mulailah dengan `lihat_fakta` dan `lihat_bank`. Lalu rencanakan omongan yang masih kurang sebagai satu set sebelum menulis:
+- kartu penentu yang berbeda untuk tiap omongan, dari jenis dokumen yang berbeda bila kartunya memungkinkan;
+- minimal satu omongan yang ternyata betul;
+- huruf kunci tidak sama semua.
+
+Tulis semua draf yang masih kurang, periksa dengan `periksa_kode`, lalu ajukan bersama-sama. Hasil `ajukan` memuat putusan tiap draf. Yang lolos sudah masuk bank; jangan diubah lagi. Untuk yang ditolak, baca alasannya: perbaiki kalimatnya bila masalahnya di kata-kata, atau ganti sudutnya bila jawabannya memang bisa ditebak tanpa kartu. Penolakan penebak berlaku untuk kalimatnya, bukan untuk kartunya. Peringatan penguji tidak menolak, tetapi pakailah untuk draf berikutnya.
+
+Penebak hanya diberi pilihan kunci dan kembarannya (pilihan lain yang berlabel sama, "Betul" atau "Keliru"). Jadi kembaran itu harus sama masuk akalnya dengan kunci bagi orang yang belum membaca kartu, dan tidak boleh dibantah oleh pesan teman sendiri. Pada omongan yang betul, seluruh isi pesan teman harus bisa dicek di kartu.
+
+Tiap `ajukan` mengurangi anggaran, dan hasilnya memberi tahu sisanya. Sesudah {MAKS_DITOLAK} draf ditolak, percakapan ini ditutup dan dimulai lagi dari awal; pelajarannya tetap terlihat di `lihat_bank`.
 
 Nama teman dipasang sistem dari daftar tetap; isi `nama` dengan nama apa saja.
 
 Bentuk yang diperiksa `periksa_kode` (tulis langsung benar):
 {BENTUK}
 
-Berhenti ketika omonganmu masuk bank, atau ketika sisa anggaran tidak cukup untuk satu `ajukan` lagi. Jawaban akhirmu cukup dua atau tiga kalimat: apa yang masuk bank dan apa yang kamu tinggalkan. Jangan menulis ulang JSON di jawaban akhir.
+Berhenti ketika hasil `ajukan` atau `lihat_bank` menyatakan simulasi bisa dirakit, atau ketika sisa anggaran tidak cukup untuk satu `ajukan` lagi. Jawaban akhirmu cukup dua atau tiga kalimat: apa yang masuk bank dan apa yang kamu tinggalkan. Jangan menulis ulang JSON di jawaban akhir.
 
 Contoh satu omongan yang sudah jadi, dari perusahaan lain. Tiru bentuk dan gayanya, jangan kalimatnya:
 

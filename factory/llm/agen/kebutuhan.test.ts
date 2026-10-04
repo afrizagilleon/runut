@@ -1,5 +1,5 @@
 /** M2d-19: kebutuhan tingkat simulasi terlihat oleh agen; draf "Keliru" tidak dibayar bila yang kurang hanya "Betul". */
-import { cpSync, mkdtempSync, readFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -18,7 +18,11 @@ const ID_TIGA_KELIRU = ['1a5abd0216e457e5', 'adf573a6e895ac7a', '4615245eb6fd12e
 /** Salinan tiga omongan bank sungguhan (4 Okt: ketiganya berjawaban "Keliru") ke folder sementara. */
 function bankTigaKeliru(): string {
   const f = mkdtempSync(join(tmpdir(), 'bank-butuh-'));
-  for (const id of ID_TIGA_KELIRU) cpSync(`${AKAR}eval/bank-omongan/${sha}/${id}.json`, `${f}/${sha}/${id}.json`, { recursive: true });
+  // Rara (adf573…) diarsipkan 4 Okt (M2d-23: bocor menurut penebak berpasangan); berkasnya tetap dipakai sebagai fixture.
+  for (const id of ID_TIGA_KELIRU) {
+    const hidup = `${AKAR}eval/bank-omongan/${sha}/${id}.json`;
+    cpSync(existsSync(hidup) ? hidup : `${AKAR}eval/bank-omongan/arsip/${sha}/${id}.json`, `${f}/${sha}/${id}.json`, { recursive: true });
+  }
   return f;
 }
 

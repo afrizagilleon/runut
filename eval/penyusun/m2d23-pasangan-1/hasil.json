@@ -1,0 +1,2063 @@
+{
+  "id": "m2d23-pasangan-1",
+  "ambang_p": 0.02,
+  "biaya_usd": 0.502254,
+  "galat": null,
+  "butir": [
+    {
+      "id": "tayang-dada-s1-kata-bursa",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 0,
+        "p": 1,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 0 dari 12 (peluang kebetulan 1,0000; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": true,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 0,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [],
+      "penguji_opus": {
+        "kunci": 0,
+        "n": 4,
+        "putusan": "lulus",
+        "alasan": [
+          "Tanpa dokumen; bursa biasanya umumkan UMA saat harga melonjak.",
+          "Tanpa dokumen; pengumuman bursa biasanya peringatan kenaikan harga tidak wajar.",
+          "Tanpa dokumen; kenaikan ekstrem biasanya memicu pengumuman aktivitas pasar tak wajar.",
+          "Tanpa dokumen; bursa biasanya umumkan kenaikan harga tak wajar."
+        ]
+      }
+    },
+    {
+      "id": "tayang-dada-s2-dividen-pemilik-kecil",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 9,
+        "p": 0.072998046875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 9 dari 12 (peluang kebetulan 0,0730; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Dimas menyatakan sudah menerima dividen (receh), bukan tidak kebagian.",
+        "10 lot dividen receh, kemungkinan Rp140, bukan soal ex-date",
+        "Ia pegang 10 lot sejak Juli, jadi kebagian dividen kecil Rp140.",
+        "10 lot dividen receh, Rp140 masuk akal"
+      ],
+      "penguji_opus": {
+        "kunci": 0,
+        "n": 4,
+        "putusan": "lulus",
+        "alasan": [
+          "Tebakan tanpa dokumen: Rp14.000 cukup untuk bayar parkir.",
+          "Tebakan tanpa dokumen: Rp14.000 cukup untuk parkir motor.",
+          "Tebakan tanpa dokumen: 10 lot = 1.000 lembar, dividen jadi Rp14.000.",
+          "Tebakan: 10 lot = 1.000 saham, cukup untuk parkir."
+        ]
+      }
+    },
+    {
+      "id": "tayang-dada-s3-siapa-yang-menjual",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 3,
+        "p": 0.980712890625,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (peluang kebetulan 0,9807; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 0,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Jika harga sekarang Rp178, pemilik besar menjual di harga belasan rupiah jauh lebih logis sebagai alasan keliru.",
+        "Harga belasan rupiah lebih masuk akal untuk penjualan besar.",
+        "Harga belasan rupiah lebih masuk akal untuk jual besar"
+      ],
+      "penguji_opus": {
+        "kunci": 0,
+        "n": 4,
+        "putusan": "lulus",
+        "alasan": [
+          "Tanpa dokumen, tebakan: \"tidak terdengar jual\" bukan bukti tidak menjual.",
+          "Tebakan tanpa dokumen; harga Rp178 termasuk ratusan rupiah.",
+          "Tebakan tanpa dokumen; harga ratusan cocok dengan Rp178 sekarang.",
+          "Tanpa dokumen; tak terdengar menjual bukan berarti tidak menjual."
+        ]
+      }
+    },
+    {
+      "id": "tayang-ultj-turun-di-tanggal-ex",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 5,
+        "p": 0.80615234375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (peluang kebetulan 0,8062; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 1,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Penurunan Rp145 lebih konsisten dengan dividen Rp130 daripada Rp160.",
+        "Dividend Rp130 lebih masuk akal daripada Rp160 untuk saham anjlok Rp145",
+        "Harga anjlok 145, dividen 130 lebih dekat selisih wajar",
+        "Dividen Rp130 lebih dekat ke Rp45 daripada Rp160."
+      ],
+      "penguji_opus": {
+        "kunci": 3,
+        "n": 4,
+        "putusan": "tolak",
+        "alasan": [
+          "Tebakan: penurunan ex-dividen biasanya mendekati besar dividen.",
+          "Tebakan tanpa dokumen: harga ex-dividen biasanya turun sebesar dividen.",
+          "Tebakan tanpa dokumen: turun Rp145 cocok dengan dividen sekitar Rp130.",
+          "Tebakan tanpa dokumen: penurunan ex-dividen biasanya mendekati besar dividen."
+        ]
+      }
+    },
+    {
+      "id": "tayang-ultj-riwayat-dividen",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 8,
+        "p": 0.19384765625,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 12 (peluang kebetulan 0,1938; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 3,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Dividen turun lebih realistis daripada tahun tanpa dividen sama sekali.",
+        "Klaim 'naik terus' lebih mungkin salah karena dividen pernah turun.",
+        "Naik terus tiap tahun lebih mudah salah karena dividen bisa turun.",
+        "Klaim 'naik terus' lebih mungkin salah karena dividen turun, bukan absen."
+      ],
+      "penguji_opus": {
+        "kunci": 1,
+        "n": 4,
+        "putusan": "lulus",
+        "alasan": [
+          "Tanpa dokumen; tebakan, klaim \"naik terus\" paling rawan keliru.",
+          "Tanpa dokumen; tebakan, paling sesuai klaim Fajar.",
+          "Tanpa dokumen; hanya pilihan ini konsisten dengan klaim Fajar.",
+          "Tanpa dokumen, hanya menebak sesuai klaim Fajar."
+        ]
+      }
+    },
+    {
+      "id": "tayang-ultj-siapa-yang-membeli",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 5,
+        "p": 0.80615234375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (peluang kebetulan 0,8062; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 3,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Rio sebut laporan Januari, jadi pembelian muncul di dua laporan",
+        "Dua laporan disebut, jadi pembelian tercatat di dua laporan",
+        "Laporan transaksi pemegang saham biasanya rinci per transaksi, bukan satu agregat.",
+        "Pembelian besar pemilik mayoritas biasanya tercatat terbagi di beberapa laporan bulanan."
+      ],
+      "penguji_opus": {
+        "kunci": 0,
+        "n": 4,
+        "putusan": "lulus",
+        "alasan": [
+          "Tanpa dokumen; tebakan paling masuk akal, bukan hasil pemeriksaan.",
+          "Tanpa dokumen; tebakan: biasanya hanya orang dalam kecil yang membeli.",
+          "Tanpa dokumen; tebakan, klaim Rio kemungkinan dibuat keliru.",
+          "Tebakan saja; dokumennya tidak ada, tak bisa diverifikasi."
+        ]
+      }
+    },
+    {
+      "id": "m2d3-tirt-o1",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Perbandingan harga saham standar menggunakan penutupan (closing price), bukan pembukaan.",
+        "Perbandingan penutupan ke penutupan lebih standar dan objektif dalam analisis saham.",
+        "Perbandingan harga saham standar menggunakan penutupan (closing price), bukan pembukaan.",
+        "Perbandingan penutupan-ke-penutupan lebih standar dan kredibel untuk analisis saham jangka panjang."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d3-dada-o1",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 8,
+        "p": 0.19384765625,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 12 (peluang kebetulan 0,1938; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 3,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 3,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Jika omongan keliru, laporan lolos pemeriksaan. Angka 299,5 juta mungkin dari 3 laporan berbeda.",
+        "Jika omongan keliru, laporan lolos pemeriksaan lebih kredibel dengan data lebih lengkap.",
+        "Laporan lolos pemeriksaan, biasanya ada beberapa laporan.",
+        "Jika keliru, laporan lolos; tiga laporan lebih mungkin dari satu."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d3-ultj-o3",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 2,
+        "p": 0.996826171875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 2 dari 12 (peluang kebetulan 0,9968; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": true,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Pada hari ex-dividen, harga sering turun lebih besar dari dividen karena faktor pasar dan pajak.",
+        "Penurunan hari ini melebihi dividen tunai yang dibagikan perusahaan."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d3-ultj-o2",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 10,
+        "p": 0.019287109375,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 12 (peluang kebetulan 0,0193; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Penyesuaian harga ex-dividend biasanya mendekati dividen, tapi faktor pasar menyebabkan penyimpangan.",
+        "Penyesuaian harga ex-dividend biasanya mendekati dividen, tapi jarang persis sama. Jatuh lebih dalam lebih realistis.",
+        "Penurunan harga saham saat ex-dividend biasanya lebih besar dari dividen karena faktor pasar lain.",
+        "Penurunan harga ex-dividend biasanya lebih besar dari dividen karena pajak dan faktor pasar lainnya."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d3-tirt-o3",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 10,
+        "p": 0.019287109375,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 12 (peluang kebetulan 0,0193; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 3,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 3,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Penghentian perdagangan biasanya terkait fundamental perusahaan, bukan volume transaksi.",
+        "Penghentian perdagangan biasanya terkait fundamental perusahaan, bukan harga saham semata.",
+        "Penghentian perdagangan biasanya terkait kelangsungan usaha, bukan volume transaksi.",
+        "Setop karena keraguan kelangsungan usaha, bukan kenaikan harga"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d5-tirt-o2",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 11,
+        "p": 0.003173828125,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 11 dari 12 (peluang kebetulan 0,0032; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 3,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Sari menyebut periode spesifik (26 Nov-9 Des), konsisten dengan pernyataan 1.",
+        "Sari spesifik menyebut tanggal 26 Nov-9 Des, konsisten dengan pernyataan 2.",
+        "Sari spesifik menyebut periode 26 Nov-9 Des, bukan sejak awal tahun.",
+        "Sari spesifik menyebut periode 26 Nov-9 Des, jadi pernyataan 2 lebih sesuai klaim."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d5-tirt-o3",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 4,
+        "p": 0.927001953125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (peluang kebetulan 0,9270; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 3,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 1,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Kesalahan lebih mungkin soal pencatatan hasil, bukan jadwal rapat.",
+        "Fokus pada catatan resmi, bukan jadwal rapat.",
+        "Koreksi lebih spesifik pada ketiadaan catatan resmi hasil putusan.",
+        "Pesan itu keliru karena hasil putusan rapat tidak tercatat di dokumen resmi."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d6-tirt-o1",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 9,
+        "p": 0.072998046875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 9 dari 12 (peluang kebetulan 0,0730; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 3,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Setop bursa biasanya karena keraguan usaha, bukan harga naik terus.",
+        "Setop awal tahun lebih konsisten dengan keraguan usaha fundamental.",
+        "Setop bursa biasanya karena masalah fundamental perusahaan, bukan harga naik. Awal tahun lebih konsisten dengan investigasi.",
+        "Setop awal tahun karena keraguan usaha, bukan kenaikan harga"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d8-tirt-o1",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 10,
+        "p": 0.019287109375,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 12 (peluang kebetulan 0,0193; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Penghentian saham biasanya terkait faktor teknis/harga daripada tanggal administratif.",
+        "Penghentian saham biasanya terkait pergerakan harga ekstrem, bukan keraguan usaha.",
+        "Penghentian sementara biasanya karena kenaikan harga kumulatif, bukan keraguan usaha.",
+        "Penghentian sementara biasanya karena kenaikan harga kumulatif, bukan keraguan usaha."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d10-tirt-v2",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Dua kali lipat berarti ~2x, bukan 3,51x yang jauh lebih besar.",
+        "Tio bilang 'lebih dari dua kali lipat', bukan 'tiga kali lipat'. 2,21x lebih sesuai.",
+        "Dua kali lipat berarti ~2x, bukan 3,51x yang jauh lebih besar.",
+        "Tio bilang 'lebih dari dua kali lipat', 2,21 kali lebih sesuai daripada 3,51 kali"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d10a1-tirt-o1",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 8,
+        "p": 0.19384765625,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 12 (peluang kebetulan 0,1938; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Kenaikan tajam lebih sering trigger halt daripada laporan terlambat.",
+        "Kenaikan harga tajam adalah alasan teknis bursa menghentikan perdagangan.",
+        "Penghentian sementara karena kenaikan harga tajam lebih umum.",
+        "Penghentian sementara biasanya karena kenaikan harga tajam, bukan keraguan usaha."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d10a2-tirt-o1",
+      "kelompok": "lama-tertebak-opus-luar",
+      "catatan": "penguji luar Opus menebak ≥ 2/3",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 10,
+        "tak_terbaca": 2,
+        "kunci": 8,
+        "p": 0.0546875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 10 (peluang kebetulan 0,0547; batas 0,02); 2 tak terbaca dibuang"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 2
+        }
+      ],
+      "alasan_kunci": [
+        "Rp106 lebih dekat ke Rp97, lebih masuk akal sebagai kesalahan ingatan.",
+        "Rp106 lebih dekat ke Rp97, lebih masuk akal sebagai kesalahan ingatan.",
+        "Rp106 lebih dekat ke Rp97 yang diingat Tio dibanding Rp115",
+        "Rp106 lebih dekat ke Rp97 yang diingat Tio daripada Rp115"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d3-dada-o3",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 0,
+        "p": 1,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 0 dari 12 (peluang kebetulan 1,0000; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": true,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 0,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d3-tirt-o2",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Kenaikan terus-menerus berarti harga penutupan setiap hari lebih tinggi dari hari sebelumnya.",
+        "Kenaikan harga saham berkelanjutan ditunjukkan closing price lebih tinggi setiap hari, bukan volume transaksi.",
+        "Kenaikan harga berkelanjutan ditentukan pergerakan harga harian, bukan volume transaksi.",
+        "Kenaikan harga saham berkelanjutan ditunjukkan closing price lebih tinggi setiap hari, bukan volume transaksi."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d3-ultj-o1",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 2,
+        "p": 0.996826171875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 2 dari 12 (peluang kebetulan 0,9968; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": true,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Pesan menyebut ada laporan jual; koreksinya semua laporan berisi penambahan saham.",
+        "Klaim 'ada yang jual' keliru karena semua laporan berisi penambahan kepemilikan."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d4-ultj-o1",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Riwayat dividen konsisten lebih mudah diverifikasi daripada pertumbuhan tanpa kecuali.",
+        "Konsistensi pembagian lebih mudah diverifikasi daripada pertumbuhan tanpa kecuali.",
+        "Riwayat dividen konsisten lebih mungkin daripada pertumbuhan tanpa kecuali.",
+        "Konsistensi pembayaran tidak menjamin peningkatan jumlah dividen setiap tahun."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d4-tirt-o3",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 11,
+        "p": 0.003173828125,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 11 dari 12 (peluang kebetulan 0,0032; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 3,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Sinta menyebut 'kelangsungan usaha' sebagai alasan penghentian, sesuai pernyataan 2.",
+        "Kelangsungan usaha adalah alasan lebih umum dan fundamental untuk penghentian operasi.",
+        "Sinta menyebut 'kelangsungan usaha' sebagai alasan penghentian, sesuai pernyataan 2.",
+        "Keraguan kelangsungan usaha umum jadi alasan penghentian saham"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d4-tirt-o1",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Pernyataan Tio menyebut 'naiknya udah kelewat batas', merujuk kenaikan harga kumulatif.",
+        "Kenaikan kelewat batas adalah mekanisme halt harga, bukan volume nol.",
+        "Penghentian perdagangan biasanya dipicu batas kenaikan harga, bukan volume nol.",
+        "Kenaikan harga kelewat batas adalah mekanisme penghentian perdagangan otomatis."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d4-ultj-o2",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Orang dalam bisa membeli saham berkali-kali dalam sebulan, tidak hanya 2 laporan.",
+        "Jumlah spesifik (16,07 juta lembar) lebih kredibel daripada vague '2 laporan'",
+        "Pembelian berkelanjutan sepanjang Januari lebih konsisten dengan pola transaksi reguler.",
+        "Pembelian berkelanjutan sepanjang Januari lebih konsisten dengan akumulasi volume besar daripada hanya 2 laporan."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d4-dada-o2",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Penjualan di 3 laporan berbeda lebih mungkin terjadi pada tanggal berbeda dalam Agustus.",
+        "Transaksi dalam satu bulan lebih mungkin tersebar beberapa hari daripada laporan terbit bersamaan.",
+        "Penjualan di 3 laporan berbeda lebih mungkin terjadi pada tanggal berbeda daripada laporan terbit bersamaan.",
+        "Transaksi dalam periode tertentu lebih spesifik daripada penerbitan laporan sama hari"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d4-dada-o1",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 11,
+        "tak_terbaca": 1,
+        "kunci": 5,
+        "p": 0.7255859375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 3
+        }
+      ],
+      "alasan_kunci": [
+        "Periode lebih panjang memungkinkan kenaikan ekstrem lebih terjadi.",
+        "Periode lebih panjang lebih mungkin mencapai kenaikan ekstrem 22x lipat",
+        "rentang lebih panjang, kenaikan 22 kali lebih mungkin",
+        "Pesan dikirim pukul 20.15 setelah penutupan pasar, jadi dokumen memuat penutupan terbaru 8 Oktober."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d4-ultj-o3",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 10,
+        "p": 0.019287109375,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 12 (peluang kebetulan 0,0193; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Pernyataan Fitri eksplisit: 'ga ada yang jual' berarti semua transaksi pembelian saja.",
+        "Jika orang dalam beli terus tanpa yang jual, berarti semua transaksi adalah pembelian.",
+        "Pernyataan asli menyebut pembelian tanpa penjualan, bukan pembeli orang dalam lain.",
+        "Pernyataan 2 lebih umum dan sesuai omongan Fitri"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d5-tirt-o1",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 3,
+        "p": 0.980712890625,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (peluang kebetulan 0,9807; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 1,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Keraguan kelangsungan usaha lebih fundamental, berbeda dari alasan teknis harga.",
+        "Keraguan kelangsungan usaha lebih mungkin sebab penghentian berbeda.",
+        "Penghentian Januari 2025 lazim karena keraguan kelangsungan usaha, berbeda dari kenaikan harga."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d6-tirt-o2",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 7,
+        "p": 0.38720703125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (peluang kebetulan 0,3872; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 1,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Selisih dua tanggal berbeda bulan lebih umum pola analisis saham.",
+        "Selisih 58 rupiah lebih konsisten dengan jarak waktu lebih panjang (26 Nov-9 Des) daripada jarak pendek (1-9 Des).",
+        "Selisih dua penutupan, bukan harga; tanggal 26 Nov dan 9 Des lebih masuk akal.",
+        "Selisih dua penutupan lebih mungkin dari rentang tanggal lebih lebar."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d10-pemanasan",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 7,
+        "p": 0.38720703125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (peluang kebetulan 0,3872; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Kenaikan harga tajam lebih umum trigger halt dagang dibanding laporan terlambat.",
+        "Penghentian sementara karena harga naik tajam lebih umum.",
+        "Penghentian sementara karena kenaikan harga tajam lebih umum.",
+        "Penghentian karena kenaikan harga tidak wajar (URA), bukan keraguan kelangsungan usaha."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d10-tirt-v1",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 7,
+        "p": 0.38720703125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (peluang kebetulan 0,3872; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Kenaikan tajam lebih sering trigger halt daripada laporan terlambat.",
+        "Kenaikan harga tajam memicu suspensi, bukan keraguan kelangsungan usaha.",
+        "Keraguan kelangsungan usaha bukan alasan khas penghentian sesaat.",
+        "Penghentian dagang biasanya karena kenaikan harga tajam, bukan keraguan usaha."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "m2d10a1-tirt-o2",
+      "kelompok": "lama-tak-tertebak",
+      "catatan": "penguji luar tidak menebak",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 10,
+        "tak_terbaca": 2,
+        "kunci": 8,
+        "p": 0.0546875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 10 (peluang kebetulan 0,0547; batas 0,02); 2 tak terbaca dibuang"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 2
+        }
+      ],
+      "alasan_kunci": [
+        "Rp106 lebih dekat ke Rp97, lebih masuk akal untuk kesalahan ingatan.",
+        "Rp106 lebih dekat ke Rp97, lebih masuk akal untuk kesalahan ingatan.",
+        "Rp106 lebih dekat Rp97, lebih masuk akal kesalahan ingatan.",
+        "Rp106 lebih dekat ke Rp97, lebih masuk akal untuk kesalahan ingatan."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "bank-Dimas",
+      "kelompok": "bank",
+      "catatan": "di bank (lolos semua gerbang saat masuk)",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 6,
+        "p": 0.61279296875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Januari lebih awal, lebih logis untuk keraguan kelangsungan usaha tahunan.",
+        "Penghentian Januari lebih mungkin terkait fundamental usaha daripada Desember.",
+        "Suspensi Januari karena keraguan usaha lebih umum daripada Desember.",
+        "Suspend Januari karena keraguan kelangsungan usaha, bukan kenaikan harga."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "bank-Rara",
+      "kelompok": "bank",
+      "catatan": "di bank (lolos semua gerbang saat masuk)",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Ratusan ribu lembar vs jutaan lembar lebih masuk akal daripada vs nol transaksi.",
+        "Ratusan ribu lembar masih aktivitas nyata. Lebih logis keliru ke arah lebih tinggi.",
+        "Volume transaksi lebih mungkin lebih tinggi daripada nol sama sekali.",
+        "Jika omongan 'ratusan ribu lembar' keliru, lebih logis volume aktual lebih tinggi daripada nol sama sekali."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "bank-Bayu",
+      "kelompok": "bank",
+      "catatan": "di bank (lolos semua gerbang saat masuk)",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 0,
+        "p": 1,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 0 dari 12 (peluang kebetulan 1,0000; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": true,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 0,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [],
+      "penguji_opus": null
+    },
+    {
+      "id": "bank-Nadia",
+      "kelompok": "bank",
+      "catatan": "di bank (lolos semua gerbang saat masuk)",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 5,
+        "p": 0.80615234375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (peluang kebetulan 0,8062; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 1,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "November 25 lebih umum sebagai hari kerja bursa dibanding 26.",
+        "Tanpa dokumen, tidak bisa memastikan tanggal pasti. Pilih 1 sebagai estimasi umum.",
+        "Tanggal spesifik lebih mungkin tercatat di dokumen resmi.",
+        "Nadia bilang akhir November, 25 lebih awal dari 26"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "18-agen-1-p2",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 6,
+        "p": 0.61279296875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 3,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Rara menyebut 'merah sehari' berarti turun, bukan datar.",
+        "Dokumen klaim naik beruntun tanpa jeda, bukan datar",
+        "Dokumen menyatakan naik beruntun tanpa jeda, membantah klaim merah.",
+        "Jika keliru, dokumen justru menyatakan naik tiap hari tanpa jeda"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "18-agen-1-p3",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak saringan",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Pernyataan 1 lebih jelas dan terukur dengan rasio spesifik 2,21x",
+        "Pernyataan 2 lebih akurat untuk 'lebih dari dua kali lipat' daripada pernyataan 1",
+        "Pernyataan 1 lebih logis: 2,21x adalah penggandaan lebih dari dua kali lipat. Pernyataan 2 tidak masuk akal matematis.",
+        "2,21 kali lebih akurat untuk 'lebih dari dua kali lipat' daripada selisih Rp58."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "18-uji-ajukan-1-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Keliru",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 10,
+        "p": 0.019287109375,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 12 (peluang kebetulan 0,0193; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Suspensi bursa biasanya karena volatilitas harga, bukan inaktivitas transaksi.",
+        "Suspensi biasanya terkait pergerakan harga ekstrem, bukan likuiditas nol.",
+        "Suspend berulang biasanya karena kenaikan harga kumulatif, bukan tanpa transaksi.",
+        "Suspen berulang biasanya karena kenaikan harga kumulatif signifikan."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "19-agen-2-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Nadia bilang 'harga terakhirnya' saat disetop, merujuk penutupan bursa terakhir sebelum dihentikan.",
+        "Penutupan 'hari bursa terakhirnya' lebih akurat daripada 'hari ini' karena bursa ditutup/disetop.",
+        "Nadia bilang 'harga terakhirnya' dan 'sebelum disetop', merujuk penutupan bursa terakhir secara historis, bukan hari ini.",
+        "Penutupan 'hari bursa terakhirnya' lebih presisi daripada 'hari ini' karena bursa punya jadwal tutup spesifik."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "19-agen-2-p2",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak saringan",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Nadia spesifik menyebut 'nggak sampai cepek per lembar' berarti kenaikan <Rp100.",
+        "Cepek = 500 rupiah. Kenaikan kurang dari 500 rupiah per lembar sesuai pernyataan Nadia.",
+        "Nadia spesifik sebut 'cepek per lembar' = kurang Rp100. Pernyataan 1 langsung cocok.",
+        "Nadia spesifik sebut 'nggak sampai cepek per lembar' = kurang 100 rupiah"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "19-agen-2-p3",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak kritikus",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 6,
+        "p": 0.61279296875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 1,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 3,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Tanggal 25 September 2025 lebih dekat dengan konteks 'kemarin' pada 20 Desember.",
+        "Nadia bilang hanya jadwal rapat yang tercatat, bukan isi keputusan.",
+        "Nadia bilang hanya jadwal rapat yang tercatat, bukan isi keputusan.",
+        "RUPS T kemarin, jadwal 25 September 2025 lebih konsisten dengan waktu pesan"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "19-agen-2-p4",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak kritikus",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 4,
+        "p": 0.927001953125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (peluang kebetulan 0,9270; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 0,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 2,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "RUPS T biasanya September, bukan November",
+        "Nadia sebut RUPS T kemarin, jadwal 25 September lebih dekat.",
+        "RUPS Telkom memang digelar 25 September 2025, jadi jadwal itu lebih mungkin tercatat.",
+        "Daftar aksi korporasi hanya mencatat jadwal RUPS 25 September 2025 tanpa keputusan."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "22-ajukan-opus-2-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 4,
+        "p": 0.927001953125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (peluang kebetulan 0,9270; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 0,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "November 25 lebih umum sebagai hari kerja bursa dibanding 26.",
+        "Tanpa dokumen, tidak bisa memastikan tanggal pasti. Pilih 1 sebagai estimasi umum.",
+        "Tanggal spesifik lebih mungkin tercatat di dokumen resmi.",
+        "Tidak ada dokumen, tidak bisa dipastikan."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "22-ajukan-opus-2b-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 4,
+        "p": 0.927001953125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (peluang kebetulan 0,9270; batas 0,02)"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 2,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 0,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "November 25 lebih umum sebagai hari kerja bursa dibanding 26.",
+        "Tanpa dokumen, tidak bisa memastikan tanggal pasti. Pilih 1 sebagai estimasi umum.",
+        "Tanggal spesifik lebih mungkin tercatat di dokumen resmi.",
+        "Nadia bilang akhir November, 25 lebih awal dari 26"
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "22-ajukan-sonnet-1-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak saringan",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Nadia eksplisit: kali ini beda alasan, bukan soal perusahaan tapi harga naik.",
+        "Nadia eksplisit: kali ini beda alasan, bukan soal perusahaan.",
+        "Nadia eksplisit menyebut alasan berbeda: harga naik, bukan masalah perusahaan.",
+        "Nadia eksplisit: alasan berbeda Januari, bukan soal perusahaan tapi harga naik."
+      ],
+      "penguji_opus": null
+    },
+    {
+      "id": "22-ajukan-sonnet-3-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak saringan",
+      "jawaban": "Betul",
+      "pasangan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 12,
+        "p": 0.000244140625,
+        "putusan": "tolak",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+        ]
+      },
+      "plasebo_tolak": false,
+      "per_model": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kunci": 4,
+          "n": 4
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kunci": 4,
+          "n": 4
+        }
+      ],
+      "alasan_kunci": [
+        "Nadia spesifik bilang 'akhir November', bukan 'awal November'.",
+        "Nadia spesifik bilang 'mulai akhir November', bukan awal November.",
+        "Nadia spesifik sebut 'akhir November', bukan awal November.",
+        "Nadia spesifik bilang 'mulai akhir November', bukan awal November"
+      ],
+      "penguji_opus": null
+    }
+  ]
+}
