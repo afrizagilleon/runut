@@ -9,7 +9,7 @@ import type { OmonganBebas } from '../bebas/skema.ts';
 import { AKAR } from '../env.ts';
 import type { PaketFakta } from '../paket.ts';
 import { SETELAN_PENEBAK_KUAT } from '../rotasi/penebak-kuat.ts';
-import { buatAlat, CADANGAN_AJUKAN_USD, kebutuhanSimulasi, kunciBetul, rakitSimulasi, SEMUA_BETUL, tingkatOmongan } from './alat.ts';
+import { buatAlat, CADANGAN_AJUKAN_USD, kebutuhanSimulasi, kunciBetul, rakitSimulasi, SEMUA_BETUL, tingkatEntri, tingkatOmongan } from './alat.ts';
 import { instruksiAgen } from './prompt.ts';
 
 const paket = JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d17-uji-2/paket.json`, 'utf8')) as PaketFakta;
@@ -18,13 +18,13 @@ type Catat = (n: NilaiOmonganV3) => void;
 const pas = (kunci: number, n: number) => ({ putusan: { kunci, n } }) as unknown as NilaiOmonganV3['pasangan'];
 const kuat = (kunci: number) => ({ putusan: { kunci, n: 4, putusan: kunci >= 3 ? 'tolak' : 'lulus', alasan: 'x' }, jawaban: [] }) as unknown as NilaiOmonganV3['penebak_kuat'];
 
-function alatDengan(o: { pagu?: number; tingkat?: 'biasa' | 'sulit'; opus?: number; jeda?: number }) {
+function alatDengan(o: { pagu?: number; tingkat?: 'biasa' | 'sulit'; opus?: number; jeda?: number; murah?: number }) {
   const urutan: string[] = [];
   const nilai = (async (om: OmonganBebas, _p: unknown, _c: unknown, putaran: number, urut: number, catat: Catat): Promise<NilaiOmonganV3> => {
     urutan.push(`mulai-${String(putaran)}`);
     await new Promise((r) => setTimeout(r, o.jeda ?? 20));
     urutan.push(`selesai-${String(putaran)}`);
-    const n = { putaran, urut, omongan: om, berhenti: 'lolos', alasan: [], dicatat: [], saringan: null, kartu_rotasi: null, pasangan: pas(5, 12), penebak_kuat: kuat(o.opus ?? 0), kritik: null, biaya_gerbang_usd: 0.05, id_bank: null } as NilaiOmonganV3;
+    const n = { putaran, urut, omongan: om, berhenti: 'lolos', alasan: [], dicatat: [], saringan: null, kartu_rotasi: null, pasangan: pas(o.murah ?? 5, 12), penebak_kuat: kuat(o.opus ?? 0), kritik: null, biaya_gerbang_usd: 0.05, id_bank: null } as NilaiOmonganV3;
     catat(n);
     return n;
   }) as never;
@@ -69,8 +69,23 @@ describe('tingkat', () => {
     expect(h.hasil[0]).toMatchObject({ lolos: false, berhenti: 'penebak-kuat' });
     expect(h.hasil[0]?.penolakan.join(' ')).toMatch(/mode sulit: penguji Opus tanpa kartu benar 1 dari 4; targetnya 0/);
     expect(bacaBank(gagal.folderBank, shaPaketBank(paket))).toHaveLength(0);
-    const lolos = alatDengan({ tingkat: 'sulit', opus: 0 });
+    const lolos = alatDengan({ tingkat: 'sulit', opus: 0, murah: 3 });
     expect((await lolos.alat.ajukanBanyak([tigaDraf(lolos.alat)[0] as string])).hasil[0]?.lolos).toBe(true);
+    expect(tingkatEntri(bacaBank(lolos.folderBank, shaPaketBank(paket))[0] as never)).toBe('sulit');
+  });
+  it('mode sulit: Opus 0 tetapi penebak murah 5 dari 12 → ditolak (firasat belum menyesatkan)', async () => {
+    const { alat, folderBank } = alatDengan({ tingkat: 'sulit', opus: 0, murah: 5 });
+    const h = await alat.ajukanBanyak([tigaDraf(alat)[0] as string]);
+    expect(h.hasil[0]).toMatchObject({ lolos: false, berhenti: 'saringan' });
+    expect(h.hasil[0]?.penolakan.join(' ')).toMatch(/mode sulit: tanpa kartu, penebak memilih kunci 5 dari 12; targetnya paling banyak 3 dari 12/);
+    expect(bacaBank(folderBank, shaPaketBank(paket))).toHaveLength(0);
+  });
+  it('mode sulit: bank yang dirakit hanya omongan berlabel sulit — simulasi biasa yang sudah terakit tidak dihitung selesai', () => {
+    const alii = JSON.parse(readFileSync(`${AKAR}eval/penyusun/paket-alii-2025-11-10/paket.json`, 'utf8')) as PaketFakta;
+    const buat = (tingkat: 'biasa' | 'sulit') => buatAlat({ paket: alii, folderBank: `${AKAR}eval/bank-omongan`, idJalan: 'tes', paguUsd: 1, biayaAgen: () => 0, labelPenulis: 'tes', panggil: () => Promise.reject(new Error('tak dipakai')), tingkat });
+    expect(buat('biasa').selesai()).toBe(true);
+    expect(buat('sulit').selesai()).toBe(false);
+    expect(buat('sulit').keadaan().jumlah_omongan).toBe(0);
   });
   it('mode biasa: penguji Opus yang menebak tidak menolak', async () => {
     const { alat } = alatDengan({ opus: 4 });
@@ -86,6 +101,7 @@ describe('petunjuk dan batas token', () => {
     expect(p).not.toMatch(/\{[A-Z_]+\}/);
     expect(p).not.toMatch(/bertingkat SULIT/);
     expect(instruksiAgen(3, 5, 'sulit')).toMatch(/bertingkat SULIT/);
+    expect(instruksiAgen(3, 5, 'sulit')).toMatch(/paling banyak 3 dari 12/);
   });
   it('penguji Opus: max_tokens 32.000', () => {
     expect(SETELAN_PENEBAK_KUAT.maxTokens).toBe(32_000);

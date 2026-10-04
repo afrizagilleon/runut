@@ -57,7 +57,7 @@ export interface OpsiAlat {
   biayaAgen: () => number;
   labelPenulis: string;
   target?: number;
-  /** M2d-25: 'sulit' = penguji Opus harus 0 benar tanpa kartu; selain itu omongan tidak masuk bank. */
+  /** M2d-25: 'sulit' = hanya omongan berlabel sulit (`tingkatOmongan`: penebak murah ≤ 3 dari 12 DAN penguji Opus 0 benar) yang masuk bank dan dirakit. */
   tingkat?: 'biasa' | 'sulit';
   /** Sudut yang pernah ditolak gerbang berbayar di percobaan lain atas paket yang sama (pelajaran lintas percakapan). */
   riwayatDitolak?: readonly SudutDitolak[];
@@ -94,6 +94,11 @@ export function tingkatOmongan(n: Pick<NilaiOmonganV3, 'pasangan' | 'penebak_kua
   const q = n.penebak_kuat?.putusan;
   if (k <= 3 && q !== undefined && q !== null && q.kunci === 0) return 'sulit';
   return 'biasa';
+}
+/** Tingkat satu entri bank: label tersimpan, atau dihitung ulang dari jejak gerbangnya (entri sebelum M2d-25). Murni. */
+export function tingkatEntri(e: EntriBank): Tingkat | null {
+  const j = e.jejak_gerbang as { tingkat?: Tingkat | null; pasangan?: NilaiOmonganV3['pasangan']; penebak_kuat?: NilaiOmonganV3['penebak_kuat'] };
+  return j.tingkat ?? tingkatOmongan({ pasangan: j.pasangan, penebak_kuat: j.penebak_kuat ?? null });
 }
 /** Paling banyak draf per panggilan `periksa_kode` / `ajukan` (satu simulasi = tiga omongan). */
 export const MAKS_DRAF_PER_PANGGILAN = 3;
@@ -191,7 +196,8 @@ export function buatAlat(o: OpsiAlat) {
   /** Galat gerbang yang bukan penolakan dan bukan pagu (penyedia hilang, jaringan): percobaan harus berhenti. */
   let rusak: string | null = null;
 
-  const bank = (): EntriBank[] => bacaBank(o.folderBank, sha);
+  // Mode sulit: bank yang dilihat agen dan dirakit hanya omongan berlabel sulit; omongan lain di folder yang sama diabaikan.
+  const bank = (): EntriBank[] => bacaBank(o.folderBank, sha).filter((e) => o.tingkat !== 'sulit' || tingkatEntri(e) === 'sulit');
   const terpakai = (): number => o.biayaAgen() + biayaGerbang;
   const sisa = (): number => bulat(Math.max(0, o.paguUsd - terpakai()));
   const ringkasBank = (b: readonly EntriBank[]): HasilAjukan['bank'] => ({ kartu_penentu: sudutBank(b), jumlah_sudut: jumlahSudut(b), target });
@@ -269,7 +275,7 @@ export function buatAlat(o: OpsiAlat) {
       return lapor('ajukan', 'GERBANG RUSAK — percobaan dihentikan', dasar('galat-gerbang', [], ['Gerbang tidak bisa dijalankan (gangguan teknis, bukan penolakan). Draf ini tetap tersimpan. Berhenti; jangan menulis draf lain.'], terakhir?.biaya_gerbang_usd ?? 0));
     }
     biayaGerbang += n.biaya_gerbang_usd;
-    // Mode sulit: yang masuk bank hanya omongan yang TIDAK bisa ditebak penguji Opus satu kali pun.
+    // Mode sulit: yang masuk bank hanya omongan berlabel sulit — firasat penebak murah menyesatkan DAN penguji Opus tidak menebak satu kali pun.
     if (o.tingkat === 'sulit' && n.berhenti === 'lolos') {
       const q = n.penebak_kuat?.putusan;
       if (q === undefined || q === null) {
@@ -278,6 +284,10 @@ export function buatAlat(o: OpsiAlat) {
       } else if (q.kunci > 0) {
         n.berhenti = 'penebak-kuat';
         n.alasan = [`mode sulit: penguji Opus tanpa kartu benar ${String(q.kunci)} dari ${String(q.n)}; targetnya 0 — hilangkan petunjuk dari nada pesan dan dari susunan pilihan`];
+      } else if (tingkatOmongan(n) !== 'sulit') {
+        const p = n.pasangan?.putusan;
+        n.berhenti = 'saringan';
+        n.alasan = [`mode sulit: tanpa kartu, penebak memilih kunci ${String(p?.kunci ?? '?')} dari ${String(p?.n ?? '?')}; targetnya paling banyak 3 dari 12 — bagi orang yang belum membaca kartu, kembaran harus terasa LEBIH masuk akal daripada kunci (firasat menyesatkan), bukan sekadar sama masuk akalnya`];
       }
     }
     if (n.berhenti === 'lolos') {
