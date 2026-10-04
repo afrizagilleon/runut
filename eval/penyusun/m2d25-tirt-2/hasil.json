@@ -1,0 +1,532 @@
+{
+  "id": "m2d25-tirt-2",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1.5,
+  "berhenti": "bank bisa dirakit menjadi simulasi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 3,
+      "sudut_sebelum": 2,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 3,
+  "panggilan_model": 3,
+  "pengajuan": 1,
+  "biaya_agen_usd": 0.151447,
+  "biaya_gerbang_usd": 0.0305,
+  "biaya_usd": 0.1819,
+  "durasi_detik": 92,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "d4627c59de716b5b",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "naik-2025-11-26-2025-12-09"
+        ],
+        "asal": "m2d24-tirt-1"
+      },
+      {
+        "id": "24204ffe71062aff",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "asal": "m2d24-tirt-1"
+      },
+      {
+        "id": "ebd1a41adfb4ff73",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "asal": "m2d25-tirt-2"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": true,
+    "dipilih": [
+      "d4627c59de716b5b",
+      "24204ffe71062aff",
+      "ebd1a41adfb4ff73"
+    ],
+    "alasan": [],
+    "draf": {
+      "omongan": [
+        {
+          "nama": "Rara",
+          "jam": "21.30",
+          "pesan": "Dari penutupan 26 November sampai penutupan kemarin, T udah naik Rp106 per lembar. Gila sih.",
+          "angka_pesan": [
+            {
+              "teks": "26 November",
+              "fact_id": "naik-2025-11-26-2025-12-09"
+            },
+            {
+              "teks": "Rp106",
+              "fact_id": "harga-2025-12-09"
+            }
+          ],
+          "kartu": [
+            "naik-2025-11-26-2025-12-09",
+            "harga-2025-11-27",
+            "harga-2025-12-09",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "naik-2025-11-26-2025-12-09"
+          ],
+          "pilihan": {
+            "a": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut.",
+            "b": "Keliru, selisih penutupannya [[harga-2025-11-27|Rp52]] per lembar.",
+            "c": "Keliru, selisih penutupannya [[naik-2025-11-26-2025-12-09|Rp58]] per lembar.",
+            "d": "Betul, penutupan kemarin memang [[harga-2025-12-09|Rp106]] per lembar."
+          },
+          "kunci": "c",
+          "penjelasan": "Kenaikannya dihitung dari selisih dua penutupan: [[naik-2025-11-26-2025-12-09|Rp106]] pada [[naik-2025-11-26-2025-12-09|9 Desember]] dikurangi [[naik-2025-11-26-2025-12-09|Rp48]] pada [[naik-2025-11-26-2025-12-09|26 November]], hasilnya [[naik-2025-11-26-2025-12-09|Rp58]] per lembar. Angka [[harga-2025-12-09|Rp106]] yang disebut teman adalah harga penutupan kemarin, bukan besar kenaikannya. [[harga-2025-11-27|Rp52]] adalah penutupan [[harga-2025-11-27|27 November]], bukan selisih. Naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut memang tercatat, tetapi itu soal lamanya, bukan besarnya. Salah-kaprah yang umum: menyamakan harga sekarang dengan besar kenaikan."
+        },
+        {
+          "nama": "Bayu",
+          "jam": "19.12",
+          "pesan": "Volume T hari ini lebih gede dari kemarin kayaknya, grup sebelah heboh terus dari pagi.",
+          "angka_pesan": [],
+          "kartu": [
+            "volume-2025-12-10",
+            "volume-2025-11-26",
+            "volume-2025-12-09",
+            "susp-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "volume-2025-12-10"
+          ],
+          "pilihan": {
+            "a": "Keliru, data bursa hari ini mencatat [[volume-2025-12-10|0 lembar]].",
+            "b": "Keliru, data bursa hari ini mencatat [[volume-2025-11-26|178.100 lembar]].",
+            "c": "Betul, data bursa hari ini mencatat [[volume-2025-12-09|1.461.200 lembar]].",
+            "d": "Betul, volume kemarin saja sudah [[volume-2025-12-09|1.461.200 lembar]]."
+          },
+          "kunci": "a",
+          "penjelasan": "Data bursa hari ini, [[volume-2025-12-10|10 Desember 2025]], mencatat volume [[volume-2025-12-10|0 lembar]]. Wajar, karena bursa menghentikan sementara perdagangannya hari ini untuk cooling down. Volume besar [[volume-2025-12-09|1.461.200 lembar]] itu milik kemarin, [[volume-2025-12-09|9 Desember 2025]], jadi hari ini justru jauh lebih kecil. Angka [[volume-2025-11-26|178.100 lembar]] milik [[volume-2025-11-26|26 November 2025]]. Salah-kaprah yang umum: mengira saham yang sedang ramai dibicarakan pasti ramai diperdagangkan, padahal saat dihentikan tidak ada transaksi."
+        },
+        {
+          "nama": "Dimas",
+          "jam": "20.15",
+          "pesan": "Eh, ini bukan pertama kalinya T disetop bursa tahun ini kan? Seingetku awal tahun juga pernah. Ada yang inget alasannya?",
+          "angka_pesan": [],
+          "kartu": [
+            "susp-2025-01-21",
+            "susp-2025-12-10",
+            "rups-2025-09-25"
+          ],
+          "kartu_penentu": [
+            "susp-2025-01-21"
+          ],
+          "pilihan": {
+            "a": "Betul, Januari dihentikan karena laporan keuangan terlambat disampaikan.",
+            "b": "Betul, Januari dihentikan karena keraguan atas kelangsungan usaha.",
+            "c": "Keliru, yang tercatat tahun ini hanya jadwal rapat pemegang saham.",
+            "d": "Keliru, sebelum hari ini perdagangannya tidak pernah dihentikan bursa."
+          },
+          "kunci": "b",
+          "penjelasan": "Pengumuman bursa mencatat perdagangan saham T dihentikan sementara pada [[susp-2025-01-21|21 Januari 2025]], jadi omongan bahwa awal tahun juga pernah disetop memang betul. Alasan resminya bukan soal laporan keuangan, melainkan keraguan bursa atas kelangsungan usaha perseroan. Alasan itu berbeda dari penghentian [[susp-2025-12-10|10 Desember 2025]], yang dilakukan untuk cooling down sesudah kenaikan harga kumulatif. Jadwal rapat pemegang saham [[rups-2025-09-25|25 September 2025]] adalah dokumen lain dan tidak meniadakan penghentian Januari. Salah-kaprah yang umum: mengira semua penghentian perdagangan punya alasan yang sama, padahal tiap pengumuman bursa menuliskan alasannya sendiri."
+        }
+      ]
+    }
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "20.15",
+        "pesan": "Eh, ini bukan pertama kalinya T disetop bursa tahun ini kan? Seingetku awal tahun juga pernah. Ada yang inget alasannya?",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10",
+          "rups-2025-09-25"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Betul, Januari dihentikan karena laporan keuangan terlambat disampaikan.",
+          "b": "Betul, Januari dihentikan karena keraguan atas kelangsungan usaha.",
+          "c": "Keliru, yang tercatat tahun ini hanya jadwal rapat pemegang saham.",
+          "d": "Keliru, sebelum hari ini perdagangannya tidak pernah dihentikan bursa."
+        },
+        "kunci": "b",
+        "penjelasan": "Pengumuman bursa mencatat perdagangan saham T dihentikan sementara pada [[susp-2025-01-21|21 Januari 2025]], jadi omongan bahwa awal tahun juga pernah disetop memang betul. Alasan resminya bukan soal laporan keuangan, melainkan keraguan bursa atas kelangsungan usaha perseroan. Alasan itu berbeda dari penghentian [[susp-2025-12-10|10 Desember 2025]], yang dilakukan untuk cooling down sesudah kenaikan harga kumulatif. Jadwal rapat pemegang saham [[rups-2025-09-25|25 September 2025]] adalah dokumen lain dan tidak meniadakan penghentian Januari. Salah-kaprah yang umum: mengira semua penghentian perdagangan punya alasan yang sama, padahal tiap pengumuman bursa menuliskan alasannya sendiri.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini sebagian benar: penghentian Januari memang ada, tetapi kartu 1 menulis alasannya keraguan atas kelangsungan usaha, bukan laporan keuangan."
+          },
+          "c": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "rups-2025-09-25",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 hanya jadwal rapat, sedangkan penghentian Januari tercatat di pengumuman bursa tersendiri."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat penghentian di bulan Januari, jauh sebelum penghentian hari ini."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi bursa menghentikan perdagangan pada bulan Januari?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (peluang kebetulan 0,9270; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat penghentian 21 Januari 2025 karena keraguan atas kelangsungan usaha, cocok dengan ingatan Dimas bahwa awal tahun juga pernah disetop.",
+            "biaya_usd": 0.0003909
+          },
+          {
+            "r": 2,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat penghentian sementara 21 Januari 2025 karena keraguan atas kelangsungan usaha, cocok dengan ingatan Dimas tentang awal tahun.",
+            "biaya_usd": 0.000350876
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, Januari dihentikan karena laporan keuangan terlambat disampaikan.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; keterlambatan laporan keuangan alasan suspensi paling umum.",
+            "biaya_usd": 0.004308,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, Januari dihentikan karena laporan keuangan terlambat disampaikan.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan berdasarkan alasan suspensi yang paling umum.",
+            "biaya_usd": 0.004548,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, Januari dihentikan karena laporan keuangan terlambat disampaikan.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan, keterlambatan laporan keuangan alasan suspensi paling umum.",
+            "biaya_usd": 0.004968,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, Januari dihentikan karena laporan keuangan terlambat disampaikan.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan, karena keterlambatan laporan alasan suspensi paling umum.",
+            "biaya_usd": 0.006888,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 0,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.020712
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Tidak ada perubahan yang diperlukan; semua klaim Dimas tercek dari kartu dan hanya kunci yang benar menurut kartu.",
+        "token_penalaran": [
+          1097
+        ]
+      },
+      "biaya_gerbang_usd": 0.030497006,
+      "id_bank": "ebd1a41adfb4ff73",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Keraguan kelangsungan usaha lebih sering menyebabkan penghentian bursa.",
+            "biaya_usd": 0.000547,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Keraguan kelangsungan usaha lebih umum penyebab penghentian perdagangan saham.",
+            "biaya_usd": 0.000557,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Keraguan kelangsungan usaha lebih umum sebab penghentian saham berkala",
+            "biaya_usd": 0.000541,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Keraguan kelangsungan usaha lebih umum sebab penghentian bursa berkala",
+            "biaya_usd": 0.000541,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Suspend Januari biasanya karena keterlambatan laporan keuangan.",
+            "biaya_usd": 0.0000279,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Suspend awal tahun biasanya karena keterlambatan laporan keuangan.",
+            "biaya_usd": 0.0000279,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Suspend Januari biasanya karena keterlambatan laporan keuangan.",
+            "biaya_usd": 0.00002785,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Suspend saham biasanya karena keterlambatan laporan keuangan.",
+            "biaya_usd": 0.00002785,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Penghentian perdagangan lazim dipicu keterlambatan penyampaian laporan keuangan, bukan keraguan kelangsungan usaha.",
+            "biaya_usd": 0.00043776,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Penghentian awal tahun umumnya karena keterlambatan penyampaian laporan keuangan.",
+            "biaya_usd": 0.00026781,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Penyebab umum suspensi Januari adalah keterlambatan penyampaian laporan keuangan ke bursa.",
+            "biaya_usd": 0.00064199,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Penghentian Januari umumnya karena keterlambatan penyampaian laporan keuangan.",
+            "biaya_usd": 0.00057336,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 4,
+          "p": 0.927001953125,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (peluang kebetulan 0,9270; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.00421842
+      }
+    }
+  ],
+  "draf_lolos_kode": [
+    {
+      "id": "ebd1a41adfb4ff73",
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "20.15",
+        "pesan": "Eh, ini bukan pertama kalinya T disetop bursa tahun ini kan? Seingetku awal tahun juga pernah. Ada yang inget alasannya?",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10",
+          "rups-2025-09-25"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Betul, Januari dihentikan karena laporan keuangan terlambat disampaikan.",
+          "b": "Betul, Januari dihentikan karena keraguan atas kelangsungan usaha.",
+          "c": "Keliru, yang tercatat tahun ini hanya jadwal rapat pemegang saham.",
+          "d": "Keliru, sebelum hari ini perdagangannya tidak pernah dihentikan bursa."
+        },
+        "kunci": "b",
+        "penjelasan": "Pengumuman bursa mencatat perdagangan saham T dihentikan sementara pada [[susp-2025-01-21|21 Januari 2025]], jadi omongan bahwa awal tahun juga pernah disetop memang betul. Alasan resminya bukan soal laporan keuangan, melainkan keraguan bursa atas kelangsungan usaha perseroan. Alasan itu berbeda dari penghentian [[susp-2025-12-10|10 Desember 2025]], yang dilakukan untuk cooling down sesudah kenaikan harga kumulatif. Jadwal rapat pemegang saham [[rups-2025-09-25|25 September 2025]] adalah dokumen lain dan tidak meniadakan penghentian Januari. Salah-kaprah yang umum: mengira semua penghentian perdagangan punya alasan yang sama, padahal tiap pengumuman bursa menuliskan alasannya sendiri.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini sebagian benar: penghentian Januari memang ada, tetapi kartu 1 menulis alasannya keraguan atas kelangsungan usaha, bukan laporan keuangan."
+          },
+          "c": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "rups-2025-09-25",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 hanya jadwal rapat, sedangkan penghentian Januari tercatat di pengumuman bursa tersendiri."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat penghentian di bulan Januari, jauh sebelum penghentian hari ini."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi bursa menghentikan perdagangan pada bulan Januari?"
+      }
+    }
+  ],
+  "teks_akhir": ""
+}

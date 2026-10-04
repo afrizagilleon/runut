@@ -1,0 +1,357 @@
+{
+  "id": "8c56aa79aa89af89",
+  "paket_sha": "f6acffd5e06b47e41f995ee614ea3b39be016a6e0326ab6bef527ffff5fc0918",
+  "kartu_penentu": [
+    "div-2025-05-22-bayar"
+  ],
+  "omongan": {
+    "nama": "Dimas",
+    "jam": "19.12",
+    "pesan": "Dividen tunai yang tercatat Rp4,5 per lembar, dan itu udah dibayarin ke pemegang saham kan?",
+    "angka_pesan": [
+      {
+        "teks": "Rp4,5",
+        "fact_id": "div-2025-05-22"
+      }
+    ],
+    "kartu": [
+      "div-2025-05-22",
+      "div-2025-05-22-bayar",
+      "dividen-tercatat"
+    ],
+    "kartu_penentu": [
+      "div-2025-05-22-bayar"
+    ],
+    "pilihan": {
+      "a": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22|22 Mei 2025]].",
+      "b": "Keliru, dividen itu belum dibayarkan sampai hari ini.",
+      "c": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22-bayar|13 Juni 2025]].",
+      "d": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan."
+    },
+    "kunci": "c",
+    "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-22|Rp4,5 per lembar]] dengan tanggal ex [[div-2025-05-22|22 Mei 2025]], dan pembayarannya [[div-2025-05-22-bayar|13 Juni 2025]]. Hari ini sudah November, jadi tanggal bayar itu sudah lewat dan omongan teman cocok dengan kartu. Pilihan yang menggoda adalah tanggal Mei, padahal itu tanggal ex: batas siapa yang berhak menerima, bukan hari uangnya dibayarkan. Daftar ini mencatat [[dividen-tercatat|1 pembagian]], jadi yang bisa dicek hanyalah pembagian yang tercatat. Salah-kaprah yang umum: mengira tanggal ex adalah tanggal dividen dibayarkan.",
+    "pengecoh": {
+      "a": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2025-05-22",
+        "umpan_balik": "Ini salah periode: kartu 1 mencatat tanggal itu sebagai tanggal ex, bukan tanggal pembayaran."
+      },
+      "b": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2025-05-22-bayar",
+        "umpan_balik": "Ini salah periode: tanggal bayar di kartu 2 sudah lewat jauh sebelum hari ini, jadi uangnya sudah dibayarkan."
+      },
+      "d": {
+        "jenis": "pertanyaan-lain",
+        "rujukan": "div-2025-05-22-bayar",
+        "umpan_balik": "Ini menjawab pertanyaan lain: soalnya sudah dibayar atau belum, dan kartu 2 justru mencatat tanggal pembayarannya."
+      }
+    },
+    "pertanyaan_cek": "Tanggal mana yang menandai uang dividen benar-benar dibayarkan?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "biasa",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Tanggal pembayaran dividen umumnya setelah tanggal pencatatan, 22 Mei lebih logis sebelum 13 Juni.",
+          "biaya_usd": 0.000591,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanggal pembayaran dividen tunai umumnya lebih cepat setelah pencatatan.",
+          "biaya_usd": 0.000526,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Tanggal pembayaran dividen umumnya lebih awal dari tanggal pencatatan.",
+          "biaya_usd": 0.000515,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Tanggal pembayaran dividen tunai umumnya setelah tanggal pencatatan, Juni lebih logis.",
+          "biaya_usd": 0.000545,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanggal 13 Juni lebih dekat setelah pencatatan dividen",
+          "biaya_usd": 0.00002705,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Pesan 19.12, tanggal 22 Mei lebih dekat dan mungkin",
+          "biaya_usd": 0.00002825,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanggal 13 Juni lebih dekat setelah 19.12, kemungkinan pembayaran dividen.",
+          "biaya_usd": 0.0000324,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanggal 22 Mei lebih dekat ke 19.12, kemungkinan sesuai.",
+          "biaya_usd": 0.00003,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Pembayaran dividen tunai Rp4,5/lembar umumnya jatuh pertengahan Juni 2025.",
+          "biaya_usd": 0.00044735,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Dividen tunai Rp4,5 per lembar umumnya dibayarkan 13 Juni 2025",
+          "biaya_usd": 0.00034565,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Dividen tunai Rp4,5 per lembar dibayarkan pada 22 Mei 2025.",
+          "biaya_usd": 0.0002948,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Pembayaran dividen tunai umumnya jatuh pada pertengahan Juni 2025.",
+          "biaya_usd": 0.00030836,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 6,
+        "p": 0.61279296875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.0036908600000000002
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 2 menyatakan dividen dengan tanggal ex 22 Mei 2025 dibayarkan 13 Juni 2025, sehingga uangnya sudah dibayarkan pada tanggal itu.",
+          "biaya_usd": 0.000951926
+        },
+        {
+          "r": 2,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 mencatat dividen tunai Rp4,5 per lembar dan Kartu 2 mencatat pembayaran pada 13 Juni 2025, sehingga pernyataan Dimas cocok.",
+          "biaya_usd": 0.001119926
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, tebakan: catatan dividen biasanya tanpa tanggal bayar.",
+          "biaya_usd": 0.005432,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, tanggal pembayaran tidak bisa dipastikan; tebakan saja.",
+          "biaya_usd": 0.005272,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+          "skor": 1,
+          "alasan": "Tebakan: tanpa dokumen, tanggal bayar tidak bisa dipastikan.",
+          "biaya_usd": 0.005332,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan, tanggal bayar tidak bisa dipastikan.",
+          "biaya_usd": 0.006332,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 0,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 3,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.022368000000000002
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Tidak ada yang perlu diubah; pertahankan perbedaan tanggal ex vs tanggal bayar sebagai inti penguji karena itulah yang membuat pilihan a menggoda tapi jelas salah menurut kartu.",
+      "token_penalaran": [
+        3114
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d25-alii-1",
+    "putaran": 4,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T12:33:11.997Z"
+}

@@ -1,0 +1,361 @@
+{
+  "id": "dd409a430aebc05e",
+  "paket_sha": "ebdd6af30685721106cc117faadde4279499f63dec48606b7965d9237e36166e",
+  "kartu_penentu": [
+    "harga-2026-08-13"
+  ],
+  "omongan": {
+    "nama": "Rara",
+    "jam": "20.05",
+    "pesan": "Barusan liat data bursa, tanggal 13 Agustus harga tutupnya Rp1.605 per lembar.",
+    "angka_pesan": [
+      {
+        "teks": "13 Agustus",
+        "fact_id": "harga-2026-08-13"
+      },
+      {
+        "teks": "Rp1.605",
+        "fact_id": "harga-2026-08-14"
+      }
+    ],
+    "kartu": [
+      "harga-2026-08-13",
+      "harga-2026-08-14",
+      "harga-2026-08-18"
+    ],
+    "kartu_penentu": [
+      "harga-2026-08-13"
+    ],
+    "pilihan": {
+      "a": "Keliru, penutupan tanggal itu tercatat [[harga-2026-08-13|Rp1.285]].",
+      "b": "Betul, penutupan tanggal itu tercatat [[harga-2026-08-14|Rp1.605]].",
+      "c": "Betul, sesudah tanggal itu harganya tercatat [[harga-2026-08-18|Rp1.810]].",
+      "d": "Keliru, penutupan tanggal itu tercatat [[harga-2026-08-18|Rp1.810]]."
+    },
+    "kunci": "a",
+    "penjelasan": "Data harga harian mencatat penutupan [[harga-2026-08-13|13 Agustus 2026]] adalah [[harga-2026-08-13|Rp1.285]]. Angka teman, [[harga-2026-08-14|Rp1.605]], adalah penutupan [[harga-2026-08-14|14 Agustus 2026]], hari bursa berikutnya. Angka [[harga-2026-08-18|Rp1.810]] juga bukan milik tanggal yang disebut teman; itu penutupan [[harga-2026-08-18|18 Agustus 2026]]. Data harga harian selalu bertanggal, jadi cocokkan tanggal dan angkanya bersama-sama. Salah-kaprah yang umum: mengambil angka dari baris data yang bersebelahan tanpa melihat tanggalnya.",
+    "pengecoh": {
+      "b": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "harga-2026-08-14",
+        "umpan_balik": "Ini percaya omongan tanpa cek: angka teman ada di kartu 2, tetapi tanggalnya sehari bursa sesudahnya."
+      },
+      "c": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2026-08-18",
+        "umpan_balik": "Ini salah periode: kartu 3 adalah penutupan hari bursa lain, dan angka teman pun bukan milik tanggal itu."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2026-08-18",
+        "umpan_balik": "Ini salah periode: harga di kartu 3 adalah penutupan tanggal lain, bukan tanggal yang disebut teman."
+      }
+    },
+    "pertanyaan_cek": "Angka di data harga itu tercatat untuk tanggal yang mana?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "biasa",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Rp1.810 lebih dekat ke Rp1.605 daripada Rp1.285, lebih masuk akal.",
+          "biaya_usd": 0.000577,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp1.810 lebih dekat ke Rp1.605 daripada Rp1.285, lebih masuk akal.",
+          "biaya_usd": 0.000577,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Rp1.810 lebih dekat ke Rp1.605, pergerakan harga wajar.",
+          "biaya_usd": 0.000531,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp1.810 lebih dekat ke Rp1.605, pergerakan harga wajar",
+          "biaya_usd": 0.000531,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp1.285 lebih dekat ke Rp1.605 daripada Rp1.810",
+          "biaya_usd": 0.0000283,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Rp1.285 lebih dekat ke Rp1.605 daripada Rp1.810",
+          "biaya_usd": 0.0000283,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp1.285 lebih dekat ke Rp1.605 daripada Rp1.810",
+          "biaya_usd": 0.00002825,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp1.810 lebih dekat ke Rp1.605 daripada Rp1.285",
+          "biaya_usd": 0.00002825,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Angka Rp1.285 lebih dekat dan wajar sebagai koreksi harga penutupan.",
+          "biaya_usd": 0.01080451,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 0,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.02044484,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, angka Rp1.285 lebih mungkin sebagai koreksi penutupan.",
+          "biaya_usd": 0.010516359999999999,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Angka Rp1.605 kemungkinan tertukar dengan tanggal lain; penutupan sebenarnya Rp1.810.",
+          "biaya_usd": 0.00059968,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 11,
+        "tak_terbaca": 1,
+        "kunci": 5,
+        "p": 0.7255859375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang"
+        ]
+      },
+      "biaya_usd": 0.044694489999999996
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan penutupan 13 Agustus 2026 adalah Rp1.285, bukan Rp1.605 seperti kata Rara.",
+          "biaya_usd": 0.000190238
+        },
+        {
+          "r": 2,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan penutupan 13 Agustus 2026 adalah Rp1.285, bukan Rp1.605 seperti kata Rara.",
+          "biaya_usd": 0.000180038
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, tebakan: angka sama dengan klaim Rara.",
+          "biaya_usd": 0.004472,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; hanya pilihan ini selaras dengan klaim Rara.",
+          "biaya_usd": 0.004652,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; pilihan ini paling selaras dengan klaim Rara.",
+          "biaya_usd": 0.003812,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, tebakan; pilihan ini paling selaras dengan klaim Rara.",
+          "biaya_usd": 0.004092,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 0,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 1,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.017028
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Penjelasan memakai frasa 'baris data yang bersebelahan' padahal kartu berupa dokumen harian per tanggal; sesuaikan istilah itu dengan bentuk kartu yang dilihat pemain.",
+      "token_penalaran": [
+        16224
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d25-agar-sulit-1",
+    "putaran": 5,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T12:46:46.420Z"
+}

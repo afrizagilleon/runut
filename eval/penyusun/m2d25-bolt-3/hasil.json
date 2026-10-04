@@ -1,0 +1,931 @@
+{
+  "id": "m2d25-bolt-3",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 0.8,
+  "berhenti": "bank bisa dirakit menjadi simulasi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 6,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 4,
+      "ditolak": 1,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 6,
+  "panggilan_model": 6,
+  "pengajuan": 2,
+  "biaya_agen_usd": 0.229762,
+  "biaya_gerbang_usd": 0.1143,
+  "biaya_usd": 0.3441,
+  "durasi_detik": 255,
+  "bank": {
+    "jumlah_sudut": 4,
+    "omongan": [
+      {
+        "id": "b74996157bfa3a0d",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "harga-2026-04-30"
+        ],
+        "asal": "m2d24-bolt-1"
+      },
+      {
+        "id": "2e163191f31aced0",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "div-2026-02-20"
+        ],
+        "asal": "m2d25-bolt-2"
+      },
+      {
+        "id": "00f5474e2bafe634",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "asal": "m2d25-bolt-2"
+      },
+      {
+        "id": "133fe8aa875e7fa4",
+        "nama": "Nadia",
+        "kartu_penentu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06"
+        ],
+        "asal": "m2d25-bolt-3"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": true,
+    "dipilih": [
+      "b74996157bfa3a0d",
+      "2e163191f31aced0",
+      "133fe8aa875e7fa4"
+    ],
+    "alasan": [],
+    "draf": {
+      "omongan": [
+        {
+          "nama": "Rara",
+          "jam": "20.05",
+          "pesan": "Turun sih hari ini, tapi harganya masih di atas penutupan akhir April kok.",
+          "angka_pesan": [],
+          "kartu": [
+            "harga-2026-04-30",
+            "harga-2026-05-04",
+            "harga-2026-05-06",
+            "harga-2026-05-07"
+          ],
+          "kartu_penentu": [
+            "harga-2026-04-30"
+          ],
+          "pilihan": {
+            "a": "Betul, akhir April ditutup [[harga-2026-04-30|Rp900]] dan hari ini lebih tinggi.",
+            "b": "Betul, akhir April ditutup [[harga-2026-05-04|Rp920]] dan hari ini lebih tinggi.",
+            "c": "Keliru, akhir April ditutup [[harga-2026-05-07|Rp930]] dan hari ini sama.",
+            "d": "Keliru, akhir April ditutup [[harga-2026-05-06|Rp990]] dan hari ini lebih rendah."
+          },
+          "kunci": "a",
+          "penjelasan": "Kartu harga akhir April mencatat penutupan [[harga-2026-04-30|30 April 2026]] di [[harga-2026-04-30|Rp900]]. Kartu harga hari ini mencatat penutupan [[harga-2026-05-07|Rp930]], lebih tinggi. Hari ini memang turun dari [[harga-2026-05-06|Rp990]] kemarin, jadi kedua bagian pesan cocok dengan kartu. Angka [[harga-2026-05-04|Rp920]] milik [[harga-2026-05-04|4 Mei 2026]], sudah masuk bulan Mei. Salah-kaprah yang umum: memakai harga awal bulan berikutnya sebagai harga akhir bulan sebelumnya."
+        },
+        {
+          "nama": "Dimas",
+          "jam": "19.12",
+          "pesan": "Dividen yang ex hari ini lebih gede dari pembagian Februari kemarin, ya. Lumayan juga naiknya.",
+          "angka_pesan": [],
+          "kartu": [
+            "div-2026-05-07",
+            "div-2026-02-20",
+            "div-2025-07-02"
+          ],
+          "kartu_penentu": [
+            "div-2026-02-20"
+          ],
+          "pilihan": {
+            "a": "Betul, pembagian Februari hanya [[div-2025-07-02|Rp20]] per lembar.",
+            "b": "Betul, pembagian Februari hanya [[div-2026-02-20|Rp25]] per lembar.",
+            "c": "Keliru, pembagian kali ini cuma [[div-2026-02-20|Rp25]] per lembar.",
+            "d": "Keliru, nominal Februari sama persis dengan pembagian kali ini."
+          },
+          "kunci": "b",
+          "penjelasan": "Dividen dengan tanggal ex hari ini tercatat [[div-2026-05-07|Rp50 per lembar]], sedangkan pembagian dengan tanggal ex [[div-2026-02-20|20 Februari 2026]] tercatat [[div-2026-02-20|Rp25 per lembar]]. Jadi yang sekarang memang lebih besar. Angka [[div-2025-07-02|Rp20]] memang ada di daftar, tetapi itu pembagian dengan tanggal ex [[div-2025-07-02|2 Juli 2025]], bukan Februari. Daftar dividen memuat beberapa baris yang mirip; cocokkan dulu tanggal ex-nya sebelum membandingkan nominal. Salah-kaprah yang umum: mengambil nominal dari baris dividen yang paling dekat di mata tanpa mengecek tanggalnya."
+        },
+        {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Hari ini yang transaksi kayaknya lebih rame ya, volumenya naik dibanding kemarin.",
+          "angka_pesan": [],
+          "kartu": [
+            "volume-2026-05-07",
+            "volume-2026-05-06",
+            "harga-2026-05-06",
+            "harga-2026-05-07"
+          ],
+          "kartu_penentu": [
+            "volume-2026-05-07",
+            "volume-2026-05-06"
+          ],
+          "pilihan": {
+            "a": "Betul, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih tinggi dari kemarin.",
+            "b": "Keliru, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih rendah dari kemarin.",
+            "c": "Betul, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih tinggi dari kemarin.",
+            "d": "Keliru, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih rendah dari kemarin."
+          },
+          "kunci": "b",
+          "penjelasan": "Data harian bursa mencatat volume hari ini, [[volume-2026-05-07|7 Mei 2026]], hanya [[volume-2026-05-07|139.700 lembar]]. Sehari sebelumnya, [[volume-2026-05-06|6 Mei 2026]], volumenya [[volume-2026-05-06|419.300 lembar]]. Jadi transaksi hari ini justru jauh lebih sepi, bukan lebih ramai. Angka yang lebih besar itu milik kemarin; tertukar tanggal membuat kesimpulannya terbalik. Harga penutupan memang berubah dari [[harga-2026-05-06|Rp990]] kemarin ke [[harga-2026-05-07|Rp930]] hari ini, tetapi perubahan harga tidak memberi tahu berapa lembar yang berpindah tangan. Salah-kaprah yang umum: mengira harga yang bergerak besar selalu disertai volume yang besar."
+        }
+      ]
+    }
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Hari ex dividen gini transaksinya lebih rame ya, volume hari ini naik dibanding kemarin.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06",
+          "harga-2026-05-07"
+        ],
+        "kartu_penentu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06"
+        ],
+        "pilihan": {
+          "a": "Betul, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih tinggi dari kemarin.",
+          "b": "Keliru, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih rendah dari kemarin.",
+          "c": "Betul, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih tinggi dari kemarin.",
+          "d": "Keliru, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih rendah dari kemarin."
+        },
+        "kunci": "b",
+        "penjelasan": "Data harian bursa mencatat volume hari ini, [[volume-2026-05-07|7 Mei 2026]], hanya [[volume-2026-05-07|139.700 lembar]]. Sehari sebelumnya, [[volume-2026-05-06|6 Mei 2026]], volumenya [[volume-2026-05-06|419.300 lembar]]. Jadi transaksi hari ini justru jauh lebih sepi, bukan lebih ramai. Angka yang lebih besar itu milik kemarin; tertukar tanggal membuat kesimpulannya terbalik. Tanggal ex dividen tidak otomatis membuat perdagangan ramai, dan harga yang turun ke [[harga-2026-05-07|Rp930]] juga tidak memberi tahu berapa lembar yang berpindah tangan. Salah-kaprah yang umum: mengira harga yang bergerak besar pasti disertai volume yang besar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: angka di kartu 1 benar milik hari ini, tetapi volume itu lebih kecil dari kemarin."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 mencatat angka itu sebagai volume kemarin, dan hari ini lebih sepi."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat angka itu untuk [[volume-2026-05-06|6 Mei]], bukan untuk hari ini."
+          }
+        },
+        "pertanyaan_cek": "Angka volume ini tercatat untuk tanggal berapa?"
+      },
+      "berhenti": "kritikus",
+      "alasan": [
+        "[kritikus: aturan, penjelasan] Penjelasan menyebut 'harga yang turun ke Rp930' padahal tidak ada kartu tentang arah pergerakan harga — kartu 3 hanya mencatat harga penutupan 7 Mei.",
+        "[kritikus: arahan] Hapus kata 'turun' pada penjelasan karena arah pergerakan harga tidak bisa dicek dari kartu; cukup sebut harga penutupan Rp930 tanpa menyebut arah."
+      ],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan volume 7 Mei 2026 sebesar 139.700 lembar, lebih rendah daripada volume 6 Mei 2026 di Kartu 2 sebesar 419.300 lembar, sehingga omongan Nadia keliru.",
+            "biaya_usd": 0.0001998
+          },
+          {
+            "r": 2,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan volume 7 Mei 2026 (hari ini) 139.700 lembar, sedangkan Kartu 2 menunjukkan volume 6 Mei 2026 (kemarin) 419.300 lembar, jadi volume hari ini lebih rendah, bukan naik.",
+            "biaya_usd": 0.000187288
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini 139.700 lembar dan lebih rendah dari kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; volume sering ramai menjelang cum date.",
+            "biaya_usd": 0.00634,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini 139.700 lembar dan lebih rendah dari kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; volume biasanya turun setelah cum date.",
+            "biaya_usd": 0.0061,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini 139.700 lembar dan lebih rendah dari kemarin.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, ini tebakan; tak bisa diverifikasi.",
+            "biaya_usd": 0.0058,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini 139.700 lembar dan lebih rendah dari kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan: volume biasanya memuncak di cum date, turun saat ex",
+            "biaya_usd": 0.00678,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 4,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 1,
+          "putusan": "tolak",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+        },
+        "biaya_usd": 0.02502
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": false,
+        "keberatan": [
+          {
+            "jenis": "aturan",
+            "bagian": "penjelasan",
+            "alasan": "Penjelasan menyebut 'harga yang turun ke Rp930' padahal tidak ada kartu tentang arah pergerakan harga — kartu 3 hanya mencatat harga penutupan 7 Mei."
+          }
+        ],
+        "arahan": "Hapus kata 'turun' pada penjelasan karena arah pergerakan harga tidak bisa dicek dari kartu; cukup sebut harga penutupan Rp930 tanpa menyebut arah.",
+        "token_penalaran": [
+          8040
+        ]
+      },
+      "biaya_gerbang_usd": 0.077916598,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Volume 419.300 lebih realistis untuk hari ex dividen dengan aktivitas tinggi.",
+            "biaya_usd": 0.000507,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lembar lebih kredibel untuk hari ex dividen dengan aktivitas tinggi.",
+            "biaya_usd": 0.000517,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume lebih rendah lebih konsisten dengan pola ex-dividen normal.",
+            "biaya_usd": 0.000481,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lembar lebih masuk akal untuk hari ex dividen dengan transaksi ramai.",
+            "biaya_usd": 0.000526,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka 139.700 lebih kecil, lebih mungkin volume rendah",
+            "biaya_usd": 0.0000263,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lebih tinggi, tapi tetap lebih rendah dari kemarin.",
+            "biaya_usd": 0.0000281,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka 139.700 lebih kecil, kemungkinan volume turun",
+            "biaya_usd": 0.00002745,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lebih tinggi, kontradiksi klaim lebih rendah",
+            "biaya_usd": 0.00002745,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume hari ex dividen lebih rendah, 139.700 lembar sesuai dokumen.",
+            "biaya_usd": 0.0003601,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lembar lebih rendah dari kemarin, sehingga klaim kenaikan salah",
+            "biaya_usd": 0.00057322,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume hari ini lebih rendah dari kemarin, sesuai angka 139.700 lembar.",
+            "biaya_usd": 0.00043129,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 1,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044232,
+            "panggilan": 2
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 11,
+          "tak_terbaca": 1,
+          "kunci": 5,
+          "p": 0.7255859375,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.02394723
+      }
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Hari ini yang transaksi kayaknya lebih rame ya, volumenya naik dibanding kemarin.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06",
+          "harga-2026-05-06",
+          "harga-2026-05-07"
+        ],
+        "kartu_penentu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06"
+        ],
+        "pilihan": {
+          "a": "Betul, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih tinggi dari kemarin.",
+          "b": "Keliru, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih rendah dari kemarin.",
+          "c": "Betul, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih tinggi dari kemarin.",
+          "d": "Keliru, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih rendah dari kemarin."
+        },
+        "kunci": "b",
+        "penjelasan": "Data harian bursa mencatat volume hari ini, [[volume-2026-05-07|7 Mei 2026]], hanya [[volume-2026-05-07|139.700 lembar]]. Sehari sebelumnya, [[volume-2026-05-06|6 Mei 2026]], volumenya [[volume-2026-05-06|419.300 lembar]]. Jadi transaksi hari ini justru jauh lebih sepi, bukan lebih ramai. Angka yang lebih besar itu milik kemarin; tertukar tanggal membuat kesimpulannya terbalik. Harga penutupan memang berubah dari [[harga-2026-05-06|Rp990]] kemarin ke [[harga-2026-05-07|Rp930]] hari ini, tetapi perubahan harga tidak memberi tahu berapa lembar yang berpindah tangan. Salah-kaprah yang umum: mengira harga yang bergerak besar selalu disertai volume yang besar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: angka di kartu 1 benar milik hari ini, tetapi volume itu lebih kecil dari kemarin."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 mencatat angka itu sebagai volume kemarin, dan hari ini lebih sepi."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat angka itu untuk [[volume-2026-05-06|6 Mei]], bukan untuk hari ini."
+          }
+        },
+        "pertanyaan_cek": "Angka volume ini tercatat untuk tanggal berapa?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (peluang kebetulan 0,8062; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 1 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan volume 7 Mei 2026 sebesar 139.700 lembar, lebih rendah daripada volume 6 Mei 2026 sebesar 419.300 lembar di Kartu 2, jadi omongan Nadia keliru.",
+            "biaya_usd": 0.000192738
+          },
+          {
+            "r": 2,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan volume 7 Mei 2026 (hari ini) 139.700 lembar, sedangkan Kartu 2 menunjukkan volume 6 Mei 2026 (kemarin) 419.300 lembar, jadi volume hari ini lebih rendah.",
+            "biaya_usd": 0.000191538
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini 139.700 lembar dan lebih tinggi dari kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan murni; tanpa dokumen, angka volume tak bisa diverifikasi.",
+            "biaya_usd": 0.004796,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini 419.300 lembar dan lebih tinggi dari kemarin.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, ini tebakan; Nadia bilang volume naik.",
+            "biaya_usd": 0.004536,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, volume hari ini 139.700 lembar dan lebih rendah dari kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan saja, tanpa dokumen tidak bisa diverifikasi.",
+            "biaya_usd": 0.006096,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, volume hari ini 419.300 lembar dan lebih tinggi dari kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan saja, tanpa dokumen tidak bisa diverifikasi.",
+            "biaya_usd": 0.004536,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 1,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 1 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.019964000000000003
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Tidak ada perubahan yang perlu; klaim, angka, dan penjelasan sudah selaras dengan kartu.",
+        "token_penalaran": [
+          1523
+        ]
+      },
+      "biaya_gerbang_usd": 0.036409506,
+      "id_bank": "133fe8aa875e7fa4",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Volume 419.300 lebih kredibel untuk pasar saham aktif dibanding 139.700",
+            "biaya_usd": 0.000515,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lembar lebih kredibel untuk pasar saham aktif.",
+            "biaya_usd": 0.000495,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Volume 419.300 lembar lebih realistis untuk pasar saham aktif.",
+            "biaya_usd": 0.000494,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lebih masuk akal dibanding 139.700 untuk pasar saham.",
+            "biaya_usd": 0.000514,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka 139.700 lebih kecil, lebih mungkin volume rendah.",
+            "biaya_usd": 0.00002675,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka 419.300 lebih realistis untuk volume ramai.",
+            "biaya_usd": 0.00002675,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka 139.700 lebih kecil, mungkin volume rendah.",
+            "biaya_usd": 0.0000261,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 lebih besar, tapi tetap lebih rendah dari kemarin.",
+            "biaya_usd": 0.0000279,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka 139.700 lebih kecil, cocok sebagai volume hari ini yang turun.",
+            "biaya_usd": 0.00616395,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 419.300 tampak ramai sehingga wajar disalahartikan naik",
+            "biaya_usd": 0.00064714,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume hari ini 139.700 lembar, lebih rendah dari kemarin",
+            "biaya_usd": 0.00050265,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Volume hari ini 139.700 lembar, lebih rendah dari kemarin.",
+            "biaya_usd": 0.0005251,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 5,
+          "p": 0.80615234375,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (peluang kebetulan 0,8062; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.009964340000000002
+      }
+    }
+  ],
+  "draf_lolos_kode": [
+    {
+      "id": "90b4cf268a3f8bef",
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Hari ex dividen gini transaksinya lebih rame ya, volume hari ini naik dibanding kemarin.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06",
+          "harga-2026-05-07"
+        ],
+        "kartu_penentu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06"
+        ],
+        "pilihan": {
+          "a": "Betul, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih tinggi dari kemarin.",
+          "b": "Keliru, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih rendah dari kemarin.",
+          "c": "Betul, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih tinggi dari kemarin.",
+          "d": "Keliru, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih rendah dari kemarin."
+        },
+        "kunci": "b",
+        "penjelasan": "Data harian bursa mencatat volume hari ini, [[volume-2026-05-07|7 Mei 2026]], hanya [[volume-2026-05-07|139.700 lembar]]. Sehari sebelumnya, [[volume-2026-05-06|6 Mei 2026]], volumenya [[volume-2026-05-06|419.300 lembar]]. Jadi transaksi hari ini justru jauh lebih sepi, bukan lebih ramai. Angka yang lebih besar itu milik kemarin; tertukar tanggal membuat kesimpulannya terbalik. Tanggal ex dividen tidak otomatis membuat perdagangan ramai, dan harga yang turun ke [[harga-2026-05-07|Rp930]] juga tidak memberi tahu berapa lembar yang berpindah tangan. Salah-kaprah yang umum: mengira harga yang bergerak besar pasti disertai volume yang besar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: angka di kartu 1 benar milik hari ini, tetapi volume itu lebih kecil dari kemarin."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 mencatat angka itu sebagai volume kemarin, dan hari ini lebih sepi."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat angka itu untuk [[volume-2026-05-06|6 Mei]], bukan untuk hari ini."
+          }
+        },
+        "pertanyaan_cek": "Angka volume ini tercatat untuk tanggal berapa?"
+      }
+    },
+    {
+      "id": "133fe8aa875e7fa4",
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Hari ini yang transaksi kayaknya lebih rame ya, volumenya naik dibanding kemarin.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06",
+          "harga-2026-05-06",
+          "harga-2026-05-07"
+        ],
+        "kartu_penentu": [
+          "volume-2026-05-07",
+          "volume-2026-05-06"
+        ],
+        "pilihan": {
+          "a": "Betul, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih tinggi dari kemarin.",
+          "b": "Keliru, volume hari ini [[volume-2026-05-07|139.700 lembar]] dan lebih rendah dari kemarin.",
+          "c": "Betul, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih tinggi dari kemarin.",
+          "d": "Keliru, volume hari ini [[volume-2026-05-06|419.300 lembar]] dan lebih rendah dari kemarin."
+        },
+        "kunci": "b",
+        "penjelasan": "Data harian bursa mencatat volume hari ini, [[volume-2026-05-07|7 Mei 2026]], hanya [[volume-2026-05-07|139.700 lembar]]. Sehari sebelumnya, [[volume-2026-05-06|6 Mei 2026]], volumenya [[volume-2026-05-06|419.300 lembar]]. Jadi transaksi hari ini justru jauh lebih sepi, bukan lebih ramai. Angka yang lebih besar itu milik kemarin; tertukar tanggal membuat kesimpulannya terbalik. Harga penutupan memang berubah dari [[harga-2026-05-06|Rp990]] kemarin ke [[harga-2026-05-07|Rp930]] hari ini, tetapi perubahan harga tidak memberi tahu berapa lembar yang berpindah tangan. Salah-kaprah yang umum: mengira harga yang bergerak besar selalu disertai volume yang besar.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: angka di kartu 1 benar milik hari ini, tetapi volume itu lebih kecil dari kemarin."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 mencatat angka itu sebagai volume kemarin, dan hari ini lebih sepi."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2026-05-06",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat angka itu untuk [[volume-2026-05-06|6 Mei]], bukan untuk hari ini."
+          }
+        },
+        "pertanyaan_cek": "Angka volume ini tercatat untuk tanggal berapa?"
+      }
+    }
+  ],
+  "teks_akhir": ""
+}

@@ -19,7 +19,7 @@
  *   walau model memanggil beberapa alat sekaligus;
  * - tiap panggilan alat dicatat ke jejak.
  */
-import { bacaBank, idOmongan, jumlahSudut, pilihSimulasi, shaPaketBank, simpanBank, sudutBank, UKURAN_SIMULASI, type EntriBank } from '../bebas/bank.ts';
+import { bacaBank, idOmongan, jumlahSudut, pilihSimulasi, shaPaketBank, simpanBank, sudutBank, UKURAN_SIMULASI, type EntriBank, type PilihanSimulasi } from '../bebas/bank.ts';
 import { nilaiOmonganV3, type NilaiOmonganV3 } from '../bebas/mesin-v3.ts';
 import { teksPaket } from '../bebas/prompt.ts';
 import { uraiOmonganBebas, type OmonganBebas } from '../bebas/skema.ts';
@@ -125,21 +125,32 @@ export function ringkasDitolak(d: readonly SudutDitolak[], maks: number = MAKS_R
 export const kunciBetul = (o: OmonganBebas): boolean => /^\s*betul\b/i.test(o.pilihan[o.kunci]);
 
 /**
+ * Perakit jalur agen (M2d-25): validator seluruh draf + minimal satu "Keliru".
+ * Validator lama hanya menuntut minimal satu "Betul"; m2d25-bolt-2 terakit
+ * dengan tiga jawaban "Betul" — pemain cukup mengiyakan semua teman.
+ */
+export const SEMUA_BETUL = 'ketiga omongan berjawaban "Betul"; simulasi butuh minimal satu yang ternyata KELIRU';
+export const rakitSimulasi = (bank: readonly EntriBank[], paket: PaketFakta): PilihanSimulasi =>
+  pilihSimulasi(bank, paket, (trio) => (trio.every((e) => kunciBetul(e.omongan)) ? SEMUA_BETUL : null));
+
+/**
  * Apa yang masih dibutuhkan supaya bank bisa dirakit menjadi simulasi — aturan
  * tingkat simulasi yang tidak terlihat dari satu omongan (M2d-19: bank 3/3
  * tetapi perakit menolak karena tidak ada kunci "Betul"). Murni.
  */
-export function kebutuhanSimulasi(bank: readonly EntriBank[], paket: PaketFakta, target: number): { terakit: boolean; butuh_betul: boolean; kebutuhan: string[] } {
-  const terakit = pilihSimulasi(bank, paket).draf !== null;
-  if (terakit) return { terakit, butuh_betul: false, kebutuhan: [] };
+export function kebutuhanSimulasi(bank: readonly EntriBank[], paket: PaketFakta, target: number): { terakit: boolean; butuh_betul: boolean; butuh_keliru: boolean; kebutuhan: string[] } {
+  const terakit = rakitSimulasi(bank, paket).draf !== null;
+  if (terakit) return { terakit, butuh_betul: false, butuh_keliru: false, kebutuhan: [] };
   const kebutuhan: string[] = [];
   const sudut = jumlahSudut(bank);
   if (sudut < target) kebutuhan.push(`Bank baru memuat ${String(sudut)} dari ${String(target)} kartu penentu berbeda.`);
   const butuhBetul = bank.length > 0 && !bank.some((e) => kunciBetul(e.omongan));
   if (butuhBetul) kebutuhan.push('Semua omongan di bank berjawaban "Keliru". Simulasi butuh minimal satu omongan yang ternyata BETUL (kuncinya pilihan "Betul, …").');
+  const butuhKeliru = bank.length > 0 && bank.every((e) => kunciBetul(e.omongan));
+  if (butuhKeliru) kebutuhan.push('Semua omongan di bank berjawaban "Betul". Simulasi butuh minimal satu omongan yang ternyata KELIRU (kuncinya pilihan "Keliru, …").');
   // M2d-20: larangan "pilih keluarga lain" dihapus — perakit tidak menuntutnya, dan penolakan penebak adalah sifat kalimat, bukan sifat kartu.
-  if (kebutuhan.length === 0) kebutuhan.push(...pilihSimulasi(bank, paket).alasan.slice(0, 2));
-  return { terakit, butuh_betul: butuhBetul, kebutuhan };
+  if (kebutuhan.length === 0) kebutuhan.push(...rakitSimulasi(bank, paket).alasan.slice(0, 2));
+  return { terakit, butuh_betul: butuhBetul, butuh_keliru: butuhKeliru, kebutuhan };
 }
 
 export interface HasilPeriksa {
@@ -240,6 +251,7 @@ export function buatAlat(o: OpsiAlat) {
     // Penjaga uang: bila simulasi hanya kurang omongan ber-kunci "Betul", draf "Keliru" tidak dibayar.
     const butuh = kebutuhanSimulasi(bank(), o.paket, target);
     if (butuh.butuh_betul && jumlahSudut(bank()) >= target && !kunciBetul(om)) return lapor('ajukan', 'bukan yang dibutuhkan simulasi (gratis)', dasar('kebutuhan', butuh.kebutuhan, ['Gerbang berbayar tidak dijalankan: bank sudah penuh dengan jawaban "Keliru". Ajukan omongan yang kuncinya "Betul, …".']));
+    if (butuh.butuh_keliru && jumlahSudut(bank()) >= target && kunciBetul(om)) return lapor('ajukan', 'bukan yang dibutuhkan simulasi (gratis)', dasar('kebutuhan', butuh.kebutuhan, ['Gerbang berbayar tidak dijalankan: bank sudah penuh dengan jawaban "Betul". Ajukan omongan yang kuncinya "Keliru, …".']));
     if (sisa() < CADANGAN_AJUKAN_USD) return lapor('ajukan', 'anggaran tidak cukup (gratis)', dasar('anggaran', [], [`Sisa anggaran US$${String(sisa())} di bawah cadangan satu pengajuan (US$${String(CADANGAN_AJUKAN_USD)}). Berhenti.`]));
     ajukanKe += 1;
     const putaranIni = ajukanKe;
@@ -335,7 +347,7 @@ export function buatAlat(o: OpsiAlat) {
     /** Keadaan untuk penghenti dan ringkasan. */
     keadaan: () => ({ ditolak: ditolakDiSini, jumlah_omongan: bank().length, jumlah_sudut: jumlahSudut(bank()), target, biaya_gerbang_usd: bulat(biayaGerbang), biaya_total_usd: bulat(terpakai()), sisa_anggaran_usd: sisa(), pengajuan: ajukanKe, nilai: semuaNilai }),
     /** Selesai = bank BISA DIRAKIT menjadi simulasi (bukan sekadar jumlah sudut). */
-    selesai: () => pilihSimulasi(bank(), o.paket).draf !== null,
+    selesai: () => rakitSimulasi(bank(), o.paket).draf !== null,
     anggaranHabis: () => sisa() < CADANGAN_AJUKAN_USD,
     /** Pesan galat gerbang (bukan penolakan); `null` = sehat. */
     rusak: () => rusak,

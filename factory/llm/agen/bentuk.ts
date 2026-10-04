@@ -58,7 +58,7 @@ export function butirBentuk(): ButirBentuk[] {
 
 /** Aturan tingkat simulasi (perakit): tidak terlihat dari satu omongan. */
 export const BARIS_SIMULASI: readonly string[] = [
-  'Dari tiga omongan satu simulasi, minimal satu ternyata BETUL (kuncinya "Betul, …").',
+  'Dari tiga omongan satu simulasi, minimal satu ternyata BETUL (kuncinya "Betul, …") dan minimal satu ternyata KELIRU (kuncinya "Keliru, …").',
   'Huruf kunci ketiga omongan tidak boleh sama semua.',
 ];
 

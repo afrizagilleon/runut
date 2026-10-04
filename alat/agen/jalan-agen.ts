@@ -27,9 +27,9 @@ import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, write
 import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { isStepCount, tool, ToolLoopAgent } from 'ai';
 import { z } from 'zod';
-import { buatAlat, CADANGAN_AJUKAN_USD, type PeristiwaAlat, type SudutDitolak } from '../../factory/llm/agen/alat.ts';
+import { buatAlat, CADANGAN_AJUKAN_USD, rakitSimulasi, type PeristiwaAlat, type SudutDitolak } from '../../factory/llm/agen/alat.ts';
 import { instruksiAgen } from '../../factory/llm/agen/prompt.ts';
-import { bacaBank, FOLDER_BANK, pilihSimulasi, shaPaketBank, UKURAN_SIMULASI } from '../../factory/llm/bebas/bank.ts';
+import { bacaBank, FOLDER_BANK, shaPaketBank, UKURAN_SIMULASI } from '../../factory/llm/bebas/bank.ts';
 import { AKAR, bacaKonfigLlm } from '../../factory/llm/env.ts';
 import { samarkan } from '../../factory/llm/klien.ts';
 import { HARGA } from '../../factory/llm/harga.ts';
@@ -268,7 +268,7 @@ try {
 
 const k = alat.keadaan();
 const bank = bacaBank(folderBank, shaPaketBank(paket));
-const simulasi = pilihSimulasi(bank, paket);
+const simulasi = rakitSimulasi(bank, paket);
 const berhenti = galat !== null ? `galat: ${galat}` : alat.rusak() !== null ? `gerbang rusak: ${alat.rusak() ?? ''}` : alat.selesai() ? 'bank bisa dirakit menjadi simulasi' : alat.anggaranHabis() ? 'anggaran tidak cukup untuk satu pengajuan lagi' : percakapan >= MAKS_PERCAKAPAN ? 'batas percakapan' : 'agen berhenti sendiri';
 const hasil = {
   id, model: MODEL_PENULIS, sdk: 'ai (ToolLoopAgent) + @openrouter/ai-sdk-provider', target, pagu_usd: pagu, berhenti, percakapan: ringkasPercakapan, langkah, panggilan_model: panggilanModel, pengajuan: k.pengajuan,

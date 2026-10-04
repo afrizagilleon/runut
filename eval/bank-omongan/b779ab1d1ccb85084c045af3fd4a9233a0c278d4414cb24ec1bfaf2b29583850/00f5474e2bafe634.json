@@ -1,0 +1,353 @@
+{
+  "id": "00f5474e2bafe634",
+  "paket_sha": "b779ab1d1ccb85084c045af3fd4a9233a0c278d4414cb24ec1bfaf2b29583850",
+  "kartu_penentu": [
+    "hari-naik-beruntun"
+  ],
+  "omongan": {
+    "nama": "Bayu",
+    "jam": "20.05",
+    "pesan": "Sebelum hari ini, harganya sempat naik beberapa hari bursa berturut-turut, kan?",
+    "angka_pesan": [],
+    "kartu": [
+      "hari-naik-beruntun",
+      "harga-2026-04-22",
+      "harga-2026-04-30",
+      "harga-2026-05-06"
+    ],
+    "kartu_penentu": [
+      "hari-naik-beruntun"
+    ],
+    "pilihan": {
+      "a": "Betul, naik beruntun sejak penutupan [[harga-2026-04-22|22 April]].",
+      "b": "Betul, naik beruntun sejak penutupan [[harga-2026-04-30|30 April]].",
+      "c": "Keliru, harganya cuma naik sekali pada [[harga-2026-05-06|6 Mei]].",
+      "d": "Keliru, penutupan [[harga-2026-05-06|6 Mei]] lebih rendah dari akhir April."
+    },
+    "kunci": "b",
+    "penjelasan": "Hitungan harga mencatat penutupan naik [[hari-naik-beruntun|3 hari bursa]] berturut-turut, dari [[harga-2026-04-30|Rp900]] pada [[harga-2026-04-30|30 April 2026]] sampai [[harga-2026-05-06|Rp990]] pada [[harga-2026-05-06|6 Mei 2026]]. Titik awalnya akhir April, bukan [[harga-2026-04-22|22 April]]: hari itu harga ditutup [[harga-2026-04-22|Rp920]], lalu justru turun ke [[harga-2026-04-30|Rp900]]. Jadi omongannya betul, asal titik awal kenaikannya dibaca tepat. Salah-kaprah yang umum: menganggap kenaikan beruntun dimulai dari tanggal data paling awal yang terlihat.",
+    "pengecoh": {
+      "a": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2026-04-22",
+        "umpan_balik": "Ini salah periode: kartu 2 mencatat [[harga-2026-04-22|Rp920]], lalu harga turun ke [[harga-2026-04-30|Rp900]] di akhir April, jadi kenaikan belum dimulai dari situ."
+      },
+      "c": {
+        "jenis": "sebagian-benar",
+        "rujukan": "hari-naik-beruntun",
+        "umpan_balik": "Ini sebagian benar: harga memang naik, tetapi kartu 1 mencatat kenaikan [[hari-naik-beruntun|3 hari bursa]] berturut-turut, bukan sekali."
+      },
+      "d": {
+        "jenis": "nyaris-benar-angka",
+        "rujukan": "harga-2026-05-06",
+        "umpan_balik": "Ini angka nyaris benar: kartu 4 mencatat penutupan [[harga-2026-05-06|Rp990]], di atas [[harga-2026-04-30|Rp900]] akhir April."
+      }
+    },
+    "pertanyaan_cek": "Mulai tanggal berapa harga penutupan naik terus tanpa jeda?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "pemanasan",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 9 (peluang kebetulan 0,0898; batas 0,02); 3 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Pesan tanggal 20.05 lebih dekat ke 30 April daripada 22 April.",
+          "biaya_usd": 0.000526,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Pesan tanggal 20.05 lebih dekat ke 30 April daripada 22 April.",
+          "biaya_usd": 0.000526,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, asumsi naik beruntun lebih dekat ke tanggal pesan (20 Mei) lebih masuk akal.",
+          "biaya_usd": 0.00057,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Tanggal 30 April lebih dekat ke 20 Mei, lebih logis untuk 'beberapa hari berturut-turut'",
+          "biaya_usd": 0.000575,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "30 April lebih dekat ke 20 Mei, rentang naik lebih pendek",
+          "biaya_usd": 0.00002835,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "22 April lebih awal, memungkinkan lebih banyak hari naik beruntun.",
+          "biaya_usd": 0.00002835,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "30 April lebih dekat ke 20.05, lebih mungkin naik beruntun.",
+          "biaya_usd": 0.0000295,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "22 April lebih awal, memungkinkan lebih banyak hari naik beruntun.",
+          "biaya_usd": 0.0000283,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.020442639999999998,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.0204388,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan beruntun beberapa hari lebih mungkin dimulai akhir April.",
+          "biaya_usd": 0.00051511,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.02044008,
+          "panggilan": 2
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 9,
+        "tak_terbaca": 3,
+        "kunci": 7,
+        "p": 0.08984375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 9 (peluang kebetulan 0,0898; batas 0,02); 3 tak terbaca dibuang"
+        ]
+      },
+      "biaya_usd": 0.06414813
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menyatakan harga naik 3 hari bursa berturut-turut dari 30 April (Rp900) ke 6 Mei (Rp990), jadi omongan Bayu betul.",
+          "biaya_usd": 0.00061065
+        },
+        {
+          "r": 2,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menyatakan harga penutupan naik 3 hari bursa berturut-turut dari 30 April 2026 sampai 6 Mei 2026.",
+          "biaya_usd": 0.00036825
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, naik beruntun sejak penutupan 30 April.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, ini tebakan; pilihan ini tampak paling wajar.",
+          "biaya_usd": 0.004736,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, naik beruntun sejak penutupan 22 April.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+          "biaya_usd": 0.006356,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, naik beruntun sejak penutupan 30 April.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan, pilihan lain tampak menyangkal klaim ini.",
+          "biaya_usd": 0.007456,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, naik beruntun sejak penutupan 30 April.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, ini tebakan; klaim Bayu tampak wajar.",
+          "biaya_usd": 0.004536,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 3,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 1,
+        "putusan": "tolak",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      },
+      "biaya_usd": 0.023084
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Tidak ada perubahan yang perlu; seluruh klaim tercek dari kartu dan hanya kunci yang benar menurut kartu.",
+      "token_penalaran": [
+        3034
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d25-bolt-2",
+    "putaran": 2,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T12:27:11.270Z"
+}

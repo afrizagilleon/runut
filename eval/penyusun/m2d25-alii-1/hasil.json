@@ -1,0 +1,2225 @@
+{
+  "id": "m2d25-alii-1",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1.5,
+  "berhenti": "bank bisa dirakit menjadi simulasi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 6,
+      "sudut_sebelum": 0,
+      "sudut_sesudah": 3,
+      "ditolak": 3,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 6,
+  "panggilan_model": 6,
+  "pengajuan": 6,
+  "biaya_agen_usd": 0.523551,
+  "biaya_gerbang_usd": 0.2558,
+  "biaya_usd": 0.7794,
+  "durasi_detik": 464,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "4bbfd272e4261530",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "volume-2025-11-07",
+          "volume-2025-11-10"
+        ],
+        "asal": "m2d25-alii-1"
+      },
+      {
+        "id": "8c56aa79aa89af89",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "div-2025-05-22-bayar"
+        ],
+        "asal": "m2d25-alii-1"
+      },
+      {
+        "id": "db2d58231a787873",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "fil-2025-11-05-01"
+        ],
+        "asal": "m2d25-alii-1"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": true,
+    "dipilih": [
+      "4bbfd272e4261530",
+      "8c56aa79aa89af89",
+      "db2d58231a787873"
+    ],
+    "alasan": [],
+    "draf": {
+      "omongan": [
+        {
+          "nama": "Bayu",
+          "jam": "21.30",
+          "pesan": "Volume hari ini lebih rame dari hari bursa sebelumnya lho, harganya juga ikut naik.",
+          "angka_pesan": [],
+          "kartu": [
+            "volume-2025-11-10",
+            "volume-2025-11-07",
+            "harga-2025-11-10",
+            "harga-2025-11-07"
+          ],
+          "kartu_penentu": [
+            "volume-2025-11-07",
+            "volume-2025-11-10"
+          ],
+          "pilihan": {
+            "a": "Betul, volume dan harga hari ini sama-sama naik.",
+            "b": "Keliru, harga hari ini turun dari hari bursa sebelumnya.",
+            "c": "Keliru, volume hari ini turun dari hari bursa sebelumnya.",
+            "d": "Betul, volume naik meski harga hari ini turun."
+          },
+          "kunci": "c",
+          "penjelasan": "Volume hari ini [[volume-2025-11-10|4.259.800 lembar]], sedangkan hari bursa sebelumnya, [[volume-2025-11-07|7 November 2025]], volumenya [[volume-2025-11-07|6.538.100 lembar]]. Jadi hari ini lebih sepi, bukan lebih ramai. Harganya memang naik dari [[harga-2025-11-07|Rp600]] ke [[harga-2025-11-10|Rp650]], dan itulah yang membuat omongannya terdengar benar. Harga dan volume harus dicek terpisah. Salah-kaprah yang umum: mengira harga yang naik selalu disertai perdagangan yang lebih ramai."
+        },
+        {
+          "nama": "Dimas",
+          "jam": "19.12",
+          "pesan": "Dividen tunai yang tercatat Rp4,5 per lembar, dan itu udah dibayarin ke pemegang saham kan?",
+          "angka_pesan": [
+            {
+              "teks": "Rp4,5",
+              "fact_id": "div-2025-05-22"
+            }
+          ],
+          "kartu": [
+            "div-2025-05-22",
+            "div-2025-05-22-bayar",
+            "dividen-tercatat"
+          ],
+          "kartu_penentu": [
+            "div-2025-05-22-bayar"
+          ],
+          "pilihan": {
+            "a": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22|22 Mei 2025]].",
+            "b": "Keliru, dividen itu belum dibayarkan sampai hari ini.",
+            "c": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22-bayar|13 Juni 2025]].",
+            "d": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan."
+          },
+          "kunci": "c",
+          "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-22|Rp4,5 per lembar]] dengan tanggal ex [[div-2025-05-22|22 Mei 2025]], dan pembayarannya [[div-2025-05-22-bayar|13 Juni 2025]]. Hari ini sudah November, jadi tanggal bayar itu sudah lewat dan omongan teman cocok dengan kartu. Pilihan yang menggoda adalah tanggal Mei, padahal itu tanggal ex: batas siapa yang berhak menerima, bukan hari uangnya dibayarkan. Daftar ini mencatat [[dividen-tercatat|1 pembagian]], jadi yang bisa dicek hanyalah pembagian yang tercatat. Salah-kaprah yang umum: mengira tanggal ex adalah tanggal dividen dibayarkan."
+        },
+        {
+          "nama": "Rara",
+          "jam": "20.05",
+          "pesan": "Di laporan terbarunya, Pemegang saham A beli 9.948.800 lembar, kepemilikannya jadi 2,21 persen.",
+          "angka_pesan": [
+            {
+              "teks": "9.948.800",
+              "fact_id": "fil-2025-11-05-01"
+            },
+            {
+              "teks": "2,21 persen",
+              "fact_id": "fil-2025-11-05-01"
+            }
+          ],
+          "kartu": [
+            "fil-2025-11-05-01",
+            "fil-2025-08-19-01"
+          ],
+          "kartu_penentu": [
+            "fil-2025-11-05-01"
+          ],
+          "pilihan": {
+            "a": "Betul, kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]].",
+            "b": "Betul, kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]].",
+            "c": "Keliru, kepemilikannya hanya menjadi [[fil-2025-08-19-01|2,152 persen]].",
+            "d": "Keliru, angka [[fil-2025-11-05-01|2,21 persen]] itu milik pemegang saham lain."
+          },
+          "kunci": "b",
+          "penjelasan": "Laporan terbaru Pemegang saham A mencatat pembelian [[fil-2025-11-05-01|9.948.800 lembar]], dan kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]] menjadi [[fil-2025-11-05-01|2,21 persen]]. Jadi omongan teman cocok dengan kartu. Yang menggoda adalah angka dari laporan Agustus: di sana kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]] ke [[fil-2025-08-19-01|2,152 persen]]. Dua laporan dari pemegang saham yang sama mudah tertukar; cocokkan jumlah lembarnya dulu. Salah-kaprah yang umum: mengambil angka dari laporan lama milik orang yang sama."
+        }
+      ]
+    }
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Dividen tunai yang tercatat Rp4,5 per lembar, dan itu udah dibayarin ke pemegang saham kan?",
+        "angka_pesan": [
+          {
+            "teks": "Rp4,5",
+            "fact_id": "div-2025-05-22"
+          }
+        ],
+        "kartu": [
+          "div-2025-05-22",
+          "div-2025-05-22-bayar",
+          "dividen-tercatat"
+        ],
+        "kartu_penentu": [
+          "div-2025-05-22-bayar"
+        ],
+        "pilihan": {
+          "a": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22|22 Mei 2025]].",
+          "b": "Keliru, sesudah tanggal ex [[div-2025-05-22|22 Mei 2025]] belum ada pembayaran.",
+          "c": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22-bayar|13 Juni 2025]].",
+          "d": "Keliru, uangnya baru akan dibayarkan [[div-2025-05-22-bayar|13 Juni 2025]]."
+        },
+        "kunci": "c",
+        "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-22|Rp4,5 per lembar]] dengan tanggal ex [[div-2025-05-22|22 Mei 2025]], dan pembayarannya [[div-2025-05-22-bayar|13 Juni 2025]]. Tanggal itu sudah lewat dari hari ini, jadi omongan teman cocok dengan kartu. Tanggal ex bukan tanggal uang masuk: itu batas siapa yang berhak menerima, sedangkan uangnya dibayarkan beberapa minggu kemudian. Daftar ini juga hanya mencatat [[dividen-tercatat|1 pembagian]], jadi yang bisa dicek hanyalah pembagian yang tercatat. Salah-kaprah yang umum: mengira tanggal ex adalah tanggal dividen dibayarkan.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat tanggal itu sebagai tanggal ex, bukan tanggal pembayaran."
+          },
+          "b": {
+            "jenis": "sebagian-benar",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini sebagian benar: tanggal ex-nya tepat, tetapi kartu 2 mencatat pembayarannya sudah dilakukan sesudah itu."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini salah periode: tanggal bayar di kartu 2 sudah lewat dari hari ini, jadi uangnya bukan baru akan dibayar."
+          }
+        },
+        "pertanyaan_cek": "Tanggal mana yang menandai uang dividen benar-benar dibayarkan?"
+      },
+      "berhenti": "kartu",
+      "alasan": [
+        "pembaca yang memegang kartu tidak memilih kunci di kedua rotasi (pilihan diputar): r0: memilih d (kunci c) — Kartu 2 menyatakan dividen dengan tanggal ex 22 Mei 2025 dibayarkan 13 Juni 2025, jadi belum dibayarkan pada 22 Mei 2025.; r2: memilih b (kunci a) — Kartu 2 menyebut dividen dengan tanggal ex 22 Mei 2025 dibayarkan 13 Juni 2025, sehingga uangnya belum dibayarkan pada saat tanggal ex."
+      ],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 12 (peluang kebetulan 0,1938; batas 0,02)"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "c",
+            "pilihan": "d",
+            "benar": false,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menyatakan dividen dengan tanggal ex 22 Mei 2025 dibayarkan 13 Juni 2025, jadi belum dibayarkan pada 22 Mei 2025.",
+            "biaya_usd": 0.000517688
+          },
+          {
+            "r": 2,
+            "kunci": "a",
+            "pilihan": "b",
+            "benar": false,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menyebut dividen dengan tanggal ex 22 Mei 2025 dibayarkan 13 Juni 2025, sehingga uangnya belum dibayarkan pada saat tanggal ex.",
+            "biaya_usd": 0.000643688
+          }
+        ],
+        "lulus": false
+      },
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.015540446000000001,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen umumnya setelah tanggal pencatatan, 22 Mei lebih logis sebelum 13 Juni.",
+            "biaya_usd": 0.000591,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen tunai umumnya lebih cepat setelah pencatatan.",
+            "biaya_usd": 0.000526,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen umumnya lebih awal dari tanggal pencatatan.",
+            "biaya_usd": 0.000515,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen tunai umumnya setelah tanggal pencatatan, Juni lebih logis.",
+            "biaya_usd": 0.000545,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 13 Juni lebih dekat dengan pesan 19.12, kemungkinan baru dibayar.",
+            "biaya_usd": 0.00003305,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Dividen tunai biasanya dibayar beberapa minggu setelah pencatatan.",
+            "biaya_usd": 0.00002825,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 13 Juni lebih dekat setelah 19.12, kemungkinan pembayaran dividen.",
+            "biaya_usd": 0.0000324,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 22 Mei lebih dekat ke 19.12, kemungkinan sesuai.",
+            "biaya_usd": 0.00003,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pembayaran dividen tunai umumnya jatuh pertengahan tahun, 13 Juni 2025.",
+            "biaya_usd": 0.01082529,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Dividen tunai Rp4,5 per lembar umumnya dibayarkan 13 Juni 2025",
+            "biaya_usd": 0.00034565,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pembayaran dividen tunai umumnya dilakukan setelah jeda pasca-RUPS, sekitar pertengahan Juni.",
+            "biaya_usd": 0.00040795,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Pembayaran dividen tunai kemungkinan besar dilakukan pada 13 Juni 2025.",
+            "biaya_usd": 0.00049948,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 8,
+          "p": 0.19384765625,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 12 (peluang kebetulan 0,1938; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.01437907
+      }
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Pemegang saham A baru beli 9.948.800 lembar awal November ini, laporannya udah keluar minggu lalu.",
+        "angka_pesan": [
+          {
+            "teks": "9.948.800",
+            "fact_id": "fil-2025-11-05-01"
+          }
+        ],
+        "kartu": [
+          "fil-2025-11-05-01",
+          "fil-2025-08-19-01",
+          "harga-2025-11-10"
+        ],
+        "kartu_penentu": [
+          "fil-2025-11-05-01"
+        ],
+        "pilihan": {
+          "a": "Keliru, transaksi itu terjadi pada [[fil-2025-08-19-01|8 Agustus 2025]].",
+          "b": "Keliru, transaksi itu terjadi pada [[fil-2025-11-05-01|7 Oktober 2025]].",
+          "c": "Betul, transaksi itu terjadi pada [[fil-2025-11-05-01|5 November 2025]].",
+          "d": "Betul, transaksi itu terjadi pada [[harga-2025-11-10|10 November 2025]]."
+        },
+        "kunci": "b",
+        "penjelasan": "Laporan kepemilikan itu memang mencatat pembelian [[fil-2025-11-05-01|9.948.800 lembar]], tetapi transaksinya terjadi [[fil-2025-11-05-01|7 Oktober 2025]] dan baru dilaporkan [[fil-2025-11-05-01|5 November 2025]]. Jadi pembeliannya bukan awal November; yang terjadi awal November hanyalah pengumumannya. Laporan lain dari pemegang saham yang sama mencatat pembelian [[fil-2025-08-19-01|8 Agustus 2025]], tetapi jumlahnya berbeda, jadi itu bukan transaksi yang dimaksud teman. Salah-kaprah yang umum: menyamakan tanggal laporan terbit dengan tanggal transaksinya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-entitas",
+            "rujukan": "fil-2025-08-19-01",
+            "umpan_balik": "Ini salah entitas: kartu 2 adalah laporan lain dengan jumlah lembar berbeda, bukan laporan pembelian yang dibicarakan."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "fil-2025-11-05-01",
+            "umpan_balik": "Ini salah periode: di kartu 1 tanggal itu adalah tanggal laporan, sedangkan transaksinya terjadi sebulan sebelumnya."
+          },
+          "d": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "fil-2025-11-05-01",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 menunjukkan transaksinya jauh sebelum laporan terbit, bukan sesudahnya."
+          }
+        },
+        "pertanyaan_cek": "Di laporan kepemilikan, mana tanggal transaksi dan mana tanggal laporannya?"
+      },
+      "berhenti": "saringan",
+      "alasan": [
+        "saringan tebak: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+      ],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.00382812,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Oktober lebih dekat November daripada Agustus, lebih masuk akal.",
+            "biaya_usd": 0.000503,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Oktober lebih dekat ke November daripada Agustus, lebih masuk akal.",
+            "biaya_usd": 0.000508,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Oktober lebih dekat November daripada Agustus, lebih masuk akal.",
+            "biaya_usd": 0.000502,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Oktober lebih dekat ke November daripada Agustus, lebih masuk akal.",
+            "biaya_usd": 0.000507,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Awal November dekat dengan 7 Oktober, bukan 8 Agustus",
+            "biaya_usd": 0.00002755,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Laporan minggu lalu, awal November, lebih dekat 7 Oktober.",
+            "biaya_usd": 0.00002815,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Awal November dekat dengan 7 Oktober, bukan 8 Agustus.",
+            "biaya_usd": 0.0000281,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Awal November dekat dengan 7 Oktober, bukan 8 Agustus",
+            "biaya_usd": 0.0000275,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Laporan keluar minggu lalu lebih dekat dengan transaksi 7 Oktober, bukan Agustus.",
+            "biaya_usd": 0.00062284,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Laporan keluar minggu lalu lebih cocok dengan transaksi awal Oktober, bukan Agustus.",
+            "biaya_usd": 0.00040588,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 7 Oktober lebih dekat ke awal November, cocok dengan laporan minggu lalu.",
+            "biaya_usd": 0.00035842,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Laporan keluar minggu lalu, transaksi Oktober lebih dekat waktunya",
+            "biaya_usd": 0.00030968,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 12,
+          "p": 0.000244140625,
+          "putusan": "tolak",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+          ]
+        },
+        "biaya_usd": 0.00382812
+      }
+    },
+    {
+      "putaran": 3,
+      "urut": 1,
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Volume hari ini paling rame dibanding beberapa hari terakhir lho, jutaan lembar pindah tangan.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-10",
+          "volume-2025-11-07",
+          "harga-2025-11-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-11-07"
+        ],
+        "pilihan": {
+          "a": "Betul, volume hari ini [[volume-2025-11-10|4.259.800 lembar]] mengalahkan hari bursa sebelumnya.",
+          "b": "Keliru, hari bursa sebelumnya lebih ramai dengan [[volume-2025-11-10|4.259.800 lembar]].",
+          "c": "Keliru, hari bursa sebelumnya lebih ramai dengan [[volume-2025-11-07|6.538.100 lembar]].",
+          "d": "Betul, volume hari ini [[volume-2025-11-07|6.538.100 lembar]] mengalahkan hari bursa sebelumnya."
+        },
+        "kunci": "c",
+        "penjelasan": "Volume hari ini memang jutaan lembar, yaitu [[volume-2025-11-10|4.259.800 lembar]]. Tetapi hari bursa sebelumnya, [[volume-2025-11-07|7 November 2025]], volumenya [[volume-2025-11-07|6.538.100 lembar]], lebih besar. Jadi hari ini bukan yang paling ramai. Harga yang naik ke [[harga-2025-11-10|Rp650]] tidak berarti volumenya ikut paling tinggi; keduanya harus dicek terpisah. Salah-kaprah yang umum: mengira hari harga naik paling tinggi pasti juga hari perdagangan paling ramai.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2025-11-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 menunjukkan hari bursa sebelumnya volumenya lebih besar."
+          },
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-11-10",
+            "umpan_balik": "Ini salah periode: angka itu di kartu 1 adalah volume hari ini, bukan volume hari bursa sebelumnya."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-11-07",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat angka itu untuk hari bursa sebelumnya, bukan hari ini."
+          }
+        },
+        "pertanyaan_cek": "Volume hari ini lebih besar atau lebih kecil dari hari bursa sebelumnya?"
+      },
+      "berhenti": "saringan",
+      "alasan": [
+        "saringan tebak: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 11 (peluang kebetulan 0,0059; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu; 1 tak terbaca dibuang"
+      ],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.03496056,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Perbedaan volume lebih signifikan, lebih meyakinkan untuk membantah klaim 'paling rame'.",
+            "biaya_usd": 0.000565,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Volume 6.538.100 lembar jauh lebih besar, lebih meyakinkan kontradiksi klaim Bayu.",
+            "biaya_usd": 0.00057,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume 6.538.100 lembar lebih signifikan menunjukkan hari sebelumnya lebih ramai.",
+            "biaya_usd": 0.000549,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Volume 6.538.100 lembar jauh lebih besar, lebih meyakinkan kontradiksi klaim Bayu.",
+            "biaya_usd": 0.000569,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "6,5 juta lembar lebih ramai dari jutaan lembar",
+            "biaya_usd": 0.00002695,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Volume jutaan lembar, 6,5 juta lebih mungkin dari 4,2 juta",
+            "biaya_usd": 0.00002995,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka lebih besar lebih mungkin menandingi volume jutaan lembar",
+            "biaya_usd": 0.0000269,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Angka lebih besar lebih mungkin menyesatkan klaim volume jutaan.",
+            "biaya_usd": 0.0000281,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 2,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.020446680000000002,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Angka 6.538.100 lebih tinggi, wajar sebagai volume hari sebelumnya.",
+            "biaya_usd": 0.00760351,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Hari sebelumnya kemungkinan lebih ramai dengan volume 6,5 juta lembar.",
+            "biaya_usd": 0.00429487,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka 4.259.800 lembar tampak lebih konsisten sebagai volume bursa sebelumnya.",
+            "biaya_usd": 0.0002506,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 11,
+          "tak_terbaca": 1,
+          "kunci": 10,
+          "p": 0.005859375,
+          "putusan": "tolak",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 11 (peluang kebetulan 0,0059; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu; 1 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.03496056
+      }
+    },
+    {
+      "putaran": 4,
+      "urut": 1,
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Dividen tunai yang tercatat Rp4,5 per lembar, dan itu udah dibayarin ke pemegang saham kan?",
+        "angka_pesan": [
+          {
+            "teks": "Rp4,5",
+            "fact_id": "div-2025-05-22"
+          }
+        ],
+        "kartu": [
+          "div-2025-05-22",
+          "div-2025-05-22-bayar",
+          "dividen-tercatat"
+        ],
+        "kartu_penentu": [
+          "div-2025-05-22-bayar"
+        ],
+        "pilihan": {
+          "a": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22|22 Mei 2025]].",
+          "b": "Keliru, dividen itu belum dibayarkan sampai hari ini.",
+          "c": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22-bayar|13 Juni 2025]].",
+          "d": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan."
+        },
+        "kunci": "c",
+        "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-22|Rp4,5 per lembar]] dengan tanggal ex [[div-2025-05-22|22 Mei 2025]], dan pembayarannya [[div-2025-05-22-bayar|13 Juni 2025]]. Hari ini sudah November, jadi tanggal bayar itu sudah lewat dan omongan teman cocok dengan kartu. Pilihan yang menggoda adalah tanggal Mei, padahal itu tanggal ex: batas siapa yang berhak menerima, bukan hari uangnya dibayarkan. Daftar ini mencatat [[dividen-tercatat|1 pembagian]], jadi yang bisa dicek hanyalah pembagian yang tercatat. Salah-kaprah yang umum: mengira tanggal ex adalah tanggal dividen dibayarkan.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat tanggal itu sebagai tanggal ex, bukan tanggal pembayaran."
+          },
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini salah periode: tanggal bayar di kartu 2 sudah lewat jauh sebelum hari ini, jadi uangnya sudah dibayarkan."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini menjawab pertanyaan lain: soalnya sudah dibayar atau belum, dan kartu 2 justru mencatat tanggal pembayarannya."
+          }
+        },
+        "pertanyaan_cek": "Tanggal mana yang menandai uang dividen benar-benar dibayarkan?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menyatakan dividen dengan tanggal ex 22 Mei 2025 dibayarkan 13 Juni 2025, sehingga uangnya sudah dibayarkan pada tanggal itu.",
+            "biaya_usd": 0.000951926
+          },
+          {
+            "r": 2,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat dividen tunai Rp4,5 per lembar dan Kartu 2 mencatat pembayaran pada 13 Juni 2025, sehingga pernyataan Dimas cocok.",
+            "biaya_usd": 0.001119926
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, tebakan: catatan dividen biasanya tanpa tanggal bayar.",
+            "biaya_usd": 0.005432,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, tanggal pembayaran tidak bisa dipastikan; tebakan saja.",
+            "biaya_usd": 0.005272,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+            "skor": 1,
+            "alasan": "Tebakan: tanpa dokumen, tanggal bayar tidak bisa dipastikan.",
+            "biaya_usd": 0.005332,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan, tanggal bayar tidak bisa dipastikan.",
+            "biaya_usd": 0.006332,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 3,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.022368000000000002
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Tidak ada yang perlu diubah; pertahankan perbedaan tanggal ex vs tanggal bayar sebagai inti penguji karena itulah yang membuat pilihan a menggoda tapi jelas salah menurut kartu.",
+        "token_penalaran": [
+          3114
+        ]
+      },
+      "biaya_gerbang_usd": 0.039719272,
+      "id_bank": "8c56aa79aa89af89",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen umumnya setelah tanggal pencatatan, 22 Mei lebih logis sebelum 13 Juni.",
+            "biaya_usd": 0.000591,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen tunai umumnya lebih cepat setelah pencatatan.",
+            "biaya_usd": 0.000526,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen umumnya lebih awal dari tanggal pencatatan.",
+            "biaya_usd": 0.000515,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Tanggal pembayaran dividen tunai umumnya setelah tanggal pencatatan, Juni lebih logis.",
+            "biaya_usd": 0.000545,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 13 Juni lebih dekat setelah pencatatan dividen",
+            "biaya_usd": 0.00002705,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pesan 19.12, tanggal 22 Mei lebih dekat dan mungkin",
+            "biaya_usd": 0.00002825,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 13 Juni lebih dekat setelah 19.12, kemungkinan pembayaran dividen.",
+            "biaya_usd": 0.0000324,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 22 Mei lebih dekat ke 19.12, kemungkinan sesuai.",
+            "biaya_usd": 0.00003,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pembayaran dividen tunai Rp4,5/lembar umumnya jatuh pertengahan Juni 2025.",
+            "biaya_usd": 0.00044735,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Dividen tunai Rp4,5 per lembar umumnya dibayarkan 13 Juni 2025",
+            "biaya_usd": 0.00034565,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Dividen tunai Rp4,5 per lembar dibayarkan pada 22 Mei 2025.",
+            "biaya_usd": 0.0002948,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Pembayaran dividen tunai umumnya jatuh pada pertengahan Juni 2025.",
+            "biaya_usd": 0.00030836,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 6,
+          "p": 0.61279296875,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.0036908600000000002
+      }
+    },
+    {
+      "putaran": 5,
+      "urut": 1,
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Di laporan terbarunya, Pemegang saham A beli 9.948.800 lembar, kepemilikannya jadi 2,21 persen.",
+        "angka_pesan": [
+          {
+            "teks": "9.948.800",
+            "fact_id": "fil-2025-11-05-01"
+          },
+          {
+            "teks": "2,21 persen",
+            "fact_id": "fil-2025-11-05-01"
+          }
+        ],
+        "kartu": [
+          "fil-2025-11-05-01",
+          "fil-2025-08-19-01"
+        ],
+        "kartu_penentu": [
+          "fil-2025-11-05-01"
+        ],
+        "pilihan": {
+          "a": "Betul, kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]].",
+          "b": "Betul, kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]].",
+          "c": "Keliru, kepemilikannya hanya menjadi [[fil-2025-08-19-01|2,152 persen]].",
+          "d": "Keliru, angka [[fil-2025-11-05-01|2,21 persen]] itu milik pemegang saham lain."
+        },
+        "kunci": "b",
+        "penjelasan": "Laporan terbaru Pemegang saham A mencatat pembelian [[fil-2025-11-05-01|9.948.800 lembar]], dan kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]] menjadi [[fil-2025-11-05-01|2,21 persen]]. Jadi omongan teman cocok dengan kartu. Yang menggoda adalah angka dari laporan Agustus: di sana kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]] ke [[fil-2025-08-19-01|2,152 persen]]. Dua laporan dari pemegang saham yang sama mudah tertukar; cocokkan jumlah lembarnya dulu. Salah-kaprah yang umum: mengambil angka dari laporan lama milik orang yang sama.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "fil-2025-08-19-01",
+            "umpan_balik": "Ini salah periode: kartu 2 adalah laporan Agustus; angka itu posisi sebelum pembelian Agustus, bukan sebelum pembelian terbaru."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "fil-2025-08-19-01",
+            "umpan_balik": "Ini angka nyaris benar: angka itu dari kartu 2, posisi sesudah pembelian Agustus, bukan hasil laporan terbaru."
+          },
+          "d": {
+            "jenis": "salah-entitas",
+            "rujukan": "fil-2025-11-05-01",
+            "umpan_balik": "Ini salah entitas: kartu 1 mencatat angka itu justru untuk Pemegang saham A sendiri."
+          }
+        },
+        "pertanyaan_cek": "Laporan mana yang mencatat jumlah lembar yang disebut teman?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 10 (peluang kebetulan 0,6230; batas 0,02); 2 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan pembelian 9.948.800 lembar dan kepemilikan naik dari 2,15 persen menjadi 2,21 persen, persis seperti pesan Rara.",
+            "biaya_usd": 0.0001619
+          },
+          {
+            "r": 2,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat pembelian 9.948.800 lembar dan kepemilikan naik dari 2,15 persen menjadi 2,21 persen, persis seperti pesan Rara.",
+            "biaya_usd": 0.000171076
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, kepemilikannya naik dari 2,12 persen.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+            "biaya_usd": 0.006188,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, kepemilikannya naik dari 2,12 persen.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tidak ada pilihan yang bisa diverifikasi.",
+            "biaya_usd": 0.005648,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, kepemilikannya naik dari 2,12 persen.",
+            "skor": 1,
+            "alasan": "Tebakan; tanpa dokumen, tak bisa diverifikasi pasti.",
+            "biaya_usd": 0.006288,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, kepemilikannya hanya menjadi 2,152 persen.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; angka 2,152 paling spesifik, jadi tebakan saja.",
+            "biaya_usd": 0.008608,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 0,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.026732
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Bedakan penanda nama pemegang saham dari huruf perusahaan (jangan sama-sama 'A') agar frasa 'Pemegang saham A' tidak terbaca sebagai para pemegang saham Perusahaan A.",
+        "token_penalaran": [
+          10182
+        ]
+      },
+      "biaya_gerbang_usd": 0.12229997599999999,
+      "id_bank": "db2d58231a787873",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 0,06% lebih masuk akal dari perubahan kecil pembelian saham",
+            "biaya_usd": 0.001076,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Perubahan 2,12% ke 2,21% = 0,09% lebih masuk akal dari pembelian 9,9 juta lembar",
+            "biaya_usd": 0.000601,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 0,06% lebih konsisten dengan pembelian 9,9 juta lembar",
+            "biaya_usd": 0.00112,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 0,09% lebih konsisten dengan pembelian 9,9 juta lembar",
+            "biaya_usd": 0.00111,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "9,948,800 lembar setara 0,06 persen, dari 2,15 ke 2,21.",
+            "biaya_usd": 0.00003505,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "9,948,800 lembar setara 0,09 persen, dari 2,12 ke 2,21",
+            "biaya_usd": 0.00003445,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 9,9 juta lembar lebih cocok naik tipis dari 2,15%.",
+            "biaya_usd": 0.0000332,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 9,9 juta lembar lebih cocok naik 0,09 persen.",
+            "biaya_usd": 0.000032,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 1,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044536,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 0,09 persen konsisten dengan total saham sekitar 11 miliar lembar, angka wajar di bursa.",
+            "biaya_usd": 0.00383995,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 0,06 persen konsisten dengan tambahan 9.948.800 lembar saham.",
+            "biaya_usd": 0.0108381,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 1,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044536,
+            "panggilan": 2
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 10,
+          "tak_terbaca": 2,
+          "kunci": 5,
+          "p": 0.623046875,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 10 (peluang kebetulan 0,6230; batas 0,02); 2 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.05961047
+      }
+    },
+    {
+      "putaran": 6,
+      "urut": 1,
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Volume hari ini lebih rame dari hari bursa sebelumnya lho, harganya juga ikut naik.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-10",
+          "volume-2025-11-07",
+          "harga-2025-11-10",
+          "harga-2025-11-07"
+        ],
+        "kartu_penentu": [
+          "volume-2025-11-07",
+          "volume-2025-11-10"
+        ],
+        "pilihan": {
+          "a": "Betul, volume dan harga hari ini sama-sama naik.",
+          "b": "Keliru, harga hari ini turun dari hari bursa sebelumnya.",
+          "c": "Keliru, volume hari ini turun dari hari bursa sebelumnya.",
+          "d": "Betul, volume naik meski harga hari ini turun."
+        },
+        "kunci": "c",
+        "penjelasan": "Volume hari ini [[volume-2025-11-10|4.259.800 lembar]], sedangkan hari bursa sebelumnya, [[volume-2025-11-07|7 November 2025]], volumenya [[volume-2025-11-07|6.538.100 lembar]]. Jadi hari ini lebih sepi, bukan lebih ramai. Harganya memang naik dari [[harga-2025-11-07|Rp600]] ke [[harga-2025-11-10|Rp650]], dan itulah yang membuat omongannya terdengar benar. Harga dan volume harus dicek terpisah. Salah-kaprah yang umum: mengira harga yang naik selalu disertai perdagangan yang lebih ramai.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2025-11-10",
+            "umpan_balik": "Ini percaya omongan tanpa cek: harganya memang naik, tetapi kartu 1 dan kartu 2 menunjukkan volume hari ini lebih kecil."
+          },
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "harga-2025-11-10",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 menunjukkan harga hari ini naik; yang keliru di omongan itu volumenya."
+          },
+          "d": {
+            "jenis": "sebagian-benar",
+            "rujukan": "harga-2025-11-10",
+            "umpan_balik": "Ini sebagian benar: kartu 3 menunjukkan harga naik, bukan turun, dan volumenya justru lebih kecil."
+          }
+        },
+        "pertanyaan_cek": "Volume hari ini lebih besar atau lebih kecil dari hari bursa sebelumnya?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 12 (peluang kebetulan 0,1938; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Volume 10 November 2025 (4.259.800 lembar) lebih rendah daripada 7 November 2025 (6.538.100 lembar), jadi omongan Bayu soal volume naik keliru.",
+            "biaya_usd": 0.0002519
+          },
+          {
+            "r": 2,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 dan 2 menunjukkan volume 10 November 2025 (4.259.800 lembar) lebih rendah dari 7 November 2025 (6.538.100 lembar), jadi omongan Bayu soal volume keliru.",
+            "biaya_usd": 0.0002801
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Betul, volume dan harga hari ini sama-sama naik.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan berdasarkan klaim Bayu, tidak terverifikasi.",
+            "biaya_usd": 0.004912,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Betul, volume dan harga hari ini sama-sama naik.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; b konsisten dengan seluruh klaim Bayu.",
+            "biaya_usd": 0.004872,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Betul, volume dan harga hari ini sama-sama naik.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; pilihan ini paling sesuai dengan klaim Bayu.",
+            "biaya_usd": 0.004092,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 0,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "Betul, volume dan harga hari ini sama-sama naik.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, ini tebakan yang paling sesuai klaim Bayu.",
+            "biaya_usd": 0.004192,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 0,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.018068
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Untuk soal serupa berikutnya, pertimbangkan menambahkan satu tanggal volume lain sebelum 7 November agar pemain harus benar-benar mencocokkan tanggal 'hari bursa sebelumnya', bukan sekadar membandingkan dua kartu volume yang tersedia.",
+        "token_penalaran": [
+          4718
+        ]
+      },
+      "biaya_gerbang_usd": 0.03950049,
+      "id_bank": "4bbfd272e4261530",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume lebih mudah berfluktuasi harian dibanding harga konsisten naik.",
+            "biaya_usd": 0.000491,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Jika volume naik tapi harga turun, itu skenario teknis yang lebih logis.",
+            "biaya_usd": 0.000516,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume lebih mudah berfluktuasi; harga naik dengan volume turun lebih mungkin.",
+            "biaya_usd": 0.00051,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga naik-turun independen volume. Volume tinggi bisa dengan harga turun.",
+            "biaya_usd": 0.0005,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume lebih rame adalah klaim utama; keliru berarti volume turun.",
+            "biaya_usd": 0.0000275,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga naik adalah klaim utama, keliru berarti harga turun",
+            "biaya_usd": 0.0000269,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Volume lebih ramai adalah klaim utama; keliru berarti volume turun.",
+            "biaya_usd": 0.00002745,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Klaim harga naik; jika keliru, harga turun.",
+            "biaya_usd": 0.00002625,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Koreksi umumnya menyangkal klaim volume yang lebih ramai dibanding harga.",
+            "biaya_usd": 0.00031827,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Klaim utama soal volume; harga hanya 'ikut', jadi koreksinya volume turun.",
+            "biaya_usd": 0.00054879,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Klaim volume lebih ramai kemungkinan keliru; harga naik bisa saja benar.",
+            "biaya_usd": 0.00044709,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Klaim utama Bayu adalah volume lebih ramai, jadi koreksinya volume turun.",
+            "biaya_usd": 0.00037123,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 8,
+          "p": 0.19384765625,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 12 (peluang kebetulan 0,1938; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.0038104799999999998
+      }
+    }
+  ],
+  "draf_lolos_kode": [
+    {
+      "id": "2108dec466ec2727",
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Dividen tunai yang tercatat Rp4,5 per lembar, dan itu udah dibayarin ke pemegang saham kan?",
+        "angka_pesan": [
+          {
+            "teks": "Rp4,5",
+            "fact_id": "div-2025-05-22"
+          }
+        ],
+        "kartu": [
+          "div-2025-05-22",
+          "div-2025-05-22-bayar",
+          "dividen-tercatat"
+        ],
+        "kartu_penentu": [
+          "div-2025-05-22-bayar"
+        ],
+        "pilihan": {
+          "a": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22|22 Mei 2025]].",
+          "b": "Keliru, sesudah tanggal ex [[div-2025-05-22|22 Mei 2025]] belum ada pembayaran.",
+          "c": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22-bayar|13 Juni 2025]].",
+          "d": "Keliru, uangnya baru akan dibayarkan [[div-2025-05-22-bayar|13 Juni 2025]]."
+        },
+        "kunci": "c",
+        "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-22|Rp4,5 per lembar]] dengan tanggal ex [[div-2025-05-22|22 Mei 2025]], dan pembayarannya [[div-2025-05-22-bayar|13 Juni 2025]]. Tanggal itu sudah lewat dari hari ini, jadi omongan teman cocok dengan kartu. Tanggal ex bukan tanggal uang masuk: itu batas siapa yang berhak menerima, sedangkan uangnya dibayarkan beberapa minggu kemudian. Daftar ini juga hanya mencatat [[dividen-tercatat|1 pembagian]], jadi yang bisa dicek hanyalah pembagian yang tercatat. Salah-kaprah yang umum: mengira tanggal ex adalah tanggal dividen dibayarkan.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat tanggal itu sebagai tanggal ex, bukan tanggal pembayaran."
+          },
+          "b": {
+            "jenis": "sebagian-benar",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini sebagian benar: tanggal ex-nya tepat, tetapi kartu 2 mencatat pembayarannya sudah dilakukan sesudah itu."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini salah periode: tanggal bayar di kartu 2 sudah lewat dari hari ini, jadi uangnya bukan baru akan dibayar."
+          }
+        },
+        "pertanyaan_cek": "Tanggal mana yang menandai uang dividen benar-benar dibayarkan?"
+      }
+    },
+    {
+      "id": "e3ec3934c03c79a0",
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Volume hari ini paling rame dibanding beberapa hari terakhir lho, jutaan lembar pindah tangan.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-10",
+          "volume-2025-11-07",
+          "harga-2025-11-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-11-07"
+        ],
+        "pilihan": {
+          "a": "Betul, volume hari ini [[volume-2025-11-10|4.259.800 lembar]] mengalahkan hari bursa sebelumnya.",
+          "b": "Keliru, hari bursa sebelumnya lebih ramai dengan [[volume-2025-11-10|4.259.800 lembar]].",
+          "c": "Keliru, hari bursa sebelumnya lebih ramai dengan [[volume-2025-11-07|6.538.100 lembar]].",
+          "d": "Betul, volume hari ini [[volume-2025-11-07|6.538.100 lembar]] mengalahkan hari bursa sebelumnya."
+        },
+        "kunci": "c",
+        "penjelasan": "Volume hari ini memang jutaan lembar, yaitu [[volume-2025-11-10|4.259.800 lembar]]. Tetapi hari bursa sebelumnya, [[volume-2025-11-07|7 November 2025]], volumenya [[volume-2025-11-07|6.538.100 lembar]], lebih besar. Jadi hari ini bukan yang paling ramai. Harga yang naik ke [[harga-2025-11-10|Rp650]] tidak berarti volumenya ikut paling tinggi; keduanya harus dicek terpisah. Salah-kaprah yang umum: mengira hari harga naik paling tinggi pasti juga hari perdagangan paling ramai.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2025-11-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 menunjukkan hari bursa sebelumnya volumenya lebih besar."
+          },
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-11-10",
+            "umpan_balik": "Ini salah periode: angka itu di kartu 1 adalah volume hari ini, bukan volume hari bursa sebelumnya."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-11-07",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat angka itu untuk hari bursa sebelumnya, bukan hari ini."
+          }
+        },
+        "pertanyaan_cek": "Volume hari ini lebih besar atau lebih kecil dari hari bursa sebelumnya?"
+      }
+    },
+    {
+      "id": "35a8fd8c018fc660",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Pemegang saham A baru beli 9.948.800 lembar awal November ini, laporannya udah keluar minggu lalu.",
+        "angka_pesan": [
+          {
+            "teks": "9.948.800",
+            "fact_id": "fil-2025-11-05-01"
+          }
+        ],
+        "kartu": [
+          "fil-2025-11-05-01",
+          "fil-2025-08-19-01",
+          "harga-2025-11-10"
+        ],
+        "kartu_penentu": [
+          "fil-2025-11-05-01"
+        ],
+        "pilihan": {
+          "a": "Keliru, transaksi itu terjadi pada [[fil-2025-08-19-01|8 Agustus 2025]].",
+          "b": "Keliru, transaksi itu terjadi pada [[fil-2025-11-05-01|7 Oktober 2025]].",
+          "c": "Betul, transaksi itu terjadi pada [[fil-2025-11-05-01|5 November 2025]].",
+          "d": "Betul, transaksi itu terjadi pada [[harga-2025-11-10|10 November 2025]]."
+        },
+        "kunci": "b",
+        "penjelasan": "Laporan kepemilikan itu memang mencatat pembelian [[fil-2025-11-05-01|9.948.800 lembar]], tetapi transaksinya terjadi [[fil-2025-11-05-01|7 Oktober 2025]] dan baru dilaporkan [[fil-2025-11-05-01|5 November 2025]]. Jadi pembeliannya bukan awal November; yang terjadi awal November hanyalah pengumumannya. Laporan lain dari pemegang saham yang sama mencatat pembelian [[fil-2025-08-19-01|8 Agustus 2025]], tetapi jumlahnya berbeda, jadi itu bukan transaksi yang dimaksud teman. Salah-kaprah yang umum: menyamakan tanggal laporan terbit dengan tanggal transaksinya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-entitas",
+            "rujukan": "fil-2025-08-19-01",
+            "umpan_balik": "Ini salah entitas: kartu 2 adalah laporan lain dengan jumlah lembar berbeda, bukan laporan pembelian yang dibicarakan."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "fil-2025-11-05-01",
+            "umpan_balik": "Ini salah periode: di kartu 1 tanggal itu adalah tanggal laporan, sedangkan transaksinya terjadi sebulan sebelumnya."
+          },
+          "d": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "fil-2025-11-05-01",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 menunjukkan transaksinya jauh sebelum laporan terbit, bukan sesudahnya."
+          }
+        },
+        "pertanyaan_cek": "Di laporan kepemilikan, mana tanggal transaksi dan mana tanggal laporannya?"
+      }
+    },
+    {
+      "id": "8c56aa79aa89af89",
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Dividen tunai yang tercatat Rp4,5 per lembar, dan itu udah dibayarin ke pemegang saham kan?",
+        "angka_pesan": [
+          {
+            "teks": "Rp4,5",
+            "fact_id": "div-2025-05-22"
+          }
+        ],
+        "kartu": [
+          "div-2025-05-22",
+          "div-2025-05-22-bayar",
+          "dividen-tercatat"
+        ],
+        "kartu_penentu": [
+          "div-2025-05-22-bayar"
+        ],
+        "pilihan": {
+          "a": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22|22 Mei 2025]].",
+          "b": "Keliru, dividen itu belum dibayarkan sampai hari ini.",
+          "c": "Betul, uangnya sudah dibayarkan pada [[div-2025-05-22-bayar|13 Juni 2025]].",
+          "d": "Keliru, daftarnya tidak mencatat kapan dividen itu dibayarkan."
+        },
+        "kunci": "c",
+        "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-22|Rp4,5 per lembar]] dengan tanggal ex [[div-2025-05-22|22 Mei 2025]], dan pembayarannya [[div-2025-05-22-bayar|13 Juni 2025]]. Hari ini sudah November, jadi tanggal bayar itu sudah lewat dan omongan teman cocok dengan kartu. Pilihan yang menggoda adalah tanggal Mei, padahal itu tanggal ex: batas siapa yang berhak menerima, bukan hari uangnya dibayarkan. Daftar ini mencatat [[dividen-tercatat|1 pembagian]], jadi yang bisa dicek hanyalah pembagian yang tercatat. Salah-kaprah yang umum: mengira tanggal ex adalah tanggal dividen dibayarkan.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat tanggal itu sebagai tanggal ex, bukan tanggal pembayaran."
+          },
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini salah periode: tanggal bayar di kartu 2 sudah lewat jauh sebelum hari ini, jadi uangnya sudah dibayarkan."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "div-2025-05-22-bayar",
+            "umpan_balik": "Ini menjawab pertanyaan lain: soalnya sudah dibayar atau belum, dan kartu 2 justru mencatat tanggal pembayarannya."
+          }
+        },
+        "pertanyaan_cek": "Tanggal mana yang menandai uang dividen benar-benar dibayarkan?"
+      }
+    },
+    {
+      "id": "db2d58231a787873",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Di laporan terbarunya, Pemegang saham A beli 9.948.800 lembar, kepemilikannya jadi 2,21 persen.",
+        "angka_pesan": [
+          {
+            "teks": "9.948.800",
+            "fact_id": "fil-2025-11-05-01"
+          },
+          {
+            "teks": "2,21 persen",
+            "fact_id": "fil-2025-11-05-01"
+          }
+        ],
+        "kartu": [
+          "fil-2025-11-05-01",
+          "fil-2025-08-19-01"
+        ],
+        "kartu_penentu": [
+          "fil-2025-11-05-01"
+        ],
+        "pilihan": {
+          "a": "Betul, kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]].",
+          "b": "Betul, kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]].",
+          "c": "Keliru, kepemilikannya hanya menjadi [[fil-2025-08-19-01|2,152 persen]].",
+          "d": "Keliru, angka [[fil-2025-11-05-01|2,21 persen]] itu milik pemegang saham lain."
+        },
+        "kunci": "b",
+        "penjelasan": "Laporan terbaru Pemegang saham A mencatat pembelian [[fil-2025-11-05-01|9.948.800 lembar]], dan kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]] menjadi [[fil-2025-11-05-01|2,21 persen]]. Jadi omongan teman cocok dengan kartu. Yang menggoda adalah angka dari laporan Agustus: di sana kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]] ke [[fil-2025-08-19-01|2,152 persen]]. Dua laporan dari pemegang saham yang sama mudah tertukar; cocokkan jumlah lembarnya dulu. Salah-kaprah yang umum: mengambil angka dari laporan lama milik orang yang sama.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "fil-2025-08-19-01",
+            "umpan_balik": "Ini salah periode: kartu 2 adalah laporan Agustus; angka itu posisi sebelum pembelian Agustus, bukan sebelum pembelian terbaru."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "fil-2025-08-19-01",
+            "umpan_balik": "Ini angka nyaris benar: angka itu dari kartu 2, posisi sesudah pembelian Agustus, bukan hasil laporan terbaru."
+          },
+          "d": {
+            "jenis": "salah-entitas",
+            "rujukan": "fil-2025-11-05-01",
+            "umpan_balik": "Ini salah entitas: kartu 1 mencatat angka itu justru untuk Pemegang saham A sendiri."
+          }
+        },
+        "pertanyaan_cek": "Laporan mana yang mencatat jumlah lembar yang disebut teman?"
+      }
+    },
+    {
+      "id": "4bbfd272e4261530",
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Volume hari ini lebih rame dari hari bursa sebelumnya lho, harganya juga ikut naik.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-10",
+          "volume-2025-11-07",
+          "harga-2025-11-10",
+          "harga-2025-11-07"
+        ],
+        "kartu_penentu": [
+          "volume-2025-11-07",
+          "volume-2025-11-10"
+        ],
+        "pilihan": {
+          "a": "Betul, volume dan harga hari ini sama-sama naik.",
+          "b": "Keliru, harga hari ini turun dari hari bursa sebelumnya.",
+          "c": "Keliru, volume hari ini turun dari hari bursa sebelumnya.",
+          "d": "Betul, volume naik meski harga hari ini turun."
+        },
+        "kunci": "c",
+        "penjelasan": "Volume hari ini [[volume-2025-11-10|4.259.800 lembar]], sedangkan hari bursa sebelumnya, [[volume-2025-11-07|7 November 2025]], volumenya [[volume-2025-11-07|6.538.100 lembar]]. Jadi hari ini lebih sepi, bukan lebih ramai. Harganya memang naik dari [[harga-2025-11-07|Rp600]] ke [[harga-2025-11-10|Rp650]], dan itulah yang membuat omongannya terdengar benar. Harga dan volume harus dicek terpisah. Salah-kaprah yang umum: mengira harga yang naik selalu disertai perdagangan yang lebih ramai.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2025-11-10",
+            "umpan_balik": "Ini percaya omongan tanpa cek: harganya memang naik, tetapi kartu 1 dan kartu 2 menunjukkan volume hari ini lebih kecil."
+          },
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "harga-2025-11-10",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 menunjukkan harga hari ini naik; yang keliru di omongan itu volumenya."
+          },
+          "d": {
+            "jenis": "sebagian-benar",
+            "rujukan": "harga-2025-11-10",
+            "umpan_balik": "Ini sebagian benar: kartu 3 menunjukkan harga naik, bukan turun, dan volumenya justru lebih kecil."
+          }
+        },
+        "pertanyaan_cek": "Volume hari ini lebih besar atau lebih kecil dari hari bursa sebelumnya?"
+      }
+    }
+  ],
+  "teks_akhir": ""
+}

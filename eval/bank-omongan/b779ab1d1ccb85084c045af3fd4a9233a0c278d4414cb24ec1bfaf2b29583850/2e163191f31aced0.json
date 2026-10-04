@@ -1,0 +1,352 @@
+{
+  "id": "2e163191f31aced0",
+  "paket_sha": "b779ab1d1ccb85084c045af3fd4a9233a0c278d4414cb24ec1bfaf2b29583850",
+  "kartu_penentu": [
+    "div-2026-02-20"
+  ],
+  "omongan": {
+    "nama": "Dimas",
+    "jam": "19.12",
+    "pesan": "Dividen yang ex hari ini lebih gede dari pembagian Februari kemarin, ya. Lumayan juga naiknya.",
+    "angka_pesan": [],
+    "kartu": [
+      "div-2026-05-07",
+      "div-2026-02-20",
+      "div-2025-07-02"
+    ],
+    "kartu_penentu": [
+      "div-2026-02-20"
+    ],
+    "pilihan": {
+      "a": "Betul, pembagian Februari hanya [[div-2025-07-02|Rp20]] per lembar.",
+      "b": "Betul, pembagian Februari hanya [[div-2026-02-20|Rp25]] per lembar.",
+      "c": "Keliru, pembagian kali ini cuma [[div-2026-02-20|Rp25]] per lembar.",
+      "d": "Keliru, nominal Februari sama persis dengan pembagian kali ini."
+    },
+    "kunci": "b",
+    "penjelasan": "Dividen dengan tanggal ex hari ini tercatat [[div-2026-05-07|Rp50 per lembar]], sedangkan pembagian dengan tanggal ex [[div-2026-02-20|20 Februari 2026]] tercatat [[div-2026-02-20|Rp25 per lembar]]. Jadi yang sekarang memang lebih besar. Angka [[div-2025-07-02|Rp20]] memang ada di daftar, tetapi itu pembagian dengan tanggal ex [[div-2025-07-02|2 Juli 2025]], bukan Februari. Daftar dividen memuat beberapa baris yang mirip; cocokkan dulu tanggal ex-nya sebelum membandingkan nominal. Salah-kaprah yang umum: mengambil nominal dari baris dividen yang paling dekat di mata tanpa mengecek tanggalnya.",
+    "pengecoh": {
+      "a": {
+        "jenis": "nyaris-benar-angka",
+        "rujukan": "div-2025-07-02",
+        "umpan_balik": "Ini angka nyaris benar: kartu 3 mencatat [[div-2025-07-02|Rp20]] untuk tanggal ex [[div-2025-07-02|2 Juli 2025]], bukan Februari. Februari tercatat [[div-2026-02-20|Rp25]]."
+      },
+      "c": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2026-05-07",
+        "umpan_balik": "Ini salah periode: kartu 1 mencatat pembagian kali ini [[div-2026-05-07|Rp50]]; [[div-2026-02-20|Rp25]] itu milik pembagian Februari."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2026-02-20",
+        "umpan_balik": "Ini salah periode: kartu 2 mencatat Februari [[div-2026-02-20|Rp25]], sedangkan kali ini [[div-2026-05-07|Rp50]]; nominalnya berbeda."
+      }
+    },
+    "pertanyaan_cek": "Baris dividen mana yang tanggal ex-nya jatuh di bulan Februari?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "biasa",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (peluang kebetulan 0,8062; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp25 lebih masuk akal sebagai dividen sebelumnya yang lebih kecil dari kenaikan hari ini.",
+          "biaya_usd": 0.000552,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen hari ini lebih besar dari Februari, jadi Februari harus nilai terendah.",
+          "biaya_usd": 0.001102,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp25 lebih masuk akal sebagai dividen Februari yang lebih kecil.",
+          "biaya_usd": 0.001141,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen Februari lebih rendah logis jika hanya Rp20 daripada Rp25.",
+          "biaya_usd": 0.000526,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen naik, Februari lebih kecil dari hari ini, Rp25 lebih mungkin.",
+          "biaya_usd": 0.00002885,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen Februari lebih kecil dari ex hari ini, Rp20 lebih mungkin.",
+          "biaya_usd": 0.00002765,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Jika dividen ex hari ini lebih besar, Februari kemungkinan Rp25.",
+          "biaya_usd": 0.0000282,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen ex hari ini lebih besar, Februari lebih kecil, Rp20 lebih mungkin.",
+          "biaya_usd": 0.0000288,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Kenaikan terasa 'lumayan' lebih wajar dari basis Rp20 yang lebih rendah",
+          "biaya_usd": 0.01113748,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp20 per lembar adalah nominal dividen saham ritel yang lebih umum.",
+          "biaya_usd": 0.00062676,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan dari Rp25 lebih wajar disebut lumayan dibanding lompatan dari Rp20",
+          "biaya_usd": 0.00103356,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan tipikal dari Rp20 ke Rp25 lebih wajar disebut lumayan",
+          "biaya_usd": 0.00037929,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 5,
+        "p": 0.80615234375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (peluang kebetulan 0,8062; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.016611590000000002
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan dividen ex hari ini Rp50 per lembar, sedangkan Kartu 2 menunjukkan pembagian Februari Rp25 per lembar, jadi omongan Dimas benar.",
+          "biaya_usd": 0.00029655
+        },
+        {
+          "r": 2,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan dividen ex 7 Mei 2026 Rp50 per lembar, lebih besar dari Kartu 2 yang menunjukkan dividen Februari Rp25 per lembar, jadi omongan Dimas benar.",
+          "biaya_usd": 0.000356038
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, pembagian Februari hanya Rp25 per lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan berdasar angka Rp25 yang muncul berulang.",
+          "biaya_usd": 0.008304,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, pembagian kali ini cuma Rp25 per lembar.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, nominal tidak bisa dicek.",
+          "biaya_usd": 0.005184,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, pembagian Februari hanya Rp20 per lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan Februari Rp20, kini Rp25.",
+          "biaya_usd": 0.006744,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, pembagian Februari hanya Rp25 per lembar.",
+          "skor": 1,
+          "alasan": "Tebakan saja; dokumen tidak diberikan, angka tak bisa dicek.",
+          "biaya_usd": 0.004324,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 2,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": null,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.024556
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Tidak ada perubahan yang diperlukan; semua bagian klaim tercek dari kartu dan hanya satu pilihan yang benar.",
+      "token_penalaran": [
+        5505
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d25-bolt-2",
+    "putaran": 1,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T12:25:48.639Z"
+}

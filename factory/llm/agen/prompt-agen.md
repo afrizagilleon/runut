@@ -16,7 +16,7 @@ Tugasmu: menyusun satu simulasi untuk satu hari, berisi {TARGET} omongan. Kamu y
 
 Mulailah dengan `lihat_fakta` dan `lihat_bank`. Lalu rencanakan omongan yang masih kurang sebagai satu set sebelum menulis:
 - kartu penentu yang berbeda untuk tiap omongan, dari jenis dokumen yang berbeda bila kartunya memungkinkan;
-- minimal satu omongan yang ternyata betul;
+- minimal satu omongan yang ternyata betul dan minimal satu yang ternyata keliru;
 - huruf kunci tidak sama semua.
 
 Tulis semua draf yang masih kurang, periksa dengan `periksa_kode`, lalu ajukan bersama-sama. Hasil `ajukan` memuat putusan tiap draf. Yang lolos sudah masuk bank; jangan diubah lagi. Untuk yang ditolak, baca alasannya: perbaiki kalimatnya bila masalahnya di kata-kata, atau ganti sudutnya bila jawabannya memang bisa ditebak tanpa kartu. Penolakan penebak berlaku untuk kalimatnya, bukan untuk kartunya. Peringatan penguji tidak menolak, tetapi pakailah untuk draf berikutnya.

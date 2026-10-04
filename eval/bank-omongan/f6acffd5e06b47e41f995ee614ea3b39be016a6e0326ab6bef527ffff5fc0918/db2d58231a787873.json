@@ -1,0 +1,360 @@
+{
+  "id": "db2d58231a787873",
+  "paket_sha": "f6acffd5e06b47e41f995ee614ea3b39be016a6e0326ab6bef527ffff5fc0918",
+  "kartu_penentu": [
+    "fil-2025-11-05-01"
+  ],
+  "omongan": {
+    "nama": "Rara",
+    "jam": "20.05",
+    "pesan": "Di laporan terbarunya, Pemegang saham A beli 9.948.800 lembar, kepemilikannya jadi 2,21 persen.",
+    "angka_pesan": [
+      {
+        "teks": "9.948.800",
+        "fact_id": "fil-2025-11-05-01"
+      },
+      {
+        "teks": "2,21 persen",
+        "fact_id": "fil-2025-11-05-01"
+      }
+    ],
+    "kartu": [
+      "fil-2025-11-05-01",
+      "fil-2025-08-19-01"
+    ],
+    "kartu_penentu": [
+      "fil-2025-11-05-01"
+    ],
+    "pilihan": {
+      "a": "Betul, kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]].",
+      "b": "Betul, kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]].",
+      "c": "Keliru, kepemilikannya hanya menjadi [[fil-2025-08-19-01|2,152 persen]].",
+      "d": "Keliru, angka [[fil-2025-11-05-01|2,21 persen]] itu milik pemegang saham lain."
+    },
+    "kunci": "b",
+    "penjelasan": "Laporan terbaru Pemegang saham A mencatat pembelian [[fil-2025-11-05-01|9.948.800 lembar]], dan kepemilikannya naik dari [[fil-2025-11-05-01|2,15 persen]] menjadi [[fil-2025-11-05-01|2,21 persen]]. Jadi omongan teman cocok dengan kartu. Yang menggoda adalah angka dari laporan Agustus: di sana kepemilikannya naik dari [[fil-2025-08-19-01|2,12 persen]] ke [[fil-2025-08-19-01|2,152 persen]]. Dua laporan dari pemegang saham yang sama mudah tertukar; cocokkan jumlah lembarnya dulu. Salah-kaprah yang umum: mengambil angka dari laporan lama milik orang yang sama.",
+    "pengecoh": {
+      "a": {
+        "jenis": "salah-periode",
+        "rujukan": "fil-2025-08-19-01",
+        "umpan_balik": "Ini salah periode: kartu 2 adalah laporan Agustus; angka itu posisi sebelum pembelian Agustus, bukan sebelum pembelian terbaru."
+      },
+      "c": {
+        "jenis": "nyaris-benar-angka",
+        "rujukan": "fil-2025-08-19-01",
+        "umpan_balik": "Ini angka nyaris benar: angka itu dari kartu 2, posisi sesudah pembelian Agustus, bukan hasil laporan terbaru."
+      },
+      "d": {
+        "jenis": "salah-entitas",
+        "rujukan": "fil-2025-11-05-01",
+        "umpan_balik": "Ini salah entitas: kartu 1 mencatat angka itu justru untuk Pemegang saham A sendiri."
+      }
+    },
+    "pertanyaan_cek": "Laporan mana yang mencatat jumlah lembar yang disebut teman?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "biasa",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 10 (peluang kebetulan 0,6230; batas 0,02); 2 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 0,06% lebih masuk akal dari perubahan kecil pembelian saham",
+          "biaya_usd": 0.001076,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Perubahan 2,12% ke 2,21% = 0,09% lebih masuk akal dari pembelian 9,9 juta lembar",
+          "biaya_usd": 0.000601,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 0,06% lebih konsisten dengan pembelian 9,9 juta lembar",
+          "biaya_usd": 0.00112,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 0,09% lebih konsisten dengan pembelian 9,9 juta lembar",
+          "biaya_usd": 0.00111,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "9,948,800 lembar setara 0,06 persen, dari 2,15 ke 2,21.",
+          "biaya_usd": 0.00003505,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "9,948,800 lembar setara 0,09 persen, dari 2,12 ke 2,21",
+          "biaya_usd": 0.00003445,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 9,9 juta lembar lebih cocok naik tipis dari 2,15%.",
+          "biaya_usd": 0.0000332,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 9,9 juta lembar lebih cocok naik 0,09 persen.",
+          "biaya_usd": 0.000032,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.02044536,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 0,09 persen konsisten dengan total saham sekitar 11 miliar lembar, angka wajar di bursa.",
+          "biaya_usd": 0.00383995,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 0,06 persen konsisten dengan tambahan 9.948.800 lembar saham.",
+          "biaya_usd": 0.0108381,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.02044536,
+          "panggilan": 2
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 10,
+        "tak_terbaca": 2,
+        "kunci": 5,
+        "p": 0.623046875,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 10 (peluang kebetulan 0,6230; batas 0,02); 2 tak terbaca dibuang"
+        ]
+      },
+      "biaya_usd": 0.05961047
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan pembelian 9.948.800 lembar dan kepemilikan naik dari 2,15 persen menjadi 2,21 persen, persis seperti pesan Rara.",
+          "biaya_usd": 0.0001619
+        },
+        {
+          "r": 2,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 mencatat pembelian 9.948.800 lembar dan kepemilikan naik dari 2,15 persen menjadi 2,21 persen, persis seperti pesan Rara.",
+          "biaya_usd": 0.000171076
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, kepemilikannya naik dari 2,12 persen.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+          "biaya_usd": 0.006188,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, kepemilikannya naik dari 2,12 persen.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, tidak ada pilihan yang bisa diverifikasi.",
+          "biaya_usd": 0.005648,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 0,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, kepemilikannya naik dari 2,12 persen.",
+          "skor": 1,
+          "alasan": "Tebakan; tanpa dokumen, tak bisa diverifikasi pasti.",
+          "biaya_usd": 0.006288,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, kepemilikannya hanya menjadi 2,152 persen.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; angka 2,152 paling spesifik, jadi tebakan saja.",
+          "biaya_usd": 0.008608,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 0,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 0,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.026732
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Bedakan penanda nama pemegang saham dari huruf perusahaan (jangan sama-sama 'A') agar frasa 'Pemegang saham A' tidak terbaca sebagai para pemegang saham Perusahaan A.",
+      "token_penalaran": [
+        10182
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d25-alii-1",
+    "putaran": 5,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T12:35:16.146Z"
+}

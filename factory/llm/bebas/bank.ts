@@ -116,9 +116,10 @@ const lepas = (a: EntriBank, b: EntriBank): boolean => !a.kartu_penentu.some((k)
 /**
  * Pilih tiga omongan berkartu-penentu saling lepas (satu per kartu penentu),
  * urutan masuk bank, lalu validator seluruh draf (`validasiM2d8`, masalah
- * tingkat draf). Kombinasi pertama yang lolos menjadi draf. Murni.
+ * tingkat draf). Kombinasi pertama yang lolos menjadi draf. `syarat` (pilihan):
+ * aturan tambahan pemanggil atas tiga omongan; mengembalikan alasan bila gagal. Murni.
  */
-export function pilihSimulasi(entri: readonly EntriBank[], paket: PaketFakta): PilihanSimulasi {
+export function pilihSimulasi(entri: readonly EntriBank[], paket: PaketFakta, syarat?: (trio: readonly EntriBank[]) => string | null): PilihanSimulasi {
   const sudut = jumlahSudut(entri);
   if (sudut < UKURAN_SIMULASI) {
     return { draf: null, dipilih: [], dicoba: 0, alasan: [`bank baru memuat ${String(sudut)} kartu penentu berbeda (${String(entri.length)} omongan); simulasi butuh ${String(UKURAN_SIMULASI)}`] };
@@ -137,8 +138,9 @@ export function pilihSimulasi(entri: readonly EntriBank[], paket: PaketFakta): P
         dicoba += 1;
         const draf: DrafSimulasi = { omongan: [a, b, c].map((e) => drafDari(e.omongan)) };
         const masalah = validasiM2d8(draf, paket).filter((m) => m.omongan === null);
-        if (masalah.length === 0) return { draf, dipilih: [a.id, b.id, c.id], dicoba, alasan: [] };
-        gagal.push(`validator seluruh draf (${[a.id, b.id, c.id].join(', ')}): ${masalah.map((m) => `[${m.kode}] ${m.pesan}`).join('; ')}`);
+        const tambahan = masalah.length === 0 ? (syarat?.([a, b, c]) ?? null) : null;
+        if (masalah.length === 0 && tambahan === null) return { draf, dipilih: [a.id, b.id, c.id], dicoba, alasan: [] };
+        gagal.push(`validator seluruh draf (${[a.id, b.id, c.id].join(', ')}): ${tambahan ?? masalah.map((m) => `[${m.kode}] ${m.pesan}`).join('; ')}`);
       }
     }
   }

@@ -1,0 +1,2344 @@
+{
+  "id": "m2d25-agar-sulit-1",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1.5,
+  "berhenti": "anggaran tidak cukup untuk satu pengajuan lagi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 8,
+      "sudut_sebelum": 0,
+      "sudut_sesudah": 1,
+      "ditolak": 5,
+      "teks_akhir": ""
+    },
+    {
+      "ke": 2,
+      "langkah": 2,
+      "sudut_sebelum": 1,
+      "sudut_sesudah": 1,
+      "ditolak": 0,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 10,
+  "panggilan_model": 10,
+  "pengajuan": 6,
+  "biaya_agen_usd": 1.106494,
+  "biaya_gerbang_usd": 0.4747,
+  "biaya_usd": 1.5812,
+  "durasi_detik": 972,
+  "bank": {
+    "jumlah_sudut": 1,
+    "omongan": [
+      {
+        "id": "dd409a430aebc05e",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "harga-2026-08-13"
+        ],
+        "asal": "m2d25-agar-sulit-1"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": false,
+    "dipilih": [],
+    "alasan": [
+      "bank baru memuat 1 kartu penentu berbeda (1 omongan); simulasi butuh 3"
+    ],
+    "draf": null
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Ini bukan pertama kalinya disetop bursa lho. Bulan lalu sahamnya juga pernah dihentikan sementara.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2026-08-19",
+          "susp-2026-07-22"
+        ],
+        "kartu_penentu": [
+          "susp-2026-07-22"
+        ],
+        "pilihan": {
+          "a": "Keliru, penghentian sebelumnya terjadi lebih dari setahun lalu.",
+          "b": "Betul, bulan lalu alasan resminya keterlambatan laporan keuangan.",
+          "c": "Keliru, bulan lalu yang dihentikan saham perusahaan lain.",
+          "d": "Betul, bulan lalu alasan resminya kenaikan harga kumulatif."
+        },
+        "kunci": "d",
+        "penjelasan": "Pengumuman bursa mencatat perdagangan saham Perusahaan A dihentikan sementara pada [[susp-2026-07-22|22 Juli 2026]], sebulan sebelum penghentian [[susp-2026-08-19|19 Agustus 2026]]. Alasan resmi keduanya sama: peningkatan harga kumulatif yang signifikan pada saham Perusahaan A, bukan soal laporan keuangan. Jadi omongan teman bisa dicek dan cocok. Perhatikan juga: kedua pengumuman tidak mencatat kapan perdagangan dibuka lagi, jadi lama penghentiannya tidak bisa dipastikan. Salah-kaprah yang umum: mengira setiap penghentian sementara pasti karena perusahaan bermasalah dengan laporannya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat penghentian sebelumnya terjadi bulan lalu, masih dalam setahun terakhir."
+          },
+          "b": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini sebagian benar: memang pernah dihentikan, tetapi kartu 2 menyebut alasannya kenaikan harga kumulatif, bukan laporan keuangan."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah entitas: kartu 2 jelas menyebut saham Perusahaan A yang dihentikan bulan lalu."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi yang ditulis bursa di pengumuman penghentian sebelumnya?"
+      },
+      "berhenti": "penebak-kuat",
+      "alasan": [
+        "mode sulit: penguji Opus tanpa kartu benar 4 dari 4; targetnya 0 — hilangkan petunjuk dari nada pesan dan dari susunan pilihan"
+      ],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (peluang kebetulan 0,3872; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menunjukkan penghentian sementara pada 22 Juli 2026, bulan sebelumnya, dengan alasan resmi kenaikan harga kumulatif signifikan.",
+            "biaya_usd": 0.00019055
+          },
+          {
+            "r": 2,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menunjukkan penghentian sementara pada 22 Juli 2026 dengan alasan resmi kenaikan harga kumulatif signifikan, cocok dengan omongan Dimas bahwa bulan lalu sahamnya juga dihentikan sementara.",
+            "biaya_usd": 0.000304726
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, bulan lalu alasan resminya kenaikan harga kumulatif.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; alasan suspensi bursa yang paling umum.",
+            "biaya_usd": 0.00458,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, bulan lalu alasan resminya kenaikan harga kumulatif.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; suspensi karena kenaikan harga paling umum di bursa.",
+            "biaya_usd": 0.005,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, bulan lalu alasan resminya kenaikan harga kumulatif.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; kenaikan harga kumulatif alasan suspensi paling umum.",
+            "biaya_usd": 0.00452,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, bulan lalu alasan resminya kenaikan harga kumulatif.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan, alasan suspensi bursa paling umum.",
+            "biaya_usd": 0.00442,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 4,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 3,
+          "putusan": "tolak",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+        },
+        "biaya_usd": 0.018520000000000002
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Perkuat alasan opsi Keliru (a dan c) yang saat ini bisa dieliminasi hanya dari konteks peristiwa, tanpa perlu membaca kartu.",
+        "token_penalaran": [
+          8781
+        ]
+      },
+      "biaya_gerbang_usd": 0.053423366,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Keterlambatan laporan keuangan adalah alasan penghentian sementara yang lebih umum dan berulang.",
+            "biaya_usd": 0.000549,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Keterlambatan laporan keuangan adalah alasan umum penghentian sementara saham.",
+            "biaya_usd": 0.000524,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Keterlambatan laporan keuangan lebih umum penyebab penghentian sementara saham.",
+            "biaya_usd": 0.000538,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Keterlambatan laporan keuangan adalah alasan penghentian sementara saham yang umum dan reguler.",
+            "biaya_usd": 0.000543,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "suspend sementara biasanya karena kenaikan harga kumulatif",
+            "biaya_usd": 0.00002705,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Suspend berulang sering karena keterlambatan laporan keuangan.",
+            "biaya_usd": 0.00002825,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "suspend sementara biasanya karena kenaikan harga kumulatif",
+            "biaya_usd": 0.0000288,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Suspend sementara biasanya karena kenaikan harga kumulatif, bukan laporan keuangan.",
+            "biaya_usd": 0.0000312,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Penghentian sementara saham biasanya karena kenaikan harga kumulatif (UMA).",
+            "biaya_usd": 0.00024382,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Penghentian berulang khas karena kenaikan harga kumulatif (URA), bukan keterlambatan laporan.",
+            "biaya_usd": 0.00037475,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Penghentian sementara saham biasanya karena kenaikan harga kumulatif (UMP).",
+            "biaya_usd": 0.0002506,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Penghentian sementara bursa lazim dipicu kenaikan harga kumulatif (UMA).",
+            "biaya_usd": 0.00044933,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 7,
+          "p": 0.38720703125,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (peluang kebetulan 0,3872; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.0035878
+      }
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Barusan cek, harga tutup kemarin sore Rp1.605 per lembar, sebelum hari ini disetop bursa.",
+        "angka_pesan": [
+          {
+            "teks": "Rp1.605",
+            "fact_id": "harga-2026-08-14"
+          }
+        ],
+        "kartu": [
+          "harga-2026-08-13",
+          "harga-2026-08-14",
+          "harga-2026-08-18",
+          "volume-2026-08-18"
+        ],
+        "kartu_penentu": [
+          "harga-2026-08-14",
+          "harga-2026-08-18"
+        ],
+        "pilihan": {
+          "a": "Keliru, angka itu penutupan [[harga-2026-08-13|13 Agustus]], bukan kemarin.",
+          "b": "Keliru, angka itu penutupan [[harga-2026-08-14|14 Agustus]], bukan kemarin.",
+          "c": "Betul, angka itu penutupan kemarin tanggal [[harga-2026-08-18|18 Agustus]].",
+          "d": "Betul, angka itu penutupan hari bervolume [[volume-2026-08-18|4.382.400 lembar]]."
+        },
+        "kunci": "b",
+        "penjelasan": "Harga [[harga-2026-08-14|Rp1.605]] adalah penutupan [[harga-2026-08-14|14 Agustus 2026]], bukan kemarin. Penutupan kemarin, [[harga-2026-08-18|18 Agustus 2026]], adalah [[harga-2026-08-18|Rp1.810]]. Angka [[harga-2026-08-13|Rp1.285]] milik [[harga-2026-08-13|13 Agustus 2026]], jadi juga bukan sumber angka teman. Volume [[volume-2026-08-18|4.382.400 lembar]] memang tercatat kemarin, tetapi itu tidak mengubah harga penutupannya. Data harga harian selalu bertanggal; cocokkan tanggalnya dulu sebelum memakai angkanya. Salah-kaprah yang umum: mengambil angka dari baris data terdekat tanpa melihat tanggalnya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-13",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat penutupan sehari lebih awal dengan angka berbeda; angka teman ada di kartu 2."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 3 mencatat penutupan kemarin berbeda dari angka teman."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "volume-2026-08-18",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 bicara volume kemarin, bukan harga penutupannya."
+          }
+        },
+        "pertanyaan_cek": "Tanggal berapa yang tertulis di data harga yang memuat angka teman?"
+      },
+      "berhenti": "penebak-kuat",
+      "alasan": [
+        "mode sulit: penguji Opus tanpa kartu benar 3 dari 4; targetnya 0 — hilangkan petunjuk dari nada pesan dan dari susunan pilihan"
+      ],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (peluang kebetulan 0,3872; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menunjukkan Rp1.605 adalah harga penutupan 14 Agustus 2026, bukan penutupan kemarin.",
+            "biaya_usd": 0.00060815
+          },
+          {
+            "r": 2,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Angka Rp1.605 per lembar cocok dengan harga penutupan 14 Agustus 2026, bukan penutupan kemarin.",
+            "biaya_usd": 0.00034595
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, angka itu penutupan 14 Agustus, bukan kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; angka mungkin penutupan hari sebelumnya",
+            "biaya_usd": 0.007208,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, angka itu penutupan 14 Agustus, bukan kemarin.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, ini tebakan; tidak bisa dipastikan.",
+            "biaya_usd": 0.009728,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, angka itu penutupan kemarin tanggal 18 Agustus.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+            "biaya_usd": 0.006548,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Keliru, angka itu penutupan 14 Agustus, bukan kemarin.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; harga suspensi biasanya dari hari sebelumnya.",
+            "biaya_usd": 0.008248,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 3,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 1,
+          "putusan": "tolak",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+        },
+        "biaya_usd": 0.031731999999999996
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Pertimbangkan menambah satu kartu tentang penghentian perdagangan hari ini agar bagian 'disetop bursa' pada omongan juga bisa dicek pemain dari kartu.",
+        "token_penalaran": [
+          13438
+        ]
+      },
+      "biaya_gerbang_usd": 0.08481989,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, asumsi 'kemarin' lebih dekat ke hari ini daripada dua hari lalu.",
+            "biaya_usd": 0.000563,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, asumsi 'kemarin' lebih dekat ke hari sebelumnya (13 Agustus) daripada dua hari lalu (14 Agustus).",
+            "biaya_usd": 0.000658,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, opsi 1 (14 Agustus) lebih umum sebagai hari sebelumnya.",
+            "biaya_usd": 0.000562,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "14 Agustus lebih dekat ke 'kemarin' dari 13 Agustus jika hari ini 15 Agustus",
+            "biaya_usd": 0.000587,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Jika keliru, kemarin bukan 14 Agustus, jadi 14 Agustus lebih mungkin.",
+            "biaya_usd": 0.00003045,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Jika keliru, kemarin bukan 13 Agustus, jadi itu tanggal lain",
+            "biaya_usd": 0.00002805,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Penutupan 14 Agustus lebih mungkin, bukan kemarin.",
+            "biaya_usd": 0.0000268,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Jika keliru, penutupan 13 Agustus lebih mungkin dari 14 Agustus",
+            "biaya_usd": 0.0000292,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Sahai disetop setelah 14 Agustus, jadi penutupan terakhir bukan kemarin.",
+            "biaya_usd": 0.00040632,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Saham disetop, penutupan terakhir 13 Agustus, bukan kemarin.",
+            "biaya_usd": 0.00135552,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka Rp1.605 kemungkinan penutupan 14 Agustus, bukan kemarin.",
+            "biaya_usd": 0.00028089,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Saham disetop sejak 14 Agustus, penutupan terakhir adalah 13 Agustus.",
+            "biaya_usd": 0.00071353,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 7,
+          "p": 0.38720703125,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (peluang kebetulan 0,3872; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.005240759999999999
+      }
+    },
+    {
+      "putaran": 3,
+      "urut": 1,
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Cek data bursa deh: harga penutupannya naik 3 hari bursa beruntun sampai tanggal 18 Agustus.",
+        "angka_pesan": [
+          {
+            "teks": "3",
+            "fact_id": "hari-naik-beruntun"
+          },
+          {
+            "teks": "18 Agustus",
+            "fact_id": "harga-2026-08-18"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2026-08-13",
+          "harga-2026-08-14",
+          "harga-2026-08-18"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, kenaikan beruntunnya bermula dari [[hari-naik-beruntun|Rp1.030]].",
+          "b": "Betul, kenaikan beruntunnya bermula dari [[harga-2026-08-13|Rp1.285]].",
+          "c": "Keliru, penutupan [[harga-2026-08-14|Rp1.605]] lebih rendah dari hari sebelumnya.",
+          "d": "Keliru, penutupan [[harga-2026-08-18|Rp1.810]] lebih rendah dari hari sebelumnya."
+        },
+        "kunci": "a",
+        "penjelasan": "Hitungan dari data harga harian menunjukkan penutupan naik [[hari-naik-beruntun|3 hari bursa]] berturut-turut, berawal dari [[hari-naik-beruntun|Rp1.030]] pada [[hari-naik-beruntun|12 Agustus 2026]]: lalu [[harga-2026-08-13|Rp1.285]], [[harga-2026-08-14|Rp1.605]], dan [[harga-2026-08-18|Rp1.810]]. Tiap hari lebih tinggi dari hari bursa sebelumnya, jadi tidak ada hari yang turun. Titik awal kenaikan beruntun itu adalah penutupan sebelum kenaikan pertama, bukan [[harga-2026-08-13|Rp1.285]]; dari situ baru terhitung dua kenaikan. Salah-kaprah yang umum: memulai hitungan dari hari kenaikan pertama, sehingga satu kenaikan terlewat.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-13",
+            "umpan_balik": "Ini salah periode: kartu 2 adalah hari kenaikan pertama; titik awalnya penutupan sehari bursa sebelumnya di kartu 1."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2026-08-14",
+            "umpan_balik": "Ini angka nyaris benar: kartu 3 mencatat harga itu, tetapi lebih tinggi dari penutupan sebelumnya, bukan lebih rendah."
+          },
+          "d": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini angka nyaris benar: kartu 4 mencatat harga itu, dan hasilnya lebih tinggi dari hari bursa sebelumnya."
+          }
+        },
+        "pertanyaan_cek": "Apakah tiap penutupan dalam rentang itu lebih tinggi dari hari bursa sebelumnya?"
+      },
+      "berhenti": "penebak-kuat",
+      "alasan": [
+        "mode sulit: penguji Opus tanpa kartu benar 1 dari 4; targetnya 0 — hilangkan petunjuk dari nada pesan dan dari susunan pilihan"
+      ],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 10 (peluang kebetulan 0,9453; batas 0,02); 2 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 1 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menyatakan penutupan naik tiga hari bursa berturut-turut dari 12 Agustus Rp1.030 sampai 18 Agustus Rp1.810.",
+            "biaya_usd": 0.0007477
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menyatakan harga penutupan naik 3 hari bursa berturut-turut dari Rp1.030 pada 12 Agustus sampai Rp1.810 pada 18 Agustus, cocok dengan omongan Bayu.",
+            "biaya_usd": 0.000926076
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikan beruntunnya bermula dari Rp1.030.",
+            "skor": 1,
+            "alasan": "Tebakan saja; dokumen tidak tersedia, jadi tak bisa diverifikasi.",
+            "biaya_usd": 0.0042,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, penutupan Rp1.810 lebih rendah dari hari sebelumnya.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, ini tebakan; angka tak bisa diverifikasi.",
+            "biaya_usd": 0.00446,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikan beruntunnya bermula dari Rp1.285.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa data bursa, tak bisa diverifikasi.",
+            "biaya_usd": 0.00452,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikan beruntunnya bermula dari Rp1.285.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, kebenaran klaim tak bisa diverifikasi.",
+            "biaya_usd": 0.00414,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 1,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 1 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.017320000000000002
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Tidak ada perubahan yang diperlukan; pembeda antara opsi a dan b sudah diterangkan langsung oleh kartu penentu.",
+        "token_penalaran": [
+          8562
+        ]
+      },
+      "biaya_gerbang_usd": 0.093250556,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Harga Rp1.285 lebih realistis untuk saham dibanding Rp1.030",
+            "biaya_usd": 0.000533,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga awal Rp1.285 lebih realistis untuk kenaikan 3 hari beruntun.",
+            "biaya_usd": 0.000548,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Harga Rp1.285 lebih realistis untuk saham dengan kenaikan 3 hari beruntun.",
+            "biaya_usd": 0.000552,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp1.285 lebih realistis untuk kenaikan 3 hari beruntun hingga Rp1.300an",
+            "biaya_usd": 0.000567,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga awal lebih rendah memungkinkan kenaikan beruntun tiga hari",
+            "biaya_usd": 0.0000282,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga awal lebih tinggi lebih mungkin naik beruntun",
+            "biaya_usd": 0.0000258,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga awal lebih rendah lebih mungkin naik beruntun",
+            "biaya_usd": 0.00002575,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga naik beruntun wajar mulai dari level lebih rendah, bukan Rp1.030.",
+            "biaya_usd": 0.00003115,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga awal kenaikan beruntun biasanya harga terendah sebelum naik.",
+            "biaya_usd": 0.00043278,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan tiga hari beruntun lebih wajar dimulai dari harga Rp1.285.",
+            "biaya_usd": 0.0004599,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044492,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044492,
+            "panggilan": 2
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 10,
+          "tak_terbaca": 2,
+          "kunci": 3,
+          "p": 0.9453125,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 10 (peluang kebetulan 0,9453; batas 0,02); 2 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.044093419999999994
+      }
+    },
+    {
+      "putaran": 4,
+      "urut": 1,
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Ini bukan suspensi pertamanya lho. Dalam setahun terakhir bursa udah pernah menghentikan perdagangannya juga.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2026-08-19",
+          "susp-2026-07-22",
+          "harga-2026-08-12"
+        ],
+        "kartu_penentu": [
+          "susp-2026-07-22"
+        ],
+        "pilihan": {
+          "a": "Keliru, penghentian sebelumnya menimpa emiten lain, bukan Perusahaan A.",
+          "b": "Betul, penghentian sebelumnya terjadi pada [[susp-2026-07-22|22 Juli 2026]].",
+          "c": "Betul, penghentian sebelumnya terjadi pada [[harga-2026-08-12|12 Agustus 2026]].",
+          "d": "Keliru, penghentian sebelumnya terjadi lebih dari setahun lalu."
+        },
+        "kunci": "b",
+        "penjelasan": "Pengumuman bursa mencatat perdagangan saham Perusahaan A sudah pernah dihentikan sementara pada [[susp-2026-07-22|22 Juli 2026]], sebelum penghentian [[susp-2026-08-19|19 Agustus 2026]]. Jadi omongan teman cocok dengan dokumen. Tanggal [[harga-2026-08-12|12 Agustus 2026]] hanya muncul di data harga penutupan; pada hari itu ada harga penutupan, bukan pengumuman penghentian. Kedua pengumuman juga tidak mencatat kapan perdagangan dibuka lagi. Salah-kaprah yang umum: menganggap setiap tanggal di data bursa sebagai tanggal kejadian penting.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah entitas: kartu 2 jelas mencatat penghentian sebelumnya untuk saham Perusahaan A sendiri."
+          },
+          "c": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "harga-2026-08-12",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 hanya data harga penutupan, bukan pengumuman penghentian."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat penghentian sebelumnya masih dalam setahun terakhir."
+          }
+        },
+        "pertanyaan_cek": "Dokumen jenis apa yang mencatat penghentian sementara, dan tanggal berapa tertulis di sana?"
+      },
+      "berhenti": "saringan",
+      "alasan": [
+        "saringan tebak: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 9 (peluang kebetulan 0,0195; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu; 3 tak terbaca dibuang"
+      ],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.07459778,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "22 Juli lebih dekat ke setahun lalu dibanding 12 Agustus",
+            "biaya_usd": 0.000521,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Juli lebih dekat ke 'setahun terakhir' dari Desember 2026",
+            "biaya_usd": 0.000521,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, pilihan 1 lebih masuk akal karena Juli lebih dekat setahun terakhir.",
+            "biaya_usd": 0.00056,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Juli lebih dekat ke 'setahun terakhir' dari 19 Desember dibanding Agustus",
+            "biaya_usd": 0.00055,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 22 Juli lebih awal dari pesan 19.12, mungkin sudah terjadi.",
+            "biaya_usd": 0.0000299,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Tanggal 22 Juli lebih masuk akal dalam setahun terakhir.",
+            "biaya_usd": 0.0000275,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 22 Juli lebih dekat dengan pesan 19.12, lebih mungkin.",
+            "biaya_usd": 0.00002985,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal 12 Agustus lebih dekat dengan setahun terakhir.",
+            "biaya_usd": 0.00002745,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 1,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044624,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 1,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044496,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, opsi pertama dipilih sebagai perkiraan terbaik.",
+            "biaya_usd": 0.01099492,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 1,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044496,
+            "panggilan": 2
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 9,
+          "tak_terbaca": 3,
+          "kunci": 8,
+          "p": 0.01953125,
+          "putusan": "tolak",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 8 dari 9 (peluang kebetulan 0,0195; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu; 3 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.07459778
+      }
+    },
+    {
+      "putaran": 5,
+      "urut": 1,
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Barusan liat data bursa, tanggal 13 Agustus harga tutupnya Rp1.605 per lembar.",
+        "angka_pesan": [
+          {
+            "teks": "13 Agustus",
+            "fact_id": "harga-2026-08-13"
+          },
+          {
+            "teks": "Rp1.605",
+            "fact_id": "harga-2026-08-14"
+          }
+        ],
+        "kartu": [
+          "harga-2026-08-13",
+          "harga-2026-08-14",
+          "harga-2026-08-18"
+        ],
+        "kartu_penentu": [
+          "harga-2026-08-13"
+        ],
+        "pilihan": {
+          "a": "Keliru, penutupan tanggal itu tercatat [[harga-2026-08-13|Rp1.285]].",
+          "b": "Betul, penutupan tanggal itu tercatat [[harga-2026-08-14|Rp1.605]].",
+          "c": "Betul, sesudah tanggal itu harganya tercatat [[harga-2026-08-18|Rp1.810]].",
+          "d": "Keliru, penutupan tanggal itu tercatat [[harga-2026-08-18|Rp1.810]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Data harga harian mencatat penutupan [[harga-2026-08-13|13 Agustus 2026]] adalah [[harga-2026-08-13|Rp1.285]]. Angka teman, [[harga-2026-08-14|Rp1.605]], adalah penutupan [[harga-2026-08-14|14 Agustus 2026]], hari bursa berikutnya. Angka [[harga-2026-08-18|Rp1.810]] juga bukan milik tanggal yang disebut teman; itu penutupan [[harga-2026-08-18|18 Agustus 2026]]. Data harga harian selalu bertanggal, jadi cocokkan tanggal dan angkanya bersama-sama. Salah-kaprah yang umum: mengambil angka dari baris data yang bersebelahan tanpa melihat tanggalnya.",
+        "pengecoh": {
+          "b": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "harga-2026-08-14",
+            "umpan_balik": "Ini percaya omongan tanpa cek: angka teman ada di kartu 2, tetapi tanggalnya sehari bursa sesudahnya."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini salah periode: kartu 3 adalah penutupan hari bursa lain, dan angka teman pun bukan milik tanggal itu."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini salah periode: harga di kartu 3 adalah penutupan tanggal lain, bukan tanggal yang disebut teman."
+          }
+        },
+        "pertanyaan_cek": "Angka di data harga itu tercatat untuk tanggal yang mana?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan penutupan 13 Agustus 2026 adalah Rp1.285, bukan Rp1.605 seperti kata Rara.",
+            "biaya_usd": 0.000190238
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan penutupan 13 Agustus 2026 adalah Rp1.285, bukan Rp1.605 seperti kata Rara.",
+            "biaya_usd": 0.000180038
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, tebakan: angka sama dengan klaim Rara.",
+            "biaya_usd": 0.004472,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; hanya pilihan ini selaras dengan klaim Rara.",
+            "biaya_usd": 0.004652,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; pilihan ini paling selaras dengan klaim Rara.",
+            "biaya_usd": 0.003812,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, penutupan tanggal itu tercatat Rp1.605.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, tebakan; pilihan ini paling selaras dengan klaim Rara.",
+            "biaya_usd": 0.004092,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 1,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.017028
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Penjelasan memakai frasa 'baris data yang bersebelahan' padahal kartu berupa dokumen harian per tanggal; sesuaikan istilah itu dengan bentuk kartu yang dilihat pemain.",
+        "token_penalaran": [
+          16224
+        ]
+      },
+      "biaya_gerbang_usd": 0.118228356,
+      "id_bank": "dd409a430aebc05e",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Rp1.810 lebih dekat ke Rp1.605 daripada Rp1.285, lebih masuk akal.",
+            "biaya_usd": 0.000577,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp1.810 lebih dekat ke Rp1.605 daripada Rp1.285, lebih masuk akal.",
+            "biaya_usd": 0.000577,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Rp1.810 lebih dekat ke Rp1.605, pergerakan harga wajar.",
+            "biaya_usd": 0.000531,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp1.810 lebih dekat ke Rp1.605, pergerakan harga wajar",
+            "biaya_usd": 0.000531,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp1.285 lebih dekat ke Rp1.605 daripada Rp1.810",
+            "biaya_usd": 0.0000283,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Rp1.285 lebih dekat ke Rp1.605 daripada Rp1.810",
+            "biaya_usd": 0.0000283,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp1.285 lebih dekat ke Rp1.605 daripada Rp1.810",
+            "biaya_usd": 0.00002825,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp1.810 lebih dekat ke Rp1.605 daripada Rp1.285",
+            "biaya_usd": 0.00002825,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka Rp1.285 lebih dekat dan wajar sebagai koreksi harga penutupan.",
+            "biaya_usd": 0.01080451,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.02044484,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, angka Rp1.285 lebih mungkin sebagai koreksi penutupan.",
+            "biaya_usd": 0.010516359999999999,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Angka Rp1.605 kemungkinan tertukar dengan tanggal lain; penutupan sebenarnya Rp1.810.",
+            "biaya_usd": 0.00059968,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 11,
+          "tak_terbaca": 1,
+          "kunci": 5,
+          "p": 0.7255859375,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.044694489999999996
+      }
+    },
+    {
+      "putaran": 6,
+      "urut": 1,
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.40",
+        "pesan": "Iseng ngitung dari data bursa: dari tutup 3 Agustus sampai tutup 18 Agustus, harganya naik Rp1.120 per lembar.",
+        "angka_pesan": [
+          {
+            "teks": "3 Agustus",
+            "fact_id": "naik-2026-08-03-2026-08-18"
+          },
+          {
+            "teks": "18 Agustus",
+            "fact_id": "naik-2026-08-03-2026-08-18"
+          },
+          {
+            "teks": "Rp1.120",
+            "fact_id": "naik-2026-08-03-2026-08-18"
+          }
+        ],
+        "kartu": [
+          "naik-2026-08-03-2026-08-18",
+          "harga-2026-08-03",
+          "harga-2026-08-12",
+          "harga-2026-08-14"
+        ],
+        "kartu_penentu": [
+          "naik-2026-08-03-2026-08-18",
+          "harga-2026-08-03"
+        ],
+        "pilihan": {
+          "a": "Keliru, hitungan itu dimulai dari akhir Juli, bukan Agustus.",
+          "b": "Betul, penutupan awalnya tercatat [[harga-2026-08-03|Rp690]] per lembar.",
+          "c": "Betul, penutupan awalnya tercatat [[harga-2026-08-12|Rp1.030]] per lembar.",
+          "d": "Keliru, penutupan terakhirnya baru [[harga-2026-08-14|Rp1.605]] per lembar."
+        },
+        "kunci": "b",
+        "penjelasan": "Hitungan dari data harga harian mencatat penutupan [[harga-2026-08-03|3 Agustus 2026]] sebesar [[harga-2026-08-03|Rp690]] dan penutupan [[naik-2026-08-03-2026-08-18|18 Agustus 2026]] sebesar [[naik-2026-08-03-2026-08-18|Rp1.810]], jadi kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]] per lembar, cocok dengan kata teman. Angka [[harga-2026-08-12|Rp1.030]] adalah penutupan [[harga-2026-08-12|12 Agustus 2026]], dan [[harga-2026-08-14|Rp1.605]] adalah penutupan [[harga-2026-08-14|14 Agustus 2026]]; keduanya bukan ujung hitungan teman. Salah-kaprah yang umum: memakai harga dari tanggal di tengah rentang sebagai titik awal atau titik akhir.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "naik-2026-08-03-2026-08-18",
+            "umpan_balik": "Ini salah periode: kartu 1 menghitung kenaikan mulai awal Agustus, persis seperti kata teman."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-12",
+            "umpan_balik": "Ini salah periode: kartu 3 adalah penutupan pertengahan Agustus, bukan titik awal hitungan teman."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-14",
+            "umpan_balik": "Ini salah periode: kartu 4 bukan penutupan terakhir; hitungan teman berakhir pada hari bursa sesudahnya."
+          }
+        },
+        "pertanyaan_cek": "Harga penutupan tanggal mana yang menjadi titik awal dan titik akhir hitungan itu?"
+      },
+      "berhenti": "penebak-kuat",
+      "alasan": [
+        "mode sulit: penguji Opus tanpa kartu benar 2 dari 4; targetnya 0 — hilangkan petunjuk dari nada pesan dan dari susunan pilihan"
+      ],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat kenaikan dari 3 Agustus 2026 ke 18 Agustus 2026 sebesar Rp1.120 dan memakai penutupan awal Rp690, cocok dengan hitungan Bayu.",
+            "biaya_usd": 0.0011
+          },
+          {
+            "r": 2,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat kenaikan 3–18 Agustus 2026 sebesar Rp1.120, dengan penutupan awal Rp690.",
+            "biaya_usd": 0.0012836
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, penutupan awalnya tercatat Rp1.030 per lembar.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tak ada yang bisa diverifikasi.",
+            "biaya_usd": 0.004928,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, penutupan awalnya tercatat Rp690 per lembar.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, ini hanya tebakan; tidak bisa diverifikasi.",
+            "biaya_usd": 0.005508,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, penutupan awalnya tercatat Rp1.030 per lembar.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tak ada pilihan yang bisa diverifikasi.",
+            "biaya_usd": 0.005788,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "Betul, penutupan awalnya tercatat Rp690 per lembar.",
+            "skor": 1,
+            "alasan": "Tebakan saja; dokumen tidak tersedia, jadi tidak bisa diverifikasi.",
+            "biaya_usd": 0.006768,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 2,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.022992000000000002
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Penjelasan menyebut sumbernya 'hitungan dari data harga harian' padahal kartu penentunya berlabel 'hitungan dari kartu lain'; samakan sebutan sumber agar pemain mudah menelusuri kartunya.",
+        "token_penalaran": [
+          4923
+        ]
+      },
+      "biaya_gerbang_usd": 0.05041039,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Jika naik Rp1.120 dari Rp690, hasilnya Rp1.810. Lebih masuk akal daripada dari Rp1.030 menjadi Rp2.150.",
+            "biaya_usd": 0.000691,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp1.030 = Rp2.150, lebih masuk akal daripada dari Rp690",
+            "biaya_usd": 0.000621,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp690 + Rp1.120 = Rp1.810 lebih masuk akal daripada Rp1.030 + Rp1.120 = Rp2.150",
+            "biaya_usd": 0.000675,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp1.030 = Rp2.150 lebih masuk akal daripada dari Rp690",
+            "biaya_usd": 0.00062,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Harga saham Indonesia umumnya ratusan hingga ribuan rupiah, bukan Rp690.",
+            "biaya_usd": 0.0000309,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Harga saham Indonesia umumnya di bawah Rp1.000, jarang Rp1.030",
+            "biaya_usd": 0.0000309,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp1.030 lebih wajar daripada dari Rp690",
+            "biaya_usd": 0.00003025,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp690 lebih wajar daripada dari Rp1.030",
+            "biaya_usd": 0.00003025,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp1.030 (sekitar 109%) lebih wajar dibanding dari Rp690 (162%).",
+            "biaya_usd": 0.00067567,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp1.030 berarti +109%, lebih wajar daripada +162%.",
+            "biaya_usd": 0.0005528,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp690 menghasilkan harga akhir yang wajar.",
+            "biaya_usd": 0.00203506,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 1,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Kenaikan Rp1.120 dari Rp690 menghasilkan harga akhir wajar (Rp1.810).",
+            "biaya_usd": 0.00104051,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 6,
+          "p": 0.61279296875,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 12 (peluang kebetulan 0,6128; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.007033339999999999
+      }
+    }
+  ],
+  "draf_lolos_kode": [
+    {
+      "id": "a064364f80a64e1d",
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Ini bukan pertama kalinya disetop bursa lho. Bulan lalu sahamnya juga pernah dihentikan sementara.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2026-08-19",
+          "susp-2026-07-22"
+        ],
+        "kartu_penentu": [
+          "susp-2026-07-22"
+        ],
+        "pilihan": {
+          "a": "Keliru, penghentian sebelumnya terjadi lebih dari setahun lalu.",
+          "b": "Betul, bulan lalu alasan resminya keterlambatan laporan keuangan.",
+          "c": "Keliru, bulan lalu yang dihentikan saham perusahaan lain.",
+          "d": "Betul, bulan lalu alasan resminya kenaikan harga kumulatif."
+        },
+        "kunci": "d",
+        "penjelasan": "Pengumuman bursa mencatat perdagangan saham Perusahaan A dihentikan sementara pada [[susp-2026-07-22|22 Juli 2026]], sebulan sebelum penghentian [[susp-2026-08-19|19 Agustus 2026]]. Alasan resmi keduanya sama: peningkatan harga kumulatif yang signifikan pada saham Perusahaan A, bukan soal laporan keuangan. Jadi omongan teman bisa dicek dan cocok. Perhatikan juga: kedua pengumuman tidak mencatat kapan perdagangan dibuka lagi, jadi lama penghentiannya tidak bisa dipastikan. Salah-kaprah yang umum: mengira setiap penghentian sementara pasti karena perusahaan bermasalah dengan laporannya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat penghentian sebelumnya terjadi bulan lalu, masih dalam setahun terakhir."
+          },
+          "b": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini sebagian benar: memang pernah dihentikan, tetapi kartu 2 menyebut alasannya kenaikan harga kumulatif, bukan laporan keuangan."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah entitas: kartu 2 jelas menyebut saham Perusahaan A yang dihentikan bulan lalu."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi yang ditulis bursa di pengumuman penghentian sebelumnya?"
+      }
+    },
+    {
+      "id": "768af6d58b5641e1",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Barusan cek, harga tutup kemarin sore Rp1.605 per lembar, sebelum hari ini disetop bursa.",
+        "angka_pesan": [
+          {
+            "teks": "Rp1.605",
+            "fact_id": "harga-2026-08-14"
+          }
+        ],
+        "kartu": [
+          "harga-2026-08-13",
+          "harga-2026-08-14",
+          "harga-2026-08-18",
+          "volume-2026-08-18"
+        ],
+        "kartu_penentu": [
+          "harga-2026-08-14",
+          "harga-2026-08-18"
+        ],
+        "pilihan": {
+          "a": "Keliru, angka itu penutupan [[harga-2026-08-13|13 Agustus]], bukan kemarin.",
+          "b": "Keliru, angka itu penutupan [[harga-2026-08-14|14 Agustus]], bukan kemarin.",
+          "c": "Betul, angka itu penutupan kemarin tanggal [[harga-2026-08-18|18 Agustus]].",
+          "d": "Betul, angka itu penutupan hari bervolume [[volume-2026-08-18|4.382.400 lembar]]."
+        },
+        "kunci": "b",
+        "penjelasan": "Harga [[harga-2026-08-14|Rp1.605]] adalah penutupan [[harga-2026-08-14|14 Agustus 2026]], bukan kemarin. Penutupan kemarin, [[harga-2026-08-18|18 Agustus 2026]], adalah [[harga-2026-08-18|Rp1.810]]. Angka [[harga-2026-08-13|Rp1.285]] milik [[harga-2026-08-13|13 Agustus 2026]], jadi juga bukan sumber angka teman. Volume [[volume-2026-08-18|4.382.400 lembar]] memang tercatat kemarin, tetapi itu tidak mengubah harga penutupannya. Data harga harian selalu bertanggal; cocokkan tanggalnya dulu sebelum memakai angkanya. Salah-kaprah yang umum: mengambil angka dari baris data terdekat tanpa melihat tanggalnya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-13",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat penutupan sehari lebih awal dengan angka berbeda; angka teman ada di kartu 2."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 3 mencatat penutupan kemarin berbeda dari angka teman."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "volume-2026-08-18",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 bicara volume kemarin, bukan harga penutupannya."
+          }
+        },
+        "pertanyaan_cek": "Tanggal berapa yang tertulis di data harga yang memuat angka teman?"
+      }
+    },
+    {
+      "id": "a78b22df1e8165a5",
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Cek data bursa deh: harga penutupannya naik 3 hari bursa beruntun sampai tanggal 18 Agustus.",
+        "angka_pesan": [
+          {
+            "teks": "3",
+            "fact_id": "hari-naik-beruntun"
+          },
+          {
+            "teks": "18 Agustus",
+            "fact_id": "harga-2026-08-18"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2026-08-13",
+          "harga-2026-08-14",
+          "harga-2026-08-18"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, kenaikan beruntunnya bermula dari [[hari-naik-beruntun|Rp1.030]].",
+          "b": "Betul, kenaikan beruntunnya bermula dari [[harga-2026-08-13|Rp1.285]].",
+          "c": "Keliru, penutupan [[harga-2026-08-14|Rp1.605]] lebih rendah dari hari sebelumnya.",
+          "d": "Keliru, penutupan [[harga-2026-08-18|Rp1.810]] lebih rendah dari hari sebelumnya."
+        },
+        "kunci": "a",
+        "penjelasan": "Hitungan dari data harga harian menunjukkan penutupan naik [[hari-naik-beruntun|3 hari bursa]] berturut-turut, berawal dari [[hari-naik-beruntun|Rp1.030]] pada [[hari-naik-beruntun|12 Agustus 2026]]: lalu [[harga-2026-08-13|Rp1.285]], [[harga-2026-08-14|Rp1.605]], dan [[harga-2026-08-18|Rp1.810]]. Tiap hari lebih tinggi dari hari bursa sebelumnya, jadi tidak ada hari yang turun. Titik awal kenaikan beruntun itu adalah penutupan sebelum kenaikan pertama, bukan [[harga-2026-08-13|Rp1.285]]; dari situ baru terhitung dua kenaikan. Salah-kaprah yang umum: memulai hitungan dari hari kenaikan pertama, sehingga satu kenaikan terlewat.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-13",
+            "umpan_balik": "Ini salah periode: kartu 2 adalah hari kenaikan pertama; titik awalnya penutupan sehari bursa sebelumnya di kartu 1."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2026-08-14",
+            "umpan_balik": "Ini angka nyaris benar: kartu 3 mencatat harga itu, tetapi lebih tinggi dari penutupan sebelumnya, bukan lebih rendah."
+          },
+          "d": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini angka nyaris benar: kartu 4 mencatat harga itu, dan hasilnya lebih tinggi dari hari bursa sebelumnya."
+          }
+        },
+        "pertanyaan_cek": "Apakah tiap penutupan dalam rentang itu lebih tinggi dari hari bursa sebelumnya?"
+      }
+    },
+    {
+      "id": "34766c1e14c3db3b",
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Ini bukan suspensi pertamanya lho. Dalam setahun terakhir bursa udah pernah menghentikan perdagangannya juga.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2026-08-19",
+          "susp-2026-07-22",
+          "harga-2026-08-12"
+        ],
+        "kartu_penentu": [
+          "susp-2026-07-22"
+        ],
+        "pilihan": {
+          "a": "Keliru, penghentian sebelumnya menimpa emiten lain, bukan Perusahaan A.",
+          "b": "Betul, penghentian sebelumnya terjadi pada [[susp-2026-07-22|22 Juli 2026]].",
+          "c": "Betul, penghentian sebelumnya terjadi pada [[harga-2026-08-12|12 Agustus 2026]].",
+          "d": "Keliru, penghentian sebelumnya terjadi lebih dari setahun lalu."
+        },
+        "kunci": "b",
+        "penjelasan": "Pengumuman bursa mencatat perdagangan saham Perusahaan A sudah pernah dihentikan sementara pada [[susp-2026-07-22|22 Juli 2026]], sebelum penghentian [[susp-2026-08-19|19 Agustus 2026]]. Jadi omongan teman cocok dengan dokumen. Tanggal [[harga-2026-08-12|12 Agustus 2026]] hanya muncul di data harga penutupan; pada hari itu ada harga penutupan, bukan pengumuman penghentian. Kedua pengumuman juga tidak mencatat kapan perdagangan dibuka lagi. Salah-kaprah yang umum: menganggap setiap tanggal di data bursa sebagai tanggal kejadian penting.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-entitas",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah entitas: kartu 2 jelas mencatat penghentian sebelumnya untuk saham Perusahaan A sendiri."
+          },
+          "c": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "harga-2026-08-12",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 hanya data harga penutupan, bukan pengumuman penghentian."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2026-07-22",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat penghentian sebelumnya masih dalam setahun terakhir."
+          }
+        },
+        "pertanyaan_cek": "Dokumen jenis apa yang mencatat penghentian sementara, dan tanggal berapa tertulis di sana?"
+      }
+    },
+    {
+      "id": "dd409a430aebc05e",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Barusan liat data bursa, tanggal 13 Agustus harga tutupnya Rp1.605 per lembar.",
+        "angka_pesan": [
+          {
+            "teks": "13 Agustus",
+            "fact_id": "harga-2026-08-13"
+          },
+          {
+            "teks": "Rp1.605",
+            "fact_id": "harga-2026-08-14"
+          }
+        ],
+        "kartu": [
+          "harga-2026-08-13",
+          "harga-2026-08-14",
+          "harga-2026-08-18"
+        ],
+        "kartu_penentu": [
+          "harga-2026-08-13"
+        ],
+        "pilihan": {
+          "a": "Keliru, penutupan tanggal itu tercatat [[harga-2026-08-13|Rp1.285]].",
+          "b": "Betul, penutupan tanggal itu tercatat [[harga-2026-08-14|Rp1.605]].",
+          "c": "Betul, sesudah tanggal itu harganya tercatat [[harga-2026-08-18|Rp1.810]].",
+          "d": "Keliru, penutupan tanggal itu tercatat [[harga-2026-08-18|Rp1.810]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Data harga harian mencatat penutupan [[harga-2026-08-13|13 Agustus 2026]] adalah [[harga-2026-08-13|Rp1.285]]. Angka teman, [[harga-2026-08-14|Rp1.605]], adalah penutupan [[harga-2026-08-14|14 Agustus 2026]], hari bursa berikutnya. Angka [[harga-2026-08-18|Rp1.810]] juga bukan milik tanggal yang disebut teman; itu penutupan [[harga-2026-08-18|18 Agustus 2026]]. Data harga harian selalu bertanggal, jadi cocokkan tanggal dan angkanya bersama-sama. Salah-kaprah yang umum: mengambil angka dari baris data yang bersebelahan tanpa melihat tanggalnya.",
+        "pengecoh": {
+          "b": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "harga-2026-08-14",
+            "umpan_balik": "Ini percaya omongan tanpa cek: angka teman ada di kartu 2, tetapi tanggalnya sehari bursa sesudahnya."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini salah periode: kartu 3 adalah penutupan hari bursa lain, dan angka teman pun bukan milik tanggal itu."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-18",
+            "umpan_balik": "Ini salah periode: harga di kartu 3 adalah penutupan tanggal lain, bukan tanggal yang disebut teman."
+          }
+        },
+        "pertanyaan_cek": "Angka di data harga itu tercatat untuk tanggal yang mana?"
+      }
+    },
+    {
+      "id": "66d809736664d200",
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.40",
+        "pesan": "Iseng ngitung dari data bursa: dari tutup 3 Agustus sampai tutup 18 Agustus, harganya naik Rp1.120 per lembar.",
+        "angka_pesan": [
+          {
+            "teks": "3 Agustus",
+            "fact_id": "naik-2026-08-03-2026-08-18"
+          },
+          {
+            "teks": "18 Agustus",
+            "fact_id": "naik-2026-08-03-2026-08-18"
+          },
+          {
+            "teks": "Rp1.120",
+            "fact_id": "naik-2026-08-03-2026-08-18"
+          }
+        ],
+        "kartu": [
+          "naik-2026-08-03-2026-08-18",
+          "harga-2026-08-03",
+          "harga-2026-08-12",
+          "harga-2026-08-14"
+        ],
+        "kartu_penentu": [
+          "naik-2026-08-03-2026-08-18",
+          "harga-2026-08-03"
+        ],
+        "pilihan": {
+          "a": "Keliru, hitungan itu dimulai dari akhir Juli, bukan Agustus.",
+          "b": "Betul, penutupan awalnya tercatat [[harga-2026-08-03|Rp690]] per lembar.",
+          "c": "Betul, penutupan awalnya tercatat [[harga-2026-08-12|Rp1.030]] per lembar.",
+          "d": "Keliru, penutupan terakhirnya baru [[harga-2026-08-14|Rp1.605]] per lembar."
+        },
+        "kunci": "b",
+        "penjelasan": "Hitungan dari data harga harian mencatat penutupan [[harga-2026-08-03|3 Agustus 2026]] sebesar [[harga-2026-08-03|Rp690]] dan penutupan [[naik-2026-08-03-2026-08-18|18 Agustus 2026]] sebesar [[naik-2026-08-03-2026-08-18|Rp1.810]], jadi kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]] per lembar, cocok dengan kata teman. Angka [[harga-2026-08-12|Rp1.030]] adalah penutupan [[harga-2026-08-12|12 Agustus 2026]], dan [[harga-2026-08-14|Rp1.605]] adalah penutupan [[harga-2026-08-14|14 Agustus 2026]]; keduanya bukan ujung hitungan teman. Salah-kaprah yang umum: memakai harga dari tanggal di tengah rentang sebagai titik awal atau titik akhir.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "naik-2026-08-03-2026-08-18",
+            "umpan_balik": "Ini salah periode: kartu 1 menghitung kenaikan mulai awal Agustus, persis seperti kata teman."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-12",
+            "umpan_balik": "Ini salah periode: kartu 3 adalah penutupan pertengahan Agustus, bukan titik awal hitungan teman."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-08-14",
+            "umpan_balik": "Ini salah periode: kartu 4 bukan penutupan terakhir; hitungan teman berakhir pada hari bursa sesudahnya."
+          }
+        },
+        "pertanyaan_cek": "Harga penutupan tanggal mana yang menjadi titik awal dan titik akhir hitungan itu?"
+      }
+    }
+  ],
+  "teks_akhir": ""
+}

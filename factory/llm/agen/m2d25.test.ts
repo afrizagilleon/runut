@@ -3,13 +3,13 @@ import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { bacaBank, shaPaketBank } from '../bebas/bank.ts';
+import { bacaBank, pilihSimulasi, shaPaketBank } from '../bebas/bank.ts';
 import type { NilaiOmonganV3 } from '../bebas/mesin-v3.ts';
 import type { OmonganBebas } from '../bebas/skema.ts';
 import { AKAR } from '../env.ts';
 import type { PaketFakta } from '../paket.ts';
 import { SETELAN_PENEBAK_KUAT } from '../rotasi/penebak-kuat.ts';
-import { buatAlat, CADANGAN_AJUKAN_USD, tingkatOmongan } from './alat.ts';
+import { buatAlat, CADANGAN_AJUKAN_USD, kebutuhanSimulasi, kunciBetul, rakitSimulasi, SEMUA_BETUL, tingkatOmongan } from './alat.ts';
 import { instruksiAgen } from './prompt.ts';
 
 const paket = JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d17-uji-2/paket.json`, 'utf8')) as PaketFakta;
@@ -89,5 +89,30 @@ describe('petunjuk dan batas token', () => {
   });
   it('penguji Opus: max_tokens 32.000', () => {
     expect(SETELAN_PENEBAK_KUAT.maxTokens).toBe(32_000);
+  });
+});
+
+describe('perakit jalur agen: minimal satu Keliru', () => {
+  const muat = (f: string): PaketFakta => JSON.parse(readFileSync(`${AKAR}${f}`, 'utf8')) as PaketFakta;
+  it('bank BOLT nyata (tiga "Betul"): validator lama merakit, perakit agen menolak dan menyebut kebutuhannya', () => {
+    const bolt = muat('eval/penyusun/paket-bolt-2026-05-07/paket.json');
+    // Hanya omongan "Betul" (keadaan bank sesudah m2d25-bolt-2); omongan "Keliru" yang masuk belakangan tidak ikut.
+    const bank = bacaBank(`${AKAR}eval/bank-omongan`, shaPaketBank(bolt)).filter((e) => kunciBetul(e.omongan));
+    expect(bank.length).toBeGreaterThanOrEqual(3);
+    expect(pilihSimulasi(bank, bolt).draf).not.toBeNull();
+    const r = rakitSimulasi(bank, bolt);
+    expect(r.draf).toBeNull();
+    expect(r.alasan.join(' ')).toContain(SEMUA_BETUL);
+    const k = kebutuhanSimulasi(bank, bolt, 3);
+    expect(k).toMatchObject({ terakit: false, butuh_keliru: true, butuh_betul: false });
+    expect(k.kebutuhan.join(' ')).toMatch(/minimal satu omongan yang ternyata KELIRU/);
+  });
+  it('bank ALII nyata (dua "Betul", satu "Keliru") tetap terakit', () => {
+    const alii = muat('eval/penyusun/paket-alii-2025-11-10/paket.json');
+    expect(rakitSimulasi(bacaBank(`${AKAR}eval/bank-omongan`, shaPaketBank(alii)), alii).draf).not.toBeNull();
+  });
+  it('aturan itu ada di petunjuk agen', () => {
+    expect(instruksiAgen(3, 5)).toMatch(/minimal satu yang ternyata keliru/);
+    expect(instruksiAgen(3, 5)).toMatch(/minimal satu ternyata KELIRU/);
   });
 });
