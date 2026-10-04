@@ -1,0 +1,361 @@
+{
+  "id": "28192295aab0c290",
+  "paket_sha": "40bccdb8f5412733fd2301665f7e8ea2707aedd06d2515d906f9aa83c2e3744e",
+  "kartu_penentu": [
+    "volume-2026-06-15"
+  ],
+  "omongan": {
+    "nama": "Bayu",
+    "jam": "20.05",
+    "pesan": "Harganya naik tapi yang ditransaksikan hari ini cuma 12.000 lembar. Sepi banget ya.",
+    "angka_pesan": [
+      {
+        "teks": "12.000",
+        "fact_id": "volume-2026-06-12"
+      }
+    ],
+    "kartu": [
+      "volume-2026-06-12",
+      "volume-2026-06-15",
+      "harga-2026-06-12",
+      "harga-2026-06-15"
+    ],
+    "kartu_penentu": [
+      "volume-2026-06-15"
+    ],
+    "pilihan": {
+      "a": "Betul, volume hari ini lebih kecil dari hari bursa sebelumnya.",
+      "b": "Betul, harga naik walau volumenya sama dengan kemarin.",
+      "c": "Keliru, angka itu volume sepekan, bukan volume hari ini.",
+      "d": "Keliru, itu volume hari bursa sebelumnya, bukan hari ini."
+    },
+    "kunci": "d",
+    "penjelasan": "Angka [[volume-2026-06-12|12.000 lembar]] adalah volume [[volume-2026-06-12|12 Juni 2026]], hari bursa sebelumnya. Volume hari ini, [[volume-2026-06-15|15 Juni 2026]], tercatat [[volume-2026-06-15|50.600 lembar]], jauh lebih banyak. Harganya memang naik, dari [[harga-2026-06-12|Rp390]] ke [[harga-2026-06-15|Rp392]], tetapi transaksinya tidak sepi seperti yang dikira. Salah-kaprah yang umum: membaca baris data kemarin sebagai data hari ini.",
+    "pengecoh": {
+      "a": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "volume-2026-06-15",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 mencatat volume hari ini [[volume-2026-06-15|50.600 lembar]], lebih besar."
+      },
+      "b": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "volume-2026-06-12",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 dan kartu 2 menunjukkan volume kedua hari itu berbeda jauh."
+      },
+      "c": {
+        "jenis": "pertanyaan-lain",
+        "rujukan": "volume-2026-06-12",
+        "umpan_balik": "Ini menjawab pertanyaan lain: kartu 1 mencatat angka itu sebagai volume harian [[volume-2026-06-12|12 Juni 2026]]."
+      }
+    },
+    "pertanyaan_cek": "Angka volume yang disebut teman itu milik hari apa?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "pemanasan",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (nilai uji 0,3872; batas 0,02)",
+        "pembaca kartu r0 bingung: \"Harganya naik tapi yang ditransaksikan hari ini cuma 12.000 lembar.\"",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume hari bursa sebelumnya lebih logis sebagai sumber kesalahan umum.",
+          "biaya_usd": 0.000505,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume sepekan lebih masuk akal daripada hari bursa sebelumnya untuk menjelaskan angka 12.000 lembar yang relatif besar.",
+          "biaya_usd": 0.000595,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume harian lebih sering dicatat per hari bursa sebelumnya daripada per minggu.",
+          "biaya_usd": 0.000519,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume sepekan lebih umum dilaporkan daripada hari bursa sebelumnya",
+          "biaya_usd": 0.000504,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume harian biasanya per hari, bukan sepekan.",
+          "biaya_usd": 0.0000254,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Volume harian biasanya merujuk hari bursa sebelumnya, bukan sepekan.",
+          "biaya_usd": 0.0000284,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume harian biasanya per hari, bukan sepekan.",
+          "biaya_usd": 0.00002535,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume sepekan lebih mungkin daripada volume hari bursa sebelumnya.",
+          "biaya_usd": 0.00002595,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kesalahan umum adalah membaca volume hari bursa sebelumnya, bukan hari ini.",
+          "biaya_usd": 0.00036939,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Angka 12.000 lembar lebih cocok sebagai volume sepekan, bukan harian.",
+          "biaya_usd": 0.00024057,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Angka 12.000 lembar kemungkinan volume sepekan, bukan harian.",
+          "biaya_usd": 0.00032276,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Angka itu kemungkinan volume hari bursa sebelumnya, bukan hari ini.",
+          "biaya_usd": 0.00070244,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 7,
+        "p": 0.38720703125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (nilai uji 0,3872; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.00386326
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [
+            "Harganya naik tapi yang ditransaksikan hari ini cuma 12.000 lembar."
+          ],
+          "alasan": "Kartu 1 mencatat 12.000 lembar pada 12 Juni, sedangkan Kartu 2 mencatat volume 15 Juni 50.600 lembar, jadi angka Bayu adalah volume hari bursa sebelumnya.",
+          "biaya_usd": 0.00097925
+        },
+        {
+          "r": 2,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 2 menunjukkan volume 15 Juni 2026 adalah 50.600 lembar, sedangkan Kartu 1 mencatat 12.000 lembar pada 12 Juni 2026, jadi angka Bayu adalah volume hari bursa sebelumnya.",
+          "biaya_usd": 0.00082205
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "Keliru, itu volume hari bursa sebelumnya, bukan hari ini.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan: angka kemungkinan tertukar dengan volume kemarin.",
+          "biaya_usd": 0.006084,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "Keliru, itu volume hari bursa sebelumnya, bukan hari ini.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan, volume sebelumnya sering tertukar.",
+          "biaya_usd": 0.004824,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "Keliru, itu volume hari bursa sebelumnya, bukan hari ini.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; kolom volume sebelumnya sering tertukar.",
+          "biaya_usd": 0.005484,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 3,
+          "isi_kunci": 3,
+          "terbaca": true,
+          "salinan": "Keliru, itu volume hari bursa sebelumnya, bukan hari ini.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan: angka kemungkinan volume hari sebelumnya.",
+          "biaya_usd": 0.004624,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 4,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 3,
+        "putusan": "tolak",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      },
+      "biaya_usd": 0.021016
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Pastikan status 12 Juni sebagai hari bursa terakhir sebelum 15 Juni bisa dibaca langsung dari kartu, karena saat ini pemain harus menyimpulkannya sendiri dari dua tanggal terbit.",
+      "token_penalaran": [
+        9206
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d26-amag-1",
+    "putaran": 3,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T16:14:39.721Z"
+}

@@ -1,0 +1,359 @@
+{
+  "id": "e59779237448d406",
+  "paket_sha": "40bccdb8f5412733fd2301665f7e8ea2707aedd06d2515d906f9aa83c2e3744e",
+  "kartu_penentu": [
+    "volume-2026-06-15"
+  ],
+  "omongan": {
+    "nama": "Bayu",
+    "jam": "20.05",
+    "pesan": "Harganya naik lagi, tapi volume hari ini cuma 12.000 lembar. Sepi banget ya.",
+    "angka_pesan": [
+      {
+        "teks": "12.000",
+        "fact_id": "volume-2026-06-12"
+      }
+    ],
+    "kartu": [
+      "volume-2026-06-12",
+      "volume-2026-06-15",
+      "harga-2026-06-12",
+      "harga-2026-06-15"
+    ],
+    "kartu_penentu": [
+      "volume-2026-06-15"
+    ],
+    "pilihan": {
+      "a": "Betul, volume hari ini turun dibanding hari bursa sebelumnya.",
+      "b": "Keliru, volume hari ini justru jauh lebih besar dari itu.",
+      "c": "Betul, volumenya sama sepinya dengan hari bursa sebelumnya.",
+      "d": "Keliru, angka itu dihitung dalam satuan lot, bukan lembar."
+    },
+    "kunci": "b",
+    "penjelasan": "Angka [[volume-2026-06-12|12.000 lembar]] tercatat sebagai volume [[volume-2026-06-12|12 Juni 2026]], hari bursa sebelumnya, dan satuannya memang lembar. Volume hari ini, [[volume-2026-06-15|15 Juni 2026]], adalah [[volume-2026-06-15|50.600 lembar]], jauh lebih besar. Harga memang naik dari [[harga-2026-06-12|Rp390]] ke [[harga-2026-06-15|Rp392]], tetapi transaksinya tidak sepi. Salah-kaprah yang umum: membaca baris data kemarin sebagai data hari ini, lalu mencari alasan lain seperti satuan lot.",
+    "pengecoh": {
+      "a": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "volume-2026-06-15",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 mencatat volume hari ini [[volume-2026-06-15|50.600 lembar]], bukan lebih kecil."
+      },
+      "c": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "volume-2026-06-12",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 dan kartu 2 memperlihatkan volume dua hari itu berselisih jauh."
+      },
+      "d": {
+        "jenis": "nyaris-benar-angka",
+        "rujukan": "volume-2026-06-12",
+        "umpan_balik": "Ini angka nyaris benar: angkanya tepat, tetapi kartu 1 mencatatnya dalam lembar, untuk [[volume-2026-06-12|12 Juni 2026]]."
+      }
+    },
+    "pertanyaan_cek": "Angka volume itu milik hari apa, dan apa satuannya?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "sulit",
+    "peningkatan_dari": "28192295aab0c290",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 0 dari 12 (nilai uji 1,0000; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Lot adalah satuan standar perdagangan saham, bukan lembar individual.",
+          "biaya_usd": 0.000483,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Satuan lot lebih umum digunakan daripada lembar dalam pelaporan volume saham.",
+          "biaya_usd": 0.000508,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Lot adalah satuan standar saham (1 lot = 100 lembar), lebih mungkin terjadi kesalahan satuan.",
+          "biaya_usd": 0.000557,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Satuan lot lebih umum digunakan dalam pelaporan volume saham Indonesia.",
+          "biaya_usd": 0.000487,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Volume saham biasanya dalam lot, bukan lembar",
+          "biaya_usd": 0.0000242,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume saham biasanya dalam lot, bukan lembar.",
+          "biaya_usd": 0.0000248,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Saham dihitung dalam lot, bukan lembar.",
+          "biaya_usd": 0.00002595,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume saham biasanya dalam lot, bukan lembar.",
+          "biaya_usd": 0.00002475,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "12.000 kemungkinan lot, setara 1,2 juta lembar, jadi tidak sepi.",
+          "biaya_usd": 0.00029481,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "12.000 kemungkinan lot, setara 1,2 juta lembar, bukan sepi",
+          "biaya_usd": 0.00025368,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "12.000 kemungkinan lot, sama dengan 1,2 juta lembar saham.",
+          "biaya_usd": 0.00026769,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Volume 12.000 kemungkinan dalam lot, setara 1,2 juta lembar.",
+          "biaya_usd": 0.00034521,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 0,
+        "p": 1,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 0 dari 12 (nilai uji 1,0000; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.00329609
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 2 menunjukkan volume 15 Juni 2026 adalah 50.600 lembar, bukan 12.000 lembar, sehingga omongan Bayu keliru.",
+          "biaya_usd": 0.001200738
+        },
+        {
+          "r": 2,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 2 menunjukkan volume 15 Juni 2026 adalah 50.600 lembar, jauh lebih besar dari 12.000 lembar yang disebut Bayu.",
+          "biaya_usd": 0.001103538
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, angka itu dihitung dalam satuan lot, bukan lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; volume bursa Indonesia lazim dicatat dalam lot.",
+          "biaya_usd": 0.005024,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, angka itu dihitung dalam satuan lot, bukan lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; data BEI biasanya pakai lot, 1 lot 100 lembar.",
+          "biaya_usd": 0.004344,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, angka itu dihitung dalam satuan lot, bukan lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; volume bursa Indonesia lazim dicatat dalam lot.",
+          "biaya_usd": 0.004244,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 3,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Keliru, angka itu dihitung dalam satuan lot, bukan lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; kekeliruan lot-lembar paling umum di bursa Indonesia.",
+          "biaya_usd": 0.004464,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 0,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 3,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.018076
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Tambahkan satu kartu harga untuk hari bursa sebelum 12 Juni supaya makna 'lagi' pada 'naik lagi' juga bisa dicek pemain.",
+      "token_penalaran": [
+        13723
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d26-amag-naik-1",
+    "putaran": 1,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T16:27:45.987Z"
+}

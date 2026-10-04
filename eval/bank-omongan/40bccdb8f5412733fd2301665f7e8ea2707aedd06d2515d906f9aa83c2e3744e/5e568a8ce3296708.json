@@ -1,0 +1,355 @@
+{
+  "id": "5e568a8ce3296708",
+  "paket_sha": "40bccdb8f5412733fd2301665f7e8ea2707aedd06d2515d906f9aa83c2e3744e",
+  "kartu_penentu": [
+    "harga-2026-06-15",
+    "harga-2026-05-29"
+  ],
+  "omongan": {
+    "nama": "Rara",
+    "jam": "16.42",
+    "pesan": "Udah naik beberapa hari beruntun, tapi harganya masih belum balik ke penutupan akhir Mei ya.",
+    "angka_pesan": [],
+    "kartu": [
+      "harga-2026-05-29",
+      "harga-2026-06-15",
+      "harga-2026-06-12",
+      "hari-naik-beruntun"
+    ],
+    "kartu_penentu": [
+      "harga-2026-06-15",
+      "harga-2026-05-29"
+    ],
+    "pilihan": {
+      "a": "Keliru, penutupan hari ini [[harga-2026-05-29|Rp398]] sudah melewati akhir Mei.",
+      "b": "Betul, penutupan hari ini [[harga-2026-06-15|Rp392]] masih di bawah akhir Mei.",
+      "c": "Betul, penutupan hari ini [[harga-2026-06-12|Rp390]] masih di bawah akhir Mei.",
+      "d": "Keliru, penutupan akhir Mei hanya [[hari-naik-beruntun|Rp356]] per lembar."
+    },
+    "kunci": "b",
+    "penjelasan": "Rentetan naiknya memang ada di data: [[hari-naik-beruntun|5 hari bursa]] berturut-turut sampai hari ini. Penutupan hari ini [[harga-2026-06-15|Rp392]], sedangkan penutupan [[harga-2026-05-29|29 Mei 2026]] adalah [[harga-2026-05-29|Rp398]], jadi harganya memang belum kembali ke level akhir Mei. Pilihan yang menyebut [[harga-2026-06-12|Rp390]] menggoda karena angkanya dekat, tetapi itu penutupan [[harga-2026-06-12|12 Juni 2026]], bukan hari ini. Salah-kaprah yang umum: mengambil harga penutupan dari baris tanggal yang bersebelahan.",
+    "pengecoh": {
+      "a": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2026-05-29",
+        "umpan_balik": "Ini salah periode: kartu 1 mencatat [[harga-2026-05-29|Rp398]] sebagai penutupan [[harga-2026-05-29|29 Mei 2026]], bukan hari ini."
+      },
+      "c": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2026-06-12",
+        "umpan_balik": "Ini salah periode: kartu 3 mencatat [[harga-2026-06-12|Rp390]] sebagai penutupan [[harga-2026-06-12|12 Juni 2026]], hari bursa sebelumnya."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "hari-naik-beruntun",
+        "umpan_balik": "Ini salah periode: kartu 4 mencatat [[hari-naik-beruntun|Rp356]] sebagai penutupan [[hari-naik-beruntun|8 Juni 2026]], bukan akhir Mei."
+      }
+    },
+    "pertanyaan_cek": "Berapa harga penutupan hari ini, dan berapa penutupan akhir Mei?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "biasa",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (nilai uji 0,7256; batas 0,02); 1 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp392 lebih tinggi dari Rp390, konsisten dengan 'naik beberapa hari beruntun'",
+          "biaya_usd": 0.000563,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp390 lebih rendah, konsisten dengan 'belum balik' ke level Mei",
+          "biaya_usd": 0.000533,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp392 lebih tinggi dari Rp390, lebih konsisten dengan tren naik beberapa hari.",
+          "biaya_usd": 0.000557,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp390 lebih konservatif dan masuk akal untuk harga belum pulih",
+          "biaya_usd": 0.000527,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp392 lebih spesifik dan dekat dengan level yang disebutkan",
+          "biaya_usd": 0.00002605,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp390 lebih spesifik dan konsisten dengan belum pulih",
+          "biaya_usd": 0.00002545,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp392 lebih dekat ke pemulihan, sesuai belum balik akhir Mei",
+          "biaya_usd": 0.0000278,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp390 lebih mungkin di bawah penutupan akhir Mei daripada Rp392",
+          "biaya_usd": 0.0000266,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kedua angka sama-sama mungkin; tidak ada pembeda, pilih satu.",
+          "biaya_usd": 0.00041517,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Jika penutupan akhir Mei 392, harga 392 berarti sudah balik, kontradiksi",
+          "biaya_usd": 0.00092028,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 1,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.0204436,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Penutupan hari ini Rp390 masih di bawah penutupan akhir Mei.",
+          "biaya_usd": 0.01755193,
+          "panggilan": 2
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 11,
+        "tak_terbaca": 1,
+        "kunci": 5,
+        "p": 0.7255859375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (nilai uji 0,7256; batas 0,02); 1 tak terbaca dibuang"
+        ]
+      },
+      "biaya_usd": 0.041616879999999995
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "b",
+          "pilihan": "b",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 2 menunjukkan penutupan 15 Juni Rp392, kartu 1 menunjukkan akhir Mei Rp398, dan kartu 4 menunjukkan kenaikan beruntun, jadi omongan Rara betul.",
+          "biaya_usd": 0.0008844
+        },
+        {
+          "r": 2,
+          "kunci": "d",
+          "pilihan": "d",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan penutupan akhir Mei Rp398, kartu 2 menunjukkan penutupan 15 Juni Rp392, dan kartu 4 menegaskan kenaikan beruntun, jadi Rp392 masih di bawah Rp398.",
+          "biaya_usd": 0.0010836
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, penutupan hari ini Rp392 masih di bawah akhir Mei.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; angka Rp392 tidak bisa dipastikan.",
+          "biaya_usd": 0.004616,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, penutupan hari ini Rp392 masih di bawah akhir Mei.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; angka penutupan tidak bisa diverifikasi.",
+          "biaya_usd": 0.005196,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, penutupan hari ini Rp392 masih di bawah akhir Mei.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, angka tak bisa diverifikasi.",
+          "biaya_usd": 0.004676,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 1,
+          "terbaca": true,
+          "salinan": "Betul, penutupan hari ini Rp392 masih di bawah akhir Mei.",
+          "skor": 1,
+          "alasan": "Tebakan saja; dokumen tidak ada, angka tak bisa dicek.",
+          "biaya_usd": 0.004396,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 4,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 1,
+        "putusan": "tolak",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      },
+      "biaya_usd": 0.018884
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Sebagai penguat kecil, tandai di kartu 1 bahwa 29 Mei adalah hari bursa terakhir bulan Mei, supaya frasa 'akhir Mei' di pesan tidak mengandalkan kalender pemain.",
+      "token_penalaran": [
+        7101
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d26-amag-1",
+    "putaran": 4,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T16:19:25.959Z"
+}
