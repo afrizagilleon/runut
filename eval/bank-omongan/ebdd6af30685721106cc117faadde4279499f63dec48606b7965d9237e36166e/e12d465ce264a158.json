@@ -1,0 +1,351 @@
+{
+  "id": "e12d465ce264a158",
+  "paket_sha": "ebdd6af30685721106cc117faadde4279499f63dec48606b7965d9237e36166e",
+  "kartu_penentu": [
+    "volume-2026-08-19"
+  ],
+  "omongan": {
+    "nama": "Bayu",
+    "jam": "21.30",
+    "pesan": "Volume A hari ini pasti jutaan lembar lagi kayak kemarin, lagi rame banget dibahas di mana-mana.",
+    "angka_pesan": [],
+    "kartu": [
+      "volume-2026-08-19",
+      "volume-2026-08-18",
+      "susp-2026-08-19"
+    ],
+    "kartu_penentu": [
+      "volume-2026-08-19"
+    ],
+    "pilihan": {
+      "a": "Keliru, volume hari ini [[volume-2026-08-19|0 lembar]] karena disuspensi.",
+      "b": "Keliru, hari ini bursa libur sehingga tak ada transaksi.",
+      "c": "Betul, hari ini perdagangannya masih ramai seperti kemarin.",
+      "d": "Betul, volume hari ini juga [[volume-2026-08-18|4.382.400 lembar]]."
+    },
+    "kunci": "a",
+    "penjelasan": "Data harian mencatat volume [[volume-2026-08-19|19 Agustus 2026]] sebesar [[volume-2026-08-19|0 lembar]]. Sebabnya ada di pengumuman bursa: perdagangan saham ini dihentikan sementara pada hari yang sama, bukan karena bursa libur. Angka jutaan itu milik kemarin: [[volume-2026-08-18|4.382.400 lembar]] pada [[volume-2026-08-18|18 Agustus 2026]]. Ramai dibahas tidak sama dengan ada transaksi. Salah-kaprah yang umum: mengira saham yang ramai dibicarakan pasti tetap diperdagangkan.",
+    "pengecoh": {
+      "b": {
+        "jenis": "sebagian-benar",
+        "rujukan": "susp-2026-08-19",
+        "umpan_balik": "Ini sebagian benar: memang tak ada transaksi, tetapi kartu 3 menyebut perdagangannya dihentikan bursa, bukan libur."
+      },
+      "c": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "volume-2026-08-19",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 mencatat tidak ada lembar yang diperdagangkan hari ini."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "volume-2026-08-18",
+        "umpan_balik": "Ini salah periode: kartu 2 adalah volume kemarin, bukan hari ini."
+      }
+    },
+    "pertanyaan_cek": "Berapa lembar yang diperdagangkan hari ini, dan apa sebabnya?"
+  },
+  "jejak_gerbang": {
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (peluang kebetulan 0,9807; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Bursa libur lebih umum menyebabkan nol transaksi daripada suspensi mendadak.",
+          "biaya_usd": 0.000535,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Jam 21.30 malam, bursa sudah tutup. Libur lebih umum daripada suspensi.",
+          "biaya_usd": 0.000545,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Bursa libur lebih umum terjadi daripada suspensi mendadak.",
+          "biaya_usd": 0.000499,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Jam 21.30 malam, bursa sudah tutup. Libur lebih logis daripada suspensi.",
+          "biaya_usd": 0.000544,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Libur bursa membuat klaim volume jutaan lembar mustahil.",
+          "biaya_usd": 0.0000278,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Libur bursa membuat klaim volume jutaan lembar mustahil",
+          "biaya_usd": 0.0000272,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Libur bursa membuat klaim volume jutaan lembar mustahil",
+          "biaya_usd": 0.00002715,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Libur bursa membuat klaim volume jutaan lembar mustahil.",
+          "biaya_usd": 0.00002775,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Disuspensi karena gejolak/URA biasanya jadi perbincangan ramai di mana-mana.",
+          "biaya_usd": 0.00034583,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Bursa libur berarti benar-benar tak ada transaksi, lebih mungkin dari suspensi",
+          "biaya_usd": 0.00023268,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Suspensi menghasilkan volume 0 yang tercatat, lebih mungkin dilaporkan dokumen.",
+          "biaya_usd": 0.00030515,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Pembicaraan ramai soal saham tertentu lebih cocok dengan skenario disuspensi spesifik, bukan bursa libur.",
+          "biaya_usd": 0.0005649,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 3,
+        "p": 0.980712890625,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (peluang kebetulan 0,9807; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.00368146
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 mencatat volume 19 Agustus 2026 nol lembar dan Kartu 3 menyebut perdagangan disuspensi, sehingga klaim Bayu soal volume jutaan lembar tidak cocok.",
+          "biaya_usd": 0.0005434
+        },
+        {
+          "r": 2,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan volume perdagangan 19 Agustus 2026 adalah 0 lembar, dan Kartu 3 menyatakan perdagangan saham A disuspensi pada tanggal itu.",
+          "biaya_usd": 0.0002476
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Keliru, volume hari ini 0 lembar karena disuspensi.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; Bayu hanya berasumsi, kemungkinan disuspensi.",
+          "biaya_usd": 0.006072,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Keliru, volume hari ini 0 lembar karena disuspensi.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; klaim \"pasti\" Bayu kemungkinan keliru.",
+          "biaya_usd": 0.006872,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Keliru, volume hari ini 0 lembar karena disuspensi.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; klaim 'pasti' Bayu kemungkinan keliru.",
+          "biaya_usd": 0.006292,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Keliru, volume hari ini 0 lembar karena disuspensi.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; klaim 'pasti' Bayu kemungkinan jebakan.",
+          "biaya_usd": 0.006152,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 4,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 0,
+        "putusan": "tolak",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      },
+      "biaya_usd": 0.025388
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Klaim 'rame banget dibahas di mana-mana' tidak bisa dicek dari kartu mana pun; tambahkan kartu tentang pembicaraan pasar atau hapus bagian itu dari pesan agar setiap klaim sekunder juga terverifikasi.",
+      "token_penalaran": [
+        4884
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d23-agar-1",
+    "putaran": 3,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T10:37:34.837Z"
+}

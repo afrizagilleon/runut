@@ -1,0 +1,351 @@
+{
+  "id": "843be14b7cfd4037",
+  "paket_sha": "ebdd6af30685721106cc117faadde4279499f63dec48606b7965d9237e36166e",
+  "kartu_penentu": [
+    "susp-2026-07-22"
+  ],
+  "omongan": {
+    "nama": "Dimas",
+    "jam": "19.12",
+    "pesan": "Guys, A baru sekali ini kok disuspen bursa. Sebelumnya perdagangannya nggak pernah dihentikan.",
+    "angka_pesan": [],
+    "kartu": [
+      "susp-2026-08-19",
+      "susp-2026-07-22",
+      "harga-2026-08-03"
+    ],
+    "kartu_penentu": [
+      "susp-2026-07-22"
+    ],
+    "pilihan": {
+      "a": "Betul, sebelum hari ini bursa belum pernah menghentikannya.",
+      "b": "Betul, penghentian bulan lalu hanya untuk saham lain.",
+      "c": "Keliru, bursa juga menghentikannya pada bulan lalu.",
+      "d": "Keliru, bursa juga menghentikannya pada awal bulan ini."
+    },
+    "kunci": "c",
+    "penjelasan": "Pengumuman bursa hari ini memang mencatat penghentian pada [[susp-2026-08-19|19 Agustus 2026]]. Tetapi ada pengumuman sejenis untuk Perusahaan A juga, terbit [[susp-2026-07-22|22 Juli 2026]], dengan alasan yang sama: kenaikan harga kumulatif yang signifikan. Jadi ini bukan yang pertama. Awal bulan ini sahamnya justru masih diperdagangkan: data harian mencatat harga penutupan [[harga-2026-08-03|3 Agustus 2026]]. Salah-kaprah yang umum: mengira peristiwa yang tidak kita dengar berarti tidak pernah terjadi.",
+    "pengecoh": {
+      "a": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "susp-2026-07-22",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 adalah pengumuman penghentian sebelumnya untuk Perusahaan A."
+      },
+      "b": {
+        "jenis": "salah-entitas",
+        "rujukan": "susp-2026-07-22",
+        "umpan_balik": "Ini salah entitas: kartu 2 menyebut saham Perusahaan A sendiri, bukan saham lain."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2026-08-03",
+        "umpan_balik": "Ini salah periode: kartu 3 menunjukkan awal bulan ini sahamnya masih punya harga penutupan; penghentiannya bulan lalu."
+      }
+    },
+    "pertanyaan_cek": "Adakah pengumuman penghentian lain untuk perusahaan yang sama sebelum hari ini?"
+  },
+  "jejak_gerbang": {
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Pernyataan 1 lebih konsisten menyanggah klaim 'baru sekali ini' dengan bukti historis lebih jauh.",
+          "biaya_usd": 0.000572,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Lebih dekat waktu dengan pesan 19.12, lebih kredibel sebagai koreksi.",
+          "biaya_usd": 0.000522,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Suspense bursa biasanya dicatat dalam periode terdekat, awal bulan lebih relevan.",
+          "biaya_usd": 0.000521,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Suspense bursa biasanya terjadi berulang kali, bukan sekali saja.",
+          "biaya_usd": 0.000511,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dokumen menyebut penghentian bulan lalu, bukan awal bulan ini.",
+          "biaya_usd": 0.0000279,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Awal bulan ini lebih dekat, lebih mungkin diingat.",
+          "biaya_usd": 0.0000267,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Pernyataan 1 lebih spesifik dan mungkin sesuai dokumen.",
+          "biaya_usd": 0.00002725,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "awal bulan ini lebih spesifik daripada bulan lalu",
+          "biaya_usd": 0.00002425,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Suspensi sebelumnya yang lebih baru (awal bulan ini) lebih mungkin tercatat di dokumen.",
+          "biaya_usd": 0.00060523,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Kata \"sebelumnya\" lebih cocok dengan penghentian pada bulan lalu.",
+          "biaya_usd": 0.00057683,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 3,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Penghentian tambahan yang baru terjadi awal bulan ini lebih mungkin terlewat.",
+          "biaya_usd": 0.00040439,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 2,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.02044276,
+          "panggilan": 2
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 11,
+        "tak_terbaca": 1,
+        "kunci": 5,
+        "p": 0.7255859375,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 11 (peluang kebetulan 0,7256; batas 0,02); 1 tak terbaca dibuang"
+        ]
+      },
+      "biaya_usd": 0.02426131
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 2 menunjukkan Perusahaan A juga dihentikan sementara perdagangannya pada 22 Juli 2026, sehingga ucapan Dimas bahwa sebelumnya belum pernah dihentikan itu keliru.",
+          "biaya_usd": 0.00022235
+        },
+        {
+          "r": 2,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 2 menunjukkan saham A sudah pernah dihentikan sementara pada 22 Juli 2026, sehingga ucapan Dimas bahwa sebelumnya tidak pernah dihentikan adalah keliru.",
+          "biaya_usd": 0.000259726
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, bursa juga menghentikannya pada bulan lalu.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; pilihan lain menyiratkan ada penghentian bulan lalu.",
+          "biaya_usd": 0.006376,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, bursa juga menghentikannya pada bulan lalu.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, ini tebakan; pilihan lain menyinggung suspensi bulan lalu.",
+          "biaya_usd": 0.005836,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, bursa juga menghentikannya pada bulan lalu.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; pilihan lain ikut menyebut bulan lalu, jadi ini tebakan.",
+          "biaya_usd": 0.006316,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, bursa juga menghentikannya pada bulan lalu.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan, karena dua pilihan menyebut penghentian bulan lalu.",
+          "biaya_usd": 0.006096,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 4,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 2,
+        "putusan": "tolak",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 4 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      },
+      "biaya_usd": 0.024624000000000004
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Tidak ada perubahan yang diperlukan; kedua klaim teman dapat dicek dari kartu dan hanya satu pilihan yang benar.",
+      "token_penalaran": [
+        1458
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d23-agar-1",
+    "putaran": 1,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T10:34:06.532Z"
+}

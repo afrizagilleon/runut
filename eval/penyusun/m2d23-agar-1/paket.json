@@ -1,0 +1,206 @@
+{
+  "paket_id": "penyusun-agar-2026-08-19",
+  "simbol": "AGAR",
+  "nama_emiten": "PT Asia Sejahtera Mina Tbk",
+  "nama_samaran": "Perusahaan A",
+  "tanggal_t": "2026-08-19",
+  "peristiwa": "Hari ini bursa menghentikan sementara perdagangan saham perusahaan. Dalam setahun terakhir bursa juga pernah menghentikan sementara perdagangannya.",
+  "fakta": [
+    {
+      "fact_id": "susp-2026-08-19",
+      "jenis": "dokumen",
+      "asal": "pengumuman penghentian sementara perdagangan oleh bursa",
+      "terbit": "2026-08-19",
+      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 19 Agustus 2026. Alasan resmi: Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan A. Kapan perdagangannya dibuka lagi tidak tercatat, jadi lama penghentiannya tidak bisa dipastikan.",
+      "nilai": null,
+      "satuan": null,
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "susp-2026-07-22",
+      "jenis": "dokumen",
+      "asal": "pengumuman penghentian sementara perdagangan oleh bursa",
+      "terbit": "2026-07-22",
+      "klaim": "Perdagangan saham dihentikan sementara oleh bursa pada 22 Juli 2026. Alasan resmi: Terjadinya peningkatan harga kumulatif yang signifikan pada saham Perusahaan A. Kapan perdagangannya dibuka lagi tidak tercatat, jadi lama penghentiannya tidak bisa dipastikan.",
+      "nilai": null,
+      "satuan": null,
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "harga-2026-08-03",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2026-08-03",
+      "klaim": "Harga penutupan 3 Agustus 2026 adalah Rp690 per lembar.",
+      "nilai": 690,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": [
+        "pada hari ini harga pembukaan, tertinggi, terendah, dan penutupan tercatat sama (R19b)"
+      ]
+    },
+    {
+      "fact_id": "harga-2026-08-12",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2026-08-12",
+      "klaim": "Harga penutupan 12 Agustus 2026 adalah Rp1.030 per lembar.",
+      "nilai": 1030,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": [
+        "pada hari ini harga pembukaan, tertinggi, terendah, dan penutupan tercatat sama (R19b)"
+      ]
+    },
+    {
+      "fact_id": "harga-2026-08-13",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2026-08-13",
+      "klaim": "Harga penutupan 13 Agustus 2026 adalah Rp1.285 per lembar.",
+      "nilai": 1285,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "harga-2026-08-14",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2026-08-14",
+      "klaim": "Harga penutupan 14 Agustus 2026 adalah Rp1.605 per lembar.",
+      "nilai": 1605,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "harga-2026-08-18",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2026-08-18",
+      "klaim": "Harga penutupan 18 Agustus 2026 adalah Rp1.810 per lembar.",
+      "nilai": 1810,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "volume-2026-08-18",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2026-08-18",
+      "klaim": "Volume perdagangan 18 Agustus 2026 adalah 4.382.400 lembar.",
+      "nilai": 4382400,
+      "satuan": "lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "volume-2026-08-19",
+      "jenis": "dokumen",
+      "asal": "data harga harian bursa",
+      "terbit": "2026-08-19",
+      "klaim": "Volume perdagangan 19 Agustus 2026 adalah 0 lembar.",
+      "nilai": 0,
+      "satuan": "lembar",
+      "turunan_dari": [],
+      "catatan": []
+    },
+    {
+      "fact_id": "kelipatan-2026-08-03-2026-08-18",
+      "jenis": "hitungan",
+      "asal": "dihitung dari fakta lain di paket ini",
+      "terbit": "2026-08-18",
+      "klaim": "Harga penutupan 18 Agustus 2026 (Rp1.810) adalah 2,62 kali harga penutupan 3 Agustus 2026 (Rp690), dibulatkan dua angka di belakang koma.",
+      "nilai": 2.62,
+      "satuan": "kali",
+      "turunan_dari": [
+        "harga-2026-08-03",
+        "harga-2026-08-18"
+      ],
+      "catatan": []
+    },
+    {
+      "fact_id": "naik-2026-08-03-2026-08-18",
+      "jenis": "hitungan",
+      "asal": "dihitung dari fakta lain di paket ini",
+      "terbit": "2026-08-18",
+      "klaim": "Kenaikan harga penutupan dari 3 Agustus 2026 sampai 18 Agustus 2026: Rp1.810 dikurangi Rp690 sama dengan Rp1.120.",
+      "nilai": 1120,
+      "satuan": "rupiah per lembar",
+      "turunan_dari": [
+        "harga-2026-08-18",
+        "harga-2026-08-03"
+      ],
+      "catatan": []
+    },
+    {
+      "fact_id": "hari-naik-beruntun",
+      "jenis": "hitungan",
+      "asal": "dihitung dari fakta lain di paket ini",
+      "terbit": "2026-08-18",
+      "klaim": "Dari 12 Agustus 2026 (Rp1.030) sampai 18 Agustus 2026 (Rp1.810), harga penutupan naik 3 hari bursa berturut-turut, tiap hari lebih tinggi dari hari bursa sebelumnya.",
+      "nilai": 3,
+      "satuan": "hari bursa",
+      "turunan_dari": [
+        "harga-2026-08-12",
+        "harga-2026-08-13",
+        "harga-2026-08-14",
+        "harga-2026-08-18"
+      ],
+      "catatan": []
+    }
+  ],
+  "kata_terlarang": [
+    "AGAR",
+    "AGAR.JK",
+    "PT Asia Sejahtera Mina Tbk",
+    "Asia Sejahtera",
+    "PT Indo Kreasi Pratama",
+    "PT Sinar Terang Asia Raya"
+  ],
+  "disingkirkan": [
+    {
+      "fact_id": "harga-2026-08-19",
+      "alasan": "TIDAK_LENGKAP: temuan R19a: harga di hari tanpa transaksi (volume nol) bukan harga yang disepakati siapa pun"
+    },
+    {
+      "fact_id": "rups-2026-06-26",
+      "alasan": "kalimatnya menyebut tanggal sesudah T: 2029"
+    }
+  ],
+  "pemeriksaan": {
+    "aturan_dijalankan": 13,
+    "aturan_dilewati": 24,
+    "temuan": [
+      {
+        "aturan": "R18a",
+        "keparahan": "catatan",
+        "ringkasan": "8 hari bursa Perusahaan A antara 2026-07-20 dan 2026-07-31 tidak mencatat satu lembar pun berpindah tangan, dan tanggal-tanggal itu tidak ada di daftar suspensi. Daftar suspensi hanya mencatat hari mulai berhenti, bukan tiap harinya, jadi tidak bisa ditentukan apakah hari-hari itu memang suspensi."
+      },
+      {
+        "aturan": "R19a",
+        "keparahan": "peringatan",
+        "ringkasan": "10 hari bursa Perusahaan A antara 2026-07-20 dan 2026-08-19 mencatat satu harga saja untuk buka, tertinggi, terendah, dan tutup, sementara volumenya nol. Angka itu bukan harga yang disepakati siapa pun hari itu."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 9 dari 10 hari bursa antara 2026-07-14 dan 2026-07-27, harga Perusahaan A tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp260 di awal, Rp630 di akhir)."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 20 hari bursa berturut-turut, dari 2026-07-15 sampai 2026-08-11, harga Perusahaan A tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp324 di awal, Rp1.210 di akhir)."
+      },
+      {
+        "aturan": "R19b",
+        "keparahan": "peringatan",
+        "ringkasan": "Selama 9 dari 10 hari bursa antara 2026-07-30 dan 2026-08-12, harga Perusahaan A tiap harinya hanya mencatat satu angka — buka, tertinggi, terendah, dan tutup sama — walau harganya berganti dari hari ke hari (Rp630 di awal, Rp1.030 di akhir)."
+      }
+    ]
+  }
+}

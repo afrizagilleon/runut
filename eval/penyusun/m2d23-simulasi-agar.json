@@ -1,0 +1,80 @@
+{
+  "asal": "m2d23-agar-1",
+  "paket": "eval/penyusun/demo-agar/paket.json",
+  "dipilih": [
+    "843be14b7cfd4037",
+    "ad5f4d18d99462b4",
+    "e12d465ce264a158"
+  ],
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Dimas",
+        "jam": "19.12",
+        "pesan": "Guys, A baru sekali ini kok disuspen bursa. Sebelumnya perdagangannya nggak pernah dihentikan.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2026-08-19",
+          "susp-2026-07-22",
+          "harga-2026-08-03"
+        ],
+        "kartu_penentu": [
+          "susp-2026-07-22"
+        ],
+        "pilihan": {
+          "a": "Betul, sebelum hari ini bursa belum pernah menghentikannya.",
+          "b": "Betul, penghentian bulan lalu hanya untuk saham lain.",
+          "c": "Keliru, bursa juga menghentikannya pada bulan lalu.",
+          "d": "Keliru, bursa juga menghentikannya pada awal bulan ini."
+        },
+        "kunci": "c",
+        "penjelasan": "Pengumuman bursa hari ini memang mencatat penghentian pada [[susp-2026-08-19|19 Agustus 2026]]. Tetapi ada pengumuman sejenis untuk Perusahaan A juga, terbit [[susp-2026-07-22|22 Juli 2026]], dengan alasan yang sama: kenaikan harga kumulatif yang signifikan. Jadi ini bukan yang pertama. Awal bulan ini sahamnya justru masih diperdagangkan: data harian mencatat harga penutupan [[harga-2026-08-03|3 Agustus 2026]]. Salah-kaprah yang umum: mengira peristiwa yang tidak kita dengar berarti tidak pernah terjadi."
+      },
+      {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Gila sih A, dari awal Agustus sampai kemarin harganya udah lebih dari dobel.",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2026-08-03",
+          "harga-2026-08-12",
+          "naik-2026-08-03-2026-08-18",
+          "harga-2026-08-14"
+        ],
+        "kartu_penentu": [
+          "naik-2026-08-03-2026-08-18"
+        ],
+        "pilihan": {
+          "a": "Keliru, kenaikannya baru [[harga-2026-08-03|Rp690]] sejak awal bulan.",
+          "b": "Keliru, harga kemarin baru [[harga-2026-08-12|Rp1.030]] per lembar.",
+          "c": "Betul, kenaikannya [[naik-2026-08-03-2026-08-18|Rp1.120]] sejak awal bulan.",
+          "d": "Betul, kenaikannya [[harga-2026-08-14|Rp1.605]] sejak awal bulan ini."
+        },
+        "kunci": "c",
+        "penjelasan": "Harga penutupan awal Agustus ([[harga-2026-08-03|3 Agustus 2026]]) adalah [[harga-2026-08-03|Rp690]]. Kartu hitungan kenaikan mencatat sampai [[naik-2026-08-03-2026-08-18|18 Agustus 2026]] harganya naik [[naik-2026-08-03-2026-08-18|Rp1.120]], lebih besar dari harga awalnya sendiri, jadi harga kemarin memang lebih dari dobel. Angka [[harga-2026-08-12|Rp1.030]] dan [[harga-2026-08-14|Rp1.605]] adalah harga penutupan hari lain, bukan besar kenaikan. Omongan ini betul soal angka, tetapi tidak berkata apa-apa tentang harga ke depan. Salah-kaprah yang umum: mencampur harga penutupan dengan besar kenaikan harga."
+      },
+      {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Volume A hari ini pasti jutaan lembar lagi kayak kemarin, lagi rame banget dibahas di mana-mana.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2026-08-19",
+          "volume-2026-08-18",
+          "susp-2026-08-19"
+        ],
+        "kartu_penentu": [
+          "volume-2026-08-19"
+        ],
+        "pilihan": {
+          "a": "Keliru, volume hari ini [[volume-2026-08-19|0 lembar]] karena disuspensi.",
+          "b": "Keliru, hari ini bursa libur sehingga tak ada transaksi.",
+          "c": "Betul, hari ini perdagangannya masih ramai seperti kemarin.",
+          "d": "Betul, volume hari ini juga [[volume-2026-08-18|4.382.400 lembar]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Data harian mencatat volume [[volume-2026-08-19|19 Agustus 2026]] sebesar [[volume-2026-08-19|0 lembar]]. Sebabnya ada di pengumuman bursa: perdagangan saham ini dihentikan sementara pada hari yang sama, bukan karena bursa libur. Angka jutaan itu milik kemarin: [[volume-2026-08-18|4.382.400 lembar]] pada [[volume-2026-08-18|18 Agustus 2026]]. Ramai dibahas tidak sama dengan ada transaksi. Salah-kaprah yang umum: mengira saham yang ramai dibicarakan pasti tetap diperdagangkan."
+      }
+    ]
+  }
+}
