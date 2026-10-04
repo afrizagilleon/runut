@@ -1,0 +1,653 @@
+{
+  "id": "m2d20-jev-2",
+  "model": "typesafe/jev-1.13",
+  "panggilan": 128,
+  "biaya_usd": 0.003358,
+  "galat": null,
+  "instruksi": {
+    "tebak": "Seorang teman mengirim pesan ini di grup obrolan tentang sebuah saham. Kamu TIDAK diberi dokumen apa pun. Dari yang tertulis saja, pernyataan mana yang paling mungkin benar?",
+    "kartu": "Seorang teman mengirim pesan ini di grup obrolan tentang sebuah saham. Di bawahnya ada kartu: potongan dokumen resmi. Cocokkan omongan teman dengan kartunya. Pernyataan mana yang benar menurut kartu?"
+  },
+  "butir": [
+    {
+      "id": "tayang-dada-s1-kata-bursa",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0.03,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.135,
+          0.03,
+          0.095,
+          0.74
+        ],
+        "pilihan": [
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.953,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0,
+          0.953,
+          0.013,
+          0.035
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin."
+    },
+    {
+      "id": "tayang-dada-s2-dividen-pemilik-kecil",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Betul",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.785,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.785,
+          0.04,
+          0.145,
+          0.03
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.995,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.995,
+          0.005,
+          0,
+          0
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. "
+    },
+    {
+      "id": "tayang-dada-s3-siapa-yang-menjual",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "c",
+      "tanpa_kartu": {
+        "p_kunci": 0.125,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.175,
+          0.502,
+          0.125,
+          0.198
+        ],
+        "pilihan": [
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.998,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0,
+          0,
+          0.998,
+          0.003
+        ],
+        "pilihan": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "pesan": "Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Ber"
+    },
+    {
+      "id": "tayang-ultj-turun-di-tanggal-ex",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.21,
+          0,
+          0.79,
+          0
+        ],
+        "pilihan": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 1,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0,
+          1,
+          0,
+          0
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!"
+    },
+    {
+      "id": "tayang-ultj-riwayat-dividen",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0,
+          0.998,
+          0.003,
+          0
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.098,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.098,
+          0.815,
+          0.04,
+          0.048
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Gue baru buka riwayat dividennya. Perusahaan U ini bagi dividen tiap tahun tanpa putus sej"
+    },
+    {
+      "id": "tayang-ultj-siapa-yang-membeli",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Betul",
+      "kunci": "d",
+      "tanpa_kartu": {
+        "p_kunci": 0.015,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.005,
+          0.948,
+          0.033,
+          0.015
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.078,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.048,
+          0.82,
+          0.055,
+          0.078
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Jangan kegeeran dulu. Gue baca laporan Januari: pemilik terbesarnya yang 53 persen itu iku"
+    },
+    {
+      "id": "bank-1a5abd",
+      "kelompok": "bank-agen",
+      "catatan": "lolos semua gerbang (Dimas)",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0.003,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.808,
+          0.003,
+          0.187,
+          0.003
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.862,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.01,
+          0.862,
+          0.125,
+          0.003
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Saham T ini udah dua kali disetop bursa tahun ini. Dua-duanya gara-gara harganya kebablasa"
+    },
+    {
+      "id": "bank-adf573",
+      "kelompok": "bank-agen",
+      "catatan": "lolos semua gerbang (Rara)",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.075,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.418,
+          0.075,
+          0.232,
+          0.275
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Kemarin transaksinya cuma ratusan ribu lembar katanya, sepi banget. Aku sih nunggu rame du"
+    },
+    {
+      "id": "bank-461524",
+      "kelompok": "bank-agen",
+      "catatan": "lolos semua gerbang (Bayu)",
+      "jawaban": "Keliru",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.03,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.03,
+          0.05,
+          0.485,
+          0.433
+        ],
+        "pilihan": [
+          2,
+          3,
+          2,
+          2
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.833,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.833,
+          0,
+          0.09,
+          0.078
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Hari ini saham T katanya rame banget, transaksinya tembus jutaan lembar. Ada yang udah lih"
+    },
+    {
+      "id": "18-agen-1-p2",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0.003,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.995,
+          0.003,
+          0,
+          0.003
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.685,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.195,
+          0.685,
+          0.098,
+          0.023
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Ah lebay, katanya naik beruntun. Seingetku awal Desember sempet merah kok sehari, jadi buk"
+    },
+    {
+      "id": "18-agen-1-p3",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak saringan",
+      "jawaban": "Betul",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.493,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.493,
+          0.208,
+          0.168,
+          0.133
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.992,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.992,
+          0,
+          0,
+          0.008
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Sebelum disetop tadi, harganya katanya udah lebih dari dua kali lipat cuma dalam dua mingg"
+    },
+    {
+      "id": "18-uji-ajukan-1-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0.003,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.98,
+          0.003,
+          0.01,
+          0.008
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.982,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.01,
+          0.982,
+          0.003,
+          0.005
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Lho, disuspen lagi? Perasaan Januari kemarin juga gini. Fix alasannya sama, bursa ragu per"
+    },
+    {
+      "id": "19-agen-2-p1",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak penebak-kuat",
+      "jawaban": "Betul",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.228,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.228,
+          0.105,
+          0.113,
+          0.555
+        ],
+        "pilihan": [
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.798,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.798,
+          0.103,
+          0.045,
+          0.055
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Eh sebelum disetop tadi, harga terakhirnya katanya udah tembus seratus perak ya? Padahal a"
+    },
+    {
+      "id": "19-agen-2-p2",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak saringan",
+      "jawaban": "Betul",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.64,
+        "pilih_kunci": 3,
+        "p_per_isi": [
+          0.64,
+          0.02,
+          0.008,
+          0.333
+        ],
+        "pilihan": [
+          0,
+          0,
+          3,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.615,
+        "pilih_kunci": 3,
+        "p_per_isi": [
+          0.615,
+          0.005,
+          0.365,
+          0.015
+        ],
+        "pilihan": [
+          0,
+          0,
+          2,
+          0
+        ]
+      },
+      "pesan": "Orang-orang heboh banget soal T. Padahal dari awal naik akhir November sampai kemarin, nai"
+    },
+    {
+      "id": "19-agen-2-p3",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak kritikus",
+      "jawaban": "Betul",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.683,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.683,
+          0.298,
+          0.01,
+          0.01
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 1,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Yang di grup sebelah bilang RUPS T kemarin mutusin macem-macem, makanya naik. Ngarang itu."
+    },
+    {
+      "id": "19-agen-2-p4",
+      "kelompok": "agen-ditolak",
+      "catatan": "ditolak kritikus",
+      "jawaban": "Betul",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.63,
+        "pilih_kunci": 3,
+        "p_per_isi": [
+          0.63,
+          0.345,
+          0.013,
+          0.013
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          1
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 1,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Ada yang bilang RUPS T kemarin mutusin macem-macem. Aku iseng cek daftar aksi korporasinya"
+    }
+  ]
+}

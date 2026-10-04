@@ -1,0 +1,293 @@
+{
+  "id": "m2d20-jev-1",
+  "model": "typesafe/jev-1.13",
+  "panggilan": 63,
+  "biaya_usd": 0.0016,
+  "galat": "AI_InvalidResponseDataError: Question \"jawaban\" did not select a highest-probability option.",
+  "instruksi": {
+    "tebak": "Seorang teman mengirim pesan ini di grup obrolan tentang sebuah saham. Kamu TIDAK diberi dokumen apa pun. Dari yang tertulis saja, pernyataan mana yang paling mungkin benar?",
+    "kartu": "Seorang teman mengirim pesan ini di grup obrolan tentang sebuah saham. Di bawahnya ada kartu: potongan dokumen resmi. Cocokkan omongan teman dengan kartunya. Pernyataan mana yang benar menurut kartu?"
+  },
+  "butir": [
+    {
+      "id": "tayang-dada-s1-kata-bursa",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0.025,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.128,
+          0.025,
+          0.09,
+          0.758
+        ],
+        "pilihan": [
+          3,
+          3,
+          3,
+          3
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.96,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0,
+          0.96,
+          0.01,
+          0.03
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Saham D naik 22 kali! Pasti mau dibeli investor asing, bursa udah umumin."
+    },
+    {
+      "id": "tayang-dada-s2-dividen-pemilik-kecil",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Betul",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0.783,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.783,
+          0.04,
+          0.15,
+          0.028
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.992,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.992,
+          0.008,
+          0,
+          0
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pesan": "Gue pegang 10 lot dari Juli. Dividennya receh banget, buat bayar parkir motor aja kurang. "
+    },
+    {
+      "id": "tayang-dada-s3-siapa-yang-menjual",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "c",
+      "tanpa_kartu": {
+        "p_kunci": 0.13,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.168,
+          0.49,
+          0.13,
+          0.213
+        ],
+        "pilihan": [
+          0,
+          1,
+          1,
+          1
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 1,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0,
+          0,
+          1,
+          0
+        ],
+        "pilihan": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "pesan": "Harganya udah Rp178 lho. Pemilik terbesarnya aja tenang-tenang, nggak kedengeran jual. Ber"
+    },
+    {
+      "id": "tayang-ultj-turun-di-tanggal-ex",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.198,
+          0,
+          0.803,
+          0
+        ],
+        "pilihan": [
+          2,
+          2,
+          2,
+          2
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.998,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0,
+          0.998,
+          0.003,
+          0
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Saham U dibuka anjlok Rp145, padahal dividennya Rp45. Pasti ada kabar buruk!"
+    },
+    {
+      "id": "tayang-ultj-riwayat-dividen",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Keliru",
+      "kunci": "a",
+      "tanpa_kartu": {
+        "p_kunci": 0,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0,
+          0.998,
+          0.003,
+          0
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.095,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.095,
+          0.815,
+          0.04,
+          0.05
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Gue baru buka riwayat dividennya. Perusahaan U ini bagi dividen tiap tahun tanpa putus sej"
+    },
+    {
+      "id": "tayang-ultj-siapa-yang-membeli",
+      "kelompok": "tayang",
+      "catatan": "soal tayang",
+      "jawaban": "Betul",
+      "kunci": "d",
+      "tanpa_kartu": {
+        "p_kunci": 0.013,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.01,
+          0.945,
+          0.033,
+          0.013
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.083,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.068,
+          0.778,
+          0.073,
+          0.083
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Jangan kegeeran dulu. Gue baca laporan Januari: pemilik terbesarnya yang 53 persen itu iku"
+    },
+    {
+      "id": "bank-1a5abd",
+      "kelompok": "bank-agen",
+      "catatan": "lolos semua gerbang (Dimas)",
+      "jawaban": "Keliru",
+      "kunci": "b",
+      "tanpa_kartu": {
+        "p_kunci": 0.003,
+        "pilih_kunci": 0,
+        "p_per_isi": [
+          0.79,
+          0.003,
+          0.205,
+          0.003
+        ],
+        "pilihan": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "dengan_kartu": {
+        "p_kunci": 0.857,
+        "pilih_kunci": 4,
+        "p_per_isi": [
+          0.01,
+          0.857,
+          0.128,
+          0.005
+        ],
+        "pilihan": [
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      "pesan": "Saham T ini udah dua kali disetop bursa tahun ini. Dua-duanya gara-gara harganya kebablasa"
+    }
+  ]
+}
