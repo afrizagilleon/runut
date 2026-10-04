@@ -34,6 +34,7 @@ import { SETELAN_PENULIS_OPUS_V3 } from '../pemanggil-v2.ts';
 import { kartuRotasi, type KartuRotasi } from '../rotasi/jalan.ts';
 import { tebakRotasiV2, type HasilTebakRotasiV2 } from '../rotasi/jalan-v2.ts';
 import { tebakKuat, type HasilTebakKuat } from '../rotasi/penebak-kuat.ts';
+import { agregasiSelabel, type PutusanSelabel } from '../rotasi/selabel.ts';
 import type { SetelanPanggil } from '../susun.ts';
 import { kritikusMakna, kritikusMenolakTemplat } from '../templat/gerbang.ts';
 import { SETELAN_TEMPLAT_M2D11 } from '../templat/m2d11.ts';
@@ -76,6 +77,8 @@ export interface NilaiOmonganV3 {
   alasan: string[];
   dicatat: string[];
   saringan: HasilTebakRotasiV2 | null;
+  /** M2d-21: putusan selabel (kunci lawan kembaran selabelnya), bila dipakai. */
+  selabel?: PutusanSelabel | null;
   kartu_rotasi: { per_rotasi: Array<Omit<KartuRotasi, 'putusan'>>; lulus: boolean } | null;
   penebak_kuat: HasilTebakKuat | null;
   kritik: (Pick<PutusanKritik, 'menjawab' | 'tanpa_keberatan' | 'keberatan' | 'arahan'> & { token_penalaran: Array<number | null> }) | null;
@@ -127,8 +130,21 @@ export class HentiPenjagaV3 extends Error {
 const jumlah = <T>(x: readonly T[], f: (y: T) => number): number => x.reduce((a, y) => a + f(y), 0);
 const teksGalat = (g: unknown): string => (g instanceof Error ? `${g.name}: ${g.message}` : 'galat tak dikenal');
 
+/**
+ * Opsi gerbang (M2d-21). Bawaan = perilaku M2d-16.
+ * - `selabel`: penolak saringan tebak = ukuran selabel (kunci lawan kembaran selabelnya, acak 50 %), yang
+ *   tidak ikut mengukur kecenderungan penebak mengiyakan teman; putusan v2 hanya dicatat.
+ * - `penebakKuatDicatat`: penebak kuat Opus tetap dijalankan tetapi TIDAK menolak (keputusan pemilik D-A:
+ *   patokan = pemula membaca kartu, bukan "tak tertebak AI pintar"; alasan penebak kuat di 3 penolakannya
+ *   adalah pengetahuan pasar).
+ */
+export interface OpsiGerbangV3 {
+  selabel?: boolean;
+  penebakKuatDicatat?: boolean;
+}
+
 /** Nilai SATU omongan lewat urutan gerbang v3; berhenti di gerbang pertama yang menolak. `catat` dipanggil lebih dulu supaya nilai tersimpan walau gerbang melempar (pagu). */
-export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil: PanggilTemplat, putaran: number, urut: number, catat: (n: NilaiOmonganV3) => void = () => undefined, periksaKode: typeof periksaKodeV3 = periksaKodeV3): Promise<NilaiOmonganV3> {
+export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil: PanggilTemplat, putaran: number, urut: number, catat: (n: NilaiOmonganV3) => void = () => undefined, periksaKode: typeof periksaKodeV3 = periksaKodeV3, opsi: OpsiGerbangV3 = {}): Promise<NilaiOmonganV3> {
   const n: NilaiOmonganV3 = { putaran, urut, omongan: o, berhenti: 'kode', alasan: [], dicatat: [], saringan: null, kartu_rotasi: null, penebak_kuat: null, kritik: null, biaya_gerbang_usd: 0, id_bank: null };
   catat(n);
   // 1. kode (gratis)
@@ -145,7 +161,21 @@ export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil
   n.saringan = s;
   n.biaya_gerbang_usd += s.biaya_usd;
   n.dicatat.push(s.putusan.diagnosis);
-  if (s.putusan.putusan === 'tak-terukur') {
+  if (opsi.selabel === true) {
+    const sl = agregasiSelabel(s.jawaban, d.pilihan);
+    n.selabel = sl;
+    n.dicatat.push(`saringan v2 (dicatat): ${s.putusan.alasan.join('; ')}`);
+    if (sl.putusan === 'tak-terukur') {
+      n.berhenti = 'tak-terukur';
+      n.alasan = [`saringan tebak: ${sl.alasan.join('; ')}`];
+      return n;
+    }
+    if (sl.putusan === 'tolak') {
+      n.alasan = [`saringan tebak: ${sl.alasan.join('; ')}`];
+      return n;
+    }
+    n.dicatat.push(`saringan selabel: ${sl.alasan.join('; ')}`);
+  } else if (s.putusan.putusan === 'tak-terukur') {
     n.berhenti = 'tak-terukur';
     n.alasan = [`saringan tebak: ${s.putusan.alasan.join('; ')}`];
     return n;
@@ -169,16 +199,17 @@ export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil
   const q = await tebakKuat(d, { panggil, putaran, omongan: urut });
   n.penebak_kuat = q;
   n.biaya_gerbang_usd += q.biaya_usd;
-  if (q.putusan.putusan === 'tak-terukur') {
+  if (opsi.penebakKuatDicatat === true) {
+    n.dicatat.push(`penebak kuat (dicatat, tidak menolak): ${q.putusan.alasan}`);
+  } else if (q.putusan.putusan === 'tak-terukur') {
     n.berhenti = 'tak-terukur';
     n.alasan = [q.putusan.alasan];
     return n;
-  }
-  if (q.putusan.putusan === 'tolak') {
+  } else if (q.putusan.putusan === 'tolak') {
     n.alasan = [q.putusan.alasan];
     return n;
   }
-  if (q.putusan.isi_konsisten !== null) n.dicatat.push(`penebak kuat konsisten memilih pengecoh (opsi asal ${'abcd'[q.putusan.isi_konsisten] ?? '?'}) di ≥ 3 rotasi`);
+  if (opsi.penebakKuatDicatat !== true && q.putusan.isi_konsisten !== null) n.dicatat.push(`penebak kuat konsisten memilih pengecoh (opsi asal ${'abcd'[q.putusan.isi_konsisten] ?? '?'}) di ≥ 3 rotasi`);
   // 5. kritikus GLM (tidak menjawab → sekali lagi)
   n.berhenti = 'kritikus';
   const kartu0 = k.per_rotasi[0]?.putusan ?? null;

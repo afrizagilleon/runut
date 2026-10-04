@@ -7,6 +7,8 @@
  * - `periksaKode`  : gerbang kode gratis untuk satu draf; penolakan apa adanya.
  * - `ajukan`       : gerbang berbayar (saringan tebak → pembaca kartu → penebak
  *                    kuat → kritikus, `nilaiOmonganV3`); yang lolos masuk bank.
+ *                    M2d-21: saringan tebak memakai ukuran selabel; penebak kuat
+ *                    hanya dicatat (tidak menolak).
  *
  * Yang dijaga kode di sini (bukan diputuskan model):
  * - nama dipasang dari daftar pemeran tetap (`pemeran.ts`);
@@ -186,7 +188,7 @@ export function buatAlat(o: OpsiAlat) {
     ajukanKe += 1;
     let n: NilaiOmonganV3 | null = null;
     try {
-      n = await nilai(om, o.paket, o.panggil, ajukanKe, 1, (y) => semuaNilai.push(y), periksaKodeAgen);
+      n = await nilai(om, o.paket, o.panggil, ajukanKe, 1, (y) => semuaNilai.push(y), periksaKodeAgen, { selabel: true, penebakKuatDicatat: true });
     } catch (galat) {
       const terakhir = semuaNilai.at(-1);
       if (terakhir !== undefined && terakhir.putaran === ajukanKe) biayaGerbang += terakhir.biaya_gerbang_usd;

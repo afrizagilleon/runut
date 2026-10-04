@@ -32,6 +32,7 @@ import { instruksiAgen } from '../../factory/llm/agen/prompt.ts';
 import { bacaBank, FOLDER_BANK, pilihSimulasi, shaPaketBank, UKURAN_SIMULASI } from '../../factory/llm/bebas/bank.ts';
 import { AKAR, bacaKonfigLlm } from '../../factory/llm/env.ts';
 import { samarkan } from '../../factory/llm/klien.ts';
+import { HARGA } from '../../factory/llm/harga.ts';
 import { MODEL_OR_OPUS } from '../../factory/llm/model.ts';
 import { BASE_URL_OPENROUTER } from '../../factory/llm/openrouter.ts';
 import { PencatatBiaya } from '../../factory/llm/pagu.ts';
@@ -67,6 +68,11 @@ const target = Number(arg('--target') ?? UKURAN_SIMULASI);
 if (!Number.isInteger(target) || target < 1 || target > UKURAN_SIMULASI) throw new Error(`--target harus 1–${String(UKURAN_SIMULASI)}`);
 const maksLangkah = Number(arg('--langkah') ?? LANGKAH_BAWAAN);
 const ujiAjukan = arg('--uji-ajukan');
+/** Model penulis agen: Opus 5.5 (bawaan) atau Sonnet 5.5 (banding M2d-21). Penyedia tetap dikunci ke Anthropic. */
+const MODEL_SONNET = 'anthropic/claude-sonnet-5.5';
+const namaModel = arg('--model') ?? 'opus';
+if (namaModel !== 'opus' && namaModel !== 'sonnet') throw new Error('--model harus opus atau sonnet');
+const MODEL_PENULIS: string = namaModel === 'sonnet' ? MODEL_SONNET : MODEL_OR_OPUS;
 
 const folder = `${AKAR}eval/penyusun/${id}`;
 if (existsSync(folder)) throw new Error(`folder ${folder} sudah ada; pakai --id lain`);
@@ -77,7 +83,8 @@ mkdirSync(folder, { recursive: true });
 writeFileSync(`${folder}/paket.json`, `${JSON.stringify(paket, null, 2)}\n`, 'utf8');
 
 const awalanTag = `${AWALAN_TAG_PENYUSUN}${id}/`;
-const folderBank = `${AKAR}${FOLDER_BANK}`;
+/** `--bank <folder>`: bank selain bank sungguhan (mis. salinan untuk membandingkan dua model dari keadaan yang sama). */
+const folderBank = `${AKAR}${arg('--bank') ?? FOLDER_BANK}`;
 const rahasia = [konfig.apiKey];
 const tulis = (berkas: string, baris: Record<string, unknown>): void => appendFileSync(`${folder}/${berkas}`, samarkan(JSON.stringify(baris), rahasia) + '\n', 'utf8');
 const jejak = (baris: Record<string, unknown>): void => tulis('jejak-agen.jsonl', { waktu: new Date().toISOString(), ...baris });
@@ -110,7 +117,7 @@ function riwayatDitolak(): SudutDitolak[] {
 
 let biayaAgen = 0;
 const alat = buatAlat({
-  paket, folderBank, idJalan: id, panggil: panggilGerbang, paguUsd: pagu, biayaAgen: () => biayaAgen, labelPenulis: `${MODEL_OR_OPUS} (agen ber-alat)`, target, riwayatDitolak: riwayatDitolak(),
+  paket, folderBank, idJalan: id, panggil: panggilGerbang, paguUsd: pagu, biayaAgen: () => biayaAgen, labelPenulis: `${MODEL_PENULIS} (agen ber-alat)`, target, riwayatDitolak: riwayatDitolak(),
   catat: (p: PeristiwaAlat) => {
     jejak({ jenis: 'alat', ...p });
     console.log(`  alat ${p.alat}: ${p.ringkas}`);
@@ -127,7 +134,8 @@ if (ujiAjukan !== null) {
   process.exit(0);
 }
 
-const ledger = new PencatatBiaya({ paguUsd: konfig.paguUsd, jalurLedger: jalurLedger(AKAR), biayaNyata: true });
+// Biaya selalu dari usage.cost; baris harga hanya batas atas bila respons tanpa cost (Sonnet memakai baris Opus = batas atas yang aman).
+const ledger = new PencatatBiaya({ paguUsd: konfig.paguUsd, jalurLedger: jalurLedger(AKAR), biayaNyata: true, harga: { ...HARGA, [MODEL_PENULIS]: HARGA[MODEL_OR_OPUS] } });
 const totalAwal = ledger.total();
 let panggilanModel = 0;
 let percakapan = 0;
@@ -157,7 +165,7 @@ const fetchBerpenjaga: typeof fetch = async (masukan, init) => {
   const penyedia = typeof data?.['provider'] === 'string' ? (data['provider'] as string) : null;
   const dariSimpanan = usage?.prompt_tokens_details?.cached_tokens ?? null;
   const keSimpanan = usage?.prompt_tokens_details?.cache_write_tokens ?? null;
-  const entri = ledger.catat(MODEL_OR_OPUS, tag, {
+  const entri = ledger.catat(MODEL_PENULIS, tag, {
     percobaan: 1, status: respons.status, token_masuk: usage?.prompt_tokens ?? null, token_keluar: usage?.completion_tokens ?? null, latensi_ms: latensi,
     galat: respons.ok ? null : samarkan(teks.slice(0, 300), rahasia), mungkin_ditagih: respons.ok || respons.status >= 500,
     biaya_penyedia_usd: typeof usage?.cost === 'number' ? usage.cost : null, penyedia, token_penalaran: usage?.completion_tokens_details?.reasoning_tokens ?? null,
@@ -179,7 +187,7 @@ const openrouter = createOpenRouter({ apiKey: konfig.apiKey, baseURL: konfig.bas
 const skemaOmongan = z.object({ omongan: z.record(z.string(), z.unknown()).describe('Satu objek omongan, bentuknya sama dengan contoh di petunjuk.') });
 
 const agen = new ToolLoopAgent({
-  model: openrouter(MODEL_OR_OPUS, { usage: { include: true }, provider: pagarPeranV2('penulis') as never, extraBody: { cache_control: SIMPAN_PROMPT } }),
+  model: openrouter(MODEL_PENULIS, { usage: { include: true }, provider: pagarPeranV2('penulis') as never, extraBody: { cache_control: SIMPAN_PROMPT } }),
   tools: {
     lihat_fakta: tool({ description: 'Semua kartu fakta hari simulasi. Gratis.', inputSchema: z.object({}), execute: () => alat.lihatFakta() }),
     lihat_bank: tool({ description: 'Omongan yang sudah lolos, kartu penentu yang sudah terpakai, dan sisa anggaran. Gratis.', inputSchema: z.object({}), execute: () => alat.lihatBank() }),
@@ -192,7 +200,7 @@ const agen = new ToolLoopAgent({
   providerOptions: { openrouter: { reasoning: { effort: 'medium', exclude: false } } },
 });
 
-console.log(`Agen ${id}: ${MODEL_OR_OPUS} @ anthropic lewat AI SDK; target ${String(target)} sudut; pagu US$${String(pagu)}; maks ${String(maksLangkah)} langkah per percakapan, ${String(MAKS_PERCAKAPAN)} percakapan; bank ${FOLDER_BANK}/${shaPaketBank(paket).slice(0, 12)}…; PID ${String(process.pid)}.`);
+console.log(`Agen ${id}: ${MODEL_PENULIS} @ anthropic lewat AI SDK; target ${String(target)} sudut; pagu US$${String(pagu)}; maks ${String(maksLangkah)} langkah per percakapan, ${String(MAKS_PERCAKAPAN)} percakapan; bank ${arg('--bank') ?? FOLDER_BANK}/${shaPaketBank(paket).slice(0, 12)}…; PID ${String(process.pid)}.`);
 const mulai = Date.now();
 let galat: string | null = null;
 let teksAkhir = '';
@@ -219,7 +227,7 @@ const bank = bacaBank(folderBank, shaPaketBank(paket));
 const simulasi = pilihSimulasi(bank, paket);
 const berhenti = galat !== null ? `galat: ${galat}` : alat.selesai() ? 'bank bisa dirakit menjadi simulasi' : alat.anggaranHabis() ? 'anggaran tidak cukup untuk satu pengajuan lagi' : percakapan >= MAKS_PERCAKAPAN ? 'batas percakapan' : 'agen berhenti sendiri';
 const hasil = {
-  id, model: MODEL_OR_OPUS, sdk: 'ai (ToolLoopAgent) + @openrouter/ai-sdk-provider', target, pagu_usd: pagu, berhenti, percakapan: ringkasPercakapan, langkah, panggilan_model: panggilanModel, pengajuan: k.pengajuan,
+  id, model: MODEL_PENULIS, sdk: 'ai (ToolLoopAgent) + @openrouter/ai-sdk-provider', target, pagu_usd: pagu, berhenti, percakapan: ringkasPercakapan, langkah, panggilan_model: panggilanModel, pengajuan: k.pengajuan,
   biaya_agen_usd: bulat(biayaAgen), biaya_gerbang_usd: k.biaya_gerbang_usd, biaya_usd: k.biaya_total_usd, durasi_detik: Math.round((Date.now() - mulai) / 1000),
   bank: { jumlah_sudut: k.jumlah_sudut, omongan: bank.map((e) => ({ id: e.id, nama: e.omongan.nama, kartu_penentu: e.kartu_penentu, asal: e.asal.jalan })) },
   simulasi: { terbit: simulasi.draf !== null, dipilih: simulasi.dipilih, alasan: simulasi.alasan, draf: simulasi.draf },
