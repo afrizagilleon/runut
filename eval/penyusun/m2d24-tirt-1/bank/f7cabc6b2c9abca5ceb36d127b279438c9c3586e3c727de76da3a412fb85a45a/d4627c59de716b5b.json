@@ -1,0 +1,364 @@
+{
+  "id": "d4627c59de716b5b",
+  "paket_sha": "f7cabc6b2c9abca5ceb36d127b279438c9c3586e3c727de76da3a412fb85a45a",
+  "kartu_penentu": [
+    "naik-2025-11-26-2025-12-09"
+  ],
+  "omongan": {
+    "nama": "Rara",
+    "jam": "21.30",
+    "pesan": "Dari penutupan 26 November sampai penutupan kemarin, T udah naik Rp106 per lembar. Gila sih.",
+    "angka_pesan": [
+      {
+        "teks": "26 November",
+        "fact_id": "naik-2025-11-26-2025-12-09"
+      },
+      {
+        "teks": "Rp106",
+        "fact_id": "harga-2025-12-09"
+      }
+    ],
+    "kartu": [
+      "naik-2025-11-26-2025-12-09",
+      "harga-2025-11-27",
+      "harga-2025-12-09",
+      "hari-naik-beruntun"
+    ],
+    "kartu_penentu": [
+      "naik-2025-11-26-2025-12-09"
+    ],
+    "pilihan": {
+      "a": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut.",
+      "b": "Keliru, selisih penutupannya [[harga-2025-11-27|Rp52]] per lembar.",
+      "c": "Keliru, selisih penutupannya [[naik-2025-11-26-2025-12-09|Rp58]] per lembar.",
+      "d": "Betul, penutupan kemarin memang [[harga-2025-12-09|Rp106]] per lembar."
+    },
+    "kunci": "c",
+    "penjelasan": "Kenaikannya dihitung dari selisih dua penutupan: [[naik-2025-11-26-2025-12-09|Rp106]] pada [[naik-2025-11-26-2025-12-09|9 Desember]] dikurangi [[naik-2025-11-26-2025-12-09|Rp48]] pada [[naik-2025-11-26-2025-12-09|26 November]], hasilnya [[naik-2025-11-26-2025-12-09|Rp58]] per lembar. Angka [[harga-2025-12-09|Rp106]] yang disebut teman adalah harga penutupan kemarin, bukan besar kenaikannya. [[harga-2025-11-27|Rp52]] adalah penutupan [[harga-2025-11-27|27 November]], bukan selisih. Naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut memang tercatat, tetapi itu soal lamanya, bukan besarnya. Salah-kaprah yang umum: menyamakan harga sekarang dengan besar kenaikan.",
+    "pengecoh": {
+      "a": {
+        "jenis": "pertanyaan-lain",
+        "rujukan": "hari-naik-beruntun",
+        "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 menghitung berapa hari harganya naik, bukan berapa rupiah kenaikannya."
+      },
+      "b": {
+        "jenis": "nyaris-benar-angka",
+        "rujukan": "harga-2025-11-27",
+        "umpan_balik": "Ini angka nyaris benar: angka di kartu 2 adalah harga penutupan sehari sesudah titik awal, bukan selisih kenaikannya."
+      },
+      "d": {
+        "jenis": "percaya-otoritas",
+        "rujukan": "harga-2025-12-09",
+        "umpan_balik": "Ini percaya omongan tanpa cek: kartu 3 memang harga penutupan kemarin, tetapi itu harga, bukan besar kenaikannya."
+      }
+    },
+    "pertanyaan_cek": "Yang ditanya itu harga penutupannya atau selisih antara dua penutupan?"
+  },
+  "jejak_gerbang": {
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 10 (peluang kebetulan 0,9453; batas 0,02); 2 tak terbaca dibuang",
+        "pembaca kartu r0 bingung: \"Dari penutupan 26 November sampai penutupan kemarin, T udah naik Rp106 per lembar. Gila sih.\"",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 1 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp58 lebih mendekati Rp106 daripada Rp52, lebih masuk akal.",
+          "biaya_usd": 0.000546,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp52 lebih dekat ke Rp106 dibanding Rp58, lebih masuk akal.",
+          "biaya_usd": 0.000541,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp58 lebih dekat ke Rp106 daripada Rp52, lebih masuk akal.",
+          "biaya_usd": 0.000545,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp52 lebih dekat ke Rp106, menunjukkan kesalahan perhitungan sederhana.",
+          "biaya_usd": 0.000545,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Rp106 dua kali Rp52, mungkin salah hitung dua hari",
+          "biaya_usd": 0.0000263,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp106 dua kali lipat Rp52, kemungkinan salah hitung periode",
+          "biaya_usd": 0.0000281,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Rp106 mungkin hasil salah hitung; Rp52 lebih masuk akal.",
+          "biaya_usd": 0.00002745,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Selisih Rp52 lebih dekat ke Rp106 daripada Rp58.",
+          "biaya_usd": 0.00002745,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 2,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.0204436,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": null,
+          "isi": null,
+          "isi_kunci": 2,
+          "terbaca": false,
+          "salinan": "",
+          "skor": null,
+          "alasan": "(tak terbaca)",
+          "biaya_usd": 0.0204436,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Selisih Rp58 lebih konsisten sebagai koreksi atas klaim kenaikan Rp106.",
+          "biaya_usd": 0.00128301,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp106 kira-kira dua kali Rp52, kemungkinan salah hitung ganda",
+          "biaya_usd": 0.00075756,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 10,
+        "tak_terbaca": 2,
+        "kunci": 3,
+        "p": 0.9453125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 10 (peluang kebetulan 0,9453; batas 0,02); 2 tak terbaca dibuang"
+        ]
+      },
+      "biaya_usd": 0.04521407
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [
+            "Dari penutupan 26 November sampai penutupan kemarin, T udah naik Rp106 per lembar. Gila sih."
+          ],
+          "alasan": "Kartu 1 menghitung kenaikan dari 26 November ke 9 Desember adalah Rp106 dikurangi Rp48, yaitu Rp58, bukan Rp106.",
+          "biaya_usd": 0.0006036
+        },
+        {
+          "r": 2,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menunjukkan kenaikan dari 26 November ke 9 Desember adalah Rp106 - Rp48 = Rp58, bukan Rp106.",
+          "biaya_usd": 0.001659176
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, selisih penutupannya Rp52 per lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, ini tebakan; klaim Rp106 tampak berlebihan.",
+          "biaya_usd": 0.00698,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "d",
+          "isi": 2,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, selisih penutupannya Rp58 per lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan, a dan b tak menjawab selisih.",
+          "biaya_usd": 0.0068,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, selisih penutupannya Rp52 per lembar.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; kenaikan Rp106 tidak bisa diverifikasi",
+          "biaya_usd": 0.00758,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 2,
+          "terbaca": true,
+          "salinan": "Keliru, selisih penutupannya Rp52 per lembar.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, ini tebakan; pilihan C mencampur harga dengan kenaikan.",
+          "biaya_usd": 0.0047,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 1,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 1,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 1 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.02606
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Longgarkan kalimat pembuka Rara sebab pengulangan 'penutupan … sampai penutupan …' terdengar seperti bahasa laporan, bukan obrolan grup di ponsel.",
+      "token_penalaran": [
+        9627
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d24-tirt-1",
+    "putaran": 3,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T11:39:13.062Z"
+}

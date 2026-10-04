@@ -1,0 +1,1001 @@
+{
+  "id": "m2d24-bolt-1",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1,
+  "berhenti": "galat: AI_APICallError: This request requires more credits, or fewer max_tokens. You requested up to 128000 tokens, but can only afford 119401. To increase, visit https://openrouter.ai/workspaces/default/keys/[disamarkan] and adjust the key's total limit",
+  "percakapan": [],
+  "langkah": 0,
+  "panggilan_model": 5,
+  "pengajuan": 3,
+  "biaya_agen_usd": 0.409184,
+  "biaya_gerbang_usd": 0.0772,
+  "biaya_usd": 0.4864,
+  "durasi_detik": 275,
+  "bank": {
+    "jumlah_sudut": 1,
+    "omongan": [
+      {
+        "id": "b74996157bfa3a0d",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "harga-2026-04-30"
+        ],
+        "asal": "m2d24-bolt-1"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": false,
+    "dipilih": [],
+    "alasan": [
+      "bank baru memuat 1 kartu penentu berbeda (1 omongan); simulasi butuh 3"
+    ],
+    "draf": null
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.10",
+        "pesan": "Dividennya Rp50 per lembar kan? Yang baru pegang mulai besok pagi juga masih kebagian lah.",
+        "angka_pesan": [
+          {
+            "teks": "Rp50",
+            "fact_id": "div-2026-05-07"
+          }
+        ],
+        "kartu": [
+          "div-2026-05-07",
+          "div-2026-02-20",
+          "div-2026-02-20-bayar"
+        ],
+        "kartu_penentu": [
+          "div-2026-05-07"
+        ],
+        "pilihan": {
+          "a": "Betul, tanggal ex-nya baru jatuh pekan depan.",
+          "b": "Betul, pembeli besok masih kebagian karena tanggal ex belum lewat.",
+          "c": "Keliru, pembeli besok tidak kebagian karena hari ini tanggal ex.",
+          "d": "Keliru, tanggal ex-nya sudah lewat sejak pekan lalu."
+        },
+        "kunci": "c",
+        "penjelasan": "Kartu dividen terbaru mencatat dividen [[div-2026-05-07|Rp50]] per lembar dengan tanggal ex [[div-2026-05-07|7 Mei 2026]], yaitu hari ini. Mulai tanggal ex, pembeli baru tidak lagi berhak atas dividen itu; yang berhak adalah yang sudah memegang saham sebelum tanggal ex. Jadi pembeli besok sudah terlambat. Tanggal ex yang sudah lewat, [[div-2026-02-20|20 Februari 2026]], milik dividen lain sebesar [[div-2026-02-20|Rp25]], dan kartu pembayarannya hanya mencatat tanggal bayar [[div-2026-02-20-bayar|3 Maret 2026]]. Salah-kaprah yang umum: mengira pembeli sesudah tanggal ex masih kebagian dividen.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 mencatat tanggal ex [[div-2026-05-07|7 Mei 2026]], yaitu hari ini, bukan pekan depan."
+          },
+          "b": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: menurut kartu 1 tanggal ex sudah tiba hari ini, jadi pembeli besok tidak berhak."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2026-02-20",
+            "umpan_balik": "Ini salah periode: tanggal ex yang sudah lewat di kartu 2 milik dividen [[div-2026-02-20|Rp25]], bukan dividen yang dibahas."
+          }
+        },
+        "pertanyaan_cek": "Kapan tanggal ex dividen ini, dan apa artinya bagi pembeli sesudahnya?"
+      },
+      "berhenti": "saringan",
+      "alasan": [
+        "saringan tebak: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+      ],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.00335674,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Hari ini adalah tanggal ex-dividend, pembeli besok tidak kebagian dividen.",
+            "biaya_usd": 0.000508,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Ex-dividend biasanya ditetapkan hari sebelumnya, bukan pekan lalu.",
+            "biaya_usd": 0.000513,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Hari ini kemungkinan tanggal ex-dividend, pembeli besok tidak kebagian.",
+            "biaya_usd": 0.000512,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Ex-dividend biasanya ditetapkan hari sebelumnya, bukan seminggu sebelumnya.",
+            "biaya_usd": 0.000527,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Ex date hari ini, beli besok tidak dapat dividen",
+            "biaya_usd": 0.00002595,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Besok beli tidak dapat karena hari ini ex-date",
+            "biaya_usd": 0.00002475,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Ex date hari ini, pembeli besok tidak dapat dividen",
+            "biaya_usd": 0.0000259,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Besok beli tidak dapat karena hari ini ex-date.",
+            "biaya_usd": 0.0000253,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Besok tanggal ex-dividen, jadi pembeli mulai besok tidak berhak dividen.",
+            "biaya_usd": 0.00031259,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Pembeli mulai besok tidak kebagian karena hari ini tanggal ex-dividen.",
+            "biaya_usd": 0.0002414,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Besok tanggal ex-dividen, jadi pembeli mulai besok tidak kebagian dividen.",
+            "biaya_usd": 0.00031937,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 2,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Hari ini tanggal ex-dividen, jadi pembeli mulai besok tidak berhak dividen.",
+            "biaya_usd": 0.00032148,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 12,
+          "p": 0.000244140625,
+          "putusan": "tolak",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 12 dari 12 (peluang kebetulan 0,0002; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+          ]
+        },
+        "biaya_usd": 0.00335674
+      }
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Turun sih hari ini, tapi harganya masih di atas penutupan akhir April kok.",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2026-04-30",
+          "harga-2026-05-04",
+          "harga-2026-05-06",
+          "harga-2026-05-07"
+        ],
+        "kartu_penentu": [
+          "harga-2026-04-30"
+        ],
+        "pilihan": {
+          "a": "Betul, akhir April ditutup [[harga-2026-04-30|Rp900]] dan hari ini lebih tinggi.",
+          "b": "Betul, akhir April ditutup [[harga-2026-05-04|Rp920]] dan hari ini lebih tinggi.",
+          "c": "Keliru, akhir April ditutup [[harga-2026-05-07|Rp930]] dan hari ini sama.",
+          "d": "Keliru, akhir April ditutup [[harga-2026-05-06|Rp990]] dan hari ini lebih rendah."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu harga akhir April mencatat penutupan [[harga-2026-04-30|30 April 2026]] di [[harga-2026-04-30|Rp900]]. Kartu harga hari ini mencatat penutupan [[harga-2026-05-07|Rp930]], lebih tinggi. Hari ini memang turun dari [[harga-2026-05-06|Rp990]] kemarin, jadi kedua bagian pesan cocok dengan kartu. Angka [[harga-2026-05-04|Rp920]] milik [[harga-2026-05-04|4 Mei 2026]], sudah masuk bulan Mei. Salah-kaprah yang umum: memakai harga awal bulan berikutnya sebagai harga akhir bulan sebelumnya.",
+        "pengecoh": {
+          "b": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2026-05-04",
+            "umpan_balik": "Ini angka nyaris benar: [[harga-2026-05-04|Rp920]] di kartu 2 adalah penutupan [[harga-2026-05-04|4 Mei 2026]], bukan akhir April."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-05-07",
+            "umpan_balik": "Ini salah periode: [[harga-2026-05-07|Rp930]] di kartu 4 adalah penutupan hari ini, bukan akhir April."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-05-06",
+            "umpan_balik": "Ini salah periode: [[harga-2026-05-06|Rp990]] di kartu 3 adalah penutupan kemarin; akhir April jauh lebih rendah."
+          }
+        },
+        "pertanyaan_cek": "Berapa harga penutupan pada hari bursa terakhir bulan April?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 11 (peluang kebetulan 0,5000; batas 0,02); 1 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan penutupan akhir April Rp900, sedangkan Kartu 4 menunjukkan harga hari ini Rp930 yang lebih tinggi meski turun dari Rp990.",
+            "biaya_usd": 0.00039835
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menunjukkan akhir April ditutup Rp900, sedangkan kartu 3 dan 4 menunjukkan harga turun ke Rp930 pada 7 Mei dan masih di atas Rp900.",
+            "biaya_usd": 0.00051955
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, akhir April ditutup Rp900 dan hari ini lebih tinggi.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan sesuai klaim Rara, angka tak terverifikasi.",
+            "biaya_usd": 0.004676,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, akhir April ditutup Rp900 dan hari ini lebih tinggi.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, harga tidak bisa dipastikan.",
+            "biaya_usd": 0.004156,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, akhir April ditutup Rp920 dan hari ini lebih tinggi.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, angka penutupan tak bisa dicek.",
+            "biaya_usd": 0.005076,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 3,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Keliru, akhir April ditutup Rp990 dan hari ini lebih rendah.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan, angka tidak bisa diverifikasi.",
+            "biaya_usd": 0.006916,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 2,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.020824000000000002
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Di penjelasan, sebut tanggal 6 Mei 2026 untuk angka Rp990, bukan hanya 'kemarin', agar pemain mudah mencocokkannya dengan Kartu 3.",
+        "token_penalaran": [
+          3382
+        ]
+      },
+      "biaya_gerbang_usd": 0.06912940000000001,
+      "id_bank": "b74996157bfa3a0d",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga turun hari ini tapi masih di atas April, lebih konsisten dengan Rp900 yang lebih rendah.",
+            "biaya_usd": 0.00056,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga hari ini turun tapi masih di atas April memerlukan margin lebih besar.",
+            "biaya_usd": 0.00052,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pernyataan 1 lebih konservatif, lebih mungkin akurat tanpa data spesifik.",
+            "biaya_usd": 0.000544,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp920 lebih realistis sebagai harga penutupan saham dibanding Rp900",
+            "biaya_usd": 0.000529,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga lebih tinggi dari Rp900 lebih mungkin daripada Rp920.",
+            "biaya_usd": 0.0000258,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga di atas Rp920 lebih mungkin daripada di atas Rp900.",
+            "biaya_usd": 0.0000264,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp900 lebih rendah, lebih mungkin di bawah harga hari ini",
+            "biaya_usd": 0.00002515,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga di atas Rp920 lebih mungkin daripada di atas Rp900",
+            "biaya_usd": 0.00002575,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Penutupan lebih rendah (900) lebih mungkin membuat harga hari ini tetap di atasnya.",
+            "biaya_usd": 0.00050472,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Penutupan Rp900 lebih konsisten dengan 'masih di atas' setelah turun hari ini.",
+            "biaya_usd": 0.00081871,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Kata 'masih' mengisyaratkan harga kini hanya sedikit di atas penutupan April.",
+            "biaya_usd": 0.01078831,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 0,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.020439640000000002,
+            "panggilan": 2
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 11,
+          "tak_terbaca": 1,
+          "kunci": 6,
+          "p": 0.5,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 6 dari 11 (peluang kebetulan 0,5000; batas 0,02); 1 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.03480748
+      }
+    },
+    {
+      "putaran": 3,
+      "urut": 1,
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Kata grup sebelah, RUPS akhir April nggak mutusin apa-apa soal dividen. Jadi pembagiannya belum pasti.",
+        "angka_pesan": [],
+        "kartu": [
+          "rups-2026-04-27",
+          "div-2026-05-07",
+          "dividen-tercatat"
+        ],
+        "kartu_penentu": [
+          "rups-2026-04-27"
+        ],
+        "pilihan": {
+          "a": "Betul, rapat itu cuma mengesahkan laporan tahunan dan akuntan publik.",
+          "b": "Betul, keputusan soal dividen ditunda ke rapat berikutnya.",
+          "c": "Keliru, dividen diputuskan lewat rapat direksi, bukan RUPS.",
+          "d": "Keliru, rapat itu menyetujui pemakaian laba termasuk dividen tunai."
+        },
+        "kunci": "d",
+        "penjelasan": "Kartu RUPS mencatat keputusan rapat [[rups-2026-04-27|27 April 2026]]. Salah satu agendanya menyetujui penggunaan laba bersih, termasuk pembagian dividen tunai kepada pemegang saham. Kartu dividen terbaru menunjukkan kelanjutannya: dividen [[div-2026-05-07|Rp50]] per lembar dengan tanggal ex [[div-2026-05-07|7 Mei 2026]]. Pilihan yang menyebut laporan tahunan memang menggoda karena agenda itu ada, tetapi rapat yang sama juga memutuskan dividen. Salah-kaprah yang umum: menganggap kabar dari grup lain sudah pasti benar tanpa membuka hasil rapatnya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "rups-2026-04-27",
+            "umpan_balik": "Ini sebagian benar: laporan tahunan dan akuntan memang disetujui, tetapi kartu 1 juga mencatat persetujuan dividen tunai."
+          },
+          "b": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "rups-2026-04-27",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 tidak mencatat penundaan; dividen tunai disetujui di rapat itu."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "rups-2026-04-27",
+            "umpan_balik": "Ini salah entitas: kartu 1 menunjukkan persetujuan dividen datang dari rapat pemegang saham, bukan direksi."
+          }
+        },
+        "pertanyaan_cek": "Apa yang diputuskan rapat pemegang saham itu soal laba bersih?"
+      },
+      "berhenti": "saringan",
+      "alasan": [
+        "saringan tebak: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 12 (peluang kebetulan 0,0193; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+      ],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0.004762379999999999,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "RUPS dan rapat direksi adalah mekanisme berbeda untuk keputusan dividen.",
+            "biaya_usd": 0.001108,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "RUPS adalah forum resmi pengambilan keputusan dividen, bukan rapat direksi.",
+            "biaya_usd": 0.001333,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "RUPS adalah forum resmi untuk keputusan dividen. Jika RUPS membahas laba, dividen biasanya diputuskan di sana.",
+            "biaya_usd": 0.000607,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "RUPS adalah forum resmi untuk keputusan dividen, bukan direksi.",
+            "biaya_usd": 0.000512,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "RUPS memang forum yang memutuskan dividen, bukan rapat direksi.",
+            "biaya_usd": 0.00002905,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "RUPS memang memutuskan dividen; dokumen menyetujui laba dan dividen tunai.",
+            "biaya_usd": 0.00003265,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "RUPS memang forum yang memutuskan dividen, bukan direksi",
+            "biaya_usd": 0.0000272,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "RUPS biasanya menyetujui dividen, bukan direksi",
+            "biaya_usd": 0.0000266,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "RUPS April umumnya menyetujui penggunaan laba termasuk dividen tunai.",
+            "biaya_usd": 0.00027204,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "RUPS menyetujui penggunaan laba, termasuk dividen tunai.",
+            "biaya_usd": 0.00021441,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "RUPS umumnya menyetujui penggunaan laba bersih termasuk dividen tunai.",
+            "biaya_usd": 0.00023136,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "RUPS memang memutuskan penggunaan laba termasuk dividen tunai.",
+            "biaya_usd": 0.00036907,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 10,
+          "p": 0.019287109375,
+          "putusan": "tolak",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 10 dari 12 (peluang kebetulan 0,0193; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu"
+          ]
+        },
+        "biaya_usd": 0.004762379999999999
+      }
+    }
+  ],
+  "draf_lolos_kode": [
+    {
+      "id": "db5bbd0d595a2f99",
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "19.10",
+        "pesan": "Dividennya Rp50 per lembar kan? Yang baru pegang mulai besok pagi juga masih kebagian lah.",
+        "angka_pesan": [
+          {
+            "teks": "Rp50",
+            "fact_id": "div-2026-05-07"
+          }
+        ],
+        "kartu": [
+          "div-2026-05-07",
+          "div-2026-02-20",
+          "div-2026-02-20-bayar"
+        ],
+        "kartu_penentu": [
+          "div-2026-05-07"
+        ],
+        "pilihan": {
+          "a": "Betul, tanggal ex-nya baru jatuh pekan depan.",
+          "b": "Betul, pembeli besok masih kebagian karena tanggal ex belum lewat.",
+          "c": "Keliru, pembeli besok tidak kebagian karena hari ini tanggal ex.",
+          "d": "Keliru, tanggal ex-nya sudah lewat sejak pekan lalu."
+        },
+        "kunci": "c",
+        "penjelasan": "Kartu dividen terbaru mencatat dividen [[div-2026-05-07|Rp50]] per lembar dengan tanggal ex [[div-2026-05-07|7 Mei 2026]], yaitu hari ini. Mulai tanggal ex, pembeli baru tidak lagi berhak atas dividen itu; yang berhak adalah yang sudah memegang saham sebelum tanggal ex. Jadi pembeli besok sudah terlambat. Tanggal ex yang sudah lewat, [[div-2026-02-20|20 Februari 2026]], milik dividen lain sebesar [[div-2026-02-20|Rp25]], dan kartu pembayarannya hanya mencatat tanggal bayar [[div-2026-02-20-bayar|3 Maret 2026]]. Salah-kaprah yang umum: mengira pembeli sesudah tanggal ex masih kebagian dividen.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 mencatat tanggal ex [[div-2026-05-07|7 Mei 2026]], yaitu hari ini, bukan pekan depan."
+          },
+          "b": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini percaya omongan tanpa cek: menurut kartu 1 tanggal ex sudah tiba hari ini, jadi pembeli besok tidak berhak."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2026-02-20",
+            "umpan_balik": "Ini salah periode: tanggal ex yang sudah lewat di kartu 2 milik dividen [[div-2026-02-20|Rp25]], bukan dividen yang dibahas."
+          }
+        },
+        "pertanyaan_cek": "Kapan tanggal ex dividen ini, dan apa artinya bagi pembeli sesudahnya?"
+      }
+    },
+    {
+      "id": "b74996157bfa3a0d",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.05",
+        "pesan": "Turun sih hari ini, tapi harganya masih di atas penutupan akhir April kok.",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2026-04-30",
+          "harga-2026-05-04",
+          "harga-2026-05-06",
+          "harga-2026-05-07"
+        ],
+        "kartu_penentu": [
+          "harga-2026-04-30"
+        ],
+        "pilihan": {
+          "a": "Betul, akhir April ditutup [[harga-2026-04-30|Rp900]] dan hari ini lebih tinggi.",
+          "b": "Betul, akhir April ditutup [[harga-2026-05-04|Rp920]] dan hari ini lebih tinggi.",
+          "c": "Keliru, akhir April ditutup [[harga-2026-05-07|Rp930]] dan hari ini sama.",
+          "d": "Keliru, akhir April ditutup [[harga-2026-05-06|Rp990]] dan hari ini lebih rendah."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu harga akhir April mencatat penutupan [[harga-2026-04-30|30 April 2026]] di [[harga-2026-04-30|Rp900]]. Kartu harga hari ini mencatat penutupan [[harga-2026-05-07|Rp930]], lebih tinggi. Hari ini memang turun dari [[harga-2026-05-06|Rp990]] kemarin, jadi kedua bagian pesan cocok dengan kartu. Angka [[harga-2026-05-04|Rp920]] milik [[harga-2026-05-04|4 Mei 2026]], sudah masuk bulan Mei. Salah-kaprah yang umum: memakai harga awal bulan berikutnya sebagai harga akhir bulan sebelumnya.",
+        "pengecoh": {
+          "b": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2026-05-04",
+            "umpan_balik": "Ini angka nyaris benar: [[harga-2026-05-04|Rp920]] di kartu 2 adalah penutupan [[harga-2026-05-04|4 Mei 2026]], bukan akhir April."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-05-07",
+            "umpan_balik": "Ini salah periode: [[harga-2026-05-07|Rp930]] di kartu 4 adalah penutupan hari ini, bukan akhir April."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-05-06",
+            "umpan_balik": "Ini salah periode: [[harga-2026-05-06|Rp990]] di kartu 3 adalah penutupan kemarin; akhir April jauh lebih rendah."
+          }
+        },
+        "pertanyaan_cek": "Berapa harga penutupan pada hari bursa terakhir bulan April?"
+      }
+    },
+    {
+      "id": "a060d3b966de6ce7",
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "21.30",
+        "pesan": "Kata grup sebelah, RUPS akhir April nggak mutusin apa-apa soal dividen. Jadi pembagiannya belum pasti.",
+        "angka_pesan": [],
+        "kartu": [
+          "rups-2026-04-27",
+          "div-2026-05-07",
+          "dividen-tercatat"
+        ],
+        "kartu_penentu": [
+          "rups-2026-04-27"
+        ],
+        "pilihan": {
+          "a": "Betul, rapat itu cuma mengesahkan laporan tahunan dan akuntan publik.",
+          "b": "Betul, keputusan soal dividen ditunda ke rapat berikutnya.",
+          "c": "Keliru, dividen diputuskan lewat rapat direksi, bukan RUPS.",
+          "d": "Keliru, rapat itu menyetujui pemakaian laba termasuk dividen tunai."
+        },
+        "kunci": "d",
+        "penjelasan": "Kartu RUPS mencatat keputusan rapat [[rups-2026-04-27|27 April 2026]]. Salah satu agendanya menyetujui penggunaan laba bersih, termasuk pembagian dividen tunai kepada pemegang saham. Kartu dividen terbaru menunjukkan kelanjutannya: dividen [[div-2026-05-07|Rp50]] per lembar dengan tanggal ex [[div-2026-05-07|7 Mei 2026]]. Pilihan yang menyebut laporan tahunan memang menggoda karena agenda itu ada, tetapi rapat yang sama juga memutuskan dividen. Salah-kaprah yang umum: menganggap kabar dari grup lain sudah pasti benar tanpa membuka hasil rapatnya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "rups-2026-04-27",
+            "umpan_balik": "Ini sebagian benar: laporan tahunan dan akuntan memang disetujui, tetapi kartu 1 juga mencatat persetujuan dividen tunai."
+          },
+          "b": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "rups-2026-04-27",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 tidak mencatat penundaan; dividen tunai disetujui di rapat itu."
+          },
+          "c": {
+            "jenis": "salah-entitas",
+            "rujukan": "rups-2026-04-27",
+            "umpan_balik": "Ini salah entitas: kartu 1 menunjukkan persetujuan dividen datang dari rapat pemegang saham, bukan direksi."
+          }
+        },
+        "pertanyaan_cek": "Apa yang diputuskan rapat pemegang saham itu soal laba bersih?"
+      }
+    }
+  ],
+  "teks_akhir": ""
+}

@@ -284,7 +284,7 @@ Pertanyaan cek: Berapa besaran kenaikan nominal harga antara dua tanggal itu?
 | z-ai/glm-5.3 | 110 | US$0.4027 |
 | **total** | 275 | **US$1.3304** |
 
-Bagian: D-B US$1.0050 (pagu US$2.1000); D-D penilai GLM US$0.3254 (pagu US$0.4000). Kumulatif ledger US$17.2508 (4697 entri).
+Bagian: D-B US$1.0050 (pagu US$2.1000); D-D penilai GLM US$0.3254 (pagu US$0.4000). Kumulatif ledger US$18.7040 (4824 entri).
 
 ## 7. Keterbatasan
 
