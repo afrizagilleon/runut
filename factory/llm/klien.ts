@@ -145,7 +145,9 @@ export function samarkan(teks: string, rahasia: readonly string[]): string {
   }
   return hasil
     .replace(/Bearer\s+[A-Za-z0-9._\-]+/g, 'Bearer [disamarkan]')
-    .replace(/\b(sk|rc|fl)-[A-Za-z0-9_\-]{6,}/g, '[disamarkan]');
+    .replace(/\b(sk|rc|fl)-[A-Za-z0-9_\-]{6,}/g, '[disamarkan]')
+    // Galat 402 OpenRouter memuat URL berisi pengenal kunci akun (bukan kuncinya, tetapi tidak perlu ikut repo).
+    .replace(/(\/keys\/)[A-Za-z0-9]{16,}/g, '$1[disamarkan]');
 }
 
 const bawaanTidur = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));

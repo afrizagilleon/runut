@@ -39,7 +39,7 @@ export const PENGUJI_OPUS_MENOLAK = false;
 export const CADANGAN_AJUKAN_USD = 0.12;
 
 export interface PeristiwaAlat {
-  alat: 'lihat_fakta' | 'lihat_bank' | 'periksa_kode' | 'ajukan';
+  alat: 'lihat_fakta' | 'lihat_bank' | 'periksa_kode' | 'ajukan' | 'lihat_simulasi' | 'tingkatkan' | 'usulkan_hari' | 'periksa_saham';
   ke: number;
   ringkas: string;
   hasil: unknown;
@@ -99,6 +99,24 @@ export function tingkatOmongan(n: Pick<NilaiOmonganV3, 'pasangan' | 'penebak_kua
 export function tingkatEntri(e: EntriBank): Tingkat | null {
   const j = e.jejak_gerbang as { tingkat?: Tingkat | null; pasangan?: NilaiOmonganV3['pasangan']; penebak_kuat?: NilaiOmonganV3['penebak_kuat'] };
   return j.tingkat ?? tingkatOmongan({ pasangan: j.pasangan, penebak_kuat: j.penebak_kuat ?? null });
+}
+/** Ukuran tanpa-kartu satu omongan: bagian jawaban penebak murah yang memilih kunci, dan jumlah benar penguji Opus. Murni. */
+export function ukuranTebak(n: { pasangan?: NilaiOmonganV3['pasangan'] | undefined; penebak_kuat?: NilaiOmonganV3['penebak_kuat'] | undefined }): { murah: number | null; kunci: number | null; n: number | null; opus: number | null } {
+  const p = n.pasangan?.putusan;
+  const q = n.penebak_kuat?.putusan;
+  return { murah: p === undefined || p.n === 0 ? null : p.kunci / p.n, kunci: p?.kunci ?? null, n: p?.n ?? null, opus: q === undefined || q === null ? null : q.kunci };
+}
+const ukuranEntri = (e: EntriBank): ReturnType<typeof ukuranTebak> => ukuranTebak(e.jejak_gerbang as { pasangan?: NilaiOmonganV3['pasangan']; penebak_kuat?: NilaiOmonganV3['penebak_kuat'] });
+/** Id omongan asal bila entri ini versi yang ditingkatkan (M2d-26); `null` = versi asal. */
+export const peningkatanDari = (e: EntriBank): string | null => (e.jejak_gerbang as { peningkatan_dari?: string }).peningkatan_dari ?? null;
+/**
+ * Versi baru LEBIH SULIT dari versi asal bila penebak murah lebih jarang memilih kunci (bagian, bukan hitungan —
+ * jawaban tak terbaca dibuang) DAN penguji Opus tidak lebih sering benar. Murni.
+ */
+export function lebihSulit(baru: ReturnType<typeof ukuranTebak>, asal: ReturnType<typeof ukuranTebak>): boolean {
+  if (baru.murah === null || asal.murah === null) return false;
+  if (baru.opus !== null && asal.opus !== null && baru.opus > asal.opus) return false;
+  return baru.murah < asal.murah - 1e-9;
 }
 /** Paling banyak draf per panggilan `periksa_kode` / `ajukan` (satu simulasi = tiga omongan). */
 export const MAKS_DRAF_PER_PANGGILAN = 3;
@@ -197,7 +215,9 @@ export function buatAlat(o: OpsiAlat) {
   let rusak: string | null = null;
 
   // Mode sulit: bank yang dilihat agen dan dirakit hanya omongan berlabel sulit; omongan lain di folder yang sama diabaikan.
-  const bank = (): EntriBank[] => bacaBank(o.folderBank, sha).filter((e) => o.tingkat !== 'sulit' || tingkatEntri(e) === 'sulit');
+  const semuaEntri = (): EntriBank[] => bacaBank(o.folderBank, sha);
+  // Versi yang ditingkatkan (M2d-26) tersimpan di folder yang sama, tetapi tidak ikut dirakit: simulasi dasarnya tetap versi asal.
+  const bank = (): EntriBank[] => semuaEntri().filter((e) => peningkatanDari(e) === null && (o.tingkat !== 'sulit' || tingkatEntri(e) === 'sulit'));
   const terpakai = (): number => o.biayaAgen() + biayaGerbang;
   const sisa = (): number => bulat(Math.max(0, o.paguUsd - terpakai()));
   const ringkasBank = (b: readonly EntriBank[]): HasilAjukan['bank'] => ({ kartu_penentu: sudutBank(b), jumlah_sudut: jumlahSudut(b), target });
@@ -240,7 +260,7 @@ export function buatAlat(o: OpsiAlat) {
     return lapor('periksa_kode', `lolos (draf ${id})`, { lolos: true, penolakan: [], id_draf: id });
   };
 
-  const ajukanSatu = async (x: unknown, namaPaksa?: string): Promise<HasilAjukan> => {
+  const ajukanSatu = async (x: unknown, namaPaksa?: string, asal?: EntriBank): Promise<HasilAjukan> => {
     const dasar = (berhenti: string, penolakan: string[], catatan: string[] = [], biaya = 0): HasilAjukan => ({ lolos: berhenti === 'lolos', berhenti, penolakan, catatan, biaya_pengajuan_usd: bulat(biaya), sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) });
     // `{ id_draf }` = draf yang sudah lolos periksa_kode (tanpa mengirim ulang JSON); selain itu = objek omongan utuh.
     const idDraf = typeof x === 'object' && x !== null && typeof (x as { id_draf?: unknown }).id_draf === 'string' ? (x as { id_draf: string }).id_draf : null;
@@ -254,8 +274,15 @@ export function buatAlat(o: OpsiAlat) {
     const id = idOmongan(om);
     const lama = diajukan.get(id);
     if (lama !== undefined) return lapor('ajukan', 'draf sama sudah diajukan (gratis)', dasar('sudah-diajukan', lama.penolakan, ['Draf yang persis sama sudah pernah diajukan; hasilnya tidak berubah. Ubah drafnya atau ganti sudut.']));
+    // Peningkatan (M2d-26): yang diuji tidak boleh berubah — kartu penentu dan jawabannya sama dengan versi asal. Diperiksa gratis.
+    if (asal !== undefined) {
+      const sama = [...om.kartu_penentu].sort().join('|') === [...asal.kartu_penentu].sort().join('|');
+      if (!sama) return lapor('tingkatkan', 'kartu penentu berubah (gratis)', dasar('kebutuhan', [`Kartu penentu versi baru (${om.kartu_penentu.join(', ')}) harus sama dengan versi asal (${asal.kartu_penentu.join(', ')}).`], ['Gerbang berbayar tidak dijalankan.']));
+      if (kunciBetul(om) !== kunciBetul(asal.omongan)) return lapor('tingkatkan', 'jawaban berubah (gratis)', dasar('kebutuhan', [`Jawaban versi asal "${kunciBetul(asal.omongan) ? 'Betul' : 'Keliru'}"; versi baru harus berjawaban sama.`], ['Gerbang berbayar tidak dijalankan.']));
+      if (ukuranEntri(asal).murah === null) return lapor('tingkatkan', 'versi asal tak terukur (gratis)', dasar('kebutuhan', ['Versi asal tidak punya ukuran penebak, jadi tidak ada pembanding.'], ['Gerbang berbayar tidak dijalankan.']));
+    }
     // Penjaga uang: bila simulasi hanya kurang omongan ber-kunci "Betul", draf "Keliru" tidak dibayar.
-    const butuh = kebutuhanSimulasi(bank(), o.paket, target);
+    const butuh = asal !== undefined ? { butuh_betul: false, butuh_keliru: false, kebutuhan: [] as string[] } : kebutuhanSimulasi(bank(), o.paket, target);
     if (butuh.butuh_betul && jumlahSudut(bank()) >= target && !kunciBetul(om)) return lapor('ajukan', 'bukan yang dibutuhkan simulasi (gratis)', dasar('kebutuhan', butuh.kebutuhan, ['Gerbang berbayar tidak dijalankan: bank sudah penuh dengan jawaban "Keliru". Ajukan omongan yang kuncinya "Betul, …".']));
     if (butuh.butuh_keliru && jumlahSudut(bank()) >= target && kunciBetul(om)) return lapor('ajukan', 'bukan yang dibutuhkan simulasi (gratis)', dasar('kebutuhan', butuh.kebutuhan, ['Gerbang berbayar tidak dijalankan: bank sudah penuh dengan jawaban "Betul". Ajukan omongan yang kuncinya "Keliru, …".']));
     if (sisa() < CADANGAN_AJUKAN_USD) return lapor('ajukan', 'anggaran tidak cukup (gratis)', dasar('anggaran', [], [`Sisa anggaran US$${String(sisa())} di bawah cadangan satu pengajuan (US$${String(CADANGAN_AJUKAN_USD)}). Berhenti.`]));
@@ -290,10 +317,22 @@ export function buatAlat(o: OpsiAlat) {
         n.alasan = [`mode sulit: tanpa kartu, penebak memilih kunci ${String(p?.kunci ?? '?')} dari ${String(p?.n ?? '?')}; targetnya paling banyak 3 dari 12 — bagi orang yang belum membaca kartu, kembaran harus terasa LEBIH masuk akal daripada kunci (firasat menyesatkan), bukan sekadar sama masuk akalnya`];
       }
     }
+    // Peningkatan: lolos semua gerbang belum cukup — harus terukur lebih sulit dari versi asal.
+    let banding: string[] = [];
+    if (asal !== undefined && n.berhenti === 'lolos') {
+      const ub = ukuranTebak(n);
+      const ua = ukuranEntri(asal);
+      const teks = `penebak tanpa kartu memilih kunci ${String(ub.kunci)} dari ${String(ub.n)} (versi asal ${String(ua.kunci)} dari ${String(ua.n)}); penguji Opus benar ${String(ub.opus ?? '?')} dari 4 (versi asal ${String(ua.opus ?? '?')})`;
+      if (lebihSulit(ub, ua)) banding = [`Lebih sulit dari versi asal: ${teks}. Tingkat: ${tingkatOmongan(n) ?? 'tak terukur'}.`];
+      else {
+        n.berhenti = 'tidak-naik';
+        n.alasan = [`lolos semua gerbang, tetapi tidak lebih sulit dari versi asal: ${teks}. Versi asal dipertahankan.`];
+      }
+    }
     if (n.berhenti === 'lolos') {
       simpanBank(o.folderBank, {
         id, paket_sha: sha, kartu_penentu: [...om.kartu_penentu], omongan: om,
-        jejak_gerbang: { tingkat: tingkatOmongan(n), kode: { dicatat: n.dicatat }, saringan: n.saringan, ...(n.pasangan === undefined ? {} : { pasangan: n.pasangan }), kartu: n.kartu_rotasi, penebak_kuat: n.penebak_kuat, kritikus: n.kritik },
+        jejak_gerbang: { tingkat: tingkatOmongan(n), ...(asal === undefined ? {} : { peningkatan_dari: asal.id }), kode: { dicatat: n.dicatat }, saringan: n.saringan, ...(n.pasangan === undefined ? {} : { pasangan: n.pasangan }), kartu: n.kartu_rotasi, penebak_kuat: n.penebak_kuat, kritikus: n.kritik },
         asal: { jalan: o.idJalan, putaran: putaranIni, urut: 1, penulis: o.labelPenulis, sha256_prompt: '' },
         waktu: jam().toISOString(),
       });
@@ -308,13 +347,49 @@ export function buatAlat(o: OpsiAlat) {
     const peringatan = q !== null && q !== undefined && q.putusan.putusan === 'tolak' && n.berhenti !== 'penebak-kuat'
       ? [`Peringatan penguji Opus (tidak menolak): ${q.putusan.alasan}`, ...[...new Set(q.jawaban.filter((j) => j.isi === j.isi_kunci && j.alasan.trim() !== '').map((j) => `alasan penguji Opus: "${j.alasan.trim()}"`))].slice(0, 2)]
       : [];
-    const h = dasar(n.berhenti, n.berhenti === 'lolos' ? [] : [...n.alasan, ...kataPenebak], n.berhenti === 'tak-terukur' ? ['Gerbang tidak bisa mengukur draf ini (bukan penolakan). Boleh diajukan lagi sesudah diubah sedikit.'] : peringatan, n.biaya_gerbang_usd);
+    const h = dasar(n.berhenti, n.berhenti === 'lolos' ? [] : [...n.alasan, ...kataPenebak], n.berhenti === 'tak-terukur' ? ['Gerbang tidak bisa mengukur draf ini (bukan penolakan). Boleh diajukan lagi sesudah diubah sedikit.'] : [...banding, ...peringatan], n.biaya_gerbang_usd);
     if (n.berhenti !== 'tak-terukur') diajukan.set(id, h);
     if (n.berhenti !== 'lolos' && n.berhenti !== 'tak-terukur') {
       ditolak.push({ kartu_penentu: [...om.kartu_penentu], pesan: om.pesan, berhenti: n.berhenti, alasan: h.penolakan.slice(0, 4) });
       ditolakDiSini += 1;
     }
+    if (asal !== undefined) return lapor('tingkatkan', n.berhenti === 'lolos' ? `NAIK: ${banding[0] ?? ''}` : `berhenti di ${n.berhenti}`, h);
     return lapor('ajukan', n.berhenti === 'lolos' ? `lolos → bank (${String(h.bank.jumlah_sudut)}/${String(target)})` : `berhenti di ${n.berhenti}`, h);
+  };
+
+  /** Simulasi yang sudah terakit + ukuran tiap omongannya + versi yang sudah ditingkatkan (M2d-26). */
+  const simulasiDasar = (): EntriBank[] => {
+    const b = bank();
+    const r = rakitSimulasi(b, o.paket);
+    return r.dipilih.flatMap((id) => b.filter((e) => e.id === id));
+  };
+  const versiNaik = (idAsal: string): EntriBank[] => semuaEntri().filter((e) => peningkatanDari(e) === idAsal);
+  const alasanMemilihKunci = (e: EntriBank): string[] => {
+    const j = e.jejak_gerbang as { pasangan?: NilaiOmonganV3['pasangan'] };
+    return [...new Set((j.pasangan?.jawaban ?? []).filter((x) => x.isi !== null && x.isi === x.isi_kunci && typeof x.alasan === 'string' && x.alasan.trim() !== '').map((x) => x.alasan.trim()))].slice(0, 5);
+  };
+  const lihatSimulasi = () => {
+    const s = simulasiDasar();
+    return lapor('lihat_simulasi', s.length === 0 ? 'belum ada simulasi terakit' : `${String(s.length)} omongan; ${String(s.filter((e) => versiNaik(e.id).length > 0).length)} sudah punya versi lebih sulit`, {
+      omongan: s.map((e) => {
+        const u = ukuranEntri(e);
+        return {
+          id_asal: e.id, nama: e.omongan.nama, kartu_penentu: [...e.kartu_penentu], jawaban: kunciBetul(e.omongan) ? 'Betul' : 'Keliru', tingkat: tingkatEntri(e),
+          penebak_tanpa_kartu: u.n === null ? 'tak terukur' : `memilih kunci ${String(u.kunci)} dari ${String(u.n)}`, penguji_opus: u.opus === null ? 'tak terukur' : `benar ${String(u.opus)} dari 4`,
+          alasan_penebak_memilih_kunci: alasanMemilihKunci(e), omongan: e.omongan,
+          versi_lebih_sulit: versiNaik(e.id).map((v) => ({ id: v.id, tingkat: tingkatEntri(v), penebak_tanpa_kartu: `memilih kunci ${String(ukuranEntri(v).kunci)} dari ${String(ukuranEntri(v).n)}`, pesan: v.omongan.pesan })),
+        };
+      }),
+      sisa_anggaran_usd: sisa(),
+    });
+  };
+  /** Ajukan versi lebih sulit dari satu omongan simulasi. Nama teman tetap; kartu penentu dan jawaban tidak boleh berubah. */
+  const tingkatkan = (idAsal: string, idDraf: string): Promise<HasilAjukan> => {
+    const asal = simulasiDasar().find((e) => e.id === idAsal);
+    if (asal === undefined) return Promise.resolve(lapor('tingkatkan', 'id_asal tak dikenal (gratis)', { lolos: false, berhenti: 'bentuk', penolakan: [`id_asal "${idAsal}" bukan omongan simulasi ini. Pakai id_asal dari lihat_simulasi.`], catatan: [], biaya_pengajuan_usd: 0, sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) }));
+    const p = antre.then(() => ajukanSatu({ id_draf: idDraf }, asal.omongan.nama, asal));
+    antre = p.catch(() => undefined);
+    return p;
   };
 
   /** Periksa 1–3 draf sekaligus (gratis). */
@@ -353,7 +428,10 @@ export function buatAlat(o: OpsiAlat) {
   };
 
   return {
-    lihatFakta, lihatBank, periksaKode, periksaKodeBanyak, ajukan, ajukanBanyak,
+    lihatFakta, lihatBank, periksaKode, periksaKodeBanyak, ajukan, ajukanBanyak, lihatSimulasi, tingkatkan,
+    /** Mode tingkatkan selesai: tiap omongan simulasi sudah punya versi yang terukur lebih sulit. */
+    semuaNaik: () => simulasiDasar().length > 0 && simulasiDasar().every((e) => versiNaik(e.id).length > 0),
+    jumlahNaik: () => simulasiDasar().filter((e) => versiNaik(e.id).length > 0).length,
     /** Keadaan untuk penghenti dan ringkasan. */
     keadaan: () => ({ ditolak: ditolakDiSini, jumlah_omongan: bank().length, jumlah_sudut: jumlahSudut(bank()), target, biaya_gerbang_usd: bulat(biayaGerbang), biaya_total_usd: bulat(terpakai()), sisa_anggaran_usd: sisa(), pengajuan: ajukanKe, nilai: semuaNilai }),
     /** Selesai = bank BISA DIRAKIT menjadi simulasi (bukan sekadar jumlah sudut). */

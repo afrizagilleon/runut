@@ -48,7 +48,8 @@ export const MAKS_PUTARAN_V3 = 3;
 /** Urutan gerbang baru (kontrak M2d-16 D-3). */
 export const URUTAN_GERBANG_V3 = ['kode', 'saringan', 'kartu', 'penebak-kuat', 'kritikus'] as const;
 export type GerbangV3 = (typeof URUTAN_GERBANG_V3)[number];
-export type BerhentiV3 = GerbangV3 | 'lolos' | 'tak-terukur';
+/** 'tidak-naik' (M2d-26): versi peningkatan lolos semua gerbang tetapi tidak terukur lebih sulit dari versi asal. */
+export type BerhentiV3 = GerbangV3 | 'lolos' | 'tak-terukur' | 'tidak-naik';
 
 export interface PanggilanPenulisV3 {
   putaran: number;

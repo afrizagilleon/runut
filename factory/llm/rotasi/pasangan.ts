@@ -15,6 +15,11 @@
  * 3 model × 2 urutan × 2 rumusan = 12 jawaban. Peluang acak 0,5. Tak terbaca
  * dibuang; lebih dari sepertiga tak terbaca → "tak-terukur". Tolak bila
  * P(X ≥ kunci | n; 0,5) < `AMBANG_P_PASANGAN`.
+ *
+ * CATATAN (audit 4 Okt): angka P itu NILAI UJI, bukan peluang sebenarnya — 12
+ * jawaban datang dari 3 model yang menjawab soal yang sama, jadi saling terkait.
+ * Dasar sah ambangnya adalah kalibrasi (0 dari 6 soal tayang ditolak; plasebo
+ * 5 dari 48), bukan hitungan binomialnya.
  */
 import { teksPolos } from '../../skema/rujukan.ts';
 import type { KunciOpsi, OmonganDraf } from '../draf.ts';
@@ -104,7 +109,7 @@ export function agregasiPasangan(jawaban: readonly JawabanRotasi[]): PutusanPasa
   return {
     ...dasar,
     putusan: tolak ? 'tolak' : 'lulus',
-    alasan: [`tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci ${String(kunci)} dari ${String(terbaca.length)} (peluang kebetulan ${koma(p, 4)}; batas ${koma(AMBANG_P_PASANGAN, 2)})${tolak ? ' — kunci bisa dibedakan dari kembarannya tanpa membaca kartu' : ''}${takTerbaca > 0 ? `; ${String(takTerbaca)} tak terbaca dibuang` : ''}`],
+    alasan: [`tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci ${String(kunci)} dari ${String(terbaca.length)} (nilai uji ${koma(p, 4)}; batas ${koma(AMBANG_P_PASANGAN, 2)})${tolak ? ' — kunci bisa dibedakan dari kembarannya tanpa membaca kartu' : ''}${takTerbaca > 0 ? `; ${String(takTerbaca)} tak terbaca dibuang` : ''}`],
   };
 }
 

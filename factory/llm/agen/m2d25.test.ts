@@ -3,13 +3,13 @@ import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { bacaBank, pilihSimulasi, shaPaketBank } from '../bebas/bank.ts';
+import { bacaBank, shaPaketBank } from '../bebas/bank.ts';
 import type { NilaiOmonganV3 } from '../bebas/mesin-v3.ts';
 import type { OmonganBebas } from '../bebas/skema.ts';
 import { AKAR } from '../env.ts';
 import type { PaketFakta } from '../paket.ts';
 import { SETELAN_PENEBAK_KUAT } from '../rotasi/penebak-kuat.ts';
-import { buatAlat, CADANGAN_AJUKAN_USD, kebutuhanSimulasi, kunciBetul, rakitSimulasi, SEMUA_BETUL, tingkatEntri, tingkatOmongan } from './alat.ts';
+import { buatAlat, CADANGAN_AJUKAN_USD, kebutuhanSimulasi, kunciBetul, rakitSimulasi, tingkatEntri, tingkatOmongan } from './alat.ts';
 import { instruksiAgen } from './prompt.ts';
 
 const paket = JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d17-uji-2/paket.json`, 'utf8')) as PaketFakta;
@@ -110,15 +110,14 @@ describe('petunjuk dan batas token', () => {
 
 describe('perakit jalur agen: minimal satu Keliru', () => {
   const muat = (f: string): PaketFakta => JSON.parse(readFileSync(`${AKAR}${f}`, 'utf8')) as PaketFakta;
-  it('bank BOLT nyata (tiga "Betul"): validator lama merakit, perakit agen menolak dan menyebut kebutuhannya', () => {
+  it('bank BOLT nyata (tiga "Betul"): perakit agen menolak dan menyebut kebutuhannya', () => {
     const bolt = muat('eval/penyusun/paket-bolt-2026-05-07/paket.json');
     // Hanya omongan "Betul" (keadaan bank sesudah m2d25-bolt-2); omongan "Keliru" yang masuk belakangan tidak ikut.
     const bank = bacaBank(`${AKAR}eval/bank-omongan`, shaPaketBank(bolt)).filter((e) => kunciBetul(e.omongan));
     expect(bank.length).toBeGreaterThanOrEqual(3);
-    expect(pilihSimulasi(bank, bolt).draf).not.toBeNull();
     const r = rakitSimulasi(bank, bolt);
     expect(r.draf).toBeNull();
-    expect(r.alasan.join(' ')).toContain(SEMUA_BETUL);
+    expect(r.alasan.join(' ')).toMatch(/TIDAK_ADA_KELIRU/); // sejak M2d-26 validator produk sendiri yang menolaknya
     const k = kebutuhanSimulasi(bank, bolt, 3);
     expect(k).toMatchObject({ terakit: false, butuh_keliru: true, butuh_betul: false });
     expect(k.kebutuhan.join(' ')).toMatch(/minimal satu omongan yang ternyata KELIRU/);

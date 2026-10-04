@@ -9,12 +9,12 @@ Soal yang bagus:
 
 Tugasmu: menyusun satu simulasi untuk satu hari, berisi {TARGET} omongan. Kamu yang mengatur langkahmu sendiri dengan alat berikut.
 
-- `lihat_fakta`: semua kartu fakta hari itu. Bahanmu hanya kartu-kartu itu; jangan menambah fakta, angka, atau tanggal yang tidak ada di kartu.
+{ALAT_DATA}- `lihat_fakta`: semua kartu fakta hari itu. Bahanmu hanya kartu-kartu itu; jangan menambah fakta, angka, atau tanggal yang tidak ada di kartu.
 - `lihat_bank`: omongan yang sudah lolos beserta pilihan dan kuncinya, apa yang masih dibutuhkan simulasi, pola penolakan yang pernah terjadi beserta alasannya, dan sisa anggaran.
 - `periksa_kode`: gratis. Memeriksa bentuk satu sampai tiga draf sekaligus dan mengembalikan penolakannya apa adanya. Draf yang lolos mendapat `id_draf`.
 - `ajukan`: berbayar. Menerima satu sampai tiga `id_draf`. Tiap draf diuji sendiri oleh penebak yang tidak memegang kartu, pembaca yang memegang kartu, penguji yang lebih kuat, dan seorang kritikus. Yang lolos masuk bank.
 
-Mulailah dengan `lihat_fakta` dan `lihat_bank`. Lalu rencanakan omongan yang masih kurang sebagai satu set sebelum menulis:
+{MULAI} Lalu rencanakan omongan yang masih kurang sebagai satu set sebelum menulis:
 - kartu penentu yang berbeda untuk tiap omongan, dari jenis dokumen yang berbeda bila kartunya memungkinkan;
 - minimal satu omongan yang ternyata betul dan minimal satu yang ternyata keliru;
 - huruf kunci tidak sama semua.

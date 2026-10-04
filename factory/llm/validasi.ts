@@ -17,7 +17,7 @@
  *   wajib dicatat di `angka_pesan` — ke fakta, atau sebagai andaian.
  * - **tanggal sesudah T**: "24 Oktober 2025" di bagian yang dilihat pemain,
  *   termasuk di kalimat fakta yang dijadikan kartu.
- * - bentuk soal K-05: 2×2 Betul/Keliru, minimal satu Betul, kunci tidak
+ * - bentuk soal K-05: 2×2 Betul/Keliru, minimal satu Betul DAN minimal satu Keliru (pemilik 4 Okt), kunci tidak
  *   seragam, 2–4 kartu, tanpa ajakan transaksi dan kata penilaian, emiten
  *   tersamar.
  */
@@ -479,6 +479,9 @@ export function validasiDraf(draf: unknown, paket: PaketFakta): MasalahDraf[] {
     const label = omongan.map((o) => (KUNCI.includes(o.kunci) ? labelOpsi(o.pilihan[o.kunci]) : null));
     if (!label.includes('Betul')) {
       tambah(k, 'TIDAK_ADA_BETUL', null, 'Minimal satu dari tiga omongan harus ternyata BETUL (kuncinya pilihan "Betul,").');
+    }
+    if (!label.includes('Keliru')) {
+      tambah(k, 'TIDAK_ADA_KELIRU', null, 'Minimal satu dari tiga omongan harus ternyata KELIRU (kuncinya pilihan "Keliru,").');
     }
     if (new Set(omongan.map((o) => o.kunci)).size === 1) {
       tambah(k, 'KUNCI_SERAGAM', null, `Huruf kunci ketiga omongan sama semua ("${omongan[0]?.kunci ?? ''}").`);
