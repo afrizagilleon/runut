@@ -70,7 +70,7 @@ describe('alat agen', () => {
   });
   it('periksa_kode: draf lolos walau namanya di luar daftar; draf rusak ditolak apa adanya', () => {
     const { alat } = siapkan();
-    expect(alat.periksaKode(mentah)).toEqual({ lolos: true, penolakan: [] });
+    expect(alat.periksaKode(mentah)).toMatchObject({ lolos: true, penolakan: [] });
     expect(alat.periksaKode({ ...mentah, pilihan: { a: 'x' } }).lolos).toBe(false);
   });
   it('ajukan: belum lolos kode → gerbang berbayar TIDAK dijalankan', async () => {
@@ -140,6 +140,7 @@ describe('prompt agen', () => {
     expect(p).not.toMatch(/\{[A-Z_]+\}/);
     for (const a of ['lihat_fakta', 'lihat_bank', 'periksa_kode', 'ajukan']) expect(p).toContain(`\`${a}\``);
     expect(p).not.toContain('susp-2025-12-10');
-    expect(p.length).toBeLessThan(7000);
+    // M2d-20: kontrak bentuk masuk prompt (±2.500 karakter); tetap jauh di bawah prompt 23 aturan lama (17.621).
+    expect(p.length).toBeLessThan(9000);
   });
 });

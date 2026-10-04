@@ -76,6 +76,7 @@ export interface Keberatan {
 
 const JALUR_PROMPT = fileURLToPath(new URL('./prompt-kritikus.md', import.meta.url));
 const JALUR_PROMPT_MAKNA = fileURLToPath(new URL('./prompt-kritikus-makna.md', import.meta.url));
+const JALUR_PROMPT_V3 = fileURLToPath(new URL('./prompt-kritikus-v3.md', import.meta.url));
 
 export function promptKritikus(): string {
   return readFileSync(JALUR_PROMPT, 'utf8').replace(/\r\n/g, '\n').trim();
@@ -86,6 +87,15 @@ export function promptKritikusMakna(): string {
   return readFileSync(JALUR_PROMPT_MAKNA, 'utf8').replace(/\r\n/g, '\n').trim();
 }
 
+/**
+ * Prompt kritikus urutan v3 (M2d-20): penebak SUDAH dijalankan sebelum kritikus;
+ * ucapan orang lain yang dikutip/dibantah teman bukan klaim teman. Prompt
+ * makna (M2d-4) tidak berubah.
+ */
+export function promptKritikusV3(): string {
+  return readFileSync(JALUR_PROMPT_V3, 'utf8').replace(/\r\n/g, '\n').trim();
+}
+
 /** Hasil peran lain yang boleh (dan perlu) dilihat kritikus. */
 export interface KonteksKritik {
   no: number;
@@ -93,13 +103,17 @@ export interface KonteksKritik {
   tebakan: Array<{ pilihan: string; yakin: number }>;
   /** M2d-4: penebak dijalankan SESUDAH kritikus (hasilnya belum ada). */
   penebakSesudah?: boolean;
+  /** M2d-20: urutan v3 — penebak sudah dijalankan dan tidak menolak; omongan dinilai sendiri (tanpa "N dari 3"). */
+  urutanV3?: boolean;
 }
 
 /** Pesan pengguna untuk kritikus: seluruh soal, kunci, kartu penentu, penjelasan, hasil peran lain. */
 export function tulisSoalKritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik): string {
   const kartu = kartuOmongan(o, paket);
   const baris = [
-    `SOAL YANG DIPERIKSA: omongan ${String(k.no)} dari 3, simulasi "${paket.nama_samaran}" pada ${tanggalId(paket.tanggal_t)}.`,
+    k.urutanV3 === true
+      ? `SOAL YANG DIPERIKSA: satu omongan untuk simulasi "${paket.nama_samaran}" pada ${tanggalId(paket.tanggal_t)}.`
+      : `SOAL YANG DIPERIKSA: omongan ${String(k.no)} dari 3, simulasi "${paket.nama_samaran}" pada ${tanggalId(paket.tanggal_t)}.`,
     `Peristiwa hari itu: ${paket.peristiwa}`,
     '',
     `Pesan dari ${o.nama} (${o.jam}): "${teksPolos(o.pesan)}"`,
@@ -125,7 +139,9 @@ export function tulisSoalKritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKri
       : `- pembaca yang memegang kartu (tanpa tahu kunci) memilih "${String(k.kartu.pilihan)}"` +
         `${k.kartu.kartu_ditunjuk_no.length > 0 ? `, menunjuk kartu ${k.kartu.kartu_ditunjuk_no.join(' dan ')}` : ''}; ` +
         `alasannya: "${k.kartu.alasan}"`,
-    k.penebakSesudah === true
+    k.urutanV3 === true
+      ? '- penebak tanpa kartu: SUDAH dijalankan sebelum kritikus dan tidak menolak soal ini.'
+      : k.penebakSesudah === true
       ? '- tiga penebak tanpa kartu: dijalankan SESUDAH kritikus (hasilnya belum ada).'
       : k.tebakan.length === 0
       ? '- tiga penebak tanpa kartu: belum dijalankan.'
@@ -136,7 +152,7 @@ export function tulisSoalKritik(o: OmonganDraf, paket: PaketFakta, k: KonteksKri
 
 export function pesanKritikus(o: OmonganDraf, paket: PaketFakta, k: KonteksKritik, cekMakna = false): PesanChat[] {
   return [
-    { role: 'system', content: cekMakna ? promptKritikusMakna() : promptKritikus() },
+    { role: 'system', content: k.urutanV3 === true ? promptKritikusV3() : cekMakna ? promptKritikusMakna() : promptKritikus() },
     { role: 'user', content: tulisSoalKritik(o, paket, k) },
   ];
 }

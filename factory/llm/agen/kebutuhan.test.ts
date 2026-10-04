@@ -8,7 +8,7 @@ import type { NilaiOmonganV3 } from '../bebas/mesin-v3.ts';
 import { uraiOmonganBebas, type OmonganBebas } from '../bebas/skema.ts';
 import { AKAR } from '../env.ts';
 import type { PaketFakta } from '../paket.ts';
-import { buatAlat, kebutuhanSimulasi, keluargaSudut, kunciBetul } from './alat.ts';
+import { buatAlat, kebutuhanSimulasi, kunciBetul } from './alat.ts';
 
 const paket = JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d17-uji-2/paket.json`, 'utf8')) as PaketFakta;
 const sha = shaPaketBank(paket);
@@ -34,21 +34,19 @@ function nilaiLolos() {
 }
 
 describe('kebutuhan simulasi', () => {
-  it('kunciBetul dan keluargaSudut', () => {
+  it('kunciBetul', () => {
     const o = uraiOmonganBebas(structuredClone(mentah)).omongan as OmonganBebas;
     expect(kunciBetul(o)).toBe(false);
     expect(kunciBetul({ ...o, kunci: 'a' })).toBe(true);
-    expect(keluargaSudut(['volume-2025-12-09'])).toBe('volume');
-    expect(keluargaSudut([])).toBe('');
   });
-  it('bank sungguhan 4 Okt (tiga "Keliru", dua sudut volume): tidak terakit, butuh "Betul", sudut volume disebut', () => {
+  it('bank sungguhan 4 Okt (tiga "Keliru"): tidak terakit, butuh "Betul"; TIDAK ada larangan sudut/keluarga (M2d-20)', () => {
     const b = bacaBank(bankTigaKeliru(), sha);
     expect(b).toHaveLength(3);
     const k = kebutuhanSimulasi(b, paket, 3);
     expect(k.terakit).toBe(false);
     expect(k.butuh_betul).toBe(true);
     expect(k.kebutuhan.join(' ')).toMatch(/BETUL/);
-    expect(k.kebutuhan.join(' ')).toMatch(/Sudut "volume" sudah dipakai 2 omongan/);
+    expect(k.kebutuhan.join(' ')).not.toMatch(/keluarga|Sudut/);
   });
   it('bank kosong: yang dibutuhkan hanya jumlah sudut', () => {
     const k = kebutuhanSimulasi([], paket, 3);

@@ -89,7 +89,7 @@ describe('utamaV3 --palsu', () => {
     expect(log.join('\n')).toMatch(/teks berpikir: ADA/);
   });
 
-  it('jalan penuh --palsu: hasil.json terbit, mentah 1 + 3 × 31 baris, bank PALSU di folder jalan (bukan eval/bank-omongan)', async () => {
+  it('jalan penuh --palsu: hasil.json terbit, mentah 1 + 3 × 27 baris, bank PALSU di folder jalan (bukan eval/bank-omongan)', async () => {
     const f = sementara();
     // Bank sungguhan boleh berisi (sejak M2d-18); yang dijaga: jalan palsu tidak menambah apa pun ke sana.
     const bankSebelum = readdirSync(`${AKAR}eval/bank-omongan`, { recursive: true }).map(String).sort();
@@ -97,7 +97,7 @@ describe('utamaV3 --palsu', () => {
     expect(kode).toBe(0);
     const h = JSON.parse(readFileSync(`${f}/uji-b/hasil.json`, 'utf8')) as HasilV3 & { palsu: boolean };
     expect(h).toMatchObject({ palsu: true, terbit: true, id_jalan: 'uji-b' });
-    expect(baris(`${f}/uji-b/mentah-panggilan.jsonl`)).toHaveLength(1 + 3 * 31);
+    expect(baris(`${f}/uji-b/mentah-panggilan.jsonl`)).toHaveLength(1 + 3 * 27);
     const folderPalsu = `${f}/uji-b/bank-palsu/${shaPaketBank(tirt)}`;
     expect(readdirSync(folderPalsu)).toHaveLength(3);
     for (const b of readdirSync(folderPalsu)) expect((JSON.parse(readFileSync(`${folderPalsu}/${b}`, 'utf8')) as { asal: { penulis: string } }).asal.penulis).toBe('PALSU (tanpa model)');

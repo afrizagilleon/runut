@@ -174,7 +174,7 @@ export async function pembacaKartu(o: OmonganDraf, paket: PaketFakta, panggil: P
 }
 
 /** Kritikus dengan konteks jawaban pembaca kartu (bentuk sama dengan M2d-8: penebak "sesudah", tanpa tebakan). */
-export async function kritikusMakna(o: OmonganDraf, paket: PaketFakta, kartu: PutusanKartu | null, panggil: PanggilTemplat, putaran: number, no: number): Promise<PutusanKritik> {
+export async function kritikusMakna(o: OmonganDraf, paket: PaketFakta, kartu: PutusanKartu | null, panggil: PanggilTemplat, putaran: number, no: number, urutanV3 = false): Promise<PutusanKritik> {
   return kritik(
     o,
     paket,
@@ -183,6 +183,7 @@ export async function kritikusMakna(o: OmonganDraf, paket: PaketFakta, kartu: Pu
       kartu: kartu === null ? null : { pilihan: kartu.pilihan, kartu_ditunjuk_no: kartu.kartu_ditunjuk.map((id) => o.kartu.indexOf(id) + 1).filter((x) => x > 0), alasan: kartu.alasan_penjawab },
       tebakan: [],
       penebakSesudah: true,
+      ...(urutanV3 ? { urutanV3: true } : {}),
     },
     { panggil: lewatTemplat(panggil), putaran, omongan: no, cekMakna: true, ...SETELAN_KRITIKUS },
   );

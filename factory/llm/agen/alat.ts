@@ -69,8 +69,6 @@ export const MAKS_RIWAYAT_DITOLAK = 8;
 
 /** Kunci omongan ini pilihan "Betul, …"? */
 export const kunciBetul = (o: OmonganBebas): boolean => /^\s*betul\b/i.test(o.pilihan[o.kunci]);
-/** Keluarga sudut = awalan id kartu penentu ("volume-2025-12-09" → "volume"). */
-export const keluargaSudut = (kartuPenentu: readonly string[]): string => (kartuPenentu[0] ?? '').split('-')[0] ?? '';
 
 /**
  * Apa yang masih dibutuhkan supaya bank bisa dirakit menjadi simulasi — aturan
@@ -85,9 +83,7 @@ export function kebutuhanSimulasi(bank: readonly EntriBank[], paket: PaketFakta,
   if (sudut < target) kebutuhan.push(`Bank baru memuat ${String(sudut)} dari ${String(target)} kartu penentu berbeda.`);
   const butuhBetul = bank.length > 0 && !bank.some((e) => kunciBetul(e.omongan));
   if (butuhBetul) kebutuhan.push('Semua omongan di bank berjawaban "Keliru". Simulasi butuh minimal satu omongan yang ternyata BETUL (kuncinya pilihan "Betul, …").');
-  const hitung = new Map<string, number>();
-  for (const e of bank) hitung.set(keluargaSudut(e.kartu_penentu), (hitung.get(keluargaSudut(e.kartu_penentu)) ?? 0) + 1);
-  for (const [k, n] of hitung) if (k !== '' && n >= 2) kebutuhan.push(`Sudut "${k}" sudah dipakai ${String(n)} omongan; pilih kartu penentu dari keluarga lain.`);
+  // M2d-20: larangan "pilih keluarga lain" dihapus — perakit tidak menuntutnya, dan penolakan penebak adalah sifat kalimat, bukan sifat kartu.
   if (kebutuhan.length === 0) kebutuhan.push(...pilihSimulasi(bank, paket).alasan.slice(0, 2));
   return { terakit, butuh_betul: butuhBetul, kebutuhan };
 }
@@ -95,6 +91,8 @@ export function kebutuhanSimulasi(bank: readonly EntriBank[], paket: PaketFakta,
 export interface HasilPeriksa {
   lolos: boolean;
   penolakan: string[];
+  /** Nomor draf bila lolos: pakai di `ajukan` supaya draf tidak perlu dikirim ulang. */
+  id_draf?: string;
 }
 
 export interface HasilAjukan {
@@ -117,6 +115,8 @@ export function buatAlat(o: OpsiAlat) {
   const sha = shaPaketBank(o.paket);
   const semuaNilai: NilaiOmonganV3[] = [];
   const diajukan = new Map<string, HasilAjukan>();
+  /** Draf yang sudah lolos `periksa_kode`, menurut nomor drafnya. */
+  const drafLolos = new Map<string, OmonganBebas>();
   const ditolak: SudutDitolak[] = [...(o.riwayatDitolak ?? [])];
   let ditolakDiSini = 0;
   let biayaGerbang = 0;
@@ -160,12 +160,18 @@ export function buatAlat(o: OpsiAlat) {
     if (u.omongan === null) return lapor('periksa_kode', 'bentuk tak terurai', { lolos: false, penolakan: [u.alasan] });
     const k = periksaKodeAgen(u.omongan, o.paket);
     const penolakan = k.menolak.map((m) => `${m.sumber}: ${m.alasan}`);
-    return lapor('periksa_kode', penolakan.length === 0 ? 'lolos' : `${String(penolakan.length)} penolakan`, { lolos: penolakan.length === 0, penolakan });
+    if (penolakan.length > 0) return lapor('periksa_kode', `${String(penolakan.length)} penolakan`, { lolos: false, penolakan });
+    const id = idOmongan(u.omongan);
+    drafLolos.set(id, u.omongan);
+    return lapor('periksa_kode', `lolos (draf ${id})`, { lolos: true, penolakan: [], id_draf: id });
   };
 
   const ajukanSatu = async (x: unknown): Promise<HasilAjukan> => {
     const dasar = (berhenti: string, penolakan: string[], catatan: string[] = [], biaya = 0): HasilAjukan => ({ lolos: berhenti === 'lolos', berhenti, penolakan, catatan, biaya_pengajuan_usd: bulat(biaya), sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) });
-    const u = urai(x);
+    // `{ id_draf }` = draf yang sudah lolos periksa_kode (tanpa mengirim ulang JSON); selain itu = objek omongan utuh.
+    const idDraf = typeof x === 'object' && x !== null && typeof (x as { id_draf?: unknown }).id_draf === 'string' ? (x as { id_draf: string }).id_draf : null;
+    if (idDraf !== null && !drafLolos.has(idDraf)) return lapor('ajukan', 'nomor draf tak dikenal (gratis)', dasar('bentuk', [`Nomor draf "${idDraf}" tidak dikenal. Pakai id_draf dari periksa_kode yang lolos.`]));
+    const u = idDraf !== null ? { omongan: drafLolos.get(idDraf) as OmonganBebas, alasan: '' } : urai(x);
     if (u.omongan === null) return lapor('ajukan', 'bentuk tak terurai (gratis)', dasar('bentuk', [u.alasan]));
     const om = u.omongan;
     const k = periksaKodeAgen(om, o.paket);

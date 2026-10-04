@@ -182,10 +182,10 @@ export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil
   // 5. kritikus GLM (tidak menjawab → sekali lagi)
   n.berhenti = 'kritikus';
   const kartu0 = k.per_rotasi[0]?.putusan ?? null;
-  let kr = await kritikusMakna(d, paket, kartu0, panggil, putaran, urut);
+  let kr = await kritikusMakna(d, paket, kartu0, panggil, putaran, urut, true);
   if (!kr.menjawab) {
     n.dicatat.push(`kritikus tidak menjawab (${kr.keberatan[0]?.alasan ?? '-'}); diperiksa sekali lagi`);
-    const ulang = await kritikusMakna(d, paket, kartu0, panggil, putaran, urut);
+    const ulang = await kritikusMakna(d, paket, kartu0, panggil, putaran, urut, true);
     kr = { ...ulang, panggilan: [...kr.panggilan, ...ulang.panggilan] };
   }
   n.biaya_gerbang_usd += jumlah(kr.panggilan, (x) => x.biaya_usd);

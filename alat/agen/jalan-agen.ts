@@ -47,8 +47,8 @@ const LANGKAH_BAWAAN = 14;
 const MAKS_DITOLAK_PER_PERCAKAPAN = 2;
 /** Percakapan paling banyak per percobaan. */
 const MAKS_PERCAKAPAN = 6;
-/** Simpanan prompt: 1 jam, supaya satu `ajukan` yang lama tidak membuatnya kedaluwarsa. */
-const SIMPAN_PROMPT = { type: 'ephemeral', ttl: '1h' } as const;
+/** Simpanan prompt 5 menit (bawaan): jeda antar panggilan terukur < 200 detik; TTL 1 jam bertarif tulis 2× dan memboroskan ±US$0,16 di M2d-19. */
+const SIMPAN_PROMPT = { type: 'ephemeral' } as const;
 /** Cadangan pagu kumulatif sebelum tiap panggilan model agen (USD). */
 const CADANGAN_PANGGILAN_USD = 0.3;
 
@@ -184,7 +184,7 @@ const agen = new ToolLoopAgent({
     lihat_fakta: tool({ description: 'Semua kartu fakta hari simulasi. Gratis.', inputSchema: z.object({}), execute: () => alat.lihatFakta() }),
     lihat_bank: tool({ description: 'Omongan yang sudah lolos, kartu penentu yang sudah terpakai, dan sisa anggaran. Gratis.', inputSchema: z.object({}), execute: () => alat.lihatBank() }),
     periksa_kode: tool({ description: 'Periksa bentuk SATU draf omongan. Gratis. Mengembalikan penolakan apa adanya; kosong berarti lolos.', inputSchema: skemaOmongan, execute: ({ omongan }) => alat.periksaKode(omongan) }),
-    ajukan: tool({ description: `Ajukan SATU draf ke gerbang berbayar (pembaca kartu, penebak tanpa kartu, kritikus). Yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)}.`, inputSchema: skemaOmongan, execute: ({ omongan }) => alat.ajukan(omongan) }),
+    ajukan: tool({ description: `Ajukan SATU draf ke gerbang berbayar (pembaca kartu, penebak tanpa kartu, kritikus). Yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)}.`, inputSchema: z.object({ id_draf: z.string().describe('id_draf dari periksa_kode yang lolos.') }), execute: ({ id_draf }) => alat.ajukan({ id_draf }) }),
   },
   stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.keadaan().jumlah_omongan > sudutAwal || alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
   maxOutputTokens: 128_000,

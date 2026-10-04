@@ -46,10 +46,10 @@ describe('mesin v3: jalan mulus', () => {
     expect(h.nilai.map((n) => n.berhenti)).toEqual(['lolos', 'lolos', 'lolos']);
     expect(h.panggilan_penulis).toHaveLength(1);
     expect(h.panggilan_penulis[0]).toMatchObject({ putaran: 1, jenis: 'tulis', diminta: 3, terbaca: 3, model: MODEL_OR_OPUS, ada_teks_berpikir: true });
-    // per omongan: 24 tebak rotasi → 2 pembaca kartu → 4 penebak kuat → 1 kritikus, dalam urutan itu
+    // per omongan: 20 tebak rotasi (3 model × 4 rotasi dengan pesan + 2 model × 4 tanpa pesan; M2d-20: Haiku tidak ikut kondisi tanpa pesan) → 2 pembaca kartu → 4 penebak kuat → 1 kritikus
     const o1Log = p.log.filter((i) => i.omongan === 1);
-    expect(jenis(o1Log)).toEqual([...Array<string>(24).fill('gerbang-tebak'), 'gerbang-kartu', 'gerbang-kartu', ...Array<string>(4).fill('gerbang-tebak-kuat'), 'kritikus']);
-    expect(p.log).toHaveLength(1 + 3 * 31);
+    expect(jenis(o1Log)).toEqual([...Array<string>(20).fill('gerbang-tebak'), 'gerbang-kartu', 'gerbang-kartu', ...Array<string>(4).fill('gerbang-tebak-kuat'), 'kritikus']);
+    expect(p.log).toHaveLength(1 + 3 * 27);
     // bank: satu berkas per omongan, jejak gerbang + asal jalan
     const b = bacaBank(f, SHA);
     expect(b.map((e) => e.id).sort()).toEqual([o1, o2, o3].map(idOmongan).sort());
@@ -222,7 +222,7 @@ describe('mesin v3: penjaga', () => {
     const f = bank();
     const { hasil } = jalan({ penulis: () => keluaranV3([o1]) }, f, { maksPutaran: 1 });
     const h = await hasil;
-    // palsu: penulis 0,19; penebak kuat 4 × 0,02; 24 tebak rotasi + 2 pembaca kartu + 1 kritikus × 0,001
-    expect(h.biaya_usd).toBeCloseTo(0.19 + 0.08 + 0.027, 6);
+    // palsu: penulis 0,19; penebak kuat 4 × 0,02; 20 tebak rotasi + 2 pembaca kartu + 1 kritikus × 0,001
+    expect(h.biaya_usd).toBeCloseTo(0.19 + 0.08 + 0.023, 6);
   });
 });

@@ -7,6 +7,7 @@
 import type { OmonganDraf } from '../draf.ts';
 import type { PanggilTemplat } from '../templat/penulis.ts';
 import { keRotasi } from './jalan.ts';
+import { MODEL_OR_HAIKU } from '../model.ts';
 import { HURUF_ROTASI, KONDISI, MODEL_ROTASI, pesanRotasi, putar, ROTASI, uraiSalinan, type JawabanRotasi } from './rotasi.ts';
 import { agregasiRotasiV2, petakanSalinanV2, type PutusanRotasiV2 } from './rotasi-v2.ts';
 
@@ -21,6 +22,8 @@ export async function tebakRotasiV2(o: OmonganDraf, opsi: { panggil: PanggilTemp
   const perModel = MODEL_ROTASI.map(async (m, mi) => {
     const hasil: JawabanRotasi[] = [];
     for (const [ki, k] of KONDISI.entries()) {
+      // M2d-20: Haiku menolak menjawab kondisi tanpa pesan (28 dari 54 panggilan, 14 ulangan berbayar); kondisi itu hanya diagnosis.
+      if (k === 'pilihan-saja' && m.model === MODEL_OR_HAIKU) continue;
       for (const r of ROTASI) {
         const p = putar(o, r);
         const pesan = pesanRotasi(k, { nama: o.nama, jam: o.jam, pesan: o.pesan, pilihan: p.pilihan });

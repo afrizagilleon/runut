@@ -3,11 +3,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { UKURAN_SIMULASI } from '../bebas/bank.ts';
 import { teksTeladanV3 } from '../bebas/prompt-v3.ts';
+import { kontrakBentuk } from './bentuk.ts';
 
 const JALUR = fileURLToPath(new URL('./prompt-agen.md', import.meta.url));
 
 export function instruksiAgen(target: number = UKURAN_SIMULASI): string {
-  const isi: Record<string, string> = { TARGET: String(target), TELADAN: teksTeladanV3() };
+  const isi: Record<string, string> = { TARGET: String(target), TELADAN: teksTeladanV3(), BENTUK: kontrakBentuk() };
   return readFileSync(JALUR, 'utf8')
     .replace(/\r\n/g, '\n')
     .replace(/\{([A-Z_]+)\}/g, (utuh, nama: string) => {
