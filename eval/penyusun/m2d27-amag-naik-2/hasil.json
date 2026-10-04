@@ -1,0 +1,1084 @@
+{
+  "id": "m2d27-amag-naik-2",
+  "mode": "tingkatkan",
+  "kode": null,
+  "hari_dipilih": "2026-06-15",
+  "effort": "high",
+  "maks_token": 128000,
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1,
+  "berhenti": "anggaran tidak cukup untuk satu langkah lagi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 4,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 1,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 4,
+  "panggilan_model": 4,
+  "pengajuan": 2,
+  "biaya_agen_usd": 0.411265,
+  "biaya_gerbang_usd": 0.2142,
+  "biaya_usd": 0.6255,
+  "durasi_detik": 463,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "28192295aab0c290",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "volume-2026-06-15"
+        ],
+        "asal": "m2d26-amag-1",
+        "tingkat": "pemanasan"
+      },
+      {
+        "id": "5e568a8ce3296708",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "harga-2026-06-15",
+          "harga-2026-05-29"
+        ],
+        "asal": "m2d26-amag-1",
+        "tingkat": "biasa"
+      },
+      {
+        "id": "1ad0aa1ec482f54e",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "dividen-tercatat",
+          "div-2026-05-07"
+        ],
+        "asal": "m2d26-amag-1",
+        "tingkat": "biasa"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": true,
+    "dipilih": [
+      "28192295aab0c290",
+      "5e568a8ce3296708",
+      "1ad0aa1ec482f54e"
+    ],
+    "alasan": [],
+    "draf": {
+      "omongan": [
+        {
+          "nama": "Bayu",
+          "jam": "20.05",
+          "pesan": "Harganya naik tapi yang ditransaksikan hari ini cuma 12.000 lembar. Sepi banget ya.",
+          "angka_pesan": [
+            {
+              "teks": "12.000",
+              "fact_id": "volume-2026-06-12"
+            }
+          ],
+          "kartu": [
+            "volume-2026-06-12",
+            "volume-2026-06-15",
+            "harga-2026-06-12",
+            "harga-2026-06-15"
+          ],
+          "kartu_penentu": [
+            "volume-2026-06-15"
+          ],
+          "pilihan": {
+            "a": "Betul, volume hari ini lebih kecil dari hari bursa sebelumnya.",
+            "b": "Betul, harga naik walau volumenya sama dengan kemarin.",
+            "c": "Keliru, angka itu volume sepekan, bukan volume hari ini.",
+            "d": "Keliru, itu volume hari bursa sebelumnya, bukan hari ini."
+          },
+          "kunci": "d",
+          "penjelasan": "Angka [[volume-2026-06-12|12.000 lembar]] adalah volume [[volume-2026-06-12|12 Juni 2026]], hari bursa sebelumnya. Volume hari ini, [[volume-2026-06-15|15 Juni 2026]], tercatat [[volume-2026-06-15|50.600 lembar]], jauh lebih banyak. Harganya memang naik, dari [[harga-2026-06-12|Rp390]] ke [[harga-2026-06-15|Rp392]], tetapi transaksinya tidak sepi seperti yang dikira. Salah-kaprah yang umum: membaca baris data kemarin sebagai data hari ini."
+        },
+        {
+          "nama": "Rara",
+          "jam": "16.42",
+          "pesan": "Udah naik beberapa hari beruntun, tapi harganya masih belum balik ke penutupan akhir Mei ya.",
+          "angka_pesan": [],
+          "kartu": [
+            "harga-2026-05-29",
+            "harga-2026-06-15",
+            "harga-2026-06-12",
+            "hari-naik-beruntun"
+          ],
+          "kartu_penentu": [
+            "harga-2026-06-15",
+            "harga-2026-05-29"
+          ],
+          "pilihan": {
+            "a": "Keliru, penutupan hari ini [[harga-2026-05-29|Rp398]] sudah melewati akhir Mei.",
+            "b": "Betul, penutupan hari ini [[harga-2026-06-15|Rp392]] masih di bawah akhir Mei.",
+            "c": "Betul, penutupan hari ini [[harga-2026-06-12|Rp390]] masih di bawah akhir Mei.",
+            "d": "Keliru, penutupan akhir Mei hanya [[hari-naik-beruntun|Rp356]] per lembar."
+          },
+          "kunci": "b",
+          "penjelasan": "Rentetan naiknya memang ada di data: [[hari-naik-beruntun|5 hari bursa]] berturut-turut sampai hari ini. Penutupan hari ini [[harga-2026-06-15|Rp392]], sedangkan penutupan [[harga-2026-05-29|29 Mei 2026]] adalah [[harga-2026-05-29|Rp398]], jadi harganya memang belum kembali ke level akhir Mei. Pilihan yang menyebut [[harga-2026-06-12|Rp390]] menggoda karena angkanya dekat, tetapi itu penutupan [[harga-2026-06-12|12 Juni 2026]], bukan hari ini. Salah-kaprah yang umum: mengambil harga penutupan dari baris tanggal yang bersebelahan."
+        },
+        {
+          "nama": "Dimas",
+          "jam": "18.15",
+          "pesan": "Gue cek daftar aksi korporasinya, ada 7 kali bagi dividen tunai sejak 2020.",
+          "angka_pesan": [
+            {
+              "teks": "7",
+              "fact_id": "dividen-tercatat"
+            },
+            {
+              "teks": "2020",
+              "fact_id": "dividen-tercatat"
+            }
+          ],
+          "kartu": [
+            "dividen-tercatat",
+            "div-2026-05-07",
+            "div-2025-05-14"
+          ],
+          "kartu_penentu": [
+            "dividen-tercatat",
+            "div-2026-05-07"
+          ],
+          "pilihan": {
+            "a": "Betul, yang terbaru dibagikan [[div-2026-05-07|Rp30]] per lembar.",
+            "b": "Betul, yang terbaru dibagikan [[div-2025-05-14|Rp40]] per lembar.",
+            "c": "Keliru, daftarnya baru mencatat pembagian sejak [[div-2025-05-14|2025]].",
+            "d": "Keliru, pembagian tahun [[div-2026-05-07|2026]] belum masuk daftar itu."
+          },
+          "kunci": "a",
+          "penjelasan": "Daftar aksi korporasi memang mencatat [[dividen-tercatat|7 pembagian]] dividen tunai, dari tanggal ex [[dividen-tercatat|29 Juli 2020]] sampai [[dividen-tercatat|7 Mei 2026]]. Yang terbaru, bertanggal ex [[div-2026-05-07|7 Mei 2026]], besarnya [[div-2026-05-07|Rp30]] per lembar; angka [[div-2025-05-14|Rp40]] milik pembagian bertanggal ex [[div-2025-05-14|14 Mei 2025]]. Daftar itu sendiri mengingatkan bahwa isinya belum tentu lengkap, jadi yang bisa dipastikan hanya apa yang tercatat di sana. Salah-kaprah yang umum: mengira besar dividen tahun lalu masih berlaku untuk pembagian terbaru."
+        }
+      ]
+    }
+  },
+  "peningkatan": [
+    {
+      "id": "e59779237448d406",
+      "dari": "28192295aab0c290",
+      "nama": "Bayu",
+      "tingkat": "sulit",
+      "asal": "m2d26-amag-naik-1",
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "20.05",
+        "pesan": "Harganya naik lagi, tapi volume hari ini cuma 12.000 lembar. Sepi banget ya.",
+        "angka_pesan": [
+          {
+            "teks": "12.000",
+            "fact_id": "volume-2026-06-12"
+          }
+        ],
+        "kartu": [
+          "volume-2026-06-12",
+          "volume-2026-06-15",
+          "harga-2026-06-12",
+          "harga-2026-06-15"
+        ],
+        "kartu_penentu": [
+          "volume-2026-06-15"
+        ],
+        "pilihan": {
+          "a": "Betul, volume hari ini turun dibanding hari bursa sebelumnya.",
+          "b": "Keliru, volume hari ini justru jauh lebih besar dari itu.",
+          "c": "Betul, volumenya sama sepinya dengan hari bursa sebelumnya.",
+          "d": "Keliru, angka itu dihitung dalam satuan lot, bukan lembar."
+        },
+        "kunci": "b",
+        "penjelasan": "Angka [[volume-2026-06-12|12.000 lembar]] tercatat sebagai volume [[volume-2026-06-12|12 Juni 2026]], hari bursa sebelumnya, dan satuannya memang lembar. Volume hari ini, [[volume-2026-06-15|15 Juni 2026]], adalah [[volume-2026-06-15|50.600 lembar]], jauh lebih besar. Harga memang naik dari [[harga-2026-06-12|Rp390]] ke [[harga-2026-06-15|Rp392]], tetapi transaksinya tidak sepi. Salah-kaprah yang umum: membaca baris data kemarin sebagai data hari ini, lalu mencari alasan lain seperti satuan lot.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-06-15",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 2 mencatat volume hari ini [[volume-2026-06-15|50.600 lembar]], bukan lebih kecil."
+          },
+          "c": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "volume-2026-06-12",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 1 dan kartu 2 memperlihatkan volume dua hari itu berselisih jauh."
+          },
+          "d": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "volume-2026-06-12",
+            "umpan_balik": "Ini angka nyaris benar: angkanya tepat, tetapi kartu 1 mencatatnya dalam lembar, untuk [[volume-2026-06-12|12 Juni 2026]]."
+          }
+        },
+        "pertanyaan_cek": "Angka volume itu milik hari apa, dan apa satuannya?"
+      }
+    },
+    {
+      "id": "25ddea4d9f1c3df0",
+      "dari": "1ad0aa1ec482f54e",
+      "nama": "Dimas",
+      "tingkat": "biasa",
+      "asal": "m2d27-amag-naik-2",
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "18.15",
+        "pesan": "Gue cek daftar aksi korporasinya, ada 7 kali bagi dividen tunai sejak 2020.",
+        "angka_pesan": [
+          {
+            "teks": "7",
+            "fact_id": "dividen-tercatat"
+          },
+          {
+            "teks": "2020",
+            "fact_id": "dividen-tercatat"
+          }
+        ],
+        "kartu": [
+          "dividen-tercatat",
+          "div-2026-05-07",
+          "div-2025-05-14"
+        ],
+        "kartu_penentu": [
+          "dividen-tercatat",
+          "div-2026-05-07"
+        ],
+        "pilihan": {
+          "a": "Betul, yang terbaru turun menjadi [[div-2026-05-07|Rp30]] per lembar.",
+          "b": "Betul, yang terbaru naik menjadi [[div-2025-05-14|Rp40]] per lembar.",
+          "c": "Keliru, daftarnya baru mencatat pembagian sejak [[div-2025-05-14|2025]].",
+          "d": "Keliru, pembagian tahun [[div-2026-05-07|2026]] belum masuk daftar itu."
+        },
+        "kunci": "a",
+        "penjelasan": "Daftar aksi korporasi memang mencatat [[dividen-tercatat|7 pembagian]] dividen tunai, dari tanggal ex [[dividen-tercatat|29 Juli 2020]] sampai [[dividen-tercatat|7 Mei 2026]]. Pembagian terbaru, bertanggal ex [[div-2026-05-07|7 Mei 2026]], besarnya [[div-2026-05-07|Rp30]] per lembar, lebih kecil dari [[div-2025-05-14|Rp40]] pada tanggal ex [[div-2025-05-14|14 Mei 2025]]. Jadi yang terbaru turun, bukan naik. Daftar itu juga mengingatkan bahwa isinya belum tentu lengkap. Salah-kaprah yang umum: mengira dividen terbaru pasti lebih besar karena harga sahamnya sedang naik.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-14",
+            "umpan_balik": "Ini salah periode: kartu 3 mencatat [[div-2025-05-14|Rp40]] untuk tanggal ex [[div-2025-05-14|14 Mei 2025]], pembagian sebelumnya, bukan yang terbaru."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "dividen-tercatat",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat daftar itu dimulai dari tanggal ex [[dividen-tercatat|29 Juli 2020]]."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat pembagian bertanggal ex [[div-2026-05-07|7 Mei 2026]] di daftar itu."
+          }
+        },
+        "pertanyaan_cek": "Berapa besar pembagian terbaru dibanding pembagian sebelumnya?"
+      }
+    }
+  ],
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Rara",
+        "jam": "16.42",
+        "pesan": "Udah naik beberapa hari beruntun, tapi harganya masih belum balik ke penutupan akhir Mei ya.",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2026-05-29",
+          "harga-2026-06-15",
+          "div-2026-05-07",
+          "turun-2026-05-29-2026-06-15"
+        ],
+        "kartu_penentu": [
+          "harga-2026-06-15",
+          "harga-2026-05-29"
+        ],
+        "pilihan": {
+          "a": "Keliru, penutupan hari ini [[harga-2026-05-29|Rp398]] sudah melewati akhir Mei.",
+          "b": "Keliru, hari ini sudah [[div-2026-05-07|Rp30]] di atas penutupan akhir Mei.",
+          "c": "Betul, hari ini masih [[div-2026-05-07|Rp30]] di bawah penutupan akhir Mei.",
+          "d": "Betul, hari ini masih [[turun-2026-05-29-2026-06-15|Rp6]] di bawah penutupan akhir Mei."
+        },
+        "kunci": "d",
+        "penjelasan": "Penutupan hari ini [[harga-2026-06-15|Rp392]], sedangkan penutupan [[harga-2026-05-29|29 Mei 2026]] adalah [[harga-2026-05-29|Rp398]]. Jadi harganya memang belum kembali ke level akhir Mei, dan selisihnya tinggal [[turun-2026-05-29-2026-06-15|Rp6]] per lembar. Angka [[div-2026-05-07|Rp30]] bukan selisih harga: itu dividen tunai per lembar dengan tanggal ex [[div-2026-05-07|7 Mei 2026]], jauh sebelum akhir Mei. Salah-kaprah yang umum: memakai besar dividen sebagai ukuran jarak harga ke level sebelumnya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-05-29",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat [[harga-2026-05-29|Rp398]] sebagai penutupan [[harga-2026-05-29|29 Mei 2026]], bukan hari ini."
+          },
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 mencatat [[div-2026-05-07|Rp30]] sebagai dividen per lembar, bukan selisih harga, dan hari ini belum melewati akhir Mei."
+          },
+          "c": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 mencatat [[div-2026-05-07|Rp30]] sebagai dividen per lembar, bukan selisih harga dengan akhir Mei."
+          }
+        },
+        "pertanyaan_cek": "Berapa selisih penutupan hari ini dengan penutupan akhir Mei?"
+      },
+      "berhenti": "kritikus",
+      "alasan": [
+        "[kritikus: makna, kunci] Bagian klaim teman yang tidak bisa dicek dari kartu: \"harga sudah naik beberapa hari bursa beruntun sampai hari ini\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan.",
+        "[kritikus: aturan, pesan] Klaim harga naik beberapa hari beruntun tidak bisa dipastikan benar atau salah dari kartu karena tidak ada deret harga harian menjelang 15 Juni, padahal kunci Betul mengesahkan seluruh omongan Rara.",
+        "[kritikus: arahan] Tambahkan kartu deret harga penutupan beberapa hari sebelum 15 Juni 2026, atau hilangkan klaim kenaikan beruntun dari pesan Rara, supaya seluruh omongannya bisa dicek dari kartu."
+      ],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (nilai uji 0,8062; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": false,
+            "bingung": [],
+            "alasan": "Kartu 4 menunjukkan harga 15 Juni 2026 masih Rp6 di bawah penutupan 29 Mei 2026, sesuai dengan omongan Rara.",
+            "biaya_usd": 0.00048015
+          },
+          {
+            "r": 2,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 2 menunjukkan penutupan 15 Juni 2026 Rp392, dan kartu 4 menghitung selisih Rp6 di bawah penutupan 29 Mei 2026 Rp398.",
+            "biaya_usd": 0.00073035
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, hari ini masih Rp6 di bawah penutupan akhir Mei.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; selisih kecil cocok dengan kenaikan beruntun.",
+            "biaya_usd": 0.004768,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, hari ini masih Rp6 di bawah penutupan akhir Mei.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, angka tidak bisa diverifikasi.",
+            "biaya_usd": 0.004508,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, hari ini masih Rp30 di bawah penutupan akhir Mei.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; selaras dengan klaim Rara.",
+            "biaya_usd": 0.006348,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, hari ini masih Rp30 di bawah penutupan akhir Mei.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; Rp30 muncul dua kali di pilihan",
+            "biaya_usd": 0.005888,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 2,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": null,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 2 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.021512
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": false,
+        "keberatan": [
+          {
+            "jenis": "makna",
+            "bagian": "kunci",
+            "alasan": "Bagian klaim teman yang tidak bisa dicek dari kartu: \"harga sudah naik beberapa hari bursa beruntun sampai hari ini\"; kunci tidak boleh \"Betul\" kecuali pilihan itu menyatakan bagian tersebut tak bisa dipastikan."
+          },
+          {
+            "jenis": "aturan",
+            "bagian": "pesan",
+            "alasan": "Klaim harga naik beberapa hari beruntun tidak bisa dipastikan benar atau salah dari kartu karena tidak ada deret harga harian menjelang 15 Juni, padahal kunci Betul mengesahkan seluruh omongan Rara."
+          }
+        ],
+        "arahan": "Tambahkan kartu deret harga penutupan beberapa hari sebelum 15 Juni 2026, atau hilangkan klaim kenaikan beruntun dari pesan Rara, supaya seluruh omongannya bisa dicek dari kartu.",
+        "token_penalaran": [
+          14650
+        ]
+      },
+      "biaya_gerbang_usd": 0.08896804,
+      "id_bank": null,
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp6 lebih realistis untuk perbedaan harga saham dibanding Rp30.",
+            "biaya_usd": 0.000538,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp30 lebih konsisten dengan 'beberapa hari beruntun' naik tapi belum balik.",
+            "biaya_usd": 0.000558,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pernyataan 1 lebih masuk akal untuk kenaikan beberapa hari beruntun.",
+            "biaya_usd": 0.001142,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Jika naik beberapa hari tapi belum balik, selisih Rp30 lebih masuk akal daripada Rp6.",
+            "biaya_usd": 0.000602,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Harga saham bergerak kecil, selisih Rp6 lebih wajar dari Rp30",
+            "biaya_usd": 0.00003025,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Selisih Rp30 lebih masuk akal untuk belum balik ke akhir Mei.",
+            "biaya_usd": 0.00002845,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Naik beruntun tapi belum balik, selisih lebih besar lebih mungkin",
+            "biaya_usd": 0.0000284,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Selisih Rp30 lebih masuk akal untuk belum balik setelah naik.",
+            "biaya_usd": 0.0000284,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Kenaikan beruntun belum menutup gap besar, Rp30 lebih konsisten dengan 'belum balik'.",
+            "biaya_usd": 0.00070205,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan beruntun belum menutup selisih besar, Rp30 lebih masuk akal.",
+            "biaya_usd": 0.01067274,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan beruntun beberapa hari lebih mungkin menyisakan jarak kecil Rp6.",
+            "biaya_usd": 0.00029947,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Setelah beberapa hari naik, sisa jarak Rp6 lebih masuk akal daripada Rp30.",
+            "biaya_usd": 0.00051176,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 5,
+          "p": 0.80615234375,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 12 (nilai uji 0,8062; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.01514152
+      }
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Dimas",
+        "jam": "18.15",
+        "pesan": "Gue cek daftar aksi korporasinya, ada 7 kali bagi dividen tunai sejak 2020.",
+        "angka_pesan": [
+          {
+            "teks": "7",
+            "fact_id": "dividen-tercatat"
+          },
+          {
+            "teks": "2020",
+            "fact_id": "dividen-tercatat"
+          }
+        ],
+        "kartu": [
+          "dividen-tercatat",
+          "div-2026-05-07",
+          "div-2025-05-14"
+        ],
+        "kartu_penentu": [
+          "dividen-tercatat",
+          "div-2026-05-07"
+        ],
+        "pilihan": {
+          "a": "Betul, yang terbaru turun menjadi [[div-2026-05-07|Rp30]] per lembar.",
+          "b": "Betul, yang terbaru naik menjadi [[div-2025-05-14|Rp40]] per lembar.",
+          "c": "Keliru, daftarnya baru mencatat pembagian sejak [[div-2025-05-14|2025]].",
+          "d": "Keliru, pembagian tahun [[div-2026-05-07|2026]] belum masuk daftar itu."
+        },
+        "kunci": "a",
+        "penjelasan": "Daftar aksi korporasi memang mencatat [[dividen-tercatat|7 pembagian]] dividen tunai, dari tanggal ex [[dividen-tercatat|29 Juli 2020]] sampai [[dividen-tercatat|7 Mei 2026]]. Pembagian terbaru, bertanggal ex [[div-2026-05-07|7 Mei 2026]], besarnya [[div-2026-05-07|Rp30]] per lembar, lebih kecil dari [[div-2025-05-14|Rp40]] pada tanggal ex [[div-2025-05-14|14 Mei 2025]]. Jadi yang terbaru turun, bukan naik. Daftar itu juga mengingatkan bahwa isinya belum tentu lengkap. Salah-kaprah yang umum: mengira dividen terbaru pasti lebih besar karena harga sahamnya sedang naik.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-14",
+            "umpan_balik": "Ini salah periode: kartu 3 mencatat [[div-2025-05-14|Rp40]] untuk tanggal ex [[div-2025-05-14|14 Mei 2025]], pembagian sebelumnya, bukan yang terbaru."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "dividen-tercatat",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat daftar itu dimulai dari tanggal ex [[dividen-tercatat|29 Juli 2020]]."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat pembagian bertanggal ex [[div-2026-05-07|7 Mei 2026]] di daftar itu."
+          }
+        },
+        "pertanyaan_cek": "Berapa besar pembagian terbaru dibanding pembagian sebelumnya?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "pemeriksa: G-register (dicatat): memakai \"gue\"",
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (nilai uji 0,9270; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat 7 dividen tunai sejak 2020, sedangkan Kartu 2 dan 3 menunjukkan dividen terbaru Rp30 pada 2026 turun dari Rp40 pada 2025.",
+            "biaya_usd": 0.00074485
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat 7 dividen tunai sejak 2020, dan Kartu 2/3 menunjukkan dividen terbaru Rp30, turun dari Rp40.",
+            "biaya_usd": 0.00111445
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+            "skor": 1,
+            "alasan": "Hanya tebakan; tanpa dokumen, klaim Dimas tidak bisa diverifikasi.",
+            "biaya_usd": 0.00576,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+            "skor": 1,
+            "alasan": "Tebakan saja; dokumen tidak tersedia untuk diverifikasi.",
+            "biaya_usd": 0.00494,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+            "biaya_usd": 0.00468,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+            "skor": 1,
+            "alasan": "Tebakan saja; dokumen tidak diberikan, jadi tidak bisa diverifikasi.",
+            "biaya_usd": 0.00408,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 1,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.01946
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Tegaskan di kartu atau penjelasan bahwa dividen Rp40 (ex 14 Mei 2025) adalah pembagian tepat sebelum dividen Rp30 (ex 7 Mei 2026), supaya kata 'turun' di kunci tidak bergantung pada asumsi tidak ada pembagian lain di antara keduanya.",
+        "token_penalaran": [
+          25876
+        ]
+      },
+      "biaya_gerbang_usd": 0.12522903,
+      "id_bank": "25ddea4d9f1c3df0",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen cenderung stabil atau turun saat kondisi bisnis normal.",
+            "biaya_usd": 0.000488,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Perusahaan yang konsisten bagi dividen cenderung meningkatkan nominal.",
+            "biaya_usd": 0.000498,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen cenderung stabil atau turun saat kondisi ekonomi menantang.",
+            "biaya_usd": 0.000497,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen cenderung naik seiring pertumbuhan perusahaan jangka panjang.",
+            "biaya_usd": 0.000512,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, penurunan lebih umum daripada kenaikan.",
+            "biaya_usd": 0.00002735,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, asumsi umum dividen cenderung naik",
+            "biaya_usd": 0.00002735,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, penurunan lebih umum daripada kenaikan.",
+            "biaya_usd": 0.0000273,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, kenaikan dividen lebih umum dari penurunan.",
+            "biaya_usd": 0.0000285,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Dividen terbaru umumnya naik menjadi Rp40 per lembar saham.",
+            "biaya_usd": 0.00035429,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pola dividen cenderung naik; kenaikan terbaru ke Rp40 lebih konsisten.",
+            "biaya_usd": 0.00038902,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Dividen cenderung naik; yang terbaru Rp40 per lembar lebih mungkin.",
+            "biaya_usd": 0.01067895,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Riwayat dividen cenderung meningkat, terbaru Rp40 per lembar.",
+            "biaya_usd": 0.00144881,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 4,
+          "p": 0.927001953125,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (nilai uji 0,9270; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.01497657
+      }
+    }
+  ],
+  "draf_lolos_kode": [
+    {
+      "id": "2425162fe8c81ce5",
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "18.15",
+        "pesan": "Gue cek daftar aksi korporasinya, ada 7 kali bagi dividen tunai sejak 2020.",
+        "angka_pesan": [
+          {
+            "teks": "7",
+            "fact_id": "dividen-tercatat"
+          },
+          {
+            "teks": "2020",
+            "fact_id": "dividen-tercatat"
+          }
+        ],
+        "kartu": [
+          "dividen-tercatat",
+          "div-2026-05-07",
+          "div-2025-05-14"
+        ],
+        "kartu_penentu": [
+          "dividen-tercatat",
+          "div-2026-05-07"
+        ],
+        "pilihan": {
+          "a": "Betul, yang terbaru turun menjadi [[div-2026-05-07|Rp30]] per lembar.",
+          "b": "Betul, yang terbaru naik menjadi [[div-2025-05-14|Rp40]] per lembar.",
+          "c": "Keliru, daftarnya baru mencatat pembagian sejak [[div-2025-05-14|2025]].",
+          "d": "Keliru, pembagian tahun [[div-2026-05-07|2026]] belum masuk daftar itu."
+        },
+        "kunci": "a",
+        "penjelasan": "Daftar aksi korporasi memang mencatat [[dividen-tercatat|7 pembagian]] dividen tunai, dari tanggal ex [[dividen-tercatat|29 Juli 2020]] sampai [[dividen-tercatat|7 Mei 2026]]. Pembagian terbaru, bertanggal ex [[div-2026-05-07|7 Mei 2026]], besarnya [[div-2026-05-07|Rp30]] per lembar, lebih kecil dari [[div-2025-05-14|Rp40]] pada tanggal ex [[div-2025-05-14|14 Mei 2025]]. Jadi yang terbaru turun, bukan naik. Daftar itu juga mengingatkan bahwa isinya belum tentu lengkap. Salah-kaprah yang umum: mengira dividen terbaru pasti lebih besar karena harga sahamnya sedang naik.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2025-05-14",
+            "umpan_balik": "Ini salah periode: kartu 3 mencatat [[div-2025-05-14|Rp40]] untuk tanggal ex [[div-2025-05-14|14 Mei 2025]], pembagian sebelumnya, bukan yang terbaru."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "dividen-tercatat",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat daftar itu dimulai dari tanggal ex [[dividen-tercatat|29 Juli 2020]]."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini salah periode: kartu 2 mencatat pembagian bertanggal ex [[div-2026-05-07|7 Mei 2026]] di daftar itu."
+          }
+        },
+        "pertanyaan_cek": "Berapa besar pembagian terbaru dibanding pembagian sebelumnya?"
+      }
+    },
+    {
+      "id": "7ea69addd3ae6c87",
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "16.42",
+        "pesan": "Udah naik beberapa hari beruntun, tapi harganya masih belum balik ke penutupan akhir Mei ya.",
+        "angka_pesan": [],
+        "kartu": [
+          "harga-2026-05-29",
+          "harga-2026-06-15",
+          "div-2026-05-07",
+          "turun-2026-05-29-2026-06-15"
+        ],
+        "kartu_penentu": [
+          "harga-2026-06-15",
+          "harga-2026-05-29"
+        ],
+        "pilihan": {
+          "a": "Keliru, penutupan hari ini [[harga-2026-05-29|Rp398]] sudah melewati akhir Mei.",
+          "b": "Keliru, hari ini sudah [[div-2026-05-07|Rp30]] di atas penutupan akhir Mei.",
+          "c": "Betul, hari ini masih [[div-2026-05-07|Rp30]] di bawah penutupan akhir Mei.",
+          "d": "Betul, hari ini masih [[turun-2026-05-29-2026-06-15|Rp6]] di bawah penutupan akhir Mei."
+        },
+        "kunci": "d",
+        "penjelasan": "Penutupan hari ini [[harga-2026-06-15|Rp392]], sedangkan penutupan [[harga-2026-05-29|29 Mei 2026]] adalah [[harga-2026-05-29|Rp398]]. Jadi harganya memang belum kembali ke level akhir Mei, dan selisihnya tinggal [[turun-2026-05-29-2026-06-15|Rp6]] per lembar. Angka [[div-2026-05-07|Rp30]] bukan selisih harga: itu dividen tunai per lembar dengan tanggal ex [[div-2026-05-07|7 Mei 2026]], jauh sebelum akhir Mei. Salah-kaprah yang umum: memakai besar dividen sebagai ukuran jarak harga ke level sebelumnya.",
+        "pengecoh": {
+          "a": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2026-05-29",
+            "umpan_balik": "Ini salah periode: kartu 1 mencatat [[harga-2026-05-29|Rp398]] sebagai penutupan [[harga-2026-05-29|29 Mei 2026]], bukan hari ini."
+          },
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 mencatat [[div-2026-05-07|Rp30]] sebagai dividen per lembar, bukan selisih harga, dan hari ini belum melewati akhir Mei."
+          },
+          "c": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "div-2026-05-07",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 3 mencatat [[div-2026-05-07|Rp30]] sebagai dividen per lembar, bukan selisih harga dengan akhir Mei."
+          }
+        },
+        "pertanyaan_cek": "Berapa selisih penutupan hari ini dengan penutupan akhir Mei?"
+      }
+    }
+  ],
+  "teks_akhir": ""
+}

@@ -1,0 +1,365 @@
+{
+  "id": "25ddea4d9f1c3df0",
+  "paket_sha": "40bccdb8f5412733fd2301665f7e8ea2707aedd06d2515d906f9aa83c2e3744e",
+  "kartu_penentu": [
+    "dividen-tercatat",
+    "div-2026-05-07"
+  ],
+  "omongan": {
+    "nama": "Dimas",
+    "jam": "18.15",
+    "pesan": "Gue cek daftar aksi korporasinya, ada 7 kali bagi dividen tunai sejak 2020.",
+    "angka_pesan": [
+      {
+        "teks": "7",
+        "fact_id": "dividen-tercatat"
+      },
+      {
+        "teks": "2020",
+        "fact_id": "dividen-tercatat"
+      }
+    ],
+    "kartu": [
+      "dividen-tercatat",
+      "div-2026-05-07",
+      "div-2025-05-14"
+    ],
+    "kartu_penentu": [
+      "dividen-tercatat",
+      "div-2026-05-07"
+    ],
+    "pilihan": {
+      "a": "Betul, yang terbaru turun menjadi [[div-2026-05-07|Rp30]] per lembar.",
+      "b": "Betul, yang terbaru naik menjadi [[div-2025-05-14|Rp40]] per lembar.",
+      "c": "Keliru, daftarnya baru mencatat pembagian sejak [[div-2025-05-14|2025]].",
+      "d": "Keliru, pembagian tahun [[div-2026-05-07|2026]] belum masuk daftar itu."
+    },
+    "kunci": "a",
+    "penjelasan": "Daftar aksi korporasi memang mencatat [[dividen-tercatat|7 pembagian]] dividen tunai, dari tanggal ex [[dividen-tercatat|29 Juli 2020]] sampai [[dividen-tercatat|7 Mei 2026]]. Pembagian terbaru, bertanggal ex [[div-2026-05-07|7 Mei 2026]], besarnya [[div-2026-05-07|Rp30]] per lembar, lebih kecil dari [[div-2025-05-14|Rp40]] pada tanggal ex [[div-2025-05-14|14 Mei 2025]]. Jadi yang terbaru turun, bukan naik. Daftar itu juga mengingatkan bahwa isinya belum tentu lengkap. Salah-kaprah yang umum: mengira dividen terbaru pasti lebih besar karena harga sahamnya sedang naik.",
+    "pengecoh": {
+      "b": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2025-05-14",
+        "umpan_balik": "Ini salah periode: kartu 3 mencatat [[div-2025-05-14|Rp40]] untuk tanggal ex [[div-2025-05-14|14 Mei 2025]], pembagian sebelumnya, bukan yang terbaru."
+      },
+      "c": {
+        "jenis": "salah-periode",
+        "rujukan": "dividen-tercatat",
+        "umpan_balik": "Ini salah periode: kartu 1 mencatat daftar itu dimulai dari tanggal ex [[dividen-tercatat|29 Juli 2020]]."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2026-05-07",
+        "umpan_balik": "Ini salah periode: kartu 2 mencatat pembagian bertanggal ex [[div-2026-05-07|7 Mei 2026]] di daftar itu."
+      }
+    },
+    "pertanyaan_cek": "Berapa besar pembagian terbaru dibanding pembagian sebelumnya?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "biasa",
+    "peningkatan_dari": "1ad0aa1ec482f54e",
+    "kode": {
+      "dicatat": [
+        "pemeriksa: G-register (dicatat): memakai \"gue\"",
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (nilai uji 0,9270; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen cenderung stabil atau turun saat kondisi bisnis normal.",
+          "biaya_usd": 0.000488,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Perusahaan yang konsisten bagi dividen cenderung meningkatkan nominal.",
+          "biaya_usd": 0.000498,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen cenderung stabil atau turun saat kondisi ekonomi menantang.",
+          "biaya_usd": 0.000497,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen cenderung naik seiring pertumbuhan perusahaan jangka panjang.",
+          "biaya_usd": 0.000512,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, penurunan lebih umum daripada kenaikan.",
+          "biaya_usd": 0.00002735,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, asumsi umum dividen cenderung naik",
+          "biaya_usd": 0.00002735,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, penurunan lebih umum daripada kenaikan.",
+          "biaya_usd": 0.0000273,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, kenaikan dividen lebih umum dari penurunan.",
+          "biaya_usd": 0.0000285,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Dividen terbaru umumnya naik menjadi Rp40 per lembar saham.",
+          "biaya_usd": 0.00035429,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Pola dividen cenderung naik; kenaikan terbaru ke Rp40 lebih konsisten.",
+          "biaya_usd": 0.00038902,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Dividen cenderung naik; yang terbaru Rp40 per lembar lebih mungkin.",
+          "biaya_usd": 0.01067895,
+          "panggilan": 2
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Riwayat dividen cenderung meningkat, terbaru Rp40 per lembar.",
+          "biaya_usd": 0.00144881,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 4,
+        "p": 0.927001953125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 4 dari 12 (nilai uji 0,9270; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.01497657
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 mencatat 7 dividen tunai sejak 2020, sedangkan Kartu 2 dan 3 menunjukkan dividen terbaru Rp30 pada 2026 turun dari Rp40 pada 2025.",
+          "biaya_usd": 0.00074485
+        },
+        {
+          "r": 2,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 mencatat 7 dividen tunai sejak 2020, dan Kartu 2/3 menunjukkan dividen terbaru Rp30, turun dari Rp40.",
+          "biaya_usd": 0.00111445
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+          "skor": 1,
+          "alasan": "Hanya tebakan; tanpa dokumen, klaim Dimas tidak bisa diverifikasi.",
+          "biaya_usd": 0.00576,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+          "skor": 1,
+          "alasan": "Tebakan saja; dokumen tidak tersedia untuk diverifikasi.",
+          "biaya_usd": 0.00494,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+          "biaya_usd": 0.00468,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, yang terbaru naik menjadi Rp40 per lembar.",
+          "skor": 1,
+          "alasan": "Tebakan saja; dokumen tidak diberikan, jadi tidak bisa diverifikasi.",
+          "biaya_usd": 0.00408,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 0,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 1,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.01946
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Tegaskan di kartu atau penjelasan bahwa dividen Rp40 (ex 14 Mei 2025) adalah pembagian tepat sebelum dividen Rp30 (ex 7 Mei 2026), supaya kata 'turun' di kunci tidak bergantung pada asumsi tidak ada pembagian lain di antara keduanya.",
+      "token_penalaran": [
+        25876
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "m2d27-amag-naik-2",
+    "putaran": 2,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-04T23:26:19.222Z"
+}
