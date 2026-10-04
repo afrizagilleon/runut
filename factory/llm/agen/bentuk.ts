@@ -36,7 +36,10 @@ export function butirBentuk(): ButirBentuk[] {
     { kode: [/^pemeriksa: G-panjang/], baris: `\`pesan\` paling banyak ${String(p.pesan)} kata dan ${String(BATAS.pesan)} karakter; \`jam\` berbentuk HH.MM, ${BATAS.jamMulai} atau lebih.` },
     { kode: [/^pemeriksa: OPSI_TAK_DUA_DUA/, /^detektor D8/], baris: 'Empat pilihan: tepat dua diawali "Betul," dan dua diawali "Keliru,".' },
     { kode: [/^pemeriksa: G-satu-klausa/], baris: 'Tiap pilihan satu klausa: "Betul, …" atau "Keliru, …". Koma kedua hanya untuk kontras (", bukan …", ", tetapi …").' },
-    { kode: [/^pemeriksa: OPSI_PANJANG_TIMPANG/, /^detektor D1/], baris: `Tiap pilihan paling banyak ${String(p.pilihan)} kata dan ${String(BATAS.opsi)} karakter, dan panjangnya seragam: yang terpanjang paling banyak ${RASIO_PANJANG_PILIHAN} kali yang terpendek.` },
+    { kode: [/^pemeriksa: OPSI_PANJANG_TIMPANG/, /^detektor D1/], baris: `Tiap pilihan paling banyak ${String(p.pilihan)} kata dan ${String(BATAS.opsi)} karakter, dan panjangnya seragam: yang terpanjang paling banyak ${RASIO_PANJANG_PILIHAN} kali yang terpendek, dan kunci bukan pilihan terpanjang.` },
+    { kode: [/^pemeriksa: G-pilihan-kembar/], baris: 'Tidak ada dua pilihan yang isinya sama.' },
+    { kode: [/^detektor D5/], baris: 'Pilihan kunci tidak boleh menjadi "titik tengah": jangan biarkan kunci berbagi lebih banyak kata dengan pilihan lain daripada pengecoh mana pun.' },
+    { kode: [/^gerbang artefak/], baris: 'Pilihan kunci tidak boleh mengulang kata dari pesan teman yang tidak muncul di pengecoh mana pun; penebak tanpa kartu cukup memilih pilihan yang "meresmikan" omongan teman.' },
     { kode: [/^pemeriksa: ANGKA_TANPA_RUJUKAN/, /^M2d-13: angka-di-kartu/], baris: 'Setiap angka dan tanggal di pilihan, penjelasan, dan umpan balik ditulis sebagai rujukan `[[id_kartu|teks]]`, dan kartu itu ada di `kartu`. Angka yang tidak tertulis di kartu tidak boleh dipakai. `pertanyaan_cek` tanpa angka.' },
     { kode: [/^pemeriksa: RUJUKAN_PANJANG/], baris: `Teks di dalam rujukan paling banyak ${String(BATAS.label)} karakter.` },
     { kode: [/^pemeriksa: ANGKA_PESAN_TANPA_JEJAK/], baris: 'Setiap angka di `pesan` dicatat di `angka_pesan`: `{"teks": "…", "fact_id": "id_kartu"}`, atau `{"teks": "…", "andaian": true}` bila angkanya karangan teman (hanya boleh bila jawabannya "Keliru").' },
@@ -45,7 +48,7 @@ export function butirBentuk(): ButirBentuk[] {
     { kode: [/^pemeriksa: G-penilaian/, /^pemeriksa: KATA_PENILAIAN/], baris: 'Tanpa kata penilaian saham (bagus, jelek, sehat, buruk, murah, mahal, cuan) dan tanpa ajakan membeli atau menjual, juga di pesan teman.' },
     { kode: [/^pemeriksa: PENJELASAN_TANPA_SALAH_KAPRAH/], baris: `\`penjelasan\` paling banyak ${String(BATAS.penjelasan)} karakter dan ditutup satu kalimat "Salah-kaprah yang umum: …".` },
     { kode: [/^M2d-13: umpan balik/], baris: `\`pengecoh\`: tiap huruf punya \`jenis\`, \`rujukan\` (id kartu), dan \`umpan_balik\` paling banyak ${String(UMPAN_BALIK_MAKS)} karakter yang memuat nama jenis kesalahannya dan "kartu N" (N = urutan kartu rujukan itu di \`kartu\`). Nama jenis: ${nama}.` },
-    { kode: [/^M2d-13: label pengecoh/], baris: '`percaya-otoritas` hanya untuk pengecoh "Betul, …" ketika kuncinya "Keliru, …".' },
+    { kode: [/^M2d-13: label pengecoh/], baris: '`percaya-otoritas` hanya untuk pengecoh "Betul, …" ketika kuncinya "Keliru, …". Huruf kunci tidak punya entri di `pengecoh`.' },
     { kode: [/^anti-salin teladan/], baris: 'Jangan menyalin kalimat contoh (lima kata berurutan yang sama), kecuali nama jenis kesalahan.' },
   ];
 }

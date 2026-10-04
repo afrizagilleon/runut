@@ -61,8 +61,8 @@ export const PENYEDIA_PERAN: Readonly<Record<PeranV2, KunciPenyedia>> = {
     alasan: 'Ledger: 642 dari 642 panggilan penebak Haiku dilayani Amazon Bedrock, 0 token penalaran di semuanya. Mengunci penyedia yang sudah selalu dipakai.',
   },
   'penebak-deepseek': {
-    model: MODEL_OR_DEEPSEEK, jenis: ['gerbang-tebak'], slug: 'relace', nama: 'Relace',
-    alasan: 'Ledger: penebak DeepSeek tersebar di 22 penyedia (599 panggilan); Relace terbanyak (219) dan 0 dari 219 memakai token penalaran saat penalaran dimatikan. GMICloud: 7 dari 12 panggilan menghabiskan 600 token untuk berpikir → tak terbaca.',
+    model: MODEL_OR_DEEPSEEK, jenis: ['gerbang-tebak'], slug: 'wafer', nama: 'Wafer',
+    alasan: 'M2d-22 (4 Okt): Relace menaikkan harga keluaran ke US$2,4/juta (di atas batas max_price US$1,2) → semua panggilan penebak DeepSeek 404 dan dua percobaan agen (±US$0,98) berjalan tanpa gerbang. Dipindah ke Wafer (US$0,05/0,6; sudah dipakai pembaca kartu DeepSeek). Riwayat: Ledger: penebak DeepSeek tersebar di 22 penyedia (599 panggilan); Relace terbanyak (219) dan 0 dari 219 memakai token penalaran saat penalaran dimatikan. GMICloud: 7 dari 12 panggilan menghabiskan 600 token untuk berpikir → tak terbaca.',
   },
   'penebak-glm': {
     model: MODEL_OR_GLM, jenis: ['gerbang-tebak'], slug: 'wafer', nama: 'Wafer',

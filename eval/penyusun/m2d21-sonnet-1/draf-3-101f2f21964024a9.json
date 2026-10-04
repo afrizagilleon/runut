@@ -1,0 +1,46 @@
+{
+  "omongan": [
+    {
+      "no": 3,
+      "nama": "Tika",
+      "jam": "20.15",
+      "pesan": "Sebelum disetop tadi, harganya naik terus tiap hari bursa tanpa sekali pun turun, mulai akhir November. Udah ada yang cek datanya?",
+      "angka_pesan": [],
+      "kartu": [
+        "hari-naik-beruntun",
+        "harga-2025-11-26",
+        "harga-2025-12-09",
+        "volume-2025-12-10"
+      ],
+      "kartu_penentu": [
+        "hari-naik-beruntun"
+      ],
+      "pilihan": {
+        "a": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+        "b": "Betul, penutupan naik tiap hari bursa dari awal November sampai kemarin.",
+        "c": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+        "d": "Keliru, penutupan hari ini turun dibanding penutupan kemarin."
+      },
+      "kunci": "a",
+      "penjelasan": "Kartu pertama mencatat penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari sebelumnya, dari [[harga-2025-11-26|26 November]] ([[harga-2025-11-26|Rp48]]) sampai [[harga-2025-12-09|9 Desember]] ([[harga-2025-12-09|Rp106]]). Jadi deretannya mulai akhir November, bukan awal, dan tidak ada hari turun. Penutupan [[volume-2025-12-10|10 Desember]] tidak ada: volumenya [[volume-2025-12-10|0 lembar]] karena perdagangan dihentikan. Salah-kaprah yang umum: mengira harga yang naik cepat pasti pernah terkoreksi di tengah jalan.",
+      "pengecoh": {
+        "b": {
+          "jenis": "salah-periode",
+          "rujukan": "harga-2025-11-26",
+          "umpan_balik": "Ini salah periode: kartu 2 menunjukkan deretan naik dimulai akhir November, bukan awal November."
+        },
+        "c": {
+          "jenis": "sebagian-benar",
+          "rujukan": "hari-naik-beruntun",
+          "umpan_balik": "Ini sebagian benar: harganya memang naik cepat, tetapi kartu 1 mencatat tiap hari lebih tinggi, tanpa hari turun."
+        },
+        "d": {
+          "jenis": "pertanyaan-lain",
+          "rujukan": "volume-2025-12-10",
+          "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 mencatat hari ini tanpa transaksi, sedangkan omongannya soal deretan sebelum disetop."
+        }
+      },
+      "pertanyaan_cek": "Apakah penutupan harian sebelum penghentian pernah turun?"
+    }
+  ]
+}

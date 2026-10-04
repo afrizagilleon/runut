@@ -1,0 +1,80 @@
+{
+  "paket_sha": "f7cabc6b2c9abca5ceb36d127b279438c9c3586e3c727de76da3a412fb85a45a",
+  "dipilih": [
+    "1a5abd0216e457e5",
+    "adf573a6e895ac7a",
+    "4f21811124c42b24"
+  ],
+  "draf": {
+    "omongan": [
+      {
+        "nama": "Dimas",
+        "jam": "20.12",
+        "pesan": "Saham T ini udah dua kali disetop bursa tahun ini. Dua-duanya gara-gara harganya kebablasan naik, jadi santai aja, nanti dibuka lagi pasti lanjut terbang.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-01-21",
+          "susp-2025-12-10",
+          "hari-naik-beruntun"
+        ],
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "pilihan": {
+          "a": "Betul, kedua penghentian beralasan kenaikan harga kumulatif.",
+          "b": "Keliru, yang Januari beralasan keraguan kelangsungan usaha.",
+          "c": "Betul, kedua penghentian sama-sama diputuskan oleh bursa.",
+          "d": "Keliru, yang Desember beralasan keraguan kelangsungan usaha."
+        },
+        "kunci": "b",
+        "penjelasan": "Kedua penghentian memang keputusan bursa, tetapi alasannya berbeda. Yang hari ini, [[susp-2025-12-10|10 Desember 2025]], beralasan [[susp-2025-12-10|peningkatan harga kumulatif]] dalam rangka cooling down, sesudah harga naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut. Yang pertama, [[susp-2025-01-21|21 Januari 2025]], beralasan [[susp-2025-01-21|keraguan atas kelangsungan usaha]] — itu soal kesehatan usahanya, bukan soal harga naik. Salah-kaprah yang umum: menganggap semua penghentian perdagangan punya sebab yang sama, padahal tiap pengumuman bursa mencantumkan alasannya sendiri."
+      },
+      {
+        "nama": "Rara",
+        "jam": "22.05",
+        "pesan": "Kemarin transaksinya cuma ratusan ribu lembar katanya, sepi banget. Aku sih nunggu rame dulu baru mau masuk.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-25",
+          "volume-2025-11-26",
+          "volume-2025-12-09",
+          "volume-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-12-09"
+        ],
+        "pilihan": {
+          "a": "Betul, transaksi kemarin di kisaran ratusan ribu lembar.",
+          "b": "Keliru, transaksi kemarin lebih dari satu juta lembar.",
+          "c": "Betul, transaksi hari ini bahkan kosong sama sekali.",
+          "d": "Keliru, transaksi kemarin kosong sama sekali."
+        },
+        "kunci": "b",
+        "penjelasan": "Volume kemarin, [[volume-2025-12-09|9 Desember]], adalah [[volume-2025-12-09|1.461.200 lembar]], jadi lebih dari sejuta, bukan ratusan ribu. Angka ratusan ribu itu milik [[volume-2025-11-26|26 November]], yaitu [[volume-2025-11-26|178.100 lembar]]. Volume kosong tercatat pada [[volume-2025-11-25|25 November]] dan hari ini, [[volume-2025-12-10|10 Desember]], saat perdagangan dihentikan. Salah-kaprah yang umum: mengingat angka dari hari lain lalu menempelkannya ke hari yang sedang dibicarakan."
+      },
+      {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Kalian tahu nggak, akhir November saham T ini sempet sepi banget, sehari pernah nggak ada yang transaksi sama sekali.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-25",
+          "volume-2025-11-26",
+          "volume-2025-12-09",
+          "volume-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-11-25"
+        ],
+        "pilihan": {
+          "a": "Betul, transaksi kosong tercatat pada [[volume-2025-11-25|25 November]].",
+          "b": "Betul, transaksi kosong tercatat pada [[volume-2025-11-26|26 November]].",
+          "c": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-09|9 Desember]].",
+          "d": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-10|10 Desember]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu volume [[volume-2025-11-25|25 November 2025]] mencatat [[volume-2025-11-25|0 lembar]]: hari itu memang tidak ada satu lembar pun yang berpindah tangan, jadi omongan teman cocok dengan kartu. Esoknya, [[volume-2025-11-26|26 November]], volumenya sudah [[volume-2025-11-26|178.100 lembar]], dan pada [[volume-2025-12-09|9 Desember]] malah [[volume-2025-12-09|1.461.200 lembar]]. Volume [[volume-2025-12-10|0 lembar]] pada [[volume-2025-12-10|10 Desember]] memang ada, tetapi itu hari perdagangan disetop, bukan akhir November. Salah-kaprah yang umum: mengira volume nol hanya terjadi ketika bursa menghentikan perdagangan."
+      }
+    ]
+  }
+}

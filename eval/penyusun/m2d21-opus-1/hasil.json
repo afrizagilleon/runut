@@ -1,0 +1,181 @@
+{
+  "id": "m2d21-opus-1",
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 0.6,
+  "berhenti": "anggaran tidak cukup untuk satu pengajuan lagi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 9,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": "Omongan baru saya belum masuk bank. Draf sudah lolos pemeriksaan bentuk, tetapi gerbang berbayar dua kali gagal karena gangguan teknis. Draf itu sendiri tidak ditolak.\n\nDraf yang tertahan (id `4f21811124c42b24`) adalah omongan yang ternyata BETUL, dan memang itu yang masih dibutuhkan simulasi karena ketiga omongan di bank berjawaban Keliru. Isinya: teman bilang akhir November pernah sehari tanpa transaksi. Kartu penentunya `volume-2025-11-25` (0 lembar). Pengecohnya tanggal 26 November, 9 Desember, dan 10 Desember.\n\nKedua `ajukan` berhenti dengan galat \"No endpoints found\" untuk model pemeriksanya, jadi gerbang belum sempat menilai draf. Keduanya juga tidak tercatat sebagai penolakan. Biayanya tetap terpotong (sekitar US$0,22 lalu US$0,02), sehingga sisa anggaran tinggal US$0,328. Saya berhenti mengajukan karena galatnya dari sisi sistem. Sesudah gangguan itu dibereskan, draf ini bisa diajukan lagi dengan id yang sama."
+    },
+    {
+      "ke": 2,
+      "langkah": 3,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 12,
+  "panggilan_model": 12,
+  "pengajuan": 2,
+  "biaya_agen_usd": 0.496442,
+  "biaya_gerbang_usd": 0,
+  "biaya_usd": 0.4964,
+  "durasi_detik": 187,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "1a5abd0216e457e5",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "asal": "m2d18-agen-1"
+      },
+      {
+        "id": "adf573a6e895ac7a",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "volume-2025-12-09"
+        ],
+        "asal": "m2d18-uji-ajukan-2"
+      },
+      {
+        "id": "4615245eb6fd12e7",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "asal": "m2d19-agen-1"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": false,
+    "dipilih": [],
+    "alasan": [
+      "validator seluruh draf (1a5abd0216e457e5, adf573a6e895ac7a, 4615245eb6fd12e7): [TIDAK_ADA_BETUL] Minimal satu dari tiga omongan harus ternyata BETUL (kuncinya pilihan \"Betul,\")."
+    ],
+    "draf": null
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Kalian tahu nggak, akhir November saham T ini sempet sepi banget, sehari pernah nggak ada yang transaksi sama sekali.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-25",
+          "volume-2025-11-26",
+          "volume-2025-12-09",
+          "volume-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-11-25"
+        ],
+        "pilihan": {
+          "a": "Betul, transaksi kosong tercatat pada [[volume-2025-11-25|25 November]].",
+          "b": "Betul, transaksi kosong tercatat pada [[volume-2025-11-26|26 November]].",
+          "c": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-09|9 Desember]].",
+          "d": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-10|10 Desember]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu volume [[volume-2025-11-25|25 November 2025]] mencatat [[volume-2025-11-25|0 lembar]]: hari itu memang tidak ada satu lembar pun yang berpindah tangan, jadi omongan teman cocok dengan kartu. Esoknya, [[volume-2025-11-26|26 November]], volumenya sudah [[volume-2025-11-26|178.100 lembar]], dan pada [[volume-2025-12-09|9 Desember]] malah [[volume-2025-12-09|1.461.200 lembar]]. Volume [[volume-2025-12-10|0 lembar]] pada [[volume-2025-12-10|10 Desember]] memang ada, tetapi itu hari perdagangan disetop, bukan akhir November. Salah-kaprah yang umum: mengira volume nol hanya terjadi ketika bursa menghentikan perdagangan.",
+        "pengecoh": {
+          "b": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "volume-2025-11-26",
+            "umpan_balik": "Ini angka nyaris benar: tanggalnya meleset sehari. Kartu 2 mencatat hari itu sudah ada transaksi; yang kosong adalah kartu 1."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-12-09",
+            "umpan_balik": "Ini salah periode: kartu 3 justru mencatat jutaan lembar berpindah tangan, dan teman bicara soal akhir November."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-12-10",
+            "umpan_balik": "Ini salah periode: kartu 4 adalah hari disetop di Desember, padahal kartu 1 sudah mencatat volume nol di akhir November."
+          }
+        },
+        "pertanyaan_cek": "Pada hari apa di akhir November volume perdagangannya kosong?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Kalian tahu nggak, akhir November saham T ini sempet sepi banget, sehari pernah nggak ada yang transaksi sama sekali.",
+        "angka_pesan": [],
+        "kartu": [
+          "volume-2025-11-25",
+          "volume-2025-11-26",
+          "volume-2025-12-09",
+          "volume-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "volume-2025-11-25"
+        ],
+        "pilihan": {
+          "a": "Betul, transaksi kosong tercatat pada [[volume-2025-11-25|25 November]].",
+          "b": "Betul, transaksi kosong tercatat pada [[volume-2025-11-26|26 November]].",
+          "c": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-09|9 Desember]].",
+          "d": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-10|10 Desember]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu volume [[volume-2025-11-25|25 November 2025]] mencatat [[volume-2025-11-25|0 lembar]]: hari itu memang tidak ada satu lembar pun yang berpindah tangan, jadi omongan teman cocok dengan kartu. Esoknya, [[volume-2025-11-26|26 November]], volumenya sudah [[volume-2025-11-26|178.100 lembar]], dan pada [[volume-2025-12-09|9 Desember]] malah [[volume-2025-12-09|1.461.200 lembar]]. Volume [[volume-2025-12-10|0 lembar]] pada [[volume-2025-12-10|10 Desember]] memang ada, tetapi itu hari perdagangan disetop, bukan akhir November. Salah-kaprah yang umum: mengira volume nol hanya terjadi ketika bursa menghentikan perdagangan.",
+        "pengecoh": {
+          "b": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "volume-2025-11-26",
+            "umpan_balik": "Ini angka nyaris benar: tanggalnya meleset sehari. Kartu 2 mencatat hari itu sudah ada transaksi; yang kosong adalah kartu 1."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-12-09",
+            "umpan_balik": "Ini salah periode: kartu 3 justru mencatat jutaan lembar berpindah tangan, dan teman bicara soal akhir November."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "volume-2025-12-10",
+            "umpan_balik": "Ini salah periode: kartu 4 adalah hari disetop di Desember, padahal kartu 1 sudah mencatat volume nol di akhir November."
+          }
+        },
+        "pertanyaan_cek": "Pada hari apa di akhir November volume perdagangannya kosong?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    }
+  ],
+  "teks_akhir": ""
+}

@@ -1,0 +1,475 @@
+{
+  "id": "m2d22-ajukan-opus-2",
+  "mode": "uji-ajukan",
+  "sumber": "eval/penyusun/m2d21-opus-1/draf-2-4f21811124c42b24.json",
+  "hasil": {
+    "lolos": false,
+    "berhenti": "anggaran",
+    "penolakan": [],
+    "catatan": [
+      "Pagu tercapai di tengah gerbang. Berhenti."
+    ],
+    "biaya_pengajuan_usd": 0.0076,
+    "sisa_anggaran_usd": 0.2924,
+    "bank": {
+      "kartu_penentu": [
+        "susp-2025-01-21",
+        "volume-2025-12-09",
+        "volume-2025-12-10"
+      ],
+      "jumlah_sudut": 3,
+      "target": 3
+    }
+  },
+  "keadaan": {
+    "ditolak": 0,
+    "jumlah_omongan": 3,
+    "jumlah_sudut": 3,
+    "target": 3,
+    "biaya_gerbang_usd": 0.0076,
+    "biaya_total_usd": 0.0076,
+    "sisa_anggaran_usd": 0.2924,
+    "pengajuan": 1,
+    "nilai": [
+      {
+        "putaran": 1,
+        "urut": 1,
+        "omongan": {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Kalian tahu nggak, akhir November saham T ini sempet sepi banget, sehari pernah nggak ada yang transaksi sama sekali.",
+          "angka_pesan": [],
+          "kartu": [
+            "volume-2025-11-25",
+            "volume-2025-11-26",
+            "volume-2025-12-09",
+            "volume-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "volume-2025-11-25"
+          ],
+          "pilihan": {
+            "a": "Betul, transaksi kosong tercatat pada [[volume-2025-11-25|25 November]].",
+            "b": "Betul, transaksi kosong tercatat pada [[volume-2025-11-26|26 November]].",
+            "c": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-09|9 Desember]].",
+            "d": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-10|10 Desember]]."
+          },
+          "kunci": "a",
+          "penjelasan": "Kartu volume [[volume-2025-11-25|25 November 2025]] mencatat [[volume-2025-11-25|0 lembar]]: hari itu memang tidak ada satu lembar pun yang berpindah tangan, jadi omongan teman cocok dengan kartu. Esoknya, [[volume-2025-11-26|26 November]], volumenya sudah [[volume-2025-11-26|178.100 lembar]], dan pada [[volume-2025-12-09|9 Desember]] malah [[volume-2025-12-09|1.461.200 lembar]]. Volume [[volume-2025-12-10|0 lembar]] pada [[volume-2025-12-10|10 Desember]] memang ada, tetapi itu hari perdagangan disetop, bukan akhir November. Salah-kaprah yang umum: mengira volume nol hanya terjadi ketika bursa menghentikan perdagangan.",
+          "pengecoh": {
+            "b": {
+              "jenis": "nyaris-benar-angka",
+              "rujukan": "volume-2025-11-26",
+              "umpan_balik": "Ini angka nyaris benar: tanggalnya meleset sehari. Kartu 2 mencatat hari itu sudah ada transaksi; yang kosong adalah kartu 1."
+            },
+            "c": {
+              "jenis": "salah-periode",
+              "rujukan": "volume-2025-12-09",
+              "umpan_balik": "Ini salah periode: kartu 3 justru mencatat jutaan lembar berpindah tangan, dan teman bicara soal akhir November."
+            },
+            "d": {
+              "jenis": "salah-periode",
+              "rujukan": "volume-2025-12-10",
+              "umpan_balik": "Ini salah periode: kartu 4 adalah hari disetop di Desember, padahal kartu 1 sudah mencatat volume nol di akhir November."
+            }
+          },
+          "pertanyaan_cek": "Pada hari apa di akhir November volume perdagangannya kosong?"
+        },
+        "berhenti": "penebak-kuat",
+        "alasan": [],
+        "dicatat": [
+          "pilihan-saja (diagnosis): kunci 4 dari 8 terbaca (peluang kebetulan 0,1138)",
+          "saringan v2 (dicatat): pesan+pilihan: tanpa kartu, penebak memilih isi kunci 5 dari 11 jawaban terbaca (peluang kebetulan 0,1146; batas 0,01); 1 tak terbaca dibuang",
+          "saringan selabel: tanpa kartu, dari 10 jawaban yang memilih pilihan \"Betul\", 5 memilih kunci dan 5 memilih kembarannya (peluang kebetulan 0,6230; batas 0,02); 91 % jawaban memilih pilihan \"Betul\""
+        ],
+        "saringan": {
+          "jawaban": [
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": null,
+              "isi": null,
+              "isi_kunci": 0,
+              "terbaca": false,
+              "salinan": "Saya tidak memiliki akses ke dokumen yang dirujuk dalam pertanyaan ini. Tanpa melihat data transaksi saham T untuk akhir November dan awal Desember, saya tidak dapat memverifikasi klaim Nadia tentang tanggal spesifik terjadinya transaksi kosong.\n\nUntuk menjawab dengan akurat, saya memerlukan dokumen",
+              "skor": null,
+              "alasan": "(tak terbaca/tak terpetakan)",
+              "biaya_usd": 0.00225,
+              "panggilan": 2
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "c",
+              "isi": 1,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 26 November.",
+              "skor": 1,
+              "alasan": "Nadia menyebut akhir November ada hari tanpa transaksi, pilihan c paling sesuai periode tersebut.",
+              "biaya_usd": 0.000715,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "a",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, transaksi kosong hanya tercatat pada 9 Desember.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, pilihan a paling spesifik dengan tanggal tertentu.",
+              "biaya_usd": 0.00063,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "a",
+              "isi": 1,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 26 November.",
+              "skor": 1,
+              "alasan": "Nadia menyebut akhir November, pilihan (a) paling sesuai dengan periode tersebut.",
+              "biaya_usd": 0.00069,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Tidak ada dokumen, pilih paling mungkin.",
+              "biaya_usd": 0.00003385,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 1,
+              "huruf": "c",
+              "isi": 1,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 26 November.",
+              "skor": 1,
+              "alasan": "Pilihan paling spesifik dan masuk akal.",
+              "biaya_usd": 0.00003325,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Tidak ada dokumen, pilih opsi paling spesifik.",
+              "biaya_usd": 0.00003565,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 3,
+              "huruf": "a",
+              "isi": 1,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 26 November.",
+              "skor": 1,
+              "alasan": "Pilihan ini paling spesifik dan masuk akal.",
+              "biaya_usd": 0.00003385,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Nadia bilang akhir November, opsi a paling cocok.",
+              "biaya_usd": 0.00003705,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Nadia bilang akhir November, opsi b paling cocok.",
+              "biaya_usd": 0.00003705,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Nadia bilang akhir November, opsi 25 November paling cocok.",
+              "biaya_usd": 0.00003825,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "a",
+              "isi": 1,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 26 November.",
+              "skor": 1,
+              "alasan": "Nadia bilang akhir November, opsi a paling cocok.",
+              "biaya_usd": 0.00003705,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 0,
+              "huruf": "c",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, transaksi kosong hanya tercatat pada 9 Desember.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, menebak pilihan yang paling mungkin benar.",
+              "biaya_usd": 0.00029127,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, menebak opsi paling mungkin benar.",
+              "biaya_usd": 0.00030144,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, menebak opsi yang menyatakan kecocokan pesan teman.",
+              "biaya_usd": 0.00033534,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 3,
+              "huruf": "c",
+              "isi": 3,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, transaksi kosong hanya tercatat pada 10 Desember.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, menebak tanggal transaksi kosong yang paling mungkin.",
+              "biaya_usd": 0.00035568,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, pilihan paling mungkin sesuai akhir November.",
+              "biaya_usd": 0.00028519,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "c",
+              "isi": 1,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 26 November.",
+              "skor": 1,
+              "alasan": "Akhir November paling mungkin 26 November tanpa transaksi.",
+              "biaya_usd": 0.00031359,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 25 November.",
+              "skor": 1,
+              "alasan": "Nadia menyebut akhir November, cocok dengan tanggal 25 November.",
+              "biaya_usd": 0.00028519,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "a",
+              "isi": 1,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, transaksi kosong tercatat pada 26 November.",
+              "skor": 1,
+              "alasan": "Nadia menyebut akhir November, cocok dengan tanggal 26 November.",
+              "biaya_usd": 0.00034071,
+              "panggilan": 1
+            }
+          ],
+          "putusan": {
+            "aturan": "v2-binomial-pesan-pilihan",
+            "putusan": "lulus",
+            "alasan": [
+              "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 5 dari 11 jawaban terbaca (peluang kebetulan 0,1146; batas 0,01); 1 tak terbaca dibuang"
+            ],
+            "kondisi": {
+              "pilihan-saja": {
+                "total": 8,
+                "n": 8,
+                "kunci": 4,
+                "tak_terbaca": 0,
+                "p": 0.1138153076171875,
+                "tak_terukur": false,
+                "per_model": [
+                  {
+                    "model": "deepseek/deepseek-v4.1-flash",
+                    "kunci": 2,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  },
+                  {
+                    "model": "z-ai/glm-5.3",
+                    "kunci": 2,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  }
+                ]
+              },
+              "pesan-pilihan": {
+                "total": 12,
+                "n": 11,
+                "kunci": 5,
+                "tak_terbaca": 1,
+                "p": 0.11462640762329102,
+                "tak_terukur": false,
+                "per_model": [
+                  {
+                    "model": "anthropic/claude-haiku-4.5",
+                    "kunci": 0,
+                    "n": 3,
+                    "tak_terbaca": 1
+                  },
+                  {
+                    "model": "deepseek/deepseek-v4.1-flash",
+                    "kunci": 3,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  },
+                  {
+                    "model": "z-ai/glm-5.3",
+                    "kunci": 2,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  }
+                ]
+              }
+            },
+            "diagnosis": "pilihan-saja (diagnosis): kunci 4 dari 8 terbaca (peluang kebetulan 0,1138)"
+          },
+          "biaya_usd": 0.007079410000000001
+        },
+        "kartu_rotasi": {
+          "per_rotasi": [
+            {
+              "r": 0,
+              "kunci": "a",
+              "pilihan": "a",
+              "benar": true,
+              "menunjuk_penentu": true,
+              "bingung": [],
+              "alasan": "Kartu 1 mencatat volume perdagangan 25 November 2025 sebesar 0 lembar, cocok dengan omongan Nadia tentang akhir November tanpa transaksi.",
+              "biaya_usd": 0.00023085
+            },
+            {
+              "r": 2,
+              "kunci": "c",
+              "pilihan": "c",
+              "benar": true,
+              "menunjuk_penentu": true,
+              "bingung": [],
+              "alasan": "Kartu 1 mencatat volume perdagangan 25 November 2025 sebesar 0 lembar, cocok dengan cerita Nadia tentang hari tanpa transaksi pada akhir November.",
+              "biaya_usd": 0.00025185
+            }
+          ],
+          "lulus": true
+        },
+        "penebak_kuat": null,
+        "kritik": null,
+        "biaya_gerbang_usd": 0.007562110000000001,
+        "id_bank": null,
+        "selabel": {
+          "aturan": "selabel-binomial",
+          "n": 11,
+          "tak_terbaca": 1,
+          "n_selabel": 10,
+          "kunci": 5,
+          "p": 0.623046875,
+          "bagian_betul": 0.9090909090909091,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, dari 10 jawaban yang memilih pilihan \"Betul\", 5 memilih kunci dan 5 memilih kembarannya (peluang kebetulan 0,6230; batas 0,02); 91 % jawaban memilih pilihan \"Betul\""
+          ]
+        }
+      }
+    ]
+  }
+}

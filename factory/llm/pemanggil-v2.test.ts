@@ -27,7 +27,7 @@ describe('penyedia dikunci per peran (satu tabel)', () => {
       penulis: `${MODEL_OR_OPUS}@anthropic`,
       'penebak-kuat': `${MODEL_OR_OPUS}@anthropic`,
       'penebak-haiku': `${MODEL_OR_HAIKU}@amazon-bedrock`,
-      'penebak-deepseek': `${MODEL_OR_DEEPSEEK}@relace`,
+      'penebak-deepseek': `${MODEL_OR_DEEPSEEK}@wafer`,
       'penebak-glm': `${MODEL_OR_GLM}@wafer`,
       'pembaca-kartu': `${MODEL_OR_DEEPSEEK}@wafer`,
       kritikus: `${MODEL_OR_GLM}@wafer`,

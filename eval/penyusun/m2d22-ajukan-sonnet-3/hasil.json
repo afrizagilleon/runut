@@ -1,0 +1,456 @@
+{
+  "id": "m2d22-ajukan-sonnet-3",
+  "mode": "uji-ajukan",
+  "sumber": "eval/penyusun/m2d21-sonnet-1/draf-3-101f2f21964024a9.json",
+  "hasil": {
+    "lolos": false,
+    "berhenti": "saringan",
+    "penolakan": [
+      "saringan tebak: tanpa kartu, dari 6 jawaban yang memilih pilihan \"Betul\", 6 memilih kunci dan 0 memilih kembarannya (peluang kebetulan 0,0156; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu; 55 % jawaban memilih pilihan \"Betul\"",
+      "alasan penebak tanpa kartu: \"Pola naik beruntun paling spesifik dan masuk akal.\"",
+      "alasan penebak tanpa kartu: \"Pilihan paling spesifik dan masuk akal tanpa dokumen.\"",
+      "alasan penebak tanpa kartu: \"Nadia bilang naik terus tiap hari bursa mulai akhir November\"",
+      "alasan penebak tanpa kartu: \"Nadia bilang naik terus mulai akhir November\""
+    ],
+    "catatan": [],
+    "biaya_pengajuan_usd": 0.0089,
+    "sisa_anggaran_usd": 0.2911,
+    "bank": {
+      "kartu_penentu": [
+        "susp-2025-01-21",
+        "volume-2025-12-09",
+        "volume-2025-12-10"
+      ],
+      "jumlah_sudut": 3,
+      "target": 3
+    }
+  },
+  "keadaan": {
+    "ditolak": 1,
+    "jumlah_omongan": 3,
+    "jumlah_sudut": 3,
+    "target": 3,
+    "biaya_gerbang_usd": 0.0089,
+    "biaya_total_usd": 0.0089,
+    "sisa_anggaran_usd": 0.2911,
+    "pengajuan": 1,
+    "nilai": [
+      {
+        "putaran": 1,
+        "urut": 1,
+        "omongan": {
+          "nama": "Nadia",
+          "jam": "20.15",
+          "pesan": "Sebelum disetop tadi, harganya naik terus tiap hari bursa tanpa sekali pun turun, mulai akhir November. Udah ada yang cek datanya?",
+          "angka_pesan": [],
+          "kartu": [
+            "hari-naik-beruntun",
+            "harga-2025-11-26",
+            "harga-2025-12-09",
+            "volume-2025-12-10"
+          ],
+          "kartu_penentu": [
+            "hari-naik-beruntun"
+          ],
+          "pilihan": {
+            "a": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+            "b": "Betul, penutupan naik tiap hari bursa dari awal November sampai kemarin.",
+            "c": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+            "d": "Keliru, penutupan hari ini turun dibanding penutupan kemarin."
+          },
+          "kunci": "a",
+          "penjelasan": "Kartu pertama mencatat penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari sebelumnya, dari [[harga-2025-11-26|26 November]] ([[harga-2025-11-26|Rp48]]) sampai [[harga-2025-12-09|9 Desember]] ([[harga-2025-12-09|Rp106]]). Jadi deretannya mulai akhir November, bukan awal, dan tidak ada hari turun. Penutupan [[volume-2025-12-10|10 Desember]] tidak ada: volumenya [[volume-2025-12-10|0 lembar]] karena perdagangan dihentikan. Salah-kaprah yang umum: mengira harga yang naik cepat pasti pernah terkoreksi di tengah jalan.",
+          "pengecoh": {
+            "b": {
+              "jenis": "salah-periode",
+              "rujukan": "harga-2025-11-26",
+              "umpan_balik": "Ini salah periode: kartu 2 menunjukkan deretan naik dimulai akhir November, bukan awal November."
+            },
+            "c": {
+              "jenis": "sebagian-benar",
+              "rujukan": "hari-naik-beruntun",
+              "umpan_balik": "Ini sebagian benar: harganya memang naik cepat, tetapi kartu 1 mencatat tiap hari lebih tinggi, tanpa hari turun."
+            },
+            "d": {
+              "jenis": "pertanyaan-lain",
+              "rujukan": "volume-2025-12-10",
+              "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 mencatat hari ini tanpa transaksi, sedangkan omongannya soal deretan sebelum disetop."
+            }
+          },
+          "pertanyaan_cek": "Apakah penutupan harian sebelum penghentian pernah turun?"
+        },
+        "berhenti": "saringan",
+        "alasan": [
+          "saringan tebak: tanpa kartu, dari 6 jawaban yang memilih pilihan \"Betul\", 6 memilih kunci dan 0 memilih kembarannya (peluang kebetulan 0,0156; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu; 55 % jawaban memilih pilihan \"Betul\""
+        ],
+        "dicatat": [
+          "pilihan-saja (diagnosis): kunci 5 dari 8 terbaca (peluang kebetulan 0,0273)",
+          "saringan v2 (dicatat): pesan+pilihan: tanpa kartu, penebak memilih isi kunci 6 dari 11 jawaban terbaca (peluang kebetulan 0,0343; batas 0,01); 1 tak terbaca dibuang"
+        ],
+        "saringan": {
+          "jawaban": [
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "c",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, pilihan c paling logis karena mengakui tren naik namun ada pengecualian.",
+              "biaya_usd": 0.000755,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "d",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, pilihan d) paling masuk akal karena klaim kenaikan terus-menerus tanpa sekali turun sangat ekstrem dan jarang terjadi di pasar saham.",
+              "biaya_usd": 0.00086,
+              "panggilan": 1
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": null,
+              "isi": null,
+              "isi_kunci": 0,
+              "terbaca": false,
+              "salinan": "Saya tidak memiliki akses ke dokumen data saham yang dimaksud dalam pertanyaan ini. Tanpa melihat data historis harga saham sejak akhir November, saya tidak dapat memverifikasi klaim Nadia tentang kenaikan harga yang konsisten.\n\nUntuk menjawab dengan akurat, saya memerlukan:\n- Data penutupan harian ",
+              "skor": null,
+              "alasan": "(tak terbaca/tak terpetakan)",
+              "biaya_usd": 0.00279,
+              "panggilan": 2
+            },
+            {
+              "model": "anthropic/claude-haiku-4.5",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "b",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Nadia klaim naik terus tanpa turun sekali pun, tapi opsi b menunjukkan ada penurunan.",
+              "biaya_usd": 0.00077,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 0,
+              "huruf": "c",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Pilihan ini paling spesifik menyebut koreksi data.",
+              "biaya_usd": 0.0000389,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Pola naik beruntun paling spesifik dan masuk akal.",
+              "biaya_usd": 0.0000407,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Pilihan paling spesifik dan masuk akal tanpa dokumen.",
+              "biaya_usd": 0.0000395,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pilihan-saja",
+              "r": 3,
+              "huruf": "b",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, opsi ini paling spesifik dan masuk akal.",
+              "biaya_usd": 0.0000407,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "c",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "c) Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Nadia klaim naik terus tanpa turun, opsi c menyangkal.",
+              "biaya_usd": 0.00004485,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Nadia bilang naik terus tiap hari bursa mulai akhir November",
+              "biaya_usd": 0.00004245,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Nadia bilang naik terus mulai akhir November",
+              "biaya_usd": 0.00003945,
+              "panggilan": 1
+            },
+            {
+              "model": "deepseek/deepseek-v4.1-flash",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "d",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Nadia bilang naik tiap hari bursa mulai akhir November.",
+              "biaya_usd": 0.00004245,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 0,
+              "huruf": "c",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, opsi koreksi spesifik ini paling mungkin benar.",
+              "biaya_usd": 0.0004152,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, opsi ini paling mungkin sesuai klaim teman.",
+              "biaya_usd": 0.0004491,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 2,
+              "huruf": "c",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Tanpa dokumen, frasa ini paling spesifik dan masuk akal sebagai klaim.",
+              "biaya_usd": 0.00053724,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pilihan-saja",
+              "r": 3,
+              "huruf": "d",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Deretan kenaikan kemungkinan dimulai akhir November, bukan awal November.",
+              "biaya_usd": 0.00046605,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 0,
+              "huruf": "a",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Klaim Nadia soal kenaikan beruntun cocok dengan deret akhir November.",
+              "biaya_usd": 0.00048374,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 1,
+              "huruf": "b",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Pesan Nadia menyebut kenaikan tiap hari bursa sejak akhir November.",
+              "biaya_usd": 0.00033797,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 2,
+              "huruf": "a",
+              "isi": 2,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+              "skor": 1,
+              "alasan": "Klaim naik terus tanpa turun kemungkinan meleset satu hari.",
+              "biaya_usd": 0.00038543,
+              "panggilan": 1
+            },
+            {
+              "model": "z-ai/glm-5.3",
+              "kondisi": "pesan-pilihan",
+              "r": 3,
+              "huruf": "d",
+              "isi": 0,
+              "isi_kunci": 0,
+              "terbaca": true,
+              "salinan": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+              "skor": 1,
+              "alasan": "Klaim Nadia soal kenaikan harian sejak akhir November terkonfirmasi dokumen.",
+              "biaya_usd": 0.00034475,
+              "panggilan": 1
+            }
+          ],
+          "putusan": {
+            "aturan": "v2-binomial-pesan-pilihan",
+            "putusan": "lulus",
+            "alasan": [
+              "pesan+pilihan: tanpa kartu, penebak memilih isi kunci 6 dari 11 jawaban terbaca (peluang kebetulan 0,0343; batas 0,01); 1 tak terbaca dibuang"
+            ],
+            "kondisi": {
+              "pilihan-saja": {
+                "total": 8,
+                "n": 8,
+                "kunci": 5,
+                "tak_terbaca": 0,
+                "p": 0.0272979736328125,
+                "tak_terukur": false,
+                "per_model": [
+                  {
+                    "model": "deepseek/deepseek-v4.1-flash",
+                    "kunci": 2,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  },
+                  {
+                    "model": "z-ai/glm-5.3",
+                    "kunci": 3,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  }
+                ]
+              },
+              "pesan-pilihan": {
+                "total": 12,
+                "n": 11,
+                "kunci": 6,
+                "tak_terbaca": 1,
+                "p": 0.03432750701904297,
+                "tak_terukur": false,
+                "per_model": [
+                  {
+                    "model": "anthropic/claude-haiku-4.5",
+                    "kunci": 0,
+                    "n": 3,
+                    "tak_terbaca": 1
+                  },
+                  {
+                    "model": "deepseek/deepseek-v4.1-flash",
+                    "kunci": 3,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  },
+                  {
+                    "model": "z-ai/glm-5.3",
+                    "kunci": 3,
+                    "n": 4,
+                    "tak_terbaca": 0
+                  }
+                ]
+              }
+            },
+            "diagnosis": "pilihan-saja (diagnosis): kunci 5 dari 8 terbaca (peluang kebetulan 0,0273)"
+          },
+          "biaya_usd": 0.00892348
+        },
+        "kartu_rotasi": null,
+        "penebak_kuat": null,
+        "kritik": null,
+        "biaya_gerbang_usd": 0.00892348,
+        "id_bank": null,
+        "selabel": {
+          "aturan": "selabel-binomial",
+          "n": 11,
+          "tak_terbaca": 1,
+          "n_selabel": 6,
+          "kunci": 6,
+          "p": 0.015625,
+          "bagian_betul": 0.5454545454545454,
+          "putusan": "tolak",
+          "alasan": [
+            "tanpa kartu, dari 6 jawaban yang memilih pilihan \"Betul\", 6 memilih kunci dan 0 memilih kembarannya (peluang kebetulan 0,0156; batas 0,02) — kunci bisa dibedakan dari kembarannya tanpa membaca kartu; 55 % jawaban memilih pilihan \"Betul\""
+          ]
+        }
+      }
+    ]
+  }
+}

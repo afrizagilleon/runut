@@ -1,0 +1,45 @@
+{
+  "omongan": [
+    {
+      "angka_pesan": [],
+      "jam": "20.15",
+      "kartu": [
+        "volume-2025-11-25",
+        "volume-2025-11-26",
+        "volume-2025-12-10"
+      ],
+      "kartu_penentu": [
+        "volume-2025-11-25"
+      ],
+      "kunci": "a",
+      "nama": "Sinta",
+      "no": 4,
+      "pengecoh": {
+        "b": {
+          "jenis": "salah-periode",
+          "rujukan": "volume-2025-11-26",
+          "umpan_balik": "Ini salah periode: kartu 2 mencatat volume hari itu tidak kosong; hari tanpa transaksi adalah sehari sebelumnya."
+        },
+        "c": {
+          "jenis": "pertanyaan-lain",
+          "rujukan": "volume-2025-11-26",
+          "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 memang tidak kosong, tetapi teman bicara soal satu hari di akhir November, dan hari itu ada di kartu 1."
+        },
+        "d": {
+          "jenis": "salah-periode",
+          "rujukan": "volume-2025-12-10",
+          "umpan_balik": "Ini salah periode: kartu 3 adalah hari disetop di Desember, padahal kartu 1 sudah mencatat volume nol di akhir November."
+        }
+      },
+      "penjelasan": "Kartu volume [[volume-2025-11-25|25 November 2025]] mencatat [[volume-2025-11-25|0 lembar]]: hari itu memang tidak ada satu lembar pun yang berpindah tangan, jadi omongan teman bisa dicek dan cocok. Esoknya, [[volume-2025-11-26|26 November]], volumenya sudah [[volume-2025-11-26|178.100 lembar]], jadi hari itu tidak kosong. Volume [[volume-2025-12-10|0 lembar]] pada [[volume-2025-12-10|10 Desember]] juga ada, tetapi itu hari perdagangan disetop dan bukan akhir November. Salah-kaprah yang umum: mengira volume nol hanya terjadi ketika bursa menghentikan perdagangan.",
+      "pertanyaan_cek": "Pada hari apa di akhir November volume perdagangannya nol?",
+      "pesan": "Kalian tahu nggak, akhir November saham T ini sempet sepi banget, sehari pernah nggak ada yang transaksi sama sekali.",
+      "pilihan": {
+        "a": "Betul, transaksi kosong tercatat pada [[volume-2025-11-25|25 November]].",
+        "b": "Betul, transaksi kosong tercatat pada [[volume-2025-11-26|26 November]].",
+        "c": "Keliru, volume [[volume-2025-11-26|26 November]] justru tidak kosong.",
+        "d": "Keliru, transaksi kosong hanya tercatat pada [[volume-2025-12-10|10 Desember]]."
+      }
+    }
+  ]
+}

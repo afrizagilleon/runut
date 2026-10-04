@@ -125,6 +125,8 @@ export function buatAlat(o: OpsiAlat) {
   let ke = 0;
   let ajukanKe = 0;
   let antre: Promise<unknown> = Promise.resolve();
+  /** Galat gerbang yang bukan penolakan dan bukan pagu (penyedia hilang, jaringan): percobaan harus berhenti. */
+  let rusak: string | null = null;
 
   const bank = (): EntriBank[] => bacaBank(o.folderBank, sha);
   const terpakai = (): number => o.biayaAgen() + biayaGerbang;
@@ -193,7 +195,11 @@ export function buatAlat(o: OpsiAlat) {
       const terakhir = semuaNilai.at(-1);
       if (terakhir !== undefined && terakhir.putaran === ajukanKe) biayaGerbang += terakhir.biaya_gerbang_usd;
       if (galat instanceof PaguTercapai) return lapor('ajukan', 'terpotong pagu', dasar('anggaran', [], ['Pagu tercapai di tengah gerbang. Berhenti.'], terakhir?.biaya_gerbang_usd ?? 0));
-      throw galat;
+      // M2d-22: gerbang rusak bukan penolakan. Dulu galatnya dilempar ke model, yang lalu terus menulis dan membayar
+      // tanpa pernah dinilai (dua percobaan, ±US$0,98). Sekarang: dicatat, drafnya tetap tersimpan, percobaan dihentikan.
+      rusak = galat instanceof Error ? `${galat.name}: ${galat.message}`.slice(0, 400) : 'galat tak dikenal';
+      ajukanKe -= 1;
+      return lapor('ajukan', 'GERBANG RUSAK — percobaan dihentikan', dasar('galat-gerbang', [], ['Gerbang tidak bisa dijalankan (gangguan teknis, bukan penolakan). Draf ini tetap tersimpan. Berhenti; jangan menulis draf lain.'], terakhir?.biaya_gerbang_usd ?? 0));
     }
     biayaGerbang += n.biaya_gerbang_usd;
     if (n.berhenti === 'lolos') {
@@ -232,6 +238,10 @@ export function buatAlat(o: OpsiAlat) {
     /** Selesai = bank BISA DIRAKIT menjadi simulasi (bukan sekadar jumlah sudut). */
     selesai: () => pilihSimulasi(bank(), o.paket).draf !== null,
     anggaranHabis: () => sisa() < CADANGAN_AJUKAN_USD,
+    /** Pesan galat gerbang (bukan penolakan); `null` = sehat. */
+    rusak: () => rusak,
+    /** Draf yang sudah lolos gerbang kode di percobaan ini (untuk disimpan walau gerbang berbayar gagal). */
+    drafLolos: () => [...drafLolos.entries()].map(([id, omongan]) => ({ id, omongan })),
   };
 }
 

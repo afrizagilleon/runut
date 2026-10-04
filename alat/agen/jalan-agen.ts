@@ -37,7 +37,7 @@ import { MODEL_OR_OPUS } from '../../factory/llm/model.ts';
 import { BASE_URL_OPENROUTER } from '../../factory/llm/openrouter.ts';
 import { PencatatBiaya } from '../../factory/llm/pagu.ts';
 import type { PaketFakta } from '../../factory/llm/paket.ts';
-import { pagarPeranV2, periksaPenyedia } from '../../factory/llm/pemanggil-v2.ts';
+import { pagarPeranV2, PENYEDIA_PERAN, periksaPenyedia } from '../../factory/llm/pemanggil-v2.ts';
 import { AWALAN_TAG_PENYUSUN, biayaAwalan, jalurLedger } from '../penyusun/biaya.ts';
 import { panggilV3 } from '../penyusun/pemanggil-v3.ts';
 
@@ -88,6 +88,33 @@ const folderBank = `${AKAR}${arg('--bank') ?? FOLDER_BANK}`;
 const rahasia = [konfig.apiKey];
 const tulis = (berkas: string, baris: Record<string, unknown>): void => appendFileSync(`${folder}/${berkas}`, samarkan(JSON.stringify(baris), rahasia) + '\n', 'utf8');
 const jejak = (baris: Record<string, unknown>): void => tulis('jejak-agen.jsonl', { waktu: new Date().toISOString(), ...baris });
+
+/**
+ * Pemeriksaan GRATIS sebelum panggilan berbayar apa pun (M2d-22): tiap penyedia yang dikunci per peran harus
+ * masih melayani modelnya dengan harga di bawah batas `max_price`. Daftar titik akhir OpenRouter tidak ditagih.
+ * Tanpa ini, penyedia yang menaikkan harga membuat gerbang 404 sementara agen terus membayar.
+ */
+async function periksaPenyediaTerkunci(): Promise<string[]> {
+  const masalah: string[] = [];
+  const perModel = new Map<string, Array<{ tag?: string; pricing: { prompt: string; completion: string } }>>();
+  for (const [peran, k] of Object.entries(PENYEDIA_PERAN)) {
+    if (!perModel.has(k.model)) {
+      const r = await fetch(`${konfig.baseUrl}/models/${k.model}/endpoints`);
+      if (!r.ok) { masalah.push(`${peran}: daftar titik akhir ${k.model} tidak terbaca (HTTP ${String(r.status)})`); continue; }
+      perModel.set(k.model, ((await r.json()) as { data: { endpoints: Array<{ tag?: string; pricing: { prompt: string; completion: string } }> } }).data.endpoints);
+    }
+    const batas = (pagarPeranV2(peran as keyof typeof PENYEDIA_PERAN) as { max_price: { prompt: number; completion: number } }).max_price;
+    const cocok = (perModel.get(k.model) ?? []).filter((e) => (e.tag ?? '').split('/')[0] === k.slug);
+    if (cocok.length === 0) { masalah.push(`${peran}: penyedia "${k.slug}" tidak lagi melayani ${k.model}`); continue; }
+    if (!cocok.some((e) => Number(e.pricing.prompt) * 1e6 <= batas.prompt + 1e-9 && Number(e.pricing.completion) * 1e6 <= batas.completion + 1e-9)) {
+      masalah.push(`${peran}: harga "${k.slug}" untuk ${k.model} (US$${cocok.map((e) => `${String(Number(e.pricing.prompt) * 1e6)}/${String(Number(e.pricing.completion) * 1e6)}`).join(', ')} per juta) di atas batas US$${String(batas.prompt)}/${String(batas.completion)}`);
+    }
+  }
+  return masalah;
+}
+const masalahPenyedia = await periksaPenyediaTerkunci();
+if (masalahPenyedia.length > 0) throw new Error(`Penyedia terkunci bermasalah; TIDAK ada panggilan berbayar yang dikirim:\n- ${masalahPenyedia.join('\n- ')}`);
+console.log('Penyedia terkunci: semua peran masih dilayani di bawah batas harga (diperiksa gratis).');
 
 const terpakaiPenyusun = biayaAwalan(AKAR, AWALAN_TAG_PENYUSUN);
 const panggilGerbang = panggilV3({ akar: AKAR, paguMilestoneUsd: Math.round((terpakaiPenyusun + pagu + 0.01) * 1e4) / 1e4, awalanMilestone: AWALAN_TAG_PENYUSUN, log: (b) => console.log(b) })(awalanTag, pagu, `${folder}/mentah-panggilan.jsonl`);
@@ -194,7 +221,7 @@ const agen = new ToolLoopAgent({
     periksa_kode: tool({ description: 'Periksa bentuk SATU draf omongan. Gratis. Mengembalikan penolakan apa adanya; kosong berarti lolos.', inputSchema: skemaOmongan, execute: ({ omongan }) => alat.periksaKode(omongan) }),
     ajukan: tool({ description: `Ajukan SATU draf ke gerbang berbayar (pembaca kartu, penebak tanpa kartu, kritikus). Yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)}.`, inputSchema: z.object({ id_draf: z.string().describe('id_draf dari periksa_kode yang lolos.') }), execute: ({ id_draf }) => alat.ajukan({ id_draf }) }),
   },
-  stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.keadaan().jumlah_omongan > sudutAwal || alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
+  stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.rusak() !== null || alat.keadaan().jumlah_omongan > sudutAwal || alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
   maxOutputTokens: 128_000,
   maxRetries: 2,
   providerOptions: { openrouter: { reasoning: { effort: 'medium', exclude: false } } },
@@ -207,7 +234,7 @@ let teksAkhir = '';
 let langkah = 0;
 const ringkasPercakapan: Array<{ ke: number; langkah: number; sudut_sebelum: number; sudut_sesudah: number; ditolak: number; teks_akhir: string }> = [];
 try {
-  while (percakapan < MAKS_PERCAKAPAN && !alat.selesai() && !alat.anggaranHabis()) {
+  while (percakapan < MAKS_PERCAKAPAN && !alat.selesai() && !alat.anggaranHabis() && alat.rusak() === null) {
     percakapan += 1;
     sudutAwal = alat.keadaan().jumlah_omongan;
     ditolakAwal = alat.keadaan().ditolak;
@@ -225,13 +252,13 @@ try {
 const k = alat.keadaan();
 const bank = bacaBank(folderBank, shaPaketBank(paket));
 const simulasi = pilihSimulasi(bank, paket);
-const berhenti = galat !== null ? `galat: ${galat}` : alat.selesai() ? 'bank bisa dirakit menjadi simulasi' : alat.anggaranHabis() ? 'anggaran tidak cukup untuk satu pengajuan lagi' : percakapan >= MAKS_PERCAKAPAN ? 'batas percakapan' : 'agen berhenti sendiri';
+const berhenti = galat !== null ? `galat: ${galat}` : alat.rusak() !== null ? `gerbang rusak: ${alat.rusak() ?? ''}` : alat.selesai() ? 'bank bisa dirakit menjadi simulasi' : alat.anggaranHabis() ? 'anggaran tidak cukup untuk satu pengajuan lagi' : percakapan >= MAKS_PERCAKAPAN ? 'batas percakapan' : 'agen berhenti sendiri';
 const hasil = {
   id, model: MODEL_PENULIS, sdk: 'ai (ToolLoopAgent) + @openrouter/ai-sdk-provider', target, pagu_usd: pagu, berhenti, percakapan: ringkasPercakapan, langkah, panggilan_model: panggilanModel, pengajuan: k.pengajuan,
   biaya_agen_usd: bulat(biayaAgen), biaya_gerbang_usd: k.biaya_gerbang_usd, biaya_usd: k.biaya_total_usd, durasi_detik: Math.round((Date.now() - mulai) / 1000),
   bank: { jumlah_sudut: k.jumlah_sudut, omongan: bank.map((e) => ({ id: e.id, nama: e.omongan.nama, kartu_penentu: e.kartu_penentu, asal: e.asal.jalan })) },
   simulasi: { terbit: simulasi.draf !== null, dipilih: simulasi.dipilih, alasan: simulasi.alasan, draf: simulasi.draf },
-  nilai: k.nilai, teks_akhir: teksAkhir,
+  nilai: k.nilai, draf_lolos_kode: alat.drafLolos(), teks_akhir: teksAkhir,
 };
 writeFileSync(`${folder}/hasil.json`, samarkan(JSON.stringify(hasil, null, 2), rahasia), 'utf8');
 console.log(`selesai (${berhenti}): ${String(panggilanModel)} panggilan model, ${String(k.pengajuan)} pengajuan, bank ${String(k.jumlah_sudut)}/${String(target)}, US$${k.biaya_total_usd.toFixed(4)} (agen ${biayaAgen.toFixed(4)} + gerbang ${k.biaya_gerbang_usd.toFixed(4)}), simulasi ${simulasi.draf !== null ? 'TERBIT' : 'belum'}`);

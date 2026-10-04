@@ -70,7 +70,7 @@ describe('pemanggil v3: badan permintaan', () => {
     expect(j.biaya_usd).toBe(0.11);
   });
 
-  it('tiap peran gerbang membawa SATU penyedia terkunci (penebak DeepSeek relace; pembaca kartu DeepSeek wafer)', async () => {
+  it('tiap peran gerbang membawa SATU penyedia terkunci (penebak DeepSeek wafer sejak M2d-22; pembaca kartu DeepSeek wafer)', async () => {
     const s = siapkan((b) => respons(NAMA[((b['provider'] as { order: string[] }).order[0] as string)] as string));
     const [haiku, deepseek, glm] = MODEL_ROTASI;
     await s.p(PESAN, { ...haiku!.setelan }, info('gerbang-tebak', MODEL_OR_HAIKU, { ke: 1 }));
@@ -81,7 +81,7 @@ describe('pemanggil v3: badan permintaan', () => {
     await s.p(PESAN, { suhu: 0, maxTokens: 4000 }, info('kritikus', MODEL_OR_GLM, { peran: 'kritikus' }));
     expect(s.kirim.map((k) => [k.badan['model'], (k.badan['provider'] as { order: string[]; allow_fallbacks: boolean }).order, (k.badan['provider'] as { allow_fallbacks: boolean }).allow_fallbacks])).toEqual([
       [MODEL_OR_HAIKU, ['amazon-bedrock'], false],
-      [MODEL_OR_DEEPSEEK, ['relace'], false],
+      [MODEL_OR_DEEPSEEK, ['wafer'], false],
       [MODEL_OR_GLM, ['wafer'], false],
       [MODEL_OR_DEEPSEEK, ['wafer'], false],
       [MODEL_OR_OPUS, ['anthropic'], false],

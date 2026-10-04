@@ -1,0 +1,51 @@
+{
+  "omongan": [
+    {
+      "angka_pesan": [
+        {
+          "fact_id": "hari-naik-beruntun",
+          "teks": "sembilan hari bursa"
+        }
+      ],
+      "jam": "19.12",
+      "kartu": [
+        "hari-naik-beruntun",
+        "susp-2025-12-10",
+        "susp-2025-01-21"
+      ],
+      "kartu_penentu": [
+        "susp-2025-12-10",
+        "hari-naik-beruntun"
+      ],
+      "kunci": "c",
+      "nama": "Tomi",
+      "no": 3,
+      "pengecoh": {
+        "a": {
+          "jenis": "sebagian-benar",
+          "rujukan": "hari-naik-beruntun",
+          "umpan_balik": "Ini sebagian benar: kartu 1 mencatat harga naik terus, tiap hari lebih tinggi, tanpa turun."
+        },
+        "b": {
+          "jenis": "salah-periode",
+          "rujukan": "susp-2025-01-21",
+          "umpan_balik": "Ini salah periode: alasan keraguan usaha ada di kartu 3 untuk Januari, bukan penghentian hari ini."
+        },
+        "d": {
+          "jenis": "pertanyaan-lain",
+          "rujukan": "susp-2025-12-10",
+          "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 justru mencatat alasan resmi penghentian hari ini, yaitu cooling down."
+        }
+      },
+      "penjelasan": "Kartu pertama mencatat harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari sebelumnya. Kartu kedua mencatat penghentian [[susp-2025-12-10|10 Desember 2025]] karena peningkatan harga kumulatif, dalam rangka cooling down; tidak ada kata soal kelangsungan usaha. Alasan keraguan usaha ada di kartu ketiga, yaitu penghentian [[susp-2025-01-21|21 Januari 2025]], peristiwa lain. Salah-kaprah yang umum: mengira semua penghentian oleh bursa punya alasan yang sama.",
+      "pertanyaan_cek": "Apa alasan resmi bursa menghentikan perdagangan hari ini?",
+      "pesan": "Hari ini disetop bursa karena harganya naik terus sembilan hari bursa beruntun, bukan karena soal usahanya.",
+      "pilihan": {
+        "a": "Keliru, harganya sempat turun di tengah [[hari-naik-beruntun|9 hari bursa]] itu.",
+        "b": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] beruntun lalu diragukan kelangsungan usahanya.",
+        "c": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] beruntun lalu didinginkan bursa.",
+        "d": "Keliru, harganya naik [[hari-naik-beruntun|9 hari bursa]], tetapi alasan penghentiannya tidak tercatat."
+      }
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "omongan": [
+    {
+      "angka_pesan": [],
+      "jam": "20.12",
+      "kartu": [
+        "hari-naik-beruntun",
+        "harga-2025-11-26",
+        "harga-2025-12-09",
+        "susp-2025-12-10"
+      ],
+      "kartu_penentu": [
+        "hari-naik-beruntun"
+      ],
+      "kunci": "a",
+      "nama": "Tiara",
+      "no": 4,
+      "pengecoh": {
+        "b": {
+          "jenis": "salah-periode",
+          "rujukan": "harga-2025-11-26",
+          "umpan_balik": "Ini salah periode: kartu 2 baru mulai akhir November, tidak ada catatan naik terus sejak awal tahun."
+        },
+        "c": {
+          "jenis": "nyaris-benar-angka",
+          "rujukan": "hari-naik-beruntun",
+          "umpan_balik": "Ini angka nyaris benar: kartu 1 mencatat tiap hari lebih tinggi, tanpa satu pun hari turun."
+        },
+        "d": {
+          "jenis": "sebagian-benar",
+          "rujukan": "harga-2025-12-09",
+          "umpan_balik": "Ini sebagian benar: harga memang naik, tetapi kartu 3 menunjukkan harga terus naik sampai hari terakhir, tidak mendatar."
+        }
+      },
+      "penjelasan": "Kartu hari naik beruntun mencatat penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] pada [[harga-2025-11-26|26 November]] sampai [[harga-2025-12-09|Rp106]] pada [[harga-2025-12-09|9 Desember]], tiap hari lebih tinggi dari hari sebelumnya. Penghentian baru terjadi pada [[susp-2025-12-10|10 Desember]], jadi tidak ada hari turun di tengahnya. Data itu hanya mulai akhir November, bukan awal tahun. Salah-kaprah yang umum: mengira kenaikan beruntun berarti data sejak awal tahun juga naik terus.",
+      "pertanyaan_cek": "Apakah penutupan harga turun pada salah satu hari dalam rentang itu?",
+      "pesan": "Sebelum disetop tadi, katanya harganya naik terus tiap hari bursa sejak akhir November, nggak pernah turun sekali pun. Bener nggak sih?",
+      "pilihan": {
+        "a": "Betul, setiap penutupan melampaui hari lalunya.",
+        "b": "Betul, penutupan naik terus sejak awal tahun ini.",
+        "c": "Keliru, penutupan sempat turun sehari di tengah jalan.",
+        "d": "Keliru, penutupan naik sebagian hari lalu mendatar."
+      }
+    }
+  ]
+}

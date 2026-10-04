@@ -1,0 +1,44 @@
+{
+  "omongan": [
+    {
+      "angka_pesan": [],
+      "jam": "20.15",
+      "kartu": [
+        "susp-2025-12-10",
+        "susp-2025-01-21"
+      ],
+      "kartu_penentu": [
+        "susp-2025-12-10"
+      ],
+      "kunci": "a",
+      "nama": "Tika",
+      "no": 3,
+      "pengecoh": {
+        "b": {
+          "jenis": "salah-periode",
+          "rujukan": "susp-2025-12-10",
+          "umpan_balik": "Ini salah periode: kartu 1 menyebut kenaikan harga sebagai alasan hari ini, bukan keraguan usaha."
+        },
+        "c": {
+          "jenis": "salah-periode",
+          "rujukan": "susp-2025-12-10",
+          "umpan_balik": "Ini salah periode: alasan keraguan usaha milik penghentian lama; kartu 1 menyebut kenaikan harga untuk hari ini."
+        },
+        "d": {
+          "jenis": "sebagian-benar",
+          "rujukan": "susp-2025-01-21",
+          "umpan_balik": "Ini sebagian benar: harga naik memang alasan kini, tetapi kartu 2 mencatat alasan Januari adalah keraguan usaha."
+        }
+      },
+      "penjelasan": "Pengumuman [[susp-2025-12-10|10 Desember 2025]] menyebut alasan resminya: kenaikan harga kumulatif yang signifikan, cooling down sebagai perlindungan investor. Pengumuman [[susp-2025-01-21|21 Januari 2025]] menyebut alasan lain: keraguan atas kelangsungan usaha. Jadi kedua bagian pesan Tika cocok dengan kartu. Salah-kaprah yang umum: mengira setiap penghentian perdagangan oleh bursa pasti berarti perusahaannya bermasalah.",
+      "pertanyaan_cek": "Apa alasan resmi tiap pengumuman penghentian itu?",
+      "pesan": "Disetop lagi nih. Tapi katanya kali ini beda alasan sama yang Januari: bukan soal perusahaannya, tapi harganya naik terus.",
+      "pilihan": {
+        "a": "Betul, kini karena harga naik, bukan keraguan usaha seperti Januari.",
+        "b": "Betul, kini bursa meragukan kelangsungan usaha perseroan.",
+        "c": "Keliru, kini dan Januari sama-sama karena keraguan usaha.",
+        "d": "Keliru, kini dan Januari sama-sama karena harga naik."
+      }
+    }
+  ]
+}

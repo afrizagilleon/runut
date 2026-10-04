@@ -1,0 +1,579 @@
+{
+  "id": "m2d21-sonnet-1",
+  "model": "anthropic/claude-sonnet-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 0.6,
+  "berhenti": "anggaran tidak cukup untuk satu pengajuan lagi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 11,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": "Omongan baru belum masuk bank. Tiga kali `ajukan` gagal dengan galat sistem yang sama (HTTP 404, model penguji tidak tersedia), jadi drafnya belum pernah diuji. Anggaran tetap berkurang, dari US$0,5871 menjadi US$0,4578 setelah dua kali percobaan. Aku tidak tahu apakah percobaan ketiga juga memotong anggaran.\n\nDrafnya omongan Tika yang kuncinya \"Betul\": alasan penghentian perdagangan hari ini (kenaikan harga) berbeda dari alasan Januari (keraguan usaha). Drafnya lolos `periksa_kode` dengan `id_draf` e6bedf0edeed608c. Kartu penentunya `susp-2025-12-10`."
+    },
+    {
+      "ke": 2,
+      "langkah": 6,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": "Omongan baru belum masuk bank. Draf tentang penghentian hari ini (harga naik sembilan hari bursa beruntun, alasan resminya cooling down, bukan soal usaha) lolos `periksa_kode`. Dua kali `ajukan` gagal dengan galat teknis HTTP 404 dari model penguji. Itu galat sistem, bukan penolakan atas isi draf.\n\nSaya berhenti di sini dan tidak mengutak-atik draf, karena galatnya bukan dari kata-katanya. Draf itu berkunci \"Betul\", jadi kalau lolos, kebutuhan simulasi akan terpenuhi. Saya tidak tahu sisa anggaran saat ini karena belum memeriksa `lihat_bank` lagi."
+    },
+    {
+      "ke": 3,
+      "langkah": 7,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": "Omongan baru belum masuk bank. Draf tentang deretan kenaikan harga sembilan hari bursa lolos `periksa_kode`, tetapi dua kali `ajukan` gagal dengan galat teknis (HTTP 404 pada model penguji). Karena itu belum ada hasil uji dari pembaca kartu, penebak, maupun kritikus.\n\nOmongan itu berkunci \"Betul\" dan kartu penentunya `hari-naik-beruntun`, jadi memenuhi kebutuhan simulasi akan satu omongan yang betul. Saya berhenti di sini dan tidak mengulang pengajuan, karena galatnya ada di sisi sistem, bukan di kata-kata draf."
+    },
+    {
+      "ke": 4,
+      "langkah": 8,
+      "sudut_sebelum": 3,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 32,
+  "panggilan_model": 32,
+  "pengajuan": 9,
+  "biaya_agen_usd": 0.48864,
+  "biaya_gerbang_usd": 0,
+  "biaya_usd": 0.4886,
+  "durasi_detik": 311,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "1a5abd0216e457e5",
+        "nama": "Dimas",
+        "kartu_penentu": [
+          "susp-2025-01-21"
+        ],
+        "asal": "m2d18-agen-1"
+      },
+      {
+        "id": "adf573a6e895ac7a",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "volume-2025-12-09"
+        ],
+        "asal": "m2d18-uji-ajukan-2"
+      },
+      {
+        "id": "4615245eb6fd12e7",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "volume-2025-12-10"
+        ],
+        "asal": "m2d19-agen-1"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": false,
+    "dipilih": [],
+    "alasan": [
+      "validator seluruh draf (1a5abd0216e457e5, adf573a6e895ac7a, 4615245eb6fd12e7): [TIDAK_ADA_BETUL] Minimal satu dari tiga omongan harus ternyata BETUL (kuncinya pilihan \"Betul,\")."
+    ],
+    "draf": null
+  },
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Disetop lagi nih. Tapi katanya kali ini beda alasan sama yang Januari: bukan soal perusahaannya, tapi harganya naik terus.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, kini karena harga naik, bukan keraguan usaha seperti Januari.",
+          "b": "Betul, kini bursa meragukan kelangsungan usaha perseroan.",
+          "c": "Keliru, kini dan Januari sama-sama karena keraguan usaha.",
+          "d": "Keliru, kini dan Januari sama-sama karena harga naik."
+        },
+        "kunci": "a",
+        "penjelasan": "Pengumuman [[susp-2025-12-10|10 Desember 2025]] menyebut alasan resminya: kenaikan harga kumulatif yang signifikan, cooling down sebagai perlindungan investor. Pengumuman [[susp-2025-01-21|21 Januari 2025]] menyebut alasan lain: keraguan atas kelangsungan usaha. Jadi kedua bagian pesan Tika cocok dengan kartu. Salah-kaprah yang umum: mengira setiap penghentian perdagangan oleh bursa pasti berarti perusahaannya bermasalah.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini salah periode: kartu 1 menyebut kenaikan harga sebagai alasan hari ini, bukan keraguan usaha."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini salah periode: alasan keraguan usaha milik penghentian lama; kartu 1 menyebut kenaikan harga untuk hari ini."
+          },
+          "d": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini sebagian benar: harga naik memang alasan kini, tetapi kartu 2 mencatat alasan Januari adalah keraguan usaha."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi tiap pengumuman penghentian itu?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Disetop lagi nih. Tapi katanya kali ini beda alasan sama yang Januari: bukan soal perusahaannya, tapi harganya naik terus.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, kini karena harga naik, bukan keraguan usaha seperti Januari.",
+          "b": "Betul, kini bursa meragukan kelangsungan usaha perseroan.",
+          "c": "Keliru, kini dan Januari sama-sama karena keraguan usaha.",
+          "d": "Keliru, kini dan Januari sama-sama karena harga naik."
+        },
+        "kunci": "a",
+        "penjelasan": "Pengumuman [[susp-2025-12-10|10 Desember 2025]] menyebut alasan resminya: kenaikan harga kumulatif yang signifikan, cooling down sebagai perlindungan investor. Pengumuman [[susp-2025-01-21|21 Januari 2025]] menyebut alasan lain: keraguan atas kelangsungan usaha. Jadi kedua bagian pesan Tika cocok dengan kartu. Salah-kaprah yang umum: mengira setiap penghentian perdagangan oleh bursa pasti berarti perusahaannya bermasalah.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini salah periode: kartu 1 menyebut kenaikan harga sebagai alasan hari ini, bukan keraguan usaha."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini salah periode: alasan keraguan usaha milik penghentian lama; kartu 1 menyebut kenaikan harga untuk hari ini."
+          },
+          "d": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini sebagian benar: harga naik memang alasan kini, tetapi kartu 2 mencatat alasan Januari adalah keraguan usaha."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi tiap pengumuman penghentian itu?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 3,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Disetop lagi nih. Tapi katanya kali ini beda alasan sama yang Januari: bukan soal perusahaannya, tapi harganya naik terus.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10"
+        ],
+        "pilihan": {
+          "a": "Betul, kini karena harga naik, bukan keraguan usaha seperti Januari.",
+          "b": "Betul, kini bursa meragukan kelangsungan usaha perseroan.",
+          "c": "Keliru, kini dan Januari sama-sama karena keraguan usaha.",
+          "d": "Keliru, kini dan Januari sama-sama karena harga naik."
+        },
+        "kunci": "a",
+        "penjelasan": "Pengumuman [[susp-2025-12-10|10 Desember 2025]] menyebut alasan resminya: kenaikan harga kumulatif yang signifikan, cooling down sebagai perlindungan investor. Pengumuman [[susp-2025-01-21|21 Januari 2025]] menyebut alasan lain: keraguan atas kelangsungan usaha. Jadi kedua bagian pesan Tika cocok dengan kartu. Salah-kaprah yang umum: mengira setiap penghentian perdagangan oleh bursa pasti berarti perusahaannya bermasalah.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini salah periode: kartu 1 menyebut kenaikan harga sebagai alasan hari ini, bukan keraguan usaha."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini salah periode: alasan keraguan usaha milik penghentian lama; kartu 1 menyebut kenaikan harga untuk hari ini."
+          },
+          "d": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini sebagian benar: harga naik memang alasan kini, tetapi kartu 2 mencatat alasan Januari adalah keraguan usaha."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi tiap pengumuman penghentian itu?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 4,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "19.12",
+        "pesan": "Hari ini disetop bursa karena harganya naik terus sembilan hari bursa beruntun, bukan karena soal usahanya.",
+        "angka_pesan": [
+          {
+            "teks": "sembilan hari bursa",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10",
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Keliru, harganya sempat turun di tengah [[hari-naik-beruntun|9 hari bursa]] itu.",
+          "b": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] beruntun lalu diragukan kelangsungan usahanya.",
+          "c": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] beruntun lalu didinginkan bursa.",
+          "d": "Keliru, harganya naik [[hari-naik-beruntun|9 hari bursa]], tetapi alasan penghentiannya tidak tercatat."
+        },
+        "kunci": "c",
+        "penjelasan": "Kartu pertama mencatat harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari sebelumnya. Kartu kedua mencatat penghentian [[susp-2025-12-10|10 Desember 2025]] karena peningkatan harga kumulatif, dalam rangka cooling down; tidak ada kata soal kelangsungan usaha. Alasan keraguan usaha ada di kartu ketiga, yaitu penghentian [[susp-2025-01-21|21 Januari 2025]], peristiwa lain. Salah-kaprah yang umum: mengira semua penghentian oleh bursa punya alasan yang sama.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Ini sebagian benar: kartu 1 mencatat harga naik terus, tiap hari lebih tinggi, tanpa turun."
+          },
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini salah periode: alasan keraguan usaha ada di kartu 3 untuk Januari, bukan penghentian hari ini."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 justru mencatat alasan resmi penghentian hari ini, yaitu cooling down."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi bursa menghentikan perdagangan hari ini?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 5,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "19.12",
+        "pesan": "Hari ini disetop bursa karena harganya naik terus sembilan hari bursa beruntun, bukan karena soal usahanya.",
+        "angka_pesan": [
+          {
+            "teks": "sembilan hari bursa",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "susp-2025-12-10",
+          "susp-2025-01-21"
+        ],
+        "kartu_penentu": [
+          "susp-2025-12-10",
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Keliru, harganya sempat turun di tengah [[hari-naik-beruntun|9 hari bursa]] itu.",
+          "b": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] beruntun lalu diragukan kelangsungan usahanya.",
+          "c": "Betul, harganya naik [[hari-naik-beruntun|9 hari bursa]] beruntun lalu didinginkan bursa.",
+          "d": "Keliru, harganya naik [[hari-naik-beruntun|9 hari bursa]], tetapi alasan penghentiannya tidak tercatat."
+        },
+        "kunci": "c",
+        "penjelasan": "Kartu pertama mencatat harga penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari sebelumnya. Kartu kedua mencatat penghentian [[susp-2025-12-10|10 Desember 2025]] karena peningkatan harga kumulatif, dalam rangka cooling down; tidak ada kata soal kelangsungan usaha. Alasan keraguan usaha ada di kartu ketiga, yaitu penghentian [[susp-2025-01-21|21 Januari 2025]], peristiwa lain. Salah-kaprah yang umum: mengira semua penghentian oleh bursa punya alasan yang sama.",
+        "pengecoh": {
+          "a": {
+            "jenis": "sebagian-benar",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Ini sebagian benar: kartu 1 mencatat harga naik terus, tiap hari lebih tinggi, tanpa turun."
+          },
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "susp-2025-01-21",
+            "umpan_balik": "Ini salah periode: alasan keraguan usaha ada di kartu 3 untuk Januari, bukan penghentian hari ini."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "susp-2025-12-10",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 justru mencatat alasan resmi penghentian hari ini, yaitu cooling down."
+          }
+        },
+        "pertanyaan_cek": "Apa alasan resmi bursa menghentikan perdagangan hari ini?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 6,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Sebelum disetop tadi, harganya naik terus tiap hari bursa tanpa sekali pun turun, mulai akhir November. Udah ada yang cek datanya?",
+        "angka_pesan": [],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "volume-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+          "b": "Betul, penutupan naik tiap hari bursa dari awal November sampai kemarin.",
+          "c": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+          "d": "Keliru, penutupan hari ini turun dibanding penutupan kemarin."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu pertama mencatat penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari sebelumnya, dari [[harga-2025-11-26|26 November]] ([[harga-2025-11-26|Rp48]]) sampai [[harga-2025-12-09|9 Desember]] ([[harga-2025-12-09|Rp106]]). Jadi deretannya mulai akhir November, bukan awal, dan tidak ada hari turun. Penutupan [[volume-2025-12-10|10 Desember]] tidak ada: volumenya [[volume-2025-12-10|0 lembar]] karena perdagangan dihentikan. Salah-kaprah yang umum: mengira harga yang naik cepat pasti pernah terkoreksi di tengah jalan.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: kartu 2 menunjukkan deretan naik dimulai akhir November, bukan awal November."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Ini sebagian benar: harganya memang naik cepat, tetapi kartu 1 mencatat tiap hari lebih tinggi, tanpa hari turun."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "volume-2025-12-10",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 mencatat hari ini tanpa transaksi, sedangkan omongannya soal deretan sebelum disetop."
+          }
+        },
+        "pertanyaan_cek": "Apakah penutupan harian sebelum penghentian pernah turun?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 7,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.15",
+        "pesan": "Sebelum disetop tadi, harganya naik terus tiap hari bursa tanpa sekali pun turun, mulai akhir November. Udah ada yang cek datanya?",
+        "angka_pesan": [],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "volume-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, penutupan naik tiap hari bursa dari akhir November sampai kemarin.",
+          "b": "Betul, penutupan naik tiap hari bursa dari awal November sampai kemarin.",
+          "c": "Keliru, penutupan sempat turun sehari di tengah deretan hari itu.",
+          "d": "Keliru, penutupan hari ini turun dibanding penutupan kemarin."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu pertama mencatat penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, tiap hari lebih tinggi dari sebelumnya, dari [[harga-2025-11-26|26 November]] ([[harga-2025-11-26|Rp48]]) sampai [[harga-2025-12-09|9 Desember]] ([[harga-2025-12-09|Rp106]]). Jadi deretannya mulai akhir November, bukan awal, dan tidak ada hari turun. Penutupan [[volume-2025-12-10|10 Desember]] tidak ada: volumenya [[volume-2025-12-10|0 lembar]] karena perdagangan dihentikan. Salah-kaprah yang umum: mengira harga yang naik cepat pasti pernah terkoreksi di tengah jalan.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: kartu 2 menunjukkan deretan naik dimulai akhir November, bukan awal November."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Ini sebagian benar: harganya memang naik cepat, tetapi kartu 1 mencatat tiap hari lebih tinggi, tanpa hari turun."
+          },
+          "d": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "volume-2025-12-10",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 4 mencatat hari ini tanpa transaksi, sedangkan omongannya soal deretan sebelum disetop."
+          }
+        },
+        "pertanyaan_cek": "Apakah penutupan harian sebelum penghentian pernah turun?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 8,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.12",
+        "pesan": "Sebelum disetop tadi, katanya harganya naik terus tiap hari bursa sejak akhir November, nggak pernah turun sekali pun. Bener nggak sih?",
+        "angka_pesan": [],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, setiap penutupan melampaui hari lalunya.",
+          "b": "Betul, penutupan naik terus sejak awal tahun ini.",
+          "c": "Keliru, penutupan sempat turun sehari di tengah jalan.",
+          "d": "Keliru, penutupan naik sebagian hari lalu mendatar."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu hari naik beruntun mencatat penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] pada [[harga-2025-11-26|26 November]] sampai [[harga-2025-12-09|Rp106]] pada [[harga-2025-12-09|9 Desember]], tiap hari lebih tinggi dari hari sebelumnya. Penghentian baru terjadi pada [[susp-2025-12-10|10 Desember]], jadi tidak ada hari turun di tengahnya. Data itu hanya mulai akhir November, bukan awal tahun. Salah-kaprah yang umum: mengira kenaikan beruntun berarti data sejak awal tahun juga naik terus.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: kartu 2 baru mulai akhir November, tidak ada catatan naik terus sejak awal tahun."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Ini angka nyaris benar: kartu 1 mencatat tiap hari lebih tinggi, tanpa satu pun hari turun."
+          },
+          "d": {
+            "jenis": "sebagian-benar",
+            "rujukan": "harga-2025-12-09",
+            "umpan_balik": "Ini sebagian benar: harga memang naik, tetapi kartu 3 menunjukkan harga terus naik sampai hari terakhir, tidak mendatar."
+          }
+        },
+        "pertanyaan_cek": "Apakah penutupan harga turun pada salah satu hari dalam rentang itu?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    },
+    {
+      "putaran": 9,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.12",
+        "pesan": "Sebelum disetop tadi, katanya harganya naik terus tiap hari bursa sejak akhir November, nggak pernah turun sekali pun. Bener nggak sih?",
+        "angka_pesan": [],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2025-11-26",
+          "harga-2025-12-09",
+          "susp-2025-12-10"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, setiap penutupan melampaui hari lalunya.",
+          "b": "Betul, penutupan naik terus sejak awal tahun ini.",
+          "c": "Keliru, penutupan sempat turun sehari di tengah jalan.",
+          "d": "Keliru, penutupan naik sebagian hari lalu mendatar."
+        },
+        "kunci": "a",
+        "penjelasan": "Kartu hari naik beruntun mencatat penutupan naik [[hari-naik-beruntun|9 hari bursa]] berturut-turut, dari [[harga-2025-11-26|Rp48]] pada [[harga-2025-11-26|26 November]] sampai [[harga-2025-12-09|Rp106]] pada [[harga-2025-12-09|9 Desember]], tiap hari lebih tinggi dari hari sebelumnya. Penghentian baru terjadi pada [[susp-2025-12-10|10 Desember]], jadi tidak ada hari turun di tengahnya. Data itu hanya mulai akhir November, bukan awal tahun. Salah-kaprah yang umum: mengira kenaikan beruntun berarti data sejak awal tahun juga naik terus.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-11-26",
+            "umpan_balik": "Ini salah periode: kartu 2 baru mulai akhir November, tidak ada catatan naik terus sejak awal tahun."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "hari-naik-beruntun",
+            "umpan_balik": "Ini angka nyaris benar: kartu 1 mencatat tiap hari lebih tinggi, tanpa satu pun hari turun."
+          },
+          "d": {
+            "jenis": "sebagian-benar",
+            "rujukan": "harga-2025-12-09",
+            "umpan_balik": "Ini sebagian benar: harga memang naik, tetapi kartu 3 menunjukkan harga terus naik sampai hari terakhir, tidak mendatar."
+          }
+        },
+        "pertanyaan_cek": "Apakah penutupan harga turun pada salah satu hari dalam rentang itu?"
+      },
+      "berhenti": "saringan",
+      "alasan": [],
+      "dicatat": [],
+      "saringan": null,
+      "kartu_rotasi": null,
+      "penebak_kuat": null,
+      "kritik": null,
+      "biaya_gerbang_usd": 0,
+      "id_bank": null
+    }
+  ],
+  "teks_akhir": ""
+}

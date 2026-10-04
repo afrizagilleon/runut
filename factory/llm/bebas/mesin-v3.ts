@@ -195,21 +195,34 @@ export async function nilaiOmonganV3(o: OmonganBebas, paket: PaketFakta, panggil
     return n;
   }
   // 4. penebak kuat Opus satu-soal
-  n.berhenti = 'penebak-kuat';
-  const q = await tebakKuat(d, { panggil, putaran, omongan: urut });
-  n.penebak_kuat = q;
-  n.biaya_gerbang_usd += q.biaya_usd;
   if (opsi.penebakKuatDicatat === true) {
-    n.dicatat.push(`penebak kuat (dicatat, tidak menolak): ${q.putusan.alasan}`);
-  } else if (q.putusan.putusan === 'tak-terukur') {
-    n.berhenti = 'tak-terukur';
-    n.alasan = [q.putusan.alasan];
-    return n;
-  } else if (q.putusan.putusan === 'tolak') {
-    n.alasan = [q.putusan.alasan];
-    return n;
+    // Hanya catatan (M2d-21). Perkiraan pra-kirimnya memesan ±US$0,38 × 4 panggilan, jadi saat sisa pagu tipis ia
+    // tertolak pagu walau biaya nyatanya ±US$0,02; catatan tidak boleh menghentikan gerbang berikutnya (M2d-22).
+    try {
+      const q = await tebakKuat(d, { panggil, putaran, omongan: urut });
+      n.penebak_kuat = q;
+      n.biaya_gerbang_usd += q.biaya_usd;
+      n.dicatat.push(`penebak kuat (dicatat, tidak menolak): ${q.putusan.alasan}`);
+    } catch (galat) {
+      if (!(galat instanceof PaguTercapai)) throw galat;
+      n.dicatat.push('penebak kuat (catatan) tidak dijalankan: perkiraan pra-kirimnya melebihi sisa pagu');
+    }
+  } else {
+    n.berhenti = 'penebak-kuat';
+    const q = await tebakKuat(d, { panggil, putaran, omongan: urut });
+    n.penebak_kuat = q;
+    n.biaya_gerbang_usd += q.biaya_usd;
+    if (q.putusan.putusan === 'tak-terukur') {
+      n.berhenti = 'tak-terukur';
+      n.alasan = [q.putusan.alasan];
+      return n;
+    }
+    if (q.putusan.putusan === 'tolak') {
+      n.alasan = [q.putusan.alasan];
+      return n;
+    }
+    if (q.putusan.isi_konsisten !== null) n.dicatat.push(`penebak kuat konsisten memilih pengecoh (opsi asal ${'abcd'[q.putusan.isi_konsisten] ?? '?'}) di ≥ 3 rotasi`);
   }
-  if (opsi.penebakKuatDicatat !== true && q.putusan.isi_konsisten !== null) n.dicatat.push(`penebak kuat konsisten memilih pengecoh (opsi asal ${'abcd'[q.putusan.isi_konsisten] ?? '?'}) di ≥ 3 rotasi`);
   // 5. kritikus GLM (tidak menjawab → sekali lagi)
   n.berhenti = 'kritikus';
   const kartu0 = k.per_rotasi[0]?.putusan ?? null;
