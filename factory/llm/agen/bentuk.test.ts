@@ -27,7 +27,7 @@ function penolakanTersimpan(): string[] {
       for (const baris of readFileSync(j, 'utf8').split(/\r?\n/)) {
         if (baris.trim() === '') continue;
         const b = JSON.parse(baris) as { jenis: string; alat?: string; hasil?: { penolakan?: string[] } };
-        if (b.jenis === 'alat' && b.alat === 'periksa_kode') hasil.push(...(b.hasil?.penolakan ?? []));
+        if (b.jenis === 'alat' && (b.alat === 'periksa_kode' || b.alat === 'periksa_draft_dengan_aturan')) hasil.push(...(b.hasil?.penolakan ?? []));
       }
     }
     const u = `${akar}/${nama}/uji-satu-panggilan.json`;

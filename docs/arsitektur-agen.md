@@ -48,7 +48,7 @@ flowchart LR
         A4 -->|"cukup sampai di sini"| A5(["berhenti"])
     end
 
-    subgraph PK["periksa_kode · tool gratis"]
+    subgraph PK["periksa_draft_dengan_aturan · tool gratis"]
         direction TB
         PK1["1 sampai 3 draft"] --> PK2{"aturan cacat soal D1-D9<br/>+ kontrak bentuk K"}
         PK2 -->|lolos| PK3["id_draf"]

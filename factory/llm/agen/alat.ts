@@ -39,7 +39,7 @@ export const PENGUJI_OPUS_MENOLAK = false;
 export const CADANGAN_AJUKAN_USD = 0.12;
 
 export interface PeristiwaAlat {
-  alat: 'lihat_fakta' | 'lihat_bank' | 'periksa_kode' | 'ajukan' | 'lihat_simulasi' | 'tingkatkan' | 'usulkan_hari' | 'periksa_saham';
+  alat: 'lihat_fakta' | 'lihat_bank' | 'periksa_draft_dengan_aturan' | 'ajukan' | 'lihat_simulasi' | 'tingkatkan' | 'usulkan_hari' | 'periksa_saham';
   ke: number;
   ringkas: string;
   hasil: unknown;
@@ -118,7 +118,7 @@ export function lebihSulit(baru: ReturnType<typeof ukuranTebak>, asal: ReturnTyp
   if (baru.opus !== null && asal.opus !== null && baru.opus > asal.opus) return false;
   return baru.murah < asal.murah - 1e-9;
 }
-/** Paling banyak draf per panggilan `periksa_kode` / `ajukan` (satu simulasi = tiga omongan). */
+/** Paling banyak draf per panggilan `periksa_draft_dengan_aturan` / `ajukan` (satu simulasi = tiga omongan). */
 export const MAKS_DRAF_PER_PANGGILAN = 3;
 
 /** Ringkasan penolakan per pola (kartu penentu × gerbang): yang dibawa adalah polanya, bukan 8 butir terakhir. */
@@ -203,8 +203,10 @@ export function buatAlat(o: OpsiAlat) {
   const sha = shaPaketBank(o.paket);
   const semuaNilai: NilaiOmonganV3[] = [];
   const diajukan = new Map<string, HasilAjukan>();
-  /** Draf yang sudah lolos `periksa_kode`, menurut nomor drafnya. */
+  /** Draf yang sudah lolos `periksa_draft_dengan_aturan`, menurut nomor drafnya. */
   const drafLolos = new Map<string, OmonganBebas>();
+  /** Nomor draf yang sudah pernah dikirim ke gerbang berbayar (lolos atau tidak). */
+  const drafTerkirim = new Set<string>();
   const ditolak: SudutDitolak[] = [...(o.riwayatDitolak ?? [])];
   let ditolakDiSini = 0;
   let biayaGerbang = 0;
@@ -251,26 +253,26 @@ export function buatAlat(o: OpsiAlat) {
 
   const periksaKode = (x: unknown): HasilPeriksa => {
     const u = urai(x);
-    if (u.omongan === null) return lapor('periksa_kode', 'bentuk tak terurai', { lolos: false, penolakan: [u.alasan] });
+    if (u.omongan === null) return lapor('periksa_draft_dengan_aturan', 'bentuk tak terurai', { lolos: false, penolakan: [u.alasan] });
     const k = periksaKodeAgen(u.omongan, o.paket);
     const penolakan = k.menolak.map((m) => `${m.sumber}: ${m.alasan}`);
-    if (penolakan.length > 0) return lapor('periksa_kode', `${String(penolakan.length)} penolakan`, { lolos: false, penolakan });
+    if (penolakan.length > 0) return lapor('periksa_draft_dengan_aturan', `${String(penolakan.length)} penolakan`, { lolos: false, penolakan });
     const id = idOmongan(u.omongan);
     drafLolos.set(id, u.omongan);
-    return lapor('periksa_kode', `lolos (draf ${id})`, { lolos: true, penolakan: [], id_draf: id });
+    return lapor('periksa_draft_dengan_aturan', `lolos (draf ${id})`, { lolos: true, penolakan: [], id_draf: id });
   };
 
   const ajukanSatu = async (x: unknown, namaPaksa?: string, asal?: EntriBank): Promise<HasilAjukan> => {
     const dasar = (berhenti: string, penolakan: string[], catatan: string[] = [], biaya = 0): HasilAjukan => ({ lolos: berhenti === 'lolos', berhenti, penolakan, catatan, biaya_pengajuan_usd: bulat(biaya), sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) });
-    // `{ id_draf }` = draf yang sudah lolos periksa_kode (tanpa mengirim ulang JSON); selain itu = objek omongan utuh.
+    // `{ id_draf }` = draf yang sudah lolos periksa_draft_dengan_aturan (tanpa mengirim ulang JSON); selain itu = objek omongan utuh.
     const idDraf = typeof x === 'object' && x !== null && typeof (x as { id_draf?: unknown }).id_draf === 'string' ? (x as { id_draf: string }).id_draf : null;
-    if (idDraf !== null && !drafLolos.has(idDraf)) return lapor('ajukan', 'nomor draf tak dikenal (gratis)', dasar('bentuk', [`Nomor draf "${idDraf}" tidak dikenal. Pakai id_draf dari periksa_kode yang lolos.`]));
+    if (idDraf !== null && !drafLolos.has(idDraf)) return lapor('ajukan', 'nomor draf tak dikenal (gratis)', dasar('bentuk', [`Nomor draf "${idDraf}" tidak dikenal. Pakai id_draf dari periksa_draft_dengan_aturan yang lolos.`]));
     const u = idDraf !== null ? { omongan: drafLolos.get(idDraf) as OmonganBebas, alasan: '' } : urai(x);
     if (u.omongan === null) return lapor('ajukan', 'bentuk tak terurai (gratis)', dasar('bentuk', [u.alasan]));
     // Nama dipasang lagi saat diajukan: draf sebatch tidak boleh bernama sama dengan omongan yang baru saja masuk bank.
     const om = namaPaksa === undefined ? pasangNama(u.omongan, bank().map((e) => e.omongan.nama)) : { ...u.omongan, nama: namaPaksa };
     const k = periksaKodeAgen(om, o.paket);
-    if (k.menolak.length > 0) return lapor('ajukan', 'belum lolos kode (gratis)', dasar('kode', k.menolak.map((m) => `${m.sumber}: ${m.alasan}`), ['Gerbang berbayar tidak dijalankan. Pakai periksa_kode sampai lolos dulu.']));
+    if (k.menolak.length > 0) return lapor('ajukan', 'belum lolos kode (gratis)', dasar('kode', k.menolak.map((m) => `${m.sumber}: ${m.alasan}`), ['Gerbang berbayar tidak dijalankan. Pakai periksa_draft_dengan_aturan sampai lolos dulu.']));
     const id = idOmongan(om);
     const lama = diajukan.get(id);
     if (lama !== undefined) return lapor('ajukan', 'draf sama sudah diajukan (gratis)', dasar('sudah-diajukan', lama.penolakan, ['Draf yang persis sama sudah pernah diajukan; hasilnya tidak berubah. Ubah drafnya atau ganti sudut.']));
@@ -287,6 +289,7 @@ export function buatAlat(o: OpsiAlat) {
     if (butuh.butuh_keliru && jumlahSudut(bank()) >= target && kunciBetul(om)) return lapor('ajukan', 'bukan yang dibutuhkan simulasi (gratis)', dasar('kebutuhan', butuh.kebutuhan, ['Gerbang berbayar tidak dijalankan: bank sudah penuh dengan jawaban "Betul". Ajukan omongan yang kuncinya "Keliru, …".']));
     if (sisa() < CADANGAN_AJUKAN_USD) return lapor('ajukan', 'anggaran tidak cukup (gratis)', dasar('anggaran', [], [`Sisa anggaran US$${String(sisa())} di bawah cadangan satu pengajuan (US$${String(CADANGAN_AJUKAN_USD)}). Berhenti.`]));
     ajukanKe += 1;
+    if (idDraf !== null) drafTerkirim.add(idDraf);
     const putaranIni = ajukanKe;
     let milik: NilaiOmonganV3 | null = null;
     let n: NilaiOmonganV3 | null = null;
@@ -391,6 +394,25 @@ export function buatAlat(o: OpsiAlat) {
     antre = p.catch(() => undefined);
     return p;
   };
+  /**
+   * Ajukan 1–3 versi lebih sulit sekaligus; tiap versi diuji sendiri dan BERDAMPINGAN, sama seperti `ajukan` (M2d-27).
+   * Versi yang tidak terjangkau anggaran tidak dijalankan dan tetap tersimpan.
+   */
+  const tingkatkanBanyak = async (pasangan: ReadonlyArray<{ id_asal: string; id_draf: string }>): Promise<{ hasil: Array<{ id_asal: string; id_draf: string } & HasilAjukan>; jumlah_naik: number; semua_naik: boolean }> => {
+    const daftar = pasangan.slice(0, MAKS_DRAF_PER_PANGGILAN);
+    const dasar = simulasiDasar();
+    const terjangkau = Math.max(0, Math.floor((sisa() + 1e-9) / CADANGAN_AJUKAN_USD));
+    const kosong = (berhenti: string, penolakan: string[], catatan: string[]): HasilAjukan => ({ lolos: false, berhenti, penolakan, catatan, biaya_pengajuan_usd: 0, sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) });
+    let dipesan = 0;
+    const hasil = await Promise.all(daftar.map(async (x) => {
+      const asal = dasar.find((e) => e.id === x.id_asal);
+      if (asal === undefined) return { ...x, ...lapor('tingkatkan', 'id_asal tak dikenal (gratis)', kosong('bentuk', [`id_asal "${x.id_asal}" bukan omongan simulasi ini. Pakai id_asal dari lihat_simulasi.`], [])) };
+      if (dipesan >= terjangkau) return { ...x, ...kosong('anggaran', [], [`Sisa anggaran hanya cukup untuk ${String(terjangkau)} versi; versi ini belum dijalankan dan tetap tersimpan.`]) };
+      dipesan += 1;
+      return { ...x, ...(await ajukanSatu({ id_draf: x.id_draf }, asal.omongan.nama, asal)) };
+    }));
+    return { hasil: hasil.map((h) => ({ ...h, sisa_anggaran_usd: sisa() })), jumlah_naik: simulasiDasar().filter((e) => versiNaik(e.id).length > 0).length, semua_naik: simulasiDasar().length > 0 && simulasiDasar().every((e) => versiNaik(e.id).length > 0) };
+  };
 
   /** Periksa 1–3 draf sekaligus (gratis). */
   const periksaKodeBanyak = (xs: readonly unknown[]): HasilPeriksa[] => xs.slice(0, MAKS_DRAF_PER_PANGGILAN).map((x) => periksaKode(x));
@@ -428,7 +450,9 @@ export function buatAlat(o: OpsiAlat) {
   };
 
   return {
-    lihatFakta, lihatBank, periksaKode, periksaKodeBanyak, ajukan, ajukanBanyak, lihatSimulasi, tingkatkan,
+    lihatFakta, lihatBank, periksaKode, periksaKodeBanyak, ajukan, ajukanBanyak, lihatSimulasi, tingkatkan, tingkatkanBanyak,
+    /** Ada draf lolos-aturan yang belum pernah dikirim ke gerbang berbayar (dipakai mode hemat pelari). */
+    adaDrafSiap: () => [...drafLolos.keys()].some((id) => !drafTerkirim.has(id)),
     /** Mode tingkatkan selesai: tiap omongan simulasi sudah punya versi yang terukur lebih sulit. */
     semuaNaik: () => simulasiDasar().length > 0 && simulasiDasar().every((e) => versiNaik(e.id).length > 0),
     jumlahNaik: () => simulasiDasar().filter((e) => versiNaik(e.id).length > 0).length,

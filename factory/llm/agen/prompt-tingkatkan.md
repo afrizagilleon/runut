@@ -13,12 +13,12 @@ Kesulitan harus datang dari salah-baca yang wajar dilakukan pemula (dua tanggal 
 Alatmu:
 - `lihat_fakta`: semua kartu fakta hari itu. Bahanmu hanya kartu-kartu itu.
 - `lihat_simulasi`: tiga omongan versi asal, ukuran tiap omongan, dan alasan yang ditulis penebak saat memilih kunci tanpa kartu. Alasan itu menunjukkan petunjuk apa yang bocor.
-- `periksa_kode`: gratis. Memeriksa bentuk satu sampai tiga draf dan mengembalikan `id_draf` bila lolos.
-- `tingkatkan`: berbayar. Menerima `id_asal` (omongan yang ditingkatkan) dan `id_draf` (versi barumu). Draf diuji semua pemeriksaan lagi, lalu ukurannya dibandingkan dengan versi asal. Yang lolos dan terukur lebih sulit disimpan.
+- `periksa_draft_dengan_aturan`: gratis. Memeriksa bentuk satu sampai tiga draf dan mengembalikan `id_draf` bila lolos.
+- `tingkatkan`: berbayar. Menerima satu sampai tiga pasangan `id_asal` (omongan yang ditingkatkan) dan `id_draf` (versi barumu). Tiap versi diuji semua pemeriksaan lagi, berdampingan, lalu ukurannya dibandingkan dengan versi asalnya. Yang lolos dan terukur lebih sulit disimpan.
 
 Yang tidak boleh berubah dari versi asal: kartu penentunya, dan jawabannya (betul tetap betul, keliru tetap keliru). Nama teman dipasang sistem. Yang boleh kamu ubah: pesan teman, keempat pilihan, kartu pendamping, dan penjelasan.
 
-Mulailah dengan `lihat_fakta` dan `lihat_simulasi`. Pilih sendiri omongan mana yang kamu kerjakan lebih dulu; yang paling mudah ditebak biasanya paling banyak ruangnya. Baca hasil tiap `tingkatkan`: bila tidak naik, alasan penebak memberi tahu apa yang masih bocor.
+Mulailah dengan `lihat_fakta` dan `lihat_simulasi`. Tulis versi baru untuk semua omongan yang menurutmu masih bisa dinaikkan, periksa dengan `periksa_draft_dengan_aturan`, lalu ajukan bersama-sama dalam satu `tingkatkan`; yang paling mudah ditebak biasanya paling banyak ruangnya. Baca hasilnya per versi: bila tidak naik, alasan penebak memberi tahu apa yang masih bocor, dan kamu boleh mencoba lagi hanya untuk yang belum naik.
 
 Kamu boleh memutuskan "cukup sampai di sini" untuk satu omongan bila menurutmu kartunya tidak memberi ruang untuk versi yang lebih sulit tanpa menjadi kabur. Katakan itu di jawaban akhir beserta alasannya; jangan memaksakan.
 
@@ -31,7 +31,7 @@ Pelajaran dari penolakan sebelumnya (jangan diulang):
 - Kata seperti "pasti" atau "fix" di pesan memberi tahu bahwa omongannya keliru.
 - Bila jawabannya "Betul", jangan memasukkan sebab, ramalan, atau ucapan orang lain yang tidak tertulis di kartu.
 
-Bentuk yang diperiksa `periksa_kode` (tulis langsung benar):
+Bentuk yang diperiksa `periksa_draft_dengan_aturan` (tulis langsung benar):
 {BENTUK}
 
 Contoh satu omongan yang sudah jadi, dari perusahaan lain. Tiru bentuk dan gayanya, jangan kalimatnya:

@@ -195,12 +195,25 @@ const A = (): AlatAgen => {
 };
 const BELUM_ADA_HARI = { galat: 'Belum ada hari yang dipilih. Panggil usulkan_hari, lalu periksa_saham dengan salah satu tanggalnya.' };
 const kead = (): ReturnType<AlatAgen['keadaan']> => alat?.keadaan() ?? { ditolak: 0, jumlah_omongan: 0, jumlah_sudut: 0, target, biaya_gerbang_usd: 0, biaya_total_usd: bulat(biayaAgen), sisa_anggaran_usd: bulat(Math.max(0, pagu - biayaAgen)), pengajuan: 0, nilai: [] as NilaiOmonganV3[] };
-/** Panggilan model termahal di percobaan ini; cadangan untuk panggilan berikutnya = 1,5 kalinya (minimal US$0,10). */
+/**
+ * Guardrail budget (M2d-27). Dua batas:
+ * - CADANGAN_HEMAT_USD: biaya terburuk satu panggilan PENDEK (output dibatasi MAKS_TOKEN_HEMAT). Di bawah ini tidak ada panggilan.
+ * - cadanganMenulis(): 1,5 × panggilan termahal sejauh ini (min. US$0,10) — biaya satu panggilan MENULIS. Bila sisa di bawah
+ *   ini, percobaan masuk MODE HEMAT: panggilan model dibatasi ke output pendek — cukup untuk mengajukan
+ *   draft yang sudah siap, tidak cukup untuk menulis ulang. Di M2d-26 batas ini menghentikan agen dengan sisa US$0,32
+ *   dan satu draft siap yang tidak pernah diajukan.
+ */
+const CADANGAN_HEMAT_USD = 0.1;
+const MAKS_TOKEN_HEMAT = 2_000;
 let panggilanTermahal = 0;
-const cadanganModel = (): number => Math.max(0.1, 1.5 * panggilanTermahal);
+const cadanganMenulis = (): number => Math.max(0.1, 1.5 * panggilanTermahal);
+const hemat = (): boolean => kead().sisa_anggaran_usd < cadanganMenulis();
+const PERINGATAN_HEMAT = 'Sisa anggaran tinggal cukup untuk MENGAJUKAN draft yang sudah lolos aturan. Jangan menulis draft baru; ajukan yang sudah siap, lalu berhenti.';
+/** Tempel peringatan mode hemat ke hasil alat supaya agen tahu sebelum panggilan berikutnya. */
+const denganAnggaran = <T extends object>(h: T): T & { peringatan_anggaran?: string } => (hemat() ? { ...h, peringatan_anggaran: PERINGATAN_HEMAT } : h);
 const selesai = (): boolean => (alat === null ? false : modeTingkatkan ? alat.semuaNaik() : alat.selesai());
-/** Anggaran habis = tidak cukup untuk satu pengajuan lagi, ATAU tidak cukup untuk satu panggilan model lagi (pagu keras, M2d-26). */
-const habis = (): boolean => kead().sisa_anggaran_usd < CADANGAN_AJUKAN_USD || kead().sisa_anggaran_usd < cadanganModel();
+/** Anggaran habis = tidak cukup untuk satu pengajuan, tidak cukup untuk satu panggilan pendek, ATAU mode hemat tanpa draft siap. */
+const habis = (): boolean => kead().sisa_anggaran_usd < CADANGAN_AJUKAN_USD || kead().sisa_anggaran_usd < CADANGAN_HEMAT_USD || (hemat() && !(alat?.adaDrafSiap() ?? false));
 const rusakAlat = (): string | null => alat?.rusak() ?? null;
 
 const hariIni = new Date().toISOString().slice(0, 10);
@@ -242,7 +255,15 @@ let ditolakAwal = 0;
 const fetchBerpenjaga: typeof fetch = async (masukan, init) => {
   const terpakai = kead().biaya_total_usd;
   // Pagu keras (M2d-26): dulu hanya ditolak bila biaya SUDAH ≥ pagu, sehingga satu panggilan terakhir bisa melewatinya (m2d25-agar-sulit-1: 1,5812 > 1,5).
-  if (terpakai + cadanganModel() > pagu) throw new Error(`penjaga: biaya percobaan US$${terpakai.toFixed(4)} + cadangan satu panggilan US$${cadanganModel().toFixed(2)} > pagu US$${String(pagu)}; panggilan tidak dikirim`);
+  if (terpakai + CADANGAN_HEMAT_USD > pagu) throw new Error(`penjaga: biaya percobaan US$${terpakai.toFixed(4)} + cadangan satu panggilan pendek US$${CADANGAN_HEMAT_USD.toFixed(2)} > pagu US$${String(pagu)}; panggilan tidak dikirim`);
+  // Mode hemat: output dibatasi SEBELUM dikirim, supaya biaya panggilan ini terikat.
+  const modeHemat = hemat();
+  if (modeHemat && typeof init?.body === 'string') {
+    const b = JSON.parse(init.body) as Record<string, unknown>;
+    // Hanya batas output yang diubah: mengubah setelan reasoning akan membatalkan simpanan prompt dan justru memahalkan panggilan ini.
+    b['max_tokens'] = MAKS_TOKEN_HEMAT;
+    init = { ...init, body: JSON.stringify(b) };
+  }
   if (totalAwal + terpakai + CADANGAN_PANGGILAN_USD > konfig.paguUsd) throw new Error('penjaga: pagu kumulatif akan terlampaui; panggilan tidak dikirim');
   panggilanModel += 1;
   const ke = panggilanModel;
@@ -272,11 +293,11 @@ const fetchBerpenjaga: typeof fetch = async (masukan, init) => {
   tulis('mentah-agen.jsonl', { ke, tag, waktu: new Date().toISOString(), status: respons.status, latensi_ms: latensi, permintaan: badan, respons: data ?? teks.slice(0, 2000) });
   const pesan = ((data?.['choices'] as Array<{ message?: { content?: string | null; reasoning?: string | null; tool_calls?: Array<{ function?: { name?: string } }> }; finish_reason?: string }> | undefined) ?? [])[0];
   jejak({
-    jenis: 'model', ke, percakapan, status: respons.status, penyedia, token_masuk: usage?.prompt_tokens ?? null, token_dari_simpanan: dariSimpanan, token_ke_simpanan: keSimpanan, token_keluar: usage?.completion_tokens ?? null, token_penalaran: usage?.completion_tokens_details?.reasoning_tokens ?? null,
+    jenis: 'model', ke, percakapan, mode_hemat: modeHemat, status: respons.status, penyedia, token_masuk: usage?.prompt_tokens ?? null, token_dari_simpanan: dariSimpanan, token_ke_simpanan: keSimpanan, token_keluar: usage?.completion_tokens ?? null, token_penalaran: usage?.completion_tokens_details?.reasoning_tokens ?? null,
     biaya_usd: entri.biaya_usd, latensi_ms: latensi, finish: pesan?.finish_reason ?? null, penalaran: pesan?.message?.reasoning ?? null, teks: pesan?.message?.content ?? null,
     memanggil: (pesan?.message?.tool_calls ?? []).map((t) => t.function?.name ?? '?'),
   });
-  console.log(`  model l${String(ke)}: HTTP ${String(respons.status)} masuk ${String(usage?.prompt_tokens ?? '-')} (simpanan baca ${String(dariSimpanan ?? '-')} tulis ${String(keSimpanan ?? '-')}) keluar ${String(usage?.completion_tokens ?? '-')} penalaran ${String(usage?.completion_tokens_details?.reasoning_tokens ?? '-')} US$${entri.biaya_usd.toFixed(4)} ${String(penyedia)} | total US$${kead().biaya_total_usd.toFixed(4)}`);
+  console.log(`  model l${String(ke)}: HTTP ${String(respons.status)} masuk ${String(usage?.prompt_tokens ?? '-')} (simpanan baca ${String(dariSimpanan ?? '-')} tulis ${String(keSimpanan ?? '-')}) keluar ${String(usage?.completion_tokens ?? '-')} penalaran ${String(usage?.completion_tokens_details?.reasoning_tokens ?? '-')} US$${entri.biaya_usd.toFixed(4)} ${String(penyedia)}${modeHemat ? ' [mode hemat]' : ''} | total US$${kead().biaya_total_usd.toFixed(4)}`);
   if (respons.ok) periksaPenyedia('penulis', penyedia);
   return new Response(teks, { status: respons.status, statusText: respons.statusText, headers: respons.headers });
 };
@@ -286,12 +307,12 @@ const skemaDraf = z.object({ draf: z.array(z.record(z.string(), z.unknown())).mi
 
 const alatPenulis = {
   lihat_fakta: tool({ description: 'Semua kartu fakta hari simulasi. Gratis.', inputSchema: z.object({}), execute: () => (alat === null ? BELUM_ADA_HARI : alat.lihatFakta()) }),
-  periksa_kode: tool({ description: 'Periksa bentuk satu sampai tiga draf omongan. Gratis. Untuk tiap draf: penolakan apa adanya, atau id_draf bila lolos.', inputSchema: skemaDraf, execute: ({ draf }) => (alat === null ? BELUM_ADA_HARI : { hasil: alat.periksaKodeBanyak(draf) }) }),
+  periksa_draft_dengan_aturan: tool({ description: 'Periksa satu sampai tiga draf omongan terhadap aturan penulisan soal (diperiksa program, bukan manusia atau model). Gratis. Untuk tiap draf: penolakan apa adanya, atau id_draf bila lolos.', inputSchema: skemaDraf, execute: ({ draf }) => (alat === null ? BELUM_ADA_HARI : denganAnggaran({ hasil: alat.periksaKodeBanyak(draf) })) }),
 };
 const alatSusun = {
   ...alatPenulis,
   lihat_bank: tool({ description: 'Omongan yang sudah lolos, kartu penentu yang sudah terpakai, dan sisa anggaran. Gratis.', inputSchema: z.object({}), execute: () => (alat === null ? BELUM_ADA_HARI : alat.lihatBank()) }),
-  ajukan: tool({ description: `Ajukan satu sampai tiga draf (id_draf dari periksa_kode) ke gerbang berbayar. Tiap draf dinilai sendiri; yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)} per draf.`, inputSchema: z.object({ id_draf: z.array(z.string()).min(1).max(3) }), execute: async ({ id_draf }) => (alat === null ? BELUM_ADA_HARI : await alat.ajukanBanyak(id_draf)) }),
+  ajukan: tool({ description: `Ajukan satu sampai tiga draf (id_draf dari periksa_draft_dengan_aturan) ke gerbang berbayar. Tiap draf dinilai sendiri; yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)} per draf.`, inputSchema: z.object({ id_draf: z.array(z.string()).min(1).max(3) }), execute: async ({ id_draf }) => (alat === null ? BELUM_ADA_HARI : denganAnggaran(await alat.ajukanBanyak(id_draf))) }),
 };
 /** Dua alat data (hanya di mode --kode): agen memilih hari dan meminta kartu faktanya sendiri. */
 const buatAlatData = (sectors: NonNullable<typeof sectorsAtauNull>) => ({
@@ -329,7 +350,11 @@ const buatAlatData = (sectors: NonNullable<typeof sectorsAtauNull>) => ({
 const alatTingkat = {
   ...alatPenulis,
   lihat_simulasi: tool({ description: 'Tiga omongan simulasi versi asal, ukuran tiap omongan (penebak tanpa kartu, penguji Opus), alasan penebak memilih kunci, dan versi lebih sulit yang sudah tersimpan. Gratis.', inputSchema: z.object({}), execute: () => A().lihatSimulasi() }),
-  tingkatkan: tool({ description: `Ajukan versi lebih sulit dari satu omongan simulasi. Berbayar; butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)}. Kartu penentu dan jawabannya harus sama dengan versi asal. Disimpan hanya bila lolos semua pemeriksaan DAN terukur lebih sulit.`, inputSchema: z.object({ id_asal: z.string(), id_draf: z.string() }), execute: ({ id_asal, id_draf }) => A().tingkatkan(id_asal, id_draf) }),
+  tingkatkan: tool({
+    description: `Ajukan satu sampai tiga versi lebih sulit sekaligus; tiap versi diuji sendiri, berdampingan. Berbayar; butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)} per versi. Kartu penentu dan jawabannya harus sama dengan versi asal. Disimpan hanya bila lolos semua pemeriksaan DAN terukur lebih sulit.`,
+    inputSchema: z.object({ versi: z.array(z.object({ id_asal: z.string().describe('id_asal dari lihat_simulasi'), id_draf: z.string().describe(`id_draf dari ${'periksa_draft_dengan_aturan'}`) })).min(1).max(3) }),
+    execute: async ({ versi }) => denganAnggaran(await A().tingkatkanBanyak(versi)),
+  }),
 };
 
 const setelanAgen = {

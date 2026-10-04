@@ -138,7 +138,7 @@ describe('prompt agen', () => {
   it('terisi penuh, menyebut keempat alat, tidak memuat paket fakta (agen mengambilnya lewat alat)', () => {
     const p = instruksiAgen(3);
     expect(p).not.toMatch(/\{[A-Z_]+\}/);
-    for (const a of ['lihat_fakta', 'lihat_bank', 'periksa_kode', 'ajukan']) expect(p).toContain(`\`${a}\``);
+    for (const a of ['lihat_fakta', 'lihat_bank', 'periksa_draft_dengan_aturan', 'ajukan']) expect(p).toContain(`\`${a}\``);
     expect(p).not.toContain('susp-2025-12-10');
     // M2d-20: kontrak bentuk masuk prompt (±2.500 karakter); tetap jauh di bawah prompt 23 aturan lama (17.621).
     expect(p.length).toBeLessThan(13200);

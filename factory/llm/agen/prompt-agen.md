@@ -11,7 +11,7 @@ Tugasmu: menyusun satu simulasi untuk satu hari, berisi {TARGET} omongan. Kamu y
 
 {ALAT_DATA}- `lihat_fakta`: semua kartu fakta hari itu. Bahanmu hanya kartu-kartu itu; jangan menambah fakta, angka, atau tanggal yang tidak ada di kartu.
 - `lihat_bank`: omongan yang sudah lolos beserta pilihan dan kuncinya, apa yang masih dibutuhkan simulasi, pola penolakan yang pernah terjadi beserta alasannya, dan sisa anggaran.
-- `periksa_kode`: gratis. Memeriksa bentuk satu sampai tiga draf sekaligus dan mengembalikan penolakannya apa adanya. Draf yang lolos mendapat `id_draf`.
+- `periksa_draft_dengan_aturan`: gratis. Memeriksa bentuk satu sampai tiga draf sekaligus dan mengembalikan penolakannya apa adanya. Draf yang lolos mendapat `id_draf`.
 - `ajukan`: berbayar. Menerima satu sampai tiga `id_draf`. Tiap draf diuji sendiri oleh penebak yang tidak memegang kartu, pembaca yang memegang kartu, penguji yang lebih kuat, dan seorang kritikus. Yang lolos masuk bank.
 
 {MULAI} Lalu rencanakan omongan yang masih kurang sebagai satu set sebelum menulis:
@@ -19,7 +19,7 @@ Tugasmu: menyusun satu simulasi untuk satu hari, berisi {TARGET} omongan. Kamu y
 - minimal satu omongan yang ternyata betul dan minimal satu yang ternyata keliru;
 - huruf kunci tidak sama semua.
 
-Tulis semua draf yang masih kurang, periksa dengan `periksa_kode`, lalu ajukan bersama-sama. Hasil `ajukan` memuat putusan tiap draf. Yang lolos sudah masuk bank; jangan diubah lagi. Untuk yang ditolak, baca alasannya: perbaiki kalimatnya bila masalahnya di kata-kata, atau ganti sudutnya bila jawabannya memang bisa ditebak tanpa kartu. Penolakan penebak berlaku untuk kalimatnya, bukan untuk kartunya. Peringatan penguji tidak menolak, tetapi pakailah untuk draf berikutnya.
+Tulis semua draf yang masih kurang, periksa dengan `periksa_draft_dengan_aturan`, lalu ajukan bersama-sama. Hasil `ajukan` memuat putusan tiap draf. Yang lolos sudah masuk bank; jangan diubah lagi. Untuk yang ditolak, baca alasannya: perbaiki kalimatnya bila masalahnya di kata-kata, atau ganti sudutnya bila jawabannya memang bisa ditebak tanpa kartu. Penolakan penebak berlaku untuk kalimatnya, bukan untuk kartunya. Peringatan penguji tidak menolak, tetapi pakailah untuk draf berikutnya.
 
 Penebak hanya diberi pilihan kunci dan kembarannya (pilihan lain yang berlabel sama, "Betul" atau "Keliru"). Jadi kembaran itu harus sama masuk akalnya dengan kunci bagi orang yang belum membaca kartu, dan tidak boleh dibantah oleh pesan teman sendiri. Pada omongan yang betul, seluruh isi pesan teman harus bisa dicek di kartu.
 
@@ -34,7 +34,7 @@ Pelajaran dari penolakan sebelumnya (jangan diulang):
 {TINGKAT}
 Nama teman dipasang sistem dari daftar tetap; isi `nama` dengan nama apa saja.
 
-Bentuk yang diperiksa `periksa_kode` (tulis langsung benar):
+Bentuk yang diperiksa `periksa_draft_dengan_aturan` (tulis langsung benar):
 {BENTUK}
 
 Berhenti ketika hasil `ajukan` atau `lihat_bank` menyatakan simulasi bisa dirakit, atau ketika sisa anggaran tidak cukup untuk satu `ajukan` lagi. Jawaban akhirmu cukup dua atau tiga kalimat: apa yang masuk bank dan apa yang kamu tinggalkan. Jangan menulis ulang JSON di jawaban akhir.

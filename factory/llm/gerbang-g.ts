@@ -81,9 +81,14 @@ export interface BuktiHitung {
   hasil: number;
 }
 
-function cocokHitung(z: AngkaDiTeks, hasil: number): boolean {
+/**
+ * `persis` (M2d-27): untuk SELISIH rupiah/lembar kelonggaran relatif 1 % tidak dipakai. Kelonggaran itu dibuat untuk
+ * kelipatan dan persen yang ditulis dibulatkan ("2,21 kali"); pada selisih ia membuat 392 "cocok" dengan 398 − 5 = 393
+ * (m2d26-amag-1, penolakan keliru yang memakan satu panggilan model).
+ */
+function cocokHitung(z: AngkaDiTeks, hasil: number, persis: boolean = false): boolean {
   if (!Number.isFinite(hasil)) return false;
-  return Math.abs(z.nilai - hasil) <= Math.max(z.presisi, TOLERANSI_RELATIF * Math.abs(hasil)) + 1e-9;
+  return Math.abs(z.nilai - hasil) <= (persis ? z.presisi : Math.max(z.presisi, TOLERANSI_RELATIF * Math.abs(hasil))) + 1e-9;
 }
 
 function sejenis(x: AngkaG, y: AngkaG): boolean {
@@ -120,7 +125,7 @@ function hitungUntuk(z: AngkaG, semua: readonly AngkaG[]): BuktiHitung | null {
         }
       }
       for (const [rumus, hasil] of calon) {
-        if (cocokHitung(z, hasil)) return { angka: z.teks, satuan: z.satuan, rumus: `${rumus} = ${tulisAngka(hasil)}`, hasil };
+        if (cocokHitung(z, hasil, z.satuan === 'rupiah' || z.satuan === 'lembar')) return { angka: z.teks, satuan: z.satuan, rumus: `${rumus} = ${tulisAngka(hasil)}`, hasil };
       }
     }
   }
