@@ -141,6 +141,6 @@ describe('prompt agen', () => {
     for (const a of ['lihat_fakta', 'lihat_bank', 'periksa_kode', 'ajukan']) expect(p).toContain(`\`${a}\``);
     expect(p).not.toContain('susp-2025-12-10');
     // M2d-20: kontrak bentuk masuk prompt (±2.500 karakter); tetap jauh di bawah prompt 23 aturan lama (17.621).
-    expect(p.length).toBeLessThan(11800);
+    expect(p.length).toBeLessThan(13200);
   });
 });

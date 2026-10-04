@@ -7,8 +7,10 @@ import { kontrakBentuk } from './bentuk.ts';
 
 const JALUR = fileURLToPath(new URL('./prompt-agen.md', import.meta.url));
 
-export function instruksiAgen(target: number = UKURAN_SIMULASI, maksDitolak: number = 5): string {
-  const isi: Record<string, string> = { TARGET: String(target), TELADAN: teksTeladanV3(), BENTUK: kontrakBentuk(), MAKS_DITOLAK: String(maksDitolak) };
+const BARIS_SULIT = '\nSimulasi ini bertingkat SULIT: penguji yang lebih kuat tidak boleh bisa menebak jawaban satu kali pun tanpa kartu. Hilangkan setiap petunjuk dari nada pesan dan dari susunan pilihan; omongan yang masih tertebak tidak masuk bank.\n';
+
+export function instruksiAgen(target: number = UKURAN_SIMULASI, maksDitolak: number = 5, tingkat: 'biasa' | 'sulit' = 'biasa'): string {
+  const isi: Record<string, string> = { TARGET: String(target), TELADAN: teksTeladanV3(), BENTUK: kontrakBentuk(), MAKS_DITOLAK: String(maksDitolak), TINGKAT: tingkat === 'sulit' ? BARIS_SULIT : '' };
   return readFileSync(JALUR, 'utf8')
     .replace(/\r\n/g, '\n')
     .replace(/\{([A-Z_]+)\}/g, (utuh, nama: string) => {

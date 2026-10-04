@@ -68,6 +68,13 @@ const target = Number(arg('--target') ?? UKURAN_SIMULASI);
 if (!Number.isInteger(target) || target < 1 || target > UKURAN_SIMULASI) throw new Error(`--target harus 1–${String(UKURAN_SIMULASI)}`);
 const maksLangkah = Number(arg('--langkah') ?? LANGKAH_BAWAAN);
 const ujiAjukan = arg('--uji-ajukan');
+/** `--tingkat sulit`: penguji Opus harus 0 benar; batas token penulis tidak diturunkan (kata pemilik 5 Okt). */
+const tingkat = (arg('--tingkat') ?? 'biasa') as 'biasa' | 'sulit';
+if (tingkat !== 'biasa' && tingkat !== 'sulit') throw new Error('--tingkat harus biasa atau sulit');
+/** `--ajukan-dulu <hasil.json>`: draf lolos-kode yang tersisa dari percobaan lama diajukan sebelum agen menulis lagi. */
+const ajukanDulu = arg('--ajukan-dulu');
+/** Batas token keluaran penulis: 32.000 (keluaran terbesar terukur 12.063 token; OpenRouter menolak panggilan bila saldo tidak menjamin seluruh batas). */
+const MAKS_TOKEN_PENULIS = tingkat === 'sulit' ? 128_000 : 32_000;
 /** Model penulis agen: Opus 5.5 (bawaan) atau Sonnet 5.5 (banding M2d-21). Penyedia tetap dikunci ke Anthropic. */
 const MODEL_SONNET = 'anthropic/claude-sonnet-5.5';
 const namaModel = arg('--model') ?? 'opus';
@@ -144,7 +151,7 @@ function riwayatDitolak(): SudutDitolak[] {
 
 let biayaAgen = 0;
 const alat = buatAlat({
-  paket, folderBank, idJalan: id, panggil: panggilGerbang, paguUsd: pagu, biayaAgen: () => biayaAgen, labelPenulis: `${MODEL_PENULIS} (agen ber-alat)`, target, riwayatDitolak: riwayatDitolak(),
+  paket, folderBank, idJalan: id, panggil: panggilGerbang, paguUsd: pagu, biayaAgen: () => biayaAgen, labelPenulis: `${MODEL_PENULIS} (agen ber-alat)`, target, tingkat, riwayatDitolak: riwayatDitolak(),
   catat: (p: PeristiwaAlat) => {
     jejak({ jenis: 'alat', ...p });
     console.log(`  alat ${p.alat}: ${p.ringkas}`);
@@ -162,6 +169,16 @@ if (ujiAjukan !== null) {
 }
 
 // Biaya selalu dari usage.cost; baris harga hanya batas atas bila respons tanpa cost (Sonnet memakai baris Opus = batas atas yang aman).
+if (ajukanDulu !== null) {
+  type D = { id: string; omongan: Record<string, unknown> & { pesan: string } };
+  const lama = JSON.parse(readFileSync(`${AKAR}${ajukanDulu}`, 'utf8')) as { draf_lolos_kode?: D[]; nilai?: Array<{ omongan: { pesan: string } }> };
+  const dinilai = new Set((lama.nilai ?? []).map((n) => n.omongan.pesan));
+  const sisaDraf = (lama.draf_lolos_kode ?? []).filter((d) => !dinilai.has(d.omongan.pesan));
+  const idSiap = alat.periksaKodeBanyak(sisaDraf.map((d) => d.omongan)).flatMap((h) => (h.lolos && h.id_draf !== undefined ? [h.id_draf] : []));
+  console.log(`Draf tersisa dari ${ajukanDulu}: ${String(sisaDraf.length)} belum dinilai, ${String(idSiap.length)} lolos kode → diajukan dulu.`);
+  if (idSiap.length > 0) await alat.ajukanBanyak(idSiap);
+}
+
 const ledger = new PencatatBiaya({ paguUsd: konfig.paguUsd, jalurLedger: jalurLedger(AKAR), biayaNyata: true, harga: { ...HARGA, [MODEL_PENULIS]: HARGA[MODEL_OR_OPUS] } });
 const totalAwal = ledger.total();
 let panggilanModel = 0;
@@ -222,7 +239,7 @@ const agen = new ToolLoopAgent({
     ajukan: tool({ description: `Ajukan satu sampai tiga draf (id_draf dari periksa_kode) ke gerbang berbayar. Tiap draf dinilai sendiri; yang lolos masuk bank. Butuh sisa anggaran minimal US$${String(CADANGAN_AJUKAN_USD)} per draf.`, inputSchema: z.object({ id_draf: z.array(z.string()).min(1).max(3) }), execute: ({ id_draf }) => alat.ajukanBanyak(id_draf) }),
   },
   stopWhen: [isStepCount(maksLangkah), () => alat.selesai() || alat.anggaranHabis() || alat.rusak() !== null ||  alat.keadaan().ditolak - ditolakAwal >= MAKS_DITOLAK_PER_PERCAKAPAN],
-  maxOutputTokens: 128_000,
+  maxOutputTokens: MAKS_TOKEN_PENULIS,
   maxRetries: 2,
   providerOptions: { openrouter: { reasoning: { effort: 'medium', exclude: false } } },
 });
@@ -240,7 +257,7 @@ try {
     ditolakAwal = alat.keadaan().ditolak;
     console.log(`- percakapan ${String(percakapan)} (bank ${String(sudutAwal)}/${String(target)}, sisa US$${String(alat.keadaan().sisa_anggaran_usd)})`);
     jejak({ jenis: 'percakapan', ke: percakapan, bank: sudutAwal });
-    const hasil = await agen.generate({ prompt: instruksiAgen(target, MAKS_DITOLAK_PER_PERCAKAPAN) });
+    const hasil = await agen.generate({ prompt: instruksiAgen(target, MAKS_DITOLAK_PER_PERCAKAPAN, tingkat) });
     teksAkhir = hasil.text;
     langkah += hasil.steps.length;
     ringkasPercakapan.push({ ke: percakapan, langkah: hasil.steps.length, sudut_sebelum: sudutAwal, sudut_sesudah: alat.keadaan().jumlah_omongan, ditolak: alat.keadaan().ditolak - ditolakAwal, teks_akhir: hasil.text });

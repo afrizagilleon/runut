@@ -57,6 +57,8 @@ export interface OpsiAlat {
   biayaAgen: () => number;
   labelPenulis: string;
   target?: number;
+  /** M2d-25: 'sulit' = penguji Opus harus 0 benar tanpa kartu; selain itu omongan tidak masuk bank. */
+  tingkat?: 'biasa' | 'sulit';
   /** Sudut yang pernah ditolak gerbang berbayar di percobaan lain atas paket yang sama (pelajaran lintas percakapan). */
   riwayatDitolak?: readonly SudutDitolak[];
   jam?: () => Date;
@@ -74,6 +76,25 @@ export interface SudutDitolak {
 }
 
 export const MAKS_RIWAYAT_DITOLAK = 8;
+
+export type Tingkat = 'pemanasan' | 'biasa' | 'sulit';
+
+/**
+ * Label tingkat satu omongan (M2d-25), dari dua penguji tanpa kartu. Batasnya dari enam soal tayang yang
+ * dibandingkan dengan pemain sungguhan (`.context/agen/analisa-4okt.md` §10; n = 6, masih kasar):
+ * - pemanasan: penebak murah memilih kunci ≥ 7 dari 12 (firasat mengarah ke jawaban benar);
+ * - sulit: penebak murah ≤ 3 dari 12 DAN penguji Opus 0 benar (firasat menyesatkan, tidak tertebak);
+ * - biasa: selain itu. `null` bila penebak tidak dijalankan. Murni.
+ */
+export function tingkatOmongan(n: Pick<NilaiOmonganV3, 'pasangan' | 'penebak_kuat'>): Tingkat | null {
+  const p = n.pasangan?.putusan;
+  if (p === undefined || p.n === 0) return null;
+  const k = (p.kunci / p.n) * 12;
+  if (k >= 7) return 'pemanasan';
+  const q = n.penebak_kuat?.putusan;
+  if (k <= 3 && q !== undefined && q !== null && q.kunci === 0) return 'sulit';
+  return 'biasa';
+}
 /** Paling banyak draf per panggilan `periksa_kode` / `ajukan` (satu simulasi = tiga omongan). */
 export const MAKS_DRAF_PER_PANGGILAN = 3;
 
@@ -176,12 +197,12 @@ export function buatAlat(o: OpsiAlat) {
 
   const lihatFakta = (): { hari: string; kartu: string } => lapor('lihat_fakta', 'kartu fakta dibaca', { hari: o.paket.tanggal_t, kartu: teksPaket(o.paket) });
 
-  const lihatBank = (): { omongan: Array<{ nama: string; kartu_penentu: string[]; pesan: string; jawaban: 'Betul' | 'Keliru'; pilihan: OmonganBebas['pilihan']; kunci: string }>; kartu_penentu_terpakai: string[]; jumlah_sudut: number; target: number; kebutuhan_simulasi: string[]; pernah_ditolak: PolaDitolak[]; sisa_anggaran_usd: number } => {
+  const lihatBank = (): { omongan: Array<{ nama: string; kartu_penentu: string[]; pesan: string; jawaban: 'Betul' | 'Keliru'; pilihan: OmonganBebas['pilihan']; kunci: string; tingkat: Tingkat | null }>; kartu_penentu_terpakai: string[]; jumlah_sudut: number; target: number; kebutuhan_simulasi: string[]; pernah_ditolak: PolaDitolak[]; sisa_anggaran_usd: number } => {
     const b = bank();
     const butuh = kebutuhanSimulasi(b, o.paket, target);
     return lapor('lihat_bank', `${String(jumlahSudut(b))} dari ${String(target)} sudut${butuh.terakit ? '; simulasi bisa dirakit' : ''}`, {
       // M2d-23: pilihan + kunci omongan yang LOLOS ikut ditampilkan — contoh kembaran yang berhasil dari hari yang sama.
-      omongan: b.map((e) => ({ nama: e.omongan.nama, kartu_penentu: [...e.kartu_penentu], pesan: e.omongan.pesan, jawaban: kunciBetul(e.omongan) ? 'Betul' : 'Keliru', pilihan: e.omongan.pilihan, kunci: e.omongan.kunci })),
+      omongan: b.map((e) => ({ nama: e.omongan.nama, kartu_penentu: [...e.kartu_penentu], pesan: e.omongan.pesan, jawaban: kunciBetul(e.omongan) ? 'Betul' : 'Keliru', pilihan: e.omongan.pilihan, kunci: e.omongan.kunci, tingkat: (e.jejak_gerbang as { tingkat?: Tingkat | null }).tingkat ?? null })),
       kebutuhan_simulasi: butuh.kebutuhan,
       kartu_penentu_terpakai: sudutBank(b),
       jumlah_sudut: jumlahSudut(b),
@@ -202,7 +223,7 @@ export function buatAlat(o: OpsiAlat) {
     return lapor('periksa_kode', `lolos (draf ${id})`, { lolos: true, penolakan: [], id_draf: id });
   };
 
-  const ajukanSatu = async (x: unknown): Promise<HasilAjukan> => {
+  const ajukanSatu = async (x: unknown, namaPaksa?: string): Promise<HasilAjukan> => {
     const dasar = (berhenti: string, penolakan: string[], catatan: string[] = [], biaya = 0): HasilAjukan => ({ lolos: berhenti === 'lolos', berhenti, penolakan, catatan, biaya_pengajuan_usd: bulat(biaya), sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) });
     // `{ id_draf }` = draf yang sudah lolos periksa_kode (tanpa mengirim ulang JSON); selain itu = objek omongan utuh.
     const idDraf = typeof x === 'object' && x !== null && typeof (x as { id_draf?: unknown }).id_draf === 'string' ? (x as { id_draf: string }).id_draf : null;
@@ -210,7 +231,7 @@ export function buatAlat(o: OpsiAlat) {
     const u = idDraf !== null ? { omongan: drafLolos.get(idDraf) as OmonganBebas, alasan: '' } : urai(x);
     if (u.omongan === null) return lapor('ajukan', 'bentuk tak terurai (gratis)', dasar('bentuk', [u.alasan]));
     // Nama dipasang lagi saat diajukan: draf sebatch tidak boleh bernama sama dengan omongan yang baru saja masuk bank.
-    const om = pasangNama(u.omongan, bank().map((e) => e.omongan.nama));
+    const om = namaPaksa === undefined ? pasangNama(u.omongan, bank().map((e) => e.omongan.nama)) : { ...u.omongan, nama: namaPaksa };
     const k = periksaKodeAgen(om, o.paket);
     if (k.menolak.length > 0) return lapor('ajukan', 'belum lolos kode (gratis)', dasar('kode', k.menolak.map((m) => `${m.sumber}: ${m.alasan}`), ['Gerbang berbayar tidak dijalankan. Pakai periksa_kode sampai lolos dulu.']));
     const id = idOmongan(om);
@@ -221,25 +242,37 @@ export function buatAlat(o: OpsiAlat) {
     if (butuh.butuh_betul && jumlahSudut(bank()) >= target && !kunciBetul(om)) return lapor('ajukan', 'bukan yang dibutuhkan simulasi (gratis)', dasar('kebutuhan', butuh.kebutuhan, ['Gerbang berbayar tidak dijalankan: bank sudah penuh dengan jawaban "Keliru". Ajukan omongan yang kuncinya "Betul, …".']));
     if (sisa() < CADANGAN_AJUKAN_USD) return lapor('ajukan', 'anggaran tidak cukup (gratis)', dasar('anggaran', [], [`Sisa anggaran US$${String(sisa())} di bawah cadangan satu pengajuan (US$${String(CADANGAN_AJUKAN_USD)}). Berhenti.`]));
     ajukanKe += 1;
+    const putaranIni = ajukanKe;
+    let milik: NilaiOmonganV3 | null = null;
     let n: NilaiOmonganV3 | null = null;
     try {
-      n = await nilai(om, o.paket, o.panggil, ajukanKe, 1, (y) => semuaNilai.push(y), periksaKodeAgen, { pasangan: true, penebakKuatDicatat: !PENGUJI_OPUS_MENOLAK });
+      n = await nilai(om, o.paket, o.panggil, putaranIni, 1, (y) => { semuaNilai.push(y); milik = y; }, periksaKodeAgen, { pasangan: true, penebakKuatDicatat: !PENGUJI_OPUS_MENOLAK });
     } catch (galat) {
-      const terakhir = semuaNilai.at(-1);
-      if (terakhir !== undefined && terakhir.putaran === ajukanKe) biayaGerbang += terakhir.biaya_gerbang_usd;
+      const terakhir = (milik as NilaiOmonganV3 | null) ?? undefined;
+      if (terakhir !== undefined) biayaGerbang += terakhir.biaya_gerbang_usd;
       if (galat instanceof PaguTercapai) return lapor('ajukan', 'terpotong pagu', dasar('anggaran', [], ['Pagu tercapai di tengah gerbang. Berhenti.'], terakhir?.biaya_gerbang_usd ?? 0));
       // M2d-22: gerbang rusak bukan penolakan. Dulu galatnya dilempar ke model, yang lalu terus menulis dan membayar
       // tanpa pernah dinilai (dua percobaan, ±US$0,98). Sekarang: dicatat, drafnya tetap tersimpan, percobaan dihentikan.
       rusak = galat instanceof Error ? `${galat.name}: ${galat.message}`.slice(0, 400) : 'galat tak dikenal';
-      ajukanKe -= 1;
       return lapor('ajukan', 'GERBANG RUSAK — percobaan dihentikan', dasar('galat-gerbang', [], ['Gerbang tidak bisa dijalankan (gangguan teknis, bukan penolakan). Draf ini tetap tersimpan. Berhenti; jangan menulis draf lain.'], terakhir?.biaya_gerbang_usd ?? 0));
     }
     biayaGerbang += n.biaya_gerbang_usd;
+    // Mode sulit: yang masuk bank hanya omongan yang TIDAK bisa ditebak penguji Opus satu kali pun.
+    if (o.tingkat === 'sulit' && n.berhenti === 'lolos') {
+      const q = n.penebak_kuat?.putusan;
+      if (q === undefined || q === null) {
+        n.berhenti = 'tak-terukur';
+        n.alasan = ['mode sulit: penguji Opus tidak bisa dijalankan, jadi tingkatnya tak terukur'];
+      } else if (q.kunci > 0) {
+        n.berhenti = 'penebak-kuat';
+        n.alasan = [`mode sulit: penguji Opus tanpa kartu benar ${String(q.kunci)} dari ${String(q.n)}; targetnya 0 — hilangkan petunjuk dari nada pesan dan dari susunan pilihan`];
+      }
+    }
     if (n.berhenti === 'lolos') {
       simpanBank(o.folderBank, {
         id, paket_sha: sha, kartu_penentu: [...om.kartu_penentu], omongan: om,
-        jejak_gerbang: { kode: { dicatat: n.dicatat }, saringan: n.saringan, ...(n.pasangan === undefined ? {} : { pasangan: n.pasangan }), kartu: n.kartu_rotasi, penebak_kuat: n.penebak_kuat, kritikus: n.kritik },
-        asal: { jalan: o.idJalan, putaran: ajukanKe, urut: 1, penulis: o.labelPenulis, sha256_prompt: '' },
+        jejak_gerbang: { tingkat: tingkatOmongan(n), kode: { dicatat: n.dicatat }, saringan: n.saringan, ...(n.pasangan === undefined ? {} : { pasangan: n.pasangan }), kartu: n.kartu_rotasi, penebak_kuat: n.penebak_kuat, kritikus: n.kritik },
+        asal: { jalan: o.idJalan, putaran: putaranIni, urut: 1, penulis: o.labelPenulis, sha256_prompt: '' },
         waktu: jam().toISOString(),
       });
       n.id_bank = id;
@@ -266,14 +299,28 @@ export function buatAlat(o: OpsiAlat) {
   const periksaKodeBanyak = (xs: readonly unknown[]): HasilPeriksa[] => xs.slice(0, MAKS_DRAF_PER_PANGGILAN).map((x) => periksaKode(x));
 
   /** Ajukan 1–3 draf; tiap draf dinilai sendiri, berurutan (hitungan anggaran dan nama tetap benar). */
+  /**
+   * Ajukan 1–3 draf; tiap draf dinilai sendiri dan BERDAMPINGAN (M2d-25). Dulu berurutan: tiga draf memakan
+   * ±9 menit, simpanan prompt 5 menit kedaluwarsa, dan panggilan penulis berikutnya membayar penuh (m2d24-tirt-1).
+   * Nama dipasang di muka supaya draf sebatch tidak bernama sama; draf yang tidak terjangkau anggaran tidak dijalankan.
+   */
   const ajukanBanyak = async (ids: readonly string[]): Promise<{ hasil: Array<{ id_draf: string } & HasilAjukan>; simulasi_bisa_dirakit: boolean; kebutuhan_simulasi: string[] }> => {
-    const hasil: Array<{ id_draf: string } & HasilAjukan> = [];
-    for (const id of ids.slice(0, MAKS_DRAF_PER_PANGGILAN)) {
-      hasil.push({ id_draf: id, ...(await ajukan({ id_draf: id })) });
-      if (rusak !== null) break;
-    }
+    const daftar = [...new Set(ids)].slice(0, MAKS_DRAF_PER_PANGGILAN);
+    const terjangkau = Math.max(0, Math.floor((sisa() + 1e-9) / CADANGAN_AJUKAN_USD));
+    const pakai = bank().map((e) => e.omongan.nama);
+    const tugas = daftar.map((id, i) => {
+      const d = drafLolos.get(id);
+      if (i >= terjangkau) return { id, nama: undefined, tunda: true };
+      const nama = d === undefined ? undefined : pasangNama(d, pakai).nama;
+      if (nama !== undefined) pakai.push(nama);
+      return { id, nama, tunda: false };
+    });
+    const hasil = await Promise.all(tugas.map(async (t) => {
+      if (t.tunda) return { id_draf: t.id, lolos: false, berhenti: 'anggaran', penolakan: [], catatan: [`Sisa anggaran hanya cukup untuk ${String(terjangkau)} pengajuan; draf ini belum dijalankan dan tetap tersimpan.`], biaya_pengajuan_usd: 0, sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) };
+      return { id_draf: t.id, ...(await ajukanSatu({ id_draf: t.id }, t.nama)) };
+    }));
     const butuh = kebutuhanSimulasi(bank(), o.paket, target);
-    return { hasil, simulasi_bisa_dirakit: butuh.terakit, kebutuhan_simulasi: butuh.kebutuhan };
+    return { hasil: hasil.map((h) => ({ ...h, sisa_anggaran_usd: sisa(), bank: ringkasBank(bank()) })), simulasi_bisa_dirakit: butuh.terakit, kebutuhan_simulasi: butuh.kebutuhan };
   };
 
   /** Satu pengajuan pada satu waktu. */

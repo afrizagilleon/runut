@@ -25,6 +25,13 @@ Penebak hanya diberi pilihan kunci dan kembarannya (pilihan lain yang berlabel s
 
 Tiap `ajukan` mengurangi anggaran, dan hasilnya memberi tahu sisanya. Sesudah {MAKS_DITOLAK} draf ditolak, percakapan ini ditutup dan dimulai lagi dari awal; pelajarannya tetap terlihat di `lihat_bank`.
 
+Pelajaran dari penolakan sebelumnya (jangan diulang):
+- Kembaran yang dibantah pesan teman sendiri selalu tertebak. Contoh: teman bilang "ratusan ribu lembar", kembarannya "kosong sama sekali".
+- Pilihan "Keliru" tidak boleh beralasan yang ternyata benar menurut kartu; alasannya harus salah menurut kartu.
+- Angka atau kata di pilihan kunci yang menggemakan pesan teman membuat kunci terpilih tanpa kartu. Biarkan angka penentu hanya ada di kartu, atau beri kembaran angka yang sama wajarnya.
+- Kata seperti "pasti" atau "fix" di pesan memberi tahu bahwa omongannya keliru. Pakai seperlunya, dan jangan di setiap omongan.
+- Bila jawabannya "Betul", jangan memasukkan sebab, ramalan, atau ucapan orang lain yang tidak tertulis di kartu.
+{TINGKAT}
 Nama teman dipasang sistem dari daftar tetap; isi `nama` dengan nama apa saja.
 
 Bentuk yang diperiksa `periksa_kode` (tulis langsung benar):

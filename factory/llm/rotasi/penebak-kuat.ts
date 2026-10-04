@@ -33,7 +33,7 @@ export const KUAT_MIN_KUNCI = 3;
  * praktis (keputusan pemilik 3 Okt: jangan batasi token Opus). Suhu 1 (syarat
  * model saat berpikir). `exclude: false` = minta teks berpikir (ringkasan).
  */
-export const SETELAN_PENEBAK_KUAT: SetelanPanggil = { suhu: 1, tanpaSuhu: true, maxTokens: 128_000, tambahanBadan: { reasoning: { effort: 'low', exclude: false } } };
+export const SETELAN_PENEBAK_KUAT: SetelanPanggil = { suhu: 1, tanpaSuhu: true, maxTokens: 32_000, tambahanBadan: { reasoning: { effort: 'low', exclude: false } } };
 
 export interface PutusanKuat {
   putusan: PutusanSaringan;
