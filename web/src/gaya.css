@@ -2970,3 +2970,287 @@ body:has(.sorotan) .melayang {
 .dapur-mentah {
   overflow-wrap: anywhere;
 }
+
+/* --- jejak AI agent di halaman dapur ----------------------------------------- */
+
+/*
+ * Bagian ini suara KAMI tentang rekaman kerja AI agent: tanpa lembar, tanpa
+ * kalender. Bahannya yang sudah ada di halaman dapur — peran teks judul / isi
+ * / meta / aksi, garis kiri tipis untuk kutipan rekaman (rupa `.dapur-tolak`),
+ * pintu lipatan `.jejak-rinci`, dan `.rincian` untuk medan tool result. Tidak
+ * ada ukuran huruf, warna, atau radius baru.
+ */
+.jejak-agen-tahap-daftar {
+  margin: 12px 0;
+}
+
+.jejak-agen-tahap-daftar > li {
+  margin: 0 0 4px;
+}
+
+/* Gerbang: peringatan ditulis di atas kertas dengan garis kiri, lalu satu tombol. */
+.jejak-agen-gerbang {
+  margin: 16px 0;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--garis-tegas);
+}
+
+.jejak-agen-gerbang > p {
+  margin: 0 0 12px;
+}
+
+/*
+ * Tombol bagian ini: tombol garis tepi (rupa "↓ Pilih jawaban" — tindakan
+ * kedua, bukan bidang penuh), peran *aksi*, >= 44 px.
+ */
+.jejak-agen-tombol {
+  min-height: 44px;
+  padding: 8px 16px;
+  background: var(--lembar);
+  color: var(--stempel);
+  border: 1.5px solid var(--stempel);
+  border-radius: 3px;
+  font-family: var(--baca);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.4;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--gerak) ease;
+}
+
+.jejak-agen-tombol:active {
+  background: var(--garis);
+}
+
+/*
+ * Di ujung jejak tidak ada langkah berikutnya: tombolnya redup dan tidak
+ * berbuat apa-apa. `aria-disabled`, bukan `disabled`, supaya fokus papan ketik
+ * tidak hilang saat pengunjung sampai di langkah terakhir.
+ */
+.jejak-agen-tombol[aria-disabled='true'] {
+  background: var(--lembar);
+  color: var(--tinta-redup);
+  border-color: var(--garis-tegas);
+  cursor: default;
+}
+
+/* Sakelar tampilan: tiga tombol sama lebar; yang terpilih bertepi 2 px dan berhuruf tinta (rupa opsi terpilih). */
+.jejak-agen-sakelar {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.jejak-agen-sakelar > .jejak-agen-tombol {
+  padding: 8px 4px;
+  border-color: var(--garis-kontrol);
+}
+
+.jejak-agen-sakelar > .jejak-agen-tombol[aria-pressed='true'] {
+  border: 2px solid var(--stempel);
+  color: var(--tinta);
+}
+
+.jejak-agen-tahap {
+  margin: 0 0 24px;
+}
+
+.jejak-agen-tahap-angka {
+  margin: 0 0 12px;
+}
+
+.jejak-agen-langkah,
+.jejak-agen-hasil,
+.jejak-agen-larik {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.jejak-agen-langkah > li {
+  margin: 0 0 16px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--garis);
+}
+
+.jejak-agen-kepala,
+.jejak-agen-baris,
+.jejak-agen-angka,
+.jejak-agen-ucapan {
+  margin: 0 0 4px;
+  overflow-wrap: anywhere;
+}
+
+.jejak-agen-hasil > li {
+  margin: 0 0 8px;
+}
+
+/* Nama tool: tebal saja (satu teknik penekanan); boleh patah di garis bawah. */
+.jejak-agen-tool {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Status: warna saja — token umpan balik yang sudah ada, >= 4,5:1 di kedua mode. */
+.jejak-agen-status-lolos {
+  color: var(--cocok);
+}
+
+.jejak-agen-status-ditolak {
+  color: var(--belum-cocok);
+}
+
+.jejak-agen-rekaman {
+  color: var(--tinta-redup);
+}
+
+/* Alasan penolakan, dikutip dari rekaman: garis kiri tipis (rupa `.dapur-tolak`). */
+.jejak-agen-alasan {
+  list-style: none;
+  margin: 4px 0 8px;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--garis-tegas);
+  font-size: 14px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.jejak-agen-alasan > li {
+  margin: 0 0 8px;
+}
+
+.jejak-agen-alasan > li:last-child {
+  margin-bottom: 0;
+}
+
+/* Tool result lengkap: medan demi medan; teks panjang tetap dengan baris barunya. */
+.jejak-agen-medan dd {
+  margin: 2px 0 0 12px;
+}
+
+.jejak-agen-teks {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.jejak-agen-larik > li {
+  margin: 0 0 8px;
+  padding: 0 0 0 12px;
+  border-left: 1px solid var(--garis-tegas);
+}
+
+/*
+ * Diagram: AI agent satu kotak di tengah, tool di sekelilingnya; garis hanya
+ * antara agent dan tool. Bidangnya berbanding tetap 100 : 130 supaya garis
+ * (SVG) dan kotak (HTML, dalam persen) selalu bertemu, di ponsel maupun laptop.
+ */
+.jejak-agen-bidang {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  aspect-ratio: 100 / 130;
+  margin: 0 auto 12px;
+}
+
+.jejak-agen-garis {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.jejak-agen-garis line {
+  stroke: var(--garis-kontrol);
+  stroke-width: 0.35;
+}
+
+.jejak-agen-garis polygon {
+  fill: var(--garis-kontrol);
+}
+
+.jejak-agen-garis .jejak-agen-nyala line {
+  stroke: var(--stempel);
+  stroke-width: 0.8;
+}
+
+.jejak-agen-garis .jejak-agen-nyala polygon {
+  fill: var(--stempel);
+}
+
+.jejak-agen-agen,
+.jejak-agen-simpul > li {
+  position: absolute;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 2px 4px;
+  text-align: center;
+  background: var(--lembar);
+  border: 1px solid var(--garis-kontrol);
+  border-radius: 2px;
+  font-family: var(--baca);
+  font-size: 12px;
+  line-height: 1.2;
+  overflow: hidden;
+}
+
+/* Agent: satu-satunya kotak bertepi tinta tebal — bentuk yang dominan di diagram. */
+.jejak-agen-agen {
+  border: 2px solid var(--tinta);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.jejak-agen-simpul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.jejak-agen-simpul > li {
+  color: var(--tinta-redup);
+  transition: border-color var(--gerak) ease;
+}
+
+.jejak-agen-simpul .jejak-agen-tool {
+  font-weight: 400;
+}
+
+/* Tool yang sedang dipanggil: tepi 2 px --stempel dan huruf tinta; garisnya ikut menebal. */
+.jejak-agen-simpul > li.jejak-agen-nyala {
+  border: 2px solid var(--stempel);
+  color: var(--tinta);
+}
+
+.jejak-agen-pindah {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+
+.jejak-agen-pindah > .jejak-agen-tombol {
+  padding: 8px 4px;
+}
+
+.jejak-agen-kini {
+  margin: 0 0 12px;
+}
+
+.jejak-agen-hasil-kini {
+  margin: 0 0 12px;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--garis);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jejak-agen-tombol,
+  .jejak-agen-simpul > li {
+    transition: none;
+  }
+}

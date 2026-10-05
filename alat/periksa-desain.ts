@@ -446,6 +446,7 @@ export const MARKUP_BAWAAN = [
   'web/src/Teks.tsx',
   'web/src/BatasGalat.tsx',
   'web/src/Dapur.tsx',
+  'web/src/JejakAgen.tsx',
 ];
 
 const dijalankanLangsung =

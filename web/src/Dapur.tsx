@@ -23,6 +23,7 @@ import { useEffect } from 'react';
 import { teksPolos } from '../../factory/skema/rujukan.ts';
 import mentah from './dapur-data.json';
 import { angkaId } from './angka.ts';
+import JejakAgen, { DATA_JEJAK, ringkasJejak } from './JejakAgen.tsx';
 import {
   awamPenolakan,
   berhentiAwam,
@@ -435,6 +436,12 @@ export default function Dapur(): JSX.Element {
         </p>
         {/* Kritik D-5 butir 1: status kedua jalan terlihat di layar pertama, bertaut ke jalannya. */}
         <ul className="dapur-daftar dapur-ringkas">
+          <li>
+            <a className="dapur-tautan" href="#judul-jejak-agen" data-uid="dapur:ke-jejak-agen">
+              Jejak AI agent
+            </a>
+            : {ringkasJejak(DATA_JEJAK)}
+          </li>
           {DATA.jalan.map((j) => (
             <li key={j.id}>
               <a className="dapur-tautan" href={`#judul-${j.id}`} data-uid={`dapur:ke-${j.id}`}>
@@ -456,6 +463,12 @@ export default function Dapur(): JSX.Element {
           Angka, nama model, dan kalimat dalam tanda kutip dibaca dari jejak mentah lingkar agen, tanpa
           disunting. Kode teknisnya diterjemahkan; aslinya ada di lipatan “Rincian teknis”.
         </p>
+
+        {/*
+          Jejak AI agent yang menulis simulasi 15 Juni 2026 (penulis ber-tool). Tertutup
+          sampai pengunjung membukanya sendiri: isinya memuat jawaban simulasi itu.
+        */}
+        <JejakAgen />
 
         {/* Kritik D-6 (putusan E): penjelasan peran datang SEBELUM jalan yang memakainya. */}
         <section className="dapur-bagian" aria-labelledby="judul-peran">
