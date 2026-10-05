@@ -38,6 +38,13 @@ export interface KunciPenyedia {
   /** Nama penyedia di medan `provider` respons. */
   nama: string;
   alasan: string;
+  /**
+   * Batas harga (USD per juta token) khusus peran ini, menggantikan `max_price` = harga daftar.
+   * Hanya diisi bila penyedia terkunci menaikkan harganya di atas harga daftar DAN penyedia itu
+   * sengaja dipertahankan karena perilakunya sudah terkalibrasi. Pemeriksaan gratis sebelum
+   * percobaan (`periksaPenyediaTerkunci`) tetap menolak jalan bila harganya naik lagi.
+   */
+  maks_harga?: { prompt: number; completion: number };
 }
 
 /**
@@ -66,6 +73,9 @@ export const PENYEDIA_PERAN: Readonly<Record<PeranV2, KunciPenyedia>> = {
   },
   'penebak-glm': {
     model: MODEL_OR_GLM, jenis: ['gerbang-tebak'], slug: 'wafer', nama: 'Wafer',
+    // 5 Okt 2026: Wafer menaikkan harga keluaran GLM-5.3 dari ≤ US$4,4 ke US$6/juta (di atas harga daftar Z.AI 1,40/4,40; harga masuknya turun ke US$0,04–0,08).
+    // Penyedianya TIDAK diganti: gerbang ini terkalibrasi pada Wafer. Selisihnya ±US$0,01 per panggilan kritikus (median ±6.000 token keluar).
+    maks_harga: { prompt: 1.4, completion: 6 },
     alasan: 'Ledger: 574 dari 575 panggilan penebak GLM dilayani Wafer (effort "minimal", median 33 token penalaran). Mengunci penyedia yang sudah hampir selalu dipakai.',
   },
   'pembaca-kartu': {
@@ -74,6 +84,9 @@ export const PENYEDIA_PERAN: Readonly<Record<PeranV2, KunciPenyedia>> = {
   },
   kritikus: {
     model: MODEL_OR_GLM, jenis: ['kritikus'], slug: 'wafer', nama: 'Wafer',
+    // 5 Okt 2026: Wafer menaikkan harga keluaran GLM-5.3 dari ≤ US$4,4 ke US$6/juta (di atas harga daftar Z.AI 1,40/4,40; harga masuknya turun ke US$0,04–0,08).
+    // Penyedianya TIDAK diganti: gerbang ini terkalibrasi pada Wafer. Selisihnya ±US$0,01 per panggilan kritikus (median ±6.000 token keluar).
+    maks_harga: { prompt: 1.4, completion: 6 },
     alasan: 'Tetap seperti amandemen A-1 M2d-10: Wafer terbukti berpikir (57/57 panggilan kritikus effort "high" ≥ 1.000 token penalaran; di M2d-11/13/15: 7 panggilan, median 6.164).',
   },
 };
@@ -96,7 +109,7 @@ export function pagarPeranV2(peran: PeranV2): Readonly<Record<string, unknown>> 
   const k = PENYEDIA_PERAN[peran];
   const { allow_fallbacks: _f, ...dasar } = pagarPenyedia(k.model);
   void _f;
-  return { ...dasar, order: [k.slug], allow_fallbacks: false };
+  return { ...dasar, ...(k.maks_harga === undefined ? {} : { max_price: { ...k.maks_harga } }), order: [k.slug], allow_fallbacks: false };
 }
 
 /** Respons dari penyedia lain walau fallback dimatikan → jalan berhenti (tidak pernah dialihkan). */
