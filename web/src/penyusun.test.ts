@@ -13,7 +13,7 @@ describe('keteranganPenyusun', () => {
   it('simulasi dari agent: menyebut agent dan penyetujunya, tidak mengaku disetujui manusia', () => {
     expect(KASUS_DARI_AGEN).toContain('amag-2026-06-15');
     const teks = keteranganPenyusun('amag-2026-06-15');
-    expect(teks).toBe('Soal simulasi ini ditulis agen AI kami dan diperiksa Claude (model AI).');
+    expect(teks).toBe('Simulasi ini ditulis agen AI kami dan diperiksa Claude (model AI).');
     expect(teks).not.toMatch(/manusia|pemilik|belum ada yang tayang/);
   });
 

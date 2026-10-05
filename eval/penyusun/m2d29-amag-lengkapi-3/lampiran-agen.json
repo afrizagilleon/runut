@@ -1,0 +1,180 @@
+{
+  "kasus_id": "amag-2026-06-15",
+  "sumber": {
+    "paket": "eval/penyusun/m2d26-amag-1/paket.json",
+    "paket_sha256": "40bccdb8f5412733fd2301665f7e8ea2707aedd06d2515d906f9aa83c2e3744e",
+    "bank": "eval/bank-omongan",
+    "gudang": [
+      {
+        "nama": "AMAG-m4a-corpactions.json",
+        "sha256": "b971ca1c44b22b5ce2c0e3b69323e41f1c6797f2e741b0b5de21255674e14b68"
+      },
+      {
+        "nama": "AMAG-m4a-daily-2025-04-30.json",
+        "sha256": "ad392f281f830d04a6884dec8d42e20dc87f2660fbed1be13689f4f361ee0c39"
+      },
+      {
+        "nama": "AMAG-m4a-daily-2026-04-23.json",
+        "sha256": "d16a6816d38bdfdd4c1036ebd8cab2e6c11f384c12b4ad7a9866cf9a8d334b82"
+      },
+      {
+        "nama": "AMAG-m4a-filings-p0.json",
+        "sha256": "738fff6e95332ee3f19ed2500233eabd8aea7ed6f0bb5f008f8f14e80d531010"
+      },
+      {
+        "nama": "AMAG-m4a-overview-financials.json",
+        "sha256": "62d9cf74fa6064588cbcb810687491224cad980efaa7323a368c10f9771f1591"
+      },
+      {
+        "nama": "AMAG-m4a-ownership.json",
+        "sha256": "7f0cb005903dc2a849f7eb8c75fd3f38ac57b267ca8cb0032ecf6c9e1d8808b4"
+      }
+    ]
+  },
+  "judul": "Perusahaan A: harga naik beberapa hari, dan riwayat dividen tunainya",
+  "emiten": {
+    "papan": "Pengembangan",
+    "sektor": "asuransi"
+  },
+  "soal": [
+    {
+      "id_omongan": "5e568a8ce3296708",
+      "soal_id": "belum-balik-akhir-mei",
+      "tanya": "Omongan Rara cocok dengan dokumennya?",
+      "istilah": [
+        {
+          "kata": "Harga penutupan",
+          "arti": "Harga yang dicatat bursa sebagai harga akhir pada satu hari bursa."
+        },
+        {
+          "kata": "Hari bursa",
+          "arti": "Hari ketika bursa buka untuk perdagangan. Akhir pekan dan hari libur bursa tidak dihitung."
+        }
+      ]
+    },
+    {
+      "id_omongan": "25ddea4d9f1c3df0",
+      "soal_id": "tujuh-kali-dividen",
+      "tanya": "Omongan Dimas cocok dengan dokumennya?",
+      "istilah": [
+        {
+          "kata": "Dividen tunai",
+          "arti": "Bagian laba yang dibayarkan perusahaan kepada pemegang saham dalam bentuk uang."
+        },
+        {
+          "kata": "Tanggal ex",
+          "arti": "Mulai tanggal ini pembeli baru tidak lagi kebagian dividen yang sudah diumumkan; yang sudah pegang sebelumnya tetap kebagian."
+        }
+      ]
+    },
+    {
+      "id_omongan": "e59779237448d406",
+      "soal_id": "volume-sepi",
+      "tanya": "Omongan Bayu cocok dengan dokumennya?",
+      "istilah": [
+        {
+          "kata": "Volume",
+          "arti": "Jumlah lembar saham yang berpindah tangan dalam satu hari bursa."
+        },
+        {
+          "kata": "Lot",
+          "arti": "Satuan jual-beli di bursa. Satu lot berisi 100 lembar saham."
+        }
+      ]
+    }
+  ],
+  "awam": {
+    "div-2025-05-14": {
+      "kepala": "Daftar dividen · 14 Mei 2025",
+      "isi": "Dividen tunai [[div-2025-05-14|Rp40]] per lembar, tanggal ex [[div-2025-05-14|14 Mei 2025]]."
+    },
+    "div-2026-05-07": {
+      "kepala": "Daftar dividen · 7 Mei 2026",
+      "isi": "Dividen tunai [[div-2026-05-07|Rp30]] per lembar, tanggal ex [[div-2026-05-07|7 Mei 2026]]."
+    },
+    "dividen-tercatat": {
+      "kepala": "Daftar aksi korporasi · 7 Mei 2026",
+      "isi": "Daftar ini mencatat [[dividen-tercatat|7 pembagian]] dividen tunai, tanggal ex [[dividen-tercatat|29 Juli 2020]] sampai [[dividen-tercatat|7 Mei 2026]]. Daftarnya belum tentu lengkap: bisa ada pembagian yang tidak tercatat."
+    },
+    "harga-2026-05-29": {
+      "kepala": "Data harga harian · 29 Mei 2026",
+      "isi": "Harga penutupan [[harga-2026-05-29|29 Mei 2026]] adalah [[harga-2026-05-29|Rp398]] per lembar."
+    },
+    "harga-2026-06-12": {
+      "kepala": "Data harga harian · 12 Juni 2026",
+      "isi": "Harga penutupan [[harga-2026-06-12|12 Juni 2026]] adalah [[harga-2026-06-12|Rp390]] per lembar."
+    },
+    "harga-2026-06-15": {
+      "kepala": "Data harga harian · 15 Juni 2026",
+      "isi": "Harga penutupan [[harga-2026-06-15|15 Juni 2026]] adalah [[harga-2026-06-15|Rp392]] per lembar."
+    },
+    "hari-naik-beruntun": {
+      "kepala": "Dihitung dari data harga",
+      "isi": "Dari [[hari-naik-beruntun|8 Juni 2026 (Rp356)]] sampai [[hari-naik-beruntun|15 Juni 2026 (Rp392)]], harga penutupan naik [[hari-naik-beruntun|5 hari bursa]] berturut-turut. Tiap hari lebih tinggi dari hari bursa sebelumnya."
+    },
+    "volume-2026-06-12": {
+      "kepala": "Data harga harian · 12 Juni 2026",
+      "isi": "Volume perdagangan [[volume-2026-06-12|12 Juni 2026]] adalah [[volume-2026-06-12|12.000 lembar]]."
+    },
+    "volume-2026-06-15": {
+      "kepala": "Data harga harian · 15 Juni 2026",
+      "isi": "Volume perdagangan [[volume-2026-06-15|15 Juni 2026]] adalah [[volume-2026-06-15|50.600 lembar]]."
+    }
+  },
+  "pembukaan": {
+    "fact_ids": [
+      "harga-2026-06-17",
+      "volume-2026-06-17",
+      "harga-2026-06-18",
+      "volume-2026-06-18",
+      "harga-2026-06-19",
+      "volume-2026-06-19",
+      "harga-2026-06-23",
+      "volume-2026-06-23",
+      "harga-2026-07-13",
+      "harga-2026-07-14",
+      "volume-2026-07-15",
+      "harga-2026-07-21",
+      "volume-2026-07-21"
+    ],
+    "paragraf": [
+      "Hari bursa pertama sesudahnya di data, [[harga-2026-06-17|17 Juni 2026]], harga tutup [[harga-2026-06-17|Rp398]]. Angka itu sama dengan penutupan [[harga-2026-05-29|29 Mei 2026]]. Volumenya [[volume-2026-06-17|5.500 lembar]].",
+      "Pada [[harga-2026-06-18|18 Juni 2026]] harga tutup tetap [[harga-2026-06-18|Rp398]], dengan volume [[volume-2026-06-18|43.700 lembar]].",
+      "Pada [[harga-2026-06-19|19 Juni 2026]] harga tutup [[harga-2026-06-19|Rp386]]. Volumenya hanya [[volume-2026-06-19|200 lembar]].",
+      "Pada [[harga-2026-06-23|23 Juni 2026]] harga tutup [[harga-2026-06-23|Rp400]], penutupan tertinggi sesudah hari simulasi sejauh data yang ada. Volumenya [[volume-2026-06-23|12.000 lembar]].",
+      "Pada [[harga-2026-07-13|13 Juli 2026]] harga tutup [[harga-2026-07-13|Rp386]], dan esoknya, [[harga-2026-07-14|14 Juli 2026]], juga [[harga-2026-07-14|Rp386]].",
+      "Pada [[volume-2026-07-15|15 Juli 2026]] volumenya [[volume-2026-07-15|135.100 lembar]], terbesar sesudah hari simulasi sejauh data yang ada.",
+      "Baris terakhir di data, [[harga-2026-07-21|21 Juli 2026]], harga tutup [[harga-2026-07-21|Rp392]], sama dengan penutupan [[harga-2026-06-15|15 Juni 2026]]. Volumenya [[volume-2026-07-21|23.200 lembar]].",
+      "Sesudah tanggal simulasi, data tidak mencatat dividen baru, rapat umum pemegang saham, atau penghentian sementara perdagangan. Laporan kepemilikan tidak terbaca sama sekali untuk perusahaan ini; kosongnya data belum tentu berarti tidak ada laporan."
+    ],
+    "bisa_dibaca": [
+      "Harga tutup hari itu [[harga-2026-06-15|Rp392]] masih di bawah [[harga-2026-05-29|Rp398]] pada akhir Mei, walau sudah naik [[hari-naik-beruntun|5 hari bursa]] berturut-turut.",
+      "Volume hari itu [[volume-2026-06-15|50.600 lembar]]. Angka [[volume-2026-06-12|12.000 lembar]] adalah volume [[volume-2026-06-12|12 Juni 2026]], hari bursa sebelumnya.",
+      "Dividen tunai terbaru [[div-2026-05-07|Rp30]] per lembar, lebih kecil dari [[div-2025-05-14|Rp40]] pada tanggal ex [[div-2025-05-14|14 Mei 2025]]."
+    ],
+    "tidak_bisa_dibaca": [
+      "Ke mana harga bergerak sesudah hari itu. Tidak satu pun kartu memuat itu, dan latihan ini tidak memintamu menebaknya.",
+      "Kenapa volume hari itu besar. Data harga harian hanya mencatat jumlahnya, bukan alasannya.",
+      "Apakah daftar dividen itu lengkap. Daftarnya sendiri menyebut bisa ada pembagian yang tidak tercatat."
+    ],
+    "disingkirkan": [
+      "Satu calon kartu tentang rapat umum pemegang saham disingkirkan, karena kalimatnya menyebut tahun yang jatuh sesudah tanggal simulasi.",
+      "Perbandingan dividen dengan laba tahun bukunya tidak dijadikan kartu. Untuk satu pembagian lama hasilnya di luar selang yang dianggap masuk akal, dan penyebabnya tidak diketahui; bisa juga cara memetakan tahun bukunya yang tidak cocok.",
+      "Dua hitungan di paket fakta, selisih dan kelipatan harga antara akhir Mei dan hari itu, tidak dipakai sebagai kartu di ketiga omongan."
+    ]
+  },
+  "penutup": {
+    "kepala": "Angka yang benar bisa salah tanggal.",
+    "isi": "Ketiga omongan hari ini bergantung pada satu hal: baris tanggal mana yang dibaca. Cocokkan tanggalnya dulu, baru angkanya. Selamat belajar membaca data."
+  },
+  "kartu_konsep": [
+    {
+      "kode": "A2",
+      "judul": "Lot dan lembar"
+    },
+    {
+      "kode": "B1",
+      "judul": "Dividen dan tanggal cum/ex"
+    }
+  ]
+}

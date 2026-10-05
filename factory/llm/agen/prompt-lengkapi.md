@@ -16,6 +16,8 @@ Aturan isi:
 - Tiap angka di `isi` kartu dan di layar pembukaan ditulis sebagai `[[fact_id|teks]]`, dan angka di `teks` harus tertulis persis begitu di kalimat fakta yang ditautkannya. Label `teks` paling banyak 36 karakter: tautkan angkanya, bukan seluruh klausanya. `kepala`, `tanya`, istilah, judul, dan penutup tampil sebagai teks biasa: tautan tidak boleh ada di sana, dan `tanya` tidak memuat angka.
 - Hanya fakta yang ada: kartu dari `lihat_fakta`, dan fakta sesudah tanggal simulasi dari `lihat_sesudahnya`. Fakta sesudah tanggal simulasi hanya boleh ditautkan di layar pembukaan, tidak di kartu. Bila sebuah jenis data kosong, katakan kosong; jangan mengisinya dengan cerita, sebab, atau ramalan.
 - Jangan membocorkan jawaban di judul, `tanya`, istilah, atau kartu: semuanya dibaca sebelum pemain menjawab.
+- Urutkan ketiga soal menurut jam pesannya, dari yang paling awal, supaya obrolan tidak berjalan mundur.
+- Tiap `paragraf` di layar pembukaan diberi label tanggal dari fakta pertama yang ditautkannya. Jadi tautan pertama tiap paragraf harus fakta sesudah tanggal simulasi, dan paragraf berurutan menurut waktu. Paragraf yang tidak bercerita tentang satu tanggal (misalnya "tidak ada dividen baru yang tercatat") ditulis tanpa tautan.
 - Tanpa nama asli perusahaan, kode saham, atau nama orang; pakai nama samaran yang ada di kartu.
 - Tanpa saran membeli atau menjual, dan tanpa penilaian atas saham atau perusahaannya.
 - Bahasa Indonesia sehari-hari, kalimat pendek. Jangan memakai tanda tebal `**`.

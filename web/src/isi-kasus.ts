@@ -71,8 +71,9 @@ export function petaKartu(kasus: Kasus): Record<string, string[]> {
  */
 export function keteranganPenyusun(kasus_id: string): string {
   if (kasusDariAgen(kasus_id)) {
-    // Diringkas atas kata pemilik (5 Okt): satu kalimat pendek.
-    return 'Soal simulasi ini ditulis agen AI kami dan diperiksa Claude (model AI).';
+    // Diringkas atas kata pemilik (5 Okt): satu kalimat pendek. Sejak M2d-29 seluruh simulasi (soal, kartu, istilah,
+    // layar ini) ditulis agent; penyetuju memeriksa tanpa menyunting.
+    return 'Simulasi ini ditulis agen AI kami dan diperiksa Claude (model AI).';
   }
   const manusia = 'Soal di simulasi ini disusun Claude (model AI) bersama pemilik, lalu diuji dan disetujui manusia.';
   return KASUS_DARI_AGEN.length === 0

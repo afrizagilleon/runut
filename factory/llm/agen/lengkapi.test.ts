@@ -20,7 +20,11 @@ import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { KasusTidakSah, bangunKasusUmum } from '../../kasus/bangun.ts';
 import { dariAgen, type LampiranPenyetuju } from '../../kasus/dari-agen.ts';
-import { LAMPIRAN_AMAG_2026_06_15 as LAMPIRAN } from '../../kasus/lampiran/amag-2026-06-15.ts';
+import { keJson } from '../../kasus/json.ts';
+// Lampiran yang terpasang sebagai kasus tayang: tulisan agent (percobaan m2d29-amag-lengkapi-3).
+import { BERKAS_LAMPIRAN_AMAG, LAMPIRAN_AMAG_2026_06_15 as LAMPIRAN_AGEN } from '../../kasus/lampiran/amag-2026-06-15.ts';
+// Contoh lampiran TULISAN TANGAN yang lolos; sudah digantikan sebagai kasus tayang, disimpan untuk tes ini.
+import { LAMPIRAN_AMAG_2026_06_15_PENYETUJU as LAMPIRAN } from '../../kasus/lampiran/amag-2026-06-15.penyetuju.ts';
 import { FOLDER_GUDANG, muatGudang } from '../../muat/gudang.ts';
 import { AKAR } from '../env.ts';
 import { MODEL_OR_GLM } from '../model.ts';
@@ -424,16 +428,72 @@ describe.runIf(adaCache)('mode lengkapi atas AMAG (gudang sungguhan, critic tiru
     expect(critic.panggilan).toHaveLength(1);
   });
 
-  it('ajukan_kasus: critic lolos → lampiran-agen.json + kasus.json, sama dengan kasus AMAG yang tayang', async () => {
-    const { alat, folderKeluaran, critic, peristiwa } = alatAmag([TANPA_KEBERATAN]);
+  it('ajukan_kasus: draft lampiran tulisan agent yang terpasang → berkas percobaannya dan kasus AMAG yang tayang, byte demi byte', async () => {
+    const { alat, folderKeluaran } = alatAmag([TANPA_KEBERATAN]);
+    const draf: DrafLampiran = structuredClone({ judul: LAMPIRAN_AGEN.judul, soal: LAMPIRAN_AGEN.soal, awam: LAMPIRAN_AGEN.awam, pembukaan: LAMPIRAN_AGEN.pembukaan, penutup: LAMPIRAN_AGEN.penutup, kartu_konsep: LAMPIRAN_AGEN.kartu_konsep });
+    const periksa = alat.periksaKasus(draf);
+    expect(periksa.masalah).toEqual([]);
+    expect(await alat.ajukanKasus(periksa.id_lampiran as string)).toMatchObject({ lolos: true, berhenti: 'lolos' });
+    // Alat yang sama, dijalankan ulang tanpa jaringan, menulis kembali kedua berkas percobaan itu tanpa selisih satu byte.
+    expect(readFileSync(join(folderKeluaran, 'lampiran-agen.json'), 'utf8')).toBe(readFileSync(`${AKAR}${BERKAS_LAMPIRAN_AMAG}`, 'utf8'));
+    expect(readFileSync(join(folderKeluaran, 'kasus.json'), 'utf8')).toBe(readFileSync(`${AKAR}cases/amag-2026-06-15.json`, 'utf8'));
+  });
+
+  it("aturan 'tampilan': lampiran percobaan m2d29-2 DITOLAK (jam mundur; paragraf dibuka fakta tanggal simulasi), lampiran m2d29-3 lolos", () => {
+    const { alat, critic } = alatAmag([TANPA_KEBERATAN]);
+    const pilih = (l: LampiranPenyetuju): DrafLampiran => structuredClone({ judul: l.judul, soal: l.soal, awam: l.awam, pembukaan: l.pembukaan, penutup: l.penutup, kartu_konsep: l.kartu_konsep });
+    // Berkas percobaan lama dibaca apa adanya dari cakram: lampiran yang sempat lolos aturan kasus dan critic sebelum dua aturan ini ada.
+    const lama = JSON.parse(readFileSync(`${AKAR}eval/penyusun/m2d29-amag-lengkapi-2/lampiran-agen.json`, 'utf8')) as LampiranPenyetuju;
+    const h = alat.periksaKasus(pilih(lama));
+    expect(h.lolos).toBe(false);
+    expect(h.id_lampiran).toBeUndefined();
+    // Tepat dua masalah, keduanya bersumber 'tampilan' — tidak ada penolakan lain yang ikut menumpang.
+    expect(h.masalah.map((m) => m.sumber)).toEqual(['tampilan', 'tampilan']);
+    expect(h.masalah[0]?.pesan).toBe('Urutan soal: soal ke-3 dikirim pukul 18.15, lebih awal dari soal ke-2 (20.05). Urutkan soal menurut jam pesannya supaya obrolan tidak berjalan mundur.');
+    expect(h.masalah[1]?.pesan).toContain('pembukaan.paragraf ke-6: tautan pertamanya "harga-2026-06-15" bukan fakta sesudah tanggal simulasi.');
+    expect(alat.adaLampiranSiap()).toBe(false);
+
+    // Masing-masing aturan berdiri sendiri: memperbaiki satu hal menyisakan tepat yang lain.
+    const urutJam = pilih(lama);
+    urutJam.soal = [urutJam.soal[0], urutJam.soal[2], urutJam.soal[1]] as DrafLampiran['soal'];
+    expect(alat.periksaKasus(urutJam).masalah.map((m) => m.pesan.slice(0, 26))).toEqual(['pembukaan.paragraf ke-6: t']);
+    const tanpaParagraf6 = pilih(lama);
+    tanpaParagraf6.pembukaan.paragraf = tanpaParagraf6.pembukaan.paragraf.slice(0, 5);
+    expect(alat.periksaKasus(tanpaParagraf6).masalah.map((m) => m.pesan.slice(0, 12))).toEqual(['Urutan soal:']);
+
+    // Paragraf yang tanggal pembukanya mundur juga ditolak (cabang kedua aturan paragraf), diuji atas lampiran yang lolos.
+    const mundur = pilih(LAMPIRAN_AGEN);
+    const [p1, p2, ...sisa] = mundur.pembukaan.paragraf;
+    mundur.pembukaan.paragraf = [p2 as string, p1 as string, ...sisa];
+    const hm = alat.periksaKasus(mundur).masalah;
+    expect(hm.map((m) => m.sumber)).toEqual(['tampilan']);
+    expect(hm[0]?.pesan).toContain('pembukaan.paragraf ke-2: tautan pertamanya bertanggal 2026-06-17, lebih awal dari paragraf sebelumnya (2026-06-18).');
+
+    // Lampiran yang terpasang (m2d29-3) dan lampiran tulisan tangan penyetuju lolos kedua aturan.
+    for (const l of [LAMPIRAN_AGEN, LAMPIRAN]) {
+      const lolos = alat.periksaKasus(pilih(l));
+      expect(lolos.masalah).toEqual([]);
+      expect(lolos.lolos).toBe(true);
+    }
+    expect(critic.panggilan).toHaveLength(0);
+  });
+
+  it('ajukan_kasus: critic lolos → lampiran-agen.json + kasus.json, sama dengan kasus yang dibangun pabrik dari lampiran itu', async () => {
+    const { alat, s, folderKeluaran, critic, peristiwa } = alatAmag([TANPA_KEBERATAN]);
     const id = alat.periksaKasus(drafAmag()).id_lampiran as string;
     const h = await alat.ajukanKasus(id);
     expect(h).toMatchObject({ lolos: true, berhenti: 'lolos', keberatan: [], biaya_pengajuan_usd: 0.03 });
     expect(readdirSync(folderKeluaran).sort()).toEqual(['kasus.json', 'lampiran-agen.json']);
     expect(h.berkas?.every((b) => b.startsWith(folderKeluaran))).toBe(true);
-    // Lampiran yang ditulis = lampiran penyetuju (tulisan + bagian yang dilengkapi kode); kasusnya = berkas tayang, byte demi byte.
+    /*
+     * Lampiran yang ditulis = lampiran penyetuju (tulisan + bagian yang dilengkapi kode). Kasusnya dulu dibandingkan dengan
+     * berkas tayang; sejak kasus tayang dibangun dari lampiran tulisan agent, pembandingnya pembangun dan pengubah produk
+     * yang dipanggil langsung atas lampiran penyetuju — byte demi byte, dan memang BUKAN berkas tayang.
+     */
     expect(JSON.parse(readFileSync(join(folderKeluaran, 'lampiran-agen.json'), 'utf8'))).toEqual(JSON.parse(JSON.stringify(LAMPIRAN)));
-    expect(readFileSync(join(folderKeluaran, 'kasus.json'), 'utf8')).toBe(readFileSync(`${AKAR}cases/amag-2026-06-15.json`, 'utf8'));
+    const dibangun = bangunKasusUmum(dariAgen({ paket: s.paket, omongan: s.omongan, lampiran: LAMPIRAN, data: s.data }), s.beku === undefined ? s.data : { ...s.data, aturan_beku: [...s.beku.aturan] }, s.asal_gudang, s.kosong, s.asal_kosong).kasus;
+    expect(readFileSync(join(folderKeluaran, 'kasus.json'), 'utf8')).toBe(keJson(dibangun));
+    expect(readFileSync(join(folderKeluaran, 'kasus.json'), 'utf8')).not.toBe(readFileSync(`${AKAR}cases/amag-2026-06-15.json`, 'utf8'));
     expect(alat.terbit()?.id_lampiran).toBe(id);
     expect(peristiwa.at(-1)).toMatchObject({ alat: 'ajukan_kasus' });
 

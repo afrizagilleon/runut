@@ -673,7 +673,7 @@ export function angkaLabelMeleset(d: DrafLampiran, klaim: ReadonlyMap<string, st
 
 export interface MasalahLampiran {
   /** Siapa yang menolak: bentuk draft, kuncian, pengubah (`dariAgen`), pembangun, validator kasus, atau pembanding kesetiaan. */
-  sumber: 'bentuk' | 'kuncian' | 'label' | 'pengubah' | 'pembangun' | 'validator' | 'setia';
+  sumber: 'bentuk' | 'kuncian' | 'label' | 'pengubah' | 'pembangun' | 'validator' | 'setia' | 'tampilan';
   /** Kode masalah validator kasus, bila ada. */
   kode?: string;
   pesan: string;
@@ -787,6 +787,28 @@ export function buatAlatLengkapi(s: SiapanLengkapi, o: OpsiAlatLengkapi) {
       if (alasan !== undefined) masalah.push({ sumber: 'kuncian', pesan: `${tempat} menautkan "${id}", fakta sesudah tanggal simulasi yang tidak lolos aturan verifikasi (${alasan}).` });
     }
     for (const pesan of angkaLabelMeleset(d, s.klaim, samar)) masalah.push({ sumber: 'label', pesan });
+
+    // Tampilan (M2d-29, dari kasus AMAG tulisan agent): dua hal yang validator kasus tidak periksa tetapi terlihat pemain.
+    // (1) Jam pesan di obrolan tidak boleh mundur dari soal ke soal.
+    const jam = d.soal.map((x) => s.omongan.find((o) => o.id === x.id_omongan)?.omongan.jam ?? '');
+    for (let i = 1; i < jam.length; i++) {
+      if ((jam[i] as string) !== '' && (jam[i - 1] as string) !== '' && (jam[i] as string) < (jam[i - 1] as string)) {
+        masalah.push({ sumber: 'tampilan', pesan: `Urutan soal: soal ke-${String(i + 1)} dikirim pukul ${jam[i] as string}, lebih awal dari soal ke-${String(i)} (${jam[i - 1] as string}). Urutkan soal menurut jam pesannya supaya obrolan tidak berjalan mundur.` });
+      }
+    }
+    // (2) Tiap paragraf "sesudahnya" diberi label tanggal dari fakta PERTAMA yang ditautkannya: fakta itu harus sesudah tanggal simulasi, dan tanggalnya tidak boleh mundur.
+    let tanggalLalu = '';
+    d.pembukaan.paragraf.forEach((teks, i) => {
+      const pertama = ambilRujukan(teks)[0];
+      if (pertama === undefined) return;
+      const tanggal = /(\d{4}-\d{2}-\d{2})(?!.*\d{4}-\d{2}-\d{2})/.exec(pertama.fact_id)?.[1] ?? '';
+      if (!s.sesudah.lolos.has(pertama.fact_id)) {
+        masalah.push({ sumber: 'tampilan', pesan: `pembukaan.paragraf ke-${String(i + 1)}: tautan pertamanya "${pertama.fact_id}" bukan fakta sesudah tanggal simulasi. Label tanggal paragraf diambil dari tautan pertama; mulai paragraf dengan fakta sesudah tanggal simulasi, atau tulis paragraf itu tanpa tautan.` });
+      } else if (tanggal !== '' && tanggalLalu !== '' && tanggal < tanggalLalu) {
+        masalah.push({ sumber: 'tampilan', pesan: `pembukaan.paragraf ke-${String(i + 1)}: tautan pertamanya bertanggal ${tanggal}, lebih awal dari paragraf sebelumnya (${tanggalLalu}). Paragraf diurutkan menurut waktu.` });
+      }
+      if (s.sesudah.lolos.has(pertama.fact_id) && tanggal !== '') tanggalLalu = tanggal;
+    });
 
     const lampiran: LampiranPenyetuju = { kasus_id: s.kasus_id, sumber: s.sumber, judul: d.judul, emiten: s.emiten, soal: d.soal, awam: d.awam, pembukaan: d.pembukaan, penutup: d.penutup, kartu_konsep: d.kartu_konsep };
     let kasus: Kasus | null = null;

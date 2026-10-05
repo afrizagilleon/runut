@@ -271,7 +271,7 @@ describe.runIf(adaCache)('periksaSetia', () => {
     const s = k.soal[2];
     if (s === undefined) throw new Error('tanpa soal');
     s.penjelasan = s.penjelasan.replace('tidak sepi', 'memang sepi');
-    expect(periksaSetia(k, sumber.paket, sumber.omongan).join('\n')).toMatch(/"volume-hari-ini": penjelasan tidak sama/);
+    expect(periksaSetia(k, sumber.paket, sumber.omongan).join('\n')).toMatch(/"volume-sepi": penjelasan tidak sama/);
   });
 
   it('SABOTASE: kunci digeser → tertangkap', () => {
