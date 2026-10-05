@@ -13,11 +13,12 @@ import { cpSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterEach, describe, expect, it } from 'vitest';
-import { KALIMAT_MENULIS_ULANG, TOOL_ATURAN } from './baca-agen.ts';
+import { KALIMAT_MENULIS_ULANG, KELOMPOK_TOOL, TATA_LEBAR, TOOL_ATURAN } from './baca-agen.ts';
 import { akarSementara, bacaSse, minta, mulaiServer, type ServerUji } from './bantu-uji.ts';
-import { FOLDER_REKAMAN, KONFIG_JEJAK, MEDAN_TERLARANG, dataJejak, kataTerlarang, kodeRekaman, uraiTanpaPenalaran } from './rekaman-agen.ts';
+import { FOLDER_REKAMAN, KONFIG_JEJAK, MEDAN_TERLARANG, NAMA_LAMA, dataJejak, kataTerlarang, kodeRekaman, uraiTanpaPenalaran } from './rekaman-agen.ts';
 import {
   TOOL_DIAGRAM,
+  gambarDiagram,
   periksaBersih,
   peristiwaReplay,
   siapkanReplay,
@@ -76,8 +77,10 @@ describe('replay: data yang disiapkan untuk peramban', () => {
     }
     expect(r.langkah.map((l) => l.no)).toEqual(Array.from({ length: 21 }, (_, i) => i + 1));
     expect(r.biaya_usd).toBeCloseTo(2.776, 6);
-    // Budget = jumlah budget keempat percobaan di hasil.json.
+    // Budget = jumlah budget keempat percobaan di hasil.json; jumlah rekamannya ikut dikirim untuk label budget.
     expect(r.kepala.budget_usd).toBe(5);
+    expect(r.kepala.jumlah_rekaman).toBe(KONFIG_JEJAK.percobaan.length);
+    expect(r.kepala.jumlah_rekaman).toBe(4);
   });
 
   it('tahap berurutan: mencari bahan → menulis dan menguji → menaikkan kesulitan → melengkapi simulasi', () => {
@@ -118,10 +121,27 @@ describe('replay: data yang disiapkan untuk peramban', () => {
     expect(() => periksaBersih({ a: { penalaran: 'x' } }, terlarang)).toThrow(/penalaran/);
   });
 
-  it('diagram: dua belas tool di tempat tetap; tiap tool rekaman punya simpul; yang menyala = yang dipilih agent', () => {
+  it('diagram: dua belas tool dalam empat kelompok; tiap tool rekaman punya simpul; yang menyala = yang dipilih agent', () => {
     expect(r.kepala.tool.map((t) => t.nama)).toEqual([...TOOL_DIAGRAM]);
+    expect(TOOL_DIAGRAM).toEqual(KELOMPOK_TOOL.flatMap((k) => k.tool));
     expect(r.kepala.tool).toHaveLength(12);
-    for (const g of [r.kepala.diagram.tegak, r.kepala.diagram.lebar]) expect(g.tool).toHaveLength(12);
+    // M2d-32 D-2: nama kelompok dikirim, dan tiap tool membawa kelompoknya.
+    expect(r.kepala.kelompok).toEqual([
+      { id: 'bahan', nama: 'Bahan' },
+      { id: 'catatan', nama: 'Catatan' },
+      { id: 'periksa', nama: 'Pemeriksaan tanpa biaya' },
+      { id: 'uji', nama: 'Uji berbayar' },
+    ]);
+    for (const t of r.kepala.tool) expect(t.kelompok, t.nama).toBe(KELOMPOK_TOOL.find((k) => k.tool.includes(t.nama))?.id);
+    for (const g of [r.kepala.diagram.tegak, r.kepala.diagram.lebar]) {
+      expect(g.tool).toHaveLength(12);
+      expect(g.kelompok.map((k) => k.id)).toEqual(['bahan', 'catatan', 'periksa', 'uji']);
+      expect(g.tool.map((t) => t.kelompok)).toEqual(r.kepala.tool.map((t) => t.kelompok));
+      // Garis: hanya empat angka agent ⇄ tool; tidak ada medan lain yang bisa menyambung tool ke tool.
+      for (const t of g.tool) expect(Object.keys(t.garis).sort()).toEqual(['x1', 'x2', 'y1', 'y2']);
+    }
+    expect(r.kepala.diagram.lebar.keterangan).toBe(true);
+    expect(r.kepala.diagram.tegak.keterangan).toBe(false);
     for (const l of r.langkah) {
       expect(l.nyala.length, `langkah ${String(l.no)}`).toBeGreaterThan(0);
       const nama = l.nyala.map((i) => r.kepala.tool[i]).flatMap((t) => (t === undefined ? [] : [t.nama, ...t.nama_lama]));
@@ -129,8 +149,26 @@ describe('replay: data yang disiapkan untuk peramban', () => {
     }
     expect(r.kepala.tool.find((t) => t.nama === 'periksa_draft_dengan_aturan')?.nama_lama).toEqual(['periksa_kode']);
     expect(r.kepala.tool.every((t) => t.keterangan !== null)).toBe(true);
-    // Tool yang belum dikenal menyusul di belakang; yang ketiga belas tidak muat dan pembangun menolak, bukan diam.
-    expect(toolDiagram([{ nama: 'tool_baru', nama_lama: [] }]).at(-1)?.nama).toBe('tool_baru');
+    // Tool yang belum dikenal menyusul di belakang; tanpa kelompok ia tidak digambar dan pembangun menolak, bukan diam.
+    const denganBaru = toolDiagram([{ nama: 'tool_baru', nama_lama: [] }]);
+    expect(denganBaru.at(-1)?.nama).toBe('tool_baru');
+    expect(() => gambarDiagram(TATA_LEBAR, denganBaru)).toThrow(/tool_baru belum punya kelompok/);
+  });
+
+  it('M2d-31 F-3: satu nama untuk tool yang berganti nama — nama lama tidak ada di langkah yang dikirim', () => {
+    const lama = Object.keys(NAMA_LAMA);
+    expect(lama).toEqual(['periksa_kode']);
+    // Rekamannya sendiri memang memakai nama lama di sebagian langkah.
+    expect(data.langkah.some((l) => l.memanggil.includes('periksa_kode'))).toBe(true);
+    for (const l of r.langkah) {
+      for (const nama of [...l.memanggil, ...l.tanpa_hasil, ...l.hasil.map((h) => h.alat)]) expect(lama, `langkah ${String(l.no)}`).not.toContain(nama);
+      expect(new Set(l.memanggil).size, `langkah ${String(l.no)}`).toBe(l.memanggil.length);
+    }
+    for (const [i, l] of r.langkah.entries()) {
+      expect(l.memanggil).toEqual([...new Set((data.langkah[i]?.memanggil ?? []).map((n) => NAMA_LAMA[n] ?? n))]);
+      // Tool result tetap sebanyak di rekaman, dan rekaman aslinya tidak disentuh.
+      expect(l.hasil.map((h) => h.asli.ringkas)).toEqual(data.langkah[i]?.hasil.map((h) => h.ringkas));
+    }
   });
 
   it('"Agent menulis ulang." hanya bila langkah berikutnya memang menulis draf baru', () => {
@@ -141,7 +179,7 @@ describe('replay: data yang disiapkan untuk peramban', () => {
       for (const h of l.hasil) {
         if (h.kalimat.endsWith(KALIMAT_MENULIS_ULANG)) {
           expect(menulis, `langkah ${String(l.no)}`).toBe(true);
-          expect(h.status).toBe('ditolak');
+          expect(h.status).toBe('perbaiki');
         }
       }
     }
@@ -149,7 +187,7 @@ describe('replay: data yang disiapkan untuk peramban', () => {
     expect(bersambung).toEqual([5, 6, 10, 15]);
     // Langkah 5: dua draf berkalimat sama digabung jadi satu baris Ringkas.
     expect(r.langkah[4]?.ringkas).toEqual([
-      { status: 'ditolak', kalimat: 'Penebak tanpa kartu masih bisa menebak jawabannya: 12 dari 12 tebakan memilih jawaban benar. Agent menulis ulang.', jumlah: 2 },
+      { status: 'perbaiki', kalimat: 'Penebak tanpa kartu masih bisa menebak jawabannya: semua tebakannya memilih jawaban benar. Agent menulis ulang.', jumlah: 2 },
       { status: 'lolos', kalimat: 'Semua penguji meloloskan draf ini. Soalnya masuk kumpulan soal yang lolos.', jumlah: 1 },
     ]);
   });
@@ -209,7 +247,7 @@ describe('replay atas rekaman tiruan', () => {
     expect(dikirim).not.toMatch(/asuransi multi/i);
     expect(r.langkah[0]?.ucapan).toBe('Saya ajukan untuk [kode].');
     expect(r.langkah[0]?.token.berpikir).toBe(3);
-    expect(r.langkah[0]?.ringkas[0]?.kalimat).toBe('Penebak tanpa kartu masih bisa menebak jawabannya: 9 dari 12 tebakan memilih jawaban benar.');
+    expect(r.langkah[0]?.ringkas[0]?.kalimat).toBe('Penebak tanpa kartu masih bisa menebak jawabannya.');
     // Pengurai yang dipakai pembaca rekaman memang membuang medan itu.
     expect(uraiTanpaPenalaran('{"penalaran":"x","a":{"penalaran":"y","b":1}}')).toEqual({ a: { b: 1 } });
   });

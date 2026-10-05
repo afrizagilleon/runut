@@ -5,11 +5,16 @@
 // dilompati ke akhir, diatur kecepatannya) dan menggambarnya di tiga tampilan
 // yang selalu sinkron: Ringkas, Rinci, Diagram.
 //
+// Diagram: AI agent satu lembar di tengah, tool di sekelilingnya dalam empat
+// lembar kelompok. Tiap langkah: tool call terbang dari agent ke tool yang
+// dipilih, tool result terbang kembali, lalu hasilnya mendarat di lembar agent
+// sebagai cap. Geraknya hanya itu, dan mati di prefers-reduced-motion.
+//
 // Semua teks dari server dimasukkan lewat textContent; tidak ada HTML yang dirakit dari teks.
 // Teks tetap halaman ada di agen-murni.js (`TEKS`), yang juga dites.
 import {
-  KECEPATAN, Pemutar, TEKS, angkaLangkah, angkaSingkat, biayaLangkah, dolar, kodeDariKetikan,
-  potongNama, ringkasTahap, tanggalPanjang, uraiSse,
+  KECEPATAN, LAMA_TERBANG_MS, Pemutar, TEKS, angkaLangkah, angkaSingkat, biayaLangkah, capLangkah, dolar, keadaanAgen,
+  kodeDariKetikan, labelStatus, potongNama, ringkasTahap, tanggalPanjang, toolBerhasil, uraiSse,
 } from './agen-murni.js';
 
 /* ------------------------------------------------------------------ */
@@ -47,7 +52,7 @@ function kosongkan(e) {
 const $ = (id) => document.getElementById(id);
 
 const gerakHalus = () => !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const layarLebar = window.matchMedia('(min-width: 900px)');
+const layarLebar = window.matchMedia('(min-width: 1200px)');
 
 /** Nama tool: huruf mesin, boleh patah di garis bawah. */
 function namaTool(nama) {
@@ -88,6 +93,13 @@ const k = {
   tahap: new Map(),
   /** Pembatal pembacaan aliran yang sedang berjalan. */
   batal: null,
+  /**
+   * Gerak di diagram untuk langkah terakhir: 'pergi' (tool call menuju tool),
+   * 'kembali' (tool result menuju agent), 'tiba' (hasil sudah di agent; juga
+   * keadaan diam). `gen` naik tiap gerak baru, supaya akhir animasi lama diabaikan.
+   */
+  gerak: 'tiba',
+  gen: 0,
 };
 
 const fase = () => k.pemutar?.fase ?? 'diam';
@@ -112,9 +124,8 @@ function bagianTahap(id) {
 }
 
 function tandaStatus(status) {
-  if (status === 'lolos') return el('span', { kelas: 'agen-tanda agen-lolos' }, TEKS.lolos);
-  if (status === 'ditolak') return el('span', { kelas: 'agen-tanda agen-ditolak' }, TEKS.ditolak);
-  return null;
+  const label = labelStatus(status);
+  return label === null ? null : el('span', { kelas: `agen-tanda agen-tanda-${status}` }, label);
 }
 
 function barisKalimat(status, kalimat, jumlah) {
@@ -145,7 +156,6 @@ function barisRingkas(l) {
         'ul',
         { kelas: 'agen-kalimat-daftar' },
         l.ringkas.map((r) => barisKalimat(r.status, r.kalimat, r.jumlah)),
-        l.tanpa_hasil.length > 0 ? el('li', { kelas: 'agen-kalimat meta' }, daftarTool(l.tanpa_hasil), `: ${TEKS.tanpaHasil}`) : null,
       ),
     ),
     el('p', { kelas: 'meta agen-angka' }, angkaSingkat(l)),
@@ -205,7 +215,6 @@ function barisRinci(l) {
             lipatanAsli(h),
           ),
         ),
-        l.tanpa_hasil.length > 0 ? el('li', { kelas: 'meta' }, daftarTool(l.tanpa_hasil), `: ${TEKS.tanpaHasil}`) : null,
       ),
     ),
   );
@@ -222,41 +231,153 @@ function pasangKotak(e, kotak) {
   e.style.height = kotak.height;
 }
 
-/** Gambar ulang diagram menurut lebar layar. AI agent satu kotak di tengah; tiap garis agent ⇄ satu tool. */
+/** Geometri diagram untuk lebar layar sekarang (dihitung server; halaman hanya menggambar). */
+function geometri() {
+  return layarLebar.matches ? k.kepala.diagram.lebar : k.kepala.diagram.tegak;
+}
+
+/**
+ * Gambar ulang diagram menurut lebar layar. AI agent satu lembar di tengah;
+ * tiap kelompok tool satu lembar berkepala; tiap garis agent ⇄ satu tool.
+ */
 function gambarDiagram() {
   if (k.kepala === null) return;
   const lebar = layarLebar.matches;
-  const g = lebar ? k.kepala.diagram.lebar : k.kepala.diagram.tegak;
+  const g = geometri();
   const bidang = $('agen-bidang');
   bidang.dataset.tata = lebar ? 'lebar' : 'tegak';
+  bidang.dataset.keterangan = g.keterangan ? 'ya' : 'tidak';
   bidang.style.aspectRatio = `${g.bidang.lebar} / ${g.bidang.tinggi}`;
+  bidang.style.setProperty('--kali', String(k.kecepatan));
   const garis = kosongkan($('agen-garis'));
   garis.setAttribute('viewBox', `0 0 ${g.bidang.lebar} ${g.bidang.tinggi}`);
+  const lembar = kosongkan($('agen-lembar'));
+  for (const kel of g.kelompok) {
+    const nama = k.kepala.kelompok.find((x) => x.id === kel.id)?.nama ?? kel.id;
+    const kertas = el('div', { kelas: 'agen-kelompok', 'data-kelompok': kel.id });
+    pasangKotak(kertas, kel.lembar);
+    const kepala = el('p', { kelas: 'agen-kelompok-nama', 'data-kelompok': kel.id }, nama);
+    pasangKotak(kepala, kel.kepala);
+    lembar.append(kertas, kepala);
+  }
   const simpul = kosongkan($('agen-simpul'));
   pasangKotak($('agen-kotak'), g.agen);
   for (const [i, t] of k.kepala.tool.entries()) {
     const d = g.tool[i];
     if (d === undefined) continue;
     const grup = svg('g', { 'data-tool': i });
-    grup.append(svg('line', d.garis), svg('polygon', { points: d.panah[0] }), svg('polygon', { points: d.panah[1] }));
+    grup.append(svg('line', d.garis));
     garis.append(grup);
-    const li = el('li', { 'data-tool': i, title: t.keterangan ?? t.nama }, namaTool(t.nama), el('span', { kelas: 'agen-hitung', hidden: true }));
+    const namaKelompok = k.kepala.kelompok.find((x) => x.id === d.kelompok)?.nama ?? '';
+    const li = el(
+      'li',
+      { 'data-tool': i, 'data-kelompok': d.kelompok },
+      el('span', { kelas: 'sembunyi' }, `${namaKelompok}: `),
+      el('span', { kelas: 'agen-simpul-nama' }, namaTool(t.nama), el('span', { kelas: 'agen-hitung', hidden: true })),
+      t.keterangan ? el('span', { kelas: 'agen-simpul-ket' }, t.keterangan) : null,
+    );
     pasangKotak(li, d.kotak);
     simpul.append(li);
   }
+  aturGerak('tiba');
+}
+
+/** Ganti gerak diagram (dan buang tool call / tool result yang masih terbang bila gerak baru = 'tiba'). */
+function aturGerak(gerak) {
+  k.gerak = gerak;
+  if (gerak === 'tiba') {
+    k.gen += 1;
+    kosongkan($('agen-kirim'));
+  }
+  $('agen-bidang').dataset.gerak = gerak;
+  document.documentElement.dataset.gerak = gerak;
   nyalakan();
 }
 
-/** Nyalakan tool langkah terakhir (bila agent sedang memanggil) dan perbarui hitungan panggilan. */
+/**
+ * Terbangkan satu keping per tool di sepanjang garisnya: 'call' dari agent ke
+ * tool, 'result' dari tool ke agent. `sesudah` dipanggil ketika semuanya tiba.
+ * Lamanya diatur CSS (`--kali` = kecepatan); jeda menahan animasinya.
+ */
+function terbangkan(jenis, indeks, sesudah) {
+  const g = geometri();
+  const wadah = kosongkan($('agen-kirim'));
+  const gen = k.gen;
+  const persen = (nilai, dari) => `${((nilai / dari) * 100).toFixed(2)}%`;
+  let sisa = 0;
+  for (const i of indeks) {
+    const d = g.tool[i];
+    if (d === undefined) continue;
+    const keAgen = jenis === 'result';
+    const keping = el('span', { kelas: `agen-keping agen-keping-${jenis}` }, jenis === 'call' ? TEKS.toolCall : TEKS.toolResult);
+    keping.style.setProperty('--x1', persen(keAgen ? d.garis.x2 : d.garis.x1, g.bidang.lebar));
+    keping.style.setProperty('--y1', persen(keAgen ? d.garis.y2 : d.garis.y1, g.bidang.tinggi));
+    keping.style.setProperty('--x2', persen(keAgen ? d.garis.x1 : d.garis.x2, g.bidang.lebar));
+    keping.style.setProperty('--y2', persen(keAgen ? d.garis.y1 : d.garis.y2, g.bidang.tinggi));
+    sisa += 1;
+    keping.addEventListener('animationend', () => {
+      if (gen !== k.gen) return;
+      sisa -= 1;
+      if (sisa === 0) sesudah();
+    }, { once: true });
+    wadah.append(keping);
+  }
+  if (sisa === 0) sesudah();
+}
+
+/** Langkah baru di diagram: tool call pergi, tool result kembali, hasil mendarat di agent. */
+function gerakkanLangkah(l, bergerak) {
+  k.gen += 1;
+  if (!bergerak || !gerakHalus() || k.tampilan !== 'diagram' || document.hidden) {
+    aturGerak('tiba');
+    return;
+  }
+  const gen = k.gen;
+  k.gerak = 'pergi';
+  $('agen-bidang').dataset.gerak = 'pergi';
+  document.documentElement.dataset.gerak = 'pergi';
+  nyalakan();
+  terbangkan('call', l.nyala, () => {
+    if (gen !== k.gen) return;
+    k.gerak = 'kembali';
+    $('agen-bidang').dataset.gerak = 'kembali';
+    document.documentElement.dataset.gerak = 'kembali';
+    nyalakan();
+    terbangkan('result', toolBerhasil(l, k.kepala.tool), () => {
+      if (gen === k.gen) aturGerak('tiba');
+    });
+  });
+}
+
+/** Cap di lembar agent: status tool result langkah terakhir (lolos, diminta perbaiki, tidak dipakai). */
+function gambarCap(l) {
+  const wadah = $('agen-cap');
+  const kunci = l === undefined || k.gerak !== 'tiba' ? '' : `${l.no}`;
+  if (wadah.dataset.langkah === kunci) return;
+  wadah.dataset.langkah = kunci;
+  kosongkan(wadah);
+  if (kunci === '') return;
+  for (const status of capLangkah(l)) wadah.append(el('span', { kelas: `cap agen-cap-satu agen-cap-${status}` }, labelStatus(status)));
+}
+
+/**
+ * Nyalakan garis dan tool langkah terakhir selama tool call / tool result
+ * sedang berjalan (atau baru saja tiba), perbarui hitungan panggilan, keadaan
+ * agent, dan cap di lembar agent.
+ */
 function nyalakan() {
   const terakhir = k.tampil.at(-1);
-  const nyala = fase() === 'panggil' && terakhir !== undefined ? terakhir.nyala : [];
+  const aktif = terakhir !== undefined && (k.gerak !== 'tiba' || fase() === 'panggil');
+  const nyala = aktif ? terakhir.nyala : [];
   for (const e of document.querySelectorAll('#agen-simpul > li, #agen-garis > g')) {
     const i = Number(e.dataset.tool);
-    e.classList.toggle('agen-nyala', nyala.includes(i));
+    const n = k.hitung[i] ?? 0;
+    // Selama tool call masih di jalan, tool-nya baru DITUJU (bertepi); ia terisi begitu tool call tiba.
+    const dituju = nyala.includes(i) && k.gerak === 'pergi' && e.tagName === 'LI';
+    e.classList.toggle('agen-dituju', dituju);
+    e.classList.toggle('agen-nyala', nyala.includes(i) && !dituju);
+    e.classList.toggle('agen-pernah', n > 0);
     if (e.tagName === 'LI') {
-      const n = k.hitung[i] ?? 0;
-      e.classList.toggle('agen-pernah', n > 0);
       if (nyala.includes(i)) e.setAttribute('aria-current', 'step');
       else e.removeAttribute('aria-current');
       const hitung = e.querySelector('.agen-hitung');
@@ -265,13 +386,15 @@ function nyalakan() {
       hitung.setAttribute('aria-label', TEKS.dipanggilLabel(n));
     }
   }
-  const kotak = $('agen-kotak');
-  kotak.dataset.fase = fase();
-  $('agen-kotak-keadaan').textContent =
-    fase() === 'pikir' ? TEKS.agenPikir : fase() === 'panggil' ? TEKS.agenPanggil : fase() === 'usai' ? TEKS.agenUsai : TEKS.agenDiam;
+  const keadaan = keadaanAgen(fase(), k.gerak, terakhir !== undefined);
+  $('agen-kotak').dataset.fase = keadaan;
+  $('agen-kotak-keadaan').textContent = {
+    diam: TEKS.agenDiam, pikir: TEKS.agenPikir, kirim: TEKS.agenKirim, tunggu: TEKS.agenTunggu, baca: TEKS.agenBaca, usai: TEKS.agenUsai,
+  }[keadaan];
+  gambarCap(terakhir);
 }
 
-/** Panel di samping diagram: langkah yang sedang dilihat. */
+/** Catatan di bawah diagram: langkah yang sedang dilihat. */
 function gambarKini() {
   const wadah = kosongkan($('diagram-kini'));
   const l = k.tampil.at(-1);
@@ -281,7 +404,7 @@ function gambarKini() {
   }
   const namaTahap = k.kepala.tahap.find((x) => x.id === l.tahap)?.nama ?? l.tahap;
   wadah.append(
-    el('p', { kelas: 'meta' }, `${TEKS.langkah(l.no, k.kepala.jumlah_langkah)} · ${namaTahap}`),
+    el('p', { kelas: 'meta agen-kini-langkah' }, `${TEKS.langkah(l.no, k.kepala.jumlah_langkah)} · ${namaTahap}`),
     kepalaLangkah(l),
     el(
       'ul',
@@ -292,7 +415,16 @@ function gambarKini() {
       }),
     ),
     el('ul', { kelas: 'agen-kalimat-daftar' }, l.ringkas.map((r) => barisKalimat(r.status, r.kalimat, r.jumlah))),
-    el('p', { kelas: 'meta' }, angkaSingkat(l)),
+    el('p', { kelas: 'meta agen-kini-angka' }, angkaSingkat(l)),
+  );
+}
+
+/** Legenda diagram (di pojok bidang): dua keping yang terbang dan arti hitungan. */
+function gambarLegenda() {
+  kosongkan($('legenda-diagram')).append(
+    el('li', {}, el('span', { kelas: 'agen-keping-contoh agen-keping-call' }, TEKS.toolCall), ` ${TEKS.legendaCall}`),
+    el('li', {}, el('span', { kelas: 'agen-keping-contoh agen-keping-result' }, TEKS.toolResult), ` ${TEKS.legendaResult}`),
+    el('li', {}, el('span', { kelas: 'agen-hitung' }, TEKS.contohHitung), ` ${TEKS.legendaHitung}`),
   );
 }
 
@@ -318,7 +450,7 @@ function gambarKeadaan() {
   $('agen-kini').textContent = bagian.join(' — ');
   if (k.kepala !== null) {
     const biaya = k.tampil.reduce((j, x) => j + biayaLangkah(x), 0);
-    $('agen-biaya').textContent = TEKS.biayaBudget(dolar(biaya), dolar(k.kepala.budget_usd));
+    $('agen-biaya').textContent = TEKS.biayaBudget(dolar(biaya), dolar(k.kepala.budget_usd), k.kepala.jumlah_rekaman);
     const persen = k.kepala.budget_usd > 0 ? Math.min(100, (biaya / k.kepala.budget_usd) * 100) : 0;
     $('agen-ukur-isi').style.width = `${persen.toFixed(1)}%`;
   }
@@ -348,7 +480,7 @@ function tampilkanLangkah(l, gulir) {
   const angka = ringkasTahap(t.langkah);
   t.ringkas.angka.textContent = angka;
   t.rinci.angka.textContent = angka;
-  nyalakan();
+  gerakkanLangkah(l, gulir);
   gambarKini();
   gambarKeadaan();
   if (gulir) {
@@ -365,7 +497,7 @@ function pemutarBaru() {
       gambarKeadaan();
     },
     tuntas: () => {
-      nyalakan();
+      aturGerak('tiba');
       if (k.simulasi !== null) gambarSimulasi(k.simulasi);
       gambarKeadaan();
     },
@@ -457,9 +589,11 @@ function terimaKepala(kepala) {
   k.kepala = kepala;
   k.hitung = kepala.tool.map(() => 0);
   $('agen-kerja').hidden = false;
-  $('keterangan-rinci').textContent = TEKS.keteranganRinci;
   const lama = kepala.tool.filter((t) => t.nama_lama.length > 0).map((t) => TEKS.namaLama(t.nama, t.nama_lama.join(', ')));
-  $('keterangan-diagram').textContent = [TEKS.keteranganDiagram, ...lama].join(' ');
+  $('keterangan-ringkas').textContent = TEKS.keteranganRingkas;
+  $('keterangan-rinci').textContent = [TEKS.keteranganRinci, TEKS.keteranganWaktu, TEKS.keteranganBudget(dolar(kepala.budget_usd), kepala.jumlah_rekaman), ...lama].join(' ');
+  $('pokok-diagram').textContent = TEKS.pokokDiagram(kepala.tool.length);
+  gambarLegenda();
   const sumber = kosongkan($('sumber-isi'));
   for (const s of kepala.sumber) sumber.append(el('li', {}, s));
   $('agen-sumber').hidden = kepala.sumber.length === 0;
@@ -478,7 +612,9 @@ function terima(p) {
 function setel() {
   k.pemutar?.matikan();
   k.batal?.abort();
-  Object.assign(k, { kepala: null, tampil: [], simulasi: null, hitung: [], batal: null, pemutar: null });
+  Object.assign(k, { kepala: null, tampil: [], simulasi: null, hitung: [], batal: null, pemutar: null, gerak: 'tiba', gen: k.gen + 1 });
+  kosongkan($('agen-kirim'));
+  kosongkan($('agen-cap')).dataset.langkah = '';
   k.tahap.clear();
   kosongkan($('tampilan-ringkas'));
   kosongkan($('rinci-isi'));
@@ -541,6 +677,8 @@ async function putar(kode) {
 /* ------------------------------------------------------------------ */
 
 function gantiTampilan(nama) {
+  // Keping yang masih terbang tidak ikut pindah tampilan: hasilnya langsung dianggap tiba.
+  if (k.tampilan === 'diagram' && nama !== 'diagram' && k.gerak !== 'tiba') aturGerak('tiba');
   k.tampilan = nama;
   for (const t of document.querySelectorAll('[data-tampilan]')) t.setAttribute('aria-pressed', t.dataset.tampilan === nama ? 'true' : 'false');
   for (const t of document.querySelectorAll('[data-tampilan-isi]')) t.hidden = t.dataset.tampilanIsi !== nama;
@@ -552,6 +690,7 @@ async function mulai() {
   for (const v of KECEPATAN) pilih.append(el('option', { value: v.nilai, selected: v.nilai === 1 }, v.label));
   pilih.addEventListener('change', () => {
     k.kecepatan = Number(pilih.value);
+    $('agen-bidang').style.setProperty('--kali', String(k.kecepatan));
     k.pemutar?.gantiKecepatan(k.kecepatan);
   });
   for (const t of document.querySelectorAll('[data-tampilan]')) t.addEventListener('click', () => gantiTampilan(t.dataset.tampilan));
@@ -574,6 +713,7 @@ async function mulai() {
     }
     void putar(kode);
   });
+  $('agen-bidang').style.setProperty('--lama-terbang', `${LAMA_TERBANG_MS}ms`);
   gantiTampilan('ringkas');
   try {
     const status = await (await fetch('/api/status')).json();

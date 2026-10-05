@@ -13,36 +13,45 @@ export const TEKS = {
   tombolLompat: 'Lompat ke akhir',
   tombolUlang: 'Putar dari awal',
   kecepatan: 'Kecepatan',
-  agenBerpikir: 'Agent berpikir dan memilih tool…',
+  agenBerpikir: 'Agent memilih tool berikutnya…',
   agenMenunggu: 'Menunggu langkah agent berikutnya…',
   agenDijeda: 'Dijeda.',
   agenSelesai: 'Agent selesai. Simulasinya jadi.',
   agenSelesaiTanpaSimulasi: 'Agent selesai.',
   agenDiam: 'siap',
-  agenPikir: 'berpikir',
-  agenPanggil: 'tool call',
+  agenPikir: 'memilih tool berikutnya',
+  agenKirim: 'mengirim tool call',
+  agenTunggu: 'menunggu tool result',
+  agenBaca: 'membaca tool result',
   agenUsai: 'selesai',
+  toolCall: 'tool call',
   namaAgen: 'AI agent',
   langkah: (no, jumlah) => (jumlah === null ? `Langkah ${no}` : `Langkah ${no} dari ${jumlah}`),
   belumAdaLangkah: 'Belum ada langkah.',
-  biayaBudget: (biaya, budget) => `Biaya ${biaya} dari budget ${budget}`,
+  biayaBudget: (biaya, budget, rekaman) => `Biaya ${biaya} dari budget ${budget} untuk ${rekaman} rekaman`,
   memanggil: 'Agent memanggil',
   ucapan: 'Ucapan agent:',
   toolResult: 'tool result',
-  tanpaHasil: 'tool result tidak tercatat di langkah ini.',
   rekamanAsli: 'rekaman asli',
   ringkasanRekaman: 'Ringkasan di rekaman',
   isiRekaman: 'Isi tool result',
   lolos: 'lolos',
-  ditolak: 'ditolak',
+  perbaiki: 'diminta perbaiki',
+  tidakDipakai: 'tidak dipakai',
   draf: (n) => `${n} draf`,
   dipanggil: (n) => `${n}×`,
   dipanggilLabel: (n) => `dipanggil ${n} kali`,
   kosong: '(kosong)',
   teksKosong: '(teks kosong)',
   daftarKosong: '(daftar kosong)',
-  keteranganDiagram:
-    'AI agent digambar sekali, di tengah. Tiap garis dua arah: tool call dari agent, tool result kembali ke agent. Tidak ada garis dari satu tool ke tool lain: tool mana yang dipanggil, kapan, dan berapa kali diputuskan agent.',
+  pokokDiagram: (jumlah) => `Satu AI agent, ${jumlah} tool. Agent sendiri yang memilih tool mana yang dipanggil, kapan, dan berapa kali.`,
+  legendaCall: 'dari agent ke tool',
+  legendaResult: 'dari tool ke agent',
+  legendaHitung: 'jumlah panggilan',
+  contohHitung: '3×',
+  keteranganRingkas: 'Di tiap langkah: "waktu model" adalah lama model menjawab di langkah itu; "biaya" adalah biaya model dan penguji di langkah itu.',
+  keteranganWaktu: '"Waktu model" di kepala tiap tahap adalah jumlah lama model menjawab, bukan lama seluruh tahap.',
+  keteranganBudget: (budget, rekaman) => `Budget ${budget} adalah jumlah budget ${rekaman} rekaman kerja agent yang diputar di sini.`,
   namaLama: (kini, lama) => `Di rekaman awal, ${kini} masih bernama ${lama}.`,
   keteranganRinci:
     'Rekaman mencatat tool yang dipilih agent dan tool result-nya. Teks berpikir model tidak ditampilkan; yang tampil hanya jumlah tokennya. Kode saham dan alamat berkas disamarkan.',
@@ -59,6 +68,47 @@ export const TEKS = {
   modeReplay: 'Replay: rekaman kerja AI agent diputar dari berkas di komputermu. Tanpa panggilan model, tanpa API key, tanpa biaya.',
   modeLain: 'Tampilan ini hanya ada bila pintu penyusun dijalankan tanpa --mesin-lama.',
 };
+
+/** Label status satu tool result (kata kerja cara kerjanya); `null` untuk tool yang hanya membaca bahan. */
+export function labelStatus(status) {
+  if (status === 'lolos') return TEKS.lolos;
+  if (status === 'perbaiki') return TEKS.perbaiki;
+  if (status === 'tidak-dipakai') return TEKS.tidakDipakai;
+  return null;
+}
+
+/** Lama tool call terbang ke tool, dan lama tool result terbang kembali, pada kecepatan 1×. */
+export const LAMA_TERBANG_MS = 380;
+
+/**
+ * Apa yang sedang dikerjakan agent di diagram, dari fase pemutar dan gerak
+ * tool call / tool result: 'diam' | 'pikir' | 'kirim' | 'tunggu' | 'baca' | 'usai'.
+ */
+export function keadaanAgen(fasePemutar, gerak, adaLangkah) {
+  if (fasePemutar === 'usai') return 'usai';
+  if (!adaLangkah) return fasePemutar === 'pikir' ? 'pikir' : 'diam';
+  if (gerak === 'pergi') return 'kirim';
+  if (gerak === 'kembali') return 'tunggu';
+  if (fasePemutar === 'panggil') return 'baca';
+  return fasePemutar === 'pikir' ? 'pikir' : 'diam';
+}
+
+/** Status yang mendarat di agent sesudah sebuah langkah: satu cap per status, urut kemunculan. */
+export function capLangkah(l) {
+  const keluar = [];
+  for (const r of l.ringkas) if (r.status !== null && !keluar.includes(r.status)) keluar.push(r.status);
+  return keluar;
+}
+
+/** Indeks tool (di `kepala.tool`) yang tool result-nya tercatat di langkah ini: dari sana tool result kembali. */
+export function toolBerhasil(l, tool) {
+  const keluar = [];
+  for (const h of l.hasil) {
+    const i = tool.findIndex((t) => t.nama === h.alat || t.nama_lama.includes(h.alat));
+    if (i >= 0 && !keluar.includes(i)) keluar.push(i);
+  }
+  return keluar;
+}
 
 export const KECEPATAN = [
   { nilai: 0.5, label: '0,5×' },
@@ -150,16 +200,16 @@ export function jumlahkan(langkah) {
   return { jumlah: langkah.length, lama_ms: lamaMs, biaya_usd: biaya };
 }
 
-/** "3 langkah · model 8,8 detik · US$0,06" */
+/** "3 langkah · waktu model 8,8 detik · biaya US$0,06" */
 export function ringkasTahap(langkah) {
   const j = jumlahkan(langkah);
-  return `${j.jumlah} langkah · model ${lama(j.lama_ms)} · ${dolar(j.biaya_usd)}`;
+  return `${j.jumlah} langkah · waktu model ${lama(j.lama_ms)} · biaya ${dolar(j.biaya_usd)}`;
 }
 
 /** Butir angka satu langkah untuk tampilan Rinci. */
 export function angkaLangkah(l) {
   return [
-    `model ${lama(l.lama_ms)}`,
+    `waktu model ${lama(l.lama_ms)}`,
     `biaya model ${dolarRinci(l.biaya_model_usd)}`,
     ...(l.biaya_penguji_usd > 0 ? [`biaya penguji ${dolarRinci(l.biaya_penguji_usd)}`] : []),
     `token berpikir ${angkaId(l.token.berpikir)}`,
@@ -168,9 +218,9 @@ export function angkaLangkah(l) {
   ];
 }
 
-/** Angka singkat satu langkah untuk tampilan Ringkas: "model 4,5 detik · US$0,0356". */
+/** Angka singkat satu langkah untuk tampilan Ringkas: "waktu model 4,5 detik · biaya US$0,0356". */
 export function angkaSingkat(l) {
-  return `model ${lama(l.lama_ms)} · ${dolarRinci(biayaLangkah(l))}`;
+  return `waktu model ${lama(l.lama_ms)} · biaya ${dolarRinci(biayaLangkah(l))}`;
 }
 
 /** Nama tool dipotong di garis bawah (boleh patah di sana supaya muat di layar sempit). */

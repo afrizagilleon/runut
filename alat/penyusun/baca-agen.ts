@@ -38,7 +38,14 @@ export const NAMA_TAHAP: Readonly<Record<IdTahap, string>> = {
   lengkap: 'Melengkapi simulasi',
 };
 
-export type Status = 'lolos' | 'ditolak';
+/**
+ * Status satu tool result, dengan kata kerja cara kerjanya (M2d-32 D-7):
+ * - `lolos`: tool meloloskan;
+ * - `perbaiki`: tool meminta perbaikan, dan itu memang bisa dijawab agent dengan menulis ulang;
+ * - `tidak-dipakai`: tool tidak meloloskan dan tidak ada yang ditulis ulang
+ *   (mis. versi baru tidak lebih sulit, jadi versi asal yang dipakai).
+ */
+export type Status = 'lolos' | 'perbaiki' | 'tidak-dipakai';
 
 function medan(nilai: unknown, nama: string): unknown {
   if (nilai !== null && typeof nilai === 'object' && nama in nilai) {
@@ -48,14 +55,21 @@ function medan(nilai: unknown, nama: string): unknown {
 }
 
 /**
- * Status satu tool result, dari medan `lolos` yang dicatat tool itu. Tool yang
- * hanya membaca bahan tidak punya medan itu dan tidak berstatus.
+ * Medan `lolos` yang dicatat tool itu. Tool yang hanya membaca bahan tidak
+ * punya medan itu: `null`.
  */
-export function statusHasil(h: HasilTool): Status | null {
+export function lolosHasil(h: HasilTool): boolean | null {
   const lolos = medan(h.hasil, 'lolos');
-  if (lolos === true) return 'lolos';
-  if (lolos === false) return 'ditolak';
-  return null;
+  return lolos === true ? true : lolos === false ? false : null;
+}
+
+/** Status satu tool result; `null` untuk tool yang hanya membaca bahan. */
+export function statusHasil(h: HasilTool): Status | null {
+  const lolos = lolosHasil(h);
+  if (lolos === null) return null;
+  if (lolos) return 'lolos';
+  const jenis = jenisTolak(h) ?? 'tak-dikenal';
+  return JENIS_DIPERBAIKI.includes(jenis) ? 'perbaiki' : 'tidak-dipakai';
 }
 
 /** Medan tempat tool mencatat alasan penolakannya (penguji, pemeriksa aturan, kritikus). */
@@ -74,24 +88,46 @@ export function alasanTolak(h: HasilTool): string[] {
 /* --- nama tool dalam bahasa biasa -------------------------------------------- */
 
 /**
- * Keterangan singkat tiap tool, ditulis di sebelah namanya. Nama tool sendiri
- * selalu ditulis persis seperti di rekaman: itu nama sungguhan.
+ * Keterangan satu baris tiap tool, ditulis di bawah namanya (M2d-32 D-3). Nama
+ * tool sendiri nama sungguhan. "Tanpa biaya" tidak diulang di sini: itu nama
+ * kelompoknya (`KELOMPOK_TOOL`).
  */
 export const KETERANGAN_TOOL: Readonly<Record<string, string>> = {
   usulkan_hari: 'mencari hari yang ada peristiwanya',
   periksa_saham: 'mengambil data hari itu dan memverifikasinya',
-  lihat_bank: 'melihat kumpulan soal yang lolos',
   lihat_fakta: 'membaca kartu fakta hari itu',
+  lihat_bank: 'melihat soal yang sudah lolos',
   lihat_simulasi: 'membaca soal versi asal dan skornya',
-  periksa_kode: 'pemeriksa aturan untuk draf, gratis',
-  periksa_draft_dengan_aturan: 'pemeriksa aturan untuk draf, gratis',
-  ajukan: 'mengirim draf ke para penguji',
-  tingkatkan: 'menguji versi yang lebih sulit',
   lihat_soal_terkunci: 'membaca soal yang sudah jadi',
   lihat_sesudahnya: 'membaca data sesudah hari simulasi',
-  periksa_kasus_dengan_aturan: 'pemeriksa aturan untuk simulasi lengkap, gratis',
+  periksa_kode: 'memeriksa satu draf dengan aturan',
+  periksa_draft_dengan_aturan: 'memeriksa satu draf dengan aturan',
+  periksa_kasus_dengan_aturan: 'memeriksa simulasi lengkap dengan aturan',
+  ajukan: 'mengirim draf ke para penguji',
+  tingkatkan: 'menguji versi yang lebih sulit',
   ajukan_kasus: 'mengirim simulasi lengkap ke kritikus',
 };
+
+/* --- kelompok tool ---------------------------------------------------------- */
+
+export type IdKelompok = 'bahan' | 'catatan' | 'periksa' | 'uji';
+
+/**
+ * Tool dikelompokkan menurut GUNANYA (M2d-32 D-2), bukan menurut kapan
+ * dipanggil: yang mengambil bahan, yang membaca catatan, yang memeriksa tanpa
+ * biaya, dan yang menguji dengan biaya. Tiap kelompok satu lembar di diagram.
+ */
+export const KELOMPOK_TOOL: ReadonlyArray<{ id: IdKelompok; nama: string; tool: readonly string[] }> = [
+  { id: 'bahan', nama: 'Bahan', tool: ['usulkan_hari', 'periksa_saham', 'lihat_fakta'] },
+  { id: 'catatan', nama: 'Catatan', tool: ['lihat_bank', 'lihat_simulasi', 'lihat_soal_terkunci', 'lihat_sesudahnya'] },
+  { id: 'periksa', nama: 'Pemeriksaan tanpa biaya', tool: ['periksa_draft_dengan_aturan', 'periksa_kasus_dengan_aturan'] },
+  { id: 'uji', nama: 'Uji berbayar', tool: ['ajukan', 'tingkatkan', 'ajukan_kasus'] },
+];
+
+/** Kelompok sebuah tool (nama sekarang), atau `null` bila tool itu belum dikelompokkan. */
+export function kelompokTool(nama: string): IdKelompok | null {
+  return KELOMPOK_TOOL.find((k) => k.tool.includes(nama))?.id ?? null;
+}
 
 /** Keterangan sebuah tool, atau `null` bila namanya belum dikenal (nama saja yang tampil). */
 export function keteranganTool(nama: string): string | null {
@@ -166,7 +202,7 @@ export const PETA_KRITIKUS: Readonly<Record<string, string>> = {
 
 /** Jenis penolakan satu tool result; `null` bila tool result itu bukan penolakan. */
 export function jenisTolak(h: HasilTool): JenisTolak | null {
-  if (statusHasil(h) !== 'ditolak') return null;
+  if (lolosHasil(h) !== false) return null;
   const berhenti = medan(h.hasil, 'berhenti');
   if (typeof berhenti === 'string') return PETA_BERHENTI[berhenti] ?? 'tak-dikenal';
   return TOOL_ATURAN.includes(h.alat) ? 'aturan' : 'tak-dikenal';
@@ -186,10 +222,14 @@ function sebabKritikus(h: HasilTool): string | null {
   return null;
 }
 
-/** Hitungan uji tebak tanpa kartu ("memilih kunci 12 dari 12" di alasan rekaman): [benar, jumlah tebakan]. */
-function hitunganTebak(h: HasilTool): [string, string] | null {
+/**
+ * Apakah SEMUA tebakan tanpa kartu memilih jawaban benar ("memilih kunci n dari
+ * n" di alasan rekaman). Hitungannya sendiri tidak ditulis di kalimat (M2d-32
+ * D-7): yang perlu dibaca adalah apa yang terjadi, bukan pecahannya.
+ */
+function semuaTebakanBenar(h: HasilTool): boolean {
   const m = /memilih kunci (\d+) dari (\d+)/.exec(alasanTolak(h)[0] ?? '');
-  return m?.[1] !== undefined && m[2] !== undefined ? [m[1], m[2]] : null;
+  return m?.[1] !== undefined && m[1] === m[2];
 }
 
 function panjangLarik(nilai: unknown, nama: string): number | null {
@@ -203,16 +243,16 @@ function angkaMedan(nilai: unknown, nama: string): number | null {
 }
 
 /**
- * Kalimat penolakan untuk tiap jenis. `obyek` = "draf ini" atau "simulasi ini".
- * Yang diambil dari rekaman hanya angka (hitungan tebakan); sisanya kata kami.
+ * Kalimat untuk tiap jenis tool result yang tidak meloloskan. `obyek` = "draf
+ * ini" atau "simulasi ini". Ditulis dengan kata kerja cara kerjanya (siapa
+ * meminta apa), dan tidak memuat teks rekaman.
  */
 export function kalimatTolak(h: HasilTool, jenis: JenisTolak, obyek: string): string {
   switch (jenis) {
     case 'tebak-tanpa-kartu': {
-      const n = hitunganTebak(h);
-      return n === null
-        ? 'Penebak tanpa kartu masih bisa menebak jawabannya.'
-        : `Penebak tanpa kartu masih bisa menebak jawabannya: ${n[0]} dari ${n[1]} tebakan memilih jawaban benar.`;
+      return semuaTebakanBenar(h)
+        ? 'Penebak tanpa kartu masih bisa menebak jawabannya: semua tebakannya memilih jawaban benar.'
+        : 'Penebak tanpa kartu masih bisa menebak jawabannya.';
     }
     case 'pembaca-kartu':
       return 'Pembaca kartu menjawab keliru walau sudah membaca kartu: soalnya belum cukup jelas.';
@@ -220,7 +260,7 @@ export function kalimatTolak(h: HasilTool, jenis: JenisTolak, obyek: string): st
       return 'Penguji Opus masih bisa menebak jawabannya tanpa kartu.';
     case 'kritikus': {
       const sebab = sebabKritikus(h);
-      return sebab === null ? `Kritikus menolak ${obyek}.` : `Kritikus menolak: ${sebab}.`;
+      return sebab === null ? `Kritikus meminta ${obyek} diperbaiki.` : `Kritikus meminta perbaikan: ${sebab}.`;
     }
     case 'tidak-lebih-sulit':
       return 'Para penguji menilai versi baru tidak lebih sulit dari versi asal. Versi asal dipertahankan.';
@@ -229,26 +269,26 @@ export function kalimatTolak(h: HasilTool, jenis: JenisTolak, obyek: string): st
     case 'kritikus-tak-menjawab':
       return `Kritikus belum memberi jawaban untuk ${obyek}.`;
     case 'bukan-yang-kurang':
-      return `Tool menolak tanpa biaya: ${obyek} bukan yang masih kurang untuk simulasi.`;
+      return `Tool tidak menguji ${obyek}, tanpa biaya: bukan yang masih kurang untuk simulasi.`;
     case 'budget':
       return `Budget tidak cukup untuk menguji ${obyek}.`;
     case 'sudah-dikirim':
-      return `Tool menolak tanpa biaya: ${obyek} sudah pernah dikirim.`;
+      return `Tool tidak menguji ${obyek}, tanpa biaya: sudah pernah dikirim.`;
     case 'bentuk':
-      return 'Tool menolak tanpa biaya: isi tool call tidak sesuai bentuk yang diminta.';
+      return 'Tool meminta tool call diperbaiki, tanpa biaya: isinya tidak sesuai bentuk yang diminta.';
     case 'aturan': {
       const sebab = sebabAturan(h);
-      return sebab === null ? `Pemeriksa aturan menolak ${obyek}.` : `Pemeriksa aturan menolak: ${sebab}.`;
+      return sebab === null ? `Pemeriksa aturan meminta ${obyek} diperbaiki.` : `Pemeriksa aturan meminta perbaikan: ${sebab}.`;
     }
     case 'tak-dikenal':
-      return `Penguji menolak ${obyek}.`;
+      return `Penguji meminta ${obyek} diperbaiki.`;
   }
 }
 
 /** Kalimat sambungan bila di langkah berikutnya agent menulis draf baru. */
 export const KALIMAT_MENULIS_ULANG = 'Agent menulis ulang.';
 
-/** Jenis penolakan yang dijawab agent dengan menulis ulang (bukan budget habis atau salah kirim). */
+/** Jenis yang dijawab agent dengan menulis ulang (bukan budget habis atau salah kirim): status `perbaiki`. */
 export const JENIS_DIPERBAIKI: readonly JenisTolak[] = [
   'tebak-tanpa-kartu',
   'pembaca-kartu',
@@ -370,14 +410,18 @@ export function simpulNyala(tool: readonly ToolJejak[], l: Pick<LangkahJejak, 'm
 /* --- geometri diagram ------------------------------------------------------- */
 
 /**
- * AI agent SATU kotak di tengah bidang; tool mengelilinginya di dua belas
- * tempat. Tiap tool hanya terhubung ke agent — tidak ada garis dari tool ke
- * tool, dan tempat sebuah tool tidak mengatakan kapan ia dipanggil: bukan
- * urutan kotak, bukan lajur waktu (`docs/arsitektur-agen.md`).
+ * AI agent SATU lembar di tengah bidang; tool mengelilinginya, dikelompokkan
+ * menurut gunanya: tiap kelompok satu lembar berkepala nama kelompok, tiap tool
+ * satu baris di lembar itu (M2d-32 D-1, D-2). Tiap tool hanya terhubung ke
+ * agent — tidak ada garis dari tool ke tool, dan tempat sebuah tool tidak
+ * mengatakan kapan ia dipanggil: bukan urutan kotak, bukan lajur waktu
+ * (`docs/arsitektur-agen.md`).
  *
- * Dua tata letak dengan aturan yang sama: `tegak` untuk layar sempit (tiga
- * tool di tiap sisi) dan `lebar` untuk layar lebar (empat di atas, empat di
- * bawah, dua di kiri, dua di kanan).
+ * Dua tata letak dengan aturan yang sama. `lebar` (layar ≥ 1200 px): empat
+ * lembar di empat sisi agent, tiap tool dengan keterangannya. `tegak` (layar
+ * lebih sempit): dua lembar di atas agent dan dua di bawah, garis lewat celah
+ * di antara dua lembar; keterangan tool tidak muat di baris selebar itu dan
+ * tampil di catatan langkah di bawah diagram (M2d-32 OQ-1).
  */
 export interface Titik {
   x: number;
@@ -392,52 +436,103 @@ export interface Kotak {
   tinggi: number;
 }
 
+/** Sisi kotak tool yang menghadap agent: di sisi itu garis agent ⇄ tool berujung. */
+export type Hadap = 'atas' | 'bawah' | 'kiri' | 'kanan';
+
+export interface LembarKelompok {
+  id: IdKelompok;
+  /** Seluruh lembar: kepala + baris tool. */
+  lembar: Kotak;
+  /** Kepala lembar (tempat nama kelompok). */
+  kepala: Kotak;
+  hadap: Hadap;
+  /** Kotak tiap tool, urutan sama dengan `KELOMPOK_TOOL`. */
+  tool: Kotak[];
+}
+
 export interface TataDiagram {
   bidang: { lebar: number; tinggi: number };
   agen: Kotak;
-  ukuranTool: { lebar: number; tinggi: number };
-  /** Titik tengah dua belas tempat tool, searah jarum jam dari kiri atas. */
-  tempat: readonly Titik[];
+  kelompok: readonly LembarKelompok[];
+  /** Apakah keterangan tool ditulis di dalam barisnya. */
+  keterangan: boolean;
 }
 
-export const TATA_TEGAK: TataDiagram = {
-  bidang: { lebar: 100, tinggi: 150 },
-  agen: { cx: 50, cy: 75, lebar: 24, tinggi: 30 },
-  // Tinggi 20: nama tool terpanjang patah jadi empat baris di layar 375 px.
-  ukuranTool: { lebar: 28, tinggi: 20 },
-  tempat: [
-    { x: 14.5, y: 11 },
-    { x: 50, y: 11 },
-    { x: 85.5, y: 11 },
-    { x: 85.5, y: 48 },
-    { x: 85.5, y: 75 },
-    { x: 85.5, y: 102 },
-    { x: 85.5, y: 139 },
-    { x: 50, y: 139 },
-    { x: 14.5, y: 139 },
-    { x: 14.5, y: 102 },
-    { x: 14.5, y: 75 },
-    { x: 14.5, y: 48 },
+function kotakDari(x: number, y: number, lebar: number, tinggi: number): Kotak {
+  return { cx: x + lebar / 2, cy: y + tinggi / 2, lebar, tinggi };
+}
+
+/**
+ * Satu lembar kelompok dengan sudut kiri atas (x, y). `susun`: 'kolom' = tool
+ * bertumpuk ke bawah selebar lembar; 'baris' = tool berjajar ke samping.
+ */
+function lembarKelompok(
+  id: IdKelompok,
+  x: number,
+  y: number,
+  lebar: number,
+  ukuran: { kepala: number; tool: number },
+  susun: 'kolom' | 'baris',
+  hadap: Hadap,
+): LembarKelompok {
+  const n = KELOMPOK_TOOL.find((k) => k.id === id)?.tool.length ?? 0;
+  const tinggi = ukuran.kepala + (susun === 'kolom' ? n * ukuran.tool : ukuran.tool);
+  // Lembar yang tool-nya menghadap ke atas (lembar di bawah agent) berkepala di
+  // BAWAH: garis ke tool tidak boleh melewati kepala lembarnya sendiri.
+  const kepalaDiBawah = hadap === 'atas';
+  const yTool = kepalaDiBawah ? y : y + ukuran.kepala;
+  const yKepala = kepalaDiBawah ? y + tinggi - ukuran.kepala : y;
+  const tool: Kotak[] = [];
+  for (let i = 0; i < n; i++) {
+    tool.push(susun === 'kolom' ? kotakDari(x, yTool + i * ukuran.tool, lebar, ukuran.tool) : kotakDari(x + (i * lebar) / n, yTool, lebar / n, ukuran.tool));
+  }
+  return { id, lembar: kotakDari(x, y, lebar, tinggi), kepala: kotakDari(x, yKepala, lebar, ukuran.kepala), hadap, tool };
+}
+
+/** Tinggi sebuah lembar kolom berisi n tool. */
+const tinggiKolom = (n: number, u: { kepala: number; tool: number }): number => u.kepala + n * u.tool;
+
+/**
+ * Layar lebar, satuan = 1 px di jendela 1280 px (bidang 1160 px). Bahan di atas
+ * dan uji berbayar di bawah (tool berjajar), catatan di kiri dan pemeriksaan
+ * tanpa biaya di kanan (tool bertumpuk). Lembar atas dan bawah lebih sempit
+ * dari bidang supaya garis ke tool terluarnya tidak melewati lembar kiri atau
+ * kanan; pojok kiri atas yang kosong dipakai legenda. Lembar kiri dan kanan
+ * selebar 290: nama tool terpanjang (27 huruf mesin 14 px) muat satu baris.
+ */
+const U_LEBAR = { kepala: 28, tool: 64 };
+const T_LEBAR = 516;
+export const TATA_LEBAR: TataDiagram = {
+  bidang: { lebar: 1160, tinggi: T_LEBAR },
+  agen: { cx: 580, cy: T_LEBAR / 2, lebar: 216, tinggi: 132 },
+  keterangan: true,
+  kelompok: [
+    lembarKelompok('bahan', 230, 0, 700, U_LEBAR, 'baris', 'bawah'),
+    lembarKelompok('catatan', 0, (T_LEBAR - tinggiKolom(4, U_LEBAR)) / 2, 290, U_LEBAR, 'kolom', 'kanan'),
+    lembarKelompok('periksa', 870, (T_LEBAR - tinggiKolom(2, U_LEBAR)) / 2, 290, U_LEBAR, 'kolom', 'kiri'),
+    lembarKelompok('uji', 230, T_LEBAR - (U_LEBAR.kepala + U_LEBAR.tool), 700, U_LEBAR, 'baris', 'atas'),
   ],
 };
 
-export const TATA_LEBAR: TataDiagram = {
-  bidang: { lebar: 160, tinggi: 96 },
-  agen: { cx: 80, cy: 48, lebar: 30, tinggi: 22 },
-  ukuranTool: { lebar: 35, tinggi: 15 },
-  tempat: [
-    { x: 18.5, y: 8.5 },
-    { x: 59.5, y: 8.5 },
-    { x: 100.5, y: 8.5 },
-    { x: 141.5, y: 8.5 },
-    { x: 141.5, y: 37 },
-    { x: 141.5, y: 59 },
-    { x: 141.5, y: 87.5 },
-    { x: 100.5, y: 87.5 },
-    { x: 59.5, y: 87.5 },
-    { x: 18.5, y: 87.5 },
-    { x: 18.5, y: 59 },
-    { x: 18.5, y: 37 },
+/**
+ * Layar sempit, satuan ≈ 1 px di jendela 375 px. Dua lembar di atas agent, dua
+ * di bawah; celah 28 di tengah tempat garis lewat. Lembar atas rata bawah dan
+ * lembar bawah rata atas, supaya semuanya menempel ke ruang agent.
+ */
+const U_TEGAK = { kepala: 24, tool: 38 };
+const ATAS_TEGAK = tinggiKolom(4, U_TEGAK);
+/** Lembar agent setinggi 116: nama, keadaan, dan dua cap bertumpuk muat di dalamnya. */
+const T_AGEN_TEGAK = 116;
+const BAWAH_TEGAK = ATAS_TEGAK + 40 + T_AGEN_TEGAK + 40;
+export const TATA_TEGAK: TataDiagram = {
+  bidang: { lebar: 320, tinggi: BAWAH_TEGAK + tinggiKolom(3, U_TEGAK) },
+  agen: { cx: 160, cy: ATAS_TEGAK + 40 + T_AGEN_TEGAK / 2, lebar: 172, tinggi: T_AGEN_TEGAK },
+  keterangan: false,
+  kelompok: [
+    lembarKelompok('bahan', 0, ATAS_TEGAK - tinggiKolom(3, U_TEGAK), 146, U_TEGAK, 'kolom', 'kanan'),
+    lembarKelompok('catatan', 174, 0, 146, U_TEGAK, 'kolom', 'kiri'),
+    lembarKelompok('periksa', 0, BAWAH_TEGAK, 146, U_TEGAK, 'kolom', 'kanan'),
+    lembarKelompok('uji', 174, BAWAH_TEGAK, 146, U_TEGAK, 'kolom', 'kiri'),
   ],
 };
 
@@ -453,43 +548,41 @@ export function tepiKotak(k: Kotak, ke: Titik): Titik {
   return { x: k.cx + dx * skala, y: k.cy + dy * skala };
 }
 
+/** Titik tengah sisi kotak tool yang menghadap agent. */
+export function jangkarTool(k: Kotak, hadap: Hadap): Titik {
+  switch (hadap) {
+    case 'atas':
+      return { x: k.cx, y: k.cy - k.tinggi / 2 };
+    case 'bawah':
+      return { x: k.cx, y: k.cy + k.tinggi / 2 };
+    case 'kiri':
+      return { x: k.cx - k.lebar / 2, y: k.cy };
+    case 'kanan':
+      return { x: k.cx + k.lebar / 2, y: k.cy };
+  }
+}
+
 export interface GarisTool {
-  /** Ujung di tepi kotak agent. */
+  /** Ujung di tepi lembar agent. */
   agen: Titik;
-  /** Ujung di tepi kotak tool. */
+  /** Ujung di tepi kotak tool, di sisi yang menghadap agent. */
   tool: Titik;
-  /** Mata panah di tiap ujung (tool call ke tool, tool result ke agent), tiga titik. */
-  panahAgen: [Titik, Titik, Titik];
-  panahTool: [Titik, Titik, Titik];
 }
 
-const PANJANG_PANAH = 2.4;
-const LEBAR_PANAH = 1.1;
-
-function panah(ujung: Titik, dari: Titik): [Titik, Titik, Titik] {
-  const dx = ujung.x - dari.x;
-  const dy = ujung.y - dari.y;
-  const p = Math.hypot(dx, dy);
-  const ux = dx / p;
-  const uy = dy / p;
-  const pangkal = { x: ujung.x - ux * PANJANG_PANAH, y: ujung.y - uy * PANJANG_PANAH };
-  return [
-    ujung,
-    { x: pangkal.x - uy * LEBAR_PANAH, y: pangkal.y + ux * LEBAR_PANAH },
-    { x: pangkal.x + uy * LEBAR_PANAH, y: pangkal.y - ux * LEBAR_PANAH },
-  ];
+/** Tempat sebuah tool (nama sekarang) di sebuah tata letak; `null` bila tool itu belum dikelompokkan. */
+export function tempatTool(tata: TataDiagram, nama: string): { kelompok: LembarKelompok; kotak: Kotak } | null {
+  for (const k of tata.kelompok) {
+    const i = KELOMPOK_TOOL.find((x) => x.id === k.id)?.tool.indexOf(nama) ?? -1;
+    const kotak = i < 0 ? undefined : k.tool[i];
+    if (kotak !== undefined) return { kelompok: k, kotak };
+  }
+  return null;
 }
 
-/** Kotak tool di sebuah tempat. */
-export function kotakTool(tata: TataDiagram, tempat: Titik): Kotak {
-  return { cx: tempat.x, cy: tempat.y, lebar: tata.ukuranTool.lebar, tinggi: tata.ukuranTool.tinggi };
-}
-
-/** Garis dua arah antara agent dan tool di sebuah tempat: dari tepi kotak agent ke tepi kotak tool. */
-export function garisTool(tata: TataDiagram, tempat: Titik): GarisTool {
-  const agen = tepiKotak(tata.agen, tempat);
-  const tool = tepiKotak(kotakTool(tata, tempat), { x: tata.agen.cx, y: tata.agen.cy });
-  return { agen, tool, panahAgen: panah(agen, tool), panahTool: panah(tool, agen) };
+/** Garis dua arah antara agent dan satu tool: tool call ke tool, tool result kembali ke agent. */
+export function garisTool(tata: TataDiagram, kotak: Kotak, hadap: Hadap): GarisTool {
+  const tool = jangkarTool(kotak, hadap);
+  return { agen: tepiKotak(tata.agen, tool), tool };
 }
 
 export interface PersenKotak {

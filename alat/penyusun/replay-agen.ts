@@ -26,22 +26,24 @@ import { fileURLToPath } from 'node:url';
 import {
   JENIS_DIPERBAIKI,
   KALIMAT_MENULIS_ULANG,
+  KELOMPOK_TOOL,
   NAMA_TAHAP,
   TATA_LEBAR,
   TATA_TEGAK,
   TOOL_ATURAN,
   barisBaca,
   garisTool,
+  kelompokTool,
   keteranganTool,
-  kotakTool,
   persenKotak,
   simpulNyala,
   tanpaHasil,
+  tempatTool,
+  type IdKelompok,
   type JenisTolak,
   type PersenKotak,
   type Status,
   type TataDiagram,
-  type Titik,
 } from './baca-agen.ts';
 import {
   KONFIG_JEJAK,
@@ -64,27 +66,17 @@ const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 /* --- tool di diagram --------------------------------------------------------- */
 
 /**
- * Tool yang bisa dipanggil agent, dalam urutan TEMPAT di diagram (searah jarum
- * jam dari kiri atas). Urutannya menurut jenis tool — yang membaca bahan di
- * atas dan bawah, yang mengirim ke penguji di kanan, pemeriksa aturan di kiri
- * — bukan menurut kapan tool dipanggil: diagram ini bukan lajur waktu.
+ * Tool yang bisa dipanggil agent, dalam urutan kelompoknya (`KELOMPOK_TOOL`:
+ * bahan, catatan, pemeriksaan tanpa biaya, uji berbayar). Urutannya menurut
+ * guna tool, bukan menurut kapan tool dipanggil: diagram ini bukan lajur waktu.
  */
-export const TOOL_DIAGRAM: readonly string[] = [
-  'usulkan_hari',
-  'periksa_saham',
-  'lihat_fakta',
-  'lihat_bank',
-  'ajukan',
-  'tingkatkan',
-  'ajukan_kasus',
-  'lihat_sesudahnya',
-  'lihat_soal_terkunci',
-  'lihat_simulasi',
-  'periksa_kasus_dengan_aturan',
-  'periksa_draft_dengan_aturan',
-];
+export const TOOL_DIAGRAM: readonly string[] = KELOMPOK_TOOL.flatMap((k) => k.tool);
 
-/** Daftar tool diagram: yang dikenal di tempat tetapnya; tool lain dari rekaman menyusul selama masih ada tempat. */
+/**
+ * Daftar tool diagram: yang dikenal di tempat kelompoknya; tool lain dari
+ * rekaman menyusul di belakang — dan `gambarDiagram` menolak menggambarnya
+ * sampai tool itu diberi kelompok (bukan diam-diam ditaruh di mana saja).
+ */
 export function toolDiagram(dipakai: readonly ToolJejak[] = []): ToolJejak[] {
   const keluar: ToolJejak[] = TOOL_DIAGRAM.map((nama) => ({
     nama,
@@ -97,7 +89,7 @@ export function toolDiagram(dipakai: readonly ToolJejak[] = []): ToolJejak[] {
 /* --- bentuk yang dikirim ke peramban ----------------------------------------- */
 
 export interface HasilTampil {
-  /** Nama tool persis seperti di rekaman. */
+  /** Nama tool (nama sekarang; lihat `LangkahTampil.memanggil`). */
   alat: string;
   status: Status | null;
   jenis: JenisTolak | null;
@@ -117,7 +109,11 @@ export interface BarisRingkas {
 export interface LangkahTampil {
   no: number;
   tahap: IdTahap;
-  /** Tool yang dipilih agent di langkah ini, persis seperti di rekaman. */
+  /**
+   * Tool yang dipilih agent di langkah ini. Tool yang berganti nama di tengah
+   * rekaman ditulis dengan nama SEKARANG (satu nama di semua tampilan); nama
+   * lamanya hanya ada di `kepala.tool[].nama_lama` dan di `asli`.
+   */
   memanggil: string[];
   /** Ucapan agent di langkah ini, bila ada. Bukan teks berpikir. */
   ucapan: string | null;
@@ -128,7 +124,7 @@ export interface LangkahTampil {
   token: { masuk: number; keluar: number; berpikir: number };
   ringkas: BarisRingkas[];
   hasil: HasilTampil[];
-  /** Tool yang dipilih tetapi tool result-nya tidak tercatat di langkah ini. */
+  /** Tool yang dipilih tetapi tool result-nya tidak tercatat di langkah ini (di diagram: tidak ada tool result yang kembali). */
   tanpa_hasil: string[];
   /** Indeks tool (di `kepala.tool`) yang menyala di diagram pada langkah ini. */
   nyala: number[];
@@ -137,8 +133,15 @@ export interface LangkahTampil {
 export interface GambarDiagram {
   bidang: { lebar: number; tinggi: number };
   agen: PersenKotak;
-  /** Satu butir per tool, urutan sama dengan `kepala.tool`. Garisnya SELALU agent ⇄ tool itu. */
-  tool: Array<{ kotak: PersenKotak; garis: { x1: number; y1: number; x2: number; y2: number }; panah: [string, string] }>;
+  /** Apakah keterangan tool ditulis di dalam barisnya (layar lebar) atau di panel langkah (layar sempit). */
+  keterangan: boolean;
+  /** Lembar tiap kelompok tool dan kepalanya (tempat nama kelompok). */
+  kelompok: Array<{ id: IdKelompok; lembar: PersenKotak; kepala: PersenKotak }>;
+  /**
+   * Satu butir per tool, urutan sama dengan `kepala.tool`. Garisnya SELALU
+   * agent ⇄ tool itu: (x1, y1) di tepi lembar agent, (x2, y2) di tepi baris tool.
+   */
+  tool: Array<{ kotak: PersenKotak; kelompok: IdKelompok; garis: { x1: number; y1: number; x2: number; y2: number } }>;
 }
 
 export interface KepalaTampil {
@@ -148,9 +151,13 @@ export interface KepalaTampil {
   tanggal_simulasi: string | null;
   /** Jumlah budget yang disetujui untuk pekerjaan ini. */
   budget_usd: number;
+  /** Berapa rekaman kerja agent yang dijumlahkan menjadi `budget_usd` (untuk label budget). */
+  jumlah_rekaman: number;
   /** Jumlah langkah bila sudah diketahui (replay); `null` selama agent masih bekerja. */
   jumlah_langkah: number | null;
-  tool: Array<{ nama: string; nama_lama: string[]; keterangan: string | null }>;
+  tool: Array<{ nama: string; nama_lama: string[]; keterangan: string | null; kelompok: IdKelompok | null }>;
+  /** Kelompok tool menurut gunanya, dengan nama yang tampil di kepala lembarnya. */
+  kelompok: Array<{ id: IdKelompok; nama: string }>;
   tahap: Array<{ id: IdTahap; nama: string }>;
   diagram: { tegak: GambarDiagram; lebar: GambarDiagram };
   /** Berkas rekaman yang dibaca (kode saham disamarkan). */
@@ -186,23 +193,25 @@ function bulat(n: number, angka = 100): number {
   return Math.round(n * angka) / angka;
 }
 
-function titikTeks(daftar: readonly Titik[]): string {
-  return daftar.map((t) => `${String(bulat(t.x))},${String(bulat(t.y))}`).join(' ');
-}
-
-export function gambarDiagram(tata: TataDiagram, jumlahTool: number): GambarDiagram {
-  const tool: GambarDiagram['tool'] = [];
-  for (let i = 0; i < jumlahTool; i++) {
-    const tempat = tata.tempat[i];
-    if (tempat === undefined) throw new Error(`Diagram hanya punya ${String(tata.tempat.length)} tempat; tool ke-${String(i + 1)} tidak muat.`);
-    const g = garisTool(tata, tempat);
-    tool.push({
-      kotak: persenKotak(tata, kotakTool(tata, tempat)),
+export function gambarDiagram(tata: TataDiagram, tool: ReadonlyArray<{ nama: string }>): GambarDiagram {
+  const butir: GambarDiagram['tool'] = [];
+  for (const t of tool) {
+    const tempat = tempatTool(tata, t.nama);
+    if (tempat === null) throw new Error(`Tool ${t.nama} belum punya kelompok di diagram (KELOMPOK_TOOL).`);
+    const g = garisTool(tata, tempat.kotak, tempat.kelompok.hadap);
+    butir.push({
+      kotak: persenKotak(tata, tempat.kotak),
+      kelompok: tempat.kelompok.id,
       garis: { x1: bulat(g.agen.x), y1: bulat(g.agen.y), x2: bulat(g.tool.x), y2: bulat(g.tool.y) },
-      panah: [titikTeks(g.panahAgen), titikTeks(g.panahTool)],
     });
   }
-  return { bidang: tata.bidang, agen: persenKotak(tata, tata.agen), tool };
+  return {
+    bidang: tata.bidang,
+    agen: persenKotak(tata, tata.agen),
+    keterangan: tata.keterangan,
+    kelompok: tata.kelompok.map((k) => ({ id: k.id, lembar: persenKotak(tata, k.lembar), kepala: persenKotak(tata, k.kepala) })),
+    tool: butir,
+  };
 }
 
 /**
@@ -211,11 +220,14 @@ export function gambarDiagram(tata: TataDiagram, jumlahTool: number): GambarDiag
  * yang bisa diperbaiki lalu diberi sambungan "Agent menulis ulang."
  */
 export function langkahTampil(l: LangkahJejak, tool: readonly ToolJejak[], menulisUlang: boolean): LangkahTampil {
+  /** Nama sekarang sebuah tool (nama lama di rekaman awal → nama yang dipakai diagram). */
+  const kini = (nama: string): string => NAMA_LAMA[nama] ?? nama;
+  const unik = (daftar: readonly string[]): string[] => [...new Set(daftar.map(kini))];
   const hasil: HasilTampil[] = l.hasil.map((h) => {
     const b = barisBaca(h);
     const sambung = menulisUlang && b.jenis !== null && JENIS_DIPERBAIKI.includes(b.jenis);
     return {
-      alat: h.alat,
+      alat: kini(h.alat),
       status: b.status,
       jenis: b.jenis,
       kalimat: sambung ? `${b.kalimat} ${KALIMAT_MENULIS_ULANG}` : b.kalimat,
@@ -231,7 +243,7 @@ export function langkahTampil(l: LangkahJejak, tool: readonly ToolJejak[], menul
   return {
     no: l.no,
     tahap: l.tahap,
-    memanggil: [...l.memanggil],
+    memanggil: unik(l.memanggil),
     ucapan: l.teks,
     lama_ms: l.latensi_ms,
     biaya_model_usd: l.biaya_usd,
@@ -239,7 +251,7 @@ export function langkahTampil(l: LangkahJejak, tool: readonly ToolJejak[], menul
     token: { masuk: l.token_masuk, keluar: l.token_keluar, berpikir: l.token_penalaran },
     ringkas,
     hasil,
-    tanpa_hasil: tanpaHasil(l),
+    tanpa_hasil: unik(tanpaHasil(l)),
     nyala: simpulNyala(tool, l),
   };
 }
@@ -252,14 +264,15 @@ function menulisDraf(l: LangkahJejak): boolean {
 export function kepalaTampil(
   mode: KepalaTampil['mode'],
   tool: readonly ToolJejak[],
-  isi: Pick<KepalaTampil, 'model' | 'nama_samaran' | 'tanggal_simulasi' | 'budget_usd' | 'jumlah_langkah' | 'sumber'>,
+  isi: Pick<KepalaTampil, 'model' | 'nama_samaran' | 'tanggal_simulasi' | 'budget_usd' | 'jumlah_rekaman' | 'jumlah_langkah' | 'sumber'>,
 ): KepalaTampil {
   return {
     mode,
     ...isi,
-    tool: tool.map((t) => ({ nama: t.nama, nama_lama: [...t.nama_lama], keterangan: keteranganTool(t.nama) })),
+    tool: tool.map((t) => ({ nama: t.nama, nama_lama: [...t.nama_lama], keterangan: keteranganTool(t.nama), kelompok: kelompokTool(t.nama) })),
+    kelompok: KELOMPOK_TOOL.map((k) => ({ id: k.id, nama: k.nama })),
     tahap: URUT_TAHAP.map((id) => ({ id, nama: NAMA_TAHAP[id] })),
-    diagram: { tegak: gambarDiagram(TATA_TEGAK, tool.length), lebar: gambarDiagram(TATA_LEBAR, tool.length) },
+    diagram: { tegak: gambarDiagram(TATA_TEGAK, tool), lebar: gambarDiagram(TATA_LEBAR, tool) },
   };
 }
 
@@ -373,6 +386,7 @@ export function siapkanReplay(akar: string = AKAR, konfig: typeof KONFIG_JEJAK =
     nama_samaran: data.simulasi.nama_samaran,
     tanggal_simulasi: data.simulasi.tanggal,
     budget_usd: bulat(data.percobaan.reduce((j, p) => j + p.pagu_usd, 0), 1e4),
+    jumlah_rekaman: data.percobaan.length,
     jumlah_langkah: langkah.length,
     sumber: data.sumber,
   });
