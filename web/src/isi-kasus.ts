@@ -54,7 +54,7 @@ export function petaKartu(kasus: Kasus): Record<string, string[]> {
 
 /**
  * Siapa yang menyusun soal simulasi ini — kalimat suara kami di layar
- * pembukaan, di atas pintu ke dapur agen.
+ * pembukaan (bagian jejak verifikasi).
  *
  * Sampai kasus AMAG ada, kalimat ini ditulis mati di `Aplikasi.tsx` dan
  * berbunyi "…disusun Claude bersama pemilik… Agen otomatis kami sedang belajar

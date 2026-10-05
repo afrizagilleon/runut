@@ -9,7 +9,7 @@
  * 360 × 640 dan 390 × 844 (ponsel sentuh), terang dan gelap, simulasi DADA.
  * Layar: pertama; soal 1 tanpa pemandu (atas + penuh); pemandu tiap langkah;
  * petunjuk ditekan; terima kasih + kalender; kalender dari layar pertama
- * (pengunjung yang kembali); dapur atas + penuh. Yang belum ada di sebuah
+ * (pengunjung yang kembali). Yang belum ada di sebuah
  * versi (mis. pemandu di `sebelum`) dilewati dan dilaporkan, tidak digagalkan.
  *
  * Ragam `uji` hanya 360 × 640 terang: bahan penguji pemahaman (D-5).
@@ -227,16 +227,6 @@ async function satuUkuran(
     } else {
       catatan.push(`${skema} ${ukuran.nama}: tidak ada kalender (versi ini)`);
     }
-    await tutup();
-  }
-
-  /* --- 3. dapur ------------------------------------------------------------ */
-  {
-    const { page, tutup } = await konteksBaru(peramban, skema, ukuran, dibatalkan);
-    await page.goto(`${ASAL}/?dapur`);
-    await page.getByRole('heading', { name: 'Dapur agen' }).waitFor();
-    await potret(page, '08-dapur-atas');
-    await potret(page, '08-dapur-penuh', true);
     await tutup();
   }
   return jumlah;

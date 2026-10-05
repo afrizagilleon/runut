@@ -1,0 +1,467 @@
+/*
+ * Tampilan AI agent di pintu penyusun. Bahan dan token dari gaya.css (halaman
+ * penyusun): lembar bersudut 2 px, suara kami bergaris kiri, status memakai
+ * --cocok / --belum-cocok (bukan merah), ungu --stempel hanya untuk yang bisa
+ * diketuk dan untuk tool yang sedang dipanggil. Tanpa bayangan, tanpa gradasi.
+ * Skala huruf tetap 12 · 14 · 16 · 17 · 20 · 28.
+ */
+
+.agen-tata {
+  max-width: 1856px;
+  margin: 0 auto;
+  padding: 0 var(--sisi) 96px;
+}
+
+/* --- bilah: sakelar tampilan, pemutaran, keadaan ----------------------------- */
+
+.agen-bilah {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  margin: 0 -20px 12px;
+  padding: 10px 20px;
+  background: var(--lembar);
+  border-bottom: 1px solid var(--garis-tegas);
+}
+
+.agen-sakelar,
+.agen-kontrol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.agen-sakelar > .tombol {
+  border-color: var(--garis-kontrol);
+  color: var(--tinta);
+}
+
+.agen-sakelar > .tombol[aria-pressed='true'] {
+  border-color: var(--stempel-isi);
+  background: var(--stempel-isi);
+  color: var(--di-atas-pekat);
+}
+
+.agen-kecepatan {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--meta);
+  color: var(--tinta-redup);
+}
+
+.agen-keadaan {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+
+.agen-keadaan p {
+  margin: 0;
+}
+
+.agen-kini {
+  font-weight: 600;
+}
+
+.agen-ukur {
+  height: 4px;
+  margin-top: 6px;
+  background: var(--garis);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.agen-ukur > span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--tinta-redup);
+  transition: width 0.3s ease;
+}
+
+/* --- tahap dan langkah (Ringkas, Rinci) -------------------------------------- */
+
+.agen-tahap {
+  margin: 0 0 20px;
+}
+
+.agen-tahap > h3 {
+  margin: 16px 0 2px;
+}
+
+.agen-tahap-angka {
+  margin: 0 0 4px;
+}
+
+.agen-langkah {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.agen-baris {
+  display: grid;
+  grid-template-columns: 2.2em minmax(0, 1fr) auto;
+  gap: 2px 12px;
+  align-items: start;
+  padding: 10px 0;
+  border-top: 1px solid var(--garis);
+  scroll-margin: 140px 0 24px;
+}
+
+.agen-baris-rinci {
+  grid-template-columns: 2.2em minmax(0, 1fr);
+}
+
+.agen-no {
+  font-family: var(--mesin);
+  font-size: var(--meta);
+  color: var(--tinta-redup);
+  text-align: right;
+  padding-top: 2px;
+}
+
+.agen-apa {
+  min-width: 0;
+}
+
+.agen-panggil,
+.agen-hasil-kepala,
+.agen-ucapan,
+.agen-angka-rinci {
+  margin: 0 0 4px;
+}
+
+.agen-angka {
+  margin: 0;
+  padding-top: 2px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.agen-tool {
+  font-family: var(--mesin);
+  font-size: var(--meta);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.agen-kalimat-daftar,
+.agen-hasil,
+.agen-tool-ket {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.agen-kalimat {
+  margin: 0 0 2px;
+}
+
+.agen-tanda {
+  font-size: var(--meta);
+  font-weight: 600;
+}
+
+.agen-lolos {
+  color: var(--cocok);
+}
+
+.agen-ditolak {
+  color: var(--belum-cocok);
+}
+
+.agen-hasil > li {
+  margin: 8px 0 0;
+  padding: 0 0 0 12px;
+  border-left: 2px solid var(--garis-tegas);
+}
+
+.agen-ucapan {
+  font-style: normal;
+}
+
+/* Lipatan "rekaman asli": teks rekaman apa adanya, huruf mesin. */
+.agen-asli-isi {
+  margin: 4px 0 8px;
+  padding: 8px 12px;
+  border: 1px dashed var(--garis-tegas);
+  border-radius: 2px;
+  overflow-wrap: anywhere;
+}
+
+.agen-teks-asli {
+  font-family: var(--mesin);
+  font-size: var(--meta);
+  white-space: pre-wrap;
+}
+
+.agen-medan {
+  margin: 0;
+}
+
+.agen-medan > dt {
+  font-family: var(--mesin);
+  font-size: 12px;
+  color: var(--tinta-redup);
+  margin-top: 6px;
+}
+
+.agen-medan > dd {
+  margin: 0 0 0 12px;
+}
+
+.agen-larik {
+  margin: 0;
+  padding-left: 1.4em;
+}
+
+/* --- diagram ---------------------------------------------------------------- */
+
+/*
+ * AI agent satu kotak di tengah; tool mengelilinginya. Kotak-kotaknya HTML yang
+ * diletakkan dengan persen di atas bidang; garisnya SVG di bawahnya. Tidak ada
+ * garis dari tool ke tool.
+ */
+.agen-diagram-tata {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+}
+
+.agen-bidang {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.agen-bidang[data-tata='lebar'] {
+  max-width: none;
+}
+
+.agen-garis {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.agen-garis line {
+  stroke: var(--garis-tegas);
+  stroke-width: 0.35;
+}
+
+.agen-garis polygon {
+  fill: var(--garis-kontrol);
+}
+
+.agen-garis .agen-nyala line {
+  stroke: var(--stempel);
+  stroke-width: 0.9;
+}
+
+.agen-garis .agen-nyala polygon {
+  fill: var(--stempel);
+}
+
+.agen-kotak,
+.agen-simpul > li {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 2px 4px;
+  text-align: center;
+  background: var(--lembar);
+  border: 1px solid var(--garis-kontrol);
+  border-radius: 2px;
+  line-height: 1.2;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.agen-kotak {
+  border: 2px solid var(--tinta);
+  font-weight: 600;
+}
+
+.agen-kotak-keadaan {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--tinta-redup);
+}
+
+.agen-kotak[data-fase='pikir'] {
+  border-color: var(--stempel);
+  border-style: dashed;
+}
+
+.agen-kotak[data-fase='pikir'] .agen-kotak-keadaan {
+  color: var(--stempel);
+}
+
+.agen-kotak[data-fase='usai'] {
+  border-color: var(--cocok);
+}
+
+.agen-kotak[data-fase='usai'] .agen-kotak-keadaan {
+  color: var(--cocok);
+}
+
+.agen-simpul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.agen-simpul > li {
+  color: var(--tinta-redup);
+}
+
+.agen-simpul .agen-tool {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.agen-simpul > li.agen-pernah {
+  color: var(--tinta);
+  border-color: var(--tinta-redup);
+}
+
+.agen-simpul > li.agen-nyala {
+  border: 2px solid var(--stempel-isi);
+  background: var(--stempel-isi);
+  color: var(--di-atas-pekat);
+}
+
+.agen-hitung {
+  position: absolute;
+  top: -9px;
+  right: -6px;
+  min-width: 26px;
+  padding: 1px 5px;
+  font-family: var(--mesin);
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--tinta);
+  background: var(--lembar);
+  border: 1px solid var(--garis-kontrol);
+  border-radius: 9px;
+}
+
+.agen-hitung[hidden] {
+  display: none;
+}
+
+.agen-diagram-kini {
+  min-width: 0;
+  padding: 0 0 0 14px;
+  border-left: 3px solid var(--garis-tegas);
+}
+
+.agen-diagram-kini > .agen-tool-ket {
+  margin: 0 0 8px;
+}
+
+.agen-diagram-kini .agen-tool-ket .agen-tool {
+  font-weight: 500;
+}
+
+/* --- simulasi yang jadi ------------------------------------------------------ */
+
+.agen-simulasi-judul {
+  margin: 12px 0 2px;
+}
+
+.agen-istilah {
+  margin: 0;
+}
+
+.agen-istilah > dt {
+  font-weight: 600;
+  margin-top: 6px;
+}
+
+.agen-istilah > dd {
+  margin: 0;
+}
+
+#galat-kode[hidden] {
+  display: none;
+}
+
+/* --- layar lebar (tangkapan video 1280 px ke atas) --------------------------- */
+
+@media (min-width: 900px) {
+  .agen-simpul .agen-tool {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .agen-diagram-tata {
+    grid-template-columns: minmax(0, 1fr) 360px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .agen-kotak-keadaan {
+    font-size: 14px;
+  }
+
+  .agen-bilah .tombol,
+  .agen-bilah select {
+    font-size: 16px;
+    min-height: 40px;
+    padding: 6px 14px;
+  }
+}
+
+/* --- ponsel ----------------------------------------------------------------- */
+
+@media (max-width: 599px) {
+  /* Layar sempit: bilah tidak menempel (ia akan menutup sepertiga layar). */
+  .agen-bilah {
+    position: static;
+    margin: 0 -12px 12px;
+    padding: 8px 12px;
+    gap: 6px 12px;
+  }
+
+  .agen-bilah .tombol {
+    padding: 8px 12px;
+  }
+
+  .agen-baris {
+    grid-template-columns: 1.8em minmax(0, 1fr);
+  }
+
+  .agen-angka {
+    grid-column: 2;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .agen-simpul > li {
+    padding: 1px 2px;
+  }
+
+  .agen-simpul .agen-tool {
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agen-kotak,
+  .agen-simpul > li,
+  .agen-ukur > span {
+    transition: none;
+  }
+}

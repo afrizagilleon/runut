@@ -1,45 +1,37 @@
 /**
- * `node --experimental-strip-types alat/jejak-agen.ts` — data statis bagian
- * "Jejak AI agent" di halaman dapur.
+ * Pembaca rekaman percobaan AI agent untuk pintu penyusun (mode replay).
  *
  * Sumbernya rekaman empat percobaan AI agent yang menulis simulasi 15 Juni
- * 2026 (`eval/penyusun/<id>/jejak-agen.jsonl` + `hasil.json`). Polanya sama
- * dengan `alat/dapur.ts`: yang ditulis tangan hanya DAFTAR percobaan; setiap
- * angka dan setiap teks di `web/src/jejak-agen-data.json` lahir di sini dari
- * rekaman, dan `jejak-agen.test.ts` menolak berkas yang disunting tangan.
+ * 2026 (`eval/penyusun/<id>/jejak-agen.jsonl` + `hasil.json`). Yang ditulis
+ * tangan hanya DAFTAR percobaan; setiap angka dan setiap teks lahir di sini
+ * dari rekaman, saat server dinyalakan. Tidak ada berkas data turunan.
  *
  * Tiga hal yang dijaga berkas ini, disebut dengan nama:
  *
  * 1. **Medan `penalaran` tidak pernah ikut.** Baris berjenis `model` di rekaman
  *    membawa teks berpikir model. Medan itu dibuang SAAT BARIS DIURAI (reviver
- *    `JSON.parse`), jadi tidak pernah ada di memori pembangun, apalagi di data.
- *    Yang diambil dari baris `model` hanya daftar di `MEDAN_MODEL`; dari baris
- *    `alat` hanya `alat`, `ringkas`, `hasil`. Jumlah token berpikir
- *    (`token_penalaran`) ikut sebagai angka.
+ *    `JSON.parse`), jadi tidak pernah ada di memori pembaca, apalagi di data
+ *    yang dikirim ke peramban. Yang diambil dari baris `model` hanya daftar di
+ *    `MEDAN_MODEL`; dari baris `alat` hanya `alat`, `ringkas`, `hasil`. Jumlah
+ *    token berpikir (`token_penalaran`) ikut sebagai angka.
  * 2. **Tidak ada kode saham, nama perusahaan, atau alamat berkas mesin.** Id
  *    percobaan dan jalur berkas di rekaman memuat kode saham; keduanya
- *    disamarkan (`[kode]`), dan pembangun menolak menulis bila masih ada sisa.
+ *    disamarkan (`[kode]`), dan pembaca menolak bila masih ada sisa.
  * 3. **Angka cocok dengan `hasil.json`.** Jumlah langkah dan biaya tiap
- *    percobaan diperiksa terhadap `hasil.json` sebelum data ditulis.
- *
- * Bocoran jawaban: rekaman ini memuat soal dan kunci simulasi yang dimainkan
- * orang. Data ini karena itu HANYA dirender sesudah pengunjung membuka
- * gerbangnya sendiri (`web/src/JejakAgen.tsx`); sebelum itu yang tampil hanya
- * angka (kebijakan Amandemen A-1 halaman dapur).
+ *    percobaan diperiksa terhadap `hasil.json` sebelum data dipakai.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 
-const AKAR = fileURLToPath(new URL('../', import.meta.url));
-
-export const BERKAS_DATA_JEJAK = 'web/src/jejak-agen-data.json';
+const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 
 /** Folder rekaman; satu percobaan satu subfolder. */
 export const FOLDER_REKAMAN = 'eval/penyusun';
 
 /** Percobaan yang membentuk simulasi ini, berurutan. Hanya daftar; bukan isi. */
 export const KONFIG_JEJAK: { kasus: string; percobaan: readonly string[] } = {
-  kasus: 'cases/amag-2026-06-15.json',
+  /** Simulasi yang jadi, ditulis percobaan terakhir (sama byte demi byte dengan yang dimainkan). */
+  kasus: 'eval/penyusun/m2d29-amag-lengkapi-3/kasus.json',
   percobaan: ['m2d26-amag-1', 'm2d26-amag-naik-1', 'm2d27-amag-naik-2', 'm2d29-amag-lengkapi-3'],
 };
 
@@ -271,7 +263,7 @@ export function dataJejak(akar: string = AKAR, konfig: typeof KONFIG_JEJAK = KON
     tanggal_t: string;
   };
   /** Yang tidak boleh ada di data: kode saham dan nama perusahaan (utuh dan tanpa "Tbk"). */
-  const terlarang = [kasus.emiten.nama, kasus.emiten.nama.replace(/\s+Tbk\.?$/i, ''), kasus.emiten.simbol];
+  const terlarang = kataTerlarang(akar, konfig);
 
   const percobaan: PercobaanJejak[] = [];
   const langkah: LangkahJejak[] = [];
@@ -385,8 +377,7 @@ export function dataJejak(akar: string = AKAR, konfig: typeof KONFIG_JEJAK = KON
   }).filter((t) => t.jumlah_langkah > 0);
 
   const data: DataJejak = {
-    keterangan:
-      'Dibangun `node --experimental-strip-types alat/jejak-agen.ts` dari rekaman percobaan AI agent. Jangan disunting tangan.',
+    keterangan: 'Dibaca dari rekaman percobaan AI agent oleh alat/penyusun/rekaman-agen.ts.',
     sumber,
     simulasi: { tanggal: kasus.tanggal_t, nama_samaran: kasus.nama_samaran },
     model,
@@ -400,7 +391,7 @@ export function dataJejak(akar: string = AKAR, konfig: typeof KONFIG_JEJAK = KON
     langkah,
   };
 
-  // Gerbang terakhir: tidak satu pun teks atau nama medan memuat yang terlarang.
+  // Pemeriksaan terakhir: tidak satu pun teks atau nama medan memuat yang terlarang.
   const isi = semuaTeksJejak(data);
   for (const kata of terlarang) {
     const bocor = isi.find((t) => t.toLowerCase().includes(kata.toLowerCase()));
@@ -416,10 +407,21 @@ export function keJsonJejak(data: DataJejak): string {
   return `${JSON.stringify(data, null, 1)}\n`;
 }
 
-const dijalankanLangsung =
-  process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href;
-if (dijalankanLangsung) {
-  const teks = keJsonJejak(dataJejak());
-  writeFileSync(`${AKAR}${BERKAS_DATA_JEJAK}`, teks, 'utf8');
-  console.log(`Ditulis ${BERKAS_DATA_JEJAK} (${String(teks.length)} karakter).`);
+/**
+ * Kode saham percobaan pertama (`hasil.json` → `kode`): yang diketik penyusun
+ * untuk memutar rekaman ini. Hanya dipakai server untuk mencocokkan ketikan;
+ * tidak ikut di data tampilan agent.
+ */
+export function kodeRekaman(akar: string = AKAR, konfig: typeof KONFIG_JEJAK = KONFIG_JEJAK): string {
+  const pertama = konfig.percobaan[0];
+  if (pertama === undefined) throw new Error('Tidak ada percobaan.');
+  const hasil = JSON.parse(readFileSync(`${akar}${FOLDER_REKAMAN}/${pertama}/hasil.json`, 'utf8')) as { kode?: unknown };
+  if (typeof hasil.kode !== 'string' || !/^[A-Z]{4}$/.test(hasil.kode)) throw new Error(`${pertama}: hasil.json tanpa kode saham.`);
+  return hasil.kode;
+}
+
+/** Kata yang tidak boleh ada di data tampilan agent: nama perusahaan (utuh dan tanpa "Tbk") dan kode saham. */
+export function kataTerlarang(akar: string = AKAR, konfig: typeof KONFIG_JEJAK = KONFIG_JEJAK): string[] {
+  const kasus = JSON.parse(readFileSync(`${akar}${konfig.kasus}`, 'utf8')) as { emiten: { simbol: string; nama: string } };
+  return [kasus.emiten.nama, kasus.emiten.nama.replace(/\s+Tbk\.?$/i, ''), kasus.emiten.simbol];
 }

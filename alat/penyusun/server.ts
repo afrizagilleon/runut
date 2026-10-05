@@ -36,6 +36,7 @@ import { KRITIKUS_TERKUNCI_A1, mesinTemplatM2d11Palsu, mesinTemplatM2d11Sungguha
 import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
+import { kirimReplay, siapkanReplay, type ReplayAgen } from './replay-agen.ts';
 import { bacaRekaman, jamSungguhan, JamVirtual, putarRekaman, RUMUS_JEDA, type JamTayang, type PemutarTayang, type Rekaman } from './tayang-ulang.ts';
 
 /** Satu-satunya alamat yang boleh didengar. Tidak bisa diubah lewat argumen. */
@@ -57,6 +58,10 @@ const BERKAS_HALAMAN: Readonly<Record<string, string>> = {
   '/app.js': 'app.js',
   '/gaya.css': 'gaya.css',
   '/ringkas.js': 'ringkas.js',
+  '/agen.html': 'agen.html',
+  '/agen.js': 'agen.js',
+  '/agen-murni.js': 'agen-murni.js',
+  '/agen.css': 'agen.css',
 };
 
 export interface OpsiServer {
@@ -94,6 +99,12 @@ export interface OpsiServer {
    * tayang ulang log jalan `folder`, panel penyetuju hidup atas draf terpilih.
    */
   demo?: { folder: string; draf: string; suntingan: string; paguUjiUlangUsd: number | null; jam?: JamTayang; folderSimpan?: string };
+  /**
+   * Mode replay agent (`--replay-agent`): halaman utama = tampilan AI agent,
+   * diputar dari rekaman percobaan di repo. Tanpa model, tanpa Sectors, tanpa
+   * API key, tanpa tulisan apa pun. `akar`: akar rekaman (tes mengganti).
+   */
+  replayAgen?: { akar?: string };
 }
 
 export type NamaMesin = 'lingkar' | 'templat' | 'templat-m2d11' | 'bebas';
@@ -128,6 +139,8 @@ export interface KeadaanServer {
   alur: KonteksAlur;
   tayang: KeadaanTayang | null;
   demo: KeadaanDemo | null;
+  /** Rekaman AI agent yang sudah disiapkan (mode replay agent). */
+  agen: ReplayAgen | null;
 }
 
 export class GalatPermintaan extends Error {
@@ -236,6 +249,12 @@ function cocokkan(peta: Map<string, Penangan>, jalur: string): { f: Penangan; ba
 
 daftarRute('GET', '/api/status', (_req, res, { keadaan }) => {
   const o = keadaan.opsi;
+  if (keadaan.agen !== null) {
+    const a = keadaan.agen;
+    // Kode saham yang punya rekaman: untuk petunjuk di kolom isian saja. Nama perusahaan tidak pernah dikirim.
+    kirimJson(res, 200, { mode: 'replay-agent', hari_ini: o.jam().toISOString().slice(0, 10), agen: { kode_rekaman: [a.kode], jumlah_langkah: a.langkah.length, budget_usd: a.kepala.budget_usd } });
+    return;
+  }
   if (keadaan.tayang !== null) {
     kirimJson(res, 200, { mode: 'tayang-ulang', hari_ini: o.jam().toISOString().slice(0, 10), rekaman: keadaan.tayang.status });
     return;
@@ -266,7 +285,7 @@ function wajibKode(nilai: unknown): string {
 
 function wajibJendela(nilai: unknown): number {
   const j = jendelaSah(nilai);
-  if (j === null) throw new GalatPermintaan(400, 'Jendela "sesudahnya" harus bilangan bulat 5–20 hari bursa.');
+  if (j === null) throw new GalatPermintaan(400, 'Jumlah hari bursa sesudah hari simulasi harus bilangan bulat 5–20.');
   return j;
 }
 
@@ -423,6 +442,18 @@ daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
   }
   if (a === undefined) throw new GalatPermintaan(404, 'Jalan tidak dikenal.');
   sambungSse(res, a, nomorSesudah(req));
+});
+
+/**
+ * Tampilan AI agent: seluruh langkah rekaman untuk satu kode saham, lewat SSE
+ * (`event: kepala` → `langkah` × n → `simulasi` → `selesai`). Jeda diatur halaman.
+ */
+daftarRute('GET', '/api/agen/aliran', (_req, res, { keadaan, url }) => {
+  const a = keadaan.agen;
+  if (a === null) throw new GalatPermintaan(404, 'Hanya ada di mode replay agent (--replay-agent).');
+  const kode = wajibKode(url.searchParams.get('kode'));
+  if (kode !== a.kode) throw new GalatPermintaan(404, `Belum ada rekaman AI agent untuk ${kode}. Rekaman yang ada: ${a.kode}.`);
+  kirimReplay(res, a);
 });
 
 /** M2d-12: perekam bingkai memajukan jam virtual tayang ulang (hanya `--jam-virtual`). */
@@ -641,6 +672,9 @@ export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan:
   const rekaman = opsiMentah.tayangUlang === undefined ? null : bacaRekaman(opsiMentah.tayangUlang.folder);
   const od = opsiMentah.demo;
   if (od !== undefined && rekaman !== null) throw new Error('--demo dan --tayang-ulang tidak bisa dipakai bersama.');
+  const ora = opsiMentah.replayAgen;
+  if (ora !== undefined && (od !== undefined || rekaman !== null)) throw new Error('--replay-agent tidak bisa digabung dengan --demo atau --tayang-ulang.');
+  const agen = ora === undefined ? null : ora.akar === undefined ? siapkanReplay() : siapkanReplay(ora.akar);
   const demo =
     od === undefined
       ? null
@@ -662,7 +696,10 @@ export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan:
       ? { ...opsiMentah, palsu: true, folderKeluaran: rekaman.folderInduk, mesin: mesinRekaman() }
       : demo !== null
         ? { ...opsiMentah, palsu: false, folderKeluaran: mkdtempSync(join(tmpdir(), 'penyusun-demo-')), mesin: mesinDemo(demo.keadaanRekaman, shaPaket(demo.paket), shaPaket, demo.id) }
-        : opsiMentah;
+        : agen !== null
+          ? // Replay agent: tanpa jaringan (palsu), mesin pengganti yang tidak pernah menjalankan apa pun.
+            { ...opsiMentah, palsu: true, mesin: mesinRekaman() }
+          : opsiMentah;
   const aliran = new Map<string, Aliran>();
   const gudang = new PemuatGudang(opsi.folderGudang ?? join(opsi.akar, '.cache', 'sectors'));
   const proses = opsi.proses ?? process.env;
@@ -725,7 +762,7 @@ export function buatAplikasi(opsiMentah: OpsiServer): { server: Server; keadaan:
       pemutarUji: { terkirim: 0, selesai: false },
     };
   }
-  const keadaan: KeadaanServer = { opsi, aliran, gudang, alur, tayang, demo: keadaanDemo };
+  const keadaan: KeadaanServer = { opsi, aliran, gudang, alur, tayang, demo: keadaanDemo, agen };
   const server = createServer((req, res) => {
     void layani(req, res, keadaan);
   });
@@ -750,6 +787,18 @@ function jagaDemo(metode: string, jalur: string, d: KeadaanDemo): void {
   throw new GalatPermintaan(409, 'Mode demo: tindakan ini tidak tersedia (tanpa ambil data Sectors, tanpa agen sungguhan; penyetuju lewat panel demo).');
 }
 
+/**
+ * Mode replay agent hanya melayani: halaman, status, dan aliran rekaman agent.
+ * Semua POST dan rute API lain ditolak 409 — tidak ada tindakan yang dijalankan.
+ */
+function jagaReplayAgen(metode: string, jalur: string): void {
+  const tolak = (): never => {
+    throw new GalatPermintaan(409, 'Mode replay agent: ini rekaman kerja AI agent; tidak ada tindakan yang dijalankan dan tidak ada panggilan model.');
+  };
+  if (metode === 'POST') tolak();
+  if (metode === 'GET' && jalur.startsWith('/api/') && jalur !== '/api/status' && jalur !== '/api/agen/aliran') tolak();
+}
+
 function jagaTayang(metode: string, jalur: string, t: KeadaanTayang): void {
   const tolak = (): never => {
     throw new GalatPermintaan(409, `Mode tayang ulang: ini rekaman jalan ${t.rekaman.id}; tidak ada tindakan yang dijalankan dan tidak ada panggilan model.`);
@@ -771,8 +820,10 @@ async function layani(req: IncomingMessage, res: ServerResponse, keadaan: Keadaa
     if (!hostSah(req.headers.host)) throw new GalatPermintaan(403, 'Host tidak dikenal; pintu penyusun hanya melayani 127.0.0.1.');
     if (keadaan.tayang !== null) jagaTayang(metode, url.pathname, keadaan.tayang);
     if (keadaan.demo !== null) jagaDemo(metode, url.pathname, keadaan.demo);
+    if (keadaan.agen !== null) jagaReplayAgen(metode, url.pathname);
     if (metode === 'GET') {
-      const berkas = BERKAS_HALAMAN[url.pathname];
+      // Mode replay agent: halaman utama = tampilan AI agent.
+      const berkas = keadaan.agen !== null && (url.pathname === '/' || url.pathname === '/index.html') ? 'agen.html' : BERKAS_HALAMAN[url.pathname];
       if (berkas !== undefined) {
         sajikanHalaman(res, berkas);
         return;
@@ -841,6 +892,8 @@ export interface ArgumenServer {
   jamVirtual: boolean;
   /** M2d-14: `--demo <folder jalan> --draf <pilihan> --suntingan <berkas> [--pagu-uji-ulang <usd>]`. */
   demo: { folder: string; draf: string; suntingan: string | null; paguUjiUlangUsd: number | null } | null;
+  /** `--replay-agent`: putar rekaman kerja AI agent di halaman utama. */
+  replayAgen: boolean;
 }
 
 /**
@@ -849,7 +902,7 @@ export interface ArgumenServer {
  * `--host` sengaja DITOLAK: server ini hanya untuk 127.0.0.1.
  */
 export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): ArgumenServer {
-  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, prompt: null, tayangUlang: null, jamVirtual: false, demo: null };
+  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, prompt: null, tayangUlang: null, jamVirtual: false, demo: null, replayAgen: false };
   let draf: string | null = null;
   let suntingan: string | null = null;
   let paguUji: number | null = null;
@@ -887,6 +940,7 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
       hasil.tayangUlang = nilai;
       i++;
     } else if (a === '--jam-virtual') hasil.jamVirtual = true;
+    else if (a === '--replay-agent') hasil.replayAgen = true;
     else if (a === '--demo' && nilai !== undefined) {
       hasil.demo = { folder: nilai, draf: 'akhir', suntingan: null, paguUjiUlangUsd: null };
       i++;
@@ -909,6 +963,7 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
     if (hasil.tayangUlang !== null || hasil.palsu) throw new Error('--demo tidak bisa digabung dengan --tayang-ulang atau --palsu.');
     hasil.demo = { ...hasil.demo, draf: draf ?? 'akhir', suntingan, paguUjiUlangUsd: paguUji };
   }
+  if (hasil.replayAgen && (hasil.demo !== null || hasil.tayangUlang !== null || hasil.palsu)) throw new Error('--replay-agent tidak bisa digabung dengan --demo, --tayang-ulang, atau --palsu.');
   if (hasil.mesin === 'bebas' && hasil.penulis === null) throw new Error('--mesin bebas butuh --penulis opus|haiku|deepseek (M2d-13).');
   if (hasil.penulis !== null && hasil.mesin !== 'bebas') throw new Error('--penulis hanya berlaku bersama --mesin bebas.');
   if (hasil.prompt !== null && hasil.mesin !== 'bebas') throw new Error('--prompt hanya berlaku bersama --mesin bebas.');
@@ -933,8 +988,14 @@ async function utama(): Promise<number> {
     ...(arg.demo === null || arg.demo.suntingan === null
       ? {}
       : { demo: { folder: arg.demo.folder, draf: arg.demo.draf, suntingan: arg.demo.suntingan, paguUjiUlangUsd: arg.demo.paguUjiUlangUsd, ...(arg.jamVirtual ? { jam: new JamVirtual() } : {}) } }),
+    ...(arg.replayAgen ? { replayAgen: {} } : {}),
   });
   const port = await dengarkan(server, arg.port);
+  if (arg.replayAgen) {
+    console.log(`Pintu penyusun — REPLAY AI AGENT: http://${HOST}:${String(port)}/`);
+    console.log('Rekaman kerja AI agent diputar dari berkas di repo. Tanpa panggilan model, tanpa Sectors, tanpa API key, tanpa biaya.');
+    return 0;
+  }
   if (arg.demo !== null) {
     console.log(`Pintu penyusun — MODE DEMO ${arg.demo.folder} (draf ${arg.demo.draf})${arg.jamVirtual ? ' (jam virtual)' : ''}: http://${HOST}:${String(port)}/`);
     console.log(

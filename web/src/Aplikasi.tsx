@@ -61,7 +61,6 @@ import { barisMeta, contohPembuka } from './pembuka.ts';
 import { bacaPerangkat, type InfoKoneksi, type Perangkat } from './perangkat.ts';
 import { berkasDariTumpukan, pasangPelaporAkar, pesanDari, sumberGalat } from './galat.ts';
 import { TAUTAN_JEJAK_NAIK, kalimatJejak, kalimatJejakNaik, ringkasanJejak } from './jejak.ts';
-import { PARAM_DAPUR, TAUTAN_DAPUR } from './dapur.ts';
 import {
   JUDUL_KALENDER,
   PENGANTAR_KALENDER_AKHIR,
@@ -2465,30 +2464,12 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
         </p>
       </details>
       {/*
-        Pintu ke "Dapur agen" (M3.13 D-4), di dekat kalimat jejak: satu kalimat
-        suara kami yang lebih dulu menyatakan siapa yang menyusun soal simulasi
-        ini (`keteranganPenyusun`: berbeda untuk simulasi yang soalnya ditulis
-        agent), lalu satu tautan. Tab baru: layar ini masih di tengah alur
-        (tiga pertanyaan singkat menunggu), dan pindah halaman di tab yang sama
-        akan membuang keadaannya.
+        Satu kalimat suara kami yang menyatakan siapa yang menyusun soal
+        simulasi ini (`keteranganPenyusun`: berbeda untuk simulasi yang soalnya
+        ditulis agent). Bergaris kiri seperti kutipan catatan.
       */}
-      {/*
-        Rupa sesudah kritik D-5 (butir 8): kalimatnya suara kami bergaris kiri,
-        tautannya di baris sendiri seperti pintu lipatan di atasnya, dengan
-        "↗" karena ia membuka tab baru.
-      */}
-      <div className="dapur-pintu-jejak">
+      <div className="keterangan-penyusun">
         <p className="meta">{keteranganPenyusun(kasus.kasus_id)}</p>
-        <a
-          className="dapur-pintu-tautan"
-          href={`?${PARAM_DAPUR}`}
-          target="_blank"
-          rel="noopener"
-          aria-label={`${TAUTAN_DAPUR} (buka di tab baru)`}
-          data-uid="dapur:jejak"
-        >
-          {TAUTAN_DAPUR} ↗
-        </a>
       </div>
     </section>
   );
@@ -2554,16 +2535,6 @@ export function LayarAkhir({
           pengantar={PENGANTAR_KALENDER_AKHIR}
           pilih={pilihDariKalender}
         />
-        {/*
-          Pintu ke "Dapur agen" (M3.13 D-4) di layar terakhir: permainan sudah
-          selesai dan jawaban sudah terkirim, jadi pindah halaman di tab yang
-          sama tidak membuang apa pun.
-        */}
-        <p className="dapur-pintu terima-kalimat">
-          <a className="dapur-tautan" href={`?${PARAM_DAPUR}`} data-uid="dapur:akhir">
-            {TAUTAN_DAPUR} ›
-          </a>
-        </p>
       </section>
     );
   }

@@ -1,14 +1,12 @@
 /**
- * Data bagian "Jejak AI agent" = rekaman percobaan, tidak dikarang, tanpa teks
- * berpikir model, tanpa kode saham.
+ * Rekaman percobaan AI agent yang diputar pintu penyusun: tidak dikarang,
+ * tanpa teks berpikir model, tanpa kode saham.
  *
- * 1. `web/src/jejak-agen-data.json` di repo sama byte demi byte dengan keluaran
- *    `dataJejak()` — berkas yang disunting tangan merah.
- * 2. Jumlah langkah dan biaya tiap percobaan = `hasil.json` percobaan itu.
- * 3. Tiap langkah dan tiap tool result di data = baris rekamannya, berurutan.
- * 4. Medan `penalaran` tidak ada di data, di kedalaman mana pun; langkah hanya
+ * 1. Jumlah langkah dan biaya tiap percobaan = `hasil.json` percobaan itu.
+ * 2. Tiap langkah dan tiap tool result di data = baris rekamannya, berurutan.
+ * 3. Medan `penalaran` tidak ada di data, di kedalaman mana pun; langkah hanya
  *    membawa medan yang didaftar.
- * 5. Kode saham, nama perusahaan, alamat berkas mesin, dan alamat jaringan
+ * 4. Kode saham, nama perusahaan, alamat berkas mesin, dan alamat jaringan
  *    tidak ada di data.
  *
  * Tes ini membaca rekaman HANYA lewat `uraiTanpaPenalaran`, jadi teks berpikir
@@ -16,11 +14,10 @@
  */
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync, cpSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { afterAll, describe, expect, it } from 'vitest';
 import {
-  BERKAS_DATA_JEJAK,
   FOLDER_REKAMAN,
   KONFIG_JEJAK,
   MEDAN_MODEL,
@@ -34,10 +31,11 @@ import {
   samarkanDalam,
   semuaTeksJejak,
   uraiTanpaPenalaran,
+  kodeRekaman,
   type DataJejak,
-} from './jejak-agen.ts';
+} from './rekaman-agen.ts';
 
-const AKAR = fileURLToPath(new URL('../', import.meta.url));
+const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 const mentah = (berkas: string): string => readFileSync(`${AKAR}${berkas}`, 'utf8');
 
 interface Baris {
@@ -70,12 +68,14 @@ const TERLARANG = [kasus.emiten.nama, kasus.emiten.nama.replace(/\s+Tbk\.?$/i, '
 
 describe('data jejak AI agent dari rekaman percobaan', () => {
   const data = dataJejak();
-  /** Berkas yang benar-benar dimuat halaman — bukan keluaran pembangun. */
-  const teksBerkas = mentah(BERKAS_DATA_JEJAK).replace(/\r\n/g, '\n');
+  /** Data seperti yang dipakai server: lewat JSON, supaya yang diuji = yang bisa dikirim. */
+  const teksBerkas = keJsonJejak(data);
   const berkas = JSON.parse(teksBerkas) as DataJejak;
 
-  it('berkas di repo = keluaran node --experimental-strip-types alat/jejak-agen.ts (byte demi byte)', () => {
-    expect(teksBerkas === keJsonJejak(data), `${BERKAS_DATA_JEJAK} harus hasil alat/jejak-agen.ts`).toBe(true);
+  it('kode saham rekaman dibaca dari hasil.json percobaan pertama, dan tidak ada di data', () => {
+    const kode = kodeRekaman();
+    expect(kode).toBe(kasus.emiten.simbol);
+    expect(teksBerkas.toLowerCase().includes(kode.toLowerCase())).toBe(false);
   });
 
   it('empat percobaan, berurutan; jumlah langkah dan biaya tiap percobaan = hasil.json', () => {
@@ -262,7 +262,7 @@ describe('pembangun jejak atas rekaman tiruan', () => {
   });
 
   function tulis(langkahHasil: number, biaya: number): void {
-    mkdirSync(`${akar}cases`, { recursive: true });
+    mkdirSync(dirname(`${akar}${KONFIG_JEJAK.kasus}`), { recursive: true });
     cpSync(`${AKAR}${KONFIG_JEJAK.kasus}`, `${akar}${KONFIG_JEJAK.kasus}`);
     mkdirSync(folder, { recursive: true });
     const baris = [

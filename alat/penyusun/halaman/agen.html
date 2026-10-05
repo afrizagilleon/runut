@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI agent penyusun — lokal</title>
+  <link rel="stylesheet" href="/gaya.css">
+  <link rel="stylesheet" href="/agen.css">
+  <script type="module" src="/agen.js"></script>
+</head>
+<body>
+  <header class="kepala">
+    <div class="kepala-isi">
+      <div class="kepala-judul">
+        <h1>AI agent penyusun</h1>
+        <p class="meta">Ketik kode saham. AI agent memilih sendiri tool mana yang dipanggil, kapan, dan berapa kali, sampai satu simulasi jadi: tiga soal, kartunya, dan bagian "apa yang terjadi sesudahnya". Berjalan di komputermu saja (127.0.0.1).</p>
+        <p class="meta" id="mode"></p>
+      </div>
+    </div>
+  </header>
+
+  <div class="agen-tata">
+    <main id="utama">
+      <section id="agen-mulai" class="bagian" aria-labelledby="judul-mulai">
+        <h2 id="judul-mulai">Kode saham</h2>
+        <form id="form-agen" class="baris-form" autocomplete="off">
+          <label for="kode">Kode saham (empat huruf)</label>
+          <input id="kode" name="kode" type="text" inputmode="text" maxlength="4" required>
+          <button type="submit" class="tombol tombol-utama" id="tombol-putar">Putar kerja agent</button>
+        </form>
+        <p class="meta" id="petunjuk-kode"></p>
+        <p class="tidak" id="galat-kode" role="alert" hidden></p>
+      </section>
+
+      <section id="agen-kerja" class="bagian" aria-labelledby="judul-kerja" hidden>
+        <h2 id="judul-kerja">Agent bekerja</h2>
+
+        <div class="agen-bilah" id="agen-bilah">
+          <div class="agen-sakelar" role="group" aria-label="Tampilan">
+            <button type="button" class="tombol" data-tampilan="ringkas" aria-pressed="true">Ringkas</button>
+            <button type="button" class="tombol" data-tampilan="rinci" aria-pressed="false">Rinci</button>
+            <button type="button" class="tombol" data-tampilan="diagram" aria-pressed="false">Diagram</button>
+          </div>
+          <div class="agen-kontrol" role="group" aria-label="Pemutaran">
+            <button type="button" class="tombol" id="tombol-jeda">Jeda</button>
+            <button type="button" class="tombol" id="tombol-lompat">Lompat ke akhir</button>
+            <label class="agen-kecepatan" for="kecepatan">Kecepatan
+              <select id="kecepatan"></select>
+            </label>
+            <button type="button" class="tombol" id="tombol-ulang" hidden>Putar dari awal</button>
+          </div>
+          <div class="agen-keadaan">
+            <p class="agen-kini" id="agen-kini" aria-live="polite"></p>
+            <p class="meta" id="agen-biaya"></p>
+            <div class="agen-ukur" aria-hidden="true"><span id="agen-ukur-isi"></span></div>
+          </div>
+        </div>
+
+        <div id="tampilan-ringkas" data-tampilan-isi="ringkas"></div>
+
+        <div id="tampilan-rinci" data-tampilan-isi="rinci" hidden>
+          <p class="meta" id="keterangan-rinci"></p>
+          <div id="rinci-isi"></div>
+        </div>
+
+        <div id="tampilan-diagram" data-tampilan-isi="diagram" hidden>
+          <div class="agen-diagram-tata">
+            <div class="agen-bidang" id="agen-bidang">
+              <svg class="agen-garis" id="agen-garis" aria-hidden="true" focusable="false"></svg>
+              <p class="agen-kotak" id="agen-kotak"><span class="agen-kotak-nama">AI agent</span><span class="agen-kotak-keadaan" id="agen-kotak-keadaan"></span></p>
+              <ul class="agen-simpul" id="agen-simpul" aria-label="Tool yang bisa dipanggil AI agent"></ul>
+            </div>
+            <div class="agen-diagram-kini" id="diagram-kini" aria-live="polite"></div>
+          </div>
+          <p class="meta" id="keterangan-diagram"></p>
+        </div>
+      </section>
+
+      <section id="agen-simulasi" class="bagian" aria-labelledby="judul-simulasi" hidden>
+        <h2 id="judul-simulasi">Simulasi yang jadi</h2>
+        <div id="simulasi-isi"></div>
+      </section>
+
+      <section id="agen-sumber" class="bagian" aria-labelledby="judul-sumber" hidden>
+        <details>
+          <summary id="judul-sumber">Berkas rekaman yang dibaca</summary>
+          <ul class="meta" id="sumber-isi"></ul>
+        </details>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
