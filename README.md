@@ -8,7 +8,7 @@ Situs: <https://alpha.zaa.my.id> · Teaser: ⟦TAUTAN_TEASER⟧ · Video penjuri
 
 - **Produk.** Pemain membaca kartu fakta satu saham pada satu tanggal, lalu memutuskan tiga omongan teman itu Betul atau Keliru; sesudahnya dibuka apa yang terjadi. Sectors Hackathon 2026, Track 01 (AI Agents & Assistants).
 - **Untuk siapa.** Pemain pemula (aplikasi di `web/`) dan penyusun/pengajar yang menyiapkan simulasi (pintu penyusun di `alat/penyusun/`).
-- **Di mana Runut Agent bekerja.** `alat/agen/jalan-agen.ts`: satu AI agent dengan 12 tool. Dari kode saham ia memutuskan sendiri hari mana yang dibekukan, sudut tiap omongan, isi draft, tool mana dipanggil dan kapan, memperbaiki atau ganti sudut, dan kapan berhenti.
+- **Di mana Runut Agent bekerja.** `alat/agen/jalan-agen.ts`: satu AI agent dengan 12 tool. Dari kode saham ia memutuskan sendiri hari mana yang dibekukan, topik tiap omongan, isi draft, tool mana dipanggil dan kapan, memperbaiki atau ganti sudut, dan kapan berhenti.
 - **Yang diputuskan kode, bukan AI.** 33 aturan verifikasi atas data Sectors, aturan bentuk soal, urutan empat tester, dan guardrail budget.
 - **Bukti nyata.** Simulasi AMAG (15 Juni 2026) di situs seluruhnya ditulis Runut Agent, identik byte dengan hasil percobaannya di repo; alpha 21 Sep–5 Okt 2026 dibuka 150 orang. Lihat [Hasil](#hasil).
 - **Periksa tanpa API key** (sesudah `npm install`): `npm run agen:replay` · `npm run penyusun` · `npm test`.
@@ -17,9 +17,9 @@ Situs: <https://alpha.zaa.my.id> · Teaser: ⟦TAUTAN_TEASER⟧ · Video penjuri
 
 | Syarat resmi | Di mana | Apa yang ada di sana |
 |---|---|---|
-| multi-step reasoning flows | `alat/agen/jalan-agen.ts`, `factory/llm/agen/prompt-agen.md` | Lingkar `ToolLoopAgent`: reasoning → memilih tool → membaca tool result → memutuskan langkah berikutnya, dalam tiga tahap (susun, tingkatkan, lengkapi). |
-| custom tool-use pipelines | `factory/llm/agen/alat.ts`, `factory/llm/agen/lengkapi.ts`, `alat/agen/alat-sectors.ts` | 12 tool buatan sendiri; `ajukan` menjalankan blind guesser → card reader → tester kuat → critic untuk tiap draft. |
-| memory or state management | `factory/llm/bebas/bank.ts`, `eval/bank-omongan/`, `eval/penyusun/` | Bank omongan yang lolos beserta score-nya, dibaca agent lewat `lihat_bank` dan `lihat_simulasi`; tiap langkah ditulis ke `jejak-agen.jsonl`. |
+| multi-step reasoning flows | `alat/agen/jalan-agen.ts`, `factory/llm/agen/prompt-agen.md` | Loop `ToolLoopAgent`: reasoning → memilih tool → membaca tool result → memutuskan langkah berikutnya, dalam tiga tahap (susun, tingkatkan, lengkapi). |
+| custom tool-use pipelines | `factory/llm/agen/alat.ts`, `factory/llm/agen/lengkapi.ts`, `alat/agen/alat-sectors.ts` | 12 tool buatan sendiri; `ajukan` menjalankan blind guesser → card reader → tester → critic untuk tiap draft. |
+| memory or state management | `factory/llm/bebas/bank.ts`, `eval/bank-omongan/`, `eval/penyusun/` | Kumpulan omongan yang lolos beserta score-nya, dibaca agent lewat `lihat_bank` dan `lihat_simulasi`; tiap langkah ditulis ke `jejak-agen.jsonl`. |
 | autonomous task execution | `alat/agen/jalan-agen.ts` (mode `--kode`), `factory/llm/agen/anggaran.ts` | Masukan hanya kode saham dan budget; agent bekerja sampai simulasi terakit atau ia memutuskan berhenti, di dalam guardrail budget dan step limit. |
 | a purpose-built interface for a specific participant and problem | `web/`, `alat/penyusun/halaman/agen.html` | Aplikasi pemain untuk pemula (ponsel, tanpa login) dan tampilan AI agent untuk penyusun: Ringkas, Rinci, Diagram. |
 | Sectors data at its core | `alat/sectors.ts`, `factory/verifikasi/`, `docs/bukti/gudang-manifest.json` | Setiap kartu fakta berasal dari Sectors API dan hanya tampil sesudah lolos aturan verifikasi; tanpa Sectors tidak ada simulasi. |
@@ -253,7 +253,7 @@ Tiap aturan wajib melaporkan **berapa yang sungguh diperiksa**, bukan hanya bera
 
 Sebuah simulasi **diverifikasi dengan dokumen yang sudah terbit pada tanggal bekunya**, bukan dengan seluruh data yang ada hari ini. Alasannya sama dengan alasan simulasi itu ada: yang ditanyakan adalah apa yang bisa dibaca pada hari itu. Yang terjadi sesudah tanggal beku tetap muncul, di layar pembukaan.
 
-Simulasi yang sudah tayang tidak ikut bergeser ketika gudang atau aturan bertambah: daftar aturan tiap simulasi tayang dibekukan di `docs/bukti/aturan-beku-kasus.json`, dan `npm run build:case` hanya membaca 111 berkas yang sidiknya dibekukan di `docs/bukti/gudang-beku-kasus.json`.
+Simulasi yang sudah live tidak ikut bergeser ketika gudang atau aturan bertambah: daftar aturan tiap simulasi yang live dibekukan di `docs/bukti/aturan-beku-kasus.json`, dan `npm run build:case` hanya membaca 111 berkas yang sidiknya dibekukan di `docs/bukti/gudang-beku-kasus.json`.
 
 ### Mengambil ulang data Sectors
 
@@ -379,7 +379,7 @@ Keluarannya tabel Markdown: berapa orang (bukan berapa sesi), corong per penanda
 
 ### Riwayat: mesin penyusun sebelum Runut Agent
 
-Sebelum Runut Agent, `factory/llm/` memuat beberapa generasi penyusun yang urutan langkahnya ditetapkan kode: penulis di bawah validator, lingkar tulis–uji–tulis ulang, lingkar berperan dengan critic terpisah, penulis bertemplat, dan penulis bebas dengan bank omongan. Tester, aturan bentuk soal, penjaga budget, dan bank omongan yang dipakai Runut Agent sekarang lahir dari sana. Laporan tiap generasi ada di [`docs/bukti/`](docs/bukti/) (`lingkar-agen*.md`, `uji-tanding-model.md`, `pintu-penyusun.md`), dan halaman penyusun generasi itu masih bisa dibuka dengan `npm run penyusun -- --mesin-lama`.
+Sebelum Runut Agent, `factory/llm/` memuat beberapa generasi penyusun yang urutan langkahnya ditetapkan kode: penulis di bawah validator, loop tulis–uji–tulis ulang, loop berperan dengan critic terpisah, penulis bertemplat, dan penulis bebas dengan bank omongan. Tester, aturan bentuk soal, penjaga budget, dan bank omongan yang dipakai Runut Agent sekarang lahir dari sana. Laporan tiap generasi ada di [`docs/bukti/`](docs/bukti/) (`lingkar-agen*.md`, `uji-tanding-model.md`, `pintu-penyusun.md`), dan halaman penyusun generasi itu masih bisa dibuka dengan `npm run penyusun -- --mesin-lama`.
 
 ### Susunan
 
@@ -389,9 +389,9 @@ Sebelum Runut Agent, `factory/llm/` memuat beberapa generasi penyusun yang uruta
 | `factory/llm/agen/` | Tool agent, guardrail budget, tahap lengkapi, dan prompt |
 | `factory/verifikasi/` | Aturan verifikasi data Sectors (kode, tanpa LLM) |
 | `factory/` | Selebihnya: pembangun kasus, skema, pemuat data, dan mesin penyusun generasi sebelumnya |
-| `cases/` | Simulasi yang tayang beserta jejak verifikasinya (JSON, ikut di-commit) |
+| `cases/` | Simulasi yang live beserta jejak verifikasinya (JSON, ikut di-commit) |
 | `eval/penyusun/` | Rekaman tiap percobaan agent: jejak, panggilan mentah, hasil |
-| `eval/bank-omongan/` | Bank omongan yang lolos semua tester |
+| `eval/bank-omongan/` | Kumpulan omongan yang lolos semua tester |
 | `web/` | Aplikasi pemain: statis, tanpa login, membaca `cases/` |
 | `alat/penyusun/` | Pintu penyusun lokal: tampilan AI agent dan halaman penyusun |
 | `server/` | Pengumpul peristiwa alpha: Node bawaan saja |
