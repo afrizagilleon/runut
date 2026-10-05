@@ -28,7 +28,7 @@ import { KartuFakta } from './KartuFakta.tsx';
 import { Sorotan } from './Sorotan.tsx';
 import { Teks, idPenjelasan, type SakelarSumber } from './Teks.tsx';
 import { catatPeristiwa, siramPeristiwa } from './kirim.ts';
-import { DAFTAR_KASUS, indeksFakta, kartuSoal } from './kasus.ts';
+import { DAFTAR_KASUS, indeksFakta, kartuSoal, keteranganPenyusun } from './kasus.ts';
 import { awalBungkus, reduksi } from './bungkus.ts';
 import {
   bacaDimainkan,
@@ -2466,8 +2466,9 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
       </details>
       {/*
         Pintu ke "Dapur agen" (M3.13 D-4), di dekat kalimat jejak: satu kalimat
-        suara kami yang lebih dulu menyatakan bahwa soal simulasi ini ditulis
-        manusia, lalu satu tautan. Tab baru: layar ini masih di tengah alur
+        suara kami yang lebih dulu menyatakan siapa yang menyusun soal simulasi
+        ini (`keteranganPenyusun`: berbeda untuk simulasi yang soalnya ditulis
+        agent), lalu satu tautan. Tab baru: layar ini masih di tengah alur
         (tiga pertanyaan singkat menunggu), dan pindah halaman di tab yang sama
         akan membuang keadaannya.
       */}
@@ -2477,10 +2478,7 @@ function JejakVerifikasi({ kasus }: { kasus: Kasus }): JSX.Element {
         "↗" karena ia membuka tab baru.
       */}
       <div className="dapur-pintu-jejak">
-        <p className="meta">
-          Soal di simulasi ini disusun Claude (model AI) bersama pemilik, lalu diuji dan disetujui manusia.
-          Agen otomatis kami sedang belajar membuat soal baru, dan belum ada yang tayang.
-        </p>
+        <p className="meta">{keteranganPenyusun(kasus.kasus_id)}</p>
         <a
           className="dapur-pintu-tautan"
           href={`?${PARAM_DAPUR}`}

@@ -28,10 +28,11 @@
  * belasan/ratusan rupiah" = 0,778 → ambang 0,889. Semua pasangan pilihan
  * manusia lolos (dites).
  */
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { teksPolos } from '../skema/rujukan.ts';
 import type { KunciOpsi } from './draf.ts';
 import { AKAR } from './env.ts';
+import { berkasKasusManusia } from '../kasus/kasus-manusia.ts';
 
 const HURUF: readonly KunciOpsi[] = ['a', 'b', 'c', 'd'];
 
@@ -133,9 +134,8 @@ export function ambangKembarDari(kasus: readonly SoalKembar[]): { maks_manusia: 
 /** Semua soal manusia di `cases/*.json`. */
 export function kasusManusia(): SoalKembar[] {
   const folder = `${AKAR}cases`;
-  return readdirSync(folder)
-    .filter((f) => f.endsWith('.json'))
-    .sort()
+  // Kasus dari agent ada di `cases/` tetapi bukan soal manusia (`kasus-manusia.ts`).
+  return berkasKasusManusia(folder)
     .map((f) => ({ berkas: `cases/${f}`, soal: (JSON.parse(readFileSync(`${folder}/${f}`, 'utf8')) as { soal: SoalKembar['soal'] }).soal }));
 }
 

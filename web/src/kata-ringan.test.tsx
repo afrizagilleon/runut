@@ -34,7 +34,7 @@ import type { Kasus } from '../../factory/skema/tipe.ts';
 /*
  * `kasus.ts` mengimpor berkas kasus lewat alias `@cases` milik Vite, yang tidak
  * ada di konfigurasi Vitest. Di sini ia diganti modul yang membaca BERKAS YANG
- * SAMA dari cakram, dengan urutan yang sama (DADA, ULTJ); sisanya
+ * SAMA dari cakram, dengan urutan yang sama (DADA, ULTJ, AMAG); sisanya
  * (`isi-kasus.ts`) diteruskan apa adanya.
  */
 vi.mock('./kasus.ts', async () => {
@@ -45,7 +45,8 @@ vi.mock('./kasus.ts', async () => {
   const muat = (id: string): Kasus => JSON.parse(baca(`${akar}cases/${id}.json`, 'utf8')) as Kasus;
   const KASUS = muat('dada-2025-10-08');
   const KASUS_ULTJ = muat('ultj-2026-05-04');
-  return { ...isi, KASUS, KASUS_ULTJ, DAFTAR_KASUS: [KASUS, KASUS_ULTJ] };
+  const KASUS_AMAG = muat('amag-2026-06-15');
+  return { ...isi, KASUS, KASUS_ULTJ, KASUS_AMAG, DAFTAR_KASUS: [KASUS, KASUS_ULTJ, KASUS_AMAG] };
 });
 import { Kaki, LayarAkhir, LayarPembuka, LayarPembukaan, LayarSoal, TitikSoal } from './Aplikasi.tsx';
 import { type Aksi, type Keadaan, langkah } from './alur.ts';
@@ -252,8 +253,8 @@ describe('M3.12 D-3 — gerbang kata "kasus" di layar kedua simulasi', () => {
 
   const terpakaiSemua = new Set<string>();
 
-  it('dua simulasi dirender (penjaga: daftar tidak kosong)', () => {
-    expect(DAFTAR_KASUS.map((k) => k.kasus_id)).toEqual(['dada-2025-10-08', 'ultj-2026-05-04']);
+  it('tiga simulasi dirender (penjaga: daftar tidak kosong)', () => {
+    expect(DAFTAR_KASUS.map((k) => k.kasus_id)).toEqual(['dada-2025-10-08', 'ultj-2026-05-04', 'amag-2026-06-15']);
   });
 
   for (const kasus of DAFTAR_KASUS) {

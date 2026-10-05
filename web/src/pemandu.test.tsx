@@ -22,7 +22,8 @@ vi.mock('./kasus.ts', async () => {
   const muat = (id: string): Kasus => JSON.parse(baca(`${akar}cases/${id}.json`, 'utf8')) as Kasus;
   const KASUS = muat('dada-2025-10-08');
   const KASUS_ULTJ = muat('ultj-2026-05-04');
-  return { ...isi, KASUS, KASUS_ULTJ, DAFTAR_KASUS: [KASUS, KASUS_ULTJ] };
+  const KASUS_AMAG = muat('amag-2026-06-15');
+  return { ...isi, KASUS, KASUS_ULTJ, KASUS_AMAG, DAFTAR_KASUS: [KASUS, KASUS_ULTJ, KASUS_AMAG] };
 });
 import { LayarPemanasan, LayarSoal } from './Aplikasi.tsx';
 import { langkah, type Keadaan } from './alur.ts';

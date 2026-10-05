@@ -26,10 +26,11 @@
  * yang juga belum terkunci (dari sepasang omongan baru yang mirip, yang
  * bernomor lebih besar ditulis ulang).
  */
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { teksPolos } from '../skema/rujukan.ts';
 import type { KunciOpsi } from './draf.ts';
 import { AKAR } from './env.ts';
+import { berkasKasusManusia } from '../kasus/kasus-manusia.ts';
 
 const HURUF: readonly KunciOpsi[] = ['a', 'b', 'c', 'd'];
 const BULAN = /(?<![\p{L}])(januari|februari|maret|april|mei|juni|juli|agustus|september|oktober|november|desember)(?![\p{L}])/giu;
@@ -86,9 +87,8 @@ let tersimpan: ReturnType<typeof ambangMiripDari> | null = null;
 export function ambangMirip(): ReturnType<typeof ambangMiripDari> {
   if (tersimpan !== null) return tersimpan;
   const folder = `${AKAR}cases`;
-  const kasus = readdirSync(folder)
-    .filter((f) => f.endsWith('.json'))
-    .sort()
+  // Hanya kasus tulisan manusia: kasus dari agent tidak ikut menyetel ambangnya (`kasus-manusia.ts`).
+  const kasus = berkasKasusManusia(folder)
     .map((f) => ({ berkas: `cases/${f}`, soal: (JSON.parse(readFileSync(`${folder}/${f}`, 'utf8')) as { soal: KasusMirip['soal'] }).soal }));
   tersimpan = ambangMiripDari(kasus);
   return tersimpan;

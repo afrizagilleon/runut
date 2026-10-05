@@ -24,6 +24,7 @@ import type { HasilPeran, PemeriksaanPeran } from './agen-peran.ts';
 import { lolosKartuLuar, lolosTebakLuar } from './agen-laporan.ts';
 import type { KunciOpsi } from './draf.ts';
 import { AKAR } from './env.ts';
+import { berkasKasusManusia } from '../kasus/kasus-manusia.ts';
 import { FOLDER_PENGUJI_M2D4, bacaRiwayatDi, lolosM2d4, type KunciPengujiM2d4 } from './gaya-penguji.ts';
 import { AWALAN_TAG_M2D4, FOLDER_M2D4, PAGU_MILESTONE_M2D4, URUTAN_GAYA } from './gaya-susun.ts';
 import { batasPanjang, gRegister, hitungKata, masalahKlausa } from './gerbang-gaya.ts';
@@ -110,9 +111,7 @@ export function ringkasBentuk(daftar: readonly BentukOmongan[], batasPilihan: nu
 }
 
 function soalManusia(): Array<{ pesan: string; pilihan: Record<KunciOpsi, string> }> {
-  return readdirSync(`${AKAR}cases`)
-    .filter((x) => x.endsWith('.json'))
-    .sort()
+  return berkasKasusManusia(`${AKAR}cases`)
     .flatMap((x) =>
       baca<{ soal: Array<{ pesan: { isi: string }; pilihan: Array<{ kunci: KunciOpsi; teks: string }> }> }>(`${AKAR}cases/${x}`).soal.map((s) => ({
         pesan: s.pesan.isi,

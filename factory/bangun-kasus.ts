@@ -19,8 +19,16 @@ import {
 import { keJson } from './kasus/json.ts';
 import { DADA_2025_10_08 } from './kasus/dada-2025-10-08.ts';
 import { ULTJ_2026_05_04 } from './kasus/ultj-2026-05-04.ts';
+import {
+  HasilAgenTidakSah,
+  bacaSumberAgen,
+  dariAgen,
+  periksaSetia,
+  type LampiranPenyetuju,
+} from './kasus/dari-agen.ts';
+import { LAMPIRAN_AMAG_2026_06_15 } from './kasus/lampiran/amag-2026-06-15.ts';
 import { muatDada } from './muat/dada.ts';
-import { FOLDER_GUDANG } from './muat/gudang.ts';
+import { FOLDER_GUDANG, muatGudang } from './muat/gudang.ts';
 import { bacaDaftarBeku, muatGudangBeku, periksaGudangBeku, type DaftarBeku } from './muat/gudang-beku.ts';
 import { bacaAturanBeku, periksaJejakBeku, type AturanBeku } from './verifikasi/aturan-beku.ts';
 import type { HasilBangun } from './kasus/bangun.ts';
@@ -42,6 +50,26 @@ const KASUS: Record<string, DefinisiKasus> = {
 const KASUS_UMUM: Record<string, DefinisiKasusUmum> = {
   'ultj-2026-05-04': ULTJ_2026_05_04,
 };
+
+/**
+ * Kasus yang soalnya ditulis AI agent (`npm run agen`) dan dilengkapi satu
+ * lampiran penyetuju. Definisinya tidak ditulis tangan: `dariAgen` menyusunnya
+ * dari paket fakta + omongan bank + lampiran, lalu ia dibangun pembangun yang
+ * sama dengan `KASUS_UMUM` (`bangunKasusUmum`, `ATURAN_V2`).
+ */
+const KASUS_AGEN: Record<string, LampiranPenyetuju> = {
+  'amag-2026-06-15': LAMPIRAN_AMAG_2026_06_15,
+};
+
+/** Kasus yang soalnya tulisan agent; harus sama dengan `KASUS_DARI_AGEN` (`kasus/asal-agen.ts`, dites). */
+export const ID_KASUS_AGEN: readonly string[] = Object.keys(KASUS_AGEN).sort();
+
+/** Seluruh kasus yang bisa dibangun `npm run build:case`. */
+export const ID_KASUS_TERDAFTAR: readonly string[] = [
+  ...Object.keys(KASUS),
+  ...Object.keys(KASUS_UMUM),
+  ...Object.keys(KASUS_AGEN),
+].sort();
 
 /**
  * Endpoint asal tiap respons kosong menurut manifest gudang (M3.13 D-3).
@@ -95,6 +123,39 @@ function bangunUmum(
 }
 
 /**
+ * Kasus dari agent dibangun dari berkas gudang yang disebut lampirannya
+ * sendiri (nama + sha256), bukan dari 111 berkas beku DADA/ULTJ: emitennya
+ * memang tidak ada di sana. Aturannya sama — satu berkas hilang atau berbeda
+ * satu byte → `GudangBekuRusak`, dan berkas lain di folder tidak ikut dibaca.
+ *
+ * Sesudah dibangun, kasusnya dibandingkan kembali dengan hasil agent
+ * (`periksaSetia`): teks soal sama huruf demi huruf, dan fakta kartunya sama
+ * dengan paket yang dibaca agent. Selisih apa pun menggagalkan build.
+ */
+function bangunDariAgen(
+  lampiran: LampiranPenyetuju,
+  folder: string,
+  beku: AturanBeku['kasus'][string] | undefined,
+): HasilBangun {
+  const { paket, omongan } = bacaSumberAgen(lampiran, AKAR);
+  const gudang = muatGudang(folder, { izin: lampiran.sumber.gudang });
+  const dataGudang = gudang.emiten.get(paket.simbol);
+  if (dataGudang === undefined) {
+    throw new Error(
+      `Emiten "${paket.simbol}" tidak ada di berkas gudang lampiran ${lampiran.kasus_id}; ` +
+        `yang terbaca: ${[...gudang.emiten.keys()].join(', ')}.`,
+    );
+  }
+  const def = dariAgen({ paket, omongan, lampiran, data: dataGudang });
+  const data = beku === undefined ? dataGudang : { ...dataGudang, aturan_beku: [...beku.aturan] };
+  const kosong = gudang.berkas.filter((b) => b.jenis === 'paginasi-kosong').map((b) => b.berkas);
+  const hasil = bangunKasusUmum(def, data, gudang.asal, kosong, asalKosongDariManifest(kosong));
+  const selisih = periksaSetia(hasil.kasus, paket, omongan);
+  if (selisih.length > 0) throw new HasilAgenTidakSah(lampiran.kasus_id, selisih);
+  return hasil;
+}
+
+/**
  * Bangun satu kasus tayang dari gudang beku di `folder`, dengan daftar aturan
  * beku kasus itu. Tidak menulis apa pun.
  *
@@ -113,6 +174,7 @@ export function bangunKasusTayang(
   let hasil: HasilBangun;
   const definisi = KASUS[kasus_id];
   const definisiUmum = KASUS_UMUM[kasus_id];
+  const lampiranAgen = KASUS_AGEN[kasus_id];
   if (definisi !== undefined) {
     // Pemuat DADA membaca berkasnya sendiri menurut nama; sidik seluruh gudang
     // beku diperiksa lebih dulu, lalu berkas dibaca dari folder yang sama.
@@ -120,6 +182,8 @@ export function bangunKasusTayang(
     hasil = bangunKasus(definisi, muatDada(folder));
   } else if (definisiUmum !== undefined) {
     hasil = bangunUmum(definisiUmum, folder, daftar, beku);
+  } else if (lampiranAgen !== undefined) {
+    hasil = bangunDariAgen(lampiranAgen, folder, beku);
   } else {
     throw new Error(`Kasus "${kasus_id}" tidak dikenal.`);
   }
@@ -140,16 +204,13 @@ function utama(argumen: string[]): number {
       'Sebutkan kasus yang mau dibangun, misalnya:\n' +
         '  npm run build:case -- dada-2025-10-08\n' +
         'Kasus yang tersedia: ' +
-        [...Object.keys(KASUS), ...Object.keys(KASUS_UMUM)].sort().join(', '),
+        ID_KASUS_TERDAFTAR.join(', '),
     );
     return 1;
   }
-  const definisi = KASUS[kasus_id];
-  const definisiUmum = KASUS_UMUM[kasus_id];
-  if (definisi === undefined && definisiUmum === undefined) {
+  if (!ID_KASUS_TERDAFTAR.includes(kasus_id)) {
     console.error(
-      `Kasus "${kasus_id}" tidak dikenal. Kasus yang tersedia: ` +
-        `${[...Object.keys(KASUS), ...Object.keys(KASUS_UMUM)].sort().join(', ')}.`,
+      `Kasus "${kasus_id}" tidak dikenal. Kasus yang tersedia: ${ID_KASUS_TERDAFTAR.join(', ')}.`,
     );
     return 1;
   }
@@ -204,6 +265,9 @@ if (dijalankanLangsung) {
     if (galat instanceof KasusTidakSah) {
       console.error('Kasus tidak dibangun karena tidak lolos validator:');
       for (const m of galat.masalah) console.error(`  [${m.kode}] ${m.pesan}`);
+    } else if (galat instanceof HasilAgenTidakSah) {
+      console.error('Kasus tidak dibangun karena hasil agent dan lampirannya tidak cocok:');
+      for (const b of galat.butir) console.error(`  - ${b}`);
     } else {
       console.error(galat instanceof Error ? `${galat.name}: ${galat.message}` : String(galat));
     }

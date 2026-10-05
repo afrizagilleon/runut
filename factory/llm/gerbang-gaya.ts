@@ -37,10 +37,11 @@
  * memuat "gue", "gua", "lo", atau "elo" (utuh, termasuk "guenya"/"gue-nya")
  * ditolak. Penanda bahasa resmi tetap ditolak G-kaku (`gerbang-g.ts`).
  */
-import { readdirSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { teksPolos } from '../skema/rujukan.ts';
 import type { KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
+import { berkasKasusManusia } from '../kasus/kasus-manusia.ts';
 
 const KUNCI: readonly KunciOpsi[] = ['a', 'b', 'c', 'd'];
 
@@ -87,9 +88,8 @@ let batasTersimpan: BatasPanjang | null = null;
 export function batasPanjang(): BatasPanjang {
   if (batasTersimpan !== null) return batasTersimpan;
   const folder = `${AKAR}cases`;
-  const kasus = readdirSync(folder)
-    .filter((f) => f.endsWith('.json'))
-    .sort()
+  // Hanya soal tulisan manusia: kasus dari agent tidak ikut menyetel batasnya (`kasus-manusia.ts`).
+  const kasus = berkasKasusManusia(folder)
     .map((f) => ({ berkas: `cases/${f}`, soal: (JSON.parse(readFileSync(`${folder}/${f}`, 'utf8')) as { soal: SoalKasusGaya[] }).soal }));
   batasTersimpan = batasPanjangDari(kasus);
   return batasTersimpan;

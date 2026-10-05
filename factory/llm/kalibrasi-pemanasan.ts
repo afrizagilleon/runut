@@ -21,11 +21,12 @@
  * `fakta.json` (kalimat kedua kartu), `jejak.json` (semua percobaan). TIDAK
  * dipasang ke produk.
  */
-import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { ambilRujukan, teksPolos } from '../skema/rujukan.ts';
 import { tanggalId } from '../format.ts';
 import type { KunciOpsi, OmonganDraf } from './draf.ts';
 import { AKAR } from './env.ts';
+import { berkasKasusManusia } from '../kasus/kasus-manusia.ts';
 import { gArtefak } from './gerbang-artefak.ts';
 import { gerbangG } from './gerbang-g.ts';
 import { gerbangGaya } from './gerbang-gaya.ts';
@@ -84,9 +85,9 @@ interface SoalTayang {
 
 export function kasusTayang(): Array<{ berkas: string; fakta: string[]; soal: SoalTayang[] }> {
   const folder = `${AKAR}cases`;
-  return readdirSync(folder)
-    .filter((f) => f.endsWith('.json'))
-    .sort()
+  // Anti-bocor menjaga soal tayang tulisan manusia. Kasus dari agent tidak ikut: nama pemeran
+  // tetap agent dan kalimatnya sendiri akan terlarang bagi agent itu (`kasus-manusia.ts`).
+  return berkasKasusManusia(folder)
     .map((f) => {
       const k = JSON.parse(readFileSync(`${folder}/${f}`, 'utf8')) as { fakta: Array<{ fact_id: string }>; soal: SoalTayang[] };
       return { berkas: f, fakta: k.fakta.map((x) => x.fact_id), soal: k.soal };

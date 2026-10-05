@@ -10,6 +10,7 @@
  */
 import dada from '@cases/dada-2025-10-08.json';
 import ultj from '@cases/ultj-2026-05-04.json';
+import amag from '@cases/amag-2026-06-15.json';
 import type { Kasus } from '../../factory/skema/tipe.ts';
 
 export * from './isi-kasus.ts';
@@ -23,6 +24,11 @@ export * from './isi-kasus.ts';
  */
 export const KASUS: Kasus = dada as unknown as Kasus;
 export const KASUS_ULTJ: Kasus = ultj as unknown as Kasus;
+/**
+ * Kasus ketiga: soalnya ditulis AI agent, dilengkapi lampiran penyetuju
+ * (`factory/kasus/dari-agen.ts`, `factory/kasus/lampiran/amag-2026-06-15.ts`).
+ */
+export const KASUS_AMAG: Kasus = amag as unknown as Kasus;
 
 /**
  * Seluruh kasus yang bisa dimainkan, dalam urutan tetap.
@@ -32,4 +38,4 @@ export const KASUS_ULTJ: Kasus = ultj as unknown as Kasus;
  * kasus pada kunjungan pertama. Karena itu ia ditulis di sini sekali, bukan
  * dihasilkan dari urutan berkas di cakram.
  */
-export const DAFTAR_KASUS: readonly Kasus[] = [KASUS, KASUS_ULTJ];
+export const DAFTAR_KASUS: readonly Kasus[] = [KASUS, KASUS_ULTJ, KASUS_AMAG];
