@@ -37,6 +37,7 @@ import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { isStepCount, tool, ToolLoopAgent } from 'ai';
 import { z } from 'zod';
 import { buatAlat, CADANGAN_AJUKAN_USD, peningkatanDari, rakitSimulasi, tingkatEntri, type AlatAgen, type PeristiwaAlat, type SudutDitolak } from '../../factory/llm/agen/alat.ts';
+import { CADANGAN_HEMAT_USD, MAKS_TOKEN_HEMAT, paguKeras, putusanAnggaran, type PutusanAnggaran } from '../../factory/llm/agen/anggaran.ts';
 import { instruksiAgen, instruksiTingkatkan } from '../../factory/llm/agen/prompt.ts';
 import type { NilaiOmonganV3 } from '../../factory/llm/bebas/mesin-v3.ts';
 import { bacaBank, FOLDER_BANK, shaPaketBank, UKURAN_SIMULASI } from '../../factory/llm/bebas/bank.ts';
@@ -149,7 +150,7 @@ if (masalahPenyedia.length > 0) throw new Error(`Penyedia terkunci bermasalah; T
 console.log('Penyedia terkunci: semua peran masih dilayani di bawah batas harga (diperiksa gratis).');
 
 const terpakaiPenyusun = biayaAwalan(AKAR, AWALAN_TAG_PENYUSUN);
-const panggilGerbang = panggilV3({ akar: AKAR, paguMilestoneUsd: Math.round((terpakaiPenyusun + pagu + 0.01) * 1e4) / 1e4, awalanMilestone: AWALAN_TAG_PENYUSUN, log: (b) => console.log(b) })(awalanTag, pagu, `${folder}/mentah-panggilan.jsonl`);
+const panggilGerbang = panggilV3({ akar: AKAR, paguMilestoneUsd: Math.round((terpakaiPenyusun + paguKeras(pagu) + 0.01) * 1e4) / 1e4, awalanMilestone: AWALAN_TAG_PENYUSUN, log: (b) => console.log(b) })(awalanTag, paguKeras(pagu), `${folder}/mentah-panggilan.jsonl`);
 
 /** Sudut yang ditolak gerbang berbayar di percobaan agen lain atas paket yang sama. */
 function riwayatDitolak(paket: PaketFakta): SudutDitolak[] {
@@ -184,7 +185,7 @@ let alat: AlatAgen | null = null;
 function pasangPaket(p: PaketFakta): AlatAgen {
   paket = p;
   writeFileSync(`${folder}/paket.json`, `${JSON.stringify(p, null, 2)}\n`, 'utf8');
-  alat = buatAlat({ paket: p, folderBank, idJalan: id as string, panggil: panggilGerbang, paguUsd: pagu, biayaAgen: () => biayaAgen, labelPenulis: `${MODEL_PENULIS} (agen ber-alat)`, target, tingkat, riwayatDitolak: riwayatDitolak(p), catat: catatAlat });
+  alat = buatAlat({ paket: p, folderBank, idJalan: id as string, panggil: panggilGerbang, paguUsd: paguKeras(pagu), biayaAgen: () => biayaAgen, labelPenulis: `${MODEL_PENULIS} (agen ber-alat)`, target, tingkat, riwayatDitolak: riwayatDitolak(p), catat: catatAlat });
   return alat;
 }
 if (paket !== null) pasangPaket(paket);
@@ -194,26 +195,16 @@ const A = (): AlatAgen => {
   return alat;
 };
 const BELUM_ADA_HARI = { galat: 'Belum ada hari yang dipilih. Panggil usulkan_hari, lalu periksa_saham dengan salah satu tanggalnya.' };
-const kead = (): ReturnType<AlatAgen['keadaan']> => alat?.keadaan() ?? { ditolak: 0, jumlah_omongan: 0, jumlah_sudut: 0, target, biaya_gerbang_usd: 0, biaya_total_usd: bulat(biayaAgen), sisa_anggaran_usd: bulat(Math.max(0, pagu - biayaAgen)), pengajuan: 0, nilai: [] as NilaiOmonganV3[] };
-/**
- * Guardrail budget (M2d-27). Dua batas:
- * - CADANGAN_HEMAT_USD: biaya terburuk satu panggilan PENDEK (output dibatasi MAKS_TOKEN_HEMAT). Di bawah ini tidak ada panggilan.
- * - cadanganMenulis(): 1,5 × panggilan termahal sejauh ini (min. US$0,10) — biaya satu panggilan MENULIS. Bila sisa di bawah
- *   ini, percobaan masuk MODE HEMAT: panggilan model dibatasi ke output pendek — cukup untuk mengajukan
- *   draft yang sudah siap, tidak cukup untuk menulis ulang. Di M2d-26 batas ini menghentikan agen dengan sisa US$0,32
- *   dan satu draft siap yang tidak pernah diajukan.
- */
-const CADANGAN_HEMAT_USD = 0.1;
-const MAKS_TOKEN_HEMAT = 2_000;
-let panggilanTermahal = 0;
-const cadanganMenulis = (): number => Math.max(0.1, 1.5 * panggilanTermahal);
-const hemat = (): boolean => kead().sisa_anggaran_usd < cadanganMenulis();
+const kead = (): ReturnType<AlatAgen['keadaan']> => alat?.keadaan() ?? { ditolak: 0, jumlah_omongan: 0, jumlah_sudut: 0, target, biaya_gerbang_usd: 0, biaya_total_usd: bulat(biayaAgen), sisa_anggaran_usd: bulat(Math.max(0, paguKeras(pagu) - biayaAgen)), pengajuan: 0, nilai: [] as NilaiOmonganV3[] };
+/** Guardrail budget: aturan dan riwayatnya di `factory/llm/agen/anggaran.ts` (M2d-28). */
+const biayaPanggilan: number[] = [];
+const anggaran = (): PutusanAnggaran => putusanAnggaran({ pagu, terpakai: kead().biaya_total_usd, biayaPanggilan, cadanganUji: CADANGAN_AJUKAN_USD, adaDrafSiap: alat?.adaDrafSiap() ?? false });
+const hemat = (): boolean => anggaran().hemat;
 const PERINGATAN_HEMAT = 'Sisa anggaran tinggal cukup untuk MENGAJUKAN draft yang sudah lolos aturan. Jangan menulis draft baru; ajukan yang sudah siap, lalu berhenti.';
 /** Tempel peringatan mode hemat ke hasil alat supaya agen tahu sebelum panggilan berikutnya. */
 const denganAnggaran = <T extends object>(h: T): T & { peringatan_anggaran?: string } => (hemat() ? { ...h, peringatan_anggaran: PERINGATAN_HEMAT } : h);
 const selesai = (): boolean => (alat === null ? false : modeTingkatkan ? alat.semuaNaik() : alat.selesai());
-/** Anggaran habis = tidak cukup untuk satu pengajuan, tidak cukup untuk satu panggilan pendek, ATAU mode hemat tanpa draft siap. */
-const habis = (): boolean => kead().sisa_anggaran_usd < CADANGAN_AJUKAN_USD || kead().sisa_anggaran_usd < CADANGAN_HEMAT_USD || (hemat() && !(alat?.adaDrafSiap() ?? false));
+const habis = (): boolean => anggaran().habis;
 const rusakAlat = (): string | null => alat?.rusak() ?? null;
 
 const hariIni = new Date().toISOString().slice(0, 10);
@@ -255,7 +246,7 @@ let ditolakAwal = 0;
 const fetchBerpenjaga: typeof fetch = async (masukan, init) => {
   const terpakai = kead().biaya_total_usd;
   // Pagu keras (M2d-26): dulu hanya ditolak bila biaya SUDAH ≥ pagu, sehingga satu panggilan terakhir bisa melewatinya (m2d25-agar-sulit-1: 1,5812 > 1,5).
-  if (terpakai + CADANGAN_HEMAT_USD > pagu) throw new Error(`penjaga: biaya percobaan US$${terpakai.toFixed(4)} + cadangan satu panggilan pendek US$${CADANGAN_HEMAT_USD.toFixed(2)} > pagu US$${String(pagu)}; panggilan tidak dikirim`);
+  if (anggaran().tolak_panggilan) throw new Error(`penjaga: biaya percobaan US$${terpakai.toFixed(4)} + cadangan satu panggilan pendek US$${CADANGAN_HEMAT_USD.toFixed(2)} > batas keras US$${String(paguKeras(pagu))} (budget US$${String(pagu)} + toleransi); panggilan tidak dikirim`);
   // Mode hemat: output dibatasi SEBELUM dikirim, supaya biaya panggilan ini terikat.
   const modeHemat = hemat();
   if (modeHemat && typeof init?.body === 'string') {
@@ -289,7 +280,7 @@ const fetchBerpenjaga: typeof fetch = async (masukan, init) => {
     biaya_penyedia_usd: typeof usage?.cost === 'number' ? usage.cost : null, penyedia, token_penalaran: usage?.completion_tokens_details?.reasoning_tokens ?? null,
   }, CADANGAN_PANGGILAN_USD, { penalaran_diminta: { effort: EFFORT_PENULIS, exclude: false } });
   biayaAgen += entri.biaya_usd;
-  panggilanTermahal = Math.max(panggilanTermahal, entri.biaya_usd);
+  biayaPanggilan.push(entri.biaya_usd);
   tulis('mentah-agen.jsonl', { ke, tag, waktu: new Date().toISOString(), status: respons.status, latensi_ms: latensi, permintaan: badan, respons: data ?? teks.slice(0, 2000) });
   const pesan = ((data?.['choices'] as Array<{ message?: { content?: string | null; reasoning?: string | null; tool_calls?: Array<{ function?: { name?: string } }> }; finish_reason?: string }> | undefined) ?? [])[0];
   jejak({
