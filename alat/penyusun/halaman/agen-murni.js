@@ -57,7 +57,7 @@ export const TEKS = {
   sumber: 'Berkas rekaman yang dibaca',
   galatSambung: 'Sambungan ke server terputus. Muat ulang halaman untuk memutar lagi.',
   modeReplay: 'Replay: rekaman kerja AI agent diputar dari berkas di komputermu. Tanpa panggilan model, tanpa API key, tanpa biaya.',
-  modeLain: 'Tampilan ini hanya ada bila pintu penyusun dijalankan dengan --replay-agent.',
+  modeLain: 'Tampilan ini hanya ada bila pintu penyusun dijalankan tanpa --mesin-lama.',
 };
 
 export const KECEPATAN = [

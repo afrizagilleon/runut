@@ -1,6 +1,6 @@
 /**
  * Mesin penulis "bebas" M2d-13 untuk pintu penyusun:
- * `npm run penyusun -- --mesin bebas --penulis opus|haiku|deepseek`.
+ * `npm run penyusun -- --mesin-lama --mesin bebas --penulis opus|haiku|deepseek`.
  *
  * Penulis bebas (`factory/llm/bebas/mesin.ts`): satu model, tanpa
  * penyempurna, gerbang M2d-11 (kode + detektor + tebak rotasi + kartu 2 rotasi

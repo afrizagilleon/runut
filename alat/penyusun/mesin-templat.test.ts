@@ -18,9 +18,9 @@ const JAM = (): Date => new Date('2026-10-01T00:00:00Z');
 
 describe('pilihan mesin di baris perintah', () => {
   it('--mesin templat | lingkar; bawaan lingkar; nilai lain ditolak', () => {
-    expect(uraiArgumen([], 'X:/').mesin).toBe('lingkar');
-    expect(uraiArgumen(['--mesin', 'templat'], 'X:/').mesin).toBe('templat');
-    expect(() => uraiArgumen(['--mesin', 'opus'], 'X:/')).toThrow(/--mesin/);
+    expect(uraiArgumen(['--mesin-lama'], 'X:/').mesin).toBe('lingkar');
+    expect(uraiArgumen(['--mesin-lama', '--mesin', 'templat'], 'X:/').mesin).toBe('templat');
+    expect(() => uraiArgumen(['--mesin-lama', '--mesin', 'opus'], 'X:/')).toThrow(/--mesin/);
   });
   it('server memasang mesin templat bila diminta; mesin lama tetap bawaan', () => {
     const akar = akarSementara();

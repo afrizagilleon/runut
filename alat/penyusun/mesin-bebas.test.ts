@@ -30,10 +30,10 @@ describe('mesin bebas — paket beku (pra-registrasi §3)', () => {
 
 describe('argumen pintu', () => {
   it('--mesin bebas butuh --penulis; --penulis hanya untuk bebas', () => {
-    expect(uraiArgumen(['--mesin', 'bebas', '--penulis', 'haiku'], 'D:/r/')).toMatchObject({ mesin: 'bebas', penulis: 'haiku' });
-    expect(() => uraiArgumen(['--mesin', 'bebas'], 'D:/r/')).toThrow(/--penulis/);
-    expect(() => uraiArgumen(['--penulis', 'opus'], 'D:/r/')).toThrow(/--mesin bebas/);
-    expect(() => uraiArgumen(['--mesin', 'bebas', '--penulis', 'gpt'], 'D:/r/')).toThrow(/opus/);
+    expect(uraiArgumen(['--mesin-lama', '--mesin', 'bebas', '--penulis', 'haiku'], 'D:/r/')).toMatchObject({ mesin: 'bebas', penulis: 'haiku' });
+    expect(() => uraiArgumen(['--mesin-lama', '--mesin', 'bebas'], 'D:/r/')).toThrow(/--penulis/);
+    expect(() => uraiArgumen(['--mesin-lama', '--penulis', 'opus'], 'D:/r/')).toThrow(/--mesin bebas/);
+    expect(() => uraiArgumen(['--mesin-lama', '--mesin', 'bebas', '--penulis', 'gpt'], 'D:/r/')).toThrow(/opus/);
   });
 });
 
@@ -52,11 +52,11 @@ describe('jalan palsu lewat antarmuka pintu', () => {
 
 describe('M2d-15: --prompt v2 (profil Opus ditingkatkan)', () => {
   it('--prompt v2 hanya untuk --mesin bebas --penulis opus; v1/v2 saja', () => {
-    expect(uraiArgumen(['--mesin', 'bebas', '--penulis', 'opus', '--prompt', 'v2'], 'D:/r/')).toMatchObject({ mesin: 'bebas', penulis: 'opus', prompt: 'v2' });
-    expect(uraiArgumen(['--mesin', 'bebas', '--penulis', 'opus'], 'D:/r/').prompt).toBeNull();
-    expect(() => uraiArgumen(['--mesin', 'bebas', '--penulis', 'haiku', '--prompt', 'v2'], 'D:/r/')).toThrow(/penulis opus/);
-    expect(() => uraiArgumen(['--mesin', 'templat', '--prompt', 'v2'], 'D:/r/')).toThrow(/--mesin bebas/);
-    expect(() => uraiArgumen(['--mesin', 'bebas', '--penulis', 'opus', '--prompt', 'v3'], 'D:/r/')).toThrow(/v1.*v2/);
+    expect(uraiArgumen(['--mesin-lama', '--mesin', 'bebas', '--penulis', 'opus', '--prompt', 'v2'], 'D:/r/')).toMatchObject({ mesin: 'bebas', penulis: 'opus', prompt: 'v2' });
+    expect(uraiArgumen(['--mesin-lama', '--mesin', 'bebas', '--penulis', 'opus'], 'D:/r/').prompt).toBeNull();
+    expect(() => uraiArgumen(['--mesin-lama', '--mesin', 'bebas', '--penulis', 'haiku', '--prompt', 'v2'], 'D:/r/')).toThrow(/penulis opus/);
+    expect(() => uraiArgumen(['--mesin-lama', '--mesin', 'templat', '--prompt', 'v2'], 'D:/r/')).toThrow(/--mesin bebas/);
+    expect(() => uraiArgumen(['--mesin-lama', '--mesin', 'bebas', '--penulis', 'opus', '--prompt', 'v3'], 'D:/r/')).toThrow(/v1.*v2/);
   });
 
   it('profil v2: nama, perkiraan memakai max_tokens 16.000 dan ≤ 2 tulis-ulang pra-periksa', () => {

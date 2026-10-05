@@ -1,5 +1,6 @@
 /**
- * Pintu penyusun lokal (M2d-9): `npm run penyusun`.
+ * Pintu penyusun lokal (M2d-9): `npm run penyusun -- --mesin-lama`. Tanpa bendera, `npm run penyusun`
+ * membuka tampilan AI agent (M2d-32 D-8; `replay-agen.ts`).
  *
  * Satu server `node:http` yang HANYA mendengar di 127.0.0.1 (D-1, D-6). Ia
  * menyajikan satu halaman HTML/JS polos (`halaman/`) dan API JSON kecil; tahap
@@ -450,7 +451,7 @@ daftarRute('GET', '/api/jalan/:id/aliran', (req, res, { keadaan, bagian }) => {
  */
 daftarRute('GET', '/api/agen/aliran', (_req, res, { keadaan, url }) => {
   const a = keadaan.agen;
-  if (a === null) throw new GalatPermintaan(404, 'Hanya ada di mode replay agent (--replay-agent).');
+  if (a === null) throw new GalatPermintaan(404, 'Hanya ada di tampilan AI agent (npm run penyusun tanpa --mesin-lama).');
   const kode = wajibKode(url.searchParams.get('kode'));
   if (kode !== a.kode) throw new GalatPermintaan(404, `Belum ada rekaman AI agent untuk ${kode}. Rekaman yang ada: ${a.kode}.`);
   kirimReplay(res, a);
@@ -892,17 +893,28 @@ export interface ArgumenServer {
   jamVirtual: boolean;
   /** M2d-14: `--demo <folder jalan> --draf <pilihan> --suntingan <berkas> [--pagu-uji-ulang <usd>]`. */
   demo: { folder: string; draf: string; suntingan: string | null; paguUjiUlangUsd: number | null } | null;
-  /** `--replay-agent`: putar rekaman kerja AI agent di halaman utama. */
+  /**
+   * Tampilan AI agent (replay rekaman) di halaman utama. BAWAAN `npm run penyusun`
+   * (M2d-32 D-8): benar kecuali ada `--mesin-lama`, `--demo`, atau `--tayang-ulang`.
+   * `--replay-agent` tetap diterima dan berarti sama dengan bawaan.
+   */
   replayAgen: boolean;
+  /** `--mesin-lama`: halaman penyusun lama (mesin M2d-8…M2d-15), bukan tampilan AI agent. */
+  mesinLama: boolean;
 }
 
 /**
+ * Tanpa bendera mode: tampilan AI agent (M2d-32 D-8). `--mesin-lama` membuka halaman penyusun lama;
+ * `--palsu`, `--mesin`, `--penulis`, `--prompt` hanya berlaku bersamanya.
  * `--port <n>`, `--pagu-penyusun <usd>`, `--palsu`, `--keluaran <folder>`, `--mesin lingkar|templat` (M2d-10),
  * `--tayang-ulang <folder jalan>` dan `--jam-virtual` (M2d-12).
  * `--host` sengaja DITOLAK: server ini hanya untuk 127.0.0.1.
  */
 export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): ArgumenServer {
-  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, prompt: null, tayangUlang: null, jamVirtual: false, demo: null, replayAgen: false };
+  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, prompt: null, tayangUlang: null, jamVirtual: false, demo: null, replayAgen: false, mesinLama: false };
+  let replayDiminta = false;
+  /** Bendera milik halaman lama yang dipakai (untuk pesan galat bila `--mesin-lama` tidak ada). */
+  const milikLama: string[] = [];
   let draf: string | null = null;
   let suntingan: string | null = null;
   let paguUji: number | null = null;
@@ -910,7 +922,9 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
     const a = argv[i];
     const nilai = argv[i + 1];
     if (a === '--host' || a?.startsWith('--host=') === true) throw new Error('--host tidak didukung: pintu penyusun hanya mendengar di 127.0.0.1.');
+    if (a === '--palsu' || a === '--mesin' || a === '--penulis' || a === '--prompt') milikLama.push(a);
     if (a === '--palsu') hasil.palsu = true;
+    else if (a === '--mesin-lama') hasil.mesinLama = true;
     else if (a === '--port' && nilai !== undefined) {
       const n = Number(nilai);
       if (!Number.isInteger(n) || n < 0 || n > 65535) throw new Error('--port harus bilangan 0–65535.');
@@ -940,7 +954,7 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
       hasil.tayangUlang = nilai;
       i++;
     } else if (a === '--jam-virtual') hasil.jamVirtual = true;
-    else if (a === '--replay-agent') hasil.replayAgen = true;
+    else if (a === '--replay-agent') replayDiminta = true;
     else if (a === '--demo' && nilai !== undefined) {
       hasil.demo = { folder: nilai, draf: 'akhir', suntingan: null, paguUjiUlangUsd: null };
       i++;
@@ -963,7 +977,12 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
     if (hasil.tayangUlang !== null || hasil.palsu) throw new Error('--demo tidak bisa digabung dengan --tayang-ulang atau --palsu.');
     hasil.demo = { ...hasil.demo, draf: draf ?? 'akhir', suntingan, paguUjiUlangUsd: paguUji };
   }
-  if (hasil.replayAgen && (hasil.demo !== null || hasil.tayangUlang !== null || hasil.palsu)) throw new Error('--replay-agent tidak bisa digabung dengan --demo, --tayang-ulang, atau --palsu.');
+  if (replayDiminta && (hasil.demo !== null || hasil.tayangUlang !== null || hasil.palsu || hasil.mesinLama)) throw new Error('--replay-agent tidak bisa digabung dengan --demo, --tayang-ulang, --palsu, atau --mesin-lama.');
+  if (hasil.mesinLama && (hasil.demo !== null || hasil.tayangUlang !== null)) throw new Error('--mesin-lama tidak bisa digabung dengan --demo atau --tayang-ulang.');
+  if (!hasil.mesinLama && hasil.demo === null && hasil.tayangUlang === null && milikLama.length > 0) {
+    throw new Error(`${milikLama.join(', ')} hanya berlaku bersama --mesin-lama (tanpa bendera itu pintu penyusun membuka tampilan AI agent).`);
+  }
+  hasil.replayAgen = !hasil.mesinLama && hasil.demo === null && hasil.tayangUlang === null;
   if (hasil.mesin === 'bebas' && hasil.penulis === null) throw new Error('--mesin bebas butuh --penulis opus|haiku|deepseek (M2d-13).');
   if (hasil.penulis !== null && hasil.mesin !== 'bebas') throw new Error('--penulis hanya berlaku bersama --mesin bebas.');
   if (hasil.prompt !== null && hasil.mesin !== 'bebas') throw new Error('--prompt hanya berlaku bersama --mesin bebas.');
@@ -992,8 +1011,9 @@ async function utama(): Promise<number> {
   });
   const port = await dengarkan(server, arg.port);
   if (arg.replayAgen) {
-    console.log(`Pintu penyusun — REPLAY AI AGENT: http://${HOST}:${String(port)}/`);
+    console.log(`Pintu penyusun — AI AGENT (replay): http://${HOST}:${String(port)}/`);
     console.log('Rekaman kerja AI agent diputar dari berkas di repo. Tanpa panggilan model, tanpa Sectors, tanpa API key, tanpa biaya.');
+    console.log('Halaman penyusun lama: npm run penyusun -- --mesin-lama');
     return 0;
   }
   if (arg.demo !== null) {

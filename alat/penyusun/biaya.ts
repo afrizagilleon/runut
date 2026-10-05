@@ -14,7 +14,7 @@ export const AWALAN_TAG_PENYUSUN = 'penyusun/';
 /**
  * Pagu seluruh panggilan berbayar pintu penyusun (tag `penyusun/`), di atas
  * pagu kumulatif `LLM_PAGU_USD`. Bawaan US$1,20 = pagu milestone M2d-9;
- * bisa diubah dengan `npm run penyusun -- --pagu-penyusun <usd>`.
+ * bisa diubah dengan `npm run penyusun -- --mesin-lama --pagu-penyusun <usd>`.
  */
 export const PAGU_PENYUSUN_BAWAAN = 1.2;
 

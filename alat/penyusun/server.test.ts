@@ -24,7 +24,7 @@ describe('server hanya di 127.0.0.1', () => {
   it('--host ditolak; --port/--pagu-penyusun/--palsu diurai', () => {
     expect(() => uraiArgumen(['--host', '0.0.0.0'])).toThrow(/127\.0\.0\.1/);
     expect(() => uraiArgumen(['--host=0.0.0.0'])).toThrow(/127\.0\.0\.1/);
-    const a = uraiArgumen(['--port', '8800', '--pagu-penyusun', '0.5', '--palsu'], 'D:/r/');
+    const a = uraiArgumen(['--mesin-lama', '--port', '8800', '--pagu-penyusun', '0.5', '--palsu'], 'D:/r/');
     expect(a).toMatchObject({ port: 8800, paguPenyusunUsd: 0.5, palsu: true });
     expect(() => uraiArgumen(['--pagu-penyusun', '-1'])).toThrow();
     expect(() => uraiArgumen(['--apa'])).toThrow(/tidak dikenal/);

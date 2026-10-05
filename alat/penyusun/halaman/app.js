@@ -110,7 +110,7 @@ async function muatStatus() {
   const catatan = [...k.llm.catatan, ...k.sectors.catatan];
   if (hilang.length > 0 || catatan.length > 0) {
     isi.append(el('div', { kelas: 'kotak-catatan penting' },
-      el('p', {}, 'Isi variabel berikut di berkas .env di akar repo (salin dari .env.example), lalu jalankan ulang npm run penyusun:'),
+      el('p', {}, 'Isi variabel berikut di berkas .env di akar repo (salin dari .env.example), lalu jalankan ulang npm run penyusun -- --mesin-lama:'),
       el('ul', {}, hilang.map((v) => el('li', {}, el('code', {}, v.nama), ` — ${v.arti}`))),
       catatan.map((c) => el('p', {}, c)),
       el('p', { kelas: 'meta' }, 'Tanpa kunci OpenRouter kamu tetap bisa melihat usulan hari, 33 aturan, dan paket fakta; agen tidak bisa dijalankan. Tanpa kunci Sectors hanya emiten yang datanya sudah ada di cache yang bisa dipakai.'),

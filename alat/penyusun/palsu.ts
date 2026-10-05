@@ -1,5 +1,5 @@
 /**
- * Mode palsu pintu penyusun (`npm run penyusun -- --palsu`): Sectors dan agen
+ * Mode palsu pintu penyusun (`npm run penyusun -- --mesin-lama --palsu`): Sectors dan agen
  * palsu, TANPA jaringan dan tanpa biaya — untuk spesifikasi Playwright asap
  * dan untuk melihat halaman tanpa kunci. Tidak ada yang ditulis ke buku kas
  * atau ledger sungguhan.

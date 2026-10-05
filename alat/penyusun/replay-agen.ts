@@ -1,7 +1,7 @@
 /**
  * Tampilan AI agent di pintu penyusun: apa yang dikirim ke peramban.
  *
- * `npm run penyusun -- --replay-agent` memutar rekaman empat percobaan nyata
+ * `npm run penyusun` (bawaan sejak M2d-32; `--replay-agent` berarti sama) memutar rekaman empat percobaan nyata
  * agent untuk satu saham (`rekaman-agen.ts`). Penyusun mengetik kode saham,
  * lalu langkah agent muncul satu per satu. Tanpa jaringan keluar, tanpa API
  * key, tanpa biaya: yang dibaca hanya berkas rekaman di repo.

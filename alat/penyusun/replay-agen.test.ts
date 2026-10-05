@@ -229,9 +229,22 @@ describe('server: mode replay agent', () => {
     s = null;
   });
 
+  it('M2d-32 D-8: tanpa bendera = tampilan AI agent; --mesin-lama = halaman penyusun lama', () => {
+    expect(uraiArgumen([], 'D:/r/')).toMatchObject({ replayAgen: true, mesinLama: false });
+    expect(uraiArgumen(['--port', '8791'], 'D:/r/').replayAgen).toBe(true);
+    expect(uraiArgumen(['--mesin-lama'], 'D:/r/')).toMatchObject({ replayAgen: false, mesinLama: true, mesin: 'lingkar', palsu: false });
+    expect(uraiArgumen(['--mesin-lama', '--palsu'], 'D:/r/')).toMatchObject({ replayAgen: false, palsu: true });
+    // Mode lain yang sudah punya benderanya sendiri tidak ikut menjadi tampilan agent.
+    expect(uraiArgumen(['--tayang-ulang', 'x'], 'D:/r/').replayAgen).toBe(false);
+    expect(uraiArgumen(['--demo', 'x', '--suntingan', 's.json'], 'D:/r/').replayAgen).toBe(false);
+    // Bendera milik halaman lama tanpa --mesin-lama ditolak dengan petunjuk, bukan diam-diam membuka agent.
+    for (const b of [['--palsu'], ['--mesin', 'templat'], ['--penulis', 'opus'], ['--prompt', 'v1']]) expect(() => uraiArgumen(b, 'D:/r/'), b.join(' ')).toThrow(/hanya berlaku bersama --mesin-lama/);
+    expect(() => uraiArgumen(['--mesin-lama', '--replay-agent'], 'D:/r/')).toThrow(/--replay-agent/);
+    expect(() => uraiArgumen(['--mesin-lama', '--tayang-ulang', 'x'], 'D:/r/')).toThrow(/--mesin-lama/);
+  });
+
   it('--replay-agent diurai; tidak bisa digabung dengan --demo, --tayang-ulang, atau --palsu', () => {
     expect(uraiArgumen(['--replay-agent'], 'D:/r/').replayAgen).toBe(true);
-    expect(uraiArgumen([], 'D:/r/').replayAgen).toBe(false);
     expect(() => uraiArgumen(['--replay-agent', '--palsu'], 'D:/r/')).toThrow(/--replay-agent/);
     expect(() => uraiArgumen(['--replay-agent', '--tayang-ulang', 'x'], 'D:/r/')).toThrow(/--replay-agent/);
   });

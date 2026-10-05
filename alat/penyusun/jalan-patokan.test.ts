@@ -22,8 +22,8 @@ describe('jalan TIRT M2d-11', () => {
     expect(p.per_panggilan.some((x) => /^penebak \d/.test(x.peran))).toBe(false);
   });
   it('server menerima --mesin templat-m2d11', () => {
-    expect(uraiArgumen(['--mesin', 'templat-m2d11']).mesin).toBe('templat-m2d11');
-    expect(() => uraiArgumen(['--mesin', 'lain'])).toThrow();
+    expect(uraiArgumen(['--mesin-lama', '--mesin', 'templat-m2d11']).mesin).toBe('templat-m2d11');
+    expect(() => uraiArgumen(['--mesin-lama', '--mesin', 'lain'])).toThrow();
   });
   it('server memasang mesin templat-m2d11 (palsu dan sungguhan)', () => {
     const d = mkdtempSync(join(tmpdir(), 'pintu-'));

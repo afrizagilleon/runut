@@ -1,7 +1,7 @@
 /**
  * Mesin penulis "templat" untuk pintu penyusun (M2d-10 D-6). Dipasang di
  * belakang antarmuka `MesinPenulis` yang sama dengan lingkar M2d-8 — server
- * dan halaman tidak berubah; pilih dengan `npm run penyusun -- --mesin templat`.
+ * dan halaman tidak berubah; pilih dengan `npm run penyusun -- --mesin-lama --mesin templat`.
  *
  * Isinya: lingkar templat (`factory/llm/templat/mesin.ts`) dengan setelan
  * tumpukan hasil kalibrasi M2d-10 (`SETELAN_TEMPLAT_M2D10`), tiga model
