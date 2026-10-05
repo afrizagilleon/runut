@@ -6,13 +6,20 @@
  *    jeda menahan, lanjut meneruskan dari sisa waktu, lompat menampilkan
  *    semuanya, kecepatan memendekkan jeda. (Sabotase: jeda nol → merah.)
  * 2. Pengurai SSE bertahap.
- * 3. Kata buatan yang dilarang pemilik tidak ada di teks halaman agent.
+ * 3. Kata buatan yang dilarang pemilik tidak ada di teks halaman agent, di
+ *    SEMUA kalimat yang bisa dikirim server (bukan hanya yang muncul di
+ *    rekaman), dan di pesan galat rute agent (M2d-32 R-3).
+ * 4. Tanpa pembingkaian kegagalan (M2d-32 D-7): tidak ada "ditolak"/"menolak"
+ *    dan tidak ada pecahan hitungan di teks kami.
+ * 5. Baris tanpa tool result tidak digambar (F-2); label waktu dan budget (F-6).
  */
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { KETERANGAN_TOOL, NAMA_TAHAP } from './baca-agen.ts';
+import { KALIMAT_MENULIS_ULANG, KELOMPOK_TOOL, KETERANGAN_TOOL, NAMA_TAHAP, PETA_BERHENTI, PETA_KODE_ATURAN, PETA_KRITIKUS, TOOL_ATURAN, barisBaca, kalimatTolak, type JenisTolak } from './baca-agen.ts';
+import { akarSementara, minta, mulaiServer } from './bantu-uji.ts';
+import { kodeRekaman, type HasilTool } from './rekaman-agen.ts';
 import { siapkanReplay } from './replay-agen.ts';
 
 const HALAMAN = fileURLToPath(new URL('./halaman/', import.meta.url));
@@ -50,6 +57,13 @@ interface Murni {
   kodeDariKetikan(teks: unknown): string | null;
   tanggalPanjang(iso: string): string;
   ringkasTahap(l: Array<{ lama_ms: number; biaya_model_usd: number; biaya_penguji_usd: number }>): string;
+  angkaSingkat(l: { lama_ms: number; biaya_model_usd: number; biaya_penguji_usd: number }): string;
+  angkaLangkah(l: { lama_ms: number; biaya_model_usd: number; biaya_penguji_usd: number; token: { masuk: number; keluar: number; berpikir: number } }): string[];
+  labelStatus(status: string | null): string | null;
+  LAMA_TERBANG_MS: number;
+  keadaanAgen(fase: string, gerak: string, adaLangkah: boolean): string;
+  capLangkah(l: { ringkas: Array<{ status: string | null }> }): string[];
+  toolBerhasil(l: { hasil: Array<{ alat: string }> }, tool: Array<{ nama: string; nama_lama: string[] }>): number[];
   Pemutar: new (pakai: { tampilkan: (l: LangkahUji, gulir: boolean) => void; fase?: (f: string) => void; tuntas?: () => void; berubah?: () => void }, jam?: { sekarang?: () => number }) => PemutarUji;
 }
 
@@ -239,7 +253,67 @@ describe('format', () => {
     expect(M.kodeDariKetikan('AM')).toBeNull();
     expect(M.kodeDariKetikan('AMAG1')).toBeNull();
     expect(M.tanggalPanjang('2026-06-15')).toBe('15 Juni 2026');
-    expect(M.ringkasTahap([{ lama_ms: 4_456, biaya_model_usd: 0.03, biaya_penguji_usd: 0.02 }])).toBe('1 langkah · model 4,5 detik · US$0,05');
+  });
+
+  it('M2d-31 F-6: lama dan biaya berlabel — "waktu model" (lama model menjawab) dan "biaya"; budget menyebut jumlah rekamannya', () => {
+    const l = { lama_ms: 4_456, biaya_model_usd: 0.03, biaya_penguji_usd: 0.02, token: { masuk: 6_933, keluar: 46, berpikir: 15 } };
+    expect(M.ringkasTahap([l])).toBe('1 langkah · waktu model 4,5 detik · biaya US$0,05');
+    expect(M.angkaSingkat(l)).toBe('waktu model 4,5 detik · biaya US$0,0500');
+    expect(M.angkaLangkah(l)).toEqual(['waktu model 4,5 detik', 'biaya model US$0,0300', 'biaya penguji US$0,0200', 'token berpikir 15', 'token masuk 6.933', 'token keluar 46']);
+    const teks = M.TEKS as unknown as { biayaBudget: (a: string, b: string, n: number) => string; keteranganBudget: (b: string, n: number) => string; keteranganWaktu: string; keteranganRingkas: string };
+    expect(teks.biayaBudget('US$0,59', 'US$5,00', 4)).toBe('Biaya US$0,59 dari budget US$5,00 untuk 4 rekaman');
+    expect(teks.keteranganBudget('US$5,00', 4)).toBe('Budget US$5,00 adalah jumlah budget 4 rekaman kerja agent yang diputar di sini.');
+    expect(teks.keteranganWaktu).toMatch(/jumlah lama model menjawab, bukan lama seluruh tahap/);
+    expect(teks.keteranganRingkas).toMatch(/"waktu model" adalah lama model menjawab di langkah itu/);
+  });
+});
+
+describe('diagram: yang terlihat saat sebuah langkah diputar (M2d-32 D-4)', () => {
+  it('keadaan agent: memilih → mengirim tool call → menunggu tool result → membaca tool result → memilih lagi → selesai', () => {
+    expect(M.keadaanAgen('diam', 'tiba', false)).toBe('diam');
+    expect(M.keadaanAgen('pikir', 'tiba', false)).toBe('pikir');
+    expect(M.keadaanAgen('panggil', 'pergi', true)).toBe('kirim');
+    expect(M.keadaanAgen('panggil', 'kembali', true)).toBe('tunggu');
+    expect(M.keadaanAgen('panggil', 'tiba', true)).toBe('baca');
+    expect(M.keadaanAgen('pikir', 'tiba', true)).toBe('pikir');
+    // Pemutar sudah pindah ke "pikir" tetapi keping masih di jalan (kecepatan tinggi): geraknya yang ditunjukkan.
+    expect(M.keadaanAgen('pikir', 'kembali', true)).toBe('tunggu');
+    expect(M.keadaanAgen('usai', 'tiba', true)).toBe('usai');
+    // Dua kali terbang muat di jeda terpendek antar-langkah pada 1× (900 ms).
+    expect(M.LAMA_TERBANG_MS * 2).toBeLessThan(M.RUMUS_JEDA_AGEN.MIN_MS);
+  });
+
+  it('hasil yang mendarat di agent = status tool result langkah itu, satu cap per status; label memakai kata kerja cara kerja', () => {
+    const r = siapkanReplay();
+    const l5 = r.langkah[4];
+    if (l5 === undefined) throw new Error('langkah 5 hilang');
+    expect(M.capLangkah(l5)).toEqual(['perbaiki', 'lolos']);
+    expect(M.capLangkah(l5).map((x) => M.labelStatus(x))).toEqual(['diminta perbaiki', 'lolos']);
+    expect(M.labelStatus('tidak-dipakai')).toBe('tidak dipakai');
+    expect(M.labelStatus(null)).toBeNull();
+    // Langkah yang hanya membaca bahan tidak memberi cap.
+    expect(M.capLangkah(r.langkah[0] as { ringkas: Array<{ status: string | null }> })).toEqual([]);
+    // Tiap status yang dikirim server punya label; tidak ada status di luar tiga itu.
+    const status = new Set(r.langkah.flatMap((l) => l.ringkas.map((x) => x.status)).filter((x) => x !== null));
+    expect([...status].sort()).toEqual(['lolos', 'perbaiki', 'tidak-dipakai']);
+    for (const x of status) expect(M.labelStatus(x)).toBeTypeOf('string');
+  });
+
+  it('tool result hanya kembali dari tool yang memang punya tool result di langkah itu (F-2: tanpa baris "tidak tercatat")', () => {
+    const r = siapkanReplay();
+    const l2 = r.langkah[1];
+    if (l2 === undefined) throw new Error('langkah 2 hilang');
+    // Langkah 2: agent memanggil dua tool, rekaman langkah itu mencatat satu tool result.
+    expect(l2.memanggil).toEqual(['periksa_saham', 'lihat_bank']);
+    expect(l2.tanpa_hasil).toEqual(['lihat_bank']);
+    expect(l2.nyala.map((i) => r.kepala.tool[i]?.nama)).toEqual(['periksa_saham', 'lihat_bank']);
+    expect(M.toolBerhasil(l2, r.kepala.tool).map((i) => r.kepala.tool[i]?.nama)).toEqual(['periksa_saham']);
+    for (const l of r.langkah) for (const i of M.toolBerhasil(l, r.kepala.tool)) expect(l.nyala, `langkah ${String(l.no)}`).toContain(i);
+    // Halaman tidak lagi menggambar baris untuk tool tanpa tool result, dan tidak punya teksnya.
+    const js = readFileSync(join(HALAMAN, 'agen.js'), 'utf8');
+    expect(js).not.toMatch(/tanpa_hasil|tanpaHasil/);
+    expect(Object.keys(M.TEKS)).not.toContain('tanpaHasil');
+    expect(JSON.stringify(Object.values(M.TEKS).filter((v) => typeof v === 'string'))).not.toMatch(/tidak tercatat/);
   });
 });
 
@@ -263,14 +337,55 @@ export const KATA_DILARANG: ReadonlyArray<{ nama: string; pola: RegExp }> = [
   { nama: 'meresmikan', pola: /\bmeresmikan\b/i },
   { nama: 'artefak', pola: /\bartefak\b/i },
   { nama: 'kode G-', pola: /\bG-[a-z]/ },
-  { nama: 'kode R-angka', pola: /\bR\d{1,2}[a-z]?\b/ },
+  { nama: 'kode R-angka', pola: /\bR-?\d{1,2}[a-z]?\b/ },
   { nama: 'gagal', pola: /\bgagal\b/i },
   { nama: 'percobaan ulang', pola: /percobaan ulang/i },
   { nama: 'anggaran', pola: /\banggaran\b/i },
 ];
 
+/**
+ * Pembingkaian kegagalan (M2d-32 D-7), dilarang di teks KAMI: label dan kalimat
+ * memakai kata kerja cara kerja ("diminta perbaiki"), tanpa pecahan hitungan.
+ * "Langkah 6 dari 21" boleh (itu kemajuan) dan "Biaya … dari budget …" bukan pecahan hitungan.
+ * Tidak dipakai atas ucapan agent: itu rekaman, bukan teks kami.
+ */
+export const BINGKAI_KEGAGALAN: ReadonlyArray<{ nama: string; pola: RegExp }> = [
+  { nama: 'tolak', pola: /(?:to|no)lak/i },
+  { nama: 'pecahan hitungan', pola: /(?<!Langkah )\b\d+ dari \d+\b/ },
+];
+
 function langgar(teks: string): string[] {
   return KATA_DILARANG.filter((k) => k.pola.test(teks)).map((k) => k.nama);
+}
+
+function membingkai(teks: string): string[] {
+  return BINGKAI_KEGAGALAN.filter((k) => k.pola.test(teks)).map((k) => k.nama);
+}
+
+/** Semua kalimat yang BISA dikirim server untuk satu tool result: tiap jenis, tiap sebab, tiap tool. */
+function semuaKalimatServer(): string[] {
+  const h = (alat: string, hasil: unknown): HasilTool => ({ alat, ringkas: '', hasil });
+  const keluar: string[] = [KALIMAT_MENULIS_ULANG];
+  const jenis: JenisTolak[] = [...new Set<JenisTolak>([...Object.values(PETA_BERHENTI), 'aturan', 'tak-dikenal'])];
+  for (const j of jenis) {
+    for (const obyek of ['draf ini', 'simulasi ini']) {
+      keluar.push(kalimatTolak(h('ajukan', { lolos: false, penolakan: [] }), j, obyek));
+      keluar.push(kalimatTolak(h('ajukan', { lolos: false, penolakan: ['penebak memilih kunci 12 dari 12'] }), j, obyek));
+    }
+  }
+  for (const k of Object.keys(PETA_KRITIKUS)) keluar.push(barisBaca(h('ajukan_kasus', { lolos: false, berhenti: 'kritikus', keberatan: [`[kritikus: ${k}] x`] })).kalimat);
+  // Awalan kode aturan seperti di rekaman; sebabnya yang dikirim, kodenya tidak.
+  const AWALAN = ['pemeriksa: G-angka-cukup: x', 'gerbang artefak: meresmikan: x', 'gerbang artefak: keseimbangan: x', 'pemeriksa: G-panjang: x', 'pemeriksa: OPSI_PANJANG_TIMPANG: x', 'pemeriksa: ANGKA_TANPA_RUJUKAN: x', 'pemeriksa: G-penilaian: x'];
+  for (const a of AWALAN) keluar.push(barisBaca(h('periksa_draft_dengan_aturan', { lolos: false, penolakan: [a] })).kalimat);
+  keluar.push(...PETA_KODE_ATURAN.map((x) => x.sebab));
+  const TOOL = [...KELOMPOK_TOOL.flatMap((k) => k.tool), 'periksa_kode', 'tool_entah'];
+  for (const t of TOOL) {
+    keluar.push(barisBaca(h(t, { lolos: true })).kalimat);
+    keluar.push(barisBaca(h(t, {})).kalimat);
+    keluar.push(barisBaca(h(t, { hari: [1, 2], omongan: [], aturan_dijalankan: 15, kartu_lolos: 17, disingkirkan: [1] })).kalimat);
+    keluar.push(barisBaca(h(t, { omongan: [1, 2, 3] })).kalimat);
+  }
+  return [...new Set(keluar)];
 }
 
 describe('kata buatan tidak tampil di teks halaman agent', () => {
@@ -281,6 +396,12 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
     expect(langgar('pemeriksa: G-angka-cukup')).toEqual(['kode G-']);
     expect(langgar('aturan R26 dan pagu jalan ini tidak terbit')).toEqual(['pagu', 'jalan (run)', 'terbit', 'kode R-angka']);
     expect(langgar('Agent memanggil lihat_bank lalu menjalankan pemeriksa aturan dengan budget.')).toEqual([]);
+    expect(langgar('lihat R-3 dan R12')).toEqual(['kode R-angka']);
+    expect(langgar('Harga penutupan Rp392 per lembar.')).toEqual([]);
+    expect(membingkai('ditolak')).toEqual(['tolak']);
+    expect(membingkai('Kritikus menolak: 12 dari 12 tebakan')).toEqual(['tolak', 'pecahan hitungan']);
+    expect(membingkai('Langkah 6 dari 21 · Biaya US$0,59 dari budget US$5,00 untuk 4 rekaman')).toEqual([]);
+    expect(membingkai('diminta perbaiki')).toEqual([]);
   });
 
   it('teks tetap halaman (TEKS), agen.html, dan semua teks di agen.js', () => {
@@ -291,9 +412,48 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
     // Semua teks berkutip di agen.js (termasuk nama kelas; komentar dibuang lebih dulu).
     const js = readFileSync(join(HALAMAN, 'agen.js'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
     const kutip = js.match(/'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`/g) ?? [];
-    expect(tetap.length).toBeGreaterThan(40);
+    // Fungsi teks juga dipanggil dengan angka, seperti di halaman ("Langkah 6 dari 21", budget 4 rekaman).
+    for (const v of Object.values(M.TEKS)) if (typeof v !== 'string') tetap.push((v as (...a: unknown[]) => string)(6, 21, 4));
+    // Teks di atribut agen.html (aria-label, placeholder, title) ikut diperiksa.
+    const atribut = [...readFileSync(join(HALAMAN, 'agen.html'), 'utf8').matchAll(/(?:aria-label|title|placeholder|alt)="([^"]*)"/g)].map((m) => m[1] ?? '');
+    expect(tetap.length).toBeGreaterThan(60);
     expect(kutip.length).toBeGreaterThan(100);
-    for (const t of [...tetap, html, ...kutip]) expect(langgar(t), t.slice(0, 80)).toEqual([]);
+    expect(atribut.length).toBeGreaterThan(2);
+    for (const t of [...tetap, html, ...atribut, ...kutip]) {
+      expect(langgar(t), t.slice(0, 80)).toEqual([]);
+      expect(membingkai(t), t.slice(0, 80)).toEqual([]);
+    }
+    // CSS tidak menyisipkan teks (content: "…") yang lolos dari pemeriksaan ini.
+    expect(readFileSync(join(HALAMAN, 'agen.css'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')).not.toMatch(/(?:^|[\s;{])content\s*:/);
+  });
+
+  it('SEMUA kalimat yang bisa dikirim server (tiap jenis, tiap sebab, tiap tool), nama kelompok, dan keterangan tool', () => {
+    const teks = [...semuaKalimatServer(), ...KELOMPOK_TOOL.map((k) => k.nama), ...Object.values(KETERANGAN_TOOL), ...Object.values(NAMA_TAHAP), ...Object.values(PETA_KRITIKUS)];
+    expect(teks.length).toBeGreaterThan(70);
+    expect(TOOL_ATURAN.length).toBe(3);
+    for (const t of teks) {
+      expect(langgar(t), t).toEqual([]);
+      expect(membingkai(t), t).toEqual([]);
+    }
+  });
+
+  it('pesan galat rute agent yang bisa sampai ke halaman', async () => {
+    const s = await mulaiServer({ akar: akarSementara(null), replayAgen: {} });
+    try {
+      const pesan: string[] = [];
+      for (const jalur of ['/api/agen/aliran?kode=TIRT', '/api/agen/aliran?kode=1', '/api/agen/aliran']) {
+        const j = await minta(s.port, 'GET', jalur);
+        expect(j.status, jalur).toBeGreaterThanOrEqual(400);
+        pesan.push((j.json() as { galat: string }).galat);
+      }
+      expect(pesan[0]).toBe(`Belum ada rekaman AI agent untuk TIRT. Rekaman yang ada: ${kodeRekaman()}.`);
+      for (const t of pesan) {
+        expect(langgar(t), t).toEqual([]);
+        expect(membingkai(t), t).toEqual([]);
+      }
+    } finally {
+      await s.tutup();
+    }
   });
 
   it('semua yang dikirim server untuk Ringkas dan Diagram: kalimat langkah, nama tahap, keterangan tool, keterangan penyetuju', () => {
@@ -303,11 +463,17 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
       ...Object.values(KETERANGAN_TOOL),
       ...r.kepala.tahap.map((t) => t.nama),
       ...r.kepala.tool.map((t) => t.keterangan ?? ''),
+      ...r.kepala.kelompok.map((k) => k.nama),
       r.simulasi.keterangan_penyetuju,
-      ...r.langkah.flatMap((l) => [...l.ringkas.map((x) => x.kalimat), ...l.hasil.map((x) => x.kalimat), l.ucapan ?? '']),
+      ...r.langkah.flatMap((l) => [...l.ringkas.map((x) => x.kalimat), ...l.hasil.map((x) => x.kalimat)]),
     ];
+    const ucapan = r.langkah.map((l) => l.ucapan ?? '');
     expect(teks.length).toBeGreaterThan(80);
-    for (const t of teks) expect(langgar(t), t).toEqual([]);
+    for (const t of [...teks, ...ucapan]) expect(langgar(t), t).toEqual([]);
+    // Teks kami (bukan ucapan agent yang direkam): tanpa pembingkaian kegagalan.
+    for (const t of teks) expect(membingkai(t), t).toEqual([]);
+    // Nama status yang dikirim juga bukan kata itu.
+    expect(JSON.stringify(r.langkah.map((l) => [l.ringkas.map((x) => x.status), l.hasil.map((x) => [x.status, x.jenis])]))).not.toMatch(/(?:to|no)lak/i);
   });
 
   it('rekaman asli MEMANG memuat kata itu — karena itu hanya ada di lipatan "rekaman asli" tampilan Rinci', () => {
