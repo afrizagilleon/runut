@@ -36,6 +36,14 @@ export function instruksiAgen(target: number = UKURAN_SIMULASI, maksDitolak: num
   });
 }
 
+/** Petunjuk tahap "lengkapi kasus" (M2d-29): agent menulis lampiran untuk tiga omongan yang sudah terkunci. */
+export function instruksiLengkapi(maksDitolak: number, kartuKonsep: ReadonlyArray<{ kode: string; judul: string }>): string {
+  return isiPrompt(fileURLToPath(new URL('./prompt-lengkapi.md', import.meta.url)), {
+    MAKS_DITOLAK: String(maksDitolak),
+    KARTU_KONSEP: kartuKonsep.map((k) => `${k.kode} (${k.judul})`).join(', '),
+  });
+}
+
 /** Petunjuk langkah "tingkatkan" (M2d-26): menaikkan kesulitan simulasi yang sudah jadi, satu omongan demi satu omongan. */
 export function instruksiTingkatkan(): string {
   return isiPrompt(fileURLToPath(new URL('./prompt-tingkatkan.md', import.meta.url)), { TELADAN: teksTeladanV3(), BENTUK: kontrakBentuk() });

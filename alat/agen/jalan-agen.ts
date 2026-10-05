@@ -30,6 +30,13 @@
  *   npm run agen -- --id <id> --paket <berkas> [--bank folder] --tingkatkan --pagu <usd> --setuju-berbayar
  *     menaikkan kesulitan simulasi yang SUDAH terakit, satu omongan demi satu omongan (128 rb token, effort high);
  *     versi asal tidak dihapus.
+ *
+ * M2d-29:
+ *   npm run agen -- --id <id> --paket <berkas> [--bank folder] --lengkapi [--omongan id1,id2,id3] --pagu <usd> --setuju-berbayar
+ *     tahap 2: agent yang sama menulis lampiran kasus (judul, urutan soal, tanya, istilah, teks kartu, layar pembukaan,
+ *     penutup, kartu konsep) untuk tiga omongan yang SUDAH terkunci. Data sesudah hari simulasi hanya terlihat di mode
+ *     ini, dan mode ini menolak jalan bila simulasinya belum terakit (`siapkanLengkapi`). Kasus yang lolos critic
+ *     ditulis ke eval/penyusun/<id>/lampiran-agen.json dan kasus.json — tidak pernah ke cases/.
  */
 import { appendFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -38,10 +45,12 @@ import { isStepCount, tool, ToolLoopAgent } from 'ai';
 import { z } from 'zod';
 import { buatAlat, CADANGAN_AJUKAN_USD, peningkatanDari, rakitSimulasi, tingkatEntri, type AlatAgen, type PeristiwaAlat, type SudutDitolak } from '../../factory/llm/agen/alat.ts';
 import { CADANGAN_HEMAT_USD, MAKS_TOKEN_HEMAT, paguKeras, putusanAnggaran, type PutusanAnggaran } from '../../factory/llm/agen/anggaran.ts';
-import { instruksiAgen, instruksiTingkatkan } from '../../factory/llm/agen/prompt.ts';
+import { buatAlatLengkapi, CADANGAN_KRITIK_KASUS_USD, KARTU_KONSEP_ADA, siapkanLengkapi, type AlatLengkapi, type SiapanLengkapi } from '../../factory/llm/agen/lengkapi.ts';
+import { instruksiAgen, instruksiLengkapi, instruksiTingkatkan } from '../../factory/llm/agen/prompt.ts';
 import type { NilaiOmonganV3 } from '../../factory/llm/bebas/mesin-v3.ts';
 import { bacaBank, FOLDER_BANK, shaPaketBank, UKURAN_SIMULASI } from '../../factory/llm/bebas/bank.ts';
 import { AKAR, bacaKonfigLlm } from '../../factory/llm/env.ts';
+import { FOLDER_GUDANG } from '../../factory/muat/gudang.ts';
 import { samarkan } from '../../factory/llm/klien.ts';
 import { HARGA } from '../../factory/llm/harga.ts';
 import { MODEL_OR_OPUS } from '../../factory/llm/model.ts';
@@ -59,6 +68,8 @@ import { buatAlatSectors } from './alat-sectors.ts';
 const PAKET_BAWAAN = 'eval/penyusun/m2d17-uji-2/paket.json';
 /** Batas langkah SATU percakapan (satu omongan). */
 const LANGKAH_BAWAAN = 20;
+/** Batas langkah mode lengkapi (satu percakapan untuk seluruh lampiran): tiga alat baca + periksa/ajukan berulang sampai 6 penolakan. */
+const LANGKAH_LENGKAPI = 40;
 /** Pengajuan ditolak sebanyak ini: percakapan ditutup, mulai percakapan baru. */
 const MAKS_DITOLAK_PER_PERCAKAPAN = 5;
 /** Percakapan paling banyak per percobaan. */
@@ -81,7 +92,9 @@ const pagu = Number(arg('--pagu'));
 if (!Number.isFinite(pagu) || pagu <= 0) throw new Error('butuh --pagu <usd> (pagu percobaan ini: agen + gerbang)');
 const target = Number(arg('--target') ?? UKURAN_SIMULASI);
 if (!Number.isInteger(target) || target < 1 || target > UKURAN_SIMULASI) throw new Error(`--target harus 1–${String(UKURAN_SIMULASI)}`);
-const maksLangkah = Number(arg('--langkah') ?? LANGKAH_BAWAAN);
+/** `--lengkapi`: tahap 2 — agent menulis lampiran kasus untuk tiga omongan yang sudah terkunci (M2d-29). */
+const modeLengkapi = process.argv.includes('--lengkapi');
+const maksLangkah = Number(arg('--langkah') ?? (modeLengkapi ? LANGKAH_LENGKAPI : LANGKAH_BAWAAN));
 const ujiAjukan = arg('--uji-ajukan');
 /** `--tingkat sulit`: penguji Opus harus 0 benar; batas token penulis tidak diturunkan (kata pemilik 5 Okt). */
 const tingkat = (arg('--tingkat') ?? 'biasa') as 'biasa' | 'sulit';
@@ -95,12 +108,16 @@ if (arg('--kode') !== null && kode === null) throw new Error('--kode bukan kode 
 const modeTingkatkan = process.argv.includes('--tingkatkan');
 if (modeTingkatkan && (kode !== null || arg('--paket') === null)) throw new Error('--tingkatkan butuh --paket <berkas> dari simulasi yang sudah terakit (bukan --kode)');
 if (kode !== null && arg('--paket') !== null) throw new Error('pakai --kode ATAU --paket, bukan keduanya');
+if (modeLengkapi && (kode !== null || arg('--paket') === null || modeTingkatkan || ujiAjukan !== null || ajukanDulu !== null)) throw new Error('--lengkapi butuh --paket <berkas> dari simulasi yang sudah terakit, dan tidak digabung dengan --kode, --tingkatkan, --uji-ajukan, atau --ajukan-dulu');
+if (!modeLengkapi && arg('--omongan') !== null) throw new Error('--omongan hanya untuk --lengkapi');
 /** Batas token keluaran penulis: 32.000 (keluaran terbesar terukur 12.063 token; OpenRouter menolak panggilan bila saldo tidak menjamin seluruh batas). Mode sulit dan langkah tingkatkan: 128.000 (kata pemilik). */
-const MAKS_TOKEN_PENULIS = tingkat === 'sulit' || modeTingkatkan ? 128_000 : 32_000;
+const MAKS_TOKEN_PENULIS = tingkat === 'sulit' || modeTingkatkan || modeLengkapi ? 128_000 : 32_000;
 /** Effort penulis: medium (K-9); langkah tingkatkan memakai high — satu omongan, butuh berpikir paling keras. */
-const EFFORT_PENULIS: 'medium' | 'high' = modeTingkatkan ? 'high' : 'medium';
+const EFFORT_PENULIS: 'medium' | 'high' = modeTingkatkan || modeLengkapi ? 'high' : 'medium';
 /** Pengajuan ditolak sebanyak ini di langkah tingkatkan: berhenti. */
 const MAKS_DITOLAK_TINGKATKAN = 6;
+/** Lampiran ditolak critic sebanyak ini di mode lengkapi: berhenti. */
+const MAKS_DITOLAK_LENGKAPI = 6;
 /** Model penulis agen: Opus 5.5 (bawaan) atau Sonnet 5.5 (banding M2d-21). Penyedia tetap dikunci ke Anthropic. */
 const MODEL_SONNET = 'anthropic/claude-sonnet-5.5';
 const namaModel = arg('--model') ?? 'opus';
@@ -113,6 +130,17 @@ const konfig = bacaKonfigLlm(AKAR);
 if (konfig.baseUrl !== BASE_URL_OPENROUTER) throw new Error('LLM_BASE_URL bukan OpenRouter (nilainya tidak dicetak).');
 /** Paket fakta: dari berkas (`--paket`), atau baru diketahui saat agen memanggil `periksa_saham` (`--kode`). */
 let paket: PaketFakta | null = kode === null ? (JSON.parse(readFileSync(`${AKAR}${arg('--paket') ?? PAKET_BAWAAN}`, 'utf8')) as PaketFakta) : null;
+/**
+ * Kuncian mode lengkapi, diperiksa GRATIS sebelum folder percobaan dibuat dan sebelum panggilan apa pun: melempar bila
+ * simulasi paket ini belum terakit, bila omongan yang diminta bukan omongan simulasinya, atau bila data gudangnya tidak cocok.
+ */
+const siapanLengkapi: SiapanLengkapi | null = modeLengkapi
+  ? siapkanLengkapi({
+      jalurPaket: `${AKAR}${arg('--paket') as string}`, sumberPaket: arg('--paket') as string,
+      folderBank: `${AKAR}${arg('--bank') ?? FOLDER_BANK}`, sumberBank: arg('--bank') ?? FOLDER_BANK,
+      folderGudang: FOLDER_GUDANG, omongan: arg('--omongan')?.split(',').map((x) => x.trim()).filter((x) => x !== '') ?? null,
+    })
+  : null;
 mkdirSync(folder, { recursive: true });
 
 const awalanTag = `${AWALAN_TAG_PENYUSUN}${id}/`;
@@ -181,14 +209,20 @@ const catatAlat = (p: Omit<PeristiwaAlat, 'ke'> & { ke?: number }): void => {
   console.log(`  alat ${p.alat}: ${p.ringkas}`);
 };
 let alat: AlatAgen | null = null;
+/** Alat mode lengkapi; biaya critic-nya ikut dihitung sebagai biaya percobaan lewat `biayaLuar`. */
+let alatLengkapi: AlatLengkapi | null = null;
+const biayaLuar = (): number => alatLengkapi?.keadaan().biaya_kritik_usd ?? 0;
 /** Pasang paket fakta: tulis `paket.json`, buat alat penulis untuk paket itu. */
 function pasangPaket(p: PaketFakta): AlatAgen {
   paket = p;
   writeFileSync(`${folder}/paket.json`, `${JSON.stringify(p, null, 2)}\n`, 'utf8');
-  alat = buatAlat({ paket: p, folderBank, idJalan: id as string, panggil: panggilGerbang, paguUsd: paguKeras(pagu), biayaAgen: () => biayaAgen, labelPenulis: `${MODEL_PENULIS} (agen ber-alat)`, target, tingkat, riwayatDitolak: riwayatDitolak(p), catat: catatAlat });
+  alat = buatAlat({ paket: p, folderBank, idJalan: id as string, panggil: panggilGerbang, paguUsd: paguKeras(pagu), biayaAgen: () => biayaAgen + biayaLuar(), labelPenulis: `${MODEL_PENULIS} (agen ber-alat)`, target, tingkat, riwayatDitolak: riwayatDitolak(p), catat: catatAlat });
   return alat;
 }
 if (paket !== null) pasangPaket(paket);
+if (siapanLengkapi !== null) {
+  alatLengkapi = buatAlatLengkapi(siapanLengkapi, { folderKeluaran: folder, panggil: panggilGerbang, paguUsd: paguKeras(pagu), biayaAgen: () => biayaAgen, catat: catatAlat });
+}
 /** Alat penulis; melempar bila belum ada paket (hanya mungkin di mode --kode sebelum `periksa_saham`). */
 const A = (): AlatAgen => {
   if (alat === null) throw new Error('belum ada paket fakta');
@@ -198,14 +232,20 @@ const BELUM_ADA_HARI = { galat: 'Belum ada hari yang dipilih. Panggil usulkan_ha
 const kead = (): ReturnType<AlatAgen['keadaan']> => alat?.keadaan() ?? { ditolak: 0, jumlah_omongan: 0, jumlah_sudut: 0, target, biaya_gerbang_usd: 0, biaya_total_usd: bulat(biayaAgen), sisa_anggaran_usd: bulat(Math.max(0, paguKeras(pagu) - biayaAgen)), pengajuan: 0, nilai: [] as NilaiOmonganV3[] };
 /** Guardrail budget: aturan dan riwayatnya di `factory/llm/agen/anggaran.ts` (M2d-28). */
 const biayaPanggilan: number[] = [];
-const anggaran = (): PutusanAnggaran => putusanAnggaran({ pagu, terpakai: kead().biaya_total_usd, biayaPanggilan, cadanganUji: CADANGAN_AJUKAN_USD, adaDrafSiap: alat?.adaDrafSiap() ?? false });
+const anggaran = (): PutusanAnggaran => putusanAnggaran({
+  pagu, terpakai: kead().biaya_total_usd, biayaPanggilan,
+  cadanganUji: alatLengkapi !== null ? CADANGAN_KRITIK_KASUS_USD : CADANGAN_AJUKAN_USD,
+  adaDrafSiap: alatLengkapi !== null ? alatLengkapi.adaLampiranSiap() : (alat?.adaDrafSiap() ?? false),
+});
 const hemat = (): boolean => anggaran().hemat;
 const PERINGATAN_HEMAT = 'Sisa anggaran tinggal cukup untuk MENGAJUKAN draft yang sudah lolos aturan. Jangan menulis draft baru; ajukan yang sudah siap, lalu berhenti.';
 /** Tempel peringatan mode hemat ke hasil alat supaya agen tahu sebelum panggilan berikutnya. */
 const denganAnggaran = <T extends object>(h: T): T & { peringatan_anggaran?: string } => (hemat() ? { ...h, peringatan_anggaran: PERINGATAN_HEMAT } : h);
-const selesai = (): boolean => (alat === null ? false : modeTingkatkan ? alat.semuaNaik() : alat.selesai());
+const selesai = (): boolean => (alatLengkapi !== null ? alatLengkapi.terbit() !== null : alat === null ? false : modeTingkatkan ? alat.semuaNaik() : alat.selesai());
 const habis = (): boolean => anggaran().habis;
-const rusakAlat = (): string | null => alat?.rusak() ?? null;
+const rusakAlat = (): string | null => alatLengkapi?.rusak() ?? alat?.rusak() ?? null;
+/** Penolakan berbayar sejauh ini: gerbang omongan, atau critic lampiran di mode lengkapi. */
+const jumlahDitolak = (): number => (alatLengkapi !== null ? alatLengkapi.keadaan().ditolak : kead().ditolak);
 
 const hariIni = new Date().toISOString().slice(0, 10);
 const sectorsAtauNull = kode === null ? null : buatAlatSectors({
@@ -347,15 +387,33 @@ const alatTingkat = {
     execute: async ({ versi }) => denganAnggaran(await A().tingkatkanBanyak(versi)),
   }),
 };
+/** Empat alat mode lengkapi (M2d-29) + `lihat_fakta`. Draft lampiran diperiksa kode; skema masukan sengaja longgar supaya penolakannya datang dari aturan, bukan dari SDK. */
+const buatAlatLengkap = (L: AlatLengkapi) => ({
+  lihat_fakta: alatPenulis.lihat_fakta,
+  lihat_soal_terkunci: tool({ description: 'Tiga omongan yang sudah terkunci (nama, jam, pesan, pilihan, kunci, penjelasan, kartu, kartu penentu) beserta id_omongan-nya. Teks soal tidak bisa diubah. Gratis.', inputSchema: z.object({}), execute: () => L.lihatSoalTerkunci() }),
+  lihat_sesudahnya: tool({ description: 'Fakta SESUDAH tanggal simulasi yang lolos aturan verifikasi (harga, volume, dividen, rapat, laporan kepemilikan — yang memang ada), tiap fakta dengan fact_id, kalimat, nilai, dan tanggal; jenis data yang kosong disebut kosong. Gratis.', inputSchema: z.object({}), execute: () => L.lihatSesudahnya() }),
+  periksa_kasus_dengan_aturan: tool({
+    description: 'Periksa satu draft lampiran (bagian yang kamu tulis saja) dengan aturan yang sama dengan produk: program melengkapi sisanya, membangun kasusnya, dan menjalankan validator. Gratis. Mengembalikan tiap masalah apa adanya, atau id_lampiran bila lolos.',
+    inputSchema: z.object({ lampiran: z.record(z.string(), z.unknown()).describe('Objek lampiran: judul, soal, awam, pembukaan, penutup, kartu_konsep — bentuknya seperti contoh di petunjuk.') }),
+    execute: ({ lampiran }) => denganAnggaran(L.periksaKasus(lampiran)),
+  }),
+  ajukan_kasus: tool({
+    description: `Ajukan satu lampiran yang sudah lolos aturan (id_lampiran dari periksa_kasus_dengan_aturan) ke satu critic. Berbayar; butuh sisa anggaran minimal US$${String(CADANGAN_KRITIK_KASUS_USD)}. Bila critic keberatan, keberatannya dikembalikan; bila lolos, kasus ditulis dan pekerjaan selesai.`,
+    inputSchema: z.object({ id_lampiran: z.string() }),
+    execute: async ({ id_lampiran }) => denganAnggaran(await L.ajukanKasus(id_lampiran)),
+  }),
+});
 
 const setelanAgen = {
   model: openrouter(MODEL_PENULIS, { usage: { include: true }, provider: pagarPeranV2('penulis') as never, extraBody: { cache_control: SIMPAN_PROMPT } }),
-  stopWhen: [isStepCount(maksLangkah), () => selesai() || habis() || rusakAlat() !== null || kead().ditolak - ditolakAwal >= (modeTingkatkan ? MAKS_DITOLAK_TINGKATKAN : MAKS_DITOLAK_PER_PERCAKAPAN)],
+  stopWhen: [isStepCount(maksLangkah), () => selesai() || habis() || rusakAlat() !== null || jumlahDitolak() - ditolakAwal >= (modeLengkapi ? MAKS_DITOLAK_LENGKAPI : modeTingkatkan ? MAKS_DITOLAK_TINGKATKAN : MAKS_DITOLAK_PER_PERCAKAPAN)],
   maxOutputTokens: MAKS_TOKEN_PENULIS,
   maxRetries: 2,
   providerOptions: { openrouter: { reasoning: { effort: EFFORT_PENULIS, exclude: false } } },
 };
-const agen: { generate(o: { prompt: string }): Promise<{ text: string; steps: unknown[] }> } = modeTingkatkan
+const agen: { generate(o: { prompt: string }): Promise<{ text: string; steps: unknown[] }> } = alatLengkapi !== null
+  ? new ToolLoopAgent({ ...setelanAgen, tools: buatAlatLengkap(alatLengkapi) })
+  : modeTingkatkan
   ? new ToolLoopAgent({ ...setelanAgen, tools: alatTingkat })
   : sectorsAtauNull !== null ? new ToolLoopAgent({ ...setelanAgen, tools: { ...buatAlatData(sectorsAtauNull), ...alatSusun } })
   : new ToolLoopAgent({ ...setelanAgen, tools: alatSusun });
@@ -364,24 +422,24 @@ if (modeTingkatkan && rakitSimulasi(bacaBank(folderBank, shaPaketBank(paket as P
   throw new Error('--tingkatkan: bank untuk paket ini belum bisa dirakit menjadi simulasi; tidak ada yang ditingkatkan. Tidak ada panggilan berbayar yang dikirim.');
 }
 
-console.log(`Agen ${id}: ${MODEL_PENULIS} @ anthropic lewat AI SDK; mode ${modeTingkatkan ? 'tingkatkan' : kode !== null ? `dari kode ${kode}` : 'susun'}; effort ${EFFORT_PENULIS}; maks ${String(MAKS_TOKEN_PENULIS)} token; target ${String(target)} sudut; pagu US$${String(pagu)}; maks ${String(maksLangkah)} langkah per percakapan; bank ${arg('--bank') ?? FOLDER_BANK}${paket === null ? '' : `/${shaPaketBank(paket).slice(0, 12)}…`}; PID ${String(process.pid)}.`);
+console.log(`Agen ${id}: ${MODEL_PENULIS} @ anthropic lewat AI SDK; mode ${modeLengkapi ? `lengkapi (omongan ${siapanLengkapi?.omongan.map((e) => e.id).join(', ') ?? ''})` : modeTingkatkan ? 'tingkatkan' : kode !== null ? `dari kode ${kode}` : 'susun'}; effort ${EFFORT_PENULIS}; maks ${String(MAKS_TOKEN_PENULIS)} token; target ${String(target)} sudut; pagu US$${String(pagu)}; maks ${String(maksLangkah)} langkah per percakapan; bank ${arg('--bank') ?? FOLDER_BANK}${paket === null ? '' : `/${shaPaketBank(paket).slice(0, 12)}…`}; PID ${String(process.pid)}.`);
 const mulai = Date.now();
 let galat: string | null = null;
 let teksAkhir = '';
 let langkah = 0;
 const ringkasPercakapan: Array<{ ke: number; langkah: number; sudut_sebelum: number; sudut_sesudah: number; ditolak: number; teks_akhir: string }> = [];
 try {
-  while (percakapan < (modeTingkatkan ? 1 : MAKS_PERCAKAPAN) && !selesai() && !habis() && rusakAlat() === null) {
+  while (percakapan < (modeTingkatkan || modeLengkapi ? 1 : MAKS_PERCAKAPAN) && !selesai() && !habis() && rusakAlat() === null) {
     percakapan += 1;
     sudutAwal = kead().jumlah_omongan;
-    ditolakAwal = kead().ditolak;
+    ditolakAwal = jumlahDitolak();
     console.log(`- percakapan ${String(percakapan)} (bank ${String(sudutAwal)}/${String(target)}, sisa US$${String(kead().sisa_anggaran_usd)})`);
     jejak({ jenis: 'percakapan', ke: percakapan, bank: sudutAwal });
     // Mode --kode: selama hari belum dipilih, petunjuknya mulai dari `usulkan_hari`; sesudah itu sama dengan mode paket.
-    const hasil = await agen.generate({ prompt: modeTingkatkan ? instruksiTingkatkan() : instruksiAgen(target, MAKS_DITOLAK_PER_PERCAKAPAN, tingkat, kode !== null) });
+    const hasil = await agen.generate({ prompt: modeLengkapi ? instruksiLengkapi(MAKS_DITOLAK_LENGKAPI, KARTU_KONSEP_ADA) : modeTingkatkan ? instruksiTingkatkan() : instruksiAgen(target, MAKS_DITOLAK_PER_PERCAKAPAN, tingkat, kode !== null) });
     teksAkhir = hasil.text;
     langkah += hasil.steps.length;
-    ringkasPercakapan.push({ ke: percakapan, langkah: hasil.steps.length, sudut_sebelum: sudutAwal, sudut_sesudah: kead().jumlah_omongan, ditolak: kead().ditolak - ditolakAwal, teks_akhir: hasil.text });
+    ringkasPercakapan.push({ ke: percakapan, langkah: hasil.steps.length, sudut_sebelum: sudutAwal, sudut_sesudah: kead().jumlah_omongan, ditolak: jumlahDitolak() - ditolakAwal, teks_akhir: hasil.text });
     if (alat === null) break; // agen berhenti tanpa memilih hari: percakapan baru tidak akan mengubahnya
   }
 } catch (g) {
@@ -395,18 +453,30 @@ const semuaEntri = paketAkhir === null ? [] : bacaBank(folderBank, shaPaketBank(
 const bank = semuaEntri.filter((e) => peningkatanDari(e) === null);
 const simulasi = paketAkhir === null ? { draf: null, dipilih: [] as string[], dicoba: 0, alasan: ['agen tidak memilih hari; tidak ada paket fakta'] } : rakitSimulasi(bank, paketAkhir);
 const naik = semuaEntri.filter((e) => peningkatanDari(e) !== null && simulasi.dipilih.includes(peningkatanDari(e) as string));
+const kLengkapi = (alatLengkapi as AlatLengkapi | null)?.keadaan() ?? null;
 const berhenti = galat !== null ? `galat: ${galat}` : rusakAlat() !== null ? `gerbang rusak: ${rusakAlat() ?? ''}`
+  : kLengkapi !== null ? (kLengkapi.terbit ? 'kasus lolos critic dan ditulis' : kLengkapi.ditolak >= MAKS_DITOLAK_LENGKAPI ? 'batas penolakan' : habis() ? 'anggaran tidak cukup untuk satu langkah lagi' : langkah >= maksLangkah ? 'batas langkah' : 'agen berhenti sendiri')
   : modeTingkatkan ? (selesai() ? 'ketiga omongan punya versi lebih sulit' : habis() ? 'anggaran tidak cukup untuk satu langkah lagi' : kead().ditolak >= MAKS_DITOLAK_TINGKATKAN ? 'batas penolakan' : 'agen berhenti sendiri (cukup sampai di sini)')
   : selesai() ? 'bank bisa dirakit menjadi simulasi' : habis() ? 'anggaran tidak cukup untuk satu langkah lagi' : percakapan >= MAKS_PERCAKAPAN ? 'batas percakapan' : 'agen berhenti sendiri';
 const hasil = {
-  id, mode: modeTingkatkan ? 'tingkatkan' : kode !== null ? 'dari-kode' : 'susun', kode, hari_dipilih: paketAkhir?.tanggal_t ?? null, effort: EFFORT_PENULIS, maks_token: MAKS_TOKEN_PENULIS,
+  id, mode: modeLengkapi ? 'lengkapi' : modeTingkatkan ? 'tingkatkan' : kode !== null ? 'dari-kode' : 'susun', kode, hari_dipilih: paketAkhir?.tanggal_t ?? null, effort: EFFORT_PENULIS, maks_token: MAKS_TOKEN_PENULIS,
   model: MODEL_PENULIS, sdk: 'ai (ToolLoopAgent) + @openrouter/ai-sdk-provider', target, pagu_usd: pagu, berhenti, percakapan: ringkasPercakapan, langkah, panggilan_model: panggilanModel, pengajuan: k.pengajuan,
   biaya_agen_usd: bulat(biayaAgen), biaya_gerbang_usd: k.biaya_gerbang_usd, biaya_usd: k.biaya_total_usd, durasi_detik: Math.round((Date.now() - mulai) / 1000),
   bank: { jumlah_sudut: k.jumlah_sudut, omongan: bank.map((e) => ({ id: e.id, nama: e.omongan.nama, kartu_penentu: e.kartu_penentu, asal: e.asal.jalan, tingkat: tingkatEntri(e) })) },
   simulasi: { terbit: simulasi.draf !== null, dipilih: simulasi.dipilih, alasan: simulasi.alasan, draf: simulasi.draf },
   peningkatan: naik.map((e) => ({ id: e.id, dari: peningkatanDari(e), nama: e.omongan.nama, tingkat: tingkatEntri(e), asal: e.asal.jalan, omongan: e.omongan })),
   nilai: k.nilai, draf_lolos_kode: (alat as AlatAgen | null)?.drafLolos() ?? [], teks_akhir: teksAkhir,
+  // Mode lengkapi (M2d-29): omongan yang dipakai, apakah kasus terbit, dan seluruh putusan critic.
+  ...(siapanLengkapi === null || kLengkapi === null ? {} : {
+    lengkapi: {
+      kasus_id: siapanLengkapi.kasus_id, omongan_dipakai: siapanLengkapi.omongan.map((e) => ({ id: e.id, nama: e.omongan.nama, versi_dari: siapanLengkapi.asal[e.id] ?? e.id })),
+      kasus_terbit: kLengkapi.terbit, berkas: (alatLengkapi as AlatLengkapi | null)?.terbit()?.berkas ?? [], id_lampiran_terbit: (alatLengkapi as AlatLengkapi | null)?.terbit()?.id_lampiran ?? null,
+      pengajuan: kLengkapi.pengajuan, ditolak_critic: kLengkapi.ditolak, biaya_kritik_usd: kLengkapi.biaya_kritik_usd,
+      sumber: siapanLengkapi.sumber, emiten: siapanLengkapi.emiten, catatan_penyetuju: siapanLengkapi.catatan_penyetuju,
+      putusan_critic: kLengkapi.putusan_critic, lampiran_lolos_aturan: kLengkapi.lampiran_lolos_aturan,
+    },
+  }),
 };
 writeFileSync(`${folder}/hasil.json`, samarkan(JSON.stringify(hasil, null, 2), rahasia), 'utf8');
-console.log(`selesai (${berhenti}): ${String(panggilanModel)} panggilan model, ${String(k.pengajuan)} pengajuan, bank ${String(k.jumlah_sudut)}/${String(target)}, US$${k.biaya_total_usd.toFixed(4)} (agen ${biayaAgen.toFixed(4)} + gerbang ${k.biaya_gerbang_usd.toFixed(4)}), simulasi ${simulasi.draf !== null ? 'TERBIT' : 'belum'}${modeTingkatkan ? `, versi lebih sulit ${String(new Set(naik.map((e) => peningkatanDari(e))).size)}/${String(simulasi.dipilih.length)}` : ''}${kode !== null ? `, hari dipilih ${paketAkhir?.tanggal_t ?? '-'}` : ''}`);
+console.log(`selesai (${berhenti}): ${String(panggilanModel)} panggilan model, ${String(k.pengajuan)} pengajuan, bank ${String(k.jumlah_sudut)}/${String(target)}, US$${k.biaya_total_usd.toFixed(4)} (agen ${biayaAgen.toFixed(4)} + gerbang ${k.biaya_gerbang_usd.toFixed(4)}), simulasi ${simulasi.draf !== null ? 'TERBIT' : 'belum'}${modeTingkatkan ? `, versi lebih sulit ${String(new Set(naik.map((e) => peningkatanDari(e))).size)}/${String(simulasi.dipilih.length)}` : ''}${kode !== null ? `, hari dipilih ${paketAkhir?.tanggal_t ?? '-'}` : ''}${kLengkapi !== null ? `; kasus ${kLengkapi.terbit ? 'TERBIT' : 'belum terbit'} (${String(kLengkapi.pengajuan)} pengajuan ke critic, ${String(kLengkapi.ditolak)} ditolak, critic US$${kLengkapi.biaya_kritik_usd.toFixed(4)})` : ''}`);
 console.log(`berkas: ${folder}/hasil.json · jejak-agen.jsonl · mentah-agen.jsonl · mentah-panggilan.jsonl`);

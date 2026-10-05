@@ -39,7 +39,7 @@ export const PENGUJI_OPUS_MENOLAK = false;
 export const CADANGAN_AJUKAN_USD = 0.12;
 
 export interface PeristiwaAlat {
-  alat: 'lihat_fakta' | 'lihat_bank' | 'periksa_draft_dengan_aturan' | 'ajukan' | 'lihat_simulasi' | 'tingkatkan' | 'usulkan_hari' | 'periksa_saham';
+  alat: 'lihat_fakta' | 'lihat_bank' | 'periksa_draft_dengan_aturan' | 'ajukan' | 'lihat_simulasi' | 'tingkatkan' | 'usulkan_hari' | 'periksa_saham' | 'lihat_soal_terkunci' | 'lihat_sesudahnya' | 'periksa_kasus_dengan_aturan' | 'ajukan_kasus';
   ke: number;
   ringkas: string;
   hasil: unknown;
