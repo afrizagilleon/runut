@@ -93,6 +93,7 @@
     "rotasi:plasebo": "node --experimental-strip-types factory/llm/rotasi/plasebo.ts",
     "penyusun:v3": "node --experimental-strip-types alat/penyusun/jalan-v3.ts",
     "agen": "node --experimental-strip-types alat/agen/jalan-agen.ts",
+    "agen:replay": "node --experimental-strip-types alat/agen/putar-ulang.ts",
     "patokan:laporan": "node --experimental-strip-types factory/llm/patokan/laporan.ts"
   },
   "dependencies": {
