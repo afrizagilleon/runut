@@ -153,7 +153,7 @@ Tiga tahap itu adalah tiga cara menjalankan agent yang sama: **susun** (tiga omo
 
 ## Hasil
 
-- Runut Agent menyusun simulasi untuk lima saham: AGAR, ALII, AMAG, TIRT, BOLT, dengan biaya model US$0,60–1,37 per simulasi (biaya nyata dari penyedia) ditambah 5–8 kredit Sectors API per saham.
+- Runut Agent menyusun simulasi untuk enam saham: AGAR, ALII, AMAG, TIRT, BOLT, MLPT, dengan biaya model US$0,60–1,37 per simulasi (biaya nyata dari penyedia) ditambah 5–8 kredit Sectors API per saham. Simulasi MLPT (7 Oktober 2025, US$0,82) disusun dengan menekan tombol di halaman penyusun; jejaknya ada di `eval/penyusun/pn-20261006-061713/`.
 - Simulasi AMAG (15 Juni 2026) yang ada di situs seluruhnya ditulis Runut Agent mulai dari kode saham: memilih hari, kartu fakta, tiga soal, dan bagian "apa yang terjadi sesudahnya". `cases/amag-2026-06-15.json` identik byte dengan `eval/penyusun/m2d29-amag-lengkapi-3/kasus.json`; sha256 keduanya `f97a0ff2f30660f0500892a974d9b145c94f27e8049275734b0b87f2a9c1ddb0`.
 - Alpha 21 Sep–5 Okt 2026: 150 orang membuka; 48 menyelesaikan tiga soal; 44 memberi penilaian, rata-rata 4,0 dari 5.
 - 33 aturan verifikasi aktif (kode, bukan AI) menyaring data Sectors sebelum menjadi kartu.
