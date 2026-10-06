@@ -345,6 +345,9 @@ export const KATA_DILARANG: ReadonlyArray<{ nama: string; pola: RegExp }> = [
   { nama: 'gagal', pola: /\bgagal\b/i },
   { nama: 'percobaan ulang', pola: /percobaan ulang/i },
   { nama: 'anggaran', pola: /\banggaran\b/i },
+  // M-PN1 A-1 (T-A2): istilah buatan kontrak, bukan kata yang dibaca orang. Di mana pun dalam kata, juga di nama id dan kelas.
+  { nama: 'pelari', pola: /pelari/i },
+  { nama: 'tiruan', pola: /tiruan/i },
 ];
 
 /**
@@ -401,6 +404,10 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
     expect(langgar('aturan R26 dan pagu jalan ini tidak terbit')).toEqual(['pagu', 'jalan (run)', 'terbit', 'kode R-angka']);
     expect(langgar('Agent memanggil lihat_bank lalu menjalankan pemeriksa aturan dengan budget.')).toEqual([]);
     expect(langgar('lihat R-3 dan R12')).toEqual(['kode R-angka']);
+    expect(langgar('PELARI TIRUAN — bukan agent sungguhan')).toEqual(['pelari', 'tiruan']);
+    expect(langgar('pita-tiruan-kerja')).toEqual(['tiruan']);
+    expect(langgar('Pelari sudah dimatikan')).toEqual(['pelari']);
+    expect(langgar('Proses agent sudah dimatikan; program yang menjalankan agent berhenti.')).toEqual([]);
     expect(langgar('Harga penutupan Rp392 per lembar.')).toEqual([]);
     expect(membingkai('ditolak')).toEqual(['tolak']);
     expect(membingkai('Kritikus menolak: 12 dari 12 tebakan')).toEqual(['tolak', 'pecahan hitungan']);

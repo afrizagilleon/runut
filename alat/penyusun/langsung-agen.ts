@@ -139,7 +139,7 @@ export function jalankanProses(perintah: string, argumen: readonly string[], cwd
     };
     anak.once('close', (kode) => tutup(kode));
     anak.once('error', (galat) => {
-      log(`agent | pelari tidak bisa dinyalakan: ${galat.name}`);
+      log(`agent | proses agent tidak bisa dinyalakan: ${galat.name}`);
       tutup(null);
     });
   });
