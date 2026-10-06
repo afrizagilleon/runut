@@ -153,7 +153,7 @@ Tiga tahap itu adalah tiga cara menjalankan agent yang sama: **susun** (tiga omo
 
 ## Hasil
 
-- Runut Agent menyusun simulasi untuk lima saham: AGAR, ALII, AMAG, TIRT, BOLT, dengan biaya US$0,60–1,37 per simulasi (biaya nyata dari penyedia).
+- Runut Agent menyusun simulasi untuk lima saham: AGAR, ALII, AMAG, TIRT, BOLT, dengan biaya model US$0,60–1,37 per simulasi (biaya nyata dari penyedia) ditambah 5–8 kredit Sectors API per saham.
 - Simulasi AMAG (15 Juni 2026) yang ada di situs seluruhnya ditulis Runut Agent mulai dari kode saham: memilih hari, kartu fakta, tiga soal, dan bagian "apa yang terjadi sesudahnya". `cases/amag-2026-06-15.json` identik byte dengan `eval/penyusun/m2d29-amag-lengkapi-3/kasus.json`; sha256 keduanya `f97a0ff2f30660f0500892a974d9b145c94f27e8049275734b0b87f2a9c1ddb0`.
 - Alpha 21 Sep–5 Okt 2026: 150 orang membuka; 48 menyelesaikan tiga soal; 44 memberi penilaian, rata-rata 4,0 dari 5.
 - 33 aturan verifikasi aktif (kode, bukan AI) menyaring data Sectors sebelum menjadi kartu.
@@ -175,11 +175,13 @@ Berkas simulasi sudah ikut di `cases/`. `?kasus=<id>` membuka satu simulasi tert
 **(b) Memutar ulang kerja agent, tanpa API key dan tanpa jaringan**
 
 ```bash
-npm run penyusun                                        # tampilan AI agent di http://127.0.0.1:8790/ (Ringkas, Rinci, Diagram)
+npm run penyusun                                        # MEMUTAR ULANG rekaman kerja agent (saham AMAG) di http://127.0.0.1:8790/ (Ringkas, Rinci, Diagram)
 npm run agen:replay                                     # di terminal: percobaan AMAG dari kode saham
 npm run agen:replay -- --daftar                         # semua percobaan yang punya rekaman
 npm run agen:replay -- --id m2d27-amag-naik-2 --cepat   # percobaan lain, tanpa jeda; --penuh menampilkan reasoning utuh
 ```
+
+`npm run penyusun` tidak menjalankan agent: halaman itu memutar ulang rekaman kerja Runut Agent yang sudah ada di repo. Untuk menyusun simulasi baru, jalankan agent dari terminal seperti di (c); hasilnya menjadi rekaman baru di folder yang sama.
 
 Keduanya hanya membaca rekaman di `eval/penyusun/<id>/` (`jejak-agen.jsonl` dan `hasil.json`); tidak ada model yang dipanggil.
 
