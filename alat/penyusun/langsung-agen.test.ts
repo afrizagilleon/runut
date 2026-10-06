@@ -57,7 +57,9 @@ interface PelariUji extends PelariAgen {
   tulis(baris: Record<string, unknown>): void;
   tulisMentah(teks: string): void;
   /** Pelari berhenti sendiri; `hasil` ditulis ke `hasil.json` bila diberikan. */
-  tamat(hasil?: Record<string, unknown>): void;
+  tamat(hasil?: Record<string, unknown>, kodeKeluar?: number): void;
+  /** Satu baris keluaran proses (seperti yang ditulis proses agent ke terminal). */
+  cetak(baris: string): void;
 }
 
 /** PENGGANTI UJI: menulis hanya apa yang disuruh tes; tidak memanggil apa pun. */
@@ -73,12 +75,13 @@ function pelariUji(): PelariUji {
       if (terakhir === undefined) throw new Error('pelari uji belum dinyalakan');
       appendFileSync(join(terakhir.folder, 'jejak-agen.jsonl'), teks, 'utf8');
     },
-    tamat: (hasil) => {
+    tamat: (hasil, kodeKeluar = 0) => {
       const terakhir = p.panggilan.at(-1);
       if (terakhir !== undefined && hasil !== undefined) writeFileSync(join(terakhir.folder, 'hasil.json'), JSON.stringify(hasil), 'utf8');
-      beres?.({ kodeKeluar: 0 });
+      beres?.({ kodeKeluar });
       beres = null;
     },
+    cetak: (baris) => p.panggilan.at(-1)?.log(`agent | ${baris}`),
     mulai: (permintaan) => {
       p.panggilan.push(permintaan);
       mkdirSync(permintaan.folder, { recursive: true });
@@ -290,7 +293,7 @@ describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, buka
     const semua = a.peristiwa();
     expect(semua.map((x) => x.jenis)).toEqual(['kepala', 'langkah', 'langkah', 'langkah', 'akhir', 'selesai']);
     const akhir = semua.at(-2)?.data as AkhirLangsung;
-    expect(akhir).toEqual({ hasil: 'terakit', folder: jawab.folder, biaya_usd: 0.4242, jumlah_langkah: 3 });
+    expect(akhir).toEqual({ hasil: 'terakit', folder: jawab.folder, biaya_usd: 0.4242, jumlah_langkah: 3, sebab: null, pesan: null });
 
     // Satu jalur kebenaran (D-1): yang dikirim = pemetaan replay atas baris yang sama.
     const terlarang = [KODE_UJI];
@@ -369,6 +372,71 @@ describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, buka
     // Tiga kerja, tiga folder berbeda (jam uji tetap → id diberi akhiran).
     expect(new Set(pelari.panggilan.map((p) => p.id)).size).toBe(3);
     for (const p of pelari.panggilan) expect(p.id).toMatch(/^[a-z0-9-]{3,40}$/);
+  });
+
+  it('A-1 T-A3: sebab berhenti sampai ke halaman dalam kalimat biasa — kunci kedaluwarsa (hasil.json), harga penyedia (proses keluar tanpa hasil), sebab tak dikenal; kunci tidak bocor', async () => {
+    const pelari = pelariUji();
+    s = await serverUji(pelari, true);
+    const srv = s;
+    const teksAliran: string[] = [];
+    const akhirDari = async (siapkan: () => void): Promise<AkhirLangsung> => {
+      expect((await minta(srv.port, 'POST', '/api/agen/jalankan', { badan: SETUJU })).status).toBe(202);
+      siapkan();
+      const al = await bukaAliran(srv.port, '/api/agen/langsung/aliran');
+      await al.tunggu(() => al.teks().includes('event: selesai'));
+      teksAliran.push(al.teks());
+      const akhir = al.peristiwa().find((x) => x.jenis === 'akhir')?.data as AkhirLangsung;
+      al.tutup();
+      return akhir;
+    };
+
+    // (a) Agent sempat bekerja, lalu penyedia model tidak menerima kuncinya: `hasil.json` → berhenti "galat: …".
+    const kedaluwarsa = await akhirDari(() => {
+      pelari.tulis(BARIS_1);
+      pelari.tamat({ berhenti: `galat: AI_APICallError: API key expired for ${KODE_UJI}`, biaya_usd: 0.03, simulasi: { terbit: false } });
+    });
+    expect(kedaluwarsa).toMatchObject({ hasil: 'berhenti', biaya_usd: 0.03, jumlah_langkah: 1 });
+    expect(kedaluwarsa.sebab).toEqual({ id: 'kunci-kedaluwarsa', kalimat: 'Agent berhenti: kunci API tidak diterima penyedia model (kedaluwarsa). Perbarui LLM_API_KEY di .env, lalu jalankan lagi.' });
+    expect(kedaluwarsa.pesan).toBe('galat: AI_APICallError: API key expired for [kode]');
+
+    // (b) Proses keluar ≠ 0 sebelum menulis hasil.json: sebabnya dari keluaran proses (bentuk galat Node yang tidak tertangkap).
+    const harga = await akhirDari(() => {
+      pelari.cetak('file:///D:/Projects/rahasia/alat/agen/jalan-agen.ts:177');
+      pelari.cetak("if (masalahPenyedia.length > 0) throw new Error(`Penyedia terkunci bermasalah`);");
+      pelari.cetak('                                    ^');
+      pelari.cetak('');
+      pelari.cetak('Error: Penyedia terkunci bermasalah; TIDAK ada panggilan berbayar yang dikirim:');
+      pelari.cetak(`- penulis: harga "anthropic" untuk anthropic/claude-opus-5.5 (US$6/30 per juta) di atas batas US$5/25 Bearer ${KUNCI_LLM_PALSU}`);
+      pelari.cetak('    at file:///D:/Projects/rahasia/alat/agen/jalan-agen.ts:177:42');
+      pelari.cetak('Node.js v24.11.0');
+      pelari.tamat(undefined, 1);
+    });
+    expect(harga).toMatchObject({ hasil: 'tanpa-hasil', biaya_usd: null, jumlah_langkah: 0 });
+    expect(harga.sebab).toEqual({ id: 'harga-penyedia', kalimat: 'Agent tidak dijalankan: harga penyedia model berubah melewati batas yang ditetapkan di kode. Tidak ada biaya. (rincian di terminal)' });
+    expect(harga.pesan).toBe('Error: Penyedia terkunci bermasalah; TIDAK ada panggilan berbayar yang dikirim: - penulis: harga "anthropic" untuk anthropic/claude-opus-5.5 (US$6/30 per juta) di atas batas US$5/25 Bearer [disamarkan]');
+
+    // (c) Sebab yang belum ada di tabel: kalimat umum + lihat terminal; pesan aslinya tetap dikutip, disamarkan.
+    const entah = await akhirDari(() => {
+      pelari.cetak(`TypeError: sesuatu yang belum pernah terjadi di C:\\Users\\orang\\repo\\x.ts dengan ${KUNCI_SECTORS_PALSU}`);
+      pelari.tamat(undefined, 1);
+    });
+    expect(entah.sebab?.id).toBe('tak-dikenal-tanpa-hasil');
+    expect(entah.sebab?.kalimat).toMatch(/Lihat terminal/);
+    expect(entah.pesan).toBe('TypeError: sesuatu yang belum pernah terjadi di [berkas] dengan [disamarkan]');
+    const entahDenganHasil = await akhirDari(() => pelari.tamat({ berhenti: 'galat: Error: hal lain', biaya_usd: 0, simulasi: { terbit: false } }));
+    expect(entahDenganHasil).toMatchObject({ hasil: 'berhenti', sebab: { id: 'tak-dikenal' }, pesan: 'galat: Error: hal lain' });
+    // Keluar tanpa hasil dan tanpa satu baris keluaran pun: tetap ada kalimat, tanpa kutipan.
+    expect(await akhirDari(() => pelari.tamat(undefined, 1))).toMatchObject({ hasil: 'tanpa-hasil', sebab: { id: 'tak-dikenal-tanpa-hasil' }, pesan: null });
+    // Keadaan biasa tidak diberi sebab kesalahan.
+    expect(await akhirDari(() => pelari.tamat({ berhenti: 'batas percakapan', biaya_usd: 0.9, simulasi: { terbit: false } }))).toMatchObject({ hasil: 'berhenti', sebab: null, pesan: null });
+
+    // Tidak ada nilai kunci, alamat berkas mesin, atau kode saham di apa pun yang dikirim ke halaman.
+    for (const t of teksAliran) {
+      expect(t).not.toContain(KUNCI_LLM_PALSU);
+      expect(t).not.toContain(KUNCI_SECTORS_PALSU);
+      expect(t).not.toMatch(/rahasia|Users\\\\orang/);
+      expect(t).not.toContain(KODE_UJI);
+    }
   });
 });
 

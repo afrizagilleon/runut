@@ -22,6 +22,7 @@ import { KALIMAT_MENULIS_ULANG, KELOMPOK_TOOL, KETERANGAN_TOOL, NAMA_TAHAP, PETA
 import { akarSementara, minta, mulaiServer } from './bantu-uji.ts';
 import { kodeRekaman, type HasilTool } from './rekaman-agen.ts';
 import { siapkanReplay } from './replay-agen.ts';
+import { SEBAB_TAK_DIKENAL, SEBAB_TAK_DIKENAL_TANPA_HASIL, TABEL_SEBAB } from './sebab-berhenti.ts';
 
 const HALAMAN = fileURLToPath(new URL('./halaman/', import.meta.url));
 
@@ -68,6 +69,7 @@ interface Murni {
   budgetDariKetikan(teks: unknown, maks: number): number | null;
   persen(nilai: number): string;
   kalimatAkhir(hasil: string): string;
+  kalimatSebab(akhir: unknown): string | null;
   Pemutar: new (pakai: { tampilkan: (l: LangkahUji, gulir: boolean) => void; fase?: (f: string) => void; tuntas?: () => void; berubah?: () => void }, jam?: { sekarang?: () => number }) => PemutarUji;
 }
 
@@ -560,6 +562,24 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
       expect(langgar(t), t).toEqual([]);
       expect(membingkai(t), t).toEqual([]);
     }
+  });
+
+  it('M-PN1 A-1 T-A3: tiap kalimat sebab berhenti yang bisa dikirim server; halaman menampilkannya, dan pesan asli program hanya sebagai kutipan', () => {
+    const kalimat = [...TABEL_SEBAB, SEBAB_TAK_DIKENAL, SEBAB_TAK_DIKENAL_TANPA_HASIL].map((b) => b.kalimat);
+    expect(kalimat.length).toBeGreaterThanOrEqual(12);
+    for (const t of kalimat) {
+      expect(langgar(t), t).toEqual([]);
+      expect(membingkai(t), t).toEqual([]);
+    }
+    // Halaman: kalimat sebab dari server menang atas kalimat keadaan akhir; tanpa sebab → null.
+    expect(M.kalimatSebab({ hasil: 'berhenti', sebab: { id: 'x', kalimat: 'Agent berhenti: contoh.' } })).toBe('Agent berhenti: contoh.');
+    for (const a of [{ hasil: 'terakit', sebab: null }, { hasil: 'berhenti' }, { sebab: { kalimat: '  ' } }, { sebab: { kalimat: 3 } }, null, undefined]) expect(M.kalimatSebab(a), JSON.stringify(a)).toBeNull();
+    const js = readFileSync(join(HALAMAN, 'agen.js'), 'utf8');
+    expect(js).toMatch(/el\('p', \{\}, kalimatSebab\(a\) \?\? kalimatAkhir\(a\.hasil\)\)/);
+    // Pesan asli program (bisa memuat kata apa pun) hanya tampil di satu tempat, berlabel, lewat textContent.
+    expect(js.match(/a\.pesan/g)).toHaveLength(3);
+    expect(js).toMatch(/`\$\{TEKS\.pesanProgram\} `, el\('span', \{ kelas: 'agen-teks-asli' \}, a\.pesan\)/);
+    expect(M.TEKS['pesanProgram']).toBe('Pesan asli dari program:');
   });
 
   it('semua yang dikirim server untuk Ringkas dan Diagram: kalimat langkah, nama tahap, keterangan tool, keterangan penyetuju', () => {

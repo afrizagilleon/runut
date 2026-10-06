@@ -13,7 +13,7 @@
 // Semua teks dari server dimasukkan lewat textContent; tidak ada HTML yang dirakit dari teks.
 // Teks tetap halaman ada di agen-murni.js (`TEKS`), yang juga dites.
 import {
-  KECEPATAN, LAMA_TERBANG_MS, Pemutar, TEKS, angkaLangkah, angkaSingkat, biayaLangkah, budgetDariKetikan, capLangkah, dolar, kalimatAkhir, keadaanAgen,
+  KECEPATAN, LAMA_TERBANG_MS, Pemutar, TEKS, angkaLangkah, angkaSingkat, biayaLangkah, budgetDariKetikan, capLangkah, dolar, kalimatAkhir, kalimatSebab, keadaanAgen,
   kodeDariKetikan, labelStatus, persen, potongNama, ringkasTahap, tanggalPanjang, toolBerhasil, uraiSse,
 } from './agen-murni.js';
 
@@ -648,7 +648,10 @@ function gambarAkhir() {
   wadah.hidden = a === null;
   if (a === null) return;
   wadah.append(
-    el('p', {}, kalimatAkhir(a.hasil)),
+    // Bila agent berhenti karena kesalahan, server mengirim sebabnya dalam kalimat biasa; selain itu kalimat keadaan akhir.
+    el('p', {}, kalimatSebab(a) ?? kalimatAkhir(a.hasil)),
+    // Pesan asli program: kutipan yang sudah disamarkan server, ditandai sebagai kutipan.
+    typeof a.pesan === 'string' && a.pesan !== '' ? el('p', { kelas: 'meta' }, `${TEKS.pesanProgram} `, el('span', { kelas: 'agen-teks-asli' }, a.pesan)) : null,
     a.hasil === 'terakit' ? el('p', { kelas: 'meta' }, TEKS.akhirLanjut) : null,
     el('p', { kelas: 'meta' }, TEKS.akhirFolder(a.folder), a.biaya_usd === null ? null : ` · ${TEKS.akhirBiaya(dolar(a.biaya_usd))}`),
   );

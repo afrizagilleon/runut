@@ -38,6 +38,7 @@ export const TEKS = {
   akhirBerhenti: 'Agent berhenti sebelum tiga soal terakit. Sebabnya tercatat di hasil.json di folder keluaran dan di terminal.',
   akhirDihentikan: 'Dihentikan dari halaman ini. Proses agent sudah dimatikan; panggilan yang terkirim sebelum itu tetap tercatat biayanya.',
   akhirTanpaHasil: 'Proses agent berhenti sebelum menulis hasil. Sebabnya ada di terminal tempat npm run penyusun dinyalakan.',
+  pesanProgram: 'Pesan asli dari program:',
   akhirFolder: (folder) => `Folder keluaran: ${folder}`,
   akhirBiaya: (biaya) => `Biaya tercatat: ${biaya}.`,
   galatSambungLangsung: 'Sambungan ke server terputus. Agent tetap bekerja di server; muat ulang halaman untuk melihat langkahnya lagi.',
@@ -289,6 +290,15 @@ export function kalimatAkhir(hasil) {
   if (hasil === 'dihentikan') return TEKS.akhirDihentikan;
   if (hasil === 'tanpa-hasil') return TEKS.akhirTanpaHasil;
   return TEKS.akhirBerhenti;
+}
+
+/**
+ * Kalimat sebab berhenti yang dikirim server (`akhir.sebab.kalimat`, dari
+ * `sebab-berhenti.ts`), atau `null` bila server tidak mengirim sebab.
+ */
+export function kalimatSebab(akhir) {
+  const k = akhir?.sebab?.kalimat;
+  return typeof k === 'string' && k.trim() !== '' ? k : null;
 }
 
 /** "15 Juni 2026" dari "2026-06-15". */

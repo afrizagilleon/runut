@@ -29,6 +29,7 @@ import type { ServerResponse } from 'node:http';
 import { isAbsolute, join, relative, sep } from 'node:path';
 import { TOLERANSI_PAGU } from '../../factory/llm/agen/anggaran.ts';
 import { PerakitLangkah, samarkan, samarkanDalam, uraiTanpaPenalaran } from './rekaman-agen.ts';
+import { SEBAB_TAK_DIKENAL, SEBAB_TAK_DIKENAL_TANPA_HASIL, barisGalatTerakhir, berhentiKarenaGalat, samarkanKeluaran, sebabBerhenti, type SebabBerhenti } from './sebab-berhenti.ts';
 import { bukaSse, kepalaTampil, langkahTampil, menulisDraf, periksaBersih, toolDiagram, type KepalaTampil, type LangkahTampil } from './replay-agen.ts';
 
 /* --- uang --------------------------------------------------------------------- */
@@ -176,7 +177,18 @@ export interface AkhirLangsung {
   /** `hasil.json` → `biaya_usd`, bila ada. */
   biaya_usd: number | null;
   jumlah_langkah: number;
+  /**
+   * Sebab berhenti dalam kalimat biasa (`sebab-berhenti.ts`), bila agent berhenti
+   * karena kesalahan: `hasil.json` → `berhenti` berawalan `galat:`, atau proses
+   * keluar tanpa `hasil.json`. `null` untuk keadaan biasa (terakit, budget, dihentikan).
+   */
+  sebab: SebabBerhenti | null;
+  /** Kutipan pesan asli program, sudah disamarkan (`samarkanKeluaran`); `null` bila tidak ada. */
+  pesan: string | null;
 }
+
+/** Berapa baris terakhir keluaran proses agent yang disimpan untuk mencari sebab berhenti. */
+export const BARIS_EKOR = 80;
 
 export interface OpsiLangsung {
   pelari: PelariAgen;
@@ -225,6 +237,8 @@ export class JalanLangsung {
   private terkirim = 0;
   private paketDibaca = false;
   private dimintaBerhenti = false;
+  /** Baris terakhir keluaran proses agent (yang juga tampil di terminal). */
+  private readonly ekor: string[] = [];
 
   constructor(o: OpsiLangsung) {
     this.o = o;
@@ -246,7 +260,13 @@ export class JalanLangsung {
       sumber: [`${this.folderTampil}jejak-agen.jsonl (teks berpikir model tidak ikut)`],
     });
     this.catat('kepala', this.kepala);
-    this.proses = o.pelari.mulai({ id: o.id, kode: o.kode, budgetUsd: o.budgetUsd, folder: this.folder, kreditSectors: o.kreditSectors, log: o.log });
+    // Keluaran proses agent tetap ke terminal; ekornya disimpan untuk menjelaskan sebab berhenti di halaman.
+    const log = (baris: string): void => {
+      this.ekor.push(baris);
+      if (this.ekor.length > BARIS_EKOR) this.ekor.shift();
+      o.log(baris);
+    };
+    this.proses = o.pelari.mulai({ id: o.id, kode: o.kode, budgetUsd: o.budgetUsd, folder: this.folder, kreditSectors: o.kreditSectors, log });
     this.timer = setInterval(() => this.baca(), o.selangMs);
     this.timer.unref();
     void this.proses.selesai.then((h) => this.tutup(h.kodeKeluar));
@@ -365,12 +385,27 @@ export class JalanLangsung {
     };
     const hasil = bacaHasil();
     const biaya = typeof hasil?.biaya_usd === 'number' ? hasil.biaya_usd : null;
-    if (this.dimintaBerhenti) return { ...dasar, hasil: 'dihentikan', biaya_usd: biaya };
-    if (hasil === null) return { ...dasar, hasil: 'tanpa-hasil', biaya_usd: null };
-    if (hasil.simulasi?.terbit === true) return { ...dasar, hasil: 'terakit', biaya_usd: biaya };
+    const biasa = { sebab: null, pesan: null };
+    if (this.dimintaBerhenti) return { ...dasar, ...biasa, hasil: 'dihentikan', biaya_usd: biaya };
+    if (hasil === null) {
+      // Proses keluar sebelum menulis hasil.json: sebabnya dicari di keluaran proses (A-1 T-A3 b).
+      const baris = barisGalatTerakhir(this.ekor);
+      return {
+        ...dasar,
+        hasil: 'tanpa-hasil',
+        biaya_usd: null,
+        sebab: sebabBerhenti(this.ekor.join('\n')) ?? SEBAB_TAK_DIKENAL_TANPA_HASIL,
+        pesan: baris === null ? null : samarkanKeluaran(baris, this.terlarang),
+      };
+    }
+    if (hasil.simulasi?.terbit === true) return { ...dasar, ...biasa, hasil: 'terakit', biaya_usd: biaya };
     // `jalan-agen.ts`: "anggaran tidak cukup untuk satu langkah lagi".
-    if (typeof hasil.berhenti === 'string' && /^anggaran\b/.test(hasil.berhenti)) return { ...dasar, hasil: 'budget', biaya_usd: biaya };
-    return { ...dasar, hasil: 'berhenti', biaya_usd: biaya };
+    if (typeof hasil.berhenti === 'string' && /^anggaran\b/.test(hasil.berhenti)) return { ...dasar, ...biasa, hasil: 'budget', biaya_usd: biaya };
+    // `jalan-agen.ts`: "galat: <nama>: <pesan>" atau "gerbang rusak: …" (A-1 T-A3 a).
+    if (berhentiKarenaGalat(hasil.berhenti)) {
+      return { ...dasar, hasil: 'berhenti', biaya_usd: biaya, sebab: sebabBerhenti(hasil.berhenti) ?? SEBAB_TAK_DIKENAL, pesan: samarkanKeluaran(hasil.berhenti, this.terlarang) };
+    }
+    return { ...dasar, ...biasa, hasil: 'berhenti', biaya_usd: biaya };
   }
 
   private tutup(kodeKeluar: number | null): void {
@@ -380,7 +415,7 @@ export class JalanLangsung {
     this.akhir = this.bacaAkhir();
     this.keadaan = this.dimintaBerhenti ? 'dihentikan' : 'selesai';
     this.catat('akhir', this.akhir);
-    this.o.log(`agent langsung ${this.id}: ${this.akhir.hasil}; ${String(this.terkirim)} langkah; kode keluar ${kodeKeluar === null ? '-' : String(kodeKeluar)}; folder ${this.folderTampil}`);
+    this.o.log(`agent langsung ${this.id}: ${this.akhir.hasil}${this.akhir.sebab === null ? '' : ` (${this.akhir.sebab.id})`}; ${String(this.terkirim)} langkah; kode keluar ${kodeKeluar === null ? '-' : String(kodeKeluar)}; folder ${this.folderTampil}`);
     for (const res of this.pelanggan) {
       res.write('event: selesai\ndata: {}\n\n');
       res.end();
