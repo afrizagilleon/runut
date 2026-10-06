@@ -15,6 +15,7 @@
         <h1>AI agent penyusun</h1>
         <p class="meta">Ketik kode saham. AI agent memilih sendiri tool mana yang dipanggil, kapan, dan berapa kali, sampai satu simulasi jadi: tiga soal, kartunya, dan bagian "apa yang terjadi sesudahnya". Berjalan di komputermu saja (127.0.0.1).</p>
         <p class="meta" id="mode"></p>
+        <p class="tidak" id="pita-tiruan" role="status" hidden></p>
       </div>
     </div>
   </header>
@@ -26,14 +27,38 @@
         <form id="form-agen" class="baris-form" autocomplete="off">
           <label for="kode">Kode saham (empat huruf)</label>
           <input id="kode" name="kode" type="text" inputmode="text" maxlength="4" required>
-          <button type="submit" class="tombol tombol-utama" id="tombol-putar">Putar kerja agent</button>
         </form>
-        <p class="meta" id="petunjuk-kode"></p>
         <p class="tidak" id="galat-kode" role="alert" hidden></p>
+
+        <div class="kotak-catatan" id="pilih-jalankan">
+          <h3>Jalankan Runut Agent</h3>
+          <p class="meta">AI agent sungguhan bekerja sekarang untuk kode saham di atas: memanggil model lewat OpenRouter dengan kuncimu (berbayar) dan menulis rekaman baru di eval/penyusun/. Langkahnya muncul di bawah begitu selesai ditulis.</p>
+          <p id="nonaktif-jalankan" hidden></p>
+          <button type="button" class="tombol tombol-utama" id="tombol-jalankan">Jalankan Runut Agent</button>
+          <div id="setuju-jalankan" hidden>
+            <p id="pernyataan-biaya"></p>
+            <div class="baris-form">
+              <label for="budget">Budget (dolar AS)</label>
+              <input id="budget" name="budget" type="text" inputmode="decimal" maxlength="6" autocomplete="off">
+            </div>
+            <p id="baris-kredit" hidden><label><input type="checkbox" id="setuju-kredit"> <span id="teks-kredit"></span></label></p>
+            <button type="button" class="tombol tombol-utama" id="tombol-setuju">Setuju, jalankan dengan budget ini</button>
+            <button type="button" class="tombol" id="tombol-batal">Batal</button>
+          </div>
+        </div>
+
+        <div class="kotak-catatan" id="pilih-putar">
+          <h3>Putar ulang rekaman</h3>
+          <p class="meta">Memutar ulang rekaman kerja Runut Agent yang sudah ada di repo. Tidak ada model yang dipanggil: tanpa API key, tanpa biaya.</p>
+          <p class="meta" id="petunjuk-kode"></p>
+          <button type="submit" form="form-agen" class="tombol" id="tombol-putar">Putar ulang rekaman</button>
+        </div>
       </section>
 
       <section id="agen-kerja" class="bagian" aria-labelledby="judul-kerja" hidden>
         <h2 id="judul-kerja">Agent bekerja</h2>
+        <p class="tidak" id="pita-tiruan-kerja" role="status" hidden></p>
+        <p class="meta" id="agen-asal"></p>
 
         <div class="agen-bilah" id="agen-bilah">
           <div class="agen-sakelar" role="group" aria-label="Tampilan">
@@ -48,6 +73,7 @@
               <select id="kecepatan"></select>
             </label>
             <button type="button" class="tombol" id="tombol-ulang" hidden>Putar dari awal</button>
+            <button type="button" class="tombol tombol-bahaya" id="tombol-hentikan" hidden>Hentikan agent</button>
           </div>
           <div class="agen-keadaan">
             <p class="agen-kini" id="agen-kini" aria-live="polite"></p>
@@ -55,6 +81,8 @@
             <div class="agen-ukur" aria-hidden="true"><span id="agen-ukur-isi"></span></div>
           </div>
         </div>
+
+        <div class="kotak-catatan" id="agen-akhir" aria-live="polite" hidden></div>
 
         <div data-tampilan-isi="ringkas">
           <p class="meta" id="keterangan-ringkas"></p>

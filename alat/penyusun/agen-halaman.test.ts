@@ -13,7 +13,8 @@
  *    dan tidak ada pecahan hitungan di teks kami.
  * 5. Baris tanpa tool result tidak digambar (F-2); label waktu dan budget (F-6).
  */
-import { readFileSync } from 'node:fs';
+import { mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -64,6 +65,9 @@ interface Murni {
   keadaanAgen(fase: string, gerak: string, adaLangkah: boolean): string;
   capLangkah(l: { ringkas: Array<{ status: string | null }> }): string[];
   toolBerhasil(l: { hasil: Array<{ alat: string }> }, tool: Array<{ nama: string; nama_lama: string[] }>): number[];
+  budgetDariKetikan(teks: unknown, maks: number): number | null;
+  persen(nilai: number): string;
+  kalimatAkhir(hasil: string): string;
   Pemutar: new (pakai: { tampilkan: (l: LangkahUji, gulir: boolean) => void; fase?: (f: string) => void; tuntas?: () => void; berubah?: () => void }, jam?: { sekarang?: () => number }) => PemutarUji;
 }
 
@@ -453,6 +457,104 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
       }
     } finally {
       await s.tutup();
+    }
+  });
+
+  it('M-PN1: pesan rute "Jalankan Runut Agent" yang bisa sampai ke halaman (tanpa kunci, tanpa setuju, budget, kredit, kerja kedua, hentikan)', async () => {
+    // PELARI TIRUAN UJI: tidak menulis dan tidak memanggil apa pun; hanya ada supaya pesan "masih ada yang bekerja" bisa dipancing.
+    let beres: (h: { kodeKeluar: number | null }) => void = () => undefined;
+    const pelari = { tiruan: false, folderDasar: mkdtempSync(join(tmpdir(), 'pn1-pesan-')), mulai: () => ({ pid: null, hentikan: () => beres({ kodeKeluar: null }), selesai: new Promise<{ kodeKeluar: number | null }>((b) => (beres = b)) }) };
+    const pesan: string[] = [];
+    const galat = async (port: number, metode: string, jalur: string, badan?: unknown): Promise<void> => {
+      const j = await minta(port, metode, jalur, badan === undefined ? {} : { badan });
+      expect(j.status, `${metode} ${jalur} ${JSON.stringify(badan)}`).toBeGreaterThanOrEqual(400);
+      pesan.push((j.json() as { galat: string }).galat);
+    };
+    const tanpaKunci = await mulaiServer({ akar: akarSementara(null), replayAgen: {}, agenLangsung: { pelari } });
+    try {
+      pesan.push(((await minta(tanpaKunci.port, 'GET', '/api/status')).json() as { jalankan: { alasan: string } }).jalankan.alasan);
+      await galat(tanpaKunci.port, 'POST', '/api/agen/jalankan', { kode: 'TIRT', setuju: true, budget_usd: 1 });
+      await galat(tanpaKunci.port, 'GET', '/api/agen/langsung/aliran');
+      await galat(tanpaKunci.port, 'POST', '/api/agen/hentikan', {});
+      await galat(tanpaKunci.port, 'POST', '/api/siapkan', {});
+    } finally {
+      await tanpaKunci.tutup();
+    }
+    const s = await mulaiServer({ akar: akarSementara(), replayAgen: {}, agenLangsung: { pelari } });
+    try {
+      await galat(s.port, 'POST', '/api/agen/jalankan', { kode: 'TIRT', budget_usd: 1 });
+      await galat(s.port, 'POST', '/api/agen/jalankan', { kode: 'TIRT', setuju: true, budget_usd: 9 });
+      await galat(s.port, 'POST', '/api/agen/jalankan', { kode: '1', setuju: true, budget_usd: 1 });
+      await galat(s.port, 'POST', '/api/agen/jalankan', { kode: 'TIRT', setuju: true, budget_usd: 1 });
+      await galat(s.port, 'GET', '/api/agen/siap?kode=1');
+      expect((await minta(s.port, 'POST', '/api/agen/jalankan', { badan: { kode: 'TIRT', setuju: true, budget_usd: 1, setuju_kredit: true } })).status).toBe(202);
+      await galat(s.port, 'POST', '/api/agen/jalankan', { kode: 'TIRT', setuju: true, budget_usd: 1, setuju_kredit: true });
+      s.keadaan.langsung?.hentikan();
+    } finally {
+      await s.tutup();
+    }
+    expect(pesan).toHaveLength(11);
+    expect(pesan.join(' | ')).toMatch(/LLM_API_KEY/);
+    expect(pesan.join(' | ')).toMatch(/kredit Sectors/);
+    expect(pesan.join(' | ')).toMatch(/hanya satu yang boleh bekerja/);
+    for (const t of pesan) {
+      expect(t.length, t).toBeGreaterThan(20);
+      expect(langgar(t), t).toEqual([]);
+      expect(membingkai(t), t).toEqual([]);
+    }
+  });
+
+  it('M-PN1: dua pilihan berjudul jujur; persetujuan hanya dikirim dari satu tombol; rekaman tidak bisa menyamar sebagai kerja langsung', () => {
+    const html = readFileSync(join(HALAMAN, 'agen.html'), 'utf8');
+    // Kode saja: komentar dibuang lebih dulu.
+    const js = readFileSync(join(HALAMAN, 'agen.js'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    // Judul dan tombol: "Jalankan Runut Agent" dan "Putar ulang rekaman"; nama lama yang menyesatkan hilang.
+    expect(html).toMatch(/<h3>Jalankan Runut Agent<\/h3>/);
+    expect(html).toMatch(/<h3>Putar ulang rekaman<\/h3>/);
+    expect(html).toMatch(/id="tombol-jalankan">Jalankan Runut Agent<\/button>/);
+    expect(html).toMatch(/id="tombol-putar">Putar ulang rekaman<\/button>/);
+    expect(html).toMatch(/id="tombol-hentikan" hidden>Hentikan agent<\/button>/);
+    expect(M.TEKS['tombolPutar']).toBe('Putar ulang rekaman');
+    expect(M.TEKS['tombolJalankan']).toBe('Jalankan Runut Agent');
+    expect(`${html}\n${js}\n${JSON.stringify(Object.values(M.TEKS).filter((v) => typeof v === 'string'))}`).not.toMatch(/Putar kerja agent/);
+    // Pita pelari tiruan: kalimatnya, dan dua tempatnya di halaman.
+    expect(M.TEKS['pitaTiruan']).toMatch(/^PELARI TIRUAN — bukan agent sungguhan\./);
+    expect(html).toMatch(/id="pita-tiruan" role="status" hidden>/);
+    expect(html).toMatch(/id="pita-tiruan-kerja" role="status" hidden>/);
+    expect(js).toMatch(/j\.tiruan === true\) \{\s+\$\('pita-tiruan'\)\.textContent = TEKS\.pitaTiruan;\s+\$\('pita-tiruan'\)\.hidden = false;/);
+    // `setuju: true` dikirim dari SATU tempat: fungsi tombol setuju. Tombol "Jalankan" sendiri hanya membuka pernyataan biaya.
+    expect(js.match(/setuju: true/g)).toHaveLength(1);
+    expect(js.match(/'\/api\/agen\/jalankan'/g)).toHaveLength(1);
+    expect(js).toMatch(/async function setujuJalankan\(\) \{[\s\S]*?kirim\('\/api\/agen\/jalankan', \{ kode, setuju: true, budget_usd: budget[\s\S]*?\n\}/);
+    const buka = /async function bukaSetuju\(\) \{[\s\S]*?\n\}/.exec(js)?.[0] ?? '';
+    expect(buka).toMatch(/TEKS\.pernyataanBiaya/);
+    expect(buka).not.toMatch(/kirim\(|method: 'POST'/);
+    expect(js).toMatch(/\$\('tombol-setuju'\)\.addEventListener\('click', \(\) => void setujuJalankan\(\)\)/);
+    // Enter di kolom kode dan tombol "Putar dari awal" hanya pernah memutar rekaman.
+    const kirimForm = /\$\('form-agen'\)\.addEventListener\('submit'[\s\S]*?\n {2}\}\);/.exec(js)?.[0] ?? '';
+    expect(kirimForm).toMatch(/void putar\(kode\)/);
+    expect(kirimForm).not.toMatch(/ikutiLangsung|setujuJalankan|bukaSetuju|kirim\(/);
+    expect(js).toMatch(/\$\('tombol-ulang'\)\.hidden = !tuntas \|\| langsung;/);
+    // Alamat aliran: rekaman dan kerja langsung tidak pernah tertukar.
+    expect(/async function putar\(kode\) \{[\s\S]*?\n\}/.exec(js)?.[0]).toMatch(/\/api\/agen\/aliran\?kode=/);
+    expect(/async function putar\(kode\) \{[\s\S]*?\n\}/.exec(js)?.[0]).not.toMatch(/langsung/);
+    expect(/async function ikutiLangsung\(\) \{[\s\S]*?\n\}/.exec(js)?.[0]).toMatch(/'\/api\/agen\/langsung\/aliran'/);
+    expect(js.match(/\/api\/agen\/aliran\?kode=/g)).toHaveLength(1);
+  });
+
+  it('M-PN1: budget dari ketikan, persen, dan kalimat keadaan akhir (keadaan + langkah berikutnya, tanpa pembingkaian)', () => {
+    expect(M.budgetDariKetikan('1,5', 2)).toBe(1.5);
+    expect(M.budgetDariKetikan(' 2 ', 2)).toBe(2);
+    expect(M.budgetDariKetikan('0.25', 2)).toBe(0.25);
+    for (const t of ['2,01', '0', '-1', '', 'abc', '1e1', '1.5.0', null, undefined, '99']) expect(M.budgetDariKetikan(t, 2), String(t)).toBeNull();
+    expect(M.persen(0.15)).toBe('15%');
+    const akhir = ['terakit', 'budget', 'berhenti', 'dihentikan', 'tanpa-hasil'].map((h) => M.kalimatAkhir(h));
+    expect(new Set(akhir).size).toBe(5);
+    expect(M.kalimatAkhir('entah')).toBe(M.kalimatAkhir('berhenti'));
+    expect(M.kalimatAkhir('budget')).toMatch(/^Agent berhenti karena budget tidak cukup untuk satu langkah lagi\. .*(jalankan lagi|lanjutkan)/);
+    for (const t of akhir) {
+      expect(langgar(t), t).toEqual([]);
+      expect(membingkai(t), t).toEqual([]);
     }
   });
 

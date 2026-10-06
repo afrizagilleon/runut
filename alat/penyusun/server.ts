@@ -508,13 +508,31 @@ function statusJalankan(keadaan: KeadaanServer): Record<string, unknown> | null 
   };
 }
 
+/**
+ * Data saham di cache lokal, atau `null`. Cache yang belum ada sama sekali (repo
+ * yang baru di-clone tidak punya `.cache/sectors`) berarti "belum ada data",
+ * bukan galat. Pelari (proses lain) bisa baru saja mengisi cache, jadi bila
+ * belum ada, cache dibaca ulang sekali.
+ */
+function dataCache(keadaan: KeadaanServer, kode: string): ReturnType<PemuatGudang['emiten']> {
+  const baca = (): ReturnType<PemuatGudang['emiten']> => {
+    try {
+      return keadaan.gudang.emiten(kode);
+    } catch {
+      return null;
+    }
+  };
+  const ada = baca();
+  if (ada !== null) return ada;
+  keadaan.gudang.lupakan();
+  return baca();
+}
+
 /** Apakah data saham ini sudah ada di cache lokal (kalau belum, pelari perlu izin memakai kredit Sectors). */
 daftarRute('GET', '/api/agen/siap', (_req, res, { keadaan, url }) => {
   const pelari = wajibPelari(keadaan);
   const kode = wajibKode(url.searchParams.get('kode'));
-  // Pelari (proses lain) bisa baru saja mengisi cache: bila belum ada, cache dibaca ulang sekali.
-  if (keadaan.gudang.emiten(kode) === null) keadaan.gudang.lupakan();
-  const adaData = keadaan.gudang.emiten(kode) !== null;
+  const adaData = dataCache(keadaan, kode) !== null;
   const o = keadaan.opsi;
   kirimJson(res, 200, {
     kode,
@@ -540,7 +558,7 @@ daftarRute('POST', '/api/agen/jalankan', (_req, res, { keadaan, badan }) => {
   if (budget === null) throw new GalatPermintaan(400, `Budget harus angka dolar di atas 0 dan paling banyak ${String(BUDGET_SUSUN_MAKS_USD)}.`);
   const kunci = kunciJalankan(keadaan, pelari);
   if (!kunci.siap) throw new GalatPermintaan(400, kunci.alasan ?? 'Kunci API belum diisi.');
-  const data = keadaan.gudang.emiten(kode);
+  const data = dataCache(keadaan, kode);
   const perluKredit = !pelari.tiruan && data === null;
   if (perluKredit) {
     if (b['setuju_kredit'] !== true) throw new GalatPermintaan(400, `Data ${kode} belum ada di cache lokal. Centang izin mengambilnya dari Sectors API (memakai kredit Sectors) dulu.`);

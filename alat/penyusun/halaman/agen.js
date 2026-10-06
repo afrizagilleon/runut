@@ -13,8 +13,8 @@
 // Semua teks dari server dimasukkan lewat textContent; tidak ada HTML yang dirakit dari teks.
 // Teks tetap halaman ada di agen-murni.js (`TEKS`), yang juga dites.
 import {
-  KECEPATAN, LAMA_TERBANG_MS, Pemutar, TEKS, angkaLangkah, angkaSingkat, biayaLangkah, capLangkah, dolar, keadaanAgen,
-  kodeDariKetikan, labelStatus, potongNama, ringkasTahap, tanggalPanjang, toolBerhasil, uraiSse,
+  KECEPATAN, LAMA_TERBANG_MS, Pemutar, TEKS, angkaLangkah, angkaSingkat, biayaLangkah, budgetDariKetikan, capLangkah, dolar, kalimatAkhir, keadaanAgen,
+  kodeDariKetikan, labelStatus, persen, potongNama, ringkasTahap, tanggalPanjang, toolBerhasil, uraiSse,
 } from './agen-murni.js';
 
 /* ------------------------------------------------------------------ */
@@ -79,6 +79,20 @@ function daftarTool(nama) {
 
 const k = {
   kode: null,
+  /**
+   * Dari mana langkah di layar berasal: 'putar' (rekaman di repo) atau
+   * 'langsung' (pelari agent yang sedang bekerja). Tidak pernah berganti diam-diam:
+   * hanya `putar()` dan `ikutiLangsung()` yang mengisinya.
+   */
+  sumber: null,
+  /** Bagian `jalankan` dari /api/status: boleh tidaknya menjalankan agent, batas budget, pelari tiruan. */
+  jalankan: null,
+  /** Kode saham yang sedang dimintai persetujuan (kotak setuju terbuka). */
+  kodeSetuju: null,
+  /** Ada kerja agent dari halaman ini yang belum berakhir. */
+  bekerja: false,
+  /** Keadaan akhir kerja agent yang dijalankan dari halaman (peristiwa `akhir`). */
+  akhir: null,
   kepala: null,
   /** Langkah yang sudah ditampilkan. */
   tampil: [],
@@ -443,14 +457,18 @@ function gambarKeadaan() {
     const namaTahap = k.kepala.tahap.find((x) => x.id === l.tahap)?.nama ?? l.tahap;
     bagian.push(`${TEKS.langkah(l.no, jumlah)} · ${namaTahap}`);
   }
-  if (tuntas) bagian.push(k.simulasi === null ? TEKS.agenSelesaiTanpaSimulasi : TEKS.agenSelesai);
+  const langsung = k.sumber === 'langsung';
+  if (tuntas && langsung) bagian.push(k.akhir?.hasil === 'terakit' ? TEKS.agenSelesaiTanpaSimulasi : k.akhir?.hasil === 'dihentikan' ? TEKS.agenDihentikan : TEKS.agenBerhenti);
+  else if (tuntas) bagian.push(k.simulasi === null ? TEKS.agenSelesaiTanpaSimulasi : TEKS.agenSelesai);
   else if (jeda) bagian.push(TEKS.agenDijeda);
   else if (fase() === 'pikir') bagian.push(TEKS.agenBerpikir);
   else if (p !== null && p.antrean.length === 0 && !p.aliranSelesai) bagian.push(TEKS.agenMenunggu);
   $('agen-kini').textContent = bagian.join(' — ');
   if (k.kepala !== null) {
     const biaya = k.tampil.reduce((j, x) => j + biayaLangkah(x), 0);
-    $('agen-biaya').textContent = TEKS.biayaBudget(dolar(biaya), dolar(k.kepala.budget_usd), k.kepala.jumlah_rekaman);
+    $('agen-biaya').textContent = langsung
+      ? TEKS.biayaBudgetLangsung(dolar(biaya), dolar(k.kepala.budget_usd))
+      : TEKS.biayaBudget(dolar(biaya), dolar(k.kepala.budget_usd), k.kepala.jumlah_rekaman);
     const persen = k.kepala.budget_usd > 0 ? Math.min(100, (biaya / k.kepala.budget_usd) * 100) : 0;
     $('agen-ukur-isi').style.width = `${persen.toFixed(1)}%`;
   }
@@ -459,7 +477,10 @@ function gambarKeadaan() {
   jedaTombol.setAttribute('aria-pressed', jeda ? 'true' : 'false');
   jedaTombol.hidden = tuntas;
   $('tombol-lompat').hidden = tuntas;
-  $('tombol-ulang').hidden = !tuntas;
+  // "Putar dari awal" hanya untuk rekaman: kerja agent yang sungguhan tidak diputar ulang dari tombol ini.
+  $('tombol-ulang').hidden = !tuntas || langsung;
+  $('tombol-hentikan').hidden = !(langsung && k.bekerja);
+  kunciPilihan();
   document.documentElement.dataset.agen = tuntas ? 'tuntas' : jeda ? 'jeda' : 'putar';
   document.documentElement.dataset.langkah = String(k.tampil.length);
 }
@@ -499,6 +520,7 @@ function pemutarBaru() {
     tuntas: () => {
       aturGerak('tiba');
       if (k.simulasi !== null) gambarSimulasi(k.simulasi);
+      gambarAkhir();
       gambarKeadaan();
     },
     berubah: gambarKeadaan,
@@ -589,9 +611,17 @@ function terimaKepala(kepala) {
   k.kepala = kepala;
   k.hitung = kepala.tool.map(() => 0);
   $('agen-kerja').hidden = false;
+  // Judul dan baris asal mengatakan dengan jujur apa yang sedang dilihat: kerja yang berlangsung, atau rekaman.
+  const langsung = kepala.mode === 'langsung';
+  $('judul-kerja').textContent = langsung ? TEKS.judulKerja : TEKS.judulPutar;
+  $('agen-asal').textContent = langsung ? TEKS.asalLangsung(k.jalankan?.kerja?.folder ?? '') : TEKS.asalPutar;
+  const pita = $('pita-tiruan-kerja');
+  pita.hidden = !(langsung && k.jalankan?.tiruan === true);
+  pita.textContent = TEKS.pitaTiruan;
   const lama = kepala.tool.filter((t) => t.nama_lama.length > 0).map((t) => TEKS.namaLama(t.nama, t.nama_lama.join(', ')));
   $('keterangan-ringkas').textContent = TEKS.keteranganRingkas;
-  $('keterangan-rinci').textContent = [TEKS.keteranganRinci, TEKS.keteranganWaktu, TEKS.keteranganBudget(dolar(kepala.budget_usd), kepala.jumlah_rekaman), ...lama].join(' ');
+  const budget = langsung ? TEKS.keteranganBudgetLangsung(dolar(kepala.budget_usd)) : TEKS.keteranganBudget(dolar(kepala.budget_usd), kepala.jumlah_rekaman);
+  $('keterangan-rinci').textContent = [TEKS.keteranganRinci, TEKS.keteranganWaktu, budget, ...lama].join(' ');
   $('pokok-diagram').textContent = TEKS.pokokDiagram(kepala.tool.length);
   gambarLegenda();
   const sumber = kosongkan($('sumber-isi'));
@@ -606,13 +636,42 @@ function terima(p) {
   if (p.jenis === 'kepala' && p.data !== null) terimaKepala(p.data);
   else if (p.jenis === 'langkah' && p.data !== null) k.pemutar?.terima(p.data);
   else if (p.jenis === 'simulasi' && p.data !== null) k.simulasi = p.data;
-  else if (p.jenis === 'selesai') k.pemutar?.selesaiAliran();
+  else if (p.jenis === 'akhir' && p.data !== null) {
+    // Pelari sudah berhenti: tombol Hentikan hilang sekarang; kalimat akhirnya tampil sesudah langkah terakhir.
+    k.akhir = p.data;
+    k.bekerja = false;
+    gambarKeadaan();
+  } else if (p.jenis === 'selesai') k.pemutar?.selesaiAliran();
+}
+
+/** Keadaan akhir kerja agent yang dijalankan dari halaman: kalimatnya, folder keluaran, biaya tercatat. */
+function gambarAkhir() {
+  const a = k.akhir;
+  const wadah = kosongkan($('agen-akhir'));
+  wadah.hidden = a === null;
+  if (a === null) return;
+  wadah.append(
+    a.tiruan ? el('p', { kelas: 'tidak' }, TEKS.akhirTiruan) : null,
+    el('p', {}, kalimatAkhir(a.hasil)),
+    a.hasil === 'terakit' ? el('p', { kelas: 'meta' }, TEKS.akhirLanjut) : null,
+    el('p', { kelas: 'meta' }, TEKS.akhirFolder(a.folder), a.biaya_usd === null ? null : ` · ${TEKS.akhirBiaya(dolar(a.biaya_usd))}`),
+  );
+  document.documentElement.dataset.akhir = a.hasil;
+}
+
+/** Selagi agent bekerja dari halaman ini, dua pilihan di atas dikunci (hanya satu kerja pada satu waktu). */
+function kunciPilihan() {
+  const j = k.jalankan;
+  $('tombol-jalankan').disabled = j === null || j.siap !== true || k.bekerja;
+  $('tombol-putar').disabled = k.bekerja;
 }
 
 function setel() {
   k.pemutar?.matikan();
   k.batal?.abort();
-  Object.assign(k, { kepala: null, tampil: [], simulasi: null, hitung: [], batal: null, pemutar: null, gerak: 'tiba', gen: k.gen + 1 });
+  Object.assign(k, { kepala: null, tampil: [], simulasi: null, akhir: null, sumber: null, hitung: [], batal: null, pemutar: null, gerak: 'tiba', gen: k.gen + 1 });
+  kosongkan($('agen-akhir')).hidden = true;
+  delete document.documentElement.dataset.akhir;
   kosongkan($('agen-kirim'));
   kosongkan($('agen-cap')).dataset.langkah = '';
   k.tahap.clear();
@@ -626,21 +685,45 @@ function setel() {
   document.documentElement.dataset.agen = 'putar';
 }
 
+function tampilGalat(pesan) {
+  const galat = $('galat-kode');
+  galat.textContent = pesan;
+  galat.hidden = false;
+}
+
+/** Pilihan B: putar ulang rekaman yang ada di repo. Tidak memanggil apa pun selain berkas rekaman. */
 async function putar(kode) {
   setel();
   k.kode = kode;
+  k.sumber = 'putar';
+  document.documentElement.dataset.sumber = 'putar';
   k.pemutar = pemutarBaru();
+  await bacaAliran(`/api/agen/aliran?kode=${encodeURIComponent(kode)}`, TEKS.galatSambung);
+}
+
+/** Pilihan A: ikuti kerja agent yang SEDANG dijalankan server (sesudah klik setuju, atau sesudah halaman dimuat ulang). */
+async function ikutiLangsung() {
+  setel();
+  k.sumber = 'langsung';
+  k.bekerja = true;
+  document.documentElement.dataset.sumber = 'langsung';
+  k.pemutar = pemutarBaru();
+  kunciPilihan();
+  await bacaAliran('/api/agen/langsung/aliran', TEKS.galatSambungLangsung);
+}
+
+/** Baca satu aliran SSE sampai habis; peristiwanya masuk ke pemutar yang sama untuk kedua pilihan. */
+async function bacaAliran(alamat, pesanPutus) {
   const galat = $('galat-kode');
   galat.hidden = true;
   const batal = new AbortController();
   k.batal = batal;
   let jawab;
   try {
-    jawab = await fetch(`/api/agen/aliran?kode=${encodeURIComponent(kode)}`, { headers: { Accept: 'text/event-stream' }, signal: batal.signal });
+    jawab = await fetch(alamat, { headers: { Accept: 'text/event-stream' }, signal: batal.signal });
   } catch {
     if (batal.signal.aborted) return;
-    galat.textContent = TEKS.galatSambung;
-    galat.hidden = false;
+    tampilGalat(pesanPutus);
     return;
   }
   if (!jawab.ok || jawab.body === null) {
@@ -648,8 +731,7 @@ async function putar(kode) {
     try {
       pesan = (await jawab.json()).galat ?? pesan;
     } catch { /* bukan JSON */ }
-    galat.textContent = pesan;
-    galat.hidden = false;
+    tampilGalat(pesan);
     return;
   }
   const pembaca = jawab.body.getReader();
@@ -665,11 +747,105 @@ async function putar(kode) {
     }
   } catch {
     if (batal.signal.aborted) return;
-    if (k.pemutar?.aliranSelesai !== true) {
-      galat.textContent = TEKS.galatSambung;
-      galat.hidden = false;
-    }
+    if (k.pemutar?.aliranSelesai !== true) tampilGalat(pesanPutus);
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Jalankan Runut Agent: persetujuan budget, lalu pelari sungguhan     */
+/* ------------------------------------------------------------------ */
+
+async function kirim(jalur, badan) {
+  try {
+    const jawab = await fetch(jalur, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(badan) });
+    let isi = {};
+    try {
+      isi = await jawab.json();
+    } catch { /* bukan JSON */ }
+    return { ok: jawab.ok, isi };
+  } catch {
+    return { ok: false, isi: { galat: TEKS.galatSambung } };
+  }
+}
+
+function tutupSetuju() {
+  k.kodeSetuju = null;
+  $('setuju-jalankan').hidden = true;
+  $('tombol-jalankan').hidden = false;
+}
+
+/** Klik "Jalankan Runut Agent": BELUM menjalankan apa pun — hanya membuka pernyataan biaya dan isian budget. */
+async function bukaSetuju() {
+  const j = k.jalankan;
+  if (j === null || j.siap !== true || k.bekerja) return;
+  const kode = kodeDariKetikan($('kode').value);
+  if (kode === null) {
+    tampilGalat(TEKS.kodeDulu);
+    $('kode').focus();
+    return;
+  }
+  $('galat-kode').hidden = true;
+  let siap;
+  try {
+    siap = await (await fetch(`/api/agen/siap?kode=${encodeURIComponent(kode)}`)).json();
+  } catch {
+    tampilGalat(TEKS.galatSambung);
+    return;
+  }
+  if (siap.galat) {
+    tampilGalat(siap.galat);
+    return;
+  }
+  k.kodeSetuju = kode;
+  $('pernyataan-biaya').textContent = j.tiruan ? TEKS.pernyataanTiruan : TEKS.pernyataanBiaya(dolar(j.budget_maks_usd), persen(j.toleransi));
+  $('budget').value = String(j.budget_bawaan_usd).replace('.', ',');
+  $('baris-kredit').hidden = siap.perlu_kredit !== true;
+  $('setuju-kredit').checked = false;
+  $('setuju-kredit').disabled = siap.sectors_siap !== true;
+  $('teks-kredit').textContent = siap.sectors_siap === true ? TEKS.teksKredit(kode) : TEKS.kreditTanpaKunci(kode);
+  $('setuju-jalankan').hidden = false;
+  $('tombol-jalankan').hidden = true;
+  document.documentElement.dataset.setuju = '1';
+}
+
+/** Klik "Setuju, jalankan dengan budget ini": satu-satunya tempat halaman mengirim `setuju: true`. */
+async function setujuJalankan() {
+  const j = k.jalankan;
+  const kode = kodeDariKetikan($('kode').value);
+  if (j === null || kode === null || kode !== k.kodeSetuju) {
+    tutupSetuju();
+    return;
+  }
+  const budget = budgetDariKetikan($('budget').value, j.budget_maks_usd);
+  if (budget === null) {
+    tampilGalat(TEKS.budgetTakSah(dolar(j.budget_maks_usd)));
+    return;
+  }
+  const perluKredit = !$('baris-kredit').hidden;
+  if (perluKredit && !$('setuju-kredit').checked) {
+    tampilGalat(TEKS.kreditDulu);
+    return;
+  }
+  $('galat-kode').hidden = true;
+  $('tombol-setuju').disabled = true;
+  const hasil = await kirim('/api/agen/jalankan', { kode, setuju: true, budget_usd: budget, ...(perluKredit ? { setuju_kredit: true } : {}) });
+  $('tombol-setuju').disabled = false;
+  if (!hasil.ok) {
+    tampilGalat(hasil.isi.galat ?? TEKS.galatSambung);
+    return;
+  }
+  tutupSetuju();
+  delete document.documentElement.dataset.setuju;
+  k.kode = kode;
+  k.jalankan = { ...j, kerja: hasil.isi };
+  void ikutiLangsung();
+}
+
+async function hentikan() {
+  $('tombol-hentikan').disabled = true;
+  const hasil = await kirim('/api/agen/hentikan', {});
+  $('tombol-hentikan').disabled = false;
+  if (!hasil.ok) tampilGalat(hasil.isi.galat ?? TEKS.galatSambung);
 }
 
 /* ------------------------------------------------------------------ */
@@ -703,26 +879,53 @@ async function mulai() {
   const masukan = $('kode');
   masukan.addEventListener('input', () => {
     masukan.value = masukan.value.toUpperCase();
+    // Persetujuan berlaku untuk satu kode saham: kode berubah → kotak setuju ditutup.
+    if (k.kodeSetuju !== null) tutupSetuju();
   });
+  // Enter di kolom kode = pilihan yang tanpa biaya (putar ulang rekaman), tidak pernah menjalankan agent.
   $('form-agen').addEventListener('submit', (e) => {
     e.preventDefault();
+    if (k.bekerja) return;
     const kode = kodeDariKetikan(masukan.value);
     if (kode === null) {
       masukan.focus();
       return;
     }
+    tutupSetuju();
     void putar(kode);
   });
+  $('tombol-jalankan').addEventListener('click', () => void bukaSetuju());
+  $('tombol-setuju').addEventListener('click', () => void setujuJalankan());
+  $('tombol-batal').addEventListener('click', tutupSetuju);
+  $('tombol-hentikan').addEventListener('click', () => void hentikan());
   $('agen-bidang').style.setProperty('--lama-terbang', `${LAMA_TERBANG_MS}ms`);
   gantiTampilan('ringkas');
   try {
     const status = await (await fetch('/api/status')).json();
     if (status.mode === 'replay-agent') {
-      $('mode').textContent = TEKS.modeReplay;
+      $('mode').textContent = TEKS.modeDua;
       const kode = status.agen?.kode_rekaman?.[0];
       if (kode) {
         $('petunjuk-kode').textContent = TEKS.petunjukKode(kode);
         masukan.placeholder = `mis. ${kode}`;
+      }
+      const j = status.jalankan ?? null;
+      k.jalankan = j;
+      if (j !== null && j.tiruan === true) {
+        $('pita-tiruan').textContent = TEKS.pitaTiruan;
+        $('pita-tiruan').hidden = false;
+        document.documentElement.dataset.pelari = 'tiruan';
+      }
+      // Tanpa kunci: pilihan "Jalankan" tetap terlihat, nonaktif, dengan satu kalimat cara mengisinya.
+      if (j !== null && j.siap !== true) {
+        $('nonaktif-jalankan').textContent = TEKS.nonaktif(j.alasan ?? '');
+        $('nonaktif-jalankan').hidden = false;
+      }
+      kunciPilihan();
+      // Halaman dimuat ulang selagi agent bekerja: ikuti kerja itu lagi (tidak menyalakan apa pun).
+      if (j?.kerja?.keadaan === 'bekerja') {
+        k.kode = j.kerja.kode;
+        void ikutiLangsung();
       }
     } else {
       $('mode').textContent = TEKS.modeLain;

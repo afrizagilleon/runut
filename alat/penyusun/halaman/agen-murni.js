@@ -7,7 +7,44 @@
 export const TEKS = {
   petunjukKode: (kode) => `Rekaman yang ada: ${kode}.`,
   memuat: 'Membaca rekaman…',
-  tombolPutar: 'Putar kerja agent',
+  tombolPutar: 'Putar ulang rekaman',
+  // --- dua pilihan (M-PN1): menjalankan agent sungguhan, atau memutar ulang rekaman ---
+  modeDua:
+    'Dua pilihan di bawah. "Jalankan Runut Agent" memanggil model sungguhan dan berbayar, hanya sesudah kamu menyetujui budget-nya. "Putar ulang rekaman" hanya membaca berkas rekaman: tanpa panggilan model, tanpa API key, tanpa biaya.',
+  pitaTiruan:
+    'PELARI TIRUAN — bukan agent sungguhan. Di sesi ini "Jalankan Runut Agent" hanya menyalin sebuah rekaman lama baris demi baris dengan jeda: tidak ada model yang dipanggil dan tidak ada biaya.',
+  tombolJalankan: 'Jalankan Runut Agent',
+  tombolSetuju: 'Setuju, jalankan dengan budget ini',
+  tombolBatal: 'Batal',
+  tombolHentikan: 'Hentikan agent',
+  nonaktif: (alasan) => `Belum bisa dijalankan di komputer ini. ${alasan}`,
+  pernyataanBiaya: (maks, lebih) =>
+    `Menekan tombol setuju memanggil model berbayar lewat OpenRouter dengan kuncimu, untuk kode saham di atas. Agent berhenti sendiri saat budget tidak cukup untuk satu langkah lagi; panggilan yang sudah terkirim boleh melewati budget paling banyak ${lebih}. Dari halaman ini budget paling banyak ${maks}.`,
+  pernyataanTiruan: 'Pelari tiruan: tombol setuju tidak memanggil model dan tidak memakai biaya. Budget hanya ditampilkan.',
+  labelBudget: 'Budget (dolar AS)',
+  budgetTakSah: (maks) => `Budget harus angka di atas 0 dan paling banyak ${maks}.`,
+  kodeDulu: 'Ketik kode saham empat huruf dulu.',
+  teksKredit: (kode) => `Data ${kode} belum ada di cache lokal. Izinkan agent mengambilnya dari Sectors API (memakai kredit Sectors).`,
+  kreditTanpaKunci: (kode) => `Data ${kode} belum ada di cache lokal, dan SECTORS_API_KEY belum diisi di berkas .env.`,
+  kreditDulu: 'Centang izin memakai kredit Sectors dulu, atau pilih kode saham yang datanya sudah ada di cache lokal.',
+  judulKerja: 'Agent bekerja',
+  judulPutar: 'Putar ulang rekaman',
+  asalLangsung: (folder) => `Langsung: langkah di bawah ditulis pelari agent selagi halaman ini terbuka, ke ${folder}jejak-agen.jsonl. Tiap langkah muncul begitu selesai ditulis.`,
+  asalPutar: 'Putar ulang rekaman: langkah di bawah dibaca dari berkas rekaman di repo. Tidak ada model yang dipanggil.',
+  biayaBudgetLangsung: (biaya, budget) => `Biaya ${biaya} dari budget ${budget}`,
+  keteranganBudgetLangsung: (budget) => `Budget ${budget} adalah budget yang kamu setujui untuk kerja agent ini.`,
+  agenBerhenti: 'Agent berhenti.',
+  agenDihentikan: 'Dihentikan.',
+  akhirTerakit: 'Agent selesai. Tiga soal terakit menjadi satu simulasi.',
+  akhirLanjut: 'Langkah berikutnya (menaikkan kesulitan dan melengkapi simulasi) dijalankan dari terminal: README, bagian Menjalankan (c).',
+  akhirBudget: 'Agent berhenti karena budget tidak cukup untuk satu langkah lagi. Rekamannya tersimpan; jalankan lagi dengan budget lebih besar, atau lanjutkan dari terminal.',
+  akhirBerhenti: 'Agent berhenti sebelum tiga soal terakit. Sebabnya tercatat di hasil.json di folder keluaran dan di terminal.',
+  akhirDihentikan: 'Dihentikan dari halaman ini. Pelari sudah dimatikan; panggilan yang terkirim sebelum itu tetap tercatat biayanya.',
+  akhirTanpaHasil: 'Pelari berhenti sebelum menulis hasil. Sebabnya ada di terminal tempat npm run penyusun dinyalakan.',
+  akhirFolder: (folder) => `Folder keluaran: ${folder}`,
+  akhirBiaya: (biaya) => `Biaya tercatat: ${biaya}.`,
+  akhirTiruan: 'Ini keluaran PELARI TIRUAN, bukan kerja agent sungguhan.',
+  galatSambungLangsung: 'Sambungan ke server terputus. Agent tetap bekerja di server; muat ulang halaman untuk melihat langkahnya lagi.',
   tombolJeda: 'Jeda',
   tombolLanjut: 'Lanjut',
   tombolLompat: 'Lompat ke akhir',
@@ -65,7 +102,6 @@ export const TEKS = {
   sesudahnya: 'Apa yang terjadi sesudahnya',
   sumber: 'Berkas rekaman yang dibaca',
   galatSambung: 'Sambungan ke server terputus. Muat ulang halaman untuk memutar lagi.',
-  modeReplay: 'Replay: rekaman kerja AI agent diputar dari berkas di komputermu. Tanpa panggilan model, tanpa API key, tanpa biaya.',
   modeLain: 'Tampilan ini hanya ada bila pintu penyusun dijalankan tanpa --mesin-lama.',
 };
 
@@ -232,6 +268,31 @@ export function potongNama(nama) {
 export function kodeDariKetikan(teks) {
   const k = String(teks ?? '').trim().toUpperCase();
   return /^[A-Z]{4}$/.test(k) ? k : null;
+}
+
+/**
+ * Budget dari ketikan: angka di atas 0 dan paling banyak `maks` (koma atau
+ * titik desimal); `null` bila bukan. Server memeriksa lagi batas yang sama.
+ */
+export function budgetDariKetikan(teks, maks) {
+  const t = String(teks ?? '').trim().replace(',', '.');
+  if (!/^\d+(\.\d+)?$/.test(t)) return null;
+  const n = Number(t);
+  return Number.isFinite(n) && n > 0 && n <= maks ? n : null;
+}
+
+/** "15%" dari 0,15. */
+export function persen(nilai) {
+  return `${Math.round(nilai * 100)}%`;
+}
+
+/** Kalimat keadaan akhir kerja agent yang dijalankan dari halaman (`akhir.hasil` dari server). */
+export function kalimatAkhir(hasil) {
+  if (hasil === 'terakit') return TEKS.akhirTerakit;
+  if (hasil === 'budget') return TEKS.akhirBudget;
+  if (hasil === 'dihentikan') return TEKS.akhirDihentikan;
+  if (hasil === 'tanpa-hasil') return TEKS.akhirTanpaHasil;
+  return TEKS.akhirBerhenti;
 }
 
 /** "15 Juni 2026" dari "2026-06-15". */

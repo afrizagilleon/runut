@@ -14,7 +14,7 @@
  * 3. Permintaan kedua selagi yang pertama bekerja → 409, pelari tidak dipanggil lagi.
  * 4. Hentikan mematikan pelari: tidak ada baris baru sesudahnya.
  */
-import { existsSync, appendFileSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, appendFileSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { request } from 'node:http';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -116,6 +116,8 @@ function bukaAliran(port: number, jalur: string): Promise<AliranUji> {
       const peristiwa = (): Array<{ jenis: string; data: unknown }> =>
         teks
           .split('\n\n')
+          // Potongan terakhir belum tentu utuh (peristiwa besar tiba dalam beberapa potongan): hanya blok yang sudah ditutup baris kosong.
+          .slice(0, -1)
           .map((b) => b.split('\n'))
           .filter((b) => b.some((l) => l.startsWith('event: ')))
           .map((b) => ({
@@ -391,6 +393,18 @@ describe('§3 (2): pagar uang — pelari tidak pernah dipanggil tanpa kunci, kli
     expect((await minta(s.port, 'POST', '/api/agen/jalankan', { badan: { ...SETUJU, setuju_kredit: true } })).status).toBe(202);
     expect(pelari.panggilan).toHaveLength(1);
     expect(pelari.panggilan[0]?.kreditSectors).toBe(true);
+  });
+
+  it('repo tanpa folder cache sama sekali (baru di-clone): "belum ada data", bukan galat server', async () => {
+    const pelari = pelariUji(false);
+    const akar = akarSementara();
+    rmSync(join(akar, '.cache'), { recursive: true, force: true });
+    s = await mulaiServer({ akar, replayAgen: {}, agenLangsung: { pelari, selangMs: 15 } });
+    const siap = await minta(s.port, 'GET', `/api/agen/siap?kode=${KODE_UJI}`);
+    expect(siap.status).toBe(200);
+    expect(siap.json()).toMatchObject({ ada_data: false, perlu_kredit: true });
+    expect((await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU })).status).toBe(400);
+    expect(pelari.panggilan).toHaveLength(0);
   });
 
   it('argumen pelari sungguhan = `npm run agen -- --id … --kode … --pagu … --setuju-berbayar`; izin kredit hanya bila disetujui', () => {
