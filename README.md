@@ -172,20 +172,24 @@ npm run dev        # pemain di http://localhost:5173
 
 Berkas simulasi sudah ikut di `cases/`. `?kasus=<id>` membuka satu simulasi tertentu, misalnya `http://localhost:5173/?kasus=amag-2026-06-15`.
 
-**(b) Memutar ulang kerja agent, tanpa API key dan tanpa jaringan**
+**(b) Halaman penyusun: memutar ulang rekaman, atau menjalankan agent**
 
 ```bash
-npm run penyusun                                        # MEMUTAR ULANG rekaman kerja agent (saham AMAG) di http://127.0.0.1:8790/ (Ringkas, Rinci, Diagram)
+npm run penyusun                                        # http://127.0.0.1:8790/ — dua pilihan di satu halaman (Ringkas, Rinci, Diagram)
+npm run penyusun -- --pelari-tiruan                     # mencoba alur "Jalankan" tanpa kunci: pelari tiruan, bukan agent sungguhan
 npm run agen:replay                                     # di terminal: percobaan AMAG dari kode saham
 npm run agen:replay -- --daftar                         # semua percobaan yang punya rekaman
 npm run agen:replay -- --id m2d27-amag-naik-2 --cepat   # percobaan lain, tanpa jeda; --penuh menampilkan reasoning utuh
 ```
 
-`npm run penyusun` tidak menjalankan agent: halaman itu memutar ulang rekaman kerja Runut Agent yang sudah ada di repo. Untuk menyusun simulasi baru, jalankan agent dari terminal seperti di (c); hasilnya menjadi rekaman baru di folder yang sama.
+Halaman `npm run penyusun` punya dua pilihan, dan namanya mengatakan apa yang terjadi:
 
-Keduanya hanya membaca rekaman di `eval/penyusun/<id>/` (`jejak-agen.jsonl` dan `hasil.json`); tidak ada model yang dipanggil.
+- **Putar ulang rekaman** memutar ulang rekaman kerja Runut Agent yang sudah ada di repo (saham AMAG). Tanpa API key, tanpa jaringan, tidak ada model yang dipanggil. `npm run agen:replay` melakukan hal yang sama di terminal. Keduanya hanya membaca `eval/penyusun/<id>/` (`jejak-agen.jsonl` dan `hasil.json`).
+- **Jalankan Runut Agent** menjalankan agent sungguhan untuk kode saham yang diketik: program yang sama dengan `npm run agen` di (c), tahap susun. Ini berbayar dan butuh `.env` seperti di (c); tanpa `.env` pilihan ini tampil nonaktif dengan cara mengisinya. Agent baru dinyalakan sesudah budget disetujui di halaman (bawaan US$1,50; dari halaman paling banyak US$2), hanya satu pada satu waktu, dan ada tombol Hentikan. Tiap langkah muncul di halaman begitu agent menulisnya ke `eval/penyusun/<id>/jejak-agen.jsonl`; keluarannya sama dengan (c). Data saham yang belum ada di cache lokal hanya diambil dari Sectors API bila izinnya dicentang.
 
-**(c) Menjalankan agent sungguhan dengan kunci sendiri** (berbayar)
+Dengan `--pelari-tiruan`, "Jalankan Runut Agent" tidak memanggil model: sebuah pelari tiruan menyalin rekaman lama baris demi baris ke folder sementara, dan halaman memasang pita "PELARI TIRUAN — bukan agent sungguhan". Gunanya hanya untuk melihat alurnya tanpa kunci.
+
+**(c) Menjalankan agent sungguhan dari terminal dengan kunci sendiri** (berbayar)
 
 ```bash
 cp .env.example .env    # isi nilainya sendiri; .env tidak pernah di-commit
@@ -198,6 +202,7 @@ npm run agen -- --id <id-baru> --paket eval/penyusun/<id-susun>/paket.json --tin
 npm run agen -- --id <id-baru> --paket eval/penyusun/<id-susun>/paket.json --lengkapi --pagu 1.5 --setuju-berbayar
 ```
 
+- Tahap susun juga bisa dijalankan dari halaman di (b), dengan pagar yang sama; tahap tingkatkan dan lengkapi hanya dari terminal.
 - `.env` memuat `SECTORS_API_KEY`, `LLM_BASE_URL` (alamat OpenRouter), `LLM_API_KEY`, `LLM_MODEL`, dan `LLM_PAGU_USD`. Kunci hanya dibaca kode.
 - `--id` adalah nama folder baru di `eval/penyusun/`; `--pagu` adalah budget percobaan itu dalam dolar; tanpa `--setuju-berbayar` perintahnya berhenti sebelum memanggil apa pun.
 - `--setuju-kredit-sectors` mengizinkan pengambilan data saham yang belum ada di cache lokal dari Sectors API (memakai kredit). Bendera lain: `--target 1..3`, `--langkah <n>`, `--bank <folder>`, `--omongan id1,id2,id3` (bersama `--lengkapi`).
