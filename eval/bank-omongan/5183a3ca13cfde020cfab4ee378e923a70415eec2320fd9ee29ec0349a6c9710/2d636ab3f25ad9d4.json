@@ -1,0 +1,358 @@
+{
+  "id": "2d636ab3f25ad9d4",
+  "paket_sha": "5183a3ca13cfde020cfab4ee378e923a70415eec2320fd9ee29ec0349a6c9710",
+  "kartu_penentu": [
+    "div-2025-05-15"
+  ],
+  "omongan": {
+    "nama": "Nadia",
+    "jam": "20.30",
+    "pesan": "Dividen tunai yang tercatat Mei kemarin Rp3,44 per lembar kan? Mau kucatat di buku.",
+    "angka_pesan": [
+      {
+        "teks": "Rp3,44 per lembar",
+        "fact_id": "div-2025-05-15"
+      }
+    ],
+    "kartu": [
+      "div-2025-05-15",
+      "rups-2025-05-02",
+      "div-2024-08-22",
+      "div-2024-05-07"
+    ],
+    "kartu_penentu": [
+      "div-2025-05-15"
+    ],
+    "pilihan": {
+      "a": "Betul, tanggal ex dividen itu [[div-2025-05-15|15 Mei 2025]].",
+      "b": "Betul, tanggal ex dividen itu [[rups-2025-05-02|2 Mei 2025]].",
+      "c": "Keliru, dividen terakhirnya ber-ex [[div-2024-08-22|22 Agustus 2024]].",
+      "d": "Keliru, dividen terakhirnya ber-ex [[div-2024-05-07|7 Mei 2024]]."
+    },
+    "kunci": "a",
+    "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-15|Rp3,44 per lembar]] dengan tanggal ex [[div-2025-05-15|15 Mei 2025]], jadi omongan teman betul. Tanggal [[rups-2025-05-02|2 Mei 2025]] adalah jadwal rapat pemegang saham, bukan tanggal ex. Dividen ex [[div-2024-08-22|22 Agustus 2024]] besarnya [[div-2024-08-22|Rp4,4 per lembar]] dan dividen ex [[div-2024-05-07|7 Mei 2024]] besarnya [[div-2024-05-07|Rp4,28 per lembar]]; keduanya pembagian tahun sebelumnya. Salah-kaprah yang umum: menyamakan tanggal rapat dengan tanggal ex, padahal yang menentukan siapa kebagian dividen adalah tanggal ex.",
+    "pengecoh": {
+      "b": {
+        "jenis": "pertanyaan-lain",
+        "rujukan": "rups-2025-05-02",
+        "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 adalah jadwal rapat pemegang saham, bukan tanggal ex dividen."
+      },
+      "c": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2024-08-22",
+        "umpan_balik": "Ini salah periode: kartu 3 mencatat dividen tahun sebelumnya, bukan yang terakhir tercatat."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "div-2024-05-07",
+        "umpan_balik": "Ini salah periode: kartu 4 memang dividen bulan Mei, tetapi Mei tahun sebelumnya."
+      }
+    },
+    "pertanyaan_cek": "Tanggal ex dividen ini jatuh pada hari apa, dan dokumen mana yang mencatatnya?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "pemanasan",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (nilai uji 0,3872; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Ex dividen biasanya lebih awal dalam bulan sebelum pencatatan dividen.",
+          "biaya_usd": 0.000503,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Ex dividen biasanya pertengahan bulan, bukan awal bulan.",
+          "biaya_usd": 0.000488,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Ex dividen biasanya lebih awal dalam bulan sebelum pencatatan.",
+          "biaya_usd": 0.000492,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Ex dividen biasanya pertengahan bulan, bukan awal bulan.",
+          "biaya_usd": 0.000487,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen tunai Mei, ex dividen biasanya pertengahan bulan.",
+          "biaya_usd": 0.0000465,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen tunai Mei, ex dividen awal bulan lebih mungkin.",
+          "biaya_usd": 0.0000453,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen tunai Mei, ex dividen biasanya pertengahan bulan",
+          "biaya_usd": 0.00004524,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen tunai Mei biasanya ex dividen awal bulan",
+          "biaya_usd": 0.00004164,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Tanggal ex dividen pertengahan bulan lebih umum untuk pencatatan dividen Mei.",
+          "biaya_usd": 0.0008638,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Pencatatan dividen Mei lebih selaras dengan tanggal ex dividen 15 Mei 2025.",
+          "biaya_usd": 0.00091884,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Pola umum: dividen tercatat Mei dengan ex dividen pertengahan bulan tersebut.",
+          "biaya_usd": 0.00189916,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Dividen Rp3,44 per lembar umumnya terkait tanggal ex dividen awal Mei.",
+          "biaya_usd": 0.00079284,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 7,
+        "p": 0.38720703125,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (nilai uji 0,3872; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.00662332
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 mencatat dividen tunai Rp3,44 per lembar dengan tanggal ex 15 Mei 2025, cocok dengan omongan Nadia.",
+          "biaya_usd": 0.00181602
+        },
+        {
+          "r": 2,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 mencatat dividen tunai Rp3,44 per lembar dengan tanggal ex 15 Mei 2025, cocok dengan omongan Nadia.",
+          "biaya_usd": 0.00136346
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, tanggal ex dividen itu 15 Mei 2025.",
+          "skor": 1,
+          "alasan": "Tebakan tanpa dokumen; cocok dengan klaim \"Mei kemarin\".",
+          "biaya_usd": 0.004792,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, tanggal ex dividen itu 15 Mei 2025.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; hanya tebakan, pilihan Mei 2025 tampak wajar.",
+          "biaya_usd": 0.004732,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "c",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, tanggal ex dividen itu 15 Mei 2025.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; tebakan, cocok dengan klaim Mei kemarin.",
+          "biaya_usd": 0.004532,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, tanggal ex dividen itu 2 Mei 2025.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+          "biaya_usd": 0.006112,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 3,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 0,
+        "putusan": "tolak",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      },
+      "biaya_usd": 0.020168000000000002
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Opsi kunci sebaiknya juga menyebut besaran Rp3,44 per lembar agar menggemakan klaim teman, bukan hanya tanggal ex.",
+      "token_penalaran": [
+        3980
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "pn-20261006-061713",
+    "putaran": 3,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-06T06:21:21.807Z"
+}

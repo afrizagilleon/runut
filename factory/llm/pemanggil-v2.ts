@@ -75,7 +75,7 @@ export const PENYEDIA_PERAN: Readonly<Record<PeranV2, KunciPenyedia>> = {
     model: MODEL_OR_GLM, jenis: ['gerbang-tebak'], slug: 'wafer', nama: 'Wafer',
     // 5 Okt 2026: Wafer menaikkan harga keluaran GLM-5.3 dari ≤ US$4,4 ke US$6/juta (di atas harga daftar Z.AI 1,40/4,40; harga masuknya turun ke US$0,04–0,08).
     // Penyedianya TIDAK diganti: gerbang ini terkalibrasi pada Wafer. Selisihnya ±US$0,01 per panggilan kritikus (median ±6.000 token keluar).
-    maks_harga: { prompt: 1.4, completion: 6 },
+    maks_harga: { prompt: 1.4, completion: 7.5 },
     alasan: 'Ledger: 574 dari 575 panggilan penebak GLM dilayani Wafer (effort "minimal", median 33 token penalaran). Mengunci penyedia yang sudah hampir selalu dipakai.',
   },
   'pembaca-kartu': {
@@ -86,7 +86,7 @@ export const PENYEDIA_PERAN: Readonly<Record<PeranV2, KunciPenyedia>> = {
     model: MODEL_OR_GLM, jenis: ['kritikus'], slug: 'wafer', nama: 'Wafer',
     // 5 Okt 2026: Wafer menaikkan harga keluaran GLM-5.3 dari ≤ US$4,4 ke US$6/juta (di atas harga daftar Z.AI 1,40/4,40; harga masuknya turun ke US$0,04–0,08).
     // Penyedianya TIDAK diganti: gerbang ini terkalibrasi pada Wafer. Selisihnya ±US$0,01 per panggilan kritikus (median ±6.000 token keluar).
-    maks_harga: { prompt: 1.4, completion: 6 },
+    maks_harga: { prompt: 1.4, completion: 7.5 },
     alasan: 'Tetap seperti amandemen A-1 M2d-10: Wafer terbukti berpikir (57/57 panggilan kritikus effort "high" ≥ 1.000 token penalaran; di M2d-11/13/15: 7 panggilan, median 6.164).',
   },
 };

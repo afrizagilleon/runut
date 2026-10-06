@@ -1,0 +1,362 @@
+{
+  "id": "2da79a123d998d53",
+  "paket_sha": "5183a3ca13cfde020cfab4ee378e923a70415eec2320fd9ee29ec0349a6c9710",
+  "kartu_penentu": [
+    "hari-naik-beruntun"
+  ],
+  "omongan": {
+    "nama": "Rara",
+    "jam": "16.42",
+    "pesan": "Gila, 5 hari bursa naik terus, sore ini tutup di Rp8.600.",
+    "angka_pesan": [
+      {
+        "teks": "5 hari bursa",
+        "fact_id": "hari-naik-beruntun"
+      },
+      {
+        "teks": "Rp8.600",
+        "fact_id": "hari-naik-beruntun"
+      }
+    ],
+    "kartu": [
+      "hari-naik-beruntun",
+      "harga-2025-09-18",
+      "harga-2025-10-02",
+      "harga-2025-10-06"
+    ],
+    "kartu_penentu": [
+      "hari-naik-beruntun"
+    ],
+    "pilihan": {
+      "a": "Betul, kenaikan beruntun itu berangkat dari [[hari-naik-beruntun|Rp5.875]].",
+      "b": "Betul, kenaikan beruntun itu berangkat dari [[harga-2025-09-18|Rp6.300]].",
+      "c": "Keliru, kenaikan beruntunnya baru mulai dari [[harga-2025-10-02|Rp6.525]].",
+      "d": "Keliru, penutupan sore ini masih [[harga-2025-10-06|Rp7.900]]."
+    },
+    "kunci": "a",
+    "penjelasan": "Hitungan kenaikan beruntun mencatat harga penutupan naik [[hari-naik-beruntun|5 hari bursa]] berturut-turut, dari [[hari-naik-beruntun|Rp5.875]] pada [[hari-naik-beruntun|30 September 2025]] sampai [[hari-naik-beruntun|Rp8.600]] pada [[hari-naik-beruntun|7 Oktober 2025]]. Jadi omongan teman betul, dan titik berangkatnya adalah penutupan akhir September itu. Harga [[harga-2025-09-18|Rp6.300]] memang pernah tercatat, tetapi itu penutupan [[harga-2025-09-18|18 September 2025]], sebelum harga sempat turun lagi. [[harga-2025-10-02|Rp6.525]] sudah hari kedua kenaikan, dan [[harga-2025-10-06|Rp7.900]] adalah penutupan sehari sebelumnya. Salah-kaprah yang umum: mengira titik awal kenaikan adalah harga mana saja yang sempat terlihat di grafik.",
+    "pengecoh": {
+      "b": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2025-09-18",
+        "umpan_balik": "Ini salah periode: harga di kartu 2 adalah penutupan pertengahan September, bukan awal kenaikan beruntun."
+      },
+      "c": {
+        "jenis": "nyaris-benar-angka",
+        "rujukan": "harga-2025-10-02",
+        "umpan_balik": "Ini angka nyaris benar: kartu 3 mencatat penutupan sesudah kenaikan dimulai, bukan harga sebelum kenaikan pertama."
+      },
+      "d": {
+        "jenis": "salah-periode",
+        "rujukan": "harga-2025-10-06",
+        "umpan_balik": "Ini salah periode: kartu 4 adalah penutupan sehari sebelumnya, bukan penutupan sore ini."
+      }
+    },
+    "pertanyaan_cek": "Dari harga penutupan tanggal berapa kenaikan beruntun ini dihitung?"
+  },
+  "jejak_gerbang": {
+    "tingkat": "sulit",
+    "kode": {
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (nilai uji 0,9807; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ]
+    },
+    "saringan": null,
+    "pasangan": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Rp6.300 lebih masuk akal untuk kenaikan 5 hari ke Rp8.600",
+          "biaya_usd": 0.00114,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Rp6.300 lebih masuk akal untuk kenaikan 5 hari ke Rp8.600",
+          "biaya_usd": 0.001045,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Rp6.300 lebih masuk akal untuk kenaikan 5 hari ke Rp8.600",
+          "biaya_usd": 0.001084,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-haiku-4.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan dari Rp6.300 ke Rp8.600 lebih realistis daripada dari Rp5.875",
+          "biaya_usd": 0.000569,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "5 hari naik dari 5.875 ke 8.600 lebih masuk akal",
+          "biaya_usd": 0.00005382,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 5 hari dari 6300 ke 8600 lebih wajar daripada dari 5875",
+          "biaya_usd": 0.00005502,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "5 hari naik dari 5875 ke 8600, kenaikan wajar 46%.",
+          "biaya_usd": 0.00005496,
+          "panggilan": 1
+        },
+        {
+          "model": "deepseek/deepseek-v4.1-flash",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "5 hari naik dari 6300 ke 8600 wajar, dari 5875 terlalu besar",
+          "biaya_usd": 0.00005376,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "2",
+          "skor": 1,
+          "alasan": "Kenaikan dari Rp6.300 memberi return harian lebih wajar.",
+          "biaya_usd": 0.00075201,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan 36,5% lebih wajar untuk 5 hari dibanding 46%.",
+          "biaya_usd": 0.00147205,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "a",
+          "isi": 0,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan lima hari beruntun ke Rp8.600 lebih wajar berawal dari Rp5.875.",
+          "biaya_usd": 0.00096837,
+          "panggilan": 1
+        },
+        {
+          "model": "z-ai/glm-5.3",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "1",
+          "skor": 1,
+          "alasan": "Kenaikan dari Rp6.300 ke Rp8.600 lebih wajar untuk lima hari beruntun.",
+          "biaya_usd": 0.00157705,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "aturan": "pasangan-binomial",
+        "n": 12,
+        "tak_terbaca": 0,
+        "kunci": 3,
+        "p": 0.980712890625,
+        "putusan": "lulus",
+        "alasan": [
+          "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (nilai uji 0,9807; batas 0,02)"
+        ]
+      },
+      "biaya_usd": 0.00882504
+    },
+    "kartu": {
+      "per_rotasi": [
+        {
+          "r": 0,
+          "kunci": "a",
+          "pilihan": "a",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menyatakan dari 30 September 2025 Rp5.875 sampai 7 Oktober 2025 Rp8.600 harga penutupan naik 5 hari bursa berturut-turut, cocok dengan pesan Rara.",
+          "biaya_usd": 0.00140124
+        },
+        {
+          "r": 2,
+          "kunci": "c",
+          "pilihan": "c",
+          "benar": true,
+          "menunjuk_penentu": true,
+          "bingung": [],
+          "alasan": "Kartu 1 menyatakan dari 30 September 2025 Rp5.875 sampai 7 Oktober 2025 Rp8.600 naik 5 hari bursa berturut-turut, cocok dengan pesan Rara.",
+          "biaya_usd": 0.00087924
+        }
+      ],
+      "lulus": true
+    },
+    "penebak_kuat": {
+      "jawaban": [
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 0,
+          "huruf": "b",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+          "skor": 1,
+          "alasan": "Tebakan saja; tanpa dokumen, tak bisa dipastikan.",
+          "biaya_usd": 0.005468,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 1,
+          "huruf": "c",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen, hanya tebakan; kenaikan sekitar 36% paling masuk akal.",
+          "biaya_usd": 0.006808,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 2,
+          "huruf": "d",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+          "skor": 1,
+          "alasan": "Tanpa dokumen; ini tebakan, tidak bisa diverifikasi.",
+          "biaya_usd": 0.006348,
+          "panggilan": 1
+        },
+        {
+          "model": "anthropic/claude-opus-5.5",
+          "kondisi": "pesan-pilihan",
+          "r": 3,
+          "huruf": "a",
+          "isi": 1,
+          "isi_kunci": 0,
+          "terbaca": true,
+          "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+          "skor": 1,
+          "alasan": "Tebakan saja; dokumen tidak ada, klaim tak bisa diverifikasi.",
+          "biaya_usd": 0.006368,
+          "panggilan": 1
+        }
+      ],
+      "putusan": {
+        "kunci": 0,
+        "n": 4,
+        "tak_terbaca": 0,
+        "isi_konsisten": 1,
+        "putusan": "lulus",
+        "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      },
+      "biaya_usd": 0.024992
+    },
+    "kritikus": {
+      "menjawab": true,
+      "tanpa_keberatan": true,
+      "keberatan": [],
+      "arahan": "Ubah sebutan 'omongan teman' pada penjelasan agar tidak terdengar seperti istilah sistem; cukup rujuk pesan Rara secara wajar.",
+      "token_penalaran": [
+        6979
+      ]
+    }
+  },
+  "asal": {
+    "jalan": "pn-20261006-061713",
+    "putaran": 1,
+    "urut": 1,
+    "penulis": "anthropic/claude-opus-5.5 (agen ber-alat)",
+    "sha256_prompt": ""
+  },
+  "waktu": "2026-10-06T06:21:48.390Z"
+}

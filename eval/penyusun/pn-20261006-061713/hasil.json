@@ -1,0 +1,1347 @@
+{
+  "id": "pn-20261006-061713",
+  "mode": "dari-kode",
+  "kode": "MLPT",
+  "hari_dipilih": "2025-10-07",
+  "effort": "medium",
+  "maks_token": 32000,
+  "model": "anthropic/claude-opus-5.5",
+  "sdk": "ai (ToolLoopAgent) + @openrouter/ai-sdk-provider",
+  "target": 3,
+  "pagu_usd": 1.5,
+  "berhenti": "bank bisa dirakit menjadi simulasi",
+  "percakapan": [
+    {
+      "ke": 1,
+      "langkah": 6,
+      "sudut_sebelum": 0,
+      "sudut_sesudah": 3,
+      "ditolak": 0,
+      "teks_akhir": ""
+    }
+  ],
+  "langkah": 6,
+  "panggilan_model": 6,
+  "pengajuan": 3,
+  "biaya_agen_usd": 0.444821,
+  "biaya_gerbang_usd": 0.378,
+  "biaya_usd": 0.8229,
+  "durasi_detik": 349,
+  "bank": {
+    "jumlah_sudut": 3,
+    "omongan": [
+      {
+        "id": "2d636ab3f25ad9d4",
+        "nama": "Nadia",
+        "kartu_penentu": [
+          "div-2025-05-15"
+        ],
+        "asal": "pn-20261006-061713",
+        "tingkat": "pemanasan"
+      },
+      {
+        "id": "2da79a123d998d53",
+        "nama": "Rara",
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "asal": "pn-20261006-061713",
+        "tingkat": "sulit"
+      },
+      {
+        "id": "12f1568ec946bd89",
+        "nama": "Bayu",
+        "kartu_penentu": [
+          "susp-2025-08-27"
+        ],
+        "asal": "pn-20261006-061713",
+        "tingkat": "pemanasan"
+      }
+    ]
+  },
+  "simulasi": {
+    "terbit": true,
+    "dipilih": [
+      "2d636ab3f25ad9d4",
+      "2da79a123d998d53",
+      "12f1568ec946bd89"
+    ],
+    "alasan": [],
+    "draf": {
+      "omongan": [
+        {
+          "nama": "Nadia",
+          "jam": "20.30",
+          "pesan": "Dividen tunai yang tercatat Mei kemarin Rp3,44 per lembar kan? Mau kucatat di buku.",
+          "angka_pesan": [
+            {
+              "teks": "Rp3,44 per lembar",
+              "fact_id": "div-2025-05-15"
+            }
+          ],
+          "kartu": [
+            "div-2025-05-15",
+            "rups-2025-05-02",
+            "div-2024-08-22",
+            "div-2024-05-07"
+          ],
+          "kartu_penentu": [
+            "div-2025-05-15"
+          ],
+          "pilihan": {
+            "a": "Betul, tanggal ex dividen itu [[div-2025-05-15|15 Mei 2025]].",
+            "b": "Betul, tanggal ex dividen itu [[rups-2025-05-02|2 Mei 2025]].",
+            "c": "Keliru, dividen terakhirnya ber-ex [[div-2024-08-22|22 Agustus 2024]].",
+            "d": "Keliru, dividen terakhirnya ber-ex [[div-2024-05-07|7 Mei 2024]]."
+          },
+          "kunci": "a",
+          "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-15|Rp3,44 per lembar]] dengan tanggal ex [[div-2025-05-15|15 Mei 2025]], jadi omongan teman betul. Tanggal [[rups-2025-05-02|2 Mei 2025]] adalah jadwal rapat pemegang saham, bukan tanggal ex. Dividen ex [[div-2024-08-22|22 Agustus 2024]] besarnya [[div-2024-08-22|Rp4,4 per lembar]] dan dividen ex [[div-2024-05-07|7 Mei 2024]] besarnya [[div-2024-05-07|Rp4,28 per lembar]]; keduanya pembagian tahun sebelumnya. Salah-kaprah yang umum: menyamakan tanggal rapat dengan tanggal ex, padahal yang menentukan siapa kebagian dividen adalah tanggal ex."
+        },
+        {
+          "nama": "Rara",
+          "jam": "16.42",
+          "pesan": "Gila, 5 hari bursa naik terus, sore ini tutup di Rp8.600.",
+          "angka_pesan": [
+            {
+              "teks": "5 hari bursa",
+              "fact_id": "hari-naik-beruntun"
+            },
+            {
+              "teks": "Rp8.600",
+              "fact_id": "hari-naik-beruntun"
+            }
+          ],
+          "kartu": [
+            "hari-naik-beruntun",
+            "harga-2025-09-18",
+            "harga-2025-10-02",
+            "harga-2025-10-06"
+          ],
+          "kartu_penentu": [
+            "hari-naik-beruntun"
+          ],
+          "pilihan": {
+            "a": "Betul, kenaikan beruntun itu berangkat dari [[hari-naik-beruntun|Rp5.875]].",
+            "b": "Betul, kenaikan beruntun itu berangkat dari [[harga-2025-09-18|Rp6.300]].",
+            "c": "Keliru, kenaikan beruntunnya baru mulai dari [[harga-2025-10-02|Rp6.525]].",
+            "d": "Keliru, penutupan sore ini masih [[harga-2025-10-06|Rp7.900]]."
+          },
+          "kunci": "a",
+          "penjelasan": "Hitungan kenaikan beruntun mencatat harga penutupan naik [[hari-naik-beruntun|5 hari bursa]] berturut-turut, dari [[hari-naik-beruntun|Rp5.875]] pada [[hari-naik-beruntun|30 September 2025]] sampai [[hari-naik-beruntun|Rp8.600]] pada [[hari-naik-beruntun|7 Oktober 2025]]. Jadi omongan teman betul, dan titik berangkatnya adalah penutupan akhir September itu. Harga [[harga-2025-09-18|Rp6.300]] memang pernah tercatat, tetapi itu penutupan [[harga-2025-09-18|18 September 2025]], sebelum harga sempat turun lagi. [[harga-2025-10-02|Rp6.525]] sudah hari kedua kenaikan, dan [[harga-2025-10-06|Rp7.900]] adalah penutupan sehari sebelumnya. Salah-kaprah yang umum: mengira titik awal kenaikan adalah harga mana saja yang sempat terlihat di grafik."
+        },
+        {
+          "nama": "Bayu",
+          "jam": "19.15",
+          "pesan": "Seingetku bursa terakhir nyetop saham ini Februari kemarin, habis itu jalan normal.",
+          "angka_pesan": [],
+          "kartu": [
+            "susp-2025-02-19",
+            "rups-2025-05-02",
+            "susp-2025-08-14",
+            "susp-2025-08-27"
+          ],
+          "kartu_penentu": [
+            "susp-2025-08-27"
+          ],
+          "pilihan": {
+            "a": "Betul, penghentian terakhirnya memang tercatat [[susp-2025-02-19|19 Februari 2025]].",
+            "b": "Betul, yang tercatat sesudahnya hanya rapat [[rups-2025-05-02|2 Mei 2025]].",
+            "c": "Keliru, penghentian terakhirnya justru tercatat [[susp-2025-08-14|14 Agustus 2025]].",
+            "d": "Keliru, penghentian terakhirnya tercatat [[susp-2025-08-27|27 Agustus 2025]]."
+          },
+          "kunci": "d",
+          "penjelasan": "Penghentian [[susp-2025-02-19|19 Februari 2025]] memang ada, tetapi bukan yang terakhir. Bursa menghentikan perdagangan lagi pada [[susp-2025-08-14|14 Agustus 2025]] dan sekali lagi pada [[susp-2025-08-27|27 Agustus 2025]], keduanya karena kenaikan harga kumulatif yang signifikan. Jadi yang terakhir adalah akhir Agustus. Rapat pemegang saham [[rups-2025-05-02|2 Mei 2025]] bukan penghentian perdagangan. Salah-kaprah yang umum: mengira penghentian oleh bursa cuma terjadi sekali, padahal bisa berulang dalam beberapa minggu."
+        }
+      ]
+    }
+  },
+  "peningkatan": [],
+  "nilai": [
+    {
+      "putaran": 1,
+      "urut": 1,
+      "omongan": {
+        "nama": "Rara",
+        "jam": "16.42",
+        "pesan": "Gila, 5 hari bursa naik terus, sore ini tutup di Rp8.600.",
+        "angka_pesan": [
+          {
+            "teks": "5 hari bursa",
+            "fact_id": "hari-naik-beruntun"
+          },
+          {
+            "teks": "Rp8.600",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2025-09-18",
+          "harga-2025-10-02",
+          "harga-2025-10-06"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, kenaikan beruntun itu berangkat dari [[hari-naik-beruntun|Rp5.875]].",
+          "b": "Betul, kenaikan beruntun itu berangkat dari [[harga-2025-09-18|Rp6.300]].",
+          "c": "Keliru, kenaikan beruntunnya baru mulai dari [[harga-2025-10-02|Rp6.525]].",
+          "d": "Keliru, penutupan sore ini masih [[harga-2025-10-06|Rp7.900]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Hitungan kenaikan beruntun mencatat harga penutupan naik [[hari-naik-beruntun|5 hari bursa]] berturut-turut, dari [[hari-naik-beruntun|Rp5.875]] pada [[hari-naik-beruntun|30 September 2025]] sampai [[hari-naik-beruntun|Rp8.600]] pada [[hari-naik-beruntun|7 Oktober 2025]]. Jadi omongan teman betul, dan titik berangkatnya adalah penutupan akhir September itu. Harga [[harga-2025-09-18|Rp6.300]] memang pernah tercatat, tetapi itu penutupan [[harga-2025-09-18|18 September 2025]], sebelum harga sempat turun lagi. [[harga-2025-10-02|Rp6.525]] sudah hari kedua kenaikan, dan [[harga-2025-10-06|Rp7.900]] adalah penutupan sehari sebelumnya. Salah-kaprah yang umum: mengira titik awal kenaikan adalah harga mana saja yang sempat terlihat di grafik.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-09-18",
+            "umpan_balik": "Ini salah periode: harga di kartu 2 adalah penutupan pertengahan September, bukan awal kenaikan beruntun."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2025-10-02",
+            "umpan_balik": "Ini angka nyaris benar: kartu 3 mencatat penutupan sesudah kenaikan dimulai, bukan harga sebelum kenaikan pertama."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-10-06",
+            "umpan_balik": "Ini salah periode: kartu 4 adalah penutupan sehari sebelumnya, bukan penutupan sore ini."
+          }
+        },
+        "pertanyaan_cek": "Dari harga penutupan tanggal berapa kenaikan beruntun ini dihitung?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (nilai uji 0,9807; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menyatakan dari 30 September 2025 Rp5.875 sampai 7 Oktober 2025 Rp8.600 harga penutupan naik 5 hari bursa berturut-turut, cocok dengan pesan Rara.",
+            "biaya_usd": 0.00140124
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 menyatakan dari 30 September 2025 Rp5.875 sampai 7 Oktober 2025 Rp8.600 naik 5 hari bursa berturut-turut, cocok dengan pesan Rara.",
+            "biaya_usd": 0.00087924
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tak bisa dipastikan.",
+            "biaya_usd": 0.005468,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen, hanya tebakan; kenaikan sekitar 36% paling masuk akal.",
+            "biaya_usd": 0.006808,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; ini tebakan, tidak bisa diverifikasi.",
+            "biaya_usd": 0.006348,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, kenaikan beruntun itu berangkat dari Rp6.300.",
+            "skor": 1,
+            "alasan": "Tebakan saja; dokumen tidak ada, klaim tak bisa diverifikasi.",
+            "biaya_usd": 0.006368,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 1,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.024992
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Ubah sebutan 'omongan teman' pada penjelasan agar tidak terdengar seperti istilah sistem; cukup rujuk pesan Rara secara wajar.",
+        "token_penalaran": [
+          6979
+        ]
+      },
+      "biaya_gerbang_usd": 0.08651285,
+      "id_bank": "2da79a123d998d53",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Rp6.300 lebih masuk akal untuk kenaikan 5 hari ke Rp8.600",
+            "biaya_usd": 0.00114,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Rp6.300 lebih masuk akal untuk kenaikan 5 hari ke Rp8.600",
+            "biaya_usd": 0.001045,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Rp6.300 lebih masuk akal untuk kenaikan 5 hari ke Rp8.600",
+            "biaya_usd": 0.001084,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan dari Rp6.300 ke Rp8.600 lebih realistis daripada dari Rp5.875",
+            "biaya_usd": 0.000569,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "5 hari naik dari 5.875 ke 8.600 lebih masuk akal",
+            "biaya_usd": 0.00005382,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 5 hari dari 6300 ke 8600 lebih wajar daripada dari 5875",
+            "biaya_usd": 0.00005502,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "5 hari naik dari 5875 ke 8600, kenaikan wajar 46%.",
+            "biaya_usd": 0.00005496,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "5 hari naik dari 6300 ke 8600 wajar, dari 5875 terlalu besar",
+            "biaya_usd": 0.00005376,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Kenaikan dari Rp6.300 memberi return harian lebih wajar.",
+            "biaya_usd": 0.00075201,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan 36,5% lebih wajar untuk 5 hari dibanding 46%.",
+            "biaya_usd": 0.00147205,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan lima hari beruntun ke Rp8.600 lebih wajar berawal dari Rp5.875.",
+            "biaya_usd": 0.00096837,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Kenaikan dari Rp6.300 ke Rp8.600 lebih wajar untuk lima hari beruntun.",
+            "biaya_usd": 0.00157705,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 3,
+          "p": 0.980712890625,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 3 dari 12 (nilai uji 0,9807; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.00882504
+      }
+    },
+    {
+      "putaran": 2,
+      "urut": 1,
+      "omongan": {
+        "nama": "Bayu",
+        "jam": "19.15",
+        "pesan": "Seingetku bursa terakhir nyetop saham ini Februari kemarin, habis itu jalan normal.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-02-19",
+          "rups-2025-05-02",
+          "susp-2025-08-14",
+          "susp-2025-08-27"
+        ],
+        "kartu_penentu": [
+          "susp-2025-08-27"
+        ],
+        "pilihan": {
+          "a": "Betul, penghentian terakhirnya memang tercatat [[susp-2025-02-19|19 Februari 2025]].",
+          "b": "Betul, yang tercatat sesudahnya hanya rapat [[rups-2025-05-02|2 Mei 2025]].",
+          "c": "Keliru, penghentian terakhirnya justru tercatat [[susp-2025-08-14|14 Agustus 2025]].",
+          "d": "Keliru, penghentian terakhirnya tercatat [[susp-2025-08-27|27 Agustus 2025]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Penghentian [[susp-2025-02-19|19 Februari 2025]] memang ada, tetapi bukan yang terakhir. Bursa menghentikan perdagangan lagi pada [[susp-2025-08-14|14 Agustus 2025]] dan sekali lagi pada [[susp-2025-08-27|27 Agustus 2025]], keduanya karena kenaikan harga kumulatif yang signifikan. Jadi yang terakhir adalah akhir Agustus. Rapat pemegang saham [[rups-2025-05-02|2 Mei 2025]] bukan penghentian perdagangan. Salah-kaprah yang umum: mengira penghentian oleh bursa cuma terjadi sekali, padahal bisa berulang dalam beberapa minggu.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-08-27",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 4 mencatat penghentian lagi pada akhir Agustus."
+          },
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "rups-2025-05-02",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 tentang jadwal rapat pemegang saham, bukan penghentian perdagangan."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-08-27",
+            "umpan_balik": "Ini sebagian benar: memang ada penghentian pertengahan Agustus, tetapi kartu 4 mencatat satu lagi sesudahnya."
+          }
+        },
+        "pertanyaan_cek": "Kapan penghentian perdagangan yang paling akhir tercatat?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 8 (nilai uji 0,3633; batas 0,02); 4 tak terbaca dibuang",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "d",
+            "pilihan": "d",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 4 mencatat penghentian sementara perdagangan terbaru pada 27 Agustus 2025, sehingga omongan Bayu bahwa penghentian terakhir terjadi Februari keliru.",
+            "biaya_usd": 0.000534
+          },
+          {
+            "r": 2,
+            "kunci": "b",
+            "pilihan": "b",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 4 mencatat penghentian sementara terakhir pada 27 Agustus 2025, sehingga klaim Bayu bahwa penghentian terakhir terjadi Februari keliru.",
+            "biaya_usd": 0.0005292
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Keliru, penghentian terakhirnya justru tercatat 14 Agustus 2025.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tanggal tidak bisa dipastikan.",
+            "biaya_usd": 0.005664,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Betul, penghentian terakhirnya memang tercatat 19 Februari 2025.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; tanggal ini paling sesuai ingatan Bayu.",
+            "biaya_usd": 0.005644,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Keliru, penghentian terakhirnya justru tercatat 14 Agustus 2025.",
+            "skor": 1,
+            "alasan": "Tebakan saja, dokumen tidak ada; tanggal tidak bisa diverifikasi.",
+            "biaya_usd": 0.006084,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "Keliru, penghentian terakhirnya justru tercatat 14 Agustus 2025.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; dua pilihan menyebut penghentian lebih baru.",
+            "biaya_usd": 0.006424,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 0,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 2,
+          "putusan": "lulus",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 0 dari 4 rotasi terbaca"
+        },
+        "biaya_usd": 0.023815999999999997
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Tidak ada masalah berarti; bila ingin menyempurnakan, sebut eksplisit di penjelasan bahwa bagian 'habis itu jalan normal' juga keliru karena bursa masih menghentikan perdagangan pada Agustus.",
+        "token_penalaran": [
+          5042
+        ]
+      },
+      "biaya_gerbang_usd": 0.23223702999999998,
+      "id_bank": "12f1568ec946bd89",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "27 Agustus 2025 lebih dekat dengan 'Februari kemarin' jika konteks sekarang adalah September-Oktober 2025",
+            "biaya_usd": 0.000583,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "27 Agustus 2025 lebih dekat dengan 'Februari kemarin' jika pesan dikirim akhir Agustus 2025",
+            "biaya_usd": 0.000598,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "27 Agustus 2025 lebih jauh dari Februari, lebih kontras dengan klaim Bayu",
+            "biaya_usd": 0.000542,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "14 Agustus 2025 lebih dekat dengan 'Februari kemarin' daripada 27 Agustus",
+            "biaya_usd": 0.000562,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Jika keliru, tanggal lebih dekat ke sekarang lebih mungkin",
+            "biaya_usd": 0.00004344,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Februari ke Agustus lebih masuk akal daripada 27 Agustus",
+            "biaya_usd": 0.00004704,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "d",
+            "isi": 3,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal lebih dekat ke sekarang, lebih mungkin benar.",
+            "biaya_usd": 0.00004338,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "c",
+            "isi": 2,
+            "isi_kunci": 3,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Februari lalu, Agustus lebih dekat dari Februari",
+            "biaya_usd": 0.00004458,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 3,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.042034840000000004,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 3,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.042033879999999996,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 3,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.042034199999999994,
+            "panggilan": 2
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": null,
+            "isi": null,
+            "isi_kunci": 3,
+            "terbaca": false,
+            "salinan": "",
+            "skor": null,
+            "alasan": "(tak terbaca)",
+            "biaya_usd": 0.042034199999999994,
+            "panggilan": 2
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 8,
+          "tak_terbaca": 4,
+          "kunci": 5,
+          "p": 0.36328125,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 5 dari 8 (nilai uji 0,3633; batas 0,02); 4 tak terbaca dibuang"
+          ]
+        },
+        "biaya_usd": 0.17060055999999998
+      }
+    },
+    {
+      "putaran": 3,
+      "urut": 1,
+      "omongan": {
+        "nama": "Nadia",
+        "jam": "20.30",
+        "pesan": "Dividen tunai yang tercatat Mei kemarin Rp3,44 per lembar kan? Mau kucatat di buku.",
+        "angka_pesan": [
+          {
+            "teks": "Rp3,44 per lembar",
+            "fact_id": "div-2025-05-15"
+          }
+        ],
+        "kartu": [
+          "div-2025-05-15",
+          "rups-2025-05-02",
+          "div-2024-08-22",
+          "div-2024-05-07"
+        ],
+        "kartu_penentu": [
+          "div-2025-05-15"
+        ],
+        "pilihan": {
+          "a": "Betul, tanggal ex dividen itu [[div-2025-05-15|15 Mei 2025]].",
+          "b": "Betul, tanggal ex dividen itu [[rups-2025-05-02|2 Mei 2025]].",
+          "c": "Keliru, dividen terakhirnya ber-ex [[div-2024-08-22|22 Agustus 2024]].",
+          "d": "Keliru, dividen terakhirnya ber-ex [[div-2024-05-07|7 Mei 2024]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-15|Rp3,44 per lembar]] dengan tanggal ex [[div-2025-05-15|15 Mei 2025]], jadi omongan teman betul. Tanggal [[rups-2025-05-02|2 Mei 2025]] adalah jadwal rapat pemegang saham, bukan tanggal ex. Dividen ex [[div-2024-08-22|22 Agustus 2024]] besarnya [[div-2024-08-22|Rp4,4 per lembar]] dan dividen ex [[div-2024-05-07|7 Mei 2024]] besarnya [[div-2024-05-07|Rp4,28 per lembar]]; keduanya pembagian tahun sebelumnya. Salah-kaprah yang umum: menyamakan tanggal rapat dengan tanggal ex, padahal yang menentukan siapa kebagian dividen adalah tanggal ex.",
+        "pengecoh": {
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "rups-2025-05-02",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 adalah jadwal rapat pemegang saham, bukan tanggal ex dividen."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2024-08-22",
+            "umpan_balik": "Ini salah periode: kartu 3 mencatat dividen tahun sebelumnya, bukan yang terakhir tercatat."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2024-05-07",
+            "umpan_balik": "Ini salah periode: kartu 4 memang dividen bulan Mei, tetapi Mei tahun sebelumnya."
+          }
+        },
+        "pertanyaan_cek": "Tanggal ex dividen ini jatuh pada hari apa, dan dokumen mana yang mencatatnya?"
+      },
+      "berhenti": "lolos",
+      "alasan": [],
+      "dicatat": [
+        "saringan berpasangan: tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (nilai uji 0,3872; batas 0,02)",
+        "penguji Opus (tidak menolak): penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+      ],
+      "saringan": null,
+      "kartu_rotasi": {
+        "per_rotasi": [
+          {
+            "r": 0,
+            "kunci": "a",
+            "pilihan": "a",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat dividen tunai Rp3,44 per lembar dengan tanggal ex 15 Mei 2025, cocok dengan omongan Nadia.",
+            "biaya_usd": 0.00181602
+          },
+          {
+            "r": 2,
+            "kunci": "c",
+            "pilihan": "c",
+            "benar": true,
+            "menunjuk_penentu": true,
+            "bingung": [],
+            "alasan": "Kartu 1 mencatat dividen tunai Rp3,44 per lembar dengan tanggal ex 15 Mei 2025, cocok dengan omongan Nadia.",
+            "biaya_usd": 0.00136346
+          }
+        ],
+        "lulus": true
+      },
+      "penebak_kuat": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, tanggal ex dividen itu 15 Mei 2025.",
+            "skor": 1,
+            "alasan": "Tebakan tanpa dokumen; cocok dengan klaim \"Mei kemarin\".",
+            "biaya_usd": 0.004792,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, tanggal ex dividen itu 15 Mei 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; hanya tebakan, pilihan Mei 2025 tampak wajar.",
+            "biaya_usd": 0.004732,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "c",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, tanggal ex dividen itu 15 Mei 2025.",
+            "skor": 1,
+            "alasan": "Tanpa dokumen; tebakan, cocok dengan klaim Mei kemarin.",
+            "biaya_usd": 0.004532,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-opus-5.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "Betul, tanggal ex dividen itu 2 Mei 2025.",
+            "skor": 1,
+            "alasan": "Tebakan saja; tanpa dokumen, tidak bisa diverifikasi.",
+            "biaya_usd": 0.006112,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "kunci": 3,
+          "n": 4,
+          "tak_terbaca": 0,
+          "isi_konsisten": 0,
+          "putusan": "tolak",
+          "alasan": "penebak kuat (tanpa kartu, pilihan diputar): memilih isi kunci di 3 dari 4 rotasi terbaca — jawabannya bisa ditebak tanpa membaca kartu"
+        },
+        "biaya_usd": 0.020168000000000002
+      },
+      "kritik": {
+        "menjawab": true,
+        "tanpa_keberatan": true,
+        "keberatan": [],
+        "arahan": "Opsi kunci sebaiknya juga menyebut besaran Rp3,44 per lembar agar menggemakan klaim teman, bukan hanya tanggal ex.",
+        "token_penalaran": [
+          3980
+        ]
+      },
+      "biaya_gerbang_usd": 0.05928456,
+      "id_bank": "2d636ab3f25ad9d4",
+      "pasangan": {
+        "jawaban": [
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Ex dividen biasanya lebih awal dalam bulan sebelum pencatatan dividen.",
+            "biaya_usd": 0.000503,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Ex dividen biasanya pertengahan bulan, bukan awal bulan.",
+            "biaya_usd": 0.000488,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Ex dividen biasanya lebih awal dalam bulan sebelum pencatatan.",
+            "biaya_usd": 0.000492,
+            "panggilan": 1
+          },
+          {
+            "model": "anthropic/claude-haiku-4.5",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Ex dividen biasanya pertengahan bulan, bukan awal bulan.",
+            "biaya_usd": 0.000487,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen tunai Mei, ex dividen biasanya pertengahan bulan.",
+            "biaya_usd": 0.0000465,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen tunai Mei, ex dividen awal bulan lebih mungkin.",
+            "biaya_usd": 0.0000453,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen tunai Mei, ex dividen biasanya pertengahan bulan",
+            "biaya_usd": 0.00004524,
+            "panggilan": 1
+          },
+          {
+            "model": "deepseek/deepseek-v4.1-flash",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen tunai Mei biasanya ex dividen awal bulan",
+            "biaya_usd": 0.00004164,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 0,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Tanggal ex dividen pertengahan bulan lebih umum untuk pencatatan dividen Mei.",
+            "biaya_usd": 0.0008638,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 1,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "2",
+            "skor": 1,
+            "alasan": "Pencatatan dividen Mei lebih selaras dengan tanggal ex dividen 15 Mei 2025.",
+            "biaya_usd": 0.00091884,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 2,
+            "huruf": "a",
+            "isi": 0,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Pola umum: dividen tercatat Mei dengan ex dividen pertengahan bulan tersebut.",
+            "biaya_usd": 0.00189916,
+            "panggilan": 1
+          },
+          {
+            "model": "z-ai/glm-5.3",
+            "kondisi": "pesan-pilihan",
+            "r": 3,
+            "huruf": "b",
+            "isi": 1,
+            "isi_kunci": 0,
+            "terbaca": true,
+            "salinan": "1",
+            "skor": 1,
+            "alasan": "Dividen Rp3,44 per lembar umumnya terkait tanggal ex dividen awal Mei.",
+            "biaya_usd": 0.00079284,
+            "panggilan": 1
+          }
+        ],
+        "putusan": {
+          "aturan": "pasangan-binomial",
+          "n": 12,
+          "tak_terbaca": 0,
+          "kunci": 7,
+          "p": 0.38720703125,
+          "putusan": "lulus",
+          "alasan": [
+            "tanpa kartu, diberi kunci dan kembaran selabelnya saja, penebak memilih kunci 7 dari 12 (nilai uji 0,3872; batas 0,02)"
+          ]
+        },
+        "biaya_usd": 0.00662332
+      }
+    }
+  ],
+  "draf_lolos_kode": [
+    {
+      "id": "8bab914b36a4fa44",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "19.15",
+        "pesan": "Seingetku bursa terakhir nyetop saham ini Februari kemarin, habis itu jalan normal.",
+        "angka_pesan": [],
+        "kartu": [
+          "susp-2025-02-19",
+          "rups-2025-05-02",
+          "susp-2025-08-14",
+          "susp-2025-08-27"
+        ],
+        "kartu_penentu": [
+          "susp-2025-08-27"
+        ],
+        "pilihan": {
+          "a": "Betul, penghentian terakhirnya memang tercatat [[susp-2025-02-19|19 Februari 2025]].",
+          "b": "Betul, yang tercatat sesudahnya hanya rapat [[rups-2025-05-02|2 Mei 2025]].",
+          "c": "Keliru, penghentian terakhirnya justru tercatat [[susp-2025-08-14|14 Agustus 2025]].",
+          "d": "Keliru, penghentian terakhirnya tercatat [[susp-2025-08-27|27 Agustus 2025]]."
+        },
+        "kunci": "d",
+        "penjelasan": "Penghentian [[susp-2025-02-19|19 Februari 2025]] memang ada, tetapi bukan yang terakhir. Bursa menghentikan perdagangan lagi pada [[susp-2025-08-14|14 Agustus 2025]] dan sekali lagi pada [[susp-2025-08-27|27 Agustus 2025]], keduanya karena kenaikan harga kumulatif yang signifikan. Jadi yang terakhir adalah akhir Agustus. Rapat pemegang saham [[rups-2025-05-02|2 Mei 2025]] bukan penghentian perdagangan. Salah-kaprah yang umum: mengira penghentian oleh bursa cuma terjadi sekali, padahal bisa berulang dalam beberapa minggu.",
+        "pengecoh": {
+          "a": {
+            "jenis": "percaya-otoritas",
+            "rujukan": "susp-2025-08-27",
+            "umpan_balik": "Ini percaya omongan tanpa cek: kartu 4 mencatat penghentian lagi pada akhir Agustus."
+          },
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "rups-2025-05-02",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 tentang jadwal rapat pemegang saham, bukan penghentian perdagangan."
+          },
+          "c": {
+            "jenis": "sebagian-benar",
+            "rujukan": "susp-2025-08-27",
+            "umpan_balik": "Ini sebagian benar: memang ada penghentian pertengahan Agustus, tetapi kartu 4 mencatat satu lagi sesudahnya."
+          }
+        },
+        "pertanyaan_cek": "Kapan penghentian perdagangan yang paling akhir tercatat?"
+      }
+    },
+    {
+      "id": "f80eb737249e5381",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "20.30",
+        "pesan": "Dividen tunai yang tercatat Mei kemarin Rp3,44 per lembar kan? Mau kucatat di buku.",
+        "angka_pesan": [
+          {
+            "teks": "Rp3,44 per lembar",
+            "fact_id": "div-2025-05-15"
+          }
+        ],
+        "kartu": [
+          "div-2025-05-15",
+          "rups-2025-05-02",
+          "div-2024-08-22",
+          "div-2024-05-07"
+        ],
+        "kartu_penentu": [
+          "div-2025-05-15"
+        ],
+        "pilihan": {
+          "a": "Betul, tanggal ex dividen itu [[div-2025-05-15|15 Mei 2025]].",
+          "b": "Betul, tanggal ex dividen itu [[rups-2025-05-02|2 Mei 2025]].",
+          "c": "Keliru, dividen terakhirnya ber-ex [[div-2024-08-22|22 Agustus 2024]].",
+          "d": "Keliru, dividen terakhirnya ber-ex [[div-2024-05-07|7 Mei 2024]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Daftar aksi korporasi mencatat dividen tunai [[div-2025-05-15|Rp3,44 per lembar]] dengan tanggal ex [[div-2025-05-15|15 Mei 2025]], jadi omongan teman betul. Tanggal [[rups-2025-05-02|2 Mei 2025]] adalah jadwal rapat pemegang saham, bukan tanggal ex. Dividen ex [[div-2024-08-22|22 Agustus 2024]] besarnya [[div-2024-08-22|Rp4,4 per lembar]] dan dividen ex [[div-2024-05-07|7 Mei 2024]] besarnya [[div-2024-05-07|Rp4,28 per lembar]]; keduanya pembagian tahun sebelumnya. Salah-kaprah yang umum: menyamakan tanggal rapat dengan tanggal ex, padahal yang menentukan siapa kebagian dividen adalah tanggal ex.",
+        "pengecoh": {
+          "b": {
+            "jenis": "pertanyaan-lain",
+            "rujukan": "rups-2025-05-02",
+            "umpan_balik": "Ini menjawab pertanyaan lain: kartu 2 adalah jadwal rapat pemegang saham, bukan tanggal ex dividen."
+          },
+          "c": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2024-08-22",
+            "umpan_balik": "Ini salah periode: kartu 3 mencatat dividen tahun sebelumnya, bukan yang terakhir tercatat."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "div-2024-05-07",
+            "umpan_balik": "Ini salah periode: kartu 4 memang dividen bulan Mei, tetapi Mei tahun sebelumnya."
+          }
+        },
+        "pertanyaan_cek": "Tanggal ex dividen ini jatuh pada hari apa, dan dokumen mana yang mencatatnya?"
+      }
+    },
+    {
+      "id": "2da79a123d998d53",
+      "omongan": {
+        "nama": "Rara",
+        "jam": "16.42",
+        "pesan": "Gila, 5 hari bursa naik terus, sore ini tutup di Rp8.600.",
+        "angka_pesan": [
+          {
+            "teks": "5 hari bursa",
+            "fact_id": "hari-naik-beruntun"
+          },
+          {
+            "teks": "Rp8.600",
+            "fact_id": "hari-naik-beruntun"
+          }
+        ],
+        "kartu": [
+          "hari-naik-beruntun",
+          "harga-2025-09-18",
+          "harga-2025-10-02",
+          "harga-2025-10-06"
+        ],
+        "kartu_penentu": [
+          "hari-naik-beruntun"
+        ],
+        "pilihan": {
+          "a": "Betul, kenaikan beruntun itu berangkat dari [[hari-naik-beruntun|Rp5.875]].",
+          "b": "Betul, kenaikan beruntun itu berangkat dari [[harga-2025-09-18|Rp6.300]].",
+          "c": "Keliru, kenaikan beruntunnya baru mulai dari [[harga-2025-10-02|Rp6.525]].",
+          "d": "Keliru, penutupan sore ini masih [[harga-2025-10-06|Rp7.900]]."
+        },
+        "kunci": "a",
+        "penjelasan": "Hitungan kenaikan beruntun mencatat harga penutupan naik [[hari-naik-beruntun|5 hari bursa]] berturut-turut, dari [[hari-naik-beruntun|Rp5.875]] pada [[hari-naik-beruntun|30 September 2025]] sampai [[hari-naik-beruntun|Rp8.600]] pada [[hari-naik-beruntun|7 Oktober 2025]]. Jadi omongan teman betul, dan titik berangkatnya adalah penutupan akhir September itu. Harga [[harga-2025-09-18|Rp6.300]] memang pernah tercatat, tetapi itu penutupan [[harga-2025-09-18|18 September 2025]], sebelum harga sempat turun lagi. [[harga-2025-10-02|Rp6.525]] sudah hari kedua kenaikan, dan [[harga-2025-10-06|Rp7.900]] adalah penutupan sehari sebelumnya. Salah-kaprah yang umum: mengira titik awal kenaikan adalah harga mana saja yang sempat terlihat di grafik.",
+        "pengecoh": {
+          "b": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-09-18",
+            "umpan_balik": "Ini salah periode: harga di kartu 2 adalah penutupan pertengahan September, bukan awal kenaikan beruntun."
+          },
+          "c": {
+            "jenis": "nyaris-benar-angka",
+            "rujukan": "harga-2025-10-02",
+            "umpan_balik": "Ini angka nyaris benar: kartu 3 mencatat penutupan sesudah kenaikan dimulai, bukan harga sebelum kenaikan pertama."
+          },
+          "d": {
+            "jenis": "salah-periode",
+            "rujukan": "harga-2025-10-06",
+            "umpan_balik": "Ini salah periode: kartu 4 adalah penutupan sehari sebelumnya, bukan penutupan sore ini."
+          }
+        },
+        "pertanyaan_cek": "Dari harga penutupan tanggal berapa kenaikan beruntun ini dihitung?"
+      }
+    }
+  ],
+  "teks_akhir": ""
+}
