@@ -19,11 +19,12 @@
  * Yang dijaga:
  * - medan `penalaran` dibuang saat tiap baris diurai (`uraiTanpaPenalaran`);
  * - kode saham dan nama perusahaan disamarkan seperti di replay;
- * - pelari tiruan (tes, tangkapan layar) selalu bertanda: `tiruan: true` ikut
- *   di status dan di peristiwa akhir, dan halaman memasang pitanya.
+ * - tidak ada mode uji di permukaan publik (A-1): pengganti proses agent untuk
+ *   tes hanya bisa disuntikkan dari kode (`OpsiServer.agenLangsung.pelari`),
+ *   tidak dari baris perintah dan tidak dari variabel lingkungan.
  */
 import { spawn } from 'node:child_process';
-import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import type { ServerResponse } from 'node:http';
 import { isAbsolute, join, relative, sep } from 'node:path';
 import { TOLERANSI_PAGU } from '../../factory/llm/agen/anggaran.ts';
@@ -81,8 +82,6 @@ export interface ProsesPelari {
 }
 
 export interface PelariAgen {
-  /** `true` hanya untuk pelari tiruan: halaman WAJIB memasang pita "PELARI TIRUAN". */
-  tiruan: boolean;
   /** Folder tempat pelari membuat `<id>/jejak-agen.jsonl`. */
   folderDasar: string;
   mulai(p: PermintaanPelari): ProsesPelari;
@@ -150,62 +149,9 @@ export function jalankanProses(perintah: string, argumen: readonly string[], cwd
 /** Pelari sungguhan: `node --experimental-strip-types alat/agen/jalan-agen.ts …` di akar repo. */
 export function pelariSungguhan(akarRepo: string): PelariAgen {
   return {
-    tiruan: false,
     // `jalan-agen.ts` menulis ke `<akar repo>/eval/penyusun/<id>/` (tidak bisa diubah lewat argumen).
     folderDasar: join(akarRepo, 'eval', 'penyusun'),
     mulai: (p) => jalankanProses(process.execPath, argumenPelari(p), akarRepo, p.log),
-  };
-}
-
-/**
- * PELARI TIRUAN — bukan agent sungguhan. Tidak memanggil model, tidak membuka
- * jaringan: ia menyalin baris demi baris sebuah jejak yang SUDAH ada ke folder
- * baru, dengan jeda, lalu menulis `hasil.json` bertanda `pelari_tiruan: true`.
- * Dipakai untuk tangkapan layar (`npm run penyusun -- --pelari-tiruan`); tes
- * memakai pelari tiruannya sendiri dengan isi buatan tes.
- */
-export function pelariTiruan(o: { folderDasar: string; sumber: string; jedaMs: number }): PelariAgen {
-  return {
-    tiruan: true,
-    folderDasar: o.folderDasar,
-    mulai: (p) => {
-      mkdirSync(p.folder, { recursive: true });
-      const baris = readFileSync(join(o.sumber, 'jejak-agen.jsonl'), 'utf8').split('\n').filter((b) => b.trim() !== '');
-      // Paket fakta disalin lebih dulu: pembaca jejak menyamarkan kode saham dan nama perusahaan SUMBER dari sini.
-      const jalurPaket = join(o.sumber, 'paket.json');
-      if (existsSync(jalurPaket)) writeFileSync(join(p.folder, 'paket.json'), readFileSync(jalurPaket, 'utf8'), 'utf8');
-      let i = 0;
-      let timer: ReturnType<typeof setTimeout> | null = null;
-      let beres: (h: { kodeKeluar: number | null }) => void = () => undefined;
-      const selesai = new Promise<{ kodeKeluar: number | null }>((b) => {
-        beres = b;
-      });
-      const maju = (): void => {
-        const b = baris[i];
-        if (b === undefined) {
-          const hasil = JSON.parse(readFileSync(join(o.sumber, 'hasil.json'), 'utf8')) as Record<string, unknown>;
-          writeFileSync(join(p.folder, 'hasil.json'), JSON.stringify({ ...hasil, id: p.id, pagu_usd: p.budgetUsd, pelari_tiruan: true }, null, 2), 'utf8');
-          timer = null;
-          beres({ kodeKeluar: 0 });
-          return;
-        }
-        appendFileSync(join(p.folder, 'jejak-agen.jsonl'), `${b}\n`, 'utf8');
-        i += 1;
-        timer = setTimeout(maju, o.jedaMs);
-      };
-      p.log(`PELARI TIRUAN (bukan agent sungguhan): menyalin ${String(baris.length)} baris jejak ke ${p.folder}; tanpa panggilan model.`);
-      timer = setTimeout(maju, o.jedaMs);
-      return {
-        pid: null,
-        hentikan: () => {
-          if (timer === null) return;
-          clearTimeout(timer);
-          timer = null;
-          beres({ kodeKeluar: null });
-        },
-        selesai,
-      };
-    },
   };
 }
 
@@ -230,7 +176,6 @@ export interface AkhirLangsung {
   /** `hasil.json` → `biaya_usd`, bila ada. */
   biaya_usd: number | null;
   jumlah_langkah: number;
-  tiruan: boolean;
 }
 
 export interface OpsiLangsung {
@@ -259,7 +204,6 @@ export class JalanLangsung {
   readonly id: string;
   readonly kode: string;
   readonly budgetUsd: number;
-  readonly tiruan: boolean;
   readonly folder: string;
   /** Folder untuk ditampilkan: relatif terhadap akar repo bila di dalamnya. */
   readonly folderTampil: string;
@@ -287,7 +231,6 @@ export class JalanLangsung {
     this.id = o.id;
     this.kode = o.kode;
     this.budgetUsd = o.budgetUsd;
-    this.tiruan = o.pelari.tiruan;
     this.folder = join(o.pelari.folderDasar, o.id);
     const rel = relative(o.akar, this.folder);
     this.folderTampil = `${rel.startsWith('..') || isAbsolute(rel) ? this.folder.split(sep).join('/') : rel.split(sep).join('/')}/`;
@@ -408,7 +351,7 @@ export class JalanLangsung {
   }
 
   private bacaAkhir(): AkhirLangsung {
-    const dasar = { folder: this.folderTampil, jumlah_langkah: this.terkirim, tiruan: this.tiruan };
+    const dasar = { folder: this.folderTampil, jumlah_langkah: this.terkirim };
     const jalur = join(this.folder, 'hasil.json');
     type Hasil = { berhenti?: unknown; biaya_usd?: unknown; simulasi?: { terbit?: unknown } };
     const bacaHasil = (): Hasil | null => {

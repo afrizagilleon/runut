@@ -1,9 +1,11 @@
 /**
  * "Jalankan Runut Agent" (M-PN1): server menyalakan pelari dan membaca jejak yang tumbuh.
  *
- * SEMUA pelari di berkas ini PELARI TIRUAN UJI: tidak ada model yang dipanggil,
- * tidak ada jaringan, tidak ada `.env` sungguhan (akar sementara). Pelari
- * sungguhan (`pelariSungguhan`) tidak pernah dinyalakan di sini.
+ * SEMUA proses agent di berkas ini PENGGANTI UJI yang didefinisikan di berkas ini
+ * dan disuntikkan lewat opsi kode (`agenLangsung.pelari`): tidak ada model yang
+ * dipanggil, tidak ada jaringan, tidak ada `.env` sungguhan (akar sementara).
+ * Proses sungguhan (`pelariSungguhan`) tidak pernah dinyalakan di sini. Produk
+ * sendiri tidak punya mode uji (A-1).
  *
  * Empat penutup risiko kontrak §3:
  * 1. Langkah di halaman berasal dari jejak yang DITULIS SAAT ITU oleh pelari
@@ -28,22 +30,24 @@ import {
   argumenPelari,
   budgetSah,
   jalankanProses,
-  pelariTiruan,
   type AkhirLangsung,
   type PelariAgen,
   type PermintaanPelari,
 } from './langsung-agen.ts';
 import { PerakitLangkah, kodeRekaman, uraiTanpaPenalaran } from './rekaman-agen.ts';
 import { langkahTampil, menulisDraf, siapkanReplay, toolDiagram, type KepalaTampil, type LangkahTampil } from './replay-agen.ts';
-import { SUMBER_PELARI_TIRUAN, uraiArgumen } from './server.ts';
+import { uraiArgumen } from './server.ts';
 
 const AKAR = fileURLToPath(new URL('../../', import.meta.url));
 const tunda = (ms: number): Promise<void> => new Promise((b) => setTimeout(b, ms));
 
+/** Jejak di repo yang disalin pengganti uji `penyalinJejak` (percobaan susun dari kode saham). */
+const SUMBER_JEJAK = 'eval/penyusun/m2d26-amag-1';
+
 /** Kode saham buatan tes: tidak ada di rekaman mana pun dan bukan kode sungguhan. */
 const KODE_UJI = 'ZZQX';
 
-/* --- PELARI TIRUAN UJI ---------------------------------------------------------- */
+/* --- PENGGANTI UJI ---------------------------------------------------------------- */
 
 interface PelariUji extends PelariAgen {
   /** Tiap kali server menyalakan pelari, permintaannya dicatat di sini. */
@@ -56,12 +60,11 @@ interface PelariUji extends PelariAgen {
   tamat(hasil?: Record<string, unknown>): void;
 }
 
-/** PELARI TIRUAN UJI: menulis hanya apa yang disuruh tes; tidak memanggil apa pun. */
-function pelariUji(tiruan: boolean): PelariUji {
+/** PENGGANTI UJI: menulis hanya apa yang disuruh tes; tidak memanggil apa pun. */
+function pelariUji(): PelariUji {
   let beres: ((h: { kodeKeluar: number | null }) => void) | null = null;
   const p: PelariUji = {
-    tiruan,
-    folderDasar: mkdtempSync(join(tmpdir(), 'pn1-pelari-uji-')),
+    folderDasar: mkdtempSync(join(tmpdir(), 'pn1-uji-')),
     panggilan: [],
     dihentikan: 0,
     tulis: (baris) => p.tulisMentah(`${JSON.stringify({ waktu: new Date().toISOString(), ...baris })}\n`),
@@ -94,6 +97,54 @@ function pelariUji(tiruan: boolean): PelariUji {
     },
   };
   return p;
+}
+
+/**
+ * PENGGANTI UJI kedua: menyalin baris demi baris sebuah jejak yang sudah ada ke folder baru, dengan jeda.
+ * Tidak memanggil model, tidak membuka jaringan. Hanya ada di berkas tes ini (A-1): kode produk tidak punya
+ * pengganti proses agent, dan tidak ada bendera yang menyalakannya.
+ */
+function penyalinJejak(o: { folderDasar: string; sumber: string; jedaMs: number }): PelariAgen {
+  return {
+    folderDasar: o.folderDasar,
+    mulai: (p) => {
+      mkdirSync(p.folder, { recursive: true });
+      const baris = readFileSync(join(o.sumber, 'jejak-agen.jsonl'), 'utf8').split('\n').filter((b) => b.trim() !== '');
+      // Paket fakta disalin lebih dulu: pembaca jejak menyamarkan kode saham dan nama perusahaan SUMBER dari sini.
+      const jalurPaket = join(o.sumber, 'paket.json');
+      if (existsSync(jalurPaket)) writeFileSync(join(p.folder, 'paket.json'), readFileSync(jalurPaket, 'utf8'), 'utf8');
+      let i = 0;
+      let timer: ReturnType<typeof setTimeout> | null = null;
+      let beres: (h: { kodeKeluar: number | null }) => void = () => undefined;
+      const selesai = new Promise<{ kodeKeluar: number | null }>((b) => {
+        beres = b;
+      });
+      const maju = (): void => {
+        const b = baris[i];
+        if (b === undefined) {
+          const hasil = JSON.parse(readFileSync(join(o.sumber, 'hasil.json'), 'utf8')) as Record<string, unknown>;
+          writeFileSync(join(p.folder, 'hasil.json'), JSON.stringify({ ...hasil, id: p.id, pagu_usd: p.budgetUsd }, null, 2), 'utf8');
+          timer = null;
+          beres({ kodeKeluar: 0 });
+          return;
+        }
+        appendFileSync(join(p.folder, 'jejak-agen.jsonl'), `${b}\n`, 'utf8');
+        i += 1;
+        timer = setTimeout(maju, o.jedaMs);
+      };
+      timer = setTimeout(maju, o.jedaMs);
+      return {
+        pid: null,
+        hentikan: () => {
+          if (timer === null) return;
+          clearTimeout(timer);
+          timer = null;
+          beres({ kodeKeluar: null });
+        },
+        selesai,
+      };
+    },
+  };
 }
 
 /* --- pembaca SSE bertahap -------------------------------------------------------- */
@@ -182,12 +233,11 @@ async function serverUji(pelari: PelariAgen, kunci: boolean, denganData = true):
 
 describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, bukan rekaman', () => {
   it('langkah muncul selagi pelari masih bekerja, dengan isi buatan tes yang tidak ada di rekaman mana pun', async () => {
-    const pelari = pelariUji(true);
-    s = await serverUji(pelari, false);
+    const pelari = pelariUji();
+    s = await serverUji(pelari, true);
     const mulai = await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU });
     expect(mulai.status).toBe(202);
-    const jawab = mulai.json() as { id: string; folder: string; tiruan: boolean };
-    expect(jawab.tiruan).toBe(true);
+    const jawab = mulai.json() as { id: string; folder: string };
     expect(pelari.panggilan).toHaveLength(1);
     expect(pelari.panggilan[0]).toMatchObject({ kode: KODE_UJI, budgetUsd: BUDGET_SUSUN_BAWAAN_USD, id: jawab.id, kreditSectors: false });
 
@@ -212,8 +262,7 @@ describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, buka
     // Baris model langkah 2 tiba → langkah 1 tertutup dan dikirim, selagi pelari MASIH bekerja.
     pelari.tulis(BARIS_2);
     await a.tunggu((p) => langkahDari(p).length === 1);
-    const status = (await minta(s.port, 'GET', '/api/status')).json() as { jalankan: { tiruan: boolean; kerja: { keadaan: string; kode: string; id: string } } };
-    expect(status.jalankan.tiruan).toBe(true);
+    const status = (await minta(s.port, 'GET', '/api/status')).json() as { jalankan: { kerja: { keadaan: string; kode: string; id: string } } };
     expect(status.jalankan.kerja).toMatchObject({ keadaan: 'bekerja', kode: KODE_UJI, id: jawab.id });
     const l1 = langkahDari(a.peristiwa())[0] as LangkahTampil;
     expect(l1.no).toBe(1);
@@ -241,7 +290,7 @@ describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, buka
     const semua = a.peristiwa();
     expect(semua.map((x) => x.jenis)).toEqual(['kepala', 'langkah', 'langkah', 'langkah', 'akhir', 'selesai']);
     const akhir = semua.at(-2)?.data as AkhirLangsung;
-    expect(akhir).toEqual({ hasil: 'terakit', folder: jawab.folder, biaya_usd: 0.4242, jumlah_langkah: 3, tiruan: true });
+    expect(akhir).toEqual({ hasil: 'terakit', folder: jawab.folder, biaya_usd: 0.4242, jumlah_langkah: 3 });
 
     // Satu jalur kebenaran (D-1): yang dikirim = pemetaan replay atas baris yang sama.
     const terlarang = [KODE_UJI];
@@ -292,7 +341,7 @@ describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, buka
   });
 
   it('"Putar ulang rekaman" tetap rekaman; kode tanpa rekaman tidak diam-diam dijalankan', async () => {
-    const pelari = pelariUji(false);
+    const pelari = pelariUji();
     s = await serverUji(pelari, true);
     expect((await minta(s.port, 'GET', `/api/agen/aliran?kode=${KODE_UJI}`)).status).toBe(404);
     expect((await minta(s.port, 'GET', `/api/agen/aliran?kode=${kodeRekaman()}`)).status).toBe(200);
@@ -301,8 +350,8 @@ describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, buka
   });
 
   it('keadaan akhir dibaca dari hasil.json pelari: budget, berhenti karena sebab lain, tanpa hasil', async () => {
-    const pelari = pelariUji(true);
-    s = await serverUji(pelari, false);
+    const pelari = pelariUji();
+    s = await serverUji(pelari, true);
     const akhirDari = async (hasil: Record<string, unknown> | undefined): Promise<AkhirLangsung> => {
       const srv = s as ServerUji;
       expect((await minta(srv.port, 'POST', '/api/agen/jalankan', { badan: SETUJU })).status).toBe(202);
@@ -325,10 +374,10 @@ describe('§3 (1): langkah di halaman = jejak yang ditulis pelari SAAT ITU, buka
 
 describe('§3 (2): pagar uang — pelari tidak pernah dipanggil tanpa kunci, klik setuju, dan budget dalam batas', () => {
   it('tanpa kunci: status menyebut nama variabel yang kosong; POST jalankan 400; pelari 0 panggilan', async () => {
-    const pelari = pelariUji(false);
+    const pelari = pelariUji();
     s = await serverUji(pelari, false);
-    const status = (await minta(s.port, 'GET', '/api/status')).json() as { jalankan: { siap: boolean; alasan: string; tiruan: boolean; budget_bawaan_usd: number; budget_maks_usd: number; kerja: unknown } };
-    expect(status.jalankan).toMatchObject({ siap: false, tiruan: false, budget_bawaan_usd: 1.5, budget_maks_usd: 2, kerja: null });
+    const status = (await minta(s.port, 'GET', '/api/status')).json() as { jalankan: { siap: boolean; alasan: string; budget_bawaan_usd: number; budget_maks_usd: number; kerja: unknown } };
+    expect(status.jalankan).toMatchObject({ siap: false, budget_bawaan_usd: 1.5, budget_maks_usd: 2, kerja: null });
     expect(status.jalankan.alasan).toMatch(/LLM_API_KEY/);
     expect(status.jalankan.alasan).toMatch(/\.env/);
     const j = await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU });
@@ -339,7 +388,7 @@ describe('§3 (2): pagar uang — pelari tidak pernah dipanggil tanpa kunci, kli
   });
 
   it('dengan kunci: tanpa klik setuju, budget di luar batas, asal lain, jenis badan lain → pelari 0 panggilan; baru permintaan sah yang memanggilnya', async () => {
-    const pelari = pelariUji(false);
+    const pelari = pelariUji();
     s = await serverUji(pelari, true);
     const port = s.port;
     const status = (await minta(port, 'GET', '/api/status')).json() as { jalankan: { siap: boolean; alasan: string | null } };
@@ -382,7 +431,7 @@ describe('§3 (2): pagar uang — pelari tidak pernah dipanggil tanpa kunci, kli
   });
 
   it('data saham belum ada di cache: tanpa izin kredit Sectors pelari tidak dipanggil; dengan izin, benderanya diteruskan', async () => {
-    const pelari = pelariUji(false);
+    const pelari = pelariUji();
     s = await serverUji(pelari, true, false);
     const siap = (await minta(s.port, 'GET', `/api/agen/siap?kode=${KODE_UJI}`)).json() as { ada_data: boolean; perlu_kredit: boolean; sectors_siap: boolean };
     expect(siap).toMatchObject({ ada_data: false, perlu_kredit: true, sectors_siap: true });
@@ -396,7 +445,7 @@ describe('§3 (2): pagar uang — pelari tidak pernah dipanggil tanpa kunci, kli
   });
 
   it('repo tanpa folder cache sama sekali (baru di-clone): "belum ada data", bukan galat server', async () => {
-    const pelari = pelariUji(false);
+    const pelari = pelariUji();
     const akar = akarSementara();
     rmSync(join(akar, '.cache'), { recursive: true, force: true });
     s = await mulaiServer({ akar, replayAgen: {}, agenLangsung: { pelari, selangMs: 15 } });
@@ -423,7 +472,7 @@ describe('§3 (2): pagar uang — pelari tidak pernah dipanggil tanpa kunci, kli
 
 describe('§3 (3): hanya satu kerja pada satu waktu', () => {
   it('permintaan kedua selagi yang pertama bekerja → 409 dengan kalimat jelas; pelari tidak dipanggil lagi; sesudah selesai boleh lagi', async () => {
-    const pelari = pelariUji(false);
+    const pelari = pelariUji();
     s = await serverUji(pelari, true);
     expect((await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU })).status).toBe(202);
     const idPertama = pelari.panggilan[0]?.id;
@@ -444,7 +493,7 @@ describe('§3 (3): hanya satu kerja pada satu waktu', () => {
 });
 
 describe('§3 (4): Hentikan mematikan pelari', () => {
-  /** Jejak contoh untuk pelari tiruan modul (`pelariTiruan`): 40 langkah satu baris. */
+  /** Jejak contoh untuk `penyalinJejak`: 40 langkah satu baris. */
   function sumberContoh(): string {
     const folder = mkdtempSync(join(tmpdir(), 'pn1-sumber-'));
     writeFileSync(join(folder, 'jejak-agen.jsonl'), Array.from({ length: 40 }, (_, i) => JSON.stringify(model(i + 1, ['lihat_fakta']))).join('\n') + '\n', 'utf8');
@@ -452,10 +501,9 @@ describe('§3 (4): Hentikan mematikan pelari', () => {
     return folder;
   }
 
-  it('pelari tiruan berhenti menulis sesudah Hentikan; keadaan akhir "dihentikan"; Hentikan kedua 409', async () => {
-    const pelari = pelariTiruan({ folderDasar: mkdtempSync(join(tmpdir(), 'pn1-tiruan-')), sumber: sumberContoh(), jedaMs: 25 });
-    expect(pelari.tiruan).toBe(true);
-    s = await serverUji(pelari, false);
+  it('proses agent berhenti menulis sesudah Hentikan; keadaan akhir "dihentikan"; Hentikan kedua 409', async () => {
+    const pelari = penyalinJejak({ folderDasar: mkdtempSync(join(tmpdir(), 'pn1-salin-')), sumber: sumberContoh(), jedaMs: 25 });
+    s = await serverUji(pelari, true);
     // Belum ada yang bekerja: Hentikan 409.
     expect((await minta(s.port, 'POST', '/api/agen/hentikan', { badan: {} })).status).toBe(409);
     const mulai = (await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU })).json() as { id: string };
@@ -470,7 +518,7 @@ describe('§3 (4): Hentikan mematikan pelari', () => {
     expect(saatHenti).toBeGreaterThanOrEqual(3);
     expect(saatHenti).toBeLessThan(40);
     const akhir = a.peristiwa().find((x) => x.jenis === 'akhir')?.data as AkhirLangsung;
-    expect(akhir).toMatchObject({ hasil: 'dihentikan', tiruan: true, jumlah_langkah: saatHenti });
+    expect(akhir).toMatchObject({ hasil: 'dihentikan', jumlah_langkah: saatHenti });
     // Sesudah Hentikan pelari tidak menulis apa pun lagi, dan tidak menulis hasil.json.
     await tunda(250);
     expect(jumlahBaris()).toBe(saatHenti);
@@ -483,7 +531,7 @@ describe('§3 (4): Hentikan mematikan pelari', () => {
   });
 
   it('Hentikan memanggil `hentikan` pelari tepat satu kali', async () => {
-    const pelari = pelariUji(false);
+    const pelari = pelariUji();
     s = await serverUji(pelari, true);
     await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU });
     expect(pelari.dihentikan).toBe(0);
@@ -510,35 +558,57 @@ describe('§3 (4): Hentikan mematikan pelari', () => {
   }, 20_000);
 });
 
-describe('D-3: pelari tiruan selalu bertanda', () => {
-  it('--pelari-tiruan diurai, hanya di tampilan AI agent', () => {
-    expect(uraiArgumen([], 'D:/r/').pelariTiruan).toBe(false);
-    expect(uraiArgumen(['--pelari-tiruan'], 'D:/r/')).toMatchObject({ pelariTiruan: true, replayAgen: true });
-    expect(() => uraiArgumen(['--mesin-lama', '--pelari-tiruan'], 'D:/r/')).toThrow(/--pelari-tiruan/);
-    expect(() => uraiArgumen(['--tayang-ulang', 'x', '--pelari-tiruan'], 'D:/r/')).toThrow(/--pelari-tiruan/);
+describe('A-1: tidak ada mode uji di permukaan publik', () => {
+  it('tidak ada cara menyalakan pengganti proses agent dari baris perintah atau variabel lingkungan', () => {
+    // Bendera lama dan tebakan serupa: semuanya bendera tak dikenal.
+    for (const b of ['--pelari-tiruan', '--tiruan', '--pelari', '--pelari-uji', '--uji', '--palsu-agen', '--agen-tiruan']) expect(() => uraiArgumen([b], 'D:/r/'), b).toThrow(/Argumen tidak dikenal/);
+    expect(() => uraiArgumen(['--replay-agent', '--pelari-tiruan'], 'D:/r/')).toThrow(/Argumen tidak dikenal/);
+    // Hasil urai argumen tidak punya medan untuk itu.
+    expect(Object.keys(uraiArgumen([], 'D:/r/')).filter((k) => /pelari|tiruan|uji|langsung/i.test(k))).toEqual([]);
+    const server = readFileSync(join(AKAR, 'alat/penyusun/server.ts'), 'utf8');
+    const kode = server.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    // Proses agent dipilih di SATU tempat: opsi dari kode, atau proses sungguhan.
+    expect(kode.match(/agenLangsung\?\.pelari/g)).toHaveLength(1);
+    expect(kode).toMatch(/opsiMentah\.agenLangsung\?\.pelari \?\? pelariSungguhan\(opsiMentah\.akar\)/);
+    // `utama()` (baris perintah) tidak pernah mengisi opsi itu.
+    const utama = /async function utama\(\): Promise<number> \{[\s\S]*?\n\}/.exec(kode)?.[0] ?? '';
+    expect(utama).toMatch(/buatAplikasi\(/);
+    expect(utama).not.toMatch(/agenLangsung|pelari/i);
+    // Pembaca jejak tidak membaca lingkungan atau argumen proses, dan tidak punya pengganti di dalamnya.
+    const langsung = readFileSync(join(AKAR, 'alat/penyusun/langsung-agen.ts'), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    expect(langsung).not.toMatch(/process\.env|process\.argv|tiruan/i);
+    expect(kode).not.toMatch(/tiruan/i);
+    expect((kode.match(/process\.env/g) ?? []).length).toBe((kode.match(/o\.proses \?\? process\.env|opsi\.proses \?\? process\.env/g) ?? []).length);
   });
 
-  it('pelari tiruan baris perintah (menyalin jejak di repo): bertanda di status, di peristiwa akhir, dan di hasil.json; tanpa kunci; tidak menulis ke eval/', async () => {
-    const pelari = pelariTiruan({ folderDasar: mkdtempSync(join(tmpdir(), 'pn1-tiruan-')), sumber: join(AKAR, SUMBER_PELARI_TIRUAN), jedaMs: 2 });
-    s = await serverUji(pelari, false);
-    const status = (await minta(s.port, 'GET', '/api/status')).json() as { jalankan: { siap: boolean; tiruan: boolean } };
-    expect(status.jalankan).toMatchObject({ siap: true, tiruan: true });
-    const mulai = (await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU })).json() as { id: string; folder: string; tiruan: boolean };
-    expect(mulai.tiruan).toBe(true);
-    expect(mulai.folder).not.toMatch(/eval\/penyusun/);
+  it('server yang dibuat seperti dari baris perintah memakai proses sungguhan, apa pun isi lingkungan; status dan respons tidak punya kolom mode uji', async () => {
+    const akar = akarSementara();
+    s = await mulaiServer({ akar, replayAgen: {}, proses: { PELARI_TIRUAN: '1', PELARI: 'tiruan', NODE_ENV: 'test', UJI: '1' } });
+    expect(s.keadaan.pelari?.folderDasar).toBe(join(akar, 'eval', 'penyusun'));
+    const status = await minta(s.port, 'GET', '/api/status');
+    expect(Object.keys((status.json() as { jalankan: Record<string, unknown> }).jalankan).sort()).toEqual(['alasan', 'budget_bawaan_usd', 'budget_maks_usd', 'kerja', 'siap', 'toleransi']);
+    expect(status.teks).not.toMatch(/tiruan|pelari/i);
+    expect((await minta(s.port, 'GET', `/api/agen/siap?kode=${KODE_UJI}`)).teks).not.toMatch(/tiruan|pelari/i);
+  });
+
+  it('jejak sungguhan dari repo yang disalin pengganti uji: delapan langkah, kode saham dan nama perusahaan sumber disamarkan, tanpa kolom mode uji', async () => {
+    const pelari = penyalinJejak({ folderDasar: mkdtempSync(join(tmpdir(), 'pn1-salin-')), sumber: join(AKAR, SUMBER_JEJAK), jedaMs: 2 });
+    s = await serverUji(pelari, true);
+    const mulai = await minta(s.port, 'POST', '/api/agen/jalankan', { badan: SETUJU });
+    expect(mulai.teks).not.toMatch(/tiruan|pelari/i);
+    const jawab = mulai.json() as { id: string; folder: string };
     a = await bukaAliran(s.port, '/api/agen/langsung/aliran');
     await a.tunggu(() => (a as AliranUji).teks().includes('event: selesai'), 8_000);
     const semua = a.peristiwa();
-    const sumber = JSON.parse(readFileSync(join(AKAR, SUMBER_PELARI_TIRUAN, 'hasil.json'), 'utf8')) as { langkah: number; kode: string };
+    const sumber = JSON.parse(readFileSync(join(AKAR, SUMBER_JEJAK, 'hasil.json'), 'utf8')) as { langkah: number; kode: string };
     expect(langkahDari(semua)).toHaveLength(sumber.langkah);
-    expect(semua.at(-2)?.data).toMatchObject({ hasil: 'terakit', tiruan: true });
-    const hasil = JSON.parse(readFileSync(join(pelari.folderDasar, mulai.id, 'hasil.json'), 'utf8')) as { pelari_tiruan: boolean; id: string };
-    expect(hasil).toMatchObject({ pelari_tiruan: true, id: mulai.id });
-    // Kode saham dan nama perusahaan jejak sumber disamarkan (dari paket.json), teks berpikir tidak ikut.
+    expect(semua.at(-2)?.data).toMatchObject({ hasil: 'terakit', folder: jawab.folder });
     const badan = a.teks();
     expect(badan.toLowerCase()).not.toContain(sumber.kode.toLowerCase());
     expect(badan).not.toMatch(/asuransi multi/i);
     expect(badan).not.toMatch(/penalaran/);
-    expect(badan).not.toMatch(/[A-Za-z]:[\\/]Projects/);
+    expect(badan).not.toMatch(/tiruan|pelari/i);
+    expect((await minta(s.port, 'GET', '/api/status')).teks).not.toMatch(/tiruan|pelari/i);
+    expect(s.log.join('\n')).not.toMatch(/tiruan|pelari/i);
   }, 20_000);
 });

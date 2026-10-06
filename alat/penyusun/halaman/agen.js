@@ -81,11 +81,11 @@ const k = {
   kode: null,
   /**
    * Dari mana langkah di layar berasal: 'putar' (rekaman di repo) atau
-   * 'langsung' (pelari agent yang sedang bekerja). Tidak pernah berganti diam-diam:
+   * 'langsung' (agent yang sedang bekerja). Tidak pernah berganti diam-diam:
    * hanya `putar()` dan `ikutiLangsung()` yang mengisinya.
    */
   sumber: null,
-  /** Bagian `jalankan` dari /api/status: boleh tidaknya menjalankan agent, batas budget, pelari tiruan. */
+  /** Bagian `jalankan` dari /api/status: boleh tidaknya menjalankan agent, batas budget. */
   jalankan: null,
   /** Kode saham yang sedang dimintai persetujuan (kotak setuju terbuka). */
   kodeSetuju: null,
@@ -615,9 +615,6 @@ function terimaKepala(kepala) {
   const langsung = kepala.mode === 'langsung';
   $('judul-kerja').textContent = langsung ? TEKS.judulKerja : TEKS.judulPutar;
   $('agen-asal').textContent = langsung ? TEKS.asalLangsung(k.jalankan?.kerja?.folder ?? '') : TEKS.asalPutar;
-  const pita = $('pita-tiruan-kerja');
-  pita.hidden = !(langsung && k.jalankan?.tiruan === true);
-  pita.textContent = TEKS.pitaTiruan;
   const lama = kepala.tool.filter((t) => t.nama_lama.length > 0).map((t) => TEKS.namaLama(t.nama, t.nama_lama.join(', ')));
   $('keterangan-ringkas').textContent = TEKS.keteranganRingkas;
   const budget = langsung ? TEKS.keteranganBudgetLangsung(dolar(kepala.budget_usd)) : TEKS.keteranganBudget(dolar(kepala.budget_usd), kepala.jumlah_rekaman);
@@ -637,7 +634,7 @@ function terima(p) {
   else if (p.jenis === 'langkah' && p.data !== null) k.pemutar?.terima(p.data);
   else if (p.jenis === 'simulasi' && p.data !== null) k.simulasi = p.data;
   else if (p.jenis === 'akhir' && p.data !== null) {
-    // Pelari sudah berhenti: tombol Hentikan hilang sekarang; kalimat akhirnya tampil sesudah langkah terakhir.
+    // Proses agent sudah berhenti: tombol Hentikan hilang sekarang; kalimat akhirnya tampil sesudah langkah terakhir.
     k.akhir = p.data;
     k.bekerja = false;
     gambarKeadaan();
@@ -651,7 +648,6 @@ function gambarAkhir() {
   wadah.hidden = a === null;
   if (a === null) return;
   wadah.append(
-    a.tiruan ? el('p', { kelas: 'tidak' }, TEKS.akhirTiruan) : null,
     el('p', {}, kalimatAkhir(a.hasil)),
     a.hasil === 'terakit' ? el('p', { kelas: 'meta' }, TEKS.akhirLanjut) : null,
     el('p', { kelas: 'meta' }, TEKS.akhirFolder(a.folder), a.biaya_usd === null ? null : ` · ${TEKS.akhirBiaya(dolar(a.biaya_usd))}`),
@@ -752,7 +748,7 @@ async function bacaAliran(alamat, pesanPutus) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Jalankan Runut Agent: persetujuan budget, lalu pelari sungguhan     */
+/* Jalankan Runut Agent: persetujuan budget, lalu agent sungguhan    */
 /* ------------------------------------------------------------------ */
 
 async function kirim(jalur, badan) {
@@ -797,7 +793,7 @@ async function bukaSetuju() {
     return;
   }
   k.kodeSetuju = kode;
-  $('pernyataan-biaya').textContent = j.tiruan ? TEKS.pernyataanTiruan : TEKS.pernyataanBiaya(dolar(j.budget_maks_usd), persen(j.toleransi));
+  $('pernyataan-biaya').textContent = TEKS.pernyataanBiaya(dolar(j.budget_maks_usd), persen(j.toleransi));
   $('budget').value = String(j.budget_bawaan_usd).replace('.', ',');
   $('baris-kredit').hidden = siap.perlu_kredit !== true;
   $('setuju-kredit').checked = false;
@@ -911,11 +907,6 @@ async function mulai() {
       }
       const j = status.jalankan ?? null;
       k.jalankan = j;
-      if (j !== null && j.tiruan === true) {
-        $('pita-tiruan').textContent = TEKS.pitaTiruan;
-        $('pita-tiruan').hidden = false;
-        document.documentElement.dataset.pelari = 'tiruan';
-      }
       // Tanpa kunci: pilihan "Jalankan" tetap terlihat, nonaktif, dengan satu kalimat cara mengisinya.
       if (j !== null && j.siap !== true) {
         $('nonaktif-jalankan').textContent = TEKS.nonaktif(j.alasan ?? '');

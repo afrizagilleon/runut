@@ -40,7 +40,7 @@ import { mesinPalsu, pengambilPalsu } from './palsu.ts';
 import { periksaTanggal } from './tanggal.ts';
 import { jendelaSah, kodeSah, usulkanHari } from './usulan.ts';
 import { kirimReplay, siapkanReplay, type ReplayAgen } from './replay-agen.ts';
-import { BUDGET_SUSUN_BAWAAN_USD, BUDGET_SUSUN_MAKS_USD, JalanLangsung, SELANG_BACA_MS, TOLERANSI_BUDGET, budgetSah, pelariSungguhan, pelariTiruan, type PelariAgen } from './langsung-agen.ts';
+import { BUDGET_SUSUN_BAWAAN_USD, BUDGET_SUSUN_MAKS_USD, JalanLangsung, SELANG_BACA_MS, TOLERANSI_BUDGET, budgetSah, pelariSungguhan, type PelariAgen } from './langsung-agen.ts';
 import { bacaRekaman, jamSungguhan, JamVirtual, putarRekaman, RUMUS_JEDA, type JamTayang, type PemutarTayang, type Rekaman } from './tayang-ulang.ts';
 
 /** Satu-satunya alamat yang boleh didengar. Tidak bisa diubah lewat argumen. */
@@ -111,8 +111,8 @@ export interface OpsiServer {
   replayAgen?: { akar?: string };
   /**
    * M-PN1 "Jalankan Runut Agent" (hanya di tampilan AI agent). `pelari`: bawaan
-   * pelari sungguhan (`alat/agen/jalan-agen.ts` sebagai proses anak); tes dan
-   * `--pelari-tiruan` menggantinya. `selangMs`: selang pembacaan jejak.
+   * proses `alat/agen/jalan-agen.ts` sungguhan. Pengganti untuk tes HANYA bisa diberikan lewat opsi ini dari
+   * kode; tidak ada bendera baris perintah atau variabel lingkungan yang mengisinya (A-1). `selangMs`: selang pembacaan jejak.
    */
   agenLangsung?: { pelari?: PelariAgen; selangMs?: number };
 }
@@ -484,9 +484,8 @@ function wajibPelari(keadaan: KeadaanServer): PelariAgen {
   return keadaan.pelari;
 }
 
-/** Kunci untuk memanggil model: hanya nama variabel yang kosong, tidak pernah nilainya. Pelari tiruan tidak butuh kunci. */
-function kunciJalankan(keadaan: KeadaanServer, pelari: PelariAgen): { siap: boolean; alasan: string | null } {
-  if (pelari.tiruan) return { siap: true, alasan: null };
+/** Kunci untuk memanggil model: hanya nama variabel yang kosong, tidak pernah nilainya. */
+function kunciJalankan(keadaan: KeadaanServer): { siap: boolean; alasan: string | null } {
   const k = statusKonfig(keadaan.opsi.akar, keadaan.opsi.proses ?? process.env).llm;
   if (k.siap) return { siap: true, alasan: null };
   const isi = k.hilang.length === 0 ? '' : `Isi ${k.hilang.join(', ')} di berkas .env (salin dari .env.example), lalu muat ulang halaman ini. `;
@@ -499,12 +498,11 @@ function statusJalankan(keadaan: KeadaanServer): Record<string, unknown> | null 
   if (pelari === null) return null;
   const l = keadaan.langsung;
   return {
-    ...kunciJalankan(keadaan, pelari),
-    tiruan: pelari.tiruan,
+    ...kunciJalankan(keadaan),
     budget_bawaan_usd: BUDGET_SUSUN_BAWAAN_USD,
     budget_maks_usd: BUDGET_SUSUN_MAKS_USD,
     toleransi: TOLERANSI_BUDGET,
-    kerja: l === null ? null : { id: l.id, kode: l.kode, keadaan: l.keadaan, budget_usd: l.budgetUsd, folder: l.folderTampil, tiruan: l.tiruan },
+    kerja: l === null ? null : { id: l.id, kode: l.kode, keadaan: l.keadaan, budget_usd: l.budgetUsd, folder: l.folderTampil },
   };
 }
 
@@ -530,14 +528,14 @@ function dataCache(keadaan: KeadaanServer, kode: string): ReturnType<PemuatGudan
 
 /** Apakah data saham ini sudah ada di cache lokal (kalau belum, pelari perlu izin memakai kredit Sectors). */
 daftarRute('GET', '/api/agen/siap', (_req, res, { keadaan, url }) => {
-  const pelari = wajibPelari(keadaan);
+  wajibPelari(keadaan);
   const kode = wajibKode(url.searchParams.get('kode'));
   const adaData = dataCache(keadaan, kode) !== null;
   const o = keadaan.opsi;
   kirimJson(res, 200, {
     kode,
     ada_data: adaData,
-    perlu_kredit: !pelari.tiruan && !adaData,
+    perlu_kredit: !adaData,
     sectors_siap: statusKonfig(o.akar, o.proses ?? process.env).sectors.siap,
   });
 });
@@ -556,10 +554,10 @@ daftarRute('POST', '/api/agen/jalankan', (_req, res, { keadaan, badan }) => {
   if (b['setuju'] !== true) throw new GalatPermintaan(400, 'Menjalankan AI agent memanggil model berbayar. Setujui budget-nya di halaman dulu.');
   const budget = budgetSah(b['budget_usd']);
   if (budget === null) throw new GalatPermintaan(400, `Budget harus angka dolar di atas 0 dan paling banyak ${String(BUDGET_SUSUN_MAKS_USD)}.`);
-  const kunci = kunciJalankan(keadaan, pelari);
+  const kunci = kunciJalankan(keadaan);
   if (!kunci.siap) throw new GalatPermintaan(400, kunci.alasan ?? 'Kunci API belum diisi.');
   const data = dataCache(keadaan, kode);
-  const perluKredit = !pelari.tiruan && data === null;
+  const perluKredit = data === null;
   if (perluKredit) {
     if (b['setuju_kredit'] !== true) throw new GalatPermintaan(400, `Data ${kode} belum ada di cache lokal. Centang izin mengambilnya dari Sectors API (memakai kredit Sectors) dulu.`);
     const s = statusKonfig(o.akar, o.proses ?? process.env).sectors;
@@ -583,8 +581,8 @@ daftarRute('POST', '/api/agen/jalankan', (_req, res, { keadaan, badan }) => {
     log: o.log,
   });
   keadaan.langsung = l;
-  o.log(`agent langsung ${id}: dinyalakan sesudah klik setuju; kode ${kode}; budget US$${budget.toFixed(2)}; ${pelari.tiruan ? 'PELARI TIRUAN (bukan agent sungguhan)' : `pelari sungguhan PID ${String(l.pid ?? '-')}`}`);
-  kirimJson(res, 202, { id, kode, budget_usd: budget, folder: l.folderTampil, tiruan: l.tiruan });
+  o.log(`agent langsung ${id}: dinyalakan sesudah klik setuju; kode ${kode}; budget US${budget.toFixed(2)}; PID proses agent ${String(l.pid ?? '-')}`);
+  kirimJson(res, 202, { id, kode, budget_usd: budget, folder: l.folderTampil });
 });
 
 /** D-2: tombol Hentikan — mematikan pelari milik server ini. */
@@ -1057,18 +1055,7 @@ export interface ArgumenServer {
   replayAgen: boolean;
   /** `--mesin-lama`: halaman penyusun lama (mesin M2d-8…M2d-15), bukan tampilan AI agent. */
   mesinLama: boolean;
-  /**
-   * `--pelari-tiruan` (M-PN1 D-3): "Jalankan Runut Agent" memakai PELARI TIRUAN — menyalin jejak yang sudah
-   * ada dengan jeda, tanpa panggilan model. Halaman memasang pita "PELARI TIRUAN — bukan agent sungguhan"
-   * selama bendera ini dipakai. Hanya berlaku di tampilan AI agent.
-   */
-  pelariTiruan: boolean;
 }
-
-/** Jejak yang disalin pelari tiruan (`--pelari-tiruan`): percobaan susun dari kode saham yang sudah ada di repo. */
-export const SUMBER_PELARI_TIRUAN = 'eval/penyusun/m2d26-amag-1';
-/** Jeda antar-baris pelari tiruan. */
-export const JEDA_PELARI_TIRUAN_MS = 700;
 
 /**
  * Tanpa bendera mode: tampilan AI agent (M2d-32 D-8). `--mesin-lama` membuka halaman penyusun lama;
@@ -1078,7 +1065,7 @@ export const JEDA_PELARI_TIRUAN_MS = 700;
  * `--host` sengaja DITOLAK: server ini hanya untuk 127.0.0.1.
  */
 export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): ArgumenServer {
-  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, prompt: null, tayangUlang: null, jamVirtual: false, demo: null, replayAgen: false, mesinLama: false, pelariTiruan: false };
+  const hasil: ArgumenServer = { port: PORT_BAWAAN, palsu: false, paguPenyusunUsd: PAGU_PENYUSUN_BAWAAN, keluaran: join(akar, 'eval', 'penyusun'), mesin: 'lingkar', penulis: null, prompt: null, tayangUlang: null, jamVirtual: false, demo: null, replayAgen: false, mesinLama: false };
   let replayDiminta = false;
   /** Bendera milik halaman lama yang dipakai (untuk pesan galat bila `--mesin-lama` tidak ada). */
   const milikLama: string[] = [];
@@ -1122,7 +1109,6 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
       i++;
     } else if (a === '--jam-virtual') hasil.jamVirtual = true;
     else if (a === '--replay-agent') replayDiminta = true;
-    else if (a === '--pelari-tiruan') hasil.pelariTiruan = true;
     else if (a === '--demo' && nilai !== undefined) {
       hasil.demo = { folder: nilai, draf: 'akhir', suntingan: null, paguUjiUlangUsd: null };
       i++;
@@ -1151,7 +1137,6 @@ export function uraiArgumen(argv: readonly string[], akar: string = AKAR_REPO): 
     throw new Error(`${milikLama.join(', ')} hanya berlaku bersama --mesin-lama (tanpa bendera itu pintu penyusun membuka tampilan AI agent).`);
   }
   hasil.replayAgen = !hasil.mesinLama && hasil.demo === null && hasil.tayangUlang === null;
-  if (hasil.pelariTiruan && !hasil.replayAgen) throw new Error('--pelari-tiruan hanya berlaku di tampilan AI agent (tanpa --mesin-lama, --demo, atau --tayang-ulang).');
   if (hasil.mesin === 'bebas' && hasil.penulis === null) throw new Error('--mesin bebas butuh --penulis opus|haiku|deepseek (M2d-13).');
   if (hasil.penulis !== null && hasil.mesin !== 'bebas') throw new Error('--penulis hanya berlaku bersama --mesin bebas.');
   if (hasil.prompt !== null && hasil.mesin !== 'bebas') throw new Error('--prompt hanya berlaku bersama --mesin bebas.');
@@ -1177,16 +1162,12 @@ async function utama(): Promise<number> {
       ? {}
       : { demo: { folder: arg.demo.folder, draf: arg.demo.draf, suntingan: arg.demo.suntingan, paguUjiUlangUsd: arg.demo.paguUjiUlangUsd, ...(arg.jamVirtual ? { jam: new JamVirtual() } : {}) } }),
     ...(arg.replayAgen ? { replayAgen: {} } : {}),
-    // Pelari tiruan menulis ke folder sementara, tidak pernah ke eval/.
-    ...(arg.pelariTiruan ? { agenLangsung: { pelari: pelariTiruan({ folderDasar: mkdtempSync(join(tmpdir(), 'penyusun-pelari-tiruan-')), sumber: join(AKAR_REPO, SUMBER_PELARI_TIRUAN), jedaMs: JEDA_PELARI_TIRUAN_MS }) } } : {}),
   });
   const port = await dengarkan(server, arg.port);
   if (arg.replayAgen) {
     console.log(`Pintu penyusun — AI AGENT: http://${HOST}:${String(port)}/`);
-    if (arg.pelariTiruan) {
-      console.log(`PELARI TIRUAN — bukan agent sungguhan: "Jalankan Runut Agent" menyalin jejak ${SUMBER_PELARI_TIRUAN} dengan jeda. Tanpa panggilan model, tanpa biaya.`);
-    } else {
-      console.log('Jalankan Runut Agent: pelari yang sama dengan `npm run agen` (berbayar; butuh .env; hanya sesudah klik setuju di halaman). Keluarannya tampil di terminal ini.');
+    {
+      console.log('Jalankan Runut Agent: program yang sama dengan `npm run agen` (berbayar; butuh .env; hanya sesudah klik setuju di halaman). Keluarannya tampil di terminal ini.');
     }
     console.log('Putar ulang rekaman: dibaca dari berkas di repo. Tanpa panggilan model, tanpa Sectors, tanpa API key, tanpa biaya.');
     console.log('Halaman penyusun lama: npm run penyusun -- --mesin-lama');

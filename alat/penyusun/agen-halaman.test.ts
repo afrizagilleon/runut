@@ -461,9 +461,9 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
   });
 
   it('M-PN1: pesan rute "Jalankan Runut Agent" yang bisa sampai ke halaman (tanpa kunci, tanpa setuju, budget, kredit, kerja kedua, hentikan)', async () => {
-    // PELARI TIRUAN UJI: tidak menulis dan tidak memanggil apa pun; hanya ada supaya pesan "masih ada yang bekerja" bisa dipancing.
+    // PENGGANTI UJI (disuntikkan dari kode tes): tidak menulis dan tidak memanggil apa pun; hanya ada supaya pesan "masih ada yang bekerja" bisa dipancing.
     let beres: (h: { kodeKeluar: number | null }) => void = () => undefined;
-    const pelari = { tiruan: false, folderDasar: mkdtempSync(join(tmpdir(), 'pn1-pesan-')), mulai: () => ({ pid: null, hentikan: () => beres({ kodeKeluar: null }), selesai: new Promise<{ kodeKeluar: number | null }>((b) => (beres = b)) }) };
+    const pelari = { folderDasar: mkdtempSync(join(tmpdir(), 'pn1-pesan-')), mulai: () => ({ pid: null, hentikan: () => beres({ kodeKeluar: null }), selesai: new Promise<{ kodeKeluar: number | null }>((b) => (beres = b)) }) };
     const pesan: string[] = [];
     const galat = async (port: number, metode: string, jalur: string, badan?: unknown): Promise<void> => {
       const j = await minta(port, metode, jalur, badan === undefined ? {} : { badan });
@@ -517,11 +517,8 @@ describe('kata buatan tidak tampil di teks halaman agent', () => {
     expect(M.TEKS['tombolPutar']).toBe('Putar ulang rekaman');
     expect(M.TEKS['tombolJalankan']).toBe('Jalankan Runut Agent');
     expect(`${html}\n${js}\n${JSON.stringify(Object.values(M.TEKS).filter((v) => typeof v === 'string'))}`).not.toMatch(/Putar kerja agent/);
-    // Pita pelari tiruan: kalimatnya, dan dua tempatnya di halaman.
-    expect(M.TEKS['pitaTiruan']).toMatch(/^PELARI TIRUAN — bukan agent sungguhan\./);
-    expect(html).toMatch(/id="pita-tiruan" role="status" hidden>/);
-    expect(html).toMatch(/id="pita-tiruan-kerja" role="status" hidden>/);
-    expect(js).toMatch(/j\.tiruan === true\) \{\s+\$\('pita-tiruan'\)\.textContent = TEKS\.pitaTiruan;\s+\$\('pita-tiruan'\)\.hidden = false;/);
+    // A-1: tidak ada pita, kolom, atau teks mode uji di halaman.
+    expect(`${html}\n${js}\n${readFileSync(join(HALAMAN, 'agen-murni.js'), 'utf8')}`).not.toMatch(/tiruan|pelari/i);
     // `setuju: true` dikirim dari SATU tempat: fungsi tombol setuju. Tombol "Jalankan" sendiri hanya membuka pernyataan biaya.
     expect(js.match(/setuju: true/g)).toHaveLength(1);
     expect(js.match(/'\/api\/agen\/jalankan'/g)).toHaveLength(1);

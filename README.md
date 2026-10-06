@@ -176,7 +176,6 @@ Berkas simulasi sudah ikut di `cases/`. `?kasus=<id>` membuka satu simulasi tert
 
 ```bash
 npm run penyusun                                        # http://127.0.0.1:8790/ — dua pilihan di satu halaman (Ringkas, Rinci, Diagram)
-npm run penyusun -- --pelari-tiruan                     # mencoba alur "Jalankan" tanpa kunci: pelari tiruan, bukan agent sungguhan
 npm run agen:replay                                     # di terminal: percobaan AMAG dari kode saham
 npm run agen:replay -- --daftar                         # semua percobaan yang punya rekaman
 npm run agen:replay -- --id m2d27-amag-naik-2 --cepat   # percobaan lain, tanpa jeda; --penuh menampilkan reasoning utuh
@@ -186,8 +185,6 @@ Halaman `npm run penyusun` punya dua pilihan, dan namanya mengatakan apa yang te
 
 - **Putar ulang rekaman** memutar ulang rekaman kerja Runut Agent yang sudah ada di repo (saham AMAG). Tanpa API key, tanpa jaringan, tidak ada model yang dipanggil. `npm run agen:replay` melakukan hal yang sama di terminal. Keduanya hanya membaca `eval/penyusun/<id>/` (`jejak-agen.jsonl` dan `hasil.json`).
 - **Jalankan Runut Agent** menjalankan agent sungguhan untuk kode saham yang diketik: program yang sama dengan `npm run agen` di (c), tahap susun. Ini berbayar dan butuh `.env` seperti di (c); tanpa `.env` pilihan ini tampil nonaktif dengan cara mengisinya. Agent baru dinyalakan sesudah budget disetujui di halaman (bawaan US$1,50; dari halaman paling banyak US$2), hanya satu pada satu waktu, dan ada tombol Hentikan. Tiap langkah muncul di halaman begitu agent menulisnya ke `eval/penyusun/<id>/jejak-agen.jsonl`; keluarannya sama dengan (c). Data saham yang belum ada di cache lokal hanya diambil dari Sectors API bila izinnya dicentang.
-
-Dengan `--pelari-tiruan`, "Jalankan Runut Agent" tidak memanggil model: sebuah pelari tiruan menyalin rekaman lama baris demi baris ke folder sementara, dan halaman memasang pita "PELARI TIRUAN — bukan agent sungguhan". Gunanya hanya untuk melihat alurnya tanpa kunci.
 
 **(c) Menjalankan agent sungguhan dari terminal dengan kunci sendiri** (berbayar)
 
@@ -392,7 +389,7 @@ Sebelum Runut Agent, `factory/llm/` memuat beberapa generasi penyusun yang uruta
 
 | Folder | Isi |
 |---|---|
-| `alat/agen/` | Pelari Runut Agent (`jalan-agen.ts`), tool data Sectors, dan replay di terminal |
+| `alat/agen/` | Program yang menjalankan Runut Agent (`jalan-agen.ts`), tool data Sectors, dan replay di terminal |
 | `factory/llm/agen/` | Tool agent, guardrail budget, tahap lengkapi, dan prompt |
 | `factory/verifikasi/` | Aturan verifikasi data Sectors (kode, tanpa LLM) |
 | `factory/` | Selebihnya: pembangun kasus, skema, pemuat data, dan mesin penyusun generasi sebelumnya |
