@@ -256,6 +256,84 @@ function tahapLangkah(mode: string, sudahMenulis: boolean): IdTahap {
   throw new Error(`Mode percobaan tak dikenal: ${mode}`);
 }
 
+export interface OpsiPerakit {
+  /** Indeks percobaan yang ditulis ke tiap langkah. */
+  percobaan: number;
+  /** `hasil.json` → `mode` (`dari-kode`, `tingkatkan`, `lengkapi`). */
+  mode: string;
+  /** Jumlah langkah sebelum percobaan ini (nomor langkah = `awal` + urutan). */
+  awal: number;
+  /** Kata yang disamarkan. DIBACA tiap baris, tidak disalin: pembaca langsung menambah isinya. */
+  terlarang: readonly string[];
+  /** Awalan pesan galat. */
+  label: string;
+  /** Angka yang kosong dibaca 0. Hanya untuk jejak yang sedang tumbuh; rekaman di repo dibaca ketat. */
+  longgar?: boolean;
+}
+
+/**
+ * Perakit langkah: SATU-SATUNYA tempat baris `jejak-agen.jsonl` (sesudah
+ * `uraiTanpaPenalaran`) dipetakan menjadi `LangkahJejak`. Dipakai pembaca
+ * rekaman (`dataJejak`, replay) dan pembaca jejak yang sedang tumbuh
+ * (`langsung-agen.ts`, M-PN1 D-1), supaya tampilan langsung dan replay tidak
+ * bisa berbeda. Baris `model` membuka langkah baru; baris `alat` menempel ke
+ * langkah yang sedang terbuka; baris lain (`percakapan`) tidak dipakai.
+ */
+export class PerakitLangkah {
+  readonly langkah: LangkahJejak[] = [];
+  private sudahMenulis = false;
+  private kini: LangkahJejak | null = null;
+  private readonly o: OpsiPerakit;
+
+  constructor(o: OpsiPerakit) {
+    this.o = o;
+  }
+
+  private angka(nilai: unknown, apa: string): number {
+    if (this.o.longgar === true && (nilai === null || nilai === undefined)) return 0;
+    return wajibAngka(nilai, `${this.o.label} ${apa}`);
+  }
+
+  /** Terima satu baris. Mengembalikan `true` bila baris ini MEMBUKA langkah baru. */
+  terima(b: { jenis?: string }): boolean {
+    const terlarang = this.o.terlarang;
+    if (b.jenis === 'model') {
+      const m = b as BarisModel;
+      const memanggil = Array.isArray(m.memanggil) ? [...m.memanggil] : [];
+      if (memanggil.some((t) => !TOOL_BAHAN.includes(t))) this.sudahMenulis = true;
+      this.kini = {
+        no: this.o.awal + this.langkah.length + 1,
+        percobaan: this.o.percobaan,
+        tahap: tahapLangkah(this.o.mode, this.sudahMenulis),
+        ke: this.angka(m.ke, 'ke'),
+        memanggil,
+        teks: typeof m.teks === 'string' && m.teks.trim() !== '' ? samarkan(m.teks, terlarang) : null,
+        token_masuk: this.angka(m.token_masuk, 'token_masuk'),
+        token_keluar: this.angka(m.token_keluar, 'token_keluar'),
+        token_penalaran: this.angka(m.token_penalaran, 'token_penalaran'),
+        biaya_usd: this.angka(m.biaya_usd, 'biaya_usd'),
+        biaya_tester_usd: 0,
+        latensi_ms: this.angka(m.latensi_ms, 'latensi_ms'),
+        mode_hemat: typeof m.mode_hemat === 'boolean' ? m.mode_hemat : null,
+        hasil: [],
+      };
+      this.langkah.push(this.kini);
+      return true;
+    }
+    if (b.jenis === 'alat') {
+      const a = b as BarisAlat;
+      if (this.kini === null) throw new Error(`${this.o.label}: tool result sebelum langkah model pertama.`);
+      this.kini.hasil.push({
+        alat: a.alat,
+        ringkas: samarkan(a.ringkas, terlarang),
+        hasil: samarkanDalam(a.hasil, terlarang),
+      });
+      this.kini.biaya_tester_usd = enam(this.kini.biaya_tester_usd + biayaTester(a.hasil));
+    }
+    return false;
+  }
+}
+
 export function dataJejak(akar: string = AKAR, konfig: typeof KONFIG_JEJAK = KONFIG_JEJAK): DataJejak {
   const kasus = JSON.parse(readFileSync(`${akar}${konfig.kasus}`, 'utf8')) as {
     emiten: { simbol: string; nama: string };
@@ -285,42 +363,9 @@ export function dataJejak(akar: string = AKAR, konfig: typeof KONFIG_JEJAK = KON
       .map((b) => uraiTanpaPenalaran(b) as { jenis?: string });
 
     const awal = langkah.length;
-    let sudahMenulis = false;
-    let kini: LangkahJejak | null = null;
-    for (const b of baris) {
-      if (b.jenis === 'model') {
-        const m = b as BarisModel;
-        const memanggil = [...m.memanggil];
-        if (memanggil.some((t) => !TOOL_BAHAN.includes(t))) sudahMenulis = true;
-        kini = {
-          no: langkah.length + 1,
-          percobaan: indeks,
-          tahap: tahapLangkah(hasil.mode, sudahMenulis),
-          ke: wajibAngka(m.ke, `${folder} ke`),
-          memanggil,
-          teks: typeof m.teks === 'string' && m.teks.trim() !== '' ? samarkan(m.teks, terlarang) : null,
-          token_masuk: wajibAngka(m.token_masuk, `${folder} token_masuk`),
-          token_keluar: wajibAngka(m.token_keluar, `${folder} token_keluar`),
-          token_penalaran: wajibAngka(m.token_penalaran, `${folder} token_penalaran`),
-          biaya_usd: wajibAngka(m.biaya_usd, `${folder} biaya_usd`),
-          biaya_tester_usd: 0,
-          latensi_ms: wajibAngka(m.latensi_ms, `${folder} latensi_ms`),
-          mode_hemat: typeof m.mode_hemat === 'boolean' ? m.mode_hemat : null,
-          hasil: [],
-        };
-        langkah.push(kini);
-      } else if (b.jenis === 'alat') {
-        const a = b as BarisAlat;
-        if (kini === null) throw new Error(`${folder}: tool result sebelum langkah model pertama.`);
-        kini.hasil.push({
-          alat: a.alat,
-          ringkas: samarkan(a.ringkas, terlarang),
-          hasil: samarkanDalam(a.hasil, terlarang),
-        });
-        kini.biaya_tester_usd = enam(kini.biaya_tester_usd + biayaTester(a.hasil));
-      }
-      // Baris jenis lain (`percakapan`) tidak dipakai.
-    }
+    const perakit = new PerakitLangkah({ percobaan: indeks, mode: hasil.mode, awal, terlarang, label: folder });
+    for (const b of baris) perakit.terima(b);
+    langkah.push(...perakit.langkah);
 
     const milik = langkah.slice(awal);
     const agen = enam(milik.reduce((j, l) => j + l.biaya_usd, 0));

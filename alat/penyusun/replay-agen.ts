@@ -9,8 +9,9 @@
  * Server mengirim seluruh langkah lewat SSE (`event: kepala`, `langkah`,
  * `simulasi`, `selesai`); JEDA antar-langkah diatur halaman, supaya bisa
  * dijeda, dilanjutkan, dilompati, dan diatur kecepatannya tanpa bolak-balik ke
- * server. Bentuk peristiwanya sengaja tidak bergantung pada replay: mode sungguhan
- * (belum dibangun) bisa mengirim langkah lewat jalur yang sama begitu pelari agent menulisnya.
+ * server. Bentuk peristiwanya tidak bergantung pada replay: "Jalankan Runut Agent"
+ * (`langsung-agen.ts`, M-PN1) mengirim langkah lewat fungsi yang sama (`langkahTampil`,
+ * `kepalaTampil`) begitu pelari agent menulisnya ke `jejak-agen.jsonl`.
  *
  * Yang dijaga di sini:
  * - medan `penalaran` (teks berpikir model) tidak pernah ada: pembaca rekaman
@@ -257,7 +258,7 @@ export function langkahTampil(l: LangkahJejak, tool: readonly ToolJejak[], menul
 }
 
 /** Apakah langkah ini langkah menulis draf (memanggil pemeriksa aturan). */
-function menulisDraf(l: LangkahJejak): boolean {
+export function menulisDraf(l: LangkahJejak): boolean {
   return l.memanggil.some((t) => TOOL_ATURAN.includes(t));
 }
 
