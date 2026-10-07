@@ -31,12 +31,12 @@ flowchart LR
     subgraph LS["lihat_simulasi · tool gratis"]
         direction TB
         LS1["tiga omongan versi asal"]
-        LS2["score blind guesser<br/>score tester"]
+        LS2["score blind guesser<br/>score Opus tester"]
         LS3["alasan blind guesser memilih kunci jawaban<br/>= petunjuk yang bocor"]
         LS1 ~~~ LS2 ~~~ LS3
     end
 
-    subgraph AGEN["RUNUT AGENT · AI AGENT"]
+    subgraph AGEN["RUNUT AGENT · OPUS WRITER · AI AGENT"]
         direction TB
         A1(("reasoning")) --> A2["memilih tool<br/>dan isinya sendiri"]
         A2 --> A3["membaca tool result"]
@@ -59,9 +59,9 @@ flowchart LR
         direction TB
         AJ0["1 sampai 3 id_draf<br/>tiap draft diuji sendiri, paralel"] --> AJ1{"Blind guesser<br/>menebak tanpa kartu"}
         AJ1 -->|lolos| AJ2{"Card reader<br/>menjawab dengan kartu"}
-        AJ2 -->|lolos| AJ3["Tester<br/>menebak tanpa kartu,<br/>hanya memberi warning"]
+        AJ2 -->|lolos| AJ3["Opus tester<br/>menebak tanpa kartu,<br/>hanya memberi warning"]
         AJ3 --> AJ4{"Critic<br/>memeriksa makna"}
-        AJ4 -->|lolos| AJ5["LOLOS<br/>+ warning tester"]
+        AJ4 -->|lolos| AJ5["LOLOS<br/>+ warning Opus tester"]
         AJ1 -->|tolak| AJ6["DITOLAK<br/>tester mana + alasannya<br/>+ alasan blind guesser"]
         AJ2 -->|tolak| AJ6
         AJ4 -->|tolak| AJ6
@@ -70,7 +70,7 @@ flowchart LR
     subgraph TK["tingkatkan · tool berbayar"]
         direction TB
         TK0["id_asal + id_draf<br/>kartu penentu dan jawaban<br/>harus sama dengan versi asal"] --> TK1{"empat tester<br/>yang sama"}
-        TK1 -->|lolos| TK2{"dibanding versi asal:<br/>blind guesser lebih jarang benar?<br/>tester tidak lebih sering benar?"}
+        TK1 -->|lolos| TK2{"dibanding versi asal:<br/>blind guesser lebih jarang benar?<br/>Opus tester tidak lebih sering benar?"}
         TK2 -->|ya| TK3["LEBIH SULIT<br/>+ score baru"]
         TK2 -->|tidak| TK4["TIDAK LEBIH SULIT<br/>versi asal dipertahankan"]
         TK1 -->|tolak| TK4
@@ -123,11 +123,11 @@ flowchart LR
 
 | Istilah | Arti |
 |---|---|
-| AI agent | Model bahasa besar yang memilih sendiri tool mana yang dipanggil, kapan, dan berapa kali |
+| AI agent | Model (Opus) yang memilih sendiri tool mana yang dipanggil, kapan, dan berapa kali |
 | Tool call ⇄ tool result | Agent memanggil tool; tool mengembalikan hasilnya ke agent |
 | Blind guesser | Model murah yang menebak jawaban TANPA melihat kartu. Makin jarang ia benar, makin sulit soalnya |
 | Card reader | Model yang menjawab DENGAN kartu. Ia harus benar; kalau tidak, soalnya kabur |
-| Tester | Model yang lebih kuat dari blind guesser, menebak tanpa kartu. Hanya memberi warning |
+| Opus tester | Opus yang menebak tanpa kartu. Hanya memberi warning |
 | Critic | Model yang memeriksa makna soal dan penjelasannya |
 | Score | Berapa kali tester menebak benar tanpa kartu (mis. 3 dari 12) |
 | Guardrail | Batas yang dijaga kode: budget cap dan step limit |
