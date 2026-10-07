@@ -20,7 +20,7 @@
   Sectors Hackathon 2026 · Track 01: AI Agents &amp; Assistants · tim Si Paling Zero-Trust
 </p>
 
-Pemula saham dikepung klaim dari grup dan media sosial; Runut adalah latihan singkat memeriksa omongan seperti itu ke dokumen resminya, lewat simulasi dari satu hari bursa nyata yang soalnya disusun AI agent di atas data Sectors.
+Pemula saham dikepung klaim dari grup dan media sosial; Runut adalah latihan singkat memeriksa omongan seperti itu ke dokumen resminya, lewat simulasi dari satu hari bursa nyata yang soalnya disusun AI agent dan diuji model AI lain di atas data Sectors.
 
 | Pemain membuka dokumennya | lalu memutuskan: betul atau keliru | Runut Agent menyusun soalnya |
 |:---:|:---:|:---:|
