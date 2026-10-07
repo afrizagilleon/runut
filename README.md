@@ -1,8 +1,52 @@
-# Runut
+<h1 align="center">Runut</h1>
+
+<p align="center">
+  <b>Latihan lima menit: cek omongan saham ke dokumen resminya.</b><br>
+  Simulasinya disusun Runut Agent, AI agent dengan 12 tool di atas data Sectors.
+</p>
+
+<p align="center">
+  <a href="https://alpha.zaa.my.id"><b>Mainkan sekarang</b></a> ·
+  <a href="https://youtube.com/shorts/WP2YC5b52E4">Teaser (1 menit)</a> ·
+  <a href="https://youtu.be/n1AgIi5rYk4">Video demo (3 menit)</a> ·
+  <a href="https://www.instagram.com/p/DeLV_q1GiUe/">Instagram</a>
+</p>
+
+<p align="center">
+  <a href="https://youtu.be/n1AgIi5rYk4"><img src="docs/gambar/video-demo.jpg" alt="Video demo Runut, 3 menit" width="620"></a>
+</p>
+
+<p align="center">
+  Sectors Hackathon 2026 · Track 01: AI Agents &amp; Assistants · tim Si Paling Zero-Trust
+</p>
 
 Pemula saham dikepung klaim dari grup dan media sosial; Runut adalah latihan singkat memeriksa omongan seperti itu ke dokumen resminya, lewat simulasi dari satu hari bursa nyata yang soalnya disusun AI agent di atas data Sectors.
 
-Situs: <https://alpha.zaa.my.id> · Teaser (1 menit): <https://youtube.com/shorts/WP2YC5b52E4> · Video demo (3 menit): <https://youtu.be/n1AgIi5rYk4>
+| Pemain membuka dokumennya | lalu memutuskan: betul atau keliru | Runut Agent menyusun soalnya |
+|:---:|:---:|:---:|
+| <img src="docs/gambar/pemain-dokumen.jpg" alt="Kartu fakta dengan dokumen yang terbuka" width="250"> | <img src="docs/gambar/pemain-hasil.jpg" alt="Cap Cocok dengan kartu dan penjelasannya" width="250"> | <img src="docs/gambar/agent-langkah.jpg" alt="Langkah kerja Runut Agent di halaman penyusun" width="250"> |
+
+Dari satu kode saham, agent memilih hari bursa yang dibekukan, menarik datanya dari Sectors API, dan hanya fakta yang lolos 33 aturan verifikasi yang menjadi kartu. Ia lalu menulis tiga omongan teman beserta pilihan jawabannya, dan tiap soal diuji model AI lain; soal yang bisa ditebak tanpa membaca kartu dikembalikan untuk diperbaiki. Pemain mendapat tiga omongan, sekitar lima menit, tanpa akun.
+
+## Daftar isi
+
+- [Untuk juri: 60 detik](#untuk-juri-60-detik)
+- [Syarat Track 01 → di mana di repo](#syarat-track-01--di-mana-di-repo)
+- [Runut Agent](#runut-agent): diagram dan 12 tool
+- [Hasil](#hasil)
+- [Menjalankan](#menjalankan): bermain lokal, memutar ulang rekaman agent, menjalankan agent, tes
+- [Data Sectors dan 33 aturan verifikasi](#data-sectors-dan-33-aturan-verifikasi)
+- [Bukan saran investasi](#bukan-saran-investasi)
+- [Rincian teknis](#rincian-teknis)
+  - [Simulasi mana yang dimainkan](#simulasi-mana-yang-dimainkan)
+  - [Mesin verifikasi](#mesin-verifikasi)
+  - [Mengambil ulang data Sectors](#mengambil-ulang-data-sectors)
+  - [Uji di browser sungguhan](#uji-di-browser-sungguhan)
+  - [Apa yang dicatat](#apa-yang-dicatat)
+  - [Riwayat: mesin penyusun sebelum Runut Agent](#riwayat-mesin-penyusun-sebelum-runut-agent)
+  - [Susunan](#susunan)
+  - [Sumber data](#sumber-data)
+- [Lisensi](#lisensi)
 
 ## Untuk juri: 60 detik
 
