@@ -82,9 +82,9 @@ curl -s http://127.0.0.1:8787/sehat        # sehat
                                            # skema=3
 ```
 
-Pengumpul **hanya** mendengarkan di `127.0.0.1`. Firewall VPS ini tidak aktif,
-jadi mengubah `HOST` menjadi `0.0.0.0` akan langsung membuka pengumpul ke
-internet tanpa TLS dan tanpa pembatas. Jangan.
+Pengumpul **hanya** mendengarkan di `127.0.0.1`. Mengubah `HOST` menjadi
+`0.0.0.0` akan membuka pengumpul ke internet tanpa TLS dan tanpa pembatas.
+Jangan.
 
 **`MemoryDenyWriteExecute=` sengaja tidak ada di unit itu.** Ia melarang proses
 memetakan memori yang bisa ditulis sekaligus dieksekusi, dan V8 membutuhkan

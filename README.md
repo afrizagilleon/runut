@@ -2,7 +2,7 @@
 
 Pemula saham dikepung klaim dari grup dan media sosial; Runut adalah latihan singkat memeriksa omongan seperti itu ke dokumen resminya, lewat simulasi dari satu hari bursa nyata yang soalnya disusun AI agent di atas data Sectors.
 
-Situs: <https://alpha.zaa.my.id> · Teaser: ⟦TAUTAN_TEASER⟧ · Video penjurian: ⟦TAUTAN_VIDEO_PENJURIAN⟧
+Situs: <https://alpha.zaa.my.id> · Teaser (1 menit): <https://youtube.com/shorts/WP2YC5b52E4> · Video demo (3 menit): <https://youtu.be/n1AgIi5rYk4>
 
 ## Untuk juri: 60 detik
 
