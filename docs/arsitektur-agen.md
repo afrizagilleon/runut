@@ -5,7 +5,7 @@ Diagram ini disetujui pemilik pada 5 Okt 2026 untuk dipakai di README. AI agent 
 ```mermaid
 flowchart LR
     P(["Penyusun<br/>kode saham + budget"])
-    Y(["Penyetuju<br/>periksa, sunting, setuju"])
+    Y(["Reviewer manusia<br/>periksa, sunting, setuju"])
 
     subgraph UH["usulkan_hari · tool gratis"]
         direction TB
@@ -31,19 +31,19 @@ flowchart LR
     subgraph LS["lihat_simulasi · tool gratis"]
         direction TB
         LS1["tiga omongan versi asal"]
-        LS2["score blind guesser<br/>score Opus tester"]
+        LS2["score blind guesser<br/>score tester"]
         LS3["alasan blind guesser memilih kunci jawaban<br/>= petunjuk yang bocor"]
         LS1 ~~~ LS2 ~~~ LS3
     end
 
-    subgraph AGEN["OPUS WRITER · AI AGENT"]
+    subgraph AGEN["RUNUT AGENT · AI AGENT"]
         direction TB
         A1(("reasoning")) --> A2["memilih tool<br/>dan isinya sendiri"]
         A2 --> A3["membaca tool result"]
         A3 --> A4{"memutuskan"}
         A4 -->|"tulis draft baru"| A1
         A4 -->|"perbaiki kalimat"| A1
-        A4 -->|"ganti sudut"| A1
+        A4 -->|"ganti topik"| A1
         A4 -->|"lanjut naikkan kesulitan"| A1
         A4 -->|"cukup sampai di sini"| A5(["berhenti"])
     end
@@ -59,9 +59,9 @@ flowchart LR
         direction TB
         AJ0["1 sampai 3 id_draf<br/>tiap draft diuji sendiri, paralel"] --> AJ1{"Blind guesser<br/>menebak tanpa kartu"}
         AJ1 -->|lolos| AJ2{"Card reader<br/>menjawab dengan kartu"}
-        AJ2 -->|lolos| AJ3["Opus tester<br/>hanya memberi warning"]
+        AJ2 -->|lolos| AJ3["Tester<br/>menebak tanpa kartu,<br/>hanya memberi warning"]
         AJ3 --> AJ4{"Critic<br/>memeriksa makna"}
-        AJ4 -->|lolos| AJ5["LOLOS<br/>+ warning Opus tester"]
+        AJ4 -->|lolos| AJ5["LOLOS<br/>+ warning tester"]
         AJ1 -->|tolak| AJ6["DITOLAK<br/>tester mana + alasannya<br/>+ alasan blind guesser"]
         AJ2 -->|tolak| AJ6
         AJ4 -->|tolak| AJ6
@@ -70,18 +70,29 @@ flowchart LR
     subgraph TK["tingkatkan · tool berbayar"]
         direction TB
         TK0["id_asal + id_draf<br/>kartu penentu dan jawaban<br/>harus sama dengan versi asal"] --> TK1{"empat tester<br/>yang sama"}
-        TK1 -->|lolos| TK2{"dibanding versi asal:<br/>blind guesser lebih jarang benar?<br/>Opus tester tidak lebih sering benar?"}
+        TK1 -->|lolos| TK2{"dibanding versi asal:<br/>blind guesser lebih jarang benar?<br/>tester tidak lebih sering benar?"}
         TK2 -->|ya| TK3["LEBIH SULIT<br/>+ score baru"]
         TK2 -->|tidak| TK4["TIDAK LEBIH SULIT<br/>versi asal dipertahankan"]
         TK1 -->|tolak| TK4
     end
 
+    subgraph LK["tahap lengkapi · tiga tool gratis, satu berbayar"]
+        direction TB
+        LK1["lihat_soal_terkunci · lihat_sesudahnya<br/>tiga omongan terkunci<br/>+ fakta sesudah tanggal simulasi"] --> LK2["draft lampiran:<br/>judul, istilah, teks kartu,<br/>layar sesudahnya"]
+        LK2 --> LK3{"periksa_kasus_dengan_aturan<br/>validator produk, dijalankan kode"}
+        LK3 -->|lolos| LK4{"ajukan_kasus · berbayar<br/>Critic memeriksa lampiran"}
+        LK3 -->|gagal| LK5["masalahnya<br/>apa adanya"]
+        LK4 -->|lolos| LK6["kasus.json ditulis<br/>ke folder percobaan"]
+        LK4 -->|tolak| LK5
+    end
+
     subgraph HASIL["Yang tersimpan selama agent bekerja"]
         direction TB
-        H1[("Bank omongan<br/>tiap omongan lolos + score-nya")]
+        H1[("Omongan yang lolos<br/>+ score-nya")]
         H2[("Simulasi tingkat biasa<br/>3 omongan, 3 kartu penentu berbeda<br/>minimal satu Betul dan satu Keliru")]
         H3[("Versi sulit<br/>di samping versi asal")]
-        H1 ~~~ H2 ~~~ H3
+        H4[("kasus.json<br/>simulasi lengkap, siap diperiksa")]
+        H1 ~~~ H2 ~~~ H3 ~~~ H4
     end
 
     JAGA["Guardrail (kode)<br/>budget cap · step limit"]
@@ -94,15 +105,17 @@ flowchart LR
     AGEN <-->|"draft ⇄ id_draf / penolakan"| PK
     AGEN <-->|"id_draf ⇄ lolos / ditolak + alasan"| AJ
     AGEN <-->|"versi baru ⇄ lebih sulit / tidak"| TK
+    AGEN <-->|"draft lampiran ⇄ masalah / lolos"| LK
     AJ -.->|"yang lolos"| HASIL
     TK -.->|"yang lebih sulit"| HASIL
+    LK -.->|"kasus lengkap"| HASIL
     HASIL --> Y
     JAGA -.- AGEN
 
     classDef agen fill:#3C3489,stroke:#AFA9EC,color:#EEEDFE
     classDef hasil fill:#27500A,stroke:#97C459,color:#EAF3DE
     class A1,A2,A3,A4,A5 agen
-    class H1,H2,H3 hasil
+    class H1,H2,H3,H4 hasil
     style AGEN stroke:#7F77DD,stroke-width:3px
 ```
 
@@ -110,13 +123,13 @@ flowchart LR
 
 | Istilah | Arti |
 |---|---|
-| AI agent | Model (Opus) yang memilih sendiri tool mana yang dipanggil, kapan, dan berapa kali |
+| AI agent | Model bahasa besar yang memilih sendiri tool mana yang dipanggil, kapan, dan berapa kali |
 | Tool call ⇄ tool result | Agent memanggil tool; tool mengembalikan hasilnya ke agent |
 | Blind guesser | Model murah yang menebak jawaban TANPA melihat kartu. Makin jarang ia benar, makin sulit soalnya |
 | Card reader | Model yang menjawab DENGAN kartu. Ia harus benar; kalau tidak, soalnya kabur |
-| Opus tester | Opus yang menebak tanpa kartu. Hanya memberi warning |
+| Tester | Model yang lebih kuat dari blind guesser, menebak tanpa kartu. Hanya memberi warning |
 | Critic | Model yang memeriksa makna soal dan penjelasannya |
 | Score | Berapa kali tester menebak benar tanpa kartu (mis. 3 dari 12) |
 | Guardrail | Batas yang dijaga kode: budget cap dan step limit |
 
-Yang diputuskan agent: hari, sudut, isi draft, tool mana dan kapan, memperbaiki atau ganti sudut, omongan mana yang dinaikkan kesulitannya, kapan berhenti. Yang diputuskan kode: 33 aturan R, aturan bentuk, urutan empat tester di dalam `ajukan` dan `tingkatkan`, dan budget.
+Yang diputuskan agent: hari, topik tiap omongan, isi draft, tool mana dan kapan, memperbaiki atau ganti topik, omongan mana yang dinaikkan kesulitannya, kapan berhenti. Yang diputuskan kode: 33 aturan R, aturan bentuk, urutan empat tester di dalam `ajukan` dan `tingkatkan`, dan budget.

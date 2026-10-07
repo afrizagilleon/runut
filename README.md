@@ -7,10 +7,10 @@ Situs: <https://alpha.zaa.my.id> · Teaser: ⟦TAUTAN_TEASER⟧ · Video penjuri
 ## Untuk juri: 60 detik
 
 - **Produk.** Pemain membaca kartu fakta satu saham pada satu tanggal, lalu memutuskan tiga omongan teman itu Betul atau Keliru; sesudahnya dibuka apa yang terjadi. Sectors Hackathon 2026, Track 01 (AI Agents & Assistants).
-- **Untuk siapa.** Pemain pemula (aplikasi di `web/`) dan penyusun/pengajar yang menyiapkan simulasi (pintu penyusun di `alat/penyusun/`).
-- **Di mana Runut Agent bekerja.** `alat/agen/jalan-agen.ts`: satu AI agent dengan 12 tool. Dari kode saham ia memutuskan sendiri hari mana yang dibekukan, topik tiap omongan, isi draft, tool mana dipanggil dan kapan, memperbaiki atau ganti sudut, dan kapan berhenti.
+- **Untuk siapa.** Pemain pemula (aplikasi di `web/`) dan penyusun/pengajar yang menyiapkan simulasi (halaman penyusun di `alat/penyusun/`).
+- **Di mana Runut Agent bekerja.** `alat/agen/jalan-agen.ts`: satu AI agent dengan 12 tool. Dari kode saham ia memutuskan sendiri hari mana yang dibekukan, topik tiap omongan, isi draft, tool mana dipanggil dan kapan, memperbaiki draft atau ganti topik, dan kapan berhenti.
 - **Yang diputuskan kode, bukan AI.** 33 aturan verifikasi atas data Sectors, aturan bentuk soal, urutan empat tester, dan guardrail budget.
-- **Bukti nyata.** Simulasi AMAG (15 Juni 2026) di situs seluruhnya ditulis Runut Agent, identik byte dengan hasil percobaannya di repo; alpha 21 Sep–5 Okt 2026 dibuka 150 orang. Lihat [Hasil](#hasil).
+- **Bukti nyata.** Simulasi AMAG (15 Juni 2026) di situs seluruhnya ditulis Runut Agent, sama byte per byte dengan keluaran agent di repo; alpha 21 Sep–5 Okt 2026 dibuka 150 orang. Lihat [Hasil](#hasil).
 - **Periksa tanpa API key** (sesudah `npm install`): `npm run agen:replay` · `npm run penyusun` · `npm test`.
 
 ## Syarat Track 01 → di mana di repo
@@ -26,12 +26,12 @@ Situs: <https://alpha.zaa.my.id> · Teaser: ⟦TAUTAN_TEASER⟧ · Video penjuri
 
 ## Runut Agent
 
-AI agent digambar sekali di tengah; tiap tool menempel ke agent dengan panah bolak-balik (tool call ⇄ tool result). Tidak ada panah dari satu tool ke tool lain: urutan pemanggilan diputuskan agent, bukan kode. Sumber diagram: [`docs/arsitektur-agen.md`](docs/arsitektur-agen.md).
+AI agent digambar sekali di tengah; kedua belas tool menempel ke agent dengan panah bolak-balik (tool call ⇄ tool result). Tidak ada panah dari satu tool ke tool lain: urutan pemanggilan diputuskan agent, bukan kode. Sumber diagram: [`docs/arsitektur-agen.md`](docs/arsitektur-agen.md).
 
 ```mermaid
 flowchart LR
     P(["Penyusun<br/>kode saham + budget"])
-    Y(["Penyetuju<br/>periksa, sunting, setuju"])
+    Y(["Reviewer manusia<br/>periksa, sunting, setuju"])
 
     subgraph UH["usulkan_hari · tool gratis"]
         direction TB
@@ -57,19 +57,19 @@ flowchart LR
     subgraph LS["lihat_simulasi · tool gratis"]
         direction TB
         LS1["tiga omongan versi asal"]
-        LS2["score blind guesser<br/>score Opus tester"]
+        LS2["score blind guesser<br/>score tester"]
         LS3["alasan blind guesser memilih kunci jawaban<br/>= petunjuk yang bocor"]
         LS1 ~~~ LS2 ~~~ LS3
     end
 
-    subgraph AGEN["OPUS WRITER · AI AGENT"]
+    subgraph AGEN["RUNUT AGENT · AI AGENT"]
         direction TB
         A1(("reasoning")) --> A2["memilih tool<br/>dan isinya sendiri"]
         A2 --> A3["membaca tool result"]
         A3 --> A4{"memutuskan"}
         A4 -->|"tulis draft baru"| A1
         A4 -->|"perbaiki kalimat"| A1
-        A4 -->|"ganti sudut"| A1
+        A4 -->|"ganti topik"| A1
         A4 -->|"lanjut naikkan kesulitan"| A1
         A4 -->|"cukup sampai di sini"| A5(["berhenti"])
     end
@@ -85,9 +85,9 @@ flowchart LR
         direction TB
         AJ0["1 sampai 3 id_draf<br/>tiap draft diuji sendiri, paralel"] --> AJ1{"Blind guesser<br/>menebak tanpa kartu"}
         AJ1 -->|lolos| AJ2{"Card reader<br/>menjawab dengan kartu"}
-        AJ2 -->|lolos| AJ3["Opus tester<br/>hanya memberi warning"]
+        AJ2 -->|lolos| AJ3["Tester<br/>menebak tanpa kartu,<br/>hanya memberi warning"]
         AJ3 --> AJ4{"Critic<br/>memeriksa makna"}
-        AJ4 -->|lolos| AJ5["LOLOS<br/>+ warning Opus tester"]
+        AJ4 -->|lolos| AJ5["LOLOS<br/>+ warning tester"]
         AJ1 -->|tolak| AJ6["DITOLAK<br/>tester mana + alasannya<br/>+ alasan blind guesser"]
         AJ2 -->|tolak| AJ6
         AJ4 -->|tolak| AJ6
@@ -96,18 +96,29 @@ flowchart LR
     subgraph TK["tingkatkan · tool berbayar"]
         direction TB
         TK0["id_asal + id_draf<br/>kartu penentu dan jawaban<br/>harus sama dengan versi asal"] --> TK1{"empat tester<br/>yang sama"}
-        TK1 -->|lolos| TK2{"dibanding versi asal:<br/>blind guesser lebih jarang benar?<br/>Opus tester tidak lebih sering benar?"}
+        TK1 -->|lolos| TK2{"dibanding versi asal:<br/>blind guesser lebih jarang benar?<br/>tester tidak lebih sering benar?"}
         TK2 -->|ya| TK3["LEBIH SULIT<br/>+ score baru"]
         TK2 -->|tidak| TK4["TIDAK LEBIH SULIT<br/>versi asal dipertahankan"]
         TK1 -->|tolak| TK4
     end
 
+    subgraph LK["tahap lengkapi · tiga tool gratis, satu berbayar"]
+        direction TB
+        LK1["lihat_soal_terkunci · lihat_sesudahnya<br/>tiga omongan terkunci<br/>+ fakta sesudah tanggal simulasi"] --> LK2["draft lampiran:<br/>judul, istilah, teks kartu,<br/>layar sesudahnya"]
+        LK2 --> LK3{"periksa_kasus_dengan_aturan<br/>validator produk, dijalankan kode"}
+        LK3 -->|lolos| LK4{"ajukan_kasus · berbayar<br/>Critic memeriksa lampiran"}
+        LK3 -->|gagal| LK5["masalahnya<br/>apa adanya"]
+        LK4 -->|lolos| LK6["kasus.json ditulis<br/>ke folder percobaan"]
+        LK4 -->|tolak| LK5
+    end
+
     subgraph HASIL["Yang tersimpan selama agent bekerja"]
         direction TB
-        H1[("Bank omongan<br/>tiap omongan lolos + score-nya")]
+        H1[("Omongan yang lolos<br/>+ score-nya")]
         H2[("Simulasi tingkat biasa<br/>3 omongan, 3 kartu penentu berbeda<br/>minimal satu Betul dan satu Keliru")]
         H3[("Versi sulit<br/>di samping versi asal")]
-        H1 ~~~ H2 ~~~ H3
+        H4[("kasus.json<br/>simulasi lengkap, siap diperiksa")]
+        H1 ~~~ H2 ~~~ H3 ~~~ H4
     end
 
     JAGA["Guardrail (kode)<br/>budget cap · step limit"]
@@ -120,15 +131,17 @@ flowchart LR
     AGEN <-->|"draft ⇄ id_draf / penolakan"| PK
     AGEN <-->|"id_draf ⇄ lolos / ditolak + alasan"| AJ
     AGEN <-->|"versi baru ⇄ lebih sulit / tidak"| TK
+    AGEN <-->|"draft lampiran ⇄ masalah / lolos"| LK
     AJ -.->|"yang lolos"| HASIL
     TK -.->|"yang lebih sulit"| HASIL
+    LK -.->|"kasus lengkap"| HASIL
     HASIL --> Y
     JAGA -.- AGEN
 
     classDef agen fill:#3C3489,stroke:#AFA9EC,color:#EEEDFE
     classDef hasil fill:#27500A,stroke:#97C459,color:#EAF3DE
     class A1,A2,A3,A4,A5 agen
-    class H1,H2,H3 hasil
+    class H1,H2,H3,H4 hasil
     style AGEN stroke:#7F77DD,stroke-width:3px
 ```
 
@@ -153,8 +166,9 @@ Tiga tahap itu adalah tiga cara menjalankan agent yang sama: **susun** (tiga omo
 
 ## Hasil
 
-- Runut Agent menyusun simulasi untuk enam saham: AGAR, ALII, AMAG, TIRT, BOLT, MLPT, dengan biaya model US$0,60–1,37 per simulasi (biaya nyata dari penyedia) ditambah 5–8 kredit Sectors API per saham. Simulasi MLPT (7 Oktober 2025, US$0,82) disusun dengan menekan tombol di halaman penyusun; jejaknya ada di `eval/penyusun/pn-20261006-061713/`.
-- Simulasi AMAG (15 Juni 2026) yang ada di situs seluruhnya ditulis Runut Agent mulai dari kode saham: memilih hari, kartu fakta, tiga soal, dan bagian "apa yang terjadi sesudahnya". `cases/amag-2026-06-15.json` identik byte dengan `eval/penyusun/m2d29-amag-lengkapi-3/kasus.json`; sha256 keduanya `f97a0ff2f30660f0500892a974d9b145c94f27e8049275734b0b87f2a9c1ddb0`.
+- Runut Agent menyusun tiga soal yang lolos semua tester untuk enam saham: AGAR, ALII, AMAG, TIRT, BOLT, MLPT, dengan biaya model US$0,60–1,37 per simulasi (biaya nyata dari penyedia) ditambah 5–8 kredit Sectors API per saham. Simulasi MLPT (7 Oktober 2025, US$0,82) disusun dengan menekan tombol di halaman penyusun; jejaknya ada di `eval/penyusun/pn-20261006-061713/`.
+- Dari enam itu, satu yang sudah bisa dimainkan: AMAG. Hanya AMAG yang sudah melewati tahap lengkapi, diperiksa reviewer manusia, dan dipasang ke aplikasi. Lima lainnya ada di repo sebagai keluaran agent (`eval/penyusun/`) dan belum dipasang.
+- Simulasi AMAG (15 Juni 2026) di situs seluruhnya ditulis Runut Agent mulai dari kode saham: memilih hari, kartu fakta, tiga soal, dan bagian "apa yang terjadi sesudahnya". `cases/amag-2026-06-15.json` sama byte per byte dengan `eval/penyusun/m2d29-amag-lengkapi-3/kasus.json`; sha256 keduanya `f97a0ff2f30660f0500892a974d9b145c94f27e8049275734b0b87f2a9c1ddb0`.
 - Alpha 21 Sep–5 Okt 2026: 150 orang membuka; 48 menyelesaikan tiga soal; 44 memberi penilaian, rata-rata 4,0 dari 5.
 - 33 aturan verifikasi aktif (kode, bukan AI) menyaring data Sectors sebelum menjadi kartu.
 - Jejak kerja agent (tool call, tool result, biaya per langkah) tersimpan di `eval/penyusun/` dan bisa diputar ulang tanpa jaringan.
@@ -199,11 +213,11 @@ npm run agen -- --id <id-baru> --paket eval/penyusun/<id-susun>/paket.json --tin
 npm run agen -- --id <id-baru> --paket eval/penyusun/<id-susun>/paket.json --lengkapi --pagu 1.5 --setuju-berbayar
 ```
 
-- Tahap susun juga bisa dijalankan dari halaman di (b), dengan pagar yang sama; tahap tingkatkan dan lengkapi hanya dari terminal.
+- Tahap susun juga bisa dijalankan dari halaman di (b), dengan guardrail yang sama; tahap tingkatkan dan lengkapi hanya dari terminal.
 - `.env` memuat `SECTORS_API_KEY`, `LLM_BASE_URL` (alamat OpenRouter), `LLM_API_KEY`, `LLM_MODEL`, dan `LLM_PAGU_USD`. Kunci hanya dibaca kode.
 - `--id` adalah nama folder baru di `eval/penyusun/`; `--pagu` adalah budget percobaan itu dalam dolar; tanpa `--setuju-berbayar` perintahnya berhenti sebelum memanggil apa pun.
-- `--setuju-kredit-sectors` mengizinkan pengambilan data saham yang belum ada di cache lokal dari Sectors API (memakai kredit). Bendera lain: `--target 1..3`, `--langkah <n>`, `--bank <folder>`, `--omongan id1,id2,id3` (bersama `--lengkapi`).
-- Keluaran: `eval/penyusun/<id>/` — `paket.json`, `jejak-agen.jsonl`, `mentah-agen.jsonl`, `mentah-panggilan.jsonl`, `hasil.json`, dan pada tahap lengkapi `lampiran-agen.json` serta `kasus.json`. Agent tidak pernah menulis ke `cases/`; memasang kasus ke produk adalah keputusan penyetuju.
+- `--setuju-kredit-sectors` mengizinkan pengambilan data saham yang belum ada di cache lokal dari Sectors API (memakai kredit). Flag lain: `--target 1..3`, `--langkah <n>`, `--bank <folder>`, `--omongan id1,id2,id3` (bersama `--lengkapi`).
+- Keluaran: `eval/penyusun/<id>/` — `paket.json`, `jejak-agen.jsonl`, `mentah-agen.jsonl`, `mentah-panggilan.jsonl`, `hasil.json`, dan pada tahap lengkapi `lampiran-agen.json` serta `kasus.json`. Agent tidak pernah menulis ke `cases/`; memasang kasus ke produk adalah keputusan reviewer manusia.
 
 **(d) Tes**
 
@@ -218,7 +232,7 @@ npm run periksa:desain
 
 Semua angka di kartu berasal dari Sectors Financial API v2 (harga harian, dividen, suspensi, laporan kepemilikan, laporan keuangan, aksi korporasi). Sebelum menjadi kartu, data itu melewati aturan verifikasi yang berjalan **tanpa LLM**: 33 aturan aktif (`aturanAktif()` di `factory/verifikasi/v2.ts`), masing-masing dijelaskan dengan contoh nyata di [`docs/aturan-verifikasi.md`](docs/aturan-verifikasi.md). Fakta yang tidak lolos disingkirkan beserta alasannya, dan tidak pernah sampai ke agent sebagai kartu. Agent memanggil aturan yang sama lewat tool `periksa_saham` (`alat/agen/alat-sectors.ts`).
 
-Aturan yang sama berjalan atas seluruh gudang data dengan `npm run verifikasi:gudang`; agregatnya ada di [`docs/bukti/aturan-gudang.md`](docs/bukti/aturan-gudang.md). Sidik (sha256) tiap berkas data yang dipakai tercatat di `docs/bukti/gudang-manifest.json`.
+Aturan yang sama berjalan atas seluruh gudang data dengan `npm run verifikasi:gudang`; agregatnya ada di [`docs/bukti/aturan-gudang.md`](docs/bukti/aturan-gudang.md). Hash sha256 tiap berkas data yang dipakai tercatat di `docs/bukti/gudang-manifest.json`.
 
 ## Bukan saran investasi
 
@@ -228,7 +242,7 @@ Runut adalah latihan membaca dokumen, bukan nasihat investasi. Data menggambarka
 
 ### Simulasi mana yang dimainkan
 
-Ada tiga simulasi sekarang (`web/src/kasus.ts`), dan pemain tidak memilih sendiri pada kunjungan pertama:
+Aplikasi pemain memuat tiga simulasi (`web/src/kasus.ts`). Dua yang pertama disusun bersama manusia sebelum Runut Agent ada; yang ketiga ditulis Runut Agent. Pada kunjungan pertama pemain tidak memilih sendiri:
 
 | simulasi | tanggal beku | pelajarannya |
 |---|---|---|
@@ -237,9 +251,11 @@ Ada tiga simulasi sekarang (`web/src/kasus.ts`), dan pemain tidak memilih sendir
 | `amag-2026-06-15` | 15 Juni 2026 | harga naik beruntun; hari, kartu, dan soalnya dipilih dan ditulis Runut Agent |
 
 - **Kunjungan pertama:** satu simulasi dipilih acak seragam.
-- **Kunjungan berikutnya:** simulasi yang **belum** dimainkan dari peramban itu. Daftarnya disimpan di `localStorage` (`kasus_dimainkan`). Kalau semuanya sudah dimainkan, simulasinya acak lagi.
+- **Kunjungan berikutnya:** simulasi yang **belum** dimainkan dari browser itu. Daftarnya disimpan di `localStorage` (`kasus_dimainkan`). Kalau semuanya sudah dimainkan, simulasinya acak lagi.
 - **Kalender simulasi** di layar terima kasih: hanya simulasi nyata yang tampil, yang sudah selesai diberi centang. Pengunjung yang kembali juga mendapat tautan kecil ke kalender di layar pertama.
 - **`?kasus=<id>`** memaksa satu simulasi, untuk juri dan untuk uji. Nilai yang tidak dikenal diabaikan diam-diam, seperti `?k=`.
+
+**Level soal dipilih saat simulasi dipasang, bukan oleh pemain.** Tahap tingkatkan menghasilkan versi lebih sulit dari satu soal dan menyimpannya di samping versi asal; reviewer manusia memutuskan versi mana yang masuk ke `cases/`. Aplikasi pemain belum punya pilihan level.
 
 Label tiap simulasi adalah **peristiwanya**, bukan penilaian atas sahamnya: tidak ada kata "sehat", "bagus", atau "buruk" di teks simulasi mana pun, dan itu dijaga tes.
 
@@ -251,13 +267,13 @@ Produk ini menjanjikan satu hal: setiap angka di kartu sudah diperiksa. Yang mem
 npm run verifikasi:gudang
 ```
 
-Perintah itu menulis hasil lengkapnya ke `.cache/m2b/gudang.json` dan agregatnya ke `docs/bukti/aturan-gudang.md`. Ia tidak membaca jaringan, jam dinding, maupun angka acak, jadi dua kali jalan atas data yang sama memberi berkas yang sama persis.
+Perintah itu menulis hasil lengkapnya ke `.cache/m2b/gudang.json` dan agregatnya ke `docs/bukti/aturan-gudang.md`. Ia tidak membaca jaringan, jam dinding, maupun angka acak, jadi dijalankan dua kali atas data yang sama, hasilnya berkas yang sama persis.
 
 Tiap aturan wajib melaporkan **berapa yang sungguh diperiksa**, bukan hanya berapa yang merah, dan tiap temuan punya berat: `konflik` menolak kartu, `peringatan` menandai yang janggal, `catatan` adalah label. Fakta yang datanya tidak cukup untuk diputuskan berstatus `TIDAK_LENGKAP` — bukan konflik, dan bukan "belum diperiksa".
 
 Sebuah simulasi **diverifikasi dengan dokumen yang sudah terbit pada tanggal bekunya**, bukan dengan seluruh data yang ada hari ini. Alasannya sama dengan alasan simulasi itu ada: yang ditanyakan adalah apa yang bisa dibaca pada hari itu. Yang terjadi sesudah tanggal beku tetap muncul, di layar pembukaan.
 
-Simulasi yang sudah live tidak ikut bergeser ketika gudang atau aturan bertambah: daftar aturan tiap simulasi yang live dibekukan di `docs/bukti/aturan-beku-kasus.json`, dan `npm run build:case` hanya membaca 111 berkas yang sidiknya dibekukan di `docs/bukti/gudang-beku-kasus.json`.
+Simulasi yang sudah live tidak ikut bergeser ketika gudang atau aturan bertambah: daftar aturan tiap simulasi yang live dibekukan di `docs/bukti/aturan-beku-kasus.json`, dan `npm run build:case` hanya membaca 111 berkas yang hash-nya dibekukan di `docs/bukti/gudang-beku-kasus.json`.
 
 ### Mengambil ulang data Sectors
 
@@ -266,10 +282,10 @@ Data mentah Sectors tidak ikut repo, tetapi pengambilnya ikut (`alat/sectors.ts`
 ```bash
 npm run sectors:ambil -- "/v2/daily/ULTJ/?start=2026-01-01&end=2026-03-31" ULTJ-contoh.json
 npm run sectors:ambil -- --saldo        # kredit terpakai menurut buku kas
-npm run sectors:manifest                # sidik tiap berkas -> docs/bukti/gudang-manifest.json
+npm run sectors:manifest                # sha256 tiap berkas -> docs/bukti/gudang-manifest.json
 ```
 
-- Biaya tiap panggilan dihitung **sebelum** memanggil, dan panggilan yang akan melewati pagu (`SECTORS_KREDIT_PAGU`) tidak dikirim. Buku kasnya `.cache/sectors/kredit.csv`.
+- Biaya tiap panggilan dihitung **sebelum** memanggil, dan panggilan yang akan melewati batas kredit (`SECTORS_KREDIT_PAGU`) tidak dikirim. Buku kasnya `.cache/sectors/kredit.csv`.
 - Berkas yang sudah ada di `.cache/sectors/` tidak pernah ditimpa; panggilannya dilewati dengan biaya 0.
 - `docs/bukti/gudang-manifest.json` memuat nama, ukuran, sha256, dan path endpoint tiap berkas, sehingga berkas yang diambil ulang bisa dicocokkan byte per byte.
 
@@ -284,7 +300,7 @@ npm run e2e:lihat    # sama, tetapi kelihatan
 
 `npm run e2e` menyalakan servernya sendiri dan mematikannya lagi, lalu memainkan **tiap simulasi** penuh terhadap **build produksi dengan pengumpul peristiwa yang sungguhan**. Tiap layar disimpan sebagai PNG di `.cache/e2e/layar/<proyek>/`, supaya bisa dilihat tanpa membuka browser.
 
-Ia ada karena tes unit tidak bisa melihat apa yang dilihat pemain: repo ini sengaja tanpa jsdom, dan peramban tanpa frame tidak menjalankan `IntersectionObserver`, animasi, maupun gulir.
+Ia ada karena tes unit tidak bisa melihat apa yang dilihat pemain: repo ini sengaja tanpa jsdom, dan browser tanpa frame tidak menjalankan `IntersectionObserver`, animasi, maupun gulir.
 
 **Aturan repo: setiap cacat yang ditemukan manusia ditulis dulu sebagai tes e2e yang merah, baru diperbaiki.** Dan setiap tes harus dibuktikan merah dengan merusak kode produk — tes yang tetap hijau ketika kode yang dijaganya rusak bukan penjaga. Tabel "cacat → tes → sabotase" dan cara menambah tes baru ada di [`docs/uji-e2e.md`](docs/uji-e2e.md).
 
@@ -330,17 +346,17 @@ Daftar peristiwa di atas tertutup: pengumpul menolak apa pun di luarnya.
 
 Peristiwa `mulai` membawa lima belas keterangan **kasar**, semuanya kategori atau angka berentang:
 
-| medan | isi |
+| field | isi |
 |---|---|
 | `os` | `android`, `ios`, `windows`, `mac`, `linux`, `lain` |
-| `peramban_dalam` | kategori tampilan-web dalam aplikasi, `lain` (tampilan-web tanpa nama), atau `tidak` (peramban biasa) |
+| `peramban_dalam` | kategori in-app WebView, `lain` (WebView tanpa nama), atau `tidak` (browser biasa) |
 | `perujuk` | kategori asal kunjungan, `langsung`, atau `lain` — dari **nama host** saja |
 | `skema_warna`, `penunjuk`, `koneksi`, `bahasa` | `terang`/`gelap` · `kasar`/`halus`/`tidak` · `4g`/`3g`/`2g`/`lambat`/`tidak-tahu` · `id`/`en`/`lain` |
 | `jam_lokal`, `hari_lokal`, `zona_menit` | jam 0–23, hari 0–6, zona dalam menit ke timur (WIB = 420) |
 | `tinggi_layar`, `rasio_piksel` | tinggi jendela, rasio piksel satu desimal |
-| `hemat_data`, `gerak_dikurangi`, `mandiri` | ya/tidak; `null` bila perambannya tidak mengatakan |
+| `hemat_data`, `gerak_dikurangi`, `mandiri` | ya/tidak; `null` bila browsernya tidak mengatakan |
 
-User-Agent dibaca **hanya di peramban**, oleh fungsi murni `web/src/perangkat.ts`, dan yang keluar hanya dua kategorinya. Alamat perujuk tidak pernah disimpan — path dan query-nya dibuang sebelum apa pun dikirim. Tidak ada lebar/tinggi layar fisik, daftar huruf, kanvas, atau sidik jari lain: yang ditanyakan adalah pertanyaan desain ("apakah opsi pertama terlihat tanpa menggulir di ponsel ini"), bukan "siapa orang ini".
+User-Agent dibaca **hanya di browser**, oleh fungsi murni `web/src/perangkat.ts`, dan yang keluar hanya dua kategorinya. Alamat referrer tidak pernah disimpan — path dan query-nya dibuang sebelum apa pun dikirim. Tidak ada lebar/tinggi layar fisik, daftar font, canvas, atau fingerprint lain: yang ditanyakan adalah pertanyaan desain ("apakah opsi pertama terlihat tanpa menggulir di ponsel ini"), bukan "siapa orang ini".
 
 #### Ketukan: nama, bukan isi
 
@@ -366,7 +382,7 @@ Tautan yang disebar boleh membawa `?k=<kode>` — huruf kecil dan angka, paling 
 #### Yang tidak ada, dan tidak akan ditambahkan
 
 - tidak ada akun, login, atau nama;
-- tidak ada identitas selain satu nomor acak di atas — tidak ada sidik jari perangkat, tidak ada iklan, tidak ada pihak ketiga;
+- tidak ada identitas selain satu nomor acak di atas — tidak ada device fingerprint, tidak ada iklan, tidak ada pihak ketiga;
 - pengumpul **tidak menulis alamat IP maupun User-Agent** ke berkas — tidak ada header apa pun yang disimpan, dan ia hanya mendengarkan di loopback;
 - id sesi adalah angka acak yang hidup di memori tab saja dan hilang saat tab ditutup;
 - teks yang diketik tidak pernah dicatat, kecuali kotak masukan di layar akhir yang memang meminta tulisan.
@@ -383,7 +399,7 @@ Keluarannya tabel Markdown: berapa orang (bukan berapa sesi), corong per penanda
 
 ### Riwayat: mesin penyusun sebelum Runut Agent
 
-Sebelum Runut Agent, `factory/llm/` memuat beberapa generasi penyusun yang urutan langkahnya ditetapkan kode: penulis di bawah validator, loop tulis–uji–tulis ulang, loop berperan dengan critic terpisah, penulis bertemplat, dan penulis bebas dengan bank omongan. Tester, aturan bentuk soal, penjaga budget, dan bank omongan yang dipakai Runut Agent sekarang lahir dari sana. Laporan tiap generasi ada di [`docs/bukti/`](docs/bukti/) (`lingkar-agen*.md`, `uji-tanding-model.md`, `pintu-penyusun.md`), dan halaman penyusun generasi itu masih bisa dibuka dengan `npm run penyusun -- --mesin-lama`.
+Sebelum Runut Agent, `factory/llm/` memuat beberapa generasi penyusun yang urutan langkahnya ditetapkan kode: penulis di bawah validator, loop tulis–uji–tulis ulang, loop dengan critic terpisah, penulis bertemplat, dan penulis bebas yang menyimpan omongan lolos. Tester, aturan bentuk soal, guardrail budget, dan simpanan omongan lolos yang dipakai Runut Agent sekarang lahir dari sana. Laporan tiap generasi ada di [`docs/bukti/`](docs/bukti/) (`lingkar-agen*.md`, `uji-tanding-model.md`, `pintu-penyusun.md`), dan halaman penyusun generasi itu masih bisa dibuka dengan `npm run penyusun -- --mesin-lama`.
 
 ### Susunan
 
@@ -397,11 +413,11 @@ Sebelum Runut Agent, `factory/llm/` memuat beberapa generasi penyusun yang uruta
 | `eval/penyusun/` | Rekaman tiap percobaan agent: jejak, panggilan mentah, hasil |
 | `eval/bank-omongan/` | Kumpulan omongan yang lolos semua tester |
 | `web/` | Aplikasi pemain: statis, tanpa login, membaca `cases/` |
-| `alat/penyusun/` | Pintu penyusun lokal: tampilan AI agent dan halaman penyusun |
+| `alat/penyusun/` | Halaman penyusun lokal: menjalankan agent dan memutar ulang rekamannya |
 | `server/` | Pengumpul peristiwa alpha: Node bawaan saja |
 | `alat/` | Perkakas lain: pengambil Sectors, ringkasan data alpha, gate `periksa:desain` |
-| `deploy/` | Berkas dan skrip untuk menerbitkan alpha; tidak pernah dijalankan otomatis |
-| `e2e/` | Uji ujung-ke-ujung di Chromium sungguhan; lihat `docs/uji-e2e.md` |
+| `deploy/` | Berkas dan skrip untuk deploy alpha; tidak pernah dijalankan otomatis |
+| `e2e/` | Tes end-to-end di Chromium sungguhan; lihat `docs/uji-e2e.md` |
 | `docs/` | Arsitektur agent, aturan verifikasi, isi tiap simulasi, dan bukti |
 
 ### Sumber data
