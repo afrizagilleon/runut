@@ -34,6 +34,7 @@ Dari satu kode saham, agent memilih hari bursa yang dibekukan, menarik datanya d
 - [Syarat Track 01 → di mana di repo](#syarat-track-01--di-mana-di-repo)
 - [Runut Agent](#runut-agent): diagram dan 12 tool
 - [Hasil](#hasil)
+- [Riset di balik rancangannya](#riset-di-balik-rancangannya): paper yang dipakai dan temuan sendiri
 - [Menjalankan](#menjalankan): bermain lokal, memutar ulang rekaman agent, menjalankan agent, tes
 - [Data Sectors dan 33 aturan verifikasi](#data-sectors-dan-33-aturan-verifikasi)
 - [Bukan saran investasi](#bukan-saran-investasi)
@@ -217,6 +218,32 @@ Tiga tahap itu adalah tiga cara menjalankan agent yang sama: **susun** (tiga omo
 - Alpha 21 Sep–5 Okt 2026: 150 orang membuka; 48 menyelesaikan tiga soal; 44 memberi penilaian, rata-rata 4,0 dari 5.
 - 33 aturan verifikasi aktif (kode, bukan AI) menyaring data Sectors sebelum menjadi kartu.
 - Jejak kerja agent (tool call, tool result, biaya per langkah) tersimpan di `eval/penyusun/` dan bisa diputar ulang tanpa jaringan.
+
+## Riset di balik rancangannya
+
+Rancangan tester dan aturan penulisan soal tidak dikarang sendiri. Sebelum membangun, paper yang relevan dibaca dan tiap rujukan dicek satu per satu (ID arXiv ada, judul cocok); angka hanya dikutip di sini bila sudah dicocokkan ke naskahnya.
+
+**Yang dibaca, dan apa yang diambil darinya**
+
+| Rujukan | Temuannya | Dipakai di mana |
+|---|---|---|
+| Li dkk., [arXiv 2512.18880](https://arxiv.org/abs/2512.18880) (preprint) | Soal yang sulit bagi LLM belum tentu sulit bagi manusia: korelasi peringkat rata-rata 0,28 lintas model dan dataset. | "Tidak tertebak LLM kuat" tidak dipakai sebagai ukuran mutu. Opus tester hanya memberi warning dan tidak menolak soal. |
+| Zheng dkk., ICLR 2024, [arXiv 2309.03882](https://arxiv.org/abs/2309.03882); Pezeshkpour & Hruschka, [arXiv 2308.11483](https://arxiv.org/abs/2308.11483) | LLM condong ke huruf atau posisi pilihan tertentu, dan urutan pilihan mengubah jawabannya. | Tester menjawab berkali-kali dengan urutan pilihan diputar, dan yang dihitung adalah isi pilihan yang dipilih, bukan hurufnya. |
+| Haladyna, Downing & Rodriguez (2002), *Applied Measurement in Education* 15(3) | Daftar cacat penulisan soal pilihan ganda (item-writing flaws): kunci terpanjang, kata absolut, pengulangan kata dari soal, dan lainnya. | Aturan cacat soal D1–D9 di `factory/llm/cacat/detektor.ts`, dipanggil agent lewat `periksa_draft_dengan_aturan`. |
+| Schmucker & Moore, [arXiv 2503.10533](https://arxiv.org/abs/2503.10533) | Pada data siswa berskala besar, dua cacat yang paling merusak soal adalah "pilihan terpanjang adalah kunci" dan "lebih dari satu jawaban benar". | Panjang pilihan diperiksa kode; "lebih dari satu benar" diperiksa critic. |
+| Moore dkk. (2023), [arXiv 2307.08161](https://arxiv.org/abs/2307.08161) | Detektor berbasis aturan dilaporkan mengungguli GPT-4 dalam menemukan cacat penulisan soal. | Pemeriksaan bentuk soal dijalankan kode dan gratis; LLM dipakai hanya untuk yang tidak bisa diperiksa kode. |
+
+**Yang ditemukan sendiri selama membangun**
+
+- **Skor blind guesser searah dengan kesulitan bagi pemain.** Pada enam soal yang dimainkan selama alpha (26–41 pemain per soal), persentase pemain yang benar berkorelasi peringkat 0,84 dengan seberapa sering blind guesser menebak kunci tanpa kartu, dan 0,54 dengan Opus tester. Enam soal terlalu sedikit untuk disebut bukti; ini dasar label level yang dipakai agent, dan layak diuji pada lebih banyak soal.
+- **Aturan penolak harus diuji dengan kunci palsu.** Aturan tebakan pertama menolak 44,8 % pilihan yang sengaja diperlakukan sebagai kunci (94 dari 210), dan menolak 3 dari 6 soal yang sudah dimainkan. Aturan penggantinya menolak 8,6 % (18 dari 210) dan meloloskan 6 dari 6. Rincian dan cara mengulanginya: [`docs/bukti/gerbang-tebak-v2.md`](docs/bukti/gerbang-tebak-v2.md).
+- **Model yang sama bisa diam-diam berhenti berpikir.** Lewat satu penyedia, critic memakai median 84 token reasoning dan tidak mengajukan satu pun keberatan dalam 9 putusan; lewat penyedia lain, model yang sama menghasilkan median 17.678 token untuk peran yang sama. Tidak ada pesan error. Sejak itu penyedia tiap peran dikunci dan tiap panggilan ditolak bila token reasoning-nya di bawah ambang (`factory/llm/penjaga-penalaran.ts`). Rincian: [`docs/bukti/lingkar-agen-penalar.md`](docs/bukti/lingkar-agen-penalar.md).
+
+**Yang layak diteliti lebih lanjut**
+
+- Apakah skor blind guesser tetap meramalkan kesulitan bagi pemain pada puluhan soal dan saham yang berbeda.
+- Seberapa sering LLM yang dipakai sebagai penilai menerima permintaan reasoning tetapi tidak menjalankannya, lintas penyedia dan model.
+- Apakah pemain yang berlatih di Runut memang lebih sering membuka dokumen sumber pada soal berikutnya; data alpha mencatat pembukaan kartu, tetapi belum dianalisis untuk itu.
 
 ## Menjalankan
 
