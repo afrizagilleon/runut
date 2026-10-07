@@ -169,6 +169,7 @@ Tiga tahap itu adalah tiga cara menjalankan agent yang sama: **susun** (tiga omo
 - Runut Agent menyusun tiga soal yang lolos semua tester untuk enam saham: AGAR, ALII, AMAG, TIRT, BOLT, MLPT, dengan biaya model US$0,60–1,37 per simulasi (biaya nyata dari penyedia) ditambah 5–8 kredit Sectors API per saham. Simulasi MLPT (7 Oktober 2025, US$0,82) disusun dengan menekan tombol di halaman penyusun; jejaknya ada di `eval/penyusun/pn-20261006-061713/`.
 - Dari enam itu, satu yang sudah bisa dimainkan: AMAG. Hanya AMAG yang sudah melewati tahap lengkapi, diperiksa reviewer manusia, dan dipasang ke aplikasi. Lima lainnya ada di repo sebagai keluaran agent (`eval/penyusun/`) dan belum dipasang.
 - Simulasi AMAG (15 Juni 2026) di situs seluruhnya ditulis Runut Agent mulai dari kode saham: memilih hari, kartu fakta, tiga soal, dan bagian "apa yang terjadi sesudahnya". `cases/amag-2026-06-15.json` sama byte per byte dengan `eval/penyusun/m2d29-amag-lengkapi-3/kasus.json`; sha256 keduanya `f97a0ff2f30660f0500892a974d9b145c94f27e8049275734b0b87f2a9c1ddb0`.
+- Tahap tingkatkan mengubah soal Bayu di AMAG dari versi asal ke versi sulit, dan versi sulit itulah yang dimainkan di situs. Tanpa kartu, blind guesser memilih kunci jawaban 7 dari 12 kali pada versi asal dan 0 dari 12 kali pada versi sulit; Opus tester 4 dari 4 lalu 0 dari 4. Kedua versi tersimpan berdampingan di `eval/bank-omongan/40bccdb8f5412733fd2301665f7e8ea2707aedd06d2515d906f9aa83c2e3744e/` (`28192295aab0c290.json` versi asal, `e59779237448d406.json` versi sulit; angka di `jejak_gerbang`), dan kerja agent-nya bisa diputar ulang: `npm run agen:replay -- --id m2d26-amag-naik-1`.
 - Alpha 21 Sep–5 Okt 2026: 150 orang membuka; 48 menyelesaikan tiga soal; 44 memberi penilaian, rata-rata 4,0 dari 5.
 - 33 aturan verifikasi aktif (kode, bukan AI) menyaring data Sectors sebelum menjadi kartu.
 - Jejak kerja agent (tool call, tool result, biaya per langkah) tersimpan di `eval/penyusun/` dan bisa diputar ulang tanpa jaringan.
@@ -255,7 +256,7 @@ Aplikasi pemain memuat tiga simulasi (`web/src/kasus.ts`). Dua yang pertama disu
 - **Kalender simulasi** di layar terima kasih: hanya simulasi nyata yang tampil, yang sudah selesai diberi centang. Pengunjung yang kembali juga mendapat tautan kecil ke kalender di layar pertama.
 - **`?kasus=<id>`** memaksa satu simulasi, untuk juri dan untuk uji. Nilai yang tidak dikenal diabaikan diam-diam, seperti `?k=`.
 
-**Level soal dipilih saat simulasi dipasang, bukan oleh pemain.** Tahap tingkatkan menghasilkan versi lebih sulit dari satu soal dan menyimpannya di samping versi asal; reviewer manusia memutuskan versi mana yang masuk ke `cases/`. Aplikasi pemain belum punya pilihan level.
+**Level soal dipilih saat simulasi dipasang, bukan oleh pemain.** Tahap tingkatkan menghasilkan versi lebih sulit dari satu soal dan menyimpannya di samping versi asal; reviewer manusia memutuskan versi mana yang masuk ke `cases/`. Di simulasi AMAG, soal Bayu memakai versi sulit (angkanya di bagian [Hasil](#hasil)). Aplikasi pemain belum punya pilihan level.
 
 Label tiap simulasi adalah **peristiwanya**, bukan penilaian atas sahamnya: tidak ada kata "sehat", "bagus", atau "buruk" di teks simulasi mana pun, dan itu dijaga tes.
 
